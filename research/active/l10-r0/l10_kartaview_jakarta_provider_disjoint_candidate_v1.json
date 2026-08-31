@@ -1,0 +1,171 @@
+{
+  "schema": "blindassist-l10-kartaview-jakarta-provider-disjoint-candidate-v1",
+  "generated_at_utc": "2026-08-31T01:44:40Z",
+  "status": "METADATA_SELECTION_AND_QUERY_INDEPENDENT_REFERENCE_FROZEN_BEFORE_ANY_QUERY_OR_NEGATIVE_PIXEL_DOWNLOAD_OCR_HUMAN_REVIEW_OR_MODEL_CALL",
+  "decision": "L10_KARTAVIEW_JAKARTA_PROVIDER_DISJOINT_METADATA_CANDIDATE_ADMITTED_FOR_SEPARATE_DEVELOPMENT_ONLY",
+  "question": "Can a new KartaView/Jakarta sequence source separately test character-sequence text normalization and query-independent brand appearance without tuning any opened Panoramax or Mapillary row?",
+  "source_authority": {
+    "provider": "KartaView (formerly OpenStreetCam)",
+    "official_api_reference": "https://api.openstreetcam.org/api/doc.html",
+    "official_sequence_documentation": "https://kartaview.org/doc/sequences",
+    "official_photo_documentation": "https://kartaview.org/doc/photos",
+    "official_landing_and_license_statement": "https://kartaview.org/landing",
+    "imagery_license": "Creative Commons Attribution-ShareAlike 4.0 according to the official KartaView landing page; retain provider/contributor attribution and derived-artifact provenance during materialization.",
+    "osm_metadata_endpoint": "https://overpass-api.de/api/interpreter",
+    "selection_city": "Jakarta Selatan, Indonesia",
+    "provider_relation": "Provider-disjoint from Panoramax and Mapillary evaluations already opened by the L10 router.",
+    "city_relation": "City-disjoint from Grenoble, Rumilly, Halle, Caen, Rotterdam, and Den Haag router evaluations already opened in this line."
+  },
+  "selection_contract": {
+    "pixel_boundary": "Selection used only public KartaView photo/sequence metadata, OSM names/tags, coordinates, headings, sequence order, projection, field of view, capture identity, and timestamps. No selected image URL was downloaded or rendered.",
+    "target_ordering": "Within the first verified KartaView SPHERE/PLANE coverage neighbourhood returned by the official API, enumerate OSM-named non-road objects and retain the first pair with public active planar sequence frames, target-bearing inside half horizontal field of view, distinct query contributors/sequences, and complementary lexical-versus-appearance development roles.",
+    "positive_geometry": "A frame is metadata-positive only when great-circle target distance is at most 45 m and absolute wrapped heading-to-target-bearing delta is at most half the sequence camera horizontal field of view.",
+    "negative_geometry": "A candidate negative control must be public/active, at most 45 m from the same target, come from a different sequence and contributor than its query, and place the target bearing outside half horizontal field of view. Human pixel truth must still confirm target absence before any model call.",
+    "no_substitution": "After this receipt, the listed target, query sequence, query frame window, and negative-control identity may not be replaced based on pixels, OCR, rank, or truth. An invalid row becomes NOT_EVALUABLE.",
+    "opened_cohort_exclusion": "No threshold, crop, token rule, suffix rule, OCR preprocessing, appearance gate, or abstention rule may be learned from Panoramax PS/DF or Mapillary MR outcomes."
+  },
+  "rows": [
+    {
+      "candidate_id": "KVJ-CHAR-01",
+      "development_role": "PROVIDER_NORMALIZED_CHARACTER_SEQUENCE_DEVELOPMENT",
+      "target": {
+        "name": "Apotik Setia Budhi",
+        "osm_type": "way",
+        "osm_id": 482173146,
+        "lat": -6.2095204,
+        "lon": 106.8269783,
+        "tags_used": {
+          "amenity": "pharmacy",
+          "healthcare": "pharmacy",
+          "building": "yes"
+        },
+        "fixed_distinctive_token_capability_units": 1,
+        "role_reason": "The name is intentionally below the frozen two-unit distinctive-token gate, so this row can develop character-sequence normalization without pretending that the old token rule should already match it."
+      },
+      "query": {
+        "sequence_id": 2848214,
+        "contributor_user_id": 31782,
+        "capture_date": "2020-07-31",
+        "projection": "PLANE",
+        "width": 3264,
+        "height": 1836,
+        "horizontal_fov_degrees": 65.24977908193365,
+        "frame_window": [
+          {"photo_id": 1026416830, "sequence_index": 437, "target_distance_m": 27.58, "heading_degrees": 205.87, "target_bearing_degrees": 111.38, "absolute_delta_degrees": 94.49, "metadata_in_fov": false},
+          {"photo_id": 1026416834, "sequence_index": 438, "target_distance_m": 28.43, "heading_degrees": 71.46, "target_bearing_degrees": 101.14, "absolute_delta_degrees": 29.68, "metadata_in_fov": true},
+          {"photo_id": 1026416838, "sequence_index": 439, "target_distance_m": 23.73, "heading_degrees": 51.75, "target_bearing_degrees": 107.85, "absolute_delta_degrees": 56.10, "metadata_in_fov": false}
+        ],
+        "anchor_photo_detail_request": "https://api.openstreetcam.org/2.0/photo/1026416834",
+        "sequence_window_request": "https://api.openstreetcam.org/2.0/sequence/2848214/photos?page=5&itemsPerPage=100"
+      },
+      "negative_control": {
+        "photo_id": 1042789654,
+        "sequence_id": 2891838,
+        "contributor_user_id": 34382,
+        "sequence_index": 362,
+        "target_distance_m": 8.74,
+        "heading_degrees": 99.43,
+        "absolute_delta_degrees": 115.36,
+        "horizontal_fov_degrees": 68.05,
+        "metadata_in_fov": false,
+        "required_truth": "Human review must confirm that the target credential is absent before this can serve as a negative."
+      },
+      "reference_policy": "Lexical-only development row. No appearance reference may be created from the query or its neighbouring frames."
+    },
+    {
+      "candidate_id": "KVJ-BRAND-01",
+      "development_role": "QUERY_INDEPENDENT_BRAND_APPEARANCE_TRANSFER",
+      "target": {
+        "name": "Alfamidi",
+        "osm_type": "way",
+        "osm_id": 1268305162,
+        "lat": -6.2094292,
+        "lon": 106.8266021,
+        "tags_used": {
+          "shop": "convenience",
+          "building": "yes",
+          "brand": "Alfamidi",
+          "brand:wikidata": "Q12471462"
+        },
+        "fixed_distinctive_token_capability_units": 2,
+        "role_reason": "The eight-character brand already meets the frozen two-unit name-capability rule, while the Wikidata brand identity permits a query-independent logo/reference search before query pixels are opened."
+      },
+      "query": {
+        "sequence_id": 2703426,
+        "contributor_user_id": 31742,
+        "capture_date": "2020-06-24",
+        "projection": "PLANE",
+        "width": 2560,
+        "height": 1920,
+        "horizontal_fov_degrees": 68.83,
+        "frame_window": [
+          {"photo_id": 926904574, "sequence_index": 814, "target_distance_m": 16.19, "heading_degrees": 51.75, "target_bearing_degrees": 28.60, "absolute_delta_degrees": 23.15, "metadata_in_fov": true},
+          {"photo_id": 926904594, "sequence_index": 815, "target_distance_m": 7.77, "heading_degrees": 24.70, "target_bearing_degrees": 356.82, "absolute_delta_degrees": 27.88, "metadata_in_fov": true},
+          {"photo_id": 926904614, "sequence_index": 816, "target_distance_m": 3.87, "heading_degrees": 21.26, "target_bearing_degrees": 274.61, "absolute_delta_degrees": 106.65, "metadata_in_fov": false}
+        ],
+        "anchor_photo_detail_request": "https://api.openstreetcam.org/2.0/photo/926904594",
+        "sequence_window_request": "https://api.openstreetcam.org/2.0/sequence/2703426/photos?page=9&itemsPerPage=100"
+      },
+      "negative_control": {
+        "photo_id": 937703582,
+        "sequence_id": 2708674,
+        "contributor_user_id": 31646,
+        "sequence_index": 25,
+        "target_distance_m": 12.80,
+        "heading_degrees": 286.30,
+        "absolute_delta_degrees": 69.79,
+        "horizontal_fov_degrees": 102.47,
+        "metadata_in_fov": false,
+        "required_truth": "Human review must confirm that the target brand is absent before this can serve as a negative."
+      },
+      "reference_policy": "Resolve Wikidata Q12471462 to an official or Wikimedia-hosted brand reference, freeze its URL/hash before any query pixel is opened, and treat it only as brand-level appearance evidence, never exact-instance evidence."
+      ,
+      "frozen_query_independent_reference": {
+        "wikidata_entity": "Q12471462",
+        "wikidata_entity_request": "https://www.wikidata.org/wiki/Special:EntityData/Q12471462.json",
+        "commons_title": "File:Alfamidi 2015.svg",
+        "commons_description_url": "https://commons.wikimedia.org/wiki/File:Alfamidi_2015.svg",
+        "source_url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Alfamidi_2015.svg",
+        "commons_sha1": "450d75c0e985f06c78f5dedc1558a9aea48affb7",
+        "license": "Public domain according to Wikimedia Commons imageinfo metadata",
+        "artist": "PT Midi Utama Indonesia Tbk",
+        "local_path": "artifacts.local/datasets/l10-kartaview-jakarta-provider-disjoint-v1/references/Alfamidi_2015.svg",
+        "bytes": 13354,
+        "sha256": "8b795ea531e379eeb396e4c9454cc9a08d843bfcde3d604fbd4b06ebde829163",
+        "materialization_boundary": "This logo was resolved and downloaded before any KartaView query or negative-control pixel. It provides brand appearance only, never exact-place or entrance identity."
+      }
+    }
+  ],
+  "metadata_metrics": {
+    "candidate_targets": 2,
+    "query_sequences": 2,
+    "query_contributors": 2,
+    "negative_control_sequences": 2,
+    "negative_control_contributors": 2,
+    "total_distinct_sequences": 4,
+    "total_distinct_contributors": 4,
+    "provider_disjoint_from_opened_router_panels": true,
+    "city_disjoint_from_opened_router_panels": true,
+    "query_independent_reference_assets_materialized": 1,
+    "selected_query_or_negative_images_downloaded": 0,
+    "human_truth_rows_opened": 0,
+    "ocr_or_model_calls": 0
+  },
+  "next_frozen_steps": [
+    "Hash-verify the already frozen query-independent Alfamidi brand reference before every materialization or replay.",
+    "Materialize only the six exact query-window photos and two exact negative-control photos through atomic .part files under artifacts.local/datasets/l10-kartaview-jakarta-provider-disjoint-v1.",
+    "Obtain independent per-frame human truth for target/credential visibility and confirm both negative controls before any OCR or appearance call.",
+    "Develop character-sequence normalization only on KVJ-CHAR-01; keep KVJ-BRAND-01 as the separately routed appearance row and do not use MR outcomes.",
+    "Pre-register progressive observation order and abstention before evaluation; any failed source or truth gate returns NOT_EVALUABLE without substitution.",
+    "Use a second new KartaView city as confirmation after Jakarta development; Jakarta alone cannot establish city-general transfer."
+  ],
+  "claim_boundary": {
+    "allowed": "A reproducible metadata-only admission of a new-provider/new-city two-row Development candidate with exact query windows and contributor-disjoint geometric negative-control candidates.",
+    "not_allowed": [
+      "pixel visibility, lexical correctness, appearance correctness, negative validity, or any algorithm metric",
+      "independent, provider-general, city-general, open-world, conformal, FDR-controlled, online, deployment, or safety confirmation",
+      "exact facade, portal, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety",
+      "treating a brand identity or search candidate as an exact place-instance binding"
+    ]
+  }
+}

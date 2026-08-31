@@ -1,0 +1,1658 @@
+{
+  "schema": "blindassist-l10-panolab-temporal-query-router-result-v1",
+  "decision": "L10_PANOLAB_RECIPROCAL_TEMPORAL_QUERY_ROUTER_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "CONSUMED_POSTHOC_TEMPORAL_MECHANISM_DEVELOPMENT_CANDIDATE_ROUTING_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_temporal_query_router_protocol_v1.json",
+  "protocol_sha256": "4fb6fc797b97a0c35a99f03c932e30288c6e390030f254788d988fa8b01fd3d9",
+  "evaluator_sha256": "4d182dd6fc54f0c19db9adcafbd2221533d6869d100131b2079c5082387ede48",
+  "execution_backend": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "named-poi-clip-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "named-poi-clip-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.26665919995866716
+        ],
+        "median_seconds": 0.26665919995866716
+      },
+      {
+        "backend": "named-poi-clip-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.8592509999871254
+        ],
+        "median_seconds": 0.8592509999871254
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "backend_receipt_sha256": "fcec1fd760f80b96ae72a0acba0fd7da23a4339bdaff1ba550c586f0b6798d0b",
+  "frozen_thresholds": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positives before both open-set and cross-collection panels.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY candidate only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "no_adaptation": "No frame, crop, reference, feature weight, sequence length, top-two aggregation, threshold, or roster may change after either temporal result is observed."
+  },
+  "crop_receipts": [
+    {
+      "key": "FP01_prev",
+      "target_id": "FP01",
+      "role": "prev",
+      "item_id": "a2b362b7-5a22-4a1a-ae1c-76a67959ff26",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-temporal-query-v1\\images\\a2b362b7-5a22-4a1a-ae1c-76a67959ff26.jpg",
+      "source_sha256": "1666cc0a90494c201f7426d6579e544f1ba3034964bd84d60d3727e685198e47",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP01_prev.jpg",
+      "crop_sha256": "fe9667c92e24619d851b944eb59a7b4f52ee8c9bfbe5f834d0ee56ef74a4e6da",
+      "crop_bytes": 1053115,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1685.374592,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "3f0d98f7c2841c0a23191e90f41feb705c36eed60d5fc680971c032c51355f0b"
+      }
+    },
+    {
+      "key": "FP01_anchor",
+      "target_id": "FP01",
+      "role": "anchor",
+      "item_id": "48fa4a33-af91-4f8d-94ef-efb6eceff9b9",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\48fa4a33-af91-4f8d-94ef-efb6eceff9b9.jpg",
+      "source_sha256": "a7221bfe6554b5ef2279dae454d72cd573888477f0c71054408ad16173ec8e5f",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP01_anchor.jpg",
+      "crop_sha256": "972d996748349dffdec977cae885de0b8dfff945d977a358fbbb02efbf258306",
+      "crop_bytes": 948355,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1384.36135,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "65578787ea02d848fae047b02c13aa34c4a31c50425ded19cdc7f43479183ac1"
+      }
+    },
+    {
+      "key": "FP01_next",
+      "target_id": "FP01",
+      "role": "next",
+      "item_id": "544115f6-b81c-4b3e-8f79-96748bc99b55",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-temporal-query-v1\\images\\544115f6-b81c-4b3e-8f79-96748bc99b55.jpg",
+      "source_sha256": "277f1af351dbf73002d47632ae6da54f5548e8cd25087c367fdae051f6d3ecbf",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP01_next.jpg",
+      "crop_sha256": "5c861e43c5d33b8ac433a59f368f3cc5c7007f2d2b9c59a1997aaf274c850e45",
+      "crop_bytes": 522949,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 965.654802,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "7bc7317d4064afd12eb32a198c9b93d11495fc943c225761cf39d77914cf50d7"
+      }
+    },
+    {
+      "key": "FP02_prev",
+      "target_id": "FP02",
+      "role": "prev",
+      "item_id": "d1953f43-1d61-4a61-816e-4989da4fbbfa",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-temporal-query-v1\\images\\d1953f43-1d61-4a61-816e-4989da4fbbfa.jpg",
+      "source_sha256": "8822a0498d800c5e6eae3aeece2200fec7944fdf2d48b96aecde57e580058df6",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP02_prev.jpg",
+      "crop_sha256": "e33b6b840437e999decea13d2ad1342dea5bcd6b3d16277edff56d804640fb8e",
+      "crop_bytes": 827030,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3245.714996,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "60eb014fab6b21a99848eda829948614817301ef24eb3b9533deade844fc0eb0"
+      }
+    },
+    {
+      "key": "FP02_anchor",
+      "target_id": "FP02",
+      "role": "anchor",
+      "item_id": "ee86afbe-9827-46dd-8b79-41bbec35a8a0",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\ee86afbe-9827-46dd-8b79-41bbec35a8a0.jpg",
+      "source_sha256": "77a2b4df94561eac4515cc716d18eedcd8e9395c516689aa5bfc53eb068fb510",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP02_anchor.jpg",
+      "crop_sha256": "3784e8741c7270bb48561cd55b94e60b94d6b7a2848f8d83e823aece8b4ee3e0",
+      "crop_bytes": 829680,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3308.52521,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4d91d043592cb1956382c3e02ff02a99596a2dfc827ac7369ea9c52e98ffbe7f"
+      }
+    },
+    {
+      "key": "FP02_next",
+      "target_id": "FP02",
+      "role": "next",
+      "item_id": "7bab228b-d6bc-415f-aabc-8da607cbf935",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-temporal-query-v1\\images\\7bab228b-d6bc-415f-aabc-8da607cbf935.jpg",
+      "source_sha256": "bd28154bd01f31815a0d14494cccc03676f2af88182b8f40acf194266e5aef63",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-temporal-query-router-v1\\crops\\FP02_next.jpg",
+      "crop_sha256": "df4fcff7032abb53b32d55d73d7b6f4c7b60a26616171f41dddecd70ac6c2a0c",
+      "crop_bytes": 814182,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3446.447592,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "39004718dc3f77bfee7037faecb59523168e6f3d4b8b494c01d8c16d8fc13561"
+      }
+    }
+  ],
+  "metrics": {
+    "consumed_posthoc_episodes": 2,
+    "query_frames": 6,
+    "new_neighbor_frames": 4,
+    "combined_target_roster": 6,
+    "reference_views": 12,
+    "single_frame_baseline_correct_wrong_unknown": [
+      1,
+      0,
+      1
+    ],
+    "temporal_router_correct_wrong_unknown": [
+      1,
+      0,
+      1
+    ],
+    "temporal_correct_gain": 0,
+    "wrong_goal_trials": 10,
+    "wrong_goal_search_priority_candidates": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "model_seconds": 2.162355499982368
+  },
+  "gate": {
+    "two_valid_reciprocal_sequences": true,
+    "six_query_frames": true,
+    "two_of_two_temporal_router_correct": false,
+    "minimum_one_correct_gain": false,
+    "zero_temporal_router_wrong": true,
+    "zero_wrong_goal_search_priority_candidates": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "FP01",
+      "target_name": "Rumillat",
+      "single_frame_baseline": {
+        "prediction": "FL01",
+        "truth_score": 0.4373798062403997,
+        "truth_margin": -0.12183313528696688,
+        "route": "UNKNOWN_KEEP_SEARCHING"
+      },
+      "per_frame": [
+        {
+          "relation": "prev",
+          "scores": {
+            "FL01": {
+              "score": 0.5700582712888718,
+              "max_clip": 0.7413270473480225,
+              "max_dino": 0.5570216774940491,
+              "max_mutual_patch_geometry": 0.4283459633588791,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.727063775062561,
+                  "dino": 0.45937401056289673,
+                  "score": 0.2812585309147835,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.519246518611908
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7413270473480225,
+                  "dino": 0.5570216774940491,
+                  "score": 0.4283459633588791,
+                  "matches": 16,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5711279511451721
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5457807183265686,
+              "max_clip": 0.7438503503799438,
+              "max_dino": 0.5269252061843872,
+              "max_mutual_patch_geometry": 0.38425448536872864,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7413496375083923,
+                  "dino": 0.5269252061843872,
+                  "score": 0.38425448536872864,
+                  "matches": 16,
+                  "inlier_ratio": 0.375,
+                  "mean_similarity": 0.5589156150817871
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7438503503799438,
+                  "dino": 0.489561527967453,
+                  "score": 0.3764986197153727,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.5647479295730591
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.4438590496778488,
+              "max_clip": 0.6913260221481323,
+              "max_dino": 0.3253100514411926,
+              "max_mutual_patch_geometry": 0.30141857266426086,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.6913260221481323,
+                  "dino": 0.270698219537735,
+                  "score": 0.2512141664822896,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.4306528568267822
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.5985085964202881,
+                  "dino": 0.3253100514411926,
+                  "score": 0.30141857266426086,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.4305979609489441
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.45378208458423613,
+              "max_clip": 0.7439795732498169,
+              "max_dino": 0.41903209686279297,
+              "max_mutual_patch_geometry": 0.22157802432775497,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7439795732498169,
+                  "dino": 0.2839842140674591,
+                  "score": 0.20005316287279132,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.4364796280860901
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7416701912879944,
+                  "dino": 0.41903209686279297,
+                  "score": 0.22157802432775497,
+                  "matches": 8,
+                  "inlier_ratio": 0.375,
+                  "mean_similarity": 0.4834429621696472
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.44296483844518664,
+              "max_clip": 0.6728147268295288,
+              "max_dino": 0.3408883512020111,
+              "max_mutual_patch_geometry": 0.3056439906358719,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6600513458251953,
+                  "dino": 0.3323051929473877,
+                  "score": 0.3056439906358719,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5239611268043518
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6728147268295288,
+                  "dino": 0.3408883512020111,
+                  "score": 0.2771859169006348,
+                  "matches": 7,
+                  "inlier_ratio": 0.7142857142857143,
+                  "mean_similarity": 0.5543718338012695
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5151419659455617,
+              "max_clip": 0.7414840459823608,
+              "max_dino": 0.4526773691177368,
+              "max_mutual_patch_geometry": 0.3561330189307531,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.7414840459823608,
+                  "dino": 0.4333617091178894,
+                  "score": 0.3561330189307531,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.502776026725769
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.7046346664428711,
+                  "dino": 0.4526773691177368,
+                  "score": 0.3376392126083374,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.5064588189125061
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FL01",
+            "correct": false,
+            "truth_score": 0.44296483844518664,
+            "strongest_wrong_score": 0.5700582712888718,
+            "truth_margin": -0.12709343284368513,
+            "ranking": [
+              "FL01",
+              "FL02",
+              "FP02",
+              "FL04",
+              "FL03",
+              "FP01"
+            ]
+          }
+        },
+        {
+          "relation": "anchor",
+          "scores": {
+            "FL01": {
+              "score": 0.559212920665741,
+              "max_clip": 0.7118031978607178,
+              "max_dino": 0.5349394083023071,
+              "max_mutual_patch_geometry": 0.44086737334728243,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.7118031978607178,
+                  "dino": 0.498213529586792,
+                  "score": 0.2275879432757696,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5462110638618469
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7075783014297485,
+                  "dino": 0.5349394083023071,
+                  "score": 0.44086737334728243,
+                  "matches": 20,
+                  "inlier_ratio": 0.55,
+                  "mean_similarity": 0.5688611268997192
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5465681056181589,
+              "max_clip": 0.7575751543045044,
+              "max_dino": 0.5126655101776123,
+              "max_mutual_patch_geometry": 0.3831260601679484,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7575751543045044,
+                  "dino": 0.5126655101776123,
+                  "score": 0.3831260601679484,
+                  "matches": 10,
+                  "inlier_ratio": 0.6,
+                  "mean_similarity": 0.5746890902519226
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7563997507095337,
+                  "dino": 0.5024226903915405,
+                  "score": 0.3765542166573661,
+                  "matches": 14,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5271759033203125
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.4227254137396812,
+              "max_clip": 0.6703717708587646,
+              "max_dino": 0.28258299827575684,
+              "max_mutual_patch_geometry": 0.293623860925436,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.6703717708587646,
+                  "dino": 0.22386027872562408,
+                  "score": 0.17680776367584863,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.38576239347457886
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.5761719942092896,
+                  "dino": 0.28258299827575684,
+                  "score": 0.293623860925436,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.4145278036594391
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.48199947774410246,
+              "max_clip": 0.711841344833374,
+              "max_dino": 0.4065619707107544,
+              "max_mutual_patch_geometry": 0.32803628593683243,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.6966311931610107,
+                  "dino": 0.21749436855316162,
+                  "score": 0.19758426894744238,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.4742022454738617
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.711841344833374,
+                  "dino": 0.4065619707107544,
+                  "score": 0.32803628593683243,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5248580574989319
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.4373798062403997,
+              "max_clip": 0.672571063041687,
+              "max_dino": 0.3015395998954773,
+              "max_mutual_patch_geometry": 0.31648758550484973,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6504422426223755,
+                  "dino": 0.2889034152030945,
+                  "score": 0.22150802115599316,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5316192507743835
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.672571063041687,
+                  "dino": 0.3015395998954773,
+                  "score": 0.31648758550484973,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5425501465797424
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5088799405556459,
+              "max_clip": 0.7343642711639404,
+              "max_dino": 0.44157952070236206,
+              "max_mutual_patch_geometry": 0.35364391368169057,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.7343642711639404,
+                  "dino": 0.39510440826416016,
+                  "score": 0.35364391368169057,
+                  "matches": 13,
+                  "inlier_ratio": 0.46153846153846156,
+                  "mean_similarity": 0.48393377661705017
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.7182214856147766,
+                  "dino": 0.44157952070236206,
+                  "score": 0.2943919946750005,
+                  "matches": 11,
+                  "inlier_ratio": 0.2727272727272727,
+                  "mean_similarity": 0.5046719908714294
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FL01",
+            "correct": false,
+            "truth_score": 0.4373798062403997,
+            "strongest_wrong_score": 0.559212920665741,
+            "truth_margin": -0.12183311442534134,
+            "ranking": [
+              "FL01",
+              "FL02",
+              "FP02",
+              "FL04",
+              "FP01",
+              "FL03"
+            ]
+          }
+        },
+        {
+          "relation": "next",
+          "scores": {
+            "FL01": {
+              "score": 0.5883446782827377,
+              "max_clip": 0.8160121440887451,
+              "max_dino": 0.6052505373954773,
+              "max_mutual_patch_geometry": 0.37856948375701904,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.8160121440887451,
+                  "dino": 0.6052505373954773,
+                  "score": 0.37856948375701904,
+                  "matches": 12,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5678542256355286
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.72088223695755,
+                  "dino": 0.5219644904136658,
+                  "score": 0.361811359723409,
+                  "matches": 12,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5427170395851135
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5411005781247065,
+              "max_clip": 0.7644165754318237,
+              "max_dino": 0.48023951053619385,
+              "max_mutual_patch_geometry": 0.38373724772379947,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7148500680923462,
+                  "dino": 0.48023951053619385,
+                  "score": 0.38373724772379947,
+                  "matches": 13,
+                  "inlier_ratio": 0.38461538461538464,
+                  "mean_similarity": 0.5542871356010437
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7644165754318237,
+                  "dino": 0.4017398953437805,
+                  "score": 0.3678085257609685,
+                  "matches": 11,
+                  "inlier_ratio": 0.5454545454545454,
+                  "mean_similarity": 0.5192590951919556
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5194816390673319,
+              "max_clip": 0.7597030997276306,
+              "max_dino": 0.46843570470809937,
+              "max_mutual_patch_geometry": 0.34119156996409095,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.7597030997276306,
+                  "dino": 0.4063223600387573,
+                  "score": 0.3302251473069191,
+                  "matches": 11,
+                  "inlier_ratio": 0.6363636363636364,
+                  "mean_similarity": 0.44030019640922546
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.7150969505310059,
+                  "dino": 0.46843570470809937,
+                  "score": 0.34119156996409095,
+                  "matches": 12,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5117873549461365
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.5818413372223195,
+              "max_clip": 0.7413971424102783,
+              "max_dino": 0.5730017423629761,
+              "max_mutual_patch_geometry": 0.44775475446994495,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.672644853591919,
+                  "dino": 0.3404325842857361,
+                  "score": 0.24914005150397617,
+                  "matches": 8,
+                  "inlier_ratio": 0.625,
+                  "mean_similarity": 0.45995086431503296
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7413971424102783,
+                  "dino": 0.5730017423629761,
+                  "score": 0.44775475446994495,
+                  "matches": 13,
+                  "inlier_ratio": 0.46153846153846156,
+                  "mean_similarity": 0.6127170324325562
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.6567981570959092,
+              "max_clip": 0.8291179537773132,
+              "max_dino": 0.6702138185501099,
+              "max_mutual_patch_geometry": 0.49763354659080505,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.7998291850090027,
+                  "dino": 0.6580171585083008,
+                  "score": 0.42475768498011995,
+                  "matches": 21,
+                  "inlier_ratio": 0.2857142857142857,
+                  "mean_similarity": 0.6607341766357422
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.8291179537773132,
+                  "dino": 0.6702138185501099,
+                  "score": 0.49763354659080505,
+                  "matches": 22,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.6635113954544067
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5936089175588944,
+              "max_clip": 0.7330645322799683,
+              "max_dino": 0.6458394527435303,
+              "max_mutual_patch_geometry": 0.4389411701875574,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.730992317199707,
+                  "dino": 0.5770668387413025,
+                  "score": 0.4154794995601361,
+                  "matches": 13,
+                  "inlier_ratio": 0.38461538461538464,
+                  "mean_similarity": 0.6001370549201965
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.7330645322799683,
+                  "dino": 0.6458394527435303,
+                  "score": 0.4389411701875574,
+                  "matches": 17,
+                  "inlier_ratio": 0.4117647058823529,
+                  "mean_similarity": 0.621833324432373
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FP01",
+            "correct": true,
+            "truth_score": 0.6567981570959092,
+            "strongest_wrong_score": 0.5936089175588944,
+            "truth_margin": 0.06318923953701472,
+            "ranking": [
+              "FP01",
+              "FP02",
+              "FL01",
+              "FL04",
+              "FL02",
+              "FL03"
+            ]
+          }
+        }
+      ],
+      "temporal_aggregate": {
+        "scores": {
+          "FL01": {
+            "score": 0.5792014747858047,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.5883446782827377
+              },
+              {
+                "relation": "prev",
+                "score": 0.5700582712888718
+              }
+            ],
+            "discarded_frame": {
+              "relation": "anchor",
+              "score": 0.559212920665741
+            }
+          },
+          "FL02": {
+            "score": 0.5461744119723637,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5465681056181589
+              },
+              {
+                "relation": "prev",
+                "score": 0.5457807183265686
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5411005781247065
+            }
+          },
+          "FL03": {
+            "score": 0.4816703443725904,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.5194816390673319
+              },
+              {
+                "relation": "prev",
+                "score": 0.4438590496778488
+              }
+            ],
+            "discarded_frame": {
+              "relation": "anchor",
+              "score": 0.4227254137396812
+            }
+          },
+          "FL04": {
+            "score": 0.5319204074832109,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.5818413372223195
+              },
+              {
+                "relation": "anchor",
+                "score": 0.48199947774410246
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.45378208458423613
+            }
+          },
+          "FP01": {
+            "score": 0.549881497770548,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.6567981570959092
+              },
+              {
+                "relation": "prev",
+                "score": 0.44296483844518664
+              }
+            ],
+            "discarded_frame": {
+              "relation": "anchor",
+              "score": 0.4373798062403997
+            }
+          },
+          "FP02": {
+            "score": 0.5543754417522281,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.5936089175588944
+              },
+              {
+                "relation": "prev",
+                "score": 0.5151419659455617
+              }
+            ],
+            "discarded_frame": {
+              "relation": "anchor",
+              "score": 0.5088799405556459
+            }
+          }
+        },
+        "prediction": "FL01",
+        "correct": false,
+        "truth_score": 0.549881497770548,
+        "strongest_wrong_score": 0.5792014747858047,
+        "truth_margin": -0.029319977015256793,
+        "ranking": [
+          "FL01",
+          "FP02",
+          "FP01",
+          "FL02",
+          "FL04",
+          "FL03"
+        ]
+      },
+      "acceptance": {
+        "score_gate": false,
+        "margin_gate": false,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate": null,
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5792014747858047
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5461744119723637
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.4816703443725904
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5319204074832109
+        },
+        {
+          "wrong_target": "FP02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5543754417522281
+        }
+      ]
+    },
+    {
+      "episode_id": "FP02",
+      "target_name": "Halle Rebatet",
+      "single_frame_baseline": {
+        "prediction": "FP02",
+        "truth_score": 0.7103447003023965,
+        "truth_margin": 0.043777828699066546,
+        "route": "APPEARANCE_SEARCH_PRIORITY_CANDIDATE"
+      },
+      "per_frame": [
+        {
+          "relation": "prev",
+          "scores": {
+            "FL01": {
+              "score": 0.5854667437076568,
+              "max_clip": 0.7798434495925903,
+              "max_dino": 0.5052320957183838,
+              "max_mutual_patch_geometry": 0.4655337810516358,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.7432857155799866,
+                  "dino": 0.5052320957183838,
+                  "score": 0.36775333540780203,
+                  "matches": 14,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5148546695709229
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7798434495925903,
+                  "dino": 0.4907407760620117,
+                  "score": 0.4655337810516358,
+                  "matches": 15,
+                  "inlier_ratio": 0.6,
+                  "mean_similarity": 0.5819172263145447
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.6664628480489437,
+              "max_clip": 0.8352181911468506,
+              "max_dino": 0.6506968140602112,
+              "max_mutual_patch_geometry": 0.528655694081233,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.822066605091095,
+                  "dino": 0.6506968140602112,
+                  "score": 0.528655694081233,
+                  "matches": 13,
+                  "inlier_ratio": 0.5384615384615384,
+                  "mean_similarity": 0.687252402305603
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.8352181911468506,
+                  "dino": 0.550765872001648,
+                  "score": 0.4255192935466766,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.6078847050666809
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.6498737066984177,
+              "max_clip": 0.8053795099258423,
+              "max_dino": 0.6506249904632568,
+              "max_mutual_patch_geometry": 0.5133365765213966,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.8053795099258423,
+                  "dino": 0.5565147399902344,
+                  "score": 0.4522113616649921,
+                  "matches": 13,
+                  "inlier_ratio": 0.6153846153846154,
+                  "mean_similarity": 0.5598807334899902
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.734269380569458,
+                  "dino": 0.6506249904632568,
+                  "score": 0.5133365765213966,
+                  "matches": 16,
+                  "inlier_ratio": 0.625,
+                  "mean_similarity": 0.6317988634109497
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.6271549969911575,
+              "max_clip": 0.7754546999931335,
+              "max_dino": 0.6352154016494751,
+              "max_mutual_patch_geometry": 0.49235500395298004,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7467730045318604,
+                  "dino": 0.42200034856796265,
+                  "score": 0.33788692206144333,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5406190752983093
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7754546999931335,
+                  "dino": 0.6352154016494751,
+                  "score": 0.49235500395298004,
+                  "matches": 18,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.6564733386039734
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.6328043673719679,
+              "max_clip": 0.7245311737060547,
+              "max_dino": 0.634130597114563,
+              "max_mutual_patch_geometry": 0.5517145182405199,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.7221550345420837,
+                  "dino": 0.634130597114563,
+                  "score": 0.5517145182405199,
+                  "matches": 14,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.7021821141242981
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.7245311737060547,
+                  "dino": 0.5995330810546875,
+                  "score": 0.4851828813552857,
+                  "matches": 13,
+                  "inlier_ratio": 0.46153846153846156,
+                  "mean_similarity": 0.6639344692230225
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.6693140293870653,
+              "max_clip": 0.8529728651046753,
+              "max_dino": 0.6650056838989258,
+              "max_mutual_patch_geometry": 0.5113052640642438,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.8529728651046753,
+                  "dino": 0.6597036719322205,
+                  "score": 0.5113052640642438,
+                  "matches": 21,
+                  "inlier_ratio": 0.5238095238095238,
+                  "mean_similarity": 0.6710881590843201
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.8219278454780579,
+                  "dino": 0.6650056838989258,
+                  "score": 0.4786609888076782,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.6838014125823975
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FP02",
+            "correct": true,
+            "truth_score": 0.6693140293870653,
+            "strongest_wrong_score": 0.6664628480489437,
+            "truth_margin": 0.0028511813381215667,
+            "ranking": [
+              "FP02",
+              "FL02",
+              "FL03",
+              "FP01",
+              "FL04",
+              "FL01"
+            ]
+          }
+        },
+        {
+          "relation": "anchor",
+          "scores": {
+            "FL01": {
+              "score": 0.6002650727828344,
+              "max_clip": 0.748813271522522,
+              "max_dino": 0.5434007048606873,
+              "max_mutual_patch_geometry": 0.5058256288369496,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.748813271522522,
+                  "dino": 0.5247709155082703,
+                  "score": 0.4050009548664093,
+                  "matches": 14,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5400012731552124
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7260740995407104,
+                  "dino": 0.5434007048606873,
+                  "score": 0.5058256288369496,
+                  "matches": 21,
+                  "inlier_ratio": 0.6666666666666666,
+                  "mean_similarity": 0.6069907546043396
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.65789154909159,
+              "max_clip": 0.7960086464881897,
+              "max_dino": 0.7045650482177734,
+              "max_mutual_patch_geometry": 0.5078681519157008,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7856380343437195,
+                  "dino": 0.7045650482177734,
+                  "score": 0.5078681519157008,
+                  "matches": 19,
+                  "inlier_ratio": 0.47368421052631576,
+                  "mean_similarity": 0.6892496347427368
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7960086464881897,
+                  "dino": 0.5830867290496826,
+                  "score": 0.3906066715717315,
+                  "matches": 9,
+                  "inlier_ratio": 0.6666666666666666,
+                  "mean_similarity": 0.6249706745147705
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.6327215688569205,
+              "max_clip": 0.7943961024284363,
+              "max_dino": 0.6693689227104187,
+              "max_mutual_patch_geometry": 0.4683517558234079,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.7943961024284363,
+                  "dino": 0.5979576110839844,
+                  "score": 0.38083057602246606,
+                  "matches": 9,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.6528524160385132
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.7323372960090637,
+                  "dino": 0.6693689227104187,
+                  "score": 0.4683517558234079,
+                  "matches": 14,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.655692458152771
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.6122842133045197,
+              "max_clip": 0.7396427392959595,
+              "max_dino": 0.6060694456100464,
+              "max_mutual_patch_geometry": 0.5047297328710556,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7125964164733887,
+                  "dino": 0.4116574823856354,
+                  "score": 0.352756530046463,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5644104480743408
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7396427392959595,
+                  "dino": 0.6060694456100464,
+                  "score": 0.5047297328710556,
+                  "matches": 14,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.6729729771614075
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.6665669133265812,
+              "max_clip": 0.7974949479103088,
+              "max_dino": 0.6232154369354248,
+              "max_mutual_patch_geometry": 0.5790995558102925,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.7974949479103088,
+                  "dino": 0.6232154369354248,
+                  "score": 0.5790995558102925,
+                  "matches": 15,
+                  "inlier_ratio": 0.6666666666666666,
+                  "mean_similarity": 0.6949194669723511
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.7881404757499695,
+                  "dino": 0.5690385103225708,
+                  "score": 0.4862377842267354,
+                  "matches": 10,
+                  "inlier_ratio": 0.7,
+                  "mean_similarity": 0.6864533424377441
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.7103447211640221,
+              "max_clip": 0.8459176421165466,
+              "max_dino": 0.7185366153717041,
+              "max_mutual_patch_geometry": 0.5865984814507621,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.8459176421165466,
+                  "dino": 0.7092269659042358,
+                  "score": 0.5865984814507621,
+                  "matches": 21,
+                  "inlier_ratio": 0.6190476190476191,
+                  "mean_similarity": 0.7246216535568237
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.8190114498138428,
+                  "dino": 0.7185366153717041,
+                  "score": 0.4866548299789428,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.6952211856842041
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FP02",
+            "correct": true,
+            "truth_score": 0.7103447211640221,
+            "strongest_wrong_score": 0.6665669133265812,
+            "truth_margin": 0.043777807837440896,
+            "ranking": [
+              "FP02",
+              "FP01",
+              "FL02",
+              "FL03",
+              "FL04",
+              "FL01"
+            ]
+          }
+        },
+        {
+          "relation": "next",
+          "scores": {
+            "FL01": {
+              "score": 0.5865363611624792,
+              "max_clip": 0.7213897705078125,
+              "max_dino": 0.539171576499939,
+              "max_mutual_patch_geometry": 0.4981426183994,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.7017114162445068,
+                  "dino": 0.5155830383300781,
+                  "score": 0.3574511607487996,
+                  "matches": 12,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5361767411231995
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7213897705078125,
+                  "dino": 0.539171576499939,
+                  "score": 0.4981426183994,
+                  "matches": 13,
+                  "inlier_ratio": 0.6923076923076923,
+                  "mean_similarity": 0.5887140035629272
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.6502555284429999,
+              "max_clip": 0.7671368718147278,
+              "max_dino": 0.6390845775604248,
+              "max_mutual_patch_geometry": 0.5549661972943475,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7671368718147278,
+                  "dino": 0.6390845775604248,
+                  "score": 0.5549661972943475,
+                  "matches": 17,
+                  "inlier_ratio": 0.7058823529411765,
+                  "mean_similarity": 0.6506500244140625
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7538316249847412,
+                  "dino": 0.6073353290557861,
+                  "score": 0.4861335237820943,
+                  "matches": 15,
+                  "inlier_ratio": 0.5333333333333333,
+                  "mean_similarity": 0.6340872049331665
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5507113561034203,
+              "max_clip": 0.732962429523468,
+              "max_dino": 0.5461379885673523,
+              "max_mutual_patch_geometry": 0.39410002157092094,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.732962429523468,
+                  "dino": 0.4543643593788147,
+                  "score": 0.25329260528087616,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.5526384115219116
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.7041823863983154,
+                  "dino": 0.5461379885673523,
+                  "score": 0.39410002157092094,
+                  "matches": 16,
+                  "inlier_ratio": 0.3125,
+                  "mean_similarity": 0.6005333662033081
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.5894781175412629,
+              "max_clip": 0.7379826307296753,
+              "max_dino": 0.6538108587265015,
+              "max_mutual_patch_geometry": 0.41932870526062815,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7164166569709778,
+                  "dino": 0.4553782045841217,
+                  "score": 0.343408539891243,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5887003540992737
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7379826307296753,
+                  "dino": 0.6538108587265015,
+                  "score": 0.41932870526062815,
+                  "matches": 19,
+                  "inlier_ratio": 0.3684210526315789,
+                  "mean_similarity": 0.6128650307655334
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.595263390408622,
+              "max_clip": 0.6457208395004272,
+              "max_dino": 0.5923863649368286,
+              "max_mutual_patch_geometry": 0.5529112633731631,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6408955454826355,
+                  "dino": 0.5863621234893799,
+                  "score": 0.5529112633731631,
+                  "matches": 18,
+                  "inlier_ratio": 0.7222222222222222,
+                  "mean_similarity": 0.6420904994010925
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6457208395004272,
+                  "dino": 0.5923863649368286,
+                  "score": 0.5234737523964473,
+                  "matches": 14,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.666239321231842
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.6852151215076446,
+              "max_clip": 0.8160710334777832,
+              "max_dino": 0.740038275718689,
+              "max_mutual_patch_geometry": 0.5364517271518707,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.8160710334777832,
+                  "dino": 0.740038275718689,
+                  "score": 0.5364517271518707,
+                  "matches": 14,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.7152689695358276
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.7556045651435852,
+                  "dino": 0.6780535578727722,
+                  "score": 0.5269047804176807,
+                  "matches": 16,
+                  "inlier_ratio": 0.5625,
+                  "mean_similarity": 0.6744381189346313
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "FP02",
+            "correct": true,
+            "truth_score": 0.6852151215076446,
+            "strongest_wrong_score": 0.6502555284429999,
+            "truth_margin": 0.03495959306464469,
+            "ranking": [
+              "FP02",
+              "FL02",
+              "FP01",
+              "FL04",
+              "FL01",
+              "FL03"
+            ]
+          }
+        }
+      ],
+      "temporal_aggregate": {
+        "scores": {
+          "FL01": {
+            "score": 0.5934007169726567,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.6002650727828344
+              },
+              {
+                "relation": "next",
+                "score": 0.5865363611624792
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.5854667437076568
+            }
+          },
+          "FL02": {
+            "score": 0.6621771985702669,
+            "top_two_frames": [
+              {
+                "relation": "prev",
+                "score": 0.6664628480489437
+              },
+              {
+                "relation": "anchor",
+                "score": 0.65789154909159
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.6502555284429999
+            }
+          },
+          "FL03": {
+            "score": 0.6412976377776691,
+            "top_two_frames": [
+              {
+                "relation": "prev",
+                "score": 0.6498737066984177
+              },
+              {
+                "relation": "anchor",
+                "score": 0.6327215688569205
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5507113561034203
+            }
+          },
+          "FL04": {
+            "score": 0.6197196051478386,
+            "top_two_frames": [
+              {
+                "relation": "prev",
+                "score": 0.6271549969911575
+              },
+              {
+                "relation": "anchor",
+                "score": 0.6122842133045197
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5894781175412629
+            }
+          },
+          "FP01": {
+            "score": 0.6496856403492746,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.6665669133265812
+              },
+              {
+                "relation": "prev",
+                "score": 0.6328043673719679
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.595263390408622
+            }
+          },
+          "FP02": {
+            "score": 0.6977799213358333,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.7103447211640221
+              },
+              {
+                "relation": "next",
+                "score": 0.6852151215076446
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.6693140293870653
+            }
+          }
+        },
+        "prediction": "FP02",
+        "correct": true,
+        "truth_score": 0.6977799213358333,
+        "strongest_wrong_score": 0.6621771985702669,
+        "truth_margin": 0.03560272276556642,
+        "ranking": [
+          "FP02",
+          "FL02",
+          "FP01",
+          "FL03",
+          "FL04",
+          "FL01"
+        ]
+      },
+      "acceptance": {
+        "score_gate": true,
+        "margin_gate": true,
+        "route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "FP02",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5934007169726567
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.6621771985702669
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.6412976377776691
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.6197196051478386
+        },
+        {
+          "wrong_target": "FP01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.6496856403492746
+        }
+      ]
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Consumed posthoc Development evidence for or against a fixed reciprocal three-frame, top-two-mean query aggregation mechanism on exactly FP01 and FP02 in the six-target same-provider closed roster.",
+    "not_allowed": [
+      "fresh, blind, or independent confirmation",
+      "trained sequential descriptor performance or attribution to SeqNet, SeqVLAD, or JIST",
+      "provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment generalization",
+      "exact physical identity authority, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

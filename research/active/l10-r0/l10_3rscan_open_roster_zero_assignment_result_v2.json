@@ -1,0 +1,1048 @@
+{
+  "schema": "blindassist-l10-3rscan-open-roster-zero-assignment-result-v2",
+  "authority": "CONSUMED_PHYSICAL_TARGET_DISJOINT_PARTIAL_ROSTER_ZERO_ASSIGNMENT_RESULT",
+  "protocol_path": "l10_3rscan_open_roster_zero_assignment_protocol_v2.json",
+  "protocol_sha256": "7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf",
+  "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+  "cohort_sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+  "implementation": {
+    "path": "l10_3rscan_open_roster_zero_assignment.py",
+    "sha256": "a194b86ec4b495b44fd487eaebd875d4da20868468882a2fc4b476ed7650cf4c"
+  },
+  "conclusion": "L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_targets": 4,
+    "rgb_members_after_replay": 16,
+    "scenarios": 4,
+    "truth_matches_across_scenarios": 12,
+    "truth_unmatched_nodes_across_scenarios": 4
+  },
+  "metrics": {
+    "aggregate": {
+      "complete_one_view_hungarian": {
+        "true_positive": 4,
+        "false_positive": 9,
+        "false_negative": 8,
+        "precision": 0.307692,
+        "recall": 0.333333,
+        "f1": 0.32,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 4
+      },
+      "one_view_reciprocal_zero": {
+        "true_positive": 4,
+        "false_positive": 4,
+        "false_negative": 8,
+        "precision": 0.5,
+        "recall": 0.333333,
+        "f1": 0.4,
+        "zero_assignment_exact_scenarios": 0,
+        "scenarios": 4
+      },
+      "multiview_reciprocal_zero": {
+        "true_positive": 4,
+        "false_positive": 5,
+        "false_negative": 8,
+        "precision": 0.444444,
+        "recall": 0.333333,
+        "f1": 0.380952,
+        "zero_assignment_exact_scenarios": 0,
+        "scenarios": 4
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03",
+          "OZ04"
+        ],
+        "query_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03",
+          "OZ04"
+        ],
+        "one_view_score_matrix": [
+          [
+            0.664859,
+            0.756453,
+            0.476719,
+            0.563612
+          ],
+          [
+            0.540616,
+            0.6157,
+            0.473794,
+            0.466437
+          ],
+          [
+            0.309527,
+            0.348662,
+            0.629236,
+            0.544417
+          ],
+          [
+            0.35953,
+            0.439004,
+            0.566902,
+            0.865571
+          ]
+        ],
+        "multiview_bottleneck_score_matrix": [
+          [
+            0.664859,
+            0.695348,
+            0.476719,
+            0.533803
+          ],
+          [
+            0.59616,
+            0.594705,
+            0.473794,
+            0.442986
+          ],
+          [
+            0.309527,
+            0.317196,
+            0.665137,
+            0.571267
+          ],
+          [
+            0.360729,
+            0.351837,
+            0.566902,
+            0.841574
+          ]
+        ],
+        "methods": {
+          "complete_one_view_hungarian": {
+            "true_positive": 2,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ02",
+                "query": "OZ01"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              },
+              {
+                "reference": "OZ04",
+                "query": "OZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "one_view_reciprocal_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.666667,
+            "recall": 0.5,
+            "f1": 0.571429,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              },
+              {
+                "reference": "OZ04",
+                "query": "OZ04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "multiview_reciprocal_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.666667,
+            "recall": 0.5,
+            "f1": 0.571429,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              },
+              {
+                "reference": "OZ04",
+                "query": "OZ04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03"
+        ],
+        "query_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03",
+          "OZ04"
+        ],
+        "one_view_score_matrix": [
+          [
+            0.664859,
+            0.756453,
+            0.476719,
+            0.563612
+          ],
+          [
+            0.540616,
+            0.6157,
+            0.473794,
+            0.466437
+          ],
+          [
+            0.309527,
+            0.348662,
+            0.629236,
+            0.544417
+          ]
+        ],
+        "multiview_bottleneck_score_matrix": [
+          [
+            0.664859,
+            0.695348,
+            0.476719,
+            0.533803
+          ],
+          [
+            0.59616,
+            0.594705,
+            0.473794,
+            0.442986
+          ],
+          [
+            0.309527,
+            0.317196,
+            0.665137,
+            0.571267
+          ]
+        ],
+        "methods": {
+          "complete_one_view_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.333333,
+            "recall": 0.333333,
+            "f1": 0.333333,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ02",
+                "query": "OZ01"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "OZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "one_view_reciprocal_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01",
+              "OZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "multiview_reciprocal_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01",
+              "OZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03",
+          "OZ04"
+        ],
+        "query_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03"
+        ],
+        "one_view_score_matrix": [
+          [
+            0.664859,
+            0.756453,
+            0.476719
+          ],
+          [
+            0.540616,
+            0.6157,
+            0.473794
+          ],
+          [
+            0.309527,
+            0.348662,
+            0.629236
+          ],
+          [
+            0.35953,
+            0.439004,
+            0.566902
+          ]
+        ],
+        "multiview_bottleneck_score_matrix": [
+          [
+            0.664859,
+            0.695348,
+            0.476719
+          ],
+          [
+            0.59616,
+            0.594705,
+            0.473794
+          ],
+          [
+            0.309527,
+            0.317196,
+            0.665137
+          ],
+          [
+            0.360729,
+            0.351837,
+            0.566902
+          ]
+        ],
+        "methods": {
+          "complete_one_view_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.333333,
+            "recall": 0.333333,
+            "f1": 0.333333,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ02",
+                "query": "OZ01"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "OZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "one_view_reciprocal_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02",
+              "OZ04"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01"
+            ],
+            "truth_unmatched_references": [
+              "OZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "multiview_reciprocal_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02",
+              "OZ04"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01"
+            ],
+            "truth_unmatched_references": [
+              "OZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap",
+        "reference_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ03"
+        ],
+        "query_targets": [
+          "OZ01",
+          "OZ02",
+          "OZ04"
+        ],
+        "one_view_score_matrix": [
+          [
+            0.664859,
+            0.756453,
+            0.563612
+          ],
+          [
+            0.540616,
+            0.6157,
+            0.466437
+          ],
+          [
+            0.309527,
+            0.348662,
+            0.544417
+          ]
+        ],
+        "multiview_bottleneck_score_matrix": [
+          [
+            0.664859,
+            0.695348,
+            0.533803
+          ],
+          [
+            0.59616,
+            0.594705,
+            0.442986
+          ],
+          [
+            0.309527,
+            0.317196,
+            0.571267
+          ]
+        ],
+        "methods": {
+          "complete_one_view_hungarian": {
+            "true_positive": 0,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ02",
+                "query": "OZ01"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "OZ03"
+            ],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "one_view_reciprocal_zero": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02",
+              "OZ03"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01",
+              "OZ04"
+            ],
+            "truth_unmatched_references": [
+              "OZ03"
+            ],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "multiview_reciprocal_zero": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "OZ01",
+                "query": "OZ02"
+              },
+              {
+                "reference": "OZ03",
+                "query": "OZ04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "OZ02"
+            ],
+            "predicted_unmatched_queries": [
+              "OZ01"
+            ],
+            "truth_unmatched_references": [
+              "OZ03"
+            ],
+            "truth_unmatched_queries": [
+              "OZ04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_one_view_score_matrix": [
+      [
+        0.664859,
+        0.756453,
+        0.476719,
+        0.563612
+      ],
+      [
+        0.540616,
+        0.6157,
+        0.473794,
+        0.466437
+      ],
+      [
+        0.309527,
+        0.348662,
+        0.629236,
+        0.544417
+      ],
+      [
+        0.35953,
+        0.439004,
+        0.566902,
+        0.865571
+      ]
+    ],
+    "full_multiview_bottleneck_score_matrix": [
+      [
+        0.664859,
+        0.695348,
+        0.476719,
+        0.533803
+      ],
+      [
+        0.59616,
+        0.594705,
+        0.473794,
+        0.442986
+      ],
+      [
+        0.309527,
+        0.317196,
+        0.665137,
+        0.571267
+      ],
+      [
+        0.360729,
+        0.351837,
+        0.566902,
+        0.841574
+      ]
+    ],
+    "cross_view_pair_score_matrices": {
+      "OZ01->OZ01": [
+        [
+          0.664859,
+          0.68136
+        ],
+        [
+          0.618845,
+          0.776495
+        ]
+      ],
+      "OZ01->OZ02": [
+        [
+          0.756453,
+          0.695348
+        ],
+        [
+          0.772806,
+          0.560946
+        ]
+      ],
+      "OZ01->OZ03": [
+        [
+          0.476719,
+          0.502695
+        ],
+        [
+          0.463802,
+          0.56536
+        ]
+      ],
+      "OZ01->OZ04": [
+        [
+          0.563612,
+          0.571574
+        ],
+        [
+          0.533803,
+          0.508706
+        ]
+      ],
+      "OZ02->OZ01": [
+        [
+          0.540616,
+          0.59616
+        ],
+        [
+          0.633891,
+          0.779878
+        ]
+      ],
+      "OZ02->OZ02": [
+        [
+          0.6157,
+          0.485525
+        ],
+        [
+          0.730592,
+          0.594705
+        ]
+      ],
+      "OZ02->OZ03": [
+        [
+          0.473794,
+          0.545484
+        ],
+        [
+          0.456344,
+          0.511447
+        ]
+      ],
+      "OZ02->OZ04": [
+        [
+          0.466437,
+          0.494948
+        ],
+        [
+          0.441234,
+          0.442986
+        ]
+      ],
+      "OZ03->OZ01": [
+        [
+          0.309527,
+          0.468611
+        ],
+        [
+          0.308354,
+          0.415801
+        ]
+      ],
+      "OZ03->OZ02": [
+        [
+          0.348662,
+          0.25801
+        ],
+        [
+          0.375332,
+          0.317196
+        ]
+      ],
+      "OZ03->OZ03": [
+        [
+          0.629236,
+          0.665137
+        ],
+        [
+          0.80209,
+          0.75868
+        ]
+      ],
+      "OZ03->OZ04": [
+        [
+          0.544417,
+          0.719604
+        ],
+        [
+          0.571267,
+          0.593373
+        ]
+      ],
+      "OZ04->OZ01": [
+        [
+          0.35953,
+          0.425379
+        ],
+        [
+          0.360729,
+          0.364344
+        ]
+      ],
+      "OZ04->OZ02": [
+        [
+          0.439004,
+          0.344093
+        ],
+        [
+          0.488958,
+          0.351837
+        ]
+      ],
+      "OZ04->OZ03": [
+        [
+          0.566902,
+          0.653824
+        ],
+        [
+          0.561091,
+          0.616574
+        ]
+      ],
+      "OZ04->OZ04": [
+        [
+          0.865571,
+          0.841574
+        ],
+        [
+          0.907994,
+          0.724617
+        ]
+      ]
+    }
+  },
+  "gain_over_complete_assignment": {
+    "false_positive_reduction": 4,
+    "f1_delta": 0.060952,
+    "balanced_swap_false_positive_reduction": 1
+  },
+  "rgb_members_opened": 16,
+  "rgb_receipts": {
+    "OZ01_query_v1": {
+      "zip_member": "frame-000183.color.jpg",
+      "rgb_sha256": "d16cc184dc7dd124902d75d7f73d9d5c4ff77dab8f89df81fe5d34d7d22cd4ed",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ01_query_v1.png",
+      "crop_sha256": "b9a27845da94ce5ffd1721bdd3d59f091b13416b15b736b1ac07695a3ba61e5a",
+      "crop_size": [
+        747,
+        747
+      ]
+    },
+    "OZ01_query_v2": {
+      "zip_member": "frame-000532.color.jpg",
+      "rgb_sha256": "4260d7d2bb9955dcdccc7eb57dff7126bdcec12b4832b06c515cb856710d909e",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ01_query_v2.png",
+      "crop_sha256": "1e7b7387f91973fa71bea8e7003e7f82a97fd6ccbda5f37774f9b5da4f0179dc",
+      "crop_size": [
+        241,
+        241
+      ]
+    },
+    "OZ01_reference_v1": {
+      "zip_member": "frame-000393.color.jpg",
+      "rgb_sha256": "e05bd1a278ef8566e13086bdc77c95ff84352803d1aed30866a3aa2acc1551bf",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ01_reference_v1.png",
+      "crop_sha256": "9c7fd731f321249d34012705e3aebce1e0d595a378a530a88facc1b9230d5dd2",
+      "crop_size": [
+        306,
+        306
+      ]
+    },
+    "OZ01_reference_v2": {
+      "zip_member": "frame-000402.color.jpg",
+      "rgb_sha256": "7e9241b8f23c77ac96eabc523359997c272d4e8182e08d7a41636bbdf7ba7969",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ01_reference_v2.png",
+      "crop_sha256": "bf4adf7f4724dcbacb074089e543810903eaefd31f6ca70d9f6713b3fa436a0f",
+      "crop_size": [
+        332,
+        332
+      ]
+    },
+    "OZ02_query_v1": {
+      "zip_member": "frame-000032.color.jpg",
+      "rgb_sha256": "900c03fe60e43643bb5836c8e1a39bce3d9ed6286e6f1ea4d66126265d7545b3",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ02_query_v1.png",
+      "crop_sha256": "6058df25f1340a6fa3802f8bf67f93c87a99d645c4465e3e72414e5e75d7da6b",
+      "crop_size": [
+        345,
+        345
+      ]
+    },
+    "OZ02_query_v2": {
+      "zip_member": "frame-000302.color.jpg",
+      "rgb_sha256": "d56bac246833e6671ab5692106cef7f0f9dbdea0741d4d34ce7a813d5d4cf819",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ02_query_v2.png",
+      "crop_sha256": "8033ac085b530972270823b993481a66d995e19a9565bf6a606208a116ef7a82",
+      "crop_size": [
+        636,
+        636
+      ]
+    },
+    "OZ02_reference_v1": {
+      "zip_member": "frame-000362.color.jpg",
+      "rgb_sha256": "29400971486511aff535a0b4756ce88f4b932c919b507e15c07682ffaef3d24d",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ02_reference_v1.png",
+      "crop_sha256": "baaa8fdbc36a22491341f36579e642e68a87219ce9c93211d362e227e35a0c34",
+      "crop_size": [
+        313,
+        313
+      ]
+    },
+    "OZ02_reference_v2": {
+      "zip_member": "frame-000390.color.jpg",
+      "rgb_sha256": "8b2fa0edf16476a000faa03b528cd3147ee41a421db68796d95aa3cb1c89df62",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ02_reference_v2.png",
+      "crop_sha256": "1414076a7cca01d3cb9f81c4da4258089fff2e2170b432dafd8a876ac6cf8197",
+      "crop_size": [
+        281,
+        281
+      ]
+    },
+    "OZ03_query_v1": {
+      "zip_member": "frame-000115.color.jpg",
+      "rgb_sha256": "b79cccde61d2529068af9322ae0fedf59caa94f8c33665b6aaaaa24b33719e69",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ03_query_v1.png",
+      "crop_sha256": "d6356a8dddc8f2c57439a25feebe998e83c5497cc358da983427b093482eb01e",
+      "crop_size": [
+        459,
+        459
+      ]
+    },
+    "OZ03_query_v2": {
+      "zip_member": "frame-000113.color.jpg",
+      "rgb_sha256": "b759712d07fa3f1711c90b9422fb08d17b72f6c853bfa30c5bab511bafd34fbb",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ03_query_v2.png",
+      "crop_sha256": "e1567fcbd24ceda8690aaac63dfa1883577ebce2f8dd887c02f7327651006f2b",
+      "crop_size": [
+        470,
+        470
+      ]
+    },
+    "OZ03_reference_v1": {
+      "zip_member": "frame-000029.color.jpg",
+      "rgb_sha256": "8fb32505e82c50ffef75dfaf7c57cbd7d8fa0ebc722c9c8fa7c0fbd9fdcdcfc7",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ03_reference_v1.png",
+      "crop_sha256": "1d200399f68a1d622599fa6bb7d95bb90b98f3af5b8b8987260a419454e4d2c9",
+      "crop_size": [
+        543,
+        543
+      ]
+    },
+    "OZ03_reference_v2": {
+      "zip_member": "frame-000290.color.jpg",
+      "rgb_sha256": "168e365514c1ad349e05aa87a370d3fd74aab371d48383beed52024a1ea375a3",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ03_reference_v2.png",
+      "crop_sha256": "22a9656bc3c0d8f118014f0309b0574f4cffedeb550fe3610858017c5a2fbb0c",
+      "crop_size": [
+        455,
+        455
+      ]
+    },
+    "OZ04_query_v1": {
+      "zip_member": "frame-000028.color.jpg",
+      "rgb_sha256": "e22aba11d67ba5afb897d7ffb3fe401ced6c1810ef7f8838b988761160698fc1",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ04_query_v1.png",
+      "crop_sha256": "d58289fc3a515293a10950ad2a2811813e975a7927fb5fed8f055e24234e51dc",
+      "crop_size": [
+        745,
+        745
+      ]
+    },
+    "OZ04_query_v2": {
+      "zip_member": "frame-000183.color.jpg",
+      "rgb_sha256": "9d1d59f8739790b65f9e963a8143b00d5d967830a7a2aa4400d33a251377e3f7",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ04_query_v2.png",
+      "crop_sha256": "639c104089edc0db074194fe04915510d41b64d0986c45daa498460fe521dcc0",
+      "crop_size": [
+        497,
+        497
+      ]
+    },
+    "OZ04_reference_v1": {
+      "zip_member": "frame-000218.color.jpg",
+      "rgb_sha256": "919b68f152adea7826906c8bbcb5ee2aaea5fe3d2da67b1acef003fe7b64e8b2",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ04_reference_v1.png",
+      "crop_sha256": "b89dd7f8613eb44dd3d6fd43136f955d0d5fc3fbfece3be858750dd32e52b3ce",
+      "crop_size": [
+        470,
+        470
+      ]
+    },
+    "OZ04_reference_v2": {
+      "zip_member": "frame-000222.color.jpg",
+      "rgb_sha256": "69ac011bbb4b71e65c2e2f622203d4aa64505fea79ae9dd8172f85095558d35d",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-open-roster-zero-assignment-v2\\proposal-crops\\OZ04_reference_v2.png",
+      "crop_sha256": "7ab0975ab137004b2d93e925a92fa695f40e3a9e21c4371b0760e2f2eea63a53",
+      "crop_size": [
+        541,
+        541
+      ]
+    }
+  },
+  "decision_gate": {
+    "aggregate_true_matches": "12/12 across the four frozen scenarios.",
+    "aggregate_false_matches": 0,
+    "aggregate_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in 4/4 scenarios.",
+    "balanced_swap": "2/2 true matches, zero false matches, and exact rejection of both the missing reference identity and extra query identity.",
+    "single_replay": "One replay on the frozen physical-target-disjoint cohort; do not tune on its RGB, embeddings, or scores."
+  },
+  "claim_boundary": "A pass is a small real-image Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes under three bounded missing/extra-candidate constructions. Physical reference targets are disjoint from six prior cohorts, at least two reference scans are represented with at most two targets from either, and two geometry-selected views are used per target side; however all RGB, poses, meshes, labels and truth proposals come from one provider and the scenario overlap is evaluator-known. It is not open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+}

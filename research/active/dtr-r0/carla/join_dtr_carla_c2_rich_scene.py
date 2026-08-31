@@ -33,6 +33,10 @@ from dtr_carla_c2_rich_scene import (
 SENSOR_ORDER = ["instance", "wearable", "depth", "witness"]
 C4_EXPERIMENT_ID = "DTR_CARLA_C4_MULTIMAP_WORLD_PACK_V1"
 C4_OCCLUSION_SCOPE = "C4_MULTIMAP_PACK_FINAL_JOIN"
+ACTUAL_ALL_REPLAY = "ACTUAL_ALL_ACTORS"
+AUTHORITY_SCOPED_WITNESS_REPLAY = (
+    "AUTHORITATIVE_ACTUAL_PLUS_NONAUTHORITATIVE_SCRIPTED_COMMAND"
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -61,21 +65,64 @@ def _rounded(value: Any, digits: int = 5) -> Any:
     return value
 
 
-def replay_projection(row: dict[str, Any]) -> dict[str, Any]:
+def replay_projection(
+    row: dict[str, Any],
+    *,
+    mode: str = ACTUAL_ALL_REPLAY,
+    authoritative_actor_keys: frozenset[str] = frozenset(),
+) -> dict[str, Any]:
     actors: dict[str, Any] = {}
     for key, actor in sorted(row["actors"].items()):
-        actors[key] = {
+        identity = {
             "track_id": actor["track_id"],
             "asset_key": actor["asset_key"],
             "role": actor["role"],
             "kind": actor["kind"],
             "actual_blueprint": actor["actual_blueprint"],
-            "transform": _rounded(actor["transform"]),
             "local_position": _rounded(actor["local_position"]),
             "command_velocity": _rounded(actor["command_velocity"]),
-            "bounding_box": _rounded(actor["bounding_box"]),
         }
+        if mode == ACTUAL_ALL_REPLAY or key in authoritative_actor_keys:
+            actors[key] = {
+                **identity,
+                "pose_authority": "ACTUAL",
+                "transform": _rounded(actor["transform"]),
+                "bounding_box": _rounded(actor["bounding_box"]),
+            }
+        elif mode == AUTHORITY_SCOPED_WITNESS_REPLAY:
+            actors[key] = {
+                **identity,
+                "pose_authority": "SCRIPTED_COMMAND",
+                "transform": _rounded(actor["scripted_command_transform"]),
+            }
+        else:
+            raise ValueError(f"unknown replay projection mode: {mode}")
     truth = row["truth"]
+    truth_projection = {
+        "scenario_role": truth["scenario_role"],
+        "twin_role": truth["twin_role"],
+        "expected_outcome": truth["expected_outcome"],
+        "expected_responsible_assets": sorted(
+            truth["expected_responsible_assets"]
+        ),
+        "current_contact": bool(truth["current_contact"]),
+        "responsible_assets": sorted(truth["responsible_assets"]),
+        "future_contact_within_horizon": bool(
+            truth["future_contact_within_horizon"]
+        ),
+        "realized_time_to_contact_seconds": (
+            round(float(truth["realized_time_to_contact_seconds"]), 5)
+            if truth["realized_time_to_contact_seconds"] is not None
+            else None
+        ),
+    }
+    if mode == ACTUAL_ALL_REPLAY:
+        truth_projection.update(
+            {
+                "minimum_distance_m": round(float(truth["minimum_distance_m"]), 5),
+                "collision_polygons_xy": _rounded(truth["collision_polygons_xy"]),
+            }
+        )
     return {
         "episode_id": row["episode_id"],
         "layout_id": row["layout_id"],
@@ -85,26 +132,7 @@ def replay_projection(row: dict[str, Any]) -> dict[str, Any]:
         "plan_receipt_sha256": row["plan_receipt_sha256"],
         "wearer_transform": _rounded(row["wearer_transform"]),
         "actors": actors,
-        "truth": {
-            "scenario_role": truth["scenario_role"],
-            "twin_role": truth["twin_role"],
-            "expected_outcome": truth["expected_outcome"],
-            "expected_responsible_assets": sorted(
-                truth["expected_responsible_assets"]
-            ),
-            "current_contact": bool(truth["current_contact"]),
-            "minimum_distance_m": round(float(truth["minimum_distance_m"]), 5),
-            "responsible_assets": sorted(truth["responsible_assets"]),
-            "collision_polygons_xy": _rounded(truth["collision_polygons_xy"]),
-            "future_contact_within_horizon": bool(
-                truth["future_contact_within_horizon"]
-            ),
-            "realized_time_to_contact_seconds": (
-                round(float(truth["realized_time_to_contact_seconds"]), 5)
-                if truth["realized_time_to_contact_seconds"] is not None
-                else None
-            ),
-        },
+        "truth": truth_projection,
     }
 
 
@@ -113,6 +141,8 @@ def compare_replays(
     candidate: list[dict[str, Any]],
     *,
     candidate_sensor: str,
+    mode: str = ACTUAL_ALL_REPLAY,
+    authoritative_actor_keys: frozenset[str] = frozenset(),
 ) -> list[dict[str, Any]]:
     if len(reference) != len(candidate):
         return [
@@ -125,7 +155,15 @@ def compare_replays(
         ]
     failures: list[dict[str, Any]] = []
     for first, second in zip(reference, candidate, strict=True):
-        if replay_projection(first) != replay_projection(second):
+        if replay_projection(
+            first,
+            mode=mode,
+            authoritative_actor_keys=authoritative_actor_keys,
+        ) != replay_projection(
+            second,
+            mode=mode,
+            authoritative_actor_keys=authoritative_actor_keys,
+        ):
             failures.append(
                 {
                     "sensor": candidate_sensor,
@@ -433,6 +471,20 @@ def main() -> int:
         }
         for sensor in SENSOR_ORDER
     }
+    witness_replay_mode = str(
+        protocol["capture"].get("witness_replay_projection", ACTUAL_ALL_REPLAY)
+    )
+    if witness_replay_mode not in {
+        ACTUAL_ALL_REPLAY,
+        AUTHORITY_SCOPED_WITNESS_REPLAY,
+    }:
+        raise ValueError(f"unknown witness replay projection: {witness_replay_mode}")
+    authoritative_actor_keys = frozenset(
+        str(asset["asset_key"])
+        for layout_id in protocol["layouts"]
+        for asset in materialize_layout_assets(protocol, str(layout_id))
+        if bool(asset.get("scripted_pose_authority", False))
+    )
     replay_failures: list[dict[str, Any]] = []
     for episode_id in episode_ids:
         reference = rows_by_sensor["instance"][episode_id]
@@ -442,6 +494,12 @@ def main() -> int:
                     reference,
                     rows_by_sensor[sensor][episode_id],
                     candidate_sensor=sensor,
+                    mode=(
+                        witness_replay_mode
+                        if sensor == "witness"
+                        else ACTUAL_ALL_REPLAY
+                    ),
+                    authoritative_actor_keys=authoritative_actor_keys,
                 )
             )
 
@@ -892,6 +950,11 @@ def main() -> int:
     occlusion_contract_scope = (
         C4_OCCLUSION_SCOPE if defer_occlusion_to_c4_pack else "C2_LOCAL_PROTOCOL"
     )
+    replay_check_name = (
+        "cross_sensor_actual_replay_identical"
+        if witness_replay_mode == ACTUAL_ALL_REPLAY
+        else "cross_sensor_authority_scoped_replay_identical"
+    )
     checks = {
         "all_four_fresh_server_shards_complete": all(
             results[sensor]["status"] == "DTR_CARLA_C2_RAW_SHARD_CAPTURE_COMPLETE"
@@ -899,7 +962,7 @@ def main() -> int:
         ),
         "cross_shard_code_and_protocol_identity": identity_equal,
         "raw_payload_inventories_verified": not payload_failures,
-        "cross_sensor_actual_replay_identical": not replay_failures,
+        replay_check_name: not replay_failures,
         "all_formal_sensors_1280x720": all(
             bool(results[sensor]["checks"]["all_formal_payloads_are_1280x720"])
             for sensor in SENSOR_ORDER
@@ -1017,6 +1080,16 @@ def main() -> int:
         "local_occlusion_contracts_total": len(occlusion_reports),
         "payload_verification_failures": payload_failures,
         "replay_failures": replay_failures,
+        "replay_contract": {
+            "model_sensor_mode": ACTUAL_ALL_REPLAY,
+            "witness_sensor_mode": witness_replay_mode,
+            "authoritative_actor_keys": sorted(authoritative_actor_keys),
+            "truth_projection": (
+                "ACTUAL_EXACT"
+                if witness_replay_mode == ACTUAL_ALL_REPLAY
+                else "CONTACT_OUTCOME_EXACT_WITH_NONAUTHORITATIVE_GEOMETRY_EXCLUDED"
+            ),
+        },
         "model_truth_failures": model_truth_failures,
         "sealed_model_file_count": len(model_manifest),
         "sealed_evidence_file_count": len(evidence_manifest),

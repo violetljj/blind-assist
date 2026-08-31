@@ -1,0 +1,1418 @@
+{
+  "schema": "blindassist-l10-panolab-track-token-bank-fresh-result-v1",
+  "decision": "L10_PANOLAB_LONG_SHORT_TOKEN_BANK_FRESH_TARGET_WAY_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_track_token_bank_fresh_protocol_v1.json",
+  "protocol_sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+  "evaluator_sha256": "97f17615119050acbf59b39e9a684712400f6393d06ec80aca46a1c4d03c9bcd",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.4.6",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "episodes": 4,
+    "source_cities": 3,
+    "target_way_overlap_with_prior_active": 0,
+    "item_overlap_with_prior_active": 0,
+    "strict_orientation_images": 8,
+    "reciprocal_action_receipts": 4,
+    "start_occluded_geometry_roles": 4,
+    "post_action_direct_geometry_roles": 4,
+    "post_action_authorized_entrance_rays": 4,
+    "predecessor_after_frame_only_candidates": 0,
+    "predecessor_track_carried_candidates": 0,
+    "successor_after_frame_only_token_banks": 0,
+    "successor_long_short_track_token_banks": 0,
+    "successor_track_gain_over_predecessor_track": 0,
+    "successor_track_gain_over_successor_after_only": 0,
+    "successor_long_short_track_rate": 0.0,
+    "counterfactual_track_trials": 12,
+    "counterfactual_track_matches": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 20.354237
+  },
+  "gate": {
+    "four_fresh_episodes_evaluated": true,
+    "minimum_three_source_cities": true,
+    "zero_prior_active_target_way_overlap": true,
+    "zero_prior_active_item_overlap": true,
+    "strict_orientation_8_of_8": true,
+    "reciprocal_action_receipts_4_of_4": true,
+    "post_action_authorized_entrance_rays_4_of_4": true,
+    "minimum_successor_long_short_track_candidates": false,
+    "minimum_gain_over_frozen_predecessor_track": false,
+    "long_short_track_not_worse_than_after_only": true,
+    "zero_counterfactual_track_matches": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "FL01",
+      "source_city": "Grenoble",
+      "target_way_id": 190020630,
+      "target_name": "Espace Village",
+      "sequence_id": "94031adf-f962-4005-800b-268e0f92bf17",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "movement_distance_m": 5.658,
+      "geometry": {
+        "start_class": "TARGET_SELF_OCCLUDED",
+        "after_class": "DIRECT",
+        "after_entrance_ray_authorized": true,
+        "reciprocal_provider_links_verified": true
+      },
+      "frames": {
+        "start": {
+          "frame_key": "FL01_start",
+          "panorama_item_id": "d4c8763d-919a-4a55-a92e-367e21a0d785",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "d4c8763d-919a-4a55-a92e-367e21a0d785",
+            "entrance_node_id": 3132861331,
+            "camera_lon_lat": [
+              5.767529937,
+              45.165048162
+            ],
+            "entrance_lon_lat": [
+              5.7679086,
+              45.1649558
+            ],
+            "initial_bearing_degrees": 109.082781,
+            "view_azimuth_degrees": 199.0,
+            "relative_viewer_yaw_degrees": 270.082781,
+            "raw_x_degrees": 90.082781,
+            "raw_x_pixels": 1441.324503,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "d4c8763d-919a-4a55-a92e-367e21a0d785",
+              "view_azimuth_degrees": 199.0,
+              "camera_native_heading_degrees": 198.65584925412196,
+              "heading_circular_difference_degrees": 0.344151,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 1441.324503,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "0ebac324a4a3e8b1fcbeac7de791526824dcb073c48ec19362c1a7ef1f30562a"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 1.596699,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "espace",
+              "village"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after": {
+          "frame_key": "FL01_after",
+          "panorama_item_id": "24a52393-c17e-4de7-9735-091bc44925fe",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "24a52393-c17e-4de7-9735-091bc44925fe",
+            "entrance_node_id": 3132861331,
+            "camera_lon_lat": [
+              5.767506655,
+              45.165
+            ],
+            "entrance_lon_lat": [
+              5.7679086,
+              45.1649558
+            ],
+            "initial_bearing_degrees": 98.864528,
+            "view_azimuth_degrees": 205.0,
+            "relative_viewer_yaw_degrees": 253.864528,
+            "raw_x_degrees": 73.864528,
+            "raw_x_pixels": 1181.832443,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "24a52393-c17e-4de7-9735-091bc44925fe",
+              "view_azimuth_degrees": 205.0,
+              "camera_native_heading_degrees": 204.90490979000296,
+              "heading_circular_difference_degrees": 0.09509,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 1181.832443,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "66ead9f5cfcdc2b94e3c172b36d2e26fa6fd39cab8cfcbac15a1fe5cf19678fe"
+          },
+          "ocr": {
+            "row_count": 2,
+            "seconds": 2.827154,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "14",
+              "ascii_tokens": [
+                "14"
+              ],
+              "score": 0.4483853,
+              "box_xyxy": [
+                294.0,
+                558.0,
+                338.0,
+                578.0
+              ]
+            },
+            {
+              "text": "9",
+              "ascii_tokens": [
+                "9"
+              ],
+              "score": 0.9210723,
+              "box_xyxy": [
+                990.0,
+                978.0,
+                1116.0,
+                1012.0
+              ]
+            }
+          ],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "espace",
+              "village"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        }
+      },
+      "predecessor": {
+        "after_frame_only_candidate": false,
+        "track_carried_candidate": false
+      },
+      "successor": {
+        "after_frame_only_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 1,
+          "portal_ownership_authority": "NONE"
+        },
+        "long_short_track_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 2,
+          "portal_ownership_authority": "NONE"
+        },
+        "counterfactual_track_token_banks": {
+          "FL02": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "viviani"
+            ],
+            "required_distinct_target_tokens": 1,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL03": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "gare",
+              "neuilly",
+              "porte",
+              "maillot"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL04": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "eglise",
+              "notre",
+              "dame",
+              "delivrande"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          }
+        },
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "FL02",
+      "source_city": "Nantes",
+      "target_way_id": 247662576,
+      "target_name": "Le Viviani",
+      "sequence_id": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "movement_distance_m": 5.561,
+      "geometry": {
+        "start_class": "TARGET_SELF_OCCLUDED",
+        "after_class": "DIRECT",
+        "after_entrance_ray_authorized": true,
+        "reciprocal_provider_links_verified": true
+      },
+      "frames": {
+        "start": {
+          "frame_key": "FL02_start",
+          "panorama_item_id": "68471322-a768-4781-a095-dc3675f73a5a",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "68471322-a768-4781-a095-dc3675f73a5a",
+            "entrance_node_id": 3135951166,
+            "camera_lon_lat": [
+              -1.538420676,
+              47.206358155
+            ],
+            "entrance_lon_lat": [
+              -1.5382087,
+              47.2060718
+            ],
+            "initial_bearing_degrees": 153.302027,
+            "view_azimuth_degrees": 357.0,
+            "relative_viewer_yaw_degrees": 156.302027,
+            "raw_x_degrees": 336.302027,
+            "raw_x_pixels": 5380.832439,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "68471322-a768-4781-a095-dc3675f73a5a",
+              "view_azimuth_degrees": 357.0,
+              "camera_native_heading_degrees": 357.12619883040935,
+              "heading_circular_difference_degrees": 0.126199,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5380.832439,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "3c0f90727bbd7604afd9d0ac735d3cdbd087ac608effc23befb5a3ed41fc8e98"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 1.48581,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "viviani"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after": {
+          "frame_key": "FL02_after",
+          "panorama_item_id": "00a406fa-bd87-42e0-a83a-62da0226e50b",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "00a406fa-bd87-42e0-a83a-62da0226e50b",
+            "entrance_node_id": 3135951166,
+            "camera_lon_lat": [
+              -1.538441624,
+              47.20631021
+            ],
+            "entrance_lon_lat": [
+              -1.5382087,
+              47.2060718
+            ],
+            "initial_bearing_degrees": 146.426517,
+            "view_azimuth_degrees": 36.0,
+            "relative_viewer_yaw_degrees": 110.426517,
+            "raw_x_degrees": 290.426517,
+            "raw_x_pixels": 4646.824269,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "00a406fa-bd87-42e0-a83a-62da0226e50b",
+              "view_azimuth_degrees": 36.0,
+              "camera_native_heading_degrees": 35.85303399799168,
+              "heading_circular_difference_degrees": 0.146966,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4646.824269,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "afa1251638c913e4e1312620d4dea2cb844709b54eb2c08664c503a1b54a222d"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 2.220767,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "viviani"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        }
+      },
+      "predecessor": {
+        "after_frame_only_candidate": false,
+        "track_carried_candidate": false
+      },
+      "successor": {
+        "after_frame_only_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 1,
+          "portal_ownership_authority": "NONE"
+        },
+        "long_short_track_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 2,
+          "portal_ownership_authority": "NONE"
+        },
+        "counterfactual_track_token_banks": {
+          "FL01": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "espace",
+              "village"
+            ],
+            "required_distinct_target_tokens": 2,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL03": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "gare",
+              "neuilly",
+              "porte",
+              "maillot"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL04": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "eglise",
+              "notre",
+              "dame",
+              "delivrande"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          }
+        },
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "FL03",
+      "source_city": "Paris",
+      "target_way_id": 84327114,
+      "target_name": "Gare de Neuilly - Porte Maillot",
+      "sequence_id": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "movement_distance_m": 3.074,
+      "geometry": {
+        "start_class": "TARGET_SELF_OCCLUDED",
+        "after_class": "DIRECT",
+        "after_entrance_ray_authorized": true,
+        "reciprocal_provider_links_verified": true
+      },
+      "frames": {
+        "start": {
+          "frame_key": "FL03_start",
+          "panorama_item_id": "baf41e0a-e502-4004-baeb-5eaf01f9e805",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "baf41e0a-e502-4004-baeb-5eaf01f9e805",
+            "entrance_node_id": 2389530074,
+            "camera_lon_lat": [
+              2.2845379,
+              48.8781155
+            ],
+            "entrance_lon_lat": [
+              2.2843938,
+              48.8780058
+            ],
+            "initial_bearing_degrees": 220.823644,
+            "view_azimuth_degrees": 60.0,
+            "relative_viewer_yaw_degrees": 160.823644,
+            "raw_x_degrees": 340.823644,
+            "raw_x_pixels": 5453.178308,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "baf41e0a-e502-4004-baeb-5eaf01f9e805",
+              "view_azimuth_degrees": 60.0,
+              "camera_native_heading_degrees": 60.308173520664546,
+              "heading_circular_difference_degrees": 0.308174,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5453.178308,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "bd17844d4e542145c7b3cbcc594c9477fc8dd74f9c50a4f9c46449aa7b94dcb8"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 1.521801,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "gare",
+              "neuilly",
+              "porte",
+              "maillot"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after": {
+          "frame_key": "FL03_after",
+          "panorama_item_id": "5f5cf530-5b26-4b7b-a09c-c4f745cb542c",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "5f5cf530-5b26-4b7b-a09c-c4f745cb542c",
+            "entrance_node_id": 2389530074,
+            "camera_lon_lat": [
+              2.2844992,
+              48.8781047
+            ],
+            "entrance_lon_lat": [
+              2.2843938,
+              48.8780058
+            ],
+            "initial_bearing_degrees": 215.02617,
+            "view_azimuth_degrees": 68.0,
+            "relative_viewer_yaw_degrees": 147.02617,
+            "raw_x_degrees": 327.02617,
+            "raw_x_pixels": 5232.418726,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "5f5cf530-5b26-4b7b-a09c-c4f745cb542c",
+              "view_azimuth_degrees": 68.0,
+              "camera_native_heading_degrees": 68.42917046490429,
+              "heading_circular_difference_degrees": 0.42917,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5232.418726,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "01b566d6e71608000335db9e1a59dd43d7b33710df424e01706fec40f474bffd"
+          },
+          "ocr": {
+            "row_count": 1,
+            "seconds": 2.316954,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "CLON",
+              "ascii_tokens": [
+                "clon"
+              ],
+              "score": 0.48732489,
+              "box_xyxy": [
+                725.0,
+                608.0,
+                736.0,
+                654.0
+              ]
+            }
+          ],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "gare",
+              "neuilly",
+              "porte",
+              "maillot"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "eglise",
+                "notre",
+                "dame",
+                "delivrande"
+              ],
+              "witnesses": []
+            }
+          }
+        }
+      },
+      "predecessor": {
+        "after_frame_only_candidate": false,
+        "track_carried_candidate": false
+      },
+      "successor": {
+        "after_frame_only_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 1,
+          "portal_ownership_authority": "NONE"
+        },
+        "long_short_track_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 2,
+          "portal_ownership_authority": "NONE"
+        },
+        "counterfactual_track_token_banks": {
+          "FL01": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "espace",
+              "village"
+            ],
+            "required_distinct_target_tokens": 2,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL02": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "viviani"
+            ],
+            "required_distinct_target_tokens": 1,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL04": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "eglise",
+              "notre",
+              "dame",
+              "delivrande"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          }
+        },
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "FL04",
+      "source_city": "Grenoble",
+      "target_way_id": 43471848,
+      "target_name": "Église Notre-Dame de la Délivrande",
+      "sequence_id": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "movement_distance_m": 6.471,
+      "geometry": {
+        "start_class": "TARGET_SELF_OCCLUDED",
+        "after_class": "DIRECT",
+        "after_entrance_ray_authorized": true,
+        "reciprocal_provider_links_verified": true
+      },
+      "frames": {
+        "start": {
+          "frame_key": "FL04_start",
+          "panorama_item_id": "6b16f054-40ae-475c-8bf8-2c850af54c13",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "6b16f054-40ae-475c-8bf8-2c850af54c13",
+            "entrance_node_id": 2021317885,
+            "camera_lon_lat": [
+              5.7498879,
+              45.184315
+            ],
+            "entrance_lon_lat": [
+              5.74944,
+              45.1843046
+            ],
+            "initial_bearing_degrees": 268.113322,
+            "view_azimuth_degrees": 329.0,
+            "relative_viewer_yaw_degrees": 299.113322,
+            "raw_x_degrees": 119.113322,
+            "raw_x_pixels": 1905.813147,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "6b16f054-40ae-475c-8bf8-2c850af54c13",
+              "view_azimuth_degrees": 329.0,
+              "camera_native_heading_degrees": 328.81851638872917,
+              "heading_circular_difference_degrees": 0.181484,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 1905.813147,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "3372d1709485414a7646d59c381f78bdff53dfa50f55e1b718976bf47d3c9614"
+          },
+          "ocr": {
+            "row_count": 1,
+            "seconds": 2.391694,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "20",
+              "ascii_tokens": [
+                "20"
+              ],
+              "score": 0.99932718,
+              "box_xyxy": [
+                710.0,
+                677.0,
+                746.0,
+                710.0
+              ]
+            }
+          ],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "eglise",
+              "notre",
+              "dame",
+              "delivrande"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after": {
+          "frame_key": "FL04_after",
+          "panorama_item_id": "ab6c8c4c-4d03-4eab-82e5-8518182d1194",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "ab6c8c4c-4d03-4eab-82e5-8518182d1194",
+            "entrance_node_id": 2021317885,
+            "camera_lon_lat": [
+              5.7498315,
+              45.1843575
+            ],
+            "entrance_lon_lat": [
+              5.74944,
+              45.1843046
+            ],
+            "initial_bearing_degrees": 259.147741,
+            "view_azimuth_degrees": 277.0,
+            "relative_viewer_yaw_degrees": 342.147741,
+            "raw_x_degrees": 162.147741,
+            "raw_x_pixels": 2594.363852,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "ab6c8c4c-4d03-4eab-82e5-8518182d1194",
+              "view_azimuth_degrees": 277.0,
+              "camera_native_heading_degrees": 277.4716228467815,
+              "heading_circular_difference_degrees": 0.471623,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 2594.363852,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "8334e9e398cbc7dd69b5f98e3844080c214b1e936493ffd642751bd672356dd5"
+          },
+          "ocr": {
+            "row_count": 4,
+            "seconds": 2.505438,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "40",
+              "ascii_tokens": [
+                "40"
+              ],
+              "score": 0.39575016,
+              "box_xyxy": [
+                796.0,
+                705.0,
+                807.0,
+                745.0
+              ]
+            },
+            {
+              "text": "原",
+              "ascii_tokens": [],
+              "score": 0.21320459,
+              "box_xyxy": [
+                817.0,
+                704.0,
+                831.0,
+                721.0
+              ]
+            },
+            {
+              "text": "大",
+              "ascii_tokens": [],
+              "score": 0.59341371,
+              "box_xyxy": [
+                1348.0,
+                990.0,
+                1372.0,
+                1022.0
+              ]
+            },
+            {
+              "text": "20",
+              "ascii_tokens": [
+                "20"
+              ],
+              "score": 0.99341154,
+              "box_xyxy": [
+                1373.0,
+                1004.0,
+                1383.0,
+                1013.0
+              ]
+            }
+          ],
+          "predecessor_own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "eglise",
+              "notre",
+              "dame",
+              "delivrande"
+            ],
+            "witnesses": []
+          },
+          "predecessor_counterfactual_matches": {
+            "FL01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "espace",
+                "village"
+              ],
+              "witnesses": []
+            },
+            "FL02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "viviani"
+              ],
+              "witnesses": []
+            },
+            "FL03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "gare",
+                "neuilly",
+                "porte",
+                "maillot"
+              ],
+              "witnesses": []
+            }
+          }
+        }
+      },
+      "predecessor": {
+        "after_frame_only_candidate": false,
+        "track_carried_candidate": false
+      },
+      "successor": {
+        "after_frame_only_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 1,
+          "portal_ownership_authority": "NONE"
+        },
+        "long_short_track_token_bank": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 2,
+          "portal_ownership_authority": "NONE"
+        },
+        "counterfactual_track_token_banks": {
+          "FL01": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "espace",
+              "village"
+            ],
+            "required_distinct_target_tokens": 2,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL02": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "viviani"
+            ],
+            "required_distinct_target_tokens": 1,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          },
+          "FL03": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "gare",
+              "neuilly",
+              "porte",
+              "maillot"
+            ],
+            "required_distinct_target_tokens": 3,
+            "observed_target_tokens": [],
+            "target_token_coverage": 0.0,
+            "witnesses": {},
+            "phase_count": 2,
+            "portal_ownership_authority": "NONE"
+          }
+        },
+        "portal_ownership_binding_emitted": false
+      }
+    }
+  ],
+  "evidence_semantics": {
+    "predecessor": "The frozen whole-row exact-name plus grouped two-initial brand-sign matcher, evaluated both after-only and as a two-frame union.",
+    "successor": "A long-short memory bank of exact target-name tokens pooled across OCR rows and the verified start/after action edge.",
+    "counterfactuals": "Each episode's two-frame bank is evaluated against all three other fresh target names, for twelve wrong-target trials.",
+    "component_separation": "Lexical candidates, geometry roles, and entrance rays remain separate fields; no ownership binding is emitted."
+  },
+  "research_basis": [
+    {
+      "title": "GoMatching++: Parameter- and Data-Efficient Arbitrary-Shaped Video Text Spotting and Benchmarking",
+      "url": "https://arxiv.org/abs/2505.22228",
+      "official_code": "https://github.com/Hxyz-123/GoMatching",
+      "use": "Its long- and short-term matching memory motivates pooling stable text evidence across recent and historical frames; this evaluator uses a deterministic exact-token bank rather than its learned tracker."
+    },
+    {
+      "title": "GloTSFormer: Global Video Text Spotting Transformer",
+      "url": "https://arxiv.org/abs/2401.03694",
+      "use": "Its global historical association motivates retaining evidence beyond adjacent-frame-only matching; this evaluator does not implement the Transformer or claim benchmark comparability."
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Fresh target-way/item/prior-active-sequence-disjoint Development evidence, on four selected Panoramax episodes across three cities, about whether a component-separated long-short exact-token bank improves lexical-candidate availability over the frozen predecessor while post-action geometry remains independently DIRECT.",
+    "not_allowed": [
+      "source-provider-disjoint confirmation or broad generalization",
+      "a lexical candidate being the target entity rather than a same-name sign, street, or distractor",
+      "pixel portal grounding or address/sign-to-door ownership",
+      "entrance affordance, public/legal access, walkability, collision-free traversability",
+      "waypoint accuracy, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

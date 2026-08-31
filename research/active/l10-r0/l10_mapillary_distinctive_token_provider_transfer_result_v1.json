@@ -1,0 +1,1216 @@
+{
+  "schema": "blindassist-l10-mapillary-distinctive-token-provider-transfer-result-v1",
+  "decision": "L10_MAPILLARY_DISTINCTIVE_EDIT_TOKEN_PROVIDER_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "PROVIDER_AND_CITY_DISJOINT_PREEXISTING_PIXEL_HUMAN_WINDOW_FIRST_OCR_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_mapillary_distinctive_token_provider_transfer_protocol_v1.json",
+  "protocol_sha256": "572cf2fd66617827f182c314359b2a4d7e61c9cd9247a16a24bea6af52e8b999",
+  "evaluator_sha256": "7d363c87931dbd728397d4c3ff505fb8bba24cd2bfa919d41cdc53d4b4a4da46",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.3.5",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "provider_disjoint_preexisting_pixel_first_ocr_episodes": 4,
+    "cities": 2,
+    "mapillary_sequences": 4,
+    "target_roster": 17,
+    "correct_wrong_unknown_ambiguous": [
+      0,
+      0,
+      4,
+      0
+    ],
+    "positive_coverage": 0.0,
+    "wrong_target_trials": 64,
+    "wrong_target_matches": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 16.362536
+  },
+  "gate": {
+    "four_mapillary_sequences": true,
+    "two_cities": true,
+    "minimum_two_correct": false,
+    "zero_wrong": true,
+    "zero_ambiguous": true,
+    "zero_wrong_target_matches": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "MR01",
+      "city": "Rotterdam",
+      "target_name": "Markthal Rotterdam",
+      "target_way_id": 437982193,
+      "human_entity_truth": "TARGET_BUILDING_AND_MARKTHAL_CREDENTIAL_VISIBLE",
+      "portal_truth_boundary": "NOT_EVALUABLE_MULTIPLE_WALKABLE_ENTRANCES",
+      "crop_receipt": {
+        "human_interval_x": [
+          1240,
+          2190
+        ],
+        "center_x": 1715,
+        "top_y": 960,
+        "bottom_y_exclusive": 3200,
+        "width": 1920,
+        "height": 2240,
+        "pixel_sha256": "791e7475b32ed66b02c9d28924837ee49d33397f0ff5fab24987580a7d61f2d6"
+      },
+      "ocr": {
+        "row_count": 3,
+        "seconds": 5.488913,
+        "text_detection_parameters": {
+          "limit_side_len": 64,
+          "limit_type": "min",
+          "thresh": 0.3,
+          "max_side_limit": 4000,
+          "box_thresh": 0.6,
+          "unclip_ratio": 1.5
+        }
+      },
+      "ocr_rows": [
+        {
+          "text": "通",
+          "ascii_tokens": [],
+          "score": 0.48122215,
+          "box_xyxy": [
+            426.0,
+            983.0,
+            520.0,
+            1059.0
+          ]
+        },
+        {
+          "text": "HAL",
+          "ascii_tokens": [
+            "hal"
+          ],
+          "score": 0.93702012,
+          "box_xyxy": [
+            1111.0,
+            1049.0,
+            1214.0,
+            1129.0
+          ]
+        },
+        {
+          "text": "2",
+          "ascii_tokens": [
+            "2"
+          ],
+          "score": 0.83710068,
+          "box_xyxy": [
+            1606.0,
+            1100.0,
+            1730.0,
+            1224.0
+          ]
+        }
+      ],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "markthal",
+            "rotterdam"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "oude",
+            "kerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "ontmoetingskerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "pkn",
+            "kievitkerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": [],
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "MR02",
+      "city": "Den Haag",
+      "target_name": "Oude Kerk",
+      "target_way_id": 58577964,
+      "human_entity_truth": "UNIQUE_TARGET_CHURCH_BUILDING_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_2985_3035",
+      "crop_receipt": {
+        "human_interval_x": [
+          2860,
+          3070
+        ],
+        "center_x": 2965,
+        "top_y": 960,
+        "bottom_y_exclusive": 3200,
+        "width": 1920,
+        "height": 2240,
+        "pixel_sha256": "f2941e3306d9b7ef91181a362e69b13f37b9c382a5a2ffb7394a802dab6f2b4e"
+      },
+      "ocr": {
+        "row_count": 2,
+        "seconds": 5.098824,
+        "text_detection_parameters": {
+          "limit_side_len": 64,
+          "limit_type": "min",
+          "thresh": 0.3,
+          "max_side_limit": 4000,
+          "box_thresh": 0.6,
+          "unclip_ratio": 1.5
+        }
+      },
+      "ocr_rows": [
+        {
+          "text": "10",
+          "ascii_tokens": [
+            "10"
+          ],
+          "score": 0.99840146,
+          "box_xyxy": [
+            1678.0,
+            797.0,
+            1845.0,
+            934.0
+          ]
+        },
+        {
+          "text": "2",
+          "ascii_tokens": [
+            "2"
+          ],
+          "score": 0.40637365,
+          "box_xyxy": [
+            1885.0,
+            961.0,
+            1903.0,
+            981.0
+          ]
+        }
+      ],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "markthal",
+            "rotterdam"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "oude",
+            "kerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "ontmoetingskerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "pkn",
+            "kievitkerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": [],
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "MR03",
+      "city": "Rotterdam",
+      "target_name": "Ontmoetingskerk",
+      "target_way_id": 242119274,
+      "human_entity_truth": "TARGET_BUILDING_AND_ONTMOETINGSKERK_CREDENTIAL_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_3250_3300",
+      "crop_receipt": {
+        "human_interval_x": [
+          3220,
+          3320
+        ],
+        "center_x": 3270,
+        "top_y": 512,
+        "bottom_y_exclusive": 1707,
+        "width": 1024,
+        "height": 1195,
+        "pixel_sha256": "8bea3263f703aadbbd65399703bcca5e0762ce55ce2d104a1db4bb3fc9720084"
+      },
+      "ocr": {
+        "row_count": 1,
+        "seconds": 1.817856,
+        "text_detection_parameters": {
+          "limit_side_len": 64,
+          "limit_type": "min",
+          "thresh": 0.3,
+          "max_side_limit": 4000,
+          "box_thresh": 0.6,
+          "unclip_ratio": 1.5
+        }
+      },
+      "ocr_rows": [
+        {
+          "text": "ONTMOETINOBKERK",
+          "ascii_tokens": [
+            "ontmoetinobkerk"
+          ],
+          "score": 0.97155231,
+          "box_xyxy": [
+            231.0,
+            417.0,
+            393.0,
+            431.0
+          ]
+        }
+      ],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "markthal",
+            "rotterdam"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "oude",
+            "kerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "ontmoetingskerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "pkn",
+            "kievitkerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": [],
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "MR04",
+      "city": "Den Haag",
+      "target_name": "PKN Kievitkerk",
+      "target_way_id": 52971287,
+      "human_entity_truth": "UNIQUE_TARGET_CHURCH_BUILDING_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_2420_2455",
+      "crop_receipt": {
+        "human_interval_x": [
+          2410,
+          2530
+        ],
+        "center_x": 2470,
+        "top_y": 672,
+        "bottom_y_exclusive": 2240,
+        "width": 1344,
+        "height": 1568,
+        "pixel_sha256": "c9787664f72b58aa17a1e679ed6e9461f697ccd231a4c367e47f5856e2d3ff90"
+      },
+      "ocr": {
+        "row_count": 0,
+        "seconds": 1.896542,
+        "text_detection_parameters": {
+          "limit_side_len": 64,
+          "limit_type": "min",
+          "thresh": 0.3,
+          "max_side_limit": 4000,
+          "box_thresh": 0.6,
+          "unclip_ratio": 1.5
+        }
+      },
+      "ocr_rows": [],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "markthal",
+            "rotterdam"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "oude",
+            "kerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "ontmoetingskerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "MR04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "pkn",
+            "kievitkerk"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": [],
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Provider- and city-disjoint Development evidence about first-OCR transfer of the fixed distinctive-token referent-candidate branch on four previously human-reviewed, human-window-conditioned Mapillary images.",
+    "not_allowed": [
+      "pixel-unseen, active-sequence, automatic entrance-ray, independent portal, full combined-router, open-world, conformal, FDR-controlled, deployment, or safety confirmation",
+      "OCR evidence proving exact entity identity, sign-to-building association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "blindassist-l10-3rscan-scan-family-disjoint-witness-incremental-protocol-v1",
+  "authority": "FROZEN_SCAN_FAMILY_DISJOINT_SAME_CLASS_WITNESS_INCREMENTAL_DEVELOPMENT",
+  "question": "Does the unchanged two-witness surface rejector add decision-changing zero-assignment value over rank-only registered-surface matching on a new 3RScan family with same-class missing and extra candidates?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_witness_calibrated_zero_assignment_protocol_v1.json",
+    "protocol_sha256": "bc6a898fdc0d24994f0f1e22c50dd92082ab74b550fd655f767c61ad433c12fb",
+    "cohort_path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json",
+    "cohort_sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d",
+    "result_path": "l10_3rscan_witness_calibrated_zero_assignment_result_v1.json",
+    "result_sha256": "38ef5051cd93ce04f347837831142aeb1ebb1eb8f9761ca28f6f765bb666876c",
+    "implementation_path": "l10_3rscan_witness_calibrated_zero_assignment.py",
+    "implementation_sha256": "7e2a448b286aab43da9442f8fc9c13d9ceac6d4411d5532da093f6447d64bd79",
+    "required_conclusion": "L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+    "observed_gap": "The predecessor reached F1 1.0, but rank-only surface matching also reached F1 1.0 on that fresh physical-target cohort, so the witness rejector had no established incremental value."
+  },
+  "method_sources": [
+    {
+      "name": "Zero-Assignment Constraint for Graph Matching with Outliers",
+      "url": "https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_Zero-Assignment_Constraint_for_Graph_Matching_With_Outliers_CVPR_2020_paper.pdf",
+      "used_idea": "Treat unmatched nodes as explicit all-zero rows or columns instead of forcing a complete permutation."
+    },
+    {
+      "name": "Predictor-Rejector Multi-Class Abstention",
+      "url": "https://proceedings.mlr.press/v237/mao24a/mao24a.pdf",
+      "used_idea": "Evaluate the independent rejector against the unchanged predictor and require fresh incremental gain."
+    }
+  ],
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {"path": "l10_3rscan_bounded_reference_mask_cohort_v1.json", "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"},
+      {"path": "l10_3rscan_reference_pixel_field_cohort_v1.json", "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"},
+      {"path": "l10_3rscan_registered_extent_cohort_v1.json", "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"},
+      {"path": "l10_3rscan_spatial_reference_mask_cohort_v1.json", "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"},
+      {"path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json", "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"},
+      {"path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json", "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d"},
+      {"path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json", "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0"},
+      {"path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json", "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84"},
+      {"path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json", "sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d"}
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 6,
+    "same_class_targets": 6,
+    "registration_witnesses": 2,
+    "selection_order": "Exclude every reference scan family and physical reference target in the nine consumed cohorts. Group the frozen candidate rows by scan family in first-occurrence order, then by normalized semantic class in first-occurrence order. Choose the first family/class with six distinct surfaces on both scans and take its first six rows in the existing area-proxy order. Declare rows one and two registration witnesses and rows three through six evaluated targets before any surface distance is computed.",
+    "scenario_contract": "Use one closed-six scenario, one query-extra scenario, one reference-extra scenario, and all twelve ordered balanced missing-plus-extra swaps across the four evaluated same-class targets. Every scenario contains both witnesses on both sides.",
+    "forbidden": [
+      "using surface distances to choose the family, semantic class, targets, witnesses, or swaps",
+      "changing the witness count or identities after replay",
+      "multiplying, adding slack to, or tuning the predecessor witness ceiling rule",
+      "dropping any of the twelve balanced swaps after observing outcomes",
+      "claiming statistical coverage from two engineering witnesses",
+      "using target IDs inside evaluated correspondence ranking"
+    ]
+  },
+  "frozen_model": {
+    "surface_score": "The unchanged predecessor negative symmetric median nearest-surface distance after the official rigid scan transform.",
+    "witness_ceiling": "The unchanged larger of two predeclared witness correspondence residuals, with no multiplier, quantile, or learned parameter.",
+    "rank_only_baseline": "Strict reciprocal row-and-column maxima on the same surface score, with no absolute rejector.",
+    "complete_baseline": "Complete Hungarian assignment on the same surface score.",
+    "witness_zero_assignment": "An edge must satisfy the rank-only baseline and its distance must not exceed the witness ceiling; otherwise the relevant node remains unmatched."
+  },
+  "decision_gate": {
+    "rank_only_incremental_opportunity": "Rank-only must emit at least one false positive across the frozen scenarios.",
+    "witness_true_matches": "All frozen truth correspondences across all scenarios.",
+    "witness_false_matches": 0,
+    "witness_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in every frozen scenario.",
+    "no_true_match_regression": "Witness-calibrated true positives must be at least rank-only true positives.",
+    "single_replay": "One replay on the frozen scan-family-disjoint same-class cohort; do not tune or rerun after outcome."
+  },
+  "claim_boundary": "A pass is same-provider but scan-family-disjoint real-geometry Development evidence that the unchanged two-witness rejector adds decision-changing value over rank-only registered-surface matching for truth-proposed same-class indoor door targets under bounded missing/extra roster constructions. The witnesses, semantic labels, surfaces, and rigid transform remain privileged provider evidence; two witnesses have no statistical coverage guarantee. It is not raw-phone perception, open-world discovery, door detection, a portal aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

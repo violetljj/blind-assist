@@ -1,0 +1,92 @@
+{
+  "schema": "blindassist-l10-panolab-producer-stratified-router-source-protocol-v1",
+  "name": "L10 PanoLab three-producer pixel-unseen temporal router panel",
+  "status": "FROZEN_BEFORE_LINKED_NEIGHBOR_METADATA_FETCH_OR_ANY_SELECTED_PIXEL_DOWNLOAD",
+  "question": "Does the unchanged router transfer beyond the Nzau-only confirmation to one pixel-unseen target from each of three Panoramax capture producers?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_panel.py",
+    "sha256": "d5c935c1730c6639bc3b2919f2ca13829f0166ed1b0943a27309ef69cd3b5d4e",
+    "bytes": 14642
+  },
+  "inputs": {
+    "direct_candidates": {
+      "path": "F:/ba-data/blindassist-artifacts-20260805/knowledge/l10-panolab-federated-portal-v1/direct-candidates.json",
+      "sha256": "4e9bbba53fa7638580b7d2255b67d4737b60ebdfc476e3a1a3b7e0c9924d1f06",
+      "bytes": 512899
+    },
+    "prior_six_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "prior_temporal_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    },
+    "prior_eight_target_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+      "sha256": "b521986bddda64902dc173edaf7f76671543cd4b73629e946ffae504df485e2d",
+      "bytes": 7699
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "confirmation_panel_helper": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_panel.py",
+      "sha256": "97ce20071034cf85ee7d20033e68c0a753ca9ebd7746d42e87225b551b6fab03",
+      "bytes": 15597
+    },
+    "temporal_panel_helper": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_panel.py",
+      "sha256": "a4231708d461639522839694cbb21c4d6b4a91bdcb68f045f855bc6915135e1e",
+      "bytes": 13629
+    }
+  },
+  "selection": {
+    "producer_strata": [
+      "nlehuby",
+      "Nzau",
+      "Carto'Cité"
+    ],
+    "excluded_target_way_ids": [
+      190020630,
+      247662576,
+      84327114,
+      43471848,
+      305144115,
+      378533157,
+      155636324,
+      155700593,
+      155636992,
+      756359489,
+      155677465
+    ],
+    "anchor_eligibility": "Reference and query anchors must be a direct target-building pair from the frozen candidate ledger, use distinct collections, have strict explicit-zero pose projection, and not overlap any prior router item or excluded target way.",
+    "ordering": "For each producer stratum in the fixed order, walk the already frozen direct-candidate ledger order and select the first anchor pair whose exact reciprocal reference-next and query-prev/query-next all remain in the anchor collections, link reciprocally, pass strict explicit-zero projection, and do not overlap prior items.",
+    "metadata_failure_policy": "A candidate failing linked metadata is recorded and skipped before any selected pixel exists. Once a metadata-valid candidate is selected for a stratum, no pixel-driven substitution or resampling is allowed.",
+    "pixel_boundary": "All ten anchors and neighbours for selected rows remain undownloaded and human/model unseen at freeze. The first five earlier federated-source targets are excluded because their anchors were previously materialized and reviewed.",
+    "panel_size": 3
+  },
+  "materialization": {
+    "output_root": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1",
+    "download": "Download exactly fifteen selected HD panoramas through .jpg.part files, atomically replace finals, and remove partials in a finally path.",
+    "image_contract": "Each decoded image must exactly match its already frozen strict projection sensor dimensions and remain a full 2:1 equirectangular panorama.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_producer_stratified_router_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_producer_stratified_router_materialization_v1.json",
+    "human_truth": "research/active/l10-r0/l10_panolab_producer_stratified_router_truth_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A metadata-frozen, target-way/item-disjoint, pixel-unseen Development source spanning three capture-producer strata for the unchanged same-provider router.",
+    "not_allowed": [
+      "provider-disjoint, open-world, conformal, FDR-controlled, independent, or deployment confirmation",
+      "portal visibility or ownership from metadata/projection alone",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

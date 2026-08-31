@@ -1,0 +1,210 @@
+{
+  "schema": "blindassist-l10-scenenn-center-target-door-retrieval-cohort-v1",
+  "authority": "FROZEN_CONSUMED_RGBD_TRUTH_PROPOSED_DOOR_RETRIEVAL_COHORT",
+  "protocol_path": "l10_scenenn_center_target_door_retrieval_protocol_v1.json",
+  "protocol_sha256": "747eefb64b00678680181b14b30d04d270cef81113a281d09e6a94053eb79c1f",
+  "source_cohort_path": "l10_scenenn_visible_portal_cohort_v3.json",
+  "source_cohort_sha256": "a040e1916b678afe6f8b05aaaa2317774e7698dab0e459664c7be6d92057752f",
+  "geometry_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-dinov2-door-retrieval-v1",
+  "rgb_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\extracted-selected-v3",
+  "source_files": {
+    "payload/246/246.ply": {
+      "bytes": 79056429,
+      "sha256": "ecd022dfa21576efc849ee83998251584d959cefe1c6ace0a7fdcb8d3a613739"
+    },
+    "payload/246/246.xml": {
+      "bytes": 21420,
+      "sha256": "5d83cc353c41709b49ecb9293adee48b9c47611d6c5cddb4aac82cfb4adab4f3"
+    },
+    "payload/246/trajectory.log": {
+      "bytes": 792358,
+      "sha256": "680e141b889765874e5f75ca19d0a3a136ad965bbf4b72c07acf4538a5c5e9ea"
+    },
+    "payload/032/032.ply": {
+      "bytes": 120861355,
+      "sha256": "2d494b21d16684c4ae8b0d0644035834fb7221e1395fd5f45ea487ab463de4bf"
+    },
+    "payload/032/032.xml": {
+      "bytes": 59911,
+      "sha256": "e9927e64b7e3936a8bd9cd0d5adcb584869592689b78275d825f1750e53b2201"
+    },
+    "payload/032/trajectory.log": {
+      "bytes": 914714,
+      "sha256": "a2ef0c26f068e7e0900695244cbb8addb6e9391185ac48d4f96ffed9b6a4e308"
+    },
+    "payload/073/073.ply": {
+      "bytes": 76543778,
+      "sha256": "90c03c491c296ca36c1037cecc326c0640f79f92b521a5742c339a0dab5b8a0f"
+    },
+    "payload/073/073.xml": {
+      "bytes": 42597,
+      "sha256": "d79467a8eb556e075bd25e0d5160c46465145b60d07f29fea6b1798888ff3d28"
+    },
+    "payload/073/trajectory.log": {
+      "bytes": 983815,
+      "sha256": "8afab85ceb7adf8155b6745c5e537996c027fdb7a22155139782e0d6111e27c6"
+    }
+  },
+  "images": {
+    "246_reference": {
+      "scene_id": "246",
+      "episode_id": "SV01",
+      "role": "reference",
+      "frame": 3153,
+      "target_door_instance_id": 1107814,
+      "bbox_xyxy": [
+        427,
+        0,
+        640,
+        480
+      ],
+      "envelope_pixels": 51360,
+      "rgb_path": "246/image/frame.3153.png",
+      "rgb_sha256": "0b35e0626ea4f678814b7c1e5afb7a8cf478c354c543a6294f4ee8ae4fd302e0"
+    },
+    "246_query": {
+      "scene_id": "246",
+      "episode_id": "SV01",
+      "role": "query",
+      "frame": 4108,
+      "target_door_instance_id": 1107814,
+      "bbox_xyxy": [
+        516,
+        0,
+        640,
+        391
+      ],
+      "envelope_pixels": 32176,
+      "rgb_path": "246/image/frame.4108.png",
+      "rgb_sha256": "aa7e8f71ef7174879a307edbcb27d70d27e1cd16cca5ed579a0d174898aaa02b"
+    },
+    "032_reference": {
+      "scene_id": "032",
+      "episode_id": "SV02",
+      "role": "reference",
+      "frame": 706,
+      "target_door_instance_id": 483,
+      "bbox_xyxy": [
+        574,
+        0,
+        640,
+        480
+      ],
+      "envelope_pixels": 20353,
+      "rgb_path": "032/image/frame.0706.png",
+      "rgb_sha256": "4d68c8929dbac93e225f1e1f6edf62ee5bf9d859837d5420c2da21157fdd4a89"
+    },
+    "032_query": {
+      "scene_id": "032",
+      "episode_id": "SV02",
+      "role": "query",
+      "frame": 2439,
+      "target_door_instance_id": 483,
+      "bbox_xyxy": [
+        473,
+        0,
+        640,
+        455
+      ],
+      "envelope_pixels": 56433,
+      "rgb_path": "032/image/frame.2439.png",
+      "rgb_sha256": "4b2e079a7710c5ce1ccc2d439c9d10f3859de0c66b921bc088e90265f8647713"
+    },
+    "073_reference": {
+      "scene_id": "073",
+      "episode_id": "SV03",
+      "role": "reference",
+      "frame": 401,
+      "target_door_instance_id": 445,
+      "bbox_xyxy": [
+        522,
+        0,
+        640,
+        480
+      ],
+      "envelope_pixels": 28560,
+      "rgb_path": "073/image/frame.0401.png",
+      "rgb_sha256": "439ca7f7e75e41dc916ef0d64af5c2c03d74d2504c074c88907f49b60c1956f3"
+    },
+    "073_query": {
+      "scene_id": "073",
+      "episode_id": "SV03",
+      "role": "query",
+      "frame": 4650,
+      "target_door_instance_id": 445,
+      "bbox_xyxy": [
+        0,
+        0,
+        73,
+        270
+      ],
+      "envelope_pixels": 16373,
+      "rgb_path": "073/image/frame.4650.png",
+      "rgb_sha256": "0f41c636906665f58d97e2cd3fd0abae57121248ef04b8b134084207d885e9c0"
+    }
+  },
+  "anchors": [
+    {
+      "anchor": "032_reference",
+      "positive": "032_query",
+      "candidates": [
+        "032_query",
+        "073_query",
+        "246_query"
+      ]
+    },
+    {
+      "anchor": "073_reference",
+      "positive": "073_query",
+      "candidates": [
+        "032_query",
+        "073_query",
+        "246_query"
+      ]
+    },
+    {
+      "anchor": "246_reference",
+      "positive": "246_query",
+      "candidates": [
+        "032_query",
+        "073_query",
+        "246_query"
+      ]
+    },
+    {
+      "anchor": "032_query",
+      "positive": "032_reference",
+      "candidates": [
+        "032_reference",
+        "073_reference",
+        "246_reference"
+      ]
+    },
+    {
+      "anchor": "073_query",
+      "positive": "073_reference",
+      "candidates": [
+        "032_reference",
+        "073_reference",
+        "246_reference"
+      ]
+    },
+    {
+      "anchor": "246_query",
+      "positive": "246_reference",
+      "candidates": [
+        "032_reference",
+        "073_reference",
+        "246_reference"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_doors": 3,
+    "directed_anchors": 6,
+    "positive_pairs": 6,
+    "negative_pairs": 12
+  },
+  "proposal_rule": "For each frozen reference/query frame, project every vertex carrying the frozen target door instance ID with the official camera pose and intrinsics, fill its clipped convex envelope, take the tight envelope bounding box, crop raw RGB, and square-pad the shorter crop dimension with black. Geometry is evaluator-authoritative and unavailable to deployment.",
+  "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed indoor SceneNN door instances. SceneNN mesh, pose, RGB and door labels come from one provider; the six RGB-D frames are consumed; the candidate envelopes use privileged reconstructed geometry; and only three physical doors are tested. It is not door detection, pixel-mask transfer, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+}

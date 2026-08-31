@@ -1,0 +1,3355 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-layout-phrase-fresh-result-v1",
+  "decision": "L10_ROADTEXTVQA_FRESH_GOAL_CONDITIONED_LAYOUT_PHRASE_VERIFIER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_GOAL_CONDITIONED_LAYOUT_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_roadtextvqa_layout_phrase_fresh_protocol_v1.json",
+  "protocol_sha256": "636e428e486a7df213e08f4c20cf8885405a511c8a4dfee955d551e50eb06d79",
+  "evaluator_sha256": "892d21e56f53d882a4901063cf178f214be09bf808fa53cb0f53834d4017cbae",
+  "metrics": {
+    "episodes": 30,
+    "idf_correct_unknown": [
+      20,
+      10
+    ],
+    "layout_phrase_additional_correct": 1,
+    "combined_correct_unknown": [
+      21,
+      9
+    ],
+    "synthetic_phrase_negative_queries": 30,
+    "synthetic_phrase_negative_accepts": 0,
+    "wrong_goal_candidates_emitted": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_fresh_ocr_unseen_episodes": true,
+    "minimum_two_correct_gain": false,
+    "zero_synthetic_phrase_negative_accepts": true,
+    "candidate_is_always_the_conditioned_goal": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": false
+  },
+  "synthetic_phrase_negative_accepts": [],
+  "rows": [
+    {
+      "target_id": "RTVQA-Q978",
+      "question_id": 978,
+      "video": "169.mp4",
+      "question": "What is the website address mentioned in the truck service named \"Baldor\"?",
+      "aliases": [
+        "www.baldorfood.com"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 10.364135,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "baldorfood"
+        ],
+        "token_information_bits": {
+          "baldorfood": 10.364135
+        },
+        "witnesses": {
+          "baldorfood": [
+            {
+              "frame": 120,
+              "observed": "baldorfood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "baldorfood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "baldorfood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 211,
+              "observed": "baldurfood",
+              "edit_distance": 1
+            },
+            {
+              "frame": 271,
+              "observed": "baldorfood",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 120,
+            "alias": "www.baldorfood.com",
+            "target_compact": "wwwbaldorfoodcom",
+            "observed_compact": "wwwbaldorfoodcom",
+            "observed_tokens": [
+              "www",
+              "baldorfood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 14.175825,
+            "boxes": [
+              {
+                "x1": 837.0,
+                "y1": 223.0,
+                "x2": 987.0,
+                "y2": 244.0
+              }
+            ]
+          },
+          {
+            "frame": 151,
+            "alias": "www.baldorfood.com",
+            "target_compact": "wwwbaldorfoodcom",
+            "observed_compact": "wwwbaldorfoodcom",
+            "observed_tokens": [
+              "www",
+              "baldorfood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 14.175825,
+            "boxes": [
+              {
+                "x1": 847.0,
+                "y1": 240.0,
+                "x2": 993.0,
+                "y2": 260.0
+              }
+            ]
+          },
+          {
+            "frame": 181,
+            "alias": "www.baldorfood.com",
+            "target_compact": "wwwbaldorfoodcom",
+            "observed_compact": "wwwbaldorfoodcom",
+            "observed_tokens": [
+              "www",
+              "baldorfood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 14.175825,
+            "boxes": [
+              {
+                "x1": 867.0,
+                "y1": 251.0,
+                "x2": 1004.0,
+                "y2": 269.0
+              }
+            ]
+          },
+          {
+            "frame": 211,
+            "alias": "www.baldorfood.com",
+            "target_compact": "wwwbaldorfoodcom",
+            "observed_compact": "wwwbaldurfoodcom",
+            "observed_tokens": [
+              "www",
+              "baldurfood",
+              "com"
+            ],
+            "edit_distance": 1,
+            "information_bits": 14.175825,
+            "boxes": [
+              {
+                "x1": 896.0,
+                "y1": 253.0,
+                "x2": 1028.0,
+                "y2": 270.0
+              }
+            ]
+          },
+          {
+            "frame": 271,
+            "alias": "www.baldorfood.com",
+            "target_compact": "wwwbaldorfoodcom",
+            "observed_compact": "wwwbaldorfoodcom",
+            "observed_tokens": [
+              "www",
+              "baldorfood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 14.175825,
+            "boxes": [
+              {
+                "x1": 1107.0,
+                "y1": 233.0,
+                "x2": 1266.0,
+                "y2": 258.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q1433",
+      "question_id": 1433,
+      "video": "189.mp4",
+      "question": "Which parkway should I take to reach Eastern long Island?",
+      "aliases": [
+        "grand central pkwy"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 17.256255,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "central",
+          "grand",
+          "pkwy"
+        ],
+        "token_information_bits": {
+          "central": 5.720278,
+          "grand": 5.341767,
+          "pkwy": 6.19421
+        },
+        "witnesses": {
+          "central": [
+            {
+              "frame": 60,
+              "observed": "central",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "central",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "central",
+              "edit_distance": 0
+            }
+          ],
+          "grand": [
+            {
+              "frame": 60,
+              "observed": "grand",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "grand",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "grand",
+              "edit_distance": 0
+            }
+          ],
+          "pkwy": [
+            {
+              "frame": 60,
+              "observed": "pkwy",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "pkwy",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "pkwy",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 60,
+            "alias": "grand central pkwy",
+            "target_compact": "grandcentralpkwy",
+            "observed_compact": "grandcentralpkwy",
+            "observed_tokens": [
+              "grand",
+              "central",
+              "pkwy"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.256255,
+            "boxes": [
+              {
+                "x1": 548.0,
+                "y1": 266.0,
+                "x2": 583.0,
+                "y2": 279.0
+              },
+              {
+                "x1": 590.0,
+                "y1": 262.0,
+                "x2": 636.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 642.0,
+                "y1": 260.0,
+                "x2": 675.0,
+                "y2": 273.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "grand central pkwy",
+            "target_compact": "grandcentralpkwy",
+            "observed_compact": "grandcentralpkwy",
+            "observed_tokens": [
+              "grand",
+              "central",
+              "pkwy"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.256255,
+            "boxes": [
+              {
+                "x1": 525.0,
+                "y1": 205.0,
+                "x2": 573.0,
+                "y2": 221.0
+              },
+              {
+                "x1": 581.0,
+                "y1": 200.0,
+                "x2": 644.0,
+                "y2": 217.0
+              },
+              {
+                "x1": 652.0,
+                "y1": 197.0,
+                "x2": 695.0,
+                "y2": 212.0
+              }
+            ]
+          },
+          {
+            "frame": 120,
+            "alias": "grand central pkwy",
+            "target_compact": "grandcentralpkwy",
+            "observed_compact": "grandcentralpkwy",
+            "observed_tokens": [
+              "grand",
+              "central",
+              "pkwy"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.256255,
+            "boxes": [
+              {
+                "x1": 474.0,
+                "y1": 100.0,
+                "x2": 544.0,
+                "y2": 123.0
+              },
+              {
+                "x1": 558.0,
+                "y1": 94.0,
+                "x2": 653.0,
+                "y2": 117.0
+              },
+              {
+                "x1": 664.0,
+                "y1": 88.0,
+                "x2": 731.0,
+                "y2": 110.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4660",
+      "question_id": 4660,
+      "video": "2055.mp4",
+      "question": "What does Neumex company sell?",
+      "aliases": [
+        "tyres and tubes"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q4307",
+      "question_id": 4307,
+      "video": "2094.mp4",
+      "question": "Which fashion brand's name is written in white background on the right side of the road?",
+      "aliases": [
+        "louis philippe"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 8.19421,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "louis"
+        ],
+        "token_information_bits": {
+          "louis": 8.19421
+        },
+        "witnesses": {
+          "louis": [
+            {
+              "frame": 151,
+              "observed": "louis",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "louis",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4269",
+      "question_id": 4269,
+      "video": "2130.mp4",
+      "question": "Which is the pharmacy below the dental hospital?",
+      "aliases": [
+        "apollo pharmacy"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 8.55678,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "apollo"
+        ],
+        "token_information_bits": {
+          "apollo": 8.55678
+        },
+        "witnesses": {
+          "apollo": [
+            {
+              "frame": 30,
+              "observed": "apollo",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "apollo",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "apollo",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "apollo",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "apollo",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "apollo pharmacy",
+            "target_compact": "apollopharmacy",
+            "observed_compact": "bapollopharmacy",
+            "observed_tokens": [
+              "b",
+              "apollopharmacy"
+            ],
+            "edit_distance": 1,
+            "information_bits": 14.220475,
+            "boxes": [
+              {
+                "x1": 330.0,
+                "y1": 351.0,
+                "x2": 339.0,
+                "y2": 358.0
+              },
+              {
+                "x1": 372.0,
+                "y1": 339.0,
+                "x2": 492.0,
+                "y2": 356.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4933",
+      "question_id": 4933,
+      "video": "2276.mp4",
+      "question": "Which water supplier does the tanker belong to?",
+      "aliases": [
+        "jai sreerama water suppliers"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 5.663695,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "water"
+        ],
+        "token_information_bits": {
+          "water": 5.663695
+        },
+        "witnesses": {
+          "water": [
+            {
+              "frame": 270,
+              "observed": "water",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q4714",
+      "question_id": 4714,
+      "video": "2385.mp4",
+      "question": "Which cricket Academy is advertised on the lamp post?",
+      "aliases": [
+        "faiz cricket academy"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q3818",
+      "question_id": 3818,
+      "video": "2429.mp4",
+      "question": "What is the name of the tower on the left of the road?",
+      "aliases": [
+        "signature towers"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 15.683875,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "signature",
+          "towers"
+        ],
+        "token_information_bits": {
+          "signature": 8.779172,
+          "towers": 6.904703
+        },
+        "witnesses": {
+          "signature": [
+            {
+              "frame": 0,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "signature",
+              "edit_distance": 0
+            }
+          ],
+          "towers": [
+            {
+              "frame": 0,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "towers",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4438",
+      "question_id": 4438,
+      "video": "2431.mp4",
+      "question": "What is the name of the tower on the left side of the road?",
+      "aliases": [
+        "signature towers"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 15.683875,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "signature",
+          "towers"
+        ],
+        "token_information_bits": {
+          "signature": 8.779172,
+          "towers": 6.904703
+        },
+        "witnesses": {
+          "signature": [
+            {
+              "frame": 0,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "signature",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "signature",
+              "edit_distance": 0
+            }
+          ],
+          "towers": [
+            {
+              "frame": 0,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "towers",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "towers",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4720",
+      "question_id": 4720,
+      "video": "2438.mp4",
+      "question": "Which building has a To let advertised?",
+      "aliases": [
+        "park view"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q4590",
+      "question_id": 4590,
+      "video": "2448.mp4",
+      "question": "What is the make of the red car in the front?",
+      "aliases": [
+        "maruti suzuki"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 14.940367,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "maruti",
+          "suzuki"
+        ],
+        "token_information_bits": {
+          "maruti": 7.663695,
+          "suzuki": 7.276672
+        },
+        "witnesses": {
+          "maruti": [
+            {
+              "frame": 0,
+              "observed": "maruti",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "marti",
+              "edit_distance": 1
+            },
+            {
+              "frame": 120,
+              "observed": "maruti",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "marut",
+              "edit_distance": 1
+            },
+            {
+              "frame": 181,
+              "observed": "maruti",
+              "edit_distance": 0
+            },
+            {
+              "frame": 211,
+              "observed": "marut",
+              "edit_distance": 1
+            }
+          ],
+          "suzuki": [
+            {
+              "frame": 0,
+              "observed": "suzuki",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "suzuki",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "suzuki",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "suzuki",
+              "edit_distance": 0
+            },
+            {
+              "frame": 211,
+              "observed": "suzuki",
+              "edit_distance": 0
+            },
+            {
+              "frame": 241,
+              "observed": "ruzuki",
+              "edit_distance": 1
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q4911",
+      "question_id": 4911,
+      "video": "2465.mp4",
+      "question": "Which is the furniture shop near the travel agency to the left?",
+      "aliases": [
+        "universal furniture"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 14.528597,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "furniture",
+          "universal"
+        ],
+        "token_information_bits": {
+          "furniture": 5.749425,
+          "universal": 8.779172
+        },
+        "witnesses": {
+          "furniture": [
+            {
+              "frame": 241,
+              "observed": "furniture",
+              "edit_distance": 0
+            }
+          ],
+          "universal": [
+            {
+              "frame": 181,
+              "observed": "niversal",
+              "edit_distance": 1
+            },
+            {
+              "frame": 241,
+              "observed": "universal",
+              "edit_distance": 0
+            },
+            {
+              "frame": 271,
+              "observed": "universal",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q5055",
+      "question_id": 5055,
+      "video": "2516.mp4",
+      "question": "What is the slogan on the Billboard on top of the orange building?",
+      "aliases": [
+        "one for every road"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 10.094593,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "every",
+          "road"
+        ],
+        "token_information_bits": {
+          "every": 6.006583,
+          "road": 4.08801
+        },
+        "witnesses": {
+          "every": [
+            {
+              "frame": 0,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "every",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "every",
+              "edit_distance": 0
+            }
+          ],
+          "road": [
+            {
+              "frame": 0,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "road",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "road",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 415.0,
+                "y1": 226.0,
+                "x2": 437.0,
+                "y2": 239.0
+              },
+              {
+                "x1": 440.0,
+                "y1": 226.0,
+                "x2": 462.0,
+                "y2": 239.0
+              },
+              {
+                "x1": 464.0,
+                "y1": 226.0,
+                "x2": 502.0,
+                "y2": 239.0
+              },
+              {
+                "x1": 504.0,
+                "y1": 226.0,
+                "x2": 536.0,
+                "y2": 239.0
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "onefoeveryroad",
+            "observed_tokens": [
+              "one",
+              "fo",
+              "every",
+              "road"
+            ],
+            "edit_distance": 1,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 372.0,
+                "y1": 215.0,
+                "x2": 395.0,
+                "y2": 228.0
+              },
+              {
+                "x1": 399.0,
+                "y1": 215.0,
+                "x2": 413.0,
+                "y2": 228.0
+              },
+              {
+                "x1": 422.0,
+                "y1": 215.0,
+                "x2": 461.0,
+                "y2": 228.0
+              },
+              {
+                "x1": 466.0,
+                "y1": 215.0,
+                "x2": 501.0,
+                "y2": 228.0
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 326.0,
+                "y1": 181.0,
+                "x2": 350.0,
+                "y2": 197.0
+              },
+              {
+                "x1": 354.0,
+                "y1": 181.0,
+                "x2": 378.0,
+                "y2": 196.0
+              },
+              {
+                "x1": 382.0,
+                "y1": 181.0,
+                "x2": 422.0,
+                "y2": 196.0
+              },
+              {
+                "x1": 426.0,
+                "y1": 181.0,
+                "x2": 462.0,
+                "y2": 196.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 289.0,
+                "y1": 144.0,
+                "x2": 317.0,
+                "y2": 163.0
+              },
+              {
+                "x1": 319.0,
+                "y1": 143.0,
+                "x2": 346.0,
+                "y2": 162.0
+              },
+              {
+                "x1": 350.0,
+                "y1": 141.0,
+                "x2": 395.0,
+                "y2": 161.0
+              },
+              {
+                "x1": 398.0,
+                "y1": 140.0,
+                "x2": 437.0,
+                "y2": 159.0
+              }
+            ]
+          },
+          {
+            "frame": 120,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 270.0,
+                "y1": 102.0,
+                "x2": 300.0,
+                "y2": 121.0
+              },
+              {
+                "x1": 303.0,
+                "y1": 101.0,
+                "x2": 330.0,
+                "y2": 120.0
+              },
+              {
+                "x1": 334.0,
+                "y1": 99.0,
+                "x2": 383.0,
+                "y2": 119.0
+              },
+              {
+                "x1": 386.0,
+                "y1": 98.0,
+                "x2": 428.0,
+                "y2": 117.0
+              }
+            ]
+          },
+          {
+            "frame": 151,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 189.0,
+                "y1": 54.0,
+                "x2": 220.0,
+                "y2": 75.0
+              },
+              {
+                "x1": 223.0,
+                "y1": 53.0,
+                "x2": 254.0,
+                "y2": 73.0
+              },
+              {
+                "x1": 258.0,
+                "y1": 50.0,
+                "x2": 311.0,
+                "y2": 72.0
+              },
+              {
+                "x1": 313.0,
+                "y1": 47.0,
+                "x2": 359.0,
+                "y2": 69.0
+              }
+            ]
+          },
+          {
+            "frame": 181,
+            "alias": "one for every road",
+            "target_compact": "oneforeveryroad",
+            "observed_compact": "oneforeveryroad",
+            "observed_tokens": [
+              "one",
+              "for",
+              "every",
+              "road"
+            ],
+            "edit_distance": 0,
+            "information_bits": 15.029659,
+            "boxes": [
+              {
+                "x1": 104.0,
+                "y1": 13.0,
+                "x2": 139.0,
+                "y2": 38.0
+              },
+              {
+                "x1": 140.0,
+                "y1": 9.0,
+                "x2": 175.0,
+                "y2": 35.0
+              },
+              {
+                "x1": 179.0,
+                "y1": 4.0,
+                "x2": 238.0,
+                "y2": 32.0
+              },
+              {
+                "x1": 238.0,
+                "y1": 0.0,
+                "x2": 290.0,
+                "y2": 26.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q5496",
+      "question_id": 5496,
+      "video": "2517.mp4",
+      "question": "Which is the school of film studies on the left?",
+      "aliases": [
+        "dadasaheb phalke school of film studies"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 45.065787,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "dadasaheb",
+          "film",
+          "phalke",
+          "school",
+          "studies"
+        ],
+        "token_information_bits": {
+          "dadasaheb": 11.364135,
+          "film": 8.19421,
+          "phalke": 11.364135,
+          "school": 4.364135,
+          "studies": 9.779172
+        },
+        "witnesses": {
+          "dadasaheb": [
+            {
+              "frame": 180,
+              "observed": "dadasaheb",
+              "edit_distance": 0
+            }
+          ],
+          "film": [
+            {
+              "frame": 180,
+              "observed": "film",
+              "edit_distance": 0
+            }
+          ],
+          "phalke": [
+            {
+              "frame": 150,
+              "observed": "phalke",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "phalke",
+              "edit_distance": 0
+            }
+          ],
+          "school": [
+            {
+              "frame": 150,
+              "observed": "school",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "school",
+              "edit_distance": 0
+            }
+          ],
+          "studies": [
+            {
+              "frame": 150,
+              "observed": "studies",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "studies",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q7221",
+      "question_id": 7221,
+      "video": "2522.mp4",
+      "question": "Which hospital is seen on the right side of the road?",
+      "aliases": [
+        "himagiri hospitals"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 10.364135,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "himagiri"
+        ],
+        "token_information_bits": {
+          "himagiri": 10.364135
+        },
+        "witnesses": {
+          "himagiri": [
+            {
+              "frame": 0,
+              "observed": "himagiri",
+              "edit_distance": 0
+            },
+            {
+              "frame": 271,
+              "observed": "himagiri",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6105",
+      "question_id": 6105,
+      "video": "2528.mp4",
+      "question": "What electronics company is advertised on the second bus coming from the opposite side?",
+      "aliases": [
+        "bajaj electronics",
+        "bajaj"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 9.779172,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "bajaj"
+        ],
+        "token_information_bits": {
+          "bajaj": 9.779172
+        },
+        "witnesses": {
+          "bajaj": [
+            {
+              "frame": 211,
+              "observed": "bajaj",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q7204",
+      "question_id": 7204,
+      "video": "2573.mp4",
+      "question": "To which check post can someone taking a right turn from the traffic intersection on the highway go?",
+      "aliases": [
+        "jubilee hills check post"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 26.988121,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "check",
+          "hills",
+          "jubilee",
+          "post"
+        ],
+        "token_information_bits": {
+          "check": 7.19421,
+          "hills": 6.720278,
+          "jubilee": 6.663695,
+          "post": 6.409938
+        },
+        "witnesses": {
+          "check": [
+            {
+              "frame": 90,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "check",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "check",
+              "edit_distance": 0
+            }
+          ],
+          "hills": [
+            {
+              "frame": 90,
+              "observed": "hills",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "hills",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "hills",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "hills",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "hills",
+              "edit_distance": 0
+            }
+          ],
+          "jubilee": [
+            {
+              "frame": 90,
+              "observed": "jubilee",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "jubilee",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "jubilee",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "jubilee",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "jubilee",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "jubilee",
+              "edit_distance": 0
+            }
+          ],
+          "post": [
+            {
+              "frame": 180,
+              "observed": "post",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "post",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "post",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "post",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 180,
+            "alias": "jubilee hills check post",
+            "target_compact": "jubileehillscheckpost",
+            "observed_compact": "jubileehillscheckpost",
+            "observed_tokens": [
+              "jubilee",
+              "hills",
+              "check",
+              "post"
+            ],
+            "edit_distance": 0,
+            "information_bits": 26.988121,
+            "boxes": [
+              {
+                "x1": 1219.0,
+                "y1": 212.0,
+                "x2": 1246.0,
+                "y2": 222.0
+              },
+              {
+                "x1": 1248.0,
+                "y1": 212.0,
+                "x2": 1263.0,
+                "y2": 222.0
+              },
+              {
+                "x1": 1265.0,
+                "y1": 212.0,
+                "x2": 1288.0,
+                "y2": 223.0
+              },
+              {
+                "x1": 1289.0,
+                "y1": 213.0,
+                "x2": 1306.0,
+                "y2": 223.0
+              }
+            ]
+          },
+          {
+            "frame": 210,
+            "alias": "jubilee hills check post",
+            "target_compact": "jubileehillscheckpost",
+            "observed_compact": "jubileehillscheckpost",
+            "observed_tokens": [
+              "jubilee",
+              "hills",
+              "check",
+              "post"
+            ],
+            "edit_distance": 0,
+            "information_bits": 26.988121,
+            "boxes": [
+              {
+                "x1": 1234.0,
+                "y1": 172.0,
+                "x2": 1261.0,
+                "y2": 185.0
+              },
+              {
+                "x1": 1264.0,
+                "y1": 173.0,
+                "x2": 1281.0,
+                "y2": 186.0
+              },
+              {
+                "x1": 1283.0,
+                "y1": 174.0,
+                "x2": 1306.0,
+                "y2": 186.0
+              },
+              {
+                "x1": 1308.0,
+                "y1": 175.0,
+                "x2": 1325.0,
+                "y2": 187.0
+              }
+            ]
+          },
+          {
+            "frame": 270,
+            "alias": "jubilee hills check post",
+            "target_compact": "jubileehillscheckpost",
+            "observed_compact": "jubileehillscheckpost",
+            "observed_tokens": [
+              "jubilee",
+              "hills",
+              "check",
+              "post"
+            ],
+            "edit_distance": 0,
+            "information_bits": 26.988121,
+            "boxes": [
+              {
+                "x1": 1129.0,
+                "y1": 140.0,
+                "x2": 1161.0,
+                "y2": 153.0
+              },
+              {
+                "x1": 1164.0,
+                "y1": 142.0,
+                "x2": 1182.0,
+                "y2": 154.0
+              },
+              {
+                "x1": 1186.0,
+                "y1": 142.0,
+                "x2": 1213.0,
+                "y2": 155.0
+              },
+              {
+                "x1": 1214.0,
+                "y1": 143.0,
+                "x2": 1235.0,
+                "y2": 156.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q5309",
+      "question_id": 5309,
+      "video": "2607.mp4",
+      "question": "What is the website mentioned on the red boards place over the highway destination signboards?",
+      "aliases": [
+        "www.austinplywood.com"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 9.042207,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "austinplywood"
+        ],
+        "token_information_bits": {
+          "austinplywood": 9.042207
+        },
+        "witnesses": {
+          "austinplywood": [
+            {
+              "frame": 0,
+              "observed": "austinplywood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "austinplywood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "austinplywood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "austinplywood",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "austinplywood",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "www.austinplywood.com",
+            "target_compact": "wwwaustinplywoodcom",
+            "observed_compact": "wwwaustinplywoodcom",
+            "observed_tokens": [
+              "www",
+              "austinplywood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 12.853897,
+            "boxes": [
+              {
+                "x1": 891.0,
+                "y1": 29.0,
+                "x2": 1200.0,
+                "y2": 54.0
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "alias": "www.austinplywood.com",
+            "target_compact": "wwwaustinplywoodcom",
+            "observed_compact": "wwwaustinplywoodcom",
+            "observed_tokens": [
+              "www",
+              "austinplywood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 12.853897,
+            "boxes": [
+              {
+                "x1": 891.0,
+                "y1": 30.0,
+                "x2": 1201.0,
+                "y2": 54.0
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "alias": "www.austinplywood.com",
+            "target_compact": "wwwaustinplywoodcom",
+            "observed_compact": "wwwaustinplywoodcom",
+            "observed_tokens": [
+              "www",
+              "austinplywood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 12.853897,
+            "boxes": [
+              {
+                "x1": 891.0,
+                "y1": 30.0,
+                "x2": 1201.0,
+                "y2": 54.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "www.austinplywood.com",
+            "target_compact": "wwwaustinplywoodcom",
+            "observed_compact": "wwwaustinplywoodcom",
+            "observed_tokens": [
+              "www",
+              "austinplywood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 12.853897,
+            "boxes": [
+              {
+                "x1": 883.0,
+                "y1": 25.0,
+                "x2": 1196.0,
+                "y2": 51.0
+              }
+            ]
+          },
+          {
+            "frame": 120,
+            "alias": "www.austinplywood.com",
+            "target_compact": "wwwaustinplywoodcom",
+            "observed_compact": "wwwaustinplywoodcom",
+            "observed_tokens": [
+              "www",
+              "austinplywood",
+              "com"
+            ],
+            "edit_distance": 0,
+            "information_bits": 12.853897,
+            "boxes": [
+              {
+                "x1": 852.0,
+                "y1": 7.0,
+                "x2": 1180.0,
+                "y2": 35.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q5617",
+      "question_id": 5617,
+      "video": "2620.mp4",
+      "question": "Which is the pain reliever advertised on the board ahead?",
+      "aliases": [
+        "vapor in"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 7.779172,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "vapor"
+        ],
+        "token_information_bits": {
+          "vapor": 7.779172
+        },
+        "witnesses": {
+          "vapor": [
+            {
+              "frame": 0,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 150,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 180,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 210,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 240,
+              "observed": "vapor",
+              "edit_distance": 0
+            },
+            {
+              "frame": 270,
+              "observed": "vapor",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 260.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 815.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 0,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1493.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 809.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 815.0,
+                "y1": 265.0,
+                "x2": 830.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1492.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1500.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 757.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 815.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1443.0,
+                "y1": 289.0,
+                "x2": 1492.0,
+                "y2": 302.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 302.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 816.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1493.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 120,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 809.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 815.0,
+                "y1": 264.0,
+                "x2": 830.0,
+                "y2": 278.0
+              }
+            ]
+          },
+          {
+            "frame": 120,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1492.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 150,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 817.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 150,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1491.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1500.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 180,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 816.0,
+                "y1": 264.0,
+                "x2": 832.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 180,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1443.0,
+                "y1": 289.0,
+                "x2": 1493.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1513.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 210,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 757.0,
+                "y1": 261.0,
+                "x2": 809.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 815.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 210,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1492.0,
+                "y2": 304.0
+              },
+              {
+                "x1": 1499.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 304.0
+              }
+            ]
+          },
+          {
+            "frame": 240,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 276.0
+              },
+              {
+                "x1": 816.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 277.0
+              }
+            ]
+          },
+          {
+            "frame": 240,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1442.0,
+                "y1": 289.0,
+                "x2": 1491.0,
+                "y2": 303.0
+              },
+              {
+                "x1": 1500.0,
+                "y1": 291.0,
+                "x2": 1514.0,
+                "y2": 303.0
+              }
+            ]
+          },
+          {
+            "frame": 270,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 756.0,
+                "y1": 261.0,
+                "x2": 810.0,
+                "y2": 275.0
+              },
+              {
+                "x1": 817.0,
+                "y1": 264.0,
+                "x2": 831.0,
+                "y2": 276.0
+              }
+            ]
+          },
+          {
+            "frame": 270,
+            "alias": "vapor in",
+            "target_compact": "vaporin",
+            "observed_compact": "vaporin",
+            "observed_tokens": [
+              "vapor",
+              "in"
+            ],
+            "edit_distance": 0,
+            "information_bits": 10.115401,
+            "boxes": [
+              {
+                "x1": 1443.0,
+                "y1": 288.0,
+                "x2": 1493.0,
+                "y2": 302.0
+              },
+              {
+                "x1": 1500.0,
+                "y1": 290.0,
+                "x2": 1514.0,
+                "y2": 302.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "SAME_LINE_COMPACT_PHRASE"
+    },
+    {
+      "target_id": "RTVQA-Q7242",
+      "question_id": 7242,
+      "video": "2649.mp4",
+      "question": "What is the name of the gym located above Paper Rose Shoppe on the left side of the road?",
+      "aliases": [
+        "iron addicts"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 18.558345,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "addicts",
+          "iron"
+        ],
+        "token_information_bits": {
+          "addicts": 10.364135,
+          "iron": 8.19421
+        },
+        "witnesses": {
+          "addicts": [
+            {
+              "frame": 0,
+              "observed": "addicts",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "addicts",
+              "edit_distance": 0
+            }
+          ],
+          "iron": [
+            {
+              "frame": 0,
+              "observed": "iron",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "iron",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "iron addicts",
+            "target_compact": "ironaddicts",
+            "observed_compact": "ironaddicts",
+            "observed_tokens": [
+              "iron",
+              "addicts"
+            ],
+            "edit_distance": 0,
+            "information_bits": 18.558344,
+            "boxes": [
+              {
+                "x1": 29.0,
+                "y1": 94.0,
+                "x2": 95.0,
+                "y2": 128.0
+              },
+              {
+                "x1": 100.0,
+                "y1": 110.0,
+                "x2": 188.0,
+                "y2": 148.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6807",
+      "question_id": 6807,
+      "video": "2651.mp4",
+      "question": "Which clinic is seen next to Tumpa Bengali food in the building on the left side?",
+      "aliases": [
+        "dr. lavanya dental clinic"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 22.674551,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "clinic",
+          "dental",
+          "lavanya"
+        ],
+        "token_information_bits": {
+          "clinic": 7.116207,
+          "dental": 5.779172,
+          "lavanya": 9.779172
+        },
+        "witnesses": {
+          "clinic": [
+            {
+              "frame": 0,
+              "observed": "clinic",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "clinic",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "clinic",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "clinic",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "clinic",
+              "edit_distance": 0
+            }
+          ],
+          "dental": [
+            {
+              "frame": 0,
+              "observed": "dental",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "dental",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "dental",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "dental",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "dental",
+              "edit_distance": 0
+            }
+          ],
+          "lavanya": [
+            {
+              "frame": 0,
+              "observed": "lavanya",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "lavanya",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "lavanya",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "lavanya",
+              "edit_distance": 0
+            },
+            {
+              "frame": 120,
+              "observed": "lavanya",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6699",
+      "question_id": 6699,
+      "video": "2654.mp4",
+      "question": "Name the shop on the ground floor of the building with OYO sign board.",
+      "aliases": [
+        "hyderabad hosts"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q6127",
+      "question_id": 6127,
+      "video": "2665.mp4",
+      "question": "Where can I stop for a milkshake ahead?",
+      "aliases": [
+        "the thickshake factory"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 17.920915,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "factory",
+          "thickshake"
+        ],
+        "token_information_bits": {
+          "factory": 7.55678,
+          "thickshake": 10.364135
+        },
+        "witnesses": {
+          "factory": [
+            {
+              "frame": 0,
+              "observed": "factory",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "factory",
+              "edit_distance": 0
+            }
+          ],
+          "thickshake": [
+            {
+              "frame": 0,
+              "observed": "thickshake",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "thickshake",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "thicksmake",
+              "edit_distance": 1
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 0,
+            "alias": "the thickshake factory",
+            "target_compact": "thickshakefactory",
+            "observed_compact": "thickshakefactory",
+            "observed_tokens": [
+              "thickshake",
+              "factory"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.920914,
+            "boxes": [
+              {
+                "x1": 321.0,
+                "y1": 326.0,
+                "x2": 363.0,
+                "y2": 333.0
+              },
+              {
+                "x1": 367.0,
+                "y1": 326.0,
+                "x2": 395.0,
+                "y2": 333.0
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "alias": "the thickshake factory",
+            "target_compact": "thickshakefactory",
+            "observed_compact": "thickshakefactory",
+            "observed_tokens": [
+              "thickshake",
+              "factory"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.920914,
+            "boxes": [
+              {
+                "x1": 221.0,
+                "y1": 297.0,
+                "x2": 272.0,
+                "y2": 310.0
+              },
+              {
+                "x1": 274.0,
+                "y1": 300.0,
+                "x2": 308.0,
+                "y2": 312.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6112",
+      "question_id": 6112,
+      "video": "2689.mp4",
+      "question": "Which is the fitness centre to the left of the road?",
+      "aliases": [
+        "fitness world"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 12.107133,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "fitness",
+          "world"
+        ],
+        "token_information_bits": {
+          "fitness": 6.971817,
+          "world": 5.135316
+        },
+        "witnesses": {
+          "fitness": [
+            {
+              "frame": 0,
+              "observed": "fitness",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "fitness",
+              "edit_distance": 0
+            }
+          ],
+          "world": [
+            {
+              "frame": 0,
+              "observed": "world",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "world",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6703",
+      "question_id": 6703,
+      "video": "2719.mp4",
+      "question": "Where can go if they go straight from the intersection?",
+      "aliases": [
+        "biodiversity park"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 15.091645,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "biodiversity",
+          "park"
+        ],
+        "token_information_bits": {
+          "biodiversity": 11.364135,
+          "park": 3.72751
+        },
+        "witnesses": {
+          "biodiversity": [
+            {
+              "frame": 210,
+              "observed": "blodiversity",
+              "edit_distance": 1
+            }
+          ],
+          "park": [
+            {
+              "frame": 210,
+              "observed": "park",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 210,
+            "alias": "biodiversity park",
+            "target_compact": "biodiversitypark",
+            "observed_compact": "blodiversitypark",
+            "observed_tokens": [
+              "blodiversity",
+              "park"
+            ],
+            "edit_distance": 1,
+            "information_bits": 15.091645,
+            "boxes": [
+              {
+                "x1": 186.0,
+                "y1": 288.0,
+                "x2": 265.0,
+                "y2": 298.0
+              },
+              {
+                "x1": 269.0,
+                "y1": 288.0,
+                "x2": 298.0,
+                "y2": 298.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6012",
+      "question_id": 6012,
+      "video": "2779.mp4",
+      "question": "Which event is being organized as a race against HIV?",
+      "aliases": [
+        "red ribbon run"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 7.55678,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "ribbon"
+        ],
+        "token_information_bits": {
+          "ribbon": 7.55678
+        },
+        "witnesses": {
+          "ribbon": [
+            {
+              "frame": 0,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 151,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 181,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 212,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 242,
+              "observed": "ribbon",
+              "edit_distance": 0
+            },
+            {
+              "frame": 272,
+              "observed": "ribbon",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q5529",
+      "question_id": 5529,
+      "video": "2857.mp4",
+      "question": "To which school does the yellow school bus coming from the opposite direction belong?",
+      "aliases": [
+        "triveni schools"
+      ],
+      "idf": {
+        "matched": true,
+        "information_bits": 17.821379,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "schools",
+          "triveni"
+        ],
+        "token_information_bits": {
+          "schools": 7.457244,
+          "triveni": 10.364135
+        },
+        "witnesses": {
+          "schools": [
+            {
+              "frame": 30,
+              "observed": "school",
+              "edit_distance": 1
+            },
+            {
+              "frame": 60,
+              "observed": "schools",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "schools",
+              "edit_distance": 0
+            }
+          ],
+          "triveni": [
+            {
+              "frame": 30,
+              "observed": "triveni",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "triveni",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "triveni",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": true,
+        "witnesses": [
+          {
+            "frame": 30,
+            "alias": "triveni schools",
+            "target_compact": "trivenischools",
+            "observed_compact": "trivenischool",
+            "observed_tokens": [
+              "triveni",
+              "school"
+            ],
+            "edit_distance": 1,
+            "information_bits": 17.821379,
+            "boxes": [
+              {
+                "x1": 1183.0,
+                "y1": 381.0,
+                "x2": 1217.0,
+                "y2": 389.0
+              },
+              {
+                "x1": 1225.0,
+                "y1": 380.0,
+                "x2": 1254.0,
+                "y2": 388.0
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "alias": "triveni schools",
+            "target_compact": "trivenischools",
+            "observed_compact": "trivenischools",
+            "observed_tokens": [
+              "triveni",
+              "schools"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.821379,
+            "boxes": [
+              {
+                "x1": 1228.0,
+                "y1": 364.0,
+                "x2": 1281.0,
+                "y2": 374.0
+              },
+              {
+                "x1": 1292.0,
+                "y1": 364.0,
+                "x2": 1339.0,
+                "y2": 374.0
+              }
+            ]
+          },
+          {
+            "frame": 90,
+            "alias": "triveni schools",
+            "target_compact": "trivenischools",
+            "observed_compact": "trivenischools",
+            "observed_tokens": [
+              "triveni",
+              "schools"
+            ],
+            "edit_distance": 0,
+            "information_bits": 17.821379,
+            "boxes": [
+              {
+                "x1": 1431.0,
+                "y1": 299.0,
+                "x2": 1535.0,
+                "y2": 324.0
+              },
+              {
+                "x1": 1553.0,
+                "y1": 305.0,
+                "x2": 1640.0,
+                "y2": 329.0
+              }
+            ]
+          }
+        ]
+      },
+      "combined_state": "CORRECT",
+      "route": "BACKGROUND_IDF_TOKEN"
+    },
+    {
+      "target_id": "RTVQA-Q6614",
+      "question_id": 6614,
+      "video": "2944.mp4",
+      "question": "Which is the private bank right next to Bank of India?",
+      "aliases": [
+        "icici bank"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q682",
+      "question_id": 682,
+      "video": "385.mp4",
+      "question": "Which luggage shop is advertised on the blue sign on the right?",
+      "aliases": [
+        "royal luggage"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 0,
+        "required_information_bits": 8.0,
+        "matched_tokens": [],
+        "token_information_bits": {},
+        "witnesses": {}
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    },
+    {
+      "target_id": "RTVQA-Q475",
+      "question_id": 475,
+      "video": "391.mp4",
+      "question": "What business can be seen on the right side across the traffic intersection?",
+      "aliases": [
+        "barber shop"
+      ],
+      "idf": {
+        "matched": false,
+        "information_bits": 7.116207,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "barber"
+        ],
+        "token_information_bits": {
+          "barber": 7.116207
+        },
+        "witnesses": {
+          "barber": [
+            {
+              "frame": 0,
+              "observed": "barber",
+              "edit_distance": 0
+            }
+          ]
+        }
+      },
+      "layout_phrase": {
+        "matched": false,
+        "witnesses": []
+      },
+      "combined_state": "UNKNOWN",
+      "route": "UNKNOWN"
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Fresh Development evidence for whether the fixed same-line compact phrase observation adds goal-conditioned target-name candidates over the background-IDF token branch.",
+    "not_allowed": [
+      "human-verified target-absent specificity, benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, benefit, reliability, or safety confirmation",
+      "a same-line phrase proving sign-to-entity, facade, portal, or entrance ownership",
+      "access, traversability, waypoint, arrival, or handoff"
+    ]
+  }
+}

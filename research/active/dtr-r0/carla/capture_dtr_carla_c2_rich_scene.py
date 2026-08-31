@@ -47,17 +47,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sensor", choices=tuple(SENSOR_TYPES), required=True)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=2000)
+    parser.add_argument("--rpc-timeout-seconds", type=float, default=120.0)
     return parser.parse_args()
 
 
-def connect(host: str, port: int, attempts: int = 30) -> carla.Client:
+def connect(
+    host: str,
+    port: int,
+    attempts: int = 30,
+    rpc_timeout_seconds: float = 120.0,
+) -> carla.Client:
     last_error: Exception | None = None
     for _ in range(attempts):
         client = carla.Client(host, port)
         client.set_timeout(5.0)
         try:
             client.get_server_version()
-            client.set_timeout(120.0)
+            client.set_timeout(rpc_timeout_seconds)
             return client
         except Exception as exc:
             last_error = exc
@@ -753,7 +759,11 @@ def main() -> int:
         for value in protocol["scenarios"]
     }
 
-    client = connect(args.host, args.port)
+    client = connect(
+        args.host,
+        args.port,
+        rpc_timeout_seconds=args.rpc_timeout_seconds,
+    )
     if client.get_client_version() != protocol["environment"]["carla_version"]:
         raise RuntimeError(f"unexpected CARLA client version: {client.get_client_version()}")
     if client.get_server_version() != protocol["environment"]["carla_version"]:

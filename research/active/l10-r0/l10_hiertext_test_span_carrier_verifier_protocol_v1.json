@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist-l10-hiertext-test-span-carrier-verifier-protocol-v1",
+  "frozen_at": "2026-08-31T13:37:00+08:00",
+  "question": "Does exact query-span projection inside merged OCR lines preserve multiscale recall gain while eliminating wrong-carrier regression on the next unconsumed HierText test cohort, with zero accepts for queries proven absent by exhaustive truth?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_hiertext_test_span_carrier_verifier.py",
+    "sha256": "7a2c04a9cddf368f36a242be7add8f04a9b92e5d6f0ac675f83905ec94d0efb3"
+  },
+  "inputs": {
+    "ground_truth": "F:/ba-data/blindassist-artifacts-20260805/sources/hiertext-official/gt/test.jsonl.gz",
+    "image_archive": "F:/ba-data/blindassist-artifacts-20260805/datasets/hiertext-test-v1/test.tgz",
+    "images": "F:/ba-data/blindassist-artifacts-20260805/datasets/hiertext-test-v1/test",
+    "training_token_df": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-roadtextvqa-ocr-v1/train_token_df_v1.json",
+    "models": "E:/linnan/linnan/artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_cache": "F:/ba-data/blindassist-artifacts-20260805/evidence/l10-hiertext-test-span-carrier-verifier-v1/ocr_cache.json"
+  },
+  "input_sha256": {
+    "ground_truth": "8a8f6cb6dd706b457b822634e9f19b7f51cc9813729d57401a3bb6ea45abd438",
+    "image_archive": "3ad9bbaad4e03df33898700febac701fe7aa6bcc88fc14634dfb6e9b007a97df",
+    "training_token_df": "50596a531f524c1c272d9f72c07faea1f6886e8f060b557c9968b41fc4d6d345"
+  },
+  "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+  },
+  "source_contract": {
+    "split": "official HierText test v1.0",
+    "first_consumed_eligible_images": 30,
+    "new_cohort_pixel_status_before_freeze": "not OCR-processed or human-inspected",
+    "selection_uses_pixels_or_ocr": false,
+    "selection_authority": "official exhaustive legible printed word transcripts and polygons only",
+    "negative_authority": "first subsequent selected target under cyclic order that is not contained in any complete current-image truth token"
+  },
+  "selection_contract": {
+    "order": "official test annotation source order",
+    "skip_eligible_images": 30,
+    "cohort_size": 30,
+    "per_image_target": "largest normalized-area eligible unique word; lexical tie broken by normalized token",
+    "minimum_token_length": 6,
+    "maximum_token_length": 14,
+    "minimum_normalized_width": 0.055,
+    "minimum_normalized_height": 0.025,
+    "minimum_background_information_bits": 8.0,
+    "allowed_target_alphabet": "ASCII letters only",
+    "target_occurrences_per_image": 1,
+    "absent_query": "first subsequent target in cyclic cohort order that is not contained in any complete normalized legible printed word truth in the current image"
+  },
+  "algorithm_contract": {
+    "baseline": "single full-resolution frame, exact normalized target token, candidate confidence at least 0.45",
+    "successor": "baseline observations plus four deterministic 60%-width by 60%-height corner fields enlarged 1.5x; rank exact token first, then a unique exact query substring occupying at least 25% of the OCR token with its quadrilateral projected to the character span, then edit-distance one token when both strings have at least six characters",
+    "tile_fraction": 0.6,
+    "tile_scale": 1.5,
+    "minimum_ocr_confidence": 0.45,
+    "minimum_edit_one_length": 6,
+    "minimum_substring_query_fraction": 0.25,
+    "minimum_truth_overlap": 0.5,
+    "query_span_projection": "linearly interpolate both long edges of the OCR quadrilateral by normalized target start/end character offsets",
+    "candidate_binding": "projected or native accepted OCR box must cover at least half of the selected target truth bbox; otherwise WRONG_CARRIER",
+    "negative_acceptance": "any accepted candidate for a truth-absent and substring-disjoint query is a false accept"
+  },
+  "gate": {
+    "cohort_size": 30,
+    "minimum_correct_carrier_gain": 3,
+    "maximum_wrong_carrier_regression": 0,
+    "maximum_truth_absent_accepts": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_HIERTEXT_TEST_QUERY_SPAN_CARRIER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_HIERTEXT_TEST_QUERY_SPAN_CARRIER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "output": "research/active/l10-r0/l10_hiertext_test_span_carrier_verifier_result_v1.json",
+  "claim_boundary": "A fresh, disjoint 30-image cohort from previously unused HierText test pixels plus official exhaustive word truth supports a static goal-conditioned OCR carrier Development result only. Query-span projection is an OCR-box geometry mechanism; it does not establish an exact real-world referent, facade, sign, portal, entrance ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety. UNKNOWN is neither negative nor known-safe. This cohort is consumed after the run; no conformal, FDR, or open-world guarantee is claimed."
+}

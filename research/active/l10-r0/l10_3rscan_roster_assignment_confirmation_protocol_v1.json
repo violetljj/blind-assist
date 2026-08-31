@@ -1,0 +1,92 @@
+{
+  "schema": "blindassist-l10-3rscan-roster-assignment-confirmation-protocol-v1",
+  "authority": "TARGET_TRIPLE_DISJOINT_CLOSED_ROSTER_ASSIGNMENT_DEVELOPMENT",
+  "question": "Does a parameter-free one-to-one global assignment repair sibling-door collisions for the frozen center-scale score on three newly selected stable 3RScan targets?",
+  "predecessor_lock": {
+    "protocol_path": "l10_3dstreetview_center_target_lock_protocol_v1.json",
+    "protocol_sha256": "3a7938e9839daa240513a397d14e79c87b82431db5475f3e75b0284ed25789b6",
+    "cohort_path": "l10_3dstreetview_center_target_lock_cohort_v1.json",
+    "cohort_sha256": "f81a76e8a45ade7ff2b4a9a18cb32feb35d04b942ced24950e4caf788d128847",
+    "result_path": "l10_3dstreetview_center_target_lock_result_v1.json",
+    "result_sha256": "12c2d5cb7b26720b72c6d8c6354914c9693064e77e925482de60a3b95e6e24ee",
+    "implementation_path": "l10_3dstreetview_center_target_lock.py",
+    "implementation_sha256": "1abb07f11e1ac5e1c30d11ccc3aca1f88362e0bd4c330cfbf69f549d551d0f81"
+  },
+  "predecessor_pairwise": {
+    "protocol_path": "l10_3rscan_center_target_door_retrieval_protocol_v2.json",
+    "protocol_sha256": "80e667f14dfbb5660065fa7505696a3615d435d8614b0153e605d4ec79bb65dc",
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+    "result_path": "l10_3rscan_center_target_door_retrieval_result_v2.json",
+    "result_sha256": "6b2a9c2729b64f8c6de052894f6c58a7c7f32dd219d69324757d3b86ae62a4f8",
+    "implementation_path": "l10_3rscan_center_target_door_retrieval.py",
+    "implementation_sha256": "0f95e78bf4212143776b752293441d0324421e06acc5ceea63443807655400b6",
+    "required_conclusion": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "Independent center-scale retrieval confused two sibling doors from the same scan family and achieved 4/6 Top-1; a parameter-free one-to-one assignment was then chosen as the sole structural successor before selecting this confirmation cohort."
+  },
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+      }
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 3,
+    "maximum_targets_per_reference_scan": 2,
+    "selection_order": "Use candidate_protocol rows in descending area_proxy order. Exclude every exact consumed target triple; require a unique physical (reference_scan_id, target_instance_id); permit at most two targets per reference_scan_id; select the first three rows whose reference and rescan pass frame_rules. Open pose, depth and geometry only; RGB remains unopened until replay.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "proposal_rule": "Use the evaluator-authoritative tight target bounding box, crop raw RGB and square-pad with black. The frame must retain at least 32 pixels of source-image margin.",
+    "retrieval_rule": "Three reference target proposals and three rescan target proposals form a closed roster with exactly one counterpart per target. Independent scores remain diagnostic; the successor returns the maximum-total-score one-to-one assignment.",
+    "forbidden": [
+      "opening RGB during selection",
+      "model-score-based target or frame selection",
+      "changing the roster size or target list after replay",
+      "adding score weights or thresholds",
+      "using target identity inside the assignment solver"
+    ]
+  },
+  "frozen_model": {
+    "model_relative_path": "models/p1_a2_dinov2_small_ed25f3a",
+    "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "pair_score": "The unchanged predecessor center-scale score: 0.25 * global/global cosine + 0.75 * maximum cosine where at least one side is a centered 0.5 or 0.25 crop.",
+    "assignment": "Run scipy.optimize.linear_sum_assignment on the negative 3x3 pair-score matrix. No learned or selected parameter is introduced.",
+    "baseline_diagnostic": "Apply the same assignment to the global/global cosine matrix only for comparison."
+  },
+  "decision_gate": {
+    "assigned_target_identity": "3/3",
+    "bidirectional_identity_equivalent": "6/6",
+    "assignment_margin": "The selected assignment total must be strictly greater than the next-best complete assignment total.",
+    "single_replay": "One replay on the frozen target-triple-disjoint cohort; do not tune on its RGB or scores."
+  },
+  "claim_boundary": "A pass is a small target-triple-disjoint real-image Development confirmation for closed-roster one-to-one matching of three truth-proposed stable indoor 3RScan doors or doorframes. It requires an externally justified complete one-to-one reference/query roster; scan families and the single 3RScan provider may overlap prior Development; proposals use privileged geometry; and target RGB becomes consumed. It is not open-set retrieval, door detection, a portal aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+}

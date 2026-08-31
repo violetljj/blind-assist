@@ -1,0 +1,1207 @@
+{
+  "schema": "blindassist-l10-3rscan-open-roster-zero-assignment-cohort-v2",
+  "authority": "FROZEN_PRE_RGB_PHYSICAL_TARGET_DISJOINT_PARTIAL_ROSTER_COHORT",
+  "protocol_path": "l10_3rscan_open_roster_zero_assignment_protocol_v2.json",
+  "protocol_sha256": "7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf",
+  "entrypoint_sha256": "a194b86ec4b495b44fd487eaebd875d4da20868468882a2fc4b476ed7650cf4c",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "selection": {
+    "candidate_rows": 85,
+    "consumed_physical_targets": 12,
+    "candidate_rows_considered": 18,
+    "unique_physical_target_rule": true,
+    "maximum_targets_per_reference_scan": 2,
+    "reference_scan_target_counts": {
+      "4a9a43d6-7736-2874-84c3-86ec156a3b2d": 2,
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62": 2
+    },
+    "views_per_target_side": 2,
+    "opened_members": {
+      "pose_members": 10669,
+      "depth_members": 10669,
+      "rgb_members": 0
+    },
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "exclusion_receipts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+        "new_physical_targets": 3
+      }
+    ]
+  },
+  "source_manifest": {
+    "198aaa74-0ba3-26f6-8792-66b6388b17ca/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/labels.instances.annotated.v2.ply",
+      "bytes": 7729845,
+      "sha256": "2a6c3ec9b773083f6d0f644a1bde317664531073aabc26b9231445b25133c626"
+    },
+    "198aaa74-0ba3-26f6-8792-66b6388b17ca/semseg.v2.json": {
+      "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/semseg.v2.json",
+      "bytes": 33189,
+      "sha256": "2851baee70814d5b0e964182921414e3b0620dbf106f329102513d3438efcf1f"
+    },
+    "198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip": {
+      "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip",
+      "bytes": 77742167,
+      "sha256": "7520e06c26cf44c8cfb778dd70baf2b7604b69b040a9c7d4bb398123d2d6b9f9"
+    },
+    "198aaa76-0ba3-26f6-84de-6c13263a60bc/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/labels.instances.annotated.v2.ply",
+      "bytes": 8112937,
+      "sha256": "044442f966bf0dd00534088aefa77864e9f1d8fdcd089b9c7e2592cb77d961d2"
+    },
+    "198aaa76-0ba3-26f6-84de-6c13263a60bc/semseg.v2.json": {
+      "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/semseg.v2.json",
+      "bytes": 43040,
+      "sha256": "d0eb98e8d76c34f059722ef0d84ccef32119e0f71766f5e39baa3b1e04a94b81"
+    },
+    "198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip": {
+      "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip",
+      "bytes": 98742525,
+      "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"
+    },
+    "3RScan.json": {
+      "path": "datasets/3rscan/3RScan.json",
+      "bytes": 3155995,
+      "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+    },
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/labels.instances.annotated.v2.ply",
+      "bytes": 7989529,
+      "sha256": "88686db6b3828f213f831a8b6913a5ce71e63ec3949cc13dbd7aaaf92f231d22"
+    },
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d/semseg.v2.json": {
+      "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/semseg.v2.json",
+      "bytes": 40357,
+      "sha256": "e934702877b085738e88b1fa54b5a45ecccf7729c143503db9915343c0055470"
+    },
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip": {
+      "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip",
+      "bytes": 75831367,
+      "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"
+    },
+    "8eabc428-5af7-2f32-8659-97a21d90a06b/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/labels.instances.annotated.v2.ply",
+      "bytes": 3130758,
+      "sha256": "86793221ea877a9d18a8dc7db694a004d625c4e858d89b6731338722c3b7a9f7"
+    },
+    "8eabc428-5af7-2f32-8659-97a21d90a06b/semseg.v2.json": {
+      "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/semseg.v2.json",
+      "bytes": 19550,
+      "sha256": "1be229746e174c2b4cafa7de0c39b58afc3faf685aa6fe42b739276df175bde6"
+    },
+    "8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip": {
+      "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip",
+      "bytes": 31139000,
+      "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/labels.instances.annotated.v2.ply",
+      "bytes": 2659248,
+      "sha256": "3a1cec8fa45a219f383cdd29348c0b86898dfdcd00f5538824a7e43a205777f7"
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62/semseg.v2.json": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/semseg.v2.json",
+      "bytes": 19372,
+      "sha256": "1ad43c5e81e50589b9cb2de2e10f5fe3b0ea50b2d4f809e76cace4b08d4646bb"
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+      "bytes": 46320073,
+      "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+    },
+    "objects.json": {
+      "path": "datasets/3rscan/objects.json",
+      "bytes": 20096813,
+      "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "OZ01",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "rescan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "target_instance_id": 35,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        5,
+        6,
+        8,
+        11,
+        13,
+        15,
+        16,
+        17,
+        18,
+        33,
+        34,
+        35,
+        36,
+        37,
+        42,
+        46,
+        47
+      ],
+      "area_proxy": 2.069216457909094,
+      "transform": [
+        -0.9770306348800659,
+        -0.21306964755058289,
+        -0.0035416181199252605,
+        0,
+        0.2130460888147354,
+        -0.9770233035087585,
+        0.006061913445591927,
+        0,
+        -0.0047518531791865826,
+        0.0051681469194591045,
+        0.999975323677063,
+        0,
+        -0.28502774238586426,
+        -1.0446114540100098,
+        0.011900931596755981,
+        1
+      ],
+      "reference_views": [
+        {
+          "frame": 393,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            0.007431,
+            -3.39845,
+            0.21622
+          ],
+          "inside_vertices": 690,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 39182.542808307684,
+          "image_margin_pixels": 55.06581115722656,
+          "bbox_xyxy": [
+            466.8647155761719,
+            55.06581115722656,
+            770.4168701171875,
+            203.20689392089844
+          ],
+          "depth_compared_vertices": 682,
+          "depth_visible_vertices": 673,
+          "depth_visible_ratio": 0.9868035190615836,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 0.828311975443679
+        },
+        {
+          "frame": 402,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            0.480588,
+            -2.74094,
+            0.0432929
+          ],
+          "inside_vertices": 690,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 47196.972986688605,
+          "image_margin_pixels": 136.9771728515625,
+          "bbox_xyxy": [
+            203.8447723388672,
+            136.9771728515625,
+            533.2496948242188,
+            292.824462890625
+          ],
+          "depth_compared_vertices": 690,
+          "depth_visible_vertices": 669,
+          "depth_visible_ratio": 0.9695652173913043,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 0.828311975443679
+        }
+      ],
+      "query_views": [
+        {
+          "frame": 183,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.327699,
+            -1.1312,
+            0.0593654
+          ],
+          "inside_vertices": 491,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 239210.63461129577,
+          "image_margin_pixels": 32.251708984375,
+          "bbox_xyxy": [
+            131.1158447265625,
+            144.1390380859375,
+            876.3280029296875,
+            506.748291015625
+          ],
+          "depth_compared_vertices": 488,
+          "depth_visible_vertices": 462,
+          "depth_visible_ratio": 0.9467213114754098,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 4.877517282281259
+        },
+        {
+          "frame": 532,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.213994,
+            3.74399,
+            0.158201
+          ],
+          "inside_vertices": 491,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 24688.288329990115,
+          "image_margin_pixels": 120.26641845703125,
+          "bbox_xyxy": [
+            491.2474060058594,
+            298.582275390625,
+            730.3102416992188,
+            418.73358154296875
+          ],
+          "depth_compared_vertices": 459,
+          "depth_visible_vertices": 389,
+          "depth_visible_ratio": 0.8474945533769063,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 4.877517282281259
+        }
+      ]
+    },
+    {
+      "episode_id": "OZ02",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "rescan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "target_instance_id": 15,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        5,
+        6,
+        8,
+        11,
+        13,
+        15,
+        16,
+        17,
+        18,
+        33,
+        34,
+        35,
+        36,
+        37,
+        42,
+        46,
+        47
+      ],
+      "area_proxy": 2.0171363378119644,
+      "transform": [
+        0.3931542634963989,
+        0.9194696545600891,
+        0.0022762767039239407,
+        0,
+        -0.9194722771644592,
+        0.3931511342525482,
+        0.0017084681894630194,
+        0,
+        0.0006759640527889132,
+        -0.002764664590358734,
+        0.9999959468841553,
+        0,
+        1.9164713621139526,
+        -5.1678948402404785,
+        -0.18392936885356903,
+        1
+      ],
+      "reference_views": [
+        {
+          "frame": 362,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            0.507242,
+            -3.00622,
+            0.0642028
+          ],
+          "inside_vertices": 2232,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 42061.3735616887,
+          "image_margin_pixels": 46.836669921875,
+          "bbox_xyxy": [
+            192.26991271972656,
+            347.3018798828125,
+            503.06524658203125,
+            492.163330078125
+          ],
+          "depth_compared_vertices": 2228,
+          "depth_visible_vertices": 2030,
+          "depth_visible_ratio": 0.9111310592459605,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 0.9064220992055741
+        },
+        {
+          "frame": 390,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.204513,
+            -3.55081,
+            0.199951
+          ],
+          "inside_vertices": 2232,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 33399.95075951284,
+          "image_margin_pixels": 111.98602294921875,
+          "bbox_xyxy": [
+            455.9413146972656,
+            292.9032287597656,
+            734.1780395507812,
+            427.01397705078125
+          ],
+          "depth_compared_vertices": 1967,
+          "depth_visible_vertices": 1681,
+          "depth_visible_ratio": 0.8546009150991357,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 0.9064220992055741
+        }
+      ],
+      "query_views": [
+        {
+          "frame": 32,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            1.89019,
+            2.45551,
+            0.209959
+          ],
+          "inside_vertices": 1592,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 49346.059238763526,
+          "image_margin_pixels": 128.42848205566406,
+          "bbox_xyxy": [
+            153.7132110595703,
+            128.42848205566406,
+            496.1466369628906,
+            290.8106384277344
+          ],
+          "depth_compared_vertices": 1566,
+          "depth_visible_vertices": 1536,
+          "depth_visible_ratio": 0.9808429118773946,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 2.4718370594197747
+        },
+        {
+          "frame": 302,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            3.65088,
+            4.19002,
+            0.247698
+          ],
+          "inside_vertices": 1592,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 161689.3884783095,
+          "image_margin_pixels": 41.445587158203125,
+          "bbox_xyxy": [
+            162.57208251953125,
+            216.7133026123047,
+            796.314208984375,
+            497.5544128417969
+          ],
+          "depth_compared_vertices": 1592,
+          "depth_visible_vertices": 1499,
+          "depth_visible_ratio": 0.9415829145728644,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 2.4718370594197747
+        }
+      ]
+    },
+    {
+      "episode_id": "OZ03",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.7938719623150754,
+      "transform": [
+        -0.3000030219554901,
+        0.9539192318916321,
+        -0.006025470327585936,
+        0,
+        -0.9539233446121216,
+        -0.30002766847610474,
+        -0.0037057127337902784,
+        0,
+        -0.005342758726328611,
+        0.004636112134903669,
+        0.9999750256538391,
+        0,
+        -1.0686681270599365,
+        0.6349889039993286,
+        -0.001745673012919724,
+        1
+      ],
+      "reference_views": [
+        {
+          "frame": 29,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.277866,
+            -0.149845,
+            0.0881903
+          ],
+          "inside_vertices": 470,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 108388.83891413384,
+          "image_margin_pixels": 99.59719848632812,
+          "bbox_xyxy": [
+            180.39889526367188,
+            207.76773071289062,
+            721.3607788085938,
+            439.4028015136719
+          ],
+          "depth_compared_vertices": 470,
+          "depth_visible_vertices": 470,
+          "depth_visible_ratio": 1.0,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 0.8635332914429471
+        },
+        {
+          "frame": 290,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            0.323927,
+            0.469361,
+            0.0990926
+          ],
+          "inside_vertices": 470,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 77450.88501424249,
+          "image_margin_pixels": 43.874420166015625,
+          "bbox_xyxy": [
+            242.74415588378906,
+            307.2855529785156,
+            695.6669311523438,
+            495.1255798339844
+          ],
+          "depth_compared_vertices": 470,
+          "depth_visible_vertices": 470,
+          "depth_visible_ratio": 1.0,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 0.8635332914429471
+        }
+      ],
+      "query_views": [
+        {
+          "frame": 115,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.831242,
+            -1.33004,
+            0.118512
+          ],
+          "inside_vertices": 1004,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 72585.21317090711,
+          "image_margin_pixels": 115.23738861083984,
+          "bbox_xyxy": [
+            313.4827880859375,
+            115.23738861083984,
+            770.2280883789062,
+            375.0293273925781
+          ],
+          "depth_compared_vertices": 1004,
+          "depth_visible_vertices": 997,
+          "depth_visible_ratio": 0.9930278884462151,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 0.0496167805267532
+        },
+        {
+          "frame": 113,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.801847,
+            -1.30312,
+            0.0889642
+          ],
+          "inside_vertices": 1004,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 73513.39297106571,
+          "image_margin_pixels": 107.47271728515625,
+          "bbox_xyxy": [
+            224.49954223632812,
+            184.67149353027344,
+            692.6047973632812,
+            431.52728271484375
+          ],
+          "depth_compared_vertices": 1004,
+          "depth_visible_vertices": 988,
+          "depth_visible_ratio": 0.9840637450199203,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 0.0496167805267532
+        }
+      ]
+    },
+    {
+      "episode_id": "OZ04",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.735581744141595,
+      "transform": [
+        -0.3000030219554901,
+        0.9539192318916321,
+        -0.006025470327585936,
+        0,
+        -0.9539233446121216,
+        -0.30002766847610474,
+        -0.0037057127337902784,
+        0,
+        -0.005342758726328611,
+        0.004636112134903669,
+        0.9999750256538391,
+        0,
+        -1.0686681270599365,
+        0.6349889039993286,
+        -0.001745673012919724,
+        1
+      ],
+      "reference_views": [
+        {
+          "frame": 218,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -2.09184,
+            0.00347996,
+            0.0317878
+          ],
+          "inside_vertices": 944,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 88949.62691368931,
+          "image_margin_pixels": 124.12881469726562,
+          "bbox_xyxy": [
+            195.35250854492188,
+            209.58993530273438,
+            663.320556640625,
+            414.8711853027344
+          ],
+          "depth_compared_vertices": 943,
+          "depth_visible_vertices": 921,
+          "depth_visible_ratio": 0.9766702014846236,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 0.4508358678384536
+        },
+        {
+          "frame": 222,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -1.65404,
+            0.110503,
+            0.0203769
+          ],
+          "inside_vertices": 944,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 117443.33038511954,
+          "image_margin_pixels": 130.28622436523438,
+          "bbox_xyxy": [
+            141.95025634765625,
+            130.28622436523438,
+            680.2155151367188,
+            363.3340759277344
+          ],
+          "depth_compared_vertices": 944,
+          "depth_visible_vertices": 903,
+          "depth_visible_ratio": 0.9565677966101694,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 0.4508358678384536
+        }
+      ],
+      "query_views": [
+        {
+          "frame": 28,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.445796,
+            -0.229957,
+            0.0305696
+          ],
+          "inside_vertices": 655,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 226590.97096185037,
+          "image_margin_pixels": 57.1717414855957,
+          "bbox_xyxy": [
+            84.55748748779297,
+            57.1717414855957,
+            827.7830200195312,
+            421.6373291015625
+          ],
+          "depth_compared_vertices": 630,
+          "depth_visible_vertices": 623,
+          "depth_visible_ratio": 0.9888888888888889,
+          "view_index": 1,
+          "selected_pair_translation_separation_metres": 1.1691800036834192
+        },
+        {
+          "frame": 183,
+          "color_size": [
+            960,
+            540
+          ],
+          "camera_center": [
+            -0.335789,
+            0.930997,
+            0.11463
+          ],
+          "inside_vertices": 655,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 99869.7783133064,
+          "image_margin_pixels": 74.70208740234375,
+          "bbox_xyxy": [
+            389.057373046875,
+            161.35853576660156,
+            884.2979125976562,
+            383.182373046875
+          ],
+          "depth_compared_vertices": 651,
+          "depth_visible_vertices": 614,
+          "depth_visible_ratio": 0.9431643625192012,
+          "view_index": 2,
+          "selected_pair_translation_separation_metres": 1.1691800036834192
+        }
+      ]
+    }
+  ],
+  "images": {
+    "OZ01_reference_v1": {
+      "episode_id": "OZ01",
+      "role": "reference",
+      "view_index": 1,
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 35,
+      "target_label": "doorframe",
+      "frame": 393,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        466.8647155761719,
+        55.06581115722656,
+        770.4168701171875,
+        203.20689392089844
+      ],
+      "image_margin_pixels": 55.06581115722656,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9868035190615836,
+      "zip_member": "frame-000393.color.jpg"
+    },
+    "OZ01_reference_v2": {
+      "episode_id": "OZ01",
+      "role": "reference",
+      "view_index": 2,
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 35,
+      "target_label": "doorframe",
+      "frame": 402,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        203.8447723388672,
+        136.9771728515625,
+        533.2496948242188,
+        292.824462890625
+      ],
+      "image_margin_pixels": 136.9771728515625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9695652173913043,
+      "zip_member": "frame-000402.color.jpg"
+    },
+    "OZ01_query_v1": {
+      "episode_id": "OZ01",
+      "role": "query",
+      "view_index": 1,
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "target_instance_id": 35,
+      "target_label": "doorframe",
+      "frame": 183,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        131.1158447265625,
+        144.1390380859375,
+        876.3280029296875,
+        506.748291015625
+      ],
+      "image_margin_pixels": 32.251708984375,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9467213114754098,
+      "zip_member": "frame-000183.color.jpg"
+    },
+    "OZ01_query_v2": {
+      "episode_id": "OZ01",
+      "role": "query",
+      "view_index": 2,
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "target_instance_id": 35,
+      "target_label": "doorframe",
+      "frame": 532,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        491.2474060058594,
+        298.582275390625,
+        730.3102416992188,
+        418.73358154296875
+      ],
+      "image_margin_pixels": 120.26641845703125,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8474945533769063,
+      "zip_member": "frame-000532.color.jpg"
+    },
+    "OZ02_reference_v1": {
+      "episode_id": "OZ02",
+      "role": "reference",
+      "view_index": 1,
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 15,
+      "target_label": "door",
+      "frame": 362,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        192.26991271972656,
+        347.3018798828125,
+        503.06524658203125,
+        492.163330078125
+      ],
+      "image_margin_pixels": 46.836669921875,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9111310592459605,
+      "zip_member": "frame-000362.color.jpg"
+    },
+    "OZ02_reference_v2": {
+      "episode_id": "OZ02",
+      "role": "reference",
+      "view_index": 2,
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 15,
+      "target_label": "door",
+      "frame": 390,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        455.9413146972656,
+        292.9032287597656,
+        734.1780395507812,
+        427.01397705078125
+      ],
+      "image_margin_pixels": 111.98602294921875,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8546009150991357,
+      "zip_member": "frame-000390.color.jpg"
+    },
+    "OZ02_query_v1": {
+      "episode_id": "OZ02",
+      "role": "query",
+      "view_index": 1,
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "target_instance_id": 15,
+      "target_label": "door",
+      "frame": 32,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        153.7132110595703,
+        128.42848205566406,
+        496.1466369628906,
+        290.8106384277344
+      ],
+      "image_margin_pixels": 128.42848205566406,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9808429118773946,
+      "zip_member": "frame-000032.color.jpg"
+    },
+    "OZ02_query_v2": {
+      "episode_id": "OZ02",
+      "role": "query",
+      "view_index": 2,
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "target_instance_id": 15,
+      "target_label": "door",
+      "frame": 302,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        162.57208251953125,
+        216.7133026123047,
+        796.314208984375,
+        497.5544128417969
+      ],
+      "image_margin_pixels": 41.445587158203125,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9415829145728644,
+      "zip_member": "frame-000302.color.jpg"
+    },
+    "OZ03_reference_v1": {
+      "episode_id": "OZ03",
+      "role": "reference",
+      "view_index": 1,
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 29,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        180.39889526367188,
+        207.76773071289062,
+        721.3607788085938,
+        439.4028015136719
+      ],
+      "image_margin_pixels": 99.59719848632812,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 1.0,
+      "zip_member": "frame-000029.color.jpg"
+    },
+    "OZ03_reference_v2": {
+      "episode_id": "OZ03",
+      "role": "reference",
+      "view_index": 2,
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 290,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        242.74415588378906,
+        307.2855529785156,
+        695.6669311523438,
+        495.1255798339844
+      ],
+      "image_margin_pixels": 43.874420166015625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 1.0,
+      "zip_member": "frame-000290.color.jpg"
+    },
+    "OZ03_query_v1": {
+      "episode_id": "OZ03",
+      "role": "query",
+      "view_index": 1,
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 115,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        313.4827880859375,
+        115.23738861083984,
+        770.2280883789062,
+        375.0293273925781
+      ],
+      "image_margin_pixels": 115.23738861083984,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9930278884462151,
+      "zip_member": "frame-000115.color.jpg"
+    },
+    "OZ03_query_v2": {
+      "episode_id": "OZ03",
+      "role": "query",
+      "view_index": 2,
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 113,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        224.49954223632812,
+        184.67149353027344,
+        692.6047973632812,
+        431.52728271484375
+      ],
+      "image_margin_pixels": 107.47271728515625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9840637450199203,
+      "zip_member": "frame-000113.color.jpg"
+    },
+    "OZ04_reference_v1": {
+      "episode_id": "OZ04",
+      "role": "reference",
+      "view_index": 1,
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "frame": 218,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        195.35250854492188,
+        209.58993530273438,
+        663.320556640625,
+        414.8711853027344
+      ],
+      "image_margin_pixels": 124.12881469726562,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9766702014846236,
+      "zip_member": "frame-000218.color.jpg"
+    },
+    "OZ04_reference_v2": {
+      "episode_id": "OZ04",
+      "role": "reference",
+      "view_index": 2,
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "frame": 222,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        141.95025634765625,
+        130.28622436523438,
+        680.2155151367188,
+        363.3340759277344
+      ],
+      "image_margin_pixels": 130.28622436523438,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9565677966101694,
+      "zip_member": "frame-000222.color.jpg"
+    },
+    "OZ04_query_v1": {
+      "episode_id": "OZ04",
+      "role": "query",
+      "view_index": 1,
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "frame": 28,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        84.55748748779297,
+        57.1717414855957,
+        827.7830200195312,
+        421.6373291015625
+      ],
+      "image_margin_pixels": 57.1717414855957,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9888888888888889,
+      "zip_member": "frame-000028.color.jpg"
+    },
+    "OZ04_query_v2": {
+      "episode_id": "OZ04",
+      "role": "query",
+      "view_index": 2,
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "frame": 183,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        389.057373046875,
+        161.35853576660156,
+        884.2979125976562,
+        383.182373046875
+      ],
+      "image_margin_pixels": 74.70208740234375,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.9431643625192012,
+      "zip_member": "frame-000183.color.jpg"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "closed-four",
+      "reference_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03",
+        "OZ04"
+      ],
+      "query_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03",
+        "OZ04"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03"
+      ],
+      "query_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03",
+        "OZ04"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03",
+        "OZ04"
+      ],
+      "query_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03"
+      ]
+    },
+    {
+      "id": "balanced-swap",
+      "reference_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ03"
+      ],
+      "query_targets": [
+        "OZ01",
+        "OZ02",
+        "OZ04"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 4,
+    "rgb_members_after_replay": 16,
+    "scenarios": 4,
+    "truth_matches_across_scenarios": 12,
+    "truth_unmatched_nodes_across_scenarios": 4
+  },
+  "claim_boundary": "A pass is a small real-image Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes under three bounded missing/extra-candidate constructions. Physical reference targets are disjoint from six prior cohorts, at least two reference scans are represented with at most two targets from either, and two geometry-selected views are used per target side; however all RGB, poses, meshes, labels and truth proposals come from one provider and the scenario overlap is evaluator-known. It is not open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+}

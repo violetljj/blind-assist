@@ -1,0 +1,1548 @@
+{
+  "schema": "blindassist-l10-lsaa-vienna-public-source-v1",
+  "selection_authority": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_source_protocol_v3.json",
+  "remote_facade_archive": {
+    "google_drive_file_id": "1s3L1EouMaO8r3l7hq8WoQcOsSwDb8AxP",
+    "bytes": 3788288276,
+    "member_prefix": "Filtered_facades/"
+  },
+  "rows": [
+    {
+      "item_id": "LSAA-VIE-D-001",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way179007221",
+      "way_id": 179007221,
+      "facade_name": "Austria_Vienna_way179007221_Fid8761_OUye5VoBuCWdjX1S7IZelA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way179007221_Fid8761_OUye5VoBuCWdjX1S7IZelA.jpg",
+      "panorama_id": "OUye5VoBuCWdjX1S7IZelA",
+      "facade_lon_lat": [
+        16.33541430923082,
+        48.22947890724026
+      ],
+      "mission": {
+        "street_name": "Türkenschanzstraße",
+        "house_number": "7"
+      },
+      "counterfactual_mission": {
+        "house_number": "111"
+      },
+      "quality": {
+        "door_shape_hw": [
+          200,
+          91
+        ],
+        "noblur": 2267.638313538051,
+        "view_angle_degrees": 48.46488602190461,
+        "total_occlusion": 0.014833268744579159
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-002",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way133741612",
+      "way_id": 133741612,
+      "facade_name": "Austria_Vienna_way133741612_Fid4545_5kNFuI9KkO_rzXLBID67vg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way133741612_Fid4545_5kNFuI9KkO_rzXLBID67vg.jpg",
+      "panorama_id": "5kNFuI9KkO_rzXLBID67vg",
+      "facade_lon_lat": [
+        16.4397979044195,
+        48.24630546603539
+      ],
+      "mission": {
+        "street_name": "Wagramer Straße",
+        "house_number": "111"
+      },
+      "counterfactual_mission": {
+        "house_number": "11"
+      },
+      "quality": {
+        "door_shape_hw": [
+          160,
+          123
+        ],
+        "noblur": 574.3120263251236,
+        "view_angle_degrees": 15.7193964229021,
+        "total_occlusion": 0.002625102543068089
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-003",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way187527037",
+      "way_id": 187527037,
+      "facade_name": "Austria_Vienna_way187527037_Fid1944_sIMW-DzvaAAfcWisgDj7kg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way187527037_Fid1944_sIMW-DzvaAAfcWisgDj7kg.jpg",
+      "panorama_id": "sIMW-DzvaAAfcWisgDj7kg",
+      "facade_lon_lat": [
+        16.33727222111934,
+        48.184346121319074
+      ],
+      "mission": {
+        "street_name": "Aichhorngasse",
+        "house_number": "11"
+      },
+      "counterfactual_mission": {
+        "house_number": "3"
+      },
+      "quality": {
+        "door_shape_hw": [
+          168,
+          75
+        ],
+        "noblur": 625.899639253911,
+        "view_angle_degrees": -31.68368286164599,
+        "total_occlusion": 0.01945917147460887
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-004",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way130739184",
+      "way_id": 130739184,
+      "facade_name": "Austria_Vienna_way130739184_Fid8776_hHcHkx58pgY2zunL-dLTbA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way130739184_Fid8776_hHcHkx58pgY2zunL-dLTbA.jpg",
+      "panorama_id": "hHcHkx58pgY2zunL-dLTbA",
+      "facade_lon_lat": [
+        16.36148345815343,
+        48.19524844879936
+      ],
+      "mission": {
+        "street_name": "Schönbrunner Straße",
+        "house_number": "3"
+      },
+      "counterfactual_mission": {
+        "house_number": "61"
+      },
+      "quality": {
+        "door_shape_hw": [
+          196,
+          126
+        ],
+        "noblur": 584.8564667658633,
+        "view_angle_degrees": -9.883248761187273,
+        "total_occlusion": 0.038402026498897734
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-005",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way151671312",
+      "way_id": 151671312,
+      "facade_name": "Austria_Vienna_way151671312_Fid1686_RPU9vLbsx_EbIrP_htqlbw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way151671312_Fid1686_RPU9vLbsx_EbIrP_htqlbw.jpg",
+      "panorama_id": "RPU9vLbsx_EbIrP_htqlbw",
+      "facade_lon_lat": [
+        16.34806947922463,
+        48.18979699658345
+      ],
+      "mission": {
+        "street_name": "Mollardgasse",
+        "house_number": "61"
+      },
+      "counterfactual_mission": {
+        "house_number": "9"
+      },
+      "quality": {
+        "door_shape_hw": [
+          118,
+          86
+        ],
+        "noblur": 629.3120055080525,
+        "view_angle_degrees": -50.287920660988114,
+        "total_occlusion": 0.02955460434208852
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-006",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way35220365",
+      "way_id": 35220365,
+      "facade_name": "Austria_Vienna_way35220365_Fid6910_j-DGE6GB0BmIzp2a5-Kk-A.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way35220365_Fid6910_j-DGE6GB0BmIzp2a5-Kk-A.jpg",
+      "panorama_id": "j-DGE6GB0BmIzp2a5-Kk-A",
+      "facade_lon_lat": [
+        16.36239991997109,
+        48.20135210393408
+      ],
+      "mission": {
+        "street_name": "Getreidemarkt",
+        "house_number": "9"
+      },
+      "counterfactual_mission": {
+        "house_number": "14"
+      },
+      "quality": {
+        "door_shape_hw": [
+          212,
+          78
+        ],
+        "noblur": 470.2636900889079,
+        "view_angle_degrees": 53.8462082504969,
+        "total_occlusion": 0.027929738231408725
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-007",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way155035599",
+      "way_id": 155035599,
+      "facade_name": "Austria_Vienna_way155035599_Fid8061_Yts6cWMrCeAfVg8HJjWiMw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way155035599_Fid8061_Yts6cWMrCeAfVg8HJjWiMw.jpg",
+      "panorama_id": "Yts6cWMrCeAfVg8HJjWiMw",
+      "facade_lon_lat": [
+        16.36998754420324,
+        48.19016868527892
+      ],
+      "mission": {
+        "street_name": "Graf-Starhemberg-Gasse",
+        "house_number": "14"
+      },
+      "counterfactual_mission": {
+        "house_number": "152"
+      },
+      "quality": {
+        "door_shape_hw": [
+          111,
+          74
+        ],
+        "noblur": 437.8790154125882,
+        "view_angle_degrees": 37.84939164214028,
+        "total_occlusion": 0.02897498470577953
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-008",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way130803918",
+      "way_id": 130803918,
+      "facade_name": "Austria_Vienna_way130803918_Fid5982_CDfV3XQzIOcJFvqqVjadEw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way130803918_Fid5982_CDfV3XQzIOcJFvqqVjadEw.jpg",
+      "panorama_id": "CDfV3XQzIOcJFvqqVjadEw",
+      "facade_lon_lat": [
+        16.307934539264902,
+        48.21326712890147
+      ],
+      "mission": {
+        "street_name": "Thaliastraße",
+        "house_number": "152"
+      },
+      "counterfactual_mission": {
+        "house_number": "3"
+      },
+      "quality": {
+        "door_shape_hw": [
+          133,
+          93
+        ],
+        "noblur": 1040.715459191643,
+        "view_angle_degrees": -10.466136674704327,
+        "total_occlusion": 0.0
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-009",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way186907812",
+      "way_id": 186907812,
+      "facade_name": "Austria_Vienna_way186907812_Fid3295_m-hwEqtfhBpQldX5u-V1Lg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way186907812_Fid3295_m-hwEqtfhBpQldX5u-V1Lg.jpg",
+      "panorama_id": "m-hwEqtfhBpQldX5u-V1Lg",
+      "facade_lon_lat": [
+        16.34116992909099,
+        48.18710759117195
+      ],
+      "mission": {
+        "street_name": "Seumegasse",
+        "house_number": "3"
+      },
+      "counterfactual_mission": {
+        "house_number": "19"
+      },
+      "quality": {
+        "door_shape_hw": [
+          160,
+          67
+        ],
+        "noblur": 544.7296841759027,
+        "view_angle_degrees": 49.18647377694714,
+        "total_occlusion": 0.0066941406829861385
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-010",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way109567412",
+      "way_id": 109567412,
+      "facade_name": "Austria_Vienna_way109567412_Fid9878_7ptYNviYI2nF2TEfYN-pIA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way109567412_Fid9878_7ptYNviYI2nF2TEfYN-pIA.jpg",
+      "panorama_id": "7ptYNviYI2nF2TEfYN-pIA",
+      "facade_lon_lat": [
+        16.3694976752043,
+        48.20643264101211
+      ],
+      "mission": {
+        "street_name": "Spiegelgasse",
+        "house_number": "19"
+      },
+      "counterfactual_mission": {
+        "house_number": "34"
+      },
+      "quality": {
+        "door_shape_hw": [
+          178,
+          88
+        ],
+        "noblur": 406.72809554022916,
+        "view_angle_degrees": -3.1502577313766205,
+        "total_occlusion": 0.030114103936065367
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-011",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way224669540",
+      "way_id": 224669540,
+      "facade_name": "Austria_Vienna_way224669540_Fid7498_jF1aBv2WrzczZ2MYNHAYmw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way224669540_Fid7498_jF1aBv2WrzczZ2MYNHAYmw.jpg",
+      "panorama_id": "jF1aBv2WrzczZ2MYNHAYmw",
+      "facade_lon_lat": [
+        16.3301119962181,
+        48.17183897919029
+      ],
+      "mission": {
+        "street_name": "Wienerbergstraße",
+        "house_number": "34"
+      },
+      "counterfactual_mission": {
+        "house_number": "10"
+      },
+      "quality": {
+        "door_shape_hw": [
+          216,
+          71
+        ],
+        "noblur": 696.1504835458645,
+        "view_angle_degrees": -47.2753159974441,
+        "total_occlusion": 0.0010831920967862394
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-012",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way407710538",
+      "way_id": 407710538,
+      "facade_name": "Austria_Vienna_way407710538_Fid4219_LZKVIMPx2k-AkDGruHuCvg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way407710538_Fid4219_LZKVIMPx2k-AkDGruHuCvg.jpg",
+      "panorama_id": "LZKVIMPx2k-AkDGruHuCvg",
+      "facade_lon_lat": [
+        16.32163120703161,
+        48.218709745603455
+      ],
+      "mission": {
+        "street_name": "Clemens-Hofbauer-Platz",
+        "house_number": "10"
+      },
+      "counterfactual_mission": {
+        "house_number": "27"
+      },
+      "quality": {
+        "door_shape_hw": [
+          248,
+          86
+        ],
+        "noblur": 886.3670345852098,
+        "view_angle_degrees": 29.243182175851263,
+        "total_occlusion": 0.0005755902178204633
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-013",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131597143",
+      "way_id": 131597143,
+      "facade_name": "Austria_Vienna_way131597143_Fid365_axH8YoIc08EAaLDe9xPpmw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131597143_Fid365_axH8YoIc08EAaLDe9xPpmw.jpg",
+      "panorama_id": "axH8YoIc08EAaLDe9xPpmw",
+      "facade_lon_lat": [
+        16.35787686934181,
+        48.19561147454366
+      ],
+      "mission": {
+        "street_name": "Wehrgasse",
+        "house_number": "27"
+      },
+      "counterfactual_mission": {
+        "house_number": "47"
+      },
+      "quality": {
+        "door_shape_hw": [
+          241,
+          145
+        ],
+        "noblur": 515.7534402167416,
+        "view_angle_degrees": -47.57696669736853,
+        "total_occlusion": 0.01041149132612926
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-014",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way187527049",
+      "way_id": 187527049,
+      "facade_name": "Austria_Vienna_way187527049_Fid7397_71kcpoygr1kXzRWyd5PN5Q.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way187527049_Fid7397_71kcpoygr1kXzRWyd5PN5Q.jpg",
+      "panorama_id": "71kcpoygr1kXzRWyd5PN5Q",
+      "facade_lon_lat": [
+        16.343018351258667,
+        48.186742523344954
+      ],
+      "mission": {
+        "street_name": "Gaudenzdorfer Gürtel",
+        "house_number": "47"
+      },
+      "counterfactual_mission": {
+        "house_number": "27"
+      },
+      "quality": {
+        "door_shape_hw": [
+          226,
+          93
+        ],
+        "noblur": 513.8030497290396,
+        "view_angle_degrees": -38.14866783259493,
+        "total_occlusion": 0.0962203852506466
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-015",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way155032505",
+      "way_id": 155032505,
+      "facade_name": "Austria_Vienna_way155032505_Fid6116_J6me3jc1skusopZONEOhKQ.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way155032505_Fid6116_J6me3jc1skusopZONEOhKQ.jpg",
+      "panorama_id": "J6me3jc1skusopZONEOhKQ",
+      "facade_lon_lat": [
+        16.36798728877707,
+        48.18790653248613
+      ],
+      "mission": {
+        "street_name": "Johann-Strauß-Gasse",
+        "house_number": "27"
+      },
+      "counterfactual_mission": {
+        "house_number": "9"
+      },
+      "quality": {
+        "door_shape_hw": [
+          130,
+          69
+        ],
+        "noblur": 1491.4788191929995,
+        "view_angle_degrees": -27.465126643388423,
+        "total_occlusion": 0.18863404200983208
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-016",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way130741371",
+      "way_id": 130741371,
+      "facade_name": "Austria_Vienna_way130741371_Fid117_HEXsWfFemZ5REWzZwPv58g.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way130741371_Fid117_HEXsWfFemZ5REWzZwPv58g.jpg",
+      "panorama_id": "HEXsWfFemZ5REWzZwPv58g",
+      "facade_lon_lat": [
+        16.36516928951393,
+        48.19517519887503
+      ],
+      "mission": {
+        "street_name": "Waaggasse",
+        "house_number": "9"
+      },
+      "counterfactual_mission": {
+        "house_number": "14"
+      },
+      "quality": {
+        "door_shape_hw": [
+          169,
+          66
+        ],
+        "noblur": 1382.2446311538165,
+        "view_angle_degrees": 25.892407215995124,
+        "total_occlusion": 0.003036550771985423
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-017",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way178845013",
+      "way_id": 178845013,
+      "facade_name": "Austria_Vienna_way178845013_Fid4884_yG5zXG07OjHTN7EJWNe86Q.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way178845013_Fid4884_yG5zXG07OjHTN7EJWNe86Q.jpg",
+      "panorama_id": "yG5zXG07OjHTN7EJWNe86Q",
+      "facade_lon_lat": [
+        16.35190069790358,
+        48.226889416423084
+      ],
+      "mission": {
+        "street_name": "Löblichgasse",
+        "house_number": "14"
+      },
+      "counterfactual_mission": {
+        "house_number": "12"
+      },
+      "quality": {
+        "door_shape_hw": [
+          121,
+          65
+        ],
+        "noblur": 586.7272481275284,
+        "view_angle_degrees": 52.25913494581182,
+        "total_occlusion": 0.024815177212437485
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-018",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way203888500",
+      "way_id": 203888500,
+      "facade_name": "Austria_Vienna_way203888500_Fid4841_h8LFrmYK3SKM7V8s6Hjh_Q.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way203888500_Fid4841_h8LFrmYK3SKM7V8s6Hjh_Q.jpg",
+      "panorama_id": "h8LFrmYK3SKM7V8s6Hjh_Q",
+      "facade_lon_lat": [
+        16.341632660692948,
+        48.18387095074212
+      ],
+      "mission": {
+        "street_name": "Wolfganggasse",
+        "house_number": "12"
+      },
+      "counterfactual_mission": {
+        "house_number": "6"
+      },
+      "quality": {
+        "door_shape_hw": [
+          121,
+          79
+        ],
+        "noblur": 1434.0697957480136,
+        "view_angle_degrees": 34.529106197972226,
+        "total_occlusion": 0.2913412450736391
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-019",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way175776915",
+      "way_id": 175776915,
+      "facade_name": "Austria_Vienna_way175776915_Fid6600_vjwdN0CqNDzR6wb1lcgW2w.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way175776915_Fid6600_vjwdN0CqNDzR6wb1lcgW2w.jpg",
+      "panorama_id": "vjwdN0CqNDzR6wb1lcgW2w",
+      "facade_lon_lat": [
+        16.336270224801527,
+        48.191283642565395
+      ],
+      "mission": {
+        "street_name": "Clementinengasse",
+        "house_number": "6"
+      },
+      "counterfactual_mission": {
+        "house_number": "3"
+      },
+      "quality": {
+        "door_shape_hw": [
+          168,
+          101
+        ],
+        "noblur": 820.7047253026482,
+        "view_angle_degrees": -52.0260793995577,
+        "total_occlusion": 0.0
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-020",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way186907813",
+      "way_id": 186907813,
+      "facade_name": "Austria_Vienna_way186907813_Fid9703_gzTgGWSZKcsGMbMwJHOY_g.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way186907813_Fid9703_gzTgGWSZKcsGMbMwJHOY_g.jpg",
+      "panorama_id": "gzTgGWSZKcsGMbMwJHOY_g",
+      "facade_lon_lat": [
+        16.3409194951547,
+        48.18625279913404
+      ],
+      "mission": {
+        "street_name": "Steinhagegasse",
+        "house_number": "3"
+      },
+      "counterfactual_mission": {
+        "house_number": "14"
+      },
+      "quality": {
+        "door_shape_hw": [
+          270,
+          107
+        ],
+        "noblur": 465.8030140778599,
+        "view_angle_degrees": -2.294380820848909,
+        "total_occlusion": 0.0005958132045088567
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-021",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131597142",
+      "way_id": 131597142,
+      "facade_name": "Austria_Vienna_way131597142_Fid3175_k0CpQcGCRVvyvYooywWYSg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131597142_Fid3175_k0CpQcGCRVvyvYooywWYSg.jpg",
+      "panorama_id": "k0CpQcGCRVvyvYooywWYSg",
+      "facade_lon_lat": [
+        16.3574993177448,
+        48.19468792819815
+      ],
+      "mission": {
+        "street_name": "Grüngasse",
+        "house_number": "14"
+      },
+      "counterfactual_mission": {
+        "house_number": "7"
+      },
+      "quality": {
+        "door_shape_hw": [
+          125,
+          102
+        ],
+        "noblur": 597.6282520729931,
+        "view_angle_degrees": 10.590295127624463,
+        "total_occlusion": 0.009145393581961763
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-022",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way176228848",
+      "way_id": 176228848,
+      "facade_name": "Austria_Vienna_way176228848_Fid1480_Cdufzeo9M66MMGEp4CFYpw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way176228848_Fid1480_Cdufzeo9M66MMGEp4CFYpw.jpg",
+      "panorama_id": "Cdufzeo9M66MMGEp4CFYpw",
+      "facade_lon_lat": [
+        16.33353840766887,
+        48.19404281740365
+      ],
+      "mission": {
+        "street_name": "Rosinagasse",
+        "house_number": "7"
+      },
+      "counterfactual_mission": {
+        "house_number": "30"
+      },
+      "quality": {
+        "door_shape_hw": [
+          170,
+          87
+        ],
+        "noblur": 642.7339872944301,
+        "view_angle_degrees": 52.89637166155823,
+        "total_occlusion": 0.014307210613188263
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-023",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way177765882",
+      "way_id": 177765882,
+      "facade_name": "Austria_Vienna_way177765882_Fid3615_LY3KTQyUHN_3xugQXW6pNg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way177765882_Fid3615_LY3KTQyUHN_3xugQXW6pNg.jpg",
+      "panorama_id": "LY3KTQyUHN_3xugQXW6pNg",
+      "facade_lon_lat": [
+        16.36592161047632,
+        48.187622009773854
+      ],
+      "mission": {
+        "street_name": "Blechturmgasse",
+        "house_number": "30"
+      },
+      "counterfactual_mission": {
+        "house_number": "8"
+      },
+      "quality": {
+        "door_shape_hw": [
+          183,
+          80
+        ],
+        "noblur": 447.0149776826737,
+        "view_angle_degrees": -12.847798751282804,
+        "total_occlusion": 0.00949507183300136
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-024",
+      "split": "DEVELOPMENT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way183696727",
+      "way_id": 183696727,
+      "facade_name": "Austria_Vienna_way183696727_Fid9089_4__snbkYVBwtN_qldsoz_w.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way183696727_Fid9089_4__snbkYVBwtN_qldsoz_w.jpg",
+      "panorama_id": "4__snbkYVBwtN_qldsoz_w",
+      "facade_lon_lat": [
+        16.36677898509805,
+        48.18897865409009
+      ],
+      "mission": {
+        "street_name": "Johann-Strauß-Gasse",
+        "house_number": "8"
+      },
+      "counterfactual_mission": {
+        "house_number": "7"
+      },
+      "quality": {
+        "door_shape_hw": [
+          193,
+          75
+        ],
+        "noblur": 508.5100911611106,
+        "view_angle_degrees": -31.311939442868447,
+        "total_occlusion": 0.01641211105566132
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-001",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way172963233",
+      "way_id": 172963233,
+      "facade_name": "Austria_Vienna_way172963233_Fid8942_O3HieJdJjwKitUX4JEHQkA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way172963233_Fid8942_O3HieJdJjwKitUX4JEHQkA.jpg",
+      "panorama_id": "O3HieJdJjwKitUX4JEHQkA",
+      "facade_lon_lat": [
+        16.33651699252892,
+        48.19278404971252
+      ],
+      "mission": {
+        "street_name": "Dingelstedtgasse",
+        "house_number": "5"
+      },
+      "counterfactual_mission": {
+        "house_number": "4"
+      },
+      "quality": {
+        "door_shape_hw": [
+          280,
+          136
+        ],
+        "noblur": 726.1190836082477,
+        "view_angle_degrees": -17.559222663810726,
+        "total_occlusion": 0.006077795786061589
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-002",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way150246332",
+      "way_id": 150246332,
+      "facade_name": "Austria_Vienna_way150246332_Fid6285_Fcwwy7xjFBDkUUOWZF3AwA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way150246332_Fid6285_Fcwwy7xjFBDkUUOWZF3AwA.jpg",
+      "panorama_id": "Fcwwy7xjFBDkUUOWZF3AwA",
+      "facade_lon_lat": [
+        16.33362489931952,
+        48.19471425685746
+      ],
+      "mission": {
+        "street_name": "Leydoltgasse",
+        "house_number": "4"
+      },
+      "counterfactual_mission": {
+        "house_number": "29"
+      },
+      "quality": {
+        "door_shape_hw": [
+          200,
+          103
+        ],
+        "noblur": 415.97946444400316,
+        "view_angle_degrees": -45.62884805277193,
+        "total_occlusion": 0.0
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-003",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131597137",
+      "way_id": 131597137,
+      "facade_name": "Austria_Vienna_way131597137_Fid7699_HOINJuS8qF86nktTkdExXQ.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131597137_Fid7699_HOINJuS8qF86nktTkdExXQ.jpg",
+      "panorama_id": "HOINJuS8qF86nktTkdExXQ",
+      "facade_lon_lat": [
+        16.35781764721026,
+        48.195694985913754
+      ],
+      "mission": {
+        "street_name": "Wehrgasse",
+        "house_number": "29"
+      },
+      "counterfactual_mission": {
+        "house_number": "37"
+      },
+      "quality": {
+        "door_shape_hw": [
+          283,
+          149
+        ],
+        "noblur": 544.8806478011037,
+        "view_angle_degrees": 47.692616196882966,
+        "total_occlusion": 0.008256084957394752
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-004",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way177275865",
+      "way_id": 177275865,
+      "facade_name": "Austria_Vienna_way177275865_Fid6282_QvchvGMEcU6Vdc9rHHOT4Q.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way177275865_Fid6282_QvchvGMEcU6Vdc9rHHOT4Q.jpg",
+      "panorama_id": "QvchvGMEcU6Vdc9rHHOT4Q",
+      "facade_lon_lat": [
+        16.357524246035222,
+        48.192812484015505
+      ],
+      "mission": {
+        "street_name": "Schönbrunner Straße",
+        "house_number": "37"
+      },
+      "counterfactual_mission": {
+        "house_number": "13"
+      },
+      "quality": {
+        "door_shape_hw": [
+          151,
+          76
+        ],
+        "noblur": 422.2689445791829,
+        "view_angle_degrees": 51.949143424951885,
+        "total_occlusion": 0.015938697318007664
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-005",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way179007194",
+      "way_id": 179007194,
+      "facade_name": "Austria_Vienna_way179007194_Fid1729_GTp_P_X5sSgv1Qf333HZUg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way179007194_Fid1729_GTp_P_X5sSgv1Qf333HZUg.jpg",
+      "panorama_id": "GTp_P_X5sSgv1Qf333HZUg",
+      "facade_lon_lat": [
+        16.33566830797863,
+        48.22998035308453
+      ],
+      "mission": {
+        "street_name": "Türkenschanzstraße",
+        "house_number": "13"
+      },
+      "counterfactual_mission": {
+        "house_number": "18"
+      },
+      "quality": {
+        "door_shape_hw": [
+          201,
+          81
+        ],
+        "noblur": 3095.8421208570367,
+        "view_angle_degrees": 15.733782644735046,
+        "total_occlusion": 0.01321986726611004
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-006",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way186907806",
+      "way_id": 186907806,
+      "facade_name": "Austria_Vienna_way186907806_Fid4130_A5JKmiwAM_UFNrb7SKL1-w.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way186907806_Fid4130_A5JKmiwAM_UFNrb7SKL1-w.jpg",
+      "panorama_id": "A5JKmiwAM_UFNrb7SKL1-w",
+      "facade_lon_lat": [
+        16.34165302187307,
+        48.185415959797496
+      ],
+      "mission": {
+        "street_name": "Kollmayergasse",
+        "house_number": "18"
+      },
+      "counterfactual_mission": {
+        "house_number": "11"
+      },
+      "quality": {
+        "door_shape_hw": [
+          151,
+          90
+        ],
+        "noblur": 1781.0853885971528,
+        "view_angle_degrees": 16.70809875634328,
+        "total_occlusion": 0.060918716895444425
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-007",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way176215095",
+      "way_id": 176215095,
+      "facade_name": "Austria_Vienna_way176215095_Fid2005_0f_aJX3RtbOUwKSmjuxf7A.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way176215095_Fid2005_0f_aJX3RtbOUwKSmjuxf7A.jpg",
+      "panorama_id": "0f_aJX3RtbOUwKSmjuxf7A",
+      "facade_lon_lat": [
+        16.33644851214521,
+        48.19396927491912
+      ],
+      "mission": {
+        "street_name": "Robert-Hamerling-Gasse",
+        "house_number": "11"
+      },
+      "counterfactual_mission": {
+        "house_number": "92"
+      },
+      "quality": {
+        "door_shape_hw": [
+          229,
+          76
+        ],
+        "noblur": 421.2775872793084,
+        "view_angle_degrees": 43.877431094352325,
+        "total_occlusion": 0.01897518014411529
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-008",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way324059357",
+      "way_id": 324059357,
+      "facade_name": "Austria_Vienna_way324059357_Fid1544_PHlSnltTL0iAgPLWygW88g.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way324059357_Fid1544_PHlSnltTL0iAgPLWygW88g.jpg",
+      "panorama_id": "PHlSnltTL0iAgPLWygW88g",
+      "facade_lon_lat": [
+        16.30633643559952,
+        48.213064419088276
+      ],
+      "mission": {
+        "street_name": "Maroltingergasse",
+        "house_number": "92"
+      },
+      "counterfactual_mission": {
+        "house_number": "22"
+      },
+      "quality": {
+        "door_shape_hw": [
+          169,
+          65
+        ],
+        "noblur": 489.1054149716612,
+        "view_angle_degrees": -34.299672973898225,
+        "total_occlusion": 0.0
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-009",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131595777",
+      "way_id": 131595777,
+      "facade_name": "Austria_Vienna_way131595777_Fid1841_Mc8sro1Mwasg1NiIdN3byw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131595777_Fid1841_Mc8sro1Mwasg1NiIdN3byw.jpg",
+      "panorama_id": "Mc8sro1Mwasg1NiIdN3byw",
+      "facade_lon_lat": [
+        16.35592437096385,
+        48.19512794414769
+      ],
+      "mission": {
+        "street_name": "Rüdigergasse",
+        "house_number": "22"
+      },
+      "counterfactual_mission": {
+        "house_number": "26"
+      },
+      "quality": {
+        "door_shape_hw": [
+          241,
+          105
+        ],
+        "noblur": 741.3809125148854,
+        "view_angle_degrees": 18.7348888938702,
+        "total_occlusion": 0.007462289873924354
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-010",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way144468563",
+      "way_id": 144468563,
+      "facade_name": "Austria_Vienna_way144468563_Fid8645_pFCoRibPL1GFjqt2q925_w.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way144468563_Fid8645_pFCoRibPL1GFjqt2q925_w.jpg",
+      "panorama_id": "pFCoRibPL1GFjqt2q925_w",
+      "facade_lon_lat": [
+        16.392322931952073,
+        48.19344421916728
+      ],
+      "mission": {
+        "street_name": "Eslarngasse",
+        "house_number": "26"
+      },
+      "counterfactual_mission": {
+        "house_number": "8"
+      },
+      "quality": {
+        "door_shape_hw": [
+          142,
+          83
+        ],
+        "noblur": 571.9174359347973,
+        "view_angle_degrees": -47.09582074719781,
+        "total_occlusion": 0.02703253405381065
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-011",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way183743921",
+      "way_id": 183743921,
+      "facade_name": "Austria_Vienna_way183743921_Fid4186_HEcID08r86TVwC_pYp3G3Q.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way183743921_Fid4186_HEcID08r86TVwC_pYp3G3Q.jpg",
+      "panorama_id": "HEcID08r86TVwC_pYp3G3Q",
+      "facade_lon_lat": [
+        16.3529685922841,
+        48.196549868310264
+      ],
+      "mission": {
+        "street_name": "Kopernikusgasse",
+        "house_number": "8"
+      },
+      "counterfactual_mission": {
+        "house_number": "44"
+      },
+      "quality": {
+        "door_shape_hw": [
+          152,
+          66
+        ],
+        "noblur": 463.4553100128765,
+        "view_angle_degrees": 8.082352063042746,
+        "total_occlusion": 0.010398498608560805
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-012",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way122993107",
+      "way_id": 122993107,
+      "facade_name": "Austria_Vienna_way122993107_Fid2088_0UpY5YQ5COr5YqAq6tghwQ.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way122993107_Fid2088_0UpY5YQ5COr5YqAq6tghwQ.jpg",
+      "panorama_id": "0UpY5YQ5COr5YqAq6tghwQ",
+      "facade_lon_lat": [
+        16.35740642812075,
+        48.189570897077154
+      ],
+      "mission": {
+        "street_name": "Zentagasse",
+        "house_number": "44"
+      },
+      "counterfactual_mission": {
+        "house_number": "161"
+      },
+      "quality": {
+        "door_shape_hw": [
+          173,
+          92
+        ],
+        "noblur": 777.5782391642838,
+        "view_angle_degrees": -49.95654751666332,
+        "total_occlusion": 8.463898872742311e-05
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-013",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way100965071",
+      "way_id": 100965071,
+      "facade_name": "Austria_Vienna_way100965071_Fid3025__3O39fJ4wcYBhOvrcEe8ow.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way100965071_Fid3025__3O39fJ4wcYBhOvrcEe8ow.jpg",
+      "panorama_id": "_3O39fJ4wcYBhOvrcEe8ow",
+      "facade_lon_lat": [
+        16.340912466488618,
+        48.186622206497574
+      ],
+      "mission": {
+        "street_name": "Schönbrunner Straße",
+        "house_number": "161"
+      },
+      "counterfactual_mission": {
+        "house_number": "5"
+      },
+      "quality": {
+        "door_shape_hw": [
+          100,
+          68
+        ],
+        "noblur": 3146.4367471956703,
+        "view_angle_degrees": -44.34808083929347,
+        "total_occlusion": 0.00835364301043978
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-014",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way130739187",
+      "way_id": 130739187,
+      "facade_name": "Austria_Vienna_way130739187_Fid8216_AOStlliZqklg4d3r4vYRiw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way130739187_Fid8216_AOStlliZqklg4d3r4vYRiw.jpg",
+      "panorama_id": "AOStlliZqklg4d3r4vYRiw",
+      "facade_lon_lat": [
+        16.36128450597911,
+        48.195121596287834
+      ],
+      "mission": {
+        "street_name": "Schönbrunner Straße",
+        "house_number": "5"
+      },
+      "counterfactual_mission": {
+        "house_number": "25"
+      },
+      "quality": {
+        "door_shape_hw": [
+          178,
+          65
+        ],
+        "noblur": 896.8576905949233,
+        "view_angle_degrees": 41.37423483091301,
+        "total_occlusion": 0.024696144099129173
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-015",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131597138",
+      "way_id": 131597138,
+      "facade_name": "Austria_Vienna_way131597138_Fid2555_oDuDHTlpxGoZ7qEq4rNsGw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131597138_Fid2555_oDuDHTlpxGoZ7qEq4rNsGw.jpg",
+      "panorama_id": "oDuDHTlpxGoZ7qEq4rNsGw",
+      "facade_lon_lat": [
+        16.35805412515568,
+        48.195362915579345
+      ],
+      "mission": {
+        "street_name": "Wehrgasse",
+        "house_number": "25"
+      },
+      "counterfactual_mission": {
+        "house_number": "2"
+      },
+      "quality": {
+        "door_shape_hw": [
+          270,
+          174
+        ],
+        "noblur": 642.1259266654797,
+        "view_angle_degrees": 9.854600644403517,
+        "total_occlusion": 0.00924802546623022
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-016",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131606003",
+      "way_id": 131606003,
+      "facade_name": "Austria_Vienna_way131606003_Fid2721_-IhncRWqCeiNnlBNRdf3tA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131606003_Fid2721_-IhncRWqCeiNnlBNRdf3tA.jpg",
+      "panorama_id": "-IhncRWqCeiNnlBNRdf3tA",
+      "facade_lon_lat": [
+        16.35788883315979,
+        48.19305202594128
+      ],
+      "mission": {
+        "street_name": "Rüdigergasse",
+        "house_number": "2"
+      },
+      "counterfactual_mission": {
+        "house_number": "13"
+      },
+      "quality": {
+        "door_shape_hw": [
+          197,
+          69
+        ],
+        "noblur": 522.6397265629187,
+        "view_angle_degrees": 53.44777676309295,
+        "total_occlusion": 0.01251790972185709
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-017",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way183696710",
+      "way_id": 183696710,
+      "facade_name": "Austria_Vienna_way183696710_Fid899_Cld2EhOhLNVkoqAnrEo9xg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way183696710_Fid899_Cld2EhOhLNVkoqAnrEo9xg.jpg",
+      "panorama_id": "Cld2EhOhLNVkoqAnrEo9xg",
+      "facade_lon_lat": [
+        16.36686693581755,
+        48.18891409551612
+      ],
+      "mission": {
+        "street_name": "Johann-Strauß-Gasse",
+        "house_number": "13"
+      },
+      "counterfactual_mission": {
+        "house_number": "3"
+      },
+      "quality": {
+        "door_shape_hw": [
+          124,
+          71
+        ],
+        "noblur": 715.5391073033751,
+        "view_angle_degrees": 57.24079622127451,
+        "total_occlusion": 0.02910309543185325
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-018",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way130740560",
+      "way_id": 130740560,
+      "facade_name": "Austria_Vienna_way130740560_Fid8996_FUGWmC4HLiG9r_cAoPLOyA.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way130740560_Fid8996_FUGWmC4HLiG9r_cAoPLOyA.jpg",
+      "panorama_id": "FUGWmC4HLiG9r_cAoPLOyA",
+      "facade_lon_lat": [
+        16.36144899463332,
+        48.19452839190183
+      ],
+      "mission": {
+        "street_name": "Kettenbrückengasse",
+        "house_number": "3"
+      },
+      "counterfactual_mission": {
+        "house_number": "7"
+      },
+      "quality": {
+        "door_shape_hw": [
+          197,
+          145
+        ],
+        "noblur": 603.6872531708726,
+        "view_angle_degrees": -53.1466720115709,
+        "total_occlusion": 0.043204316321719415
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-019",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way49249315",
+      "way_id": 49249315,
+      "facade_name": "Austria_Vienna_way49249315_Fid1187_Z4H0fhwNDGAhgqY51ZpwKw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way49249315_Fid1187_Z4H0fhwNDGAhgqY51ZpwKw.jpg",
+      "panorama_id": "Z4H0fhwNDGAhgqY51ZpwKw",
+      "facade_lon_lat": [
+        16.36917888896173,
+        48.195567982484505
+      ],
+      "mission": {
+        "street_name": "Favoritenstraße",
+        "house_number": "7"
+      },
+      "counterfactual_mission": {
+        "house_number": "16"
+      },
+      "quality": {
+        "door_shape_hw": [
+          200,
+          112
+        ],
+        "noblur": 481.790148043753,
+        "view_angle_degrees": 51.558684296651286,
+        "total_occlusion": 0.0016926450332198995
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-020",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way174276353",
+      "way_id": 174276353,
+      "facade_name": "Austria_Vienna_way174276353_Fid4615_L_0Hbs5-KAFvG9G-P9aE9A.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way174276353_Fid4615_L_0Hbs5-KAFvG9G-P9aE9A.jpg",
+      "panorama_id": "L_0Hbs5-KAFvG9G-P9aE9A",
+      "facade_lon_lat": [
+        16.366619894833168,
+        48.18608114846875
+      ],
+      "mission": {
+        "street_name": "Kriehubergasse",
+        "house_number": "16"
+      },
+      "counterfactual_mission": {
+        "house_number": "2"
+      },
+      "quality": {
+        "door_shape_hw": [
+          168,
+          101
+        ],
+        "noblur": 623.2474685599083,
+        "view_angle_degrees": -46.124881854745496,
+        "total_occlusion": 0.0460860434828667
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-021",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way306839321",
+      "way_id": 306839321,
+      "facade_name": "Austria_Vienna_way306839321_Fid4964_w4_H9I7f6LusN1xJZRl4zQ.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way306839321_Fid4964_w4_H9I7f6LusN1xJZRl4zQ.jpg",
+      "panorama_id": "w4_H9I7f6LusN1xJZRl4zQ",
+      "facade_lon_lat": [
+        16.31152565324215,
+        48.199000779432104
+      ],
+      "mission": {
+        "street_name": "Grassigasse",
+        "house_number": "2"
+      },
+      "counterfactual_mission": {
+        "house_number": "10"
+      },
+      "quality": {
+        "door_shape_hw": [
+          138,
+          130
+        ],
+        "noblur": 406.51561342631743,
+        "view_angle_degrees": 36.10242385205857,
+        "total_occlusion": 0.0381628013550306
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-022",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way264194447",
+      "way_id": 264194447,
+      "facade_name": "Austria_Vienna_way264194447_Fid6987_R5Zn2D1KnVoD8zvrSeD-Pg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way264194447_Fid6987_R5Zn2D1KnVoD8zvrSeD-Pg.jpg",
+      "panorama_id": "R5Zn2D1KnVoD8zvrSeD-Pg",
+      "facade_lon_lat": [
+        16.31493604327678,
+        48.214449461521475
+      ],
+      "mission": {
+        "street_name": "Redtenbachergasse",
+        "house_number": "10"
+      },
+      "counterfactual_mission": {
+        "house_number": "24"
+      },
+      "quality": {
+        "door_shape_hw": [
+          140,
+          94
+        ],
+        "noblur": 625.761640503836,
+        "view_angle_degrees": 3.8080284423673754,
+        "total_occlusion": 0.00026262299210332235
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-023",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way176215118",
+      "way_id": 176215118,
+      "facade_name": "Austria_Vienna_way176215118_Fid1879_KKCkv4lzNilW50WJYizmdg.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way176215118_Fid1879_KKCkv4lzNilW50WJYizmdg.jpg",
+      "panorama_id": "KKCkv4lzNilW50WJYizmdg",
+      "facade_lon_lat": [
+        16.33806117984108,
+        48.19466391561455
+      ],
+      "mission": {
+        "street_name": "Palmgasse",
+        "house_number": "10"
+      },
+      "counterfactual_mission": {
+        "house_number": "24"
+      },
+      "quality": {
+        "door_shape_hw": [
+          230,
+          128
+        ],
+        "noblur": 523.9606154717413,
+        "view_angle_degrees": -0.22143253760777765,
+        "total_occlusion": 0.0082525420651423
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-C-024",
+      "split": "CONFIRMATION_HOLDOUT",
+      "provider": "LSAA_FILTERED_FACADES_GOOGLE_PANORAMA",
+      "city": "Vienna",
+      "country": "Austria",
+      "building": "way131602823",
+      "way_id": 131602823,
+      "facade_name": "Austria_Vienna_way131602823_Fid7090_sJvnhOX9qld7mlrLvRxKtw.jpg",
+      "remote_archive_member": "Filtered_facades/Austria_Vienna_way131602823_Fid7090_sJvnhOX9qld7mlrLvRxKtw.jpg",
+      "panorama_id": "sJvnhOX9qld7mlrLvRxKtw",
+      "facade_lon_lat": [
+        16.356016193927168,
+        48.19405673808651
+      ],
+      "mission": {
+        "street_name": "Grüngasse",
+        "house_number": "24"
+      },
+      "counterfactual_mission": {
+        "house_number": "5"
+      },
+      "quality": {
+        "door_shape_hw": [
+          174,
+          207
+        ],
+        "noblur": 772.5215468851833,
+        "view_angle_degrees": 30.393610901810764,
+        "total_occlusion": 0.023180162717230186
+      }
+    }
+  ],
+  "claim_boundary": "Pixel-blind source selection only. OSM address metadata plus one official LSAA door annotation does not establish visible text, model correctness, public access, traversability, waypoint, arrival, handoff, user benefit, or safety."
+}

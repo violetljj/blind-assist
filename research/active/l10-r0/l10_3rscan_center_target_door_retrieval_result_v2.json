@@ -1,0 +1,252 @@
+{
+  "schema": "blindassist-l10-3rscan-center-target-door-retrieval-result-v2",
+  "authority": "CONSUMED_TARGET_TRIPLE_DISJOINT_3RSCAN_PROVIDER_TRANSFER_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_center_target_door_retrieval_protocol_v2.json",
+  "protocol_sha256": "80e667f14dfbb5660065fa7505696a3615d435d8614b0153e605d4ec79bb65dc",
+  "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+  "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+  "implementation": {
+    "path": "l10_3rscan_center_target_door_retrieval.py",
+    "sha256": "0f95e78bf4212143776b752293441d0324421e06acc5ceea63443807655400b6"
+  },
+  "conclusion": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_targets": 3,
+    "directed_anchors": 6,
+    "positive_pairs": 6,
+    "negative_pairs": 12
+  },
+  "metrics": {
+    "baseline": {
+      "auroc": 0.944444,
+      "average_precision": 0.916667,
+      "retrieval": {
+        "anchors": 6,
+        "top1_correct": 5,
+        "top1_accuracy": 0.833333,
+        "mrr": 0.916667,
+        "mean_positive_margin": 0.229862,
+        "minimum_positive_margin": -0.084313,
+        "details": [
+          {
+            "anchor": "DR01_query",
+            "positive_rank": 2,
+            "positive_margin": -0.084313,
+            "ranking": [
+              "DR02_reference",
+              "DR01_reference",
+              "DR03_reference"
+            ]
+          },
+          {
+            "anchor": "DR01_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.028123,
+            "ranking": [
+              "DR01_query",
+              "DR02_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR02_query",
+            "positive_rank": 1,
+            "positive_margin": 0.470809,
+            "ranking": [
+              "DR02_reference",
+              "DR03_reference",
+              "DR01_reference"
+            ]
+          },
+          {
+            "anchor": "DR02_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.366933,
+            "ranking": [
+              "DR02_query",
+              "DR01_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR03_query",
+            "positive_rank": 1,
+            "positive_margin": 0.317015,
+            "ranking": [
+              "DR03_reference",
+              "DR02_reference",
+              "DR01_reference"
+            ]
+          },
+          {
+            "anchor": "DR03_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.280606,
+            "ranking": [
+              "DR03_query",
+              "DR02_query",
+              "DR01_query"
+            ]
+          }
+        ]
+      }
+    },
+    "upgraded": {
+      "auroc": 0.833333,
+      "average_precision": 0.833333,
+      "retrieval": {
+        "anchors": 6,
+        "top1_correct": 4,
+        "top1_accuracy": 0.666667,
+        "mrr": 0.833333,
+        "mean_positive_margin": 0.19362,
+        "minimum_positive_margin": -0.086745,
+        "details": [
+          {
+            "anchor": "DR01_query",
+            "positive_rank": 2,
+            "positive_margin": -0.086745,
+            "ranking": [
+              "DR02_reference",
+              "DR01_reference",
+              "DR03_reference"
+            ]
+          },
+          {
+            "anchor": "DR01_reference",
+            "positive_rank": 2,
+            "positive_margin": -0.05518,
+            "ranking": [
+              "DR02_query",
+              "DR01_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR02_query",
+            "positive_rank": 1,
+            "positive_margin": 0.332964,
+            "ranking": [
+              "DR02_reference",
+              "DR01_reference",
+              "DR03_reference"
+            ]
+          },
+          {
+            "anchor": "DR02_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.301399,
+            "ranking": [
+              "DR02_query",
+              "DR01_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR03_query",
+            "positive_rank": 1,
+            "positive_margin": 0.304429,
+            "ranking": [
+              "DR03_reference",
+              "DR02_reference",
+              "DR01_reference"
+            ]
+          },
+          {
+            "anchor": "DR03_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.364854,
+            "ranking": [
+              "DR03_query",
+              "DR02_query",
+              "DR01_query"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "deltas": {
+    "auroc": -0.111111,
+    "top1_accuracy": -0.166666,
+    "mean_positive_margin": -0.036242
+  },
+  "rgb_members_opened": 6,
+  "rgb_receipts": {
+    "DR01_query": {
+      "zip_member": "frame-000041.color.jpg",
+      "rgb_sha256": "50292f7cb9ad4a41cb8d1a54dce19fa41dccadc1d1da7d9980416fc3ed08b127",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR01_query.png",
+      "crop_sha256": "92cb61279c0ec138c06feb6113198328589240994b7119708e1ef6a40b19d705",
+      "crop_size": [
+        515,
+        515
+      ]
+    },
+    "DR01_reference": {
+      "zip_member": "frame-000136.color.jpg",
+      "rgb_sha256": "32930e5c8d5b4ef67b1fca887f33850592fd736b9b300017c1004d1534cc6080",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR01_reference.png",
+      "crop_sha256": "817bb4faa7faa4fba106783ca91c20fd342e7c66835e14b301a0afc18fbe278f",
+      "crop_size": [
+        382,
+        382
+      ]
+    },
+    "DR02_query": {
+      "zip_member": "frame-000171.color.jpg",
+      "rgb_sha256": "994244418e12f1655feb470b785e865f5574f1cab97531d41584138194ec2418",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR02_query.png",
+      "crop_sha256": "15bc3356bc392e59a1e6bb7a9f3a406609ae3fa858b40163329917bbf8fab8ea",
+      "crop_size": [
+        574,
+        574
+      ]
+    },
+    "DR02_reference": {
+      "zip_member": "frame-000401.color.jpg",
+      "rgb_sha256": "fd5dd3fedecfd1e0c327bb4210e6ab7a09fd51041f88086e41a1894ff2ca6867",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR02_reference.png",
+      "crop_sha256": "467da3e889fe5760fb3b1f7106d363d32960f8d460e92cbb084e260247cf7307",
+      "crop_size": [
+        428,
+        428
+      ]
+    },
+    "DR03_query": {
+      "zip_member": "frame-000174.color.jpg",
+      "rgb_sha256": "f8afbf6d6b2e3a948fb41cb8ae431396e409babcfc0436cdfdc9736f4f644289",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR03_query.png",
+      "crop_sha256": "95df1d6d14614c0600a835a744153f199aa428769c52a819f8ae61be7e6a496a",
+      "crop_size": [
+        447,
+        447
+      ]
+    },
+    "DR03_reference": {
+      "zip_member": "frame-000213.color.jpg",
+      "rgb_sha256": "3fea8cbafa443a0fc31d160d8c85be078b1b16eab5c7c0cdee70c299ea46dd7f",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-center-target-door-retrieval-v2\\proposal-crops\\DR03_reference.png",
+      "crop_sha256": "3adc6e4ee7e87384ed0564c3e7fbdabce3e944d9c921c1e1c6b4152255a25503",
+      "crop_size": [
+        443,
+        443
+      ]
+    }
+  },
+  "decision_gate": {
+    "exact_instance_top1": "6/6 directed anchors",
+    "wrong_instance_commit": "0/6",
+    "minimum_positive_margin": "strictly greater than zero for every anchor",
+    "diagnostics": [
+      "pair AUROC",
+      "average precision",
+      "MRR",
+      "mean positive margin",
+      "baseline comparison"
+    ],
+    "single_replay": "One frozen replay. Do not tune on the selected RGB proposals."
+  },
+  "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed stable indoor 3RScan door or doorframe instances. 3RScan mesh, pose, depth, RGB and semantic labels come from one provider; target triples are disjoint from the four enumerated prior cohorts, but up to two targets may share one reference scan and scan families may have appeared in prior Development; proposals use privileged reconstructed geometry; and only three physical targets are tested. It is not door detection, pixel-mask transfer, doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+}

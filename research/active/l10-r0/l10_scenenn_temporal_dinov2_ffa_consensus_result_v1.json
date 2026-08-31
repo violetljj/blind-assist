@@ -1,0 +1,2509 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-dinov2-ffa-consensus-result-v1",
+  "authority": "CONSUMED_SCENE_POSTHOC_DINOV2_FFA_GEOMETRY_CONSENSUS_MECHANISM_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_temporal_dinov2_ffa_consensus_protocol_v1.json",
+  "protocol_sha256": "e02f8acbcfe3fb6026b00634b6ac59cabf0444dd8a51890af57b1d8eb9ec19a1",
+  "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+  "cohort_sha256": "b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d",
+  "receipt_path": "l10_scenenn_temporal_fused_extent_support_rgbd_receipt_v1.json",
+  "receipt_sha256": "2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274",
+  "implementation": {
+    "path": "l10_scenenn_temporal_dinov2_ffa_consensus.py",
+    "sha256": "d57536183848c8b34b63e029f99ea71b67745a1cc2eaf5d44c026df2f86927ff"
+  },
+  "model": {
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\p1_a2_dinov2_small_ed25f3a",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "device": "CPU"
+  },
+  "conclusion": "L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "aggregate": {
+      "geometry_reciprocal": {
+        "true_positive": 34,
+        "false_positive": 3,
+        "false_negative": 0,
+        "precision": 0.918919,
+        "recall": 1.0,
+        "f1": 0.957746,
+        "zero_assignment_exact_scenarios": 12,
+        "scenarios": 15
+      },
+      "dinov2_ffa_reciprocal": {
+        "true_positive": 7,
+        "false_positive": 21,
+        "false_negative": 27,
+        "precision": 0.25,
+        "recall": 0.205882,
+        "f1": 0.225806,
+        "zero_assignment_exact_scenarios": 1,
+        "scenarios": 15
+      },
+      "dinov2_ffa_geometry_consensus": {
+        "true_positive": 7,
+        "false_positive": 1,
+        "false_negative": 27,
+        "precision": 0.875,
+        "recall": 0.205882,
+        "f1": 0.333333,
+        "zero_assignment_exact_scenarios": 0,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.521408,
+            0.490085,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.424942,
+            0.548787
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.414711,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 3,
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.333333,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.521408,
+            0.490085,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.424942,
+            0.548787
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.678736
+          ],
+          [
+            0.521408,
+            0.490085,
+            0.627562
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.424942
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.414711
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO02",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.521408,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.424942,
+            0.548787
+          ],
+          [
+            0.714719,
+            0.414711,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO03",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.521408,
+            0.490085,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.548787
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO04",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.521408,
+            0.490085,
+            0.627562
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.424942
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.414711
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.48583,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.565506,
+            0.424942,
+            0.548787
+          ],
+          [
+            0.530629,
+            0.414711,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.528109
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.548787
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.678736
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.424942
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.414711
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.48583,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.490085,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.530629,
+            0.414711,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.521408,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.714719,
+            0.414711,
+            0.717317
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.678736
+          ],
+          [
+            0.521408,
+            0.490085,
+            0.627562
+          ],
+          [
+            0.714719,
+            0.530629,
+            0.414711
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.48583,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.490085,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.565506,
+            0.424942,
+            0.548787
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.678736,
+            0.528109
+          ],
+          [
+            0.521408,
+            0.627562,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.424942,
+            0.548787
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ]
+        ],
+        "dinov2_ffa_max_view_cosine_matrix": [
+          [
+            0.493012,
+            0.48583,
+            0.528109
+          ],
+          [
+            0.521408,
+            0.490085,
+            0.517689
+          ],
+          [
+            0.582025,
+            0.565506,
+            0.548787
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "dinov2_ffa_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "dinov2_ffa_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_geometry_score_matrix": [
+      [
+        -0.106701,
+        -1.579547,
+        -0.869231,
+        -4.282027
+      ],
+      [
+        -2.642495,
+        -1.088021,
+        -2.271233,
+        -1.712339
+      ],
+      [
+        -0.592976,
+        -1.783957,
+        -0.475494,
+        -3.915597
+      ],
+      [
+        -4.372872,
+        -2.918869,
+        -4.024139,
+        -0.029867
+      ]
+    ],
+    "full_dinov2_ffa_max_view_cosine_matrix": [
+      [
+        0.493012,
+        0.48583,
+        0.678736,
+        0.528109
+      ],
+      [
+        0.521408,
+        0.490085,
+        0.627562,
+        0.517689
+      ],
+      [
+        0.582025,
+        0.565506,
+        0.424942,
+        0.548787
+      ],
+      [
+        0.714719,
+        0.530629,
+        0.414711,
+        0.717317
+      ]
+    ]
+  },
+  "crop_receipts": {
+    "SO01:reference:6825": {
+      "source_image_sha256": "2b9abd32bbb28412a881a9acb1899f47e397f26c7e9c26ecd933bf69336bfb68",
+      "visible_mask_sha256": "d376113c99041529b8c6d3a3650f9d0b5cb81cddb2c79230e06c97c99d70d909",
+      "bbox_xyxy": [
+        347,
+        0,
+        469,
+        91
+      ],
+      "square_side": 122,
+      "foreground_patch_mass": 108.718811
+    },
+    "SO01:reference:6830": {
+      "source_image_sha256": "059b9f983ae144d0778f13fc0e03c374f8141925913f3ad83bb3b544cbeb72b0",
+      "visible_mask_sha256": "df3f81a15ea017f809589ebc0b7a7c2f4ba96aabd77b1b230dd83245a185810f",
+      "bbox_xyxy": [
+        336,
+        0,
+        463,
+        101
+      ],
+      "square_side": 127,
+      "foreground_patch_mass": 124.461342
+    },
+    "SO01:reference:6835": {
+      "source_image_sha256": "7eff308b17ff3207563af655897fe5cae71bcc70418e65f534b5db92ced526fa",
+      "visible_mask_sha256": "e245b5352bf5e0a95bdc8317a1b392208c1031a926c7cca3a63c2b606ef8c207",
+      "bbox_xyxy": [
+        330,
+        0,
+        457,
+        108
+      ],
+      "square_side": 127,
+      "foreground_patch_mass": 138.20459
+    },
+    "SO01:query:7340": {
+      "source_image_sha256": "eff1b6aabfe188b69afe8e76042ef4ba4975834668598d8832f3bd8d841e88c2",
+      "visible_mask_sha256": "a70a48c05d91c1ae88f071259e90ad114cebfc7bbe1bc0a7f61900b27d693057",
+      "bbox_xyxy": [
+        617,
+        263,
+        640,
+        480
+      ],
+      "square_side": 217,
+      "foreground_patch_mass": 16.67168
+    },
+    "SO01:query:7345": {
+      "source_image_sha256": "ac0a3e16f3b0979a67ea5c6241227cc942bc9263280611c984ba52f7cf618ee9",
+      "visible_mask_sha256": "4ffc00eaa021cb7f4cbe0861bb5fda9c09a257d99ab01d7c93c11b3c02ad7b6b",
+      "bbox_xyxy": [
+        606,
+        207,
+        640,
+        480
+      ],
+      "square_side": 273,
+      "foreground_patch_mass": 22.626068
+    },
+    "SO01:query:7350": {
+      "source_image_sha256": "08750f23cc1416f714c1505ce1463bb64b7da41351a39317beb481c13fdfa000",
+      "visible_mask_sha256": "41c25f349e77f8618e979101f25c33db9e57026dd23dee6e5b25b07161a80c7e",
+      "bbox_xyxy": [
+        591,
+        132,
+        640,
+        480
+      ],
+      "square_side": 348,
+      "foreground_patch_mass": 26.797512
+    },
+    "SO02:reference:5770": {
+      "source_image_sha256": "84fe03e8392842f5b9f91c98595eb27d9935f23929ca56b622cb61892c76d73e",
+      "visible_mask_sha256": "f8e1e9cc3a4969e37fa3fbacd29cbb9c99a42cb6aaa18f4031e7ae75eb2953c8",
+      "bbox_xyxy": [
+        524,
+        0,
+        640,
+        144
+      ],
+      "square_side": 144,
+      "foreground_patch_mass": 179.406403
+    },
+    "SO02:reference:5775": {
+      "source_image_sha256": "09bcb11b9561283962bd2cf1e99d754b422118e40ba5106535459892ef751139",
+      "visible_mask_sha256": "ef351898c722024f35b45c147c459a47e9eaffdf6e516d638bac13816b3f3253",
+      "bbox_xyxy": [
+        499,
+        0,
+        640,
+        147
+      ],
+      "square_side": 147,
+      "foreground_patch_mass": 210.322037
+    },
+    "SO02:reference:5780": {
+      "source_image_sha256": "736bb05b607f411f83f3abc19dba457763927bda9d556a4f1c903e2e8e0855cc",
+      "visible_mask_sha256": "e4cbd9c22e19dc0b1a8f20403164fee7703826d0fe6c4cb1a25fcbb3742bb20f",
+      "bbox_xyxy": [
+        485,
+        0,
+        640,
+        146
+      ],
+      "square_side": 155,
+      "foreground_patch_mass": 208.546524
+    },
+    "SO02:query:7090": {
+      "source_image_sha256": "5f3c306c86055e71ddeb81707f1f193748df46ced1a685508e27b040b4811a2c",
+      "visible_mask_sha256": "6ece656346e81ca5d4015c46669cf55bf7b1d01a57e4a9f20cdba5af3fea1992",
+      "bbox_xyxy": [
+        0,
+        272,
+        56,
+        396
+      ],
+      "square_side": 124,
+      "foreground_patch_mass": 82.694817
+    },
+    "SO02:query:7095": {
+      "source_image_sha256": "c47060194090bc07a2643c1efea66eef556e3bd41f911fe2ae0e3a7e4dc26bf2",
+      "visible_mask_sha256": "a8ff98145394fceaaf9cef21c631e2fed0065d4cc616925840aaf63b24854122",
+      "bbox_xyxy": [
+        0,
+        301,
+        53,
+        423
+      ],
+      "square_side": 122,
+      "foreground_patch_mass": 81.247063
+    },
+    "SO02:query:7100": {
+      "source_image_sha256": "4517e9b4a8a0f6c8ec3dcfabb36e0c65833f163c1f99b45308f41b24fb2429de",
+      "visible_mask_sha256": "769b0f820732c961f9e0b21d3c812567eddf90aff43105c6a7459c9cfb41a168",
+      "bbox_xyxy": [
+        0,
+        269,
+        50,
+        400
+      ],
+      "square_side": 131,
+      "foreground_patch_mass": 69.865257
+    },
+    "SO03:reference:6950": {
+      "source_image_sha256": "59d9a72d4b0d5f20fdf0c18e86b187f4e802e78367b5cf8b4bd9f099abd528ab",
+      "visible_mask_sha256": "af199837de697dcf124f94394be1fccc9f619d7c5baf95a03df2510221b7fc11",
+      "bbox_xyxy": [
+        360,
+        0,
+        640,
+        99
+      ],
+      "square_side": 280,
+      "foreground_patch_mass": 23.618958
+    },
+    "SO03:reference:6955": {
+      "source_image_sha256": "979bac153da74b051a1d504dda31b31a4085f4151b16f9b80785d4b54e3eb20a",
+      "visible_mask_sha256": "1c7497b73eecd2a822aa8b50e6ac5ffb5d09dbd1455b0aef087fddf299b16e09",
+      "bbox_xyxy": [
+        374,
+        0,
+        640,
+        101
+      ],
+      "square_side": 266,
+      "foreground_patch_mass": 23.608112
+    },
+    "SO03:reference:6960": {
+      "source_image_sha256": "35792402453eb80e43359914c94c489ed1f99eeb1015961bff90fa9275d8f593",
+      "visible_mask_sha256": "55433eb328e874efdb2dc4c26d0efcabaf171991cad4528c71739f7d9c6d3fa6",
+      "bbox_xyxy": [
+        383,
+        0,
+        640,
+        111
+      ],
+      "square_side": 257,
+      "foreground_patch_mass": 30.59153
+    },
+    "SO03:query:7330": {
+      "source_image_sha256": "7345590e8cf07e0eccd29542b186e102fb0aba6d5f7865c748cf0c23adb9bc49",
+      "visible_mask_sha256": "6509f1cfba691c604f84c9e7e5a5374b4b1eed7aaa7eb174ff99ab546118164d",
+      "bbox_xyxy": [
+        214,
+        0,
+        640,
+        423
+      ],
+      "square_side": 426,
+      "foreground_patch_mass": 152.445877
+    },
+    "SO03:query:7335": {
+      "source_image_sha256": "c883d5b61f773cd71b93f1e08c85d96a77215f8d90335cf22d8a7234a2960759",
+      "visible_mask_sha256": "bcf1c918b038330a3afe231e63851e402c0c118ec9909c78b7934f7a9837e842",
+      "bbox_xyxy": [
+        211,
+        0,
+        640,
+        393
+      ],
+      "square_side": 429,
+      "foreground_patch_mass": 147.332718
+    },
+    "SO03:query:7340": {
+      "source_image_sha256": "eff1b6aabfe188b69afe8e76042ef4ba4975834668598d8832f3bd8d841e88c2",
+      "visible_mask_sha256": "ac0d854c3ebf4b552269136f9435487b47d5bc8f0576363c7a06f70655a9d14d",
+      "bbox_xyxy": [
+        206,
+        0,
+        640,
+        374
+      ],
+      "square_side": 434,
+      "foreground_patch_mass": 141.140778
+    },
+    "SO04:reference:4825": {
+      "source_image_sha256": "e877fe5e2ddb64f1d3e80e1a5595011c66613c8f52a7217a4c7c12ac18f2840e",
+      "visible_mask_sha256": "f89b6203ba09f7a14c70fa5c66483e8beaa4e36261dccdff9fe403fa62034437",
+      "bbox_xyxy": [
+        591,
+        0,
+        640,
+        93
+      ],
+      "square_side": 93,
+      "foreground_patch_mass": 101.684555
+    },
+    "SO04:reference:4830": {
+      "source_image_sha256": "3e0932f7746df389b3a2964d1faf2baca6079565a4d31eb8d1785b487fe4b384",
+      "visible_mask_sha256": "ba36ba0115b049e3a69cef2aa009decbd929f8d5495ec739b648e372dfd0b297",
+      "bbox_xyxy": [
+        590,
+        0,
+        640,
+        105
+      ],
+      "square_side": 105,
+      "foreground_patch_mass": 88.70401
+    },
+    "SO04:reference:4835": {
+      "source_image_sha256": "5561912e3fb389789ce566843e538bbf6f1890e34dcfa8f759797ac5ef60f053",
+      "visible_mask_sha256": "304737fc899311df024c5fef927ac56a8f9c6d06796c28920019475a3f964690",
+      "bbox_xyxy": [
+        585,
+        0,
+        640,
+        131
+      ],
+      "square_side": 131,
+      "foreground_patch_mass": 80.520645
+    },
+    "SO04:query:5280": {
+      "source_image_sha256": "ec5971455aaf66be94a88818ed72feaaeeea37ba2c7345d65f456c4b5d9fa66a",
+      "visible_mask_sha256": "c526f76316c2cad0a0dcdefd659ac770166707d9dd8d94bc3be2e265d7f5088a",
+      "bbox_xyxy": [
+        624,
+        339,
+        640,
+        409
+      ],
+      "square_side": 70,
+      "foreground_patch_mass": 27.960617
+    },
+    "SO04:query:5285": {
+      "source_image_sha256": "3662f7d46b1215f45df54afd16e1eb78f86d45770b5f1f29a0b41b0f04a970da",
+      "visible_mask_sha256": "547e5a54894d4f5c57e1c977230bec83db6e75cb06611c372caf9ffb910ed36b",
+      "bbox_xyxy": [
+        602,
+        273,
+        640,
+        439
+      ],
+      "square_side": 166,
+      "foreground_patch_mass": 32.768147
+    },
+    "SO04:query:5290": {
+      "source_image_sha256": "16d2584054399ebb81383c34a81eabda001265adae6502a9053e901283563a41",
+      "visible_mask_sha256": "839519387b04746022c2174e6e0f2946072f4686d77dfe095cc44ff7605d0125",
+      "bbox_xyxy": [
+        589,
+        221,
+        640,
+        458
+      ],
+      "square_side": 237,
+      "foreground_patch_mass": 31.132448
+    }
+  },
+  "incremental_gain_over_geometry": {
+    "true_positive_delta": -27,
+    "false_positive_reduction": 2,
+    "false_negative_reduction": -27,
+    "f1_delta": -0.624413,
+    "exact_scenario_gain": -12
+  },
+  "claim_boundary": "This is a posthoc mechanism Development test on a consumed SceneNN scene. Its target masks and poses are evaluator-authoritative and unavailable to deployment; DINOv2 is frozen and no labels are used for fitting. A pass would retain only a challenger for fresh evaluation. It is not door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-surface-zero-assignment-protocol-v1",
+  "authority": "PHYSICAL_TARGET_DISJOINT_COMMON_SCAN_FAMILY_REGISTERED_SURFACE_PARTIAL_MATCHING_DEVELOPMENT",
+  "question": "Can provider-registered target-surface alignment supply the independent structural evidence needed for exact zero-assignment when a same-scene door roster has extra candidates, missing targets, or both?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_open_roster_zero_assignment_protocol_v2.json",
+    "protocol_sha256": "7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf",
+    "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+    "cohort_sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+    "result_path": "l10_3rscan_open_roster_zero_assignment_result_v2.json",
+    "result_sha256": "0980fe447bbd6552d830d8bad5df65edc7d9ec36dda2aa00b03e01e3c0c82328",
+    "implementation_path": "l10_3rscan_open_roster_zero_assignment.py",
+    "implementation_sha256": "a194b86ec4b495b44fd487eaebd875d4da20868468882a2fc4b476ed7650cf4c",
+    "required_conclusion": "L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "Appearance-only reciprocal zero assignment retained just 4/12 true correspondences, emitted 5 false correspondences, missed 8, and was 0/2 on the balanced missing-plus-extra construction."
+  },
+  "method_sources": [
+    {
+      "name": "Zero-Assignment Constraint for Graph Matching with Outliers",
+      "url": "https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_Zero-Assignment_Constraint_for_Graph_Matching_With_Outliers_CVPR_2020_paper.pdf",
+      "used_idea": "Use an at-most-one partial permutation whose outlier rows and columns may remain zero."
+    },
+    {
+      "name": "Learning 3D-3D Correspondences for One-shot Partial-to-partial Registration",
+      "url": "https://arxiv.org/abs/2006.04523",
+      "used_idea": "Partial 3D overlap needs an explicit outlier-capable correspondence representation rather than an all-points-must-match assumption."
+    }
+  ],
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d"
+      },
+      {
+        "path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+        "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0"
+      }
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 4,
+    "selection_order": "Group frozen candidate rows by exact (reference_scan_id, rescan_id) in first-occurrence order. Exclude every previously consumed physical reference target. Select the first common scan family with four distinct target IDs having at least four labelled mesh vertices on both scans, then take its first four rows in frozen area_proxy order. No RGB, depth, target centroid, surface distance, or algorithm score affects admission.",
+    "scenarios": {
+      "closed_four": "Four reference surfaces and all four query surfaces.",
+      "query_extra": "Three references, their three counterparts, and one extra query surface.",
+      "reference_extra": "Four references but only the first three query counterparts.",
+      "balanced_swap": "Three references; the third counterpart is absent and replaced by the fourth physical query target."
+    },
+    "forbidden": [
+      "using surface distances during cohort selection",
+      "changing family, targets, or scenario membership after replay",
+      "adding a numeric distance threshold after observing the matrix",
+      "using provider target IDs inside the matcher",
+      "replaying the consumed appearance-only cohort as confirmation"
+    ]
+  },
+  "frozen_model": {
+    "registration": "Use the official per-rescan rigid transform already frozen in the 3RScan metadata to express every query target surface in its reference-scan coordinate system.",
+    "centroid_diagnostic": "Negative Euclidean distance between reference and registered-query target centroids.",
+    "surface_score": "Negative maximum of the two directed median nearest-surface distances between the labelled reference mesh and registered query mesh.",
+    "complete_baseline": "Maximum-total rectangular Hungarian assignment on the registered-surface score; it always emits min(reference_count, query_count) matches.",
+    "zero_assignment": "Emit a surface edge only when it is the strict maximum in both its row and column. Every other row or column is an explicit zero assignment. No learned value or numeric threshold is introduced."
+  },
+  "decision_gate": {
+    "aggregate_true_matches": "12/12 across the four frozen scenarios.",
+    "aggregate_false_matches": 0,
+    "aggregate_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in 4/4 scenarios.",
+    "balanced_swap": "2/2 true matches, zero false matches, and exact rejection of the missing reference identity and extra query identity.",
+    "single_replay": "One replay on the frozen physical-target-disjoint common-family cohort; do not tune on the registered distances."
+  },
+  "claim_boundary": "A pass is a small real-geometry Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes from one common registered scan family. Physical targets are disjoint from seven prior cohorts, but labelled instance surfaces and the rigid scan transform are privileged provider evidence unavailable to a raw phone image. It proves neither appearance-only unknown rejection nor open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

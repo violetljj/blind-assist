@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist-l10-3dstreetview-center-target-lock-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT_REAL_STREETVIEW_MECHANISM",
+  "question": "Does a frozen optical-center, scale-gated visual lock improve exact physical-point matching over one global DINOv2 embedding on prefix-disjoint real street-view pairs?",
+  "provider": {
+    "name": "3D Street View",
+    "project_url": "http://3drepresentation.stanford.edu/",
+    "repository_url": "https://github.com/amir32002/3D_Street_View",
+    "official_test_archive_url": "https://datasets.epfl.ch/vilab/eccv16/test_set/test_matching.tar",
+    "license": "Non-commercial research use under the provider dataset terms"
+  },
+  "source_snapshot": {
+    "status": "COMPLETE_MEMBERS_FROM_RATE_LIMITED_ARCHIVE_PREFIX",
+    "archive_prefix_bytes": 181018624,
+    "archive_prefix_sha256": "645e841518379f1603a0bb627d1a0530c62b366408d1faf907261711e100797e",
+    "complete_decodable_jpegs_expected": 6220,
+    "verpairs_sha256": "b23a09d1fc67e91d432805cf70ec55857ea7cc94fda0121ed85b64f0d68af223",
+    "format_sha256": "2a9d1eaa892c6cd8f7dc5f816dd4dc8d1145b8c53fc35f5240b9bfc844014e50",
+    "selection_limit": "The prefix is an archive-order subset, not a random or complete sample. Only fully decodable JPEG members are admitted."
+  },
+  "cohort_freeze": {
+    "pair_truth": "Use provider verpairs.txt same-target bit without modification.",
+    "availability": "Admit a pair only when both endpoint JPEGs are complete and decodable in the frozen archive prefix.",
+    "group_key": "The four digits before the first hyphen in each endpoint ID.",
+    "test_group_rule": "sha256(group_key UTF-8)[0] modulo 4 equals 0.",
+    "train_pair_rule": "Both endpoint groups are non-test groups.",
+    "test_pair_rule": "Both endpoint groups are test groups.",
+    "cross_group_rule": "Drop pairs crossing the train/test group partition.",
+    "pixel_selection": "No pixel content, embedding, score or outcome affects pair admission or split."
+  },
+  "frozen_model": {
+    "backbone": "facebook/dinov2-small from the project-local immutable snapshot",
+    "device": "CPU",
+    "embedding": "L2-normalized final CLS token",
+    "center_scales": [1.0, 0.5, 0.25],
+    "baseline_score": "Cosine similarity of scale-1.0 embeddings.",
+    "scale_gated_score": {
+      "image_image": "0.25 * global/global cosine + 0.75 * maximum cosine among scale pairs where at least one side is cropped.",
+      "patch_patch": "Global/global cosine because each provider patch is already a target-centered 101x101 crop.",
+      "image_patch": "Maximum cosine between the patch scale-1.0 embedding and the image embeddings at scales 1.0, 0.5 and 0.25."
+    },
+    "forbidden": [
+      "backbone fine-tuning",
+      "score-weight sweep",
+      "crop-scale sweep",
+      "test-derived threshold",
+      "pair resampling after outcome"
+    ]
+  },
+  "evaluation": {
+    "classification": "Fit one threshold per score on train by maximum balanced accuracy, then report test AUROC, average precision and balanced accuracy.",
+    "retrieval": "For each test anchor with at least one positive and one negative candidate, report top-1 same-target accuracy and MRR.",
+    "subgroups": ["image_image", "image_patch", "patch_patch"],
+    "decision_gate": "Gate is met when test AUROC improves by at least 0.01 or test retrieval top-1 improves by at least 0.03, while neither metric declines by more than 0.01.",
+    "single_replay": "Freeze one cohort, run one model replay, and do not retune on the consumed test groups."
+  },
+  "claim_boundary": "A pass is real-image Development evidence for cross-view locking of one provider-verified physical target point under an archive-prefix and provider-same-source limitation. It is not evidence that the point is a door or entrance, belongs to a named venue, is publicly accessible or traversable, yields an approach waypoint, proves arrival or HANDOFF_READY, generalizes to unseen providers, or improves user benefit or mobility safety."
+}

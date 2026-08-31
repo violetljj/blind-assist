@@ -1,0 +1,107 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-fresh-source-protocol-v2",
+  "name": "L10 PanoLab fresh target-way/item-disjoint active lexical panel V2",
+  "status": "FROZEN_BEFORE_SELECTED_PIXEL_DOWNLOAD_OR_MODEL_CALL",
+  "question": "After rejecting V1 before materialization, can the unchanged metadata-only rule freeze four named active-view pairs while additionally excluding every V1 item found in prior pixel evidence?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_panel_v2.py",
+    "sha256": "300b654d1c940b2e0a21fee46a20c4ceeda04b3297aa8ddd88a7407b01ddea07"
+  },
+  "inputs": {
+    "base_v1_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_panel.py",
+      "sha256": "087be1f9df912212c4703397829920c4296fb122aed60e7bc00dc850fe3493b5",
+      "bytes": 15753
+    },
+    "rejected_v1_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v1.json",
+      "sha256": "9007b0732d7f17d43f52a785dee25d58025dcdc1ed08b1c005c50695b707a37f",
+      "bytes": 143876
+    },
+    "v1_rejection_audit": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_audit_v1.json",
+      "sha256": "2c798758987a9608af70ff7697a6f44ee9efbde51fd1ccafbe12b1a6d5ed9abe",
+      "bytes": 2128
+    },
+    "candidate_metadata": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+      "sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+      "bytes": 13885054,
+      "pixel_views_when_generated": 0,
+      "bearing_to_pixel_projection_calls_when_generated": 0
+    },
+    "orientation_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "prior_consumed_active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    }
+  },
+  "selection": {
+    "episode_count": 4,
+    "prior_local_image_directory": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images",
+    "additional_prior_evidence_item_ids": [
+      "8ad8bffc-f8cf-4279-bbce-bb0e97781989",
+      "d4eed7ed-0bfb-4571-9d0b-0bf4c22607fa"
+    ],
+    "minimum_camera_displacement_m": 3.0,
+    "maximum_camera_displacement_m": 15.0,
+    "minimum_after_entrance_distance_m": 4.0,
+    "maximum_after_entrance_distance_m": 40.0,
+    "start_roles": [
+      "TARGET_SELF_OCCLUDED",
+      "OTHER_BUILDING_OCCLUDED"
+    ],
+    "after_role": "DIRECT",
+    "strict_orientation_required_for_both_frames": true,
+    "reciprocal_provider_links_required": true,
+    "target_name_required": true,
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ]
+  },
+  "selection_rule": {
+    "v2_change": "Add the two prior-evidence item IDs identified by the V1 audit to the exclusion set. Do not change pair eligibility, ranking, city round-robin, or panel size.",
+    "eligibility": "Require a named target way unused by the prior four active episodes; both item IDs absent from that source, its local image directory, and the V1 audit exclusion set; reciprocal same-sequence provider adjacency; 3-15 metre motion; metadata geometry transition from target/other-building occluded to DIRECT; 4-40 metre after-frame entrance range; and both items passing the unchanged strict orientation gate.",
+    "within_target_way": "Choose the pair by ascending significant target-name token count, after entrance distance, sequence ID, start item ID, after item ID.",
+    "panel": "Group the chosen target-way pairs by source city; within city sort by significant target-name token count, after entrance distance, target-way ID and sequence ID; select round-robin over city name order while requiring unique sequence IDs until four episodes are frozen.",
+    "forbidden_inputs": [
+      "selected full, SD, thumbnail, or tile pixels",
+      "OCR output",
+      "learned model output",
+      "human portal or sign visibility judgment",
+      "the post-hoc four-episode lexical outcomes"
+    ]
+  },
+  "materialization": {
+    "asset": "provider HD image",
+    "image_directory": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images",
+    "selection_output": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+    "manifest_output": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+    "download_rule": "Only after the V2 selection output exists; refuse existing destination or stale temporary; verify exact full-sensor 2:1 dimensions; record URL, bytes and SHA-256."
+  },
+  "claim_boundary": {
+    "allowed": "A target-way-, item-, and prior-active-sequence-disjoint Development roster selected without viewing the selected pixels or model outputs, after excluding the prior-evidence items found by the V1 audit.",
+    "not_allowed": [
+      "source-provider disjointness or confirmation authority",
+      "pixel portal visibility or lexical readability",
+      "active-view causal success",
+      "address-to-door or sign-to-door ownership",
+      "access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

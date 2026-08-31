@@ -9,14 +9,15 @@ Status: `ACTIVE`
   `L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET` (`4/4`
   reciprocal `SIDESTEP_TO_ENTRANCE_FACE` recoveries). This authorizes an exact
   entrance ray geometrically, not a pixel portal.
-- **SEVN backend:** the address-door metadata adapter is ready on 24 distinct
-  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). Frozen V2
-  multi-scale OCR plus mask topology reads `19/22` visible house numbers and binds
-  `14/24` target doors, with `2` wrong and `8` UNKNOWN. All six Development gates
-  pass on that consumed panel, improving the V1 `11/3/10`
-  correct/wrong/UNKNOWN result. A second metadata-selected panel with zero
-  address or panorama-frame overlap did not confirm the gate: visible-number
-  OCR was `12/20` and binding was `9/0/12` correct/wrong/UNKNOWN.
+- **SEVN backend:** after the frozen V2 stack failed to confirm on a fresh
+  panel, a portal-private PP-OCRv6 medium witness changed the observation edge
+  rather than its scoring thresholds. On 40 further fresh PAN episodes with
+  zero overlap against all 205 prior addresses and 220 prior frames, exact
+  visible-number OCR improved `22/37 -> 29/37` and binding improved
+  `16/0/24 -> 21/0/19` correct/wrong/UNKNOWN. All five new proposals were
+  correct, both ambiguous witness sets abstained, and precision stayed `100%`.
+  This passes the frozen same-source Development gate; it is not cross-provider
+  or cross-city confirmation.
 - **Pixel portal:** generic Panoramax mining is closed after the width-first
   source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
   carry imagery only with independent sub-metre portal registration.
@@ -2075,6 +2076,364 @@ Implementation and durable evidence:
 `l10_sevn_pixel_topology_confirmation_cleanup_v1.json`. The result SHA-256 is
 `0f6bda18a8a8fa19f9d4d13a2725f89e20cf5a878e9ac858c1787e65ff592c99`.
 
+#### PB24 SEVN portal-private PP-OCRv6 medium witness
+
+The successor sequence used only further fresh, metadata-selected PAN panels.
+Portal-conditioned PP-OCRv6 small added one correct and one wrong binding; a
+portal-specific witness graph made no change; an independent EasyOCR/CRAFT
+full-view fallback added one correct and one wrong; and a global PP-OCRv6 medium
+fallback again added one correct and one wrong. Those consumed panels are not
+rescored. Their common failure localized the problem: stronger text recognition
+without a typed observation edge could still attach a true address token to the
+wrong door.
+
+V5 therefore made one structural change. On V2 abstentions only, each detected
+portal instance owns a private upper-neighborhood crop. PP-OCRv6 medium reads
+that crop, and an exact target token may emit a proposal only when exactly one
+portal has the witness. Multiple witnessed portals remain ambiguous and abstain.
+The renderer, prescribed PAN action, primary seven-pass OCR, portal weights and
+masks, evaluator projection, correctness rule, and all existing successful V2
+outputs remain unchanged. Evaluator labels enter only after outputs are sealed.
+
+The source panel contains 40 distinct addresses and 40 distinct frames with no
+overlap against the 205 addresses and 220 frames in all earlier SEVN panels and
+no frame reuse within the panel. The frozen result improves exact OCR on visible
+targets from `22/37` (`59.46%`) to `29/37` (`78.38%`) and improves
+correct/wrong/UNKNOWN binding from `16/0/24` to `21/0/19`. It retains all 16
+baseline-correct bindings. Five unique portal witnesses emit five correct and
+zero wrong bindings; two ambiguous witness sets abstain. Every frozen gate
+passes, so record
+`L10_SEVN_PPOCRV6_MEDIUM_PORTAL_WITNESS_FRESH_PAN_DEVELOPMENT_GATE_MET`.
+
+This freezes the representation as the strongest SEVN PAN Development backend.
+It remains cumulative-reference-disjoint but same-source: it does not establish
+a new provider, city, or APPROACH behavior. A portal-private exact-token edge is
+not portal ownership, public access, traversability, waypoint, arrival,
+`HANDOFF_READY`, user benefit, or safety. The next decision-changing check is an
+unchanged replay on a genuinely source-disjoint source with independent
+door-instance and address-credential truth plus negative/no-portal controls; do
+not tune V5 crops, models, witness uniqueness, or abstention on this panel.
+
+Implementation and durable evidence:
+`l10_sevn_fresh_pan_panel.py`,
+`l10_sevn_fresh_pan_source_protocol_v5.json`,
+`l10_sevn_fresh_pan_source_v5.json`,
+`l10_sevn_fresh_pan_truth_v5.json`,
+`l10_sevn_fresh_pan_selection_receipt_v5.json`,
+`l10_sevn_ppocrv6_medium_fallback.py`,
+`l10_sevn_ppocrv6_medium_portal_witness.py`,
+`l10_sevn_ppocrv6_medium_portal_witness_protocol_v1.json`, and
+`l10_sevn_ppocrv6_medium_portal_witness_result_v1.json`. The result SHA-256 is
+`1c56bc1263e36ad357704161b430b4a7ea3557d7d6dabb76f37b6e8fa8b3772a`.
+
+#### PB25 PanoLab component-separated referent-candidate router
+
+The source-disjoint LSAA transfer first established a useful stop boundary for
+the SEVN OCR representation. On ten Vienna facade crops, the unchanged V5
+field produced only `1/10` exact observations and no bindings; an adaptive
+credential-field variant reached `2/10` exact observations and still no
+bindings. PP-OCRv6 and independent OCR recognition oracles were `0/10`, and all
+four frozen Text Telescope combinations were `0/10`. The selected facade pixels
+did not expose enough target text; this is an observation-reachability failure,
+not evidence that a looser join would generalize.
+
+The active Panoramax branch therefore kept the geometry and referent-candidate
+questions separate. On four fresh target-way/item-disjoint episodes across
+three cities, the frozen long/short exact-token bank found `0/4` target names
+while the post-action entrance ray remained valid on `4/4`; the target names
+were absent from the selected entrance windows. A naive ordered appearance
+memory bank then ranked all three consumed targets correctly but did not beat
+the single after frame: mean truth margin changed `0.11823 -> 0.11602`. Record
+`L10_PANOLAB_ORDERED_APPEARANCE_BANK_POSTHOC_DEVELOPMENT_GATE_NOT_MET` and do
+not tune temporal max pooling on those rows.
+
+The next component router preserved lexical `UNKNOWN` and attached a fixed
+facade fingerprint only as a `SEARCH_PRIORITY_ONLY` fallback. The fingerprint
+is `0.35` CLIP global cosine + `0.25` DINOv2 pooled cosine + `0.40` mutual-patch
+affine consistency against two references per target. On the four consumed
+positive rows it changed lexical `0/0/4` correct/wrong/UNKNOWN into `4/0/0`,
+with `0/12` wrong-goal candidates and zero ownership bindings. This
+source-extended posthoc result is not confirmation.
+
+The open-set check froze its accept thresholds before viewing any negative
+pixels: minimum top-1 score `0.6617196786` and minimum margin
+`0.0346412068`, copied from the weakest of the four positive calibration rows.
+Four new target-absent Panoramax images across three cities, with zero target
+way/item/collection overlap, were all rejected as `UNKNOWN`; false accepts were
+`0/4`. Record
+`L10_PANOLAB_OPEN_SET_APPEARANCE_ABSTENTION_FRESH_NEGATIVE_DEVELOPMENT_GATE_MET`.
+This small fixed-negative result is neither an open-world guarantee nor
+conformal/FDR control.
+
+The decisive fresh-positive panel then froze the only two remaining named
+targets in the local metadata pool that had strict DIRECT views from two
+collections. Rumillat and Halle Rebatet were target-way/item-unseen; each used
+two reference images from one collection and a query from another, for four
+query-reference-disjoint collections and zero prior item overlap. Ranked
+against all six targets, the unchanged gate accepted Halle Rebatet and returned
+`UNKNOWN` for Rumillat: `1/0/1` correct/wrong/UNKNOWN, `50%` positive coverage,
+and `0/10` wrong-goal candidates. Record
+`L10_PANOLAB_CROSS_COLLECTION_FRESH_POSITIVE_ROUTER_DEVELOPMENT_GATE_NOT_MET`.
+The precision boundary held, but cross-condition positive recall did not.
+
+A single frozen sequence hypothesis tested whether reciprocal neighbours could
+repair the failure without threshold rescue. For both consumed targets it took
+exact provider `prev/anchor/next` frames and averaged the highest two of three
+per-frame scores for each candidate. The result stayed `1/0/1`; Rumillat's one
+clear next frame ranked correctly, but the two-view aggregate still ranked a
+distractor higher. Record
+`L10_PANOLAB_RECIPROCAL_TEMPORAL_QUERY_ROUTER_POSTHOC_DEVELOPMENT_GATE_NOT_MET`
+and close that aggregation on FP01/FP02.
+
+The final structural change routed orthogonal evidence instead of changing the
+appearance score. It ran the previously frozen PP-OCRv6 medium exact-token bank
+over the same three frames. If and only if one roster name matched, it emitted a
+lexical search-priority candidate; on `NO_MATCH` it reused the sealed appearance
+result, while conflicts returned `UNKNOWN`. Rumillat was uniquely witnessed as
+`rumillat` at OCR score `0.91` in the reciprocal previous frame; Halle Rebatet
+had no lexical match and retained its correct appearance candidate. The combined
+router changed the sealed appearance `1/0/1` into `2/0/0`, with `0/10`
+wrong-target lexical matches and zero ownership bindings. Record
+`L10_PANOLAB_TEMPORAL_LEXICAL_APPEARANCE_ROUTER_POSTHOC_DEVELOPMENT_GATE_MET`
+for consumed posthoc mechanism Development only.
+
+That result proved a useful mechanism: active observation can expose an
+orthogonal credential that a cross-condition facade embedding misses, and the
+router can preserve abstention instead of weakening the appearance gate. It
+did not prove that the token belonged to the target entity, facade, or entrance,
+and the exact-token branch still failed when OCR produced a near spelling or a
+contracted token.
+
+#### PB26 conservative distinctive-token router and fresh confirmation
+
+A new metadata ledger first extended the same-provider closed roster to two
+Caen targets whose anchors had not entered the router. Euromaster and
+Bibliothèque de Caen - Maladrerie both routed correctly by lexical evidence and
+by temporal appearance (`2/0/0` for each), with zero wrong-goal candidates.
+Those four reference anchors had been materialized for an earlier portal-source
+audit, so this is router/OCR-unseen extension evidence, not fully pixel-unseen
+confirmation.
+
+The next panel enforced the stronger boundary. Before any selected pixel,
+human review, appearance, or OCR call, it chose one target per available capture
+producer from the remaining strict metadata ledger: Département du Calvados
+(nlehuby), Crèche des Petits Lutins (Nzau), and Église Saint-Pierre
+(Carto'Cité). All target ways and 15 items were disjoint from the prior router;
+references and reciprocal `prev/anchor/next` queries came from different
+collections. Human truth froze all three as valid before inference. The fixed
+appearance router safely returned `1/0/2`; the exact temporal token bank added
+nothing (`0/0/3`), leaving combined `1/0/2`. Thirty wrong-target lexical trials
+and 30 appearance controls emitted no wrong candidate.
+
+The failures exposed two concrete representation errors, not a reason to lower
+the appearance threshold. OCR read high-confidence `Colvados` for target token
+`calvados`, and read `Creche` plus `p'tits` for `creche + petits`. One posthoc
+successor was frozen before a single replay: OCR row score at least `0.90`,
+normalized target token length at least six, edit distance at most one, and two
+distinctive evidence units; a target token of length at least eight contributes
+two units, while length six/seven contributes one. A two- or three-fragment OCR
+row may also be concatenated, so `p + tits -> ptits`. The branch emits only when
+exactly one roster target meets the evidence threshold. On the consumed three
+rows it recovered Calvados and Petits Lutins, retained Saint-Pierre through the
+sealed appearance fallback, and changed `1/0/2 -> 3/0/0`, with `0/30`
+wrong-target matches and zero ownership bindings. Record
+`L10_PANOLAB_CONSUMED_DISTINCTIVE_EDIT_TOKEN_MECHANISM_DEVELOPMENT_GATE_MET` as
+posthoc mechanism evidence only.
+
+The decisive confirmation froze two further targets using only metadata name
+capability and producer strata before downloading ten selected pixels: Monoprix
+(nlehuby) and Maison de Quartier Chemin Vert (Nzau). Both target ways and all
+items were router-unseen, and reference/query collections were disjoint. Human
+truth froze both before model calls. Against the expanded 13-target roster, the
+unchanged distinctive-token branch uniquely recovered Maison de Quartier from
+`maison + chemin`, returned `NO_MATCH` for Monoprix, and produced `0/24`
+wrong-target matches. The router therefore invoked the unchanged appearance
+branch only for Monoprix; its fixed score/margin gate accepted the correct
+target with `0/12` wrong-goal candidates. Combined result: `2/0/0`, one lexical
+route, one appearance route, zero `UNKNOWN`, and zero ownership bindings.
+Record
+`L10_PANOLAB_FRESH_DISTINCTIVE_TOKEN_CONDITIONAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET`.
+
+The added edit tolerance was then attacked without tuning. The four previously
+frozen exact-roster-absent controls span Grenoble, Rezé, and Arcueil. Their
+pixels had already entered the appearance evaluation, but no governed OCR result
+referenced them before this protocol. Across 4 queries x 13 targets, the fixed
+branch produced `0/52` matches and kept `UNKNOWN` `4/4`. Record
+`L10_PANOLAB_DISTINCTIVE_EDIT_TOKEN_OPEN_SET_NEGATIVE_DEVELOPMENT_GATE_MET` for
+pre-existing-pixel, first-governed-OCR negative Development only. It is not
+fresh-pixel, conformal, FDR-controlled, calibrated-probability, or general
+open-world evidence; `UNKNOWN` is not known-safe.
+
+The staged successor result is therefore `3/3` consumed posthoc plus `2/2`
+separately frozen fresh positives, with the authority split retained rather
+than collapsed into a fictitious `5/5` confirmation. Exa literature points to
+three orthogonal future upgrades: predict when temporal matching helps
+([SMR](https://arxiv.org/abs/2503.06840)), allocate observation length instead
+of fixing it ([dynamic sequence length](https://arxiv.org/abs/2407.00863)), and
+add patch verification/calibration only after an independent calibration split
+([SafeVPR](https://arxiv.org/abs/2605.28048),
+[To Match or Not to Match](https://arxiv.org/abs/2504.06116)). The current tiny
+curated panels cannot authorize a learned selector or conformal/FDR claim.
+
+One consumed efficiency replay then applied a progressive evidence-first stop
+rule to DF01/DF02. Both routes already had sufficient evidence in the first
+`prev` frame: Maison exited on its two lexical witnesses and Monoprix exited on
+appearance score `0.703153`, margin `0.050528`, above the unchanged gates. The
+derived outcome remained `2/0/0` while observations fell `6 -> 2` (`-66.67%`),
+with one lexical and one appearance early exit and no new model call. Record
+`L10_PANOLAB_CONSUMED_PROGRESSIVE_EVIDENCE_EARLY_EXIT_MECHANISM_DEVELOPMENT_GATE_MET`.
+Because per-frame evidence was inspected before the rule was frozen, this is
+posthoc mechanism evidence, not online latency, compute, energy, motion, or
+fresh dynamic-length confirmation.
+
+The repository also contained a genuinely different provider boundary: four
+Mapillary spherical panoramas in Rotterdam and Den Haag, retained and human-
+reviewed during PB19 but never passed to governed OCR or a tested learning
+model. They were copied hash-identically into canonical `artifacts.local` and
+evaluated once through the unchanged distinctive-token branch. The crop was
+conditioned on the earlier human facade/portal interval, so the test is not
+pixel-unseen or an automatic entrance-ray result. Against a 17-target roster it
+returned `0/0/4/0` correct/wrong/`UNKNOWN`/ambiguous, `0/64` wrong-target
+matches, and zero ownership bindings. Markthal yielded only `HAL@0.937`; the
+explicit Ontmoetingskerk sign yielded `ONTMOETINOBKERK@0.972`, outside the
+frozen one-edit rule; Oude Kerk yielded only numbers and Kievitkerk no OCR row.
+Record
+`L10_MAPILLARY_DISTINCTIVE_EDIT_TOKEN_PROVIDER_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+This is a provider/city-disjoint first-OCR observation-reachability failure,
+not evidence that a looser join is safe and not a full combined-router failure.
+
+#### PB27 public-source admission and goal-conditioned background-IDF verifier
+
+A metadata-frozen KartaView/Jakarta successor first materialized eight exact,
+hash-verified images across four sequences and four contributors. Direct visual
+audit found either selected target in `0/6` query frames, so no OCR or router was
+run. The official public `mcp-karta-view` source was then pinned at commit
+`37ac5c062c9ace66bcc540086236127a3fb86bf0`. Its public `nearby_photos` tool
+calls only the geometric photo endpoint; `object_search` returns an empty result
+and `KartaView token is required` before dispatch without a user-owned
+`x-karta-token`. No dependency install, MCP launch, new KartaView cohort, or
+credential request was made. Record
+`L10_KARTAVIEW_PUBLIC_MCP_SOURCE_SIDE_VISIBILITY_AUTHORITY_NOT_ADMITTED`.
+
+The separate RoadTextVQA/RoadText-1K source supplies ten sampled OCR frames per
+driving video plus independently authored name-question answers. Video 19 was
+the sole development exposure: exact `CAVA` was visible to OCR but unusable by
+the legacy minimum-length-six rule. A first 30-video, OCR-unseen protocol added
+roster-unique exact four/five-letter tokens. Correct rows rose `9 -> 15` and
+UNKNOWN fell `15 -> 3`, but the result also contained one wrong and 11 ambiguous
+episodes, so
+`L10_ROADTEXTVQA_ROSTER_INFORMATION_ROUTER_DEVELOPMENT_GATE_NOT_MET`.
+
+The failure showed that roster uniqueness is not environmental rarity. A sealed
+background scan therefore computed video-document frequency for 64,090 OCR
+tokens across all 2,635 training videos (`26,350` sampled-frame files). The next
+router required eight information bits, target-token uniqueness in the current
+roster, exact matching for length four/five, and at most edit distance one for
+longer tokens. On a second disjoint 30-video panel it improved correct
+`10 -> 15` and UNKNOWN `19 -> 10`, but still produced one wrong and four
+ambiguous episodes. Inspection showed the decisive issue was not a threshold:
+the supposedly competing names were often genuinely co-visible businesses
+(`Hema` with `Hello`, `Vboard` with `Jayini`, and others). Record
+`L10_ROADTEXTVQA_BACKGROUND_IDF_ROUTER_DEVELOPMENT_GATE_NOT_MET`.
+
+Ten-meter assistance already has the user-selected destination, so the third
+successor removed the invalid global-mutual-exclusion assumption. It applies the
+same frozen background-IDF evidence only to the conditioned goal and can emit
+only that target or `UNKNOWN`; co-visible names cannot redirect it. On a third,
+fully disjoint 30-video OCR-unseen panel, correct/`UNKNOWN` improved
+`6/24 -> 19/11` (`20.0% -> 63.3%`, `+43.3 pp`, `+13` correct). All 30
+hash-derived absent-query canaries abstained, wrong-goal candidates and
+identity/portal bindings were zero, and accepted episodes needed a mean `5.158`
+of ten sampled frames. Record
+`L10_ROADTEXTVQA_GOAL_CONDITIONED_BACKGROUND_IDF_VERIFIER_DEVELOPMENT_GATE_MET`.
+A cyclic cross-video diagnostic accepted `1/30`: `canary` was repeatedly visible
+in the challenged video. Because the dataset does not independently assert its
+absence there, this is collision evidence and not an authorized false-positive
+rate.
+
+Exa literature review converged on the remaining representation gap. VPRText
+removes repetitive nearby-place words and combines layout with edit similarity
+([paper](https://www.mdpi.com/2414-4088/6/11/102)); a later text-VPR system uses
+word boxes plus spatial-temporal coherence to suppress unrelated text matches
+([paper](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2024.1424883/full));
+scene-text retrieval itself is explicitly conditioned on a text query
+([ECCV 2018](https://openaccess.thecvf.com/content_ECCV_2018/papers/Lluis_Gomez_Single_Shot_Scene_ECCV_2018_paper.pdf)).
+The local result is narrower: it validates goal conditioning and background
+rarity but has no text-to-sign ownership or localization authority.
+
+One structural follow-up therefore retained the IDF verifier unchanged and
+added only a same-line compact-phrase branch over the source OCR boxes. It joins
+two to four tokens when consecutive boxes overlap vertically by at least 50%
+and their gap is at most three local text heights; compact aliases of length at
+most five remain exact-only, longer aliases permit one edit. On the consumed
+third panel it recovered `U + HAUL` in four frames and `HIGH + END` in two,
+changing `19/30 -> 21/30` with `0/30` negatives. Record
+`L10_ROADTEXTVQA_CONSUMED_LAYOUT_PHRASE_MECHANISM_DEVELOPMENT_GATE_MET` as
+posthoc mechanism evidence only.
+
+The fixed branch then ran once on a fourth, fully video/OCR-unseen panel of 30
+multi-token answers. The IDF branch already accepted `20/30`; layout recovered
+only `VAPOR + IN`, producing `21/30` (`70.0%`) and `0/30` generated two-token
+negative accepts. The effect was real but below the preregistered minimum gain
+of two, so record
+`L10_ROADTEXTVQA_FRESH_GOAL_CONDITIONED_LAYOUT_PHRASE_VERIFIER_DEVELOPMENT_GATE_NOT_MET`.
+Freeze its overlap, gap, token-count, edit, and information thresholds.
+
+Freeze PB26, Mapillary, KartaView/Jakarta, and all four RoadTextVQA fresh panels.
+The
+next decision-changing check needs a
+new provider/city-disjoint sequence cohort with independent exact-target truth,
+reference views for the visual fallback, and exact-roster-absent controls. A
+goal-conditioned background-IDF text observation is now the fixed lexical
+successor, but generated canaries and cross-video collisions cannot replace
+human target-absent pixel truth. The MR images cannot tune edit distance, suffix
+rules, crop scale, or OCR preprocessing. A search-priority candidate remains neither
+exact-instance/facade/portal ownership nor access, traversability, waypoint,
+arrival, handoff, user benefit, or safety evidence.
+
+Primary results and SHA-256:
+
+- `l10_panolab_ordered_appearance_bank_result_v1.json`:
+  `f9a0f01125a660da1f8062762ca69d4f9803c9cca555f68a653ce9c384bca847`
+- `l10_panolab_component_router_result_v1.json`:
+  `a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f`
+- `l10_panolab_open_set_router_result_v1.json`:
+  `3974a36dbe411c91136b23e64ca75d386e7934b7e71d5487630ea747cb92db1b`
+- `l10_panolab_cross_collection_positive_router_result_v1.json`:
+  `db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd`
+- `l10_panolab_temporal_query_router_result_v1.json`:
+  `be8b307b85ea943ecef6d93b3c9d1b74174f750413632e43dac02493a4efb71b`
+- `l10_panolab_temporal_lexical_appearance_router_result_v1.json`:
+  `3deada55268a3bdc300e5f9f4b77b0a5f46351cb5219db4ea2848dee21faa4e4`
+- `l10_panolab_producer_stratified_appearance_router_result_v1.json`:
+  `3dda8517e564eecc9db35848a76b87b9cd5813f06aeb664eec2467108015b8d4`
+- `l10_panolab_producer_stratified_lexical_appearance_router_result_v1.json`:
+  `39225b9b69ddc2b708ce84966cdea74836096bd8aaba0d2444901e9ef68d988a`
+- `l10_panolab_distinctive_edit_token_posthoc_result_v1.json`:
+  `73734c0025be44e5aa289fd31fb27482d31f1eaed2257df508119bdff77b85f0`
+- `l10_panolab_distinctive_token_fresh_confirmation_result_v1.json`:
+  `84850bfc6fb68a46fbe43a31f2d8c67ef8e573d168ca43694c0e7e27305a5e45`
+- `l10_panolab_distinctive_token_fresh_combined_router_result_v1.json`:
+  `2856134e8d7f37b37dad0c68db93d74a4f5edbfb3e16f07d45c1172ee610e18c`
+- `l10_panolab_distinctive_token_open_set_negative_result_v1.json`:
+  `8b6f8b271badbe20cdd04d0109ddc49a395313ca5770aa6cbd7e5dc20fea0880`
+- `l10_panolab_progressive_evidence_early_exit_posthoc_result_v1.json`:
+  `a41722c776ca1be6ad578355696f3dbeb2de886ffb6634147f9cedb2232c7636`
+- `l10_mapillary_distinctive_token_provider_transfer_result_v1.json`:
+  `6333af29d64d2d26968ba6e7369bc605c97eab93e103d58d30a8149061bd6f4a`
+- `l10_kartaview_public_mcp_capability_preflight_v1.json`:
+  `8b3641805e1e69f9456784cb3c93b77ea633ae3a424ffd09dad6ebb8ff6450d2`
+- `l10_roadtextvqa_roster_information_router_result_v1.json`:
+  `5d7b035873b71b9782288a470d15a4727519c9f67d6d677e70ce2df1260a592b`
+- `l10_roadtextvqa_background_idf_router_result_v1.json`:
+  `3027dcae41930eac796e5d266cb2c4b71ed8476b68d8c77a098eadd217ae916c`
+- `l10_roadtextvqa_goal_conditioned_idf_verifier_result_v1.json`:
+  `aba065110339c355f62c963e4ccd25192475a870b112cd740ef6cc43028178bf`
+- `l10_roadtextvqa_layout_phrase_posthoc_result_v1.json`:
+  `7f4048f6e0e5c2c348f7db440ac7deee3b7de375f86ba08e239197ebf628cbf2`
+- `l10_roadtextvqa_layout_phrase_fresh_result_v1.json`:
+  `015b5925c16bb0bca324e2a22c7451ef73b3439b7132ae3cf57773613b166a86`
+
 LychSim remains a conditional secondary synthetic lab, not this route's
 replacement. The source/hardware screen and one bounded go/no-go test are in
 `L10_LYCHSIM_FEASIBILITY_2026-08-31.md`.
@@ -2944,6 +3303,526 @@ Evidence:
   `artifacts.local/evidence/l10-hiertext-word-carrier-canary/adapter.jsonl`,
   SHA-256
   `3bc752813610e5123c2d7b8c825efb7133781ed8f1e8b84251b146a321fe3668`.
+
+## HierText exhaustive-truth goal-carrier replay
+
+The official HierText test release supplies 1,634 previously unused images and
+complete word transcripts/polygons. Its `test.tgz` is 537,066,598 bytes with
+SHA-256 `3ad9bbaad4e03df33898700febac701fe7aa6bcc88fc14634dfb6e9b007a97df`.
+The source is independent of RoadTextVQA and the earlier HierText geometry audit,
+which consumed validation annotations only. Official documentation states that
+test annotations were released on 2024-12-02, images come from Open Images, and
+the dataset is CC BY-SA 4.0:
+<https://github.com/google-research-datasets/hiertext>.
+
+Three disjoint, GT-only-selected 30-image panels were consumed in order. The
+first fixed multiscale branch changed correct/wrong/`UNKNOWN`
+`9/0/21 -> 13/2/15` and accepted `0/30` queries proven absent by complete truth;
+it missed the no-wrong-regression gate. Audit showed that exact target words
+were often merged into longer OCR lines. The second successor projected a
+unique exact query substring onto its character span along the OCR
+quadrilateral. It changed `7/1/22 -> 22/3/5`, again with `0/30` absent accepts,
+but exposed text-identical instance ambiguity and one truth fragment contained
+inside a longer word.
+
+The third protocol fixed both the evaluator referent contract and runtime
+abstention before opening any further pixels. A selected target must occur once
+across every annotated word node and cannot be a substring of a longer truth
+token. Runtime preserves query-span projection, but returns `UNKNOWN` when
+best-rank OCR observations form multiple spatial carrier components. On 30
+further images it changed correct/wrong/`UNKNOWN` `11/0/19 -> 22/0/8`
+(`36.7% -> 73.3%`, `+36.7 pp`, `+11` correct) with `0/30` complete-truth-
+absent accepts. Every frozen gate passed, so record
+`L10_HIERTEXT_TEST_UNIQUE_REFERENT_SPAN_CARRIER_DEVELOPMENT_GATE_MET`.
+
+Evidence:
+
+- first multiscale result:
+  `l10_hiertext_test_multiscale_goal_verifier_result_v1.json`, SHA-256
+  `306c16d62dd095809eb584ab6dc0d1cfffd0eb748ad52aa4d82e5007715100c9`;
+- query-span result:
+  `l10_hiertext_test_span_carrier_verifier_result_v1.json`, SHA-256
+  `22805d161e769b3b4dd996f9d39b3b4d28381f531d0bbe622706a255e0204dd0`;
+- unique-referent query-span result:
+  `l10_hiertext_test_unique_referent_span_verifier_result_v1.json`, SHA-256
+  `b661e72459498dfc4a4e434a6618f0232c562bbf13d288347ce0e4524f0beed9`.
+
+This is a static OCR carrier Development result. Complete-truth uniqueness is an
+evaluator authority, not an open-world instance-identity solution. A localized
+text carrier is not a facade, sign, portal, entrance ownership, access,
+traversability, waypoint, arrival, handoff, user-benefit, deployment, or safety
+claim.
+
+## FSNS source-distinct multi-view goal evidence
+
+The official French Street Name Signs source moves the text mechanism from one
+static image to multiple observations of the same physical sign. Each sample is
+a `600x150` image containing up to four `150x150` crops intended to come from
+different positions and/or times, with a normalized canonical street-name label.
+The source and format are documented by the
+[official TensorFlow model repository](https://github.com/tensorflow/models/tree/master/research/attention_ocr)
+and the [FSNS paper](https://arxiv.org/abs/1702.03970).
+
+The 7,904,079-byte official testdata file was used only for mechanism
+development. Its 50 examples include 39 four-view samples. On a GT-only-selected
+30-example panel, the frozen single-first-view exact branch reached `26/30`; the
+multi-view goal-conditioned branch reached `30/30`, with `0/30` canonical-label-
+disjoint challenge accepts and `0/30` synthetic-negative accepts. Because the
+development protocol required a gain of five while the observed baseline left
+only four possible recoveries, record
+`L10_FSNS_TESTDATA_MULTIVIEW_GOAL_MECHANISM_GATE_NOT_MET`; do not rewrite that
+gate after the result.
+
+One official validation shard was then admitted without opening its selected
+pixels. It contains 252 physical-sign samples, including 201 with four views:
+
+- TFRecord: 39,890,103 bytes, SHA-256
+  `b8eb695d267ea5a0ae9d7ce86f270d614b15fe5e7b09bb68043e3696e2e67ea4`;
+- lossless adapter manifest: 252 rows, SHA-256
+  `258dcd60b1bc3bdfa53729823f837ab31c66314eb30bdac2517e62c76362c9a7`;
+- source adapter: `l10_fsns_tfrecord_adapter.py`, SHA-256
+  `dc9d2a9f8444cd2906145ff6a8b40ca560056c5937c7a6195e6a9c4f9f2de7c8`.
+
+The formal cohort contains 40 four-view samples in source order. Every image
+hash, normalized canonical label, and distinctive goal token is disjoint from
+all 50 testdata examples. The algorithm is unchanged: OCR each view at the same
+3x scale, accept an exact conditioned distinctive token from any view, and allow
+edit distance one only if the same target token recurs in at least two different
+views. The result changed correct/`UNKNOWN` `34/6 -> 40/0`
+(`85% -> 100%`, `+15 pp`, `+6` correct). All 40 accepted by exact evidence; the
+six new rows first accepted at view 2 (`3`) or view 3 (`3`). Canonical-label-
+disjoint challenges and synthetic negatives both remained `0/40`. Every frozen
+gate passes, so record
+`L10_FSNS_FRESH_MULTIVIEW_GOAL_EVIDENCE_DEVELOPMENT_GATE_MET`.
+
+Evidence:
+
+- protocol: `l10_fsns_multiview_goal_verifier_protocol_v1.json`, SHA-256
+  `2f22876af176f031d5567a72554abf37b73642ce506d2707dc9a102b89010194`;
+- result: `l10_fsns_multiview_goal_verifier_result_v1.json`, SHA-256
+  `54a3389fa22fd5fc615118ae23a7cc1db1d50dfcc0dda519354069995ce53e1e`;
+- OCR cache SHA-256
+  `52d7a3c26bdbeae67027da2c4226a6ff1de657bc9c2287f312fbabf040637ff8`.
+
+This establishes a source-distinct multi-view canonical sign-reading mechanism.
+FSNS does not provide exhaustive pixel text, per-tile target boxes, camera poses,
+the observation action that produced a view, metric distance, facade or entrance
+association, portal ownership, access, arrival, handoff, deployment, or safety.
+The label-disjoint challenges are collision diagnostics, not a pixel-absence
+false-positive rate.
+
+## CATALIST controlled-action goal recovery
+
+Exa discovery identified CATALIST as the first admitted public text source in
+this route that records a deliberately executed observation transformation
+rather than only passive multi-view association. The
+[official site](https://catalist-2021.github.io/) and
+[paper](https://www.cse.iitb.ac.in/~ganesh/papers/catalist2021.pdf) document
+2,322 real 1920x1080 videos recorded at 25 fps on a tripod under translation,
+roll, tilt, pan, and zoom. The official annotation provides a manually verified
+video text label, transformation class, and optional start/end times. Its
+Cloud-Vision per-frame masks are explicitly unverified and were not used. The
+official Kaggle API reports the license as unknown, so source videos remain
+local and are not redistributed.
+
+The formal selector read only the official train/validation text files. It
+froze 30 validation videos at six per action class, source-order-first per
+label/action pair. The cohort contains 12 verified labels; both every full label
+and each selected distinctive goal token are absent from the 1,595 valid
+training rows. The evaluator transferred the FSNS evidence contract unchanged:
+first-frame exact goal evidence is the baseline; the successor retains it and
+samples 25/50/75/100 percent of the annotated controlled transformation,
+accepting exact evidence from any checkpoint or edit distance one only across
+two different checkpoints. Three pre-result transport attempts are recorded in
+the protocol: the first stopped before model import; the next two exposed
+unreliable MP4 random seeking and false container frame counts. No cache,
+result, metric, or OCR output was persisted or surfaced. The final transport
+counts decodable frames first and projects the unchanged fractional checkpoints
+onto that interval.
+
+The result changed first-frame correct/`UNKNOWN` `27/3 -> 29/1`
+(`90.0% -> 96.7%`, `+2`, `+6.667 pp`). Both recoveries were pan episodes; the
+other four action classes started at `5/6` or `6/6` and added none. All 30
+canonical-label-disjoint challenges and all 30 synthetic negatives abstained.
+The preregistered minimum gain was five, so record
+`L10_CATALIST_CONTROLLED_ACTION_GOAL_RECOVERY_DEVELOPMENT_GATE_NOT_MET`.
+A posthoc two-token check on the consumed OCR cache changed `27 -> 27`; it did
+not justify opening the six remaining validation labels for the same mechanism.
+
+Evidence:
+
+- evaluator: `l10_catalist_controlled_action_goal_recovery.py`, SHA-256
+  `38bf563f955a253832881c616b3fa8a71836dd9fe79044335f0371dfd2fa136d`;
+- protocol: `l10_catalist_controlled_action_goal_recovery_protocol_v1.json`,
+  SHA-256 `1bbcb3abede51262ae3e297dad995eae7cf6453a02da45e88b705dc8ff053b4b`;
+- result: `l10_catalist_controlled_action_goal_recovery_result_v1.json`,
+  SHA-256 `3ed202edc9d72d24076db6fb073ad57215db45d7d20fbd26d5566f103a65a840`;
+- OCR cache SHA-256
+  `e1f8ee8ec4fb4089aff01ca069ec3ad033c2b2a80f7837bded4d4a5d1d632b71`.
+
+This is controlled-tripod Development evidence. CATALIST does not provide
+transformation direction, metric camera pose, randomized stationary
+counterfactuals, exhaustive per-frame pixel text, business/facade/sign
+ownership, a door or entrance, public access, traversability, arrival, handoff,
+user benefit, or safety. Recovery after a labelled transformation is
+intervention-linked evidence, not proof that a live L10 controller selected the
+action or recovered an exact target entrance in an open street.
+
+## 3D Street View center-target lock
+
+Exa discovery identified the official
+[3D Street View project](http://3drepresentation.stanford.edu/) and
+[repository](https://github.com/amir32002/3D_Street_View). Its test contract
+labels whether two observations share the exact physical target point and
+places that target at the optical center. The 1 GB official matching archive was
+rate-limited, so this replay freezes the first 181,018,624 bytes instead of
+pretending the source is complete. That prefix contains 6,220 fully decodable
+JPEG members. Intersecting them with `verpairs.txt`, then placing endpoint ID
+prefixes into a SHA-256-derived group split, yielded 2,180 training pairs and
+426 prefix-disjoint test pairs; 957 cross-partition pairs were discarded.
+
+The baseline is global/global cosine from the local immutable DINOv2-small
+snapshot. The frozen successor uses the provider geometry directly: 101x101
+target patches remain unchanged; full 640x640 images receive centered 1.0, 0.5,
+and 0.25 crops, and the score selects scale only on the full-image side. On the
+held-out groups, AUROC improved `0.949859 -> 0.984860` (`+3.5001 pp`), balanced
+accuracy `0.895773 -> 0.926341` (`+3.0568 pp`), average precision
+`0.954445 -> 0.982243`, and retrieval Top-1 across 32 eligible anchors
+`0.843750 -> 1.000000` (`+15.625 pp`). The image/patch subgroup improved AUROC
+`0.874644 -> 0.966274`, image/image improved `0.987794 -> 0.998644`, and the
+already cropped patch/patch subgroup stayed `0.981692`. Record
+`L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET`.
+
+Evidence:
+
+- evaluator: `l10_3dstreetview_center_target_lock.py`, SHA-256
+  `1abb07f11e1ac5e1c30d11ccc3aca1f88362e0bd4c330cfbf69f549d551d0f81`;
+- protocol: `l10_3dstreetview_center_target_lock_protocol_v1.json`, SHA-256
+  `3a7938e9839daa240513a397d14e79c87b82431db5475f3e75b0284ed25789b6`;
+- cohort: `l10_3dstreetview_center_target_lock_cohort_v1.json`, SHA-256
+  `f81a76e8a45ade7ff2b4a9a18cb32feb35d04b942ced24950e4caf788d128847`;
+- result: `l10_3dstreetview_center_target_lock_result_v1.json`, SHA-256
+  `12c2d5cb7b26720b72c6d8c6354914c9693064e77e925482de60a3b95e6e24ee`.
+
+This is real-image, same-provider, archive-prefix Development evidence for
+locking a provider-verified physical point under scale/view change. The test
+truth does not say that the point is a door or entrance, belongs to a named
+venue, is publicly accessible or traversable, supplies an approach waypoint,
+proves arrival or `HANDOFF_READY`, generalizes across providers, or improves
+user benefit or mobility safety.
+
+## SceneNN and 3RScan truth-proposed door transfer
+
+The first transfer kept the 3D Street View model, centered scales, and
+`0.25/0.75` score unchanged and reused the three already consumed SceneNN door
+episodes. Evaluator-authoritative mesh labels and poses supplied six square-
+padded door proposals. All six doors sat at image edges and the proposals were
+severe partial slivers. Global cosine reached AUROC/AP/Top-1
+`0.500000/0.577778/2-of-6`; the center-scale score reached
+`0.444444/0.555556/2-of-6`, with minimum margin `-0.221899`. Record
+`L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+Freeze the crops: they falsify transfer under partial visibility, not general
+cross-provider appearance matching.
+
+A new 3RScan protocol fixed the resulting information contract before RGB. It
+required `98%` of target vertices inside the source image, at least `2,000 px`
+projected area, at least `32 px` image margin, and depth-consistent visibility.
+The first diversity rule—one target per reference scan—found only two eligible
+targets and opened zero RGB. V2 changed only that pre-RGB rule to at most two
+distinct physical targets per reference scan. It froze three doors across two
+reference scan families after reading `8,185` pose and depth members and zero RGB
+members. The six selected source-frame margins were at least `36.267 px`.
+
+On the single frozen replay, global cosine reached pair AUROC/AP/Top-1
+`0.944444/0.916667/5-of-6`; the center-scale score regressed to
+`0.833333/0.833333/4-of-6`. Both errors were a collision between two visually
+similar doors from the same scan family. Record
+`L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+This shows that local target emphasis alone cannot resolve a finite sibling-door
+roster.
+
+The sole structural successor is parameter-free: construct the complete 3x3
+reference/query score matrix and maximize total score under a one-to-one
+constraint with `linear_sum_assignment`. On the consumed matrix it changed the
+center-scale result from independent `4/6` to an equivalent bidirectional `6/6`;
+the selected complete assignment beat second-best by `0.246219`. This is
+explicit posthoc mechanism Development.
+
+Before confirmation, a first target-triple-disjoint freeze was rejected without
+RGB because one row reused the same physical reference target through another
+rescan. V2 strengthened exclusion to every prior physical
+`(reference_scan_id,target_instance_id)`. It then froze doorframes 36, 37, and
+28, with minimum source-frame margin `32.705 px`, after `8,933` pose/depth and
+zero RGB members. On their single replay, both global and center-scale pair
+AUROC/AP were `1.0/1.0`; independent retrieval was `6/6`; the center-scale
+one-to-one assignment was `3/3` (bidirectional equivalent `6/6`) and its complete-
+assignment margin was `0.419960`. Record
+`L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET`.
+
+Full-frame visual audit showed that the raw 3RScan camera frames carry roughly
+90-degree roll: the apparently horizontal square-padded proposals correspond to
+complete doors/doorframes when viewed in scene orientation, rather than isolated
+door lintels. The audit does not add semantic authority beyond provider labels.
+
+The closed roster did not answer whether a candidate should remain unmatched.
+An open-roster protocol therefore froze four new physical targets, two views per
+target per side, and four scenarios before RGB: closed, query-extra, reference-
+extra, and a balanced missing-plus-extra swap. The unchanged appearance score,
+symmetric multiview bottleneck, and strict reciprocal row/column maxima retained
+only `4/12` true matches, emitted `5` false matches, missed `8`, and reached F1
+`0.380952`; the balanced swap produced `0` true and `2` false matches. Record
+`L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET`.
+Relative appearance rank is now a frozen open-roster `NEGATIVE_CONTROL`, not an
+existence test.
+
+The next protocol selected four further physical targets from one registered
+reference/rescan family before reading RGB or depth. It applied the official
+rigid transform and scored each pair by symmetric median nearest-surface
+distance. Complete surface assignment and reciprocal surface ranking both
+recovered all `12/12` true correspondences, but each emitted one adjacent
+doorframe-to-door false match in the balanced swap (`TP=12, FP=1, FN=0`, F1
+`0.96`; exact unmatched sets `3/4`). Record
+`L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET`.
+Registered surface distance is a strong `COMPONENT`, but relative mutual rank
+alone is not absence authority.
+
+A third protocol froze four more physical targets from the same scan family and
+predeclared the first two as registration witnesses before computing distances.
+Their symmetric surface residuals were `0.038178 m` and `0.038756 m`; the maximum,
+with no multiplier, slack, or selected quantile, became the absolute rejector
+ceiling. On the two evaluated targets, the unchanged registered-surface score,
+strict reciprocity, and witness ceiling reached `TP=12, FP=0, FN=0`, F1 `1.0`,
+and exact unmatched sets `4/4`, versus complete-assignment `TP=12, FP=1, FN=0`,
+F1 `0.96`. Record
+`L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET`.
+Rank-only surface matching also reached F1 `1.0` on this fresh cohort, however,
+so the witness is a `CHALLENGER`; its incremental value is not established here.
+
+A severe incremental protocol next excluded every consumed reference scan family
+and physical target, then froze the first available six same-class doors from
+`6bde60c0... -> 6bde60c4...`. Two witnesses and four evaluated targets were
+declared before distances; one closed, two unequal-size, and all twelve ordered
+balanced swaps supplied `64` truth correspondences and `26` unmatched nodes.
+Rank-only surface matching reached `TP=64, FP=2, FN=0`, F1 `0.984615`, with
+exact unmatched sets in `13/15` scenarios. The unchanged two-witness ceiling was
+`0.376774 m`: it removed both false matches but reduced true matches to `48`,
+introduced `16` misses, lowered F1 to `0.857143`, and made only `2/15`
+unmatched sets exact. Record
+`L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET`.
+The raw maximum of two witness residuals is `DEAD_FOR_THIS_ROLE` as a scan-
+family-general absolute rejector; no slack, multiplier, quantile, or witness
+reselection may rescue the consumed result.
+
+Exa review of partial-registration primary work consistently separated overlap
+support from global distance or correspondence rank. The next protocol therefore
+changed information rather than threshold: for each reference target it reused
+the deterministic upright portal frame, projected the reference and transformed
+query surfaces into horizontal-by-vertical coordinates, formed convex hulls, and
+required strictly positive intersection area. No IoU magnitude threshold exists.
+It froze the first six still-unconsumed same-class `doorframe` targets from the
+same family before surface scores or overlaps and evaluated one closed, two
+unequal-size, and all thirty ordered balanced swaps (`136` truth correspondences,
+`62` unmatched nodes).
+
+Complete assignment reached `TP=102, FP=64, FN=34`, F1 `0.675497`. Strict
+rank-only zero assignment reached `TP=136, FP=4, FN=0`, F1 `0.985507`, and
+exact unmatched sets in `29/33` scenarios. Positive registered extent support
+retained all `136` true matches, removed all `4` false matches, reached F1
+`1.0`, and recovered exact unmatched sets in all `33/33` scenarios. Record
+`L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET`.
+The support predicate is `RETAINED_CORE` for this privileged registered-
+geometry partial-roster responsibility.
+
+For scan-family confirmation, the full metadata inventory was filtered before
+geometry access. The first eligible unconsumed family was
+`422885e5... -> 422885e7...`, with four stable `door` identities. Only its two
+`semseg.v2.json` and two `labels.instances.annotated.v2.ply` files
+(`2.85 MiB` total) were materialized through the previously authorized official
+downloader; no RGB, depth, or sequence archive was downloaded. Before any surface
+score or overlap, the protocol froze the four targets, one closed, two unequal-
+size, and all twelve ordered balanced swaps (`34` truth correspondences and
+`26` unmatched nodes).
+
+With every algorithmic surface unchanged, complete assignment reached
+`TP=34, FP=12, FN=0`, F1 `0.85`. Rank-only zero assignment reached
+`TP=34, FP=2, FN=0`, F1 `0.971429`, and exact unmatched sets in `13/15`
+scenarios. Positive registered extent support retained all `34` true matches,
+removed both false matches, reached F1 `1.0`, and made all `15/15` unmatched
+sets exact. Record
+`L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET`.
+
+### SceneNN observed-surface carrier and partial-view veto boundary
+
+The next source admission selected SceneNN scene 096 before RGB-D access: four
+provider-labelled doors, eight fixed reference/query anchors, one closed, two
+unequal-size, and twelve ordered balanced-swap scenarios (`34` truth
+correspondences, `26` unmatched nodes). All `8/8` synchronized RGB-D members
+were extracted and hash-sealed. The frozen single-frame carrier retained only
+`159` and `120` depth-consistent points for SO01/SO04 query against the unchanged
+256-point minimum. No surface score or overlap matrix was computed. Record
+`L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT`;
+this is missing carrier support, not an algorithm negative.
+
+Exa review of registered RGB-D reconstruction motivated one structural repair:
+fuse exact trajectory offsets `[-5,0,+5]` in the provider world frame while
+leaving 0.08 m depth consistency, the 256-point fused minimum, 4,096 caps,
+surface score, reciprocity, and support unchanged. A transparent transport
+repair allowed an individual frozen neighbor to contribute zero points, because
+the protocol constrains only the fused observation. It did not refreeze the
+cohort or open another RGB-D member. Every fused role then supplied at least
+`931` points. Rank-only reached `TP=34, FP=3, FN=0`, F1 `0.957746`, with
+`12/15` exact scenarios. Positive convex-hull intersection reached only
+`TP=25, FP=2, FN=9`, F1 `0.819672`, `6/15` exact; true-pair IoUs were
+`0.285715, 0, 0.197744, 0.263963`. Record
+`L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET`.
+The three-frame carrier repaired evaluability, but the partial-view
+convex-hull veto is `DEAD_FOR_THIS_ROLE`.
+
+Two further candidates were frozen from primary colored-registration and
+instance-retrieval evidence, without fitting a threshold or weight. Saturation-
+weighted Hue reciprocal agreement removed all three geometry false positives
+but retained only two true matches: consensus `TP=2, FP=0, FN=32`, F1
+`0.111111`, `0/15` exact. Frozen local DINOv2-S foreground feature averaging
+used the exact three visible-target masks per role, continuous patch-mask
+weights, and max cosine across all `3x3` view pairs. It reached appearance-only
+`TP=7, FP=21, FN=27`; geometry consensus was `TP=7, FP=1, FN=27`, F1
+`0.333333`, `0/15` exact. Record
+`L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET`
+and
+`L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET`.
+Both generic appearance veto roles are closed on this consumed scene.
+
+A distinct source admission then selected the four smallest still-unconsumed
+one-door SceneNN recordings (`021`, `273`, `011`, `279`) before RGB or model
+access. Geometry froze eight observations and the same fifteen open-roster
+scenarios. Fixed EfficientLoFTR used the truth-visible target box expanded by
+`1.25`, score threshold `0.2`, at least eight matches, six-pixel homography
+RANSAC, and at least six inliers; unsupported pairs became NONE. Same-crop
+DINOv2 reciprocal assignment reached `TP=6, FP=24, FN=28`, F1 `0.1875`, and
+`1/15` exact scenarios. EfficientLoFTR improved to `TP=11, FP=18, FN=23`, F1
+`0.349206`, but supported only LF01/LF03 true diagonals and reached `0/15`
+exact scenarios. Record
+`L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET`. The frozen
+homography-inlier hard gate is `DEAD_FOR_THIS_ROLE`; its positive F1 delta is
+retained only as evidence that local correspondence is more useful than global
+patch averaging. Exa review of RoMa and DKM admits a separately fixed dense-
+certainty and balanced-sampling successor on fresh targets. No consumed crop,
+threshold, or RANSAC parameter may be tuned.
+
+The honest provider-disjoint Development boundary is therefore the temporal
+rank-only registered-surface component at F1 `0.957746`, not the perfect
+complete-surface support result. A successor must be explicitly constructed or
+trained for same physical identity under severe partial views, include NONE,
+and use fresh targets. None of these results proves raw-phone perception, door
+detection, aperture, named entrance, ownership, access, traversability,
+waypoint, arrival, `HANDOFF_READY`, user benefit, deployment, or safety.
+
+Evidence:
+
+- SceneNN transfer result:
+  `l10_scenenn_center_target_door_retrieval_result_v1.json`, SHA-256
+  `5850b222eec2b1fbd870706ea8580dc973f871c718546771eab6ebeb1e48e282`;
+- 3RScan pairwise result:
+  `l10_3rscan_center_target_door_retrieval_result_v2.json`, SHA-256
+  `6b2a9c2729b64f8c6de052894f6c58a7c7f32dd219d69324757d3b86ae62a4f8`;
+- assignment posthoc result:
+  `l10_3rscan_roster_assignment_posthoc_result_v1.json`, SHA-256
+  `c679db740615e45c61f4a20d035a31d250994f97322b81050f86844e40e1fc79`;
+- physically target-disjoint assignment protocol/cohort/result SHA-256:
+  `11eacf310a9d2ae310de321be4de152232fc8cdcb71458b04e0f29689895d699`,
+  `c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d`,
+  and `46025f243e4c108271e0776d801cd3789680738986e2afdce367a842350c149f`;
+- confirmation evaluator SHA-256:
+  `973a009919a259327eaaf65eaf92721ca6c4d50b44ed244ef407bdbde2ffebd3`;
+- open-roster appearance protocol/cohort/result/evaluator SHA-256:
+  `7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf`,
+  `4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0`,
+  `0980fe447bbd6552d830d8bad5df65edc7d9ec36dda2aa00b03e01e3c0c82328`,
+  and `a194b86ec4b495b44fd487eaebd875d4da20868468882a2fc4b476ed7650cf4c`;
+- registered-surface protocol/cohort/result/evaluator SHA-256:
+  `5b48458676b0c3a98576fa58c0d84ff8b1ab243b56d04dcf04522632fedd4fd6`,
+  `a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84`,
+  `fbdf4c1bca054a2591e1975c5e42705d05ffc7e5cf05b92950a3358084b5fe6d`,
+  and `a69b20c3c6f1d73ba0458e7ea183bcc5189104a529f7512f4b3e4543134e9a6b`;
+- witness-calibrated protocol/cohort/result/evaluator SHA-256:
+  `bc6a898fdc0d24994f0f1e22c50dd92082ab74b550fd655f767c61ad433c12fb`,
+  `99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d`,
+  `38ef5051cd93ce04f347837831142aeb1ebb1eb8f9761ca28f6f765bb666876c`,
+  and `7e2a448b286aab43da9442f8fc9c13d9ceac6d4411d5532da093f6447d64bd79`;
+- scan-family-disjoint witness protocol/cohort/result/evaluator SHA-256:
+  `78e3989dac20d98c340318d01f5470f85a3c7be6a127922a7b6467ba7743576f`,
+  `051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd`,
+  `7c25f8f08a41ba9f72aef26fa262bc79a558b5de756a3763639259baa9383a0e`,
+  and `109d36814509f916cfba3bccedecd8ff7fff6bcb916c9a26cb9d8ca41b144c0d`;
+- registered-extent-support protocol/cohort/result/evaluator SHA-256:
+  `55784575cf6a3e7365ceaba10a3bdcc6154555705bc860b5823570198322595f`,
+  `e1aa3cc56beab733dc636cf63cd8291de4fb00645289fd5a9014eb5d13b32bd7`,
+  `6e4c3b3bbff823af097106b7915b08bf88b92c3f0f4534a9c5886b34a0beb37b`,
+  and `a03f3903dabad275f784683fa09e31fbf1133e3caed367a3a325fd750518ce2b`;
+- scan-family confirmation protocol/cohort/result/evaluator SHA-256:
+  `cb71bd1ab0abc7e7a689b64ec51f96c537064899a0c99b96dd6694afdf601a8a`,
+  `af364a3a8f68110e0be1d2c5a198182dd712da1e0f74cebd9dde98e04396dbf3`,
+  `01720cd11f5c387725255eef15ea796e3fc2cca2f580f450c0b67d0d005f6f7e`,
+  and `e4ae41608a6171b857e11dbc90ed46ddffc0aed0ef321a2769e9abce97920a4b`;
+- SceneNN single-frame observed-surface protocol/cohort/receipt/result SHA-256:
+  `deb0be3fe25ff5384b0344c3accfbab3074049a18c577e22a376cb5b595a8b7c`,
+  `38981c8940927b44202b3afea7be70fcf8e077615f039efb1ad532c18ad7c817`,
+  `25eb367897508fff9b060fe82dfe9c5b8d2d168480652ecafe43058c39eb6dc5`,
+  and `37405323ebe2c55d7aa8b25a89c31a8b488b4b65789f4b88ecfda726f874894e`;
+- SceneNN temporal protocol/cohort/receipt/result SHA-256:
+  `496e1893380e9d50aeec2ad9bffcca31a9378f08cad5d088761cb4366b4f7b7b`,
+  `b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d`,
+  `2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274`,
+  and `0acfa5bd2aa8ff3bb4d4dad75c63e916f0a7064b082a138ae225d62b173bcd27`;
+- SceneNN Hue protocol/result SHA-256:
+  `e0fe8535b5ec75179926aeda136d91223fd453697bc18e32faada734da3f88dc`
+  and `a42c3a913fac3b3b9fab9cf81c0a4f5544dfdbd1cf3b5ab204d15d637aea4c67`;
+- SceneNN DINOv2-FFA protocol/result SHA-256:
+  `e02f8acbcfe3fb6026b00634b6ac59cabf0444dd8a51890af57b1d8eb9ec19a1`
+  and `a66d9b5f45dee1317e28852bd92f676c534abe6d3af4c4b2c9edab97f8fdc8eb`;
+- SceneNN EfficientLoFTR fresh protocol/cohort/RGB receipt/result SHA-256:
+  `f61d54ce43d05c72258dbe92f4e48efea621002c822cd89f66dc2b4689e16503`,
+  `b6952b081d3476db1c5f3d600fb18aa54fd8858bad7c13b02e8ed08860c76dd4`,
+  `6cf8384a27bd95e9646bfc18fa3d3a421d03a8a4e8a4ba02216efcd9b357230b`,
+  and `4fe0eff3200b538b685554a0373ce52e160b97470a3b59b780e66bb146fa4115`;
+- visual audits:
+  `artifacts.local/results/l10-3rscan-center-target-door-retrieval-v2/proposal-crops-montage.jpg`
+  and
+  `artifacts.local/results/l10-3rscan-roster-assignment-confirmation-v2/full-frame-audit-montage.jpg`.
+
+The latest positive result removes the complete-roster assumption but still
+requires truth proposals, complete surfaces, and the official rigid transform
+from one provider. It is not raw-image or phone-side unknown rejection, door
+detection, a doorway aperture, named entrance, venue ownership, public access,
+traversability, approach waypoint, arrival, `HANDOFF_READY`, provider-independent
+confirmation, user benefit, deployment, or mobility-safety evidence.
+
+Inheritance disposition:
+
+- `l10_3dstreetview_center_target_lock.py` is `RETAINED_CORE` for provider-
+  centered real-image point scoring below any portal claim;
+- the fixed SceneNN edge-sliver cohort is `NEGATIVE_CONTROL` for partial-
+  visibility source admission;
+- the unchanged center-scale pair score is
+  `COMPONENT_OR_CHALLENGER / COMPONENT` inside the closed-roster successor; its
+  standalone sibling-door failure remains frozen;
+- parameter-free one-to-one assignment is `RETAINED_CORE` only for an externally
+  justified complete closed roster;
+- appearance-only reciprocal open-roster matching is `NEGATIVE_CONTROL` for the
+  false assumption that relative rank establishes match existence;
+- registered target-surface scoring is
+  `COMPONENT_OR_CHALLENGER / COMPONENT` for partial-roster identity, not
+  standalone absence authority;
+- the raw maximum of two witness residuals is `DEAD_FOR_THIS_ROLE` as a scan-
+  family-general absolute rejector after the frozen incremental test removed two
+  false matches but killed sixteen true matches;
+- strictly positive registered planar-extent support is `RETAINED_CORE` for
+  privileged registered-geometry partial rosters after fresh incremental
+  `136/4/0 -> 136/0/0` evidence and unchanged scan-family-disjoint
+  `34/2/0 -> 34/0/0` confirmation;
+- the one-reference-per-target v1 shortage and the exact-triple-only v1 freeze
+  opened zero RGB and remain unclassified working material, not
+  `DEAD_FOR_THIS_ROLE`.
 
 ## Android text-goal canary
 

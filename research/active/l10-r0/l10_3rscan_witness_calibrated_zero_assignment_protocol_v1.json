@@ -1,0 +1,73 @@
+{
+  "schema": "blindassist-l10-3rscan-witness-calibrated-zero-assignment-protocol-v1",
+  "authority": "PHYSICAL_TARGET_DISJOINT_WITNESS_CALIBRATED_PARTIAL_MATCHING_DEVELOPMENT",
+  "question": "Can two externally confirmed registration witnesses convert accurate relative surface ranking into exact missing/extra-target zero assignment on a fresh same-scene door roster?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_registered_surface_zero_assignment_protocol_v1.json",
+    "protocol_sha256": "5b48458676b0c3a98576fa58c0d84ff8b1ab243b56d04dcf04522632fedd4fd6",
+    "cohort_path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json",
+    "cohort_sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84",
+    "result_path": "l10_3rscan_registered_surface_zero_assignment_result_v1.json",
+    "result_sha256": "fbdf4c1bca054a2591e1975c5e42705d05ffc7e5cf05b92950a3358084b5fe6d",
+    "implementation_path": "l10_3rscan_registered_surface_zero_assignment.py",
+    "implementation_sha256": "a69b20c3c6f1d73ba0458e7ea183bcc5189104a529f7512f4b3e4543134e9a6b",
+    "required_conclusion": "L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "Registered surface ranking recovered all 12 true correspondences, but the balanced missing-plus-extra roster still forced one adjacent doorframe-to-door match, leaving F1 at 0.96 and exact zero assignment at 3/4 scenarios."
+  },
+  "method_sources": [
+    {
+      "name": "Zero-Assignment Constraint for Graph Matching with Outliers",
+      "url": "https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_Zero-Assignment_Constraint_for_Graph_Matching_With_Outliers_CVPR_2020_paper.pdf",
+      "used_idea": "Retain at-most-one correspondence and make absence an explicit all-zero row or column."
+    },
+    {
+      "name": "Predictor-Rejector Multi-Class Abstention",
+      "url": "https://proceedings.mlr.press/v237/mao24a/mao24a.pdf",
+      "used_idea": "Separate prediction from rejection; here the frozen surface matcher stays fixed while an independent registration witness supplies the rejector scale."
+    }
+  ],
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {"path": "l10_3rscan_bounded_reference_mask_cohort_v1.json", "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"},
+      {"path": "l10_3rscan_reference_pixel_field_cohort_v1.json", "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"},
+      {"path": "l10_3rscan_registered_extent_cohort_v1.json", "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"},
+      {"path": "l10_3rscan_spatial_reference_mask_cohort_v1.json", "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"},
+      {"path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json", "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"},
+      {"path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json", "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d"},
+      {"path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json", "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0"},
+      {"path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json", "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84"}
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 4,
+    "registration_witnesses": 2,
+    "selection_order": "Group frozen candidate rows by exact scan family in first-occurrence order, exclude every prior physical reference target, choose the first family with four distinct target surfaces on both scans, and take its first four rows in area_proxy order. The first two rows are declared registration witnesses before any surface distance is computed; rows three and four are evaluated targets.",
+    "scenario_contract": "The four prior roster constructions are unchanged and every scenario contains both witness identities on both sides.",
+    "forbidden": [
+      "using surface distances to choose the family, targets, or witnesses",
+      "changing the witness count or identities after replay",
+      "multiplying, adding slack to, or tuning the witness ceiling",
+      "claiming statistical coverage from two engineering witnesses",
+      "using target IDs inside evaluated correspondence ranking"
+    ]
+  },
+  "frozen_model": {
+    "surface_score": "The unchanged predecessor negative symmetric median nearest-surface distance after the official rigid scan transform.",
+    "witness_ceiling": "The larger of the two observed symmetric surface distances for the two predeclared externally confirmed witness correspondences. No multiplier, quantile, or learned parameter is applied.",
+    "zero_assignment": "An edge must be a strict row-and-column surface maximum and its absolute surface distance must not exceed the witness ceiling; otherwise its row and column remain eligible for explicit zero assignment.",
+    "baseline": "Complete Hungarian assignment on the same surface score."
+  },
+  "decision_gate": {
+    "aggregate_true_matches": "12/12 across four scenarios.",
+    "aggregate_false_matches": 0,
+    "aggregate_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in 4/4 scenarios.",
+    "balanced_swap": "2/2 true matches, zero false matches, and exact rejection of both missing and extra identities.",
+    "single_replay": "One replay on the frozen fresh family; do not tune the ceiling or rerun after outcome."
+  },
+  "claim_boundary": "A pass is a small real-geometry Development confirmation that two externally confirmed same-scan registration witnesses can calibrate zero assignment for four truth-proposed stable indoor 3RScan targets under bounded missing/extra roster constructions. Physical targets are disjoint from eight prior cohorts, but the witnesses, labelled surfaces and rigid transform are privileged provider evidence; two witnesses carry no statistical coverage guarantee. It is not raw-image unknown rejection, open-world discovery, door detection, a portal aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

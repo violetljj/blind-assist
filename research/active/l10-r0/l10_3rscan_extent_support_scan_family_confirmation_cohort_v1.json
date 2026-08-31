@@ -1,0 +1,505 @@
+{
+  "schema": "blindassist-l10-3rscan-extent-support-scan-family-confirmation-cohort-v1",
+  "authority": "FROZEN_PRE_REPLAY_SCAN_FAMILY_DISJOINT_EXTENT_SUPPORT_CONFIRMATION_COHORT",
+  "protocol_path": "l10_3rscan_extent_support_scan_family_confirmation_protocol_v1.json",
+  "protocol_sha256": "cb71bd1ab0abc7e7a689b64ec51f96c537064899a0c99b96dd6694afdf601a8a",
+  "entrypoint_sha256": "e4ae41608a6171b857e11dbc90ed46ddffc0aed0ef321a2769e9abce97920a4b",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "selection": {
+    "candidate_rows_with_local_geometry": 92,
+    "consumed_physical_targets": 36,
+    "consumed_reference_scan_families": [
+      "0ad2d382-79e2-2212-98b3-641bf9d552c1",
+      "0ad2d399-79e2-2212-99cf-7a3512734bd7",
+      "10b17936-3938-2467-88ba-ba5fe2debf14",
+      "10b17971-3938-2467-8a86-2b42613aa7ec",
+      "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62"
+    ],
+    "same_class_groups_considered": 1,
+    "reference_scan_id": "422885e5-192d-25fc-871f-83fa4d7af432",
+    "rescan_id": "422885e7-192d-25fc-8767-177a507a913c",
+    "normalized_target_class": "door",
+    "physical_target_ids": [
+      6,
+      14,
+      2,
+      10
+    ],
+    "rgb_members_opened": 0,
+    "depth_members_opened": 0,
+    "surface_distances_opened": 0,
+    "extent_overlaps_opened": 0,
+    "exclusion_receipts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+        "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json",
+        "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json",
+        "sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_scan_family_disjoint_witness_incremental_cohort_v1.json",
+        "sha256": "051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd",
+        "new_physical_targets": 6
+      },
+      {
+        "path": "l10_3rscan_registered_extent_support_zero_assignment_cohort_v1.json",
+        "sha256": "e1aa3cc56beab733dc636cf63cd8291de4fb00645289fd5a9014eb5d13b32bd7",
+        "new_physical_targets": 6
+      }
+    ]
+  },
+  "source_manifest": {
+    "3RScan.json": {
+      "path": "datasets/3rscan/3RScan.json",
+      "bytes": 3155995,
+      "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+    },
+    "422885e5-192d-25fc-871f-83fa4d7af432/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/422885e5-192d-25fc-871f-83fa4d7af432/labels.instances.annotated.v2.ply",
+      "bytes": 1498502,
+      "sha256": "b275f8ad7d7600720d8564410f2f8abcec22bff8e774527db0aa89a2e30fe4db"
+    },
+    "422885e5-192d-25fc-871f-83fa4d7af432/semseg.v2.json": {
+      "path": "datasets/3rscan/422885e5-192d-25fc-871f-83fa4d7af432/semseg.v2.json",
+      "bytes": 12239,
+      "sha256": "0e5eb3b970b5098cebe12bec4989e30e3d35a0cdf46422a6b0139cd3b4758226"
+    },
+    "422885e7-192d-25fc-8767-177a507a913c/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/422885e7-192d-25fc-8767-177a507a913c/labels.instances.annotated.v2.ply",
+      "bytes": 1463840,
+      "sha256": "2fce95263666b5c32a59695c808a5275326e4fa6e509bffbd0e395563b41a2a4"
+    },
+    "422885e7-192d-25fc-8767-177a507a913c/semseg.v2.json": {
+      "path": "datasets/3rscan/422885e7-192d-25fc-8767-177a507a913c/semseg.v2.json",
+      "bytes": 12675,
+      "sha256": "14cff93065c6ead7cb2ce6a7e205c3733b9365d232b4796a0bd776c3bb8ea033"
+    },
+    "objects.json": {
+      "path": "datasets/3rscan/objects.json",
+      "bytes": 20096813,
+      "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "FC01",
+      "reference_scan_id": "422885e5-192d-25fc-871f-83fa4d7af432",
+      "rescan_id": "422885e7-192d-25fc-8767-177a507a913c",
+      "target_instance_id": 6,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        2,
+        6,
+        10,
+        14,
+        19,
+        20,
+        23
+      ],
+      "area_proxy": 2.2057755910075456,
+      "transform": [
+        0.9918356537818909,
+        0.12734319269657135,
+        -0.006767330691218376,
+        0,
+        -0.12734641134738922,
+        0.9918583035469055,
+        -4.587980220094323e-05,
+        0,
+        0.006706390995532274,
+        0.000907300622202456,
+        0.9999771118164062,
+        0,
+        -0.06649518013000488,
+        -0.17736351490020752,
+        -0.27056264877319336,
+        1
+      ],
+      "reference_target_vertices": 845,
+      "query_target_vertices": 890,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FC02",
+      "reference_scan_id": "422885e5-192d-25fc-871f-83fa4d7af432",
+      "rescan_id": "422885e7-192d-25fc-8767-177a507a913c",
+      "target_instance_id": 14,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        2,
+        6,
+        10,
+        14,
+        19,
+        20,
+        23
+      ],
+      "area_proxy": 1.5184891981382522,
+      "transform": [
+        0.9918356537818909,
+        0.12734319269657135,
+        -0.006767330691218376,
+        0,
+        -0.12734641134738922,
+        0.9918583035469055,
+        -4.587980220094323e-05,
+        0,
+        0.006706390995532274,
+        0.000907300622202456,
+        0.9999771118164062,
+        0,
+        -0.06649518013000488,
+        -0.17736351490020752,
+        -0.27056264877319336,
+        1
+      ],
+      "reference_target_vertices": 1407,
+      "query_target_vertices": 790,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FC03",
+      "reference_scan_id": "422885e5-192d-25fc-871f-83fa4d7af432",
+      "rescan_id": "422885e7-192d-25fc-8767-177a507a913c",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        2,
+        6,
+        10,
+        14,
+        19,
+        20,
+        23
+      ],
+      "area_proxy": 1.4262785200141443,
+      "transform": [
+        0.9918356537818909,
+        0.12734319269657135,
+        -0.006767330691218376,
+        0,
+        -0.12734641134738922,
+        0.9918583035469055,
+        -4.587980220094323e-05,
+        0,
+        0.006706390995532274,
+        0.000907300622202456,
+        0.9999771118164062,
+        0,
+        -0.06649518013000488,
+        -0.17736351490020752,
+        -0.27056264877319336,
+        1
+      ],
+      "reference_target_vertices": 763,
+      "query_target_vertices": 427,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FC04",
+      "reference_scan_id": "422885e5-192d-25fc-871f-83fa4d7af432",
+      "rescan_id": "422885e7-192d-25fc-8767-177a507a913c",
+      "target_instance_id": 10,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        2,
+        6,
+        10,
+        14,
+        19,
+        20,
+        23
+      ],
+      "area_proxy": 1.2407257447549713,
+      "transform": [
+        0.9918356537818909,
+        0.12734319269657135,
+        -0.006767330691218376,
+        0,
+        -0.12734641134738922,
+        0.9918583035469055,
+        -4.587980220094323e-05,
+        0,
+        0.006706390995532274,
+        0.000907300622202456,
+        0.9999771118164062,
+        0,
+        -0.06649518013000488,
+        -0.17736351490020752,
+        -0.27056264877319336,
+        1
+      ],
+      "reference_target_vertices": 418,
+      "query_target_vertices": 451,
+      "role": "EVALUATED_TARGET"
+    }
+  ],
+  "provider_transform": [
+    0.9918356537818909,
+    0.12734319269657135,
+    -0.006767330691218376,
+    0,
+    -0.12734641134738922,
+    0.9918583035469055,
+    -4.587980220094323e-05,
+    0,
+    0.006706390995532274,
+    0.000907300622202456,
+    0.9999771118164062,
+    0,
+    -0.06649518013000488,
+    -0.17736351490020752,
+    -0.27056264877319336,
+    1
+  ],
+  "scenarios": [
+    {
+      "id": "closed-six",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC01-FC02",
+      "reference_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC01-FC03",
+      "reference_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC01-FC04",
+      "reference_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC02-FC01",
+      "reference_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC02-FC03",
+      "reference_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC02-FC04",
+      "reference_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC03-FC01",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC03-FC02",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC03-FC04",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC04-FC01",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ],
+      "query_targets": [
+        "FC02",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC04-FC02",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC03",
+        "FC04"
+      ]
+    },
+    {
+      "id": "balanced-swap-FC04-FC03",
+      "reference_targets": [
+        "FC01",
+        "FC02",
+        "FC03"
+      ],
+      "query_targets": [
+        "FC01",
+        "FC02",
+        "FC04"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 4,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 34,
+    "truth_unmatched_nodes_across_scenarios": 26
+  },
+  "claim_boundary": "A pass is same-provider but scan-family-disjoint real-geometry Development confirmation that the unchanged positive registered planar-extent support rule preserves exact partial-roster correspondence for four truth-proposed same-class indoor doors. Provider labels, complete surfaces, and the official rigid transform remain privileged. It is not raw-phone perception, door detection, a portal aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

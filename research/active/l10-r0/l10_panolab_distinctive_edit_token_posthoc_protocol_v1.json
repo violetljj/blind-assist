@@ -1,0 +1,136 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-edit-token-posthoc-protocol-v1",
+  "name": "Conservative distinctive edit-neighbor token bank on the consumed producer-stratified panel",
+  "status": "FROZEN_POSTHOC_AFTER_OBSERVING_THE_SEALED_PS01_PS02_LEXICAL_FAILURES_BEFORE_THIS_SINGLE_REPLAY",
+  "authority": "CONSUMED_POSTHOC_DEVELOPMENT_MECHANISM_ONLY_REQUIRES_FRESH_PIXEL_AND_OCR_UNSEEN_CONFIRMATION",
+  "question": "Can a single conservative branch recover the two observed safe UNKNOWNs using only high-confidence, roster-unique distinctive token evidence while retaining zero wrong-target matches?",
+  "observed_before_freeze": [
+    "PS01 exposed high-confidence OCR token Colvados while the target token is calvados; the frozen exact token bank produced NO_MATCH.",
+    "PS02 exposed high-confidence Creche and p'tits while the target tokens include creche and petits; the frozen exact token bank observed only creche and des and produced NO_MATCH.",
+    "PS03 had no meaningful lexical witness and was already correctly accepted by the sealed appearance fallback."
+  ],
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc.py",
+    "sha256": "42022c1f7a25b499f89cbfe9da43f0280a6dae3ee927aa028a732be8b81c9486",
+    "bytes": 12724
+  },
+  "frozen_inputs": {
+    "failed_router_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_lexical_appearance_router_protocol_v1.json",
+      "sha256": "f8f9488afb1b7a7b908f19182e11ab43a5a9a30d6f9a2173891a0ef1fd5fc1fc",
+      "bytes": 6997
+    },
+    "failed_router_result": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_lexical_appearance_router_result_v1.json",
+      "sha256": "39225b9b69ddc2b708ce84966cdea74836096bd8aaba0d2444901e9ef68d988a",
+      "bytes": 47249
+    },
+    "appearance_result": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_appearance_router_result_v1.json",
+      "sha256": "3dda8517e564eecc9db35848a76b87b9cd5813f06aeb664eec2467108015b8d4",
+      "bytes": 155080
+    }
+  },
+  "evaluated_episodes": [
+    "PS01",
+    "PS02",
+    "PS03"
+  ],
+  "target_roster": [
+    {
+      "episode_id": "FL01",
+      "entity_name": "Espace Village"
+    },
+    {
+      "episode_id": "FL02",
+      "entity_name": "Le Viviani"
+    },
+    {
+      "episode_id": "FL03",
+      "entity_name": "Gare de Neuilly - Porte Maillot"
+    },
+    {
+      "episode_id": "FL04",
+      "entity_name": "Église Notre-Dame de la Délivrande"
+    },
+    {
+      "episode_id": "FP01",
+      "entity_name": "Rumillat"
+    },
+    {
+      "episode_id": "FP02",
+      "entity_name": "Halle Rebatet"
+    },
+    {
+      "episode_id": "CF01",
+      "entity_name": "Euromaster"
+    },
+    {
+      "episode_id": "CF02",
+      "entity_name": "Bibliothèque de Caen - Maladrerie"
+    },
+    {
+      "episode_id": "PS01",
+      "entity_name": "Département du Calvados - Direction de la Culture"
+    },
+    {
+      "episode_id": "PS02",
+      "entity_name": "Crèche des Petits Lutins"
+    },
+    {
+      "episode_id": "PS03",
+      "entity_name": "Église Saint-Pierre"
+    }
+  ],
+  "name_token_contract": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ]
+  },
+  "distinctive_edit_token_contract": {
+    "minimum_ocr_row_score": 0.9,
+    "minimum_target_token_length": 6,
+    "maximum_edit_distance": 1,
+    "apostrophe_or_token_fragment_rule": "For a row with two or three normalized tokens, also test their concatenation; this converts p + tits to ptits without changing OCR text.",
+    "long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "evidence_weighting": "Each distinct matched target token of length 6-7 contributes one unit; length >=8 contributes two units. A target matches at two units.",
+    "uniqueness_rule": "Emit a lexical search-priority candidate only when exactly one target in the frozen eleven-target roster matches.",
+    "association": "Exact or Levenshtein-distance-one normalized token evidence only; witnesses union across the frozen three-frame reciprocal sequence.",
+    "authority": "Search-priority candidate only; no token, sign, facade, entity, portal, entrance, access, waypoint, arrival, or safety authority."
+  },
+  "gate": {
+    "required_combined_correct": 3,
+    "minimum_gain_over_sealed_appearance": 2,
+    "maximum_combined_wrong": 0,
+    "maximum_combined_unknown": 0,
+    "maximum_wrong_target_lexical_matches": 0,
+    "new_ocr_or_model_calls": 0,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_CONSUMED_DISTINCTIVE_EDIT_TOKEN_MECHANISM_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_CONSUMED_DISTINCTIVE_EDIT_TOKEN_MECHANISM_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run exactly once on the consumed panel. Do not tune this panel after observing the result. Any authority increase requires a separately frozen pixel- and OCR-unseen confirmation panel.",
+  "output": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Consumed Development mechanism evidence about whether a conservative, high-confidence, roster-unique exact-or-one-edit distinctive token branch explains and can recover the two already observed safe UNKNOWNs while preserving the sealed appearance fallback.",
+    "not_allowed": [
+      "fresh, blind, independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, distribution-shift, deployment, or safety confirmation",
+      "a same-name or edit-neighbor OCR token proving exact physical identity, sign-to-building association, facade ownership, portal ownership, or entrance ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or deployment performance"
+    ]
+  }
+}

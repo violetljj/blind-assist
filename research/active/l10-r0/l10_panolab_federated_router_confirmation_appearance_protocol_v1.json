@@ -1,0 +1,112 @@
+{
+  "schema": "blindassist-l10-panolab-federated-router-confirmation-appearance-protocol-v1",
+  "name": "L10 PanoLab new-city federated temporal appearance confirmation",
+  "status": "FROZEN_AFTER_HUMAN_TRUTH_BEFORE_FIRST_ROUTER_CALL_ON_CONFIRMATION_PANEL",
+  "authority": "NEW_CITY_TARGET_WAY_ITEM_DISJOINT_FEDERATED_SAME_PROVIDER_DEVELOPMENT",
+  "question": "Does the unchanged two-reference, reciprocal top-two-of-three appearance router transfer to two new Caen targets without emitting wrong-target candidates?",
+  "pre_call_observation_boundary": "Both target rows passed human-visible same-building truth before any router call. Four anchor pixels had been reviewed in an earlier portal-source audit; all six linked-neighbour pixels and every selected image remained unseen to this router.",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_appearance.py",
+    "sha256": "dff3b42d4539392276ff5e43cbca70161cfb4d7d2090678239cea01b47212c25",
+    "bytes": 18318
+  },
+  "inputs": {
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "prior_six_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "confirmation_selection": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_selection_v1.json",
+      "sha256": "7cb2ae7b6badf32e5676fb1edea29178e741ea4be7c5eb679482d81dff8b69b5",
+      "bytes": 191679
+    },
+    "confirmation_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+      "sha256": "b521986bddda64902dc173edaf7f76671543cd4b73629e946ffae504df485e2d",
+      "bytes": 7699
+    },
+    "confirmation_truth": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_truth_v1.json",
+      "sha256": "6a61a454bb008359e83fe904c8589f3d743b884f13519ec75ce3b5886cf022aa",
+      "bytes": 3792
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    "FL01",
+    "FL02",
+    "FL03",
+    "FL04",
+    "FP01",
+    "FP02",
+    "CF01",
+    "CF02"
+  ],
+  "evaluated_episodes": [
+    "CF01",
+    "CF02"
+  ],
+  "aggregation": {
+    "references": "Exactly two cross-collection entrance-ray reference windows per target.",
+    "query_sequence": "Exact reciprocal prev, anchor, next frames.",
+    "per_frame": "Unchanged strict entrance-ray crop and 0.35 CLIP + 0.25 DINOv2 + 0.40 mutual-patch-geometry score against the fixed two-reference bank.",
+    "per_target_sequence_score": "Arithmetic mean of the highest two of three per-frame target scores; deterministic ties by relation name.",
+    "no_adaptation": "No model, crop, reference count, frame count, feature weight, aggregation, threshold, target roster, target alias, or image may change after the result is observed."
+  },
+  "accept_contract": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positive rows before the open-set, Grenoble, temporal, and Caen panels.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "gate": {
+    "required": [
+      "two valid router-unseen human-truth rows",
+      "four cross-collection reference views and six reciprocal query frames",
+      "zero target-way and item overlap with the prior router cohorts",
+      "2/2 accepted candidates correct",
+      "0 accepted wrong candidates",
+      "0 wrong-target candidates across 14 counterfactual wrong-goal trials",
+      "0 portal-ownership bindings"
+    ],
+    "failure_policy": "Preserve the first result. Do not tune or resample this panel."
+  },
+  "research_basis": [
+    {
+      "title": "SeqNet: Learning Descriptors for Sequence-Based Hierarchical Place Recognition",
+      "paper": "https://arxiv.org/abs/2102.11603",
+      "official_code": "https://github.com/oravus/seqNet",
+      "use": "Motivates short sequence evidence for place recognition; this replay uses a deterministic top-two reducer, not SeqNet."
+    },
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "Motivates checking both image and sequence transfer. This replay neither trains nor attributes performance to JIST."
+    }
+  ],
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-federated-router-confirmation-appearance-v1",
+  "output": "research/active/l10-r0/l10_panolab_federated_router_confirmation_appearance_result_v1.json",
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_FEDERATED_NEW_CITY_TEMPORAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_FEDERATED_NEW_CITY_TEMPORAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "claim_boundary": {
+    "allowed": "Development evidence for or against the unchanged temporal appearance router on exactly two new-city, target-way/item-disjoint, router-unseen Caen targets in one same-provider eight-target closed roster.",
+    "not_allowed": [
+      "blind, independent, provider-disjoint, fully pixel-unseen, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "trained sequential-descriptor performance or attribution to SeqNet or JIST",
+      "exact physical identity authority, sign-to-building association, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

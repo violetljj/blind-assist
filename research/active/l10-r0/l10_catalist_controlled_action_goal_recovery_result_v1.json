@@ -1,0 +1,3434 @@
+{
+  "schema": "blindassist-l10-catalist-controlled-action-goal-recovery-result-v1",
+  "decision": "L10_CATALIST_CONTROLLED_ACTION_GOAL_RECOVERY_DEVELOPMENT_GATE_NOT_MET",
+  "authority": {
+    "dataset": "CATALISTd / CATALIST-2021 official validation split",
+    "official_site": "https://catalist-2021.github.io/",
+    "official_paper": "https://www.cse.iitb.ac.in/~ganesh/papers/catalist2021.pdf",
+    "official_kaggle_release": "https://www.kaggle.com/datasets/catalist2021/catalist2021",
+    "dataset_facts": "The authors recorded 2322 real scene-text videos at 25 fps and 1920x1080 using controlled tripod camera transformations. The tab-separated annotations provide a manually annotated and verified video text label, one of translation/roll/tilt/pan/zoom, and optional transformation start/end times. Cloud-Vision per-frame masks are explicitly unverified and are not used here.",
+    "license_boundary": "The official Kaggle API reports the license as unknown. Use is restricted to this local Development replay; no source video is redistributed by this result."
+  },
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_catalist_controlled_action_goal_recovery_protocol_v1.json",
+  "protocol_sha256": "1bbcb3abede51262ae3e297dad995eae7cf6453a02da45e88b705dc8ff053b4b",
+  "evaluator_sha256": "38bf563f955a253832881c616b3fa8a71836dd9fe79044335f0371dfd2fa136d",
+  "ocr_cache": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\l10-catalist-controlled-action-goal-recovery-v1\\ocr_cache.json",
+  "ocr_cache_sha256": "e1f8ee8ec4fb4089aff01ca069ec3ad033c2b2a80f7837bded4d4a5d1d632b71",
+  "metrics": {
+    "episodes": 30,
+    "unique_verified_labels": 12,
+    "unique_train_label_disjoint_target_tokens": 12,
+    "baseline_first_frame_exact_correct_unknown": [
+      27,
+      3
+    ],
+    "controlled_action_accumulation_correct_unknown": [
+      29,
+      1
+    ],
+    "correct_gain": 2,
+    "correct_rate_gain_pp": 6.667,
+    "mean_action_steps_to_recovery": 2.5,
+    "by_action": {
+      "TR": {
+        "baseline_correct": 6,
+        "successor_correct": 6
+      },
+      "P": {
+        "baseline_correct": 4,
+        "successor_correct": 6,
+        "baseline_unknown": 2,
+        "recovered": 2
+      },
+      "T": {
+        "baseline_correct": 5,
+        "successor_correct": 5,
+        "baseline_unknown": 1,
+        "successor_unknown": 1
+      },
+      "Z": {
+        "baseline_correct": 6,
+        "successor_correct": 6
+      },
+      "R": {
+        "baseline_correct": 6,
+        "successor_correct": 6
+      }
+    },
+    "canonical_label_disjoint_challenges": 30,
+    "canonical_label_disjoint_challenge_accepts": 0,
+    "synthetic_negative_queries": 30,
+    "synthetic_negative_accepts": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "cohort_size_met": true,
+    "minimum_unique_verified_labels_met": true,
+    "balanced_action_classes_met": true,
+    "minimum_correct_gain_met": false,
+    "minimum_successor_correct_rate_met": true,
+    "canonical_label_disjoint_challenge_limit_met": true,
+    "zero_synthetic_negative_accepts": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": false
+  },
+  "canonical_label_disjoint_challenge_accepts": [],
+  "synthetic_negative_accepts": [],
+  "rows": [
+    {
+      "source_position": 92,
+      "video": "0093.mp4",
+      "label": "मैनुएल मेनेज़ेस केंद्र MANUEL MENEZES CENTRE सिविल अभियांत्रिकी (उपभवन) CIVIL ENGINEERING ANNEX",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "manuel",
+      "video_sha256": "be2f4c21bbd5f1a127d382076feb66936a5339d9d892b4ac42e329ca248c73a3",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 0,
+          "box": [
+            [
+              893.0,
+              525.0
+            ],
+            [
+              1322.0,
+              523.0
+            ],
+            [
+              1322.0,
+              581.0
+            ],
+            [
+              893.0,
+              583.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.99776
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 46,
+          "box": [
+            [
+              1017.0,
+              637.0
+            ],
+            [
+              1448.0,
+              635.0
+            ],
+            [
+              1448.0,
+              691.0
+            ],
+            [
+              1017.0,
+              693.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.99957
+        },
+        "evidence_frames": [
+          0,
+          23,
+          46,
+          68,
+          91
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "maharashtra",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzglkdhcoccifp",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          23,
+          46,
+          68,
+          91
+        ],
+        "fps": 25.0,
+        "duration_s": 3.64
+      }
+    },
+    {
+      "source_position": 11,
+      "video": "0012.mp4",
+      "label": "सतत वातावरणीय हवा गुणवत्ता सनियत्रण केंद्र CONTINUOUS AMBIENT AIR QUALITY MONITORING STATION महाराष्ट्र प्रदूषण नियंत्रण मंडल MAHARASHTRA POLLUTION CONTROL BOARD Website : http://mpcb.gov.in E-mail : jdair@mpcb.gov.in",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "maharashtra",
+      "video_sha256": "3ae76d7d208567f4c2b2417163e35938cc14d9cedcdedd0016834e8bda663941",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 0,
+          "box": [
+            [
+              147.0,
+              413.0
+            ],
+            [
+              606.0,
+              413.0
+            ],
+            [
+              606.0,
+              443.0
+            ],
+            [
+              147.0,
+              443.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.98559
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 105,
+          "box": [
+            [
+              1376.0,
+              349.0
+            ],
+            [
+              1839.0,
+              346.0
+            ],
+            [
+              1839.0,
+              376.0
+            ],
+            [
+              1376.0,
+              379.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99766
+        },
+        "evidence_frames": [
+          0,
+          26,
+          79,
+          105
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzbamfbbcioccl",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          26,
+          52,
+          79,
+          105
+        ],
+        "fps": 25.0,
+        "duration_s": 4.2
+      }
+    },
+    {
+      "source_position": 17,
+      "video": "0018.mp4",
+      "label": "अपनी जिम्मेदारी पर वाहन खड़ा करें PARKING AT OWNER'S RISK",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "parking",
+      "video_sha256": "efae30d020888750fa2f8a53fc64eb396aa2b310583e493e44a4e05c92e59799",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 0,
+          "box": [
+            [
+              693.0,
+              840.0
+            ],
+            [
+              952.0,
+              877.0
+            ],
+            [
+              943.0,
+              938.0
+            ],
+            [
+              684.0,
+              901.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99982
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 25,
+          "box": [
+            [
+              712.0,
+              693.0
+            ],
+            [
+              969.0,
+              730.0
+            ],
+            [
+              960.0,
+              792.0
+            ],
+            [
+              703.0,
+              755.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99992
+        },
+        "evidence_frames": [
+          0,
+          25,
+          50,
+          76,
+          101
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzcndmodloknmb",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          25,
+          50,
+          76,
+          101
+        ],
+        "fps": 25.0,
+        "duration_s": 4.04
+      }
+    },
+    {
+      "source_position": 27,
+      "video": "0028.mp4",
+      "label": "नीति अध्ययन केन्द्र CENTRE FOR POLICY STUDIES (CPS)",
+      "action": "Z",
+      "action_start_s": 0.8,
+      "action_end_s": 3.0,
+      "target_token": "studies",
+      "video_sha256": "12629ea3c5238df142e1b917f7d04076d1c4d6a349d10cfe2b71232ea0b62b3b",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudies",
+          "frame_index": 19,
+          "box": [
+            [
+              1002.0,
+              535.0
+            ],
+            [
+              1224.0,
+              513.0
+            ],
+            [
+              1230.0,
+              566.0
+            ],
+            [
+              1008.0,
+              588.0
+            ]
+          ],
+          "text": "POLICY STUDIES",
+          "forms": [
+            "policy",
+            "policystudies",
+            "studies"
+          ],
+          "confidence": 0.97635
+        },
+        "evidence_frames": [
+          19
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 38,
+          "box": [
+            [
+              1008.0,
+              530.0
+            ],
+            [
+              1370.0,
+              503.0
+            ],
+            [
+              1376.0,
+              585.0
+            ],
+            [
+              1014.0,
+              611.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.99952
+        },
+        "evidence_frames": [
+          19,
+          29,
+          38,
+          47,
+          56
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzcaemloleagfl",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 19,
+        "action": [
+          29,
+          38,
+          47,
+          56
+        ],
+        "fps": 25.0,
+        "duration_s": 2.24
+      }
+    },
+    {
+      "source_position": 106,
+      "video": "0107.mp4",
+      "label": "पर्यावरण भू प्रौद्योगिकी प्रयोगशाला ENVIRONMENTAL GEOTECHNOLOGY LAB",
+      "action": "R",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "environmental",
+      "video_sha256": "02ddbab94e80f29913f99bca368f1938d9c3ad17845adc09ddc7cfeaa2002640",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 0,
+          "box": [
+            [
+              653.0,
+              598.0
+            ],
+            [
+              889.0,
+              53.0
+            ],
+            [
+              952.0,
+              79.0
+            ],
+            [
+              716.0,
+              625.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99854
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 85,
+          "box": [
+            [
+              959.0,
+              403.0
+            ],
+            [
+              1316.0,
+              892.0
+            ],
+            [
+              1266.0,
+              928.0
+            ],
+            [
+              909.0,
+              438.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.9999
+        },
+        "evidence_frames": [
+          0,
+          28,
+          56,
+          85,
+          113
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzehhghdheoolh",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          28,
+          56,
+          85,
+          113
+        ],
+        "fps": 25.0,
+        "duration_s": 4.52
+      }
+    },
+    {
+      "source_position": 121,
+      "video": "0122.mp4",
+      "label": "वायुआकाश अभियांत्रिकी विभाग AEROSPACE ENGINEERING DEPARTMENT AEROSPACE ENGINEERING DEPARTMENT",
+      "action": "R",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "aerospace",
+      "video_sha256": "4cc7d335563c240b51bf29d31ec088177ecbe6c68104416df390e03a581cca55",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "aerospace",
+          "form": "aerospaceengineeringdepartment",
+          "frame_index": 0,
+          "box": [
+            [
+              730.0,
+              740.0
+            ],
+            [
+              856.0,
+              473.0
+            ],
+            [
+              883.0,
+              485.0
+            ],
+            [
+              757.0,
+              753.0
+            ]
+          ],
+          "text": "AEROSPACE ENGINEERING DEPARTMENT",
+          "forms": [
+            "aerospace",
+            "aerospaceengineeringdepartment",
+            "department",
+            "engineering"
+          ],
+          "confidence": 0.99979
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "aerospace",
+          "form": "aerospaceengineeringdepartment",
+          "frame_index": 33,
+          "box": [
+            [
+              676.0,
+              591.0
+            ],
+            [
+              918.0,
+              418.0
+            ],
+            [
+              934.0,
+              442.0
+            ],
+            [
+              693.0,
+              614.0
+            ]
+          ],
+          "text": "AEROSPACE ENGINEERING DEPARTMENT",
+          "forms": [
+            "aerospace",
+            "aerospaceengineeringdepartment",
+            "department",
+            "engineering"
+          ],
+          "confidence": 0.99993
+        },
+        "evidence_frames": [
+          0,
+          33,
+          66,
+          99,
+          132
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzpcnmkedmhafn",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          33,
+          66,
+          99,
+          132
+        ],
+        "fps": 25.0,
+        "duration_s": 5.28
+      }
+    },
+    {
+      "source_position": 138,
+      "video": "0139.mp4",
+      "label": "इस परिसर मे तेंदुआ बार-बार देखा गया है, अत: इस परिसर मे शाम ६.00 बजे से सुबह ६.00 बजे तक घुमना माना है।इस अादेश का उल्लघंन दंङणीय अपराध है। अादेशानुसार NO ENTRY BEYOND THIS AREA FROM 6.00 PM TO 6.OO AM. PANTHER IS BEING SIGHTED FREQUENTLY IN THIS AREA. VIOLATION OF THIS ORDER SHALL BE SERIOUSLY VIEWED. By Order",
+      "action": "Z",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "frequently",
+      "video_sha256": "638318d7a3cb8833f339cb3fbaabb98e082bd68a4006dda07b6e66ade18473e0",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "frequently",
+          "form": "frequentlyinthisareaviolationof",
+          "frame_index": 0,
+          "box": [
+            [
+              245.0,
+              866.0
+            ],
+            [
+              1664.0,
+              642.0
+            ],
+            [
+              1677.0,
+              725.0
+            ],
+            [
+              258.0,
+              948.0
+            ]
+          ],
+          "text": "FREQUENTLY IN THIS AREA. VIOLATION OF",
+          "forms": [
+            "area",
+            "frequently",
+            "frequentlyinthisareaviolationof",
+            "in",
+            "of",
+            "this",
+            "violation"
+          ],
+          "confidence": 0.99683
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "frequently",
+          "form": "frequentlyinthisareaviolationof",
+          "frame_index": 56,
+          "box": [
+            [
+              568.0,
+              728.0
+            ],
+            [
+              1344.0,
+              604.0
+            ],
+            [
+              1351.0,
+              651.0
+            ],
+            [
+              575.0,
+              774.0
+            ]
+          ],
+          "text": "FREQUENTLY IN THIS AREA. VIOLATION OF",
+          "forms": [
+            "area",
+            "frequently",
+            "frequentlyinthisareaviolationof",
+            "in",
+            "of",
+            "this",
+            "violation"
+          ],
+          "confidence": 0.99881
+        },
+        "evidence_frames": [
+          0,
+          28,
+          56,
+          84,
+          112
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzagjpkcfmjblg",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          28,
+          56,
+          84,
+          112
+        ],
+        "fps": 25.0,
+        "duration_s": 4.48
+      }
+    },
+    {
+      "source_position": 162,
+      "video": "0163.mp4",
+      "label": "कोरिडोर में साइकिल चलाना मना है। इस आदेश का उल्लघंन करने वाले को ₹५0/- जुर्माना भरना पदेगा। CYCLING/RIDING IN THE CORRIDOR IS PROHIBTIED. A FINE OF Rs 50/- WILL BE CHARGED ON OFFENDERS",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "prohibtied",
+      "video_sha256": "05be2104873eeb225cb50894cc0bed1e5e5374b72333316bf71ff9b2ae1138d0",
+      "baseline_first_frame_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_frames": []
+      },
+      "controlled_action_accumulation": {
+        "accepted": false,
+        "match": null,
+        "evidence_frames": [],
+        "first_acceptance_action_step": null,
+        "decision": "UNKNOWN_AFTER_T"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzieipeiblelmc",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          20,
+          39,
+          58,
+          78
+        ],
+        "fps": 25.0,
+        "duration_s": 3.12
+      }
+    },
+    {
+      "source_position": 147,
+      "video": "0148.mp4",
+      "label": "STICKING OR PASTING OF POSTER OR STICKING OF TAPES ON FLOOR / WALLS / PILLAR IS PROHIBITED WITHIN VMCC COMPLEX, IF FOUND PENALTY OF RS.5000/- WILL BE IMPOSED STRICTLY. BY ORDER",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "prohibited",
+      "video_sha256": "62996b056a1c5b0c2dc5a96fedd3874c976dd9be7c87a70f65b177e293c0f3d6",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "prohibited",
+          "form": "pillarisprohibitedwithinvmcc",
+          "frame_index": 0,
+          "box": [
+            [
+              76.0,
+              456.0
+            ],
+            [
+              871.0,
+              480.0
+            ],
+            [
+              869.0,
+              536.0
+            ],
+            [
+              74.0,
+              512.0
+            ]
+          ],
+          "text": "/ PILLAR IS PROHIBITED WITHIN VMCC",
+          "forms": [
+            "is",
+            "pillar",
+            "pillarisprohibitedwithinvmcc",
+            "prohibited",
+            "vmcc",
+            "within"
+          ],
+          "confidence": 0.9798
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "prohibited",
+          "form": "pillarisprohibitedwithinvmcc",
+          "frame_index": 66,
+          "box": [
+            [
+              550.0,
+              471.0
+            ],
+            [
+              1333.0,
+              495.0
+            ],
+            [
+              1331.0,
+              550.0
+            ],
+            [
+              548.0,
+              527.0
+            ]
+          ],
+          "text": "/ PILLARIS PROHIBITED WITHIN VMCC",
+          "forms": [
+            "pillaris",
+            "pillarisprohibitedwithinvmcc",
+            "prohibited",
+            "vmcc",
+            "within"
+          ],
+          "confidence": 0.9899
+        },
+        "evidence_frames": [
+          0,
+          33,
+          66,
+          100,
+          133
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzamajnegfllmg",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          33,
+          66,
+          100,
+          133
+        ],
+        "fps": 25.0,
+        "duration_s": 5.32
+      }
+    },
+    {
+      "source_position": 178,
+      "video": "0179.mp4",
+      "label": "यांत्रिकी अभियांत्रिकी अवरस्नातक प्रयोगशाला (N6 खण्ड) MECHANICAL ENGINEERING UNDERGRADUATE LABORATORIES (N6 BAY) तरल यांत्रिकी FLUID MECHANICS तरल शक्ति FLUID POWER ऊष्मा अंतरण HEAT TRANSFER यांत्रिकी मापन MECHANICAL MEASUREMENTS",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "undergraduate",
+      "video_sha256": "2d4b0c587ea0149c76ed71b0162c1960af3156cfd46922babd45b7389163a9ca",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "undergraduate",
+          "form": "mechanicalengineeringundergraduate",
+          "frame_index": 0,
+          "box": [
+            [
+              486.0,
+              219.0
+            ],
+            [
+              1302.0,
+              208.0
+            ],
+            [
+              1302.0,
+              258.0
+            ],
+            [
+              486.0,
+              268.0
+            ]
+          ],
+          "text": "MECHANICAL ENGINEERING UNDERGRADUATE",
+          "forms": [
+            "engineering",
+            "mechanical",
+            "mechanicalengineeringundergraduate",
+            "undergraduate"
+          ],
+          "confidence": 0.9985
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "undergraduate",
+          "form": "mechanicalengineeringundergraduate",
+          "frame_index": 43,
+          "box": [
+            [
+              548.0,
+              412.0
+            ],
+            [
+              1360.0,
+              397.0
+            ],
+            [
+              1361.0,
+              446.0
+            ],
+            [
+              549.0,
+              462.0
+            ]
+          ],
+          "text": "MECHANICAL ENGINEERING UNDERGRADUATE",
+          "forms": [
+            "engineering",
+            "mechanical",
+            "mechanicalengineeringundergraduate",
+            "undergraduate"
+          ],
+          "confidence": 0.99974
+        },
+        "evidence_frames": [
+          0,
+          14,
+          29,
+          43,
+          58
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzhdjklijpgano",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          14,
+          29,
+          43,
+          58
+        ],
+        "fps": 25.0,
+        "duration_s": 2.32
+      }
+    },
+    {
+      "source_position": 188,
+      "video": "0189.mp4",
+      "label": "छात्रावास समन्वयक इकाई HO STEL CO-ORDINATING UNIT",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "ordinating",
+      "video_sha256": "f284b222c29dabb29d4c6875540dc0c3b4630884b1609a297dc7a6dc5ba8a4fc",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "ordinating",
+          "form": "hostelcoordinating",
+          "frame_index": 0,
+          "box": [
+            [
+              740.0,
+              233.0
+            ],
+            [
+              1276.0,
+              248.0
+            ],
+            [
+              1274.0,
+              313.0
+            ],
+            [
+              738.0,
+              298.0
+            ]
+          ],
+          "text": "HOSTEL CO-ORDINATING",
+          "forms": [
+            "co",
+            "hostel",
+            "hostelcoordinating",
+            "ordinating"
+          ],
+          "confidence": 0.99718
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "ordinating",
+          "form": "hostelcoordinating",
+          "frame_index": 8,
+          "box": [
+            [
+              737.0,
+              304.0
+            ],
+            [
+              1289.0,
+              306.0
+            ],
+            [
+              1289.0,
+              379.0
+            ],
+            [
+              737.0,
+              377.0
+            ]
+          ],
+          "text": "HOSTEL CO-ORDINATING",
+          "forms": [
+            "co",
+            "hostel",
+            "hostelcoordinating",
+            "ordinating"
+          ],
+          "confidence": 0.99946
+        },
+        "evidence_frames": [
+          0,
+          8,
+          17,
+          26,
+          34
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzfdghghdljnjd",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          8,
+          17,
+          26,
+          34
+        ],
+        "fps": 25.0,
+        "duration_s": 1.36
+      }
+    },
+    {
+      "source_position": 193,
+      "video": "0194.mp4",
+      "label": "आय.आय.टी.(मुंबई) पगारदार कामगारांची सहकारी पतपेढी मय्रादित. I.I.T MUMBAI EMPLOYESS CO-OPERATIVE CREDIT SOCIETY LTD. I.I.T POWAI, MUMBAI-76. TIME-10.00 AM TO 2.00 PM",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "employess",
+      "video_sha256": "be18045d69266629dd63fc1bd4ccd1bff14b54129e054a8a533642be747059dd",
+      "baseline_first_frame_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_frames": []
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EDIT_ONE",
+          "target": "employess",
+          "form": "employees",
+          "frame_index": 0,
+          "box": [
+            [
+              336.0,
+              213.0
+            ],
+            [
+              1855.0,
+              108.0
+            ],
+            [
+              1861.0,
+              194.0
+            ],
+            [
+              342.0,
+              299.0
+            ]
+          ],
+          "text": "LI.T MUMBAI EMPLOYEES' CO-OPERATIVE CREDIT SOCIETY LTD.",
+          "forms": [
+            "co",
+            "credit",
+            "employees",
+            "li",
+            "litmumbaiemployeescooperativecreditsocietyltd",
+            "ltd",
+            "mumbai",
+            "operative",
+            "society",
+            "t"
+          ],
+          "confidence": 0.97449
+        },
+        "evidence_frames": [
+          0,
+          26,
+          52,
+          79,
+          105
+        ],
+        "first_acceptance_action_step": 1,
+        "decision": "RECOVERED_AFTER_P"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzoloafolejmok",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          26,
+          52,
+          79,
+          105
+        ],
+        "fps": 25.0,
+        "duration_s": 4.2
+      }
+    },
+    {
+      "source_position": 16,
+      "video": "0017.mp4",
+      "label": "सतत वातावरणीय हवा गुणवत्ता सनियत्रण केंद्र CONTINUOUS AMBIENT AIR QUALITY MONITORING STATION महाराष्ट्र प्रदूषण नियंत्रण मंडल MAHARASHTRA POLLUTION CONTROL BOARD Website : http://mpcb.gov.in E-mail : jdair@mpcb.gov.in",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "maharashtra",
+      "video_sha256": "7e8577886cbe37620ed37d0d23f9a9b5fc683eab3f00e6c17cff8c38a860b641",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 0,
+          "box": [
+            [
+              720.0,
+              158.0
+            ],
+            [
+              939.0,
+              185.0
+            ],
+            [
+              936.0,
+              210.0
+            ],
+            [
+              717.0,
+              184.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99016
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 71,
+          "box": [
+            [
+              715.0,
+              952.0
+            ],
+            [
+              933.0,
+              977.0
+            ],
+            [
+              931.0,
+              996.0
+            ],
+            [
+              713.0,
+              971.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99428
+        },
+        "evidence_frames": [
+          0,
+          53,
+          71
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzjhnecnimjcci",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          18,
+          36,
+          53,
+          71
+        ],
+        "fps": 25.0,
+        "duration_s": 2.84
+      }
+    },
+    {
+      "source_position": 14,
+      "video": "0015.mp4",
+      "label": "सतत वातावरणीय हवा गुणवत्ता सनियत्रण केंद्र CONTINUOUS AMBIENT AIR QUALITY MONITORING STATION महाराष्ट्र प्रदूषण नियंत्रण मंडल MAHARASHTRA POLLUTION CONTROL BOARD Website : http://mpcb.gov.in E-mail : jdair@mpcb.gov.in",
+      "action": "Z",
+      "action_start_s": 0.0,
+      "action_end_s": 3.0,
+      "target_token": "maharashtra",
+      "video_sha256": "30947ce060c3d5df4e2546b0560640013b4ce9969dcbde03ef99b0b5de4c4ff4",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 0,
+          "box": [
+            [
+              825.0,
+              484.0
+            ],
+            [
+              1552.0,
+              529.0
+            ],
+            [
+              1549.0,
+              572.0
+            ],
+            [
+              822.0,
+              526.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99848
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 0,
+          "box": [
+            [
+              825.0,
+              484.0
+            ],
+            [
+              1552.0,
+              529.0
+            ],
+            [
+              1549.0,
+              572.0
+            ],
+            [
+              822.0,
+              526.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99848
+        },
+        "evidence_frames": [
+          0,
+          19,
+          38,
+          56,
+          75
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzlihaheiecgph",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          19,
+          38,
+          56,
+          75
+        ],
+        "fps": 25.0,
+        "duration_s": 5.08
+      }
+    },
+    {
+      "source_position": 12,
+      "video": "0013.mp4",
+      "label": "सतत वातावरणीय हवा गुणवत्ता सनियत्रण केंद्र CONTINUOUS AMBIENT AIR QUALITY MONITORING STATION महाराष्ट्र प्रदूषण नियंत्रण मंडल MAHARASHTRA POLLUTION CONTROL BOARD Website : http://mpcb.gov.in E-mail : jdair@mpcb.gov.in",
+      "action": "R",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "maharashtra",
+      "video_sha256": "b3b97bb47c27fa945c54c59ce0fce274cf437e087616b284c750c28d946dea8b",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 0,
+          "box": [
+            [
+              841.0,
+              510.0
+            ],
+            [
+              1066.0,
+              717.0
+            ],
+            [
+              1046.0,
+              738.0
+            ],
+            [
+              822.0,
+              531.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.9856
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "maharashtra",
+          "form": "maharashtrapollutioncontrolboard",
+          "frame_index": 29,
+          "box": [
+            [
+              824.0,
+              488.0
+            ],
+            [
+              1100.0,
+              623.0
+            ],
+            [
+              1087.0,
+              649.0
+            ],
+            [
+              811.0,
+              514.0
+            ]
+          ],
+          "text": "MAHARASHTRA POLLUTION CONTROL BOARD",
+          "forms": [
+            "board",
+            "control",
+            "maharashtra",
+            "maharashtrapollutioncontrolboard",
+            "pollution"
+          ],
+          "confidence": 0.99277
+        },
+        "evidence_frames": [
+          0,
+          29,
+          58,
+          87
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzddalomdmadil",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          29,
+          58,
+          87,
+          116
+        ],
+        "fps": 25.0,
+        "duration_s": 4.64
+      }
+    },
+    {
+      "source_position": 22,
+      "video": "0023.mp4",
+      "label": "अपनी जिम्मेदारी पर वाहन खड़ा करें PARKING AT OWNER'S RISK",
+      "action": "R",
+      "action_start_s": 0.0,
+      "action_end_s": 1.8,
+      "target_token": "parking",
+      "video_sha256": "29a03312e2046b5fb1e7eab624b439d1579dd9666d24b680906c38bc06337204",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 0,
+          "box": [
+            [
+              1044.0,
+              229.0
+            ],
+            [
+              1128.0,
+              326.0
+            ],
+            [
+              1101.0,
+              349.0
+            ],
+            [
+              1017.0,
+              253.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99995
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 0,
+          "box": [
+            [
+              1044.0,
+              229.0
+            ],
+            [
+              1128.0,
+              326.0
+            ],
+            [
+              1101.0,
+              349.0
+            ],
+            [
+              1017.0,
+              253.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99995
+        },
+        "evidence_frames": [
+          0,
+          11,
+          22
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzfoaklfbcolai",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          11,
+          22,
+          34,
+          45
+        ],
+        "fps": 25.0,
+        "duration_s": 3.76
+      }
+    },
+    {
+      "source_position": 20,
+      "video": "0021.mp4",
+      "label": "अपनी जिम्मेदारी पर वाहन खड़ा करें PARKING AT OWNER'S RISK",
+      "action": "Z",
+      "action_start_s": 0.0,
+      "action_end_s": 1.0,
+      "target_token": "parking",
+      "video_sha256": "01ab1d6f2911082396280155dc276776091b21fcbc15e967f5682fb1bb6ff331",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 0,
+          "box": [
+            [
+              628.0,
+              364.0
+            ],
+            [
+              1042.0,
+              424.0
+            ],
+            [
+              1029.0,
+              515.0
+            ],
+            [
+              615.0,
+              456.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99957
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 6,
+          "box": [
+            [
+              681.0,
+              392.0
+            ],
+            [
+              1026.0,
+              442.0
+            ],
+            [
+              1015.0,
+              520.0
+            ],
+            [
+              670.0,
+              469.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99992
+        },
+        "evidence_frames": [
+          0,
+          6,
+          12,
+          19,
+          25
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzflbijomjenda",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          6,
+          12,
+          19,
+          25
+        ],
+        "fps": 25.0,
+        "duration_s": 3.48
+      }
+    },
+    {
+      "source_position": 25,
+      "video": "0026.mp4",
+      "label": "नीति अध्ययन केन्द्र CENTRE FOR POLICY STUDIES (CPS)",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "studies",
+      "video_sha256": "59bc60f236263d05e1a99314f653f1e0d344ffd384f313d996bc12f54ed6acae",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 0,
+          "box": [
+            [
+              1019.0,
+              183.0
+            ],
+            [
+              1346.0,
+              155.0
+            ],
+            [
+              1352.0,
+              229.0
+            ],
+            [
+              1025.0,
+              257.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.99855
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 18,
+          "box": [
+            [
+              1013.0,
+              436.0
+            ],
+            [
+              1342.0,
+              405.0
+            ],
+            [
+              1349.0,
+              482.0
+            ],
+            [
+              1020.0,
+              514.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.99928
+        },
+        "evidence_frames": [
+          0,
+          18,
+          36,
+          54,
+          72
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzafiiclecigmb",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          18,
+          36,
+          54,
+          72
+        ],
+        "fps": 25.0,
+        "duration_s": 2.88
+      }
+    },
+    {
+      "source_position": 19,
+      "video": "0020.mp4",
+      "label": "अपनी जिम्मेदारी पर वाहन खड़ा करें PARKING AT OWNER'S RISK",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "parking",
+      "video_sha256": "24da5ba250ab52b0d633e742b69762196edfaab67bc4d05926cd9f8f46e9cc0c",
+      "baseline_first_frame_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_frames": []
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "parking",
+          "form": "parkingat",
+          "frame_index": 150,
+          "box": [
+            [
+              1770.0,
+              662.0
+            ],
+            [
+              1919.0,
+              678.0
+            ],
+            [
+              1919.0,
+              713.0
+            ],
+            [
+              1766.0,
+              697.0
+            ]
+          ],
+          "text": "PARKING AT",
+          "forms": [
+            "at",
+            "parking",
+            "parkingat"
+          ],
+          "confidence": 0.99936
+        },
+        "evidence_frames": [
+          150
+        ],
+        "first_acceptance_action_step": 4,
+        "decision": "RECOVERED_AFTER_P"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzkilofndjgmei",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          38,
+          75,
+          112,
+          150
+        ],
+        "fps": 25.0,
+        "duration_s": 6.0
+      }
+    },
+    {
+      "source_position": 102,
+      "video": "0103.mp4",
+      "label": "पर्यावरण भू प्रौद्योगिकी प्रयोगशाला ENVIRONMENTAL GEOTECHNOLOGY LAB",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "environmental",
+      "video_sha256": "645c55aa90ff4cf9b6409c595bfff8efeda119b7be39411fef0dfffae49f4ac9",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 0,
+          "box": [
+            [
+              1118.0,
+              543.0
+            ],
+            [
+              1896.0,
+              551.0
+            ],
+            [
+              1896.0,
+              613.0
+            ],
+            [
+              1118.0,
+              604.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99991
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 0,
+          "box": [
+            [
+              1118.0,
+              543.0
+            ],
+            [
+              1896.0,
+              551.0
+            ],
+            [
+              1896.0,
+              613.0
+            ],
+            [
+              1118.0,
+              604.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99991
+        },
+        "evidence_frames": [
+          0,
+          46,
+          92,
+          139,
+          185
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzlbadbgheegig",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          46,
+          92,
+          139,
+          185
+        ],
+        "fps": 25.0,
+        "duration_s": 7.4
+      }
+    },
+    {
+      "source_position": 119,
+      "video": "0120.mp4",
+      "label": "वायुआकाश अभियांत्रिकी विभाग AEROSPACE ENGINEERING DEPARTMENT AEROSPACE ENGINEERING DEPARTMENT",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "aerospace",
+      "video_sha256": "64d416902f527170a82ceb9a98934f13e464381210bbcbef16a4be0e1bd01834",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "aerospace",
+          "form": "aerospaceengineeringdepartment",
+          "frame_index": 0,
+          "box": [
+            [
+              757.0,
+              151.0
+            ],
+            [
+              1182.0,
+              87.0
+            ],
+            [
+              1188.0,
+              124.0
+            ],
+            [
+              763.0,
+              187.0
+            ]
+          ],
+          "text": "AEROSPACE ENGINEERING DEPARTMENT",
+          "forms": [
+            "aerospace",
+            "aerospaceengineeringdepartment",
+            "department",
+            "engineering"
+          ],
+          "confidence": 0.9999
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "aerospace",
+          "form": "aerospaceengineeringdepartment",
+          "frame_index": 93,
+          "box": [
+            [
+              685.0,
+              588.0
+            ],
+            [
+              1108.0,
+              540.0
+            ],
+            [
+              1112.0,
+              578.0
+            ],
+            [
+              689.0,
+              627.0
+            ]
+          ],
+          "text": "AEROSPACE ENGINEERING DEPARTMENT",
+          "forms": [
+            "aerospace",
+            "aerospaceengineeringdepartment",
+            "department",
+            "engineering"
+          ],
+          "confidence": 0.99994
+        },
+        "evidence_frames": [
+          0,
+          23,
+          46,
+          70,
+          93
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzkfiaidglekle",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          23,
+          46,
+          70,
+          93
+        ],
+        "fps": 25.0,
+        "duration_s": 3.72
+      }
+    },
+    {
+      "source_position": 23,
+      "video": "0024.mp4",
+      "label": "नीति अध्ययन केन्द्र CENTRE FOR POLICY STUDIES (CPS)",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": 1.5,
+      "target_token": "studies",
+      "video_sha256": "2e4c94dce398f8c9664020b1f68f88765f27775595bfd53cf5e2a48d083e0351",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 0,
+          "box": [
+            [
+              1559.0,
+              558.0
+            ],
+            [
+              1893.0,
+              527.0
+            ],
+            [
+              1899.0,
+              595.0
+            ],
+            [
+              1565.0,
+              625.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.97181
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 38,
+          "box": [
+            [
+              886.0,
+              550.0
+            ],
+            [
+              1200.0,
+              525.0
+            ],
+            [
+              1206.0,
+              588.0
+            ],
+            [
+              892.0,
+              614.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.99846
+        },
+        "evidence_frames": [
+          0,
+          9,
+          19,
+          38
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzbpjmkhclllpc",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          9,
+          19,
+          28,
+          38
+        ],
+        "fps": 25.0,
+        "duration_s": 3.2
+      }
+    },
+    {
+      "source_position": 90,
+      "video": "0091.mp4",
+      "label": "मैनुएल मेनेज़ेस केंद्र MANUEL MENEZES CENTRE सिविल अभियांत्रिकी (उपभवन) CIVIL ENGINEERING ANNEX",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "manuel",
+      "video_sha256": "313966066b0881054f5dbc4fbf1ef71e18ae0c63584d9259e1a9b180b740eeed",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 0,
+          "box": [
+            [
+              932.0,
+              61.0
+            ],
+            [
+              1380.0,
+              49.0
+            ],
+            [
+              1382.0,
+              115.0
+            ],
+            [
+              934.0,
+              127.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.9997
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 23,
+          "box": [
+            [
+              914.0,
+              252.0
+            ],
+            [
+              1356.0,
+              238.0
+            ],
+            [
+              1359.0,
+              304.0
+            ],
+            [
+              917.0,
+              318.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.99981
+        },
+        "evidence_frames": [
+          0,
+          23,
+          46,
+          70,
+          93
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "maharashtra",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzcpicchfkbdhk",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          23,
+          46,
+          70,
+          93
+        ],
+        "fps": 25.0,
+        "duration_s": 3.72
+      }
+    },
+    {
+      "source_position": 85,
+      "video": "0086.mp4",
+      "label": "मैनुएल मेनेज़ेस केंद्र MANUEL MENEZES CENTRE सिविल अभियांत्रिकी (उपभवन) CIVIL ENGINEERING ANNEX",
+      "action": "Z",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "manuel",
+      "video_sha256": "888858fb1fb0f7cdce5db88c46624be2343621bbb4dfae6d0ee72c3f55629dfe",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 0,
+          "box": [
+            [
+              965.0,
+              421.0
+            ],
+            [
+              1873.0,
+              441.0
+            ],
+            [
+              1870.0,
+              577.0
+            ],
+            [
+              962.0,
+              557.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.97956
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 46,
+          "box": [
+            [
+              964.0,
+              486.0
+            ],
+            [
+              1449.0,
+              498.0
+            ],
+            [
+              1447.0,
+              564.0
+            ],
+            [
+              962.0,
+              552.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.99879
+        },
+        "evidence_frames": [
+          0,
+          12,
+          23,
+          34,
+          46
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "maharashtra",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zziapahfdmomlk",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          12,
+          23,
+          34,
+          46
+        ],
+        "fps": 25.0,
+        "duration_s": 1.84
+      }
+    },
+    {
+      "source_position": 29,
+      "video": "0030.mp4",
+      "label": "नीति अध्ययन केन्द्र CENTRE FOR POLICY STUDIES (CPS)",
+      "action": "R",
+      "action_start_s": 1.0,
+      "action_end_s": 3.0,
+      "target_token": "studies",
+      "video_sha256": "29a2a24abd725df091ebb3ff37cf6c2bc6e8412f3146d8c52557f2f2daa338a7",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 24,
+          "box": [
+            [
+              862.0,
+              770.0
+            ],
+            [
+              1076.0,
+              881.0
+            ],
+            [
+              1047.0,
+              935.0
+            ],
+            [
+              834.0,
+              824.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.97522
+        },
+        "evidence_frames": [
+          24
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "studies",
+          "form": "policystudiescps",
+          "frame_index": 50,
+          "box": [
+            [
+              1025.0,
+              755.0
+            ],
+            [
+              1257.0,
+              715.0
+            ],
+            [
+              1267.0,
+              772.0
+            ],
+            [
+              1035.0,
+              813.0
+            ]
+          ],
+          "text": "POLICY STUDIES (CPS)",
+          "forms": [
+            "cps",
+            "policy",
+            "policystudiescps",
+            "studies"
+          ],
+          "confidence": 0.98919
+        },
+        "evidence_frames": [
+          24,
+          38,
+          50,
+          62
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzgmgeomcampec",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 24,
+        "action": [
+          38,
+          50,
+          62,
+          75
+        ],
+        "fps": 25.0,
+        "duration_s": 4.52
+      }
+    },
+    {
+      "source_position": 108,
+      "video": "0109.mp4",
+      "label": "मैनुएल मेनेज़ेस केंद्र MANUEL MENEZES CENTRE सिविल अभियांत्रिकी (उपभवन) CIVIL ENGINEERING ANNEX",
+      "action": "R",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "manuel",
+      "video_sha256": "f4859bd27fa59f2df3d7c317a12e3fb39285060e4e599f3863cbf183219b554e",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 0,
+          "box": [
+            [
+              615.0,
+              953.0
+            ],
+            [
+              1250.0,
+              0.0
+            ],
+            [
+              1367.0,
+              49.0
+            ],
+            [
+              732.0,
+              1027.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.98124
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 54,
+          "box": [
+            [
+              941.0,
+              581.0
+            ],
+            [
+              1542.0,
+              571.0
+            ],
+            [
+              1543.0,
+              657.0
+            ],
+            [
+              942.0,
+              666.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.98696
+        },
+        "evidence_frames": [
+          0,
+          27,
+          54,
+          80,
+          107
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "maharashtra",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzdcphdkpbjnfo",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          27,
+          54,
+          80,
+          107
+        ],
+        "fps": 25.0,
+        "duration_s": 4.28
+      }
+    },
+    {
+      "source_position": 96,
+      "video": "0097.mp4",
+      "label": "पर्यावरण भू प्रौद्योगिकी प्रयोगशाला ENVIRONMENTAL GEOTECHNOLOGY LAB",
+      "action": "Z",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "environmental",
+      "video_sha256": "966f418e4aab674bfb9ae3b19ebabf5e6680c340299ebcfea823270503b2d8ab",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 0,
+          "box": [
+            [
+              0.0,
+              773.0
+            ],
+            [
+              1872.0,
+              392.0
+            ],
+            [
+              1917.0,
+              616.0
+            ],
+            [
+              7.0,
+              996.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.98938
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 90,
+          "box": [
+            [
+              471.0,
+              679.0
+            ],
+            [
+              1385.0,
+              488.0
+            ],
+            [
+              1407.0,
+              590.0
+            ],
+            [
+              493.0,
+              781.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99964
+        },
+        "evidence_frames": [
+          0,
+          45,
+          90,
+          134,
+          179
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzelclpffmeegl",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          45,
+          90,
+          134,
+          179
+        ],
+        "fps": 25.0,
+        "duration_s": 7.16
+      }
+    },
+    {
+      "source_position": 100,
+      "video": "0101.mp4",
+      "label": "पर्यावरण भू प्रौद्योगिकी प्रयोगशाला ENVIRONMENTAL GEOTECHNOLOGY LAB",
+      "action": "T",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "environmental",
+      "video_sha256": "50ebff8975238e876bcda621ab62f6e007dd5d58b2052d7e0890e671033b7462",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 0,
+          "box": [
+            [
+              700.0,
+              243.0
+            ],
+            [
+              1244.0,
+              127.0
+            ],
+            [
+              1258.0,
+              193.0
+            ],
+            [
+              714.0,
+              309.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99971
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "environmental",
+          "form": "environmentalgeotechnologylab",
+          "frame_index": 101,
+          "box": [
+            [
+              677.0,
+              1019.0
+            ],
+            [
+              1223.0,
+              905.0
+            ],
+            [
+              1237.0,
+              971.0
+            ],
+            [
+              691.0,
+              1079.0
+            ]
+          ],
+          "text": "ENVIRONMENTAL GEOTECHNOLOGY LAB",
+          "forms": [
+            "environmental",
+            "environmentalgeotechnologylab",
+            "geotechnology",
+            "lab"
+          ],
+          "confidence": 0.99982
+        },
+        "evidence_frames": [
+          0,
+          25,
+          50,
+          76,
+          101
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzggfckagnbngh",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          25,
+          50,
+          76,
+          101
+        ],
+        "fps": 25.0,
+        "duration_s": 4.04
+      }
+    },
+    {
+      "source_position": 88,
+      "video": "0089.mp4",
+      "label": "मैनुएल मेनेज़ेस केंद्र MANUEL MENEZES CENTRE सिविल अभियांत्रिकी (उपभवन) CIVIL ENGINEERING ANNEX",
+      "action": "P",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "manuel",
+      "video_sha256": "923fbf3abc42ada92657558ce413d02b27e22cbfb421ec5c26fbcf6a354e1c87",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 0,
+          "box": [
+            [
+              488.0,
+              579.0
+            ],
+            [
+              925.0,
+              561.0
+            ],
+            [
+              928.0,
+              621.0
+            ],
+            [
+              491.0,
+              639.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.98915
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "manuel",
+          "form": "manuelmenezescentre",
+          "frame_index": 193,
+          "box": [
+            [
+              1422.0,
+              577.0
+            ],
+            [
+              1902.0,
+              575.0
+            ],
+            [
+              1902.0,
+              635.0
+            ],
+            [
+              1422.0,
+              637.0
+            ]
+          ],
+          "text": "MANUEL MENEZES CENTRE",
+          "forms": [
+            "centre",
+            "manuel",
+            "manuelmenezescentre",
+            "menezes"
+          ],
+          "confidence": 0.99975
+        },
+        "evidence_frames": [
+          0,
+          48,
+          96,
+          145,
+          193
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "maharashtra",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzikaphmnepiki",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          48,
+          96,
+          145,
+          193
+        ],
+        "fps": 25.0,
+        "duration_s": 7.72
+      }
+    },
+    {
+      "source_position": 140,
+      "video": "0141.mp4",
+      "label": "इस परिसर मे तेंदुआ बार-बार देखा गया है, अत: इस परिसर मे शाम ६.00 बजे से सुबह ६.00 बजे तक घुमना माना है।इस अादेश का उल्लघंन दंङणीय अपराध है। अादेशानुसार NO ENTRY BEYOND THIS AREA FROM 6.00 PM TO 6.OO AM. PANTHER IS BEING SIGHTED FREQUENTLY IN THIS AREA. VIOLATION OF THIS ORDER SHALL BE SERIOUSLY VIEWED. By Order",
+      "action": "TR",
+      "action_start_s": 0.0,
+      "action_end_s": null,
+      "target_token": "frequently",
+      "video_sha256": "405e80deeb6eac54f86d61c4b9a62f66d047e6be8c7f7e0e286490534ab9380c",
+      "baseline_first_frame_exact": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "frequently",
+          "form": "frequentlyinthisareaviolationof",
+          "frame_index": 0,
+          "box": [
+            [
+              589.0,
+              510.0
+            ],
+            [
+              1282.0,
+              395.0
+            ],
+            [
+              1289.0,
+              438.0
+            ],
+            [
+              596.0,
+              553.0
+            ]
+          ],
+          "text": "FREQUENTLY IN THIS AREA. VIOLATION OF",
+          "forms": [
+            "area",
+            "frequently",
+            "frequentlyinthisareaviolationof",
+            "in",
+            "of",
+            "this",
+            "violation"
+          ],
+          "confidence": 0.99417
+        },
+        "evidence_frames": [
+          0
+        ]
+      },
+      "controlled_action_accumulation": {
+        "accepted": true,
+        "match": {
+          "kind": "EXACT",
+          "target": "frequently",
+          "form": "frequentlyinthisareaviolationof",
+          "frame_index": 50,
+          "box": [
+            [
+              551.0,
+              853.0
+            ],
+            [
+              1244.0,
+              731.0
+            ],
+            [
+              1251.0,
+              774.0
+            ],
+            [
+              558.0,
+              896.0
+            ]
+          ],
+          "text": "FREQUENTLY IN THIS AREA. VIOLATION OF",
+          "forms": [
+            "area",
+            "frequently",
+            "frequentlyinthisareaviolationof",
+            "in",
+            "of",
+            "this",
+            "violation"
+          ],
+          "confidence": 0.99802
+        },
+        "evidence_frames": [
+          0,
+          25,
+          50,
+          75,
+          100
+        ],
+        "first_acceptance_action_step": 0,
+        "decision": "ALREADY_EVIDENCED_HOLD"
+      },
+      "canonical_label_disjoint_challenge": {
+        "target": "manuel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_frames": []
+        }
+      },
+      "synthetic_negative": {
+        "target": "zzmjijhpdjfdkm",
+        "accepted": false
+      },
+      "sampled_frames": {
+        "baseline": 0,
+        "action": [
+          25,
+          50,
+          75,
+          100
+        ],
+        "fps": 25.0,
+        "duration_s": 4.0
+      }
+    }
+  ],
+  "claim_boundary": "Controlled-tripod real-video Development evidence only. A CATALIST transformation class is an executed observation intervention with a verified video-level target label, but the dataset does not provide transformation direction, metric camera pose, randomized stationary counterfactuals, exhaustive per-frame pixel text truth, business/facade/sign ownership, door or entrance truth, public access, traversability, arrival, handoff, user benefit, or safety. Recovery after an annotated transformation is intervention-linked evidence, not proof that a live L10 controller chose the action or that the action caused exact-target entrance recovery in an open street."
+}

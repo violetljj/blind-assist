@@ -1,0 +1,2563 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-hue-geometry-consensus-result-v1",
+  "authority": "CONSUMED_SCENE_POSTHOC_HUE_GEOMETRY_CONSENSUS_MECHANISM_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_temporal_hue_geometry_consensus_protocol_v1.json",
+  "protocol_sha256": "e0fe8535b5ec75179926aeda136d91223fd453697bc18e32faada734da3f88dc",
+  "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+  "cohort_sha256": "b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d",
+  "receipt_path": "l10_scenenn_temporal_fused_extent_support_rgbd_receipt_v1.json",
+  "receipt_sha256": "2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274",
+  "implementation": {
+    "path": "l10_scenenn_temporal_hue_geometry_consensus.py",
+    "sha256": "b58b3b3192a1d2554df760f046cfbac87974a625f8b30778f5216c0deed28be9"
+  },
+  "conclusion": "L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "aggregate": {
+      "geometry_reciprocal": {
+        "true_positive": 34,
+        "false_positive": 3,
+        "false_negative": 0,
+        "precision": 0.918919,
+        "recall": 1.0,
+        "f1": 0.957746,
+        "zero_assignment_exact_scenarios": 12,
+        "scenarios": 15
+      },
+      "hue_reciprocal": {
+        "true_positive": 2,
+        "false_positive": 23,
+        "false_negative": 32,
+        "precision": 0.08,
+        "recall": 0.058824,
+        "f1": 0.067797,
+        "zero_assignment_exact_scenarios": 1,
+        "scenarios": 15
+      },
+      "hue_geometry_consensus": {
+        "true_positive": 2,
+        "false_positive": 0,
+        "false_negative": 32,
+        "precision": 1.0,
+        "recall": 0.058824,
+        "f1": 0.111111,
+        "zero_assignment_exact_scenarios": 0,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.965912,
+            0.903233,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.944871,
+            0.948043
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.968764,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.965912,
+            0.903233,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.944871,
+            0.948043
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.907633
+          ],
+          [
+            0.965912,
+            0.903233,
+            0.959316
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.944871
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.968764
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 3,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO02",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.965912,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.944871,
+            0.948043
+          ],
+          [
+            0.980405,
+            0.968764,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO03",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.965912,
+            0.903233,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.948043
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO04",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.965912,
+            0.903233,
+            0.959316
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.944871
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.968764
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.927009,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.919859,
+            0.944871,
+            0.948043
+          ],
+          [
+            0.921106,
+            0.968764,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.903587
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.948043
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.907633
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.944871
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.968764
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.927009,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.903233,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.921106,
+            0.968764,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.965912,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.980405,
+            0.968764,
+            0.973014
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.907633
+          ],
+          [
+            0.965912,
+            0.903233,
+            0.959316
+          ],
+          [
+            0.980405,
+            0.921106,
+            0.968764
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.927009,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.903233,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.919859,
+            0.944871,
+            0.948043
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.907633,
+            0.903587
+          ],
+          [
+            0.965912,
+            0.959316,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.944871,
+            0.948043
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO03",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "geometry_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ]
+        ],
+        "hue_histogram_intersection_matrix": [
+          [
+            0.903669,
+            0.927009,
+            0.903587
+          ],
+          [
+            0.965912,
+            0.903233,
+            0.963284
+          ],
+          [
+            0.956413,
+            0.919859,
+            0.948043
+          ]
+        ],
+        "methods": {
+          "geometry_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "hue_geometry_consensus": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_geometry_score_matrix": [
+      [
+        -0.106701,
+        -1.579547,
+        -0.869231,
+        -4.282027
+      ],
+      [
+        -2.642495,
+        -1.088021,
+        -2.271233,
+        -1.712339
+      ],
+      [
+        -0.592976,
+        -1.783957,
+        -0.475494,
+        -3.915597
+      ],
+      [
+        -4.372872,
+        -2.918869,
+        -4.024139,
+        -0.029867
+      ]
+    ],
+    "full_hue_histogram_intersection_matrix": [
+      [
+        0.903669,
+        0.927009,
+        0.907633,
+        0.903587
+      ],
+      [
+        0.965912,
+        0.903233,
+        0.959316,
+        0.963284
+      ],
+      [
+        0.956413,
+        0.919859,
+        0.944871,
+        0.948043
+      ],
+      [
+        0.980405,
+        0.921106,
+        0.968764,
+        0.973014
+      ]
+    ],
+    "reference_hue_descriptors": [
+      [
+        6.415e-05,
+        0.00025276,
+        0.00721795,
+        0.06846373,
+        0.03060662,
+        0.00637159,
+        0.0011623,
+        0.00025659,
+        0.00024606,
+        7.947e-05,
+        9.287e-05,
+        0.0,
+        0.00012542,
+        2.872e-05,
+        0.0,
+        0.0,
+        2.202e-05,
+        4.213e-05,
+        0.88496764
+      ],
+      [
+        0.0,
+        0.0,
+        8.62e-06,
+        0.00049977,
+        0.00128198,
+        0.00060221,
+        0.00067881,
+        0.00068264,
+        0.00283586,
+        0.02544711,
+        0.02828489,
+        0.00086933,
+        0.00018861,
+        4.021e-05,
+        1.819e-05,
+        0.0,
+        0.0,
+        0.0,
+        0.93856177
+      ],
+      [
+        4.404e-05,
+        2.872e-05,
+        0.00367073,
+        0.00292777,
+        0.00106273,
+        0.0014591,
+        0.00438496,
+        0.00418103,
+        0.00647595,
+        0.03331227,
+        0.0239794,
+        9.67e-05,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.91837661
+      ],
+      [
+        0.000348,
+        0.00140399,
+        0.00517556,
+        0.01353229,
+        0.00738114,
+        0.00289078,
+        0.00249958,
+        0.00417717,
+        0.00931793,
+        0.00600595,
+        0.00229558,
+        0.00068759,
+        0.0004128,
+        0.0002352,
+        0.000126,
+        0.0001836,
+        0.00027,
+        0.0002448,
+        0.94281206
+      ]
+    ],
+    "query_hue_descriptors": [
+      [
+        0.00016786,
+        0.00097822,
+        0.00245424,
+        0.00703567,
+        0.00413139,
+        0.00272339,
+        0.00215325,
+        0.00228059,
+        0.00588525,
+        0.0093452,
+        0.01029882,
+        0.00582013,
+        0.00171189,
+        0.0004457,
+        4.486e-05,
+        0.0,
+        7.525e-05,
+        2.605e-05,
+        0.94442226
+      ],
+      [
+        0.00067788,
+        0.00013847,
+        0.00718903,
+        0.03031853,
+        0.01548477,
+        0.01300059,
+        0.00670438,
+        0.01072412,
+        0.01045338,
+        0.01788421,
+        0.01221421,
+        0.00357953,
+        0.00438244,
+        0.00064171,
+        0.00053528,
+        0.00033067,
+        0.00031207,
+        0.0,
+        0.86542871
+      ],
+      [
+        2.872e-05,
+        0.00191387,
+        0.02452129,
+        0.01008636,
+        0.00231311,
+        0.00135666,
+        0.00058211,
+        0.00072572,
+        0.00090763,
+        0.0031384,
+        0.01196864,
+        0.00239449,
+        0.00023552,
+        5.74e-06,
+        1.915e-05,
+        0.0,
+        5.457e-05,
+        0.0,
+        0.93974801
+      ],
+      [
+        0.00164697,
+        0.00140267,
+        0.00247678,
+        0.00632253,
+        0.00566964,
+        0.00195447,
+        0.00098566,
+        0.00073292,
+        0.0015164,
+        0.00510941,
+        0.01322634,
+        0.00440176,
+        0.0046924,
+        0.00183652,
+        0.00258209,
+        0.00074556,
+        0.00136476,
+        0.00129315,
+        0.94203997
+      ]
+    ],
+    "observation_diagnostics": [
+      {
+        "episode_id": "SO01",
+        "reference": {
+          "retained_fused_points": 4096,
+          "frames": [
+            {
+              "frame": 6825,
+              "depth_consistent_target_pixels": 3619,
+              "retained_points": 3619,
+              "visible_mask_sha256": "d376113c99041529b8c6d3a3650f9d0b5cb81cddb2c79230e06c97c99d70d909"
+            },
+            {
+              "frame": 6830,
+              "depth_consistent_target_pixels": 4629,
+              "retained_points": 4096,
+              "visible_mask_sha256": "df3f81a15ea017f809589ebc0b7a7c2f4ba96aabd77b1b230dd83245a185810f"
+            },
+            {
+              "frame": 6835,
+              "depth_consistent_target_pixels": 5370,
+              "retained_points": 4096,
+              "visible_mask_sha256": "e245b5352bf5e0a95bdc8317a1b392208c1031a926c7cca3a63c2b606ef8c207"
+            }
+          ]
+        },
+        "query": {
+          "retained_fused_points": 2710,
+          "frames": [
+            {
+              "frame": 7340,
+              "depth_consistent_target_pixels": 0,
+              "retained_points": 0,
+              "visible_mask_sha256": "a70a48c05d91c1ae88f071259e90ad114cebfc7bbe1bc0a7f61900b27d693057"
+            },
+            {
+              "frame": 7345,
+              "depth_consistent_target_pixels": 159,
+              "retained_points": 159,
+              "visible_mask_sha256": "4ffc00eaa021cb7f4cbe0861bb5fda9c09a257d99ab01d7c93c11b3c02ad7b6b"
+            },
+            {
+              "frame": 7350,
+              "depth_consistent_target_pixels": 2551,
+              "retained_points": 2551,
+              "visible_mask_sha256": "41c25f349e77f8618e979101f25c33db9e57026dd23dee6e5b25b07161a80c7e"
+            }
+          ]
+        }
+      },
+      {
+        "episode_id": "SO02",
+        "reference": {
+          "retained_fused_points": 4096,
+          "frames": [
+            {
+              "frame": 5770,
+              "depth_consistent_target_pixels": 7543,
+              "retained_points": 4096,
+              "visible_mask_sha256": "f8e1e9cc3a4969e37fa3fbacd29cbb9c99a42cb6aaa18f4031e7ae75eb2953c8"
+            },
+            {
+              "frame": 5775,
+              "depth_consistent_target_pixels": 10971,
+              "retained_points": 4096,
+              "visible_mask_sha256": "ef351898c722024f35b45c147c459a47e9eaffdf6e516d638bac13816b3f3253"
+            },
+            {
+              "frame": 5780,
+              "depth_consistent_target_pixels": 12497,
+              "retained_points": 4096,
+              "visible_mask_sha256": "e4cbd9c22e19dc0b1a8f20403164fee7703826d0fe6c4cb1a25fcbb3742bb20f"
+            }
+          ]
+        },
+        "query": {
+          "retained_fused_points": 3795,
+          "frames": [
+            {
+              "frame": 7090,
+              "depth_consistent_target_pixels": 1667,
+              "retained_points": 1667,
+              "visible_mask_sha256": "6ece656346e81ca5d4015c46669cf55bf7b1d01a57e4a9f20cdba5af3fea1992"
+            },
+            {
+              "frame": 7095,
+              "depth_consistent_target_pixels": 1410,
+              "retained_points": 1410,
+              "visible_mask_sha256": "a8ff98145394fceaaf9cef21c631e2fed0065d4cc616925840aaf63b24854122"
+            },
+            {
+              "frame": 7100,
+              "depth_consistent_target_pixels": 718,
+              "retained_points": 718,
+              "visible_mask_sha256": "769b0f820732c961f9e0b21d3c812567eddf90aff43105c6a7459c9cfb41a168"
+            }
+          ]
+        }
+      },
+      {
+        "episode_id": "SO03",
+        "reference": {
+          "retained_fused_points": 4096,
+          "frames": [
+            {
+              "frame": 6950,
+              "depth_consistent_target_pixels": 2911,
+              "retained_points": 2911,
+              "visible_mask_sha256": "af199837de697dcf124f94394be1fccc9f619d7c5baf95a03df2510221b7fc11"
+            },
+            {
+              "frame": 6955,
+              "depth_consistent_target_pixels": 2498,
+              "retained_points": 2498,
+              "visible_mask_sha256": "1c7497b73eecd2a822aa8b50e6ac5ffb5d09dbd1455b0aef087fddf299b16e09"
+            },
+            {
+              "frame": 6960,
+              "depth_consistent_target_pixels": 3605,
+              "retained_points": 3605,
+              "visible_mask_sha256": "55433eb328e874efdb2dc4c26d0efcabaf171991cad4528c71739f7d9c6d3fa6"
+            }
+          ]
+        },
+        "query": {
+          "retained_fused_points": 4096,
+          "frames": [
+            {
+              "frame": 7330,
+              "depth_consistent_target_pixels": 86457,
+              "retained_points": 4096,
+              "visible_mask_sha256": "6509f1cfba691c604f84c9e7e5a5374b4b1eed7aaa7eb174ff99ab546118164d"
+            },
+            {
+              "frame": 7335,
+              "depth_consistent_target_pixels": 80492,
+              "retained_points": 4096,
+              "visible_mask_sha256": "bcf1c918b038330a3afe231e63851e402c0c118ec9909c78b7934f7a9837e842"
+            },
+            {
+              "frame": 7340,
+              "depth_consistent_target_pixels": 76466,
+              "retained_points": 4096,
+              "visible_mask_sha256": "ac0d854c3ebf4b552269136f9435487b47d5bc8f0576363c7a06f70655a9d14d"
+            }
+          ]
+        }
+      },
+      {
+        "episode_id": "SO04",
+        "reference": {
+          "retained_fused_points": 3268,
+          "frames": [
+            {
+              "frame": 4825,
+              "depth_consistent_target_pixels": 786,
+              "retained_points": 786,
+              "visible_mask_sha256": "f89b6203ba09f7a14c70fa5c66483e8beaa4e36261dccdff9fe403fa62034437"
+            },
+            {
+              "frame": 4830,
+              "depth_consistent_target_pixels": 927,
+              "retained_points": 927,
+              "visible_mask_sha256": "ba36ba0115b049e3a69cef2aa009decbd929f8d5495ec739b648e372dfd0b297"
+            },
+            {
+              "frame": 4835,
+              "depth_consistent_target_pixels": 1555,
+              "retained_points": 1555,
+              "visible_mask_sha256": "304737fc899311df024c5fef927ac56a8f9c6d06796c28920019475a3f964690"
+            }
+          ]
+        },
+        "query": {
+          "retained_fused_points": 931,
+          "frames": [
+            {
+              "frame": 5280,
+              "depth_consistent_target_pixels": 0,
+              "retained_points": 0,
+              "visible_mask_sha256": "c526f76316c2cad0a0dcdefd659ac770166707d9dd8d94bc3be2e265d7f5088a"
+            },
+            {
+              "frame": 5285,
+              "depth_consistent_target_pixels": 120,
+              "retained_points": 120,
+              "visible_mask_sha256": "547e5a54894d4f5c57e1c977230bec83db6e75cb06611c372caf9ffb910ed36b"
+            },
+            {
+              "frame": 5290,
+              "depth_consistent_target_pixels": 811,
+              "retained_points": 811,
+              "visible_mask_sha256": "839519387b04746022c2174e6e0f2946072f4686d77dfe095cc44ff7605d0125"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "incremental_gain_over_geometry": {
+    "true_positive_delta": -32,
+    "false_positive_reduction": 3,
+    "false_negative_reduction": -32,
+    "f1_delta": -0.846635,
+    "exact_scenario_gain": -12
+  },
+  "claim_boundary": "This consumed-scene posthoc experiment can establish only whether a deterministic Hue-geometry reciprocal consensus is mechanically useful on the frozen SceneNN cohort. Instance masks, target geometry, poses and synchronized sensor streams remain privileged; no model is trained. It is not fresh confirmation, raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

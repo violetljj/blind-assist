@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist-l10-panolab-cross-collection-positive-materialization-v1",
+  "selection": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_cross_collection_positive_selection_v1.json",
+  "selection_sha256": "408aac42bf3590379b6c3fc6c448553b15077ead253dc170fecf6355868188f0",
+  "pixel_views_before_frozen_selection": 0,
+  "human_pixel_reviews_before_frozen_selection": 0,
+  "model_calls_before_frozen_selection": 0,
+  "images": [
+    {
+      "episode_id": "FP01",
+      "role": "reference",
+      "role_index": 1,
+      "item_id": "9b23a59f-2824-4df5-a925-d551d342f1b5",
+      "collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/9b23a59f-2824-4df5-a925-d551d342f1b5.jpg",
+      "sha256": "bac1c7078140ceb22d3f60c374c1afd9c5659c63e59511785521d25c3668f2ec",
+      "bytes": 2736438,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/9b23a59f-2824-4df5-a925-d551d342f1b5/hd.jpg"
+    },
+    {
+      "episode_id": "FP01",
+      "role": "reference",
+      "role_index": 2,
+      "item_id": "6dcb90d2-2bf7-4583-a7b4-090615ab4503",
+      "collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/6dcb90d2-2bf7-4583-a7b4-090615ab4503.jpg",
+      "sha256": "52fa7a4bfed12d6fefbd19e9535e6a47c085f7b634a7e7d1706b7a6eb9465217",
+      "bytes": 2703124,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/6dcb90d2-2bf7-4583-a7b4-090615ab4503/hd.jpg"
+    },
+    {
+      "episode_id": "FP01",
+      "role": "query",
+      "role_index": 1,
+      "item_id": "48fa4a33-af91-4f8d-94ef-efb6eceff9b9",
+      "collection": "90a28bae-899b-40db-b297-ee34aff10553",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/48fa4a33-af91-4f8d-94ef-efb6eceff9b9.jpg",
+      "sha256": "a7221bfe6554b5ef2279dae454d72cd573888477f0c71054408ad16173ec8e5f",
+      "bytes": 2924643,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/48fa4a33-af91-4f8d-94ef-efb6eceff9b9/hd.jpg"
+    },
+    {
+      "episode_id": "FP02",
+      "role": "reference",
+      "role_index": 1,
+      "item_id": "936f2df9-e0ba-4b1c-af72-e6f27abef7e6",
+      "collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/936f2df9-e0ba-4b1c-af72-e6f27abef7e6.jpg",
+      "sha256": "f29bab7690e8018600c6b39490193e6f6c774661b290f8e816c126ee8f0984a4",
+      "bytes": 2642910,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/936f2df9-e0ba-4b1c-af72-e6f27abef7e6/hd.jpg"
+    },
+    {
+      "episode_id": "FP02",
+      "role": "reference",
+      "role_index": 2,
+      "item_id": "89110159-3b29-438f-88ea-a404881ea56f",
+      "collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/89110159-3b29-438f-88ea-a404881ea56f.jpg",
+      "sha256": "80dcbbc77522e4d11ef50693261511dddce84599b0efd46ed109f5716ed8c09d",
+      "bytes": 2693913,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/89110159-3b29-438f-88ea-a404881ea56f/hd.jpg"
+    },
+    {
+      "episode_id": "FP02",
+      "role": "query",
+      "role_index": 1,
+      "item_id": "ee86afbe-9827-46dd-8b79-41bbec35a8a0",
+      "collection": "e63465cb-21cb-4270-ae2b-6ecd88910b64",
+      "path": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1/images/ee86afbe-9827-46dd-8b79-41bbec35a8a0.jpg",
+      "sha256": "77a2b4df94561eac4515cc716d18eedcd8e9395c516689aa5bfc53eb068fb510",
+      "bytes": 2614936,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/ee86afbe-9827-46dd-8b79-41bbec35a8a0/hd.jpg"
+    }
+  ]
+}

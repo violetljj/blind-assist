@@ -1,0 +1,535 @@
+{
+  "schema": "blindassist-l10-lsaa-vienna-evaluator-truth-draft-v1",
+  "public_source": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_source_v3.json",
+  "truth": {
+    "LSAA-VIE-D-001": {
+      "official_single_door_box_xyxy": [
+        349.29388427734375,
+        479.4004821777344,
+        424.59063720703125,
+        645.4866943359375
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-002": {
+      "official_single_door_box_xyxy": [
+        384.1378479003906,
+        648.9932861328125,
+        486.3532409667969,
+        787.6900634765625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-003": {
+      "official_single_door_box_xyxy": [
+        273.6102600097656,
+        943.3262939453125,
+        335.8598327636719,
+        1083.122314453125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-004": {
+      "official_single_door_box_xyxy": [
+        407.57330322265625,
+        840.2041625976562,
+        512.9031372070312,
+        1003.0582885742188
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-005": {
+      "official_single_door_box_xyxy": [
+        495.1517639160156,
+        714.5281982421875,
+        566.7410888671875,
+        812.8262939453125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-006": {
+      "official_single_door_box_xyxy": [
+        441.56640625,
+        1043.2706298828125,
+        506.98272705078125,
+        1219.4781494140625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-007": {
+      "official_single_door_box_xyxy": [
+        310.5515441894531,
+        719.4677734375,
+        372.0519104003906,
+        812.59912109375
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-008": {
+      "official_single_door_box_xyxy": [
+        331.9933776855469,
+        601.0601806640625,
+        409.9842834472656,
+        711.6632080078125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-009": {
+      "official_single_door_box_xyxy": [
+        607.9241943359375,
+        985.9223022460938,
+        663.8477783203125,
+        1118.7242431640625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-010": {
+      "official_single_door_box_xyxy": [
+        872.1145629882812,
+        1430.7540283203125,
+        944.8897094726562,
+        1578.9920654296875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-011": {
+      "official_single_door_box_xyxy": [
+        321.2934875488281,
+        1239.3277587890625,
+        380.7298889160156,
+        1419.5054931640625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-012": {
+      "official_single_door_box_xyxy": [
+        710.231689453125,
+        958.5631103515625,
+        782.362060546875,
+        1164.4635009765625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-013": {
+      "official_single_door_box_xyxy": [
+        811.5692749023438,
+        1053.59814453125,
+        932.7611694335938,
+        1254.68017578125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-014": {
+      "official_single_door_box_xyxy": [
+        682.8861083984375,
+        821.687255859375,
+        760.6202392578125,
+        1009.8677978515625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-015": {
+      "official_single_door_box_xyxy": [
+        423.51995849609375,
+        801.3922119140625,
+        480.3843994140625,
+        914.55712890625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-016": {
+      "official_single_door_box_xyxy": [
+        479.2646484375,
+        735.7022705078125,
+        534.1160888671875,
+        876.6785888671875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-017": {
+      "official_single_door_box_xyxy": [
+        410.22869873046875,
+        933.2158813476562,
+        463.663330078125,
+        1034.0714111328125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-018": {
+      "official_single_door_box_xyxy": [
+        89.74099731445312,
+        542.0584716796875,
+        156.08763122558594,
+        642.725830078125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-019": {
+      "official_single_door_box_xyxy": [
+        511.3404541015625,
+        770.3932495117188,
+        595.2047119140625,
+        910.7273559570312
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-020": {
+      "official_single_door_box_xyxy": [
+        397.3513488769531,
+        953.1873168945312,
+        486.3227844238281,
+        1181.22265625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-021": {
+      "official_single_door_box_xyxy": [
+        181.35720825195312,
+        802.5606689453125,
+        266.01763916015625,
+        907.3775634765625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-022": {
+      "official_single_door_box_xyxy": [
+        722.90380859375,
+        1047.361572265625,
+        795.6202392578125,
+        1188.89111328125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-023": {
+      "official_single_door_box_xyxy": [
+        417.5196533203125,
+        1121.9105224609375,
+        483.8095703125,
+        1275.6607666015625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-D-024": {
+      "official_single_door_box_xyxy": [
+        447.0923156738281,
+        849.8214721679688,
+        509.5724792480469,
+        1010.8676147460938
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-001": {
+      "official_single_door_box_xyxy": [
+        552.6611938476562,
+        799.8784790039062,
+        666.2465209960938,
+        1036.938232421875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-002": {
+      "official_single_door_box_xyxy": [
+        249.7779541015625,
+        1161.991455078125,
+        335.49945068359375,
+        1328.819091796875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-003": {
+      "official_single_door_box_xyxy": [
+        782.8761596679688,
+        1057.4827880859375,
+        906.7245483398438,
+        1293.0321044921875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-004": {
+      "official_single_door_box_xyxy": [
+        396.97119140625,
+        1022.7630615234375,
+        460.01483154296875,
+        1148.6141357421875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-005": {
+      "official_single_door_box_xyxy": [
+        356.9895324707031,
+        503.024169921875,
+        424.2904357910156,
+        670.49462890625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-006": {
+      "official_single_door_box_xyxy": [
+        395.6539001464844,
+        855.8306884765625,
+        470.6169738769531,
+        982.2576904296875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-007": {
+      "official_single_door_box_xyxy": [
+        346.54779052734375,
+        741.14453125,
+        410.008544921875,
+        935.4334716796875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-008": {
+      "official_single_door_box_xyxy": [
+        1339.607421875,
+        939.3486938476562,
+        1393.840576171875,
+        1080.5673828125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-009": {
+      "official_single_door_box_xyxy": [
+        286.55645751953125,
+        996.1939086914062,
+        373.5224609375,
+        1202.81201171875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-010": {
+      "official_single_door_box_xyxy": [
+        440.0723571777344,
+        787.2329711914062,
+        509.9798278808594,
+        905.3378295898438
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-011": {
+      "official_single_door_box_xyxy": [
+        300.82928466796875,
+        618.0075073242188,
+        355.65875244140625,
+        744.7216186523438
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-012": {
+      "official_single_door_box_xyxy": [
+        408.13525390625,
+        969.241455078125,
+        485.21649169921875,
+        1112.893310546875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-013": {
+      "official_single_door_box_xyxy": [
+        355.3966064453125,
+        637.279052734375,
+        411.8719482421875,
+        720.0772705078125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-014": {
+      "official_single_door_box_xyxy": [
+        816.8324584960938,
+        741.1239624023438,
+        870.6779174804688,
+        889.7453002929688
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-015": {
+      "official_single_door_box_xyxy": [
+        841.7325439453125,
+        1164.7744140625,
+        986.9583740234375,
+        1389.864990234375
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-016": {
+      "official_single_door_box_xyxy": [
+        688.9391479492188,
+        795.8927001953125,
+        746.3439331054688,
+        960.23876953125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-017": {
+      "official_single_door_box_xyxy": [
+        412.4625549316406,
+        993.5181884765625,
+        471.6352844238281,
+        1097.2059326171875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-018": {
+      "official_single_door_box_xyxy": [
+        769.4577026367188,
+        869.9934692382812,
+        890.3344116210938,
+        1034.258056640625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-019": {
+      "official_single_door_box_xyxy": [
+        961.2557983398438,
+        1212.8458251953125,
+        1053.8267822265625,
+        1380.1207275390625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-020": {
+      "official_single_door_box_xyxy": [
+        772.94140625,
+        1353.708251953125,
+        856.7314453125,
+        1493.459716796875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-021": {
+      "official_single_door_box_xyxy": [
+        348.4782409667969,
+        858.7989501953125,
+        456.9137268066406,
+        973.8447265625
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-022": {
+      "official_single_door_box_xyxy": [
+        323.0544128417969,
+        655.2428588867188,
+        401.4806213378906,
+        773.8599243164062
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-023": {
+      "official_single_door_box_xyxy": [
+        128.2963409423828,
+        1171.32373046875,
+        234.4188995361328,
+        1363.430908203125
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    },
+    "LSAA-VIE-C-024": {
+      "official_single_door_box_xyxy": [
+        471.05889892578125,
+        667.66064453125,
+        643.1463012695312,
+        819.3563232421875
+      ],
+      "target_house_number_visible": null,
+      "target_credential_box_xyxy": null,
+      "annotation_state": "PENDING_PIXEL_TRUTH_BEFORE_INFERENCE"
+    }
+  },
+  "state": "PENDING_PIXEL_TRUTH_BEFORE_MODEL_INFERENCE"
+}

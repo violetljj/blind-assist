@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist-l10-panolab-federated-lexical-appearance-confirmation-protocol-v1",
+  "name": "L10 PanoLab new-city temporal lexical-then-appearance confirmation",
+  "status": "FROZEN_AFTER_APPEARANCE_RESULT_BEFORE_FIRST_OCR_CALL_ON_CONFIRMATION_PANEL",
+  "authority": "NEW_CITY_TARGET_WAY_ITEM_DISJOINT_OCR_UNSEEN_SAME_PROVIDER_DEVELOPMENT",
+  "question": "Does the unchanged exact-token-first router transfer to the two new Caen targets without conflicting with the already sealed 2/2 appearance result?",
+  "observed_before_freeze": "Human review had already exposed readable Euromaster and Bibliotheque Maladrerie signage, and the sealed temporal appearance branch was 2/2 correct. No OCR output, OCR confidence, normalized token, token-bank match, or lexical routing decision had been observed on any selected confirmation image.",
+  "ocr_calls_on_selected_images_before_protocol_freeze": 0,
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_federated_lexical_appearance_confirmation.py",
+    "sha256": "2fb9fcf9c0e9380766f2424c5fd28c44d4d8af282528f11672899a3da73cf9e3",
+    "bytes": 12992
+  },
+  "inputs": {
+    "frozen_lexical_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_protocol_v1.json",
+      "sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+      "bytes": 10357
+    },
+    "confirmation_selection": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_selection_v1.json",
+      "sha256": "7cb2ae7b6badf32e5676fb1edea29178e741ea4be7c5eb679482d81dff8b69b5",
+      "bytes": 191679
+    },
+    "confirmation_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+      "sha256": "b521986bddda64902dc173edaf7f76671543cd4b73629e946ffae504df485e2d",
+      "bytes": 7699
+    },
+    "confirmation_truth": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_truth_v1.json",
+      "sha256": "6a61a454bb008359e83fe904c8589f3d743b884f13519ec75ce3b5886cf022aa",
+      "bytes": 3792
+    },
+    "confirmation_appearance_result": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_appearance_result_v1.json",
+      "sha256": "50d1cbd6ee74657025419872ebfd9f2f49de2227d8d55a08426c9c7940f20a10",
+      "bytes": 82776
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    {
+      "episode_id": "FL01",
+      "entity_name": "Espace Village"
+    },
+    {
+      "episode_id": "FL02",
+      "entity_name": "Le Viviani"
+    },
+    {
+      "episode_id": "FL03",
+      "entity_name": "Gare de Neuilly - Porte Maillot"
+    },
+    {
+      "episode_id": "FL04",
+      "entity_name": "Église Notre-Dame de la Délivrande"
+    },
+    {
+      "episode_id": "FP01",
+      "entity_name": "Rumillat"
+    },
+    {
+      "episode_id": "FP02",
+      "entity_name": "Halle Rebatet"
+    },
+    {
+      "episode_id": "CF01",
+      "entity_name": "Euromaster"
+    },
+    {
+      "episode_id": "CF02",
+      "entity_name": "Bibliothèque de Caen - Maladrerie"
+    }
+  ],
+  "evaluated_episodes": [
+    "CF01",
+    "CF02"
+  ],
+  "routing_contract": {
+    "lexical": "Run the exact frozen PP-OCRv6 medium entrance-window pipeline and long-short exact-token bank across prev/anchor/next for every one of the eight roster names.",
+    "unique_own_match": "If and only if the requested target is the sole matched roster name, emit TEMPORAL_EXACT_TOKEN_SEARCH_PRIORITY_CANDIDATE.",
+    "no_match": "Reuse the already sealed temporal appearance candidate or UNKNOWN without recomputation or threshold changes.",
+    "unique_wrong_or_multiple_matches": "Return UNKNOWN_LEXICAL_CONFLICT_KEEP_SEARCHING; never let appearance override a lexical conflict.",
+    "authority": "All emitted candidates remain SEARCH_PRIORITY_ONLY with no portal-ownership binding.",
+    "no_adaptation": "No OCR model, confidence rule, text normalization, target spelling, long-short split, token rule, crop, image, roster, fallback, or gate may change after output."
+  },
+  "gate": {
+    "required": [
+      "both confirmation sequences and all six frames evaluated",
+      "at least one new-city target produces a unique own exact-token match",
+      "2/2 combined candidates correct with 0 wrong and 0 UNKNOWN",
+      "0 wrong-target exact-token matches across 14 counterfactual trials",
+      "0 portal-ownership bindings"
+    ],
+    "failure_policy": "Preserve the first result. Do not tune target aliases, token rules, OCR settings, or samples."
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_FEDERATED_NEW_CITY_LEXICAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_FEDERATED_NEW_CITY_LEXICAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "GoMatching++: Parameter- and Data-Efficient Arbitrary-Shaped Video Text Spotting and Benchmarking",
+      "paper": "https://arxiv.org/abs/2505.22228",
+      "official_code": "https://github.com/Hxyz-123/GoMatching",
+      "use": "Motivates accumulating text evidence across short and long temporal context. This router retains deterministic exact tokens and does not implement GoMatching++."
+    },
+    {
+      "title": "GloTSFormer: Global Video Text Spotting Transformer",
+      "paper": "https://arxiv.org/abs/2401.03694",
+      "use": "Motivates preserving historical text evidence rather than making an adjacent-frame-only decision. This replay does not implement its Transformer."
+    }
+  ],
+  "output": "research/active/l10-r0/l10_panolab_federated_lexical_appearance_confirmation_result_v1.json",
+  "claim_boundary": {
+    "allowed": "OCR-unseen Development evidence about whether the already fixed exact-token temporal branch complements or safely defers to the sealed appearance branch on exactly two new-city, target-way/item-disjoint Caen targets in one same-provider eight-target closed roster.",
+    "not_allowed": [
+      "blind, independent, provider-disjoint, fully pixel-unseen, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "a same-name OCR token proving exact entity identity, sign-to-building association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, deployment performance, or safety"
+    ]
+  }
+}

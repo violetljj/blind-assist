@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-roster-information-router-protocol-v1",
+  "name": "RoadTextVQA roster-information lexical router fresh OCR replay",
+  "status": "FROZEN_BEFORE_OPENING_SELECTED_OCR_FILES",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_DEVELOPMENT_SEARCH_PRIORITY_ONLY",
+  "question": "Does replacing the fixed minimum-length assumption with roster-conditioned information evidence recover additional exact destination-name candidates across source-disjoint driving sequences without adding wrong candidates?",
+  "development_exposure": {
+    "video": "19.mp4",
+    "question_id": 6,
+    "target_alias": "cava",
+    "observation": "The already consumed frame 0 OCR contains exact CAVA, but the frozen legacy minimum length six rule cannot use a four-character credential.",
+    "use": "Motivated the one structural branch only; video 19 is excluded from evaluation."
+  },
+  "selection_state_at_freeze": {
+    "selected_validation_annotations_read": true,
+    "selected_ocr_files_opened": 0,
+    "selected_pixels_opened": 0,
+    "selected_model_calls": 0,
+    "selection_rule": "Thirty manually fixed, one-video-per-row business/place name questions with alphabetic answer aliases, excluding consumed video 19."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_roadtextvqa_roster_information_router.py",
+    "sha256": "f092549eb1bfc650ed163be1c6b7e805d309b275560a4144b04b4424834a7e71",
+    "bytes": 12622
+  },
+  "inputs": {
+    "validation_annotations": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/val.json",
+      "sha256": "b9b69246cd773e22648acde7499113fe20b8832d6e7a8dd10faadc3d6819043f",
+      "bytes": 180371,
+      "source": "https://cvit.iiit.ac.in/images/datasets/RoadTextVQA/val.json"
+    },
+    "official_ocr_archive": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/ocr.zip",
+      "sha256": "38cefbca417c3970c1571e76c6516aee50a542050e094e3295d366936cfe1e95",
+      "bytes": 131119904,
+      "source": "https://cvit.iiit.ac.in/images/datasets/RoadTextVQA/ocr.zip",
+      "content": "Ten Google-Vision-style sampled-frame OCR JSON files per selected video at frames 0,30,...,270."
+    }
+  },
+  "selected_question_ids": [
+    44,
+    77,
+    273,
+    357,
+    380,
+    391,
+    480,
+    602,
+    707,
+    842,
+    909,
+    1397,
+    1441,
+    1565,
+    1742,
+    1810,
+    1888,
+    1988,
+    2161,
+    2442,
+    2532,
+    2543,
+    2558,
+    2565,
+    2632,
+    2686,
+    2687,
+    2844,
+    3168,
+    3407
+  ],
+  "token_contract": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens; source full-text summary is excluded and only individual textAnnotations are used.",
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "of",
+      "the"
+    ],
+    "legacy_minimum_target_token_length": 6,
+    "legacy_maximum_edit_distance": 1,
+    "legacy_long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "information_short_exact_minimum_length": 4,
+    "information_short_exact_maximum_length": 5,
+    "information_short_exact_evidence_units": 2,
+    "information_rule": "A four- or five-letter alphabetic token contributes two units only when it is exact and appears in exactly one target's aliases in the fixed thirty-target roster. No edit neighbor is permitted for this branch.",
+    "association": "Evidence unions across ten chronologically ordered sampled frames. Emit only when exactly one roster target matches; multiple matches are AMBIGUOUS and no match is UNKNOWN.",
+    "authority": "Search-priority target-name candidate only; no pixel text localization, sign-to-entity association, exact physical identity, facade, portal, entrance, access, waypoint, arrival, handoff, benefit, or safety authority."
+  },
+  "synthetic_negative_contract": {
+    "count": 30,
+    "salt": "blindassist-l10-roadtextvqa-negative-v1",
+    "formula": "For each fixed row, SHA256(question_id|video|salt), map the first ten hex nibbles to letters a-p, then prefix zz.",
+    "authority": "Generated absent-query canaries only; not human-verified scene target-absence truth."
+  },
+  "gate": {
+    "episodes": 30,
+    "minimum_correct_gain_over_legacy": 3,
+    "maximum_successor_wrong": 0,
+    "maximum_successor_ambiguous": 0,
+    "maximum_synthetic_negative_accepts": 0,
+    "identity_or_portal_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_ROADTEXTVQA_ROSTER_INFORMATION_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_ROADTEXTVQA_ROSTER_INFORMATION_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run exactly once. Do not change the selected rows, token lengths, evidence weights, edit distance, roster uniqueness, or gate after observing selected OCR.",
+  "output": "research/active/l10-r0/l10_roadtextvqa_roster_information_router_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Development evidence for whether roster-unique short exact OCR tokens improve target-name search-priority routing over the frozen legacy length rule on a fresh OCR-unseen RoadTextVQA validation panel.",
+    "not_allowed": [
+      "benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, product, benefit, reliability, or safety confirmation",
+      "pixel text localization or a token proving exact physical entity identity, sign ownership, facade ownership, portal ownership, or entrance ownership",
+      "public access, traversability, waypoint correctness, arrival, or handoff"
+    ]
+  }
+}

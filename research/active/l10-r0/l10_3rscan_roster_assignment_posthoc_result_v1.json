@@ -1,0 +1,170 @@
+{
+  "schema": "blindassist-l10-3rscan-roster-assignment-posthoc-result-v1",
+  "authority": "CONSUMED_COHORT_POSTHOC_MECHANISM_RESULT",
+  "protocol_path": "l10_3rscan_roster_assignment_posthoc_protocol_v1.json",
+  "protocol_sha256": "3e3e5b80a1ed7cf180f4ac198763c277e6f755a9176f927d45f469c95921d34a",
+  "implementation": {
+    "path": "l10_3rscan_roster_assignment_posthoc.py",
+    "sha256": "e6efed6216919ca891415f8721f26a906229324305e46af35b6ecf4cdbbdd8ca"
+  },
+  "predecessor_result_sha256": "6b2a9c2729b64f8c6de052894f6c58a7c7f32dd219d69324757d3b86ae62a4f8",
+  "conclusion": "L10_3RSCAN_ROSTER_ASSIGNMENT_POSTHOC_MECHANISM_REPAIRS_PAIRWISE_COLLISION",
+  "metrics": {
+    "baseline": {
+      "score_matrix": [
+        [
+          0.426439,
+          0.398316,
+          0.275251
+        ],
+        [
+          0.510752,
+          0.877685,
+          0.370466
+        ],
+        [
+          0.356835,
+          0.406876,
+          0.687482
+        ]
+      ],
+      "roster_assignment": {
+        "assigned_correct": 3,
+        "assigned_accuracy": 1.0,
+        "bidirectional_identity_equivalent_correct": 6,
+        "selected_total_score": 1.991606,
+        "second_best_total_score": 1.59655,
+        "assignment_margin": 0.395056,
+        "assignment": [
+          {
+            "reference": "DR01",
+            "query": "DR01"
+          },
+          {
+            "reference": "DR02",
+            "query": "DR02"
+          },
+          {
+            "reference": "DR03",
+            "query": "DR03"
+          }
+        ]
+      }
+    },
+    "upgraded": {
+      "score_matrix": [
+        [
+          0.472396,
+          0.527576,
+          0.460023
+        ],
+        [
+          0.559141,
+          0.86054,
+          0.515713
+        ],
+        [
+          0.411994,
+          0.455289,
+          0.820143
+        ]
+      ],
+      "prior_independent_retrieval": {
+        "anchors": 6,
+        "top1_correct": 4,
+        "top1_accuracy": 0.666667,
+        "mrr": 0.833333,
+        "mean_positive_margin": 0.19362,
+        "minimum_positive_margin": -0.086745,
+        "details": [
+          {
+            "anchor": "DR01_query",
+            "positive_rank": 2,
+            "positive_margin": -0.086745,
+            "ranking": [
+              "DR02_reference",
+              "DR01_reference",
+              "DR03_reference"
+            ]
+          },
+          {
+            "anchor": "DR01_reference",
+            "positive_rank": 2,
+            "positive_margin": -0.05518,
+            "ranking": [
+              "DR02_query",
+              "DR01_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR02_query",
+            "positive_rank": 1,
+            "positive_margin": 0.332964,
+            "ranking": [
+              "DR02_reference",
+              "DR01_reference",
+              "DR03_reference"
+            ]
+          },
+          {
+            "anchor": "DR02_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.301399,
+            "ranking": [
+              "DR02_query",
+              "DR01_query",
+              "DR03_query"
+            ]
+          },
+          {
+            "anchor": "DR03_query",
+            "positive_rank": 1,
+            "positive_margin": 0.304429,
+            "ranking": [
+              "DR03_reference",
+              "DR02_reference",
+              "DR01_reference"
+            ]
+          },
+          {
+            "anchor": "DR03_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.364854,
+            "ranking": [
+              "DR03_query",
+              "DR02_query",
+              "DR01_query"
+            ]
+          }
+        ]
+      },
+      "roster_assignment": {
+        "assigned_correct": 3,
+        "assigned_accuracy": 1.0,
+        "bidirectional_identity_equivalent_correct": 6,
+        "selected_total_score": 2.153078,
+        "second_best_total_score": 1.906859,
+        "assignment_margin": 0.246219,
+        "assignment": [
+          {
+            "reference": "DR01",
+            "query": "DR01"
+          },
+          {
+            "reference": "DR02",
+            "query": "DR02"
+          },
+          {
+            "reference": "DR03",
+            "query": "DR03"
+          }
+        ]
+      },
+      "directed_correct_equivalent_gain": 2,
+      "directed_accuracy_equivalent_gain": 0.333333
+    }
+  },
+  "rgb_members_reopened": 6,
+  "claim_boundary": "This is post-hoc mechanism Development on an already consumed three-target cohort. A positive repair can motivate a successor but is not confirmation. It assumes a complete closed one-to-one roster and is not open-set retrieval, detection, entrance ownership, access, traversability, arrival, handoff, user-benefit or mobility-safety evidence."
+}

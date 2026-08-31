@@ -1,0 +1,120 @@
+{
+  "schema": "blindassist-l10-panolab-producer-stratified-appearance-router-protocol-v1",
+  "name": "L10 PanoLab three-producer pixel-unseen temporal appearance replay",
+  "status": "FROZEN_AFTER_PIXEL_TRUTH_BEFORE_FIRST_APPEARANCE_CALL_ON_STRATIFIED_PANEL",
+  "authority": "PRODUCER_STRATIFIED_PIXEL_UNSEEN_TARGET_WAY_ITEM_DISJOINT_SAME_PROVIDER_DEVELOPMENT",
+  "question": "Does the unchanged two-reference, reciprocal top-two-of-three appearance router transfer to three pixel-unseen targets spanning nlehuby, Nzau and Carto'Cité capture strata?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_producer_stratified_appearance_router.py",
+    "sha256": "5cf6d17daa2ee9b26ca4e220fc50fc411fe3c1836b814793860af4609e57968c",
+    "bytes": 16727
+  },
+  "inputs": {
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "prior_six_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "prior_eight_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_appearance_result_v1.json",
+      "sha256": "50d1cbd6ee74657025419872ebfd9f2f49de2227d8d55a08426c9c7940f20a10",
+      "bytes": 82776
+    },
+    "stratified_selection": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_selection_v1.json",
+      "sha256": "3ab6aaa8dcf0d6640a0affc59fe5fae3325f221e722263cc6e767af1de636ec2",
+      "bytes": 240882
+    },
+    "stratified_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_materialization_v1.json",
+      "sha256": "9d6742c82d75c8e77b011e3a1bc6735f1bdfcf135f3697e9ee99741f1649696d",
+      "bytes": 10472
+    },
+    "stratified_truth": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_truth_v1.json",
+      "sha256": "963e68d56bae615782876834b9a564aefda2993095a63efa5079734a51c9870d",
+      "bytes": 4364
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    "FL01",
+    "FL02",
+    "FL03",
+    "FL04",
+    "FP01",
+    "FP02",
+    "CF01",
+    "CF02",
+    "PS01",
+    "PS02",
+    "PS03"
+  ],
+  "evaluated_episodes": [
+    "PS01",
+    "PS02",
+    "PS03"
+  ],
+  "aggregation": {
+    "references": "Exactly two cross-collection strict entrance-ray windows per target.",
+    "query_sequence": "Exact reciprocal prev, anchor, next frames.",
+    "per_frame": "Unchanged strict entrance-ray crop and 0.35 CLIP + 0.25 DINOv2 + 0.40 mutual-patch-geometry score against the fixed two-reference bank.",
+    "per_target_sequence_score": "Arithmetic mean of the highest two of three per-frame target scores; deterministic ties by relation name.",
+    "no_adaptation": "No model, crop, reference count, frame count, feature weight, aggregation, threshold, target roster, target alias, producer stratum, or image may change after output."
+  },
+  "accept_contract": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positives before every open-set and transfer panel.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "gate": {
+    "required": [
+      "three valid pixel-unseen human-truth rows spanning three capture producers",
+      "six cross-collection references and nine reciprocal query frames",
+      "zero target-way and item overlap with prior router cohorts",
+      "3/3 accepted candidates correct",
+      "0 accepted wrong candidates",
+      "0 wrong-target candidates across 30 counterfactual trials",
+      "0 portal-ownership bindings"
+    ],
+    "failure_policy": "Preserve the first result. Do not tune or resample this panel."
+  },
+  "research_basis": [
+    {
+      "title": "Learning Sequential Descriptors for Sequence-Based Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2207.03868",
+      "official_code": "https://github.com/vandal-vpr/vg-transformers",
+      "use": "Motivates using temporal context to improve condition robustness. This replay is a deterministic reducer, not the paper's learned sequence descriptor."
+    },
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "Motivates evaluating transfer across image and sequence regimes. This replay does not train or attribute performance to JIST."
+    }
+  ],
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-producer-stratified-appearance-v1",
+  "output": "research/active/l10-r0/l10_panolab_producer_stratified_appearance_router_result_v1.json",
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_PRODUCER_STRATIFIED_PIXEL_UNSEEN_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_PRODUCER_STRATIFIED_PIXEL_UNSEEN_APPEARANCE_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "claim_boundary": {
+    "allowed": "Pixel-unseen Development evidence for or against the unchanged temporal appearance router on exactly three target-way/item-disjoint Caen targets spanning three capture-producer strata in one same-provider eleven-target closed roster.",
+    "not_allowed": [
+      "blind or independent adjudication, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "trained sequential-descriptor performance or attribution to the cited methods",
+      "exact physical identity authority, sign-to-building association, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

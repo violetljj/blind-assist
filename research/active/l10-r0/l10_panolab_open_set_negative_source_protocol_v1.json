@@ -1,0 +1,125 @@
+{
+  "schema": "blindassist-l10-panolab-open-set-negative-source-protocol-v1",
+  "name": "L10 PanoLab pixel-unseen geospatial open-set negative panel",
+  "status": "FROZEN_BEFORE_SELECTED_PIXEL_DOWNLOAD_HUMAN_REVIEW_OR_MODEL_CALL",
+  "question": "Can a positive-calibrated dual score-and-margin gate reject four newly selected entrance-ray views whose cameras are at least 1.5 km from every positive-roster entrance, without observing their pixels before source and thresholds are frozen?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_open_set_negative_panel.py",
+    "sha256": "b07995698650ddb0e0659d29c2fd25568d52d99f7c15dadd67e115f27964332b"
+  },
+  "inputs": {
+    "candidate_metadata": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+      "sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+      "bytes": 13885054
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    },
+    "reference_portal_source": {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196
+    },
+    "node_credential_source": {
+      "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "bytes": 417017
+    },
+    "viviani_selection": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_selection_v1.json",
+      "sha256": "2bbbd48a6023bb991958b013b6f95a18bff051a1526062119952141e1c9f4532",
+      "bytes": 35627
+    },
+    "viviani_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_materialization_v1.json",
+      "sha256": "d4860a9d058ab1bd53216f10661d3f08af0eb36f72b2ac827f12efe79a4c7198",
+      "bytes": 1636
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "positive_calibration_result": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+      "sha256": "a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f",
+      "bytes": 42678
+    }
+  },
+  "selection": {
+    "exclude_prior_target_ways": "Exclude every target way in the prior active-ray, fresh four-target, reference-portal, and node-credential sources.",
+    "exclude_prior_items": "Exclude every item in those sources plus both Le Viviani reference items.",
+    "target_name_required": true,
+    "geometry_role": "DIRECT",
+    "minimum_camera_to_target_entrance_m": 4.0,
+    "maximum_camera_to_target_entrance_m": 40.0,
+    "target_camera_distance_m": 30.0,
+    "minimum_camera_to_any_positive_roster_entrance_m": 1500.0,
+    "within_target": "Choose the eligible strict-orientation DIRECT item nearest 30 metres, tie by item ID.",
+    "panel_size": 4,
+    "panel": "Sort eligible targets within source city by target-way ID and item ID, then select round-robin over sorted city names while requiring unique target ways, items, collections, and at least three cities.",
+    "forbidden_inputs": [
+      "selected full, SD, thumbnail, tile, or derived pixels",
+      "selected-image human review",
+      "OCR, CLIP, DINOv2, or any learned-model output on selected images",
+      "selected-image top-1 score, margin, or open-set decision"
+    ]
+  },
+  "open_set_contract": {
+    "calibration_source": "The four source-extended positive episodes in l10_panolab_component_router_result_v1.json; all were consumed Development before this negative source was selected.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "threshold_rule": "Set each threshold to the minimum corresponding value across the four correct positive-roster queries, with no negative examples and no search over alternative statistics.",
+    "accept": "Emit APPEARANCE_SEARCH_PRIORITY_CANDIDATE only if both the top-1 facade-fingerprint score and top-1-minus-runner-up margin meet their frozen minima; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "semantics": "This is a tiny positive-calibrated selective Development rule. It is not conformal calibration, does not control FDR, and has no distribution-shift guarantee."
+  },
+  "materialization": {
+    "provider": "Panoramax OpenStreetMap France HD image asset recorded in each frozen provider item",
+    "expected_image_size": [
+      5760,
+      2880
+    ],
+    "output_root": "artifacts.local/datasets/l10-panolab-open-set-negative-v1",
+    "partial_download_policy": "Download to item-specific .jpg.part files, atomically replace finals, and remove task-owned partials in a finally path.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "research_basis": [
+    {
+      "title": "SafeVPR: Patch-Based Conformal Verification for Safe Cross-Condition Sequence Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2605.28048",
+      "official_code": "https://github.com/Hasar12139/SafeVPR",
+      "use": "Motivates separating retrieval from patch-based verification and abstention. This four-positive calibration does not implement its sequence verifier or conformal Learn-Then-Test guarantees."
+    },
+    {
+      "title": "Through the Lens of Doubt: Robust and Efficient Uncertainty Estimation for Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2510.13464",
+      "use": "Motivates using score separation as a training-free ambiguity signal. This protocol freezes only raw top-1 score and margin and makes no benchmark-comparability claim."
+    }
+  ],
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_open_set_negative_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_open_set_negative_materialization_v1.json",
+    "human_truth": "research/active/l10-r0/l10_panolab_open_set_negative_truth_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A pixel-unseen selection and materialization receipt for four new geospatially excluded Panoramax entrance-ray controls, with the selective score/margin contract frozen before their pixels are downloaded.",
+    "not_allowed": [
+      "target absence before the post-download human truth review is frozen",
+      "formal open-set, conformal, FDR, calibration, or distribution-shift guarantees",
+      "portal ownership, access, traversability, waypoint, arrival, user benefit, deployment performance, or safety"
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-fresh-confirmation-protocol-v1",
+  "name": "Fresh confirmation of the fixed conservative distinctive-token branch",
+  "status": "FROZEN_AFTER_HUMAN_TRUTH_BEFORE_ANY_SELECTED_OCR_CALL",
+  "authority": "PIXEL_AND_OCR_UNSEEN_TARGET_WAY_ITEM_DISJOINT_SAME_PROVIDER_DEVELOPMENT_LEXICAL_ROUTING_ONLY",
+  "question": "Does the already fixed high-confidence, roster-unique exact-or-one-edit distinctive-token branch produce unique correct search-priority candidates on both fresh two-producer targets without a wrong-target match?",
+  "ocr_calls_on_selected_images_before_protocol_freeze": 0,
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation.py",
+    "sha256": "84ebe574b9d61fa8253775216eea476d2c8186d41e93c4dc2722ace237e13e99",
+    "bytes": 10142
+  },
+  "inputs": {
+    "fresh_source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_source_protocol_v1.json",
+      "sha256": "314ef72744182dcc8cfe2726110db091c52eecc192ad7bc7a9e79879c6f52bf0",
+      "bytes": 5703
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_selection_v1.json",
+      "sha256": "6430fc22533cc64ed76068c6461e6daf1da5493d78536344c50956a02e97d69d",
+      "bytes": 158134
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_materialization_v1.json",
+      "sha256": "86ca0dcd25e3b7c00116f550814e7299b5df4b4c00f5a7a263602de5be87dea8",
+      "bytes": 7129
+    },
+    "fresh_truth": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_truth_v1.json",
+      "sha256": "a0afd7c30200759bdea969b45cc5bf889bc1b9a407b9734739a9e458c5143dce",
+      "bytes": 3728
+    },
+    "posthoc_successor_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc_protocol_v1.json",
+      "sha256": "5807c0b4fd9622aac7d2f1402d0bbd2ddc2cb1d9911ade023a9311fdd2ddf65a",
+      "bytes": 6004
+    },
+    "posthoc_successor_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc_result_v1.json",
+      "sha256": "73734c0025be44e5aa289fd31fb27482d31f1eaed2257df508119bdff77b85f0",
+      "bytes": 20629
+    },
+    "frozen_ocr_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_protocol_v1.json",
+      "sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+      "bytes": 10357
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "runtime": {
+    "versions": {
+      "python": "3.11.9",
+      "numpy": "2.3.5",
+      "opencv-python": "4.10.0.84",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "onnxruntime-gpu": "1.26.0"
+    },
+    "execution": "uv isolated Python 3.11 environment; frozen local PP-OCRv6 medium ONNX detector and recognizer; CPU inference"
+  },
+  "evaluated_episodes": [
+    "DF01",
+    "DF02"
+  ],
+  "target_roster": [
+    {"episode_id": "FL01", "entity_name": "Espace Village"},
+    {"episode_id": "FL02", "entity_name": "Le Viviani"},
+    {"episode_id": "FL03", "entity_name": "Gare de Neuilly - Porte Maillot"},
+    {"episode_id": "FL04", "entity_name": "Église Notre-Dame de la Délivrande"},
+    {"episode_id": "FP01", "entity_name": "Rumillat"},
+    {"episode_id": "FP02", "entity_name": "Halle Rebatet"},
+    {"episode_id": "CF01", "entity_name": "Euromaster"},
+    {"episode_id": "CF02", "entity_name": "Bibliothèque de Caen - Maladrerie"},
+    {"episode_id": "PS01", "entity_name": "Département du Calvados - Direction de la Culture"},
+    {"episode_id": "PS02", "entity_name": "Crèche des Petits Lutins"},
+    {"episode_id": "PS03", "entity_name": "Église Saint-Pierre"},
+    {"episode_id": "DF01", "entity_name": "Monoprix"},
+    {"episode_id": "DF02", "entity_name": "Maison de Quartier Chemin Vert"}
+  ],
+  "name_token_contract": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": ["a", "an", "and", "d", "de", "du", "l", "la", "le", "les", "the"]
+  },
+  "distinctive_edit_token_contract": {
+    "minimum_ocr_row_score": 0.9,
+    "minimum_target_token_length": 6,
+    "maximum_edit_distance": 1,
+    "apostrophe_or_token_fragment_rule": "For a row with two or three normalized tokens, also test their concatenation; this converts p + tits to ptits without changing OCR text.",
+    "long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "evidence_weighting": "Each distinct matched target token of length 6-7 contributes one unit; length >=8 contributes two units. A target matches at two units.",
+    "uniqueness_rule": "Emit a lexical search-priority candidate only when exactly one target in the frozen thirteen-target roster matches.",
+    "association": "Exact or Levenshtein-distance-one normalized token evidence only; witnesses union across the frozen three-frame reciprocal sequence.",
+    "authority": "Search-priority candidate only; no token, sign, facade, entity, portal, entrance, access, waypoint, arrival, or safety authority."
+  },
+  "gate": {
+    "required_fresh_sequences": 2,
+    "required_producer_strata": 2,
+    "required_query_frames": 6,
+    "required_unique_correct_candidates": 2,
+    "maximum_wrong_candidates": 0,
+    "maximum_unknowns": 0,
+    "maximum_wrong_target_matches": 0,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_FRESH_DISTINCTIVE_EDIT_TOKEN_CONFIRMATION_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_FRESH_DISTINCTIVE_EDIT_TOKEN_CONFIRMATION_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    "JIST motivates identity-aware joint sequence evidence: https://arxiv.org/abs/2403.19787",
+    "Learning Sequential Descriptors motivates sequence-level aggregation for place recognition: https://arxiv.org/abs/2207.03868",
+    "SeqNet motivates learned sequence matching across viewpoint and appearance change: https://arxiv.org/abs/2102.11603",
+    "The implemented branch is deliberately smaller: conservative high-confidence OCR evidence unioned across a reciprocal three-frame sequence."
+  ],
+  "execution_rule": "Run exactly once. Do not tune or resample after seeing the result; a failure remains a frozen Development result.",
+  "output": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Fresh same-provider Development evidence about whether the fixed conservative distinctive-token branch transfers to exactly two target-way/item-disjoint, pixel- and OCR-unseen targets across two capture producers in a thirteen-target closed roster.",
+    "not_allowed": [
+      "independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, distribution-shift, deployment, or safety confirmation",
+      "OCR name evidence proving exact physical identity, sign-to-building association, facade ownership, portal ownership, or entrance ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or deployment performance"
+    ]
+  }
+}

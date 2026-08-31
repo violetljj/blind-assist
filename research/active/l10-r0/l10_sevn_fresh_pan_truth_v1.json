@@ -1,0 +1,1887 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-evaluator-truth-v1",
+  "generated_at_utc": "2026-08-30T20:22:34.028292Z",
+  "truth_authority": "SEVN_HUMAN_DOOR_AND_TEXT_ANNOTATIONS_PLUS_FROZEN_VIEWPORT_GEOMETRY",
+  "episodes": {
+    "SEVN001": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6546"
+      },
+      "target_door_annotation": {
+        "frame_id": 13529,
+        "house_number": "6546",
+        "street_name": "clark",
+        "x_min": 156,
+        "x_max": 166,
+        "y_min": 32,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN001_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN001_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN002": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6551"
+      },
+      "target_door_annotation": {
+        "frame_id": 17601,
+        "house_number": "6551",
+        "street_name": "clark",
+        "x_min": 171,
+        "x_max": 184,
+        "y_min": 32,
+        "y_max": 47,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN002_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN003": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6556"
+      },
+      "target_door_annotation": {
+        "frame_id": 13302,
+        "house_number": "6556",
+        "street_name": "clark",
+        "x_min": 154,
+        "x_max": 163,
+        "y_min": 30,
+        "y_max": 43,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN003_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN003_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN004": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6557"
+      },
+      "target_door_annotation": {
+        "frame_id": 17745,
+        "house_number": "6557",
+        "street_name": "clark",
+        "x_min": 168,
+        "x_max": 180,
+        "y_min": 31,
+        "y_max": 47,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN004_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN004_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN005": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6558"
+      },
+      "target_door_annotation": {
+        "frame_id": 13262,
+        "house_number": "6558",
+        "street_name": "clark",
+        "x_min": 161,
+        "x_max": 170,
+        "y_min": 31,
+        "y_max": 44,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN005_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN005_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN006": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6559"
+      },
+      "target_door_annotation": {
+        "frame_id": 17792,
+        "house_number": "6559",
+        "street_name": "clark",
+        "x_min": 164,
+        "x_max": 177,
+        "y_min": 31,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN006_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN006_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN007": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6560"
+      },
+      "target_door_annotation": {
+        "frame_id": 13139,
+        "house_number": "6560",
+        "street_name": "clark",
+        "x_min": 167,
+        "x_max": 175,
+        "y_min": 30,
+        "y_max": 42,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN007_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN007_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN008": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6561"
+      },
+      "target_door_annotation": {
+        "frame_id": 17814,
+        "house_number": "6561",
+        "street_name": "clark",
+        "x_min": 163,
+        "x_max": 175,
+        "y_min": 29,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN008_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN008_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN009": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6570"
+      },
+      "target_door_annotation": {
+        "frame_id": 12983,
+        "house_number": "6570",
+        "street_name": "clark",
+        "x_min": 156,
+        "x_max": 169,
+        "y_min": 31,
+        "y_max": 49,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN009_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN009_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN010": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6594"
+      },
+      "target_door_annotation": {
+        "frame_id": 12392,
+        "house_number": "6594",
+        "street_name": "clark",
+        "x_min": 161,
+        "x_max": 170,
+        "y_min": 34,
+        "y_max": 45,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN010_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN010_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN011": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6598"
+      },
+      "target_door_annotation": {
+        "frame_id": 12279,
+        "house_number": "6598",
+        "street_name": "clark",
+        "x_min": 160,
+        "x_max": 177,
+        "y_min": 26,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN011_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN011_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN012": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6600"
+      },
+      "target_door_annotation": {
+        "frame_id": 12192,
+        "house_number": "6600",
+        "street_name": "clark",
+        "x_min": 165,
+        "x_max": 177,
+        "y_min": 29,
+        "y_max": 45,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN012_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN012_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN013": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6602"
+      },
+      "target_door_annotation": {
+        "frame_id": 12020,
+        "house_number": "6602",
+        "street_name": "clark",
+        "x_min": 160,
+        "x_max": 175,
+        "y_min": 30,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN013_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN013_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN014": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6604"
+      },
+      "target_door_annotation": {
+        "frame_id": 12000,
+        "house_number": "6604",
+        "street_name": "clark",
+        "x_min": 160,
+        "x_max": 174,
+        "y_min": 30,
+        "y_max": 47,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN014_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN014_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN015": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6608"
+      },
+      "target_door_annotation": {
+        "frame_id": 11907,
+        "house_number": "6608",
+        "street_name": "clark",
+        "x_min": 157,
+        "x_max": 166,
+        "y_min": 31,
+        "y_max": 43,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN015_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN015_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN016": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6626"
+      },
+      "target_door_annotation": {
+        "frame_id": 11366,
+        "house_number": "6626",
+        "street_name": "clark",
+        "x_min": 162,
+        "x_max": 170,
+        "y_min": 30,
+        "y_max": 41,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN016_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN016_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN016_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN016_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN017": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6630"
+      },
+      "target_door_annotation": {
+        "frame_id": 11241,
+        "house_number": "6630",
+        "street_name": "clark",
+        "x_min": 175,
+        "x_max": 186,
+        "y_min": 26,
+        "y_max": 43,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN017_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN017_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN017_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN017_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN018": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6632"
+      },
+      "target_door_annotation": {
+        "frame_id": 10908,
+        "house_number": "6632",
+        "street_name": "clark",
+        "x_min": 157,
+        "x_max": 169,
+        "y_min": 25,
+        "y_max": 42,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN018_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN018_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN018_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN018_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN019": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6640"
+      },
+      "target_door_annotation": {
+        "frame_id": 10869,
+        "house_number": "6640",
+        "street_name": "clark",
+        "x_min": 167,
+        "x_max": 179,
+        "y_min": 30,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN019_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN019_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN019_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN019_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN020": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6644"
+      },
+      "target_door_annotation": {
+        "frame_id": 10800,
+        "house_number": "6644",
+        "street_name": "clark",
+        "x_min": 159,
+        "x_max": 176,
+        "y_min": 30,
+        "y_max": 44,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN020_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN020_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN021": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6650"
+      },
+      "target_door_annotation": {
+        "frame_id": 10569,
+        "house_number": "6650",
+        "street_name": "clark",
+        "x_min": 153,
+        "x_max": 173,
+        "y_min": 29,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN021_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN021_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN021_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN022": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6654"
+      },
+      "target_door_annotation": {
+        "frame_id": 10490,
+        "house_number": "6654",
+        "street_name": "clark",
+        "x_min": 143,
+        "x_max": 169,
+        "y_min": 31,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN022_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN022_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN023": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6656"
+      },
+      "target_door_annotation": {
+        "frame_id": 10436,
+        "house_number": "6656",
+        "street_name": "clark",
+        "x_min": 157,
+        "x_max": 175,
+        "y_min": 30,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN023_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN023_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN023_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN023_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN024": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6658"
+      },
+      "target_door_annotation": {
+        "frame_id": 10410,
+        "house_number": "6658",
+        "street_name": "clark",
+        "x_min": 160,
+        "x_max": 179,
+        "y_min": 28,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN024_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN024_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN025": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6660"
+      },
+      "target_door_annotation": {
+        "frame_id": 4956,
+        "house_number": "6660",
+        "street_name": "clark",
+        "x_min": 172,
+        "x_max": 194,
+        "y_min": 28,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN025_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN025_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN025_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN025_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN026": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6700"
+      },
+      "target_door_annotation": {
+        "frame_id": 90492,
+        "house_number": "6700",
+        "street_name": "clark",
+        "x_min": 161,
+        "x_max": 186,
+        "y_min": 28,
+        "y_max": 58,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN026_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN026_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN026_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN026_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN027": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6702"
+      },
+      "target_door_annotation": {
+        "frame_id": 90470,
+        "house_number": "6702",
+        "street_name": "clark",
+        "x_min": 168,
+        "x_max": 191,
+        "y_min": 28,
+        "y_max": 58,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN027_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN027_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN027_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN027_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN028": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6704"
+      },
+      "target_door_annotation": {
+        "frame_id": 90428,
+        "house_number": "6704",
+        "street_name": "clark",
+        "x_min": 150,
+        "x_max": 174,
+        "y_min": 29,
+        "y_max": 58,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN028_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN028_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN028_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN028_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN029": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6706"
+      },
+      "target_door_annotation": {
+        "frame_id": 90300,
+        "house_number": "6706",
+        "street_name": "clark",
+        "x_min": 164,
+        "x_max": 186,
+        "y_min": 29,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN029_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN029_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN029_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN029_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN030": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6707"
+      },
+      "target_door_annotation": {
+        "frame_id": 92141,
+        "house_number": "6707",
+        "street_name": "clark",
+        "x_min": 152,
+        "x_max": 169,
+        "y_min": 29,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN030_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN030_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN030_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN030_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN031": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6708"
+      },
+      "target_door_annotation": {
+        "frame_id": 90260,
+        "house_number": "6708",
+        "street_name": "clark",
+        "x_min": 149,
+        "x_max": 170,
+        "y_min": 28,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN031_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN031_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN031_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN031_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN032": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6710"
+      },
+      "target_door_annotation": {
+        "frame_id": 90239,
+        "house_number": "6710",
+        "street_name": "clark",
+        "x_min": 157,
+        "x_max": 179,
+        "y_min": 29,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN032_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN032_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN032_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN032_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN033": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6712"
+      },
+      "target_door_annotation": {
+        "frame_id": 90197,
+        "house_number": "6712",
+        "street_name": "clark",
+        "x_min": 170,
+        "x_max": 189,
+        "y_min": 28,
+        "y_max": 54,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN033_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN033_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN033_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN033_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN034": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6718"
+      },
+      "target_door_annotation": {
+        "frame_id": 90026,
+        "house_number": "6718",
+        "street_name": "clark",
+        "x_min": 170,
+        "x_max": 181,
+        "y_min": 33,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN034_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN034_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN034_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN034_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        }
+      }
+    },
+    "SEVN035": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6720"
+      },
+      "target_door_annotation": {
+        "frame_id": 89924,
+        "house_number": "6720",
+        "street_name": "clark",
+        "x_min": 158,
+        "x_max": 165,
+        "y_min": 33,
+        "y_max": 43,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN035_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN035_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN035_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN035_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN036": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6721"
+      },
+      "target_door_annotation": {
+        "frame_id": 92394,
+        "house_number": "6721",
+        "street_name": "clark",
+        "x_min": 162,
+        "x_max": 174,
+        "y_min": 32,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN036_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN036_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN036_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN036_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN037": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6723"
+      },
+      "target_door_annotation": {
+        "frame_id": 92453,
+        "house_number": "6723",
+        "street_name": "clark",
+        "x_min": 164,
+        "x_max": 177,
+        "y_min": 30,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN037_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN037_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN037_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN037_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN038": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6725"
+      },
+      "target_door_annotation": {
+        "frame_id": 92583,
+        "house_number": "6725",
+        "street_name": "clark",
+        "x_min": 154,
+        "x_max": 170,
+        "y_min": 31,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN038_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN038_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN038_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN038_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN039": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6727"
+      },
+      "target_door_annotation": {
+        "frame_id": 92645,
+        "house_number": "6727",
+        "street_name": "clark",
+        "x_min": 157,
+        "x_max": 174,
+        "y_min": 31,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN039_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN039_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN039_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN039_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN040": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6745"
+      },
+      "target_door_annotation": {
+        "frame_id": 92858,
+        "house_number": "6745",
+        "street_name": "clark",
+        "x_min": 155,
+        "x_max": 166,
+        "y_min": 34,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN040_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN040_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN040_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN040_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    }
+  }
+}

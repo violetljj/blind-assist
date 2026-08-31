@@ -1,0 +1,102 @@
+{
+  "schema": "blindassist-l10-panolab-open-set-negative-truth-v1",
+  "status": "FROZEN_AFTER_MATERIALIZATION_AND_BEFORE_FIRST_MODEL_CALL",
+  "frozen_at_utc": "2026-08-30T23:51:31.692Z",
+  "source_protocol": "research/active/l10-r0/l10_panolab_open_set_negative_source_protocol_v1.json",
+  "source_protocol_sha256": "14d35152181bba4a120d46e38a21afafb185f793e300b4a2c687647628059323",
+  "selection": "research/active/l10-r0/l10_panolab_open_set_negative_selection_v1.json",
+  "selection_sha256": "367b292d143618d8321f4037a9b0c4b371f1917c9f815415898383812e3bcfba",
+  "materialization": "research/active/l10-r0/l10_panolab_open_set_negative_materialization_v1.json",
+  "materialization_sha256": "9c15465a19834ddf69e98cf16dc3afd0f54f4fa79803b3d14b241cf7332acfa9",
+  "positive_roster": [
+    {
+      "episode_id": "FL01",
+      "target_way_id": 190020630,
+      "name": "Espace Village"
+    },
+    {
+      "episode_id": "FL02",
+      "target_way_id": 247662576,
+      "name": "Le Viviani"
+    },
+    {
+      "episode_id": "FL03",
+      "target_way_id": 84327114,
+      "name": "Gare de Neuilly - Porte Maillot"
+    },
+    {
+      "episode_id": "FL04",
+      "target_way_id": 43471848,
+      "name": "Église Notre-Dame de la Délivrande"
+    }
+  ],
+  "review_contract": {
+    "reviewer": "Codex root agent",
+    "pixel_surface": "Each full 5760x2880 equirectangular image was opened with original-detail request and inspected through the app-rendered 2048x1024 preview before any CLIP or DINOv2 call on the selected images.",
+    "geospatial_support": "Every selected camera is at least 1500 metres from every positive-roster OSM entrance; exact distances were frozen before download from provider camera coordinates and OSM entrance nodes.",
+    "truth_question": "Does the image contain the exact physical entity of any positive-roster target? This is not a question about generic visual similarity, category, or an unrelated same-type building.",
+    "model_calls_before_truth_freeze": 0,
+    "threshold_changes_after_review": 0
+  },
+  "episodes": [
+    {
+      "episode_id": "ON01",
+      "negative_target_way_id": 36386171,
+      "negative_target_name": "Gare de Grenoble Universités Gières",
+      "item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+      "image_sha256": "a8a00f91c2a53dabfde5ba49fece937d7d5c964e371190a454c6338a86e363a2",
+      "minimum_camera_to_positive_roster_entrance_m": 2549.847,
+      "visual_summary": "Station-area access road, parking, low buildings, trees, and mountains; no exact positive-roster entity is present.",
+      "exact_positive_roster_entity_present": false,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT"
+    },
+    {
+      "episode_id": "ON02",
+      "negative_target_way_id": 454524397,
+      "negative_target_name": "Le Chronographe",
+      "item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+      "image_sha256": "9239a166000090bb332c412db9593d89bedf31cf09d636769ecef40d4354d913",
+      "minimum_camera_to_positive_roster_entrance_m": 2599.898,
+      "visual_summary": "Archaeological or museum grounds with a modern timber-clad structure and a separate small chapel; no exact positive-roster entity is present.",
+      "exact_positive_roster_entity_present": false,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT"
+    },
+    {
+      "episode_id": "ON03",
+      "negative_target_way_id": 62643138,
+      "negative_target_name": "Centre commercial de la Vache Noire",
+      "item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+      "image_sha256": "d8da29a5d78e8c016ac328fae49fc558a80f231306a876e13540391db561ccb6",
+      "minimum_camera_to_positive_roster_entrance_m": 8173.326,
+      "visual_summary": "Commercial urban plaza and glass-fronted buildings in the Vache Noire area; no exact positive-roster entity is present.",
+      "exact_positive_roster_entity_present": false,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT"
+    },
+    {
+      "episode_id": "ON04",
+      "negative_target_way_id": 49643198,
+      "negative_target_name": "Gymnase Malherbe",
+      "item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+      "image_sha256": "653a3b49df4c8fbed081c543e34de0525f36495018fed254f32156cb30f73f3a",
+      "minimum_camera_to_positive_roster_entrance_m": 1584.286,
+      "visual_summary": "Broad residential and institutional Grenoble street scene near the gymnasium; no exact positive-roster entity is present.",
+      "exact_positive_roster_entity_present": false,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT"
+    }
+  ],
+  "summary": {
+    "episodes": 4,
+    "source_cities": 3,
+    "exact_positive_roster_entity_absent": 4,
+    "uncertain": 0,
+    "invalid": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-plus-geospatial truth that the four selected full panoramas do not contain the exact physical entity of any member of the fixed four-target positive roster.",
+    "not_allowed": [
+      "the absence of visually similar facades, stations, churches, shops, or other category-level distractors",
+      "the selected negative target's exact entrance being visible or traversable",
+      "portal ownership, access, waypoint, arrival, user benefit, deployment performance, or safety"
+    ]
+  }
+}

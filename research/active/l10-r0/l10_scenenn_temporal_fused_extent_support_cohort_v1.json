@@ -1,0 +1,739 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-fused-extent-support-cohort-v1",
+  "authority": "FROZEN_PRE_ADDITIONAL_RGBD_CONSUMED_SCENE_TEMPORAL_MECHANISM_COHORT",
+  "protocol_path": "l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+  "protocol_sha256": "496e1893380e9d50aeec2ad9bffcca31a9378f08cad5d088761cb4366b4f7b7b",
+  "entrypoint_path": "l10_scenenn_temporal_fused_extent_support.py",
+  "entrypoint_sha256": "71bac806e748b0c732a80f7bd8ff1a5c767a3cbb801934ba3176798828b67888",
+  "parent_cohort_path": "l10_scenenn_observed_extent_support_cohort_v1.json",
+  "parent_cohort_sha256": "38981c8940927b44202b3afea7be70fcf8e077615f039efb1ad532c18ad7c817",
+  "scene_id": "096",
+  "episodes": [
+    {
+      "episode_id": "SO01",
+      "scene_id": "096",
+      "target_instance_id": 279277,
+      "reference": {
+        "anchor_frame": 6830,
+        "window": [
+          {
+            "trajectory_frame": 6825,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "d376113c99041529b8c6d3a3650f9d0b5cb81cddb2c79230e06c97c99d70d909",
+            "visible_pixels": 5133,
+            "target_raster_pixels": 5133,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.016708984375,
+            "bbox_xyxy": [
+              347,
+              0,
+              469,
+              91
+            ],
+            "bbox_width": 122,
+            "bbox_height": 91
+          },
+          {
+            "trajectory_frame": 6830,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "df3f81a15ea017f809589ebc0b7a7c2f4ba96aabd77b1b230dd83245a185810f",
+            "visible_pixels": 6221,
+            "target_raster_pixels": 6221,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.020250651041666668,
+            "bbox_xyxy": [
+              336,
+              0,
+              463,
+              101
+            ],
+            "bbox_width": 127,
+            "bbox_height": 101
+          },
+          {
+            "trajectory_frame": 6835,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "e245b5352bf5e0a95bdc8317a1b392208c1031a926c7cca3a63c2b606ef8c207",
+            "visible_pixels": 6967,
+            "target_raster_pixels": 6967,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.022679036458333333,
+            "bbox_xyxy": [
+              330,
+              0,
+              457,
+              108
+            ],
+            "bbox_width": 127,
+            "bbox_height": 108
+          }
+        ]
+      },
+      "query": {
+        "anchor_frame": 7345,
+        "window": [
+          {
+            "trajectory_frame": 7340,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "a70a48c05d91c1ae88f071259e90ad114cebfc7bbe1bc0a7f61900b27d693057",
+            "visible_pixels": 2555,
+            "target_raster_pixels": 2636,
+            "visible_to_target_raster_ratio": 0.9692716236722306,
+            "visible_image_fraction": 0.008317057291666667,
+            "bbox_xyxy": [
+              617,
+              263,
+              640,
+              480
+            ],
+            "bbox_width": 23,
+            "bbox_height": 217
+          },
+          {
+            "trajectory_frame": 7345,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "4ffc00eaa021cb7f4cbe0861bb5fda9c09a257d99ab01d7c93c11b3c02ad7b6b",
+            "visible_pixels": 5516,
+            "target_raster_pixels": 5631,
+            "visible_to_target_raster_ratio": 0.979577339726514,
+            "visible_image_fraction": 0.017955729166666667,
+            "bbox_xyxy": [
+              606,
+              207,
+              640,
+              480
+            ],
+            "bbox_width": 34,
+            "bbox_height": 273
+          },
+          {
+            "trajectory_frame": 7350,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "41c25f349e77f8618e979101f25c33db9e57026dd23dee6e5b25b07161a80c7e",
+            "visible_pixels": 10659,
+            "target_raster_pixels": 10867,
+            "visible_to_target_raster_ratio": 0.9808594828379498,
+            "visible_image_fraction": 0.034697265625,
+            "bbox_xyxy": [
+              591,
+              132,
+              640,
+              480
+            ],
+            "bbox_width": 49,
+            "bbox_height": 348
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "SO02",
+      "scene_id": "096",
+      "target_instance_id": 533756,
+      "reference": {
+        "anchor_frame": 5775,
+        "window": [
+          {
+            "trajectory_frame": 5770,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "f8e1e9cc3a4969e37fa3fbacd29cbb9c99a42cb6aaa18f4031e7ae75eb2953c8",
+            "visible_pixels": 12257,
+            "target_raster_pixels": 17118,
+            "visible_to_target_raster_ratio": 0.7160299100362192,
+            "visible_image_fraction": 0.03989908854166667,
+            "bbox_xyxy": [
+              524,
+              0,
+              640,
+              144
+            ],
+            "bbox_width": 116,
+            "bbox_height": 144
+          },
+          {
+            "trajectory_frame": 5775,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "ef351898c722024f35b45c147c459a47e9eaffdf6e516d638bac13816b3f3253",
+            "visible_pixels": 15939,
+            "target_raster_pixels": 20596,
+            "visible_to_target_raster_ratio": 0.7738881336181783,
+            "visible_image_fraction": 0.051884765625,
+            "bbox_xyxy": [
+              499,
+              0,
+              640,
+              147
+            ],
+            "bbox_width": 141,
+            "bbox_height": 147
+          },
+          {
+            "trajectory_frame": 5780,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "e4cbd9c22e19dc0b1a8f20403164fee7703826d0fe6c4cb1a25fcbb3742bb20f",
+            "visible_pixels": 17503,
+            "target_raster_pixels": 22108,
+            "visible_to_target_raster_ratio": 0.7917043604125203,
+            "visible_image_fraction": 0.056975911458333334,
+            "bbox_xyxy": [
+              485,
+              0,
+              640,
+              146
+            ],
+            "bbox_width": 155,
+            "bbox_height": 146
+          }
+        ]
+      },
+      "query": {
+        "anchor_frame": 7095,
+        "window": [
+          {
+            "trajectory_frame": 7090,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "6ece656346e81ca5d4015c46669cf55bf7b1d01a57e4a9f20cdba5af3fea1992",
+            "visible_pixels": 3991,
+            "target_raster_pixels": 7382,
+            "visible_to_target_raster_ratio": 0.5406393931183961,
+            "visible_image_fraction": 0.012991536458333333,
+            "bbox_xyxy": [
+              0,
+              272,
+              56,
+              396
+            ],
+            "bbox_width": 56,
+            "bbox_height": 124
+          },
+          {
+            "trajectory_frame": 7095,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "a8ff98145394fceaaf9cef21c631e2fed0065d4cc616925840aaf63b24854122",
+            "visible_pixels": 3834,
+            "target_raster_pixels": 7093,
+            "visible_to_target_raster_ratio": 0.5405329197800649,
+            "visible_image_fraction": 0.01248046875,
+            "bbox_xyxy": [
+              0,
+              301,
+              53,
+              423
+            ],
+            "bbox_width": 53,
+            "bbox_height": 122
+          },
+          {
+            "trajectory_frame": 7100,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "769b0f820732c961f9e0b21d3c812567eddf90aff43105c6a7459c9cfb41a168",
+            "visible_pixels": 3815,
+            "target_raster_pixels": 7707,
+            "visible_to_target_raster_ratio": 0.4950045413260672,
+            "visible_image_fraction": 0.012418619791666667,
+            "bbox_xyxy": [
+              0,
+              269,
+              50,
+              400
+            ],
+            "bbox_width": 50,
+            "bbox_height": 131
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "SO03",
+      "scene_id": "096",
+      "target_instance_id": 560309,
+      "reference": {
+        "anchor_frame": 6955,
+        "window": [
+          {
+            "trajectory_frame": 6950,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "af199837de697dcf124f94394be1fccc9f619d7c5baf95a03df2510221b7fc11",
+            "visible_pixels": 6496,
+            "target_raster_pixels": 7284,
+            "visible_to_target_raster_ratio": 0.8918176825919825,
+            "visible_image_fraction": 0.021145833333333332,
+            "bbox_xyxy": [
+              360,
+              0,
+              640,
+              99
+            ],
+            "bbox_width": 280,
+            "bbox_height": 99
+          },
+          {
+            "trajectory_frame": 6955,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "1c7497b73eecd2a822aa8b50e6ac5ffb5d09dbd1455b0aef087fddf299b16e09",
+            "visible_pixels": 5873,
+            "target_raster_pixels": 6659,
+            "visible_to_target_raster_ratio": 0.8819642588977324,
+            "visible_image_fraction": 0.019117838541666668,
+            "bbox_xyxy": [
+              374,
+              0,
+              640,
+              101
+            ],
+            "bbox_width": 266,
+            "bbox_height": 101
+          },
+          {
+            "trajectory_frame": 6960,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "55433eb328e874efdb2dc4c26d0efcabaf171991cad4528c71739f7d9c6d3fa6",
+            "visible_pixels": 7038,
+            "target_raster_pixels": 7839,
+            "visible_to_target_raster_ratio": 0.8978185993111366,
+            "visible_image_fraction": 0.02291015625,
+            "bbox_xyxy": [
+              383,
+              0,
+              640,
+              111
+            ],
+            "bbox_width": 257,
+            "bbox_height": 111
+          }
+        ]
+      },
+      "query": {
+        "anchor_frame": 7335,
+        "window": [
+          {
+            "trajectory_frame": 7330,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "6509f1cfba691c604f84c9e7e5a5374b4b1eed7aaa7eb174ff99ab546118164d",
+            "visible_pixels": 95987,
+            "target_raster_pixels": 96152,
+            "visible_to_target_raster_ratio": 0.9982839670521674,
+            "visible_image_fraction": 0.31245768229166665,
+            "bbox_xyxy": [
+              214,
+              0,
+              640,
+              423
+            ],
+            "bbox_width": 426,
+            "bbox_height": 423
+          },
+          {
+            "trajectory_frame": 7335,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "bcf1c918b038330a3afe231e63851e402c0c118ec9909c78b7934f7a9837e842",
+            "visible_pixels": 88975,
+            "target_raster_pixels": 89145,
+            "visible_to_target_raster_ratio": 0.9980929945594257,
+            "visible_image_fraction": 0.2896321614583333,
+            "bbox_xyxy": [
+              211,
+              0,
+              640,
+              393
+            ],
+            "bbox_width": 429,
+            "bbox_height": 393
+          },
+          {
+            "trajectory_frame": 7340,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "ac0d854c3ebf4b552269136f9435487b47d5bc8f0576363c7a06f70655a9d14d",
+            "visible_pixels": 83881,
+            "target_raster_pixels": 84032,
+            "visible_to_target_raster_ratio": 0.9982030654988576,
+            "visible_image_fraction": 0.27305013020833335,
+            "bbox_xyxy": [
+              206,
+              0,
+              640,
+              374
+            ],
+            "bbox_width": 434,
+            "bbox_height": 374
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "SO04",
+      "scene_id": "096",
+      "target_instance_id": 1593514,
+      "reference": {
+        "anchor_frame": 4830,
+        "window": [
+          {
+            "trajectory_frame": 4825,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "f89b6203ba09f7a14c70fa5c66483e8beaa4e36261dccdff9fe403fa62034437",
+            "visible_pixels": 2866,
+            "target_raster_pixels": 2866,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.009329427083333333,
+            "bbox_xyxy": [
+              591,
+              0,
+              640,
+              93
+            ],
+            "bbox_width": 49,
+            "bbox_height": 93
+          },
+          {
+            "trajectory_frame": 4830,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "ba36ba0115b049e3a69cef2aa009decbd929f8d5495ec739b648e372dfd0b297",
+            "visible_pixels": 3224,
+            "target_raster_pixels": 3224,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.010494791666666666,
+            "bbox_xyxy": [
+              590,
+              0,
+              640,
+              105
+            ],
+            "bbox_width": 50,
+            "bbox_height": 105
+          },
+          {
+            "trajectory_frame": 4835,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "304737fc899311df024c5fef927ac56a8f9c6d06796c28920019475a3f964690",
+            "visible_pixels": 4576,
+            "target_raster_pixels": 4576,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.014895833333333334,
+            "bbox_xyxy": [
+              585,
+              0,
+              640,
+              131
+            ],
+            "bbox_width": 55,
+            "bbox_height": 131
+          }
+        ]
+      },
+      "query": {
+        "anchor_frame": 5285,
+        "window": [
+          {
+            "trajectory_frame": 5280,
+            "offset_from_anchor": -5,
+            "visible_mask_sha256": "c526f76316c2cad0a0dcdefd659ac770166707d9dd8d94bc3be2e265d7f5088a",
+            "visible_pixels": 425,
+            "target_raster_pixels": 425,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.0013834635416666667,
+            "bbox_xyxy": [
+              624,
+              339,
+              640,
+              409
+            ],
+            "bbox_width": 16,
+            "bbox_height": 70
+          },
+          {
+            "trajectory_frame": 5285,
+            "offset_from_anchor": 0,
+            "visible_mask_sha256": "547e5a54894d4f5c57e1c977230bec83db6e75cb06611c372caf9ffb910ed36b",
+            "visible_pixels": 2774,
+            "target_raster_pixels": 2774,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.009029947916666666,
+            "bbox_xyxy": [
+              602,
+              273,
+              640,
+              439
+            ],
+            "bbox_width": 38,
+            "bbox_height": 166
+          },
+          {
+            "trajectory_frame": 5290,
+            "offset_from_anchor": 5,
+            "visible_mask_sha256": "839519387b04746022c2174e6e0f2946072f4686d77dfe095cc44ff7605d0125",
+            "visible_pixels": 5354,
+            "target_raster_pixels": 5354,
+            "visible_to_target_raster_ratio": 1.0,
+            "visible_image_fraction": 0.017428385416666668,
+            "bbox_xyxy": [
+              589,
+              221,
+              640,
+              458
+            ],
+            "bbox_width": 51,
+            "bbox_height": 237
+          }
+        ]
+      }
+    }
+  ],
+  "selected_trajectory_frames": [
+    4825,
+    4830,
+    4835,
+    5280,
+    5285,
+    5290,
+    5770,
+    5775,
+    5780,
+    6825,
+    6830,
+    6835,
+    6950,
+    6955,
+    6960,
+    7090,
+    7095,
+    7100,
+    7330,
+    7335,
+    7340,
+    7345,
+    7350
+  ],
+  "scenarios": [
+    {
+      "id": "closed-four",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO02",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO03",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO04",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO03",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO04",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO02",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO04",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO02",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO03",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 4,
+    "selected_rgbd_frames": 8,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 34,
+    "truth_unmatched_nodes_across_scenarios": 26,
+    "temporal_window_frames_per_role": 3,
+    "unique_rgbd_frames": 23
+  },
+  "temporal_carrier": {
+    "identity": "PRIVILEGED_TARGET_CONDITIONED_REGISTERED_THREE_FRAME_REAL_DEPTH_OBSERVATION",
+    "trajectory_frame_offsets": [
+      -5,
+      0,
+      5
+    ],
+    "window_selection": "Exact symmetric offsets around every already-frozen reference and query anchor; no frame may be replaced or dropped after depth access.",
+    "mask": "provider instance mesh z-buffer-visible pixels for the frozen target at each temporal frame",
+    "depth_consistency_tolerance_metres": 0.08,
+    "minimum_points_per_fused_observation": 256,
+    "maximum_points_per_frame": 4096,
+    "maximum_points_per_fused_observation": 4096,
+    "fusion": "transform each accepted sensor point with its provider camera-to-world pose, concatenate all three registered clouds, then retain 4096 deterministic evenly spaced points in frame/raster order if necessary",
+    "portal_frame": "fused reference observation centroid; principal horizontal direction in the SceneNN x-z floor plane; y upright",
+    "surface_score": "unchanged negative symmetric median nearest-neighbour distance",
+    "zero_assignment": "unchanged strict reciprocal row and column maximum",
+    "support": "unchanged strictly positive registered planar convex-hull intersection; no IoU magnitude threshold"
+  },
+  "additional_rgb_members_opened_at_freeze": 0,
+  "additional_depth_members_opened_at_freeze": 0,
+  "claim_boundary": "This consumed-scene posthoc experiment can establish only whether a minimal pose-registered temporal depth carrier makes the unchanged support mechanism evaluable and mechanically effective. It cannot supply fresh confirmation because the SceneNN scene, targets, anchors, and single-frame failure are already consumed. Instance masks, geometry and trajectories remain privileged; the sensor is not a phone. It is not raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "blindassist-l10-hiertext-test-multiscale-goal-verifier-protocol-v1",
+  "frozen_at": "2026-08-31T13:28:00+08:00",
+  "question": "Can a goal-conditioned, candidate-bound multiscale OCR observation branch recover at least three additional correctly localized rare target words on previously unused HierText test pixels while accepting zero cyclic queries proven absent by exhaustive word truth?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_hiertext_test_multiscale_goal_verifier.py",
+    "sha256": "d1842c878bd294a26a91b2e048ed7a0f838f1cced98319ba7ca968f6c52a9102"
+  },
+  "inputs": {
+    "ground_truth": "F:/ba-data/blindassist-artifacts-20260805/sources/hiertext-official/gt/test.jsonl.gz",
+    "image_archive": "F:/ba-data/blindassist-artifacts-20260805/datasets/hiertext-test-v1/test.tgz",
+    "images": "F:/ba-data/blindassist-artifacts-20260805/datasets/hiertext-test-v1/test",
+    "training_token_df": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-roadtextvqa-ocr-v1/train_token_df_v1.json",
+    "models": "E:/linnan/linnan/artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_cache": "F:/ba-data/blindassist-artifacts-20260805/evidence/l10-hiertext-test-multiscale-goal-verifier-v1/ocr_cache.json"
+  },
+  "input_sha256": {
+    "ground_truth": "8a8f6cb6dd706b457b822634e9f19b7f51cc9813729d57401a3bb6ea45abd438",
+    "image_archive": "3ad9bbaad4e03df33898700febac701fe7aa6bcc88fc14634dfb6e9b007a97df",
+    "training_token_df": "50596a531f524c1c272d9f72c07faea1f6886e8f060b557c9968b41fc4d6d345"
+  },
+  "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+  },
+  "source_contract": {
+    "split": "official HierText test v1.0",
+    "test_annotations_released": "2024-12-02",
+    "pixel_status_before_freeze": "not previously used by L10",
+    "truth_status_before_freeze": "not previously used by L10; prior HierText geometry audit used validation only",
+    "selection_uses_pixels_or_ocr": false,
+    "selection_authority": "official exhaustive legible printed word transcripts and polygons only"
+  },
+  "selection_contract": {
+    "order": "official test annotation source order",
+    "cohort_size": 30,
+    "per_image_target": "largest normalized-area eligible unique word; lexical tie broken by normalized token",
+    "minimum_token_length": 6,
+    "maximum_token_length": 14,
+    "minimum_normalized_width": 0.055,
+    "minimum_normalized_height": 0.025,
+    "minimum_background_information_bits": 8.0,
+    "allowed_target_alphabet": "ASCII letters only",
+    "target_occurrences_per_image": 1,
+    "absent_query": "next selected image target under cyclic order; must be absent from the current image's complete normalized legible printed word truth"
+  },
+  "algorithm_contract": {
+    "baseline": "single full-resolution frame, exact normalized target token, candidate confidence at least 0.45",
+    "successor": "baseline observations plus four deterministic 60%-width by 60%-height corner fields enlarged 1.5x; exact target or edit distance one only when both target and observation have at least six characters",
+    "tile_fraction": 0.6,
+    "tile_scale": 1.5,
+    "minimum_ocr_confidence": 0.45,
+    "minimum_edit_one_length": 6,
+    "minimum_truth_overlap": 0.5,
+    "candidate_binding": "accepted OCR box must cover at least half of the selected target truth bbox; otherwise WRONG_CARRIER",
+    "negative_acceptance": "any accepted candidate for a truth-absent cyclic query is a false accept"
+  },
+  "gate": {
+    "cohort_size": 30,
+    "minimum_correct_carrier_gain": 3,
+    "maximum_wrong_carrier_regression": 0,
+    "maximum_truth_absent_accepts": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_HIERTEXT_TEST_MULTISCALE_GOAL_VERIFIER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_HIERTEXT_TEST_MULTISCALE_GOAL_VERIFIER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "output": "research/active/l10-r0/l10_hiertext_test_multiscale_goal_verifier_result_v1.json",
+  "claim_boundary": "Previously unused HierText test pixels plus official exhaustive word truth support a source- and domain-disjoint static OCR observation Development result only. A correctly localized target word is not an exact real-world referent, facade, sign, portal, entrance ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety claim. UNKNOWN is neither negative nor known-safe. The selected test cohort is Development evidence and is consumed after this run; no conformal, FDR, or open-world guarantee is claimed."
+}

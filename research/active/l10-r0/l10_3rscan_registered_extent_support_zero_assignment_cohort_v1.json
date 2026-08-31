@@ -1,0 +1,983 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-extent-support-zero-assignment-cohort-v1",
+  "authority": "FROZEN_PRE_REPLAY_PHYSICAL_TARGET_DISJOINT_SAME_CLASS_EXTENT_SUPPORT_COHORT",
+  "protocol_path": "l10_3rscan_registered_extent_support_zero_assignment_protocol_v1.json",
+  "protocol_sha256": "55784575cf6a3e7365ceaba10a3bdcc6154555705bc860b5823570198322595f",
+  "entrypoint_sha256": "a03f3903dabad275f784683fa09e31fbf1133e3caed367a3a325fd750518ce2b",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "selection": {
+    "candidate_rows": 85,
+    "consumed_physical_targets": 30,
+    "same_class_groups_considered": 1,
+    "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+    "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+    "normalized_target_class": "doorframe",
+    "physical_target_ids": [
+      60,
+      57,
+      58,
+      59,
+      61,
+      63
+    ],
+    "rgb_members_opened": 0,
+    "depth_members_opened": 0,
+    "surface_distances_opened": 0,
+    "extent_overlaps_opened": 0,
+    "exclusion_receipts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+        "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json",
+        "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json",
+        "sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_scan_family_disjoint_witness_incremental_cohort_v1.json",
+        "sha256": "051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd",
+        "new_physical_targets": 6
+      }
+    ]
+  },
+  "source_manifest": {
+    "3RScan.json": {
+      "path": "datasets/3rscan/3RScan.json",
+      "bytes": 3155995,
+      "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+    },
+    "6bde60c0-9162-246f-8d1f-32543babecfb/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/6bde60c0-9162-246f-8d1f-32543babecfb/labels.instances.annotated.v2.ply",
+      "bytes": 7430131,
+      "sha256": "e85ed7cea8171f01eb9a2dd0f56f4df20605ad6b377c3f7ac7a0065827eed8ed"
+    },
+    "6bde60c0-9162-246f-8d1f-32543babecfb/semseg.v2.json": {
+      "path": "datasets/3rscan/6bde60c0-9162-246f-8d1f-32543babecfb/semseg.v2.json",
+      "bytes": 41397,
+      "sha256": "aa9df88e5bbec058b1dca3610b93f361dde4ec07caab6bb7992e2deaad3150b3"
+    },
+    "6bde60c4-9162-246f-8c1e-b0c518544104/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/6bde60c4-9162-246f-8c1e-b0c518544104/labels.instances.annotated.v2.ply",
+      "bytes": 3836379,
+      "sha256": "bac15c9ec126ab3041e1be5d519a44945e64f6dbb4fabe6a99a5c96a3073376f"
+    },
+    "6bde60c4-9162-246f-8c1e-b0c518544104/semseg.v2.json": {
+      "path": "datasets/3rscan/6bde60c4-9162-246f-8c1e-b0c518544104/semseg.v2.json",
+      "bytes": 26974,
+      "sha256": "9309194ebaa533a7c957e22459e3f37ae1e63336ed01c4d3f77c3df29e3747f2"
+    },
+    "objects.json": {
+      "path": "datasets/3rscan/objects.json",
+      "bytes": 20096813,
+      "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "ES01",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 60,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3875172334304657,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 715,
+      "query_target_vertices": 362,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "ES02",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 57,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3623876073053272,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 470,
+      "query_target_vertices": 315,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "ES03",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 58,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3604792061923021,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 630,
+      "query_target_vertices": 222,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "ES04",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 59,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3417469889808449,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 500,
+      "query_target_vertices": 375,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "ES05",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 61,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3274979762599286,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 457,
+      "query_target_vertices": 375,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "ES06",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 63,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3232831171545973,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 437,
+      "query_target_vertices": 248,
+      "role": "EVALUATED_TARGET"
+    }
+  ],
+  "provider_transform": [
+    -0.9958397150039673,
+    -0.08760123699903488,
+    -0.025086933746933937,
+    0,
+    0.08744218945503235,
+    -0.9961423873901367,
+    0.007370205130428076,
+    0,
+    -0.025635797530412674,
+    0.00514588737860322,
+    0.9996581077575684,
+    0,
+    0.8546688556671143,
+    4.4531683921813965,
+    -0.02406427636742592,
+    1
+  ],
+  "scenarios": [
+    {
+      "id": "closed-six",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES01-ES02",
+      "reference_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES01-ES03",
+      "reference_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES01-ES04",
+      "reference_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES01-ES05",
+      "reference_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES01-ES06",
+      "reference_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES02-ES01",
+      "reference_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES02-ES03",
+      "reference_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES02-ES04",
+      "reference_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES02-ES05",
+      "reference_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES02-ES06",
+      "reference_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES03-ES01",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES03-ES02",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES03-ES04",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES03-ES05",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES03-ES06",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES04-ES01",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES04-ES02",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES04-ES03",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES04-ES05",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES04-ES06",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES05-ES01",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES05-ES02",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES05-ES03",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES05-ES04",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES05-ES06",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES06-ES01",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES06-ES02",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES03",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES06-ES03",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES04",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES06-ES04",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES05",
+        "ES06"
+      ]
+    },
+    {
+      "id": "balanced-swap-ES06-ES05",
+      "reference_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES05"
+      ],
+      "query_targets": [
+        "ES01",
+        "ES02",
+        "ES03",
+        "ES04",
+        "ES06"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 6,
+    "scenarios": 33,
+    "balanced_swap_scenarios": 30,
+    "truth_matches_across_scenarios": 136,
+    "truth_unmatched_nodes_across_scenarios": 62
+  },
+  "claim_boundary": "A pass is same-provider, same-scan-family, physical-target-disjoint real-geometry Development evidence that parameter-free positive registered planar extent overlap adds decision-changing absolute support over rank-only surface matching for truth-proposed stable indoor doorframes under bounded missing/extra rosters. Provider labels, complete surfaces, and the rigid transform are privileged. Positive projected overlap is spatial support, not portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

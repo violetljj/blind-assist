@@ -1,0 +1,111 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-fresh-source-protocol-v1",
+  "name": "L10 PanoLab fresh metadata-capable distinctive-token confirmation panel",
+  "status": "FROZEN_BEFORE_LINKED_NEIGHBOR_METADATA_FETCH_OR_ANY_SELECTED_PIXEL_DOWNLOAD",
+  "question": "Does the fixed conservative distinctive exact-or-one-edit token branch transfer to pixel- and OCR-unseen targets selected only from name metadata and producer strata?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_panel.py",
+    "sha256": "cf370611591d041a76e030c1f666b61a5f47ddd072db8a8f6c5e9e371f2c1d87",
+    "bytes": 12516
+  },
+  "inputs": {
+    "direct_candidates": {
+      "path": "F:/ba-data/blindassist-artifacts-20260805/knowledge/l10-panolab-federated-portal-v1/direct-candidates.json",
+      "sha256": "4e9bbba53fa7638580b7d2255b67d4737b60ebdfc476e3a1a3b7e0c9924d1f06",
+      "bytes": 512899
+    },
+    "prior_six_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "prior_temporal_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    },
+    "prior_eight_target_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+      "sha256": "b521986bddda64902dc173edaf7f76671543cd4b73629e946ffae504df485e2d",
+      "bytes": 7699
+    },
+    "prior_eleven_target_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_materialization_v1.json",
+      "sha256": "9d6742c82d75c8e77b011e3a1bc6735f1bdfcf135f3697e9ee99741f1649696d",
+      "bytes": 10472
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "episode_builder": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_panel.py",
+      "sha256": "d5c935c1730c6639bc3b2919f2ca13829f0166ed1b0943a27309ef69cd3b5d4e",
+      "bytes": 14642
+    }
+  },
+  "selection": {
+    "producer_strata": [
+      "nlehuby",
+      "Nzau"
+    ],
+    "excluded_target_way_ids": [
+      190020630,
+      247662576,
+      84327114,
+      43471848,
+      305144115,
+      378533157,
+      155636324,
+      155700593,
+      155636992,
+      756359489,
+      155677465,
+      155639593,
+      485305426,
+      154620108
+    ],
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ],
+    "minimum_target_token_length": 6,
+    "long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "name_capability_rule": "Select only target names that could reach the already frozen two-unit distinctive-token threshold: each normalized significant token of length 6-7 contributes one metadata capability unit and length >=8 contributes two. This uses no pixels or OCR outcome.",
+    "anchor_eligibility": "Reference and query anchors must be a direct target-building pair from the frozen candidate ledger, use distinct collections, have strict explicit-zero pose projection, have no prior router target-way/item overlap, and meet the name-only capability rule.",
+    "ordering": "For each producer stratum in fixed order, walk the frozen direct-candidate ledger and select the first metadata-capable anchor pair whose exact reciprocal reference-next and query-prev/query-next remain in the anchor collections, link reciprocally, pass strict projection, and avoid all prior items.",
+    "metadata_failure_policy": "Record and skip an ineligible or linked-metadata-invalid candidate before selected pixels exist. Once selected, no pixel-driven substitution or resampling is allowed.",
+    "pixel_boundary": "All ten selected anchors and neighbours are undownloaded and human/model unseen at freeze. Earlier materialized targets and items are excluded.",
+    "panel_size": 2
+  },
+  "materialization": {
+    "output_root": "artifacts.local/datasets/l10-panolab-distinctive-token-fresh-v1",
+    "download": "Download exactly ten selected HD panoramas through .jpg.part files, atomically replace finals, and remove partials in a finally path.",
+    "image_contract": "Each decoded image must match its frozen strict projection sensor dimensions and remain a full 2:1 equirectangular panorama.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_materialization_v1.json",
+    "human_truth": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_truth_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A metadata-frozen, target-way/item-disjoint, pixel- and OCR-unseen same-provider Development source for testing the already fixed distinctive-token branch across two capture producers.",
+    "not_allowed": [
+      "provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, independent, deployment, or safety confirmation",
+      "portal visibility or ownership from metadata or target-name capability alone",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

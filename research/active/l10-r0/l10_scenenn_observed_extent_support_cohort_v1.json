@@ -1,0 +1,712 @@
+{
+  "schema": "blindassist-l10-scenenn-observed-extent-support-cohort-v1",
+  "authority": "FROZEN_PRE_RGBD_FOUR_TARGET_REAL_OBSERVATION_COHORT",
+  "protocol_path": "l10_scenenn_observed_extent_support_protocol_v1.json",
+  "protocol_sha256": "deb0be3fe25ff5384b0344c3accfbab3074049a18c577e22a376cb5b595a8b7c",
+  "source_admission_path": "l10_scenenn_observed_extent_support_source_admission_v1.json",
+  "source_admission_sha256": "f7ecba9667b525fe88469ff4ae43571787ed55929a2b4203ed728cb2115d8235",
+  "entrypoint_path": "l10_scenenn_observed_extent_support.py",
+  "entrypoint_sha256": "0dd56ef4f04d40ae2606f8b2b567617089106e89e056ab452d8a333edc2b5bb5",
+  "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-observed-extent-support-v1",
+  "source_manifest": {
+    "payload/096/096.ply": {
+      "bytes": 129811998,
+      "sha256": "11701aab33baa7bfbded27e42ad0397605f98d7031952c3364d8aa4fdf921df6",
+      "md5": "bab074b61d22a7df3ddc877e37f84170"
+    },
+    "payload/096/096.xml": {
+      "bytes": 76566,
+      "sha256": "faa2de296f1b956b91a7e347954bc4c5e6dc16b8fcfd3909dd87f3d5ebd28096",
+      "md5": "b41946bf1737cc1f684ee33375d9170d"
+    },
+    "payload/096/trajectory.log": {
+      "bytes": 1601491,
+      "sha256": "74ba7e9d4ccd5d6e386b865bbd75b0c742b76f1b06ccbd0f584cedff56fee828",
+      "md5": "295826ff6ffa99ad6c99658279ec7358"
+    },
+    "payload/intrinsic/asus.ini": {
+      "bytes": 253,
+      "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"
+    }
+  },
+  "selection": {
+    "scene_id": "096",
+    "geometry_members_opened": 3,
+    "rgb_members_opened": 0,
+    "depth_members_opened": 0,
+    "selector": {
+      "allowed_inputs": [
+        "frozen target instance IDs",
+        "provider mesh vertices, triangle faces and instance labels",
+        "provider camera-to-world trajectory",
+        "provider depth intrinsics"
+      ],
+      "forbidden_inputs": [
+        "RGB frames",
+        "depth frames",
+        "observed surface distances",
+        "observed extent overlaps",
+        "algorithm outputs"
+      ],
+      "trajectory_stride": 5,
+      "minimum_pair_frame_gap": 20,
+      "minimum_pair_baseline_metres": 0.3,
+      "pair_ranking": "Maximum camera-centre baseline, then minimum visible target pixels, then minimum visibility ratio, then earlier reference and query frames.",
+      "renderer": {
+        "implementation": "unchanged CuPy CUDA triangle rasterizer from l10_scenenn_visible_portal_transfer.py",
+        "numeric_type": "float32",
+        "image_width": 640,
+        "image_height": 480,
+        "near_plane_metres": 0.02,
+        "near_plane_face_rule": "Reject a face unless all vertices are beyond the near plane.",
+        "triangle_sidedness": "double-sided",
+        "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+        "visibility_tolerance_metres": 0.005
+      },
+      "eligible_frame": {
+        "minimum_visible_target_pixels": 512,
+        "minimum_bbox_width_pixels": 24,
+        "minimum_bbox_height_pixels": 48,
+        "minimum_visible_to_target_raster_ratio": 0.4,
+        "maximum_visible_target_image_fraction": 0.8,
+        "maximum_camera_to_target_centroid_metres": 2.5
+      },
+      "failure_semantics": "If any of the four frozen targets lacks one qualifying frame pair, record NOT_EVALUABLE. Do not substitute a scene or change selector values after RGB-D access."
+    },
+    "runtime": {
+      "cupy_version": "14.1.1",
+      "cuda_runtime_version": 12090,
+      "cuda_driver_version": 13030,
+      "device_id": 0,
+      "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+    },
+    "audits": [
+      {
+        "episode_id": "SO01",
+        "target_instance_id": 279277,
+        "trajectory_frames": 9500,
+        "sampled_frames": 1901,
+        "eligible_frames": 130,
+        "reason_counts": {
+          "ELIGIBLE": 130,
+          "HEIGHT+RANGE": 10,
+          "HEIGHT+VISIBILITY+RANGE": 2,
+          "PIXELS+HEIGHT+RANGE": 1,
+          "PIXELS+HEIGHT+VISIBILITY+RANGE": 3,
+          "PIXELS+VISIBILITY+RANGE": 1,
+          "PIXELS+WIDTH": 2,
+          "PIXELS+WIDTH+HEIGHT": 8,
+          "PIXELS+WIDTH+HEIGHT+RANGE": 1,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY": 410,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 1221,
+          "PIXELS+WIDTH+RANGE": 1,
+          "PIXELS+WIDTH+VISIBILITY+RANGE": 1,
+          "RANGE": 64,
+          "VISIBILITY+RANGE": 37,
+          "WIDTH": 6,
+          "WIDTH+RANGE": 3
+        },
+        "reference_frame": 6830,
+        "query_frame": 7345,
+        "camera_baseline_m": 1.3805435891388906
+      },
+      {
+        "episode_id": "SO02",
+        "target_instance_id": 533756,
+        "trajectory_frames": 9500,
+        "sampled_frames": 1901,
+        "eligible_frames": 223,
+        "reason_counts": {
+          "ELIGIBLE": 223,
+          "HEIGHT": 1,
+          "HEIGHT+VISIBILITY": 10,
+          "PIXELS": 1,
+          "PIXELS+VISIBILITY": 6,
+          "PIXELS+WIDTH": 3,
+          "PIXELS+WIDTH+HEIGHT": 3,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY": 1320,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 291,
+          "PIXELS+WIDTH+VISIBILITY": 1,
+          "VISIBILITY": 42
+        },
+        "reference_frame": 5775,
+        "query_frame": 7095,
+        "camera_baseline_m": 3.629217896216208
+      },
+      {
+        "episode_id": "SO03",
+        "target_instance_id": 560309,
+        "trajectory_frames": 9500,
+        "sampled_frames": 1901,
+        "eligible_frames": 162,
+        "reason_counts": {
+          "ELIGIBLE": 162,
+          "HEIGHT+VISIBILITY+RANGE": 2,
+          "PIXELS+HEIGHT+VISIBILITY+RANGE": 1,
+          "PIXELS+WIDTH+HEIGHT": 1,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY": 192,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 1468,
+          "RANGE": 41,
+          "VISIBILITY+RANGE": 31,
+          "WIDTH+VISIBILITY+RANGE": 3
+        },
+        "reference_frame": 6955,
+        "query_frame": 7335,
+        "camera_baseline_m": 0.8564022647934848
+      },
+      {
+        "episode_id": "SO04",
+        "target_instance_id": 1593514,
+        "trajectory_frames": 9500,
+        "sampled_frames": 1901,
+        "eligible_frames": 254,
+        "reason_counts": {
+          "ELIGIBLE": 254,
+          "PIXELS+WIDTH": 4,
+          "PIXELS+WIDTH+HEIGHT": 3,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY": 975,
+          "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 665
+        },
+        "reference_frame": 4830,
+        "query_frame": 5285,
+        "camera_baseline_m": 1.5767368109111457
+      }
+    ]
+  },
+  "episodes": [
+    {
+      "episode_id": "SO01",
+      "scene_id": "096",
+      "target_instance_id": 279277,
+      "target_xml": {
+        "target_instance_id": 279277,
+        "instance_id": 279277,
+        "text": "door4",
+        "color_rgb": [
+          113,
+          100,
+          168
+        ],
+        "area": 30273
+      },
+      "target_mesh_vertices": 35619,
+      "strict_target_faces": 69377,
+      "reference": {
+        "frame": 6830,
+        "trajectory_header": [
+          6830,
+          6830,
+          6831
+        ],
+        "camera_center_world": [
+          0.766298,
+          1.09488,
+          -0.332924
+        ],
+        "camera_to_target_centroid_m": 2.4920468069625117,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 6221,
+        "target_raster_pixels": 6221,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.020250651041666668,
+        "bbox_xyxy": [
+          336,
+          0,
+          463,
+          101
+        ],
+        "bbox_width": 127,
+        "bbox_height": 101,
+        "visible_mask_sha256": "df3f81a15ea017f809589ebc0b7a7c2f4ba96aabd77b1b230dd83245a185810f"
+      },
+      "query": {
+        "frame": 7345,
+        "trajectory_header": [
+          7345,
+          7345,
+          7346
+        ],
+        "camera_center_world": [
+          -0.0778363,
+          1.11438,
+          -1.42515
+        ],
+        "camera_to_target_centroid_m": 1.270651348437051,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 5516,
+        "target_raster_pixels": 5631,
+        "visible_to_target_raster_ratio": 0.979577339726514,
+        "visible_image_fraction": 0.017955729166666667,
+        "bbox_xyxy": [
+          606,
+          207,
+          640,
+          480
+        ],
+        "bbox_width": 34,
+        "bbox_height": 273,
+        "visible_mask_sha256": "4ffc00eaa021cb7f4cbe0861bb5fda9c09a257d99ab01d7c93c11b3c02ad7b6b"
+      },
+      "camera_baseline_m": 1.3805435891388906
+    },
+    {
+      "episode_id": "SO02",
+      "scene_id": "096",
+      "target_instance_id": 533756,
+      "target_xml": {
+        "target_instance_id": 533756,
+        "instance_id": 533756,
+        "text": "door2",
+        "color_rgb": [
+          16,
+          75,
+          161
+        ],
+        "area": 38496
+      },
+      "target_mesh_vertices": 50458,
+      "strict_target_faces": 106287,
+      "reference": {
+        "frame": 5775,
+        "trajectory_header": [
+          5775,
+          5775,
+          5776
+        ],
+        "camera_center_world": [
+          1.00443,
+          1.10847,
+          2.33368
+        ],
+        "camera_to_target_centroid_m": 2.3822783815705777,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 15939,
+        "target_raster_pixels": 20596,
+        "visible_to_target_raster_ratio": 0.7738881336181783,
+        "visible_image_fraction": 0.051884765625,
+        "bbox_xyxy": [
+          499,
+          0,
+          640,
+          147
+        ],
+        "bbox_width": 141,
+        "bbox_height": 147,
+        "visible_mask_sha256": "ef351898c722024f35b45c147c459a47e9eaffdf6e516d638bac13816b3f3253"
+      },
+      "query": {
+        "frame": 7095,
+        "trajectory_header": [
+          7095,
+          7095,
+          7096
+        ],
+        "camera_center_world": [
+          -0.051324,
+          1.23071,
+          -1.13643
+        ],
+        "camera_to_target_centroid_m": 1.7885568201150905,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 3834,
+        "target_raster_pixels": 7093,
+        "visible_to_target_raster_ratio": 0.5405329197800649,
+        "visible_image_fraction": 0.01248046875,
+        "bbox_xyxy": [
+          0,
+          301,
+          53,
+          423
+        ],
+        "bbox_width": 53,
+        "bbox_height": 122,
+        "visible_mask_sha256": "a8ff98145394fceaaf9cef21c631e2fed0065d4cc616925840aaf63b24854122"
+      },
+      "camera_baseline_m": 3.629217896216208
+    },
+    {
+      "episode_id": "SO03",
+      "scene_id": "096",
+      "target_instance_id": 560309,
+      "target_xml": {
+        "target_instance_id": 560309,
+        "instance_id": 560309,
+        "text": "door3",
+        "color_rgb": [
+          209,
+          163,
+          173
+        ],
+        "area": 32768
+      },
+      "target_mesh_vertices": 42800,
+      "strict_target_faces": 84051,
+      "reference": {
+        "frame": 6955,
+        "trajectory_header": [
+          6955,
+          6955,
+          6956
+        ],
+        "camera_center_world": [
+          0.535156,
+          1.02372,
+          -0.836435
+        ],
+        "camera_to_target_centroid_m": 2.4988505768632354,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 5873,
+        "target_raster_pixels": 6659,
+        "visible_to_target_raster_ratio": 0.8819642588977324,
+        "visible_image_fraction": 0.019117838541666668,
+        "bbox_xyxy": [
+          374,
+          0,
+          640,
+          101
+        ],
+        "bbox_width": 266,
+        "bbox_height": 101,
+        "visible_mask_sha256": "1c7497b73eecd2a822aa8b50e6ac5ffb5d09dbd1455b0aef087fddf299b16e09"
+      },
+      "query": {
+        "frame": 7335,
+        "trajectory_header": [
+          7335,
+          7335,
+          7336
+        ],
+        "camera_center_world": [
+          -0.0820161,
+          1.14057,
+          -1.41856
+        ],
+        "camera_to_target_centroid_m": 1.8963511018922072,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 88975,
+        "target_raster_pixels": 89145,
+        "visible_to_target_raster_ratio": 0.9980929945594257,
+        "visible_image_fraction": 0.2896321614583333,
+        "bbox_xyxy": [
+          211,
+          0,
+          640,
+          393
+        ],
+        "bbox_width": 429,
+        "bbox_height": 393,
+        "visible_mask_sha256": "bcf1c918b038330a3afe231e63851e402c0c118ec9909c78b7934f7a9837e842"
+      },
+      "camera_baseline_m": 0.8564022647934848
+    },
+    {
+      "episode_id": "SO04",
+      "scene_id": "096",
+      "target_instance_id": 1593514,
+      "target_xml": {
+        "target_instance_id": 1593514,
+        "instance_id": 1593514,
+        "text": "door1",
+        "color_rgb": [
+          32,
+          207,
+          20
+        ],
+        "area": 33955
+      },
+      "target_mesh_vertices": 44262,
+      "strict_target_faces": 86790,
+      "reference": {
+        "frame": 4830,
+        "trajectory_header": [
+          4830,
+          4830,
+          4831
+        ],
+        "camera_center_world": [
+          1.50594,
+          0.95515,
+          2.00799
+        ],
+        "camera_to_target_centroid_m": 2.145969968154546,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 3224,
+        "target_raster_pixels": 3224,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.010494791666666666,
+        "bbox_xyxy": [
+          590,
+          0,
+          640,
+          105
+        ],
+        "bbox_width": 50,
+        "bbox_height": 105,
+        "visible_mask_sha256": "ba36ba0115b049e3a69cef2aa009decbd929f8d5495ec739b648e372dfd0b297"
+      },
+      "query": {
+        "frame": 5285,
+        "trajectory_header": [
+          5285,
+          5285,
+          5286
+        ],
+        "camera_center_world": [
+          -0.0518215,
+          1.03059,
+          1.77607
+        ],
+        "camera_to_target_centroid_m": 0.6805335191241292,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 2774,
+        "target_raster_pixels": 2774,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.009029947916666666,
+        "bbox_xyxy": [
+          602,
+          273,
+          640,
+          439
+        ],
+        "bbox_width": 38,
+        "bbox_height": 166,
+        "visible_mask_sha256": "547e5a54894d4f5c57e1c977230bec83db6e75cb06611c372caf9ffb910ed36b"
+      },
+      "camera_baseline_m": 1.5767368109111457
+    }
+  ],
+  "selected_trajectory_frames": [
+    4830,
+    5285,
+    5775,
+    6830,
+    6955,
+    7095,
+    7335,
+    7345
+  ],
+  "scenarios": [
+    {
+      "id": "closed-four",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO02",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO03",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO01-SO04",
+      "reference_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO03",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO02-SO04",
+      "reference_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO02",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO03-SO04",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO01",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO02",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO02",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO03",
+        "SO04"
+      ]
+    },
+    {
+      "id": "balanced-swap-SO04-SO03",
+      "reference_targets": [
+        "SO01",
+        "SO02",
+        "SO03"
+      ],
+      "query_targets": [
+        "SO01",
+        "SO02",
+        "SO04"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 4,
+    "selected_rgbd_frames": 8,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 34,
+    "truth_unmatched_nodes_across_scenarios": 26
+  },
+  "materialize_after_freeze": {
+    "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/096.oni",
+    "content_length": 1780153955,
+    "etag": "61a4de6e-6a1afe63",
+    "md5": "d8ef54d952db0ea68005d8b2d7928f0d"
+  },
+  "claim_boundary": "A pass is provider-disjoint real consumer-RGB-D Development evidence that the unchanged positive registered planar-extent support predicate can operate on privileged target-conditioned partial depth observations rather than complete provider surfaces. SceneNN instance masks, reconstruction and camera trajectory remain privileged; the sensor is not a phone and the query target proposal is truth-conditioned. This is not raw-phone perception, door detection, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or mobility-safety evidence."
+}

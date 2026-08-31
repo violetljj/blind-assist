@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-hue-geometry-consensus-protocol-v1",
+  "protocol_id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-protocol-v1",
+  "frozen_at": "2026-08-31T20:38:00+08:00",
+  "question": "Can synchronized color provide a threshold-free agreement signal that rejects the remaining SceneNN rank-only false matches without requiring partial geometric convex hulls to overlap?",
+  "predecessor": {
+    "protocol_path": "l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+    "protocol_sha256": "496e1893380e9d50aeec2ad9bffcca31a9378f08cad5d088761cb4366b4f7b7b",
+    "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+    "cohort_sha256": "b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d",
+    "receipt_path": "l10_scenenn_temporal_fused_extent_support_rgbd_receipt_v1.json",
+    "receipt_sha256": "2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274",
+    "result_path": "l10_scenenn_temporal_fused_extent_support_result_v1.json",
+    "result_sha256": "0acfa5bd2aa8ff3bb4d4dad75c63e916f0a7064b082a138ae225d62b173bcd27",
+    "required_conclusion": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "rank_only_baseline": {
+      "true_positive": 34,
+      "false_positive": 3,
+      "false_negative": 0,
+      "f1": 0.957746,
+      "exact_scenarios": 12
+    }
+  },
+  "independent_motivation": {
+    "colored_registration_primary_source": "https://openaccess.thecvf.com/content_ICCV_2017/papers/Park_Colored_Point_Cloud_ICCV_2017_paper.pdf",
+    "low_overlap_color_primary_source": "https://openaccess.thecvf.com/content/CVPR2024/papers/Mu_ColorPCR_Color_Point_Cloud_Registration_with_Multi-Stage_Geometric-Color_Fusion_CVPR_2024_paper.pdf",
+    "source_inference": "Joint photometric-geometric evidence can constrain smooth or low-overlap geometry, and ColorPCR reports Hue as the more stable HSV component under color noise. Therefore an equal-status reciprocal agreement test is motivated independently of the consumed false-pair identities."
+  },
+  "observation_carrier": {
+    "source": "unchanged 23 sealed synchronized SceneNN RGB-D frames and exact three-frame windows",
+    "geometry": "bitwise same target-conditioned depth mask, 0.08 m consistency, per-frame 4096 cap, registered fusion and fused 4096 cap as the predecessor",
+    "color": "BGR pixels at the exact retained depth-consistent target pixels before the same deterministic caps",
+    "hue_descriptor": "18 bins over OpenCV Hue [0,180), plus one achromatic mass; each pixel contributes saturation/255 to its Hue bin and 1-saturation/255 to the achromatic bin; L1 normalize",
+    "hue_similarity": "histogram intersection; no learned or fitted weight and no similarity threshold",
+    "geometry_score": "unchanged negative symmetric median registered surface distance",
+    "zero_assignment": "compute strict reciprocal row-and-column maxima independently for geometry and Hue",
+    "consensus": "retain a pair only when the identical pair appears in both reciprocal match sets; no scalar score fusion"
+  },
+  "decision_gate": {
+    "geometry_reproduction_matches_predecessor": true,
+    "consensus_true_positive": 34,
+    "consensus_false_positive": 0,
+    "consensus_false_negative": 0,
+    "exact_zero_assignment_scenarios": 15,
+    "no_true_match_loss_vs_geometry": true,
+    "f1_not_lower_than_geometry": true
+  },
+  "forbidden_after_freeze": [
+    "change Hue bin count, achromatic formulation, similarity, reciprocity, or intersection rule",
+    "add a Hue threshold, score weight, margin, or target-specific calibration",
+    "change the RGB-D frames, masks, depth tolerance, point minimum, caps, targets, or scenarios",
+    "inspect a failed scenario and rescue it with another color space or descriptor",
+    "promote a positive result on this consumed scene to fresh confirmation"
+  ],
+  "claim_boundary": "This consumed-scene posthoc experiment can establish only whether a deterministic Hue-geometry reciprocal consensus is mechanically useful on the frozen SceneNN cohort. Instance masks, target geometry, poses and synchronized sensor streams remain privileged; no model is trained. It is not fresh confirmation, raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

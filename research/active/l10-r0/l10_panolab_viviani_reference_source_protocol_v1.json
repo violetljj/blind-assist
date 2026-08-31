@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist-l10-panolab-viviani-reference-source-protocol-v1",
+  "name": "L10 PanoLab Le Viviani unseen two-scale reference source",
+  "status": "FROZEN_BEFORE_SELECTED_REFERENCE_PIXEL_DOWNLOAD_OR_MODEL_CALL",
+  "question": "Can the fourth fresh active-view target receive a deterministic two-view entrance-ray reference bank from the already frozen Panoramax metadata without reusing either fresh query item?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_viviani_reference_panel.py",
+    "sha256": "4091ac28e314cb06e432a18ba3681e99fb8f0f050e57eb2c0d33262bb214e0a8"
+  },
+  "inputs": {
+    "candidate_metadata": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+      "sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+      "bytes": 13885054
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target": {
+    "episode_id": "FL02",
+    "way_id": 247662576,
+    "name": "Le Viviani",
+    "source_city": "Nantes"
+  },
+  "selection": {
+    "eligibility": "Use only metadata-classified DIRECT views for target way 247662576 that pass the unchanged strict zero-pose Panoramax projection gate and whose item IDs are absent from all eight fresh query images.",
+    "distance_anchors_m": [
+      5.0,
+      30.0
+    ],
+    "sequential_rule": "For each distance anchor in order, select the unused eligible item minimizing absolute camera-to-entrance distance; tie by item ID.",
+    "forbidden_inputs": [
+      "selected full, SD, thumbnail, tile, or derived pixels",
+      "OCR output",
+      "CLIP, DINOv2, or any learned-model output",
+      "human sign, facade, or entrance visibility judgment",
+      "the three-target ordered appearance result"
+    ],
+    "pre_freeze_inventory": "Exact selected IDs later produced by the deterministic rule had zero occurrences in repository JSON and zero filename matches under artifacts.local/knowledge and artifacts.local/datasets before freeze."
+  },
+  "materialization": {
+    "provider": "Panoramax OpenStreetMap France HD image asset recorded in the frozen provider item",
+    "expected_image_size": [
+      5760,
+      2880
+    ],
+    "output_root": "artifacts.local/datasets/l10-panolab-viviani-reference-v1",
+    "partial_download_policy": "Download to an item-specific .jpg.part, atomically replace the final file, and remove every task-owned partial in a finally path.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_viviani_reference_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_viviani_reference_materialization_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A provenance and pixel-integrity receipt for two previously unmaterialized target-linked Panoramax reference views selected without pixel or model outcome access.",
+    "not_allowed": [
+      "the references depicting a readable target identity, facade, portal, or entrance",
+      "source-provider-disjointness because all available references share the fresh query sequence",
+      "portal ownership, access, traversability, waypoint, arrival, user benefit, deployment performance, or safety"
+    ]
+  }
+}

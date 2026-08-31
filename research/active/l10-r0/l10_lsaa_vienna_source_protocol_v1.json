@@ -1,0 +1,54 @@
+{
+  "schema": "blindassist-l10-lsaa-vienna-source-protocol-v1",
+  "name": "L10 LSAA Vienna source-disjoint address-door panel",
+  "question": "Does LSAA admit a provider- and city-disjoint panel with an OSM address credential, exactly one official door instance, and enough image quality to test the frozen portal-private witness without pixel-selected examples?",
+  "inputs": {
+    "properties_23k": {
+      "path": "artifacts.local/datasets/lsaa-l10-source-screen/Properties23K.csv",
+      "sha256": "0d008a4c525c8bb98f69fcce533bea888246b1cac581e464a781ba5b30a5d24b"
+    },
+    "door_filtered": {
+      "path": "artifacts.local/datasets/lsaa-l10-source-screen/door_filtered.csv",
+      "sha256": "674bd73c176713d513d206522ee7cff8b3299e986aafaf35594ed2d5352db5ca"
+    },
+    "door_detection": {
+      "path": "artifacts.local/datasets/lsaa-l10-source-screen/door_detection.json",
+      "sha256": "6847c0bb3f2fecb066fc10493d9fd4d0f97c2272ef8a90c8d791199ebebc1c61"
+    }
+  },
+  "providers": {
+    "dataset": "Large Scale Architectural Asset Dataset (LSAA), CC BY-NC-SA 4.0",
+    "dataset_page": "https://github.com/ZPdesu/lsaa-dataset",
+    "overpass": "https://overpass-api.de/api/interpreter",
+    "user_agent": "BlindAssist-L10-LSAA-source-screen/1.0",
+    "filtered_facades_archive": {
+      "google_drive_file_id": "1s3L1EouMaO8r3l7hq8WoQcOsSwDb8AxP",
+      "bytes": 3788288276,
+      "member_prefix": "Filtered_facades/"
+    }
+  },
+  "selection": {
+    "city": "Vienna",
+    "house_number_pattern": "[0-9]{1,4}",
+    "stable_split_seed": "L10-LSAA-VIENNA-SOURCE-DISJOINT-V1",
+    "development_count": 24,
+    "confirmation_count": 24,
+    "quality": {
+      "minimum_door_width_pixels": 64,
+      "minimum_door_height_pixels": 96,
+      "minimum_facade_width_pixels": 400,
+      "minimum_facade_height_pixels": 400,
+      "minimum_noblur": 400.0,
+      "maximum_total_occlusion": 0.35,
+      "maximum_absolute_view_angle_degrees": 60.0
+    },
+    "pixel_blind": "Selection may read only LSAA CSV/JSON metadata, current OSM way tags, and prior source identities. It may not request or decode a facade, door crop, panorama, thumbnail, OCR output, portal output, or model score.",
+    "negative_control": "Within each split, rotate the next distinct true house number onto the current facade as a deterministic counterfactual mission. Any emitted binding is wrong for that control."
+  },
+  "outputs": {
+    "public_source": "research/active/l10-r0/l10_lsaa_vienna_source_v1.json",
+    "evaluator_truth_draft": "research/active/l10-r0/l10_lsaa_vienna_truth_draft_v1.json",
+    "selection_receipt": "research/active/l10-r0/l10_lsaa_vienna_selection_receipt_v1.json"
+  },
+  "claim_boundary": "A source admission pass establishes only a pixel-blind, provider- and city-disjoint candidate panel. OSM address tags and LSAA door boxes are not visible-text truth, runtime model inputs, portal ownership, public access, traversability, waypoint, arrival, handoff, user benefit, or safety evidence."
+}

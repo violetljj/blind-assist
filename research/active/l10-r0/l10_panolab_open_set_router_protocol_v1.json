@@ -1,0 +1,122 @@
+{
+  "schema": "blindassist-l10-panolab-open-set-router-protocol-v1",
+  "name": "L10 PanoLab positive-calibrated open-set appearance abstention",
+  "status": "FROZEN_AFTER_NEGATIVE_TRUTH_AND_BEFORE_FIRST_MODEL_CALL_ON_NEGATIVE_PIXELS",
+  "question": "Does the pre-materialization dual score-and-margin gate retain all four consumed positive candidates while rejecting all four pixel-unseen, human-reviewed, geospatially excluded negative queries as UNKNOWN?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_open_set_router.py",
+    "sha256": "ce411d77eb1e8876b15b42a11e9762f9569e365650d8a9c1d57c547912fa7006"
+  },
+  "inputs": {
+    "negative_source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_source_protocol_v1.json",
+      "sha256": "14d35152181bba4a120d46e38a21afafb185f793e300b4a2c687647628059323",
+      "bytes": 7259
+    },
+    "negative_selection": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_selection_v1.json",
+      "sha256": "367b292d143618d8321f4037a9b0c4b371f1917c9f815415898383812e3bcfba",
+      "bytes": 73915
+    },
+    "negative_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_materialization_v1.json",
+      "sha256": "9c15465a19834ddf69e98cf16dc3afd0f54f4fa79803b3d14b241cf7332acfa9",
+      "bytes": 2473
+    },
+    "negative_truth": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_truth_v1.json",
+      "sha256": "db762a8521b0690eb94a3d0c10288b6e4a7d0bc4721319876015ae861fb1dc71",
+      "bytes": 5180
+    },
+    "component_router_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "component_router_result": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+      "sha256": "a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f",
+      "bytes": 42678
+    },
+    "reference_portal_source": {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196
+    },
+    "node_credential_source": {
+      "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "bytes": 417017
+    },
+    "viviani_reference_selection": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_selection_v1.json",
+      "sha256": "2bbbd48a6023bb991958b013b6f95a18bff051a1526062119952141e1c9f4532",
+      "bytes": 35627
+    },
+    "viviani_reference_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_materialization_v1.json",
+      "sha256": "d4860a9d058ab1bd53216f10661d3f08af0eb36f72b2ac827f12efe79a4c7198",
+      "bytes": 1636
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "open_set_contract": {
+    "calibration_source": "The four source-extended positive episodes in l10_panolab_component_router_result_v1.json; all were consumed Development before this negative source was selected.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "threshold_rule": "Set each threshold to the minimum corresponding value across the four correct positive-roster queries, with no negative examples and no search over alternative statistics.",
+    "accept": "Emit APPEARANCE_SEARCH_PRIORITY_CANDIDATE only if both the top-1 facade-fingerprint score and top-1-minus-runner-up margin meet their frozen minima; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "semantics": "This is a tiny positive-calibrated selective Development rule. It is not conformal calibration, does not control FDR, and has no distribution-shift guarantee."
+  },
+  "observation_window": {
+    "anchor": "strict OSM entrance ray under the unchanged zero-pose Panoramax contract",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "sampling": "native equirectangular pixels with horizontal seam wrap and no resampling"
+  },
+  "execution": {
+    "batch_size": 4,
+    "backend_rule": "Use the existing project CPU/CUDA representative probe once, then keep its selected backend for all twelve crops.",
+    "overwrite": "Refuse an existing output or artifact root.",
+    "one_shot": "Run the frozen negative evaluator once. Do not change thresholds, score formula, reference bank, crop, or panel after observing negative outcomes."
+  },
+  "gate": {
+    "positive_threshold_retention": "4/4 consumed positives",
+    "negative_rejection": "4/4 pixel-unseen negatives",
+    "maximum_negative_false_accepts": 0,
+    "maximum_portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_OPEN_SET_APPEARANCE_ABSTENTION_FRESH_NEGATIVE_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_OPEN_SET_APPEARANCE_ABSTENTION_FRESH_NEGATIVE_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "SafeVPR: Patch-Based Conformal Verification for Safe Cross-Condition Sequence Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2605.28048",
+      "official_code": "https://github.com/Hasar12139/SafeVPR",
+      "use": "Motivates a separate accept/abstain layer over patch-aware retrieval. This evaluator reuses its already frozen mutual-patch score but does not implement sequence DTW, conformal calibration, LTT, or FDR guarantees."
+    },
+    {
+      "title": "Through the Lens of Doubt: Robust and Efficient Uncertainty Estimation for Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2510.13464",
+      "use": "Motivates score separation as a training-free ambiguity signal. This evaluator uses only the top-1 score and margin fixed from four positives and claims no benchmark equivalence."
+    }
+  ],
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-open-set-router-v1",
+  "output": "research/active/l10-r0/l10_panolab_open_set_router_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Fresh-negative Development evidence about whether one pre-frozen positive-calibrated score-and-margin rule abstains on four exact-roster-absent Panoramax entrance-ray queries while retaining the four consumed positives by construction.",
+    "not_allowed": [
+      "fresh positive recognition, open-world generalization, conformal validity, FDR control, calibrated probability, or arbitrary distribution-shift robustness",
+      "an accepted appearance candidate being exact-instance, address, facade, sign, door, portal, or entrance ownership",
+      "appearance authorizing the independently projected OSM entrance ray",
+      "entrance affordance, public or legal access, walkability, collision-free traversability, waypoint accuracy, arrival, HANDOFF_READY, product benefit, user benefit, deployment performance, or safety"
+    ]
+  }
+}

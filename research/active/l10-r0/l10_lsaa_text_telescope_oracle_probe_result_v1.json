@@ -1,0 +1,523 @@
+{
+  "schema": "blindassist-l10-lsaa-text-telescope-oracle-probe-v1",
+  "generated_at_utc": "2026-08-30T22:53:36.534551Z",
+  "decision": "ORACLE_DIAGNOSTIC_ONLY_NOT_RUNTIME_ALGORITHM_EVIDENCE",
+  "inputs": {
+    "public_source": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_source_v3.json",
+      "sha256": "636cf5cd0f062024c82f2d070cc833772763edcd6c96dc7fc13ab6eaa412352b"
+    },
+    "pixel_truth": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_development_pixel_truth_v3.json",
+      "sha256": "c46f7233ddf4c35898d2f0735cb5e846ef2616f10cdb351c5368b47ed31016a6"
+    },
+    "materialization_manifest": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\lsaa-l10-source-screen\\development-v3\\materialization_manifest.json",
+      "sha256": "0d503f7a5163fe50646ab762ea1a2d0d5ba448eaf97422e58341ad4b2f9b3f11"
+    },
+    "v5_protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_ppocrv6_medium_portal_witness_protocol_v1.json",
+      "sha256": "947c917e748f3e52a10b1835efd6d12a931c9395daaf4d10805f6fec98954bc3"
+    },
+    "easyocr_protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_easyocr_craft_fallback_protocol_v1.json",
+      "sha256": "00da8cd2fd91cb2ee120281194a72d7351c3b3fd8c0587fc59821961754251f8"
+    },
+    "stt_repository": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\repositories\\fudanocr-scene-text-telescope\\scene-text-telescope",
+      "commit": "dce719068c7a7378c1b112438dd656b57d9fc777"
+    },
+    "stt_checkpoint": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\scene-text-telescope-cvpr2021\\stt-tbsrn-text-focus.pth",
+      "sha256": "20d81608336c16d1c71b7e82910ec717726dd4f89c60e68f88c53b8d8074d5e6"
+    }
+  },
+  "oracle_crop_expansion": {
+    "left_box_widths": 0.5,
+    "right_box_widths": 0.5,
+    "up_box_heights": 0.75,
+    "down_box_heights": 1.0
+  },
+  "metrics": {
+    "interpolated_ppocrv6": {
+      "exact": 0,
+      "rate": 0.0
+    },
+    "stt_ppocrv6": {
+      "exact": 0,
+      "rate": 0.0
+    },
+    "interpolated_easyocr_numeric": {
+      "exact": 0,
+      "rate": 0.0
+    },
+    "stt_easyocr_numeric": {
+      "exact": 0,
+      "rate": 0.0
+    }
+  },
+  "rows": [
+    {
+      "item_id": "LSAA-VIE-D-002",
+      "target": "111",
+      "original_credential_box_xyxy": [
+        226,
+        640,
+        255,
+        660
+      ],
+      "expanded_crop_box_xyxy": [
+        212,
+        625,
+        270,
+        680
+      ],
+      "expanded_crop_shape_hw": [
+        55,
+        58
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "32",
+          "canonical": "32",
+          "score": 0.01734717,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-006",
+      "target": "9",
+      "original_credential_box_xyxy": [
+        521,
+        1042,
+        548,
+        1065
+      ],
+      "expanded_crop_box_xyxy": [
+        508,
+        1025,
+        562,
+        1088
+      ],
+      "expanded_crop_shape_hw": [
+        63,
+        54
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "S",
+          "canonical": "",
+          "score": 0.16353248,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "29",
+          "canonical": "29",
+          "score": 0.18438771,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-008",
+      "target": "152",
+      "original_credential_box_xyxy": [
+        218,
+        572,
+        247,
+        592
+      ],
+      "expanded_crop_box_xyxy": [
+        204,
+        557,
+        262,
+        612
+      ],
+      "expanded_crop_shape_hw": [
+        55,
+        58
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "山",
+          "canonical": "",
+          "score": 0.51467532,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "0",
+          "canonical": "0",
+          "score": 0.27565724,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "3",
+          "canonical": "3",
+          "score": 0.05403693,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-009",
+      "target": "3",
+      "original_credential_box_xyxy": [
+        518,
+        948,
+        552,
+        977
+      ],
+      "expanded_crop_box_xyxy": [
+        501,
+        926,
+        569,
+        1006
+      ],
+      "expanded_crop_shape_hw": [
+        80,
+        68
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "0",
+          "canonical": "0",
+          "score": 0.26003179,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "三",
+          "canonical": "",
+          "score": 0.18572484,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "4",
+          "canonical": "4",
+          "score": 0.37052909,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.47688182,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-010",
+      "target": "19",
+      "original_credential_box_xyxy": [
+        889,
+        1370,
+        923,
+        1395
+      ],
+      "expanded_crop_box_xyxy": [
+        872,
+        1351,
+        940,
+        1420
+      ],
+      "expanded_crop_shape_hw": [
+        69,
+        68
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.68735754,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.69300956,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "2",
+          "canonical": "2",
+          "score": 0.02567911,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "3",
+          "canonical": "3",
+          "score": 0.28378485,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-016",
+      "target": "9",
+      "original_credential_box_xyxy": [
+        491,
+        705,
+        521,
+        729
+      ],
+      "expanded_crop_box_xyxy": [
+        476,
+        687,
+        536,
+        753
+      ],
+      "expanded_crop_shape_hw": [
+        66,
+        60
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.89774936,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "3",
+          "canonical": "3",
+          "score": 0.1867315,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "3",
+          "canonical": "3",
+          "score": 0.07009394,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-017",
+      "target": "14",
+      "original_credential_box_xyxy": [
+        412,
+        902,
+        440,
+        921
+      ],
+      "expanded_crop_box_xyxy": [
+        398,
+        888,
+        454,
+        940
+      ],
+      "expanded_crop_shape_hw": [
+        52,
+        56
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.44833568,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.40548527,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "5",
+          "canonical": "5",
+          "score": 0.29092263,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-018",
+      "target": "12",
+      "original_credential_box_xyxy": [
+        114,
+        514,
+        139,
+        533
+      ],
+      "expanded_crop_box_xyxy": [
+        102,
+        500,
+        152,
+        552
+      ],
+      "expanded_crop_shape_hw": [
+        52,
+        50
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "产",
+          "canonical": "",
+          "score": 0.23465268,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "2",
+          "canonical": "2",
+          "score": 0.35230735,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "5",
+          "canonical": "5",
+          "score": 0.12319005,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "4",
+          "canonical": "4",
+          "score": 0.1946275,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-019",
+      "target": "6",
+      "original_credential_box_xyxy": [
+        520,
+        738,
+        549,
+        759
+      ],
+      "expanded_crop_box_xyxy": [
+        506,
+        722,
+        564,
+        780
+      ],
+      "expanded_crop_shape_hw": [
+        58,
+        58
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "",
+          "canonical": "",
+          "score": 0.0,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "一",
+          "canonical": "",
+          "score": 0.98051971,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "535",
+          "canonical": "535",
+          "score": 0.25181058,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "55",
+          "canonical": "55",
+          "score": 0.16227252,
+          "exact": false
+        }
+      }
+    },
+    {
+      "item_id": "LSAA-VIE-D-021",
+      "target": "14",
+      "original_credential_box_xyxy": [
+        112,
+        814,
+        149,
+        850
+      ],
+      "expanded_crop_box_xyxy": [
+        94,
+        787,
+        168,
+        886
+      ],
+      "expanded_crop_shape_hw": [
+        99,
+        74
+      ],
+      "predictions": {
+        "interpolated_ppocrv6": {
+          "text": "1",
+          "canonical": "1",
+          "score": 0.43970618,
+          "exact": false
+        },
+        "stt_ppocrv6": {
+          "text": "7",
+          "canonical": "7",
+          "score": 0.42639148,
+          "exact": false
+        },
+        "interpolated_easyocr_numeric": {
+          "text": "5",
+          "canonical": "5",
+          "score": 0.40045181,
+          "exact": false
+        },
+        "stt_easyocr_numeric": {
+          "text": "7",
+          "canonical": "7",
+          "score": 0.13208086,
+          "exact": false
+        }
+      }
+    }
+  ],
+  "wall_seconds": 4.237822,
+  "claim_boundary": "Human credential boxes and fixed expansion enter this consumed-Development oracle. It can decide whether STT merits runtime integration but is not runtime localization, portal ownership, confirmation, arrival, handoff, deployment, or safety evidence."
+}

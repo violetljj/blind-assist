@@ -1,0 +1,40 @@
+{
+  "schema": "blindassist-l10-panolab-human-truth-timestamp-correction-v1",
+  "status": "SEALED_METADATA_CORRECTION_NO_RESULT_REPLAY",
+  "issued_at_local": "2026-08-31T08:22:09.7645039+08:00",
+  "reason": "The two reviewed_at_local fields were manually entered as approximate wall times without first reading the host clock. They are not authoritative and one is future-dated relative to file creation. Neither field is read by an evaluator or used in a gate.",
+  "policy": "Do not mutate hashed truth, protocol, or result files and do not rerun a sealed result for a non-semantic timestamp typo. Preserve original hashes and record the observed file-write ordering separately.",
+  "corrections": [
+    {
+      "truth_path": "research/active/l10-r0/l10_panolab_cross_collection_positive_truth_v1.json",
+      "truth_sha256": "6a1b8d13b25e3de690a91a7c1021a2ba2767098099c718a746d04e8f9b018863",
+      "non_authoritative_recorded_reviewed_at_local": "2026-08-31T08:08:00+08:00",
+      "observed_truth_last_write_local": "2026-08-31T08:02:54.3797221+08:00",
+      "downstream_protocol_path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_protocol_v1.json",
+      "observed_protocol_last_write_local": "2026-08-31T08:05:34.8959649+08:00",
+      "downstream_result_path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "observed_result_last_write_local": "2026-08-31T08:06:11.0669198+08:00",
+      "ordering": "truth_file_written_before_protocol_and_result"
+    },
+    {
+      "truth_path": "research/active/l10-r0/l10_panolab_temporal_query_truth_v1.json",
+      "truth_sha256": "90d58aab718f12ad4f0721dc52a40e16268f3998e9baab28dedd50d94e2ec77b",
+      "non_authoritative_recorded_reviewed_at_local": "2026-08-31T08:28:00+08:00",
+      "observed_truth_last_write_local": "2026-08-31T08:11:00.8454811+08:00",
+      "downstream_protocol_path": "research/active/l10-r0/l10_panolab_temporal_query_router_protocol_v1.json",
+      "observed_protocol_last_write_local": "2026-08-31T08:13:09.6898476+08:00",
+      "downstream_result_path": "research/active/l10-r0/l10_panolab_temporal_query_router_result_v1.json",
+      "observed_result_last_write_local": "2026-08-31T08:13:42.4917066+08:00",
+      "ordering": "truth_file_written_before_protocol_and_result"
+    }
+  ],
+  "semantic_effect": {
+    "truth_labels_changed": false,
+    "input_hashes_changed": false,
+    "protocols_changed": false,
+    "results_changed_or_replayed": false,
+    "metrics_or_decisions_changed": false,
+    "model_before_truth_ordering_changed": false
+  },
+  "claim_boundary": "This receipt corrects only the interpretation of two human-entered display timestamps. It does not add evidence or authority to any result."
+}

@@ -1,0 +1,129 @@
+{
+  "schema": "blindassist-l10-sevn-ppocrv6-medium-fallback-protocol-v1",
+  "name": "L10 SEVN PP-OCRv6 medium OCR expert fresh PAN Development",
+  "question": "Can the official PP-OCRv6 medium detector and recognizer materially improve V2 exact house-number evidence and correct address-to-door binding on forty additional fresh SEVN PAN episodes without adding wrong doors?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_ppocrv6_medium_fallback.py",
+    "sha256": "37383981abad5e1f8773baede6a7d09530ce65a0570696e65d3889a5ddc80b6a"
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v4.json",
+      "sha256": "2474b71d2cddd6cef05f62578d3fa5a0bae233fed85075af95f464118402fbfd"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_truth_v4.json",
+      "sha256": "656881a38cce77fd0f5e10d6edd5de06d95a4e8117c69da3c991b91086e700db"
+    },
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_protocol_v4.json",
+      "sha256": "fd9ac293a3683bf49553883743ec46ae8d94bf09b34f0757186a6e545d1172fd"
+    },
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_panel.py",
+      "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_selection_receipt_v4.json",
+      "sha256": "1a1fbed93f672a53c1572d8489f56e282ede47e024c75b4f0d576d42aa79e449"
+    },
+    "reference_public_sources": [
+      {"path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json", "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"},
+      {"path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json", "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"},
+      {"path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json", "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"},
+      {"path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v2.json", "sha256": "dc701be78e75978dc03f735e6141120a924b7a578355c8817bb4cb3db9b732e8"},
+      {"path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v3.json", "sha256": "a1ecdf9f7984f0cc91a7d273949c747971c01fe3e9254702996828ce415ae283"}
+    ],
+    "v2_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "v2_evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "archive_integrity_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr_result_v1.json",
+      "sha256": "2cf15ecde0430b16db3d73d8ac274ebfb943511a49be93859e8d62a728843e46"
+    }
+  },
+  "cohort": {
+    "episodes_per_scenario": 20,
+    "episode_count": 40,
+    "scenario_classes": ["PAN_LEFT_ADDRESS_DOOR_RECOVERY", "PAN_RIGHT_ADDRESS_DOOR_RECOVERY"],
+    "disjointness": "No address or panorama frame may overlap any of the five earlier SEVN panels; no frame may be reused across new episodes."
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.13.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime-gpu": "1.26.0",
+      "opencv-python": "4.10.0.84",
+      "numpy": "2.4.6",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "primary_ocr_backend": "Frozen PP-OCRv6 small through RapidOCR and ONNX Runtime",
+    "medium_ocr_backend": "Official PP-OCRv6 medium detector plus recognizer through PaddleOCR ONNX Runtime CPU",
+    "archive_integrity": "Reuse the hash-bound full-archive MD5 receipt, verify current byte size, and record ZIP-member CRC plus SHA-256 for every selected panorama."
+  },
+  "models": {
+    "medium_detection": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_det_onnx",
+      "revision": "61323801669c338b7891481ec7bac61ce31b576a",
+      "license": "Apache-2.0",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-det-6132380",
+      "sha256": {
+        "inference.json": "0f1a7ec35da36173529c7a60238b7f7919e3831929c3f700ad90ad4896adecd5",
+        "inference.onnx": "eb13b44b25bb36f89528b68720af8a61d9cf381176107f465db1757b65d086e1",
+        "inference.yml": "7298d5ead546584af2504d03355f881ac7a7bc0eb1e282d3e159277c1d0af871",
+        "README.md": "3046e3aab0194a2291bb3941c93b980c2b3a938a24a5be88354968f6d6187ac8"
+      }
+    },
+    "medium_recognition": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_rec_onnx",
+      "revision": "50c7eacafc52fa7bcf4194e8cd08e46f8558504b",
+      "license": "Apache-2.0",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-rec-50c7eac",
+      "sha256": {
+        "inference.json": "0b2e25e990bd072f1bf77d59d67d508bce6c4bd44af6624e0fb27d6da2cd00e8",
+        "inference.onnx": "9c09abf0957f7968c7586464b7397b84ad2387a0497a351af40e9acc71b673ba",
+        "inference.yml": "991b700facf5b50a7de193468207d5f4255b538dde0d312ae3b7c7a9b6873129",
+        "README.md": "ebce8d28436623ecab4952e24935aed86b3f8ecaf8f8736b92d5544f60fae1e9"
+      }
+    }
+  },
+  "medium_observation": {
+    "trigger": "Run only when V2 emits no selected binding and its state is UNKNOWN_TARGET_TEXT or UNKNOWN_NO_ADMISSIBLE_MASK_TOPOLOGY.",
+    "scope": "One full 1440 by 1280 action-result viewport with the hash-bound official PP-OCRv6 medium detector and recognizer; no crops, super-resolution, temporal context, target-conditioned decoding, or evaluator labels.",
+    "pipeline": "PaddleOCR 3.7.0 with ONNX Runtime, CPU device, document orientation disabled, document unwarping disabled, and text-line orientation disabled. All detection, preprocessing, decoding, and dictionary settings are frozen by the model inference.json and inference.yml hashes.",
+    "identity_rule": "Delete punctuation and spaces, then require score at least 0.5 and exact equality to the requested house number. No fuzzy, substring, edit-distance, character repair, or target-conditioned recognition is allowed.",
+    "association": "Feed all exact medium candidates through the unchanged V2 same-token de-duplication, upper-mask topology admission, deterministic ranking, and abstention rules.",
+    "asymmetry": "Never run after a V2 proposal and never replace, rerank, or revoke a V2 proposal."
+  },
+  "representation_boundary": "The only new information is a larger official PP-OCRv6 medium detector-recognizer observation on V2-abstaining action-result pixels. Renderer, prescribed PAN action, primary PP-OCRv6 small baseline, portal weights and masks, spatial radii, topology admission and ranking, evaluator projection, and mask correctness remain fixed. Evaluator labels enter only after both outputs are sealed in memory.",
+  "gate": {
+    "episode_count": 40,
+    "minimum_truth_visible_house_number_opportunities": 34,
+    "minimum_successor_visible_text_exact_ocr_rate": 0.72,
+    "minimum_exact_ocr_rate_gain": 0.08,
+    "minimum_successor_correct_binding_rate": 0.55,
+    "minimum_correct_binding_gain": 3,
+    "minimum_successor_binding_precision": 0.9,
+    "maximum_successor_wrong_bindings": 2,
+    "maximum_wrong_binding_delta": 0,
+    "retain_all_baseline_correct_bindings": true,
+    "require_all_disjointness_checks": true
+  },
+  "execution_rule": "Freeze source, evaluator, runtime, model revisions and hashes, trigger, identity and topology semantics, metrics, and gates before opening any selected panorama member. Run one output-bearing invocation. Do not tune the models, parameters, trigger, topology, gates, cohort, or runtime after observing results.",
+  "output": "research/active/l10-r0/l10_sevn_ppocrv6_medium_fallback_result_v1.json",
+  "non_claims": [
+    "The panel is same-source SEVN and PAN-only; it does not confirm a new city, provider, or APPROACH behavior.",
+    "A larger OCR expert is Development binding evidence, not proof of portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, or safety.",
+    "Mask correctness uses evaluator door annotations after inference and does not enter OCR, topology, proposal generation, or selection.",
+    "The consumed V3 retrospective probe motivated this fresh experiment but has no confirmation authority and is not included in the V4 gate.",
+    "A failed gate closes only this frozen medium expert on this cohort; UNKNOWN remains unknown rather than negative evidence."
+  ]
+}

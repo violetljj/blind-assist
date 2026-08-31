@@ -1,0 +1,142 @@
+{
+  "schema": "blindassist-l10-panolab-cross-collection-positive-source-protocol-v1",
+  "name": "L10 PanoLab pixel-unseen cross-collection positive panel",
+  "status": "FROZEN_BEFORE_SELECTED_PIXEL_DOWNLOAD_HUMAN_REVIEW_OR_MODEL_CALL",
+  "question": "Does the remaining frozen Panoramax metadata contain target-way-disjoint named positives with two collection-disjoint DIRECT views, allowing the four-positive score/margin gate to be tested on genuinely unseen positive query pixels?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_panel.py",
+    "sha256": "1a7d392807d61cef077e08738f43199231c081738b91ff8046acb5cba2d7b4ea"
+  },
+  "inputs": {
+    "candidate_metadata": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+      "sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+      "bytes": 13885054
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    },
+    "reference_portal_source": {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196
+    },
+    "node_credential_source": {
+      "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "bytes": 417017
+    },
+    "viviani_selection": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_selection_v1.json",
+      "sha256": "2bbbd48a6023bb991958b013b6f95a18bff051a1526062119952141e1c9f4532",
+      "bytes": 35627
+    },
+    "viviani_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_materialization_v1.json",
+      "sha256": "d4860a9d058ab1bd53216f10661d3f08af0eb36f72b2ac827f12efe79a4c7198",
+      "bytes": 1636
+    },
+    "negative_selection": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_selection_v1.json",
+      "sha256": "367b292d143618d8321f4037a9b0c4b371f1917c9f815415898383812e3bcfba",
+      "bytes": 73915
+    },
+    "negative_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_materialization_v1.json",
+      "sha256": "9c15465a19834ddf69e98cf16dc3afd0f54f4fa79803b3d14b241cf7332acfa9",
+      "bytes": 2473
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "positive_calibration_result": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+      "sha256": "a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f",
+      "bytes": 42678
+    }
+  },
+  "selection": {
+    "exclude_prior_target_ways": "Exclude every target way in the prior active-ray, fresh four-target, reference-portal, node-credential, and open-set-negative sources.",
+    "exclude_prior_items": "Exclude every materialized or source-carried item in those sources plus both Le Viviani references.",
+    "target_name_required": true,
+    "geometry_role": "DIRECT",
+    "minimum_camera_to_entrance_m": 4.0,
+    "maximum_camera_to_entrance_m": 60.0,
+    "minimum_distinct_collections": 2,
+    "query_distance_anchor_m": 30.0,
+    "reference_distance_anchors_m": [
+      5.0,
+      30.0
+    ],
+    "collection_pair": "For every eligible collection choose its item nearest 30 metres. Select the collection pair with the smallest absolute distance difference, tie by collection IDs. The lexicographically first collection is reference and the other is query.",
+    "reference_items": "Within the frozen reference collection, sequentially choose the unused item nearest 5 metres then the unused item nearest 30 metres, tie by item ID.",
+    "query_item": "Use the frozen query-collection representative nearest 30 metres.",
+    "panel_size": 2,
+    "panel": "After all prior target-way exclusions, require exactly two eligible cross-collection targets and sort them by target-way ID and query item ID.",
+    "forbidden_inputs": [
+      "selected full, SD, thumbnail, tile, or derived pixels",
+      "selected-image human review",
+      "OCR, CLIP, DINOv2, or any learned-model output on selected images",
+      "selected-image top-1 score, margin, acceptance, or failure"
+    ]
+  },
+  "accept_contract": {
+    "calibration_source": "The four source-extended positive episodes in l10_panolab_component_router_result_v1.json.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "threshold_rule": "Reuse the exact minimum positive score and margin frozen before the open-set negative panel; do not recalibrate on these selected positives.",
+    "accept": "The requested target must rank unique top-1 among the combined old-plus-new roster and meet both thresholds; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "semantics": "Search-priority candidate only; never physical identity or portal ownership authority."
+  },
+  "materialization": {
+    "provider": "Panoramax OpenStreetMap France HD image asset recorded in each frozen provider item",
+    "expected_image_size": [
+      5760,
+      2880
+    ],
+    "output_root": "artifacts.local/datasets/l10-panolab-cross-collection-positive-v1",
+    "partial_download_policy": "Download to item-specific .jpg.part files, atomically replace finals, and remove task-owned partials in a finally path.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "research_basis": [
+    {
+      "title": "Learning Sequential Descriptors for Sequence-based Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2207.03868",
+      "official_code": "https://github.com/vandal-vpr/vg-transformers",
+      "use": "Motivates evaluating visual place representations across distinct traversals rather than only within one sequence. This panel tests fixed single-frame facade fingerprints, not SeqVLAD."
+    },
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "Motivates cross-sequence descriptor generalization. This source panel does not train or implement SeqGeM."
+    }
+  ],
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_cross_collection_positive_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_cross_collection_positive_materialization_v1.json",
+    "human_truth": "research/active/l10-r0/l10_panolab_cross_collection_positive_truth_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A pixel-unseen selection and materialization protocol for two target-way/item-disjoint, query-reference-collection-disjoint Panoramax positive targets, with acceptance thresholds frozen before pixel download.",
+    "not_allowed": [
+      "same-entity visual truth before post-download review",
+      "provider-disjoint, city-disjoint, open-world, or broad place-recognition generalization",
+      "pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, user benefit, deployment performance, or safety"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "blindassist-l10-3rscan-open-roster-zero-assignment-protocol-v2",
+  "base_protocol_path": "l10_3rscan_open_roster_zero_assignment_protocol_v1.json",
+  "base_protocol_sha256": "71fa188143d940c82cd7df8682ba9eb8ccb8eb9ce581d2072f5366bbc5892548",
+  "reason": "The v1 geometry/depth-only freeze opened zero RGB and found only two targets when every reference scan was limited to one selected target. V2 changes only source diversity to permit two targets per reference scan while requiring at least two distinct reference scans; the two-view selector, four scenarios, model, zero-assignment algorithm and decision gate remain unchanged.",
+  "overrides": {
+    "authority": "PHYSICAL_TARGET_DISJOINT_TWO_SCAN_FAMILY_PARTIAL_ROSTER_ZERO_ASSIGNMENT_DEVELOPMENT",
+    "frozen_cohort": {
+      "maximum_targets_per_reference_scan": 2,
+      "minimum_reference_scans": 2,
+      "selection_order": "Use candidate rows in frozen descending area_proxy order. Exclude every prior physical (reference_scan_id, target_instance_id), permit at most two targets per reference scan, require at least two distinct reference scans across the four selected targets, and select the first four targets for which both scans supply two eligible geometry/depth views. RGB remains unopened until replay."
+    },
+    "claim_boundary": "A pass is a small real-image Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes under three bounded missing/extra-candidate constructions. Physical reference targets are disjoint from six prior cohorts, at least two reference scans are represented with at most two targets from either, and two geometry-selected views are used per target side; however all RGB, poses, meshes, labels and truth proposals come from one provider and the scenario overlap is evaluator-known. It is not open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+  }
+}

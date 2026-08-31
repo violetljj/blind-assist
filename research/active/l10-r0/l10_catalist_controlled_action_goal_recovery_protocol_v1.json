@@ -1,0 +1,159 @@
+{
+  "schema": "blindassist-l10-catalist-controlled-action-goal-recovery-protocol-v1",
+  "frozen_before_observed_ocr_outcome_access": true,
+  "mechanical_attempts_before_formal_run": [
+    {
+      "status": "FAILED_BEFORE_MODEL_IMPORT",
+      "reason": "The initially selected Python environment did not expose the already installed RapidOCR package.",
+      "artifacts_created": []
+    },
+    {
+      "status": "FAILED_DURING_FIRST_VIDEO_TRANSPORT",
+      "reason": "OpenCV random frame seeking failed at video 0093 frame 93. No OCR cache, result, metric, or OCR output was persisted or surfaced. The evaluator was changed only to sequentially decode the unchanged frozen frame indices.",
+      "artifacts_created": []
+    },
+    {
+      "status": "FAILED_ON_FALSE_CONTAINER_FRAME_COUNT",
+      "reason": "Sequential decoding showed that video 0093 declares 99 frames but yields only 92 decodable frames. No OCR cache, result, metric, or OCR output was persisted or surfaced. The evaluator now performs an OCR-free decode-count pass and projects the unchanged 25/50/75/100 percent checkpoints onto the actually decodable interval.",
+      "artifacts_created": []
+    }
+  ],
+  "authority": {
+    "dataset": "CATALISTd / CATALIST-2021 official validation split",
+    "official_site": "https://catalist-2021.github.io/",
+    "official_paper": "https://www.cse.iitb.ac.in/~ganesh/papers/catalist2021.pdf",
+    "official_kaggle_release": "https://www.kaggle.com/datasets/catalist2021/catalist2021",
+    "dataset_facts": "The authors recorded 2322 real scene-text videos at 25 fps and 1920x1080 using controlled tripod camera transformations. The tab-separated annotations provide a manually annotated and verified video text label, one of translation/roll/tilt/pan/zoom, and optional transformation start/end times. Cloud-Vision per-frame masks are explicitly unverified and are not used here.",
+    "license_boundary": "The official Kaggle API reports the license as unknown. Use is restricted to this local Development replay; no source video is redistributed by this result."
+  },
+  "inputs": {
+    "reference_annotations": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-catalist-official-v1/train_ann.txt",
+    "evaluation_annotations": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-catalist-official-v1/val_ann.txt",
+    "videos_root": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-catalist-official-v1/val-panel-v1",
+    "models": "E:/linnan/linnan/artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_cache": "F:/ba-data/blindassist-artifacts-20260805/evidence/l10-catalist-controlled-action-goal-recovery-v1/ocr_cache.json"
+  },
+  "input_sha256": {
+    "reference_annotations": "942a116483f559a5af205f6fee24e8d1537772e759974427ba3fa077a91d5490",
+    "evaluation_annotations": "1a39c7dfe63c51c82f84fbce523bc18d1dbbf0c4f4978120254fd1e68bc86de0"
+  },
+  "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_catalist_controlled_action_goal_recovery.py",
+    "sha256": "38bf563f955a253832881c616b3fa8a71836dd9fe79044335f0371dfd2fa136d"
+  },
+  "selection_contract": {
+    "split": "official validation",
+    "cohort_size": 30,
+    "episodes_per_action": 6,
+    "actions": [
+      "TR",
+      "P",
+      "T",
+      "Z",
+      "R"
+    ],
+    "minimum_target_token_length": 6,
+    "maximum_target_token_length": 24,
+    "target_token_rule": "Choose the lowest document-frequency ASCII alphabetic token in the verified validation video label, then the longest and lexical-first tie break, while requiring the token to be absent from every official training label. Select the source-order-first video per label/action pair. Fill six rounds across TR/P/T/Z/R, reversing action order on odd rounds and preferring a not-yet-selected verified label within each action.",
+    "selection_reads_no_pixels_or_ocr": true,
+    "training_validation_full_label_overlap": 0
+  },
+  "selected_videos": [
+    "0093.mp4",
+    "0012.mp4",
+    "0018.mp4",
+    "0028.mp4",
+    "0107.mp4",
+    "0122.mp4",
+    "0139.mp4",
+    "0163.mp4",
+    "0148.mp4",
+    "0179.mp4",
+    "0189.mp4",
+    "0194.mp4",
+    "0017.mp4",
+    "0015.mp4",
+    "0013.mp4",
+    "0023.mp4",
+    "0021.mp4",
+    "0026.mp4",
+    "0020.mp4",
+    "0103.mp4",
+    "0120.mp4",
+    "0024.mp4",
+    "0091.mp4",
+    "0086.mp4",
+    "0030.mp4",
+    "0109.mp4",
+    "0097.mp4",
+    "0101.mp4",
+    "0089.mp4",
+    "0141.mp4"
+  ],
+  "selected_video_sha256": {
+    "0012.mp4": "3ae76d7d208567f4c2b2417163e35938cc14d9cedcdedd0016834e8bda663941",
+    "0013.mp4": "b3b97bb47c27fa945c54c59ce0fce274cf437e087616b284c750c28d946dea8b",
+    "0015.mp4": "30947ce060c3d5df4e2546b0560640013b4ce9969dcbde03ef99b0b5de4c4ff4",
+    "0017.mp4": "7e8577886cbe37620ed37d0d23f9a9b5fc683eab3f00e6c17cff8c38a860b641",
+    "0018.mp4": "efae30d020888750fa2f8a53fc64eb396aa2b310583e493e44a4e05c92e59799",
+    "0020.mp4": "24da5ba250ab52b0d633e742b69762196edfaab67bc4d05926cd9f8f46e9cc0c",
+    "0021.mp4": "01ab1d6f2911082396280155dc276776091b21fcbc15e967f5682fb1bb6ff331",
+    "0023.mp4": "29a03312e2046b5fb1e7eab624b439d1579dd9666d24b680906c38bc06337204",
+    "0024.mp4": "2e4c94dce398f8c9664020b1f68f88765f27775595bfd53cf5e2a48d083e0351",
+    "0026.mp4": "59bc60f236263d05e1a99314f653f1e0d344ffd384f313d996bc12f54ed6acae",
+    "0028.mp4": "12629ea3c5238df142e1b917f7d04076d1c4d6a349d10cfe2b71232ea0b62b3b",
+    "0030.mp4": "29a2a24abd725df091ebb3ff37cf6c2bc6e8412f3146d8c52557f2f2daa338a7",
+    "0086.mp4": "888858fb1fb0f7cdce5db88c46624be2343621bbb4dfae6d0ee72c3f55629dfe",
+    "0089.mp4": "923fbf3abc42ada92657558ce413d02b27e22cbfb421ec5c26fbcf6a354e1c87",
+    "0091.mp4": "313966066b0881054f5dbc4fbf1ef71e18ae0c63584d9259e1a9b180b740eeed",
+    "0093.mp4": "be2f4c21bbd5f1a127d382076feb66936a5339d9d892b4ac42e329ca248c73a3",
+    "0097.mp4": "966f418e4aab674bfb9ae3b19ebabf5e6680c340299ebcfea823270503b2d8ab",
+    "0101.mp4": "50ebff8975238e876bcda621ab62f6e007dd5d58b2052d7e0890e671033b7462",
+    "0103.mp4": "645c55aa90ff4cf9b6409c595bfff8efeda119b7be39411fef0dfffae49f4ac9",
+    "0107.mp4": "02ddbab94e80f29913f99bca368f1938d9c3ad17845adc09ddc7cfeaa2002640",
+    "0109.mp4": "f4859bd27fa59f2df3d7c317a12e3fb39285060e4e599f3863cbf183219b554e",
+    "0120.mp4": "64d416902f527170a82ceb9a98934f13e464381210bbcbef16a4be0e1bd01834",
+    "0122.mp4": "4cc7d335563c240b51bf29d31ec088177ecbe6c68104416df390e03a581cca55",
+    "0139.mp4": "638318d7a3cb8833f339cb3fbaabb98e082bd68a4006dda07b6e66ade18473e0",
+    "0141.mp4": "405e80deeb6eac54f86d61c4b9a62f66d047e6be8c7f7e0e286490534ab9380c",
+    "0148.mp4": "62996b056a1c5b0c2dc5a96fedd3874c976dd9be7c87a70f65b177e293c0f3d6",
+    "0163.mp4": "05be2104873eeb225cb50894cc0bed1e5e5374b72333316bf71ff9b2ae1138d0",
+    "0179.mp4": "2d4b0c587ea0149c76ed71b0162c1960af3156cfd46922babd45b7389163a9ca",
+    "0189.mp4": "f284b222c29dabb29d4c6875540dc0c3b4630884b1609a297dc7a6dc5ba8a4fc",
+    "0194.mp4": "be18045d69266629dd63fc1bd4ccd1bff14b54129e054a8a533642be747059dd"
+  },
+  "algorithm_contract": {
+    "baseline": "Run PP-OCRv6 small on only the frame immediately before the annotated transformation start, or frame zero when the transformation starts with the video. Accept only a confidence-qualified exact normalized conditioned target token or exact substring.",
+    "successor": "Retain baseline evidence and run the same OCR on four preregistered 25/50/75/100 percent checkpoints of the annotated controlled transformation. Accept exact conditioned-target evidence from any sampled frame. Edit-distance-one evidence is admitted only when the same conditioned target appears in at least two distinct sampled frames.",
+    "action_checkpoint_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "minimum_ocr_confidence": 0.45,
+    "minimum_edit_token_length": 6,
+    "minimum_edit_evidence_frames": 2,
+    "inheritance": "The exact/evidence-frame rule and confidence threshold are transferred unchanged from the frozen FSNS multi-view goal verifier; no CATALIST OCR outcome was read before this protocol freeze.",
+    "candidate_output": "The already conditioned user goal only; no roster rerouting, sign-instance binding, facade binding, entrance binding, arrival, or handoff output."
+  },
+  "gate": {
+    "minimum_unique_verified_labels": 10,
+    "minimum_correct_gain": 5,
+    "minimum_successor_correct_rate": 0.8,
+    "maximum_canonical_label_disjoint_challenge_accepts": 1,
+    "zero_synthetic_negative_accepts": true,
+    "zero_identity_or_portal_bindings": true
+  },
+  "synthetic_negative_salt": "l10-catalist-controlled-action-v1-frozen-20260831",
+  "decision_names": {
+    "gate_met": "L10_CATALIST_CONTROLLED_ACTION_GOAL_RECOVERY_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_CATALIST_CONTROLLED_ACTION_GOAL_RECOVERY_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "claim_boundary": "Controlled-tripod real-video Development evidence only. A CATALIST transformation class is an executed observation intervention with a verified video-level target label, but the dataset does not provide transformation direction, metric camera pose, randomized stationary counterfactuals, exhaustive per-frame pixel text truth, business/facade/sign ownership, door or entrance truth, public access, traversability, arrival, handoff, user benefit, or safety. Recovery after an annotated transformation is intervention-linked evidence, not proof that a live L10 controller chose the action or that the action caused exact-target entrance recovery in an open street."
+}

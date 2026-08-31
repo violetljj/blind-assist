@@ -1,0 +1,933 @@
+{
+  "schema": "blindassist-l10-panolab-open-set-router-result-v1",
+  "decision": "L10_PANOLAB_OPEN_SET_APPEARANCE_ABSTENTION_FRESH_NEGATIVE_DEVELOPMENT_GATE_MET",
+  "authority": "FRESH_NEGATIVE_OPEN_SET_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_open_set_router_protocol_v1.json",
+  "protocol_sha256": "89ffeb4bf3ea394748d63a546336668c43c899321d0abc11f198b3b329c118e7",
+  "evaluator_sha256": "ce411d77eb1e8876b15b42a11e9762f9569e365650d8a9c1d57c547912fa7006",
+  "execution_backend": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "named-poi-clip-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "named-poi-clip-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.23771590000251308
+        ],
+        "median_seconds": 0.23771590000251308
+      },
+      {
+        "backend": "named-poi-clip-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.5663011999567971
+        ],
+        "median_seconds": 0.5663011999567971
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "backend_receipt_sha256": "8a202340d08e20e4396bcd9c1b727e38dd002f611161992dab3feae99b567651",
+  "open_set_contract": {
+    "calibration_source": "The four source-extended positive episodes in l10_panolab_component_router_result_v1.json; all were consumed Development before this negative source was selected.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "threshold_rule": "Set each threshold to the minimum corresponding value across the four correct positive-roster queries, with no negative examples and no search over alternative statistics.",
+    "accept": "Emit APPEARANCE_SEARCH_PRIORITY_CANDIDATE only if both the top-1 facade-fingerprint score and top-1-minus-runner-up margin meet their frozen minima; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "semantics": "This is a tiny positive-calibrated selective Development rule. It is not conformal calibration, does not control FDR, and has no distribution-shift guarantee."
+  },
+  "crop_receipts": [
+    {
+      "key": "FL01_ref1",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\bf9d95fe-fc94-4ad9-965d-a372f0581f90.jpg",
+      "source_sha256": "96d6c554c8b7aed9041009907c39dd0f92418a164237b860e7a6ce4a1d28aaa8",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL01_ref1.jpg",
+      "crop_sha256": "e5688a55dd43651f15111c3898382a027e39de67c609294f5c057a19c5453da7",
+      "crop_bytes": 827032,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1896.774423,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9d6195ccf6b6c148c8e6c9b5332e32433c05be58b80b1ddbcaa9e23cb3d19ec0"
+      }
+    },
+    {
+      "key": "FL01_ref2",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\c6fd46d9-9513-407b-adc8-419150f56f15.jpg",
+      "source_sha256": "a30856bddafeed48b32d62271c7e8a3aa9eb5f2fff9bfda8c843b3f0ca819ead",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL01_ref2.jpg",
+      "crop_sha256": "2be203cbbd71b4fbe2614bbd87e5a4de7a88a9f4696f9fbaa2741fda10dc2062",
+      "crop_bytes": 1003373,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 762.455694,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "758303b82d4eba33794ca24715e11e1c3ee034c3b82e913605e5f77115815d37"
+      }
+    },
+    {
+      "key": "FL02_ref1",
+      "target_id": "FL02",
+      "role": "reference",
+      "item_id": "e38bcf87-3e7f-46a6-97f6-611481a3c9d0",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-viviani-reference-v1\\images\\e38bcf87-3e7f-46a6-97f6-611481a3c9d0.jpg",
+      "source_sha256": "14cbcaff08a57aa9c94f80580731d8971ba3f20c36b260e41a8c41cd29c04d18",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL02_ref1.jpg",
+      "crop_sha256": "fb522f2c314b1cd01f867338264613f5e34405dee3e3036bbf5f3439b5d535c4",
+      "crop_bytes": 1085914,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4429.649926,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4856c14802d73c1524dcc90af740b85d90ee60f4c7aed2ce217dbae716144497"
+      }
+    },
+    {
+      "key": "FL02_ref2",
+      "target_id": "FL02",
+      "role": "reference",
+      "item_id": "51ad93ee-e6f6-4c06-a346-0c08b299d101",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-viviani-reference-v1\\images\\51ad93ee-e6f6-4c06-a346-0c08b299d101.jpg",
+      "source_sha256": "c2c4e50c64489258bc7d056a55b562b6f4ddf9b97851adc365507ab076b2c7e2",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL02_ref2.jpg",
+      "crop_sha256": "e8788732738155fd1eebf132cd04d4c098e3d8c899ecd7bae78ce9a2902cdc46",
+      "crop_bytes": 1196225,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4790.294361,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "ffb9d5427b7720606907c0c6e8c8c55c42fcaa9fcb08b13230f0cc4df50f1799"
+      }
+    },
+    {
+      "key": "FL03_ref1",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\960ce887-e0c7-48a5-b03c-f5770811a39b.jpg",
+      "source_sha256": "f0eef48a40dd93d6a19ec3269a97c821795b1bcd5188b61fa8cef7d7a5b3894d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL03_ref1.jpg",
+      "crop_sha256": "a4a33354f4218d558b90f8d32253673d7304e5ccb6933b9041370590e27ce864",
+      "crop_bytes": 662891,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5008.187759,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "55a43be8b468d370b24683f9b46cee8d02395c218f203abe797e0d5c1ff07b5f"
+      }
+    },
+    {
+      "key": "FL03_ref2",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\8731f6bb-1881-45b2-88e3-dd684c768401.jpg",
+      "source_sha256": "4a57d12a8546beea874ac0e70220e7b32ee252babec031d1ddb67f5a6652a5bb",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL03_ref2.jpg",
+      "crop_sha256": "6d047a993677ef7409ab33eac4396cf69540a798f36623d6d9fa6d7b177b1604",
+      "crop_bytes": 973534,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5633.571831,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "463f099dfcf7b2519de49efc08ff046520e2ce1e7a39e0d8cc2273a975906811"
+      }
+    },
+    {
+      "key": "FL04_ref1",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\e713c126-0aaf-4a06-ba0e-ec1eb51b742b.jpg",
+      "source_sha256": "3b9bcd072e27a46b1dcc42d4e256a3bd5101546008d43f02ceb0e54b0828ec1e",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL04_ref1.jpg",
+      "crop_sha256": "3f374abd0c92cb2955368ea0fa965b3b1ba6f9b3972a9b51c2917305ba3dcec6",
+      "crop_bytes": 398775,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1367.765461,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "e8595caa7688ed861ec54e71f7bedbc4546454ba9c81de17b21c260df8487020"
+      }
+    },
+    {
+      "key": "FL04_ref2",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\545723dc-96fa-4373-bf3b-c3761e6a2402.jpg",
+      "source_sha256": "7dd91c80ec5a9989f7934b2391240be07d10938dfbb945e7f1bd21f3c1571f3d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\FL04_ref2.jpg",
+      "crop_sha256": "fc192f30c826d109ca39b00f9ae8d2365cf9d8eefe5600e19b9959ded0b6534d",
+      "crop_bytes": 835075,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2723.694806,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9bb4791201888e7c10f0b68010c2e1ffa1bbbcd2c9461e1f4b7f79d55f3fb73e"
+      }
+    },
+    {
+      "key": "ON01_query",
+      "target_id": "ON01",
+      "role": "negative_query",
+      "item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-open-set-negative-v1\\images\\5fad7a9e-1d89-4f82-a2dd-f36d9836cd07.jpg",
+      "source_sha256": "a8a00f91c2a53dabfde5ba49fece937d7d5c964e371190a454c6338a86e363a2",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\ON01_query.jpg",
+      "crop_sha256": "944774194355065840f31f6da3f444e734b98df8d54a575e16fb1829165c6cc2",
+      "crop_bytes": 776580,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2054.46611,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4ec9a2dae908bd402aaf07868a016105c1851eee98d23a8e1c860593d341bcb2"
+      }
+    },
+    {
+      "key": "ON02_query",
+      "target_id": "ON02",
+      "role": "negative_query",
+      "item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-open-set-negative-v1\\images\\9d666c71-ea51-48d2-b956-ff4ed79f203c.jpg",
+      "source_sha256": "9239a166000090bb332c412db9593d89bedf31cf09d636769ecef40d4354d913",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\ON02_query.jpg",
+      "crop_sha256": "e0365d179c7a048b790c386d7ecafe2512d8d27a2b769a387c330ac93a3e8fba",
+      "crop_bytes": 878512,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2545.74192,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "d7f2594d4c6b88da0a4a2eb561db9650b1de4e89035b099009e38aba17d4a30d"
+      }
+    },
+    {
+      "key": "ON03_query",
+      "target_id": "ON03",
+      "role": "negative_query",
+      "item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-open-set-negative-v1\\images\\6e26f62d-5f86-4dd6-8d60-e053558098f6.jpg",
+      "source_sha256": "d8da29a5d78e8c016ac328fae49fc558a80f231306a876e13540391db561ccb6",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\ON03_query.jpg",
+      "crop_sha256": "5936fe21d8129c95b79fd889d44da575e8f8838442dbcb4cfb35d5befb288a51",
+      "crop_bytes": 627198,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 193.70613,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "b007f90f65ed7f5bb2dbd23a90ae2b6dd771cfd1f7715cda225b9eee3b46a263"
+      }
+    },
+    {
+      "key": "ON04_query",
+      "target_id": "ON04",
+      "role": "negative_query",
+      "item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-open-set-negative-v1\\images\\5321a537-0e5d-4347-a1e0-e935dc93ec0e.jpg",
+      "source_sha256": "653a3b49df4c8fbed081c543e34de0525f36495018fed254f32156cb30f73f3a",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-open-set-router-v1\\crops\\ON04_query.jpg",
+      "crop_sha256": "958e80f9abb30b72bd84da46177a53fa5be638fc71a727d38c5a2c2375b1d7f8",
+      "crop_bytes": 709200,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4427.709938,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "c1b70dc807bc1a27869e85b7afa4dff93bf2a25e12b4735bbb6bb0f9193f86e5"
+      }
+    }
+  ],
+  "metrics": {
+    "positive_calibration_queries": 4,
+    "positive_calibration_accepted": 4,
+    "pixel_unseen_negative_queries": 4,
+    "negative_source_cities": 3,
+    "negative_distinct_target_ways": 4,
+    "negative_distinct_items": 4,
+    "negative_distinct_collections": 4,
+    "negative_rejected_unknown": 4,
+    "negative_false_accepts": 0,
+    "negative_rejection_rate": 1.0,
+    "combined_accepted_correct": 4,
+    "combined_accepted_wrong": 0,
+    "combined_accepted_precision": 1.0,
+    "combined_positive_coverage": 1.0,
+    "portal_ownership_bindings_emitted": 0,
+    "model_seconds": 1.5927701999899
+  },
+  "gate": {
+    "four_negative_queries": true,
+    "three_negative_source_cities": true,
+    "truth_frozen_before_model": true,
+    "positive_threshold_retention_four_of_four": true,
+    "negative_rejection_four_of_four": true,
+    "zero_negative_false_accepts": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "ON01",
+      "negative_target_way_id": 36386171,
+      "negative_target_name": "Gare de Grenoble Universités Gières",
+      "minimum_camera_to_positive_roster_entrance_m": 2549.847,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "scores": {
+        "FL01": {
+          "score": 0.626674821972847,
+          "max_clip": 0.7875992655754089,
+          "max_dino": 0.5740145444869995,
+          "max_mutual_patch_geometry": 0.51877860724926,
+          "references": [
+            {
+              "reference": "FL01_ref1",
+              "clip": 0.7875992655754089,
+              "dino": 0.5481041669845581,
+              "score": 0.51877860724926,
+              "matches": 18,
+              "inlier_ratio": 0.7222222222222222,
+              "mean_similarity": 0.6024525761604309
+            },
+            {
+              "reference": "FL01_ref2",
+              "clip": 0.7859859466552734,
+              "dino": 0.5740145444869995,
+              "score": 0.4682191093762716,
+              "matches": 15,
+              "inlier_ratio": 0.4666666666666667,
+              "mean_similarity": 0.6384806036949158
+            }
+          ]
+        },
+        "FL02": {
+          "score": 0.6168469548225403,
+          "max_clip": 0.7819256782531738,
+          "max_dino": 0.5419642925262451,
+          "max_mutual_patch_geometry": 0.5192047357559204,
+          "references": [
+            {
+              "reference": "FL02_ref1",
+              "clip": 0.7815959453582764,
+              "dino": 0.5419642925262451,
+              "score": 0.5192047357559204,
+              "matches": 13,
+              "inlier_ratio": 0.5384615384615384,
+              "mean_similarity": 0.6749661564826965
+            },
+            {
+              "reference": "FL02_ref2",
+              "clip": 0.7819256782531738,
+              "dino": 0.466103196144104,
+              "score": 0.3471130430698395,
+              "matches": 9,
+              "inlier_ratio": 0.4444444444444444,
+              "mean_similarity": 0.6408240795135498
+            }
+          ]
+        },
+        "FL03": {
+          "score": 0.5611476182937621,
+          "max_clip": 0.803847074508667,
+          "max_dino": 0.48215675354003906,
+          "max_mutual_patch_geometry": 0.39815488457679743,
+          "references": [
+            {
+              "reference": "FL03_ref1",
+              "clip": 0.803847074508667,
+              "dino": 0.43752521276474,
+              "score": 0.2033782874544462,
+              "matches": 7,
+              "inlier_ratio": 0.42857142857142855,
+              "mean_similarity": 0.4881078898906708
+            },
+            {
+              "reference": "FL03_ref2",
+              "clip": 0.7137116193771362,
+              "dino": 0.48215675354003906,
+              "score": 0.39815488457679743,
+              "matches": 14,
+              "inlier_ratio": 0.2857142857142857,
+              "mean_similarity": 0.6193520426750183
+            }
+          ]
+        },
+        "FL04": {
+          "score": 0.6532231871570859,
+          "max_clip": 0.7847713828086853,
+          "max_dino": 0.7057418823242188,
+          "max_mutual_patch_geometry": 0.5052943314824786,
+          "references": [
+            {
+              "reference": "FL04_ref1",
+              "clip": 0.7315125465393066,
+              "dino": 0.3887200355529785,
+              "score": 0.245866892238458,
+              "matches": 7,
+              "inlier_ratio": 0.5714285714285714,
+              "mean_similarity": 0.5364368557929993
+            },
+            {
+              "reference": "FL04_ref2",
+              "clip": 0.7847713828086853,
+              "dino": 0.7057418823242188,
+              "score": 0.5052943314824786,
+              "matches": 14,
+              "inlier_ratio": 0.42857142857142855,
+              "mean_similarity": 0.70741206407547
+            }
+          ]
+        }
+      },
+      "ranking": [
+        "FL04",
+        "FL01",
+        "FL02",
+        "FL03"
+      ],
+      "top1_target_id": "FL04",
+      "top1_target_name": "Église Notre-Dame de la Délivrande",
+      "top1_score": 0.6532231871570859,
+      "runner_up_score": 0.626674821972847,
+      "top1_margin": 0.026548365184238976,
+      "score_gate_met": false,
+      "margin_gate_met": false,
+      "decision": "UNKNOWN_KEEP_SEARCHING",
+      "false_accept": false,
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "ON02",
+      "negative_target_way_id": 454524397,
+      "negative_target_name": "Le Chronographe",
+      "minimum_camera_to_positive_roster_entrance_m": 2599.898,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "scores": {
+        "FL01": {
+          "score": 0.4692768961191177,
+          "max_clip": 0.6673901081085205,
+          "max_dino": 0.4417354464530945,
+          "max_mutual_patch_geometry": 0.31314124166965485,
+          "references": [
+            {
+              "reference": "FL01_ref1",
+              "clip": 0.5990560054779053,
+              "dino": 0.4417354464530945,
+              "score": 0.31314124166965485,
+              "matches": 9,
+              "inlier_ratio": 0.5555555555555556,
+              "mean_similarity": 0.5368135571479797
+            },
+            {
+              "reference": "FL01_ref2",
+              "clip": 0.6673901081085205,
+              "dino": 0.2973144054412842,
+              "score": 0.2758646483222643,
+              "matches": 11,
+              "inlier_ratio": 0.5454545454545454,
+              "mean_similarity": 0.38945597410202026
+            }
+          ]
+        },
+        "FL02": {
+          "score": 0.4892781037837267,
+          "max_clip": 0.6997483968734741,
+          "max_dino": 0.4229903221130371,
+          "max_mutual_patch_geometry": 0.3465464608743787,
+          "references": [
+            {
+              "reference": "FL02_ref1",
+              "clip": 0.6981712579727173,
+              "dino": 0.4229903221130371,
+              "score": 0.3465464608743787,
+              "matches": 16,
+              "inlier_ratio": 0.4375,
+              "mean_similarity": 0.482151597738266
+            },
+            {
+              "reference": "FL02_ref2",
+              "clip": 0.6997483968734741,
+              "dino": 0.36596357822418213,
+              "score": 0.30851613730192184,
+              "matches": 10,
+              "inlier_ratio": 0.5,
+              "mean_similarity": 0.49362581968307495
+            }
+          ]
+        },
+        "FL03": {
+          "score": 0.49248747229576106,
+          "max_clip": 0.7162681818008423,
+          "max_dino": 0.3952343463897705,
+          "max_mutual_patch_geometry": 0.35746255517005915,
+          "references": [
+            {
+              "reference": "FL03_ref1",
+              "clip": 0.7162681818008423,
+              "dino": 0.35842910408973694,
+              "score": 0.2983926050364971,
+              "matches": 11,
+              "inlier_ratio": 0.5454545454545454,
+              "mean_similarity": 0.42126014828681946
+            },
+            {
+              "reference": "FL03_ref2",
+              "clip": 0.5692829489707947,
+              "dino": 0.3952343463897705,
+              "score": 0.35746255517005915,
+              "matches": 11,
+              "inlier_ratio": 0.6363636363636364,
+              "mean_similarity": 0.4766167402267456
+            }
+          ]
+        },
+        "FL04": {
+          "score": 0.46770462095737453,
+          "max_clip": 0.7209647297859192,
+          "max_dino": 0.36767852306365967,
+          "max_mutual_patch_geometry": 0.30861833691596985,
+          "references": [
+            {
+              "reference": "FL04_ref1",
+              "clip": 0.7209647297859192,
+              "dino": 0.2916991412639618,
+              "score": 0.15689076234896976,
+              "matches": 6,
+              "inlier_ratio": 0.6666666666666666,
+              "mean_similarity": 0.37653782963752747
+            },
+            {
+              "reference": "FL04_ref2",
+              "clip": 0.7021811008453369,
+              "dino": 0.36767852306365967,
+              "score": 0.30861833691596985,
+              "matches": 15,
+              "inlier_ratio": 0.4,
+              "mean_similarity": 0.4408833384513855
+            }
+          ]
+        }
+      },
+      "ranking": [
+        "FL03",
+        "FL02",
+        "FL01",
+        "FL04"
+      ],
+      "top1_target_id": "FL03",
+      "top1_target_name": "Gare de Neuilly - Porte Maillot",
+      "top1_score": 0.49248747229576106,
+      "runner_up_score": 0.4892781037837267,
+      "top1_margin": 0.0032093685120343496,
+      "score_gate_met": false,
+      "margin_gate_met": false,
+      "decision": "UNKNOWN_KEEP_SEARCHING",
+      "false_accept": false,
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "ON03",
+      "negative_target_way_id": 62643138,
+      "negative_target_name": "Centre commercial de la Vache Noire",
+      "minimum_camera_to_positive_roster_entrance_m": 8173.326,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "scores": {
+        "FL01": {
+          "score": 0.5601079291105271,
+          "max_clip": 0.7320489883422852,
+          "max_dino": 0.48080796003341675,
+          "max_mutual_patch_geometry": 0.45922198295593264,
+          "references": [
+            {
+              "reference": "FL01_ref1",
+              "clip": 0.6677933931350708,
+              "dino": 0.48080796003341675,
+              "score": 0.45922198295593264,
+              "matches": 15,
+              "inlier_ratio": 0.6,
+              "mean_similarity": 0.5740274786949158
+            },
+            {
+              "reference": "FL01_ref2",
+              "clip": 0.7320489883422852,
+              "dino": 0.35834649205207825,
+              "score": 0.33957339708621687,
+              "matches": 13,
+              "inlier_ratio": 0.38461538461538464,
+              "mean_similarity": 0.49049490690231323
+            }
+          ]
+        },
+        "FL02": {
+          "score": 0.5017877658731058,
+          "max_clip": 0.7253753542900085,
+          "max_dino": 0.41028857231140137,
+          "max_mutual_patch_geometry": 0.3633356219843814,
+          "references": [
+            {
+              "reference": "FL02_ref1",
+              "clip": 0.702274739742279,
+              "dino": 0.41028857231140137,
+              "score": 0.3633356219843814,
+              "matches": 19,
+              "inlier_ratio": 0.3684210526315789,
+              "mean_similarity": 0.5310289859771729
+            },
+            {
+              "reference": "FL02_ref2",
+              "clip": 0.7253753542900085,
+              "dino": 0.3591042160987854,
+              "score": 0.32865654677152634,
+              "matches": 10,
+              "inlier_ratio": 0.5,
+              "mean_similarity": 0.5258504748344421
+            }
+          ]
+        },
+        "FL03": {
+          "score": 0.6126766515629632,
+          "max_clip": 0.7678748965263367,
+          "max_dino": 0.5508896112442017,
+          "max_mutual_patch_geometry": 0.5154950874192374,
+          "references": [
+            {
+              "reference": "FL03_ref1",
+              "clip": 0.7678748965263367,
+              "dino": 0.5013418793678284,
+              "score": 0.3614266429628645,
+              "matches": 14,
+              "inlier_ratio": 0.42857142857142855,
+              "mean_similarity": 0.5059973001480103
+            },
+            {
+              "reference": "FL03_ref2",
+              "clip": 0.7201031446456909,
+              "dino": 0.5508896112442017,
+              "score": 0.5154950874192374,
+              "matches": 14,
+              "inlier_ratio": 0.5714285714285714,
+              "mean_similarity": 0.6560846567153931
+            }
+          ]
+        },
+        "FL04": {
+          "score": 0.5530490412314732,
+          "max_clip": 0.6856598258018494,
+          "max_dino": 0.49787473678588867,
+          "max_mutual_patch_geometry": 0.4714985450108846,
+          "references": [
+            {
+              "reference": "FL04_ref1",
+              "clip": 0.6694889068603516,
+              "dino": 0.2618483304977417,
+              "score": 0.26210635900497437,
+              "matches": 11,
+              "inlier_ratio": 0.36363636363636365,
+              "mean_similarity": 0.419370174407959
+            },
+            {
+              "reference": "FL04_ref2",
+              "clip": 0.6856598258018494,
+              "dino": 0.49787473678588867,
+              "score": 0.4714985450108846,
+              "matches": 15,
+              "inlier_ratio": 0.4666666666666667,
+              "mean_similarity": 0.642952561378479
+            }
+          ]
+        }
+      },
+      "ranking": [
+        "FL03",
+        "FL01",
+        "FL04",
+        "FL02"
+      ],
+      "top1_target_id": "FL03",
+      "top1_target_name": "Gare de Neuilly - Porte Maillot",
+      "top1_score": 0.6126766515629632,
+      "runner_up_score": 0.5601079291105271,
+      "top1_margin": 0.052568722452436156,
+      "score_gate_met": false,
+      "margin_gate_met": true,
+      "decision": "UNKNOWN_KEEP_SEARCHING",
+      "false_accept": false,
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "ON04",
+      "negative_target_way_id": 49643198,
+      "negative_target_name": "Gymnase Malherbe",
+      "minimum_camera_to_positive_roster_entrance_m": 1584.286,
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "scores": {
+        "FL01": {
+          "score": 0.6091772051957938,
+          "max_clip": 0.8029589653015137,
+          "max_dino": 0.5883631706237793,
+          "max_mutual_patch_geometry": 0.45262693671079784,
+          "references": [
+            {
+              "reference": "FL01_ref1",
+              "clip": 0.8029589653015137,
+              "dino": 0.5883631706237793,
+              "score": 0.39952994138002396,
+              "matches": 12,
+              "inlier_ratio": 0.4166666666666667,
+              "mean_similarity": 0.5640422701835632
+            },
+            {
+              "reference": "FL01_ref2",
+              "clip": 0.7802644968032837,
+              "dino": 0.5685763955116272,
+              "score": 0.45262693671079784,
+              "matches": 13,
+              "inlier_ratio": 0.46153846153846156,
+              "mean_similarity": 0.619384229183197
+            }
+          ]
+        },
+        "FL02": {
+          "score": 0.6213181986411412,
+          "max_clip": 0.7675183415412903,
+          "max_dino": 0.636557936668396,
+          "max_mutual_patch_geometry": 0.4838682373364766,
+          "references": [
+            {
+              "reference": "FL02_ref1",
+              "clip": 0.7544558644294739,
+              "dino": 0.636557936668396,
+              "score": 0.4838682373364766,
+              "matches": 15,
+              "inlier_ratio": 0.5333333333333333,
+              "mean_similarity": 0.6311324834823608
+            },
+            {
+              "reference": "FL02_ref2",
+              "clip": 0.7675183415412903,
+              "dino": 0.5527652502059937,
+              "score": 0.4030612111091614,
+              "matches": 10,
+              "inlier_ratio": 0.5,
+              "mean_similarity": 0.6448979377746582
+            }
+          ]
+        },
+        "FL03": {
+          "score": 0.5127127761642138,
+          "max_clip": 0.764173150062561,
+          "max_dino": 0.4290112555027008,
+          "max_mutual_patch_geometry": 0.34499839941660565,
+          "references": [
+            {
+              "reference": "FL03_ref1",
+              "clip": 0.764173150062561,
+              "dino": 0.38948994874954224,
+              "score": 0.26836489140987396,
+              "matches": 10,
+              "inlier_ratio": 0.4,
+              "mean_similarity": 0.46005409955978394
+            },
+            {
+              "reference": "FL03_ref2",
+              "clip": 0.6974858641624451,
+              "dino": 0.4290112555027008,
+              "score": 0.34499839941660565,
+              "matches": 11,
+              "inlier_ratio": 0.45454545454545453,
+              "mean_similarity": 0.5174975991249084
+            }
+          ]
+        },
+        "FL04": {
+          "score": 0.6293018416716503,
+          "max_clip": 0.8230222463607788,
+          "max_dino": 0.6355792880058289,
+          "max_mutual_patch_geometry": 0.4558730836098011,
+          "references": [
+            {
+              "reference": "FL04_ref1",
+              "clip": 0.7493147850036621,
+              "dino": 0.3475951850414276,
+              "score": 0.27108733107646305,
+              "matches": 7,
+              "inlier_ratio": 0.5714285714285714,
+              "mean_similarity": 0.5914632678031921
+            },
+            {
+              "reference": "FL04_ref2",
+              "clip": 0.8230222463607788,
+              "dino": 0.6355792880058289,
+              "score": 0.4558730836098011,
+              "matches": 13,
+              "inlier_ratio": 0.46153846153846156,
+              "mean_similarity": 0.6238263249397278
+            }
+          ]
+        }
+      },
+      "ranking": [
+        "FL04",
+        "FL02",
+        "FL01",
+        "FL03"
+      ],
+      "top1_target_id": "FL04",
+      "top1_target_name": "Église Notre-Dame de la Délivrande",
+      "top1_score": 0.6293018416716503,
+      "runner_up_score": 0.6213181986411412,
+      "top1_margin": 0.007983643030509024,
+      "score_gate_met": false,
+      "margin_gate_met": false,
+      "decision": "UNKNOWN_KEEP_SEARCHING",
+      "false_accept": false,
+      "portal_ownership_binding": null
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Fresh-negative Development evidence about whether one pre-frozen positive-calibrated score-and-margin rule abstains on four exact-roster-absent Panoramax entrance-ray queries while retaining the four consumed positives by construction.",
+    "not_allowed": [
+      "fresh positive recognition, open-world generalization, conformal validity, FDR control, calibrated probability, or arbitrary distribution-shift robustness",
+      "an accepted appearance candidate being exact-instance, address, facade, sign, door, portal, or entrance ownership",
+      "appearance authorizing the independently projected OSM entrance ray",
+      "entrance affordance, public or legal access, walkability, collision-free traversability, waypoint accuracy, arrival, HANDOFF_READY, product benefit, user benefit, deployment performance, or safety"
+    ]
+  }
+}

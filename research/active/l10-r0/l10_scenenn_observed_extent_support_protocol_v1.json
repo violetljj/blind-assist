@@ -1,0 +1,165 @@
+{
+  "schema": "blindassist-l10-scenenn-observed-extent-support-protocol-v1",
+  "protocol_id": "l10-scenenn-observed-extent-support-provider-disjoint-protocol-v1",
+  "frozen_at": "2026-08-31T09:00:00+08:00",
+  "question": "Does the unchanged strictly-positive registered planar-extent support rule preserve exact open-roster correspondence when complete 3RScan surfaces are replaced by target-conditioned points actually observed in real SceneNN RGB-D frames?",
+  "predecessor": {
+    "retained_core_protocol_path": "l10_3rscan_extent_support_scan_family_confirmation_protocol_v1.json",
+    "retained_core_protocol_sha256": "cb71bd1ab0abc7e7a689b64ec51f96c537064899a0c99b96dd6694afdf601a8a",
+    "retained_core_result_path": "l10_3rscan_extent_support_scan_family_confirmation_result_v1.json",
+    "retained_core_result_sha256": "01720cd11f5c387725255eef15ea796e3fc2cca2f580f450c0b67d0d005f6f7e",
+    "retained_core_implementation_path": "l10_3rscan_extent_support_scan_family_confirmation.py",
+    "retained_core_implementation_sha256": "e4ae41608a6171b857e11dbc90ed46ddffc0aed0ef321a2769e9abce97920a4b",
+    "required_conclusion": "L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET",
+    "scenenn_negative_control_result_path": "l10_scenenn_visible_portal_result_v3.json",
+    "scenenn_negative_control_result_sha256": "a7614ee4703e7d8b272e2db32973a56d5419dca891f8e301c7e545d9173df0ec"
+  },
+  "source_selector": {
+    "inventory": "Previously materialized provider XML inventory only; no scene 096 PLY, trajectory, RGB, depth, score, or support value may be opened before admission.",
+    "ordering": "Ascending three-digit SceneNN scene ID; within a scene, ascending numeric instance ID.",
+    "normalized_target_label": "lowercase text with whitespace removed must match door followed by zero or more digits; door mat and other compounds are excluded",
+    "physical_targets": 4,
+    "stop_rule": "Select the first unconsumed scene with at least four qualifying door instances, then stop.",
+    "expected_first_eligible_scene": "096",
+    "consumed_scene_ids": [
+      "014",
+      "032",
+      "038",
+      "073",
+      "225",
+      "246"
+    ],
+    "forbidden_before_source_admission": [
+      "scene 096 mesh geometry",
+      "scene 096 trajectory",
+      "scene 096 RGB-D stream",
+      "surface scores",
+      "extent overlaps",
+      "algorithm output"
+    ]
+  },
+  "provider": {
+    "name": "SceneNN",
+    "project_url": "https://scenenn.net/",
+    "paper_url": "https://scenenn.net/pdf/dataset_3dv16.pdf",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion PRO consumer RGB-D camera",
+    "world_coordinate_contract": "trajectory.log maps camera points into the reconstructed scene frame; SceneNN aligns the floor with the x-z plane, so +/−y is the upright axis and only its unoriented line is used",
+    "license_boundary": "Free for educational and research use; contact SceneNN before commercial use. BlindAssist stores local research assets only and does not redistribute raw payloads.",
+    "files": {
+      "ply": {
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/096/096.ply",
+        "content_length": 129811998,
+        "etag": "61a4d509-7bcc61e",
+        "md5": "bab074b61d22a7df3ddc877e37f84170"
+      },
+      "xml": {
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/096/096.xml",
+        "content_length": 76566,
+        "etag": "61a4d509-12b16",
+        "md5": "b41946bf1737cc1f684ee33375d9170d"
+      },
+      "trajectory": {
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/096/trajectory.log",
+        "content_length": 1601491,
+        "etag": "61a4d509-186fd3",
+        "md5": "295826ff6ffa99ad6c99658279ec7358"
+      },
+      "oni": {
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/096.oni",
+        "content_length": 1780153955,
+        "etag": "61a4de6e-6a1afe63",
+        "md5": "d8ef54d952db0ea68005d8b2d7928f0d"
+      }
+    },
+    "intrinsic": {
+      "url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini",
+      "content_length": 253,
+      "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18",
+      "fx": 544.47329,
+      "fy": 544.47329,
+      "cx": 320.0,
+      "cy": 240.0,
+      "width": 640,
+      "height": 480
+    }
+  },
+  "pre_rgbd_selector": {
+    "allowed_inputs": [
+      "frozen target instance IDs",
+      "provider mesh vertices, triangle faces and instance labels",
+      "provider camera-to-world trajectory",
+      "provider depth intrinsics"
+    ],
+    "forbidden_inputs": [
+      "RGB frames",
+      "depth frames",
+      "observed surface distances",
+      "observed extent overlaps",
+      "algorithm outputs"
+    ],
+    "trajectory_stride": 5,
+    "minimum_pair_frame_gap": 20,
+    "minimum_pair_baseline_metres": 0.3,
+    "pair_ranking": "Maximum camera-centre baseline, then minimum visible target pixels, then minimum visibility ratio, then earlier reference and query frames.",
+    "renderer": {
+      "implementation": "unchanged CuPy CUDA triangle rasterizer from l10_scenenn_visible_portal_transfer.py",
+      "numeric_type": "float32",
+      "image_width": 640,
+      "image_height": 480,
+      "near_plane_metres": 0.02,
+      "near_plane_face_rule": "Reject a face unless all vertices are beyond the near plane.",
+      "triangle_sidedness": "double-sided",
+      "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+      "visibility_tolerance_metres": 0.005
+    },
+    "eligible_frame": {
+      "minimum_visible_target_pixels": 512,
+      "minimum_bbox_width_pixels": 24,
+      "minimum_bbox_height_pixels": 48,
+      "minimum_visible_to_target_raster_ratio": 0.4,
+      "maximum_visible_target_image_fraction": 0.8,
+      "maximum_camera_to_target_centroid_metres": 2.5
+    },
+    "failure_semantics": "If any of the four frozen targets lacks one qualifying frame pair, record NOT_EVALUABLE. Do not substitute a scene or change selector values after RGB-D access."
+  },
+  "observation_carrier": {
+    "identity": "PRIVILEGED_TARGET_CONDITIONED_REAL_DEPTH_OBSERVATION",
+    "mask": "provider instance mesh z-buffer-visible pixels for the frozen target",
+    "depth": "synchronized SceneNN sensor depth at the selected trajectory frame",
+    "depth_consistency_tolerance_metres": 0.08,
+    "depth_consistency_rule": "retain a masked nonzero sensor point only when its depth differs from rendered target depth by at most 0.08 m",
+    "world_registration": "provider trajectory camera-to-world matrix",
+    "minimum_points_per_observation": 256,
+    "maximum_points_per_observation": 4096,
+    "point_cap_rule": "if needed, retain 4096 deterministic evenly spaced points in raster traversal order",
+    "portal_frame": "reference observation centroid; principal horizontal direction in SceneNN x-z floor plane; y upright",
+    "surface_score": "negative symmetric median nearest-neighbour distance between reference and query observed points",
+    "existence_support": "strictly positive convex-hull intersection after projection into the reference observation upright portal frame; no IoU magnitude threshold",
+    "zero_assignment": "strict reciprocal row and column maximum of surface score, then positive-support predicate"
+  },
+  "scenarios": {
+    "closed": 1,
+    "unequal_size": 2,
+    "ordered_balanced_swaps": 12,
+    "total": 15
+  },
+  "decision_gate": {
+    "all_true_pairs_have_positive_observed_support": true,
+    "extent_support_true_positive": 34,
+    "extent_support_false_positive": 0,
+    "extent_support_false_negative": 0,
+    "exact_zero_assignment_scenarios": 15,
+    "no_true_match_loss_vs_rank_only": true,
+    "f1_not_lower_than_rank_only": true
+  },
+  "forbidden_after_rgbd_access": [
+    "change source scene or target instances",
+    "change selected frames",
+    "change depth consistency tolerance or point limits",
+    "change portal frame, surface score, reciprocity, support predicate, or scenarios",
+    "select a subset of the four frozen targets",
+    "tune on result values"
+  ],
+  "claim_boundary": "A pass is provider-disjoint real consumer-RGB-D Development evidence that the unchanged positive registered planar-extent support predicate can operate on privileged target-conditioned partial depth observations rather than complete provider surfaces. SceneNN instance masks, reconstruction and camera trajectory remain privileged; the sensor is not a phone and the query target proposal is truth-conditioned. This is not raw-phone perception, door detection, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or mobility-safety evidence."
+}

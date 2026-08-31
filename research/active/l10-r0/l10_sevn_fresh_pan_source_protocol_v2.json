@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist-l10-sevn-dual-reference-fresh-pan-source-protocol-v1",
+  "name": "L10 SEVN cumulative-reference-disjoint fresh PAN source panel V2",
+  "evidence_class": "METADATA_ONLY_FROZEN_COHORT_SELECTION",
+  "question": "Can a portal-specific exact-token witness graph improve address-to-door binding on forty additional SEVN PAN episodes disjoint from all three earlier panels?",
+  "materializer": {
+    "path": "research/active/l10-r0/l10_sevn_fresh_pan_panel.py",
+    "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+  },
+  "frozen_inputs": {
+    "reference_public_sources": [
+      {
+        "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json",
+        "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+      }
+    ],
+    "metadata_directory": "F:\\ba-data\\SEVN",
+    "metadata": {
+      "coord.hdf5": {
+        "bytes": 419832,
+        "md5": "9d2d6f17aa31c9cb8309195cf2da00f9"
+      },
+      "label.hdf5": {
+        "bytes": 351434,
+        "md5": "36e24d0ee0b2f351282f3b84aa5d5d56"
+      },
+      "graph.pkl": {
+        "bytes": 2793330,
+        "md5": "f68be888e8f3b964544678070689b777"
+      }
+    }
+  },
+  "exclusion_feasibility": {
+    "excluded_reference_address_count": 85,
+    "excluded_reference_panorama_frame_count": 100,
+    "strictly_fresh_approach_maximum": 0,
+    "strictly_fresh_pan_candidate_addresses_per_direction": 380,
+    "metadata_only_check": "A deterministic preflight returned 20 PAN_LEFT plus 20 PAN_RIGHT episodes with 40 distinct addresses and 40 distinct frames after cumulative exclusion."
+  },
+  "cohort": {
+    "episodes_per_scenario": 20,
+    "episode_count": 40,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY"
+    ]
+  },
+  "selection_rule": {
+    "pixel_blind": "Open only coord.hdf5, label.hdf5, graph.pkl, and the three consumed public-source manifests. Do not open images.hdf5, high-res-panos.zip, a viewport, a crop, or any model output.",
+    "reference_exclusion": "Exclude the union of every canonical street-name plus house-number pair and every panorama frame_id present in any of the three earlier public sources.",
+    "within_panel_exclusion": "Use each target address and panorama frame once across the full 40-episode panel.",
+    "scenario_scope": "Freeze only PAN_LEFT and PAN_RIGHT because cumulative exclusion leaves no strictly fresh APPROACH episode.",
+    "ordering": "Reuse the frozen V1 materializer: original deterministic candidate-goal order, first twenty eligible PAN_LEFT rows, then first twenty remaining eligible PAN_RIGHT rows.",
+    "pan_recovery": "Keep the original plus or minus 90 degree start and 67.5 degree prescribed pan construction; require before != CORRECT_UNIQUE and after == CORRECT_UNIQUE from human metadata geometry.",
+    "prohibited_filters": "Do not filter or rank by OCR visibility, image appearance, portal-model output, predecessor output, witness-graph output, or eventual pixel outcome."
+  },
+  "high_resolution_archive": {
+    "expected_local_path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+    "bytes": 27819151974,
+    "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+    "member_pattern": "panos/pano_{frame_id:06d}.png",
+    "selection_access": "PROHIBITED"
+  },
+  "outputs": {
+    "public_source": "research/active/l10-r0/l10_sevn_fresh_pan_source_v2.json",
+    "evaluator_truth": "research/active/l10-r0/l10_sevn_fresh_pan_truth_v2.json",
+    "selection_receipt": "research/active/l10-r0/l10_sevn_fresh_pan_selection_receipt_v2.json"
+  },
+  "stop_rule": "Materialize this deterministic cumulative-exclusion panel once, refuse to overwrite outputs, and never replace episodes after pixel outcomes are observed.",
+  "claim_boundary": "This freezes another same-source SEVN PAN-only Development panel. It is not source-disjoint, action-general, city-disjoint, live-camera, product, user-benefit, or safety evidence."
+}

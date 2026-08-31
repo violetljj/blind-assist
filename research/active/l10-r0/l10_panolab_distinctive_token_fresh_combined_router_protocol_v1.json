@@ -1,0 +1,102 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-fresh-combined-router-protocol-v1",
+  "name": "Fresh distinctive-token router with conditional temporal appearance fallback",
+  "status": "FROZEN_AFTER_FRESH_LEXICAL_RESULT_BEFORE_ANY_SELECTED_APPEARANCE_CALL",
+  "authority": "PIXEL_AND_OCR_UNSEEN_TARGET_WAY_ITEM_DISJOINT_SAME_PROVIDER_DEVELOPMENT_ROUTING_ONLY",
+  "question": "Can the already frozen appearance branch safely resolve the sole fresh lexical NO_MATCH so that the fixed conditional router covers both fresh targets without a wrong candidate?",
+  "appearance_calls_on_selected_images_before_protocol_freeze": 0,
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_combined_router.py",
+    "sha256": "3e7dffd9680f272ade9ce7c5f9a5b6478209e103109707882a5cedeff4cea767",
+    "bytes": 14938
+  },
+  "inputs": {
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "prior_six_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "prior_eight_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_appearance_result_v1.json",
+      "sha256": "50d1cbd6ee74657025419872ebfd9f2f49de2227d8d55a08426c9c7940f20a10",
+      "bytes": 82776
+    },
+    "prior_eleven_target_result": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_appearance_router_result_v1.json",
+      "sha256": "3dda8517e564eecc9db35848a76b87b9cd5813f06aeb664eec2467108015b8d4",
+      "bytes": 155080
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_selection_v1.json",
+      "sha256": "6430fc22533cc64ed76068c6461e6daf1da5493d78536344c50956a02e97d69d",
+      "bytes": 158134
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_materialization_v1.json",
+      "sha256": "86ca0dcd25e3b7c00116f550814e7299b5df4b4c00f5a7a263602de5be87dea8",
+      "bytes": 7129
+    },
+    "fresh_truth": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_truth_v1.json",
+      "sha256": "a0afd7c30200759bdea969b45cc5bf889bc1b9a407b9734739a9e458c5143dce",
+      "bytes": 3728
+    },
+    "fresh_lexical_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation_result_v1.json",
+      "sha256": "84850bfc6fb68a46fbe43a31f2d8c67ef8e573d168ca43694c0e7e27305a5e45",
+      "bytes": 36347
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    "FL01", "FL02", "FL03", "FL04", "FP01", "FP02", "CF01", "CF02", "PS01", "PS02", "PS03", "DF01", "DF02"
+  ],
+  "evaluated_episodes": ["DF01", "DF02"],
+  "appearance_fallback_episodes": ["DF01"],
+  "routing_contract": {
+    "lexical_unique_match": "Emit the fresh distinctive-token SEARCH_PRIORITY_ONLY candidate.",
+    "lexical_no_match": "Run the unchanged temporal appearance branch; emit only if its frozen score and margin gates both pass, otherwise UNKNOWN_KEEP_SEARCHING.",
+    "lexical_wrong_or_ambiguous": "Emit UNKNOWN and do not permit appearance to override a lexical conflict.",
+    "efficiency": "Encode fresh query frames only for the one sealed lexical NO_MATCH; references for both new targets are required to preserve the full thirteen-target counterfactual roster."
+  },
+  "accept_contract": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positives before every open-set and transfer panel.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "gate": {
+    "required_fresh_sequences": 2,
+    "required_lexical_routes": 1,
+    "required_conditional_appearance_trials": 1,
+    "required_combined_correct": 2,
+    "maximum_combined_wrong": 0,
+    "maximum_combined_unknown": 0,
+    "maximum_appearance_wrong_goal_candidates": 0,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_FRESH_DISTINCTIVE_TOKEN_CONDITIONAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_FRESH_DISTINCTIVE_TOKEN_CONDITIONAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-distinctive-token-fresh-combined-v1",
+  "output": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_combined_router_result_v1.json",
+  "execution_rule": "Run exactly once. Do not tune score, margin, lexical rules, roster, or panel after seeing the result.",
+  "claim_boundary": {
+    "allowed": "Fresh same-provider Development evidence for the fixed lexical-then-conditional-appearance router on exactly two target-way/item-disjoint, pixel- and OCR-unseen targets across two capture producers in a thirteen-target closed roster.",
+    "not_allowed": [
+      "independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, distribution-shift, deployment, or safety confirmation",
+      "OCR or appearance candidates proving exact physical identity, sign-to-building association, facade ownership, portal ownership, or entrance ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or deployment performance"
+    ]
+  }
+}

@@ -1,0 +1,2741 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-fused-extent-support-result-v1",
+  "authority": "CONSUMED_SCENE_POSTHOC_TEMPORAL_FUSION_MECHANISM_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+  "protocol_sha256": "496e1893380e9d50aeec2ad9bffcca31a9378f08cad5d088761cb4366b4f7b7b",
+  "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+  "cohort_sha256": "b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d",
+  "receipt_path": "l10_scenenn_temporal_fused_extent_support_rgbd_receipt_v1.json",
+  "receipt_sha256": "2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274",
+  "implementation": {
+    "path": "l10_scenenn_temporal_fused_extent_support.py",
+    "sha256": "c404a309a638cea4c896c291f126a605c4d93249221f3caec5ac3fa7888d036a"
+  },
+  "transport_repair": {
+    "path": "l10_scenenn_temporal_fused_extent_support_transport_repair_v1.json",
+    "sha256": "f3d95687c0f51244d97c9406f4a2538debf036b5c93aee1cb4c84f416188b366",
+    "observed_failure": "OBSERVATION_EMPTY: temporal depth frame.7340.png"
+  },
+  "conclusion": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_targets": 4,
+    "selected_rgbd_frames": 8,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 34,
+    "truth_unmatched_nodes_across_scenarios": 26,
+    "temporal_window_frames_per_role": 3,
+    "unique_rgbd_frames": 23
+  },
+  "temporal_carrier": {
+    "identity": "PRIVILEGED_TARGET_CONDITIONED_REGISTERED_THREE_FRAME_REAL_DEPTH_OBSERVATION",
+    "trajectory_frame_offsets": [
+      -5,
+      0,
+      5
+    ],
+    "window_selection": "Exact symmetric offsets around every already-frozen reference and query anchor; no frame may be replaced or dropped after depth access.",
+    "mask": "provider instance mesh z-buffer-visible pixels for the frozen target at each temporal frame",
+    "depth_consistency_tolerance_metres": 0.08,
+    "minimum_points_per_fused_observation": 256,
+    "maximum_points_per_frame": 4096,
+    "maximum_points_per_fused_observation": 4096,
+    "fusion": "transform each accepted sensor point with its provider camera-to-world pose, concatenate all three registered clouds, then retain 4096 deterministic evenly spaced points in frame/raster order if necessary",
+    "portal_frame": "fused reference observation centroid; principal horizontal direction in the SceneNN x-z floor plane; y upright",
+    "surface_score": "unchanged negative symmetric median nearest-neighbour distance",
+    "zero_assignment": "unchanged strict reciprocal row and column maximum",
+    "support": "unchanged strictly positive registered planar convex-hull intersection; no IoU magnitude threshold"
+  },
+  "metrics": {
+    "aggregate": {
+      "complete_temporal_surface_hungarian": {
+        "true_positive": 30,
+        "false_positive": 16,
+        "false_negative": 4,
+        "precision": 0.652174,
+        "recall": 0.882353,
+        "f1": 0.75,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 15
+      },
+      "rank_only_temporal_surface_zero": {
+        "true_positive": 34,
+        "false_positive": 3,
+        "false_negative": 0,
+        "precision": 0.918919,
+        "recall": 1.0,
+        "f1": 0.957746,
+        "zero_assignment_exact_scenarios": 12,
+        "scenarios": 15
+      },
+      "extent_support_temporal_surface_zero": {
+        "true_positive": 25,
+        "false_positive": 2,
+        "false_negative": 9,
+        "precision": 0.925926,
+        "recall": 0.735294,
+        "f1": 0.819672,
+        "zero_assignment_exact_scenarios": 6,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.197744,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.197744,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.126798
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.197744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO02",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.197744,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO03",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO01-SO04",
+        "reference_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.197744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO01",
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.197744,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO02-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -0.475494
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.126798
+          ],
+          [
+            0.129002,
+            0.0,
+            0.197744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -2.918869,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -4.372872,
+            -4.024139,
+            -0.029867
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.263963
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO03"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO03-SO04",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -0.869231
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -2.271233
+          ],
+          [
+            -4.372872,
+            -2.918869,
+            -4.024139
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.126798
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO04",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO04"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO03"
+            ],
+            "truth_unmatched_references": [
+              "SO04"
+            ],
+            "truth_unmatched_queries": [
+              "SO03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO01",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO02",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -1.579547,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -1.088021,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -1.783957,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.0,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.197744,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO01",
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO01"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO02",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO03",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -0.869231,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -2.271233,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -0.475494,
+            -3.915597
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.126798,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.197744,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO02"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-SO04-SO03",
+        "reference_targets": [
+          "SO01",
+          "SO02",
+          "SO03"
+        ],
+        "query_targets": [
+          "SO01",
+          "SO02",
+          "SO04"
+        ],
+        "temporal_surface_score_matrix": [
+          [
+            -0.106701,
+            -1.579547,
+            -4.282027
+          ],
+          [
+            -2.642495,
+            -1.088021,
+            -1.712339
+          ],
+          [
+            -0.592976,
+            -1.783957,
+            -3.915597
+          ]
+        ],
+        "temporal_extent_iou_matrix": [
+          [
+            0.285715,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.129002,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_temporal_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO04"
+              },
+              {
+                "reference": "SO03",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_temporal_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              },
+              {
+                "reference": "SO02",
+                "query": "SO02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_temporal_surface_zero": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "SO01",
+                "query": "SO01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SO02",
+              "SO03"
+            ],
+            "predicted_unmatched_queries": [
+              "SO02",
+              "SO04"
+            ],
+            "truth_unmatched_references": [
+              "SO03"
+            ],
+            "truth_unmatched_queries": [
+              "SO04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_temporal_surface_score_matrix": [
+      [
+        -0.106701,
+        -1.579547,
+        -0.869231,
+        -4.282027
+      ],
+      [
+        -2.642495,
+        -1.088021,
+        -2.271233,
+        -1.712339
+      ],
+      [
+        -0.592976,
+        -1.783957,
+        -0.475494,
+        -3.915597
+      ],
+      [
+        -4.372872,
+        -2.918869,
+        -4.024139,
+        -0.029867
+      ]
+    ],
+    "full_temporal_extent_iou_matrix": [
+      [
+        0.285715,
+        0.0,
+        0.126798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.129002,
+        0.0,
+        0.197744,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.263963
+      ]
+    ],
+    "true_pair_extent_iou": [
+      0.285715,
+      0.0,
+      0.197744,
+      0.263963
+    ],
+    "observation_diagnostics": [
+      {
+        "episode_id": "SO01",
+        "target_instance_id": 279277,
+        "reference": {
+          "frames": [
+            {
+              "frame": 6825,
+              "renderer_visible_pixels": 5133,
+              "valid_sensor_depth_pixels": 269779,
+              "depth_consistent_target_pixels": 3619,
+              "retained_points": 3619,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "d376113c99041529b8c6d3a3650f9d0b5cb81cddb2c79230e06c97c99d70d909"
+            },
+            {
+              "frame": 6830,
+              "renderer_visible_pixels": 6221,
+              "valid_sensor_depth_pixels": 269478,
+              "depth_consistent_target_pixels": 4629,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "df3f81a15ea017f809589ebc0b7a7c2f4ba96aabd77b1b230dd83245a185810f"
+            },
+            {
+              "frame": 6835,
+              "renderer_visible_pixels": 6967,
+              "valid_sensor_depth_pixels": 267865,
+              "depth_consistent_target_pixels": 5370,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "e245b5352bf5e0a95bdc8317a1b392208c1031a926c7cca3a63c2b606ef8c207"
+            }
+          ],
+          "raw_fused_points": 11811,
+          "retained_fused_points": 4096
+        },
+        "query": {
+          "frames": [
+            {
+              "frame": 7340,
+              "renderer_visible_pixels": 2555,
+              "valid_sensor_depth_pixels": 274492,
+              "depth_consistent_target_pixels": 0,
+              "retained_points": 0,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "a70a48c05d91c1ae88f071259e90ad114cebfc7bbe1bc0a7f61900b27d693057"
+            },
+            {
+              "frame": 7345,
+              "renderer_visible_pixels": 5516,
+              "valid_sensor_depth_pixels": 274252,
+              "depth_consistent_target_pixels": 159,
+              "retained_points": 159,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "4ffc00eaa021cb7f4cbe0861bb5fda9c09a257d99ab01d7c93c11b3c02ad7b6b"
+            },
+            {
+              "frame": 7350,
+              "renderer_visible_pixels": 10659,
+              "valid_sensor_depth_pixels": 273940,
+              "depth_consistent_target_pixels": 2551,
+              "retained_points": 2551,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "41c25f349e77f8618e979101f25c33db9e57026dd23dee6e5b25b07161a80c7e"
+            }
+          ],
+          "raw_fused_points": 2710,
+          "retained_fused_points": 2710
+        }
+      },
+      {
+        "episode_id": "SO02",
+        "target_instance_id": 533756,
+        "reference": {
+          "frames": [
+            {
+              "frame": 5770,
+              "renderer_visible_pixels": 12257,
+              "valid_sensor_depth_pixels": 273603,
+              "depth_consistent_target_pixels": 7543,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "f8e1e9cc3a4969e37fa3fbacd29cbb9c99a42cb6aaa18f4031e7ae75eb2953c8"
+            },
+            {
+              "frame": 5775,
+              "renderer_visible_pixels": 15939,
+              "valid_sensor_depth_pixels": 273079,
+              "depth_consistent_target_pixels": 10971,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "ef351898c722024f35b45c147c459a47e9eaffdf6e516d638bac13816b3f3253"
+            },
+            {
+              "frame": 5780,
+              "renderer_visible_pixels": 17503,
+              "valid_sensor_depth_pixels": 273099,
+              "depth_consistent_target_pixels": 12497,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "e4cbd9c22e19dc0b1a8f20403164fee7703826d0fe6c4cb1a25fcbb3742bb20f"
+            }
+          ],
+          "raw_fused_points": 12288,
+          "retained_fused_points": 4096
+        },
+        "query": {
+          "frames": [
+            {
+              "frame": 7090,
+              "renderer_visible_pixels": 3991,
+              "valid_sensor_depth_pixels": 275685,
+              "depth_consistent_target_pixels": 1667,
+              "retained_points": 1667,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "6ece656346e81ca5d4015c46669cf55bf7b1d01a57e4a9f20cdba5af3fea1992"
+            },
+            {
+              "frame": 7095,
+              "renderer_visible_pixels": 3834,
+              "valid_sensor_depth_pixels": 275721,
+              "depth_consistent_target_pixels": 1410,
+              "retained_points": 1410,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "a8ff98145394fceaaf9cef21c631e2fed0065d4cc616925840aaf63b24854122"
+            },
+            {
+              "frame": 7100,
+              "renderer_visible_pixels": 3815,
+              "valid_sensor_depth_pixels": 276072,
+              "depth_consistent_target_pixels": 718,
+              "retained_points": 718,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "769b0f820732c961f9e0b21d3c812567eddf90aff43105c6a7459c9cfb41a168"
+            }
+          ],
+          "raw_fused_points": 3795,
+          "retained_fused_points": 3795
+        }
+      },
+      {
+        "episode_id": "SO03",
+        "target_instance_id": 560309,
+        "reference": {
+          "frames": [
+            {
+              "frame": 6950,
+              "renderer_visible_pixels": 6496,
+              "valid_sensor_depth_pixels": 271001,
+              "depth_consistent_target_pixels": 2911,
+              "retained_points": 2911,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "af199837de697dcf124f94394be1fccc9f619d7c5baf95a03df2510221b7fc11"
+            },
+            {
+              "frame": 6955,
+              "renderer_visible_pixels": 5873,
+              "valid_sensor_depth_pixels": 270782,
+              "depth_consistent_target_pixels": 2498,
+              "retained_points": 2498,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "1c7497b73eecd2a822aa8b50e6ac5ffb5d09dbd1455b0aef087fddf299b16e09"
+            },
+            {
+              "frame": 6960,
+              "renderer_visible_pixels": 7038,
+              "valid_sensor_depth_pixels": 270475,
+              "depth_consistent_target_pixels": 3605,
+              "retained_points": 3605,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "55433eb328e874efdb2dc4c26d0efcabaf171991cad4528c71739f7d9c6d3fa6"
+            }
+          ],
+          "raw_fused_points": 9014,
+          "retained_fused_points": 4096
+        },
+        "query": {
+          "frames": [
+            {
+              "frame": 7330,
+              "renderer_visible_pixels": 95987,
+              "valid_sensor_depth_pixels": 274718,
+              "depth_consistent_target_pixels": 86457,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "6509f1cfba691c604f84c9e7e5a5374b4b1eed7aaa7eb174ff99ab546118164d"
+            },
+            {
+              "frame": 7335,
+              "renderer_visible_pixels": 88975,
+              "valid_sensor_depth_pixels": 274510,
+              "depth_consistent_target_pixels": 80492,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "bcf1c918b038330a3afe231e63851e402c0c118ec9909c78b7934f7a9837e842"
+            },
+            {
+              "frame": 7340,
+              "renderer_visible_pixels": 83881,
+              "valid_sensor_depth_pixels": 274492,
+              "depth_consistent_target_pixels": 76466,
+              "retained_points": 4096,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "ac0d854c3ebf4b552269136f9435487b47d5bc8f0576363c7a06f70655a9d14d"
+            }
+          ],
+          "raw_fused_points": 12288,
+          "retained_fused_points": 4096
+        }
+      },
+      {
+        "episode_id": "SO04",
+        "target_instance_id": 1593514,
+        "reference": {
+          "frames": [
+            {
+              "frame": 4825,
+              "renderer_visible_pixels": 2866,
+              "valid_sensor_depth_pixels": 271925,
+              "depth_consistent_target_pixels": 786,
+              "retained_points": 786,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "f89b6203ba09f7a14c70fa5c66483e8beaa4e36261dccdff9fe403fa62034437"
+            },
+            {
+              "frame": 4830,
+              "renderer_visible_pixels": 3224,
+              "valid_sensor_depth_pixels": 271985,
+              "depth_consistent_target_pixels": 927,
+              "retained_points": 927,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "ba36ba0115b049e3a69cef2aa009decbd929f8d5495ec739b648e372dfd0b297"
+            },
+            {
+              "frame": 4835,
+              "renderer_visible_pixels": 4576,
+              "valid_sensor_depth_pixels": 272632,
+              "depth_consistent_target_pixels": 1555,
+              "retained_points": 1555,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "304737fc899311df024c5fef927ac56a8f9c6d06796c28920019475a3f964690"
+            }
+          ],
+          "raw_fused_points": 3268,
+          "retained_fused_points": 3268
+        },
+        "query": {
+          "frames": [
+            {
+              "frame": 5280,
+              "renderer_visible_pixels": 425,
+              "valid_sensor_depth_pixels": 270402,
+              "depth_consistent_target_pixels": 0,
+              "retained_points": 0,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "c526f76316c2cad0a0dcdefd659ac770166707d9dd8d94bc3be2e265d7f5088a"
+            },
+            {
+              "frame": 5285,
+              "renderer_visible_pixels": 2774,
+              "valid_sensor_depth_pixels": 270725,
+              "depth_consistent_target_pixels": 120,
+              "retained_points": 120,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "547e5a54894d4f5c57e1c977230bec83db6e75cb06611c372caf9ffb910ed36b"
+            },
+            {
+              "frame": 5290,
+              "renderer_visible_pixels": 5354,
+              "valid_sensor_depth_pixels": 270357,
+              "depth_consistent_target_pixels": 811,
+              "retained_points": 811,
+              "depth_consistency_tolerance_m": 0.08,
+              "visible_mask_sha256": "839519387b04746022c2174e6e0f2946072f4686d77dfe095cc44ff7605d0125"
+            }
+          ],
+          "raw_fused_points": 931,
+          "retained_fused_points": 931
+        }
+      }
+    ],
+    "surface_pair_diagnostics": {
+      "0->0": {
+        "symmetric_median_observed_surface_distance_metres": 0.106701
+      },
+      "0->1": {
+        "symmetric_median_observed_surface_distance_metres": 1.579547
+      },
+      "0->2": {
+        "symmetric_median_observed_surface_distance_metres": 0.869231
+      },
+      "0->3": {
+        "symmetric_median_observed_surface_distance_metres": 4.282027
+      },
+      "1->0": {
+        "symmetric_median_observed_surface_distance_metres": 2.642495
+      },
+      "1->1": {
+        "symmetric_median_observed_surface_distance_metres": 1.088021
+      },
+      "1->2": {
+        "symmetric_median_observed_surface_distance_metres": 2.271233
+      },
+      "1->3": {
+        "symmetric_median_observed_surface_distance_metres": 1.712339
+      },
+      "2->0": {
+        "symmetric_median_observed_surface_distance_metres": 0.592976
+      },
+      "2->1": {
+        "symmetric_median_observed_surface_distance_metres": 1.783957
+      },
+      "2->2": {
+        "symmetric_median_observed_surface_distance_metres": 0.475494
+      },
+      "2->3": {
+        "symmetric_median_observed_surface_distance_metres": 3.915597
+      },
+      "3->0": {
+        "symmetric_median_observed_surface_distance_metres": 4.372872
+      },
+      "3->1": {
+        "symmetric_median_observed_surface_distance_metres": 2.918869
+      },
+      "3->2": {
+        "symmetric_median_observed_surface_distance_metres": 4.024139
+      },
+      "3->3": {
+        "symmetric_median_observed_surface_distance_metres": 0.029867
+      }
+    },
+    "extent_support_diagnostics": [
+      {
+        "reference_index": 0,
+        "query_index": 0,
+        "registered_planar_extent_iou": 0.285715,
+        "positive_support": true
+      },
+      {
+        "reference_index": 0,
+        "query_index": 1,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 0,
+        "query_index": 2,
+        "registered_planar_extent_iou": 0.126798,
+        "positive_support": true
+      },
+      {
+        "reference_index": 0,
+        "query_index": 3,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 1,
+        "query_index": 0,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 1,
+        "query_index": 1,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 1,
+        "query_index": 2,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 1,
+        "query_index": 3,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 2,
+        "query_index": 0,
+        "registered_planar_extent_iou": 0.129002,
+        "positive_support": true
+      },
+      {
+        "reference_index": 2,
+        "query_index": 1,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 2,
+        "query_index": 2,
+        "registered_planar_extent_iou": 0.197744,
+        "positive_support": true
+      },
+      {
+        "reference_index": 2,
+        "query_index": 3,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 3,
+        "query_index": 0,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 3,
+        "query_index": 1,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 3,
+        "query_index": 2,
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference_index": 3,
+        "query_index": 3,
+        "registered_planar_extent_iou": 0.263963,
+        "positive_support": true
+      }
+    ]
+  },
+  "incremental_gain_over_rank_only": {
+    "true_positive_delta": -9,
+    "false_positive_reduction": 1,
+    "false_negative_reduction": -9,
+    "f1_delta": -0.138074,
+    "exact_zero_assignment_scenario_gain": -6
+  },
+  "support_rule": "unchanged strictly positive registered planar convex-hull intersection; no IoU magnitude threshold",
+  "claim_boundary": "This consumed-scene posthoc experiment can establish only whether a minimal pose-registered temporal depth carrier makes the unchanged support mechanism evaluable and mechanically effective. It cannot supply fresh confirmation because the SceneNN scene, targets, anchors, and single-frame failure are already consumed. Instance masks, geometry and trajectories remain privileged; the sensor is not a phone. It is not raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-fused-extent-support-transport-repair-v1",
+  "authority": "TRANSPARENT_POST_FREEZE_IMPLEMENTATION_TRANSPORT_REPAIR",
+  "recorded_at": "2026-08-31T20:24:00+08:00",
+  "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+  "original_entrypoint_sha256": "71bac806e748b0c732a80f7bd8ff1a5c767a3cbb801934ba3176798828b67888",
+  "repaired_entrypoint_sha256": "c404a309a638cea4c896c291f126a605c4d93249221f3caec5ac3fa7888d036a",
+  "observed_failure": "OBSERVATION_EMPTY: temporal depth frame.7340.png",
+  "cause": "The temporal replay reused the predecessor single-frame helper, which imposed an undeclared per-frame minimum of four points. The frozen temporal protocol constrains only the three-frame fused observation to at least 256 points.",
+  "repair": "Permit any frozen temporal member to contribute zero registered points, retain its diagnostics and mask-hash check, then apply the unchanged 256-point minimum only after concatenating all three frozen members.",
+  "scientific_fields_changed": [],
+  "additional_rgbd_access": 0,
+  "frozen_fields_unchanged": [
+    "scene",
+    "targets",
+    "anchors",
+    "trajectory_frame_offsets",
+    "depth_consistency_tolerance_metres",
+    "minimum_points_per_fused_observation",
+    "maximum_points_per_frame",
+    "maximum_points_per_fused_observation",
+    "portal_frame",
+    "surface_score",
+    "zero_assignment",
+    "support_rule",
+    "scenarios",
+    "decision_gate"
+  ],
+  "claim_boundary": "This repairs only a pre-score implementation mismatch with the already-frozen temporal carrier. It does not refreeze the cohort, reopen source selection, add RGB-D frames, or change any scientific threshold or decision rule."
+}

@@ -1,0 +1,2616 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-goal-conditioned-idf-verifier-result-v1",
+  "decision": "L10_ROADTEXTVQA_GOAL_CONDITIONED_BACKGROUND_IDF_VERIFIER_DEVELOPMENT_GATE_MET",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_GOAL_CONDITIONED_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_roadtextvqa_goal_conditioned_idf_verifier_protocol_v1.json",
+  "protocol_sha256": "7eeae52195d9a2e61f6766dc11d5ff7fc53bb3af09269895af715ff58c37aab7",
+  "evaluator_sha256": "18d938e676c821a933e6f940c2f6dde9093ea687d9a2f03439ac58c99f0c6244",
+  "metrics": {
+    "episodes": 30,
+    "legacy_correct_unknown": [
+      6,
+      24
+    ],
+    "goal_conditioned_idf_correct_unknown": [
+      19,
+      11
+    ],
+    "correct_gain": 13,
+    "synthetic_negative_queries": 30,
+    "synthetic_negative_accepts": 0,
+    "cyclic_cross_video_challenges": 30,
+    "cyclic_cross_video_challenge_accepts": 1,
+    "accepted_episode_mean_frames_to_first_candidate": 5.158,
+    "wrong_goal_candidates_emitted": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_fresh_ocr_unseen_episodes": true,
+    "minimum_three_correct_gain": true,
+    "zero_synthetic_negative_accepts": true,
+    "candidate_is_always_the_conditioned_goal": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": true
+  },
+  "synthetic_negative_accepts": [],
+  "cyclic_cross_video_challenge_accepts": [
+    {
+      "video": "2946.mp4",
+      "challenge_target_id": "RTVQA-Q5701",
+      "challenge_aliases": [
+        "canary"
+      ],
+      "match": {
+        "matched": true,
+        "information_bits": 8.042207,
+        "required_information_bits": 8.0,
+        "matched_tokens": [
+          "canary"
+        ],
+        "token_information_bits": {
+          "canary": 8.042207
+        },
+        "witnesses": {
+          "canary": [
+            {
+              "frame": 0,
+              "observed": "canary",
+              "edit_distance": 0
+            },
+            {
+              "frame": 30,
+              "observed": "canary",
+              "edit_distance": 0
+            },
+            {
+              "frame": 60,
+              "observed": "canary",
+              "edit_distance": 0
+            },
+            {
+              "frame": 90,
+              "observed": "canary",
+              "edit_distance": 0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "target_id": "RTVQA-Q5746",
+      "question_id": 5746,
+      "video": "2831.mp4",
+      "question": "To which company does the blue and yellow colored truck belong ?",
+      "aliases": [
+        "gati kwe"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q5746",
+        "match": {
+          "matched": true,
+          "information_bits": 10.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "gati"
+          ],
+          "token_information_bits": {
+            "gati": 10.364135
+          },
+          "witnesses": {
+            "gati": [
+              {
+                "frame": 0,
+                "observed": "gati",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q7030",
+        "challenge_aliases": [
+          "aurobindo"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q7030",
+      "question_id": 7030,
+      "video": "2838.mp4",
+      "question": "Which company's name is displayed on the side of the white bus passing by the left?",
+      "aliases": [
+        "aurobindo"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "aurobindo"
+          ],
+          "routes": {
+            "aurobindo": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "aurobindo": [
+              {
+                "frame": 211,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "alrobindo",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q7030",
+        "match": {
+          "matched": true,
+          "information_bits": 8.779172,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "aurobindo"
+          ],
+          "token_information_bits": {
+            "aurobindo": 8.779172
+          },
+          "witnesses": {
+            "aurobindo": [
+              {
+                "frame": 211,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "alrobindo",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 8,
+          "frame": 211
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6764",
+        "challenge_aliases": [
+          "hotel indu"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6764",
+      "question_id": 6764,
+      "video": "2882.mp4",
+      "question": "Which hotel, located on the right side of the road, has a bar in it?",
+      "aliases": [
+        "hotel indu"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q6764",
+        "match": {
+          "matched": true,
+          "information_bits": 15.055844,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "hotel",
+            "indu"
+          ],
+          "token_information_bits": {
+            "hotel": 4.691709,
+            "indu": 10.364135
+          },
+          "witnesses": {
+            "hotel": [
+              {
+                "frame": 0,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "hotel",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "hotel",
+                "edit_distance": 0
+              }
+            ],
+            "indu": [
+              {
+                "frame": 0,
+                "observed": "indu",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "indu",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "indu",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "indu",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "indu",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "indu",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q4755",
+        "challenge_aliases": [
+          "arshi",
+          "arshi skin & hair clinic"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4755",
+      "question_id": 4755,
+      "video": "2942.mp4",
+      "question": "What is the name of the business advertised on the board seen on the light pole in the divider?",
+      "aliases": [
+        "arshi",
+        "arshi skin & hair clinic"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "clinic"
+          ],
+          "routes": {
+            "clinic": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "clinic": [
+              {
+                "frame": 120,
+                "observed": "clinic",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "clinic",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q4755",
+        "match": {
+          "matched": true,
+          "information_bits": 29.878815,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "arshi",
+            "clinic",
+            "hair",
+            "skin"
+          ],
+          "token_information_bits": {
+            "arshi": 7.904703,
+            "clinic": 7.116207,
+            "hair": 6.663695,
+            "skin": 8.19421
+          },
+          "witnesses": {
+            "arshi": [
+              {
+                "frame": 60,
+                "observed": "arshi",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "arshi",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "arshi",
+                "edit_distance": 0
+              }
+            ],
+            "clinic": [
+              {
+                "frame": 120,
+                "observed": "clinic",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "clinic",
+                "edit_distance": 0
+              }
+            ],
+            "hair": [
+              {
+                "frame": 120,
+                "observed": "hair",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "hair",
+                "edit_distance": 0
+              }
+            ],
+            "skin": [
+              {
+                "frame": 120,
+                "observed": "skin",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 120
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3853",
+        "challenge_aliases": [
+          "arbor"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3853",
+      "question_id": 3853,
+      "video": "2946.mp4",
+      "question": "What is the name of the business/institute that is advertised on the bus stop seen on the left side?",
+      "aliases": [
+        "arbor"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q3853",
+        "match": {
+          "matched": true,
+          "information_bits": 9.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "arbor"
+          ],
+          "token_information_bits": {
+            "arbor": 9.364135
+          },
+          "witnesses": {
+            "arbor": [
+              {
+                "frame": 90,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "arbor",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "arbor",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5701",
+        "challenge_aliases": [
+          "canary"
+        ],
+        "accepted": true,
+        "match": {
+          "matched": true,
+          "information_bits": 8.042207,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "canary"
+          ],
+          "token_information_bits": {
+            "canary": 8.042207
+          },
+          "witnesses": {
+            "canary": [
+              {
+                "frame": 0,
+                "observed": "canary",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "canary",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "canary",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "canary",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5701",
+      "question_id": 5701,
+      "video": "2958.mp4",
+      "question": "Which business's advertisement is seen on the signboards on the light poles in the divider?",
+      "aliases": [
+        "canary"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "canary"
+          ],
+          "routes": {
+            "canary": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "canary": [
+              {
+                "frame": 90,
+                "observed": "canary",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "canary",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q5701",
+        "match": {
+          "matched": true,
+          "information_bits": 8.042207,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "canary"
+          ],
+          "token_information_bits": {
+            "canary": 8.042207
+          },
+          "witnesses": {
+            "canary": [
+              {
+                "frame": 90,
+                "observed": "canary",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "canary",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6310",
+        "challenge_aliases": [
+          "heritage"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6310",
+      "question_id": 6310,
+      "video": "2975.mp4",
+      "question": "Which company's name is displayed in green background on the wall on the left side?",
+      "aliases": [
+        "heritage"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "heritage"
+          ],
+          "routes": {
+            "heritage": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "heritage": [
+              {
+                "frame": 120,
+                "observed": "heritage",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "heritage",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q6310",
+        "match": {
+          "matched": true,
+          "information_bits": 10.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "heritage"
+          ],
+          "token_information_bits": {
+            "heritage": 10.364135
+          },
+          "witnesses": {
+            "heritage": [
+              {
+                "frame": 120,
+                "observed": "heritage",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "heritage",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 120
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5567",
+        "challenge_aliases": [
+          "kotak"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5567",
+      "question_id": 5567,
+      "video": "2981.mp4",
+      "question": "Which bank has an ATM on the left?",
+      "aliases": [
+        "kotak"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q5567",
+        "match": {
+          "matched": true,
+          "information_bits": 9.042207,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "kotak"
+          ],
+          "token_information_bits": {
+            "kotak": 9.042207
+          },
+          "witnesses": {
+            "kotak": [
+              {
+                "frame": 0,
+                "observed": "kotak",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "kotak",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "kotak",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6763",
+        "challenge_aliases": [
+          "sbi"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6763",
+      "question_id": 6763,
+      "video": "2986.mp4",
+      "question": "Which bank is seen on the left side of the road after Lakshmi Vilas bank?",
+      "aliases": [
+        "sbi"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6589",
+        "challenge_aliases": [
+          "hotel tourist palace"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6589",
+      "question_id": 6589,
+      "video": "2989.mp4",
+      "question": "In which hotel ahead can I find rooms and banquet halls?",
+      "aliases": [
+        "hotel tourist palace"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "tourist"
+          ],
+          "routes": {
+            "tourist": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "tourist": [
+              {
+                "frame": 241,
+                "observed": "tourist",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q6589",
+        "match": {
+          "matched": true,
+          "information_bits": 14.470881,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "hotel",
+            "tourist"
+          ],
+          "token_information_bits": {
+            "hotel": 4.691709,
+            "tourist": 9.779172
+          },
+          "witnesses": {
+            "hotel": [
+              {
+                "frame": 241,
+                "observed": "hotel",
+                "edit_distance": 0
+              }
+            ],
+            "tourist": [
+              {
+                "frame": 241,
+                "observed": "tourist",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 9,
+          "frame": 241
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6076",
+        "challenge_aliases": [
+          "maharaja tiffins & chat"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6076",
+      "question_id": 6076,
+      "video": "2990.mp4",
+      "question": "Which business located on the right side of the street offers tiffins and chats?",
+      "aliases": [
+        "maharaja tiffins & chat"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "maharaja",
+            "tiffins"
+          ],
+          "routes": {
+            "maharaja": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "tiffins": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "maharaja": [
+              {
+                "frame": 211,
+                "observed": "makaraja",
+                "edit_distance": 1
+              }
+            ],
+            "tiffins": [
+              {
+                "frame": 211,
+                "observed": "tiffins",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "tiffins",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q6076",
+        "match": {
+          "matched": true,
+          "information_bits": 27.770477,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "chat",
+            "maharaja",
+            "tiffins"
+          ],
+          "token_information_bits": {
+            "chat": 8.042207,
+            "maharaja": 11.364135,
+            "tiffins": 8.364135
+          },
+          "witnesses": {
+            "chat": [
+              {
+                "frame": 211,
+                "observed": "chat",
+                "edit_distance": 0
+              }
+            ],
+            "maharaja": [
+              {
+                "frame": 211,
+                "observed": "makaraja",
+                "edit_distance": 1
+              }
+            ],
+            "tiffins": [
+              {
+                "frame": 211,
+                "observed": "tiffins",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "tiffins",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 8,
+          "frame": 211
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q7304",
+        "challenge_aliases": [
+          "tsco handloom house"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q7304",
+      "question_id": 7304,
+      "video": "2996.mp4",
+      "question": "Which business is located after the store named College shoes?",
+      "aliases": [
+        "tsco handloom house"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "handloom"
+          ],
+          "routes": {
+            "handloom": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "handloom": [
+              {
+                "frame": 151,
+                "observed": "handloon",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q7304",
+        "match": {
+          "matched": true,
+          "information_bits": 22.72827,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "handloom",
+            "tsco"
+          ],
+          "token_information_bits": {
+            "handloom": 11.364135,
+            "tsco": 11.364135
+          },
+          "witnesses": {
+            "handloom": [
+              {
+                "frame": 151,
+                "observed": "handloon",
+                "edit_distance": 1
+              }
+            ],
+            "tsco": [
+              {
+                "frame": 151,
+                "observed": "tsco",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 6,
+          "frame": 151
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q225",
+        "challenge_aliases": [
+          "webster av"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q225",
+      "question_id": 225,
+      "video": "27.mp4",
+      "question": "What is the name of the street that goes to the right from the traffic signal?",
+      "aliases": [
+        "webster av"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5288",
+        "challenge_aliases": [
+          "ikea store"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5288",
+      "question_id": 5288,
+      "video": "2722.mp4",
+      "question": "Way to which store is indicated on the sign board?",
+      "aliases": [
+        "ikea store"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q5288",
+        "match": {
+          "matched": true,
+          "information_bits": 13.158414,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "ikea",
+            "store"
+          ],
+          "token_information_bits": {
+            "ikea": 8.042207,
+            "store": 5.116207
+          },
+          "witnesses": {
+            "ikea": [
+              {
+                "frame": 180,
+                "observed": "ikea",
+                "edit_distance": 0
+              }
+            ],
+            "store": [
+              {
+                "frame": 180,
+                "observed": "store",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 180
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6745",
+        "challenge_aliases": [
+          "red ribbon run"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6745",
+      "question_id": 6745,
+      "video": "2766.mp4",
+      "question": "What is the name of the race advertised on the back of the bus?",
+      "aliases": [
+        "red ribbon run"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "ribbon"
+          ],
+          "routes": {
+            "ribbon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "ribbon": [
+              {
+                "frame": 120,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "ribbon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 7.55678,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "ribbon"
+          ],
+          "token_information_bits": {
+            "ribbon": 7.55678
+          },
+          "witnesses": {
+            "ribbon": [
+              {
+                "frame": 120,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "ribbon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5852",
+        "challenge_aliases": [
+          "red ribbon run"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 7.55678,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "ribbon"
+          ],
+          "token_information_bits": {
+            "ribbon": 7.55678
+          },
+          "witnesses": {
+            "ribbon": [
+              {
+                "frame": 120,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "ribbon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5852",
+      "question_id": 5852,
+      "video": "2770.mp4",
+      "question": "What is the name of the event that was scheduled to be on Dec 1, 2018 at People's Plaza?",
+      "aliases": [
+        "red ribbon run"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "ribbon"
+          ],
+          "routes": {
+            "ribbon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "ribbon": [
+              {
+                "frame": 0,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "ribbon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 7.55678,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "ribbon"
+          ],
+          "token_information_bits": {
+            "ribbon": 7.55678
+          },
+          "witnesses": {
+            "ribbon": [
+              {
+                "frame": 0,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "ribbon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "ribbon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q6504",
+        "challenge_aliases": [
+          "t seva"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6504",
+      "question_id": 6504,
+      "video": "2781.mp4",
+      "question": "Which business is seen opposite to the gate of Priyadarshini Primary school?",
+      "aliases": [
+        "t seva"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q4477",
+        "challenge_aliases": [
+          "sauds mobiles"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4477",
+      "question_id": 4477,
+      "video": "2787.mp4",
+      "question": "What is the name of the mobile shop on the left side of the road?",
+      "aliases": [
+        "sauds mobiles"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "mobiles"
+          ],
+          "routes": {
+            "mobiles": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "mobiles": [
+              {
+                "frame": 270,
+                "observed": "mobile",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q4477",
+        "match": {
+          "matched": true,
+          "information_bits": 18.72827,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "mobiles",
+            "sauds"
+          ],
+          "token_information_bits": {
+            "mobiles": 8.364135,
+            "sauds": 10.364135
+          },
+          "witnesses": {
+            "mobiles": [
+              {
+                "frame": 270,
+                "observed": "mobile",
+                "edit_distance": 1
+              }
+            ],
+            "sauds": [
+              {
+                "frame": 270,
+                "observed": "sauds",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 10,
+          "frame": 270
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5099",
+        "challenge_aliases": [
+          "homeocare international"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5099",
+      "question_id": 5099,
+      "video": "2805.mp4",
+      "question": "What is the name of the homeopathic hospital mentioned on the bus?",
+      "aliases": [
+        "homeocare international"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "homeocare",
+            "international"
+          ],
+          "routes": {
+            "homeocare": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "international": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "homeocare": [
+              {
+                "frame": 120,
+                "observed": "homeocare",
+                "edit_distance": 0
+              }
+            ],
+            "international": [
+              {
+                "frame": 120,
+                "observed": "international",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q5099",
+        "match": {
+          "matched": true,
+          "information_bits": 17.640807,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "homeocare",
+            "international"
+          ],
+          "token_information_bits": {
+            "homeocare": 11.364135,
+            "international": 6.276672
+          },
+          "witnesses": {
+            "homeocare": [
+              {
+                "frame": 120,
+                "observed": "homeocare",
+                "edit_distance": 0
+              }
+            ],
+            "international": [
+              {
+                "frame": 120,
+                "observed": "international",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 120
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q332",
+        "challenge_aliases": [
+          "u-haul"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q332",
+      "question_id": 332,
+      "video": "49.mp4",
+      "question": "which company is advertised on the truck which is parked in the left?",
+      "aliases": [
+        "u-haul"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 7.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "haul"
+          ],
+          "token_information_bits": {
+            "haul": 7.364135
+          },
+          "witnesses": {
+            "haul": [
+              {
+                "frame": 0,
+                "observed": "haul",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "haul",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "haul",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "haul",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3432",
+        "challenge_aliases": [
+          "fedex",
+          "fedex ground"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3432",
+      "question_id": 3432,
+      "video": "516.mp4",
+      "question": "At the end of the video there is a white truck, which company's truck is it ?",
+      "aliases": [
+        "fedex",
+        "fedex ground"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "ground"
+          ],
+          "routes": {
+            "ground": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "ground": [
+              {
+                "frame": 180,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "ground",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q3432",
+        "match": {
+          "matched": true,
+          "information_bits": 12.492255,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "fedex",
+            "ground"
+          ],
+          "token_information_bits": {
+            "fedex": 5.298045,
+            "ground": 7.19421
+          },
+          "witnesses": {
+            "fedex": [
+              {
+                "frame": 210,
+                "observed": "fedex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "fedex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "fedex",
+                "edit_distance": 0
+              }
+            ],
+            "ground": [
+              {
+                "frame": 180,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "ground",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "ground",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 8,
+          "frame": 210
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q2477",
+        "challenge_aliases": [
+          "jfk",
+          "jfk airport"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2477",
+      "question_id": 2477,
+      "video": "561.mp4",
+      "question": "What is the name of the airport mentioned on the billboard?",
+      "aliases": [
+        "jfk",
+        "jfk airport"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "airport"
+          ],
+          "routes": {
+            "airport": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "airport": [
+              {
+                "frame": 120,
+                "observed": "irport",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 6.19421,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "airport"
+          ],
+          "token_information_bits": {
+            "airport": 6.19421
+          },
+          "witnesses": {
+            "airport": [
+              {
+                "frame": 120,
+                "observed": "irport",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3199",
+        "challenge_aliases": [
+          "cohen's"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3199",
+      "question_id": 3199,
+      "video": "610.mp4",
+      "question": "Which store on the right side of the street sells Fashion opticals?",
+      "aliases": [
+        "cohen's"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q3199",
+        "match": {
+          "matched": true,
+          "information_bits": 9.779172,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "cohen"
+          ],
+          "token_information_bits": {
+            "cohen": 9.779172
+          },
+          "witnesses": {
+            "cohen": [
+              {
+                "frame": 0,
+                "observed": "cohen",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "cohen",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "cohen",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "cohen",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "cohen",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "cohen",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3565",
+        "challenge_aliases": [
+          "anytime"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3565",
+      "question_id": 3565,
+      "video": "619.mp4",
+      "question": "Which business run next to Pharmacy on right side?",
+      "aliases": [
+        "anytime"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "anytime"
+          ],
+          "routes": {
+            "anytime": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "anytime": [
+              {
+                "frame": 90,
+                "observed": "anytime",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 5.609247,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "anytime"
+          ],
+          "token_information_bits": {
+            "anytime": 5.609247
+          },
+          "witnesses": {
+            "anytime": [
+              {
+                "frame": 90,
+                "observed": "anytime",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3389",
+        "challenge_aliases": [
+          "one east river place"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3389",
+      "question_id": 3389,
+      "video": "641.mp4",
+      "question": "what is the name of the black building ahead?",
+      "aliases": [
+        "one east river place"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3608",
+        "challenge_aliases": [
+          "nail supply"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3608",
+      "question_id": 3608,
+      "video": "645.mp4",
+      "question": "What is the name of the store which has an yellow awning adjacent to the Dance Center ?",
+      "aliases": [
+        "nail supply"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "supply"
+          ],
+          "routes": {
+            "supply": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "supply": [
+              {
+                "frame": 151,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "supply",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q3608",
+        "match": {
+          "matched": true,
+          "information_bits": 14.361947,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "nail",
+            "supply"
+          ],
+          "token_information_bits": {
+            "nail": 7.457244,
+            "supply": 6.904703
+          },
+          "witnesses": {
+            "nail": [
+              {
+                "frame": 181,
+                "observed": "nail",
+                "edit_distance": 0
+              }
+            ],
+            "supply": [
+              {
+                "frame": 151,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "supply",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 181
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q2508",
+        "challenge_aliases": [
+          "high end"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2508",
+      "question_id": 2508,
+      "video": "663.mp4",
+      "question": "What is the name of the vehicle just behind the bus heading towards the right side?",
+      "aliases": [
+        "high end"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 6.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "high"
+          ],
+          "token_information_bits": {
+            "high": 6.364135
+          },
+          "witnesses": {
+            "high": [
+              {
+                "frame": 210,
+                "observed": "high",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "high",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q1897",
+        "challenge_aliases": [
+          "grand central pkwy"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1897",
+      "question_id": 1897,
+      "video": "722.mp4",
+      "question": "Name the parkway on the green sign.",
+      "aliases": [
+        "grand central pkwy"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "central"
+          ],
+          "routes": {
+            "central": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "central": [
+              {
+                "frame": 180,
+                "observed": "central",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q1897",
+        "match": {
+          "matched": true,
+          "information_bits": 11.062045,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "central",
+            "grand"
+          ],
+          "token_information_bits": {
+            "central": 5.720278,
+            "grand": 5.341767
+          },
+          "witnesses": {
+            "central": [
+              {
+                "frame": 180,
+                "observed": "central",
+                "edit_distance": 0
+              }
+            ],
+            "grand": [
+              {
+                "frame": 180,
+                "observed": "grand",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 180
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q2171",
+        "challenge_aliases": [
+          "chase"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2171",
+      "question_id": 2171,
+      "video": "819.mp4",
+      "question": "What is the name of the first building seen on the left side of the road?",
+      "aliases": [
+        "chase"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "UNKNOWN",
+        "candidate": null,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "first_acceptance": null
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q3558",
+        "challenge_aliases": [
+          "burlington"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3558",
+      "question_id": 3558,
+      "video": "846.mp4",
+      "question": "What is the name of the business that is now open as shown in the red and white colored banner?",
+      "aliases": [
+        "burlington"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "burlington"
+          ],
+          "routes": {
+            "burlington": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "burlington": [
+              {
+                "frame": 0,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "burlington",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "goal_conditioned_idf": {
+        "state": "CORRECT",
+        "candidate": "RTVQA-Q3558",
+        "match": {
+          "matched": true,
+          "information_bits": 9.042207,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "burlington"
+          ],
+          "token_information_bits": {
+            "burlington": 9.042207
+          },
+          "witnesses": {
+            "burlington": [
+              {
+                "frame": 0,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "burlington",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "burlington",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0
+        }
+      },
+      "cyclic_cross_video_challenge": {
+        "challenge_target_id": "RTVQA-Q5746",
+        "challenge_aliases": [
+          "gati kwe"
+        ],
+        "accepted": false,
+        "match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        }
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for goal-conditioned, background-calibrated lexical search-priority verification on a third fresh OCR-unseen RoadTextVQA validation panel.",
+    "not_allowed": [
+      "human-verified target-absent specificity, benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, product, benefit, reliability, or safety confirmation",
+      "pixel text localization or a token proving exact physical entity identity, sign ownership, facade ownership, portal ownership, or entrance ownership",
+      "public access, traversability, waypoint correctness, arrival, or handoff"
+    ]
+  }
+}

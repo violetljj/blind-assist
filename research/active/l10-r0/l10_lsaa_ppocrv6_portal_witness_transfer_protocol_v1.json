@@ -1,0 +1,60 @@
+{
+  "schema": "blindassist-l10-lsaa-ppocrv6-portal-witness-transfer-protocol-v1",
+  "name": "L10 frozen V5 portal witness transfer to unique-building LSAA Vienna Development",
+  "question": "Does the frozen SEVN V5 portal-private PP-OCRv6 medium witness retain useful exact-text and target-door binding performance on provider-, city-, and selected-building-disjoint LSAA Vienna facades while abstaining on deterministic wrong-address controls?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_lsaa_ppocrv6_portal_witness_transfer.py",
+    "sha256": "382c112ad699246e38e770fdddd8596a0d81e70dcf98ff798bc9344bffb5c585"
+  },
+  "frozen_inputs": {
+    "public_source": {"path": "research/active/l10-r0/l10_lsaa_vienna_source_v3.json", "sha256": "636cf5cd0f062024c82f2d070cc833772763edcd6c96dc7fc13ab6eaa412352b"},
+    "official_door_truth_draft": {"path": "research/active/l10-r0/l10_lsaa_vienna_truth_draft_v3.json", "sha256": "90add35b1a70036f939745adfca20aa92f12dc76b1178fa6c508f981631f726e"},
+    "development_pixel_truth": {"path": "research/active/l10-r0/l10_lsaa_vienna_development_pixel_truth_v3.json", "sha256": "c46f7233ddf4c35898d2f0735cb5e846ef2616f10cdb351c5368b47ed31016a6"},
+    "materialization_manifest": {"path": "artifacts.local/datasets/lsaa-l10-source-screen/development-v3/materialization_manifest.json", "sha256": "0d503f7a5163fe50646ab762ea1a2d0d5ba448eaf97422e58341ad4b2f9b3f11"},
+    "selection_receipt": {"path": "research/active/l10-r0/l10_lsaa_vienna_selection_receipt_v3.json", "sha256": "4e28a97c8d7d864463bac0ec9f7be9208939735c4315bf189477bfcfd298a067"},
+    "source_protocol": {"path": "research/active/l10-r0/l10_lsaa_vienna_source_protocol_v3.json", "sha256": "7ca1406b53637cc1ec786bd2e249a52c9b7de0a93572dc0bc3b55c8300f11c0a"},
+    "v5_protocol": {"path": "research/active/l10-r0/l10_sevn_ppocrv6_medium_portal_witness_protocol_v1.json", "sha256": "947c917e748f3e52a10b1835efd6d12a931c9395daaf4d10805f6fec98954bc3"},
+    "v5_evaluator": {"path": "research/active/l10-r0/l10_sevn_ppocrv6_medium_portal_witness.py", "sha256": "4e81aee068646c33512e2cd566018eb60713385b743e555c8f52945480b48f19"}
+  },
+  "cohort": {
+    "development_facades": 24,
+    "confirmation_holdout_facades": 24,
+    "counterfactual_controls": 24,
+    "visible_exact_target_opportunities": 10,
+    "source_provider": "LSAA filtered Google panorama facades",
+    "source_city": "Vienna",
+    "selected_building_rule": "All 48 selected OSM buildings, facade members, and panorama IDs are unique across Development and confirmation holdout.",
+    "confirmation_holdout": "No confirmation facade pixel may be materialized or reviewed during this Development run."
+  },
+  "transfer_contract": {
+    "algorithm": "Reuse V5 inference byte-for-byte: frozen PP-OCRv6 small multiscale baseline, frozen portal masks and topology, and frozen PP-OCRv6 medium portal-private unique-witness abstention branch.",
+    "positive": "Run the true OSM numeric mission. Score any selected mask only after inference against the single official LSAA door box.",
+    "counterfactual": "Run the deterministic distinct rotated house number on the identical pixels. Any emitted binding is a false binding; abstention is correct.",
+    "visible_text_denominator": "Use only the ten pre-inference human-legible exact-token annotations. OSM metadata is not visible-text truth.",
+    "portal_oracle": "Report whether any runtime portal candidate overlaps the official LSAA door, but never use evaluator boxes to select, rerank, or modify a runtime proposal."
+  },
+  "gate": {
+    "positive_facades": 24,
+    "visible_opportunities": 10,
+    "minimum_successor_visible_exact_ocr_rate": 0.5,
+    "minimum_visible_exact_ocr_rate_gain": 0.1,
+    "minimum_successor_positive_correct_bindings": 4,
+    "minimum_positive_correct_binding_gain": 1,
+    "minimum_successor_positive_binding_precision": 0.8,
+    "minimum_control_adjusted_binding_precision": 0.75,
+    "maximum_successor_positive_wrong_bindings": 1,
+    "maximum_successor_counterfactual_false_bindings": 1,
+    "counterfactual_false_bindings_not_increased": true,
+    "retain_all_baseline_correct_positive_bindings": true,
+    "require_all_source_uniqueness_checks": true
+  },
+  "execution_rule": "Freeze evaluator, source, metadata truth, human pixel truth, materialization hashes, unchanged V5 implementation and protocol, gates, and control semantics before inference. Run one output-bearing Development invocation. Do not inspect confirmation pixels or claim confirmation authority.",
+  "output": "research/active/l10-r0/l10_lsaa_ppocrv6_portal_witness_transfer_result_v1.json",
+  "claim_boundary": "A pass is provider-, city-, and selected-building-disjoint LSAA Development evidence for pixel-level lexical and mask-door binding transfer under this curated single-door cohort. It is not a fresh confirmation result and does not establish address-to-door ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment performance, or safety.",
+  "non_claims": [
+    "LSAA official single-door boxes are evaluator annotations and do not enter inference.",
+    "Visible address text elsewhere on the same facade is lexical evidence only and is not proof that it owns the official door.",
+    "The cohort is quality-filtered, one-official-door, raw-numeric-address Vienna data; it is not a natural prevalence estimate.",
+    "A failed gate closes only this unchanged transfer attempt. It leaves UNKNOWN as unknown and may motivate a new Development mechanism without opening the holdout."
+  ]
+}

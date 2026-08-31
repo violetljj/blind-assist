@@ -1,0 +1,216 @@
+{
+  "schema": "blindassist-l10-lsaa-ppocrv6-recognition-oracle-probe-v1",
+  "generated_at_utc": "2026-08-30T22:45:00.112646Z",
+  "decision": "ORACLE_DIAGNOSTIC_ONLY_NOT_RUNTIME_ALGORITHM_EVIDENCE",
+  "inputs": {
+    "public_source": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_source_v3.json",
+      "sha256": "636cf5cd0f062024c82f2d070cc833772763edcd6c96dc7fc13ab6eaa412352b"
+    },
+    "pixel_truth": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_lsaa_vienna_development_pixel_truth_v3.json",
+      "sha256": "c46f7233ddf4c35898d2f0735cb5e846ef2616f10cdb351c5368b47ed31016a6"
+    },
+    "materialization_manifest": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\lsaa-l10-source-screen\\development-v3\\materialization_manifest.json",
+      "sha256": "0d503f7a5163fe50646ab762ea1a2d0d5ba448eaf97422e58341ad4b2f9b3f11"
+    },
+    "v5_protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_ppocrv6_medium_portal_witness_protocol_v1.json",
+      "sha256": "947c917e748f3e52a10b1835efd6d12a931c9395daaf4d10805f6fec98954bc3"
+    },
+    "recognition_model": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\paddleocr-ppocrv6-medium-rec-50c7eac",
+      "sha256": {
+        "inference.json": "0b2e25e990bd072f1bf77d59d67d508bce6c4bd44af6624e0fb27d6da2cd00e8",
+        "inference.onnx": "9c09abf0957f7968c7586464b7397b84ad2387a0497a351af40e9acc71b673ba",
+        "inference.yml": "991b700facf5b50a7de193468207d5f4255b538dde0d312ae3b7c7a9b6873129",
+        "README.md": "ebce8d28436623ecab4952e24935aed86b3f8ecaf8f8736b92d5544f60fae1e9"
+      }
+    }
+  },
+  "runtime": {
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "visible_opportunities": 10,
+    "exact_recognition": 0,
+    "exact_recognition_rate": 0.0
+  },
+  "rows": [
+    {
+      "item_id": "LSAA-VIE-D-002",
+      "target": "111",
+      "credential_box_xyxy": [
+        226,
+        640,
+        255,
+        660
+      ],
+      "crop_shape_hw": [
+        20,
+        29
+      ],
+      "prediction": "1",
+      "score": 0.26862252,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-006",
+      "target": "9",
+      "credential_box_xyxy": [
+        521,
+        1042,
+        548,
+        1065
+      ],
+      "crop_shape_hw": [
+        23,
+        27
+      ],
+      "prediction": "Y",
+      "score": 0.7450254,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-008",
+      "target": "152",
+      "credential_box_xyxy": [
+        218,
+        572,
+        247,
+        592
+      ],
+      "crop_shape_hw": [
+        20,
+        29
+      ],
+      "prediction": "2",
+      "score": 0.63338447,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-009",
+      "target": "3",
+      "credential_box_xyxy": [
+        518,
+        948,
+        552,
+        977
+      ],
+      "crop_shape_hw": [
+        29,
+        34
+      ],
+      "prediction": "R",
+      "score": 0.08535816,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-010",
+      "target": "19",
+      "credential_box_xyxy": [
+        889,
+        1370,
+        923,
+        1395
+      ],
+      "crop_shape_hw": [
+        25,
+        34
+      ],
+      "prediction": "一",
+      "score": 0.64527875,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-016",
+      "target": "9",
+      "credential_box_xyxy": [
+        491,
+        705,
+        521,
+        729
+      ],
+      "crop_shape_hw": [
+        24,
+        30
+      ],
+      "prediction": "①",
+      "score": 0.71520132,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-017",
+      "target": "14",
+      "credential_box_xyxy": [
+        412,
+        902,
+        440,
+        921
+      ],
+      "crop_shape_hw": [
+        19,
+        28
+      ],
+      "prediction": "一",
+      "score": 0.09423937,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-018",
+      "target": "12",
+      "credential_box_xyxy": [
+        114,
+        514,
+        139,
+        533
+      ],
+      "crop_shape_hw": [
+        19,
+        25
+      ],
+      "prediction": "世",
+      "score": 0.51069069,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-019",
+      "target": "6",
+      "credential_box_xyxy": [
+        520,
+        738,
+        549,
+        759
+      ],
+      "crop_shape_hw": [
+        21,
+        29
+      ],
+      "prediction": "1",
+      "score": 0.38627097,
+      "exact": false
+    },
+    {
+      "item_id": "LSAA-VIE-D-021",
+      "target": "14",
+      "credential_box_xyxy": [
+        112,
+        814,
+        149,
+        850
+      ],
+      "crop_shape_hw": [
+        36,
+        37
+      ],
+      "prediction": "C",
+      "score": 0.2518549,
+      "exact": false
+    }
+  ],
+  "wall_seconds": 1.351238,
+  "claim_boundary": "Human credential boxes enter this oracle probe. Results diagnose recognizer capacity only and provide no runtime localization, portal ownership, confirmation, arrival, handoff, deployment, or safety evidence."
+}

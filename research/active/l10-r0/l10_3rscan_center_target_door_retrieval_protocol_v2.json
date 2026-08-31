@@ -1,0 +1,15 @@
+{
+  "schema": "blindassist-l10-3rscan-center-target-door-retrieval-protocol-v2",
+  "base_protocol_path": "l10_3rscan_center_target_door_retrieval_protocol_v1.json",
+  "base_protocol_sha256": "ea8c633f129c457b89c350a3cfbb3e706191023a3c0489f098ba3d9b258328d5",
+  "reason": "The v1 geometry/depth-only freeze found only two eligible targets under a one-target-per-reference-scan rule and opened zero RGB members. V2 changes only the pre-RGB diversity constraint; the 32-pixel visibility contract, target-triple exclusions, model, score and decision gate remain unchanged.",
+  "overrides": {
+    "authority": "TARGET_TRIPLE_DISJOINT_MULTI_TARGET_PROVIDER_TRANSFER_DEVELOPMENT",
+    "question": "Does the frozen 3D Street View center-scale lock retrieve three distinct stable 3RScan doors or doorframes across registered rescans when geometry supplies fully visible proposals and at most two targets may come from one reference scan?",
+    "frozen_cohort": {
+      "selection_order": "Use candidate_protocol rows in its frozen descending area_proxy order. Exclude every exact consumed target triple; require a unique physical (reference_scan_id, target_instance_id) within this cohort; permit at most two selected targets per reference_scan_id; select the first three rows whose reference and rescan both pass the unchanged frame_rules. Pose, depth and instance geometry may be read during freeze; RGB members must remain unopened until replay.",
+      "maximum_targets_per_reference_scan": 2
+    },
+    "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed stable indoor 3RScan door or doorframe instances. 3RScan mesh, pose, depth, RGB and semantic labels come from one provider; target triples are disjoint from the four enumerated prior cohorts, but up to two targets may share one reference scan and scan families may have appeared in prior Development; proposals use privileged reconstructed geometry; and only three physical targets are tested. It is not door detection, pixel-mask transfer, doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+  }
+}

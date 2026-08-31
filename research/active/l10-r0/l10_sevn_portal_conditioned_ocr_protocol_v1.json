@@ -1,0 +1,104 @@
+{
+  "schema": "blindassist-l10-sevn-portal-conditioned-ocr-protocol-v1",
+  "name": "L10 SEVN portal-conditioned OCR fresh PAN Development",
+  "question": "When frozen V2 cannot read the requested house number, can a portal-conditioned credential observation recover exact text and correct door binding on forty fresh addresses without overriding any V2 proposal?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr.py",
+    "sha256": "95a8e5cfb649be1b24afbe3616da76170e8c4f3312510b88f185ed7b9ca30995"
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json",
+      "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_truth_v1.json",
+      "sha256": "2200843f24ed7ebc4358262ebf5ea3aa68aa4c8ba85a505e79bdf5ba1f3652d4"
+    },
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_protocol_v1.json",
+      "sha256": "f68407273aa3145e3c78218657492b1084186128d983480dbade5e50e5dd90be"
+    },
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_panel.py",
+      "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_selection_receipt_v1.json",
+      "sha256": "deb3b64fdd055f64bb5a39e627ade38fe5618c08f5ab43ddf7ec367dd7610a3d"
+    },
+    "reference_public_sources": [
+      {
+        "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      }
+    ],
+    "v2_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "v2_evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    }
+  },
+  "cohort": {
+    "episodes_per_scenario": 20,
+    "episode_count": 40,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY"
+    ],
+    "disjointness": "No address or panorama frame may overlap either earlier SEVN panel; no frame may be reused across fresh episodes."
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.13.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime-gpu": "1.26.0",
+      "opencv-python": "4.10.0.84",
+      "numpy": "2.4.6"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "ocr_backend": "RapidOCR through ONNX Runtime using the frozen PP-OCRv6 model files",
+    "comparison_note": "Both arms run in this same frozen successor runtime. The baseline arm preserves the V2 code and pixel contract by hash; it is a contemporaneous comparator rather than a claim that the older package environment was recreated."
+  },
+  "successor_observation": {
+    "trigger": "Run only when the V2 baseline state is UNKNOWN_TARGET_TEXT and at least one V2 portal mask survives.",
+    "maximum_portals": 6,
+    "portal_order": "Descending frozen portal confidence, then stable candidate ID.",
+    "credential_region": "Reuse the V2 adaptive upper-mask association neighborhood: mask x bounds plus the frozen horizontal radius, and mask top through the frozen upper cutoff plus the frozen vertical radius.",
+    "canonical_long_side_pixels": 1280,
+    "maximum_magnification": 4.0,
+    "minimum_crop_side_pixels": 16,
+    "resize": "Aspect-preserving bicubic resize to a canonical 1280-pixel long side, capped at four times magnification; map OCR polygons back into the original viewport.",
+    "recognizer": "Reuse the exact frozen PP-OCRv6 weights, minimum score 0.5, exact alphanumeric token equality, and deduplication contract from V2.",
+    "binding": "Join recovered exact tokens to the unchanged V2 portal masks with the unchanged upper-mask topology and truth-blind ranking.",
+    "asymmetry": "Never run the new branch after a V2 proposal or a V2 exact-token topology failure. Never replace, rerank, or revoke a baseline proposal."
+  },
+  "representation_boundary": "The only algorithmic change is a deficit-triggered portal-conditioned OCR observation field. Renderer, prescribed actions, public mission, OCR weights, exact-token threshold, portal weights and postprocessor, masks, association topology, evaluator truth projection, and correctness rules stay fixed. No text super-resolution generator, language correction, target-conditioned hallucination, new detector, or evaluator label enters inference.",
+  "gate": {
+    "episode_count": 40,
+    "minimum_truth_visible_house_number_opportunities": 36,
+    "minimum_successor_visible_text_exact_ocr_rate": 0.75,
+    "minimum_exact_ocr_rate_gain": 0.1,
+    "minimum_correct_binding_gain": 4,
+    "maximum_successor_wrong_bindings": 2,
+    "maximum_wrong_binding_delta": 1,
+    "retain_all_baseline_correct_bindings": true,
+    "require_all_disjointness_checks": true
+  },
+  "execution_rule": "Freeze source, evaluator, runtime, parameters, hashes, metrics, and gates before opening any selected panorama member. Run one output-bearing invocation. Do not tune crops, limits, scale, OCR, topology, models, gates, cohort, or runtime after observing results.",
+  "output": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr_result_v1.json",
+  "non_claims": [
+    "The fresh panel is same-source SEVN and PAN-only; it does not confirm a new city, new provider, or APPROACH behavior.",
+    "The evaluator prescribes the action and supplies door/text truth only after both runtime outputs are sealed in memory.",
+    "An exact house-number-to-mask proposal is not portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety evidence.",
+    "A failed gate closes only this frozen portal-conditioned observation representation on this cohort; it does not make UNKNOWN negative evidence."
+  ]
+}

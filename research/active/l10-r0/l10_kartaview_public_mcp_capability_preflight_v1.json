@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist-l10-kartaview-public-mcp-capability-preflight-v1",
+  "decision": "L10_KARTAVIEW_PUBLIC_MCP_SOURCE_SIDE_VISIBILITY_AUTHORITY_NOT_ADMITTED",
+  "reviewed_at": "2026-08-31",
+  "question": "Can the official public KartaView MCP provide source-side sign or object visibility evidence before another pixel cohort is opened?",
+  "official_sources": [
+    "https://kartaview.org/doc/faq",
+    "https://github.com/kartaview/mcp-karta-view"
+  ],
+  "pinned_source": {
+    "remote": "https://github.com/kartaview/mcp-karta-view.git",
+    "commit": "37ac5c062c9ace66bcc540086236127a3fb86bf0",
+    "commit_time": "2025-06-13T12:18:11+08:00",
+    "subject": "Update limit argument",
+    "local_read_only_review_path": "E:/codex-tools/src/mcp-karta-view",
+    "checkout_state": "DETACHED_CLEAN",
+    "dependency_install_performed": false,
+    "mcp_server_started": false
+  },
+  "reviewed_files": [
+    {
+      "path": "README.md",
+      "bytes": 1087,
+      "sha256": "c3a8512a69590ba62537b76f5d7ac4419b144e0411cf86fc0516351029ba1445"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 759,
+      "sha256": "dce69a9d7a31330b25521ef89645936f23b9cc5864380839e4a0d442b3fcba30"
+    },
+    {
+      "path": "src/mcp_karta_view/__init__.py",
+      "bytes": 2842,
+      "sha256": "1743df4f1a28f77a010040a742a28883b61dfbbac09ae3c7617cc7f142689a04"
+    },
+    {
+      "path": "src/mcp_karta_view/karta_view_client.py",
+      "bytes": 4684,
+      "sha256": "f60e7794b9627101364fdad092179b05f3b8d4f553e955728966102d41c3eaa3"
+    },
+    {
+      "path": "src/mcp_karta_view/models.py",
+      "bytes": 3170,
+      "sha256": "9814003d150e63a0dbc4d6b83b28951899219bd21f1eb93b7a2f4ca9aef56de0"
+    },
+    {
+      "path": "src/mcp_karta_view/config.py",
+      "bytes": 127,
+      "sha256": "47ccfb61f5c08ebe059de14ab3c62b2e61d2b6fd74ea8e48e48862b91bc9e79b"
+    }
+  ],
+  "capability_findings": {
+    "nearby_photos": {
+      "public_without_token": true,
+      "endpoint": "https://api.openstreetcam.org/2.0/photo/",
+      "selection_basis": "latitude, longitude, radius, ordering, and sequence join",
+      "visibility_authority": "NONE",
+      "reason": "It returns geometrically nearby photos and sequence metadata, but no sign, storefront, facade, or target-object detection evidence."
+    },
+    "object_search": {
+      "public_without_token": false,
+      "endpoint": "https://karta-gateway.geo.azure.myteksi.net/view/service/kartaview_service/v1/photos:search",
+      "required_header": "x-karta-token",
+      "source_behavior_without_token": "Returns ObjectSearchResponse with an empty photo list and error KartaView token is required before dispatch.",
+      "potential_response_fields": [
+        "id",
+        "sequenceId",
+        "sequenceIndex",
+        "cdnFilePath",
+        "geometry",
+        "imageViewEqCenter",
+        "imageViewFov"
+      ],
+      "visibility_authority": "UNAVAILABLE_WITHOUT_USER_OWNED_KARTAVIEW_CREDENTIAL"
+    }
+  },
+  "admission_result": {
+    "admitted": false,
+    "reason": "The only public callable branch is the same geometric-nearby mechanism already falsified by the frozen Jakarta visual audit. The object-conditioned branch requires a user-owned token that was neither supplied nor requested.",
+    "jakarta_rows_reopened": false,
+    "new_kartaview_cohort_opened": false,
+    "network_model_or_algorithm_calls": 0
+  },
+  "claim_boundary": {
+    "allowed": "Source-code capability preflight and a decision not to spend another cohort on public geometric proximity alone.",
+    "not_allowed": [
+      "claiming that object_search was executed or that a KartaView token is available",
+      "claiming target facade, sign, portal, entrance, access, waypoint, arrival, handoff, benefit, or safety evidence"
+    ]
+  }
+}

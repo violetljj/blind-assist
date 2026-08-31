@@ -1,0 +1,1155 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-fresh-confirmation-result-v1",
+  "decision": "L10_PANOLAB_FRESH_DISTINCTIVE_EDIT_TOKEN_CONFIRMATION_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "PIXEL_AND_OCR_UNSEEN_TARGET_WAY_ITEM_DISJOINT_SAME_PROVIDER_DEVELOPMENT_LEXICAL_ROUTING_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_distinctive_token_fresh_confirmation_protocol_v1.json",
+  "protocol_sha256": "6fa862b9d5b21fdeca6c80de1cf5f37d1eb4b3bb1982a9f714e65c786e458bcf",
+  "evaluator_sha256": "84ebe574b9d61fa8253775216eea476d2c8186d41e93c4dc2722ace237e13e99",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.3.5",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "pixel_and_ocr_unseen_episodes": 2,
+    "producer_strata": 2,
+    "query_frames": 6,
+    "target_roster": 13,
+    "lexical_correct_wrong_no_match_ambiguous": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "positive_coverage": 0.5,
+    "wrong_target_lexical_trials": 24,
+    "wrong_target_lexical_matches": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 20.129648
+  },
+  "gate": {
+    "two_valid_fresh_sequences_evaluated": true,
+    "two_producer_strata": true,
+    "six_query_frames": true,
+    "two_of_two_unique_correct": false,
+    "zero_wrong": true,
+    "zero_unknown": false,
+    "zero_wrong_target_lexical_matches": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "DF01",
+      "producer_stratum": "nlehuby",
+      "source_city": "Caen",
+      "target_way_id": 155629527,
+      "target_name": "Monoprix",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "frames": [
+        {
+          "frame_key": "DF01_prev",
+          "relation": "prev",
+          "panorama_item_id": "b47643ad-970c-4397-b45c-8bbc98d7fa83",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "b47643ad-970c-4397-b45c-8bbc98d7fa83",
+            "entrance_node_id": 7449055371,
+            "camera_lon_lat": [
+              -0.361134951,
+              49.181311926
+            ],
+            "entrance_lon_lat": [
+              -0.36122,
+              49.1813025
+            ],
+            "initial_bearing_degrees": 260.376971,
+            "view_azimuth_degrees": 314.0,
+            "relative_viewer_yaw_degrees": 306.376971,
+            "raw_x_degrees": 126.376971,
+            "raw_x_pixels": 2022.031541,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "b47643ad-970c-4397-b45c-8bbc98d7fa83",
+              "view_azimuth_degrees": 314.0,
+              "camera_native_heading_degrees": 314.0824910820452,
+              "heading_circular_difference_degrees": 0.082491,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 2022.031541,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "34a494bc0fcfa056a8cc53113d40b3d99ee86b25bd8e0e8b42b24cedf1cbe1c0"
+          },
+          "ocr": {
+            "row_count": 2,
+            "seconds": 2.458121,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "Parking",
+              "ascii_tokens": [
+                "parking"
+              ],
+              "score": 0.99999434,
+              "box_xyxy": [
+                310.0,
+                211.0,
+                595.0,
+                447.0
+              ]
+            },
+            {
+              "text": "Bisto",
+              "ascii_tokens": [
+                "bisto"
+              ],
+              "score": 0.90525502,
+              "box_xyxy": [
+                1159.0,
+                659.0,
+                1182.0,
+                674.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "DF01_anchor",
+          "relation": "anchor",
+          "panorama_item_id": "677c81ef-4177-4994-a07b-1a2c3d3a1720",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "677c81ef-4177-4994-a07b-1a2c3d3a1720",
+            "entrance_node_id": 7449055371,
+            "camera_lon_lat": [
+              -0.361159544,
+              49.18132716
+            ],
+            "entrance_lon_lat": [
+              -0.36122,
+              49.1813025
+            ],
+            "initial_bearing_degrees": 238.035136,
+            "view_azimuth_degrees": 313.0,
+            "relative_viewer_yaw_degrees": 285.035136,
+            "raw_x_degrees": 105.035136,
+            "raw_x_pixels": 1680.562168,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "677c81ef-4177-4994-a07b-1a2c3d3a1720",
+              "view_azimuth_degrees": 313.0,
+              "camera_native_heading_degrees": 313.27432520679145,
+              "heading_circular_difference_degrees": 0.274325,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 1680.562168,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "24dcb182ab63750be6040c7202eb336a2e2661ec928b89ebf700f185b7f7ddd2"
+          },
+          "ocr": {
+            "row_count": 2,
+            "seconds": 2.680422,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "arking",
+              "ascii_tokens": [
+                "arking"
+              ],
+              "score": 0.9999873,
+              "box_xyxy": [
+                111.0,
+                337.0,
+                425.0,
+                449.0
+              ]
+            },
+            {
+              "text": "GILBERT.I",
+              "ascii_tokens": [
+                "gilbert",
+                "i"
+              ],
+              "score": 0.85627204,
+              "box_xyxy": [
+                1388.0,
+                581.0,
+                1440.0,
+                604.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "DF01_next",
+          "relation": "next",
+          "panorama_item_id": "f4d0cedc-7faa-4bd7-8020-4b2b0f67ef96",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "f4d0cedc-7faa-4bd7-8020-4b2b0f67ef96",
+            "entrance_node_id": 7449055371,
+            "camera_lon_lat": [
+              -0.361182285,
+              49.181341862
+            ],
+            "entrance_lon_lat": [
+              -0.36122,
+              49.1813025
+            ],
+            "initial_bearing_degrees": 212.059601,
+            "view_azimuth_degrees": 328.0,
+            "relative_viewer_yaw_degrees": 244.059601,
+            "raw_x_degrees": 64.059601,
+            "raw_x_pixels": 1024.953609,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "f4d0cedc-7faa-4bd7-8020-4b2b0f67ef96",
+              "view_azimuth_degrees": 328.0,
+              "camera_native_heading_degrees": 327.54423841059605,
+              "heading_circular_difference_degrees": 0.455762,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 1024.953609,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "108b4417cd7c83405021d31efd81df5282f23736fa720ea83ca30362b6fee818"
+          },
+          "ocr": {
+            "row_count": 3,
+            "seconds": 2.630002,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "MON",
+              "ascii_tokens": [
+                "mon"
+              ],
+              "score": 0.99811912,
+              "box_xyxy": [
+                0.0,
+                0.0,
+                671.0,
+                308.0
+              ]
+            },
+            {
+              "text": "king",
+              "ascii_tokens": [
+                "king"
+              ],
+              "score": 0.89052403,
+              "box_xyxy": [
+                278.0,
+                409.0,
+                449.0,
+                508.0
+              ]
+            },
+            {
+              "text": "elle",
+              "ascii_tokens": [
+                "elle"
+              ],
+              "score": 0.99993032,
+              "box_xyxy": [
+                364.0,
+                693.0,
+                396.0,
+                716.0
+              ]
+            }
+          ]
+        }
+      ],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": [],
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "DF02",
+      "producer_stratum": "Nzau",
+      "source_city": "Caen",
+      "target_way_id": 155635139,
+      "target_name": "Maison de Quartier Chemin Vert",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "frames": [
+        {
+          "frame_key": "DF02_prev",
+          "relation": "prev",
+          "panorama_item_id": "6a547c5e-ee6f-4158-8688-132c5c138ce1",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "6a547c5e-ee6f-4158-8688-132c5c138ce1",
+            "entrance_node_id": 12584936870,
+            "camera_lon_lat": [
+              -0.39165863,
+              49.192599244
+            ],
+            "entrance_lon_lat": [
+              -0.3917026,
+              49.1926523
+            ],
+            "initial_bearing_degrees": 331.559993,
+            "view_azimuth_degrees": 157.0,
+            "relative_viewer_yaw_degrees": 174.559993,
+            "raw_x_degrees": 354.559993,
+            "raw_x_pixels": 5672.959886,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "6a547c5e-ee6f-4158-8688-132c5c138ce1",
+              "view_azimuth_degrees": 157.0,
+              "camera_native_heading_degrees": 156.866848593206,
+              "heading_circular_difference_degrees": 0.133151,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5672.959886,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "f740d1416172cf3a85939cc9a8aa71a2afa239e8166edb49f2d25d1cd3dd29f5"
+          },
+          "ocr": {
+            "row_count": 8,
+            "seconds": 3.107174,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "Maron",
+              "ascii_tokens": [
+                "maron"
+              ],
+              "score": 0.63853079,
+              "box_xyxy": [
+                82.0,
+                797.0,
+                137.0,
+                821.0
+              ]
+            },
+            {
+              "text": "on Quazbe",
+              "ascii_tokens": [
+                "on",
+                "quazbe"
+              ],
+              "score": 0.56440556,
+              "box_xyxy": [
+                97.0,
+                813.0,
+                169.0,
+                845.0
+              ]
+            },
+            {
+              "text": "三",
+              "ascii_tokens": [],
+              "score": 0.51584214,
+              "box_xyxy": [
+                543.0,
+                811.0,
+                596.0,
+                845.0
+              ]
+            },
+            {
+              "text": "bytremn vent",
+              "ascii_tokens": [
+                "bytremn",
+                "vent"
+              ],
+              "score": 0.77364951,
+              "box_xyxy": [
+                79.0,
+                833.0,
+                164.0,
+                864.0
+              ]
+            },
+            {
+              "text": "Maison",
+              "ascii_tokens": [
+                "maison"
+              ],
+              "score": 0.98755318,
+              "box_xyxy": [
+                509.0,
+                838.0,
+                567.0,
+                863.0
+              ]
+            },
+            {
+              "text": "Qurlo",
+              "ascii_tokens": [
+                "qurlo"
+              ],
+              "score": 0.65712345,
+              "box_xyxy": [
+                525.0,
+                855.0,
+                590.0,
+                875.0
+              ]
+            },
+            {
+              "text": "pu chemin-vert",
+              "ascii_tokens": [
+                "pu",
+                "chemin",
+                "vert"
+              ],
+              "score": 0.95124817,
+              "box_xyxy": [
+                508.0,
+                872.0,
+                590.0,
+                894.0
+              ]
+            },
+            {
+              "text": "1",
+              "ascii_tokens": [
+                "1"
+              ],
+              "score": 0.1973722,
+              "box_xyxy": [
+                1043.0,
+                909.0,
+                1060.0,
+                920.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "DF02_anchor",
+          "relation": "anchor",
+          "panorama_item_id": "ca9065f6-aa73-4468-b33e-bf7fbb0364a6",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "ca9065f6-aa73-4468-b33e-bf7fbb0364a6",
+            "entrance_node_id": 12584936870,
+            "camera_lon_lat": [
+              -0.391641357,
+              49.192572822
+            ],
+            "entrance_lon_lat": [
+              -0.3917026,
+              49.1926523
+            ],
+            "initial_bearing_degrees": 333.271179,
+            "view_azimuth_degrees": 148.0,
+            "relative_viewer_yaw_degrees": 185.271179,
+            "raw_x_degrees": 5.271179,
+            "raw_x_pixels": 84.338859,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "ca9065f6-aa73-4468-b33e-bf7fbb0364a6",
+              "view_azimuth_degrees": 148.0,
+              "camera_native_heading_degrees": 148.009900990099,
+              "heading_circular_difference_degrees": 0.009901,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 84.338859,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "f50361941b74004599fcf25b65cbf494f2449117c51d16632864b9b415fd2081"
+          },
+          "ocr": {
+            "row_count": 6,
+            "seconds": 2.888425,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "niror",
+              "ascii_tokens": [
+                "niror"
+              ],
+              "score": 0.52350527,
+              "box_xyxy": [
+                130.0,
+                811.0,
+                168.0,
+                832.0
+              ]
+            },
+            {
+              "text": "e ",
+              "ascii_tokens": [
+                "e"
+              ],
+              "score": 0.4569906,
+              "box_xyxy": [
+                131.0,
+                823.0,
+                199.0,
+                849.0
+              ]
+            },
+            {
+              "text": "Mabon",
+              "ascii_tokens": [
+                "mabon"
+              ],
+              "score": 0.72083783,
+              "box_xyxy": [
+                478.0,
+                839.0,
+                520.0,
+                859.0
+              ]
+            },
+            {
+              "text": "11.1",
+              "ascii_tokens": [
+                "11",
+                "1"
+              ],
+              "score": 0.63129592,
+              "box_xyxy": [
+                103.0,
+                853.0,
+                156.0,
+                887.0
+              ]
+            },
+            {
+              "text": "Cunta",
+              "ascii_tokens": [
+                "cunta"
+              ],
+              "score": 0.52097315,
+              "box_xyxy": [
+                491.0,
+                851.0,
+                539.0,
+                864.0
+              ]
+            },
+            {
+              "text": "cu c",
+              "ascii_tokens": [
+                "cu",
+                "c"
+              ],
+              "score": 0.43221843,
+              "box_xyxy": [
+                476.0,
+                862.0,
+                538.0,
+                880.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "DF02_next",
+          "relation": "next",
+          "panorama_item_id": "a7e6deb3-d66c-4014-82ac-70091c2b17e8",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "a7e6deb3-d66c-4014-82ac-70091c2b17e8",
+            "entrance_node_id": 12584936870,
+            "camera_lon_lat": [
+              -0.391622395,
+              49.192552985
+            ],
+            "entrance_lon_lat": [
+              -0.3917026,
+              49.1926523
+            ],
+            "initial_bearing_degrees": 332.1763,
+            "view_azimuth_degrees": 151.0,
+            "relative_viewer_yaw_degrees": 181.1763,
+            "raw_x_degrees": 1.1763,
+            "raw_x_pixels": 18.820807,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "a7e6deb3-d66c-4014-82ac-70091c2b17e8",
+              "view_azimuth_degrees": 151.0,
+              "camera_native_heading_degrees": 150.63988017712947,
+              "heading_circular_difference_degrees": 0.36012,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 18.820807,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "6c9fae13a010dee12c2bfa44cae777644a27de46486df7c6cb1e4898254d6928"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 2.739696,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": []
+        }
+      ],
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": true,
+          "tier": "DISTINCTIVE_EXACT_OR_ONE_EDIT_TOKEN_BANK",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [
+            "maison",
+            "chemin"
+          ],
+          "distinctive_evidence_units": 2,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {
+            "maison": [
+              {
+                "frame_key": "DF02_prev",
+                "panorama_item_id": "6a547c5e-ee6f-4158-8688-132c5c138ce1",
+                "ocr_text": "Maison",
+                "ocr_score": 0.98755318,
+                "observed_form": "maison",
+                "edit_distance": 0,
+                "match_kind": "EXACT",
+                "box_xyxy": [
+                  509.0,
+                  838.0,
+                  567.0,
+                  863.0
+                ]
+              }
+            ],
+            "chemin": [
+              {
+                "frame_key": "DF02_prev",
+                "panorama_item_id": "6a547c5e-ee6f-4158-8688-132c5c138ce1",
+                "ocr_text": "pu chemin-vert",
+                "ocr_score": 0.95124817,
+                "observed_form": "chemin",
+                "edit_distance": 0,
+                "match_kind": "EXACT",
+                "box_xyxy": [
+                  508.0,
+                  872.0,
+                  590.0,
+                  894.0
+                ]
+              }
+            ]
+          },
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "UNIQUE_OWN_TARGET_MATCH",
+        "matched_targets": [
+          "DF02"
+        ],
+        "candidate": "DF02",
+        "wrong_target_matches": [],
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Fresh same-provider Development evidence about whether the fixed conservative distinctive-token branch transfers to exactly two target-way/item-disjoint, pixel- and OCR-unseen targets across two capture producers in a thirteen-target closed roster.",
+    "not_allowed": [
+      "independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, distribution-shift, deployment, or safety confirmation",
+      "OCR name evidence proving exact physical identity, sign-to-building association, facade ownership, portal ownership, or entrance ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or deployment performance"
+    ]
+  }
+}

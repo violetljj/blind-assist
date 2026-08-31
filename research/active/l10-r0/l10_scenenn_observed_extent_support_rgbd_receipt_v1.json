@@ -1,0 +1,153 @@
+{
+  "schema": "blindassist-l10-scenenn-observed-extent-support-rgbd-receipt-v1",
+  "authority": "POST_COHORT_FREEZE_SPARSE_RGBD_RECEIPT",
+  "cohort_path": "l10_scenenn_observed_extent_support_cohort_v1.json",
+  "cohort_sha256": "38981c8940927b44202b3afea7be70fcf8e077615f039efb1ad532c18ad7c817",
+  "extractor_executable": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\tools\\bin\\ExtractSelectedSync.exe",
+  "extractor_sha256": "c867b8316dce9a3d000ff42abab2cca2891b1b4710f1697be60041c4987ac372",
+  "extractor_source_path": "l10_scenenn_extract_selected_sync.cpp",
+  "extractor_source_sha256": "33ffdc6b45ef939e925b55b6f6f0702435a2b1cfa172617402273a1ba72739e2",
+  "extraction_summary": {
+    "scanned": 7346,
+    "discarded_depth": 1368,
+    "discarded_color": 1,
+    "requested": 8,
+    "saved": 8
+  },
+  "oni": {
+    "path": "payload/096/096.oni",
+    "bytes": 1780153955,
+    "sha256": "9547f542a84e1db020471539a85fa4737eaae8d422da81240d3509ce86e6fffc",
+    "md5": "d8ef54d952db0ea68005d8b2d7928f0d"
+  },
+  "sealed_frames": {
+    "4830": {
+      "trajectory_frame": 4830,
+      "timestamp": {
+        "trajectory_frame": 4830,
+        "playback_index": 4831,
+        "color_timestamp": 193353804,
+        "depth_timestamp": 193352516,
+        "color_frame_id": 4833,
+        "depth_frame_id": 5754
+      },
+      "image_path": "payload/096/selected/image/frame.4830.png",
+      "image_sha256": "3e0932f7746df389b3a2964d1faf2baca6079565a4d31eb8d1785b487fe4b384",
+      "depth_path": "payload/096/selected/depth/frame.4830.png",
+      "depth_sha256": "a3216977489e1f8f9360ed07212cd6ac93cbc408c8255f7a99c29423ee974aba",
+      "valid_depth_fraction": 0.8853678385416667
+    },
+    "5285": {
+      "trajectory_frame": 5285,
+      "timestamp": {
+        "trajectory_frame": 5285,
+        "playback_index": 5286,
+        "color_timestamp": 211620024,
+        "depth_timestamp": 211620259,
+        "color_frame_id": 5288,
+        "depth_frame_id": 6299
+      },
+      "image_path": "payload/096/selected/image/frame.5285.png",
+      "image_sha256": "3662f7d46b1215f45df54afd16e1eb78f86d45770b5f1f29a0b41b0f04a970da",
+      "depth_path": "payload/096/selected/depth/frame.5285.png",
+      "depth_sha256": "231491f796ba7a832672b9b04a4be59affbed785871cb5ea90a98c0e31da857c",
+      "valid_depth_fraction": 0.8812662760416666
+    },
+    "5775": {
+      "trajectory_frame": 5775,
+      "timestamp": {
+        "trajectory_frame": 5775,
+        "playback_index": 5776,
+        "color_timestamp": 231427980,
+        "depth_timestamp": 231428259,
+        "color_frame_id": 5778,
+        "depth_frame_id": 6878
+      },
+      "image_path": "payload/096/selected/image/frame.5775.png",
+      "image_sha256": "09bcb11b9561283962bd2cf1e99d754b422118e40ba5106535459892ef751139",
+      "depth_path": "payload/096/selected/depth/frame.5775.png",
+      "depth_sha256": "4d7717964019efef0e2e19a5389240d940fb2e3a091b35654f46045dcfa07d1d",
+      "valid_depth_fraction": 0.8889290364583333
+    },
+    "6830": {
+      "trajectory_frame": 6830,
+      "timestamp": {
+        "trajectory_frame": 6830,
+        "playback_index": 6831,
+        "color_timestamp": 273557592,
+        "depth_timestamp": 273557461,
+        "color_frame_id": 6833,
+        "depth_frame_id": 8134
+      },
+      "image_path": "payload/096/selected/image/frame.6830.png",
+      "image_sha256": "059b9f983ae144d0778f13fc0e03c374f8141925913f3ad83bb3b544cbeb72b0",
+      "depth_path": "payload/096/selected/depth/frame.6830.png",
+      "depth_sha256": "15ebe89544cbf1ce269b2e2e0532f2ff9ab61aaf2d932934e12a3c3194d5e1f7",
+      "valid_depth_fraction": 0.87720703125
+    },
+    "6955": {
+      "trajectory_frame": 6955,
+      "timestamp": {
+        "trajectory_frame": 6955,
+        "playback_index": 6956,
+        "color_timestamp": 278484444,
+        "depth_timestamp": 278482743,
+        "color_frame_id": 6958,
+        "depth_frame_id": 8281
+      },
+      "image_path": "payload/096/selected/image/frame.6955.png",
+      "image_sha256": "979bac153da74b051a1d504dda31b31a4085f4151b16f9b80785d4b54e3eb20a",
+      "depth_path": "payload/096/selected/depth/frame.6955.png",
+      "depth_sha256": "2d2dbb22749410734a622724e82ae40555324ec79df0399e321f734fe0776154",
+      "valid_depth_fraction": 0.8814518229166667
+    },
+    "7095": {
+      "trajectory_frame": 7095,
+      "timestamp": {
+        "trajectory_frame": 7095,
+        "playback_index": 7096,
+        "color_timestamp": 283981068,
+        "depth_timestamp": 283978954,
+        "color_frame_id": 7098,
+        "depth_frame_id": 8445
+      },
+      "image_path": "payload/096/selected/image/frame.7095.png",
+      "image_sha256": "c47060194090bc07a2643c1efea66eef556e3bd41f911fe2ae0e3a7e4dc26bf2",
+      "depth_path": "payload/096/selected/depth/frame.7095.png",
+      "depth_sha256": "77ba9f017d493835107075577fe1d2a218c33f0a9dff76d31ca4bee5d92c328d",
+      "valid_depth_fraction": 0.897529296875
+    },
+    "7335": {
+      "trajectory_frame": 7335,
+      "timestamp": {
+        "trajectory_frame": 7335,
+        "playback_index": 7336,
+        "color_timestamp": 293901804,
+        "depth_timestamp": 293900416,
+        "color_frame_id": 7338,
+        "depth_frame_id": 8741
+      },
+      "image_path": "payload/096/selected/image/frame.7335.png",
+      "image_sha256": "c883d5b61f773cd71b93f1e08c85d96a77215f8d90335cf22d8a7234a2960759",
+      "depth_path": "payload/096/selected/depth/frame.7335.png",
+      "depth_sha256": "5b3f0c45f65d070667165e77d711994cc30d4c758cce766e1466dc4f57ab08e2",
+      "valid_depth_fraction": 0.8935872395833333
+    },
+    "7345": {
+      "trajectory_frame": 7345,
+      "timestamp": {
+        "trajectory_frame": 7345,
+        "playback_index": 7346,
+        "color_timestamp": 294270480,
+        "depth_timestamp": 294270272,
+        "color_frame_id": 7348,
+        "depth_frame_id": 8752
+      },
+      "image_path": "payload/096/selected/image/frame.7345.png",
+      "image_sha256": "ac0a3e16f3b0979a67ea5c6241227cc942bc9263280611c984ba52f7cf618ee9",
+      "depth_path": "payload/096/selected/depth/frame.7345.png",
+      "depth_sha256": "bec569fe6debd830a53bfabed05f8d2bbb66e92274a3d425dd9f6cd7f5c94448",
+      "valid_depth_fraction": 0.8927473958333333
+    }
+  }
+}

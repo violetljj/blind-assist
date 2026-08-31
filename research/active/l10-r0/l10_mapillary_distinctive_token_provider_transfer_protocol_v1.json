@@ -1,0 +1,103 @@
+{
+  "schema": "blindassist-l10-mapillary-distinctive-token-provider-transfer-protocol-v1",
+  "name": "Mapillary provider/city-disjoint first-OCR transfer of the fixed distinctive-token branch",
+  "status": "FROZEN_BEFORE_FIRST_GOVERNED_OCR_CALL_ON_THE_FOUR_MAPILLARY_IMAGES",
+  "authority": "PROVIDER_AND_CITY_DISJOINT_PREEXISTING_PIXEL_HUMAN_WINDOW_FIRST_OCR_DEVELOPMENT_ONLY",
+  "question": "Does the fixed distinctive-token branch recover at least the two Mapillary targets whose earlier human audit reported visible name credentials, while emitting no wrong target in a seventeen-target roster?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_mapillary_distinctive_token_provider_transfer.py",
+    "sha256": "7d363c87931dbd728397d4c3ff505fb8bba24cd2bfa919d41cdc53d4b4a4da46",
+    "bytes": 9568
+  },
+  "inputs": {
+    "mapillary_source": {
+      "path": "research/active/l10-r0/l10_mapillary_distinctive_token_source_v1.json",
+      "sha256": "786a22fe7a233d0f3b2355ee7ed8315699bc28aff4c4c980a13d1dd45754343a",
+      "bytes": 6068
+    },
+    "successor_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc_protocol_v1.json",
+      "sha256": "5807c0b4fd9622aac7d2f1402d0bbd2ddc2cb1d9911ade023a9311fdd2ddf65a",
+      "bytes": 6004
+    },
+    "fresh_panolab_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_combined_router_result_v1.json",
+      "sha256": "2856134e8d7f37b37dad0c68db93d74a4f5edbfb3e16f07d45c1172ee610e18c",
+      "bytes": 63848
+    },
+    "frozen_ocr_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_protocol_v1.json",
+      "sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+      "bytes": 10357
+    }
+  },
+  "runtime": {
+    "versions": {
+      "python": "3.11.9",
+      "numpy": "2.3.5",
+      "opencv-python": "4.10.0.84",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "onnxruntime-gpu": "1.26.0"
+    }
+  },
+  "evaluated_episodes": ["MR01", "MR02", "MR03", "MR04"],
+  "target_roster": [
+    {"episode_id": "FL01", "entity_name": "Espace Village"},
+    {"episode_id": "FL02", "entity_name": "Le Viviani"},
+    {"episode_id": "FL03", "entity_name": "Gare de Neuilly - Porte Maillot"},
+    {"episode_id": "FL04", "entity_name": "Église Notre-Dame de la Délivrande"},
+    {"episode_id": "FP01", "entity_name": "Rumillat"},
+    {"episode_id": "FP02", "entity_name": "Halle Rebatet"},
+    {"episode_id": "CF01", "entity_name": "Euromaster"},
+    {"episode_id": "CF02", "entity_name": "Bibliothèque de Caen - Maladrerie"},
+    {"episode_id": "PS01", "entity_name": "Département du Calvados - Direction de la Culture"},
+    {"episode_id": "PS02", "entity_name": "Crèche des Petits Lutins"},
+    {"episode_id": "PS03", "entity_name": "Église Saint-Pierre"},
+    {"episode_id": "DF01", "entity_name": "Monoprix"},
+    {"episode_id": "DF02", "entity_name": "Maison de Quartier Chemin Vert"},
+    {"episode_id": "MR01", "entity_name": "Markthal Rotterdam"},
+    {"episode_id": "MR02", "entity_name": "Oude Kerk"},
+    {"episode_id": "MR03", "entity_name": "Ontmoetingskerk"},
+    {"episode_id": "MR04", "entity_name": "PKN Kievitkerk"}
+  ],
+  "name_token_contract": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": ["a", "an", "and", "d", "de", "du", "l", "la", "le", "les", "the"]
+  },
+  "distinctive_edit_token_contract": {
+    "minimum_ocr_row_score": 0.9,
+    "minimum_target_token_length": 6,
+    "maximum_edit_distance": 1,
+    "apostrophe_or_token_fragment_rule": "For a row with two or three normalized tokens, also test their concatenation; this converts p + tits to ptits without changing OCR text.",
+    "long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "evidence_weighting": "Each distinct matched target token of length 6-7 contributes one unit; length >=8 contributes two units. A target matches at two units.",
+    "uniqueness_rule": "Emit a lexical search-priority candidate only when exactly one target in the frozen seventeen-target roster matches.",
+    "association": "Exact or Levenshtein-distance-one normalized token evidence only within one human-window-conditioned Mapillary observation.",
+    "authority": "Search-priority candidate only; no token, sign, facade, entity, portal, entrance, access, waypoint, arrival, or safety authority."
+  },
+  "gate": {
+    "required_mapillary_sequences": 4,
+    "required_cities": 2,
+    "minimum_correct": 2,
+    "maximum_wrong": 0,
+    "maximum_ambiguous": 0,
+    "maximum_wrong_target_matches": 0,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_MAPILLARY_DISTINCTIVE_EDIT_TOKEN_PROVIDER_TRANSFER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_MAPILLARY_DISTINCTIVE_EDIT_TOKEN_PROVIDER_TRANSFER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run once. Preserve UNKNOWN on Oude Kerk or PKN Kievitkerk if the frozen minimum token length or observation reachability does not authorize a match; do not tune after result.",
+  "output": "research/active/l10-r0/l10_mapillary_distinctive_token_provider_transfer_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Provider- and city-disjoint Development evidence about first-OCR transfer of the fixed distinctive-token referent-candidate branch on four previously human-reviewed, human-window-conditioned Mapillary images.",
+    "not_allowed": [
+      "pixel-unseen, active-sequence, automatic entrance-ray, independent portal, full combined-router, open-world, conformal, FDR-controlled, deployment, or safety confirmation",
+      "OCR evidence proving exact entity identity, sign-to-building association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

@@ -1,0 +1,2127 @@
+{
+  "schema": "blindassist-l10-hiertext-test-unique-referent-span-verifier-result-v1",
+  "decision": "L10_HIERTEXT_TEST_UNIQUE_REFERENT_SPAN_CARRIER_DEVELOPMENT_GATE_MET",
+  "authority": "PREDECLARED_HIERTEXT_TEST_PIXEL_AND_EXHAUSTIVE_WORD_TRUTH_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_hiertext_test_unique_referent_span_verifier_protocol_v1.json",
+  "protocol_sha256": "b654474398568011aef250f2a294a34b5d895b2d2b42aa663fe5473c46ac7193",
+  "evaluator_sha256": "b472cd9dcae5200b1bc357b52956d7c3ae20fe304faf8144dd533613d7f652e6",
+  "ocr_cache": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\l10-hiertext-test-unique-referent-span-verifier-v1\\ocr_cache.json",
+  "ocr_cache_sha256": "22f71d70412adb34538ea939910f4e5aab4482a3887d11cc607f10fb5c307f6f",
+  "metrics": {
+    "images": 30,
+    "positive_queries": 30,
+    "truth_absent_queries": 30,
+    "baseline_correct_wrong_unknown": [
+      11,
+      0,
+      19
+    ],
+    "successor_correct_wrong_unknown": [
+      22,
+      0,
+      8
+    ],
+    "correct_carrier_gain": 11,
+    "baseline_truth_absent_accepts": 0,
+    "successor_truth_absent_accepts": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_gt_only_selected_test_images": true,
+    "minimum_three_correct_carrier_gain": true,
+    "no_wrong_carrier_regression": true,
+    "zero_exhaustive_truth_absent_accepts": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": true
+  },
+  "truth_absent_accepts": {
+    "baseline": [],
+    "successor": []
+  },
+  "rows": [
+    {
+      "image_id": "11b92f587ff91ecf",
+      "target": "platters",
+      "target_display": "PLATTERS",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        136.0,
+        1313.0,
+        466.0,
+        1389.0
+      ],
+      "absent_query": "notorious",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              125.0,
+              1311.0
+            ],
+            [
+              473.0,
+              1303.0
+            ],
+            [
+              475.0,
+              1389.0
+            ],
+            [
+              127.0,
+              1397.0
+            ]
+          ],
+          "text": "PLATTERS",
+          "token": "platters",
+          "confidence": 0.99992,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              125.0,
+              1311.0
+            ],
+            [
+              473.0,
+              1303.0
+            ],
+            [
+              475.0,
+              1389.0
+            ],
+            [
+              127.0,
+              1397.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              123.33333587646484,
+              1310.0
+            ],
+            [
+              476.6666564941406,
+              1302.0
+            ],
+            [
+              478.6666564941406,
+              1390.666748046875
+            ],
+            [
+              125.33333587646484,
+              1398.666748046875
+            ]
+          ],
+          "text": "PLATTERS",
+          "token": "platters",
+          "confidence": 0.99995,
+          "source": "bottom_left",
+          "original_ocr_box": [
+            [
+              123.33333587646484,
+              1310.0
+            ],
+            [
+              476.6666564941406,
+              1302.0
+            ],
+            [
+              478.6666564941406,
+              1390.666748046875
+            ],
+            [
+              125.33333587646484,
+              1398.666748046875
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "120b12168bfc6d2e",
+      "target": "notorious",
+      "target_display": "Notorious",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        488.0,
+        74.0,
+        713.0,
+        113.0
+      ],
+      "absent_query": "employees",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              482.0,
+              67.33333587646484
+            ],
+            [
+              698.0,
+              70.0
+            ],
+            [
+              698.0,
+              122.0
+            ],
+            [
+              481.3333435058594,
+              119.33333587646484
+            ]
+          ],
+          "text": "Notorious",
+          "token": "notorious",
+          "confidence": 0.98751,
+          "source": "top_left",
+          "original_ocr_box": [
+            [
+              482.0,
+              67.33333587646484
+            ],
+            [
+              698.0,
+              70.0
+            ],
+            [
+              698.0,
+              122.0
+            ],
+            [
+              481.3333435058594,
+              119.33333587646484
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "12d34fad84cc7231",
+      "target": "employees",
+      "target_display": "employees'",
+      "target_background_information_bits": 9.779172,
+      "truth_bbox": [
+        509.0,
+        98.0,
+        666.0,
+        127.0
+      ],
+      "absent_query": "cashngun",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "12d5fb117f3e56c2",
+      "target": "cashngun",
+      "target_display": "CAS$H'nGuN$",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        319.0,
+        737.0,
+        597.0,
+        823.0
+      ],
+      "absent_query": "mighty",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "130d29b8604cc08c",
+      "target": "mighty",
+      "target_display": "mighty",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        338.0,
+        759.0,
+        858.0,
+        923.0
+      ],
+      "absent_query": "themselves",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "133dd2537182c920",
+      "target": "themselves",
+      "target_display": "themselves!",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        475.0,
+        447.0,
+        656.0,
+        490.0
+      ],
+      "absent_query": "preposiciones",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              467.11114501953125,
+              442.22222900390625
+            ],
+            [
+              665.3333740234375,
+              441.3333435058594
+            ],
+            [
+              665.3333740234375,
+              500.0
+            ],
+            [
+              467.5555725097656,
+              500.8888854980469
+            ]
+          ],
+          "text": "serve themselves!",
+          "token": "servethemselves",
+          "confidence": 0.99993,
+          "source": "top_right",
+          "original_ocr_box": [
+            [
+              368.0,
+              442.6666564941406
+            ],
+            [
+              665.3333740234375,
+              441.3333435058594
+            ],
+            [
+              665.3333740234375,
+              500.0
+            ],
+            [
+              368.6666564941406,
+              501.3333435058594
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "13602ad466f165d6",
+      "target": "preposiciones",
+      "target_display": "Preposiciones",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        29.0,
+        15.0,
+        353.0,
+        71.0
+      ],
+      "absent_query": "carrington",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              22.0,
+              12.0
+            ],
+            [
+              361.0,
+              12.0
+            ],
+            [
+              361.0,
+              67.0
+            ],
+            [
+              22.0,
+              67.0
+            ]
+          ],
+          "text": "Preposiciones",
+          "token": "preposiciones",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              22.0,
+              12.0
+            ],
+            [
+              361.0,
+              12.0
+            ],
+            [
+              361.0,
+              67.0
+            ],
+            [
+              22.0,
+              67.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              22.0,
+              12.0
+            ],
+            [
+              361.0,
+              12.0
+            ],
+            [
+              361.0,
+              67.0
+            ],
+            [
+              22.0,
+              67.0
+            ]
+          ],
+          "text": "Preposiciones",
+          "token": "preposiciones",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              22.0,
+              12.0
+            ],
+            [
+              361.0,
+              12.0
+            ],
+            [
+              361.0,
+              67.0
+            ],
+            [
+              22.0,
+              67.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "13d393091703dede",
+      "target": "carrington",
+      "target_display": "CARRINGTON,",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        370.0,
+        623.0,
+        1001.0,
+        764.0
+      ],
+      "absent_query": "forecast",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              457.0,
+              639.0
+            ],
+            [
+              1005.0,
+              643.0
+            ],
+            [
+              1004.0,
+              758.0
+            ],
+            [
+              456.0,
+              754.0
+            ]
+          ],
+          "text": "ARRINGTON,",
+          "token": "arrington",
+          "confidence": 0.99986,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              457.0,
+              639.0
+            ],
+            [
+              1005.0,
+              643.0
+            ],
+            [
+              1004.0,
+              758.0
+            ],
+            [
+              456.0,
+              754.0
+            ]
+          ],
+          "match_kind": "EDIT_ONE_TOKEN",
+          "match_rank": 2,
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "13d79fe6aea73be2",
+      "target": "forecast",
+      "target_display": "Forecast",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        22.0,
+        24.0,
+        155.0,
+        48.0
+      ],
+      "absent_query": "crosing",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              20.0,
+              23.33333396911621
+            ],
+            [
+              167.11111450195312,
+              19.77777862548828
+            ],
+            [
+              167.7777862548828,
+              48.4444465637207
+            ],
+            [
+              20.66666603088379,
+              52.0
+            ]
+          ],
+          "text": "Forecast 2010",
+          "token": "forecast2010",
+          "confidence": 0.99927,
+          "source": "top_left",
+          "original_ocr_box": [
+            [
+              20.0,
+              23.33333396911621
+            ],
+            [
+              240.6666717529297,
+              18.0
+            ],
+            [
+              241.3333282470703,
+              46.66666793823242
+            ],
+            [
+              20.66666603088379,
+              52.0
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "145fec6ea1d79acb",
+      "target": "crosing",
+      "target_display": "CROSING!",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        416.0,
+        374.0,
+        1236.0,
+        574.0
+      ],
+      "absent_query": "verpool",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              343.0,
+              379.0
+            ],
+            [
+              1275.0,
+              338.0
+            ],
+            [
+              1285.0,
+              555.0
+            ],
+            [
+              353.0,
+              596.0
+            ]
+          ],
+          "text": "CrOSING!",
+          "token": "crosing",
+          "confidence": 0.89222,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              343.0,
+              379.0
+            ],
+            [
+              1275.0,
+              338.0
+            ],
+            [
+              1285.0,
+              555.0
+            ],
+            [
+              353.0,
+              596.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              343.0,
+              379.0
+            ],
+            [
+              1275.0,
+              338.0
+            ],
+            [
+              1285.0,
+              555.0
+            ],
+            [
+              353.0,
+              596.0
+            ]
+          ],
+          "text": "CrOSING!",
+          "token": "crosing",
+          "confidence": 0.89222,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              343.0,
+              379.0
+            ],
+            [
+              1275.0,
+              338.0
+            ],
+            [
+              1285.0,
+              555.0
+            ],
+            [
+              353.0,
+              596.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "146029ad1a6ea063",
+      "target": "verpool",
+      "target_display": "VERPOOL",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        158.0,
+        163.0,
+        214.0,
+        184.0
+      ],
+      "absent_query": "nelson",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "14611660adef4a3b",
+      "target": "nelson",
+      "target_display": "NELSON",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        290.0,
+        106.0,
+        422.0,
+        142.0
+      ],
+      "absent_query": "audible",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              282.6153869628906,
+              107.38461303710938
+            ],
+            [
+              428.0,
+              100.0
+            ],
+            [
+              430.0,
+              144.0
+            ],
+            [
+              284.6153869628906,
+              150.92308044433594
+            ]
+          ],
+          "text": "THE LORD NE LSON",
+          "token": "thelordnelson",
+          "confidence": 0.90915,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              113.0,
+              116.0
+            ],
+            [
+              428.0,
+              100.0
+            ],
+            [
+              430.0,
+              144.0
+            ],
+            [
+              115.0,
+              159.0
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "14697ebe7b29b3f2",
+      "target": "audible",
+      "target_display": "audible",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        444.0,
+        91.0,
+        610.0,
+        158.0
+      ],
+      "absent_query": "berhad",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              431.0,
+              84.0
+            ],
+            [
+              619.0,
+              75.0
+            ],
+            [
+              623.0,
+              158.0
+            ],
+            [
+              435.0,
+              167.0
+            ]
+          ],
+          "text": "audible",
+          "token": "audible",
+          "confidence": 0.99994,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              431.0,
+              84.0
+            ],
+            [
+              619.0,
+              75.0
+            ],
+            [
+              623.0,
+              158.0
+            ],
+            [
+              435.0,
+              167.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              431.0,
+              84.0
+            ],
+            [
+              619.0,
+              75.0
+            ],
+            [
+              623.0,
+              158.0
+            ],
+            [
+              435.0,
+              167.0
+            ]
+          ],
+          "text": "audible",
+          "token": "audible",
+          "confidence": 0.99994,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              431.0,
+              84.0
+            ],
+            [
+              619.0,
+              75.0
+            ],
+            [
+              623.0,
+              158.0
+            ],
+            [
+              435.0,
+              167.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "149c9797350bfe63",
+      "target": "berhad",
+      "target_display": "Berhad",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        601.0,
+        151.0,
+        688.0,
+        192.0
+      ],
+      "absent_query": "roosevelt",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              599.0,
+              143.0
+            ],
+            [
+              693.0,
+              159.0
+            ],
+            [
+              686.0,
+              199.0
+            ],
+            [
+              592.0,
+              183.0
+            ]
+          ],
+          "text": "Berhad",
+          "token": "berhad",
+          "confidence": 0.99994,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              599.0,
+              143.0
+            ],
+            [
+              693.0,
+              159.0
+            ],
+            [
+              686.0,
+              199.0
+            ],
+            [
+              592.0,
+              183.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              600.0,
+              143.3333282470703
+            ],
+            [
+              694.0,
+              158.0
+            ],
+            [
+              688.0,
+              198.6666717529297
+            ],
+            [
+              594.0,
+              184.0
+            ]
+          ],
+          "text": "Berhad",
+          "token": "berhad",
+          "confidence": 0.99995,
+          "source": "top_right",
+          "original_ocr_box": [
+            [
+              600.0,
+              143.3333282470703
+            ],
+            [
+              694.0,
+              158.0
+            ],
+            [
+              688.0,
+              198.6666717529297
+            ],
+            [
+              594.0,
+              184.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "14e05e143cd97061",
+      "target": "roosevelt",
+      "target_display": "Roosevelt",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        158.0,
+        454.0,
+        556.0,
+        565.0
+      ],
+      "absent_query": "falafel",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "152ce73c02da6e36",
+      "target": "falafel",
+      "target_display": "Falafel",
+      "target_background_information_bits": 9.364135,
+      "truth_bbox": [
+        665.0,
+        373.0,
+        798.0,
+        477.0
+      ],
+      "absent_query": "workforce",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              646.0,
+              340.3333435058594
+            ],
+            [
+              804.6666259765625,
+              453.3333435058594
+            ],
+            [
+              781.3333740234375,
+              486.6666564941406
+            ],
+            [
+              630.6666870117188,
+              373.6666564941406
+            ]
+          ],
+          "text": "am·Gyros·Falafel",
+          "token": "amgyrosfalafel",
+          "confidence": 0.99148,
+          "source": "top_right",
+          "original_ocr_box": [
+            [
+              487.3333435058594,
+              227.3333282470703
+            ],
+            [
+              804.6666259765625,
+              453.3333435058594
+            ],
+            [
+              781.3333740234375,
+              486.6666564941406
+            ],
+            [
+              480.0,
+              260.6666564941406
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "154f67d5af263099",
+      "target": "workforce",
+      "target_display": "Workforce",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        790.0,
+        430.0,
+        918.0,
+        460.0
+      ],
+      "absent_query": "randolphmacon",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              787.0,
+              425.0
+            ],
+            [
+              924.0,
+              427.0
+            ],
+            [
+              924.0,
+              465.0
+            ],
+            [
+              787.0,
+              463.0
+            ]
+          ],
+          "text": "Workforce",
+          "token": "workforce",
+          "confidence": 0.99701,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              787.0,
+              425.0
+            ],
+            [
+              924.0,
+              427.0
+            ],
+            [
+              924.0,
+              465.0
+            ],
+            [
+              787.0,
+              463.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              787.0,
+              425.0
+            ],
+            [
+              924.0,
+              427.0
+            ],
+            [
+              924.0,
+              465.0
+            ],
+            [
+              787.0,
+              463.0
+            ]
+          ],
+          "text": "Workforce",
+          "token": "workforce",
+          "confidence": 0.99701,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              787.0,
+              425.0
+            ],
+            [
+              924.0,
+              427.0
+            ],
+            [
+              924.0,
+              465.0
+            ],
+            [
+              787.0,
+              463.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "15cb9a0074838f0a",
+      "target": "randolphmacon",
+      "target_display": "Randolph-Macon",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        470.0,
+        371.0,
+        796.0,
+        408.0
+      ],
+      "absent_query": "campbell",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              440.3333435058594,
+              366.6666564941406
+            ],
+            [
+              800.6666870117188,
+              366.6666564941406
+            ],
+            [
+              800.6666870117188,
+              409.3333435058594
+            ],
+            [
+              440.3333435058594,
+              409.3333435058594
+            ]
+          ],
+          "text": "ginia;attendedRandolph-Macon",
+          "token": "giniaattendedrandolphmacon",
+          "confidence": 0.99315,
+          "source": "top_left",
+          "original_ocr_box": [
+            [
+              80.0,
+              366.6666564941406
+            ],
+            [
+              800.6666870117188,
+              366.6666564941406
+            ],
+            [
+              800.6666870117188,
+              409.3333435058594
+            ],
+            [
+              80.0,
+              409.3333435058594
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "1612ff69247aa288",
+      "target": "campbell",
+      "target_display": "CAMPBELL",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        671.0,
+        341.0,
+        975.0,
+        385.0
+      ],
+      "absent_query": "cppitagoras",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              668.0,
+              334.0
+            ],
+            [
+              980.0,
+              343.0
+            ],
+            [
+              979.0,
+              392.0
+            ],
+            [
+              667.0,
+              383.0
+            ]
+          ],
+          "text": "CAMPBELL",
+          "token": "campbell",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              668.0,
+              334.0
+            ],
+            [
+              980.0,
+              343.0
+            ],
+            [
+              979.0,
+              392.0
+            ],
+            [
+              667.0,
+              383.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              668.0,
+              334.0
+            ],
+            [
+              980.0,
+              343.0
+            ],
+            [
+              979.0,
+              392.0
+            ],
+            [
+              667.0,
+              383.0
+            ]
+          ],
+          "text": "CAMPBELL",
+          "token": "campbell",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              668.0,
+              334.0
+            ],
+            [
+              980.0,
+              343.0
+            ],
+            [
+              979.0,
+              392.0
+            ],
+            [
+              667.0,
+              383.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "172d0ab4eb0fb6c8",
+      "target": "cppitagoras",
+      "target_display": "#cppitagoras",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        733.0,
+        77.0,
+        987.0,
+        131.0
+      ],
+      "absent_query": "exceptional",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              722.0,
+              91.0
+            ],
+            [
+              995.0,
+              69.0
+            ],
+            [
+              999.0,
+              116.0
+            ],
+            [
+              725.0,
+              138.0
+            ]
+          ],
+          "text": "#cppitagoras",
+          "token": "cppitagoras",
+          "confidence": 0.99986,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              722.0,
+              91.0
+            ],
+            [
+              995.0,
+              69.0
+            ],
+            [
+              999.0,
+              116.0
+            ],
+            [
+              725.0,
+              138.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              723.3333740234375,
+              92.66666412353516
+            ],
+            [
+              992.6666870117188,
+              70.0
+            ],
+            [
+              996.6666870117188,
+              114.0
+            ],
+            [
+              727.3333740234375,
+              136.6666717529297
+            ]
+          ],
+          "text": "#cppitagoras",
+          "token": "cppitagoras",
+          "confidence": 0.99994,
+          "source": "top_right",
+          "original_ocr_box": [
+            [
+              723.3333740234375,
+              92.66666412353516
+            ],
+            [
+              992.6666870117188,
+              70.0
+            ],
+            [
+              996.6666870117188,
+              114.0
+            ],
+            [
+              727.3333740234375,
+              136.6666717529297
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "178064d96022a785",
+      "target": "exceptional",
+      "target_display": "EXCEPTIONAL",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        250.0,
+        78.0,
+        939.0,
+        144.0
+      ],
+      "absent_query": "legislature",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              205.3000030517578,
+              68.30000305175781
+            ],
+            [
+              949.449951171875,
+              64.44999694824219
+            ],
+            [
+              949.449951171875,
+              150.8000030517578
+            ],
+            [
+              205.3000030517578,
+              155.1999969482422
+            ]
+          ],
+          "text": "AN EXCEPTIONAL OFFER to",
+          "token": "anexceptionalofferto",
+          "confidence": 0.99906,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              70.0,
+              69.0
+            ],
+            [
+              1423.0,
+              62.0
+            ],
+            [
+              1423.0,
+              148.0
+            ],
+            [
+              70.0,
+              156.0
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "179bddb0a59305a4",
+      "target": "legislature",
+      "target_display": "LEGISLATURE.",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        552.0,
+        1387.0,
+        814.0,
+        1520.0
+      ],
+      "absent_query": "notice",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "17d1100dfa7e5b2e",
+      "target": "notice",
+      "target_display": "Notice",
+      "target_background_information_bits": 8.364135,
+      "truth_bbox": [
+        354.0,
+        159.0,
+        477.0,
+        199.0
+      ],
+      "absent_query": "adjustment",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              335.23077392578125,
+              152.07691955566406
+            ],
+            [
+              482.0,
+              153.0
+            ],
+            [
+              481.0,
+              204.0
+            ],
+            [
+              334.69232177734375,
+              203.07691955566406
+            ]
+          ],
+          "text": "Funeral Notice",
+          "token": "funeralnotice",
+          "confidence": 0.95668,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              164.0,
+              151.0
+            ],
+            [
+              482.0,
+              153.0
+            ],
+            [
+              481.0,
+              204.0
+            ],
+            [
+              164.0,
+              202.0
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "181365acdfd928b1",
+      "target": "adjustment",
+      "target_display": "Adjustment",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        1252.0,
+        453.0,
+        1530.0,
+        506.0
+      ],
+      "absent_query": "czechoslovakia",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1245.0,
+              446.0
+            ],
+            [
+              1540.0,
+              446.0
+            ],
+            [
+              1540.0,
+              509.0
+            ],
+            [
+              1245.0,
+              509.0
+            ]
+          ],
+          "text": "Adjustment",
+          "token": "adjustment",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              1245.0,
+              446.0
+            ],
+            [
+              1540.0,
+              446.0
+            ],
+            [
+              1540.0,
+              509.0
+            ],
+            [
+              1245.0,
+              509.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1245.0,
+              446.0
+            ],
+            [
+              1540.0,
+              446.0
+            ],
+            [
+              1540.0,
+              509.0
+            ],
+            [
+              1245.0,
+              509.0
+            ]
+          ],
+          "text": "Adjustment",
+          "token": "adjustment",
+          "confidence": 0.99998,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              1245.0,
+              446.0
+            ],
+            [
+              1540.0,
+              446.0
+            ],
+            [
+              1540.0,
+              509.0
+            ],
+            [
+              1245.0,
+              509.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "1839ef032d1b6b0e",
+      "target": "czechoslovakia",
+      "target_display": "CZECHOSLOVAKIA",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        69.0,
+        983.0,
+        1542.0,
+        1061.0
+      ],
+      "absent_query": "competition",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              47.0,
+              971.0
+            ],
+            [
+              1555.0,
+              962.0
+            ],
+            [
+              1555.0,
+              1069.0
+            ],
+            [
+              47.0,
+              1070.0
+            ]
+          ],
+          "text": "CZECHOSLOVAKIA",
+          "token": "czechoslovakia",
+          "confidence": 0.99984,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              47.0,
+              971.0
+            ],
+            [
+              1555.0,
+              962.0
+            ],
+            [
+              1555.0,
+              1069.0
+            ],
+            [
+              47.0,
+              1070.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              47.0,
+              971.0
+            ],
+            [
+              1555.0,
+              962.0
+            ],
+            [
+              1555.0,
+              1069.0
+            ],
+            [
+              47.0,
+              1070.0
+            ]
+          ],
+          "text": "CZECHOSLOVAKIA",
+          "token": "czechoslovakia",
+          "confidence": 0.99984,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              47.0,
+              971.0
+            ],
+            [
+              1555.0,
+              962.0
+            ],
+            [
+              1555.0,
+              1069.0
+            ],
+            [
+              47.0,
+              1070.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "184a8ab34c10b428",
+      "target": "competition",
+      "target_display": "Competition",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        502.0,
+        710.0,
+        708.0,
+        756.0
+      ],
+      "absent_query": "konkrete",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              499.31036376953125,
+              712.5516967773438
+            ],
+            [
+              751.5516967773438,
+              697.7586059570312
+            ],
+            [
+              753.8275756835938,
+              749.7586059570312
+            ],
+            [
+              501.96551513671875,
+              764.5516967773438
+            ]
+          ],
+          "text": "Dog Surfing Competition & Beach Day!",
+          "token": "dogsurfingcompetitionbeachday",
+          "confidence": 0.99964,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              270.0,
+              726.0
+            ],
+            [
+              935.0,
+              687.0
+            ],
+            [
+              937.0,
+              739.0
+            ],
+            [
+              273.0,
+              778.0
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "18d237f578bcc1f5",
+      "target": "konkrete",
+      "target_display": "konkrete",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        488.0,
+        145.0,
+        550.0,
+        160.0
+      ],
+      "absent_query": "journalism",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              486.0,
+              142.0
+            ],
+            [
+              550.820556640625,
+              144.87179565429688
+            ],
+            [
+              550.15380859375,
+              164.2051239013672
+            ],
+            [
+              485.33331298828125,
+              161.3333282470703
+            ]
+          ],
+          "text": "konkrete kunst",
+          "token": "konkretekunst",
+          "confidence": 0.99793,
+          "source": "top_right",
+          "original_ocr_box": [
+            [
+              486.0,
+              142.0
+            ],
+            [
+              591.3333740234375,
+              146.6666717529297
+            ],
+            [
+              590.6666259765625,
+              166.0
+            ],
+            [
+              485.33331298828125,
+              161.3333282470703
+            ]
+          ],
+          "match_kind": "EXACT_QUERY_SPAN",
+          "match_rank": 1,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "18d5533cc9792980",
+      "target": "journalism",
+      "target_display": "Journalism",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        81.0,
+        225.0,
+        708.0,
+        426.0
+      ],
+      "absent_query": "conjunction",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              78.0,
+              268.0
+            ],
+            [
+              715.0,
+              175.0
+            ],
+            [
+              742.0,
+              361.0
+            ],
+            [
+              105.0,
+              454.0
+            ]
+          ],
+          "text": "Journalism",
+          "token": "journalism",
+          "confidence": 0.99997,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              78.0,
+              268.0
+            ],
+            [
+              715.0,
+              175.0
+            ],
+            [
+              742.0,
+              361.0
+            ],
+            [
+              105.0,
+              454.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              78.0,
+              268.0
+            ],
+            [
+              715.0,
+              175.0
+            ],
+            [
+              742.0,
+              361.0
+            ],
+            [
+              105.0,
+              454.0
+            ]
+          ],
+          "text": "Journalism",
+          "token": "journalism",
+          "confidence": 0.99997,
+          "source": "full",
+          "original_ocr_box": [
+            [
+              78.0,
+              268.0
+            ],
+            [
+              715.0,
+              175.0
+            ],
+            [
+              742.0,
+              361.0
+            ],
+            [
+              105.0,
+              454.0
+            ]
+          ],
+          "match_kind": "EXACT_TOKEN",
+          "match_rank": 0,
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "1922992c9e332d1b",
+      "target": "conjunction",
+      "target_display": "conjunction",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        162.0,
+        323.0,
+        256.0,
+        415.0
+      ],
+      "absent_query": "wuesvn",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "199ef38f58cdc158",
+      "target": "wuesvn",
+      "target_display": ".WUESVN",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        570.0,
+        398.0,
+        659.0,
+        471.0
+      ],
+      "absent_query": "platters",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    }
+  ],
+  "claim_boundary": "A third fresh, disjoint 30-image cohort from previously unused HierText test pixels plus complete official word truth supports a static unique-text-referent OCR carrier Development result only. Complete-truth uniqueness removes text-identical instance ambiguity for this evaluator; it does not solve general open-world instance identity. Query-span projection and spatial abstention do not establish a facade, sign, portal, entrance ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety. UNKNOWN is neither negative nor known-safe. This cohort is consumed after the run; no conformal, FDR, or open-world guarantee is claimed."
+}

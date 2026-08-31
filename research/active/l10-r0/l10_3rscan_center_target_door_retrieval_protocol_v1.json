@@ -1,0 +1,88 @@
+{
+  "schema": "blindassist-l10-3rscan-center-target-door-retrieval-protocol-v1",
+  "authority": "TARGET_TRIPLE_DISJOINT_PROVIDER_TRANSFER_DEVELOPMENT",
+  "question": "Does the frozen 3D Street View center-scale lock retrieve the same stable 3RScan door or doorframe across registered rescans when geometry supplies only a fully visible proposal?",
+  "predecessor_lock": {
+    "protocol_path": "l10_3dstreetview_center_target_lock_protocol_v1.json",
+    "protocol_sha256": "3a7938e9839daa240513a397d14e79c87b82431db5475f3e75b0284ed25789b6",
+    "cohort_path": "l10_3dstreetview_center_target_lock_cohort_v1.json",
+    "cohort_sha256": "f81a76e8a45ade7ff2b4a9a18cb32feb35d04b942ced24950e4caf788d128847",
+    "result_path": "l10_3dstreetview_center_target_lock_result_v1.json",
+    "result_sha256": "12c2d5cb7b26720b72c6d8c6354914c9693064e77e925482de60a3b95e6e24ee",
+    "implementation_path": "l10_3dstreetview_center_target_lock.py",
+    "implementation_sha256": "1abb07f11e1ac5e1c30d11ccc3aca1f88362e0bd4c330cfbf69f549d551d0f81"
+  },
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"
+      }
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 3,
+    "selection_order": "Use candidate_protocol rows in its frozen descending area_proxy order. Exclude every exact (reference_scan_id, rescan_id, target_instance_id) found in consumed_target_cohorts; require a previously unused reference_scan_id within this cohort; select the first three rows whose reference and rescan both pass frame_rules. Pose, depth and instance geometry may be read during freeze; RGB members must remain unopened until replay.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "proposal_rule": "Project the selected stable instance vertices with evaluator-authoritative pose and intrinsics, take the frozen tight bounding box, crop raw RGB, then square-pad the shorter dimension with black. The 32-pixel frame margin is fixed before RGB from the SceneNN edge-clipping falsifier.",
+    "retrieval_rule": "Each of three reference proposals ranks all three rescan proposals and each rescan proposal ranks all three reference proposals, yielding six directed anchors, six positives and twelve same-class cross-target negatives.",
+    "forbidden": [
+      "opening RGB during cohort selection",
+      "model-score-based target or frame selection",
+      "lowering the 32-pixel visibility margin after selection",
+      "substituting an instance after outcome",
+      "treating a truth proposal as a detector"
+    ]
+  },
+  "frozen_model": {
+    "model_relative_path": "models/p1_a2_dinov2_small_ed25f3a",
+    "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "embedding": "L2-normalized final CLS token on centered scales 1.0, 0.5 and 0.25.",
+    "baseline_score": "Global/global cosine.",
+    "upgraded_score": "0.25 * global/global cosine + 0.75 * maximum cosine where at least one side is a centered crop.",
+    "forbidden": [
+      "backbone fine-tuning",
+      "crop-scale or weight sweep",
+      "test-derived thresholds",
+      "reranking with scan or target identity"
+    ]
+  },
+  "decision_gate": {
+    "exact_instance_top1": "6/6 directed anchors",
+    "wrong_instance_commit": "0/6",
+    "minimum_positive_margin": "strictly greater than zero for every anchor",
+    "diagnostics": [
+      "pair AUROC",
+      "average precision",
+      "MRR",
+      "mean positive margin",
+      "baseline comparison"
+    ],
+    "single_replay": "One frozen replay. Do not tune on the selected RGB proposals."
+  },
+  "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed stable indoor 3RScan door or doorframe instances. 3RScan mesh, pose, depth, RGB and semantic labels come from one provider; target triples are disjoint from the four enumerated prior cohorts but scan families may have appeared in prior Development; proposals use privileged reconstructed geometry; and only three physical targets are tested. It is not door detection, pixel-mask transfer, doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+}

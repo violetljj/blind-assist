@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist-l10-panolab-open-set-negative-materialization-v1",
+  "selection": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_open_set_negative_selection_v1.json",
+  "selection_sha256": "367b292d143618d8321f4037a9b0c4b371f1917c9f815415898383812e3bcfba",
+  "pixel_views_before_frozen_selection": 0,
+  "human_pixel_reviews_before_frozen_selection": 0,
+  "model_calls_before_frozen_selection": 0,
+  "images": [
+    {
+      "episode_id": "ON01",
+      "item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+      "path": "artifacts.local/datasets/l10-panolab-open-set-negative-v1/images/5fad7a9e-1d89-4f82-a2dd-f36d9836cd07.jpg",
+      "sha256": "a8a00f91c2a53dabfde5ba49fece937d7d5c964e371190a454c6338a86e363a2",
+      "bytes": 3060580,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/5fad7a9e-1d89-4f82-a2dd-f36d9836cd07/hd.jpg"
+    },
+    {
+      "episode_id": "ON02",
+      "item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+      "path": "artifacts.local/datasets/l10-panolab-open-set-negative-v1/images/9d666c71-ea51-48d2-b956-ff4ed79f203c.jpg",
+      "sha256": "9239a166000090bb332c412db9593d89bedf31cf09d636769ecef40d4354d913",
+      "bytes": 3283501,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/9d666c71-ea51-48d2-b956-ff4ed79f203c/hd.jpg"
+    },
+    {
+      "episode_id": "ON03",
+      "item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+      "path": "artifacts.local/datasets/l10-panolab-open-set-negative-v1/images/6e26f62d-5f86-4dd6-8d60-e053558098f6.jpg",
+      "sha256": "d8da29a5d78e8c016ac328fae49fc558a80f231306a876e13540391db561ccb6",
+      "bytes": 3032798,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/6e26f62d-5f86-4dd6-8d60-e053558098f6/hd.jpg"
+    },
+    {
+      "episode_id": "ON04",
+      "item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+      "path": "artifacts.local/datasets/l10-panolab-open-set-negative-v1/images/5321a537-0e5d-4347-a1e0-e935dc93ec0e.jpg",
+      "sha256": "653a3b49df4c8fbed081c543e34de0525f36495018fed254f32156cb30f73f3a",
+      "bytes": 2625420,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/5321a537-0e5d-4347-a1e0-e935dc93ec0e/hd.jpg"
+    }
+  ]
+}

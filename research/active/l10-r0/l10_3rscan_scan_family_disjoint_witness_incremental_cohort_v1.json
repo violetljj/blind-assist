@@ -1,0 +1,691 @@
+{
+  "schema": "blindassist-l10-3rscan-scan-family-disjoint-witness-incremental-cohort-v1",
+  "authority": "FROZEN_PRE_REPLAY_SCAN_FAMILY_DISJOINT_SAME_CLASS_INCREMENTAL_COHORT",
+  "protocol_path": "l10_3rscan_scan_family_disjoint_witness_incremental_protocol_v1.json",
+  "protocol_sha256": "78e3989dac20d98c340318d01f5470f85a3c7be6a127922a7b6467ba7743576f",
+  "entrypoint_sha256": "109d36814509f916cfba3bccedecd8ff7fff6bcb916c9a26cb9d8ca41b144c0d",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "selection": {
+    "candidate_rows": 85,
+    "consumed_physical_targets": 24,
+    "consumed_reference_scan_families": [
+      "0ad2d382-79e2-2212-98b3-641bf9d552c1",
+      "0ad2d399-79e2-2212-99cf-7a3512734bd7",
+      "10b17936-3938-2467-88ba-ba5fe2debf14",
+      "10b17971-3938-2467-8a86-2b42613aa7ec",
+      "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62"
+    ],
+    "families_considered_with_six_same_class_targets": 1,
+    "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+    "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+    "normalized_target_class": "door",
+    "physical_target_ids": [
+      6,
+      26,
+      29,
+      25,
+      27,
+      39
+    ],
+    "witness_episode_ids": [
+      "FI01",
+      "FI02"
+    ],
+    "evaluated_episode_ids": [
+      "FI03",
+      "FI04",
+      "FI05",
+      "FI06"
+    ],
+    "rgb_members_opened": 0,
+    "depth_members_opened": 0,
+    "surface_distances_opened": 0,
+    "exclusion_receipts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18",
+        "new_physical_targets": 1
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+        "new_physical_targets": 3
+      },
+      {
+        "path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+        "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json",
+        "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84",
+        "new_physical_targets": 4
+      },
+      {
+        "path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json",
+        "sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d",
+        "new_physical_targets": 4
+      }
+    ]
+  },
+  "source_manifest": {
+    "3RScan.json": {
+      "path": "datasets/3rscan/3RScan.json",
+      "bytes": 3155995,
+      "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+    },
+    "6bde60c0-9162-246f-8d1f-32543babecfb/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/6bde60c0-9162-246f-8d1f-32543babecfb/labels.instances.annotated.v2.ply",
+      "bytes": 7430131,
+      "sha256": "e85ed7cea8171f01eb9a2dd0f56f4df20605ad6b377c3f7ac7a0065827eed8ed"
+    },
+    "6bde60c0-9162-246f-8d1f-32543babecfb/semseg.v2.json": {
+      "path": "datasets/3rscan/6bde60c0-9162-246f-8d1f-32543babecfb/semseg.v2.json",
+      "bytes": 41397,
+      "sha256": "aa9df88e5bbec058b1dca3610b93f361dde4ec07caab6bb7992e2deaad3150b3"
+    },
+    "6bde60c4-9162-246f-8c1e-b0c518544104/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/6bde60c4-9162-246f-8c1e-b0c518544104/labels.instances.annotated.v2.ply",
+      "bytes": 3836379,
+      "sha256": "bac15c9ec126ab3041e1be5d519a44945e64f6dbb4fabe6a99a5c96a3073376f"
+    },
+    "6bde60c4-9162-246f-8c1e-b0c518544104/semseg.v2.json": {
+      "path": "datasets/3rscan/6bde60c4-9162-246f-8c1e-b0c518544104/semseg.v2.json",
+      "bytes": 26974,
+      "sha256": "9309194ebaa533a7c957e22459e3f37ae1e63336ed01c4d3f77c3df29e3747f2"
+    },
+    "objects.json": {
+      "path": "datasets/3rscan/objects.json",
+      "bytes": 20096813,
+      "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "FI01",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 6,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 2.0046435108574605,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 996,
+      "query_target_vertices": 2701,
+      "role": "REGISTRATION_WITNESS"
+    },
+    {
+      "episode_id": "FI02",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 26,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3439097805396685,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 676,
+      "query_target_vertices": 389,
+      "role": "REGISTRATION_WITNESS"
+    },
+    {
+      "episode_id": "FI03",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 29,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.3189766464066737,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 667,
+      "query_target_vertices": 338,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FI04",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 25,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.2722697258733975,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 616,
+      "query_target_vertices": 334,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FI05",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 27,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.258717967113561,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 1004,
+      "query_target_vertices": 395,
+      "role": "EVALUATED_TARGET"
+    },
+    {
+      "episode_id": "FI06",
+      "reference_scan_id": "6bde60c0-9162-246f-8d1f-32543babecfb",
+      "rescan_id": "6bde60c4-9162-246f-8c1e-b0c518544104",
+      "target_instance_id": 39,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        3,
+        6,
+        24,
+        25,
+        26,
+        27,
+        29,
+        39,
+        48,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63
+      ],
+      "area_proxy": 1.2410620074851344,
+      "transform": [
+        -0.9958397150039673,
+        -0.08760123699903488,
+        -0.025086933746933937,
+        0,
+        0.08744218945503235,
+        -0.9961423873901367,
+        0.007370205130428076,
+        0,
+        -0.025635797530412674,
+        0.00514588737860322,
+        0.9996581077575684,
+        0,
+        0.8546688556671143,
+        4.4531683921813965,
+        -0.02406427636742592,
+        1
+      ],
+      "reference_target_vertices": 1040,
+      "query_target_vertices": 278,
+      "role": "EVALUATED_TARGET"
+    }
+  ],
+  "provider_transform": [
+    -0.9958397150039673,
+    -0.08760123699903488,
+    -0.025086933746933937,
+    0,
+    0.08744218945503235,
+    -0.9961423873901367,
+    0.007370205130428076,
+    0,
+    -0.025635797530412674,
+    0.00514588737860322,
+    0.9996581077575684,
+    0,
+    0.8546688556671143,
+    4.4531683921813965,
+    -0.02406427636742592,
+    1
+  ],
+  "scenarios": [
+    {
+      "id": "closed-six",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI03-FI04",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI03-FI05",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI03-FI06",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI04-FI03",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI04-FI05",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI04-FI06",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI05-FI03",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI05-FI04",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI05-FI06",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI06-FI03",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI04",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI06-FI04",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI05",
+        "FI06"
+      ]
+    },
+    {
+      "id": "balanced-swap-FI06-FI05",
+      "reference_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI05"
+      ],
+      "query_targets": [
+        "FI01",
+        "FI02",
+        "FI03",
+        "FI04",
+        "FI06"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 6,
+    "registration_witnesses": 2,
+    "evaluated_targets": 4,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 64,
+    "truth_unmatched_nodes_across_scenarios": 26
+  },
+  "claim_boundary": "A pass is same-provider but scan-family-disjoint real-geometry Development evidence that the unchanged two-witness rejector adds decision-changing value over rank-only registered-surface matching for truth-proposed same-class indoor door targets under bounded missing/extra roster constructions. The witnesses, semantic labels, surfaces, and rigid transform remain privileged provider evidence; two witnesses have no statistical coverage guarantee. It is not raw-phone perception, open-world discovery, door detection, a portal aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

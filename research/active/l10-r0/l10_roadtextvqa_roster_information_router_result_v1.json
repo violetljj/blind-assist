@@ -1,0 +1,4122 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-roster-information-router-result-v1",
+  "decision": "L10_ROADTEXTVQA_ROSTER_INFORMATION_ROUTER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_DEVELOPMENT_SEARCH_PRIORITY_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_roadtextvqa_roster_information_router_protocol_v1.json",
+  "protocol_sha256": "55e36f9f48190c8d1bce99191a44427241418b472a27f3240428d839c8c67235",
+  "evaluator_sha256": "f092549eb1bfc650ed163be1c6b7e805d309b275560a4144b04b4424834a7e71",
+  "metrics": {
+    "episodes": 30,
+    "sampled_frames_per_episode": 10,
+    "legacy": {
+      "correct": 9,
+      "wrong": 3,
+      "unknown": 15,
+      "ambiguous": 3
+    },
+    "roster_information": {
+      "correct": 15,
+      "wrong": 1,
+      "unknown": 3,
+      "ambiguous": 11
+    },
+    "correct_gain": 6,
+    "unknown_reduction": 12,
+    "synthetic_negative_queries": 30,
+    "synthetic_negative_accepts": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_fresh_ocr_unseen_episodes": true,
+    "minimum_three_correct_gain": true,
+    "zero_successor_wrong": false,
+    "zero_successor_ambiguous": false,
+    "zero_synthetic_negative_accepts": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": false
+  },
+  "synthetic_negative_accepts": [],
+  "rows": [
+    {
+      "target_id": "RTVQA-Q44",
+      "question_id": 44,
+      "video": "115.mp4",
+      "aliases": [
+        "liquors"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "liquors"
+          ],
+          "routes": {
+            "liquors": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "liquors": [
+              {
+                "frame": 272,
+                "observed": "liquors",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "liquors"
+          ],
+          "routes": {
+            "liquors": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "liquors": [
+              {
+                "frame": 272,
+                "observed": "liquors",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q77",
+      "question_id": 77,
+      "video": "88.mp4",
+      "aliases": [
+        "sequoias"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q77"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "sequoias"
+          ],
+          "routes": {
+            "sequoias": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "sequoias": [
+              {
+                "frame": 0,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "sequoias",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q77"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q77"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "sequoias"
+          ],
+          "routes": {
+            "sequoias": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "sequoias": [
+              {
+                "frame": 0,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "sequoias",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "sequoias",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q77"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q273",
+      "question_id": 273,
+      "video": "36.mp4",
+      "aliases": [
+        "laundromat",
+        "smile laundromat"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q273",
+          "RTVQA-Q391"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "laundromat"
+          ],
+          "routes": {
+            "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "laundromat": [
+              {
+                "frame": 240,
+                "observed": "laundromat",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "laundromat",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q391": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "laundromat"
+            ],
+            "routes": {
+              "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "laundromat": [
+                {
+                  "frame": 240,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 270,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 9,
+          "frame": 240,
+          "accepted": [
+            "RTVQA-Q273",
+            "RTVQA-Q391"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q273",
+          "RTVQA-Q391"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "laundromat"
+          ],
+          "routes": {
+            "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "laundromat": [
+              {
+                "frame": 240,
+                "observed": "laundromat",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "laundromat",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q391": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "laundromat"
+            ],
+            "routes": {
+              "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "laundromat": [
+                {
+                  "frame": 240,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 270,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 9,
+          "frame": 240,
+          "accepted": [
+            "RTVQA-Q273",
+            "RTVQA-Q391"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q357",
+      "question_id": 357,
+      "video": "185.mp4",
+      "aliases": [
+        "deli grocery"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "grocery"
+          ],
+          "routes": {
+            "grocery": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "grocery": [
+              {
+                "frame": 0,
+                "observed": "grocery",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "grocery",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "grocery",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q357",
+          "RTVQA-Q391"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "deli",
+            "grocery"
+          ],
+          "routes": {
+            "deli": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "grocery": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "deli": [
+              {
+                "frame": 0,
+                "observed": "deli",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "deli",
+                "edit_distance": 0
+              }
+            ],
+            "grocery": [
+              {
+                "frame": 0,
+                "observed": "grocery",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "grocery",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "grocery",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q391": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "super"
+            ],
+            "routes": {
+              "super": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "super": [
+                {
+                  "frame": 90,
+                  "observed": "super",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 120,
+                  "observed": "super",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q357"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q380",
+      "question_id": 380,
+      "video": "348.mp4",
+      "aliases": [
+        "cathay express"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        151,
+        181,
+        211,
+        241,
+        271
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q380"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "cathay",
+            "express"
+          ],
+          "routes": {
+            "cathay": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "cathay": [
+              {
+                "frame": 0,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "cathay",
+                "edit_distance": 0
+              }
+            ],
+            "express": [
+              {
+                "frame": 0,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "xpress",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q380"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q380"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "cathay",
+            "express"
+          ],
+          "routes": {
+            "cathay": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "cathay": [
+              {
+                "frame": 0,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "cathay",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "cathay",
+                "edit_distance": 0
+              }
+            ],
+            "express": [
+              {
+                "frame": 0,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "xpress",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q380"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q391",
+      "question_id": 391,
+      "video": "183.mp4",
+      "aliases": [
+        "super laundromat"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        151,
+        181,
+        211,
+        241,
+        271
+      ],
+      "legacy": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q273",
+          "RTVQA-Q391"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "laundromat"
+          ],
+          "routes": {
+            "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "laundromat": [
+              {
+                "frame": 30,
+                "observed": "laundromat",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "olaundromat",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q273": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "laundromat"
+            ],
+            "routes": {
+              "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "laundromat": [
+                {
+                  "frame": 30,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 60,
+                  "observed": "olaundromat",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q273",
+            "RTVQA-Q391"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q273",
+          "RTVQA-Q391",
+          "RTVQA-Q842"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "laundromat",
+            "super"
+          ],
+          "routes": {
+            "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "super": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "laundromat": [
+              {
+                "frame": 30,
+                "observed": "laundromat",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "olaundromat",
+                "edit_distance": 1
+              }
+            ],
+            "super": [
+              {
+                "frame": 60,
+                "observed": "super",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q273": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "laundromat"
+            ],
+            "routes": {
+              "laundromat": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "laundromat": [
+                {
+                  "frame": 30,
+                  "observed": "laundromat",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 60,
+                  "observed": "olaundromat",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          },
+          "RTVQA-Q842": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "depot"
+            ],
+            "routes": {
+              "depot": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "depot": [
+                {
+                  "frame": 151,
+                  "observed": "depot",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q273",
+            "RTVQA-Q391"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q480",
+      "question_id": 480,
+      "video": "117.mp4",
+      "aliases": [
+        "amalgamated bank"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q602",
+      "question_id": 602,
+      "video": "350.mp4",
+      "aliases": [
+        "collado tire shop"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "collado"
+          ],
+          "routes": {
+            "collado": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "collado": [
+              {
+                "frame": 90,
+                "observed": "collado",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q602"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 5,
+          "matched_tokens": [
+            "collado",
+            "shop",
+            "tire"
+          ],
+          "routes": {
+            "collado": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "shop": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "tire": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "collado": [
+              {
+                "frame": 90,
+                "observed": "collado",
+                "edit_distance": 0
+              }
+            ],
+            "shop": [
+              {
+                "frame": 90,
+                "observed": "shop",
+                "edit_distance": 0
+              }
+            ],
+            "tire": [
+              {
+                "frame": 60,
+                "observed": "tire",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "tire",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 3,
+          "frame": 60,
+          "accepted": [
+            "RTVQA-Q602"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q707",
+      "question_id": 707,
+      "video": "404.mp4",
+      "aliases": [
+        "master tech auto body"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "master"
+          ],
+          "routes": {
+            "master": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "master": [
+              {
+                "frame": 121,
+                "observed": "master",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "master",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q707"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 7,
+          "matched_tokens": [
+            "auto",
+            "body",
+            "master",
+            "tech"
+          ],
+          "routes": {
+            "auto": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "body": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "master": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "tech": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "auto": [
+              {
+                "frame": 121,
+                "observed": "auto",
+                "edit_distance": 0
+              }
+            ],
+            "body": [
+              {
+                "frame": 121,
+                "observed": "body",
+                "edit_distance": 0
+              }
+            ],
+            "master": [
+              {
+                "frame": 121,
+                "observed": "master",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "master",
+                "edit_distance": 0
+              }
+            ],
+            "tech": [
+              {
+                "frame": 121,
+                "observed": "tech",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "tech",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 121,
+          "accepted": [
+            "RTVQA-Q707"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q842",
+      "question_id": 842,
+      "video": "480.mp4",
+      "aliases": [
+        "the home depot"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q842"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "depot",
+            "home"
+          ],
+          "routes": {
+            "depot": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "home": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "depot": [
+              {
+                "frame": 210,
+                "observed": "depot",
+                "edit_distance": 0
+              }
+            ],
+            "home": [
+              {
+                "frame": 90,
+                "observed": "home",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "home",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "home",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q842"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q909",
+      "question_id": 909,
+      "video": "116.mp4",
+      "aliases": [
+        "china king"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q909"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "china",
+            "king"
+          ],
+          "routes": {
+            "china": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "king": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "china": [
+              {
+                "frame": 0,
+                "observed": "china",
+                "edit_distance": 0
+              }
+            ],
+            "king": [
+              {
+                "frame": 0,
+                "observed": "king",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q909"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1397",
+      "question_id": 1397,
+      "video": "441.mp4",
+      "aliases": [
+        "gasolina"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q357",
+          "RTVQA-Q707"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q357": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "deli"
+            ],
+            "routes": {
+              "deli": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "deli": [
+                {
+                  "frame": 30,
+                  "observed": "deli",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 60,
+                  "observed": "deli",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 150,
+                  "observed": "deli",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 180,
+                  "observed": "deli",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          },
+          "RTVQA-Q707": {
+            "matched": true,
+            "evidence_units": 4,
+            "matched_tokens": [
+              "auto",
+              "body"
+            ],
+            "routes": {
+              "auto": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+              "body": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "auto": [
+                {
+                  "frame": 60,
+                  "observed": "auto",
+                  "edit_distance": 0
+                }
+              ],
+              "body": [
+                {
+                  "frame": 60,
+                  "observed": "body",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q357"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1441",
+      "question_id": 1441,
+      "video": "162.mp4",
+      "aliases": [
+        "geek squad",
+        "geek"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1441"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "geek",
+            "squad"
+          ],
+          "routes": {
+            "geek": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "squad": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "geek": [
+              {
+                "frame": 180,
+                "observed": "geek",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "geek",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "geek",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "geek",
+                "edit_distance": 0
+              }
+            ],
+            "squad": [
+              {
+                "frame": 180,
+                "observed": "squad",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "squad",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "squad",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "squad",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 180,
+          "accepted": [
+            "RTVQA-Q1441"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1565",
+      "question_id": 1565,
+      "video": "271.mp4",
+      "aliases": [
+        "mags express"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "express"
+          ],
+          "routes": {
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "express": [
+              {
+                "frame": 121,
+                "observed": "express",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 60,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 3,
+          "frame": 60,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q1565",
+          "RTVQA-Q1742",
+          "RTVQA-Q3407",
+          "RTVQA-Q357"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "express",
+            "mags"
+          ],
+          "routes": {
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "mags": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "express": [
+              {
+                "frame": 121,
+                "observed": "express",
+                "edit_distance": 0
+              }
+            ],
+            "mags": [
+              {
+                "frame": 60,
+                "observed": "mags",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q357": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "deli"
+            ],
+            "routes": {
+              "deli": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "deli": [
+                {
+                  "frame": 0,
+                  "observed": "deli",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          },
+          "RTVQA-Q1742": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "grand"
+            ],
+            "routes": {
+              "grand": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "grand": [
+                {
+                  "frame": 151,
+                  "observed": "grand",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 181,
+                  "observed": "grand",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          },
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 60,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q357"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1742",
+      "question_id": 1742,
+      "video": "266.mp4",
+      "aliases": [
+        "grand slam wash"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        151,
+        181,
+        211,
+        241,
+        271
+      ],
+      "legacy": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 0,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 30,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 60,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q1742",
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 6,
+          "matched_tokens": [
+            "grand",
+            "slam",
+            "wash"
+          ],
+          "routes": {
+            "grand": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "slam": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "wash": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "grand": [
+              {
+                "frame": 0,
+                "observed": "grand",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "grand",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "grand",
+                "edit_distance": 0
+              }
+            ],
+            "slam": [
+              {
+                "frame": 0,
+                "observed": "slam",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "slam",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "slam",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "slam",
+                "edit_distance": 0
+              }
+            ],
+            "wash": [
+              {
+                "frame": 0,
+                "observed": "wash",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "wash",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "wash",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 0,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 30,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 60,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q1742",
+            "RTVQA-Q3407"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1810",
+      "question_id": 1810,
+      "video": "451.mp4",
+      "aliases": [
+        "los hermanos"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        151,
+        181,
+        211,
+        241,
+        271
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1810"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "hermanos"
+          ],
+          "routes": {
+            "hermanos": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "hermanos": [
+              {
+                "frame": 90,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 120,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "hermands",
+                "edit_distance": 1
+              },
+              {
+                "frame": 181,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 211,
+                "observed": "hermanos",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "hermanos",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "hermanos",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q1810"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1810"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "hermanos"
+          ],
+          "routes": {
+            "hermanos": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "hermanos": [
+              {
+                "frame": 90,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 120,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "hermands",
+                "edit_distance": 1
+              },
+              {
+                "frame": 181,
+                "observed": "heruanos",
+                "edit_distance": 1
+              },
+              {
+                "frame": 211,
+                "observed": "hermanos",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "hermanos",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "hermanos",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q1810"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1888",
+      "question_id": 1888,
+      "video": "929.mp4",
+      "aliases": [
+        "kaplon-belo"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "kaplon"
+          ],
+          "routes": {
+            "kaplon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "kaplon": [
+              {
+                "frame": 181,
+                "observed": "kaplon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "kaplon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "kaplon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1888"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "belo",
+            "kaplon"
+          ],
+          "routes": {
+            "belo": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "kaplon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "belo": [
+              {
+                "frame": 181,
+                "observed": "belo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "belo",
+                "edit_distance": 0
+              }
+            ],
+            "kaplon": [
+              {
+                "frame": 181,
+                "observed": "kaplon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "kaplon",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "kaplon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 181,
+          "accepted": [
+            "RTVQA-Q1888"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1988",
+      "question_id": 1988,
+      "video": "554.mp4",
+      "aliases": [
+        "kohav tours"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1988"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "kohav",
+            "tours"
+          ],
+          "routes": {
+            "kohav": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "tours": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "kohav": [
+              {
+                "frame": 90,
+                "observed": "kohav",
+                "edit_distance": 0
+              }
+            ],
+            "tours": [
+              {
+                "frame": 90,
+                "observed": "tours",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q1988"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2161",
+      "question_id": 2161,
+      "video": "504.mp4",
+      "aliases": [
+        "wal-mart"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 90,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 120,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      },
+      "information": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 90,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 120,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2442",
+      "question_id": 2442,
+      "video": "709.mp4",
+      "aliases": [
+        "happy dragon"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "dragon"
+          ],
+          "routes": {
+            "dragon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "dragon": [
+              {
+                "frame": 90,
+                "observed": "dragon",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2442"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "dragon",
+            "happy"
+          ],
+          "routes": {
+            "dragon": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "happy": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "dragon": [
+              {
+                "frame": 90,
+                "observed": "dragon",
+                "edit_distance": 0
+              }
+            ],
+            "happy": [
+              {
+                "frame": 120,
+                "observed": "happy",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 120,
+          "accepted": [
+            "RTVQA-Q2442"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2532",
+      "question_id": 2532,
+      "video": "845.mp4",
+      "aliases": [
+        "hair center"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "center"
+          ],
+          "routes": {
+            "center": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "center": [
+              {
+                "frame": 0,
+                "observed": "center",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "center",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q2532",
+          "RTVQA-Q909"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "center",
+            "hair"
+          ],
+          "routes": {
+            "center": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "hair": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "center": [
+              {
+                "frame": 0,
+                "observed": "center",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "center",
+                "edit_distance": 0
+              }
+            ],
+            "hair": [
+              {
+                "frame": 0,
+                "observed": "hair",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "hair",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q909": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "king"
+            ],
+            "routes": {
+              "king": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "king": [
+                {
+                  "frame": 270,
+                  "observed": "king",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q2532"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2543",
+      "question_id": 2543,
+      "video": "768.mp4",
+      "aliases": [
+        "david intercontinental"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2543"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "intercontinental"
+          ],
+          "routes": {
+            "intercontinental": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "intercontinental": [
+              {
+                "frame": 150,
+                "observed": "intercontinental",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "intercontinental",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 6,
+          "frame": 150,
+          "accepted": [
+            "RTVQA-Q2543"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q1742",
+          "RTVQA-Q2543",
+          "RTVQA-Q909"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "david",
+            "intercontinental"
+          ],
+          "routes": {
+            "david": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "intercontinental": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "david": [
+              {
+                "frame": 150,
+                "observed": "david",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "david",
+                "edit_distance": 0
+              }
+            ],
+            "intercontinental": [
+              {
+                "frame": 150,
+                "observed": "intercontinental",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "intercontinental",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q909": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "king"
+            ],
+            "routes": {
+              "king": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "king": [
+                {
+                  "frame": 210,
+                  "observed": "king",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          },
+          "RTVQA-Q1742": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "grand"
+            ],
+            "routes": {
+              "grand": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "grand": [
+                {
+                  "frame": 60,
+                  "observed": "grand",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 90,
+                  "observed": "grand",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 120,
+                  "observed": "grand",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 150,
+                  "observed": "grand",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 180,
+                  "observed": "grand",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 3,
+          "frame": 60,
+          "accepted": [
+            "RTVQA-Q1742"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2558",
+      "question_id": 2558,
+      "video": "962.mp4",
+      "aliases": [
+        "starbucks",
+        "starbucks coffee"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2558"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "coffee",
+            "starbucks"
+          ],
+          "routes": {
+            "coffee": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "starbucks": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "coffee": [
+              {
+                "frame": 181,
+                "observed": "coffee",
+                "edit_distance": 0
+              }
+            ],
+            "starbucks": [
+              {
+                "frame": 151,
+                "observed": "starbucks",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "tarbucks",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 6,
+          "frame": 151,
+          "accepted": [
+            "RTVQA-Q2558"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q2532",
+          "RTVQA-Q2558"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "coffee",
+            "starbucks"
+          ],
+          "routes": {
+            "coffee": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "starbucks": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "coffee": [
+              {
+                "frame": 181,
+                "observed": "coffee",
+                "edit_distance": 0
+              }
+            ],
+            "starbucks": [
+              {
+                "frame": 151,
+                "observed": "starbucks",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "tarbucks",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q2532": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "hair"
+            ],
+            "routes": {
+              "hair": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "hair": [
+                {
+                  "frame": 212,
+                  "observed": "hair",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 6,
+          "frame": 151,
+          "accepted": [
+            "RTVQA-Q2558"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2565",
+      "question_id": 2565,
+      "video": "669.mp4",
+      "aliases": [
+        "western express"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        151,
+        181,
+        211,
+        241,
+        271
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2565"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "express",
+            "western"
+          ],
+          "routes": {
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "western": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "express": [
+              {
+                "frame": 0,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "express",
+                "edit_distance": 0
+              }
+            ],
+            "western": [
+              {
+                "frame": 0,
+                "observed": "western",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "western",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "western",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q2565"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2565"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "express",
+            "western"
+          ],
+          "routes": {
+            "express": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "western": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "express": [
+              {
+                "frame": 0,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "express",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "express",
+                "edit_distance": 0
+              }
+            ],
+            "western": [
+              {
+                "frame": 0,
+                "observed": "western",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "western",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "western",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q2565"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2632",
+      "question_id": 2632,
+      "video": "759.mp4",
+      "aliases": [
+        "yankee stadium"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2632"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "stadium",
+            "yankee"
+          ],
+          "routes": {
+            "stadium": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "yankee": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "stadium": [
+              {
+                "frame": 60,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 272,
+                "observed": "stadium",
+                "edit_distance": 0
+              }
+            ],
+            "yankee": [
+              {
+                "frame": 90,
+                "observed": "ankee",
+                "edit_distance": 1
+              },
+              {
+                "frame": 121,
+                "observed": "yankee",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "yankel",
+                "edit_distance": 1
+              },
+              {
+                "frame": 272,
+                "observed": "yanke",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q2632"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q2632",
+          "RTVQA-Q842"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "stadium",
+            "yankee"
+          ],
+          "routes": {
+            "stadium": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "yankee": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "stadium": [
+              {
+                "frame": 60,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "stadium",
+                "edit_distance": 0
+              },
+              {
+                "frame": 272,
+                "observed": "stadium",
+                "edit_distance": 0
+              }
+            ],
+            "yankee": [
+              {
+                "frame": 90,
+                "observed": "ankee",
+                "edit_distance": 1
+              },
+              {
+                "frame": 121,
+                "observed": "yankee",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "yankel",
+                "edit_distance": 1
+              },
+              {
+                "frame": 272,
+                "observed": "yanke",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q842": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "home"
+            ],
+            "routes": {
+              "home": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+            },
+            "witnesses": {
+              "home": [
+                {
+                  "frame": 0,
+                  "observed": "home",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q842"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2686",
+      "question_id": 2686,
+      "video": "581.mp4",
+      "aliases": [
+        "bank of america"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "america"
+          ],
+          "routes": {
+            "america": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "america": [
+              {
+                "frame": 30,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "america",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "america"
+          ],
+          "routes": {
+            "america": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "america": [
+              {
+                "frame": 30,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "america",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "america",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2687",
+      "question_id": 2687,
+      "video": "855.mp4",
+      "aliases": [
+        "belly burgers"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "burgers"
+          ],
+          "routes": {
+            "burgers": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "burgers": [
+              {
+                "frame": 30,
+                "observed": "burgers",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2687"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "belly",
+            "burgers"
+          ],
+          "routes": {
+            "belly": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN",
+            "burgers": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "belly": [
+              {
+                "frame": 30,
+                "observed": "belly",
+                "edit_distance": 0
+              }
+            ],
+            "burgers": [
+              {
+                "frame": 30,
+                "observed": "burgers",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q2687"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q2844",
+      "question_id": 2844,
+      "video": "541.mp4",
+      "aliases": [
+        "price choice foodmarkets"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210,
+        240,
+        270
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2844"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "choice",
+            "foodmarkets"
+          ],
+          "routes": {
+            "choice": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "foodmarkets": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "choice": [
+              {
+                "frame": 0,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "choice",
+                "edit_distance": 0
+              }
+            ],
+            "foodmarkets": [
+              {
+                "frame": 240,
+                "observed": "foodmarkets",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 9,
+          "frame": 240,
+          "accepted": [
+            "RTVQA-Q2844"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q2844"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 5,
+          "matched_tokens": [
+            "choice",
+            "foodmarkets",
+            "price"
+          ],
+          "routes": {
+            "choice": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "foodmarkets": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "price": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "choice": [
+              {
+                "frame": 0,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "choice",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "choice",
+                "edit_distance": 0
+              }
+            ],
+            "foodmarkets": [
+              {
+                "frame": 240,
+                "observed": "foodmarkets",
+                "edit_distance": 0
+              }
+            ],
+            "price": [
+              {
+                "frame": 90,
+                "observed": "price",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "price",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "price",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "price",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "price",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "price",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q2844"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3168",
+      "question_id": 3168,
+      "video": "871.mp4",
+      "aliases": [
+        "infiniti of lynbrook"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q3168",
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "infiniti",
+            "lynbrook"
+          ],
+          "routes": {
+            "infiniti": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "lynbrook": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "infiniti": [
+              {
+                "frame": 121,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "infiniti",
+                "edit_distance": 0
+              }
+            ],
+            "lynbrook": [
+              {
+                "frame": 121,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 121,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 212,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 121,
+          "accepted": [
+            "RTVQA-Q3168",
+            "RTVQA-Q3407"
+          ]
+        }
+      },
+      "information": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q3168",
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 4,
+          "matched_tokens": [
+            "infiniti",
+            "lynbrook"
+          ],
+          "routes": {
+            "infiniti": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "lynbrook": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "infiniti": [
+              {
+                "frame": 121,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "infiniti",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "infiniti",
+                "edit_distance": 0
+              }
+            ],
+            "lynbrook": [
+              {
+                "frame": 121,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "lynbrook",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3407": {
+            "matched": true,
+            "evidence_units": 2,
+            "matched_tokens": [
+              "services"
+            ],
+            "routes": {
+              "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+            },
+            "witnesses": {
+              "services": [
+                {
+                  "frame": 121,
+                  "observed": "service",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 212,
+                  "observed": "service",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 5,
+          "frame": 121,
+          "accepted": [
+            "RTVQA-Q3168",
+            "RTVQA-Q3407"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3407",
+      "question_id": 3407,
+      "video": "952.mp4",
+      "aliases": [
+        "cascade water services",
+        "cascade"
+      ],
+      "sampled_frames": [
+        0,
+        30,
+        60,
+        90,
+        121,
+        151,
+        181,
+        212,
+        242,
+        272
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "cascade",
+            "services"
+          ],
+          "routes": {
+            "cascade": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "cascade": [
+              {
+                "frame": 0,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "cascade",
+                "edit_distance": 0
+              }
+            ],
+            "services": [
+              {
+                "frame": 0,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "services",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      },
+      "information": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3407"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 5,
+          "matched_tokens": [
+            "cascade",
+            "services",
+            "water"
+          ],
+          "routes": {
+            "cascade": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "services": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "water": "ROSTER_UNIQUE_SHORT_EXACT_INFORMATION_TOKEN"
+          },
+          "witnesses": {
+            "cascade": [
+              {
+                "frame": 0,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "cascade",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "cascade",
+                "edit_distance": 0
+              }
+            ],
+            "services": [
+              {
+                "frame": 0,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "services",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "services",
+                "edit_distance": 0
+              }
+            ],
+            "water": [
+              {
+                "frame": 0,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "water",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q3407"
+          ]
+        }
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for whether roster-unique short exact OCR tokens improve target-name search-priority routing over the frozen legacy length rule on a fresh OCR-unseen RoadTextVQA validation panel.",
+    "not_allowed": [
+      "benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, product, benefit, reliability, or safety confirmation",
+      "pixel text localization or a token proving exact physical entity identity, sign ownership, facade ownership, portal ownership, or entrance ownership",
+      "public access, traversability, waypoint correctness, arrival, or handoff"
+    ]
+  }
+}

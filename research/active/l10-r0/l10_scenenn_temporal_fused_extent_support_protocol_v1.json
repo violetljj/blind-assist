@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-fused-extent-support-protocol-v1",
+  "protocol_id": "l10-scenenn-temporal-fused-extent-support-posthoc-protocol-v1",
+  "frozen_at": "2026-08-31T20:10:00+08:00",
+  "question": "Can a minimal registered three-frame depth carrier repair the source-support failure of the consumed single-frame SceneNN experiment while leaving its tolerance, point minimum, matching, and positive-overlap support rule unchanged?",
+  "predecessor": {
+    "protocol_path": "l10_scenenn_observed_extent_support_protocol_v1.json",
+    "protocol_sha256": "deb0be3fe25ff5384b0344c3accfbab3074049a18c577e22a376cb5b595a8b7c",
+    "cohort_path": "l10_scenenn_observed_extent_support_cohort_v1.json",
+    "cohort_sha256": "38981c8940927b44202b3afea7be70fcf8e077615f039efb1ad532c18ad7c817",
+    "receipt_path": "l10_scenenn_observed_extent_support_rgbd_receipt_v1.json",
+    "receipt_sha256": "25eb367897508fff9b060fe82dfe9c5b8d2d168480652ecafe43058c39eb6dc5",
+    "result_path": "l10_scenenn_observed_extent_support_result_v1.json",
+    "result_sha256": "37405323ebe2c55d7aa8b25a89c31a8b488b4b65789f4b88ecfda726f874894e",
+    "implementation_path": "l10_scenenn_observed_extent_support.py",
+    "implementation_sha256": "0dd56ef4f04d40ae2606f8b2b567617089106e89e056ab452d8a333edc2b5bb5",
+    "required_conclusion": "L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT"
+  },
+  "motivation": {
+    "observed_signature": "Six frozen observations supplied 927 to 10,971 depth-consistent points before capping, while two frozen query observations supplied 159 and 120 against the unchanged 256-point minimum.",
+    "structural_change": "Accumulate three already-registered local depth observations rather than changing any single-frame acceptance threshold.",
+    "primary_source": "https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Wang_Online_Reconstruction_of_CVPR_2016_paper.pdf",
+    "source_inference": "Primary RGB-D reconstruction work integrates registered incoming depth images into a shared model; therefore local temporal integration is an independently motivated carrier change, not a fitted point-count threshold rescue."
+  },
+  "renderer": {
+    "implementation": "unchanged CuPy CUDA triangle rasterizer from l10_scenenn_visible_portal_transfer.py",
+    "numeric_type": "float32",
+    "image_width": 640,
+    "image_height": 480,
+    "near_plane_metres": 0.02,
+    "near_plane_face_rule": "Reject a face unless all vertices are beyond the near plane.",
+    "triangle_sidedness": "double-sided",
+    "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+    "visibility_tolerance_metres": 0.005
+  },
+  "temporal_carrier": {
+    "identity": "PRIVILEGED_TARGET_CONDITIONED_REGISTERED_THREE_FRAME_REAL_DEPTH_OBSERVATION",
+    "trajectory_frame_offsets": [-5, 0, 5],
+    "window_selection": "Exact symmetric offsets around every already-frozen reference and query anchor; no frame may be replaced or dropped after depth access.",
+    "mask": "provider instance mesh z-buffer-visible pixels for the frozen target at each temporal frame",
+    "depth_consistency_tolerance_metres": 0.08,
+    "minimum_points_per_fused_observation": 256,
+    "maximum_points_per_frame": 4096,
+    "maximum_points_per_fused_observation": 4096,
+    "fusion": "transform each accepted sensor point with its provider camera-to-world pose, concatenate all three registered clouds, then retain 4096 deterministic evenly spaced points in frame/raster order if necessary",
+    "portal_frame": "fused reference observation centroid; principal horizontal direction in the SceneNN x-z floor plane; y upright",
+    "surface_score": "unchanged negative symmetric median nearest-neighbour distance",
+    "zero_assignment": "unchanged strict reciprocal row and column maximum",
+    "support": "unchanged strictly positive registered planar convex-hull intersection; no IoU magnitude threshold"
+  },
+  "scenarios": {
+    "source": "unchanged 15-scenario consumed SceneNN cohort",
+    "closed": 1,
+    "unequal_size": 2,
+    "ordered_balanced_swaps": 12,
+    "total": 15
+  },
+  "decision_gate": {
+    "all_eight_fused_observations_meet_256_points": true,
+    "all_true_pairs_have_positive_observed_support": true,
+    "extent_support_true_positive": 34,
+    "extent_support_false_positive": 0,
+    "extent_support_false_negative": 0,
+    "exact_zero_assignment_scenarios": 15,
+    "no_true_match_loss_vs_rank_only": true,
+    "f1_not_lower_than_rank_only": true
+  },
+  "forbidden_after_additional_rgbd_access": [
+    "change temporal offsets or add more frames",
+    "change the 0.08 m consistency tolerance",
+    "change the 256-point minimum or either 4096-point cap",
+    "replace anchors, targets, scene, or scenarios",
+    "change the portal frame, surface score, reciprocity, or positive-support rule",
+    "promote a positive result to fresh provider-disjoint confirmation"
+  ],
+  "claim_boundary": "This consumed-scene posthoc experiment can establish only whether a minimal pose-registered temporal depth carrier makes the unchanged support mechanism evaluable and mechanically effective. It cannot supply fresh confirmation because the SceneNN scene, targets, anchors, and single-frame failure are already consumed. Instance masks, geometry and trajectories remain privileged; the sensor is not a phone. It is not raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

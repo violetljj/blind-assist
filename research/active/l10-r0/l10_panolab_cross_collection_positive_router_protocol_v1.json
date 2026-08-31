@@ -1,0 +1,112 @@
+{
+  "schema": "blindassist-l10-panolab-cross-collection-positive-router-protocol-v1",
+  "name": "L10 PanoLab fixed appearance router on target- and collection-unseen positives",
+  "status": "FROZEN_AFTER_HUMAN_TRUTH_BEFORE_MODEL_CALL",
+  "question": "Does the unchanged four-positive appearance fingerprint and open-set score/margin gate accept two target-way/item-unseen positive queries when their reference images come from different Panoramax collections?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router.py",
+    "sha256": "659887fdf3c6fecdbb12a5b8ad0ec0fa7c8097d93233f55fcf5f9ab61b073120",
+    "bytes": 19733
+  },
+  "inputs": {
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "positive_calibration_result": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+      "sha256": "a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f",
+      "bytes": 42678
+    },
+    "positive_selection": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_selection_v1.json",
+      "sha256": "408aac42bf3590379b6c3fc6c448553b15077ead253dc170fecf6355868188f0",
+      "bytes": 90460
+    },
+    "positive_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_materialization_v1.json",
+      "sha256": "46e824bb55a24920ce378a47f1ae777f0e77fd632b1dba1bb3f1bc686aae89ee",
+      "bytes": 4219
+    },
+    "positive_truth": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_truth_v1.json",
+      "sha256": "6a1b8d13b25e3de690a91a7c1021a2ba2767098099c718a746d04e8f9b018863",
+      "bytes": 3916
+    }
+  },
+  "frozen_roster": {
+    "prior_targets": [
+      "FL01",
+      "FL02",
+      "FL03",
+      "FL04"
+    ],
+    "new_targets": [
+      "FP01",
+      "FP02"
+    ],
+    "combined_targets": 6,
+    "references_per_target": 2,
+    "fresh_queries": 2,
+    "rule": "Rank each fresh query against all six targets. The four prior target banks are unchanged; each new target receives its two frozen reference-collection images."
+  },
+  "accept_contract": {
+    "calibration_source": "Minimum correct score and truth margin across the four consumed positive rows in l10_panolab_component_router_result_v1.json.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "rule": "Emit a SEARCH_PRIORITY_ONLY candidate only when the unique top-1 score and its top-1-versus-runner-up margin both meet the frozen thresholds; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "no_adaptation": "No score, margin, feature weight, crop, model, roster, image, truth label, or threshold may be changed after either fresh result is observed."
+  },
+  "execution": {
+    "network": "forbidden",
+    "models": "Reuse the exact local CLIP and DINOv2 artifacts, patch grid, batch size, crop, and 0.35/0.25/0.40 score formula sealed in the base component protocol.",
+    "output": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+    "output_policy": "Refuse an existing result or output root; preserve the first terminal result.",
+    "failure_policy": "A failure remains a failure. Do not resample, tune, or rerun a sealed row."
+  },
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-cross-collection-positive-router-v1",
+  "gate": {
+    "required": [
+      "both human-reviewed positive rows remain valid",
+      "all four new reference views are collection-disjoint from their query",
+      "zero item overlap with the prior component-router images",
+      "2/2 fresh positives accepted as the correct target",
+      "0 accepted wrong targets across the two primary trials",
+      "0 wrong-target candidates across 10 counterfactual wrong-goal trials",
+      "0 portal-ownership bindings"
+    ]
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_CROSS_COLLECTION_FRESH_POSITIVE_ROUTER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_CROSS_COLLECTION_FRESH_POSITIVE_ROUTER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "Learning Sequential Descriptors for Sequence-based Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2207.03868",
+      "official_code": "https://github.com/vandal-vpr/vg-transformers",
+      "use": "Motivates evaluating place representations across distinct traversals. This replay does not implement or claim SeqVLAD."
+    },
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "Motivates cross-sequence descriptor evaluation. This replay does not train or implement SeqGeM."
+    },
+    {
+      "title": "SafeVPR: Safe Place Recognition via Open-Set Uncertainty Quantification",
+      "paper": "https://arxiv.org/abs/2605.28048",
+      "official_code": "https://github.com/Hasar12139/SafeVPR",
+      "use": "Motivates separating retrieval ranking from accept-or-abstain. This tiny fixed-threshold panel is not conformal risk control or an open-world guarantee."
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for or against the unchanged facade-fingerprint router on exactly two target-way/item-unseen, query-reference-collection-disjoint positive Panoramax episodes, ranked against a six-target closed roster.",
+    "not_allowed": [
+      "provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment generalization",
+      "exact physical identity authority, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety",
+      "learned temporal sequence matching or a production routing policy"
+    ]
+  }
+}

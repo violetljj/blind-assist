@@ -1,0 +1,201 @@
+{
+  "schema": "blindassist-l10-panolab-component-router-protocol-v1",
+  "name": "L10 PanoLab lexical-reachability to appearance-candidate router",
+  "status": "FROZEN_BEFORE_FIRST_MODEL_CALL_ON_TWO_NEW_VIVIANI_REFERENCE_PIXELS_WITH_OTHER_QUERY_AND_REFERENCE_PIXELS_CONSUMED",
+  "question": "After extending target-linked reference coverage from three to all four fresh active-view targets, can a component router replace lexical UNKNOWN with a correct after-frame appearance search-priority candidate while preserving zero wrong-goal candidates and zero portal-ownership bindings?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_component_router.py",
+    "sha256": "d52d8611202368e4b151b60488f5b586a4c04e5fd95f580ef8cb28f0468d50d8"
+  },
+  "inputs": {
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "fresh_lexical_result": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_result_v1.json",
+      "sha256": "3a8a3e6813193e8fe53a115e7ef41e78522eef5a4371ca290e3ebf07585c27aa",
+      "bytes": 47034
+    },
+    "reference_portal_source": {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196
+    },
+    "node_credential_source": {
+      "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "bytes": 417017
+    },
+    "viviani_reference_selection": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_selection_v1.json",
+      "sha256": "2bbbd48a6023bb991958b013b6f95a18bff051a1526062119952141e1c9f4532",
+      "bytes": 35627
+    },
+    "viviani_reference_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_viviani_reference_materialization_v1.json",
+      "sha256": "d4860a9d058ab1bd53216f10661d3f08af0eb36f72b2ac827f12efe79a4c7198",
+      "bytes": 1636
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "source_authority": {
+    "mode": "SOURCE_EXTENDED_POSTHOC_DEVELOPMENT_CANDIDATE_ROUTING_ONLY",
+    "consumed_scope": "All eight fresh query panoramas, the fixed lexical result, and six references for FL01/FL03/FL04 were already consumed. The two Le Viviani reference pixels were frozen and materialized without pixel/model access but do not make the whole four-target replay fresh.",
+    "new_source": "Le Viviani reference selection had zero exact query-item overlap, zero pre-freeze selected-pixel views, zero pre-freeze model calls, and two successfully hashed 5760x2880 images.",
+    "pre_model_transport_correction": "The first invocation stopped before model loading because the FL04 near-reference ID accidentally combined the e713c126 prefix with another item's suffix. The incomplete task-owned crop directory was removed, the ID was corrected to the exact frozen node-credential item, and no model, score, weight, gate, query, roster, or selection rule changed.",
+    "same_provider_boundary": "Every query and reference is Panoramax. Six of eight references share the query collection for their target; collection-disjointness is reported per reference and no provider-disjoint generalization is claimed.",
+    "closed_roster": "The requested target is always one of four OSM-linked entities with a two-view reference bank. Target-absent and open-world rejection are not evaluated."
+  },
+  "target_roster": [
+    {
+      "episode_id": "FL01",
+      "target_way_id": 190020630,
+      "target_name": "Espace Village",
+      "references": [
+        {
+          "source": "reference_portal",
+          "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90"
+        },
+        {
+          "source": "reference_portal",
+          "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15"
+        }
+      ]
+    },
+    {
+      "episode_id": "FL02",
+      "target_way_id": 247662576,
+      "target_name": "Le Viviani",
+      "references": [
+        {
+          "source": "viviani_unseen",
+          "item_id": "e38bcf87-3e7f-46a6-97f6-611481a3c9d0"
+        },
+        {
+          "source": "viviani_unseen",
+          "item_id": "51ad93ee-e6f6-4c06-a346-0c08b299d101"
+        }
+      ]
+    },
+    {
+      "episode_id": "FL03",
+      "target_way_id": 84327114,
+      "target_name": "Gare de Neuilly - Porte Maillot",
+      "references": [
+        {
+          "source": "node_credential",
+          "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b"
+        },
+        {
+          "source": "node_credential",
+          "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401"
+        }
+      ]
+    },
+    {
+      "episode_id": "FL04",
+      "target_way_id": 43471848,
+      "target_name": "Église Notre-Dame de la Délivrande",
+      "references": [
+        {
+          "source": "node_credential",
+          "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b"
+        },
+        {
+          "source": "node_credential",
+          "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402"
+        }
+      ]
+    }
+  ],
+  "models": {
+    "clip": {
+      "path": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "revision": "3d74acf9",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    },
+    "dinov2": {
+      "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "revision": "ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "patch_grid": 9
+    }
+  },
+  "observation_window": {
+    "anchor": "strict OSM entrance ray under the unchanged zero-pose Panoramax contract",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "sampling": "native equirectangular pixels with horizontal seam wrap and no resampling"
+  },
+  "appearance_score": {
+    "formula": "For each candidate target: 0.35 * maximum CLIP reference cosine + 0.25 * maximum pooled DINOv2 reference cosine + 0.40 * maximum mutual-patch affine-consistency score.",
+    "weights": {
+      "clip": 0.35,
+      "dino": 0.25,
+      "mutual_patch_geometry": 0.4
+    },
+    "change_control": "Models, weights, patch grid, entrance window and local-geometry formula are copied unchanged. The failed two-frame max bank is not used; only the independently DIRECT after frame is scored."
+  },
+  "router": {
+    "lexical_first": "If the frozen long-short exact-token bank matched the requested target, retain LEXICAL_CANDIDATE.",
+    "appearance_fallback": "Otherwise emit APPEARANCE_SEARCH_PRIORITY_CANDIDATE only when the requested target is unique top-1 in the fixed four-target reference roster and its margin is positive; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "counterfactuals": "For each query, replay all three other roster identities as wrong requested goals. A wrong goal receives a search-priority candidate only if it is top-1 for that query.",
+    "authority": "Both branches emit candidates for observation/search prioritization only. Neither may bind a pixel region, facade, sign, door, portal, or entrance to the requested entity."
+  },
+  "execution": {
+    "batch_size": 4,
+    "backend_rule": "Use the existing project CPU/CUDA representative probe once, then keep its selected backend for all twelve crops.",
+    "overwrite": "Refuse an existing output or artifact root."
+  },
+  "gate": {
+    "reference_coverage": "4/4",
+    "minimum_component_router_correct": "3/4",
+    "minimum_correct_gain_over_frozen_lexical": 3,
+    "maximum_router_wrong": 0,
+    "maximum_wrong_goal_search_priority_candidates": 0,
+    "maximum_portal_ownership_bindings": 0,
+    "stop_rule": "Run once. If the gate fails, do not tune the consumed queries, model weights, score formula, reference choices or candidate rule. Change the source or collect a genuinely new cohort."
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_COMPONENT_ROUTER_SOURCE_EXTENDED_POSTHOC_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_COMPONENT_ROUTER_SOURCE_EXTENDED_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "Learning Sequential Descriptors for Sequence-based Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2207.03868",
+      "official_code": "https://github.com/vandal-vpr/vg-transformers",
+      "use": "Sequence VPR motivates testing temporal aggregation, but the local one-edge replay showed no gain; the router therefore spends appearance compute only on the independently useful DIRECT after frame."
+    },
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "JIST motivates learned temporal aggregation as a future genuinely new model/source route. This deterministic router does not implement SeqGeM or claim benchmark comparability."
+    }
+  ],
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-component-router-v1",
+  "output": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Source-extended, post-hoc Development evidence on four Panoramax episodes about replacing a frozen lexical UNKNOWN with a closed-roster appearance search-priority candidate while retaining explicit UNKNOWN and zero ownership bindings.",
+    "not_allowed": [
+      "fresh, blind, open-world, target-absent, source-provider-disjoint, or broad generalization evidence",
+      "a top-1 appearance candidate being exact-instance, address, sign, facade, portal, or entrance ownership",
+      "appearance authorizing the independently projected OSM entrance ray",
+      "entrance affordance, public or legal access, walkability, or collision-free traversability",
+      "waypoint accuracy, metric localization, arrival, HANDOFF_READY, product benefit, user benefit, deployment performance, or safety"
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist-l10-panolab-progressive-evidence-early-exit-posthoc-result-v1",
+  "decision": "L10_PANOLAB_CONSUMED_PROGRESSIVE_EVIDENCE_EARLY_EXIT_MECHANISM_DEVELOPMENT_GATE_MET",
+  "authority": "CONSUMED_POSTHOC_PROGRESSIVE_OBSERVATION_MECHANISM_ONLY_REQUIRES_FRESH_CONFIRMATION",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_progressive_evidence_early_exit_posthoc_protocol_v1.json",
+  "protocol_sha256": "c96e257b79b0a8fecd07b5dbdadce022c7b1655ba4a894d288fd66789026da9f",
+  "evaluator_sha256": "a83d4d95f59ce506bbb5114457c3cb5feae43e0621a5b62a2fd7dd33969037c2",
+  "metrics": {
+    "consumed_posthoc_episodes": 2,
+    "fixed_router_frames_available": 6,
+    "progressive_frames_consumed": 2,
+    "frames_saved": 4,
+    "observation_reduction_rate": 0.6666666666666666,
+    "correct_wrong_unknown": [
+      2,
+      0,
+      0
+    ],
+    "lexical_early_exits": 1,
+    "appearance_early_exits": 1,
+    "wrong_target_candidates": 0,
+    "new_ocr_or_appearance_model_calls": 0,
+    "portal_ownership_bindings_emitted": 0
+  },
+  "gate": {
+    "two_consumed_sequences_replayed": true,
+    "two_of_two_correct": true,
+    "zero_wrong": true,
+    "zero_unknown": true,
+    "minimum_fifty_percent_observation_reduction": true,
+    "one_lexical_and_one_appearance_early_exit": true,
+    "zero_new_model_calls": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "DF01",
+      "target_name": "Monoprix",
+      "trace": [
+        {
+          "prefix_length": 1,
+          "latest_relation": "prev",
+          "lexical_matched_targets": [],
+          "appearance": {
+            "prediction": "DF01",
+            "top1_score": 0.7031530767679215,
+            "top1_margin": 0.05052838444709784,
+            "candidate": "DF01",
+            "score_gate": true,
+            "margin_gate": true
+          },
+          "decision": "PROGRESSIVE_APPEARANCE_EARLY_EXIT"
+        }
+      ],
+      "frames_available": 3,
+      "frames_consumed_before_exit": 1,
+      "saved_frames": 2,
+      "candidate": "DF01",
+      "route": "PROGRESSIVE_APPEARANCE_EARLY_EXIT",
+      "candidate_authority": "SEARCH_PRIORITY_ONLY",
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "DF02",
+      "target_name": "Maison de Quartier Chemin Vert",
+      "trace": [
+        {
+          "prefix_length": 1,
+          "latest_relation": "prev",
+          "lexical_matched_targets": [
+            "DF02"
+          ],
+          "decision": "PROGRESSIVE_DISTINCTIVE_TOKEN_EARLY_EXIT"
+        }
+      ],
+      "frames_available": 3,
+      "frames_consumed_before_exit": 1,
+      "saved_frames": 2,
+      "candidate": "DF02",
+      "route": "PROGRESSIVE_DISTINCTIVE_TOKEN_EARLY_EXIT",
+      "candidate_authority": "SEARCH_PRIORITY_ONLY",
+      "portal_ownership_binding": null
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Consumed Development mechanism evidence about whether the two already opened sequences could have retained their search-priority result while stopping observation earlier under one fixed progressive rule.",
+    "not_allowed": [
+      "fresh confirmation, online latency, energy, compute, user-time, active-motion, provider/city generalization, learned sequence-receptiveness, or dynamic-length performance",
+      "conformal, FDR-controlled, calibrated-probability, deployment, or safety authority",
+      "exact identity, facade/portal ownership, access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

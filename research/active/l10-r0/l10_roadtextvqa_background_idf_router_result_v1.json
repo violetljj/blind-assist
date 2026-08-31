@@ -1,0 +1,3138 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-background-idf-router-result-v1",
+  "decision": "L10_ROADTEXTVQA_BACKGROUND_IDF_ROUTER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_DEVELOPMENT_SEARCH_PRIORITY_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_roadtextvqa_background_idf_router_protocol_v1.json",
+  "protocol_sha256": "f503b73b7668e109cb1165587910eebf97d0c74cf862b4150c22d993519293ef",
+  "evaluator_sha256": "85a365f1f93056579c03c18cf49d8691bce8757b7a92945c91e0482fa424e4ba",
+  "metrics": {
+    "episodes": 30,
+    "sampled_frames_per_episode": 10,
+    "legacy": {
+      "correct": 10,
+      "wrong": 1,
+      "unknown": 19,
+      "ambiguous": 0
+    },
+    "background_idf": {
+      "correct": 15,
+      "wrong": 1,
+      "unknown": 10,
+      "ambiguous": 4
+    },
+    "correct_gain": 5,
+    "unknown_reduction": 9,
+    "synthetic_negative_queries": 30,
+    "synthetic_negative_accepts": 0,
+    "accepted_episode_mean_frames_to_first_candidate": 2.75,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_fresh_ocr_unseen_episodes": true,
+    "minimum_three_correct_gain": true,
+    "zero_successor_wrong": false,
+    "zero_successor_ambiguous": false,
+    "zero_synthetic_negative_accepts": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": false
+  },
+  "synthetic_negative_accepts": [],
+  "rows": [
+    {
+      "target_id": "RTVQA-Q563",
+      "question_id": 563,
+      "video": "114.mp4",
+      "question": "What is the name of the shop on the left of the dry cleaners?",
+      "aliases": [
+        "the blue"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q943",
+      "question_id": 943,
+      "video": "130.mp4",
+      "question": "what is the name of airport mentioned on the board",
+      "aliases": [
+        "s f airport"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "airport"
+          ],
+          "routes": {
+            "airport": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "airport": [
+              {
+                "frame": 150,
+                "observed": "airport",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 6.19421,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "airport"
+          ],
+          "token_information_bits": {
+            "airport": 6.19421
+          },
+          "witnesses": {
+            "airport": [
+              {
+                "frame": 150,
+                "observed": "airport",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q1368",
+      "question_id": 1368,
+      "video": "180.mp4",
+      "question": "Name the transportation service provided by the white mini bus to the right?",
+      "aliases": [
+        "access-a-ride"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "access"
+          ],
+          "routes": {
+            "access": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "access": [
+              {
+                "frame": 0,
+                "observed": "access",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "access",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q1368"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 13.066491,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "access",
+            "ride"
+          ],
+          "token_information_bits": {
+            "access": 6.609247,
+            "ride": 6.457244
+          },
+          "witnesses": {
+            "access": [
+              {
+                "frame": 0,
+                "observed": "access",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "access",
+                "edit_distance": 0
+              }
+            ],
+            "ride": [
+              {
+                "frame": 30,
+                "observed": "ride",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q1368"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4841",
+      "question_id": 4841,
+      "video": "2008.mp4",
+      "question": "The building of which company is seen in the opposite side?",
+      "aliases": [
+        "tata"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 6.840573,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "tata"
+          ],
+          "token_information_bits": {
+            "tata": 6.840573
+          },
+          "witnesses": {
+            "tata": [
+              {
+                "frame": 0,
+                "observed": "tata",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "tata",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "tata",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4433",
+      "question_id": 4433,
+      "video": "2009.mp4",
+      "question": "What is the name of the bus on the right side of the road?",
+      "aliases": [
+        "hema"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q4433",
+          "RTVQA-Q5728"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 10.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "hema"
+          ],
+          "token_information_bits": {
+            "hema": 10.364135
+          },
+          "witnesses": {
+            "hema": [
+              {
+                "frame": 270,
+                "observed": "hema",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q5728": {
+            "matched": true,
+            "information_bits": 8.779172,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "hello"
+            ],
+            "token_information_bits": {
+              "hello": 8.779172
+            },
+            "witnesses": {
+              "hello": [
+                {
+                  "frame": 270,
+                  "observed": "hello",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 10,
+          "frame": 270,
+          "accepted": [
+            "RTVQA-Q4433",
+            "RTVQA-Q5728"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3817",
+      "question_id": 3817,
+      "video": "2073.mp4",
+      "question": "What is the name of the lorry service?",
+      "aliases": [
+        "eicher"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "eicher"
+          ],
+          "routes": {
+            "eicher": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "eicher": [
+              {
+                "frame": 30,
+                "observed": "eicher",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3817"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 8.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "eicher"
+          ],
+          "token_information_bits": {
+            "eicher": 8.364135
+          },
+          "witnesses": {
+            "eicher": [
+              {
+                "frame": 30,
+                "observed": "eicher",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 2,
+          "frame": 30,
+          "accepted": [
+            "RTVQA-Q3817"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3918",
+      "question_id": 3918,
+      "video": "2085.mp4",
+      "question": "What is the name of the company advertised on the blue sheets on the right?",
+      "aliases": [
+        "aurobindo"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3918"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "aurobindo"
+          ],
+          "routes": {
+            "aurobindo": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "aurobindo": [
+              {
+                "frame": 0,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 181,
+                "observed": "aurobind",
+                "edit_distance": 1
+              },
+              {
+                "frame": 241,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 271,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3918"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 8.779172,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "aurobindo"
+          ],
+          "token_information_bits": {
+            "aurobindo": 8.779172
+          },
+          "witnesses": {
+            "aurobindo": [
+              {
+                "frame": 0,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "aurobindo",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 181,
+                "observed": "aurobind",
+                "edit_distance": 1
+              },
+              {
+                "frame": 241,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              },
+              {
+                "frame": 271,
+                "observed": "ourobindo",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q3918"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3813",
+      "question_id": 3813,
+      "video": "2101.mp4",
+      "question": "What is the name of the shop on the left side of Regal Dental?",
+      "aliases": [
+        "quickies"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3813"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "quickies"
+          ],
+          "routes": {
+            "quickies": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "quickies": [
+              {
+                "frame": 90,
+                "observed": "quickie",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3813"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 11.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "quickies"
+          ],
+          "token_information_bits": {
+            "quickies": 11.364135
+          },
+          "witnesses": {
+            "quickies": [
+              {
+                "frame": 90,
+                "observed": "quickie",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q3813"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4099",
+      "question_id": 4099,
+      "video": "2103.mp4",
+      "question": "What is the name of the colony ahead?",
+      "aliases": [
+        "gulmohar park colony"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4099"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "colony",
+            "gulmohar"
+          ],
+          "routes": {
+            "colony": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "gulmohar": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "colony": [
+              {
+                "frame": 0,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "colony",
+                "edit_distance": 0
+              }
+            ],
+            "gulmohar": [
+              {
+                "frame": 211,
+                "observed": "gulmohar",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4099"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 25.45578,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "colony",
+            "gulmohar",
+            "park"
+          ],
+          "token_information_bits": {
+            "colony": 10.364135,
+            "gulmohar": 11.364135,
+            "park": 3.72751
+          },
+          "witnesses": {
+            "colony": [
+              {
+                "frame": 0,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "colony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "colony",
+                "edit_distance": 0
+              }
+            ],
+            "gulmohar": [
+              {
+                "frame": 211,
+                "observed": "gulmohar",
+                "edit_distance": 0
+              }
+            ],
+            "park": [
+              {
+                "frame": 0,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "park",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "park",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q4099"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4056",
+      "question_id": 4056,
+      "video": "2129.mp4",
+      "question": "What is the name of the Fiber cement board?",
+      "aliases": [
+        "vboard"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "vboard"
+          ],
+          "routes": {
+            "vboard": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "vboard": [
+              {
+                "frame": 0,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "vboard",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q3957",
+          "RTVQA-Q4056"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 10.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "vboard"
+          ],
+          "token_information_bits": {
+            "vboard": 10.364135
+          },
+          "witnesses": {
+            "vboard": [
+              {
+                "frame": 0,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "vboard",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "vboard",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3957": {
+            "matched": true,
+            "information_bits": 11.364135,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "jayini"
+            ],
+            "token_information_bits": {
+              "jayini": 11.364135
+            },
+            "witnesses": {
+              "jayini": [
+                {
+                  "frame": 30,
+                  "observed": "jayin",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 60,
+                  "observed": "jayin",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 90,
+                  "observed": "jayin",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 180,
+                  "observed": "jayin",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 210,
+                  "observed": "joyini",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 240,
+                  "observed": "joyini",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 270,
+                  "observed": "joyini",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q4056"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3957",
+      "question_id": 3957,
+      "video": "2131.mp4",
+      "question": "What is the name of the multi-specialty clinic on the left side of the road?",
+      "aliases": [
+        "jayini"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "jayini"
+          ],
+          "routes": {
+            "jayini": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "jayini": [
+              {
+                "frame": 0,
+                "observed": "joyini",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "jayini",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "jayini",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "joyini",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3957"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 11.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "jayini"
+          ],
+          "token_information_bits": {
+            "jayini": 11.364135
+          },
+          "witnesses": {
+            "jayini": [
+              {
+                "frame": 0,
+                "observed": "joyini",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "jayini",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "jayini",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "joyini",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q3957"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4483",
+      "question_id": 4483,
+      "video": "2176.mp4",
+      "question": "What is the name of the Kirana & General Store?",
+      "aliases": [
+        "ramdev"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "ramdev"
+          ],
+          "routes": {
+            "ramdev": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "ramdev": [
+              {
+                "frame": 0,
+                "observed": "hamdev",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4483"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 10.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "ramdev"
+          ],
+          "token_information_bits": {
+            "ramdev": 10.364135
+          },
+          "witnesses": {
+            "ramdev": [
+              {
+                "frame": 0,
+                "observed": "hamdev",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q4483"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4336",
+      "question_id": 4336,
+      "video": "2313.mp4",
+      "question": "What is the name of the building seen on the left side of the road?",
+      "aliases": [
+        "virtusa"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4523",
+      "question_id": 4523,
+      "video": "2335.mp4",
+      "question": "What is the name of the bus stop located on the left side of the highway?",
+      "aliases": [
+        "infosys bus stop"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 3.609247,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "stop"
+          ],
+          "token_information_bits": {
+            "stop": 3.609247
+          },
+          "witnesses": {
+            "stop": [
+              {
+                "frame": 150,
+                "observed": "stop",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3923",
+      "question_id": 3923,
+      "video": "2366.mp4",
+      "question": "what is the name of the nursery advertised on the wall?",
+      "aliases": [
+        "little vale"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "little"
+          ],
+          "routes": {
+            "little": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "little": [
+              {
+                "frame": 151,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "little",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 6.840573,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "little"
+          ],
+          "token_information_bits": {
+            "little": 6.840573
+          },
+          "witnesses": {
+            "little": [
+              {
+                "frame": 151,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "little",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "little",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4319",
+      "question_id": 4319,
+      "video": "2428.mp4",
+      "question": "What is the name of the high rise building seen on the left side of the road?",
+      "aliases": [
+        "signature towers"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4319"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 3,
+          "matched_tokens": [
+            "signature",
+            "towers"
+          ],
+          "routes": {
+            "signature": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "towers": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "signature": [
+              {
+                "frame": 0,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "signature",
+                "edit_distance": 0
+              }
+            ],
+            "towers": [
+              {
+                "frame": 0,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "towers",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4319"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 15.683875,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "signature",
+            "towers"
+          ],
+          "token_information_bits": {
+            "signature": 8.779172,
+            "towers": 6.904703
+          },
+          "witnesses": {
+            "signature": [
+              {
+                "frame": 0,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "signature",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "signature",
+                "edit_distance": 0
+              }
+            ],
+            "towers": [
+              {
+                "frame": 0,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "towers",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "towers",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q4319"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4572",
+      "question_id": 4572,
+      "video": "2451.mp4",
+      "question": "Which store is seen on the left side before Rajitha Hospitals?",
+      "aliases": [
+        "duroflex store"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4572"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "duroflex"
+          ],
+          "routes": {
+            "duroflex": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "duroflex": [
+              {
+                "frame": 0,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "duroflex",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4572"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 16.480342,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "duroflex",
+            "store"
+          ],
+          "token_information_bits": {
+            "duroflex": 11.364135,
+            "store": 5.116207
+          },
+          "witnesses": {
+            "duroflex": [
+              {
+                "frame": 0,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "duroflex",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "duroflex",
+                "edit_distance": 0
+              }
+            ],
+            "store": [
+              {
+                "frame": 30,
+                "observed": "store",
+                "edit_distance": 0
+              },
+              {
+                "frame": 150,
+                "observed": "store",
+                "edit_distance": 0
+              },
+              {
+                "frame": 180,
+                "observed": "store",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "store",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q4572"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3938",
+      "question_id": 3938,
+      "video": "2452.mp4",
+      "question": "what is the name of the fitness shop ahead?",
+      "aliases": [
+        "cloud fitness"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "fitness"
+          ],
+          "routes": {
+            "fitness": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "fitness": [
+              {
+                "frame": 90,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "fitnesis",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 272,
+                "observed": "fitness",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3938"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 15.014024,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "cloud",
+            "fitness"
+          ],
+          "token_information_bits": {
+            "cloud": 8.042207,
+            "fitness": 6.971817
+          },
+          "witnesses": {
+            "cloud": [
+              {
+                "frame": 242,
+                "observed": "cloud",
+                "edit_distance": 0
+              },
+              {
+                "frame": 272,
+                "observed": "cloud",
+                "edit_distance": 0
+              }
+            ],
+            "fitness": [
+              {
+                "frame": 90,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "fitnesis",
+                "edit_distance": 1
+              },
+              {
+                "frame": 151,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "fitness",
+                "edit_distance": 0
+              },
+              {
+                "frame": 272,
+                "observed": "fitness",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 9,
+          "frame": 242,
+          "accepted": [
+            "RTVQA-Q3938"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q4869",
+      "question_id": 4869,
+      "video": "2460.mp4",
+      "question": "Name the pediatric eye care clinic seen on the left side.",
+      "aliases": [
+        "diya pediatric eye care"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4869"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "pediatric"
+          ],
+          "routes": {
+            "pediatric": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "pediatric": [
+              {
+                "frame": 60,
+                "observed": "pediatric",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q4869"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 27.700087,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "care",
+            "diya",
+            "pediatric"
+          ],
+          "token_information_bits": {
+            "care": 4.971817,
+            "diya": 11.364135,
+            "pediatric": 11.364135
+          },
+          "witnesses": {
+            "care": [
+              {
+                "frame": 60,
+                "observed": "care",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "care",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "care",
+                "edit_distance": 0
+              }
+            ],
+            "diya": [
+              {
+                "frame": 60,
+                "observed": "diya",
+                "edit_distance": 0
+              }
+            ],
+            "pediatric": [
+              {
+                "frame": 60,
+                "observed": "pediatric",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 3,
+          "frame": 60,
+          "accepted": [
+            "RTVQA-Q4869"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q3825",
+      "question_id": 3825,
+      "video": "2470.mp4",
+      "question": "What is the name of the International school mentioned on the left side of the road?",
+      "aliases": [
+        "glendale"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q3825"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "glendale"
+          ],
+          "routes": {
+            "glendale": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "glendale": [
+              {
+                "frame": 0,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "giendale",
+                "edit_distance": 1
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 7.55678,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "glendale"
+          ],
+          "token_information_bits": {
+            "glendale": 7.55678
+          },
+          "witnesses": {
+            "glendale": [
+              {
+                "frame": 0,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 121,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 212,
+                "observed": "glendale",
+                "edit_distance": 0
+              },
+              {
+                "frame": 242,
+                "observed": "giendale",
+                "edit_distance": 1
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6002",
+      "question_id": 6002,
+      "video": "2504.mp4",
+      "question": "What is the name of the medical and general stores located on the left side of the road?",
+      "aliases": [
+        "shiva sai"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 7.55678,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "shiva"
+          ],
+          "token_information_bits": {
+            "shiva": 7.55678
+          },
+          "witnesses": {
+            "shiva": [
+              {
+                "frame": 0,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 120,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 211,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 241,
+                "observed": "shiva",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "shiva",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5300",
+      "question_id": 5300,
+      "video": "2525.mp4",
+      "question": "Which business is located in the building next to Domino's pizza?",
+      "aliases": [
+        "kritunga"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6501",
+      "question_id": 6501,
+      "video": "2532.mp4",
+      "question": "Which company's advertisement is seen on the billboard in the front?",
+      "aliases": [
+        "synchrony"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q6501"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "synchrony"
+          ],
+          "routes": {
+            "synchrony": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "synchrony": [
+              {
+                "frame": 0,
+                "observed": "aynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "aynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 60,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "psynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 211,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "synchrony",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 7.779172,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "synchrony"
+          ],
+          "token_information_bits": {
+            "synchrony": 7.779172
+          },
+          "witnesses": {
+            "synchrony": [
+              {
+                "frame": 0,
+                "observed": "aynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "aynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 60,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 90,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 151,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 181,
+                "observed": "psynchrony",
+                "edit_distance": 1
+              },
+              {
+                "frame": 211,
+                "observed": "synchrony",
+                "edit_distance": 0
+              },
+              {
+                "frame": 271,
+                "observed": "synchrony",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": null
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5794",
+      "question_id": 5794,
+      "video": "2542.mp4",
+      "question": "What is the name of the business that is mentioned as opening today on the billboard on the left side?",
+      "aliases": [
+        "srilakshmi"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q5794"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "srilakshmi"
+          ],
+          "routes": {
+            "srilakshmi": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "srilakshmi": [
+              {
+                "frame": 0,
+                "observed": "srilakshmi",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q5794"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 9.779172,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "srilakshmi"
+          ],
+          "token_information_bits": {
+            "srilakshmi": 9.779172
+          },
+          "witnesses": {
+            "srilakshmi": [
+              {
+                "frame": 0,
+                "observed": "srilakshmi",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q5794"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q7134",
+      "question_id": 7134,
+      "video": "2544.mp4",
+      "question": "What is the name of the electronics shop on the left of the road ?",
+      "aliases": [
+        "sri vedic electronics"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q7134"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 11.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "vedic"
+          ],
+          "token_information_bits": {
+            "vedic": 11.364135
+          },
+          "witnesses": {
+            "vedic": [
+              {
+                "frame": 90,
+                "observed": "vedic",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 4,
+          "frame": 90,
+          "accepted": [
+            "RTVQA-Q7134"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5509",
+      "question_id": 5509,
+      "video": "2549.mp4",
+      "question": "What is the name of the shake parlour on the left side?",
+      "aliases": [
+        "the sisa shakes"
+      ],
+      "legacy": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q6919"
+        ],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q5728",
+          "RTVQA-Q6919"
+        ],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q6919": {
+            "matched": true,
+            "information_bits": 15.143307,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "dental",
+              "partha"
+            ],
+            "token_information_bits": {
+              "dental": 5.779172,
+              "partha": 9.364135
+            },
+            "witnesses": {
+              "dental": [
+                {
+                  "frame": 0,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 30,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 60,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 90,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 120,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 151,
+                  "observed": "dental",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 181,
+                  "observed": "dental",
+                  "edit_distance": 0
+                }
+              ],
+              "partha": [
+                {
+                  "frame": 0,
+                  "observed": "opartha",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 30,
+                  "observed": "opartha",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 60,
+                  "observed": "opartha",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 90,
+                  "observed": "opartha",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 120,
+                  "observed": "partha",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 151,
+                  "observed": "opartha",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 181,
+                  "observed": "partha",
+                  "edit_distance": 0
+                }
+              ]
+            }
+          },
+          "RTVQA-Q5728": {
+            "matched": true,
+            "information_bits": 8.364135,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "mobiles"
+            ],
+            "token_information_bits": {
+              "mobiles": 8.364135
+            },
+            "witnesses": {
+              "mobiles": [
+                {
+                  "frame": 211,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 241,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q6919"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q6919",
+      "question_id": 6919,
+      "video": "2550.mp4",
+      "question": "Which business is located above the store named Party Addiction?",
+      "aliases": [
+        "partha dental"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 0,
+          "matched_tokens": [],
+          "routes": {},
+          "witnesses": {}
+        }
+      },
+      "background_idf": {
+        "state": "WRONG",
+        "accepted_target_ids": [
+          "RTVQA-Q5728"
+        ],
+        "expected_match": {
+          "matched": false,
+          "information_bits": 0,
+          "required_information_bits": 8.0,
+          "matched_tokens": [],
+          "token_information_bits": {},
+          "witnesses": {}
+        },
+        "non_query_matches": {
+          "RTVQA-Q5728": {
+            "matched": true,
+            "information_bits": 8.364135,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "mobiles"
+            ],
+            "token_information_bits": {
+              "mobiles": 8.364135
+            },
+            "witnesses": {
+              "mobiles": [
+                {
+                  "frame": 60,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 90,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 120,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 151,
+                  "observed": "mobile",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 3,
+          "frame": 60,
+          "accepted": [
+            "RTVQA-Q5728"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q7292",
+      "question_id": 7292,
+      "video": "2570.mp4",
+      "question": "From which store on the left side of the road can someone get iphone repaired or unlocked?",
+      "aliases": [
+        "rayhan"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "rayhan"
+          ],
+          "routes": {
+            "rayhan": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "rayhan": [
+              {
+                "frame": 180,
+                "observed": "rayhan",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "rayhan",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q7292"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 11.364135,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "rayhan"
+          ],
+          "token_information_bits": {
+            "rayhan": 11.364135
+          },
+          "witnesses": {
+            "rayhan": [
+              {
+                "frame": 180,
+                "observed": "rayhan",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "rayhan",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 7,
+          "frame": 180,
+          "accepted": [
+            "RTVQA-Q7292"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q5728",
+      "question_id": 5728,
+      "video": "2578.mp4",
+      "question": "Which shop has the logo of Samsung Galaxy on its name board?",
+      "aliases": [
+        "hello mobiles"
+      ],
+      "legacy": {
+        "state": "UNKNOWN",
+        "accepted_target_ids": [],
+        "expected_match": {
+          "matched": false,
+          "evidence_units": 1,
+          "matched_tokens": [
+            "mobiles"
+          ],
+          "routes": {
+            "mobiles": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "mobiles": [
+              {
+                "frame": 0,
+                "observed": "mobile",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "mobiles",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "mobiles",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q5728"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 17.143307,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "hello",
+            "mobiles"
+          ],
+          "token_information_bits": {
+            "hello": 8.779172,
+            "mobiles": 8.364135
+          },
+          "witnesses": {
+            "hello": [
+              {
+                "frame": 0,
+                "observed": "hello",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "hello",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "hello",
+                "edit_distance": 0
+              }
+            ],
+            "mobiles": [
+              {
+                "frame": 0,
+                "observed": "mobile",
+                "edit_distance": 1
+              },
+              {
+                "frame": 30,
+                "observed": "mobiles",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "mobiles",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {},
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q5728"
+          ]
+        }
+      }
+    },
+    {
+      "target_id": "RTVQA-Q7235",
+      "question_id": 7235,
+      "video": "2600.mp4",
+      "question": "Which company's tanker truck is seen on the right?",
+      "aliases": [
+        "sathya water supply"
+      ],
+      "legacy": {
+        "state": "CORRECT",
+        "accepted_target_ids": [
+          "RTVQA-Q7235"
+        ],
+        "expected_match": {
+          "matched": true,
+          "evidence_units": 2,
+          "matched_tokens": [
+            "sathya",
+            "supply"
+          ],
+          "routes": {
+            "sathya": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN",
+            "supply": "LEGACY_EXACT_OR_ONE_EDIT_LONG_TOKEN"
+          },
+          "witnesses": {
+            "sathya": [
+              {
+                "frame": 30,
+                "observed": "sathya",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "sathva",
+                "edit_distance": 1
+              },
+              {
+                "frame": 180,
+                "observed": "sathya",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "sathya",
+                "edit_distance": 0
+              }
+            ],
+            "supply": [
+              {
+                "frame": 0,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "supply",
+                "edit_distance": 0
+              }
+            ]
+          }
+        }
+      },
+      "background_idf": {
+        "state": "AMBIGUOUS",
+        "accepted_target_ids": [
+          "RTVQA-Q3817",
+          "RTVQA-Q7235"
+        ],
+        "expected_match": {
+          "matched": true,
+          "information_bits": 23.932533,
+          "required_information_bits": 8.0,
+          "matched_tokens": [
+            "sathya",
+            "supply",
+            "water"
+          ],
+          "token_information_bits": {
+            "sathya": 11.364135,
+            "supply": 6.904703,
+            "water": 5.663695
+          },
+          "witnesses": {
+            "sathya": [
+              {
+                "frame": 30,
+                "observed": "sathya",
+                "edit_distance": 0
+              },
+              {
+                "frame": 60,
+                "observed": "sathva",
+                "edit_distance": 1
+              },
+              {
+                "frame": 180,
+                "observed": "sathya",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "sathya",
+                "edit_distance": 0
+              }
+            ],
+            "supply": [
+              {
+                "frame": 0,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "supply",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "supply",
+                "edit_distance": 0
+              }
+            ],
+            "water": [
+              {
+                "frame": 0,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 30,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 210,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 240,
+                "observed": "water",
+                "edit_distance": 0
+              },
+              {
+                "frame": 270,
+                "observed": "water",
+                "edit_distance": 0
+              }
+            ]
+          }
+        },
+        "non_query_matches": {
+          "RTVQA-Q3817": {
+            "matched": true,
+            "information_bits": 8.364135,
+            "required_information_bits": 8.0,
+            "matched_tokens": [
+              "eicher"
+            ],
+            "token_information_bits": {
+              "eicher": 8.364135
+            },
+            "witnesses": {
+              "eicher": [
+                {
+                  "frame": 60,
+                  "observed": "bicher",
+                  "edit_distance": 1
+                },
+                {
+                  "frame": 90,
+                  "observed": "eicher",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 120,
+                  "observed": "eicher",
+                  "edit_distance": 0
+                },
+                {
+                  "frame": 150,
+                  "observed": "bicher",
+                  "edit_distance": 1
+                }
+              ]
+            }
+          }
+        },
+        "first_acceptance": {
+          "sampled_frame_count": 1,
+          "frame": 0,
+          "accepted": [
+            "RTVQA-Q7235"
+          ]
+        }
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for background-calibrated lexical search-priority routing on a second fresh OCR-unseen RoadTextVQA validation panel.",
+    "not_allowed": [
+      "benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, product, benefit, reliability, or safety confirmation",
+      "pixel text localization or a token proving exact physical entity identity, sign ownership, facade ownership, portal ownership, or entrance ownership",
+      "public access, traversability, waypoint correctness, arrival, or handoff"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "blindassist-l10-panolab-producer-stratified-router-human-truth-v1",
+  "status": "FROZEN_AFTER_PIXEL_REVIEW_BEFORE_ANY_SELECTED_APPEARANCE_OR_OCR_CALL",
+  "reviewed_at_local": "2026-08-31T08:47:03+08:00",
+  "reviewer": "Codex visual review",
+  "appearance_calls_on_selected_images_before_truth_freeze": 0,
+  "ocr_calls_on_selected_images_before_truth_freeze": 0,
+  "inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_source_protocol_v1.json",
+      "sha256": "0d8a2ed6c319b022c0e0b4efe1ef59601c73738be3147716bd67bd095bb93785",
+      "bytes": 5130
+    },
+    "selection": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_selection_v1.json",
+      "sha256": "3ab6aaa8dcf0d6640a0affc59fe5fae3325f221e722263cc6e767af1de636ec2",
+      "bytes": 240882
+    },
+    "materialization": {
+      "path": "research/active/l10-r0/l10_panolab_producer_stratified_router_materialization_v1.json",
+      "sha256": "9d6742c82d75c8e77b011e3a1bc6735f1bdfcf135f3697e9ee99741f1649696d",
+      "bytes": 10472
+    }
+  },
+  "review_method": {
+    "entrance_windows": "All fifteen strict entrance-ray windows were reviewed at their native crop dimensions: two cross-collection references and reciprocal prev/anchor/next query frames for each producer stratum.",
+    "allowed_evidence": "Downloaded pixels, frozen OSM target-way/main-entrance geometry, frozen provider item metadata, and deterministic strict entrance-ray projection only.",
+    "forbidden_evidence": "No OCR, CLIP, DINOv2, patch matcher, score, rank, threshold decision, token-bank output, or router output was viewed before this truth file was frozen."
+  },
+  "episodes": [
+    {
+      "episode_id": "PS01",
+      "producer_stratum": "nlehuby",
+      "source_city": "Caen",
+      "target_way_id": 155639593,
+      "target_name": "Département du Calvados - Direction de la Culture",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "MODERATE",
+      "observation": "The reference anchor clearly exposes the Calvados Direction de la Culture signage, entrance and buff stonework. The reference-next frame is an extreme close view of the same stone corner and is weak alone. All three query frames show the same distinctive half-timbered upper facade, stone lower facade, covered entrance and department signage from across the street."
+    },
+    {
+      "episode_id": "PS02",
+      "producer_stratum": "Nzau",
+      "source_city": "Caen",
+      "target_way_id": 485305426,
+      "target_name": "Crèche des Petits Lutins",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "MODERATE",
+      "observation": "Both references show the same timber entrance canopy and large curved green Creche des p'tits Lutins panel. The three query frames are tree-occluded to different degrees but retain the green text panel, timber structure, entrance, artwork and mushroom garden as a continuous same-building signature."
+    },
+    {
+      "episode_id": "PS03",
+      "producer_stratum": "Carto'Cité",
+      "source_city": "Caen",
+      "target_way_id": 154620108,
+      "target_name": "Église Saint-Pierre",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "Both references and all three query frames clearly show the same large Gothic church. The tower, pale entrance porch, deep pointed arch, dark side chapel, repeated buttresses and tracery remain consistent across the wider and closer collection views."
+    }
+  ],
+  "summary": {
+    "episodes_reviewed": 3,
+    "valid_positive_episodes": 3,
+    "invalid_or_uncertain_episodes": 0,
+    "producer_strata": 3,
+    "reference_frames_reviewed": 6,
+    "query_frames_reviewed": 9,
+    "pixel_driven_resamples": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-visible same-target truth for this frozen three-producer, target-way/item-disjoint, pixel-unseen, same-provider Development panel.",
+    "not_allowed": "The review does not prove exact entity authority, sign-to-building association, portal ownership, access, traversability, waypoint quality, arrival, handoff, user benefit, provider-disjoint generalization, deployment performance, or safety."
+  }
+}

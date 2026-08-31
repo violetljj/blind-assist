@@ -1,0 +1,112 @@
+{
+  "schema": "blindassist-l10-sevn-portal-witness-graph-protocol-v1",
+  "name": "L10 SEVN portal-specific exact-token witness graph fresh PAN Development",
+  "question": "Can a typed portal-to-local-observation-to-exact-token edge convert V2 text/topology UNKNOWN states into correct unique door proposals on forty additional fresh addresses?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_portal_witness_graph.py",
+    "sha256": "d2cb707671f48a89fa1274325ab3226db29b73b1bd260c8a09ea7534441e6204"
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v2.json",
+      "sha256": "dc701be78e75978dc03f735e6141120a924b7a578355c8817bb4cb3db9b732e8"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_truth_v2.json",
+      "sha256": "5836d8757185b3226cf5ec1db932cf80a04675f6c2b6c1ff36a6bf7aeeee4035"
+    },
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_protocol_v2.json",
+      "sha256": "434e1a3764c44c953f10f1e5d1d0fa65e86d2e4b728f265420f427ec42996326"
+    },
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_panel.py",
+      "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_selection_receipt_v2.json",
+      "sha256": "18cdf51145c546e74d4661abb1a0fb237bc6a0cfbd1ca26d8c45d39031abd90f"
+    },
+    "reference_public_sources": [
+      {
+        "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json",
+        "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+      }
+    ],
+    "v2_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "v2_evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "archive_integrity_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr_result_v1.json",
+      "sha256": "2cf15ecde0430b16db3d73d8ac274ebfb943511a49be93859e8d62a728843e46"
+    }
+  },
+  "cohort": {
+    "episodes_per_scenario": 20,
+    "episode_count": 40,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY"
+    ],
+    "disjointness": "No address or panorama frame may overlap any of the three earlier SEVN panels; no frame may be reused across new episodes."
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.13.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime-gpu": "1.26.0",
+      "opencv-python": "4.10.0.84",
+      "numpy": "2.4.6"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "ocr_backend": "RapidOCR through ONNX Runtime using the frozen PP-OCRv6 model files",
+    "archive_integrity": "Reuse the immediately preceding hash-bound full-archive MD5 receipt, verify current byte size, and record ZIP-member CRC plus SHA-256 for every selected panorama."
+  },
+  "portal_witness_observation": {
+    "trigger": "Run only when V2 has no selected binding and its state is UNKNOWN_TARGET_TEXT or UNKNOWN_NO_ADMISSIBLE_MASK_TOPOLOGY.",
+    "maximum_portals": 6,
+    "portal_order": "Descending frozen portal confidence, then stable candidate ID.",
+    "credential_region": "For each portal independently, reuse the V2 adaptive upper-mask neighborhood as a canonical local observation.",
+    "canonical_long_side_pixels": 1280,
+    "maximum_magnification": 4.0,
+    "minimum_crop_side_pixels": 16,
+    "recognizer": "Reuse the exact frozen PP-OCRv6 weights, score threshold 0.5, and exact alphanumeric token equality. Preserve the source portal ID on every raw recognition row.",
+    "authority_edge": "A portal owns a positive lexical witness only when OCR run on that portal's own local observation emits the requested exact token.",
+    "unique_admission": "If exactly one portal owns a positive witness, emit that portal. If zero or more than one portal owns a witness, preserve UNKNOWN; multiple witnesses remain an explicit set.",
+    "asymmetry": "Never run after a V2 proposal and never replace, rerank, or revoke a V2 proposal."
+  },
+  "representation_boundary": "The new information is the typed provenance edge between a portal instance, its local observation, and an exact OCR token. It does not widen V2 spatial radii or reinterpret a globally observed token as portal ownership. Renderer, prescribed actions, OCR and portal weights, thresholds, masks, evaluator projection, and mask correctness remain fixed. Evaluator labels enter only after both outputs are sealed in memory.",
+  "gate": {
+    "episode_count": 40,
+    "minimum_truth_visible_house_number_opportunities": 36,
+    "minimum_successor_correct_binding_rate": 0.5,
+    "minimum_correct_binding_gain": 5,
+    "minimum_successor_binding_precision": 0.9,
+    "maximum_successor_wrong_bindings": 2,
+    "maximum_wrong_binding_delta": 1,
+    "retain_all_baseline_correct_bindings": true,
+    "require_all_disjointness_checks": true
+  },
+  "execution_rule": "Freeze source, evaluator, runtime, witness semantics, parameters, hashes, metrics, and gates before opening any selected panorama member. Run one output-bearing invocation. Do not tune crops, uniqueness, OCR, topology, models, gates, cohort, or runtime after observing results.",
+  "output": "research/active/l10-r0/l10_sevn_portal_witness_graph_result_v1.json",
+  "non_claims": [
+    "The panel is same-source SEVN and PAN-only; it does not confirm a new city, provider, or APPROACH behavior.",
+    "A portal-specific exact-token edge is a Development binding mechanism, not proof of portal ownership, public access, traversability, waypoint, arrival, or HANDOFF_READY.",
+    "Mask correctness uses evaluator door annotations after inference and does not enter witness generation or selection.",
+    "A failed gate closes only this frozen witness graph on this cohort; UNKNOWN remains unknown rather than negative evidence."
+  ]
+}

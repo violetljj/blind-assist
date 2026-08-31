@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist-l10-panolab-federated-router-confirmation-source-protocol-v1",
+  "name": "L10 PanoLab new-city federated temporal router confirmation source",
+  "status": "FROZEN_BEFORE_LINKED_NEIGHBOR_METADATA_FETCH_PIXEL_DOWNLOAD_HUMAN_REVIEW_OR_ROUTER_CALL",
+  "question": "Can the unchanged lexical-then-appearance router be checked on target-way/item-disjoint Caen targets using two cross-collection reference views and reciprocal three-frame queries?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_panel.py",
+    "sha256": "97ce20071034cf85ee7d20033e68c0a753ca9ebd7746d42e87225b551b6fab03",
+    "bytes": 15597
+  },
+  "inputs": {
+    "federated_source": {
+      "path": "research/active/l10-r0/l10_panolab_federated_portal_source_v1.json",
+      "sha256": "93c6db8157702f180b7dee8d6b9f3f4b7103779be7012a46d606485ccc282526",
+      "bytes": 153622
+    },
+    "prior_router_result": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_result_v1.json",
+      "sha256": "a8546c907e1d1d4c913e9699838c9fe35ea0de47dbde2865b8a1b884fe0e738f",
+      "bytes": 42678
+    },
+    "prior_temporal_selection": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_selection_v1.json",
+      "sha256": "a799a99613f9ef71d9a1d78b95a43ab09435ff5b8aa95496b530dc4e6c0ed801",
+      "bytes": 97697
+    },
+    "prior_temporal_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "temporal_panel_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_panel.py",
+      "sha256": "a4231708d461639522839694cbb21c4d6b4a91bdcb68f045f855bc6915135e1e",
+      "bytes": 13629
+    }
+  },
+  "selection": {
+    "source_city": "Caen",
+    "city_relation": "City-disjoint from the Grenoble-only fresh-positive FP01/FP02 panel and absent from the four-target calibration roster.",
+    "panel_size": 2,
+    "eligibility": "Target way must not occur in either prior router cohort. Federated reference and query anchors must both be strict explicit-zero projections and use distinct collections.",
+    "ordering": "Sort eligible Caen rows by target-way ID then reference item ID and take the first two.",
+    "reference_bank": "Reuse the frozen federated reference anchor and fetch its exact reciprocal next item as the second reference.",
+    "query_sequence": "Fetch the exact reciprocal prev and next items around the frozen federated query anchor, yielding prev/anchor/next.",
+    "metadata_gate": "Every fetched item must preserve the anchor collection, exact provider-linked ID, reciprocal link, and strict zero-pose projection. Any failure seals the row invalid; never walk farther or substitute.",
+    "prior_overlap": "All five items per row must be disjoint from every prior component-router crop source item and FP01/FP02 temporal query item.",
+    "pixel_boundary": "The four federated anchors already exist from a prior portal-source audit but have received zero calls from this router. The six linked-neighbour pixels remain unseen at freeze. Selection uses no image, OCR, embedding, rank, score, or truth label."
+  },
+  "materialization": {
+    "expected_image_size": [
+      5760,
+      2880
+    ],
+    "output_root": "artifacts.local/datasets/l10-panolab-federated-router-confirmation-v1",
+    "anchor_policy": "Reuse and hash-verify the four exact federated source panoramas.",
+    "neighbor_policy": "Download exactly six provider-linked HD neighbours through .jpg.part files, atomically replace finals, and remove partials in a finally path.",
+    "overwrite": "Refuse an existing selection, manifest, or output root."
+  },
+  "outputs": {
+    "selection": "research/active/l10-r0/l10_panolab_federated_router_confirmation_selection_v1.json",
+    "manifest": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+    "human_truth": "research/active/l10-r0/l10_panolab_federated_router_confirmation_truth_v1.json"
+  },
+  "claim_boundary": {
+    "allowed": "A metadata-frozen, new-city, target-way/item-disjoint Development source for two-reference and reciprocal three-query-frame evaluation of the unchanged router. Existing anchors are reused from an earlier portal-source audit; this is not a blind pixel source.",
+    "not_allowed": [
+      "provider-disjoint, fully pixel-unseen, independent, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "portal ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

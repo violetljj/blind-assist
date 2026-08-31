@@ -1,0 +1,113 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-fresh-materialization-v1",
+  "selection": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+  "selection_sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+  "pixel_views_before_frozen_selection": 0,
+  "model_calls_before_frozen_selection": 0,
+  "images": [
+    {
+      "episode_id": "FL01",
+      "phase": "start",
+      "item_id": "d4c8763d-919a-4a55-a92e-367e21a0d785",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/d4c8763d-919a-4a55-a92e-367e21a0d785.jpg",
+      "sha256": "54dd2e79039f2f35270e7db039c0a4664b8c197334e60348886481b80d4115be",
+      "bytes": 3085093,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/d4c8763d-919a-4a55-a92e-367e21a0d785/hd.jpg"
+    },
+    {
+      "episode_id": "FL01",
+      "phase": "after",
+      "item_id": "24a52393-c17e-4de7-9735-091bc44925fe",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/24a52393-c17e-4de7-9735-091bc44925fe.jpg",
+      "sha256": "c5e2d8d174f030d7515411271d6c480be5a72352657109205daa50d1df26f45f",
+      "bytes": 3056727,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/24a52393-c17e-4de7-9735-091bc44925fe/hd.jpg"
+    },
+    {
+      "episode_id": "FL02",
+      "phase": "start",
+      "item_id": "68471322-a768-4781-a095-dc3675f73a5a",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/68471322-a768-4781-a095-dc3675f73a5a.jpg",
+      "sha256": "eb791f0921d868328999370ab357f15b09308eb3bcca01ceb90a88ca1760aecc",
+      "bytes": 3277667,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/68471322-a768-4781-a095-dc3675f73a5a/hd.jpg"
+    },
+    {
+      "episode_id": "FL02",
+      "phase": "after",
+      "item_id": "00a406fa-bd87-42e0-a83a-62da0226e50b",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/00a406fa-bd87-42e0-a83a-62da0226e50b.jpg",
+      "sha256": "062952bb5db19306c2c68bb68bd4d9b0e1ca12f3633357e4955c1b2f28ab5b48",
+      "bytes": 3325619,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/00a406fa-bd87-42e0-a83a-62da0226e50b/hd.jpg"
+    },
+    {
+      "episode_id": "FL03",
+      "phase": "start",
+      "item_id": "baf41e0a-e502-4004-baeb-5eaf01f9e805",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/baf41e0a-e502-4004-baeb-5eaf01f9e805.jpg",
+      "sha256": "b5d0cb22d80dc53679a4634a81040bf70b5f01c8bae8a07640c305f630dc4ae8",
+      "bytes": 3073859,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/baf41e0a-e502-4004-baeb-5eaf01f9e805/hd.jpg"
+    },
+    {
+      "episode_id": "FL03",
+      "phase": "after",
+      "item_id": "5f5cf530-5b26-4b7b-a09c-c4f745cb542c",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/5f5cf530-5b26-4b7b-a09c-c4f745cb542c.jpg",
+      "sha256": "ceea9b6d6a899878490d80e95a3bcba3ee9cd766dfa874969dc4302affd9b8d2",
+      "bytes": 3087318,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/5f5cf530-5b26-4b7b-a09c-c4f745cb542c/hd.jpg"
+    },
+    {
+      "episode_id": "FL04",
+      "phase": "start",
+      "item_id": "6b16f054-40ae-475c-8bf8-2c850af54c13",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/6b16f054-40ae-475c-8bf8-2c850af54c13.jpg",
+      "sha256": "7bbee25de3ff0878e3b334e040b85d4f77172b37d1e0b1ac476d671db676643f",
+      "bytes": 2815893,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/6b16f054-40ae-475c-8bf8-2c850af54c13/hd.jpg"
+    },
+    {
+      "episode_id": "FL04",
+      "phase": "after",
+      "item_id": "ab6c8c4c-4d03-4eab-82e5-8518182d1194",
+      "path": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v2/images/ab6c8c4c-4d03-4eab-82e5-8518182d1194.jpg",
+      "sha256": "181ffdc720bc25b7c8334299da1fc820a9aefee4056358bccf295dbac8e8aa79",
+      "bytes": 2734101,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/ab6c8c4c-4d03-4eab-82e5-8518182d1194/hd.jpg"
+    }
+  ]
+}

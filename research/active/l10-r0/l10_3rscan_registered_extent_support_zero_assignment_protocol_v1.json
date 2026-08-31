@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-extent-support-zero-assignment-protocol-v1",
+  "authority": "FROZEN_PHYSICAL_TARGET_DISJOINT_SAME_CLASS_REGISTERED_EXTENT_SUPPORT_DEVELOPMENT",
+  "question": "Can parameter-free positive registered portal-plane extent overlap provide absolute support for rank-only surface correspondence under same-class missing and extra candidates?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_scan_family_disjoint_witness_incremental_protocol_v1.json",
+    "protocol_sha256": "78e3989dac20d98c340318d01f5470f85a3c7be6a127922a7b6467ba7743576f",
+    "cohort_path": "l10_3rscan_scan_family_disjoint_witness_incremental_cohort_v1.json",
+    "cohort_sha256": "051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd",
+    "result_path": "l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json",
+    "result_sha256": "7c25f8f08a41ba9f72aef26fa262bc79a558b5de756a3763639259baa9383a0e",
+    "implementation_path": "l10_3rscan_scan_family_disjoint_witness_incremental.py",
+    "implementation_sha256": "109d36814509f916cfba3bccedecd8ff7fff6bcb916c9a26cb9d8ca41b144c0d",
+    "required_conclusion": "L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET",
+    "observed_gap": "The raw witness ceiling removed two rank-only false matches but rejected sixteen true matches because stable same-class door surfaces had widely different cross-rescan residuals."
+  },
+  "method_sources": [
+    {
+      "name": "OMNet: Learning Overlapping Mask for Partial-to-Partial Point Cloud Registration",
+      "url": "https://openaccess.thecvf.com/content/ICCV2021/papers/Xu_OMNet_Learning_Overlapping_Mask_for_Partial-to-Partial_Point_Cloud_Registration_ICCV_2021_paper.pdf",
+      "used_idea": "Model whether geometric regions overlap rather than treating a global distance threshold as correspondence existence."
+    },
+    {
+      "name": "Overlap-Guided Gaussian Mixture Models for Point Cloud Registration",
+      "url": "https://openaccess.thecvf.com/content/WACV2023/papers/Mei_Overlap-Guided_Gaussian_Mixture_Models_for_Point_Cloud_Registration_WACV_2023_paper.pdf",
+      "used_idea": "Use overlap support to handle partial scans and density variation; this experiment uses a deterministic registered-extent analogue rather than a learned model."
+    }
+  ],
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {"path": "l10_3rscan_bounded_reference_mask_cohort_v1.json", "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"},
+      {"path": "l10_3rscan_reference_pixel_field_cohort_v1.json", "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"},
+      {"path": "l10_3rscan_registered_extent_cohort_v1.json", "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"},
+      {"path": "l10_3rscan_spatial_reference_mask_cohort_v1.json", "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"},
+      {"path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json", "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"},
+      {"path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json", "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d"},
+      {"path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json", "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0"},
+      {"path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json", "sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84"},
+      {"path": "l10_3rscan_witness_calibrated_zero_assignment_cohort_v1.json", "sha256": "99b51776038a091026a793dce62e00e5c55226a04d4706a535336d4b9a43741d"},
+      {"path": "l10_3rscan_scan_family_disjoint_witness_incremental_cohort_v1.json", "sha256": "051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd"}
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 6,
+    "selection_order": "Exclude every physical reference target in the ten consumed cohorts. Group the frozen candidate rows by scan family and normalized semantic class in first-occurrence order. Choose the first family/class with six distinct surfaces on both scans and take its first six rows in the existing area-proxy order before computing surface scores or extent overlap.",
+    "scenario_contract": "Use one closed-six scenario, one query-extra scenario, one reference-extra scenario, and all thirty ordered balanced missing-plus-extra swaps across the six same-class targets.",
+    "forbidden": [
+      "using surface distances or extent overlaps to select the family, class, targets, or swaps",
+      "setting a positive IoU magnitude threshold after replay",
+      "dropping any balanced swap after observing outcomes",
+      "reusing any consumed physical reference target",
+      "using target IDs inside evaluated correspondence ranking or support"
+    ]
+  },
+  "frozen_model": {
+    "pair_score": "The unchanged negative symmetric median nearest-surface distance after the official rigid transform.",
+    "rank_only_baseline": "Strict reciprocal row-and-column maxima on the pair score.",
+    "absolute_support": "For each reference candidate, fit the existing deterministic upright portal frame, project its surface and each transformed query surface into horizontal-by-vertical coordinates, take convex hulls, and require strictly positive intersection area. No IoU magnitude threshold is used.",
+    "zero_assignment": "Keep a rank-only reciprocal edge only when absolute support is positive; otherwise leave the relevant node unmatched.",
+    "complete_baseline": "Complete Hungarian assignment on the unchanged pair score."
+  },
+  "decision_gate": {
+    "rank_only_incremental_opportunity": "Rank-only must emit at least one false positive across the frozen scenarios.",
+    "support_true_matches": "All frozen truth correspondences across all scenarios.",
+    "support_false_matches": 0,
+    "support_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in every frozen scenario.",
+    "no_true_match_regression": "Extent-supported true positives must be at least rank-only true positives.",
+    "single_replay": "One replay on the frozen physical-target-disjoint same-class cohort; do not tune or rerun after outcome."
+  },
+  "claim_boundary": "A pass is same-provider, same-scan-family, physical-target-disjoint real-geometry Development evidence that parameter-free positive registered planar extent overlap adds decision-changing absolute support over rank-only surface matching for truth-proposed stable indoor doorframes under bounded missing/extra rosters. Provider labels, complete surfaces, and the rigid transform are privileged. Positive projected overlap is spatial support, not portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

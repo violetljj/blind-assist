@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-scenenn-center-target-door-retrieval-protocol-v1",
+  "authority": "CONSUMED_RGBD_PROVIDER_DISJOINT_PORTAL_INSTANCE_TRANSFER_DEVELOPMENT",
+  "question": "Does the frozen 3D Street View center-scale lock retain exact-instance retrieval on real SceneNN doors across large viewpoint changes when evaluator-authoritative door envelopes provide the proposals?",
+  "predecessor_lock": {
+    "protocol_path": "l10_3dstreetview_center_target_lock_protocol_v1.json",
+    "protocol_sha256": "3a7938e9839daa240513a397d14e79c87b82431db5475f3e75b0284ed25789b6",
+    "cohort_path": "l10_3dstreetview_center_target_lock_cohort_v1.json",
+    "cohort_sha256": "f81a76e8a45ade7ff2b4a9a18cb32feb35d04b942ced24950e4caf788d128847",
+    "result_path": "l10_3dstreetview_center_target_lock_result_v1.json",
+    "result_sha256": "12c2d5cb7b26720b72c6d8c6354914c9693064e77e925482de60a3b95e6e24ee",
+    "implementation_path": "l10_3dstreetview_center_target_lock.py",
+    "implementation_sha256": "1abb07f11e1ac5e1c30d11ccc3aca1f88362e0bd4c330cfbf69f549d551d0f81"
+  },
+  "scene_source": {
+    "provider": "SceneNN",
+    "project": "https://scenenn.net/",
+    "repository": "https://github.com/hkust-vgd/scenenn",
+    "protocol_path": "l10_scenenn_visible_portal_protocol_v3.json",
+    "protocol_sha256": "a5759375636e2e5e4b5911ba1bb91cd71e3147a4c82537ec2ef92d457bc818ff",
+    "cohort_path": "l10_scenenn_visible_portal_cohort_v3.json",
+    "cohort_sha256": "a040e1916b678afe6f8b05aaaa2317774e7698dab0e459664c7be6d92057752f",
+    "rgbd_receipt_path": "l10_scenenn_visible_portal_rgbd_receipt_v3.json",
+    "rgbd_receipt_sha256": "8858bd9aea37965044bc9e1ea9eb951bc2b2bd69644328406d0e3117bbca76a1",
+    "prior_result_path": "l10_scenenn_visible_portal_result_v3.json",
+    "prior_result_sha256": "a7614ee4703e7d8b272e2db32973a56d5419dca891f8e301c7e545d9173df0ec",
+    "consumption_boundary": "All six selected RGB-D frames were opened by the prior geometric-transfer replay. This transfer is governed Development reuse, not fresh confirmation."
+  },
+  "frozen_cohort": {
+    "episodes": ["SV01", "SV02", "SV03"],
+    "proposal_rule": "For each frozen reference/query frame, project every vertex carrying the frozen target door instance ID with the official camera pose and intrinsics, fill its clipped convex envelope, take the tight envelope bounding box, crop raw RGB, and square-pad the shorter crop dimension with black. Geometry is evaluator-authoritative and unavailable to deployment.",
+    "retrieval_rule": "Each of three reference door crops ranks all three query door crops, and each query crop ranks all three reference crops. The matching SceneNN scene is the sole positive, yielding six directed anchors, six positives and twelve same-class cross-scene negatives.",
+    "selection_forbidden": [
+      "RGB inspection to choose scenes or frames",
+      "model-score-based proposal or pair selection",
+      "substituting scenes after outcome",
+      "door detector claims from truth proposals"
+    ]
+  },
+  "frozen_model": {
+    "backbone": "The identical local facebook/dinov2-small snapshot used by the predecessor lock.",
+    "embedding": "L2-normalized final CLS token on centered scales 1.0, 0.5 and 0.25.",
+    "baseline_score": "Global/global cosine.",
+    "upgraded_score": "0.25 * global/global cosine + 0.75 * the maximum cosine where at least one side is a centered crop.",
+    "forbidden": [
+      "backbone fine-tuning",
+      "crop-scale or weight sweep",
+      "masking RGB foreground",
+      "test-derived thresholds",
+      "reranking with scene identity"
+    ]
+  },
+  "decision_gate": {
+    "exact_instance_top1": "6/6 directed anchors",
+    "wrong_instance_commit": "0/6",
+    "minimum_positive_margin": "strictly greater than zero for every anchor",
+    "diagnostics": ["pair AUROC", "average precision", "MRR", "mean positive margin", "baseline comparison"],
+    "single_replay": "One frozen replay. Do not tune on the six consumed SceneNN crops."
+  },
+  "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed indoor SceneNN door instances. SceneNN mesh, pose, RGB and door labels come from one provider; the six RGB-D frames are consumed; the candidate envelopes use privileged reconstructed geometry; and only three physical doors are tested. It is not door detection, pixel-mask transfer, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+}

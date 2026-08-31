@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-fresh-selection-audit-v1",
+  "decision": "L10_PANOLAB_TRACK_LEXICAL_FRESH_SELECTION_V1_REJECTED_BEFORE_MATERIALIZATION",
+  "selection": {
+    "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v1.json",
+    "sha256": "9007b0732d7f17d43f52a785dee25d58025dcdc1ed08b1c005c50695b707a37f",
+    "bytes": 143876
+  },
+  "defect": "The V1 exclusion set covered the prior active-ray source and its local image directory, but not every earlier L10 pixel experiment. FL01 reused two item IDs from the reference-portal experiment, so the roster was not fully pixel-unseen.",
+  "conflicting_episode": "FL01",
+  "conflicting_target_way_id": 27108404,
+  "conflicting_item_ids": [
+    "8ad8bffc-f8cf-4279-bbce-bb0e97781989",
+    "d4eed7ed-0bfb-4571-9d0b-0bf4c22607fa"
+  ],
+  "evidence": [
+    {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196,
+      "matching_item_ids": [
+        "8ad8bffc-f8cf-4279-bbce-bb0e97781989",
+        "d4eed7ed-0bfb-4571-9d0b-0bf4c22607fa"
+      ]
+    },
+    {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_result_v1.json",
+      "sha256": "7ea4184865f9d0b6b41116aea840684c8f79466cb02a8b247c173d92d56e603f",
+      "bytes": 43407,
+      "matching_item_ids": [
+        "d4eed7ed-0bfb-4571-9d0b-0bf4c22607fa"
+      ]
+    }
+  ],
+  "containment": {
+    "selected_pixel_download_started": false,
+    "selected_model_call_started": false,
+    "materialization_manifest_created": false,
+    "materialization_directory_created": false,
+    "v1_selection_retained_as_rejected_evidence": true
+  },
+  "correction": "Freeze V2 with the two known prior-evidence item IDs added to the eligibility exclusion set, retain all other metadata-only selection rules unchanged, and refuse to reuse the V1 selection.",
+  "claim_boundary": "This is a pre-materialization source-selection defect and correction receipt. It contains no pixel or algorithm outcome and gives V1 no Development authority."
+}

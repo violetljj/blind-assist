@@ -1,0 +1,54 @@
+{
+  "schema": "blindassist-l10-lsaa-vienna-development-pixel-truth-v1",
+  "public_source": {
+    "path": "research/active/l10-r0/l10_lsaa_vienna_source_v3.json",
+    "sha256": "636cf5cd0f062024c82f2d070cc833772763edcd6c96dc7fc13ab6eaa412352b"
+  },
+  "official_door_truth_draft": {
+    "path": "research/active/l10-r0/l10_lsaa_vienna_truth_draft_v3.json",
+    "sha256": "90add35b1a70036f939745adfca20aa92f12dc76b1178fa6c508f981631f726e",
+    "use": "OFFICIAL_LSAA_SINGLE_DOOR_BOX_ONLY"
+  },
+  "materialization_manifest": {
+    "path": "artifacts.local/datasets/lsaa-l10-source-screen/development-v3/materialization_manifest.json",
+    "sha256": "0d503f7a5163fe50646ab762ea1a2d0d5ba448eaf97422e58341ad4b2f9b3f11"
+  },
+  "model_free_review_receipt": {
+    "path": "artifacts.local/datasets/lsaa-l10-source-screen/development-v3-truth-review/review_receipt.json",
+    "sha256": "8b8059d9dbeb492ec18b48896fec9ccc513cd1e92192437e7fba71c6783bc52d"
+  },
+  "annotation_rule": "Before model inference, inspect the native facade pixels and model-free door-context review. Mark visible only when the exact complete mission token is human-legible; ambiguous tiny plaques are false. Credential boxes are approximate evaluator-only evidence and are not runtime inputs.",
+  "annotations": {
+    "LSAA-VIE-D-001": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "No human-legible 7."},
+    "LSAA-VIE-D-002": {"target_house_number_visible": true, "target_credential_box_xyxy": [226, 640, 255, 660], "review_note": "Blue 111 plaque is human-legible elsewhere on the facade; door ownership is not asserted."},
+    "LSAA-VIE-D-003": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "A blue 12 plaque is visible, not mission 11."},
+    "LSAA-VIE-D-004": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "Small facade signs are not human-legible as exact token 3."},
+    "LSAA-VIE-D-005": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "No human-legible 61."},
+    "LSAA-VIE-D-006": {"target_house_number_visible": true, "target_credential_box_xyxy": [521, 1042, 548, 1065], "review_note": "Blue 9 plaque is human-legible beside the entrance."},
+    "LSAA-VIE-D-007": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "STIEGE 5 is visible, not mission 14."},
+    "LSAA-VIE-D-008": {"target_house_number_visible": true, "target_credential_box_xyxy": [218, 572, 247, 592], "review_note": "Blue 152 plaque is human-legible elsewhere on the facade; door ownership is not asserted."},
+    "LSAA-VIE-D-009": {"target_house_number_visible": true, "target_credential_box_xyxy": [518, 948, 552, 977], "review_note": "Blue 3 plaque is human-legible beside the entrance."},
+    "LSAA-VIE-D-010": {"target_house_number_visible": true, "target_credential_box_xyxy": [889, 1370, 923, 1395], "review_note": "Dark 19 plaque is human-legible above the entrance."},
+    "LSAA-VIE-D-011": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "A dark 18 sign is visible at another opening, not mission 34."},
+    "LSAA-VIE-D-012": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "A blue 12 plaque is visible, not mission 10."},
+    "LSAA-VIE-D-013": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "Ornamental plaques are not human-legible as exact token 27."},
+    "LSAA-VIE-D-014": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "No human-legible 47."},
+    "LSAA-VIE-D-015": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "A blue 22 plaque is visible, not mission 27."},
+    "LSAA-VIE-D-016": {"target_house_number_visible": true, "target_credential_box_xyxy": [491, 705, 521, 729], "review_note": "Round 9 plaque is human-legible above the entrance."},
+    "LSAA-VIE-D-017": {"target_house_number_visible": true, "target_credential_box_xyxy": [412, 902, 440, 921], "review_note": "Blue 14 plaque is human-legible above the entrance."},
+    "LSAA-VIE-D-018": {"target_house_number_visible": true, "target_credential_box_xyxy": [114, 514, 139, 533], "review_note": "Blue 12 plaque is human-legible above the selected building entrance; adjacent facade shows 11."},
+    "LSAA-VIE-D-019": {"target_house_number_visible": true, "target_credential_box_xyxy": [520, 738, 549, 759], "review_note": "Blue 6 plaque is human-legible above the entrance."},
+    "LSAA-VIE-D-020": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "A blue 4 plaque is visible, not mission 3."},
+    "LSAA-VIE-D-021": {"target_house_number_visible": true, "target_credential_box_xyxy": [112, 814, 149, 850], "review_note": "Blue 14 plaque is human-legible elsewhere on the facade; door ownership is not asserted."},
+    "LSAA-VIE-D-022": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "Recess signs are not human-legible as exact token 7."},
+    "LSAA-VIE-D-023": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "Small beige facade sign is not human-legible as exact token 30."},
+    "LSAA-VIE-D-024": {"target_house_number_visible": false, "target_credential_box_xyxy": null, "review_note": "No human-legible 8."}
+  },
+  "counts": {
+    "development_facades": 24,
+    "human_legible_exact_target_facades": 10,
+    "human_legible_exact_target_rate": 0.416667
+  },
+  "association_boundary": "A visible address token on the same LSAA facade is lexical evidence only. This truth does not establish that the token owns the official door, that the door is public or traversable, or any waypoint, arrival, handoff, user-benefit, or safety claim.",
+  "confirmation_holdout_state": "PIXELS_NOT_MATERIALIZED_OR_REVIEWED"
+}

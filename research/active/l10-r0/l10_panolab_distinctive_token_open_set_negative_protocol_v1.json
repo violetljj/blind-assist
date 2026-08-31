@@ -1,0 +1,113 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-open-set-negative-protocol-v1",
+  "name": "Open-set negative attack on the fixed distinctive-token branch",
+  "status": "FROZEN_AFTER_SUCCESSOR_AND_FRESH_POSITIVE_RESULT_BEFORE_FIRST_GOVERNED_OCR_REPLAY_ON_THE_FOUR_NEGATIVES",
+  "authority": "PREEXISTING_PIXEL_FIRST_GOVERNED_OCR_OPEN_SET_NEGATIVE_DEVELOPMENT_ONLY",
+  "question": "Does one-edit distinctive-token matching create any false search-priority candidate on four exact-roster-absent Panoramax controls across three cities?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_distinctive_token_open_set_negative.py",
+    "sha256": "4ff3e94c6574410b2e32318e273bf2258f2fefe159654902160e36adfd181813",
+    "bytes": 8517
+  },
+  "inputs": {
+    "negative_selection": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_selection_v1.json",
+      "sha256": "367b292d143618d8321f4037a9b0c4b371f1917c9f815415898383812e3bcfba",
+      "bytes": 73915
+    },
+    "negative_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_materialization_v1.json",
+      "sha256": "9c15465a19834ddf69e98cf16dc3afd0f54f4fa79803b3d14b241cf7332acfa9",
+      "bytes": 2473
+    },
+    "negative_truth": {
+      "path": "research/active/l10-r0/l10_panolab_open_set_negative_truth_v1.json",
+      "sha256": "db762a8521b0690eb94a3d0c10288b6e4a7d0bc4721319876015ae861fb1dc71",
+      "bytes": 5180
+    },
+    "successor_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_edit_token_posthoc_protocol_v1.json",
+      "sha256": "5807c0b4fd9622aac7d2f1402d0bbd2ddc2cb1d9911ade023a9311fdd2ddf65a",
+      "bytes": 6004
+    },
+    "fresh_positive_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation_result_v1.json",
+      "sha256": "84850bfc6fb68a46fbe43a31f2d8c67ef8e573d168ca43694c0e7e27305a5e45",
+      "bytes": 36347
+    },
+    "frozen_ocr_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_protocol_v1.json",
+      "sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+      "bytes": 10357
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "runtime": {
+    "versions": {
+      "python": "3.11.9",
+      "numpy": "2.3.5",
+      "opencv-python": "4.10.0.84",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "onnxruntime-gpu": "1.26.0"
+    }
+  },
+  "target_roster": [
+    {"episode_id": "FL01", "entity_name": "Espace Village"},
+    {"episode_id": "FL02", "entity_name": "Le Viviani"},
+    {"episode_id": "FL03", "entity_name": "Gare de Neuilly - Porte Maillot"},
+    {"episode_id": "FL04", "entity_name": "Église Notre-Dame de la Délivrande"},
+    {"episode_id": "FP01", "entity_name": "Rumillat"},
+    {"episode_id": "FP02", "entity_name": "Halle Rebatet"},
+    {"episode_id": "CF01", "entity_name": "Euromaster"},
+    {"episode_id": "CF02", "entity_name": "Bibliothèque de Caen - Maladrerie"},
+    {"episode_id": "PS01", "entity_name": "Département du Calvados - Direction de la Culture"},
+    {"episode_id": "PS02", "entity_name": "Crèche des Petits Lutins"},
+    {"episode_id": "PS03", "entity_name": "Église Saint-Pierre"},
+    {"episode_id": "DF01", "entity_name": "Monoprix"},
+    {"episode_id": "DF02", "entity_name": "Maison de Quartier Chemin Vert"}
+  ],
+  "name_token_contract": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": ["a", "an", "and", "d", "de", "du", "l", "la", "le", "les", "the"]
+  },
+  "distinctive_edit_token_contract": {
+    "minimum_ocr_row_score": 0.9,
+    "minimum_target_token_length": 6,
+    "maximum_edit_distance": 1,
+    "apostrophe_or_token_fragment_rule": "For a row with two or three normalized tokens, also test their concatenation; this converts p + tits to ptits without changing OCR text.",
+    "long_token_length_for_two_units": 8,
+    "minimum_distinctive_evidence_units": 2,
+    "evidence_weighting": "Each distinct matched target token of length 6-7 contributes one unit; length >=8 contributes two units. A target matches at two units.",
+    "uniqueness_rule": "Emit a lexical search-priority candidate only when exactly one target in the frozen thirteen-target roster matches.",
+    "association": "Exact or Levenshtein-distance-one normalized token evidence only; witnesses union across the available governed observation sequence.",
+    "authority": "Search-priority candidate only; no token, sign, facade, entity, portal, entrance, access, waypoint, arrival, or safety authority."
+  },
+  "gate": {
+    "required_exact_roster_absent_queries": 4,
+    "required_source_cities": 3,
+    "required_wrong_target_trials": 52,
+    "maximum_matched_target_rows": 0,
+    "maximum_negative_false_accepts": 0,
+    "required_unknowns": 4,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_DISTINCTIVE_EDIT_TOKEN_OPEN_SET_NEGATIVE_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_DISTINCTIVE_EDIT_TOKEN_OPEN_SET_NEGATIVE_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run once with the fixed successor. Do not tune on a false accept or reinterpret UNKNOWN as proof of safety.",
+  "output": "research/active/l10-r0/l10_panolab_distinctive_token_open_set_negative_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Development evidence about whether the fixed distinctive-token branch abstains on these four exact-thirteen-roster-absent, three-city Panoramax entrance-ray images. Pixels were used previously by the appearance branch, but this is the first governed OCR replay recorded for them.",
+    "not_allowed": [
+      "fresh-pixel, formal open-set, conformal, FDR-controlled, calibrated-probability, arbitrary distribution-shift, deployment, or safety guarantees",
+      "UNKNOWN meaning negative, known-safe, or absence of all visually or lexically similar entities",
+      "exact identity, sign-to-building association, facade ownership, portal ownership, access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

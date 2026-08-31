@@ -1,0 +1,126 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-layout-phrase-fresh-protocol-v1",
+  "name": "Same-line compact phrase branch on a fourth fresh RoadTextVQA panel",
+  "status": "FROZEN_BEFORE_OPENING_ANY_SELECTED_OCR_FILE",
+  "authority": "FRESH_OCR_UNSEEN_ROADTEXTVQA_VALIDATION_SPLIT_GOAL_CONDITIONED_LAYOUT_DEVELOPMENT_ONLY",
+  "question": "Does the fixed same-line compact phrase branch add target-name observations on a fresh multi-token panel without accepting generated two-token negatives?",
+  "selection_state_at_freeze": {
+    "selected_validation_annotations_read": true,
+    "selected_ocr_files_opened": 0,
+    "selected_pixels_opened": 0,
+    "selected_model_calls": 0,
+    "selected_videos": 30,
+    "selection_rule": "Thirty fixed, one-video-per-row multi-token textual answers, disjoint from every previously exposed RoadTextVQA video."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_roadtextvqa_layout_phrase_fresh.py",
+    "sha256": "892d21e56f53d882a4901063cf178f214be09bf808fa53cb0f53834d4017cbae",
+    "bytes": 6409
+  },
+  "inputs": {
+    "validation_annotations": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/val.json",
+      "sha256": "b9b69246cd773e22648acde7499113fe20b8832d6e7a8dd10faadc3d6819043f",
+      "bytes": 180371
+    },
+    "official_ocr_archive": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/ocr.zip",
+      "sha256": "38cefbca417c3970c1571e76c6516aee50a542050e094e3295d366936cfe1e95",
+      "bytes": 131119904
+    },
+    "training_token_df": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/train_token_df_v1.json",
+      "sha256": "50596a531f524c1c272d9f72c07faea1f6886e8f060b557c9968b41fc4d6d345",
+      "bytes": 695535
+    },
+    "consumed_layout_result": {
+      "path": "research/active/l10-r0/l10_roadtextvqa_layout_phrase_posthoc_result_v1.json",
+      "sha256": "7f4048f6e0e5c2c348f7db440ac7deee3b7de375f86ba08e239197ebf628cbf2",
+      "bytes": 50571
+    }
+  },
+  "selected_question_ids": [
+    978,
+    1433,
+    4660,
+    4307,
+    4269,
+    4933,
+    4714,
+    3818,
+    4438,
+    4720,
+    4590,
+    4911,
+    5055,
+    5496,
+    7221,
+    6105,
+    7204,
+    5309,
+    5617,
+    7242,
+    6807,
+    6699,
+    6127,
+    6112,
+    6703,
+    6012,
+    5529,
+    6614,
+    682,
+    475
+  ],
+  "excluded_preexposed_videos": [
+    "114.mp4", "115.mp4", "116.mp4", "117.mp4", "130.mp4", "162.mp4", "180.mp4", "183.mp4", "185.mp4", "19.mp4",
+    "2008.mp4", "2009.mp4", "2073.mp4", "2085.mp4", "2101.mp4", "2103.mp4", "2129.mp4", "2131.mp4", "2176.mp4", "2313.mp4",
+    "2335.mp4", "2366.mp4", "2428.mp4", "2451.mp4", "2452.mp4", "2460.mp4", "2470.mp4", "2504.mp4", "2525.mp4", "2532.mp4",
+    "2542.mp4", "2544.mp4", "2549.mp4", "2550.mp4", "2570.mp4", "2578.mp4", "2600.mp4", "266.mp4", "27.mp4", "271.mp4",
+    "2722.mp4", "2766.mp4", "2770.mp4", "2781.mp4", "2787.mp4", "2805.mp4", "2831.mp4", "2838.mp4", "2882.mp4", "2942.mp4",
+    "2946.mp4", "2958.mp4", "2975.mp4", "2981.mp4", "2986.mp4", "2989.mp4", "2990.mp4", "2996.mp4", "348.mp4", "350.mp4",
+    "36.mp4", "404.mp4", "441.mp4", "451.mp4", "480.mp4", "49.mp4", "504.mp4", "516.mp4", "541.mp4", "554.mp4",
+    "561.mp4", "581.mp4", "610.mp4", "619.mp4", "641.mp4", "645.mp4", "663.mp4", "669.mp4", "709.mp4", "722.mp4",
+    "759.mp4", "768.mp4", "819.mp4", "845.mp4", "846.mp4", "855.mp4", "871.mp4", "88.mp4", "929.mp4", "952.mp4", "962.mp4"
+  ],
+  "idf_contract": {
+    "ignored_name_tokens": ["a", "an", "and", "d", "de", "du", "l", "la", "le", "les", "of", "the"],
+    "minimum_token_length": 4,
+    "short_exact_maximum_length": 5,
+    "long_maximum_edit_distance": 1,
+    "minimum_information_bits": 8.0
+  },
+  "layout_phrase_contract": {
+    "minimum_vertical_overlap_ratio": 0.5,
+    "maximum_overlap_height_ratio": 0.25,
+    "maximum_gap_height_ratio": 3.0,
+    "maximum_group_tokens": 4,
+    "short_compact_exact_maximum_length": 5,
+    "maximum_compact_edit_distance": 1,
+    "minimum_information_bits": 8.0,
+    "rule": "Within one sampled frame, concatenate two to four normalized OCR tokens only when their boxes form a left-to-right chain with at least 50% vertical overlap and no gap greater than three times local text height. Compare to the complete compact alias; length at most five is exact-only and longer aliases permit one edit."
+  },
+  "synthetic_phrase_negative_contract": {
+    "count": 30,
+    "salt": "blindassist-l10-roadtextvqa-layout-fresh-negative-v1",
+    "formula": "Map twelve SHA256 nibbles to letters a-p, split into two six-letter strings, and prefix them zz and yy to form a generated two-token alias."
+  },
+  "gate": {
+    "minimum_additional_correct": 2,
+    "maximum_synthetic_phrase_negative_accepts": 0,
+    "candidate_always_equals_conditioned_goal": true,
+    "identity_or_portal_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_ROADTEXTVQA_FRESH_GOAL_CONDITIONED_LAYOUT_PHRASE_VERIFIER_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_ROADTEXTVQA_FRESH_GOAL_CONDITIONED_LAYOUT_PHRASE_VERIFIER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run exactly once. Do not change selected rows, excluded videos, IDF corpus, box overlap, box gap, token count, edit distance, information threshold, or gate after observing selected OCR.",
+  "claim_boundary": {
+    "allowed": "Fresh Development evidence for whether the fixed same-line compact phrase observation adds goal-conditioned target-name candidates over the background-IDF token branch.",
+    "not_allowed": [
+      "human-verified target-absent specificity, benchmark-test, blind, independent, provider-controlled, city-disjoint, open-world, conformal, FDR-controlled, deployment, benefit, reliability, or safety confirmation",
+      "a same-line phrase proving sign-to-entity, facade, portal, or entrance ownership",
+      "access, traversability, waypoint, arrival, or handoff"
+    ]
+  }
+}

@@ -1,0 +1,7647 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-extent-support-zero-assignment-result-v1",
+  "authority": "CONSUMED_PHYSICAL_TARGET_DISJOINT_SAME_CLASS_EXTENT_SUPPORT_RESULT",
+  "protocol_path": "l10_3rscan_registered_extent_support_zero_assignment_protocol_v1.json",
+  "protocol_sha256": "55784575cf6a3e7365ceaba10a3bdcc6154555705bc860b5823570198322595f",
+  "cohort_path": "l10_3rscan_registered_extent_support_zero_assignment_cohort_v1.json",
+  "cohort_sha256": "e1aa3cc56beab733dc636cf63cd8291de4fb00645289fd5a9014eb5d13b32bd7",
+  "implementation": {
+    "path": "l10_3rscan_registered_extent_support_zero_assignment.py",
+    "sha256": "a03f3903dabad275f784683fa09e31fbf1133e3caed367a3a325fd750518ce2b"
+  },
+  "conclusion": "L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "counts": {
+    "physical_targets": 6,
+    "scenarios": 33,
+    "balanced_swap_scenarios": 30,
+    "truth_matches_across_scenarios": 136,
+    "truth_unmatched_nodes_across_scenarios": 62
+  },
+  "metrics": {
+    "aggregate": {
+      "complete_surface_hungarian": {
+        "true_positive": 102,
+        "false_positive": 64,
+        "false_negative": 34,
+        "precision": 0.614458,
+        "recall": 0.75,
+        "f1": 0.675497,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 33
+      },
+      "rank_only_surface_zero": {
+        "true_positive": 136,
+        "false_positive": 4,
+        "false_negative": 0,
+        "precision": 0.971429,
+        "recall": 1.0,
+        "f1": 0.985507,
+        "zero_assignment_exact_scenarios": 29,
+        "scenarios": 33
+      },
+      "extent_support_surface_zero": {
+        "true_positive": 136,
+        "false_positive": 0,
+        "false_negative": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "zero_assignment_exact_scenarios": 33,
+        "scenarios": 33
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-six",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 6,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 6,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 6,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES01-ES02",
+        "reference_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.938498,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES01-ES03",
+        "reference_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.938498,
+            -0.038622,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES01-ES04",
+        "reference_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES01-ES05",
+        "reference_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES01-ES06",
+        "reference_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES01"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES02-ES01",
+        "reference_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES02-ES03",
+        "reference_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES02-ES04",
+        "reference_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES02-ES05",
+        "reference_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -1.93896
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 4,
+            "false_negative": 3,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.222222,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES02-ES06",
+        "reference_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 0,
+            "false_positive": 5,
+            "false_negative": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES02"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES03-ES01",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES03-ES02",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -0.951874,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES03-ES04",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES03-ES05",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -4.920737
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES03-ES06",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 4,
+            "false_negative": 3,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.222222,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES03"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES04-ES01",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES04-ES02",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.434756,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES04-ES03",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES04-ES05",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -3.94826
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.934381
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES04-ES06",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.882307
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES04"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES05-ES01",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES05-ES02",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -1.40371,
+            -3.726374,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES05-ES03",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -2.931908,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES05-ES04",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -0.973699,
+            -0.050974
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.832851
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES05-ES06",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906
+          ],
+          [
+            -1.40371,
+            -4.374753,
+            -3.726374,
+            -2.931908,
+            -0.973699
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES06",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES06"
+            ],
+            "predicted_unmatched_queries": [
+              "ES05"
+            ],
+            "truth_unmatched_references": [
+              "ES06"
+            ],
+            "truth_unmatched_queries": [
+              "ES05"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES06-ES01",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.893596,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES01"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES01"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES06-ES02",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES03",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -1.726608,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.951126,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.040189,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -0.759281,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -2.748337,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.830861,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 4,
+            "false_negative": 3,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.222222,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES02"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES02"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES06-ES03",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES04",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -0.928784,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -1.948341,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.976236,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.033384,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -1.966263,
+            -0.039641,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.918654,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES03"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES03"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES06-ES04",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES05",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.9464,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -3.929343,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -2.952573,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -1.781906,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -0.039641,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.882307,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES05"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES04"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES04"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-ES06-ES05",
+        "reference_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES05"
+        ],
+        "query_targets": [
+          "ES01",
+          "ES02",
+          "ES03",
+          "ES04",
+          "ES06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.04397,
+            -2.381693,
+            -1.726608,
+            -0.928784,
+            -1.93896
+          ],
+          [
+            -2.938498,
+            -0.038622,
+            -0.951126,
+            -1.948341,
+            -4.920737
+          ],
+          [
+            -1.961712,
+            -0.376902,
+            -0.040189,
+            -0.976236,
+            -3.94826
+          ],
+          [
+            -0.951874,
+            -1.550667,
+            -0.759281,
+            -0.033384,
+            -2.932197
+          ],
+          [
+            -0.434756,
+            -3.404359,
+            -2.748337,
+            -1.966263,
+            -0.934381
+          ]
+        ],
+        "registered_extent_iou_matrix": [
+          [
+            0.923375,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.893596,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.830861,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.918654,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              },
+              {
+                "reference": "ES05",
+                "query": "ES06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "extent_support_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "ES01",
+                "query": "ES01"
+              },
+              {
+                "reference": "ES02",
+                "query": "ES02"
+              },
+              {
+                "reference": "ES03",
+                "query": "ES03"
+              },
+              {
+                "reference": "ES04",
+                "query": "ES04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "ES05"
+            ],
+            "predicted_unmatched_queries": [
+              "ES06"
+            ],
+            "truth_unmatched_references": [
+              "ES05"
+            ],
+            "truth_unmatched_queries": [
+              "ES06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      }
+    ],
+    "full_surface_score_matrix": [
+      [
+        -0.04397,
+        -2.381693,
+        -1.726608,
+        -0.928784,
+        -0.9464,
+        -1.93896
+      ],
+      [
+        -2.938498,
+        -0.038622,
+        -0.951126,
+        -1.948341,
+        -3.929343,
+        -4.920737
+      ],
+      [
+        -1.961712,
+        -0.376902,
+        -0.040189,
+        -0.976236,
+        -2.952573,
+        -3.94826
+      ],
+      [
+        -0.951874,
+        -1.550667,
+        -0.759281,
+        -0.033384,
+        -1.781906,
+        -2.932197
+      ],
+      [
+        -0.434756,
+        -3.404359,
+        -2.748337,
+        -1.966263,
+        -0.039641,
+        -0.934381
+      ],
+      [
+        -1.40371,
+        -4.374753,
+        -3.726374,
+        -2.931908,
+        -0.973699,
+        -0.050974
+      ]
+    ],
+    "full_centroid_score_matrix": [
+      [
+        -0.22189,
+        -2.859367,
+        -1.949708,
+        -0.982615,
+        -1.014006,
+        -2.101807
+      ],
+      [
+        -3.102755,
+        -0.148076,
+        -1.040599,
+        -2.025117,
+        -3.987373,
+        -5.085896
+      ],
+      [
+        -2.121115,
+        -0.847781,
+        -0.128394,
+        -1.043019,
+        -3.006464,
+        -4.106143
+      ],
+      [
+        -1.065546,
+        -1.903239,
+        -1.002382,
+        -0.027042,
+        -1.950834,
+        -3.050623
+      ],
+      [
+        -0.930559,
+        -3.89284,
+        -2.985187,
+        -2.004746,
+        -0.099441,
+        -1.0614
+      ],
+      [
+        -1.909549,
+        -4.870784,
+        -3.961931,
+        -2.983922,
+        -1.029383,
+        -0.148399
+      ]
+    ],
+    "full_registered_extent_iou_matrix": [
+      [
+        0.923375,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.893596,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.830861,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.918654,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.882307,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.832851
+      ]
+    ],
+    "surface_pair_diagnostics": {
+      "ES01->ES01": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 0.22189,
+        "symmetric_median_surface_distance_metres": 0.04397
+      },
+      "ES01->ES02": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 2.859367,
+        "symmetric_median_surface_distance_metres": 2.381693
+      },
+      "ES01->ES03": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 1.949708,
+        "symmetric_median_surface_distance_metres": 1.726608
+      },
+      "ES01->ES04": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 0.982615,
+        "symmetric_median_surface_distance_metres": 0.928784
+      },
+      "ES01->ES05": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 1.014006,
+        "symmetric_median_surface_distance_metres": 0.9464
+      },
+      "ES01->ES06": {
+        "reference_target_instance_id": 60,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 2.101807,
+        "symmetric_median_surface_distance_metres": 1.93896
+      },
+      "ES02->ES01": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 3.102755,
+        "symmetric_median_surface_distance_metres": 2.938498
+      },
+      "ES02->ES02": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 0.148076,
+        "symmetric_median_surface_distance_metres": 0.038622
+      },
+      "ES02->ES03": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 1.040599,
+        "symmetric_median_surface_distance_metres": 0.951126
+      },
+      "ES02->ES04": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 2.025117,
+        "symmetric_median_surface_distance_metres": 1.948341
+      },
+      "ES02->ES05": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 3.987373,
+        "symmetric_median_surface_distance_metres": 3.929343
+      },
+      "ES02->ES06": {
+        "reference_target_instance_id": 57,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 5.085896,
+        "symmetric_median_surface_distance_metres": 4.920737
+      },
+      "ES03->ES01": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 2.121115,
+        "symmetric_median_surface_distance_metres": 1.961712
+      },
+      "ES03->ES02": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 0.847781,
+        "symmetric_median_surface_distance_metres": 0.376902
+      },
+      "ES03->ES03": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 0.128394,
+        "symmetric_median_surface_distance_metres": 0.040189
+      },
+      "ES03->ES04": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 1.043019,
+        "symmetric_median_surface_distance_metres": 0.976236
+      },
+      "ES03->ES05": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 3.006464,
+        "symmetric_median_surface_distance_metres": 2.952573
+      },
+      "ES03->ES06": {
+        "reference_target_instance_id": 58,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 4.106143,
+        "symmetric_median_surface_distance_metres": 3.94826
+      },
+      "ES04->ES01": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 1.065546,
+        "symmetric_median_surface_distance_metres": 0.951874
+      },
+      "ES04->ES02": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 1.903239,
+        "symmetric_median_surface_distance_metres": 1.550667
+      },
+      "ES04->ES03": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 1.002382,
+        "symmetric_median_surface_distance_metres": 0.759281
+      },
+      "ES04->ES04": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 0.027042,
+        "symmetric_median_surface_distance_metres": 0.033384
+      },
+      "ES04->ES05": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 1.950834,
+        "symmetric_median_surface_distance_metres": 1.781906
+      },
+      "ES04->ES06": {
+        "reference_target_instance_id": 59,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 3.050623,
+        "symmetric_median_surface_distance_metres": 2.932197
+      },
+      "ES05->ES01": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 0.930559,
+        "symmetric_median_surface_distance_metres": 0.434756
+      },
+      "ES05->ES02": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 3.89284,
+        "symmetric_median_surface_distance_metres": 3.404359
+      },
+      "ES05->ES03": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 2.985187,
+        "symmetric_median_surface_distance_metres": 2.748337
+      },
+      "ES05->ES04": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 2.004746,
+        "symmetric_median_surface_distance_metres": 1.966263
+      },
+      "ES05->ES05": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 0.099441,
+        "symmetric_median_surface_distance_metres": 0.039641
+      },
+      "ES05->ES06": {
+        "reference_target_instance_id": 61,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 1.0614,
+        "symmetric_median_surface_distance_metres": 0.934381
+      },
+      "ES06->ES01": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 60,
+        "centroid_distance_metres": 1.909549,
+        "symmetric_median_surface_distance_metres": 1.40371
+      },
+      "ES06->ES02": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 57,
+        "centroid_distance_metres": 4.870784,
+        "symmetric_median_surface_distance_metres": 4.374753
+      },
+      "ES06->ES03": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 58,
+        "centroid_distance_metres": 3.961931,
+        "symmetric_median_surface_distance_metres": 3.726374
+      },
+      "ES06->ES04": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 59,
+        "centroid_distance_metres": 2.983922,
+        "symmetric_median_surface_distance_metres": 2.931908
+      },
+      "ES06->ES05": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 61,
+        "centroid_distance_metres": 1.029383,
+        "symmetric_median_surface_distance_metres": 0.973699
+      },
+      "ES06->ES06": {
+        "reference_target_instance_id": 63,
+        "query_target_instance_id": 63,
+        "centroid_distance_metres": 0.148399,
+        "symmetric_median_surface_distance_metres": 0.050974
+      }
+    },
+    "extent_support_diagnostics": [
+      {
+        "reference": "ES01",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.923375,
+        "positive_support": true
+      },
+      {
+        "reference": "ES01",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES01",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES01",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES01",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES01",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES02",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES02",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.893596,
+        "positive_support": true
+      },
+      {
+        "reference": "ES02",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES02",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES02",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES02",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES03",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES03",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES03",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.830861,
+        "positive_support": true
+      },
+      {
+        "reference": "ES03",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES03",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES03",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES04",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES04",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES04",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES04",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.918654,
+        "positive_support": true
+      },
+      {
+        "reference": "ES04",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES04",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES05",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES05",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES05",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES05",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES05",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.882307,
+        "positive_support": true
+      },
+      {
+        "reference": "ES05",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES01",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES02",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES03",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES04",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES05",
+        "registered_planar_extent_iou": 0.0,
+        "positive_support": false
+      },
+      {
+        "reference": "ES06",
+        "query": "ES06",
+        "registered_planar_extent_iou": 0.832851,
+        "positive_support": true
+      }
+    ]
+  },
+  "incremental_gain_over_rank_only": {
+    "true_positive_delta": 0,
+    "false_positive_reduction": 4,
+    "false_negative_reduction": 0,
+    "f1_delta": 0.014493,
+    "exact_zero_assignment_scenario_gain": 4
+  },
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "support_rule": "strictly positive registered planar convex-hull intersection; no IoU threshold",
+  "decision_gate": {
+    "rank_only_incremental_opportunity": "Rank-only must emit at least one false positive across the frozen scenarios.",
+    "support_true_matches": "All frozen truth correspondences across all scenarios.",
+    "support_false_matches": 0,
+    "support_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in every frozen scenario.",
+    "no_true_match_regression": "Extent-supported true positives must be at least rank-only true positives.",
+    "single_replay": "One replay on the frozen physical-target-disjoint same-class cohort; do not tune or rerun after outcome."
+  },
+  "claim_boundary": "A pass is same-provider, same-scan-family, physical-target-disjoint real-geometry Development evidence that parameter-free positive registered planar extent overlap adds decision-changing absolute support over rank-only surface matching for truth-proposed stable indoor doorframes under bounded missing/extra rosters. Provider labels, complete surfaces, and the rigid transform are privileged. Positive projected overlap is spatial support, not portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

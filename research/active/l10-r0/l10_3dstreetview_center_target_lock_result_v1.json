@@ -1,0 +1,95 @@
+{
+  "schema": "blindassist-l10-3dstreetview-center-target-lock-result-v1",
+  "authority": "EXPLORE_DEVELOPMENT_REAL_STREETVIEW_MECHANISM_RESULT",
+  "protocol_path": "l10_3dstreetview_center_target_lock_protocol_v1.json",
+  "protocol_sha256": "3a7938e9839daa240513a397d14e79c87b82431db5475f3e75b0284ed25789b6",
+  "cohort_path": "l10_3dstreetview_center_target_lock_cohort_v1.json",
+  "cohort_sha256": "f81a76e8a45ade7ff2b4a9a18cb32feb35d04b942ced24950e4caf788d128847",
+  "model": {
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\p1_a2_dinov2_small_ed25f3a",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "device": "CPU"
+  },
+  "conclusion": "L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "counts": {
+    "cross_partition": 957,
+    "test_image_image": 135,
+    "test_image_patch": 153,
+    "test_negative": 229,
+    "test_patch_patch": 138,
+    "test_positive": 197,
+    "train_image_image": 419,
+    "train_image_patch": 687,
+    "train_negative": 1100,
+    "train_patch_patch": 448,
+    "train_positive": 454,
+    "unavailable": 23436
+  },
+  "metrics": {
+    "baseline": {
+      "train": {
+        "auroc": 0.956286,
+        "average_precision": 0.91755,
+        "balanced_accuracy": 0.890511,
+        "threshold_from_train": 0.471013
+      },
+      "test": {
+        "auroc": 0.949859,
+        "average_precision": 0.954445,
+        "balanced_accuracy": 0.895773,
+        "threshold_from_train": 0.471013
+      },
+      "test_retrieval": {
+        "eligible_anchors": 32,
+        "top1_accuracy": 0.84375,
+        "mrr": 0.921875
+      }
+    },
+    "upgraded": {
+      "train": {
+        "auroc": 0.983298,
+        "average_precision": 0.961142,
+        "balanced_accuracy": 0.952537,
+        "threshold_from_train": 0.611806
+      },
+      "test": {
+        "auroc": 0.98486,
+        "average_precision": 0.982243,
+        "balanced_accuracy": 0.926341,
+        "threshold_from_train": 0.611806
+      },
+      "test_retrieval": {
+        "eligible_anchors": 32,
+        "top1_accuracy": 1.0,
+        "mrr": 1.0
+      }
+    }
+  },
+  "deltas": {
+    "test_auroc": 0.035001,
+    "test_retrieval_top1": 0.15625
+  },
+  "test_subgroups": {
+    "image_image": {
+      "pairs": 135,
+      "positive": 79,
+      "baseline_auroc": 0.987794,
+      "upgraded_auroc": 0.998644
+    },
+    "image_patch": {
+      "pairs": 153,
+      "positive": 46,
+      "baseline_auroc": 0.874644,
+      "upgraded_auroc": 0.966274
+    },
+    "patch_patch": {
+      "pairs": 138,
+      "positive": 72,
+      "baseline_auroc": 0.981692,
+      "upgraded_auroc": 0.981692
+    }
+  },
+  "decision_gate": "Gate is met when test AUROC improves by at least 0.01 or test retrieval top-1 improves by at least 0.03, while neither metric declines by more than 0.01.",
+  "claim_boundary": "A pass is real-image Development evidence for cross-view locking of one provider-verified physical target point under an archive-prefix and provider-same-source limitation. It is not evidence that the point is a door or entrance, belongs to a named venue, is publicly accessible or traversable, yields an approach waypoint, proves arrival or HANDOFF_READY, generalizes to unseen providers, or improves user benefit or mobility safety."
+}

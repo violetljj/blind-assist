@@ -1,0 +1,161 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-ledger-protocol-v1",
+  "name": "L10 PanoLab track-carried lexical candidate ledger consumed Development",
+  "status": "FROZEN_FOR_ONE_CONSUMED_DEVELOPMENT_REPLAY",
+  "question": "Does retaining target-name lexical candidates across a verified provider-adjacent sidestep increase the number of episodes that have both an available lexical candidate and a post-action authorized entrance ray, compared with discarding the pre-action observation and using the after frame alone?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_track_lexical_ledger.py",
+    "sha256": "175d7a4c697b9e3486f3a04ad751c242b4b70d79376e39e441f6a7066f693d6c"
+  },
+  "frozen_inputs": {
+    "active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    },
+    "active_ray_result": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json",
+      "sha256": "abae1ef768ff24ad7771704c34f602d7145b382a8259b4a779b0357960fcd963",
+      "bytes": 18723
+    },
+    "active_ray_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_protocol_v2.json",
+      "sha256": "220d11023382a850df516ba830d734d8308607d2098185e825ff3db71597f860",
+      "bytes": 2219
+    },
+    "active_ray_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery.py",
+      "sha256": "fc3ad85a9ab9a890515ef5dbc417c9e052f23ce621c4b40616f618f47657ca94",
+      "bytes": 9305
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "orientation_projection_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_entrance_ray.py",
+      "sha256": "e91b58dec522a7cd9f36cc7ccfcdffaf292239fe58138d0bf91ced948d12073f",
+      "bytes": 8898
+    }
+  },
+  "runtime": {
+    "executable": "artifacts.local/runtime/l10-ppocrv6-medium-v1/.venv/Scripts/python.exe",
+    "pythonpath_order": [
+      "artifacts.local/runtime/semantic-anchor-v1/site-packages",
+      "artifacts.local/runtime/dtr-carla-c8-yolo/.venv/Lib/site-packages",
+      "artifacts.local/runtime/dtr-nuscenes-x21/.venv/Lib/site-packages"
+    ],
+    "versions": {
+      "python": "3.11.9",
+      "numpy": "2.4.6",
+      "opencv-python": "4.10.0.84",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "onnxruntime-gpu": "1.26.0"
+    }
+  },
+  "models": {
+    "medium_detection": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_det_onnx",
+      "revision": "61323801669c338b7891481ec7bac61ce31b576a",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-det-6132380",
+      "sha256": {
+        "inference.json": "0f1a7ec35da36173529c7a60238b7f7919e3831929c3f700ad90ad4896adecd5",
+        "inference.onnx": "eb13b44b25bb36f89528b68720af8a61d9cf381176107f465db1757b65d086e1",
+        "inference.yml": "7298d5ead546584af2504d03355f881ac7a7bc0eb1e282d3e159277c1d0af871",
+        "README.md": "3046e3aab0194a2291bb3941c93b980c2b3a938a24a5be88354968f6d6187ac8"
+      }
+    },
+    "medium_recognition": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_rec_onnx",
+      "revision": "50c7eacafc52fa7bcf4194e8cd08e46f8558504b",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-rec-50c7eac",
+      "sha256": {
+        "inference.json": "0b2e25e990bd072f1bf77d59d67d508bce6c4bd44af6624e0fb27d6da2cd00e8",
+        "inference.onnx": "9c09abf0957f7968c7586464b7397b84ad2387a0497a351af40e9acc71b673ba",
+        "inference.yml": "991b700facf5b50a7de193468207d5f4255b538dde0d312ae3b7c7a9b6873129",
+        "README.md": "ebce8d28436623ecab4952e24935aed86b3f8ecaf8f8736b92d5544f60fae1e9"
+      }
+    }
+  },
+  "observation_window": {
+    "anchor": "strict OSM entrance ray projected under the frozen zero-pose Panoramax contract",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "sampling": "native equirectangular pixels with horizontal seam wrap and no resampling",
+    "ocr": "frozen PP-OCRv6 medium detection and recognition ONNX"
+  },
+  "lexical_match": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ],
+    "minimum_exact_name_row_score": 0.7,
+    "exact_name_rule": "All significant target-name tokens must occur contiguously in one OCR row.",
+    "two_initial_brand_signature": {
+      "applicability": "Only a target whose significant name is exactly two single-letter tokens.",
+      "minimum_row_score": 0.8,
+      "minimum_canonical_characters": 2,
+      "maximum_canonical_characters": 4,
+      "minimum_distinct_rows": 2,
+      "maximum_pair_iou": 0.1,
+      "rule": "At least two spatially distinct OCR rows must begin and end with the ordered target initials. This is a brand-signature candidate, not an exact transcription."
+    },
+    "counterfactuals": "Every one of the eight windows is also matched against the three other episode target names."
+  },
+  "evidence_semantics": {
+    "current_frame_only_baseline": "Discard the start-frame lexical candidate and use only the after-action frame.",
+    "track_carried_successor": "Retain a start-frame lexical candidate across the verified same-sequence reciprocal action edge and union it with any after-frame candidate.",
+    "component_separation": "The lexical candidate and post-action entrance ray remain separate ledger entries. No lexical-to-portal or lexical-to-entrance ownership edge is emitted.",
+    "development_authority": "The four-image-pair pixel cohort was already consumed and the window/matcher was chosen after exploratory Development inspection. This replay may demonstrate a mechanism effect but has no fresh or confirmation authority."
+  },
+  "gate": {
+    "episodes": 4,
+    "strict_orientation_images": 8,
+    "post_action_authorized_entrance_rays": 4,
+    "minimum_track_carried_lexical_candidates": 2,
+    "minimum_gain_over_current_after_frame_only": 1,
+    "minimum_pre_action_only_candidate_retained": 1,
+    "minimum_new_candidate_acquired_after_action": 1,
+    "maximum_counterfactual_target_matches": 0,
+    "maximum_portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_TRACK_LEXICAL_LEDGER_CONSUMED_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_TRACK_LEXICAL_LEDGER_CONSUMED_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "RoadText-1K: Text Detection and Recognition Dataset for Driving Videos",
+      "venue": "ICRA 2020",
+      "url": "https://marcalr.github.io/pdfs/ICRA20.pdf",
+      "use": "Motivates treating scene text in motion as a multi-frame observation problem. This evaluator carries discrete evidence; it does not implement the paper's models."
+    }
+  ],
+  "execution_rule": "One output-bearing replay on the already-consumed four-episode Development cohort. Validate every frozen hash, all eight source image receipts, strict orientation, model files, runtime versions, and the prior active-ray gate before inference. Refuse overwrite.",
+  "output": "research/active/l10-r0/l10_panolab_track_lexical_ledger_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Consumed Development evidence that a component-separated track ledger retains more target-name lexical candidates alongside an independently authorized post-action entrance ray than an after-frame-only observation policy on these four episodes.",
+    "not_allowed": [
+      "fresh Development or confirmation authority",
+      "source-disjoint generalization",
+      "a lexical candidate being the target entity rather than a same-name sign or street label",
+      "pixel portal grounding",
+      "address-to-door or sign-to-door ownership",
+      "entrance affordance, public access, walkability, or traversability",
+      "waypoint accuracy, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

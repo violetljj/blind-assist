@@ -1,0 +1,1143 @@
+{
+  "schema": "blindassist-l10-panolab-ordered-appearance-bank-result-v1",
+  "decision": "L10_PANOLAB_ORDERED_APPEARANCE_BANK_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "POSTHOC_CONSUMED_DEVELOPMENT_MECHANISM_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_ordered_appearance_bank_protocol_v1.json",
+  "protocol_sha256": "6a3b55f2929ee4a89a34556f61aac2ff3db558b69bf78e61b7ba4e6bf2662250",
+  "evaluator_sha256": "4ff6de3e314fe17157f8cf41cc9b622281708f99cb8f7cf7ed8b0d6e666e7298",
+  "execution_backend": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "named-poi-clip-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "named-poi-clip-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.2870458000106737
+        ],
+        "median_seconds": 0.2870458000106737
+      },
+      {
+        "backend": "named-poi-clip-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.847958100028336
+        ],
+        "median_seconds": 0.847958100028336
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "backend_receipt_sha256": "30e9a7caef4b2099aecd06e9551e872e1fedd36259a29f3891eb6fd745e681b8",
+  "score_contract": {
+    "single_frame": "For each candidate target: 0.35 * maximum CLIP reference cosine + 0.25 * maximum pooled DINOv2 reference cosine + 0.40 * maximum mutual-patch affine-consistency score.",
+    "weights": {
+      "clip": 0.35,
+      "dino": 0.25,
+      "mutual_patch_geometry": 0.4
+    },
+    "ordered_bank": "For each candidate target, retain max(single-frame score at start, single-frame score at after) across the verified start-to-after provider edge. Rank the three candidates once from those retained scores.",
+    "change_control": "Weights, models, patch grid and local-geometry formula are copied unchanged from named_poi_facade_fingerprint_protocol_v1. Only the query representation changes from after-only to the two-frame ordered bank. No threshold is calibrated and no model family is swept."
+  },
+  "reference_metadata": [
+    {
+      "target_id": "FL01",
+      "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "collection": "1c2bd824-2a0e-4466-812f-f139acd2a369",
+      "query_collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "collection_disjoint": true,
+      "camera_to_entrance_distance_m": 39.083
+    },
+    {
+      "target_id": "FL01",
+      "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "query_collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "collection_disjoint": false,
+      "camera_to_entrance_distance_m": 39.624
+    },
+    {
+      "target_id": "FL03",
+      "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+      "collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "query_collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "collection_disjoint": false,
+      "camera_to_entrance_distance_m": 4.705
+    },
+    {
+      "target_id": "FL03",
+      "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+      "collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "query_collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "collection_disjoint": false,
+      "camera_to_entrance_distance_m": 28.013
+    },
+    {
+      "target_id": "FL04",
+      "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+      "collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "query_collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "collection_disjoint": false,
+      "camera_to_entrance_distance_m": 4.109
+    },
+    {
+      "target_id": "FL04",
+      "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+      "collection": "4f0a51eb-f69d-45ef-955a-9a7c163478bd",
+      "query_collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "collection_disjoint": true,
+      "camera_to_entrance_distance_m": 27.87
+    }
+  ],
+  "crop_receipts": [
+    {
+      "key": "FL01_start",
+      "target_id": "FL01",
+      "role": "start",
+      "item_id": "d4c8763d-919a-4a55-a92e-367e21a0d785",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\d4c8763d-919a-4a55-a92e-367e21a0d785.jpg",
+      "source_sha256": "54dd2e79039f2f35270e7db039c0a4664b8c197334e60348886481b80d4115be",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL01_start.jpg",
+      "crop_sha256": "d8cf244aaabd6ecf06c4d093d5b9de621e62bb6ea98841b1bb393bf31494b32d",
+      "crop_bytes": 724314,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1441.324503,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "0ebac324a4a3e8b1fcbeac7de791526824dcb073c48ec19362c1a7ef1f30562a"
+      }
+    },
+    {
+      "key": "FL01_after",
+      "target_id": "FL01",
+      "role": "after",
+      "item_id": "24a52393-c17e-4de7-9735-091bc44925fe",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\24a52393-c17e-4de7-9735-091bc44925fe.jpg",
+      "source_sha256": "c5e2d8d174f030d7515411271d6c480be5a72352657109205daa50d1df26f45f",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL01_after.jpg",
+      "crop_sha256": "d6b05fe41444debb59caa199199fe54e65e5abff416c434f1c2b727749b114cf",
+      "crop_bytes": 682331,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1181.832443,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "66ead9f5cfcdc2b94e3c172b36d2e26fa6fd39cab8cfcbac15a1fe5cf19678fe"
+      }
+    },
+    {
+      "key": "FL01_ref1",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\bf9d95fe-fc94-4ad9-965d-a372f0581f90.jpg",
+      "source_sha256": "96d6c554c8b7aed9041009907c39dd0f92418a164237b860e7a6ce4a1d28aaa8",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL01_ref1.jpg",
+      "crop_sha256": "e5688a55dd43651f15111c3898382a027e39de67c609294f5c057a19c5453da7",
+      "crop_bytes": 827032,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1896.774423,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9d6195ccf6b6c148c8e6c9b5332e32433c05be58b80b1ddbcaa9e23cb3d19ec0"
+      }
+    },
+    {
+      "key": "FL01_ref2",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\c6fd46d9-9513-407b-adc8-419150f56f15.jpg",
+      "source_sha256": "a30856bddafeed48b32d62271c7e8a3aa9eb5f2fff9bfda8c843b3f0ca819ead",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL01_ref2.jpg",
+      "crop_sha256": "2be203cbbd71b4fbe2614bbd87e5a4de7a88a9f4696f9fbaa2741fda10dc2062",
+      "crop_bytes": 1003373,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 762.455694,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "758303b82d4eba33794ca24715e11e1c3ee034c3b82e913605e5f77115815d37"
+      }
+    },
+    {
+      "key": "FL03_start",
+      "target_id": "FL03",
+      "role": "start",
+      "item_id": "baf41e0a-e502-4004-baeb-5eaf01f9e805",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\baf41e0a-e502-4004-baeb-5eaf01f9e805.jpg",
+      "source_sha256": "b5d0cb22d80dc53679a4634a81040bf70b5f01c8bae8a07640c305f630dc4ae8",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL03_start.jpg",
+      "crop_sha256": "3f4dae91ffbed0a5263be0e4d0a56a113fc2b3e651ba8013ff30a02f70eac31a",
+      "crop_bytes": 773517,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5453.178308,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "bd17844d4e542145c7b3cbcc594c9477fc8dd74f9c50a4f9c46449aa7b94dcb8"
+      }
+    },
+    {
+      "key": "FL03_after",
+      "target_id": "FL03",
+      "role": "after",
+      "item_id": "5f5cf530-5b26-4b7b-a09c-c4f745cb542c",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\5f5cf530-5b26-4b7b-a09c-c4f745cb542c.jpg",
+      "source_sha256": "ceea9b6d6a899878490d80e95a3bcba3ee9cd766dfa874969dc4302affd9b8d2",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL03_after.jpg",
+      "crop_sha256": "ec45f5e8d696cf7a590726b83d21f3ee395c8086246ebb78b5c89a819772f6ba",
+      "crop_bytes": 746434,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5232.418726,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "01b566d6e71608000335db9e1a59dd43d7b33710df424e01706fec40f474bffd"
+      }
+    },
+    {
+      "key": "FL03_ref1",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\960ce887-e0c7-48a5-b03c-f5770811a39b.jpg",
+      "source_sha256": "f0eef48a40dd93d6a19ec3269a97c821795b1bcd5188b61fa8cef7d7a5b3894d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL03_ref1.jpg",
+      "crop_sha256": "a4a33354f4218d558b90f8d32253673d7304e5ccb6933b9041370590e27ce864",
+      "crop_bytes": 662891,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5008.187759,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "55a43be8b468d370b24683f9b46cee8d02395c218f203abe797e0d5c1ff07b5f"
+      }
+    },
+    {
+      "key": "FL03_ref2",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\8731f6bb-1881-45b2-88e3-dd684c768401.jpg",
+      "source_sha256": "4a57d12a8546beea874ac0e70220e7b32ee252babec031d1ddb67f5a6652a5bb",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL03_ref2.jpg",
+      "crop_sha256": "6d047a993677ef7409ab33eac4396cf69540a798f36623d6d9fa6d7b177b1604",
+      "crop_bytes": 973534,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5633.571831,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "463f099dfcf7b2519de49efc08ff046520e2ce1e7a39e0d8cc2273a975906811"
+      }
+    },
+    {
+      "key": "FL04_start",
+      "target_id": "FL04",
+      "role": "start",
+      "item_id": "6b16f054-40ae-475c-8bf8-2c850af54c13",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\6b16f054-40ae-475c-8bf8-2c850af54c13.jpg",
+      "source_sha256": "7bbee25de3ff0878e3b334e040b85d4f77172b37d1e0b1ac476d671db676643f",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL04_start.jpg",
+      "crop_sha256": "65dac306b9186f5847e2e5090779e765cd2f5b4914fef947c2a244b09fd69af7",
+      "crop_bytes": 632145,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1905.813147,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "3372d1709485414a7646d59c381f78bdff53dfa50f55e1b718976bf47d3c9614"
+      }
+    },
+    {
+      "key": "FL04_after",
+      "target_id": "FL04",
+      "role": "after",
+      "item_id": "ab6c8c4c-4d03-4eab-82e5-8518182d1194",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-track-lexical-fresh-v2\\images\\ab6c8c4c-4d03-4eab-82e5-8518182d1194.jpg",
+      "source_sha256": "181ffdc720bc25b7c8334299da1fc820a9aefee4056358bccf295dbac8e8aa79",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL04_after.jpg",
+      "crop_sha256": "e2518fe3e987d4aa9849976f529b1fbf2c61ccc1e83e7b5b07a765df1bb47921",
+      "crop_bytes": 596030,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2594.363852,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "8334e9e398cbc7dd69b5f98e3844080c214b1e936493ffd642751bd672356dd5"
+      }
+    },
+    {
+      "key": "FL04_ref1",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\e713c126-0aaf-4a06-ba0e-ec1eb51b742b.jpg",
+      "source_sha256": "3b9bcd072e27a46b1dcc42d4e256a3bd5101546008d43f02ceb0e54b0828ec1e",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL04_ref1.jpg",
+      "crop_sha256": "3f374abd0c92cb2955368ea0fa965b3b1ba6f9b3972a9b51c2917305ba3dcec6",
+      "crop_bytes": 398775,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1367.765461,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "e8595caa7688ed861ec54e71f7bedbc4546454ba9c81de17b21c260df8487020"
+      }
+    },
+    {
+      "key": "FL04_ref2",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\545723dc-96fa-4373-bf3b-c3761e6a2402.jpg",
+      "source_sha256": "7dd91c80ec5a9989f7934b2391240be07d10938dfbb945e7f1bd21f3c1571f3d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-track-appearance-bank-v1\\crops\\FL04_ref2.jpg",
+      "crop_sha256": "fc192f30c826d109ca39b00f9ae8d2365cf9d8eefe5600e19b9959ded0b6534d",
+      "crop_bytes": 835075,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2723.694806,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9bb4791201888e7c10f0b68010c2e1ffa1bbbcd2c9461e1f4b7f79d55f3fb73e"
+      }
+    }
+  ],
+  "metrics": {
+    "source_fresh_episodes_available": 4,
+    "episodes_with_prior_reference_bank": 3,
+    "source_coverage_rate": 0.75,
+    "cities": 2,
+    "query_frames": 6,
+    "reference_views": 6,
+    "exact_query_reference_item_overlap": 0,
+    "collection_disjoint_reference_views": 2,
+    "start_only_top1": 3,
+    "after_only_top1": 3,
+    "ordered_bank_top1": 3,
+    "ordered_bank_top1_gain_over_after_only": 0,
+    "after_only_mean_truth_margin": 0.11822962041195373,
+    "ordered_bank_mean_truth_margin": 0.11602080839592577,
+    "ordered_bank_mean_margin_gain": -0.002208812016027961,
+    "wrong_goal_trials": 6,
+    "after_only_wrong_top1": 0,
+    "ordered_bank_wrong_top1": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "model_seconds": 1.4622130000498146
+  },
+  "gate": {
+    "minimum_two_of_three_ordered_bank_top1": true,
+    "minimum_one_top1_gain_over_after_only": false,
+    "ordered_bank_wrong_top1_not_increased": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "FL01",
+      "target_name": "Espace Village",
+      "target_way_id": 190020630,
+      "query_sequence_id": "94031adf-f962-4005-800b-268e0f92bf17",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "reciprocal_action_receipt": true,
+      "geometry": {
+        "start": "TARGET_SELF_OCCLUDED",
+        "after": "DIRECT",
+        "after_entrance_ray_authorized": true
+      },
+      "start": {
+        "scores": {
+          "FL01": {
+            "score": 0.7059867322444915,
+            "max_clip": 0.8178671598434448,
+            "max_dino": 0.7607226371765137,
+            "max_mutual_patch_geometry": 0.5738814175128937,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7905296087265015,
+                "dino": 0.6020721197128296,
+                "score": 0.41326597758701866,
+                "matches": 21,
+                "inlier_ratio": 0.38095238095238093,
+                "mean_similarity": 0.5985231399536133
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.8178671598434448,
+                "dino": 0.7607226371765137,
+                "score": 0.5738814175128937,
+                "matches": 20,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.7651752233505249
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.48095969334244726,
+            "max_clip": 0.6379727721214294,
+            "max_dino": 0.4555267095565796,
+            "max_mutual_patch_geometry": 0.3594688642770052,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.6379727721214294,
+                "dino": 0.3077968657016754,
+                "score": 0.3523982415596644,
+                "matches": 11,
+                "inlier_ratio": 0.5454545454545454,
+                "mean_similarity": 0.497503399848938
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.5496634244918823,
+                "dino": 0.4555267095565796,
+                "score": 0.3594688642770052,
+                "matches": 16,
+                "inlier_ratio": 0.4375,
+                "mean_similarity": 0.5001305937767029
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.6026065915822982,
+            "max_clip": 0.7399933338165283,
+            "max_dino": 0.6704661250114441,
+            "max_mutual_patch_geometry": 0.43998098373413086,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.6899233460426331,
+                "dino": 0.39557233452796936,
+                "score": 0.2114981934428215,
+                "matches": 6,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.5639951825141907
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7399933338165283,
+                "dino": 0.6704661250114441,
+                "score": 0.43998098373413086,
+                "matches": 22,
+                "inlier_ratio": 0.45454545454545453,
+                "mean_similarity": 0.6049738526344299
+              }
+            ]
+          }
+        },
+        "prediction": "FL01",
+        "correct": true,
+        "truth_score": 0.7059867322444915,
+        "strongest_wrong_score": 0.6026065915822982,
+        "truth_margin": 0.10338014066219325,
+        "ranking": [
+          "FL01",
+          "FL04",
+          "FL03"
+        ]
+      },
+      "after_only_baseline": {
+        "scores": {
+          "FL01": {
+            "score": 0.7074928673830899,
+            "max_clip": 0.8345960378646851,
+            "max_dino": 0.7450007200241089,
+            "max_mutual_patch_geometry": 0.5728351853110574,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.8345960378646851,
+                "dino": 0.6142390966415405,
+                "score": 0.5660251766443253,
+                "matches": 20,
+                "inlier_ratio": 0.7,
+                "mean_similarity": 0.6659119725227356
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.8282952308654785,
+                "dino": 0.7450007200241089,
+                "score": 0.5728351853110574,
+                "matches": 22,
+                "inlier_ratio": 0.45454545454545453,
+                "mean_similarity": 0.7876483798027039
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.5202404346730974,
+            "max_clip": 0.7143253087997437,
+            "max_dino": 0.45398378372192383,
+            "max_mutual_patch_geometry": 0.3918265766567654,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.7143253087997437,
+                "dino": 0.3136821985244751,
+                "score": 0.3067546337842941,
+                "matches": 9,
+                "inlier_ratio": 0.6666666666666666,
+                "mean_similarity": 0.4908074140548706
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.6579415798187256,
+                "dino": 0.45398378372192383,
+                "score": 0.3918265766567654,
+                "matches": 18,
+                "inlier_ratio": 0.4444444444444444,
+                "mean_similarity": 0.5425291061401367
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.6335902859182918,
+            "max_clip": 0.7833327054977417,
+            "max_dino": 0.6443198919296265,
+            "max_mutual_patch_geometry": 0.4958596650291892,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.7317479848861694,
+                "dino": 0.3947829008102417,
+                "score": 0.3041278570890426,
+                "matches": 9,
+                "inlier_ratio": 0.6666666666666666,
+                "mean_similarity": 0.48660457134246826
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7833327054977417,
+                "dino": 0.6443198919296265,
+                "score": 0.4958596650291892,
+                "matches": 17,
+                "inlier_ratio": 0.5882352941176471,
+                "mean_similarity": 0.6244158744812012
+              }
+            ]
+          }
+        },
+        "prediction": "FL01",
+        "correct": true,
+        "truth_score": 0.7074928673830899,
+        "strongest_wrong_score": 0.6335902859182918,
+        "truth_margin": 0.07390258146479811,
+        "ranking": [
+          "FL01",
+          "FL04",
+          "FL03"
+        ]
+      },
+      "ordered_bank_successor": {
+        "scores": {
+          "FL01": {
+            "score": 0.7074928673830899,
+            "selected_phase": "after"
+          },
+          "FL03": {
+            "score": 0.5202404346730974,
+            "selected_phase": "after"
+          },
+          "FL04": {
+            "score": 0.6335902859182918,
+            "selected_phase": "after"
+          }
+        },
+        "prediction": "FL01",
+        "correct": true,
+        "truth_score": 0.7074928673830899,
+        "strongest_wrong_score": 0.6335902859182918,
+        "truth_margin": 0.07390258146479811,
+        "ranking": [
+          "FL01",
+          "FL04",
+          "FL03"
+        ]
+      },
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "FL03",
+      "target_name": "Gare de Neuilly - Porte Maillot",
+      "target_way_id": 84327114,
+      "query_sequence_id": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "reciprocal_action_receipt": true,
+      "geometry": {
+        "start": "TARGET_SELF_OCCLUDED",
+        "after": "DIRECT",
+        "after_entrance_ray_authorized": true
+      },
+      "start": {
+        "scores": {
+          "FL01": {
+            "score": 0.5449316477775574,
+            "max_clip": 0.730787992477417,
+            "max_dino": 0.4887509346008301,
+            "max_mutual_patch_geometry": 0.4174202919006348,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.730787992477417,
+                "dino": 0.4887509346008301,
+                "score": 0.4174202919006348,
+                "matches": 15,
+                "inlier_ratio": 0.6,
+                "mean_similarity": 0.5217753648757935
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.6688714623451233,
+                "dino": 0.391804575920105,
+                "score": 0.28304852545261383,
+                "matches": 11,
+                "inlier_ratio": 0.36363636363636365,
+                "mean_similarity": 0.45287764072418213
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.7002089210918971,
+            "max_clip": 0.7775790095329285,
+            "max_dino": 0.7186117768287659,
+            "max_mutual_patch_geometry": 0.6210083088704518,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.7775790095329285,
+                "dino": 0.6079544425010681,
+                "score": 0.4088361288110415,
+                "matches": 8,
+                "inlier_ratio": 0.625,
+                "mean_similarity": 0.7547743916511536
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.6708929538726807,
+                "dino": 0.7186117768287659,
+                "score": 0.6210083088704518,
+                "matches": 14,
+                "inlier_ratio": 0.6428571428571429,
+                "mean_similarity": 0.756010115146637
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.5133370156089465,
+            "max_clip": 0.6981056928634644,
+            "max_dino": 0.4932645857334137,
+            "max_mutual_patch_geometry": 0.36420969168345135,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.6981056928634644,
+                "dino": 0.333566814661026,
+                "score": 0.2089868187904358,
+                "matches": 9,
+                "inlier_ratio": 0.4444444444444444,
+                "mean_similarity": 0.3858218193054199
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.6705785989761353,
+                "dino": 0.4932645857334137,
+                "score": 0.36420969168345135,
+                "matches": 11,
+                "inlier_ratio": 0.45454545454545453,
+                "mean_similarity": 0.546314537525177
+              }
+            ]
+          }
+        },
+        "prediction": "FL03",
+        "correct": true,
+        "truth_score": 0.7002089210918971,
+        "strongest_wrong_score": 0.5449316477775574,
+        "truth_margin": 0.15527727331433971,
+        "ranking": [
+          "FL03",
+          "FL01",
+          "FL04"
+        ]
+      },
+      "after_only_baseline": {
+        "scores": {
+          "FL01": {
+            "score": 0.5383052117294735,
+            "max_clip": 0.7323468923568726,
+            "max_dino": 0.4993257522583008,
+            "max_mutual_patch_geometry": 0.3928809033499824,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7323468923568726,
+                "dino": 0.4993257522583008,
+                "score": 0.3928809033499824,
+                "matches": 18,
+                "inlier_ratio": 0.4444444444444444,
+                "mean_similarity": 0.5439889430999756
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.6711277961730957,
+                "dino": 0.3743651211261749,
+                "score": 0.36390205259834013,
+                "matches": 14,
+                "inlier_ratio": 0.6428571428571429,
+                "mean_similarity": 0.44301119446754456
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.717718720237414,
+            "max_clip": 0.836546003818512,
+            "max_dino": 0.7543622255325317,
+            "max_mutual_patch_geometry": 0.5908426562945047,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.836546003818512,
+                "dino": 0.710118293762207,
+                "score": 0.5908426562945047,
+                "matches": 15,
+                "inlier_ratio": 0.5333333333333333,
+                "mean_similarity": 0.7706643342971802
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.7401334047317505,
+                "dino": 0.7543622255325317,
+                "score": 0.579336753487587,
+                "matches": 20,
+                "inlier_ratio": 0.55,
+                "mean_similarity": 0.7475312948226929
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.5323550650477409,
+            "max_clip": 0.7448114156723022,
+            "max_dino": 0.4966221749782562,
+            "max_mutual_patch_geometry": 0.3687888145446777,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.7448114156723022,
+                "dino": 0.35930514335632324,
+                "score": 0.2370942818621794,
+                "matches": 9,
+                "inlier_ratio": 0.4444444444444444,
+                "mean_similarity": 0.43771252036094666
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7195289134979248,
+                "dino": 0.4966221749782562,
+                "score": 0.3687888145446777,
+                "matches": 20,
+                "inlier_ratio": 0.4,
+                "mean_similarity": 0.5268411636352539
+              }
+            ]
+          }
+        },
+        "prediction": "FL03",
+        "correct": true,
+        "truth_score": 0.717718720237414,
+        "strongest_wrong_score": 0.5383052117294735,
+        "truth_margin": 0.17941350850794047,
+        "ranking": [
+          "FL03",
+          "FL01",
+          "FL04"
+        ]
+      },
+      "ordered_bank_successor": {
+        "scores": {
+          "FL01": {
+            "score": 0.5449316477775574,
+            "selected_phase": "start"
+          },
+          "FL03": {
+            "score": 0.717718720237414,
+            "selected_phase": "after"
+          },
+          "FL04": {
+            "score": 0.5323550650477409,
+            "selected_phase": "after"
+          }
+        },
+        "prediction": "FL03",
+        "correct": true,
+        "truth_score": 0.717718720237414,
+        "strongest_wrong_score": 0.5449316477775574,
+        "truth_margin": 0.17278707245985658,
+        "ranking": [
+          "FL03",
+          "FL01",
+          "FL04"
+        ]
+      },
+      "portal_ownership_binding": null
+    },
+    {
+      "episode_id": "FL04",
+      "target_name": "Église Notre-Dame de la Délivrande",
+      "target_way_id": 43471848,
+      "query_sequence_id": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "reciprocal_action_receipt": true,
+      "geometry": {
+        "start": "TARGET_SELF_OCCLUDED",
+        "after": "DIRECT",
+        "after_entrance_ray_authorized": true
+      },
+      "start": {
+        "scores": {
+          "FL01": {
+            "score": 0.5447087377309798,
+            "max_clip": 0.7496490478515625,
+            "max_dino": 0.48388344049453735,
+            "max_mutual_patch_geometry": 0.40340177714824677,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7496490478515625,
+                "dino": 0.48388344049453735,
+                "score": 0.40340177714824677,
+                "matches": 14,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.5378690361976624
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.6670441627502441,
+                "dino": 0.36460450291633606,
+                "score": 0.2834526797135671,
+                "matches": 9,
+                "inlier_ratio": 0.5555555555555556,
+                "mean_similarity": 0.48591887950897217
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.5070599385044153,
+            "max_clip": 0.7405763268470764,
+            "max_dino": 0.42426976561546326,
+            "max_mutual_patch_geometry": 0.3544769567601821,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.7405763268470764,
+                "dino": 0.4186360836029053,
+                "score": 0.3426213622093201,
+                "matches": 15,
+                "inlier_ratio": 0.4666666666666667,
+                "mean_similarity": 0.46721094846725464
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.7055562138557434,
+                "dino": 0.42426976561546326,
+                "score": 0.3544769567601821,
+                "matches": 17,
+                "inlier_ratio": 0.4117647058823529,
+                "mean_similarity": 0.5021756887435913
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.6299933433532715,
+            "max_clip": 0.8134458065032959,
+            "max_dino": 0.6537045240402222,
+            "max_mutual_patch_geometry": 0.454652950167656,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.7752982378005981,
+                "dino": 0.5202189087867737,
+                "score": 0.454652950167656,
+                "matches": 10,
+                "inlier_ratio": 0.7,
+                "mean_similarity": 0.6418629884719849
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.8134458065032959,
+                "dino": 0.6537045240402222,
+                "score": 0.4257320516249713,
+                "matches": 17,
+                "inlier_ratio": 0.35294117647058826,
+                "mean_similarity": 0.6293430328369141
+              }
+            ]
+          }
+        },
+        "prediction": "FL04",
+        "correct": true,
+        "truth_score": 0.6299933433532715,
+        "strongest_wrong_score": 0.5447087377309798,
+        "truth_margin": 0.08528460562229168,
+        "ranking": [
+          "FL04",
+          "FL01",
+          "FL03"
+        ]
+      },
+      "after_only_baseline": {
+        "scores": {
+          "FL01": {
+            "score": 0.560346907377243,
+            "max_clip": 0.7493078112602234,
+            "max_dino": 0.5542715191841125,
+            "max_mutual_patch_geometry": 0.39880323410034174,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7493078112602234,
+                "dino": 0.5542715191841125,
+                "score": 0.39880323410034174,
+                "matches": 11,
+                "inlier_ratio": 0.45454545454545453,
+                "mean_similarity": 0.5982048511505127
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.6480311155319214,
+                "dino": 0.3864750862121582,
+                "score": 0.3227808363735675,
+                "matches": 11,
+                "inlier_ratio": 0.5454545454545454,
+                "mean_similarity": 0.4556905925273895
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.4661574557423591,
+            "max_clip": 0.7183024883270264,
+            "max_dino": 0.3253936767578125,
+            "max_mutual_patch_geometry": 0.333507914096117,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.7183024883270264,
+                "dino": 0.3086673617362976,
+                "score": 0.20407216250896454,
+                "matches": 8,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.4081443250179291
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.6571156978607178,
+                "dino": 0.3253936767578125,
+                "score": 0.333507914096117,
+                "matches": 11,
+                "inlier_ratio": 0.5454545454545454,
+                "mean_similarity": 0.4708347022533417
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.6617196786403656,
+            "max_clip": 0.7858424186706543,
+            "max_dino": 0.688941240310669,
+            "max_mutual_patch_geometry": 0.5360988050699235,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.7106741666793823,
+                "dino": 0.4749765396118164,
+                "score": 0.3395744586984316,
+                "matches": 9,
+                "inlier_ratio": 0.4444444444444444,
+                "mean_similarity": 0.62690669298172
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7858424186706543,
+                "dino": 0.688941240310669,
+                "score": 0.5360988050699235,
+                "matches": 20,
+                "inlier_ratio": 0.55,
+                "mean_similarity": 0.6917403936386108
+              }
+            ]
+          }
+        },
+        "prediction": "FL04",
+        "correct": true,
+        "truth_score": 0.6617196786403656,
+        "strongest_wrong_score": 0.560346907377243,
+        "truth_margin": 0.10137277126312261,
+        "ranking": [
+          "FL04",
+          "FL01",
+          "FL03"
+        ]
+      },
+      "ordered_bank_successor": {
+        "scores": {
+          "FL01": {
+            "score": 0.560346907377243,
+            "selected_phase": "after"
+          },
+          "FL03": {
+            "score": 0.5070599385044153,
+            "selected_phase": "start"
+          },
+          "FL04": {
+            "score": 0.6617196786403656,
+            "selected_phase": "after"
+          }
+        },
+        "prediction": "FL04",
+        "correct": true,
+        "truth_score": 0.6617196786403656,
+        "strongest_wrong_score": 0.560346907377243,
+        "truth_margin": 0.10137277126312261,
+        "ranking": [
+          "FL04",
+          "FL01",
+          "FL03"
+        ]
+      },
+      "portal_ownership_binding": null
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Post-hoc consumed Development mechanism evidence on three Panoramax active-view episodes about whether a fixed entrance-ray appearance score benefits from carrying the best candidate evidence across one verified action edge.",
+    "not_allowed": [
+      "fresh, blind, source-provider-disjoint, or broad generalization evidence",
+      "appearance retrieval being exact-instance, address, sign, facade, portal, or entrance ownership",
+      "pixel portal grounding or an appearance candidate authorizing the OSM entrance ray",
+      "entrance affordance, public or legal access, walkability, or collision-free traversability",
+      "waypoint accuracy, metric localization, arrival, HANDOFF_READY, product benefit, user benefit, deployment performance, or safety"
+    ]
+  }
+}

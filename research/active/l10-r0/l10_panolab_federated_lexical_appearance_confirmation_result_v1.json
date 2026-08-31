@@ -1,0 +1,1284 @@
+{
+  "schema": "blindassist-l10-panolab-federated-lexical-appearance-confirmation-result-v1",
+  "decision": "L10_PANOLAB_FEDERATED_NEW_CITY_LEXICAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+  "authority": "NEW_CITY_TARGET_WAY_ITEM_DISJOINT_OCR_UNSEEN_SAME_PROVIDER_DEVELOPMENT_ROUTING_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_federated_lexical_appearance_confirmation_protocol_v1.json",
+  "protocol_sha256": "ffe759c8645aad74a341d3a4aa6dbad84e7cc6a70f240fccc05e5f3a847ed41b",
+  "evaluator_sha256": "2fb9fcf9c0e9380766f2424c5fd28c44d4d8af282528f11672899a3da73cf9e3",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.4.6",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "confirmation_episodes": 2,
+    "query_frames": 6,
+    "target_roster": 8,
+    "lexical_correct_wrong_no_match_ambiguous": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "appearance_fallback_correct_wrong_unknown": [
+      2,
+      0,
+      0
+    ],
+    "combined_correct_wrong_unknown": [
+      2,
+      0,
+      0
+    ],
+    "combined_correct_delta_from_appearance": 0,
+    "wrong_target_lexical_trials": 14,
+    "wrong_target_lexical_matches": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 19.945214
+  },
+  "gate": {
+    "two_confirmation_sequences_evaluated": true,
+    "six_query_frames": true,
+    "minimum_one_unique_own_lexical_match": true,
+    "two_of_two_combined_correct": true,
+    "zero_combined_wrong": true,
+    "zero_combined_unknown": true,
+    "zero_wrong_target_lexical_matches": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "CF01",
+      "target_name": "Euromaster",
+      "target_way_id": 155636324,
+      "source_city": "Caen",
+      "frames": [
+        {
+          "frame_key": "CF01_prev",
+          "relation": "prev",
+          "panorama_item_id": "8c035830-5fd1-4402-b896-19e975900e48",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "8c035830-5fd1-4402-b896-19e975900e48",
+            "entrance_node_id": 4357261333,
+            "camera_lon_lat": [
+              -0.385198253,
+              49.184801135
+            ],
+            "entrance_lon_lat": [
+              -0.3851487,
+              49.1848021
+            ],
+            "initial_bearing_degrees": 88.293407,
+            "view_azimuth_degrees": 345.0,
+            "relative_viewer_yaw_degrees": 103.293407,
+            "raw_x_degrees": 283.293407,
+            "raw_x_pixels": 4532.694506,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "8c035830-5fd1-4402-b896-19e975900e48",
+              "view_azimuth_degrees": 345.0,
+              "camera_native_heading_degrees": 345.1819722487025,
+              "heading_circular_difference_degrees": 0.181972,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4532.694506,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "e60b68f5af35f07a69ba65f3fcc79cd5b44a0d63fdca24fed9b67301bc2fef06"
+          },
+          "ocr": {
+            "row_count": 4,
+            "seconds": 3.232908,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "TER",
+              "ascii_tokens": [
+                "ter"
+              ],
+              "score": 0.99990112,
+              "box_xyxy": [
+                0.0,
+                0.0,
+                469.0,
+                220.0
+              ]
+            },
+            {
+              "text": "RÉVISION",
+              "ascii_tokens": [
+                "revision"
+              ],
+              "score": 0.99963009,
+              "box_xyxy": [
+                575.0,
+                233.0,
+                996.0,
+                531.0
+              ]
+            },
+            {
+              "text": "EUROASTE",
+              "ascii_tokens": [
+                "euroaste"
+              ],
+              "score": 0.88301051,
+              "box_xyxy": [
+                80.0,
+                883.0,
+                117.0,
+                949.0
+              ]
+            },
+            {
+              "text": "mA/NeV",
+              "ascii_tokens": [
+                "ma",
+                "nev"
+              ],
+              "score": 0.3784579,
+              "box_xyxy": [
+                114.0,
+                915.0,
+                124.0,
+                947.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "CF01_anchor",
+          "relation": "anchor",
+          "panorama_item_id": "c5ede0c0-1137-4151-9a34-783dfde19f5e",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "c5ede0c0-1137-4151-9a34-783dfde19f5e",
+            "entrance_node_id": 4357261333,
+            "camera_lon_lat": [
+              -0.385206231,
+              49.184820845
+            ],
+            "entrance_lon_lat": [
+              -0.3851487,
+              49.1848021
+            ],
+            "initial_bearing_degrees": 116.495822,
+            "view_azimuth_degrees": 319.0,
+            "relative_viewer_yaw_degrees": 157.495822,
+            "raw_x_degrees": 337.495822,
+            "raw_x_pixels": 5399.933153,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "c5ede0c0-1137-4151-9a34-783dfde19f5e",
+              "view_azimuth_degrees": 319.0,
+              "camera_native_heading_degrees": 318.7088540749868,
+              "heading_circular_difference_degrees": 0.291146,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5399.933153,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "2dd6dc4fbe563be54ccd6a2af3a0d28f63d55c027e38d4721cad80aab84445f4"
+          },
+          "ocr": {
+            "row_count": 1,
+            "seconds": 2.037112,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "ASTER",
+              "ascii_tokens": [
+                "aster"
+              ],
+              "score": 0.99998152,
+              "box_xyxy": [
+                0.0,
+                3.0,
+                614.0,
+                423.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "CF01_next",
+          "relation": "next",
+          "panorama_item_id": "d949046c-52fd-4960-a7ec-343cc52f41e8",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "d949046c-52fd-4960-a7ec-343cc52f41e8",
+            "entrance_node_id": 4357261333,
+            "camera_lon_lat": [
+              -0.38524048,
+              49.18481423
+            ],
+            "entrance_lon_lat": [
+              -0.3851487,
+              49.1848021
+            ],
+            "initial_bearing_degrees": 101.431187,
+            "view_azimuth_degrees": 250.0,
+            "relative_viewer_yaw_degrees": 211.431187,
+            "raw_x_degrees": 31.431187,
+            "raw_x_pixels": 502.898998,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "d949046c-52fd-4960-a7ec-343cc52f41e8",
+              "view_azimuth_degrees": 250.0,
+              "camera_native_heading_degrees": 250.4188723462917,
+              "heading_circular_difference_degrees": 0.418872,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 502.898998,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "1af70ecc55e3bbd7689ce5f10de0c4f0779871bfca8f5509d64ea4fff4b8e689"
+          },
+          "ocr": {
+            "row_count": 5,
+            "seconds": 2.778448,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "UROMASTER",
+              "ascii_tokens": [
+                "uromaster"
+              ],
+              "score": 0.99995667,
+              "box_xyxy": [
+                0.0,
+                440.0,
+                896.0,
+                633.0
+              ]
+            },
+            {
+              "text": "REVISI",
+              "ascii_tokens": [
+                "revisi"
+              ],
+              "score": 0.93415308,
+              "box_xyxy": [
+                970.0,
+                606.0,
+                1130.0,
+                683.0
+              ]
+            },
+            {
+              "text": "VOUS ÊTES ENTRE",
+              "ascii_tokens": [
+                "vous",
+                "etes",
+                "entre"
+              ],
+              "score": 0.99838066,
+              "box_xyxy": [
+                604.0,
+                1239.0,
+                809.0,
+                1305.0
+              ]
+            },
+            {
+              "text": "DE BONNES MAINS",
+              "ascii_tokens": [
+                "de",
+                "bonnes",
+                "mains"
+              ],
+              "score": 0.97778291,
+              "box_xyxy": [
+                608.0,
+                1261.0,
+                816.0,
+                1326.0
+              ]
+            },
+            {
+              "text": "businesspro.euromaster.fr",
+              "ascii_tokens": [
+                "businesspro",
+                "euromaster",
+                "fr"
+              ],
+              "score": 0.99481845,
+              "box_xyxy": [
+                611.0,
+                1283.0,
+                817.0,
+                1348.0
+              ]
+            }
+          ]
+        }
+      ],
+      "token_banks": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": true,
+          "tier": "LONG_SHORT_EXACT_TOKEN_BANK",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [
+            "euromaster"
+          ],
+          "target_token_coverage": 1.0,
+          "witnesses": {
+            "euromaster": [
+              {
+                "phase": "next",
+                "panorama_item_id": "d949046c-52fd-4960-a7ec-343cc52f41e8",
+                "text": "businesspro.euromaster.fr",
+                "score": 0.99481845,
+                "box_xyxy": [
+                  611.0,
+                  1283.0,
+                  817.0,
+                  1348.0
+                ]
+              }
+            ]
+          },
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "UNIQUE_OWN_TARGET_MATCH",
+        "matched_targets": [
+          "CF01"
+        ],
+        "candidate": "CF01",
+        "wrong_target_matches": []
+      },
+      "appearance_fallback": {
+        "prior_route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "prior_candidate": "CF01"
+      },
+      "combined_router": {
+        "route": "TEMPORAL_EXACT_TOKEN_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "CF01",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "CF02",
+      "target_name": "Bibliothèque de Caen - Maladrerie",
+      "target_way_id": 155700593,
+      "source_city": "Caen",
+      "frames": [
+        {
+          "frame_key": "CF02_prev",
+          "relation": "prev",
+          "panorama_item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+            "entrance_node_id": 12591356245,
+            "camera_lon_lat": [
+              -0.400856043,
+              49.186589328
+            ],
+            "entrance_lon_lat": [
+              -0.4009299,
+              49.1866333
+            ],
+            "initial_bearing_degrees": 312.330646,
+            "view_azimuth_degrees": 276.0,
+            "relative_viewer_yaw_degrees": 36.330646,
+            "raw_x_degrees": 216.330646,
+            "raw_x_pixels": 3461.290339,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+              "view_azimuth_degrees": 276.0,
+              "camera_native_heading_degrees": 275.70801907238837,
+              "heading_circular_difference_degrees": 0.291981,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 3461.290339,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "0fd74fdb1dace61efdda09cb02e863c8e25324eba9fa201d91ad31454db28f0e"
+          },
+          "ocr": {
+            "row_count": 10,
+            "seconds": 3.06297,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "应国",
+              "ascii_tokens": [],
+              "score": 0.25392887,
+              "box_xyxy": [
+                0.0,
+                403.0,
+                39.0,
+                435.0
+              ]
+            },
+            {
+              "text": "Bibliothèque",
+              "ascii_tokens": [
+                "bibliotheque"
+              ],
+              "score": 0.98705143,
+              "box_xyxy": [
+                609.0,
+                416.0,
+                678.0,
+                438.0
+              ]
+            },
+            {
+              "text": "市面",
+              "ascii_tokens": [],
+              "score": 0.53551346,
+              "box_xyxy": [
+                0.0,
+                442.0,
+                41.0,
+                478.0
+              ]
+            },
+            {
+              "text": "Maladrerie",
+              "ascii_tokens": [
+                "maladrerie"
+              ],
+              "score": 0.99975669,
+              "box_xyxy": [
+                608.0,
+                440.0,
+                662.0,
+                461.0
+              ]
+            },
+            {
+              "text": "Caenlamer",
+              "ascii_tokens": [
+                "caenlamer"
+              ],
+              "score": 0.99209046,
+              "box_xyxy": [
+                639.0,
+                502.0,
+                697.0,
+                524.0
+              ]
+            },
+            {
+              "text": "635",
+              "ascii_tokens": [
+                "635"
+              ],
+              "score": 0.57438391,
+              "box_xyxy": [
+                596.0,
+                515.0,
+                615.0,
+                527.0
+              ]
+            },
+            {
+              "text": "Voit a",
+              "ascii_tokens": [
+                "voit",
+                "a"
+              ],
+              "score": 0.39323631,
+              "box_xyxy": [
+                639.0,
+                524.0,
+                692.0,
+                539.0
+              ]
+            },
+            {
+              "text": "KEMANDIE",
+              "ascii_tokens": [
+                "kemandie"
+              ],
+              "score": 0.63124639,
+              "box_xyxy": [
+                642.0,
+                516.0,
+                689.0,
+                532.0
+              ]
+            },
+            {
+              "text": "facile",
+              "ascii_tokens": [
+                "facile"
+              ],
+              "score": 0.99996501,
+              "box_xyxy": [
+                1255.0,
+                637.0,
+                1301.0,
+                666.0
+              ]
+            },
+            {
+              "text": "Lire",
+              "ascii_tokens": [
+                "lire"
+              ],
+              "score": 0.95907581,
+              "box_xyxy": [
+                1261.0,
+                655.0,
+                1295.0,
+                680.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "CF02_anchor",
+          "relation": "anchor",
+          "panorama_item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+            "entrance_node_id": 12591356245,
+            "camera_lon_lat": [
+              -0.400904668,
+              49.186592505
+            ],
+            "entrance_lon_lat": [
+              -0.4009299,
+              49.1866333
+            ],
+            "initial_bearing_degrees": 337.988756,
+            "view_azimuth_degrees": 285.0,
+            "relative_viewer_yaw_degrees": 52.988756,
+            "raw_x_degrees": 232.988756,
+            "raw_x_pixels": 3727.820099,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+              "view_azimuth_degrees": 285.0,
+              "camera_native_heading_degrees": 285.1931577709852,
+              "heading_circular_difference_degrees": 0.193158,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 3727.820099,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "cbb0f8ab0a7f2b425fd48518c67a9bee525a02cbf34e18884a75e5b6fcaa76af"
+          },
+          "ocr": {
+            "row_count": 5,
+            "seconds": 2.520837,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "Bibliothèque",
+              "ascii_tokens": [
+                "bibliotheque"
+              ],
+              "score": 0.99970198,
+              "box_xyxy": [
+                1107.0,
+                518.0,
+                1292.0,
+                580.0
+              ]
+            },
+            {
+              "text": "Maladrerie",
+              "ascii_tokens": [
+                "maladrerie"
+              ],
+              "score": 0.99999511,
+              "box_xyxy": [
+                1100.0,
+                556.0,
+                1253.0,
+                612.0
+              ]
+            },
+            {
+              "text": "0214372985",
+              "ascii_tokens": [
+                "0214372985"
+              ],
+              "score": 0.99968827,
+              "box_xyxy": [
+                1023.0,
+                659.0,
+                1117.0,
+                701.0
+              ]
+            },
+            {
+              "text": "Caenlamer",
+              "ascii_tokens": [
+                "caenlamer"
+              ],
+              "score": 0.99882698,
+              "box_xyxy": [
+                1196.0,
+                672.0,
+                1321.0,
+                724.0
+              ]
+            },
+            {
+              "text": "NORMANSIE",
+              "ascii_tokens": [
+                "normansie"
+              ],
+              "score": 0.84486568,
+              "box_xyxy": [
+                1205.0,
+                697.0,
+                1306.0,
+                733.0
+              ]
+            }
+          ]
+        },
+        {
+          "frame_key": "CF02_next",
+          "relation": "next",
+          "panorama_item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+            "entrance_node_id": 12591356245,
+            "camera_lon_lat": [
+              -0.400951872,
+              49.186600883
+            ],
+            "entrance_lon_lat": [
+              -0.4009299,
+              49.1866333
+            ],
+            "initial_bearing_degrees": 23.893498,
+            "view_azimuth_degrees": 292.0,
+            "relative_viewer_yaw_degrees": 91.893498,
+            "raw_x_degrees": 271.893498,
+            "raw_x_pixels": 4350.295975,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+              "view_azimuth_degrees": 292.0,
+              "camera_native_heading_degrees": 291.5288987688098,
+              "heading_circular_difference_degrees": 0.471101,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4350.295975,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "241ae8e07c3a5f4350a341db55ccfd11be156fff5d72293374cf12570f099b0d"
+          },
+          "ocr": {
+            "row_count": 8,
+            "seconds": 3.032841,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "Bibliothèque",
+              "ascii_tokens": [
+                "bibliotheque"
+              ],
+              "score": 0.9997465,
+              "box_xyxy": [
+                1035.0,
+                614.0,
+                1221.0,
+                699.0
+              ]
+            },
+            {
+              "text": "de Caen",
+              "ascii_tokens": [
+                "de",
+                "caen"
+              ],
+              "score": 0.99695021,
+              "box_xyxy": [
+                905.0,
+                631.0,
+                981.0,
+                665.0
+              ]
+            },
+            {
+              "text": "heque",
+              "ascii_tokens": [
+                "heque"
+              ],
+              "score": 0.96559966,
+              "box_xyxy": [
+                946.0,
+                627.0,
+                997.0,
+                653.0
+              ]
+            },
+            {
+              "text": "Maladrerie",
+              "ascii_tokens": [
+                "maladrerie"
+              ],
+              "score": 0.99999607,
+              "box_xyxy": [
+                1028.0,
+                653.0,
+                1194.0,
+                727.0
+              ]
+            },
+            {
+              "text": "0214372985",
+              "ascii_tokens": [
+                "0214372985"
+              ],
+              "score": 0.99999779,
+              "box_xyxy": [
+                904.0,
+                749.0,
+                1052.0,
+                801.0
+              ]
+            },
+            {
+              "text": "Caenlamer",
+              "ascii_tokens": [
+                "caenlamer"
+              ],
+              "score": 0.97191417,
+              "box_xyxy": [
+                1141.0,
+                777.0,
+                1233.0,
+                820.0
+              ]
+            },
+            {
+              "text": "NORMANDIE",
+              "ascii_tokens": [
+                "normandie"
+              ],
+              "score": 0.99034572,
+              "box_xyxy": [
+                1149.0,
+                799.0,
+                1224.0,
+                828.0
+              ]
+            },
+            {
+              "text": "COMMURASTÉ EREAINT",
+              "ascii_tokens": [
+                "commuraste",
+                "ereaint"
+              ],
+              "score": 0.79440552,
+              "box_xyxy": [
+                1139.0,
+                810.0,
+                1227.0,
+                837.0
+              ]
+            }
+          ]
+        }
+      ],
+      "token_banks": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "required_distinct_target_tokens": 3,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "required_distinct_target_tokens": 1,
+          "observed_target_tokens": [],
+          "target_token_coverage": 0.0,
+          "witnesses": {},
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": true,
+          "tier": "LONG_SHORT_EXACT_TOKEN_BANK",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "required_distinct_target_tokens": 2,
+          "observed_target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "target_token_coverage": 1.0,
+          "witnesses": {
+            "bibliotheque": [
+              {
+                "phase": "prev",
+                "panorama_item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+                "text": "Bibliothèque",
+                "score": 0.98705143,
+                "box_xyxy": [
+                  609.0,
+                  416.0,
+                  678.0,
+                  438.0
+                ]
+              },
+              {
+                "phase": "anchor",
+                "panorama_item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+                "text": "Bibliothèque",
+                "score": 0.99970198,
+                "box_xyxy": [
+                  1107.0,
+                  518.0,
+                  1292.0,
+                  580.0
+                ]
+              },
+              {
+                "phase": "next",
+                "panorama_item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+                "text": "Bibliothèque",
+                "score": 0.9997465,
+                "box_xyxy": [
+                  1035.0,
+                  614.0,
+                  1221.0,
+                  699.0
+                ]
+              }
+            ],
+            "caen": [
+              {
+                "phase": "next",
+                "panorama_item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+                "text": "de Caen",
+                "score": 0.99695021,
+                "box_xyxy": [
+                  905.0,
+                  631.0,
+                  981.0,
+                  665.0
+                ]
+              }
+            ],
+            "maladrerie": [
+              {
+                "phase": "prev",
+                "panorama_item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+                "text": "Maladrerie",
+                "score": 0.99975669,
+                "box_xyxy": [
+                  608.0,
+                  440.0,
+                  662.0,
+                  461.0
+                ]
+              },
+              {
+                "phase": "anchor",
+                "panorama_item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+                "text": "Maladrerie",
+                "score": 0.99999511,
+                "box_xyxy": [
+                  1100.0,
+                  556.0,
+                  1253.0,
+                  612.0
+                ]
+              },
+              {
+                "phase": "next",
+                "panorama_item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+                "text": "Maladrerie",
+                "score": 0.99999607,
+                "box_xyxy": [
+                  1028.0,
+                  653.0,
+                  1194.0,
+                  727.0
+                ]
+              }
+            ]
+          },
+          "phase_count": 3,
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "UNIQUE_OWN_TARGET_MATCH",
+        "matched_targets": [
+          "CF02"
+        ],
+        "candidate": "CF02",
+        "wrong_target_matches": []
+      },
+      "appearance_fallback": {
+        "prior_route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "prior_candidate": "CF02"
+      },
+      "combined_router": {
+        "route": "TEMPORAL_EXACT_TOKEN_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "CF02",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "OCR-unseen Development evidence about whether the already fixed exact-token temporal branch complements or safely defers to the sealed appearance branch on exactly two new-city, target-way/item-disjoint Caen targets in one same-provider eight-target closed roster.",
+    "not_allowed": [
+      "blind, independent, provider-disjoint, fully pixel-unseen, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "a same-name OCR token proving exact entity identity, sign-to-building association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, deployment performance, or safety"
+    ]
+  }
+}

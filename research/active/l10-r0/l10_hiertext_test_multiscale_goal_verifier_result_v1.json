@@ -1,0 +1,1251 @@
+{
+  "schema": "blindassist-l10-hiertext-test-multiscale-goal-verifier-result-v1",
+  "decision": "L10_HIERTEXT_TEST_MULTISCALE_GOAL_VERIFIER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "PREDECLARED_HIERTEXT_TEST_PIXEL_AND_EXHAUSTIVE_WORD_TRUTH_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_hiertext_test_multiscale_goal_verifier_protocol_v1.json",
+  "protocol_sha256": "a60643e68c90b2ab46d8d148855562605a6a49241895eec8bfbbd8b7f7dd1ed8",
+  "evaluator_sha256": "d1842c878bd294a26a91b2e048ed7a0f838f1cced98319ba7ca968f6c52a9102",
+  "ocr_cache": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\l10-hiertext-test-multiscale-goal-verifier-v1\\ocr_cache.json",
+  "ocr_cache_sha256": "3dba530fcd9bf394b63d2705cb63cda65e10fa837d5edec7cca976bbea69f3c9",
+  "metrics": {
+    "images": 30,
+    "positive_queries": 30,
+    "truth_absent_queries": 30,
+    "baseline_correct_wrong_unknown": [
+      9,
+      0,
+      21
+    ],
+    "successor_correct_wrong_unknown": [
+      13,
+      2,
+      15
+    ],
+    "correct_carrier_gain": 4,
+    "baseline_truth_absent_accepts": 0,
+    "successor_truth_absent_accepts": 0,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "thirty_gt_only_selected_test_images": true,
+    "minimum_three_correct_carrier_gain": true,
+    "no_wrong_carrier_regression": false,
+    "zero_exhaustive_truth_absent_accepts": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": false
+  },
+  "truth_absent_accepts": {
+    "baseline": [],
+    "successor": []
+  },
+  "rows": [
+    {
+      "image_id": "0023eb8b8417cc39",
+      "target": "annual",
+      "target_display": "ANNUAL",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        487.0,
+        396.0,
+        677.0,
+        447.0
+      ],
+      "absent_query": "cherry",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "WRONG_CARRIER",
+        "match": {
+          "box": [
+            [
+              484.0,
+              426.0
+            ],
+            [
+              679.3333129882812,
+              426.0
+            ],
+            [
+              679.3333129882812,
+              449.3333435058594
+            ],
+            [
+              484.0,
+              449.3333435058594
+            ]
+          ],
+          "text": "ANNUAE",
+          "token": "annuae",
+          "confidence": 0.92013,
+          "source": "bottom_left",
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "0047d62a6bfc0210",
+      "target": "cherry",
+      "target_display": "CHERRY",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        1113.0,
+        791.0,
+        1282.0,
+        824.0
+      ],
+      "absent_query": "kenyon",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1052.0,
+              776.0
+            ],
+            [
+              1341.0,
+              776.0
+            ],
+            [
+              1341.0,
+              844.0
+            ],
+            [
+              1052.0,
+              844.0
+            ]
+          ],
+          "text": "$CHERRY$",
+          "token": "cherry",
+          "confidence": 0.93778,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1049.3333740234375,
+              774.0
+            ],
+            [
+              1344.0,
+              774.0
+            ],
+            [
+              1344.0,
+              850.6666259765625
+            ],
+            [
+              1049.3333740234375,
+              850.6666259765625
+            ]
+          ],
+          "text": "CHERRY",
+          "token": "cherry",
+          "confidence": 0.99893,
+          "source": "bottom_right",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "00713a488c747f1e",
+      "target": "kenyon",
+      "target_display": "Kenyon",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        27.0,
+        336.0,
+        99.0,
+        364.0
+      ],
+      "absent_query": "jutawan",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              21.0,
+              330.0
+            ],
+            [
+              106.0,
+              330.0
+            ],
+            [
+              106.0,
+              365.0
+            ],
+            [
+              21.0,
+              365.0
+            ]
+          ],
+          "text": "Kenyon",
+          "token": "kenyon",
+          "confidence": 0.99991,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              21.33333396911621,
+              329.6666564941406
+            ],
+            [
+              104.66666412353516,
+              331.6666564941406
+            ],
+            [
+              104.0,
+              365.6666564941406
+            ],
+            [
+              20.66666603088379,
+              363.6666564941406
+            ]
+          ],
+          "text": "Kenyon",
+          "token": "kenyon",
+          "confidence": 0.99992,
+          "source": "bottom_left",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "007876e46f9d24d5",
+      "target": "jutawan",
+      "target_display": "JUTAWAN",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        161.0,
+        20.0,
+        316.0,
+        77.0
+      ],
+      "absent_query": "protecting",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              168.0,
+              14.0
+            ],
+            [
+              321.0,
+              53.0
+            ],
+            [
+              314.0,
+              80.0
+            ],
+            [
+              161.0,
+              40.0
+            ]
+          ],
+          "text": "JUTAWAN",
+          "token": "jutawan",
+          "confidence": 0.99989,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              168.0,
+              14.0
+            ],
+            [
+              321.0,
+              53.0
+            ],
+            [
+              314.0,
+              80.0
+            ],
+            [
+              161.0,
+              40.0
+            ]
+          ],
+          "text": "JUTAWAN",
+          "token": "jutawan",
+          "confidence": 0.99989,
+          "source": "full",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "00c7200b44cd93f7",
+      "target": "protecting",
+      "target_display": "Protecting",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        77.0,
+        926.0,
+        266.0,
+        970.0
+      ],
+      "absent_query": "mysterious",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "00ff45f69b5b5a97",
+      "target": "mysterious",
+      "target_display": "MYSTERIOUS",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        71.0,
+        327.0,
+        267.0,
+        352.0
+      ],
+      "absent_query": "hitachi",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              29.0,
+              323.0
+            ],
+            [
+              269.0,
+              323.0
+            ],
+            [
+              269.0,
+              355.0
+            ],
+            [
+              29.0,
+              355.0
+            ]
+          ],
+          "text": "A MYSTERIOUS",
+          "token": "amysterious",
+          "confidence": 0.97189,
+          "source": "full",
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "0100f53965a54ae3",
+      "target": "hitachi",
+      "target_display": "HITACHI",
+      "target_background_information_bits": 9.779172,
+      "truth_bbox": [
+        1287.0,
+        609.0,
+        1452.0,
+        678.0
+      ],
+      "absent_query": "discharge",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1278.0,
+              642.0
+            ],
+            [
+              1448.0,
+              598.0
+            ],
+            [
+              1459.0,
+              644.0
+            ],
+            [
+              1289.0,
+              688.0
+            ]
+          ],
+          "text": "HITACHI",
+          "token": "hitachi",
+          "confidence": 0.9997,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1281.333251953125,
+              643.3333129882812
+            ],
+            [
+              1444.666748046875,
+              602.0
+            ],
+            [
+              1455.333251953125,
+              642.6666870117188
+            ],
+            [
+              1292.0,
+              684.0
+            ]
+          ],
+          "text": "HITACHI",
+          "token": "hitachi",
+          "confidence": 0.99978,
+          "source": "bottom_right",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "015635e2ce83ceac",
+      "target": "discharge",
+      "target_display": "DISCHARGE",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        543.0,
+        243.0,
+        847.0,
+        380.0
+      ],
+      "absent_query": "social",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "WRONG_CARRIER",
+        "match": {
+          "box": [
+            [
+              731.0,
+              136.0
+            ],
+            [
+              1002.0,
+              58.0
+            ],
+            [
+              1024.0,
+              132.0
+            ],
+            [
+              752.0,
+              209.0
+            ]
+          ],
+          "text": "Discharg",
+          "token": "discharg",
+          "confidence": 0.99993,
+          "source": "full",
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "015b56e049a50b7e",
+      "target": "social",
+      "target_display": "social",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        266.0,
+        456.0,
+        448.0,
+        507.0
+      ],
+      "absent_query": "schmidt",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              255.0,
+              454.0
+            ],
+            [
+              458.0,
+              452.0
+            ],
+            [
+              459.0,
+              513.0
+            ],
+            [
+              255.0,
+              515.0
+            ]
+          ],
+          "text": "social",
+          "token": "social",
+          "confidence": 0.99993,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              255.0,
+              454.0
+            ],
+            [
+              458.0,
+              452.0
+            ],
+            [
+              459.0,
+              513.0
+            ],
+            [
+              255.0,
+              515.0
+            ]
+          ],
+          "text": "social",
+          "token": "social",
+          "confidence": 0.99993,
+          "source": "full",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "01ae27c8395ee80a",
+      "target": "schmidt",
+      "target_display": "Schmidt",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        833.0,
+        968.0,
+        1004.0,
+        1005.0
+      ],
+      "absent_query": "bluegrass",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "01b476728419d587",
+      "target": "bluegrass",
+      "target_display": "BLUEGRASS",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        70.0,
+        0.0,
+        214.0,
+        74.0
+      ],
+      "absent_query": "dradin",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              101.33333587646484,
+              0.0
+            ],
+            [
+              220.6666717529297,
+              33.33333206176758
+            ],
+            [
+              207.3333282470703,
+              82.0
+            ],
+            [
+              87.33333587646484,
+              47.33333206176758
+            ]
+          ],
+          "text": "LUEGRASS",
+          "token": "luegrass",
+          "confidence": 0.93464,
+          "source": "top_left",
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "01dddbff7ba0aa42",
+      "target": "dradin",
+      "target_display": "DRADIN,",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        140.0,
+        282.0,
+        265.0,
+        313.0
+      ],
+      "absent_query": "progrediuntur",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "02b30906c77c8908",
+      "target": "progrediuntur",
+      "target_display": "progrediuntur",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        418.0,
+        235.0,
+        574.0,
+        270.0
+      ],
+      "absent_query": "production",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "033e7f88d4d43c89",
+      "target": "production",
+      "target_display": "PRODUCTION",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        488.0,
+        105.0,
+        1343.0,
+        212.0
+      ],
+      "absent_query": "paying",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "03446c246fe21a3b",
+      "target": "paying",
+      "target_display": "paying",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        643.0,
+        629.0,
+        753.0,
+        675.0
+      ],
+      "absent_query": "christ",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "037765ca5e588c95",
+      "target": "christ",
+      "target_display": "CHRIST",
+      "target_background_information_bits": 9.364135,
+      "truth_bbox": [
+        846.0,
+        305.0,
+        983.0,
+        351.0
+      ],
+      "absent_query": "ontington",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "03fec5a6fe946c73",
+      "target": "ontington",
+      "target_display": "ONTINGTON",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        0.0,
+        560.0,
+        106.0,
+        679.0
+      ],
+      "absent_query": "daniels",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              0.0,
+              652.0
+            ],
+            [
+              84.0,
+              546.0
+            ],
+            [
+              118.66666412353516,
+              580.6666870117188
+            ],
+            [
+              12.666666984558105,
+              686.6666259765625
+            ]
+          ],
+          "text": "NTINGTON",
+          "token": "ntington",
+          "confidence": 0.99979,
+          "source": "bottom_left",
+          "edit_distance": 1
+        }
+      }
+    },
+    {
+      "image_id": "044e59eb12fa18d2",
+      "target": "daniels",
+      "target_display": "DANIEL'S.",
+      "target_background_information_bits": 8.55678,
+      "truth_bbox": [
+        90.0,
+        36.0,
+        174.0,
+        84.0
+      ],
+      "absent_query": "anglais",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "050447dc6fb45d63",
+      "target": "anglais",
+      "target_display": "anglais,",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        810.0,
+        939.0,
+        907.0,
+        967.0
+      ],
+      "absent_query": "forcadell",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "062194c5aaeee9b5",
+      "target": "forcadell",
+      "target_display": "FORCADELL",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        422.0,
+        150.0,
+        736.0,
+        225.0
+      ],
+      "absent_query": "irrevocably",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              415.0,
+              168.0
+            ],
+            [
+              732.0,
+              139.0
+            ],
+            [
+              738.0,
+              204.0
+            ],
+            [
+              421.0,
+              233.0
+            ]
+          ],
+          "text": "FORCADELL",
+          "token": "forcadell",
+          "confidence": 0.99968,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              415.0,
+              168.0
+            ],
+            [
+              732.0,
+              139.0
+            ],
+            [
+              738.0,
+              204.0
+            ],
+            [
+              421.0,
+              233.0
+            ]
+          ],
+          "text": "FORCADELL",
+          "token": "forcadell",
+          "confidence": 0.99968,
+          "source": "full",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "06359c7fa780780a",
+      "target": "irrevocably",
+      "target_display": "IRREVOCABLY",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        302.0,
+        674.0,
+        387.0,
+        716.0
+      ],
+      "absent_query": "knights",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "06379384fbd2540d",
+      "target": "knights",
+      "target_display": "KNIGHTS",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        1281.0,
+        836.0,
+        1425.0,
+        885.0
+      ],
+      "absent_query": "hastings",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "06462c28f78b6c05",
+      "target": "hastings",
+      "target_display": "HASTINGS",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        625.0,
+        1179.0,
+        820.0,
+        1245.0
+      ],
+      "absent_query": "lifetime",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "074f8b8401d1c784",
+      "target": "lifetime",
+      "target_display": "lifetime",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        584.0,
+        190.0,
+        767.0,
+        259.0
+      ],
+      "absent_query": "dwellingplace",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "076bcf2ceeadb169",
+      "target": "dwellingplace",
+      "target_display": "dwelling-place",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        882.0,
+        370.0,
+        1040.0,
+        400.0
+      ],
+      "absent_query": "spitalfields",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "078a3fa8f98f217c",
+      "target": "spitalfields",
+      "target_display": "SPITALFIELDS",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        1095.0,
+        335.0,
+        1297.0,
+        371.0
+      ],
+      "absent_query": "jeauie",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1092.0,
+              330.0
+            ],
+            [
+              1306.0,
+              343.0
+            ],
+            [
+              1304.0,
+              377.0
+            ],
+            [
+              1090.0,
+              364.0
+            ]
+          ],
+          "text": "SPITALFIELDS",
+          "token": "spitalfields",
+          "confidence": 0.9979,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1094.0,
+              330.6666564941406
+            ],
+            [
+              1306.0,
+              344.0
+            ],
+            [
+              1304.0,
+              378.0
+            ],
+            [
+              1092.0,
+              364.6666564941406
+            ]
+          ],
+          "text": "SPITALFIELDS",
+          "token": "spitalfields",
+          "confidence": 0.99853,
+          "source": "top_right",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "07aead8ae48f51c6",
+      "target": "jeauie",
+      "target_display": "Jeauie",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        81.0,
+        69.0,
+        140.0,
+        111.0
+      ],
+      "absent_query": "terror",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "UNKNOWN",
+        "match": null
+      }
+    },
+    {
+      "image_id": "07b879be6b3dc905",
+      "target": "terror",
+      "target_display": "Terror",
+      "target_background_information_bits": 10.364135,
+      "truth_bbox": [
+        331.0,
+        800.0,
+        468.0,
+        856.0
+      ],
+      "absent_query": "entuck",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              328.0,
+              800.0
+            ],
+            [
+              473.0,
+              804.0
+            ],
+            [
+              472.0,
+              865.0
+            ],
+            [
+              327.0,
+              861.0
+            ]
+          ],
+          "text": "Terror",
+          "token": "terror",
+          "confidence": 0.99989,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              325.3333435058594,
+              796.3333740234375
+            ],
+            [
+              474.6666564941406,
+              797.6666259765625
+            ],
+            [
+              474.0,
+              866.3333129882812
+            ],
+            [
+              324.6666564941406,
+              864.3333129882812
+            ]
+          ],
+          "text": "Terror",
+          "token": "terror",
+          "confidence": 0.99991,
+          "source": "bottom_left",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "08203a5f2a9e3c14",
+      "target": "entuck",
+      "target_display": "ENTUCK",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        1338.0,
+        979.0,
+        1546.0,
+        1047.0
+      ],
+      "absent_query": "nguyenvndinh",
+      "baseline": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1322.0,
+              990.0
+            ],
+            [
+              1553.0,
+              960.0
+            ],
+            [
+              1563.0,
+              1033.0
+            ],
+            [
+              1332.0,
+              1062.0
+            ]
+          ],
+          "text": "ENTUCK",
+          "token": "entuck",
+          "confidence": 0.99696,
+          "source": "full",
+          "edit_distance": 0
+        }
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              1324.0,
+              990.0
+            ],
+            [
+              1554.666748046875,
+              962.6666259765625
+            ],
+            [
+              1563.333251953125,
+              1034.0
+            ],
+            [
+              1332.666748046875,
+              1062.0
+            ]
+          ],
+          "text": "ENTUCK",
+          "token": "entuck",
+          "confidence": 0.99742,
+          "source": "bottom_right",
+          "edit_distance": 0
+        }
+      }
+    },
+    {
+      "image_id": "0827819eec9a792f",
+      "target": "nguyenvndinh",
+      "target_display": "NGUYEN-VĂN-DINH",
+      "target_background_information_bits": 11.364135,
+      "truth_bbox": [
+        487.0,
+        43.0,
+        792.0,
+        147.0
+      ],
+      "absent_query": "annual",
+      "baseline": {
+        "state": "UNKNOWN",
+        "match": null
+      },
+      "successor": {
+        "state": "CORRECT",
+        "match": {
+          "box": [
+            [
+              474.0,
+              96.0
+            ],
+            [
+              790.0,
+              31.0
+            ],
+            [
+              802.0,
+              88.0
+            ],
+            [
+              485.0,
+              153.0
+            ]
+          ],
+          "text": "NGUYEN-VAN-DINH",
+          "token": "nguyenvandinh",
+          "confidence": 0.98529,
+          "source": "full",
+          "edit_distance": 1
+        }
+      }
+    }
+  ],
+  "claim_boundary": "Previously unused HierText test pixels plus official exhaustive word truth support a source- and domain-disjoint static OCR observation Development result only. A correctly localized target word is not an exact real-world referent, facade, sign, portal, entrance ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety claim. UNKNOWN is neither negative nor known-safe. The selected test cohort is Development evidence and is consumed after this run; no conformal, FDR, or open-world guarantee is claimed."
+}

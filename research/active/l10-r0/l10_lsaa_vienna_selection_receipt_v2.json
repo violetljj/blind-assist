@@ -1,0 +1,37 @@
+{
+  "schema": "blindassist-l10-lsaa-vienna-selection-receipt-v1",
+  "inputs": {
+    "properties_23k": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\lsaa-l10-source-screen\\Properties23K.csv",
+      "sha256": "0d008a4c525c8bb98f69fcce533bea888246b1cac581e464a781ba5b30a5d24b",
+      "bytes": 9179969
+    },
+    "door_filtered": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\lsaa-l10-source-screen\\door_filtered.csv",
+      "sha256": "674bd73c176713d513d206522ee7cff8b3299e986aafaf35594ed2d5352db5ca",
+      "bytes": 5025871
+    },
+    "door_detection": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\lsaa-l10-source-screen\\door_detection.json",
+      "sha256": "6847c0bb3f2fecb066fc10493d9fd4d0f97c2272ef8a90c8d791199ebebc1c61",
+      "bytes": 10155902
+    }
+  },
+  "overpass_query_sha256": "6898b9d63e732c122063d87fba4fad2f8a1725d2c4a0c50aa000d31fa27f5446",
+  "counts": {
+    "door_rows": 17377,
+    "facade_rows": 23110,
+    "metadata_quality_candidates": 199,
+    "overpass_returned_ways": 157,
+    "numeric_address_candidates": 82,
+    "development_rows": 24,
+    "confirmation_holdout_rows": 24
+  },
+  "selection_pixel_access_count": 0,
+  "selected_facade_overlap_between_splits": [],
+  "selected_building_overlap_between_splits": [
+    "way151671312",
+    "way174276353",
+    "way183743921"
+  ]
+}

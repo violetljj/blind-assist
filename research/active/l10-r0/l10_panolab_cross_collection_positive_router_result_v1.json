@@ -1,0 +1,997 @@
+{
+  "schema": "blindassist-l10-panolab-cross-collection-positive-router-result-v1",
+  "decision": "L10_PANOLAB_CROSS_COLLECTION_FRESH_POSITIVE_ROUTER_DEVELOPMENT_GATE_NOT_MET",
+  "authority": "FRESH_POSITIVE_TARGET_WAY_ITEM_COLLECTION_DISJOINT_SAME_PROVIDER_DEVELOPMENT_CANDIDATE_ROUTING_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_cross_collection_positive_router_protocol_v1.json",
+  "protocol_sha256": "170c39092e36154759d6eae601623fd725fba02de39eb5c24e393f113791c01b",
+  "evaluator_sha256": "659887fdf3c6fecdbb12a5b8ad0ec0fa7c8097d93233f55fcf5f9ab61b073120",
+  "execution_backend": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "named-poi-clip-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "named-poi-clip-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.24598810001043603
+        ],
+        "median_seconds": 0.24598810001043603
+      },
+      {
+        "backend": "named-poi-clip-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.6548344999901019
+        ],
+        "median_seconds": 0.6548344999901019
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "backend_receipt_sha256": "d5ed5f6507203887a13b88480046e04e0f82687e9c23ef17740384d16db7bf8d",
+  "frozen_thresholds": {
+    "calibration_source": "Minimum correct score and truth margin across the four consumed positive rows in l10_panolab_component_router_result_v1.json.",
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "rule": "Emit a SEARCH_PRIORITY_ONLY candidate only when the unique top-1 score and its top-1-versus-runner-up margin both meet the frozen thresholds; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "no_adaptation": "No score, margin, feature weight, crop, model, roster, image, truth label, or threshold may be changed after either fresh result is observed."
+  },
+  "reference_metadata": [
+    {
+      "target_id": "FL01",
+      "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "source": "reference_portal",
+      "collection": "1c2bd824-2a0e-4466-812f-f139acd2a369",
+      "query_collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "FL01",
+      "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "source": "reference_portal",
+      "collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "query_collection": "94031adf-f962-4005-800b-268e0f92bf17",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL02",
+      "item_id": "e38bcf87-3e7f-46a6-97f6-611481a3c9d0",
+      "source": "viviani_unseen",
+      "collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "query_collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL02",
+      "item_id": "51ad93ee-e6f6-4c06-a346-0c08b299d101",
+      "source": "viviani_unseen",
+      "collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "query_collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL03",
+      "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+      "source": "node_credential",
+      "collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "query_collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL03",
+      "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+      "source": "node_credential",
+      "collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "query_collection": "4a4f09cc-9fc0-4885-9823-800dd37af808",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL04",
+      "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+      "source": "node_credential",
+      "collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "query_collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "collection_disjoint": false
+    },
+    {
+      "target_id": "FL04",
+      "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+      "source": "node_credential",
+      "collection": "4f0a51eb-f69d-45ef-955a-9a7c163478bd",
+      "query_collection": "4e82db63-ea1d-4788-8857-34650ffeda21",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "FP01",
+      "item_id": "9b23a59f-2824-4df5-a925-d551d342f1b5",
+      "source": "cross_collection_positive",
+      "collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "query_collection": "90a28bae-899b-40db-b297-ee34aff10553",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "FP01",
+      "item_id": "6dcb90d2-2bf7-4583-a7b4-090615ab4503",
+      "source": "cross_collection_positive",
+      "collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "query_collection": "90a28bae-899b-40db-b297-ee34aff10553",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "FP02",
+      "item_id": "936f2df9-e0ba-4b1c-af72-e6f27abef7e6",
+      "source": "cross_collection_positive",
+      "collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "query_collection": "e63465cb-21cb-4270-ae2b-6ecd88910b64",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "FP02",
+      "item_id": "89110159-3b29-438f-88ea-a404881ea56f",
+      "source": "cross_collection_positive",
+      "collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "query_collection": "e63465cb-21cb-4270-ae2b-6ecd88910b64",
+      "collection_disjoint": true
+    }
+  ],
+  "crop_receipts": [
+    {
+      "key": "FL01_ref1",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\bf9d95fe-fc94-4ad9-965d-a372f0581f90.jpg",
+      "source_sha256": "96d6c554c8b7aed9041009907c39dd0f92418a164237b860e7a6ce4a1d28aaa8",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL01_ref1.jpg",
+      "crop_sha256": "e5688a55dd43651f15111c3898382a027e39de67c609294f5c057a19c5453da7",
+      "crop_bytes": 827032,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1896.774423,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9d6195ccf6b6c148c8e6c9b5332e32433c05be58b80b1ddbcaa9e23cb3d19ec0"
+      }
+    },
+    {
+      "key": "FL01_ref2",
+      "target_id": "FL01",
+      "role": "reference",
+      "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-reference-portal-v1\\images\\c6fd46d9-9513-407b-adc8-419150f56f15.jpg",
+      "source_sha256": "a30856bddafeed48b32d62271c7e8a3aa9eb5f2fff9bfda8c843b3f0ca819ead",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL01_ref2.jpg",
+      "crop_sha256": "2be203cbbd71b4fbe2614bbd87e5a4de7a88a9f4696f9fbaa2741fda10dc2062",
+      "crop_bytes": 1003373,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 762.455694,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "758303b82d4eba33794ca24715e11e1c3ee034c3b82e913605e5f77115815d37"
+      }
+    },
+    {
+      "key": "FL02_ref1",
+      "target_id": "FL02",
+      "role": "reference",
+      "item_id": "e38bcf87-3e7f-46a6-97f6-611481a3c9d0",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-viviani-reference-v1\\images\\e38bcf87-3e7f-46a6-97f6-611481a3c9d0.jpg",
+      "source_sha256": "14cbcaff08a57aa9c94f80580731d8971ba3f20c36b260e41a8c41cd29c04d18",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL02_ref1.jpg",
+      "crop_sha256": "fb522f2c314b1cd01f867338264613f5e34405dee3e3036bbf5f3439b5d535c4",
+      "crop_bytes": 1085914,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4429.649926,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4856c14802d73c1524dcc90af740b85d90ee60f4c7aed2ce217dbae716144497"
+      }
+    },
+    {
+      "key": "FL02_ref2",
+      "target_id": "FL02",
+      "role": "reference",
+      "item_id": "51ad93ee-e6f6-4c06-a346-0c08b299d101",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-viviani-reference-v1\\images\\51ad93ee-e6f6-4c06-a346-0c08b299d101.jpg",
+      "source_sha256": "c2c4e50c64489258bc7d056a55b562b6f4ddf9b97851adc365507ab076b2c7e2",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL02_ref2.jpg",
+      "crop_sha256": "e8788732738155fd1eebf132cd04d4c098e3d8c899ecd7bae78ce9a2902cdc46",
+      "crop_bytes": 1196225,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4790.294361,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "ffb9d5427b7720606907c0c6e8c8c55c42fcaa9fcb08b13230f0cc4df50f1799"
+      }
+    },
+    {
+      "key": "FL03_ref1",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\960ce887-e0c7-48a5-b03c-f5770811a39b.jpg",
+      "source_sha256": "f0eef48a40dd93d6a19ec3269a97c821795b1bcd5188b61fa8cef7d7a5b3894d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL03_ref1.jpg",
+      "crop_sha256": "a4a33354f4218d558b90f8d32253673d7304e5ccb6933b9041370590e27ce864",
+      "crop_bytes": 662891,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5008.187759,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "55a43be8b468d370b24683f9b46cee8d02395c218f203abe797e0d5c1ff07b5f"
+      }
+    },
+    {
+      "key": "FL03_ref2",
+      "target_id": "FL03",
+      "role": "reference",
+      "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\8731f6bb-1881-45b2-88e3-dd684c768401.jpg",
+      "source_sha256": "4a57d12a8546beea874ac0e70220e7b32ee252babec031d1ddb67f5a6652a5bb",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL03_ref2.jpg",
+      "crop_sha256": "6d047a993677ef7409ab33eac4396cf69540a798f36623d6d9fa6d7b177b1604",
+      "crop_bytes": 973534,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5633.571831,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "463f099dfcf7b2519de49efc08ff046520e2ce1e7a39e0d8cc2273a975906811"
+      }
+    },
+    {
+      "key": "FL04_ref1",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\e713c126-0aaf-4a06-ba0e-ec1eb51b742b.jpg",
+      "source_sha256": "3b9bcd072e27a46b1dcc42d4e256a3bd5101546008d43f02ceb0e54b0828ec1e",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL04_ref1.jpg",
+      "crop_sha256": "3f374abd0c92cb2955368ea0fa965b3b1ba6f9b3972a9b51c2917305ba3dcec6",
+      "crop_bytes": 398775,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1367.765461,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "e8595caa7688ed861ec54e71f7bedbc4546454ba9c81de17b21c260df8487020"
+      }
+    },
+    {
+      "key": "FL04_ref2",
+      "target_id": "FL04",
+      "role": "reference",
+      "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-node-credential-v1\\images\\545723dc-96fa-4373-bf3b-c3761e6a2402.jpg",
+      "source_sha256": "7dd91c80ec5a9989f7934b2391240be07d10938dfbb945e7f1bd21f3c1571f3d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FL04_ref2.jpg",
+      "crop_sha256": "fc192f30c826d109ca39b00f9ae8d2365cf9d8eefe5600e19b9959ded0b6534d",
+      "crop_bytes": 835075,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 2723.694806,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9bb4791201888e7c10f0b68010c2e1ffa1bbbcd2c9461e1f4b7f79d55f3fb73e"
+      }
+    },
+    {
+      "key": "FP01_query",
+      "target_id": "FP01",
+      "role": "query",
+      "item_id": "48fa4a33-af91-4f8d-94ef-efb6eceff9b9",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\48fa4a33-af91-4f8d-94ef-efb6eceff9b9.jpg",
+      "source_sha256": "a7221bfe6554b5ef2279dae454d72cd573888477f0c71054408ad16173ec8e5f",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP01_query.jpg",
+      "crop_sha256": "972d996748349dffdec977cae885de0b8dfff945d977a358fbbb02efbf258306",
+      "crop_bytes": 948355,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 1384.36135,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "65578787ea02d848fae047b02c13aa34c4a31c50425ded19cdc7f43479183ac1"
+      }
+    },
+    {
+      "key": "FP01_ref1",
+      "target_id": "FP01",
+      "role": "reference",
+      "item_id": "9b23a59f-2824-4df5-a925-d551d342f1b5",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\9b23a59f-2824-4df5-a925-d551d342f1b5.jpg",
+      "source_sha256": "bac1c7078140ceb22d3f60c374c1afd9c5659c63e59511785521d25c3668f2ec",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP01_ref1.jpg",
+      "crop_sha256": "e9efb997ad79b779ae8c4d6aa3dde234057575a9244d7c23441b0fcd79323bda",
+      "crop_bytes": 465369,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4095.830161,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "219dac5bddf98321be3d379a7e8897bcc412fed952f88a20f50ac5ad60321fcd"
+      }
+    },
+    {
+      "key": "FP01_ref2",
+      "target_id": "FP01",
+      "role": "reference",
+      "item_id": "6dcb90d2-2bf7-4583-a7b4-090615ab4503",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\6dcb90d2-2bf7-4583-a7b4-090615ab4503.jpg",
+      "source_sha256": "52fa7a4bfed12d6fefbd19e9535e6a47c085f7b634a7e7d1706b7a6eb9465217",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP01_ref2.jpg",
+      "crop_sha256": "7c5f59c1c52c9dd65deaf64e04a2c9cd9e944545bb98e5f4238775acfdc61be1",
+      "crop_bytes": 465744,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4439.395199,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "9dbbb493c08a07b0b8e98ea6286cca2afc8df1c2924e41f9ffdf4c3c058af7ba"
+      }
+    },
+    {
+      "key": "FP02_query",
+      "target_id": "FP02",
+      "role": "query",
+      "item_id": "ee86afbe-9827-46dd-8b79-41bbec35a8a0",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\ee86afbe-9827-46dd-8b79-41bbec35a8a0.jpg",
+      "source_sha256": "77a2b4df94561eac4515cc716d18eedcd8e9395c516689aa5bfc53eb068fb510",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP02_query.jpg",
+      "crop_sha256": "3784e8741c7270bb48561cd55b94e60b94d6b7a2848f8d83e823aece8b4ee3e0",
+      "crop_bytes": 829680,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3308.52521,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4d91d043592cb1956382c3e02ff02a99596a2dfc827ac7369ea9c52e98ffbe7f"
+      }
+    },
+    {
+      "key": "FP02_ref1",
+      "target_id": "FP02",
+      "role": "reference",
+      "item_id": "936f2df9-e0ba-4b1c-af72-e6f27abef7e6",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\936f2df9-e0ba-4b1c-af72-e6f27abef7e6.jpg",
+      "source_sha256": "f29bab7690e8018600c6b39490193e6f6c774661b290f8e816c126ee8f0984a4",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP02_ref1.jpg",
+      "crop_sha256": "39d1aed17d67db8b04b942ff205419f608af832e7aa87199354c10e1597b1fa9",
+      "crop_bytes": 651192,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4590.422815,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "306717b2532e122012a4c58953f9eb33a3ef7bd06a107e2979f7b0e7a9b68e83"
+      }
+    },
+    {
+      "key": "FP02_ref2",
+      "target_id": "FP02",
+      "role": "reference",
+      "item_id": "89110159-3b29-438f-88ea-a404881ea56f",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-cross-collection-positive-v1\\images\\89110159-3b29-438f-88ea-a404881ea56f.jpg",
+      "source_sha256": "80dcbbc77522e4d11ef50693261511dddce84599b0efd46ed109f5716ed8c09d",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-cross-collection-positive-router-v1\\crops\\FP02_ref2.jpg",
+      "crop_sha256": "4887c17969d98d3006310d473e754cf66e935d5cc1882f195d353fcd63e2c1ea",
+      "crop_bytes": 773994,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5401.20572,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "967658757df746998915a8e5a58d84bcff677deb5ca7844e5c8fc57a3ccf7540"
+      }
+    }
+  ],
+  "metrics": {
+    "fresh_positive_episodes": 2,
+    "fresh_positive_cities": 1,
+    "fresh_positive_reference_query_collections": 4,
+    "combined_target_roster": 6,
+    "combined_reference_views": 12,
+    "fresh_positive_reference_views": 4,
+    "fresh_positive_collection_disjoint_reference_views": 4,
+    "fresh_positive_exact_item_overlap_with_prior_router": 0,
+    "accepted_correct_wrong_unknown": [
+      1,
+      0,
+      1
+    ],
+    "positive_coverage": 0.5,
+    "wrong_goal_trials": 10,
+    "wrong_goal_search_priority_candidates": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "model_seconds": 1.6642639999627136
+  },
+  "gate": {
+    "two_valid_fresh_positive_truth_rows": true,
+    "four_cross_collection_reference_views": true,
+    "zero_prior_item_overlap": true,
+    "two_of_two_accepted_correct": false,
+    "zero_accepted_wrong": true,
+    "zero_wrong_goal_search_priority_candidates": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "FP01",
+      "target_name": "Rumillat",
+      "target_way_id": 305144115,
+      "reference_collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "query_collection": "90a28bae-899b-40db-b297-ee34aff10553",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "appearance": {
+        "scores": {
+          "FL01": {
+            "score": 0.5592129415273666,
+            "max_clip": 0.7118032574653625,
+            "max_dino": 0.5349394083023071,
+            "max_mutual_patch_geometry": 0.44086737334728243,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7118032574653625,
+                "dino": 0.498213529586792,
+                "score": 0.2275879432757696,
+                "matches": 7,
+                "inlier_ratio": 0.42857142857142855,
+                "mean_similarity": 0.5462110638618469
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.7075783014297485,
+                "dino": 0.5349394083023071,
+                "score": 0.44086737334728243,
+                "matches": 20,
+                "inlier_ratio": 0.55,
+                "mean_similarity": 0.5688611268997192
+              }
+            ]
+          },
+          "FL02": {
+            "score": 0.5465681056181589,
+            "max_clip": 0.7575751543045044,
+            "max_dino": 0.5126655101776123,
+            "max_mutual_patch_geometry": 0.3831260601679484,
+            "references": [
+              {
+                "reference": "FL02_ref1",
+                "clip": 0.7575751543045044,
+                "dino": 0.5126655101776123,
+                "score": 0.3831260601679484,
+                "matches": 10,
+                "inlier_ratio": 0.6,
+                "mean_similarity": 0.5746890902519226
+              },
+              {
+                "reference": "FL02_ref2",
+                "clip": 0.7563998699188232,
+                "dino": 0.5024226903915405,
+                "score": 0.3765542166573661,
+                "matches": 14,
+                "inlier_ratio": 0.42857142857142855,
+                "mean_similarity": 0.5271759033203125
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.4227254137396812,
+            "max_clip": 0.6703717708587646,
+            "max_dino": 0.28258299827575684,
+            "max_mutual_patch_geometry": 0.293623860925436,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.6703717708587646,
+                "dino": 0.22386027872562408,
+                "score": 0.17680776367584863,
+                "matches": 7,
+                "inlier_ratio": 0.5714285714285714,
+                "mean_similarity": 0.38576239347457886
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.5761720538139343,
+                "dino": 0.28258299827575684,
+                "score": 0.293623860925436,
+                "matches": 12,
+                "inlier_ratio": 0.4166666666666667,
+                "mean_similarity": 0.4145278036594391
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.4819995194673538,
+            "max_clip": 0.7118414640426636,
+            "max_dino": 0.4065619707107544,
+            "max_mutual_patch_geometry": 0.32803628593683243,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.6966312527656555,
+                "dino": 0.21749436855316162,
+                "score": 0.19758426894744238,
+                "matches": 7,
+                "inlier_ratio": 0.42857142857142855,
+                "mean_similarity": 0.4742022454738617
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7118414640426636,
+                "dino": 0.4065619707107544,
+                "score": 0.32803628593683243,
+                "matches": 10,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.5248580574989319
+              }
+            ]
+          },
+          "FP01": {
+            "score": 0.4373798062403997,
+            "max_clip": 0.672571063041687,
+            "max_dino": 0.3015395998954773,
+            "max_mutual_patch_geometry": 0.31648758550484973,
+            "references": [
+              {
+                "reference": "FP01_ref1",
+                "clip": 0.6504423022270203,
+                "dino": 0.2889034152030945,
+                "score": 0.22150802115599316,
+                "matches": 7,
+                "inlier_ratio": 0.42857142857142855,
+                "mean_similarity": 0.5316192507743835
+              },
+              {
+                "reference": "FP01_ref2",
+                "clip": 0.672571063041687,
+                "dino": 0.3015395998954773,
+                "score": 0.31648758550484973,
+                "matches": 10,
+                "inlier_ratio": 0.4,
+                "mean_similarity": 0.5425501465797424
+              }
+            ]
+          },
+          "FP02": {
+            "score": 0.5088799405556459,
+            "max_clip": 0.7343642711639404,
+            "max_dino": 0.44157952070236206,
+            "max_mutual_patch_geometry": 0.35364391368169057,
+            "references": [
+              {
+                "reference": "FP02_ref1",
+                "clip": 0.7343642711639404,
+                "dino": 0.39510440826416016,
+                "score": 0.35364391368169057,
+                "matches": 13,
+                "inlier_ratio": 0.46153846153846156,
+                "mean_similarity": 0.48393377661705017
+              },
+              {
+                "reference": "FP02_ref2",
+                "clip": 0.7182214260101318,
+                "dino": 0.44157952070236206,
+                "score": 0.2943919946750005,
+                "matches": 11,
+                "inlier_ratio": 0.2727272727272727,
+                "mean_similarity": 0.5046719908714294
+              }
+            ]
+          }
+        },
+        "prediction": "FL01",
+        "correct": false,
+        "truth_score": 0.4373798062403997,
+        "strongest_wrong_score": 0.5592129415273666,
+        "truth_margin": -0.12183313528696688,
+        "ranking": [
+          "FL01",
+          "FL02",
+          "FP02",
+          "FL04",
+          "FP01",
+          "FL03"
+        ]
+      },
+      "acceptance": {
+        "score_gate": false,
+        "margin_gate": false,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate": null,
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "score": 0.5592129415273666
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "score": 0.5465681056181589
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "score": 0.4227254137396812
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "score": 0.4819995194673538
+        },
+        {
+          "wrong_target": "FP02",
+          "search_priority_candidate": false,
+          "score": 0.5088799405556459
+        }
+      ]
+    },
+    {
+      "episode_id": "FP02",
+      "target_name": "Halle Rebatet",
+      "target_way_id": 378533157,
+      "reference_collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "query_collection": "e63465cb-21cb-4270-ae2b-6ecd88910b64",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "appearance": {
+        "scores": {
+          "FL01": {
+            "score": 0.6002651145060857,
+            "max_clip": 0.7488133907318115,
+            "max_dino": 0.5434007048606873,
+            "max_mutual_patch_geometry": 0.5058256288369496,
+            "references": [
+              {
+                "reference": "FL01_ref1",
+                "clip": 0.7488133907318115,
+                "dino": 0.5247709155082703,
+                "score": 0.4050009548664093,
+                "matches": 14,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.5400012731552124
+              },
+              {
+                "reference": "FL01_ref2",
+                "clip": 0.7260743379592896,
+                "dino": 0.5434007048606873,
+                "score": 0.5058256288369496,
+                "matches": 21,
+                "inlier_ratio": 0.6666666666666666,
+                "mean_similarity": 0.6069907546043396
+              }
+            ]
+          },
+          "FL02": {
+            "score": 0.6578915699532157,
+            "max_clip": 0.7960087060928345,
+            "max_dino": 0.7045650482177734,
+            "max_mutual_patch_geometry": 0.5078681519157008,
+            "references": [
+              {
+                "reference": "FL02_ref1",
+                "clip": 0.785638153553009,
+                "dino": 0.7045650482177734,
+                "score": 0.5078681519157008,
+                "matches": 19,
+                "inlier_ratio": 0.47368421052631576,
+                "mean_similarity": 0.6892496347427368
+              },
+              {
+                "reference": "FL02_ref2",
+                "clip": 0.7960087060928345,
+                "dino": 0.5830867290496826,
+                "score": 0.3906066715717315,
+                "matches": 9,
+                "inlier_ratio": 0.6666666666666666,
+                "mean_similarity": 0.6249706745147705
+              }
+            ]
+          },
+          "FL03": {
+            "score": 0.6327215897185462,
+            "max_clip": 0.794396162033081,
+            "max_dino": 0.6693689227104187,
+            "max_mutual_patch_geometry": 0.4683517558234079,
+            "references": [
+              {
+                "reference": "FL03_ref1",
+                "clip": 0.794396162033081,
+                "dino": 0.5979576110839844,
+                "score": 0.38083057602246606,
+                "matches": 9,
+                "inlier_ratio": 0.5555555555555556,
+                "mean_similarity": 0.6528524160385132
+              },
+              {
+                "reference": "FL03_ref2",
+                "clip": 0.7323374152183533,
+                "dino": 0.6693689227104187,
+                "score": 0.4683517558234079,
+                "matches": 14,
+                "inlier_ratio": 0.42857142857142855,
+                "mean_similarity": 0.655692458152771
+              }
+            ]
+          },
+          "FL04": {
+            "score": 0.6122842758893967,
+            "max_clip": 0.7396429181098938,
+            "max_dino": 0.6060694456100464,
+            "max_mutual_patch_geometry": 0.5047297328710556,
+            "references": [
+              {
+                "reference": "FL04_ref1",
+                "clip": 0.7125965356826782,
+                "dino": 0.4116574823856354,
+                "score": 0.352756530046463,
+                "matches": 10,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.5644104480743408
+              },
+              {
+                "reference": "FL04_ref2",
+                "clip": 0.7396429181098938,
+                "dino": 0.6060694456100464,
+                "score": 0.5047297328710556,
+                "matches": 14,
+                "inlier_ratio": 0.5,
+                "mean_similarity": 0.6729729771614075
+              }
+            ]
+          },
+          "FP01": {
+            "score": 0.66656687160333,
+            "max_clip": 0.7974948287010193,
+            "max_dino": 0.6232154369354248,
+            "max_mutual_patch_geometry": 0.5790995558102925,
+            "references": [
+              {
+                "reference": "FP01_ref1",
+                "clip": 0.7974948287010193,
+                "dino": 0.6232154369354248,
+                "score": 0.5790995558102925,
+                "matches": 15,
+                "inlier_ratio": 0.6666666666666666,
+                "mean_similarity": 0.6949194669723511
+              },
+              {
+                "reference": "FP01_ref2",
+                "clip": 0.7881402969360352,
+                "dino": 0.5690385103225708,
+                "score": 0.4862377842267354,
+                "matches": 10,
+                "inlier_ratio": 0.7,
+                "mean_similarity": 0.6864533424377441
+              }
+            ]
+          },
+          "FP02": {
+            "score": 0.7103447003023965,
+            "max_clip": 0.8459175825119019,
+            "max_dino": 0.7185366153717041,
+            "max_mutual_patch_geometry": 0.5865984814507621,
+            "references": [
+              {
+                "reference": "FP02_ref1",
+                "clip": 0.8459175825119019,
+                "dino": 0.7092269659042358,
+                "score": 0.5865984814507621,
+                "matches": 21,
+                "inlier_ratio": 0.6190476190476191,
+                "mean_similarity": 0.7246216535568237
+              },
+              {
+                "reference": "FP02_ref2",
+                "clip": 0.8190113306045532,
+                "dino": 0.7185366153717041,
+                "score": 0.4866548299789428,
+                "matches": 15,
+                "inlier_ratio": 0.4,
+                "mean_similarity": 0.6952211856842041
+              }
+            ]
+          }
+        },
+        "prediction": "FP02",
+        "correct": true,
+        "truth_score": 0.7103447003023965,
+        "strongest_wrong_score": 0.66656687160333,
+        "truth_margin": 0.043777828699066546,
+        "ranking": [
+          "FP02",
+          "FP01",
+          "FL02",
+          "FL03",
+          "FL04",
+          "FL01"
+        ]
+      },
+      "acceptance": {
+        "score_gate": true,
+        "margin_gate": true,
+        "route": "APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "FP02",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "score": 0.6002651145060857
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "score": 0.6578915699532157
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "score": 0.6327215897185462
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "score": 0.6122842758893967
+        },
+        {
+          "wrong_target": "FP01",
+          "search_priority_candidate": false,
+          "score": 0.66656687160333
+        }
+      ]
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for or against the unchanged facade-fingerprint router on exactly two target-way/item-unseen, query-reference-collection-disjoint positive Panoramax episodes, ranked against a six-target closed roster.",
+    "not_allowed": [
+      "provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment generalization",
+      "exact physical identity authority, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety",
+      "learned temporal sequence matching or a production routing policy"
+    ]
+  }
+}

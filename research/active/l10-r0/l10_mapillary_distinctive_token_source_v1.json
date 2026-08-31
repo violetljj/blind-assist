@@ -1,0 +1,125 @@
+{
+  "schema": "blindassist-l10-mapillary-distinctive-token-source-v1",
+  "status": "FROZEN_BEFORE_FIRST_GOVERNED_OCR_OR_LEARNED_MODEL_CALL_ON_THE_FOUR_RETAINED_IMAGES",
+  "authority": "PROVIDER_AND_CITY_DISJOINT_PREEXISTING_PIXEL_HUMAN_FACADE_WINDOW_DEVELOPMENT_SOURCE",
+  "frozen_at_local": "2026-08-31T09:28:00+08:00",
+  "source_receipts": {
+    "mapillary_direct_repair_roster": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v2/direct-source-repair-roster.json",
+      "sha256": "1e764bdeb24a1890dd2b77111ce395a53e8197df0bc3490b5519da48ec357640",
+      "bytes": 106320
+    },
+    "mapillary_portal_source_audit": {
+      "path": "research/active/l10-r0/named_poi_entity_linked_entrance_ray_mapillary_source_audit_v1.json",
+      "sha256": "24b072a56992c544f30544ead67d9c8863d820c1752e37d2776b3ab5a7b49564",
+      "bytes": 4939
+    }
+  },
+  "selection_history": {
+    "pixel_status": "All four images were human-reviewed during an earlier Mapillary portal-source audit; they are not pixel-unseen.",
+    "model_status_at_source_freeze": "The source roster records zero OCR calls and zero tested learning-model calls before its pixel adjudication was sealed.",
+    "current_reuse": "The distinctive-token successor and its Panoramax fresh-positive result were fixed before this first governed Mapillary OCR replay.",
+    "provider_disjoint": "Mapillary source images versus Panoramax development and confirmation images.",
+    "city_disjoint": "Rotterdam and Den Haag versus the Panoramax target cities used by this router."
+  },
+  "crop_contract": {
+    "horizontal_center": "Midpoint of the first-adjudicator whole-panorama facade/portal interval frozen before any OCR or learned-model call.",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "seam_rule": "Modulo-wrap horizontal columns on the 2:1 equirectangular panorama.",
+    "boundary": "This human interval conditions the crop and is not an automatic entrance-ray or portal-ownership result. R01 later failed unique-portal adjudication because the building has multiple walkable entrances, but its target building and visible MARKTHAL credential remain usable for referent-candidate Development."
+  },
+  "episodes": [
+    {
+      "episode_id": "MR01",
+      "source_roster_id": "R01",
+      "city": "Rotterdam",
+      "target_name": "Markthal Rotterdam",
+      "target_way_id": 437982193,
+      "mapillary_image_id": "1143158984240127",
+      "mapillary_sequence_id": "KYf0B1gbrJanVGeS8IyTEp",
+      "image": {
+        "path": "artifacts.local/datasets/l10-mapillary-distinctive-token-v1/images/R01.jpg",
+        "sha256": "e4db745b62b852b71349c3e015b588f64aa3e52b5aff7f1987a1eef95cc0be9e",
+        "bytes": 1982598,
+        "size": [7680, 3840]
+      },
+      "frozen_facade_interval_x": [1240, 2190],
+      "human_entity_truth": "TARGET_BUILDING_AND_MARKTHAL_CREDENTIAL_VISIBLE",
+      "portal_truth_boundary": "NOT_EVALUABLE_MULTIPLE_WALKABLE_ENTRANCES"
+    },
+    {
+      "episode_id": "MR02",
+      "source_roster_id": "R02",
+      "city": "Den Haag",
+      "target_name": "Oude Kerk",
+      "target_way_id": 58577964,
+      "mapillary_image_id": "1471118755062601",
+      "mapillary_sequence_id": "EU8n2iMufzvGWxjgsCAoI1",
+      "image": {
+        "path": "artifacts.local/datasets/l10-mapillary-distinctive-token-v1/images/R02.jpg",
+        "sha256": "c3f89b42941de582ca1cd492550789d399817bf77d391f662962d43e3d8cd093",
+        "bytes": 2541758,
+        "size": [7680, 3840]
+      },
+      "frozen_facade_interval_x": [2860, 3070],
+      "human_entity_truth": "UNIQUE_TARGET_CHURCH_BUILDING_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_2985_3035"
+    },
+    {
+      "episode_id": "MR03",
+      "source_roster_id": "R10",
+      "city": "Rotterdam",
+      "target_name": "Ontmoetingskerk",
+      "target_way_id": 242119274,
+      "mapillary_image_id": "1743790549489846",
+      "mapillary_sequence_id": "shJkUuFoAfvgWLDC6EZPIe",
+      "image": {
+        "path": "artifacts.local/datasets/l10-mapillary-distinctive-token-v1/images/R10.jpg",
+        "sha256": "f283a484647ccc1fbd4f3a0ba2b0cb847777332f5e3457d5a7cc91becd2ff716",
+        "bytes": 481395,
+        "size": [4096, 2048]
+      },
+      "frozen_facade_interval_x": [3220, 3320],
+      "human_entity_truth": "TARGET_BUILDING_AND_ONTMOETINGSKERK_CREDENTIAL_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_3250_3300"
+    },
+    {
+      "episode_id": "MR04",
+      "source_roster_id": "R32",
+      "city": "Den Haag",
+      "target_name": "PKN Kievitkerk",
+      "target_way_id": 52971287,
+      "mapillary_image_id": "1079751530917459",
+      "mapillary_sequence_id": "n8pHPYaXTE14ywAgNfUhDM",
+      "image": {
+        "path": "artifacts.local/datasets/l10-mapillary-distinctive-token-v1/images/R32.jpg",
+        "sha256": "6d96c5353a339a4abb670860323cac6394065c74c89ad86724c65d0752a2f157",
+        "bytes": 1118029,
+        "size": [5376, 2688]
+      },
+      "frozen_facade_interval_x": [2410, 2530],
+      "human_entity_truth": "UNIQUE_TARGET_CHURCH_BUILDING_VISIBLE",
+      "portal_truth_boundary": "EVALUABLE_STRICT_INTERSECTION_2420_2455"
+    }
+  ],
+  "summary": {
+    "episodes": 4,
+    "cities": 2,
+    "mapillary_sequences": 4,
+    "distinct_target_ways": 4,
+    "human_entity_visible": 4,
+    "explicit_name_credential_reported_visible": 2,
+    "prior_governed_ocr_calls": 0,
+    "prior_tested_learning_model_calls": 0
+  },
+  "claim_boundary": {
+    "allowed": "A provider- and city-disjoint, pre-existing-pixel, human-window-conditioned Development source for the first governed OCR replay of the frozen referent-candidate token branch.",
+    "not_allowed": [
+      "pixel-unseen, active-sequence, automatic entrance-ray, independent portal, deployment, or safety confirmation",
+      "the human facade interval proving exact identity, sign association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

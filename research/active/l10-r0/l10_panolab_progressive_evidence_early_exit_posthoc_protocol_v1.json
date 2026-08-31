@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist-l10-panolab-progressive-evidence-early-exit-posthoc-protocol-v1",
+  "name": "Progressive evidence early exit on the consumed fresh two-target panel",
+  "status": "FROZEN_POSTHOC_AFTER_INSPECTING_PER_FRAME_DF01_APPEARANCE_AND_DF02_OCR_BEFORE_THIS_SINGLE_DERIVED_REPLAY",
+  "authority": "CONSUMED_POSTHOC_PROGRESSIVE_OBSERVATION_MECHANISM_ONLY_REQUIRES_FRESH_CONFIRMATION",
+  "question": "Can an evidence-first progressive router stop after the first sufficient frame on both consumed sequences while retaining the sealed 2/2 routing outcome?",
+  "observed_before_freeze": [
+    "DF02's previous frame alone contains the two exact high-confidence witnesses maison and chemin required by the already frozen lexical contract.",
+    "DF01's previous-frame appearance top-1 is the correct target at score 0.703153 and margin 0.050528, above the already frozen score 0.661720 and margin 0.034641 gates.",
+    "This observation makes the experiment posthoc; it cannot confirm latency or observation reduction on new sequences."
+  ],
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_progressive_evidence_early_exit_posthoc.py",
+    "sha256": "a83d4d95f59ce506bbb5114457c3cb5feae43e0621a5b62a2fd7dd33969037c2",
+    "bytes": 9157
+  },
+  "inputs": {
+    "fresh_lexical_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation_protocol_v1.json",
+      "sha256": "6fa862b9d5b21fdeca6c80de1cf5f37d1eb4b3bb1982a9f714e65c786e458bcf",
+      "bytes": 7342
+    },
+    "fresh_lexical_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_confirmation_result_v1.json",
+      "sha256": "84850bfc6fb68a46fbe43a31f2d8c67ef8e573d168ca43694c0e7e27305a5e45",
+      "bytes": 36347
+    },
+    "fresh_combined_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_combined_router_protocol_v1.json",
+      "sha256": "17c0523f00fa79e2c895aa44b4782e84596b53837166d90b784247647c004b1f",
+      "bytes": 5879
+    },
+    "fresh_combined_result": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_combined_router_result_v1.json",
+      "sha256": "2856134e8d7f37b37dad0c68db93d74a4f5edbfb3e16f07d45c1172ee610e18c",
+      "bytes": 63848
+    }
+  },
+  "evaluated_episodes": ["DF01", "DF02"],
+  "target_roster": [
+    {"episode_id": "FL01", "entity_name": "Espace Village"},
+    {"episode_id": "FL02", "entity_name": "Le Viviani"},
+    {"episode_id": "FL03", "entity_name": "Gare de Neuilly - Porte Maillot"},
+    {"episode_id": "FL04", "entity_name": "Église Notre-Dame de la Délivrande"},
+    {"episode_id": "FP01", "entity_name": "Rumillat"},
+    {"episode_id": "FP02", "entity_name": "Halle Rebatet"},
+    {"episode_id": "CF01", "entity_name": "Euromaster"},
+    {"episode_id": "CF02", "entity_name": "Bibliothèque de Caen - Maladrerie"},
+    {"episode_id": "PS01", "entity_name": "Département du Calvados - Direction de la Culture"},
+    {"episode_id": "PS02", "entity_name": "Crèche des Petits Lutins"},
+    {"episode_id": "PS03", "entity_name": "Église Saint-Pierre"},
+    {"episode_id": "DF01", "entity_name": "Monoprix"},
+    {"episode_id": "DF02", "entity_name": "Maison de Quartier Chemin Vert"}
+  ],
+  "thresholds": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positives before every open-set and transfer panel.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "progressive_contract": {
+    "frame_order": ["prev", "anchor", "next"],
+    "per_prefix_rule": "After each new frame, first evaluate the fixed cumulative distinctive-token branch. A unique match exits; a conflict exits UNKNOWN. On NO_MATCH, evaluate the fixed appearance score for the latest frame and exit only if the unchanged score and margin gates pass; otherwise continue.",
+    "maximum_frames": 3,
+    "no_evidence_rule": "After the maximum prefix with no authorized candidate, return UNKNOWN_KEEP_SEARCHING.",
+    "authority": "Early exit changes observation work only; every emitted referent remains SEARCH_PRIORITY_ONLY."
+  },
+  "gate": {
+    "required_consumed_sequences": 2,
+    "required_correct": 2,
+    "maximum_wrong": 0,
+    "maximum_unknown": 0,
+    "minimum_observation_reduction_rate": 0.5,
+    "required_lexical_early_exits": 1,
+    "required_appearance_early_exits": 1,
+    "new_model_calls": 0,
+    "portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_CONSUMED_PROGRESSIVE_EVIDENCE_EARLY_EXIT_MECHANISM_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_CONSUMED_PROGRESSIVE_EVIDENCE_EARLY_EXIT_MECHANISM_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    "Dynamic sequence length motivates spending additional observations only where needed: https://arxiv.org/abs/2407.00863",
+    "Sequence-matching receptiveness motivates predicting when temporal evidence helps instead of assuming it always does: https://arxiv.org/abs/2503.06840",
+    "This replay uses no learned predictor because the available panel is too small and already consumed."
+  ],
+  "execution_rule": "Run once without new OCR or appearance inference. Do not tune frame order, thresholds, or stop rules after observing the derived result.",
+  "output": "research/active/l10-r0/l10_panolab_progressive_evidence_early_exit_posthoc_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Consumed Development mechanism evidence about whether the two already opened sequences could have retained their search-priority result while stopping observation earlier under one fixed progressive rule.",
+    "not_allowed": [
+      "fresh confirmation, online latency, energy, compute, user-time, active-motion, provider/city generalization, learned sequence-receptiveness, or dynamic-length performance",
+      "conformal, FDR-controlled, calibrated-probability, deployment, or safety authority",
+      "exact identity, facade/portal ownership, access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

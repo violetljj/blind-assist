@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist-l10-scenenn-temporal-dinov2-ffa-consensus-protocol-v1",
+  "protocol_id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-protocol-v1",
+  "frozen_at": "2026-08-31T20:54:00+08:00",
+  "question": "Can frozen DINOv2 foreground feature averaging over the exact three-frame target masks provide a view-robust identity agreement signal that removes SceneNN geometry false matches without true-match loss?",
+  "predecessor": {
+    "cohort_path": "l10_scenenn_temporal_fused_extent_support_cohort_v1.json",
+    "cohort_sha256": "b6f41771806454769565a7592c6ce32dbd8f628b55f0432f790ae6e7aa079a1d",
+    "receipt_path": "l10_scenenn_temporal_fused_extent_support_rgbd_receipt_v1.json",
+    "receipt_sha256": "2e1378a037900363d2f14bfd6d5f2ecab9ddfa627473d1212c36f12984f70274",
+    "result_path": "l10_scenenn_temporal_fused_extent_support_result_v1.json",
+    "result_sha256": "0acfa5bd2aa8ff3bb4d4dad75c63e916f0a7064b082a138ae225d62b173bcd27",
+    "required_conclusion": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "geometry_baseline": {"true_positive": 34, "false_positive": 3, "false_negative": 0, "f1": 0.957746, "exact_scenarios": 12}
+  },
+  "independent_motivation": {
+    "dinov2_primary_source": "https://arxiv.org/pdf/2304.07193",
+    "foreground_averaging_primary_source": "https://proceedings.neurips.cc/paper_files/paper/2023/file/803c6ab3d62346e004ef70211d2d15b8-Paper-Datasets_and_Benchmarks.pdf",
+    "nids_primary_source": "https://arxiv.org/html/2405.17859v1",
+    "source_inference": "DINOv2 exposes transferable patch features and instance retrieval ability; CUTE and NIDS-Net independently use foreground feature averaging rather than global CLS for object-centric instance similarity, with maximum similarity across multiple templates."
+  },
+  "model": {
+    "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "backbone": "frozen facebook/dinov2-small",
+    "device": "CPU",
+    "input": "tight visible-target-mask envelope from each sealed RGB frame, square-padded with black; processor shortest edge 256 and center crop 224",
+    "foreground_pooling": "resize the binary target mask to 256 square, center crop 224, average each 14x14 patch to a continuous foreground weight on the native 16x16 patch grid, weighted-average final patch tokens, then L2 normalize",
+    "adaptation": "none"
+  },
+  "matching": {
+    "views_per_role": 3,
+    "appearance_pair_score": "maximum cosine over the exact 3 reference by 3 query FFA descriptors",
+    "geometry_score": "unchanged predecessor negative symmetric median registered surface distance",
+    "zero_assignment": "strict reciprocal row-and-column maxima independently for geometry and FFA appearance",
+    "consensus": "retain a pair only when identical in both reciprocal match sets; no score fusion or threshold"
+  },
+  "decision_gate": {
+    "geometry_reproduction_matches_predecessor": true,
+    "consensus_true_positive": 34,
+    "consensus_false_positive": 0,
+    "consensus_false_negative": 0,
+    "exact_zero_assignment_scenarios": 15,
+    "no_true_match_loss_vs_geometry": true,
+    "f1_not_lower_than_geometry": true
+  },
+  "forbidden_after_freeze": [
+    "switch to CLS, another DINO layer, another crop, another pooling rule, or another view aggregation",
+    "fine-tune the backbone or fit an adapter, threshold, margin, or geometry-appearance weight",
+    "change frames, masks, targets, scenarios, or predecessor geometry",
+    "drop a hard true pair or inspect scenario labels to select descriptors",
+    "promote this consumed-scene privileged-mask result to fresh or phone-side confirmation"
+  ],
+  "claim_boundary": "This is a posthoc mechanism Development test on a consumed SceneNN scene. Its target masks and poses are evaluator-authoritative and unavailable to deployment; DINOv2 is frozen and no labels are used for fitting. A pass would retain only a challenger for fresh evaluation. It is not door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

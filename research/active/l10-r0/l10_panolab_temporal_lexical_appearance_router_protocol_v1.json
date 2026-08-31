@@ -1,0 +1,106 @@
+{
+  "schema": "blindassist-l10-panolab-temporal-lexical-appearance-router-protocol-v1",
+  "name": "L10 PanoLab temporal exact-token then appearance router",
+  "status": "FROZEN_AFTER_TEMPORAL_APPEARANCE_FAILURE_AND_PIXEL_REVIEW_BEFORE_FIRST_OCR_CALL_ON_TEMPORAL_PANEL",
+  "authority": "CONSUMED_POSTHOC_ORTHOGONAL_EVIDENCE_ROUTING_DEVELOPMENT",
+  "question": "Can frozen exact target-name evidence from reciprocal query frames recover the cross-condition appearance UNKNOWN without increasing wrong-target candidates?",
+  "observed_before_freeze": "The temporal appearance result remained 1 correct, 0 wrong, 1 UNKNOWN. Human review had already shown the Rumillat name in newly downloaded reciprocal neighbours. OCR outputs and scores on all six temporal images remained unseen.",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_temporal_lexical_appearance_router.py",
+    "sha256": "bd47f5702578b9c88f5a7cf6c332021c1caec33301e961366bd46021e3d0c319",
+    "bytes": 13197
+  },
+  "inputs": {
+    "frozen_lexical_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_protocol_v1.json",
+      "sha256": "bc9b22546c7c7ef1c03b5c7c8dbee1cdedee4c5d0e9d62b0f788b663dee4e02b",
+      "bytes": 10357
+    },
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "temporal_selection": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_selection_v1.json",
+      "sha256": "a799a99613f9ef71d9a1d78b95a43ab09435ff5b8aa95496b530dc4e6c0ed801",
+      "bytes": 97697
+    },
+    "temporal_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    },
+    "temporal_truth": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_truth_v1.json",
+      "sha256": "90d58aab718f12ad4f0721dc52a40e16268f3998e9baab28dedd50d94e2ec77b",
+      "bytes": 3184
+    },
+    "temporal_appearance_result": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_router_result_v1.json",
+      "sha256": "be8b307b85ea943ecef6d93b3c9d1b74174f750413632e43dac02493a4efb71b",
+      "bytes": 61060
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    "FL01",
+    "FL02",
+    "FL03",
+    "FL04",
+    "FP01",
+    "FP02"
+  ],
+  "evaluated_episodes": [
+    "FP01",
+    "FP02"
+  ],
+  "routing_contract": {
+    "lexical": "Run the exact frozen PP-OCRv6 medium entrance-window pipeline and long-short exact-token bank from l10_panolab_track_token_bank_fresh_protocol_v1.json across prev/anchor/next for every one of the six roster names.",
+    "unique_own_match": "If and only if the requested target is the sole matched roster name, emit TEMPORAL_EXACT_TOKEN_SEARCH_PRIORITY_CANDIDATE.",
+    "no_match": "Reuse the already sealed temporal appearance candidate or UNKNOWN without recomputation or threshold changes.",
+    "unique_wrong_or_multiple_matches": "Return UNKNOWN_LEXICAL_CONFLICT_KEEP_SEARCHING; never let appearance override a lexical conflict.",
+    "authority": "All emitted candidates remain SEARCH_PRIORITY_ONLY with no portal-ownership binding."
+  },
+  "gate": {
+    "required": [
+      "both consumed reciprocal sequences and all six frames evaluated",
+      "2/2 combined candidates correct",
+      "at least +1 correct over the sealed 1/2 temporal appearance fallback",
+      "0 combined wrong candidates",
+      "0 wrong-target exact-token matches across 10 counterfactual trials",
+      "0 portal-ownership bindings"
+    ],
+    "failure_policy": "Preserve the first result. No OCR threshold, token rule, image, crop, target alias, roster, or routing rule may change after output."
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_TEMPORAL_LEXICAL_APPEARANCE_ROUTER_POSTHOC_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_TEMPORAL_LEXICAL_APPEARANCE_ROUTER_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "GoMatching++: Parameter- and Data-Efficient Arbitrary-Shaped Video Text Spotting and Benchmarking",
+      "paper": "https://arxiv.org/abs/2505.22228",
+      "official_code": "https://github.com/Hxyz-123/GoMatching",
+      "use": "Motivates accumulating text evidence over short and long temporal context. This router uses a deterministic exact-token bank, not GoMatching++."
+    },
+    {
+      "title": "GloTSFormer: Global Video Text Spotting Transformer",
+      "paper": "https://arxiv.org/abs/2401.03694",
+      "use": "Motivates retaining global historical text evidence instead of adjacent-frame-only decisions. This router does not implement its Transformer."
+    }
+  ],
+  "output": "research/active/l10-r0/l10_panolab_temporal_lexical_appearance_router_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Consumed posthoc Development evidence about whether an unchanged exact-token temporal branch can complement an unchanged appearance branch on exactly FP01 and FP02 in one same-provider six-target closed roster.",
+    "not_allowed": [
+      "fresh, blind, independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "a same-name OCR token proving exact entity identity, sign-to-building association, facade ownership, or portal ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, deployment performance, or safety"
+    ]
+  }
+}

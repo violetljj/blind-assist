@@ -1,0 +1,37 @@
+{
+  "schema": "blindassist-l10-panolab-viviani-reference-materialization-v1",
+  "selection": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_viviani_reference_selection_v1.json",
+  "selection_sha256": "2bbbd48a6023bb991958b013b6f95a18bff051a1526062119952141e1c9f4532",
+  "pixel_views_before_frozen_selection": 0,
+  "model_calls_before_frozen_selection": 0,
+  "images": [
+    {
+      "item_id": "e38bcf87-3e7f-46a6-97f6-611481a3c9d0",
+      "collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "camera_to_entrance_distance_m": 26.42,
+      "selection_anchor_m": 5.0,
+      "path": "artifacts.local/datasets/l10-panolab-viviani-reference-v1/images/e38bcf87-3e7f-46a6-97f6-611481a3c9d0.jpg",
+      "sha256": "14cbcaff08a57aa9c94f80580731d8971ba3f20c36b260e41a8c41cd29c04d18",
+      "bytes": 3056225,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/e38bcf87-3e7f-46a6-97f6-611481a3c9d0/hd.jpg"
+    },
+    {
+      "item_id": "51ad93ee-e6f6-4c06-a346-0c08b299d101",
+      "collection": "4353206e-7aa7-4aaf-aa31-6c5952185a2d",
+      "camera_to_entrance_distance_m": 30.227,
+      "selection_anchor_m": 30.0,
+      "path": "artifacts.local/datasets/l10-panolab-viviani-reference-v1/images/51ad93ee-e6f6-4c06-a346-0c08b299d101.jpg",
+      "sha256": "c2c4e50c64489258bc7d056a55b562b6f4ddf9b97851adc365507ab076b2c7e2",
+      "bytes": 3045672,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/api/pictures/51ad93ee-e6f6-4c06-a346-0c08b299d101/hd.jpg"
+    }
+  ]
+}

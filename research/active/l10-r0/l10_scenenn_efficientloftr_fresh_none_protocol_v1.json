@@ -1,0 +1,108 @@
+{
+  "schema": "blindassist-l10-scenenn-efficientloftr-fresh-none-protocol-v1",
+  "protocol_id": "l10-scenenn-efficientloftr-fresh-none-protocol-v1",
+  "frozen_at": "2026-08-31T21:12:00+08:00",
+  "question": "Can a frozen semi-dense local correspondence model provide absolute same-door support and exact NONE assignments on fresh SceneNN targets under severe geometry-selected viewpoint changes?",
+  "predecessor": {
+    "temporal_geometry_result_path": "l10_scenenn_temporal_fused_extent_support_result_v1.json",
+    "temporal_geometry_result_sha256": "0acfa5bd2aa8ff3bb4d4dad75c63e916f0a7064b082a138ae225d62b173bcd27",
+    "temporal_geometry_baseline": {"true_positive": 34, "false_positive": 3, "false_negative": 0, "f1": 0.957746, "exact_scenarios": 12},
+    "dinov2_ffa_result_path": "l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json",
+    "dinov2_ffa_result_sha256": "a66d9b5f45dee1317e28852bd92f676c534abe6d3af4c4b2c9edab97f8fdc8eb",
+    "dinov2_ffa_required_conclusion": "L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "project_matcher_protocol_path": "l10_panolab_exact_portal_patch_protocol_v1.json",
+    "project_matcher_protocol_sha256": "5e485325f6d951c2ff4577c403cef6d5c620014e40a65ad7e22c455f8f6d2d84"
+  },
+  "independent_motivation": {
+    "primary_source": "https://openaccess.thecvf.com/content/CVPR2024/papers/Wang_Efficient_LoFTR_Semi-Dense_Local_Feature_Matching_with_Sparse-Like_Speed_CVPR_2024_paper.pdf",
+    "official_project": "https://zju3dv.github.io/efficientloftr/",
+    "source_inference": "EfficientLoFTR uses detector-free semi-dense mutual-nearest correspondences and is designed for large viewpoint changes and texture-poor images. Its official implementation warns of an outdoor-training domain gap indoors, so fresh SceneNN is a direct falsification test, not presumed authority."
+  },
+  "source_selector": {
+    "inventory": "Previously materialized SceneNN XML labels plus official HTTP HEAD metadata only; no selected PLY, trajectory, RGB, depth, or model score opened before admission.",
+    "consumed_scene_ids": ["014", "032", "038", "073", "096", "225", "246", "249", "521"],
+    "target_label": "normalized lowercase text must match door followed by zero or more digits",
+    "candidate_rule": "Every unconsumed scene with at least one qualifying door and an official ONI Content-Length; choose the four smallest ONI payloads, tie by scene ID; choose the lowest numeric door instance in each selected scene.",
+    "candidate_oni_bytes": {
+      "005": 1863571168, "011": 636668527, "021": 463481795, "043": 1143737634,
+      "074": 1553661552, "076": 3290768804, "082": 1334803126, "089": 1580239026,
+      "109": 1703387621, "207": 1484883445, "213": 1467193699, "234": 806623531,
+      "237": 918010779, "273": 628310332, "276": 771364524, "279": 705895486,
+      "700": 709742770
+    },
+    "expected_selected_scenes": ["021", "273", "011", "279"],
+    "expected_target_instance_ids": [289, 107842, 1004135, 1443816],
+    "forbidden_before_admission": ["selected scene mesh", "selected trajectory", "selected ONI or RGB-D", "frame visibility", "local matches", "homography or model outcome"]
+  },
+  "provider": {
+    "name": "SceneNN",
+    "project_url": "https://scenenn.net/",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion PRO consumer RGB-D camera",
+    "license_boundary": "Educational and research use; raw SceneNN payloads remain local and are not redistributed.",
+    "scenes": {
+      "021": {
+        "target_instance_id": 289,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/021/021.ply", "content_length": 73685391, "etag": "61a4d463-464598f"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/021/021.xml", "content_length": 28765, "etag": "61a4d463-705d", "inventory_sha256": "a724e0efceaa024b044bd08b0d8dc21229acc2cdc06acf4e89e31b1f3530c6e1"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/021/trajectory.log", "content_length": 424005, "etag": "61a4d463-67845"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/021.oni", "content_length": 463481795, "etag": "61a4d6b8-1ba02bc3"}
+      },
+      "273": {
+        "target_instance_id": 107842,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/273/273.ply", "content_length": 62044961, "etag": "61a4d586-3b2bb21"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/273/273.xml", "content_length": 29210, "etag": "61a4d586-721a", "inventory_sha256": "44dc9e90ca1a7716c4c59f8ad1ee3838d4bd59912fde30204ee4d54013691ecf"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/273/trajectory.log", "content_length": 642676, "etag": "61a4d586-9ce74"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/273.oni", "content_length": 628310332, "etag": "61a4e480-2573413c"}
+      },
+      "011": {
+        "target_instance_id": 1004135,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/011/011.ply", "content_length": 79669486, "etag": "61a4d457-4bfa8ee"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/011/011.xml", "content_length": 18575, "etag": "61a4d457-488f", "inventory_sha256": "3d36141d19ac156efbe6ee257145a996c71896e5ed9fd55b4586150e8d4fffb1"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/011/trajectory.log", "content_length": 619608, "etag": "61a4d457-97458"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/011.oni", "content_length": 636668527, "etag": "61a4d66b-25f2ca6f"}
+      },
+      "279": {
+        "target_instance_id": 1443816,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/279/279.ply", "content_length": 110650955, "etag": "61a4d590-698664b"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/279/279.xml", "content_length": 33662, "etag": "61a4d590-837e", "inventory_sha256": "7362f8ab65a8c5856c54657eb30635e37552ae43e7f9eca20ae404bbec04da5f"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/279/trajectory.log", "content_length": 732335, "etag": "61a4d590-b2caf"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/279.oni", "content_length": 705895486, "etag": "61a4e4c3-2a131c3e"}
+      }
+    },
+    "intrinsic": {"url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini", "content_length": 253, "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"}
+  },
+  "pre_rgb_selector": {
+    "trajectory_stride": 5,
+    "minimum_pair_frame_gap": 20,
+    "minimum_pair_baseline_metres": 0.3,
+    "pair_ranking": "maximum camera-centre baseline, then minimum visible target pixels, minimum visibility ratio, earlier frames",
+    "eligible_frame": {"minimum_visible_target_pixels": 512, "minimum_bbox_width_pixels": 24, "minimum_bbox_height_pixels": 48, "minimum_visible_to_target_raster_ratio": 0.4, "maximum_visible_target_image_fraction": 0.8, "maximum_camera_to_target_centroid_metres": 2.5},
+    "renderer": {"numeric_type": "float32", "image_width": 640, "image_height": 480, "near_plane_metres": 0.02, "near_plane_face_rule": "reject unless every vertex is beyond near plane", "triangle_sidedness": "double-sided", "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m", "visibility_tolerance_metres": 0.005},
+    "failure_semantics": "If any selected target lacks a qualifying pair, stop NOT_EVALUABLE without substituting a scene or changing geometry rules."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/p1_w2_efficientloftr_face1a79",
+    "model_safetensors_sha256": "00a5edc343fa222eba763643553548ad37a05aa3d00d266553c9f6cf67bb0e64",
+    "config_sha256": "eaa141ed38f64ec65efe7b663338e2b44d260ff2b26f5829624e5241ff29f1d8",
+    "preprocessor_sha256": "22151d20a71d5d25bee2b5f5c3a5999befa3285597218a9d1ea63998f84dc606",
+    "input": "expand the evaluator-visible target-mask tight box by 1.25 about its centre, clamp, crop raw RGB without masking, then use the frozen 480x640 grayscale processor",
+    "postprocess_score_threshold": 0.2,
+    "minimum_matches": 8,
+    "homography_ransac_reprojection_pixels": 6.0,
+    "minimum_homography_inliers": 6,
+    "absolute_support": "a pair is supported only if match count and RANSAC inlier gates both pass and a finite homography exists",
+    "zero_assignment": "strict reciprocal maximum by homography inlier count among supported pairs; unsupported pairs are NONE",
+    "adaptation": "none; CPU inference; no threshold or score fitting"
+  },
+  "baseline": {
+    "model": "same frozen local DINOv2-S used by the consumed FFA experiment",
+    "descriptor": "L2-normalized mean of final patch tokens on the identical raw context crop",
+    "assignment": "strict reciprocal cosine with no absolute support",
+    "purpose": "paired fresh-cohort comparison only; it has no NONE authority"
+  },
+  "scenarios": {"closed": 1, "unequal_size": 2, "ordered_balanced_swaps": 12, "total": 15},
+  "decision_gate": {"true_positive": 34, "false_positive": 0, "false_negative": 0, "f1": 1.0, "exact_zero_assignment_scenarios": 15, "all_four_true_pairs_have_absolute_support": true, "incremental_f1_over_dinov2": "strictly positive"},
+  "forbidden_after_rgb_access": ["change scenes, target instances, selected frames, crop expansion, model, processor, match threshold, match/inlier minimum, RANSAC tolerance, score, reciprocity, scenarios, or decision gate", "drop a target or failed scenario", "fit a threshold or model on the fresh results"],
+  "claim_boundary": "A pass is fresh SceneNN Development evidence that truth-cropped local visual correspondences can support same-door/NONE decisions across severe selected views. It remains same-provider, evaluator-mask-conditioned indoor RGB, not raw-phone detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

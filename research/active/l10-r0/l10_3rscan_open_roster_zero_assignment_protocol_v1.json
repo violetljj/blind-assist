@@ -1,0 +1,108 @@
+{
+  "schema": "blindassist-l10-3rscan-open-roster-zero-assignment-protocol-v1",
+  "authority": "PHYSICAL_TARGET_DISJOINT_PARTIAL_ROSTER_ZERO_ASSIGNMENT_DEVELOPMENT",
+  "question": "Can a parameter-free multiview reciprocal zero-assignment mechanism preserve real stable-door identity when one side contains extra candidates, missing targets, or both?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_roster_assignment_confirmation_protocol_v2.json",
+    "protocol_sha256": "11eacf310a9d2ae310de321be4de152232fc8cdcb71458b04e0f29689895d699",
+    "cohort_path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+    "cohort_sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+    "result_path": "l10_3rscan_roster_assignment_confirmation_result_v2.json",
+    "result_sha256": "46025f243e4c108271e0776d801cd3789680738986e2afdce367a842350c149f",
+    "implementation_path": "l10_3rscan_roster_assignment_confirmation.py",
+    "implementation_sha256": "973a009919a259327eaaf65eaf92721ca6c4d50b44ed244ef407bdbde2ffebd3",
+    "required_conclusion": "L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+    "observed_limit": "Complete Hungarian assignment reached 3/3 only when every reference and query identity had exactly one counterpart; it has no authority to reject absent identities or extra candidates."
+  },
+  "method_sources": [
+    {
+      "name": "Zero-Assignment Constraint for Graph Matching with Outliers",
+      "url": "https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_Zero-Assignment_Constraint_for_Graph_Matching_With_Outliers_CVPR_2020_paper.pdf",
+      "used_idea": "Outlier rows and columns may remain all-zero under at-most-one partial matching instead of being forced into a complete permutation."
+    },
+    {
+      "name": "Learning Latent Partial Matchings with Gumbel-IPF Networks",
+      "url": "https://proceedings.mlr.press/v238/cohen-indelman24a/cohen-indelman24a.pdf",
+      "used_idea": "Partial matching is a rectangular at-most-one correspondence problem; heuristic learned dustbins are not required for this frozen non-learning Development test."
+    }
+  ],
+  "source": {
+    "provider": "3RScan",
+    "dataset_relative_path": "datasets/3rscan",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "consumed_target_cohorts": [
+      {
+        "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+        "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"
+      },
+      {
+        "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+        "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"
+      },
+      {
+        "path": "l10_3rscan_registered_extent_cohort_v1.json",
+        "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"
+      },
+      {
+        "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+        "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d"
+      }
+    ]
+  },
+  "frozen_cohort": {
+    "physical_targets": 4,
+    "maximum_targets_per_reference_scan": 1,
+    "minimum_reference_scans": 4,
+    "selection_order": "Use candidate rows in frozen descending area_proxy order. Exclude every prior physical (reference_scan_id, target_instance_id), require one target per reference scan, and select the first four targets for which both scans supply two eligible geometry/depth views. RGB remains unopened until replay.",
+    "view_selection": "On each target side, choose the eligible frame with highest frozen visibility key, then the eligible frame with maximum camera-translation separation from it; ties use the same visibility key. No RGB or embedding participates.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "scenarios": {
+      "closed_four": "Four references and their four counterparts.",
+      "query_extra": "Three references, their three counterparts, and one extra query candidate.",
+      "reference_extra": "Four references but counterparts for only the first three.",
+      "balanced_swap": "Three references; the third counterpart is absent and replaced by the fourth physical target, so both sides remain size three while overlap is only two."
+    },
+    "forbidden": [
+      "opening RGB during target or frame selection",
+      "model-score-based target, frame, or scenario selection",
+      "changing target order or scenario membership after replay",
+      "learning or tuning a dustbin score",
+      "adding a numeric match threshold after observing scores",
+      "using target identity inside the matcher"
+    ]
+  },
+  "frozen_model": {
+    "model_relative_path": "models/p1_a2_dinov2_small_ed25f3a",
+    "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "pair_score": "The unchanged predecessor center-scale score: 0.25 times global/global cosine plus 0.75 times maximum cosine involving a centered 0.5 or 0.25 crop.",
+    "one_view_baseline": "Complete rectangular Hungarian assignment on the highest-visibility view pair; it always emits min(reference_count, query_count) matches.",
+    "multiview_score": "For each target pair, compute the 2x2 cross-view score matrix. Take the minimum over reference views of their best query-view score, the minimum over query views of their best reference-view score, then the minimum of those two coverage values.",
+    "zero_assignment": "Emit an edge only when it is the strict maximum in both its row and column of the scenario multiview score matrix. Every other row or column is an explicit zero assignment. No learned value or numeric threshold is introduced."
+  },
+  "decision_gate": {
+    "aggregate_true_matches": "12/12 across the four frozen scenarios.",
+    "aggregate_false_matches": 0,
+    "aggregate_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in 4/4 scenarios.",
+    "balanced_swap": "2/2 true matches, zero false matches, and exact rejection of both the missing reference identity and extra query identity.",
+    "single_replay": "One replay on the frozen physical-target-disjoint cohort; do not tune on its RGB, embeddings, or scores."
+  },
+  "claim_boundary": "A pass is a small real-image Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes under three bounded missing/extra-candidate constructions. Physical reference targets are disjoint from six prior cohorts, one target is used per reference scan, and two geometry-selected views are used per target side; however all RGB, poses, meshes, labels and truth proposals come from one provider and the scenario overlap is evaluator-known. It is not open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+}

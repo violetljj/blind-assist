@@ -1,0 +1,2210 @@
+{
+  "schema": "blindassist-l10-panolab-federated-router-confirmation-appearance-result-v1",
+  "decision": "L10_PANOLAB_FEDERATED_NEW_CITY_TEMPORAL_APPEARANCE_ROUTER_DEVELOPMENT_GATE_MET",
+  "authority": "NEW_CITY_TARGET_WAY_ITEM_DISJOINT_FEDERATED_SAME_PROVIDER_DEVELOPMENT_CANDIDATE_ROUTING_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_federated_router_confirmation_appearance_protocol_v1.json",
+  "protocol_sha256": "cb5d1c4f60d9db85a5fd27900c41838f66a5a7675054ee00735f500fce938c70",
+  "evaluator_sha256": "dff3b42d4539392276ff5e43cbca70161cfb4d7d2090678239cea01b47212c25",
+  "execution_backend": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "named-poi-clip-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "named-poi-clip-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.23803539999062195
+        ],
+        "median_seconds": 0.23803539999062195
+      },
+      {
+        "backend": "named-poi-clip-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.6279107999871485
+        ],
+        "median_seconds": 0.6279107999871485
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "backend_receipt_sha256": "2769b044fbb421c9cce80c01966b7fb0551839f4df7346665595a722d71a56bd",
+  "frozen_thresholds": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positive rows before the open-set, Grenoble, temporal, and Caen panels.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "reference_metadata": [
+    {
+      "target_id": "CF01",
+      "item_id": "3b1e6678-abcc-4282-8b31-3460f8c7229c",
+      "relation": "anchor",
+      "reference_collection": "bd32bf27-b19f-436d-a0e7-27a21b043485",
+      "query_collection": "c318aa73-0704-47fa-8594-66d16aced957",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "CF01",
+      "item_id": "2025e453-673b-4441-88be-a89d41fa2c1d",
+      "relation": "next",
+      "reference_collection": "bd32bf27-b19f-436d-a0e7-27a21b043485",
+      "query_collection": "c318aa73-0704-47fa-8594-66d16aced957",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "CF02",
+      "item_id": "42e96c48-04c5-496f-ab97-6635c3470eff",
+      "relation": "anchor",
+      "reference_collection": "8ac2e9ec-2a24-4261-83d3-1cb2c2c524df",
+      "query_collection": "ef41ce72-aa0c-418e-9ac7-8a92a9c78ebc",
+      "collection_disjoint": true
+    },
+    {
+      "target_id": "CF02",
+      "item_id": "18414a3e-7edd-4188-82e2-2632797f8876",
+      "relation": "next",
+      "reference_collection": "8ac2e9ec-2a24-4261-83d3-1cb2c2c524df",
+      "query_collection": "ef41ce72-aa0c-418e-9ac7-8a92a9c78ebc",
+      "collection_disjoint": true
+    }
+  ],
+  "crop_receipts": [
+    {
+      "key": "CF01_ref1",
+      "target_id": "CF01",
+      "role": "reference",
+      "item_id": "3b1e6678-abcc-4282-8b31-3460f8c7229c",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-federated-portal-v1\\materialized\\images\\3b1e6678-abcc-4282-8b31-3460f8c7229c.jpg",
+      "source_sha256": "27e0716a36f7c447f09057522fdce2194a5bdd09ed9d51db23156782c5c69ef5",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF01_ref1.jpg",
+      "crop_sha256": "2cd491aef7947bd74d4dc64ac6efcfee9197fe78d83df47231b2b00f19766e99",
+      "crop_bytes": 576418,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5072.558316,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "22c2787d04aac190310dfdc132a0e80298e5786de5457c3467da5f97be605de3"
+      }
+    },
+    {
+      "key": "CF01_ref2",
+      "target_id": "CF01",
+      "role": "reference",
+      "item_id": "2025e453-673b-4441-88be-a89d41fa2c1d",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\2025e453-673b-4441-88be-a89d41fa2c1d.jpg",
+      "source_sha256": "50fcce0ed9373c554c970289be34293a9d2d98fc7a5b5faed7c900c3e56ab1ab",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF01_ref2.jpg",
+      "crop_sha256": "f59db23fc3b1d542194569fd53338ef69406064fcca6fba0fe41e853e89d5a63",
+      "crop_bytes": 539595,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5356.070191,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "f757e7cc6c033214fe93f025b8e5bc559ce2cc5ce9a199ac26b67d0512d26c45"
+      }
+    },
+    {
+      "key": "CF01_prev",
+      "target_id": "CF01",
+      "role": "prev",
+      "item_id": "8c035830-5fd1-4402-b896-19e975900e48",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\8c035830-5fd1-4402-b896-19e975900e48.jpg",
+      "source_sha256": "dd3e24f0aa7cfce821d68a57555290da1a257ac1451ead3d7d53c851b7557e13",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF01_prev.jpg",
+      "crop_sha256": "b21dd8e0520693c9f2eb1bcaa4d9a1f1cccb6d3c2d14d2d95a9ff6a7fd91661f",
+      "crop_bytes": 648604,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4532.694506,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "e60b68f5af35f07a69ba65f3fcc79cd5b44a0d63fdca24fed9b67301bc2fef06"
+      }
+    },
+    {
+      "key": "CF01_anchor",
+      "target_id": "CF01",
+      "role": "anchor",
+      "item_id": "c5ede0c0-1137-4151-9a34-783dfde19f5e",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-federated-portal-v1\\materialized\\images\\c5ede0c0-1137-4151-9a34-783dfde19f5e.jpg",
+      "source_sha256": "070da5a7aee30465d36ffd4364c6a279b5ea46bf8fd9633cb2e9bfae7fc22e64",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF01_anchor.jpg",
+      "crop_sha256": "ac0b86eb9df604afa23ed10c5b8509f2b699b64196a1f6f0e8abf2e08232796e",
+      "crop_bytes": 641861,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 5399.933153,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "2dd6dc4fbe563be54ccd6a2af3a0d28f63d55c027e38d4721cad80aab84445f4"
+      }
+    },
+    {
+      "key": "CF01_next",
+      "target_id": "CF01",
+      "role": "next",
+      "item_id": "d949046c-52fd-4960-a7ec-343cc52f41e8",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\d949046c-52fd-4960-a7ec-343cc52f41e8.jpg",
+      "source_sha256": "1e5913372a2f0c3f61e8dd3ab752e10ca492dfc5074bcc83e800c0ef4c1103ed",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF01_next.jpg",
+      "crop_sha256": "5194d6469886bd3fe61be99cc3d5ac76eda2c29dfc1b37a78424428e9879507c",
+      "crop_bytes": 718854,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 502.898998,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": true,
+        "pixel_sha256": "1af70ecc55e3bbd7689ce5f10de0c4f0779871bfca8f5509d64ea4fff4b8e689"
+      }
+    },
+    {
+      "key": "CF02_ref1",
+      "target_id": "CF02",
+      "role": "reference",
+      "item_id": "42e96c48-04c5-496f-ab97-6635c3470eff",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-federated-portal-v1\\materialized\\images\\42e96c48-04c5-496f-ab97-6635c3470eff.jpg",
+      "source_sha256": "4d4e8104be3424811a653ba77e4646054b189c0fb8732995cd47002ca6cdced5",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF02_ref1.jpg",
+      "crop_sha256": "f6e1e55ae81ee63e00a642a28ec895b6d332ceb944f78291b5ddf4f29689d912",
+      "crop_bytes": 591686,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3331.310517,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "4bd9c8e44db19742357a21024132629ffd0b3a6900dd8ce273eef8f9da1add38"
+      }
+    },
+    {
+      "key": "CF02_ref2",
+      "target_id": "CF02",
+      "role": "reference",
+      "item_id": "18414a3e-7edd-4188-82e2-2632797f8876",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\18414a3e-7edd-4188-82e2-2632797f8876.jpg",
+      "source_sha256": "2bed7f753791682ea4adc702a8135f3d1fe6544efac1407d8e3bb0c77c0be1fb",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF02_ref2.jpg",
+      "crop_sha256": "d8b0f0c77673231a018c70e034777655d62ba29e65b01bcf0e5ee0c5595e5084",
+      "crop_bytes": 650176,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4085.493082,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "0915bd20af8a5eda65f9fb513fdb6c1fc094da9ec215f7a8c0cba153a4216c8c"
+      }
+    },
+    {
+      "key": "CF02_prev",
+      "target_id": "CF02",
+      "role": "prev",
+      "item_id": "16e218ad-c4a9-4a16-b39e-b9e3083453d2",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\16e218ad-c4a9-4a16-b39e-b9e3083453d2.jpg",
+      "source_sha256": "94f49f5bc5697dac9705ce817607b0088f03ab31d6851e6b7b50dd3c58534430",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF02_prev.jpg",
+      "crop_sha256": "5b0159449a4373146f69c23a2b84d315f5ccb1636af85827ceeeff547377000b",
+      "crop_bytes": 804412,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3461.290339,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "0fd74fdb1dace61efdda09cb02e863c8e25324eba9fa201d91ad31454db28f0e"
+      }
+    },
+    {
+      "key": "CF02_anchor",
+      "target_id": "CF02",
+      "role": "anchor",
+      "item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+      "source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-federated-portal-v1\\materialized\\images\\47c3de20-4e47-4db1-bcd2-c0ae7ec9d644.jpg",
+      "source_sha256": "f9bdc60c2a1f7f5c2c566d4b848e4388b3035896b12ac7c9aebd2023cbc021ec",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF02_anchor.jpg",
+      "crop_sha256": "f2737790e3928928946a4593f0568bb994a7e8f11ffb103528a4a341a1fd307a",
+      "crop_bytes": 654252,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 3727.820099,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "cbb0f8ab0a7f2b425fd48518c67a9bee525a02cbf34e18884a75e5b6fcaa76af"
+      }
+    },
+    {
+      "key": "CF02_next",
+      "target_id": "CF02",
+      "role": "next",
+      "item_id": "5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe",
+      "source_path": "E:\\linnan\\linnan\\artifacts.local\\datasets\\l10-panolab-federated-router-confirmation-v1\\images\\5429ff06-b0cd-483f-a7c8-5b9e1b91ebbe.jpg",
+      "source_sha256": "012daa71fb48ed984a2f039be791697009fdc821e97f33779be9bd20c559a0d0",
+      "crop_path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\l10-r0\\panolab-federated-router-confirmation-appearance-v1\\crops\\CF02_next.jpg",
+      "crop_sha256": "3634d43bc2a533be84c08d623dbbeeb0371bd254f855475561ddfb6cd11e5e41",
+      "crop_bytes": 661600,
+      "crop_size": [
+        1440,
+        1680
+      ],
+      "window": {
+        "center_raw_x_pixels": 4350.295975,
+        "horizontal_half_fov_degrees": 45.0,
+        "top_raw_y_pixels": 720,
+        "bottom_raw_y_pixels_exclusive": 2400,
+        "native_crop_width": 1440,
+        "native_crop_height": 1680,
+        "seam_wrapped": false,
+        "pixel_sha256": "241ae8e07c3a5f4350a341db55ccfd11be156fff5d72293374cf12570f099b0d"
+      }
+    }
+  ],
+  "metrics": {
+    "confirmation_episodes": 2,
+    "confirmation_cities": 1,
+    "query_frames": 6,
+    "new_neighbor_frames": 4,
+    "combined_target_roster": 8,
+    "combined_reference_views": 16,
+    "confirmation_reference_views": 4,
+    "collection_disjoint_confirmation_reference_views": 4,
+    "prior_router_target_way_overlap": 0,
+    "prior_router_item_overlap": 0,
+    "accepted_correct_wrong_unknown": [
+      2,
+      0,
+      0
+    ],
+    "positive_coverage": 1.0,
+    "wrong_goal_trials": 14,
+    "wrong_goal_search_priority_candidates": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "model_seconds": 2.310556699987501
+  },
+  "gate": {
+    "two_valid_router_unseen_truth_rows": true,
+    "four_cross_collection_reference_views": true,
+    "six_reciprocal_query_frames": true,
+    "zero_prior_router_target_way_overlap": true,
+    "zero_prior_router_item_overlap": true,
+    "two_of_two_accepted_correct": true,
+    "zero_accepted_wrong": true,
+    "zero_wrong_goal_search_priority_candidates": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "CF01",
+      "target_name": "Euromaster",
+      "target_way_id": 155636324,
+      "source_city": "Caen",
+      "reference_collection": "bd32bf27-b19f-436d-a0e7-27a21b043485",
+      "query_collection": "c318aa73-0704-47fa-8594-66d16aced957",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "per_frame": [
+        {
+          "relation": "prev",
+          "scores": {
+            "FL01": {
+              "score": 0.4461882680654526,
+              "max_clip": 0.6652790307998657,
+              "max_dino": 0.2770839333534241,
+              "max_mutual_patch_geometry": 0.3601740598678589,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.6652790307998657,
+                  "dino": 0.2770839333534241,
+                  "score": 0.3601740598678589,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.5402610898017883
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.6632878184318542,
+                  "dino": 0.2124105989933014,
+                  "score": 0.1951761916279793,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.46842285990715027
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.4743619834383329,
+              "max_clip": 0.6611122488975525,
+              "max_dino": 0.455007404088974,
+              "max_mutual_patch_geometry": 0.32305211325486505,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.6611122488975525,
+                  "dino": 0.455007404088974,
+                  "score": 0.32305211325486505,
+                  "matches": 9,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.5538036227226257
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.6357494592666626,
+                  "dino": 0.4095134139060974,
+                  "score": 0.23749925444523495,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.5181801915168762
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5261964556116324,
+              "max_clip": 0.6227847337722778,
+              "max_dino": 0.44901588559150696,
+              "max_mutual_patch_geometry": 0.4899195684836461,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.6227847337722778,
+                  "dino": 0.44901588559150696,
+                  "score": 0.4899195684836461,
+                  "matches": 13,
+                  "inlier_ratio": 0.6153846153846154,
+                  "mean_similarity": 0.6065670847892761
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.5348234176635742,
+                  "dino": 0.2641960382461548,
+                  "score": 0.3068184213978904,
+                  "matches": 14,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.4295457899570465
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.426689812541008,
+              "max_clip": 0.6646909713745117,
+              "max_dino": 0.3393632769584656,
+              "max_mutual_patch_geometry": 0.27301788330078125,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.6034711599349976,
+                  "dino": 0.3393632769584656,
+                  "score": 0.27301788330078125,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.43682861328125
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.6646909713745117,
+                  "dino": 0.3136104345321655,
+                  "score": 0.19156468411286673,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.4597552418708801
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.5810981512069702,
+              "max_clip": 0.6776873469352722,
+              "max_dino": 0.514666736125946,
+              "max_mutual_patch_geometry": 0.5381022393703461,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6776873469352722,
+                  "dino": 0.514666736125946,
+                  "score": 0.5381022393703461,
+                  "matches": 12,
+                  "inlier_ratio": 0.6666666666666666,
+                  "mean_similarity": 0.6457226872444153
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6461641192436218,
+                  "dino": 0.47893795371055603,
+                  "score": 0.3257807095845541,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5584812164306641
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.47046707669893906,
+              "max_clip": 0.705792248249054,
+              "max_dino": 0.36117738485336304,
+              "max_mutual_patch_geometry": 0.3328636089960734,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.705792248249054,
+                  "dino": 0.36117738485336304,
+                  "score": 0.22483733793099725,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5396096110343933
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.6530054211616516,
+                  "dino": 0.27727675437927246,
+                  "score": 0.3328636089960734,
+                  "matches": 10,
+                  "inlier_ratio": 0.6,
+                  "mean_similarity": 0.4992954134941101
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.7010466000548116,
+              "max_clip": 0.7988851070404053,
+              "max_dino": 0.7734926342964172,
+              "max_mutual_patch_geometry": 0.5701591350414135,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.7445861101150513,
+                  "dino": 0.5614496469497681,
+                  "score": 0.4573316382510322,
+                  "matches": 14,
+                  "inlier_ratio": 0.35714285714285715,
+                  "mean_similarity": 0.673962414264679
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.7988851070404053,
+                  "dino": 0.7734926342964172,
+                  "score": 0.5701591350414135,
+                  "matches": 27,
+                  "inlier_ratio": 0.48148148148148145,
+                  "mean_similarity": 0.7697148323059082
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.5050092071294785,
+              "max_clip": 0.741767942905426,
+              "max_dino": 0.5069997310638428,
+              "max_mutual_patch_geometry": 0.29660123586654663,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.6857770681381226,
+                  "dino": 0.4806963801383972,
+                  "score": 0.29660123586654663,
+                  "matches": 8,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5932024717330933
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.741767942905426,
+                  "dino": 0.5069997310638428,
+                  "score": 0.23624975234270096,
+                  "matches": 5,
+                  "inlier_ratio": 0.8,
+                  "mean_similarity": 0.6299993395805359
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF01",
+            "correct": true,
+            "truth_score": 0.7010466000548116,
+            "strongest_wrong_score": 0.5810981512069702,
+            "truth_margin": 0.1199484488478414,
+            "ranking": [
+              "CF01",
+              "FP01",
+              "FL03",
+              "CF02",
+              "FL02",
+              "FP02",
+              "FL01",
+              "FL04"
+            ]
+          }
+        },
+        {
+          "relation": "anchor",
+          "scores": {
+            "FL01": {
+              "score": 0.5452004706859589,
+              "max_clip": 0.6805413961410522,
+              "max_dino": 0.4306457042694092,
+              "max_mutual_patch_geometry": 0.4983738899230957,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.6452324390411377,
+                  "dino": 0.4306457042694092,
+                  "score": 0.4983738899230957,
+                  "matches": 15,
+                  "inlier_ratio": 0.6,
+                  "mean_similarity": 0.6229673624038696
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.6805413961410522,
+                  "dino": 0.3262671232223511,
+                  "score": 0.2891029914220174,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.5337285995483398
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5063462605079015,
+              "max_clip": 0.6286682486534119,
+              "max_dino": 0.48882585763931274,
+              "max_mutual_patch_geometry": 0.41026477267344796,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.6286682486534119,
+                  "dino": 0.48882585763931274,
+                  "score": 0.2926667630672455,
+                  "matches": 8,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.585333526134491
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.6243297457695007,
+                  "dino": 0.42543768882751465,
+                  "score": 0.41026477267344796,
+                  "matches": 12,
+                  "inlier_ratio": 0.5833333333333334,
+                  "mean_similarity": 0.5182291865348816
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5142448340143476,
+              "max_clip": 0.5968289375305176,
+              "max_dino": 0.5238120555877686,
+              "max_mutual_patch_geometry": 0.4360042299543108,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.5968289375305176,
+                  "dino": 0.5238120555877686,
+                  "score": 0.4360042299543108,
+                  "matches": 14,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.6104059219360352
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.5289105176925659,
+                  "dino": 0.3947274684906006,
+                  "score": 0.3833261052767436,
+                  "matches": 15,
+                  "inlier_ratio": 0.4666666666666667,
+                  "mean_similarity": 0.5227174162864685
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.4379613786935806,
+              "max_clip": 0.6374324560165405,
+              "max_dino": 0.45435863733291626,
+              "max_mutual_patch_geometry": 0.25317589938640594,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.5713480114936829,
+                  "dino": 0.32357609272003174,
+                  "score": 0.21289994443456334,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.3930460512638092
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.6374324560165405,
+                  "dino": 0.45435863733291626,
+                  "score": 0.25317589938640594,
+                  "matches": 8,
+                  "inlier_ratio": 0.375,
+                  "mean_similarity": 0.5523837804794312
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.6004130214452743,
+              "max_clip": 0.6396409869194031,
+              "max_dino": 0.5954481363296509,
+              "max_mutual_patch_geometry": 0.5691916048526764,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6396409869194031,
+                  "dino": 0.5954481363296509,
+                  "score": 0.4733227839072545,
+                  "matches": 11,
+                  "inlier_ratio": 0.5454545454545454,
+                  "mean_similarity": 0.6682204008102417
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6064854264259338,
+                  "dino": 0.5717636346817017,
+                  "score": 0.5691916048526764,
+                  "matches": 14,
+                  "inlier_ratio": 0.6428571428571429,
+                  "mean_similarity": 0.6929289102554321
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5333761046330134,
+              "max_clip": 0.684092104434967,
+              "max_dino": 0.5133914351463318,
+              "max_mutual_patch_geometry": 0.41399002323548,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.684092104434967,
+                  "dino": 0.5133914351463318,
+                  "score": 0.41399002323548,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.5844565033912659
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.6236901879310608,
+                  "dino": 0.4361530542373657,
+                  "score": 0.3473934903740883,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5558295845985413
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.7338951826095581,
+              "max_clip": 0.7861286401748657,
+              "max_dino": 0.808959424495697,
+              "max_mutual_patch_geometry": 0.6412757560610771,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.7625721096992493,
+                  "dino": 0.5964936017990112,
+                  "score": 0.45070608456929523,
+                  "matches": 15,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.6760591268539429
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.7861286401748657,
+                  "dino": 0.808959424495697,
+                  "score": 0.6412757560610771,
+                  "matches": 32,
+                  "inlier_ratio": 0.5625,
+                  "mean_similarity": 0.8208329677581787
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.5535493612289428,
+              "max_clip": 0.6889708638191223,
+              "max_dino": 0.5096040368080139,
+              "max_mutual_patch_geometry": 0.46252137422561634,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.6561732292175293,
+                  "dino": 0.5096040368080139,
+                  "score": 0.21720412373542786,
+                  "matches": 6,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5792109966278076
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.6889708638191223,
+                  "dino": 0.5038629174232483,
+                  "score": 0.46252137422561634,
+                  "matches": 11,
+                  "inlier_ratio": 0.6363636363636364,
+                  "mean_similarity": 0.6166951656341553
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF01",
+            "correct": true,
+            "truth_score": 0.7338951826095581,
+            "strongest_wrong_score": 0.6004130214452743,
+            "truth_margin": 0.1334821611642838,
+            "ranking": [
+              "CF01",
+              "FP01",
+              "CF02",
+              "FL01",
+              "FP02",
+              "FL03",
+              "FL02",
+              "FL04"
+            ]
+          }
+        },
+        {
+          "relation": "next",
+          "scores": {
+            "FL01": {
+              "score": 0.5048629209399224,
+              "max_clip": 0.5350181460380554,
+              "max_dino": 0.4714406430721283,
+              "max_mutual_patch_geometry": 0.4993660226464272,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.5350181460380554,
+                  "dino": 0.4714406430721283,
+                  "score": 0.4993660226464272,
+                  "matches": 12,
+                  "inlier_ratio": 0.5833333333333334,
+                  "mean_similarity": 0.6307781338691711
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.5322968363761902,
+                  "dino": 0.28604069352149963,
+                  "score": 0.2887938469648361,
+                  "matches": 9,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.49507516622543335
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.46118308951457343,
+              "max_clip": 0.4884302020072937,
+              "max_dino": 0.4302808940410614,
+              "max_mutual_patch_geometry": 0.4566557382543882,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.4884302020072937,
+                  "dino": 0.4302808940410614,
+                  "score": 0.4566557382543882,
+                  "matches": 12,
+                  "inlier_ratio": 0.5833333333333334,
+                  "mean_similarity": 0.5768283009529114
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.4702213406562805,
+                  "dino": 0.3269684612751007,
+                  "score": 0.2395653873682022,
+                  "matches": 8,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.4791307747364044
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5131089170773824,
+              "max_clip": 0.5256802439689636,
+              "max_dino": 0.5375765562057495,
+              "max_mutual_patch_geometry": 0.4868167315920193,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.5256802439689636,
+                  "dino": 0.5375765562057495,
+                  "score": 0.4868167315920193,
+                  "matches": 11,
+                  "inlier_ratio": 0.7272727272727273,
+                  "mean_similarity": 0.6149263978004456
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.44279471039772034,
+                  "dino": 0.34803351759910583,
+                  "score": 0.2458292841911316,
+                  "matches": 8,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.4916585683822632
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.39075315594673155,
+              "max_clip": 0.5541590452194214,
+              "max_dino": 0.3568892478942871,
+              "max_mutual_patch_geometry": 0.26893794536590576,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.4827835261821747,
+                  "dino": 0.29002541303634644,
+                  "score": 0.17984038218855858,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.3923790156841278
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.5541590452194214,
+                  "dino": 0.3568892478942871,
+                  "score": 0.26893794536590576,
+                  "matches": 8,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5378758907318115
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.5418595543033198,
+              "max_clip": 0.5436564087867737,
+              "max_dino": 0.5559288859367371,
+              "max_mutual_patch_geometry": 0.5314939743594119,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.5436564087867737,
+                  "dino": 0.5559288859367371,
+                  "score": 0.5314939743594119,
+                  "matches": 19,
+                  "inlier_ratio": 0.5789473684210527,
+                  "mean_similarity": 0.6732257008552551
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.5327528119087219,
+                  "dino": 0.5327752828598022,
+                  "score": 0.450947346786658,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.6366315484046936
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.48110182285308833,
+              "max_clip": 0.5177803039550781,
+              "max_dino": 0.5002590417861938,
+              "max_mutual_patch_geometry": 0.43703489005565643,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.5177803039550781,
+                  "dino": 0.5002590417861938,
+                  "score": 0.32754333068927133,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.6046953797340393
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.493193119764328,
+                  "dino": 0.4673687517642975,
+                  "score": 0.43703489005565643,
+                  "matches": 12,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5827131867408752
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.6857801656831395,
+              "max_clip": 0.775618314743042,
+              "max_dino": 0.7516300082206726,
+              "max_mutual_patch_geometry": 0.5660156336697665,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.5932328701019287,
+                  "dino": 0.4749249219894409,
+                  "score": 0.43269882752345157,
+                  "matches": 13,
+                  "inlier_ratio": 0.38461538461538464,
+                  "mean_similarity": 0.6250094175338745
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.775618314743042,
+                  "dino": 0.7516300082206726,
+                  "score": 0.5660156336697665,
+                  "matches": 22,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.778271496295929
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.49309937159220374,
+              "max_clip": 0.6140159368515015,
+              "max_dino": 0.5369988679885864,
+              "max_mutual_patch_geometry": 0.3598601917425791,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.6140159368515015,
+                  "dino": 0.5369988679885864,
+                  "score": 0.3598601917425791,
+                  "matches": 9,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.6169031858444214
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.5998449325561523,
+                  "dino": 0.45134586095809937,
+                  "score": 0.26015421251455945,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.5676091909408569
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF01",
+            "correct": true,
+            "truth_score": 0.6857801656831395,
+            "strongest_wrong_score": 0.5418595543033198,
+            "truth_margin": 0.1439206113798197,
+            "ranking": [
+              "CF01",
+              "FP01",
+              "FL03",
+              "FL01",
+              "CF02",
+              "FP02",
+              "FL02",
+              "FL04"
+            ]
+          }
+        }
+      ],
+      "temporal_aggregate": {
+        "scores": {
+          "FL01": {
+            "score": 0.5250316958129406,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5452004706859589
+              },
+              {
+                "relation": "next",
+                "score": 0.5048629209399224
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.4461882680654526
+            }
+          },
+          "FL02": {
+            "score": 0.49035412197311723,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5063462605079015
+              },
+              {
+                "relation": "prev",
+                "score": 0.4743619834383329
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.46118308951457343
+            }
+          },
+          "FL03": {
+            "score": 0.52022064481299,
+            "top_two_frames": [
+              {
+                "relation": "prev",
+                "score": 0.5261964556116324
+              },
+              {
+                "relation": "anchor",
+                "score": 0.5142448340143476
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5131089170773824
+            }
+          },
+          "FL04": {
+            "score": 0.43232559561729433,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.4379613786935806
+              },
+              {
+                "relation": "prev",
+                "score": 0.426689812541008
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.39075315594673155
+            }
+          },
+          "FP01": {
+            "score": 0.5907555863261222,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.6004130214452743
+              },
+              {
+                "relation": "prev",
+                "score": 0.5810981512069702
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5418595543033198
+            }
+          },
+          "FP02": {
+            "score": 0.5072389637430509,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5333761046330134
+              },
+              {
+                "relation": "next",
+                "score": 0.48110182285308833
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.47046707669893906
+            }
+          },
+          "CF01": {
+            "score": 0.7174708913321848,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.7338951826095581
+              },
+              {
+                "relation": "prev",
+                "score": 0.7010466000548116
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.6857801656831395
+            }
+          },
+          "CF02": {
+            "score": 0.5292792841792107,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5535493612289428
+              },
+              {
+                "relation": "prev",
+                "score": 0.5050092071294785
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.49309937159220374
+            }
+          }
+        },
+        "prediction": "CF01",
+        "correct": true,
+        "truth_score": 0.7174708913321848,
+        "strongest_wrong_score": 0.5907555863261222,
+        "truth_margin": 0.12671530500606254,
+        "ranking": [
+          "CF01",
+          "FP01",
+          "CF02",
+          "FL01",
+          "FL03",
+          "FP02",
+          "FL02",
+          "FL04"
+        ]
+      },
+      "acceptance": {
+        "score_gate": true,
+        "margin_gate": true,
+        "top1_score": 0.7174708913321848,
+        "top1_margin": 0.12671530500606254,
+        "route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "CF01",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5250316958129406
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.49035412197311723
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.52022064481299
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.43232559561729433
+        },
+        {
+          "wrong_target": "FP01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5907555863261222
+        },
+        {
+          "wrong_target": "FP02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5072389637430509
+        },
+        {
+          "wrong_target": "CF02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5292792841792107
+        }
+      ]
+    },
+    {
+      "episode_id": "CF02",
+      "target_name": "Bibliothèque de Caen - Maladrerie",
+      "target_way_id": 155700593,
+      "source_city": "Caen",
+      "reference_collection": "8ac2e9ec-2a24-4261-83d3-1cb2c2c524df",
+      "query_collection": "ef41ce72-aa0c-418e-9ac7-8a92a9c78ebc",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "per_frame": [
+        {
+          "relation": "prev",
+          "scores": {
+            "FL01": {
+              "score": 0.4970847576856613,
+              "max_clip": 0.7274071574211121,
+              "max_dino": 0.4542890787124634,
+              "max_mutual_patch_geometry": 0.3222999572753906,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.7087019085884094,
+                  "dino": 0.40264785289764404,
+                  "score": 0.3222999572753906,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.48344993591308594
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7274071574211121,
+                  "dino": 0.4542890787124634,
+                  "score": 0.3213678548733393,
+                  "matches": 8,
+                  "inlier_ratio": 0.625,
+                  "mean_similarity": 0.5932945013046265
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5127673643827438,
+              "max_clip": 0.6536480188369751,
+              "max_dino": 0.5064929127693176,
+              "max_mutual_patch_geometry": 0.3934183239936829,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.6212966442108154,
+                  "dino": 0.5064929127693176,
+                  "score": 0.3934183239936829,
+                  "matches": 15,
+                  "inlier_ratio": 0.4666666666666667,
+                  "mean_similarity": 0.5364795327186584
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.6536480188369751,
+                  "dino": 0.444464772939682,
+                  "score": 0.33261471135275705,
+                  "matches": 14,
+                  "inlier_ratio": 0.35714285714285715,
+                  "mean_similarity": 0.49016904830932617
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5477392919361591,
+              "max_clip": 0.7209346294403076,
+              "max_dino": 0.5734322667121887,
+              "max_mutual_patch_geometry": 0.3801352623850107,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.7209346294403076,
+                  "dino": 0.5734322667121887,
+                  "score": 0.32002702355384827,
+                  "matches": 10,
+                  "inlier_ratio": 0.3,
+                  "mean_similarity": 0.5908191204071045
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.6538913249969482,
+                  "dino": 0.5519999861717224,
+                  "score": 0.3801352623850107,
+                  "matches": 16,
+                  "inlier_ratio": 0.3125,
+                  "mean_similarity": 0.5792537331581116
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.5595596828881432,
+              "max_clip": 0.7637379765510559,
+              "max_dino": 0.537648618221283,
+              "max_mutual_patch_geometry": 0.3945980913498822,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7548308372497559,
+                  "dino": 0.4515931308269501,
+                  "score": 0.3586851730942726,
+                  "matches": 12,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.47824689745903015
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7637379765510559,
+                  "dino": 0.537648618221283,
+                  "score": 0.3945980913498822,
+                  "matches": 17,
+                  "inlier_ratio": 0.4117647058823529,
+                  "mean_similarity": 0.5590139627456665
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.5003132283687591,
+              "max_clip": 0.6267991662025452,
+              "max_dino": 0.4600152373313904,
+              "max_mutual_patch_geometry": 0.4148242771625519,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6267991662025452,
+                  "dino": 0.4600152373313904,
+                  "score": 0.3954931557178497,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.564990222454071
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.618968665599823,
+                  "dino": 0.4428291320800781,
+                  "score": 0.4148242771625519,
+                  "matches": 14,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5530990362167358
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5447494983673096,
+              "max_clip": 0.6924337148666382,
+              "max_dino": 0.534775972366333,
+              "max_mutual_patch_geometry": 0.4217592626810074,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.6924337148666382,
+                  "dino": 0.534775972366333,
+                  "score": 0.4217592626810074,
+                  "matches": 16,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5623456835746765
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.640214204788208,
+                  "dino": 0.46492457389831543,
+                  "score": 0.3470050493876139,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.5205075740814209
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.5656565267306107,
+              "max_clip": 0.7678509950637817,
+              "max_dino": 0.5606739521026611,
+              "max_mutual_patch_geometry": 0.3918504760815547,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.7678509950637817,
+                  "dino": 0.5606739521026611,
+                  "score": 0.3918504760815547,
+                  "matches": 13,
+                  "inlier_ratio": 0.38461538461538464,
+                  "mean_similarity": 0.5660062432289124
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.6997085809707642,
+                  "dino": 0.45453760027885437,
+                  "score": 0.27561748027801514,
+                  "matches": 9,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5512349605560303
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.6684487223625183,
+              "max_clip": 0.7926433086395264,
+              "max_dino": 0.7068259716033936,
+              "max_mutual_patch_geometry": 0.5357926785945892,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.7926433086395264,
+                  "dino": 0.7068259716033936,
+                  "score": 0.5357926785945892,
+                  "matches": 20,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.7654181122779846
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.7650626301765442,
+                  "dino": 0.6941381096839905,
+                  "score": 0.5014333327611288,
+                  "matches": 18,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.6942923069000244
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF02",
+            "correct": true,
+            "truth_score": 0.6684487223625183,
+            "strongest_wrong_score": 0.5656565267306107,
+            "truth_margin": 0.10279219563190756,
+            "ranking": [
+              "CF02",
+              "CF01",
+              "FL04",
+              "FL03",
+              "FP02",
+              "FL02",
+              "FP01",
+              "FL01"
+            ]
+          }
+        },
+        {
+          "relation": "anchor",
+          "scores": {
+            "FL01": {
+              "score": 0.5370651441812515,
+              "max_clip": 0.7809112071990967,
+              "max_dino": 0.46340852975845337,
+              "max_mutual_patch_geometry": 0.3697352230548858,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.7683517336845398,
+                  "dino": 0.46340852975845337,
+                  "score": 0.3697352230548858,
+                  "matches": 15,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5281931757926941
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7809112071990967,
+                  "dino": 0.4368332326412201,
+                  "score": 0.29982656240463257,
+                  "matches": 9,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5996531248092651
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5998178531726202,
+              "max_clip": 0.7414389848709106,
+              "max_dino": 0.5912545919418335,
+              "max_mutual_patch_geometry": 0.48125140120585763,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.694100022315979,
+                  "dino": 0.5912545919418335,
+                  "score": 0.48125140120585763,
+                  "matches": 12,
+                  "inlier_ratio": 0.5833333333333334,
+                  "mean_similarity": 0.6078965067863464
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7414389848709106,
+                  "dino": 0.5455419421195984,
+                  "score": 0.3966435560813317,
+                  "matches": 13,
+                  "inlier_ratio": 0.46153846153846156,
+                  "mean_similarity": 0.5427753925323486
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.5811765690644581,
+              "max_clip": 0.7597759962081909,
+              "max_dino": 0.5958187580108643,
+              "max_mutual_patch_geometry": 0.4157507022221883,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.7597759962081909,
+                  "dino": 0.5952956676483154,
+                  "score": 0.38412276903788245,
+                  "matches": 15,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5761841535568237
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.6714418530464172,
+                  "dino": 0.5958187580108643,
+                  "score": 0.4157507022221883,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.6236260533332825
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.5685096055269241,
+              "max_clip": 0.7365679144859314,
+              "max_dino": 0.5512624979019165,
+              "max_mutual_patch_geometry": 0.43223802745342255,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.7175827026367188,
+                  "dino": 0.4540364742279053,
+                  "score": 0.2509720313052336,
+                  "matches": 8,
+                  "inlier_ratio": 0.625,
+                  "mean_similarity": 0.46333298087120056
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.7365679144859314,
+                  "dino": 0.5512624979019165,
+                  "score": 0.43223802745342255,
+                  "matches": 14,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5763173699378967
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.5358207831780115,
+              "max_clip": 0.6779359579086304,
+              "max_dino": 0.510470449924469,
+              "max_mutual_patch_geometry": 0.42731396357218426,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6779359579086304,
+                  "dino": 0.510470449924469,
+                  "score": 0.42731396357218426,
+                  "matches": 11,
+                  "inlier_ratio": 0.45454545454545453,
+                  "mean_similarity": 0.6409709453582764
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6631422638893127,
+                  "dino": 0.47312963008880615,
+                  "score": 0.3703426569700241,
+                  "matches": 10,
+                  "inlier_ratio": 0.5,
+                  "mean_similarity": 0.5925482511520386
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.5396687388420105,
+              "max_clip": 0.7259705066680908,
+              "max_dino": 0.5371618270874023,
+              "max_mutual_patch_geometry": 0.3782215118408203,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.7259705066680908,
+                  "dino": 0.5371618270874023,
+                  "score": 0.3782215118408203,
+                  "matches": 16,
+                  "inlier_ratio": 0.375,
+                  "mean_similarity": 0.550140380859375
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.6964619159698486,
+                  "dino": 0.47648096084594727,
+                  "score": 0.364064274089677,
+                  "matches": 14,
+                  "inlier_ratio": 0.35714285714285715,
+                  "mean_similarity": 0.5365157723426819
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.6081698527702918,
+              "max_clip": 0.8061797022819519,
+              "max_dino": 0.6175064444541931,
+              "max_mutual_patch_geometry": 0.42907586464515096,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.8061797022819519,
+                  "dino": 0.6175064444541931,
+                  "score": 0.42907586464515096,
+                  "matches": 13,
+                  "inlier_ratio": 0.5384615384615384,
+                  "mean_similarity": 0.5577986240386963
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.7414941787719727,
+                  "dino": 0.4938817024230957,
+                  "score": 0.34805333614349365,
+                  "matches": 12,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.5220800042152405
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.7183390002040302,
+              "max_clip": 0.8258255124092102,
+              "max_dino": 0.7570079565048218,
+              "max_mutual_patch_geometry": 0.6001202043365029,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.8258255124092102,
+                  "dino": 0.7570079565048218,
+                  "score": 0.5186009738180373,
+                  "matches": 18,
+                  "inlier_ratio": 0.3888888888888889,
+                  "mean_similarity": 0.7467854022979736
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.7670475840568542,
+                  "dino": 0.746917724609375,
+                  "score": 0.6001202043365029,
+                  "matches": 17,
+                  "inlier_ratio": 0.5294117647058824,
+                  "mean_similarity": 0.7847725749015808
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF02",
+            "correct": true,
+            "truth_score": 0.7183390002040302,
+            "strongest_wrong_score": 0.6081698527702918,
+            "truth_margin": 0.1101691474337384,
+            "ranking": [
+              "CF02",
+              "CF01",
+              "FL02",
+              "FL03",
+              "FL04",
+              "FP02",
+              "FL01",
+              "FP01"
+            ]
+          }
+        },
+        {
+          "relation": "next",
+          "scores": {
+            "FL01": {
+              "score": 0.42866989374160763,
+              "max_clip": 0.739913821220398,
+              "max_dino": 0.324396550655365,
+              "max_mutual_patch_geometry": 0.22150229662656784,
+              "references": [
+                {
+                  "reference": "FL01_ref1",
+                  "clip": 0.739913821220398,
+                  "dino": 0.324396550655365,
+                  "score": 0.20392725492517152,
+                  "matches": 8,
+                  "inlier_ratio": 0.375,
+                  "mean_similarity": 0.4449321925640106
+                },
+                {
+                  "reference": "FL01_ref2",
+                  "clip": 0.7263509035110474,
+                  "dino": 0.29460692405700684,
+                  "score": 0.22150229662656784,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.48327773809432983
+                }
+              ]
+            },
+            "FL02": {
+              "score": 0.5624940862258275,
+              "max_clip": 0.7392534017562866,
+              "max_dino": 0.571387529373169,
+              "max_mutual_patch_geometry": 0.4022712831695875,
+              "references": [
+                {
+                  "reference": "FL02_ref1",
+                  "clip": 0.7392534017562866,
+                  "dino": 0.571387529373169,
+                  "score": 0.4022712831695875,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.5679123997688293
+                },
+                {
+                  "reference": "FL02_ref2",
+                  "clip": 0.7385059595108032,
+                  "dino": 0.5092306137084961,
+                  "score": 0.37232931206623715,
+                  "matches": 12,
+                  "inlier_ratio": 0.4166666666666667,
+                  "mean_similarity": 0.5256413817405701
+                }
+              ]
+            },
+            "FL03": {
+              "score": 0.6066016628192021,
+              "max_clip": 0.7825925350189209,
+              "max_dino": 0.6145029067993164,
+              "max_mutual_patch_geometry": 0.44767137215687675,
+              "references": [
+                {
+                  "reference": "FL03_ref1",
+                  "clip": 0.7825925350189209,
+                  "dino": 0.6145029067993164,
+                  "score": 0.44767137215687675,
+                  "matches": 13,
+                  "inlier_ratio": 0.38461538461538464,
+                  "mean_similarity": 0.646636426448822
+                },
+                {
+                  "reference": "FL03_ref2",
+                  "clip": 0.6265461444854736,
+                  "dino": 0.44376301765441895,
+                  "score": 0.3067054996887843,
+                  "matches": 10,
+                  "inlier_ratio": 0.4,
+                  "mean_similarity": 0.5257808566093445
+                }
+              ]
+            },
+            "FL04": {
+              "score": 0.4574253991246223,
+              "max_clip": 0.6946227550506592,
+              "max_dino": 0.41941845417022705,
+              "max_mutual_patch_geometry": 0.2736320532858372,
+              "references": [
+                {
+                  "reference": "FL04_ref1",
+                  "clip": 0.6946227550506592,
+                  "dino": 0.41941845417022705,
+                  "score": 0.2736320532858372,
+                  "matches": 11,
+                  "inlier_ratio": 0.36363636363636365,
+                  "mean_similarity": 0.4378112852573395
+                },
+                {
+                  "reference": "FL04_ref2",
+                  "clip": 0.6766730546951294,
+                  "dino": 0.3866300582885742,
+                  "score": 0.21017727255821228,
+                  "matches": 9,
+                  "inlier_ratio": 0.3333333333333333,
+                  "mean_similarity": 0.42035454511642456
+                }
+              ]
+            },
+            "FP01": {
+              "score": 0.4819352919856707,
+              "max_clip": 0.6813998222351074,
+              "max_dino": 0.4578113853931427,
+              "max_mutual_patch_geometry": 0.32248126963774365,
+              "references": [
+                {
+                  "reference": "FP01_ref1",
+                  "clip": 0.6813998222351074,
+                  "dino": 0.4578113853931427,
+                  "score": 0.32248126963774365,
+                  "matches": 9,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.5528250336647034
+                },
+                {
+                  "reference": "FP01_ref2",
+                  "clip": 0.6686533093452454,
+                  "dino": 0.42089879512786865,
+                  "score": 0.23806191980838778,
+                  "matches": 7,
+                  "inlier_ratio": 0.42857142857142855,
+                  "mean_similarity": 0.5713486075401306
+                }
+              ]
+            },
+            "FP02": {
+              "score": 0.48157195349534354,
+              "max_clip": 0.714303731918335,
+              "max_dino": 0.5073521137237549,
+              "max_mutual_patch_geometry": 0.26181904723246896,
+              "references": [
+                {
+                  "reference": "FP02_ref1",
+                  "clip": 0.714303731918335,
+                  "dino": 0.5073521137237549,
+                  "score": 0.26181904723246896,
+                  "matches": 7,
+                  "inlier_ratio": 0.5714285714285714,
+                  "mean_similarity": 0.571241557598114
+                },
+                {
+                  "reference": "FP02_ref2",
+                  "clip": 0.6670956015586853,
+                  "dino": 0.3721262812614441,
+                  "score": 0.2591740091641744,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.47847509384155273
+                }
+              ]
+            },
+            "CF01": {
+              "score": 0.5110760182142258,
+              "max_clip": 0.7484702467918396,
+              "max_dino": 0.5220619440078735,
+              "max_mutual_patch_geometry": 0.2964898645877838,
+              "references": [
+                {
+                  "reference": "CF01_ref1",
+                  "clip": 0.7484702467918396,
+                  "dino": 0.49825090169906616,
+                  "score": 0.2964898645877838,
+                  "matches": 9,
+                  "inlier_ratio": 0.4444444444444444,
+                  "mean_similarity": 0.5473659038543701
+                },
+                {
+                  "reference": "CF01_ref2",
+                  "clip": 0.7314549684524536,
+                  "dino": 0.5220619440078735,
+                  "score": 0.1907071669896444,
+                  "matches": 5,
+                  "inlier_ratio": 0.6,
+                  "mean_similarity": 0.5721215009689331
+                }
+              ]
+            },
+            "CF02": {
+              "score": 0.796924046606853,
+              "max_clip": 0.8806023597717285,
+              "max_dino": 0.8963330984115601,
+              "max_mutual_patch_geometry": 0.6615748652096453,
+              "references": [
+                {
+                  "reference": "CF02_ref1",
+                  "clip": 0.8739694356918335,
+                  "dino": 0.8438568115234375,
+                  "score": 0.6423758135901557,
+                  "matches": 18,
+                  "inlier_ratio": 0.5555555555555556,
+                  "mean_similarity": 0.8259117603302002
+                },
+                {
+                  "reference": "CF02_ref2",
+                  "clip": 0.8806023597717285,
+                  "dino": 0.8963330984115601,
+                  "score": 0.6615748652096453,
+                  "matches": 29,
+                  "inlier_ratio": 0.5862068965517241,
+                  "mean_similarity": 0.8341596126556396
+                }
+              ]
+            }
+          },
+          "ranking": {
+            "prediction": "CF02",
+            "correct": true,
+            "truth_score": 0.796924046606853,
+            "strongest_wrong_score": 0.6066016628192021,
+            "truth_margin": 0.19032238378765087,
+            "ranking": [
+              "CF02",
+              "FL03",
+              "FL02",
+              "CF01",
+              "FP01",
+              "FP02",
+              "FL04",
+              "FL01"
+            ]
+          }
+        }
+      ],
+      "temporal_aggregate": {
+        "scores": {
+          "FL01": {
+            "score": 0.5170749509334565,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5370651441812515
+              },
+              {
+                "relation": "prev",
+                "score": 0.4970847576856613
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.42866989374160763
+            }
+          },
+          "FL02": {
+            "score": 0.5811559696992239,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5998178531726202
+              },
+              {
+                "relation": "next",
+                "score": 0.5624940862258275
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.5127673643827438
+            }
+          },
+          "FL03": {
+            "score": 0.5938891159418301,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.6066016628192021
+              },
+              {
+                "relation": "anchor",
+                "score": 0.5811765690644581
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.5477392919361591
+            }
+          },
+          "FL04": {
+            "score": 0.5640346442075337,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5685096055269241
+              },
+              {
+                "relation": "prev",
+                "score": 0.5595596828881432
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.4574253991246223
+            }
+          },
+          "FP01": {
+            "score": 0.5180670057733854,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.5358207831780115
+              },
+              {
+                "relation": "prev",
+                "score": 0.5003132283687591
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.4819352919856707
+            }
+          },
+          "FP02": {
+            "score": 0.54220911860466,
+            "top_two_frames": [
+              {
+                "relation": "prev",
+                "score": 0.5447494983673096
+              },
+              {
+                "relation": "anchor",
+                "score": 0.5396687388420105
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.48157195349534354
+            }
+          },
+          "CF01": {
+            "score": 0.5869131897504513,
+            "top_two_frames": [
+              {
+                "relation": "anchor",
+                "score": 0.6081698527702918
+              },
+              {
+                "relation": "prev",
+                "score": 0.5656565267306107
+              }
+            ],
+            "discarded_frame": {
+              "relation": "next",
+              "score": 0.5110760182142258
+            }
+          },
+          "CF02": {
+            "score": 0.7576315234054416,
+            "top_two_frames": [
+              {
+                "relation": "next",
+                "score": 0.796924046606853
+              },
+              {
+                "relation": "anchor",
+                "score": 0.7183390002040302
+              }
+            ],
+            "discarded_frame": {
+              "relation": "prev",
+              "score": 0.6684487223625183
+            }
+          }
+        },
+        "prediction": "CF02",
+        "correct": true,
+        "truth_score": 0.7576315234054416,
+        "strongest_wrong_score": 0.5938891159418301,
+        "truth_margin": 0.16374240746361146,
+        "ranking": [
+          "CF02",
+          "FL03",
+          "CF01",
+          "FL02",
+          "FL04",
+          "FP02",
+          "FP01",
+          "FL01"
+        ]
+      },
+      "acceptance": {
+        "score_gate": true,
+        "margin_gate": true,
+        "top1_score": 0.7576315234054416,
+        "top1_margin": 0.16374240746361146,
+        "route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "CF02",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      },
+      "wrong_goal_controls": [
+        {
+          "wrong_target": "FL01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5170749509334565
+        },
+        {
+          "wrong_target": "FL02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5811559696992239
+        },
+        {
+          "wrong_target": "FL03",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5938891159418301
+        },
+        {
+          "wrong_target": "FL04",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5640346442075337
+        },
+        {
+          "wrong_target": "FP01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5180670057733854
+        },
+        {
+          "wrong_target": "FP02",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.54220911860466
+        },
+        {
+          "wrong_target": "CF01",
+          "search_priority_candidate": false,
+          "aggregate_score": 0.5869131897504513
+        }
+      ]
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence for or against the unchanged temporal appearance router on exactly two new-city, target-way/item-disjoint, router-unseen Caen targets in one same-provider eight-target closed roster.",
+    "not_allowed": [
+      "blind, independent, provider-disjoint, fully pixel-unseen, open-world, conformal, FDR-controlled, or deployment confirmation",
+      "trained sequential-descriptor performance or attribution to SeqNet or JIST",
+      "exact physical identity authority, sign-to-building association, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

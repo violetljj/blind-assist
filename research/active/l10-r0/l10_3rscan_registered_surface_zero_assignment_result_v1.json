@@ -1,0 +1,828 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-surface-zero-assignment-result-v1",
+  "authority": "CONSUMED_PHYSICAL_TARGET_DISJOINT_COMMON_FAMILY_REGISTERED_SURFACE_RESULT",
+  "protocol_path": "l10_3rscan_registered_surface_zero_assignment_protocol_v1.json",
+  "protocol_sha256": "5b48458676b0c3a98576fa58c0d84ff8b1ab243b56d04dcf04522632fedd4fd6",
+  "cohort_path": "l10_3rscan_registered_surface_zero_assignment_cohort_v1.json",
+  "cohort_sha256": "a4dcfc909f13562f38c90b1b4f94e08d3f1007531d97d3f959f0c2a570597e84",
+  "implementation": {
+    "path": "l10_3rscan_registered_surface_zero_assignment.py",
+    "sha256": "a69b20c3c6f1d73ba0458e7ea183bcc5189104a529f7512f4b3e4543134e9a6b"
+  },
+  "conclusion": "L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_targets": 4,
+    "scenarios": 4,
+    "truth_matches_across_scenarios": 12,
+    "truth_unmatched_nodes_across_scenarios": 4
+  },
+  "metrics": {
+    "aggregate": {
+      "complete_surface_hungarian": {
+        "true_positive": 12,
+        "false_positive": 1,
+        "false_negative": 0,
+        "precision": 0.923077,
+        "recall": 1.0,
+        "f1": 0.96,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 4
+      },
+      "centroid_reciprocal_zero": {
+        "true_positive": 12,
+        "false_positive": 1,
+        "false_negative": 0,
+        "precision": 0.923077,
+        "recall": 1.0,
+        "f1": 0.96,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 4
+      },
+      "surface_reciprocal_zero": {
+        "true_positive": 12,
+        "false_positive": 1,
+        "false_negative": 0,
+        "precision": 0.923077,
+        "recall": 1.0,
+        "f1": 0.96,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 4
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03",
+          "SZ04"
+        ],
+        "query_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03",
+          "SZ04"
+        ],
+        "centroid_score_matrix": [
+          [
+            -0.191619,
+            -3.42656,
+            -2.472043,
+            -2.6191
+          ],
+          [
+            -3.563419,
+            -0.022066,
+            -3.573243,
+            -3.593211
+          ],
+          [
+            -2.54096,
+            -3.50254,
+            -0.199638,
+            -0.412696
+          ],
+          [
+            -2.67681,
+            -3.561103,
+            -0.270305,
+            -0.021957
+          ]
+        ],
+        "surface_score_matrix": [
+          [
+            -0.032049,
+            -2.954735,
+            -2.320923,
+            -2.441707
+          ],
+          [
+            -3.178937,
+            -0.046453,
+            -3.250722,
+            -3.216848
+          ],
+          [
+            -2.325977,
+            -3.224135,
+            -0.029816,
+            -0.270071
+          ],
+          [
+            -2.43274,
+            -3.212959,
+            -0.238546,
+            -0.02314
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              },
+              {
+                "reference": "SZ04",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "centroid_reciprocal_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              },
+              {
+                "reference": "SZ04",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "surface_reciprocal_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              },
+              {
+                "reference": "SZ04",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03"
+        ],
+        "query_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03",
+          "SZ04"
+        ],
+        "centroid_score_matrix": [
+          [
+            -0.191619,
+            -3.42656,
+            -2.472043,
+            -2.6191
+          ],
+          [
+            -3.563419,
+            -0.022066,
+            -3.573243,
+            -3.593211
+          ],
+          [
+            -2.54096,
+            -3.50254,
+            -0.199638,
+            -0.412696
+          ]
+        ],
+        "surface_score_matrix": [
+          [
+            -0.032049,
+            -2.954735,
+            -2.320923,
+            -2.441707
+          ],
+          [
+            -3.178937,
+            -0.046453,
+            -3.250722,
+            -3.216848
+          ],
+          [
+            -2.325977,
+            -3.224135,
+            -0.029816,
+            -0.270071
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "centroid_reciprocal_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "surface_reciprocal_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "SZ04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03",
+          "SZ04"
+        ],
+        "query_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03"
+        ],
+        "centroid_score_matrix": [
+          [
+            -0.191619,
+            -3.42656,
+            -2.472043
+          ],
+          [
+            -3.563419,
+            -0.022066,
+            -3.573243
+          ],
+          [
+            -2.54096,
+            -3.50254,
+            -0.199638
+          ],
+          [
+            -2.67681,
+            -3.561103,
+            -0.270305
+          ]
+        ],
+        "surface_score_matrix": [
+          [
+            -0.032049,
+            -2.954735,
+            -2.320923
+          ],
+          [
+            -3.178937,
+            -0.046453,
+            -3.250722
+          ],
+          [
+            -2.325977,
+            -3.224135,
+            -0.029816
+          ],
+          [
+            -2.43274,
+            -3.212959,
+            -0.238546
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SZ04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "centroid_reciprocal_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SZ04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "surface_reciprocal_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "SZ04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap",
+        "reference_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ03"
+        ],
+        "query_targets": [
+          "SZ01",
+          "SZ02",
+          "SZ04"
+        ],
+        "centroid_score_matrix": [
+          [
+            -0.191619,
+            -3.42656,
+            -2.6191
+          ],
+          [
+            -3.563419,
+            -0.022066,
+            -3.593211
+          ],
+          [
+            -2.54096,
+            -3.50254,
+            -0.412696
+          ]
+        ],
+        "surface_score_matrix": [
+          [
+            -0.032049,
+            -2.954735,
+            -2.441707
+          ],
+          [
+            -3.178937,
+            -0.046453,
+            -3.216848
+          ],
+          [
+            -2.325977,
+            -3.224135,
+            -0.270071
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ03"
+            ],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "centroid_reciprocal_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ03"
+            ],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "surface_reciprocal_zero": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "SZ01",
+                "query": "SZ01"
+              },
+              {
+                "reference": "SZ02",
+                "query": "SZ02"
+              },
+              {
+                "reference": "SZ03",
+                "query": "SZ04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "SZ03"
+            ],
+            "truth_unmatched_queries": [
+              "SZ04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_centroid_score_matrix": [
+      [
+        -0.191619,
+        -3.42656,
+        -2.472043,
+        -2.6191
+      ],
+      [
+        -3.563419,
+        -0.022066,
+        -3.573243,
+        -3.593211
+      ],
+      [
+        -2.54096,
+        -3.50254,
+        -0.199638,
+        -0.412696
+      ],
+      [
+        -2.67681,
+        -3.561103,
+        -0.270305,
+        -0.021957
+      ]
+    ],
+    "full_surface_score_matrix": [
+      [
+        -0.032049,
+        -2.954735,
+        -2.320923,
+        -2.441707
+      ],
+      [
+        -3.178937,
+        -0.046453,
+        -3.250722,
+        -3.216848
+      ],
+      [
+        -2.325977,
+        -3.224135,
+        -0.029816,
+        -0.270071
+      ],
+      [
+        -2.43274,
+        -3.212959,
+        -0.238546,
+        -0.02314
+      ]
+    ],
+    "pair_diagnostics": {
+      "SZ01->SZ01": {
+        "reference_target_instance_id": 18,
+        "query_target_instance_id": 18,
+        "centroid_distance_metres": 0.191619,
+        "symmetric_median_surface_distance_metres": 0.032049
+      },
+      "SZ01->SZ02": {
+        "reference_target_instance_id": 18,
+        "query_target_instance_id": 17,
+        "centroid_distance_metres": 3.42656,
+        "symmetric_median_surface_distance_metres": 2.954735
+      },
+      "SZ01->SZ03": {
+        "reference_target_instance_id": 18,
+        "query_target_instance_id": 46,
+        "centroid_distance_metres": 2.472043,
+        "symmetric_median_surface_distance_metres": 2.320923
+      },
+      "SZ01->SZ04": {
+        "reference_target_instance_id": 18,
+        "query_target_instance_id": 8,
+        "centroid_distance_metres": 2.6191,
+        "symmetric_median_surface_distance_metres": 2.441707
+      },
+      "SZ02->SZ01": {
+        "reference_target_instance_id": 17,
+        "query_target_instance_id": 18,
+        "centroid_distance_metres": 3.563419,
+        "symmetric_median_surface_distance_metres": 3.178937
+      },
+      "SZ02->SZ02": {
+        "reference_target_instance_id": 17,
+        "query_target_instance_id": 17,
+        "centroid_distance_metres": 0.022066,
+        "symmetric_median_surface_distance_metres": 0.046453
+      },
+      "SZ02->SZ03": {
+        "reference_target_instance_id": 17,
+        "query_target_instance_id": 46,
+        "centroid_distance_metres": 3.573243,
+        "symmetric_median_surface_distance_metres": 3.250722
+      },
+      "SZ02->SZ04": {
+        "reference_target_instance_id": 17,
+        "query_target_instance_id": 8,
+        "centroid_distance_metres": 3.593211,
+        "symmetric_median_surface_distance_metres": 3.216848
+      },
+      "SZ03->SZ01": {
+        "reference_target_instance_id": 46,
+        "query_target_instance_id": 18,
+        "centroid_distance_metres": 2.54096,
+        "symmetric_median_surface_distance_metres": 2.325977
+      },
+      "SZ03->SZ02": {
+        "reference_target_instance_id": 46,
+        "query_target_instance_id": 17,
+        "centroid_distance_metres": 3.50254,
+        "symmetric_median_surface_distance_metres": 3.224135
+      },
+      "SZ03->SZ03": {
+        "reference_target_instance_id": 46,
+        "query_target_instance_id": 46,
+        "centroid_distance_metres": 0.199638,
+        "symmetric_median_surface_distance_metres": 0.029816
+      },
+      "SZ03->SZ04": {
+        "reference_target_instance_id": 46,
+        "query_target_instance_id": 8,
+        "centroid_distance_metres": 0.412696,
+        "symmetric_median_surface_distance_metres": 0.270071
+      },
+      "SZ04->SZ01": {
+        "reference_target_instance_id": 8,
+        "query_target_instance_id": 18,
+        "centroid_distance_metres": 2.67681,
+        "symmetric_median_surface_distance_metres": 2.43274
+      },
+      "SZ04->SZ02": {
+        "reference_target_instance_id": 8,
+        "query_target_instance_id": 17,
+        "centroid_distance_metres": 3.561103,
+        "symmetric_median_surface_distance_metres": 3.212959
+      },
+      "SZ04->SZ03": {
+        "reference_target_instance_id": 8,
+        "query_target_instance_id": 46,
+        "centroid_distance_metres": 0.270305,
+        "symmetric_median_surface_distance_metres": 0.238546
+      },
+      "SZ04->SZ04": {
+        "reference_target_instance_id": 8,
+        "query_target_instance_id": 8,
+        "centroid_distance_metres": 0.021957,
+        "symmetric_median_surface_distance_metres": 0.02314
+      }
+    }
+  },
+  "gain_over_complete_assignment": {
+    "false_positive_reduction": 0,
+    "f1_delta": 0.0,
+    "balanced_swap_false_positive_reduction": 0
+  },
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "decision_gate": {
+    "aggregate_true_matches": "12/12 across the four frozen scenarios.",
+    "aggregate_false_matches": 0,
+    "aggregate_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in 4/4 scenarios.",
+    "balanced_swap": "2/2 true matches, zero false matches, and exact rejection of the missing reference identity and extra query identity.",
+    "single_replay": "One replay on the frozen physical-target-disjoint common-family cohort; do not tune on the registered distances."
+  },
+  "claim_boundary": "A pass is a small real-geometry Development result for partial correspondence among four truth-proposed stable indoor 3RScan doors or doorframes from one common registered scan family. Physical targets are disjoint from seven prior cohorts, but labelled instance surfaces and the rigid scan transform are privileged provider evidence unavailable to a raw phone image. It proves neither appearance-only unknown rejection nor open-world discovery, door detection, calibrated unknown probability, a portal aperture, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

@@ -1,0 +1,232 @@
+{
+  "schema": "blindassist-l10-scenenn-center-target-door-retrieval-result-v1",
+  "authority": "CONSUMED_RGBD_PROVIDER_DISJOINT_PORTAL_INSTANCE_TRANSFER_RESULT",
+  "protocol_path": "l10_scenenn_center_target_door_retrieval_protocol_v1.json",
+  "protocol_sha256": "747eefb64b00678680181b14b30d04d270cef81113a281d09e6a94053eb79c1f",
+  "cohort_path": "l10_scenenn_center_target_door_retrieval_cohort_v1.json",
+  "cohort_sha256": "e1c38de47c6c5292f14eb4695974c77e1be99da1f26569c654e49205cd0f3f43",
+  "implementation": {
+    "path": "l10_scenenn_center_target_door_retrieval.py",
+    "sha256": "1753e707063ba2e666c3ccfe347ee49990ca3994fe86b5b14405f1c0dbd8fafa"
+  },
+  "model": {
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\p1_a2_dinov2_small_ed25f3a",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "device": "CPU"
+  },
+  "conclusion": "L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_doors": 3,
+    "directed_anchors": 6,
+    "positive_pairs": 6,
+    "negative_pairs": 12
+  },
+  "metrics": {
+    "baseline": {
+      "auroc": 0.5,
+      "average_precision": 0.577778,
+      "retrieval": {
+        "anchors": 6,
+        "top1_correct": 2,
+        "top1_accuracy": 0.333333,
+        "mrr": 0.611111,
+        "mean_positive_margin": -0.039115,
+        "minimum_positive_margin": -0.191571,
+        "details": [
+          {
+            "anchor": "032_query",
+            "positive_rank": 3,
+            "positive_margin": -0.093221,
+            "ranking": [
+              "246_reference",
+              "073_reference",
+              "032_reference"
+            ]
+          },
+          {
+            "anchor": "032_reference",
+            "positive_rank": 3,
+            "positive_margin": -0.191571,
+            "ranking": [
+              "246_query",
+              "073_query",
+              "032_query"
+            ]
+          },
+          {
+            "anchor": "073_query",
+            "positive_rank": 2,
+            "positive_margin": -0.047453,
+            "ranking": [
+              "032_reference",
+              "073_reference",
+              "246_reference"
+            ]
+          },
+          {
+            "anchor": "073_reference",
+            "positive_rank": 2,
+            "positive_margin": -0.17168,
+            "ranking": [
+              "246_query",
+              "073_query",
+              "032_query"
+            ]
+          },
+          {
+            "anchor": "246_query",
+            "positive_rank": 1,
+            "positive_margin": 0.036439,
+            "ranking": [
+              "246_reference",
+              "073_reference",
+              "032_reference"
+            ]
+          },
+          {
+            "anchor": "246_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.232793,
+            "ranking": [
+              "246_query",
+              "032_query",
+              "073_query"
+            ]
+          }
+        ]
+      }
+    },
+    "upgraded": {
+      "auroc": 0.444444,
+      "average_precision": 0.555556,
+      "retrieval": {
+        "anchors": 6,
+        "top1_correct": 2,
+        "top1_accuracy": 0.333333,
+        "mrr": 0.583333,
+        "mean_positive_margin": -0.042286,
+        "minimum_positive_margin": -0.221899,
+        "details": [
+          {
+            "anchor": "032_query",
+            "positive_rank": 3,
+            "positive_margin": -0.077828,
+            "ranking": [
+              "073_reference",
+              "246_reference",
+              "032_reference"
+            ]
+          },
+          {
+            "anchor": "032_reference",
+            "positive_rank": 3,
+            "positive_margin": -0.221899,
+            "ranking": [
+              "246_query",
+              "073_query",
+              "032_query"
+            ]
+          },
+          {
+            "anchor": "073_query",
+            "positive_rank": 2,
+            "positive_margin": -0.0716,
+            "ranking": [
+              "032_reference",
+              "073_reference",
+              "246_reference"
+            ]
+          },
+          {
+            "anchor": "073_reference",
+            "positive_rank": 3,
+            "positive_margin": -0.157467,
+            "ranking": [
+              "246_query",
+              "032_query",
+              "073_query"
+            ]
+          },
+          {
+            "anchor": "246_query",
+            "positive_rank": 1,
+            "positive_margin": 0.046375,
+            "ranking": [
+              "246_reference",
+              "073_reference",
+              "032_reference"
+            ]
+          },
+          {
+            "anchor": "246_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.228703,
+            "ranking": [
+              "246_query",
+              "032_query",
+              "073_query"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "deltas": {
+    "auroc": -0.055556,
+    "top1_accuracy": 0.0,
+    "mean_positive_margin": -0.003171
+  },
+  "crop_receipts": {
+    "032_query": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\032_query.png",
+      "width": 455,
+      "height": 455,
+      "sha256": "25c43c0244f327a025b1c3a6c8828f03e4cf051aed4a82a5e1c6f90c4e001613"
+    },
+    "032_reference": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\032_reference.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "ef9ef754f93178d5ab5f3ac44005a444b8e37879e359d81536ca727b80260df4"
+    },
+    "073_query": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\073_query.png",
+      "width": 270,
+      "height": 270,
+      "sha256": "2bb37a9b65cd60ac596beaa6d88b30dcb86fe06f240de7347c5964791fec3aa5"
+    },
+    "073_reference": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\073_reference.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "73793dc315752e6cfa5a6fc8951ca8a131098a3f8f8d466cad865bd1c9cb9d27"
+    },
+    "246_query": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\246_query.png",
+      "width": 391,
+      "height": 391,
+      "sha256": "d55189991122c596082666d2735c7058c72376cc90355a7ec0752b22f087b94b"
+    },
+    "246_reference": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-scenenn-center-target-door-retrieval-v1\\proposal-crops\\246_reference.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "10dfbcf42300827d195e73d402e8a531f4be189e9ef9e223545fe44e47dd01ed"
+    }
+  },
+  "decision_gate": {
+    "exact_instance_top1": "6/6 directed anchors",
+    "wrong_instance_commit": "0/6",
+    "minimum_positive_margin": "strictly greater than zero for every anchor",
+    "diagnostics": [
+      "pair AUROC",
+      "average precision",
+      "MRR",
+      "mean positive margin",
+      "baseline comparison"
+    ],
+    "single_replay": "One frozen replay. Do not tune on the six consumed SceneNN crops."
+  },
+  "claim_boundary": "A pass is a small real-image Development canary that the frozen same-point appearance lock transfers from outdoor 3D Street View to truth-proposed indoor SceneNN door instances. SceneNN mesh, pose, RGB and door labels come from one provider; the six RGB-D frames are consumed; the candidate envelopes use privileged reconstructed geometry; and only three physical doors are tested. It is not door detection, pixel-mask transfer, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, open-world or provider-independent confirmation, user benefit or mobility-safety evidence."
+}

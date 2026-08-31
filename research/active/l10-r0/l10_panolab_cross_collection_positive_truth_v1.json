@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist-l10-panolab-cross-collection-positive-human-truth-v1",
+  "status": "FROZEN_AFTER_PIXEL_REVIEW_BEFORE_MODEL_CALL",
+  "reviewed_at_local": "2026-08-31T08:08:00+08:00",
+  "reviewer": "Codex visual review",
+  "model_calls_on_selected_images_before_truth_freeze": 0,
+  "inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_source_protocol_v1.json",
+      "sha256": "541f53a89f3419e3fa9af66bb78a1ae6e448552827c4649b6c73986f1107c580",
+      "bytes": 7953
+    },
+    "selection": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_selection_v1.json",
+      "sha256": "408aac42bf3590379b6c3fc6c448553b15077ead253dc170fecf6355868188f0",
+      "bytes": 90460
+    },
+    "materialization": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_materialization_v1.json",
+      "sha256": "46e824bb55a24920ce378a47f1ae777f0e77fd632b1dba1bb3f1bc686aae89ee",
+      "bytes": 4219
+    }
+  },
+  "review_method": {
+    "full_panoramas": "All six 5760x2880 source panoramas were reviewed through the Codex image viewer at a 2048x1024 display rendering.",
+    "entrance_windows": "All six strict entrance-ray windows were reviewed at the original 1440x1680 crop size. The review windows used the already frozen plus/minus 45 degree horizontal and 45 degree above/60 degree below horizon contract, with native pixels and seam wrap.",
+    "allowed_evidence": "Downloaded pixels, frozen OSM target-way/main-entrance geometry, frozen item pose metadata, and deterministic entrance-ray projection only.",
+    "forbidden_evidence": "No OCR, CLIP, DINOv2, patch matcher, score, rank, threshold decision, or other learned-model output was viewed before this truth file was frozen."
+  },
+  "episodes": [
+    {
+      "episode_id": "FP01",
+      "target_way_id": 305144115,
+      "target_name": "Rumillat",
+      "reference_collection": "6c4628e6-279e-48eb-acb1-6ac695dc84f1",
+      "query_collection": "90a28bae-899b-40db-b297-ee34aff10553",
+      "reference_query_collection_disjoint": true,
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "Both references show the Rumillat facade and name directly. The query is strongly foliage-occluded but the same grey-clad retail facade and its distinctive vertical service-text panel remain visible on the right of the entrance-ray window; the neighbouring Centre Salons facade is also visible as a distractor."
+    },
+    {
+      "episode_id": "FP02",
+      "target_way_id": 378533157,
+      "target_name": "Halle Rebatet",
+      "reference_collection": "ad932773-5a1e-48e1-9d16-4b71a45f21d5",
+      "query_collection": "e63465cb-21cb-4270-ae2b-6ecd88910b64",
+      "reference_query_collection_disjoint": true,
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "MODERATE",
+      "observation": "The low historic stone hall is present in both collections. The views differ sharply: the reference sequence exposes the gabled/stone facade and adjacent modern tower, while the query sees the hall obliquely through trees with the tower as a strong distractor. The target remains partly visible, so the row is retained as frozen rather than resampled."
+    }
+  ],
+  "summary": {
+    "episodes_reviewed": 2,
+    "valid_positive_episodes": 2,
+    "invalid_or_uncertain_episodes": 0,
+    "hard_occlusion_episodes": 2,
+    "resampled_after_pixel_review": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-visible same-target positive truth for this frozen two-episode, same-provider, cross-collection panel.",
+    "not_allowed": "The review does not prove portal ownership, access, traversability, waypoint quality, arrival, handoff, user benefit, provider-disjoint generalization, deployment performance, or safety."
+  }
+}

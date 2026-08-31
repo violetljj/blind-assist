@@ -1,0 +1,1280 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-ledger-result-v1",
+  "decision": "L10_PANOLAB_TRACK_LEXICAL_LEDGER_CONSUMED_DEVELOPMENT_GATE_NOT_MET",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_track_lexical_ledger_protocol_v1.json",
+  "protocol_sha256": "1981994057b0853be63201ef2ce00d9742cdf2e9172faad132ef1a36333a6b70",
+  "evaluator_sha256": "175d7a4c697b9e3486f3a04ad751c242b4b70d79376e39e441f6a7066f693d6c",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.4.6",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "episodes": 4,
+    "strict_orientation_images": 8,
+    "post_action_authorized_entrance_rays": 4,
+    "current_after_frame_only_lexical_candidates": 1,
+    "current_after_frame_only_lexical_candidate_rate": 0.25,
+    "track_carried_lexical_candidates": 1,
+    "track_carried_lexical_candidate_rate": 0.25,
+    "track_carried_candidate_gain_count": 0,
+    "track_carried_candidate_rate_gain": 0.0,
+    "pre_action_only_candidates_retained": 0,
+    "new_candidates_acquired_after_action": 1,
+    "joint_track_candidate_plus_authorized_after_ray": 1,
+    "counterfactual_target_trials": 24,
+    "counterfactual_target_matches": 0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 26.420356
+  },
+  "gate": {
+    "all_four_consumed_development_episodes_evaluated": true,
+    "strict_orientation_8_of_8": true,
+    "frozen_active_ray_recovery_gate_met": true,
+    "post_action_authorized_entrance_ray_4_of_4": true,
+    "minimum_track_carried_lexical_candidates": false,
+    "minimum_gain_over_current_after_frame_only": false,
+    "minimum_pre_action_only_candidate_retained": false,
+    "minimum_new_candidate_acquired_after_action": true,
+    "zero_counterfactual_target_matches": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "AR01",
+      "target_name": "La Source",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "components": {
+        "start_lexical_candidate": {
+          "frame_key": "AR01-START",
+          "panorama_item_id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+            "entrance_node_id": 4459005122,
+            "camera_lon_lat": [
+              5.6875183,
+              45.191388889
+            ],
+            "entrance_lon_lat": [
+              5.6877946,
+              45.1910213
+            ],
+            "initial_bearing_degrees": 152.088683,
+            "view_azimuth_degrees": 295.0,
+            "relative_viewer_yaw_degrees": 217.088683,
+            "raw_x_degrees": 37.088683,
+            "raw_x_pixels": 593.418923,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+              "view_azimuth_degrees": 295.0,
+              "camera_native_heading_degrees": 295.08376503643865,
+              "heading_circular_difference_degrees": 0.083765,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 593.418923,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "b3c8a82ecbd51d88c0df12896cafb97a6b594d6d1ec4aa673d25a99c8c550c21"
+          },
+          "ocr": {
+            "row_count": 1,
+            "seconds": 2.265239,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "M",
+              "ascii_tokens": [
+                "m"
+              ],
+              "score": 0.99991083,
+              "box_xyxy": [
+                1090.0,
+                602.0,
+                1104.0,
+                617.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "source"
+            ],
+            "witnesses": []
+          },
+          "counterfactual_target_matches": {
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_lexical_candidate": {
+          "frame_key": "AR01-AFTER",
+          "panorama_item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+            "entrance_node_id": 4459005122,
+            "camera_lon_lat": [
+              5.6876475,
+              45.1913465
+            ],
+            "entrance_lon_lat": [
+              5.6877946,
+              45.1910213
+            ],
+            "initial_bearing_degrees": 162.318627,
+            "view_azimuth_degrees": 294.0,
+            "relative_viewer_yaw_degrees": 228.318627,
+            "raw_x_degrees": 48.318627,
+            "raw_x_pixels": 773.098036,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+              "view_azimuth_degrees": 294.0,
+              "camera_native_heading_degrees": 294.29386124228114,
+              "heading_circular_difference_degrees": 0.293861,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 773.098036,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "6e8e897b36dae7dede26db58f17b71155ce52ab87495a52986ef67bbf7d793c0"
+          },
+          "ocr": {
+            "row_count": 0,
+            "seconds": 2.564586,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "source"
+            ],
+            "witnesses": []
+          },
+          "counterfactual_target_matches": {
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_entrance_ray_authorized": true
+      },
+      "ledger": {
+        "current_frame_only_lexical_candidate": false,
+        "track_carried_lexical_candidate": false,
+        "candidate_first_observed_phase": null,
+        "pre_action_candidate_retained_after_move": false,
+        "new_candidate_acquired_after_move": false,
+        "joint_lexical_candidate_and_authorized_after_ray": false,
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "AR02",
+      "target_name": "La Galerie Saint-Martin-d’Hères",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "components": {
+        "start_lexical_candidate": {
+          "frame_key": "AR02-START",
+          "panorama_item_id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+            "entrance_node_id": 11774051470,
+            "camera_lon_lat": [
+              5.759374108,
+              45.185341168
+            ],
+            "entrance_lon_lat": [
+              5.7589313,
+              45.1854581
+            ],
+            "initial_bearing_degrees": 290.539358,
+            "view_azimuth_degrees": 126.0,
+            "relative_viewer_yaw_degrees": 164.539358,
+            "raw_x_degrees": 344.539358,
+            "raw_x_pixels": 5512.629724,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+              "view_azimuth_degrees": 126.0,
+              "camera_native_heading_degrees": 126.45561902316925,
+              "heading_circular_difference_degrees": 0.455619,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5512.629724,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "b348941ad057eb3930c9b0acc641a4c6af52eef57e85a3bd238d86ef99880583"
+          },
+          "ocr": {
+            "row_count": 2,
+            "seconds": 2.584823,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "OWAID",
+              "ascii_tokens": [
+                "owaid"
+              ],
+              "score": 0.61903185,
+              "box_xyxy": [
+                680.0,
+                575.0,
+                771.0,
+                654.0
+              ]
+            },
+            {
+              "text": "WEIGT",
+              "ascii_tokens": [
+                "weigt"
+              ],
+              "score": 0.43828192,
+              "box_xyxy": [
+                697.0,
+                623.0,
+                750.0,
+                655.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "galerie",
+              "saint",
+              "martin",
+              "dheres"
+            ],
+            "witnesses": []
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_lexical_candidate": {
+          "frame_key": "AR02-AFTER",
+          "panorama_item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+            "entrance_node_id": 11774051470,
+            "camera_lon_lat": [
+              5.759303104,
+              45.18537769
+            ],
+            "entrance_lon_lat": [
+              5.7589313,
+              45.1854581
+            ],
+            "initial_bearing_degrees": 287.058574,
+            "view_azimuth_degrees": 126.0,
+            "relative_viewer_yaw_degrees": 161.058574,
+            "raw_x_degrees": 341.058574,
+            "raw_x_pixels": 5456.937185,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+              "view_azimuth_degrees": 126.0,
+              "camera_native_heading_degrees": 126.13857405792889,
+              "heading_circular_difference_degrees": 0.138574,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 5456.937185,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": true,
+            "pixel_sha256": "2bb28e7dd79b5c1e501aa41055d1a7e3b48feaca72242b87d9a8dfce2b0a1da3"
+          },
+          "ocr": {
+            "row_count": 4,
+            "seconds": 3.089941,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "eBelvedere",
+              "ascii_tokens": [
+                "ebelvedere"
+              ],
+              "score": 0.99404633,
+              "box_xyxy": [
+                0.0,
+                267.0,
+                266.0,
+                388.0
+              ]
+            },
+            {
+              "text": "ONA",
+              "ascii_tokens": [
+                "ona"
+              ],
+              "score": 0.96327978,
+              "box_xyxy": [
+                672.0,
+                541.0,
+                786.0,
+                637.0
+              ]
+            },
+            {
+              "text": "ONIGINAVSISNERS",
+              "ascii_tokens": [
+                "oniginavsisners"
+              ],
+              "score": 0.79572177,
+              "box_xyxy": [
+                689.0,
+                598.0,
+                764.0,
+                640.0
+              ]
+            },
+            {
+              "text": "OiD",
+              "ascii_tokens": [
+                "oid"
+              ],
+              "score": 0.6618349,
+              "box_xyxy": [
+                625.0,
+                688.0,
+                654.0,
+                715.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "galerie",
+              "saint",
+              "martin",
+              "dheres"
+            ],
+            "witnesses": []
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_entrance_ray_authorized": true
+      },
+      "ledger": {
+        "current_frame_only_lexical_candidate": false,
+        "track_carried_lexical_candidate": false,
+        "candidate_first_observed_phase": null,
+        "pre_action_candidate_retained_after_move": false,
+        "new_candidate_acquired_after_move": false,
+        "joint_lexical_candidate_and_authorized_after_ray": false,
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "AR03",
+      "target_name": "Le Jean Jaurès",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "components": {
+        "start_lexical_candidate": {
+          "frame_key": "AR03-START",
+          "panorama_item_id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+            "entrance_node_id": 5661342168,
+            "camera_lon_lat": [
+              5.6976405,
+              45.1824405
+            ],
+            "entrance_lon_lat": [
+              5.6976574,
+              45.1825979
+            ],
+            "initial_bearing_degrees": 4.327868,
+            "view_azimuth_degrees": 273.0,
+            "relative_viewer_yaw_degrees": 91.327868,
+            "raw_x_degrees": 271.327868,
+            "raw_x_pixels": 4341.245894,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+              "view_azimuth_degrees": 273.0,
+              "camera_native_heading_degrees": 272.530328115593,
+              "heading_circular_difference_degrees": 0.469672,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4341.245894,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "8166f7d9765ad9b1120fef98c8659eb73289c4f1c5a8d141cdbc22d848984959"
+          },
+          "ocr": {
+            "row_count": 2,
+            "seconds": 2.96853,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "自",
+              "ascii_tokens": [],
+              "score": 0.5103873,
+              "box_xyxy": [
+                266.0,
+                673.0,
+                303.0,
+                717.0
+              ]
+            },
+            {
+              "text": "中",
+              "ascii_tokens": [],
+              "score": 0.80988163,
+              "box_xyxy": [
+                1308.0,
+                843.0,
+                1440.0,
+                918.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "jean",
+              "jaures"
+            ],
+            "witnesses": []
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_lexical_candidate": {
+          "frame_key": "AR03-AFTER",
+          "panorama_item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+            "entrance_node_id": 5661342168,
+            "camera_lon_lat": [
+              5.6977687,
+              45.1824379
+            ],
+            "entrance_lon_lat": [
+              5.6976574,
+              45.1825979
+            ],
+            "initial_bearing_degrees": 333.880783,
+            "view_azimuth_degrees": 272.0,
+            "relative_viewer_yaw_degrees": 61.880783,
+            "raw_x_degrees": 241.880783,
+            "raw_x_pixels": 3870.092534,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+              "view_azimuth_degrees": 272.0,
+              "camera_native_heading_degrees": 271.64817153067304,
+              "heading_circular_difference_degrees": 0.351828,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 3870.092534,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "87e0708910519ff7c1d702a104568e896ea1651c913a37a8b509e49277da84a8"
+          },
+          "ocr": {
+            "row_count": 4,
+            "seconds": 2.856829,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "STOP",
+              "ascii_tokens": [
+                "stop"
+              ],
+              "score": 0.99998379,
+              "box_xyxy": [
+                78.0,
+                652.0,
+                118.0,
+                680.0
+              ]
+            },
+            {
+              "text": "60",
+              "ascii_tokens": [
+                "60"
+              ],
+              "score": 0.99997592,
+              "box_xyxy": [
+                77.0,
+                669.0,
+                104.0,
+                693.0
+              ]
+            },
+            {
+              "text": "JEAN JAURES",
+              "ascii_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "score": 0.9984318,
+              "box_xyxy": [
+                975.0,
+                748.0,
+                1047.0,
+                776.0
+              ]
+            },
+            {
+              "text": "RUE",
+              "ascii_tokens": [
+                "rue"
+              ],
+              "score": 0.99891251,
+              "box_xyxy": [
+                997.0,
+                743.0,
+                1027.0,
+                761.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": true,
+            "tier": "EXACT_SIGNIFICANT_NAME_TOKENS_IN_ONE_ROW",
+            "target_tokens": [
+              "jean",
+              "jaures"
+            ],
+            "witnesses": [
+              {
+                "text": "JEAN JAURES",
+                "ascii_tokens": [
+                  "jean",
+                  "jaures"
+                ],
+                "score": 0.9984318,
+                "box_xyxy": [
+                  975.0,
+                  748.0,
+                  1047.0,
+                  776.0
+                ]
+              }
+            ]
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR04": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "v",
+                "b"
+              ],
+              "witnesses": [],
+              "candidate_count_before_spatial_deduplication": 0
+            }
+          }
+        },
+        "after_entrance_ray_authorized": true
+      },
+      "ledger": {
+        "current_frame_only_lexical_candidate": true,
+        "track_carried_lexical_candidate": true,
+        "candidate_first_observed_phase": "after",
+        "pre_action_candidate_retained_after_move": false,
+        "new_candidate_acquired_after_move": true,
+        "joint_lexical_candidate_and_authorized_after_ray": true,
+        "portal_ownership_binding_emitted": false
+      }
+    },
+    {
+      "episode_id": "AR04",
+      "target_name": "V and B",
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "components": {
+        "start_lexical_candidate": {
+          "frame_key": "AR04-START",
+          "panorama_item_id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+            "entrance_node_id": 11412888830,
+            "camera_lon_lat": [
+              5.763376657,
+              45.186277106
+            ],
+            "entrance_lon_lat": [
+              5.7633438,
+              45.1860097
+            ],
+            "initial_bearing_degrees": 184.949572,
+            "view_azimuth_degrees": 105.0,
+            "relative_viewer_yaw_degrees": 79.949572,
+            "raw_x_degrees": 259.949572,
+            "raw_x_pixels": 4159.193158,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+              "view_azimuth_degrees": 105.0,
+              "camera_native_heading_degrees": 104.9746096830153,
+              "heading_circular_difference_degrees": 0.02539,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4159.193158,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "260841346b10df9c8c2cee8a50724b87463f573c477f3eb1f9a6947e516fe808"
+          },
+          "ocr": {
+            "row_count": 6,
+            "seconds": 3.170668,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "Cave el",
+              "ascii_tokens": [
+                "cave",
+                "el"
+              ],
+              "score": 0.95997006,
+              "box_xyxy": [
+                1316.0,
+                176.0,
+                1440.0,
+                246.0
+              ]
+            },
+            {
+              "text": "VeB",
+              "ascii_tokens": [
+                "veb"
+              ],
+              "score": 0.76971966,
+              "box_xyxy": [
+                1221.0,
+                187.0,
+                1345.0,
+                244.0
+              ]
+            },
+            {
+              "text": "Vins-Bières-Rhum",
+              "ascii_tokens": [
+                "vins",
+                "bieres",
+                "rhum"
+              ],
+              "score": 0.99903536,
+              "box_xyxy": [
+                1277.0,
+                235.0,
+                1440.0,
+                270.0
+              ]
+            },
+            {
+              "text": "VOB",
+              "ascii_tokens": [
+                "vob"
+              ],
+              "score": 0.97483832,
+              "box_xyxy": [
+                346.0,
+                360.0,
+                551.0,
+                526.0
+              ]
+            },
+            {
+              "text": "SDN",
+              "ascii_tokens": [
+                "sdn"
+              ],
+              "score": 0.87238532,
+              "box_xyxy": [
+                294.0,
+                818.0,
+                360.0,
+                862.0
+              ]
+            },
+            {
+              "text": "32i81",
+              "ascii_tokens": [
+                "32i81"
+              ],
+              "score": 0.74045742,
+              "box_xyxy": [
+                306.0,
+                847.0,
+                379.0,
+                886.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "v",
+              "b"
+            ],
+            "witnesses": [],
+            "candidate_count_before_spatial_deduplication": 1
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after_lexical_candidate": {
+          "frame_key": "AR04-AFTER",
+          "panorama_item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+          "strict_entrance_ray": {
+            "schema": "blindassist-l10-panolab-entrance-ray-v1",
+            "item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+            "entrance_node_id": 11412888830,
+            "camera_lon_lat": [
+              5.763493357,
+              45.186255106
+            ],
+            "entrance_lon_lat": [
+              5.7633438,
+              45.1860097
+            ],
+            "initial_bearing_degrees": 203.244913,
+            "view_azimuth_degrees": 103.0,
+            "relative_viewer_yaw_degrees": 100.244913,
+            "raw_x_degrees": 280.244913,
+            "raw_x_pixels": 4483.91861,
+            "world_horizon_raw_y_pixels": 1440,
+            "projection_gate": {
+              "eligible": true,
+              "failures": [],
+              "item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+              "view_azimuth_degrees": 103.0,
+              "camera_native_heading_degrees": 103.32541276215974,
+              "heading_circular_difference_degrees": 0.325413,
+              "pers_yaw_degrees": 0.0,
+              "pers_pitch_degrees": 0.0,
+              "pers_roll_degrees": 0.0,
+              "sensor_width_pixels": 5760,
+              "sensor_height_pixels": 2880,
+              "downloaded_image_size": [
+                5760,
+                2880
+              ]
+            }
+          },
+          "window": {
+            "center_raw_x_pixels": 4483.91861,
+            "horizontal_half_fov_degrees": 45.0,
+            "top_raw_y_pixels": 720,
+            "bottom_raw_y_pixels_exclusive": 2400,
+            "native_crop_width": 1440,
+            "native_crop_height": 1680,
+            "seam_wrapped": false,
+            "pixel_sha256": "48bcf0501ec414ec5a71360f321140229299abd90ae32e9db0e867b771812d29"
+          },
+          "ocr": {
+            "row_count": 4,
+            "seconds": 2.695349,
+            "text_detection_parameters": {
+              "limit_side_len": 64,
+              "limit_type": "min",
+              "thresh": 0.3,
+              "max_side_limit": 4000,
+              "box_thresh": 0.6,
+              "unclip_ratio": 1.5
+            }
+          },
+          "ocr_rows": [
+            {
+              "text": "W",
+              "ascii_tokens": [
+                "w"
+              ],
+              "score": 0.27345374,
+              "box_xyxy": [
+                736.0,
+                265.0,
+                815.0,
+                351.0
+              ]
+            },
+            {
+              "text": "SDM",
+              "ascii_tokens": [
+                "sdm"
+              ],
+              "score": 0.8171826,
+              "box_xyxy": [
+                1161.0,
+                544.0,
+                1235.0,
+                596.0
+              ]
+            },
+            {
+              "text": "GRis1",
+              "ascii_tokens": [
+                "gris1"
+              ],
+              "score": 0.63105339,
+              "box_xyxy": [
+                1161.0,
+                575.0,
+                1237.0,
+                623.0
+              ]
+            },
+            {
+              "text": "09'0.",
+              "ascii_tokens": [
+                "09",
+                "0"
+              ],
+              "score": 0.93518925,
+              "box_xyxy": [
+                350.0,
+                1230.0,
+                514.0,
+                1313.0
+              ]
+            }
+          ],
+          "own_target_match": {
+            "matched": false,
+            "tier": "NONE",
+            "target_tokens": [
+              "v",
+              "b"
+            ],
+            "witnesses": [],
+            "candidate_count_before_spatial_deduplication": 0
+          },
+          "counterfactual_target_matches": {
+            "AR01": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "source"
+              ],
+              "witnesses": []
+            },
+            "AR02": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "galerie",
+                "saint",
+                "martin",
+                "dheres"
+              ],
+              "witnesses": []
+            },
+            "AR03": {
+              "matched": false,
+              "tier": "NONE",
+              "target_tokens": [
+                "jean",
+                "jaures"
+              ],
+              "witnesses": []
+            }
+          }
+        },
+        "after_entrance_ray_authorized": true
+      },
+      "ledger": {
+        "current_frame_only_lexical_candidate": false,
+        "track_carried_lexical_candidate": false,
+        "candidate_first_observed_phase": null,
+        "pre_action_candidate_retained_after_move": false,
+        "new_candidate_acquired_after_move": false,
+        "joint_lexical_candidate_and_authorized_after_ray": false,
+        "portal_ownership_binding_emitted": false
+      }
+    }
+  ],
+  "evidence_semantics": {
+    "current_frame_only_baseline": "Discard the start-frame lexical candidate and use only the after-action frame.",
+    "track_carried_successor": "Retain a start-frame lexical candidate across the verified same-sequence reciprocal action edge and union it with any after-frame candidate.",
+    "component_separation": "The lexical candidate and post-action entrance ray remain separate ledger entries. No lexical-to-portal or lexical-to-entrance ownership edge is emitted.",
+    "development_authority": "The four-image-pair pixel cohort was already consumed and the window/matcher was chosen after exploratory Development inspection. This replay may demonstrate a mechanism effect but has no fresh or confirmation authority."
+  },
+  "claim_boundary": {
+    "allowed": "Consumed Development evidence that a component-separated track ledger retains more target-name lexical candidates alongside an independently authorized post-action entrance ray than an after-frame-only observation policy on these four episodes.",
+    "not_allowed": [
+      "fresh Development or confirmation authority",
+      "source-disjoint generalization",
+      "a lexical candidate being the target entity rather than a same-name sign or street label",
+      "pixel portal grounding",
+      "address-to-door or sign-to-door ownership",
+      "entrance affordance, public access, walkability, or traversability",
+      "waypoint accuracy, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

@@ -1,0 +1,2095 @@
+{
+  "schema": "blindassist-l10-scenenn-efficientloftr-fresh-none-result-v1",
+  "authority": "FRESH_MULTISCENE_TRUTH_CROP_LOCAL_CORRESPONDENCE_NONE_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_efficientloftr_fresh_none_protocol_v1.json",
+  "protocol_sha256": "f61d54ce43d05c72258dbe92f4e48efea621002c822cd89f66dc2b4689e16503",
+  "cohort_path": "l10_scenenn_efficientloftr_fresh_none_cohort_v1.json",
+  "cohort_sha256": "b6952b081d3476db1c5f3d600fb18aa54fd8858bad7c13b02e8ed08860c76dd4",
+  "receipt_path": "l10_scenenn_efficientloftr_fresh_none_rgb_receipt_v1.json",
+  "receipt_sha256": "6cf8384a27bd95e9646bfc18fa3d3a421d03a8a4e8a4ba02216efcd9b357230b",
+  "implementation": {
+    "path": "l10_scenenn_efficientloftr_fresh_none.py",
+    "sha256": "a12cd318736150547d5acad97902cebd28a9256da858d25e421ec9601465ffda"
+  },
+  "matcher": {
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\p1_w2_efficientloftr_face1a79",
+    "model_safetensors_sha256": "00a5edc343fa222eba763643553548ad37a05aa3d00d266553c9f6cf67bb0e64",
+    "device": "CPU",
+    "model_calls": 16
+  },
+  "conclusion": "L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "aggregate": {
+      "dinov2_reciprocal_no_none_support": {
+        "true_positive": 6,
+        "false_positive": 24,
+        "false_negative": 28,
+        "precision": 0.2,
+        "recall": 0.176471,
+        "f1": 0.1875,
+        "zero_assignment_exact_scenarios": 1,
+        "scenarios": 15
+      },
+      "efficientloftr_absolute_support_reciprocal": {
+        "true_positive": 11,
+        "false_positive": 18,
+        "false_negative": 23,
+        "precision": 0.37931,
+        "recall": 0.323529,
+        "f1": 0.349206,
+        "zero_assignment_exact_scenarios": 0,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.130941,
+            0.260553,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.513878,
+            0.63545
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.282436,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            10,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            21
+          ],
+          [
+            0,
+            0,
+            7,
+            6
+          ],
+          [
+            11,
+            10,
+            6,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01",
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 3,
+            "precision": 0.5,
+            "recall": 0.25,
+            "f1": 0.333333,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03",
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.130941,
+            0.260553,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.513878,
+            0.63545
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            10,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            21
+          ],
+          [
+            0,
+            0,
+            7,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.272527
+          ],
+          [
+            0.130941,
+            0.260553,
+            0.357494
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.513878
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.282436
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            10
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            7
+          ],
+          [
+            11,
+            10,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 2,
+            "precision": 0.5,
+            "recall": 0.333333,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01",
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02",
+              "LF03",
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF01-LF02",
+        "reference_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.130941,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.513878,
+            0.63545
+          ],
+          [
+            0.779008,
+            0.282436,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            0,
+            6,
+            21
+          ],
+          [
+            0,
+            7,
+            6
+          ],
+          [
+            11,
+            6,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "matches": [
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF01-LF03",
+        "reference_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.130941,
+            0.260553,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.63545
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            0,
+            0,
+            21
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            11,
+            10,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF01-LF04",
+        "reference_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.130941,
+            0.260553,
+            0.357494
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.513878
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.282436
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            7
+          ],
+          [
+            11,
+            10,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF02-LF01",
+        "reference_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.488129,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.343887,
+            0.513878,
+            0.63545
+          ],
+          [
+            0.528356,
+            0.282436,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            7,
+            10,
+            0
+          ],
+          [
+            0,
+            7,
+            6
+          ],
+          [
+            10,
+            6,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF04"
+            ],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF02-LF03",
+        "reference_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.141699
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.63545
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            0
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            11,
+            10,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF02-LF04",
+        "reference_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.272527
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.513878
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.282436
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            10
+          ],
+          [
+            0,
+            0,
+            7
+          ],
+          [
+            11,
+            10,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF03",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03",
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF03-LF01",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.488129,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.260553,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.528356,
+            0.282436,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            7,
+            10,
+            0
+          ],
+          [
+            0,
+            6,
+            21
+          ],
+          [
+            10,
+            6,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF02"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF03-LF02",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.130941,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.779008,
+            0.282436,
+            0.196092
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            10,
+            0
+          ],
+          [
+            0,
+            6,
+            21
+          ],
+          [
+            11,
+            6,
+            0
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF03-LF04",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.272527
+          ],
+          [
+            0.130941,
+            0.260553,
+            0.357494
+          ],
+          [
+            0.779008,
+            0.528356,
+            0.282436
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            10
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            11,
+            10,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF02",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF04",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF01"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02",
+              "LF04"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02",
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF04"
+            ],
+            "truth_unmatched_queries": [
+              "LF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF04-LF01",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "query_targets": [
+          "LF02",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.488129,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.260553,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.343887,
+            0.513878,
+            0.63545
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            7,
+            10,
+            0
+          ],
+          [
+            0,
+            6,
+            21
+          ],
+          [
+            0,
+            7,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF02"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF03"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF01"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF04-LF02",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF03",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.272527,
+            0.141699
+          ],
+          [
+            0.130941,
+            0.357494,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.513878,
+            0.63545
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            10,
+            0
+          ],
+          [
+            0,
+            6,
+            21
+          ],
+          [
+            0,
+            7,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF03"
+            ],
+            "truth_unmatched_references": [
+              "LF02"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-LF04-LF03",
+        "reference_targets": [
+          "LF01",
+          "LF02",
+          "LF03"
+        ],
+        "query_targets": [
+          "LF01",
+          "LF02",
+          "LF04"
+        ],
+        "dinov2_patch_mean_cosine_matrix": [
+          [
+            0.711226,
+            0.488129,
+            0.141699
+          ],
+          [
+            0.130941,
+            0.260553,
+            0.501547
+          ],
+          [
+            0.203848,
+            0.343887,
+            0.63545
+          ]
+        ],
+        "efficientloftr_supported_inlier_matrix": [
+          [
+            115,
+            7,
+            0
+          ],
+          [
+            0,
+            0,
+            21
+          ],
+          [
+            0,
+            0,
+            6
+          ]
+        ],
+        "methods": {
+          "dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF03",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF02"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "efficientloftr_absolute_support_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "LF01",
+                "query": "LF01"
+              },
+              {
+                "reference": "LF02",
+                "query": "LF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "LF03"
+            ],
+            "predicted_unmatched_queries": [
+              "LF02"
+            ],
+            "truth_unmatched_references": [
+              "LF03"
+            ],
+            "truth_unmatched_queries": [
+              "LF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_dinov2_patch_mean_cosine_matrix": [
+      [
+        0.711226,
+        0.488129,
+        0.272527,
+        0.141699
+      ],
+      [
+        0.130941,
+        0.260553,
+        0.357494,
+        0.501547
+      ],
+      [
+        0.203848,
+        0.343887,
+        0.513878,
+        0.63545
+      ],
+      [
+        0.779008,
+        0.528356,
+        0.282436,
+        0.196092
+      ]
+    ],
+    "full_efficientloftr_supported_inlier_matrix": [
+      [
+        115,
+        7,
+        10,
+        0
+      ],
+      [
+        0,
+        0,
+        6,
+        21
+      ],
+      [
+        0,
+        0,
+        7,
+        6
+      ],
+      [
+        11,
+        10,
+        6,
+        0
+      ]
+    ],
+    "pair_diagnostics": {
+      "LF01->LF01": {
+        "match_count": 814,
+        "mean_match_score": 0.4392114579677582,
+        "homography_inliers": 115,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF01->LF02": {
+        "match_count": 36,
+        "mean_match_score": 0.29657888412475586,
+        "homography_inliers": 7,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF01->LF03": {
+        "match_count": 40,
+        "mean_match_score": 0.300601601600647,
+        "homography_inliers": 10,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF01->LF04": {
+        "match_count": 4,
+        "mean_match_score": 0.38970696926116943,
+        "homography_inliers": 0,
+        "homography_valid": false,
+        "absolute_support": false
+      },
+      "LF02->LF01": {
+        "match_count": 8,
+        "mean_match_score": 0.25182420015335083,
+        "homography_inliers": 5,
+        "homography_valid": true,
+        "absolute_support": false
+      },
+      "LF02->LF02": {
+        "match_count": 11,
+        "mean_match_score": 0.2909306585788727,
+        "homography_inliers": 4,
+        "homography_valid": true,
+        "absolute_support": false
+      },
+      "LF02->LF03": {
+        "match_count": 17,
+        "mean_match_score": 0.2940406799316406,
+        "homography_inliers": 6,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF02->LF04": {
+        "match_count": 53,
+        "mean_match_score": 0.3147929608821869,
+        "homography_inliers": 21,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF03->LF01": {
+        "match_count": 3,
+        "mean_match_score": 0.32571208477020264,
+        "homography_inliers": 0,
+        "homography_valid": false,
+        "absolute_support": false
+      },
+      "LF03->LF02": {
+        "match_count": 2,
+        "mean_match_score": 0.30094337463378906,
+        "homography_inliers": 0,
+        "homography_valid": false,
+        "absolute_support": false
+      },
+      "LF03->LF03": {
+        "match_count": 20,
+        "mean_match_score": 0.295441210269928,
+        "homography_inliers": 7,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF03->LF04": {
+        "match_count": 9,
+        "mean_match_score": 0.27654576301574707,
+        "homography_inliers": 6,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF04->LF01": {
+        "match_count": 123,
+        "mean_match_score": 0.29108747839927673,
+        "homography_inliers": 11,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF04->LF02": {
+        "match_count": 68,
+        "mean_match_score": 0.31433776021003723,
+        "homography_inliers": 10,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF04->LF03": {
+        "match_count": 13,
+        "mean_match_score": 0.3109677731990814,
+        "homography_inliers": 6,
+        "homography_valid": true,
+        "absolute_support": true
+      },
+      "LF04->LF04": {
+        "match_count": 4,
+        "mean_match_score": 0.23528830707073212,
+        "homography_inliers": 0,
+        "homography_valid": false,
+        "absolute_support": false
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "incremental_gain_over_dinov2": {
+    "true_positive_delta": 5,
+    "false_positive_reduction": 6,
+    "false_negative_reduction": 5,
+    "f1_delta": 0.161706,
+    "exact_scenario_gain": -1
+  },
+  "crop_receipts": {
+    "LF01:reference": {
+      "scene_id": "021",
+      "frame": 1690,
+      "source_image_sha256": "2032b4c39125b60d469c58361fc0abfa896144920635d7f1b40619d288e6fede",
+      "visible_mask_sha256": "06095ee0a7e2fcfab1f0aa4add609bc8bb3c4e7d6bd816fb7ac0eedb424ebb9b",
+      "tight_bbox_xyxy": [
+        199,
+        0,
+        486,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        163,
+        0,
+        522,
+        480
+      ],
+      "crop_size": [
+        359,
+        480
+      ]
+    },
+    "LF01:query": {
+      "scene_id": "021",
+      "frame": 1760,
+      "source_image_sha256": "eff3b400367e0daee3e9e99a7c05406afe9bb5c0a95891a2dc91a46448beea3a",
+      "visible_mask_sha256": "0f36e535b4f8a9186331fef9f23e37f1ac995463976a1011a83f3e5e78803c32",
+      "tight_bbox_xyxy": [
+        307,
+        0,
+        536,
+        344
+      ],
+      "expanded_bbox_xyxy": [
+        278,
+        0,
+        565,
+        387
+      ],
+      "crop_size": [
+        287,
+        387
+      ]
+    },
+    "LF02:reference": {
+      "scene_id": "273",
+      "frame": 675,
+      "source_image_sha256": "92675a24761feafda2a19fd15a7d9b0510413ff78e254fff77f0ad8258d3852b",
+      "visible_mask_sha256": "6d4534b114a176989ba8d3ae11b90213961250fdd2c636c5f9eb80885972cf95",
+      "tight_bbox_xyxy": [
+        0,
+        117,
+        27,
+        182
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        108,
+        31,
+        191
+      ],
+      "crop_size": [
+        31,
+        83
+      ]
+    },
+    "LF02:query": {
+      "scene_id": "273",
+      "frame": 1615,
+      "source_image_sha256": "3e2a09baf3091d2856a8134023e988757fdd72fb5e218269c130e4b441019029",
+      "visible_mask_sha256": "9b0ab38e6a861f02a9febe699b66a98a9c4dcc78822f3c83f8d4dca4cd5332bf",
+      "tight_bbox_xyxy": [
+        218,
+        0,
+        640,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        165,
+        0,
+        640,
+        480
+      ],
+      "crop_size": [
+        475,
+        480
+      ]
+    },
+    "LF03:reference": {
+      "scene_id": "011",
+      "frame": 3110,
+      "source_image_sha256": "b2cb1759026044ed75de85a78960b7ca020c8dca53fd02ed62f68cb2d0a3bec3",
+      "visible_mask_sha256": "dcb9e7c170e32a975bbae47ea0096a9c744eb71d2e8b8aa70b7ef8e028ae2db2",
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        48,
+        455
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        54,
+        480
+      ],
+      "crop_size": [
+        54,
+        480
+      ]
+    },
+    "LF03:query": {
+      "scene_id": "011",
+      "frame": 3315,
+      "source_image_sha256": "bbed6959a7575e0f45a051a45b11cb2ef6ff1862108a8a08e652f2da3983dd8f",
+      "visible_mask_sha256": "93683d894356f32cbc22cf1c3139d4e4d39c48a97ba513e7ec7d175ec0bf4f69",
+      "tight_bbox_xyxy": [
+        218,
+        0,
+        337,
+        153
+      ],
+      "expanded_bbox_xyxy": [
+        203,
+        0,
+        352,
+        173
+      ],
+      "crop_size": [
+        149,
+        173
+      ]
+    },
+    "LF04:reference": {
+      "scene_id": "279",
+      "frame": 290,
+      "source_image_sha256": "e437dddeeb66aefc3343c09e08b910d8398ab32fb39ed4d8b9830a46ebed5c69",
+      "visible_mask_sha256": "0badc904cc134cdad3a07e1e689a2dc3e35ea22b4e914ad54c8ff0fa2cc6d188",
+      "tight_bbox_xyxy": [
+        305,
+        102,
+        640,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        263,
+        54,
+        640,
+        480
+      ],
+      "crop_size": [
+        377,
+        426
+      ]
+    },
+    "LF04:query": {
+      "scene_id": "279",
+      "frame": 595,
+      "source_image_sha256": "d2441ee71d13fe022b8f7473aa0e335838c7dc02e80ca7c92188d7ecad72c7e7",
+      "visible_mask_sha256": "741e7417eaa13248138c14c8d263a099f05a2f73b57c868034c804ff745ee0c8",
+      "tight_bbox_xyxy": [
+        602,
+        93,
+        640,
+        203
+      ],
+      "expanded_bbox_xyxy": [
+        597,
+        79,
+        640,
+        217
+      ],
+      "crop_size": [
+        43,
+        138
+      ]
+    }
+  },
+  "claim_boundary": "A pass is fresh SceneNN Development evidence that truth-cropped local visual correspondences can support same-door/NONE decisions across severe selected views. It remains same-provider, evaluator-mask-conditioned indoor RGB, not raw-phone detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

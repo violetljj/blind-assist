@@ -1,0 +1,251 @@
+{
+  "schema": "blindassist-l10-panolab-producer-stratified-router-materialization-v1",
+  "selection": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_producer_stratified_router_selection_v1.json",
+  "selection_sha256": "3ab6aaa8dcf0d6640a0affc59fe5fae3325f221e722263cc6e767af1de636ec2",
+  "selected_pixel_views_before_frozen_selection": 0,
+  "selected_human_pixel_reviews_before_frozen_selection": 0,
+  "selected_appearance_calls_before_frozen_selection": 0,
+  "selected_ocr_calls_before_frozen_selection": 0,
+  "images": [
+    {
+      "episode_id": "PS01",
+      "role": "query",
+      "sequence_index": 0,
+      "relation_to_anchor": "prev",
+      "item_id": "4a4c4b5d-0460-404d-8e55-a5b989cf9dd9",
+      "collection": "159aad58-c7f0-4f7d-be94-3baddc44232c",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/4a4c4b5d-0460-404d-8e55-a5b989cf9dd9.jpg",
+      "sha256": "46b0a50fe3d3a6f14f40c909020e596b4d0b0c930f4bfa65b75331bbc2dacb42",
+      "bytes": 3030536,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/4a/4c/4b/5d/0460-404d-8e55-a5b989cf9dd9.jpg"
+    },
+    {
+      "episode_id": "PS01",
+      "role": "query",
+      "sequence_index": 1,
+      "relation_to_anchor": "anchor",
+      "item_id": "c97d3942-c8d2-4cb6-ac46-36e5ce7d37e3",
+      "collection": "159aad58-c7f0-4f7d-be94-3baddc44232c",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/c97d3942-c8d2-4cb6-ac46-36e5ce7d37e3.jpg",
+      "sha256": "1688651ad7dafca1029e361aa8f6b8f3cc5e1d0da537aa6a1f3b1386bdd0ab69",
+      "bytes": 3023943,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/c9/7d/39/42/c8d2-4cb6-ac46-36e5ce7d37e3.jpg"
+    },
+    {
+      "episode_id": "PS01",
+      "role": "query",
+      "sequence_index": 2,
+      "relation_to_anchor": "next",
+      "item_id": "1a56ed3d-1830-4add-a7b4-a5d9b62f2b4f",
+      "collection": "159aad58-c7f0-4f7d-be94-3baddc44232c",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/1a56ed3d-1830-4add-a7b4-a5d9b62f2b4f.jpg",
+      "sha256": "799183d3d0853ba79de6eb9239b5d741d2524f34fc927bb6b04009f98a71293f",
+      "bytes": 3027803,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/1a/56/ed/3d/1830-4add-a7b4-a5d9b62f2b4f.jpg"
+    },
+    {
+      "episode_id": "PS01",
+      "role": "reference",
+      "sequence_index": 0,
+      "relation_to_anchor": "anchor",
+      "item_id": "0a96cea7-2b0f-4b9d-940f-0234186c4ee3",
+      "collection": "085898ea-5977-418c-809e-048a3aed1d24",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/0a96cea7-2b0f-4b9d-940f-0234186c4ee3.jpg",
+      "sha256": "cfcf99b341cbc63ad56323838ed63fc4301886201fa5781b003400f9a215b31b",
+      "bytes": 3042079,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/0a/96/ce/a7/2b0f-4b9d-940f-0234186c4ee3.jpg"
+    },
+    {
+      "episode_id": "PS01",
+      "role": "reference",
+      "sequence_index": 1,
+      "relation_to_anchor": "next",
+      "item_id": "a7b643a8-53cc-4808-856e-3b5fae835b10",
+      "collection": "085898ea-5977-418c-809e-048a3aed1d24",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/a7b643a8-53cc-4808-856e-3b5fae835b10.jpg",
+      "sha256": "b4c6bae764414946ef701e6cad0aa8d52dd2aed970f6e82aa98c910dc053bc50",
+      "bytes": 2959904,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/a7/b6/43/a8/53cc-4808-856e-3b5fae835b10.jpg"
+    },
+    {
+      "episode_id": "PS02",
+      "role": "query",
+      "sequence_index": 0,
+      "relation_to_anchor": "prev",
+      "item_id": "980d07cc-7a74-4461-b5ce-831c8ac1a2c2",
+      "collection": "bc0805fa-e42c-46fb-9a3f-f83aedfaed58",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/980d07cc-7a74-4461-b5ce-831c8ac1a2c2.jpg",
+      "sha256": "cc80b1c9c36b53087c67f52ae8d5133010fd541f01ac53e2ee5c4c27196ce7ce",
+      "bytes": 2911197,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/98/0d/07/cc/7a74-4461-b5ce-831c8ac1a2c2.jpg"
+    },
+    {
+      "episode_id": "PS02",
+      "role": "query",
+      "sequence_index": 1,
+      "relation_to_anchor": "anchor",
+      "item_id": "1a5c05bf-d2ea-4f55-93d6-7b8c464cdf12",
+      "collection": "bc0805fa-e42c-46fb-9a3f-f83aedfaed58",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/1a5c05bf-d2ea-4f55-93d6-7b8c464cdf12.jpg",
+      "sha256": "ebfee7a89449071ef936e2a9d3fafe896e5a5442e2a09ece45a890e5ef990a2f",
+      "bytes": 3049493,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/1a/5c/05/bf/d2ea-4f55-93d6-7b8c464cdf12.jpg"
+    },
+    {
+      "episode_id": "PS02",
+      "role": "query",
+      "sequence_index": 2,
+      "relation_to_anchor": "next",
+      "item_id": "c86a9855-4307-4da4-8a11-266a40525d1f",
+      "collection": "bc0805fa-e42c-46fb-9a3f-f83aedfaed58",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/c86a9855-4307-4da4-8a11-266a40525d1f.jpg",
+      "sha256": "7d3c8752c1494757b59358a4b2e20b24fb1444b57deda614a928d6e69fc108a9",
+      "bytes": 2872357,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/c8/6a/98/55/4307-4da4-8a11-266a40525d1f.jpg"
+    },
+    {
+      "episode_id": "PS02",
+      "role": "reference",
+      "sequence_index": 0,
+      "relation_to_anchor": "anchor",
+      "item_id": "d08f06af-b73e-4380-a4d2-859045f28b4b",
+      "collection": "23d3d284-0b61-4783-822e-3c79feb732d8",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/d08f06af-b73e-4380-a4d2-859045f28b4b.jpg",
+      "sha256": "a1423eb993efa1df1a54036f706aef474252887ef63e0f1d504ef20a53778c2a",
+      "bytes": 2983386,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/d0/8f/06/af/b73e-4380-a4d2-859045f28b4b.jpg"
+    },
+    {
+      "episode_id": "PS02",
+      "role": "reference",
+      "sequence_index": 1,
+      "relation_to_anchor": "next",
+      "item_id": "87a17158-99b6-4ff6-8b45-7981daa379b0",
+      "collection": "23d3d284-0b61-4783-822e-3c79feb732d8",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/87a17158-99b6-4ff6-8b45-7981daa379b0.jpg",
+      "sha256": "474562e2e6200300651843c1357e0d731941bcf8f69e13b9961a0dd6655a64c1",
+      "bytes": 2945088,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/87/a1/71/58/99b6-4ff6-8b45-7981daa379b0.jpg"
+    },
+    {
+      "episode_id": "PS03",
+      "role": "query",
+      "sequence_index": 0,
+      "relation_to_anchor": "prev",
+      "item_id": "69cb3d30-8881-4605-a512-3e5b96c952ec",
+      "collection": "9a03edff-dd9f-4dd7-bc14-9a8d137cff54",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/69cb3d30-8881-4605-a512-3e5b96c952ec.jpg",
+      "sha256": "b89fd318a174f930c33f5aa8c0e9ab84cdbbe61d28f4a1a94807bf96f0651879",
+      "bytes": 2992528,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/69/cb/3d/30/8881-4605-a512-3e5b96c952ec.jpg"
+    },
+    {
+      "episode_id": "PS03",
+      "role": "query",
+      "sequence_index": 1,
+      "relation_to_anchor": "anchor",
+      "item_id": "a3d47c5a-81de-4254-b894-3b2e7e72b537",
+      "collection": "9a03edff-dd9f-4dd7-bc14-9a8d137cff54",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/a3d47c5a-81de-4254-b894-3b2e7e72b537.jpg",
+      "sha256": "84af4e209bbfd5a4786729d1f64520c3be2d0a12d0104b4fe7889b2a6c1652aa",
+      "bytes": 3088738,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/a3/d4/7c/5a/81de-4254-b894-3b2e7e72b537.jpg"
+    },
+    {
+      "episode_id": "PS03",
+      "role": "query",
+      "sequence_index": 2,
+      "relation_to_anchor": "next",
+      "item_id": "b1e58c9f-dc89-4aa2-ae26-8c65b680412e",
+      "collection": "9a03edff-dd9f-4dd7-bc14-9a8d137cff54",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/b1e58c9f-dc89-4aa2-ae26-8c65b680412e.jpg",
+      "sha256": "40e0f851a434b6ef46bbce29284f7b30dd943c7428787c24d42b67f13badbbf9",
+      "bytes": 3073613,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/b1/e5/8c/9f/dc89-4aa2-ae26-8c65b680412e.jpg"
+    },
+    {
+      "episode_id": "PS03",
+      "role": "reference",
+      "sequence_index": 0,
+      "relation_to_anchor": "anchor",
+      "item_id": "4bbe0b5a-c72f-4053-9de2-a6e02c084237",
+      "collection": "411fdea5-f9b5-4b4c-ba5b-0eb957155e63",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/4bbe0b5a-c72f-4053-9de2-a6e02c084237.jpg",
+      "sha256": "2b9822c4ba74908ba64f4425439767a9b17b07544efc41572c6efe0a86dbbc1b",
+      "bytes": 3025602,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/4b/be/0b/5a/c72f-4053-9de2-a6e02c084237.jpg"
+    },
+    {
+      "episode_id": "PS03",
+      "role": "reference",
+      "sequence_index": 1,
+      "relation_to_anchor": "next",
+      "item_id": "0aec5d1c-8346-4737-8b77-6df415dfa855",
+      "collection": "411fdea5-f9b5-4b4c-ba5b-0eb957155e63",
+      "path": "artifacts.local/datasets/l10-panolab-producer-stratified-router-v1/images/0aec5d1c-8346-4737-8b77-6df415dfa855.jpg",
+      "sha256": "812bb09128b472361f30fd9e5e14302a0517c2f0815b27dd937e77a4ba1a5ca7",
+      "bytes": 2979267,
+      "image_size": [
+        5760,
+        2880
+      ],
+      "url": "https://panoramax.openstreetmap.fr/images/0a/ec/5d/1c/8346-4737-8b77-6df415dfa855.jpg"
+    }
+  ]
+}

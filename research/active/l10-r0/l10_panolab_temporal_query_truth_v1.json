@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-panolab-temporal-query-human-truth-v1",
+  "status": "FROZEN_AFTER_NEIGHBOR_PIXEL_REVIEW_BEFORE_NEIGHBOR_MODEL_CALL",
+  "reviewed_at_local": "2026-08-31T08:28:00+08:00",
+  "reviewer": "Codex visual review",
+  "anchor_results_observed_before_source_freeze": true,
+  "new_neighbor_model_calls_before_truth_freeze": 0,
+  "inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_source_protocol_v1.json",
+      "sha256": "dc53536b62ba188c370af5e453a7f538b252b7f99bb16dad5a33864012ce1464",
+      "bytes": 5886
+    },
+    "selection": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_selection_v1.json",
+      "sha256": "a799a99613f9ef71d9a1d78b95a43ab09435ff5b8aa95496b530dc4e6c0ed801",
+      "bytes": 97697
+    },
+    "materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    }
+  },
+  "review_method": {
+    "new_images": "All four new 5760x2880 neighbour panoramas were reviewed through the Codex image viewer at a 2048x1024 display rendering.",
+    "allowed_evidence": "Downloaded pixels, frozen OSM target-way/main-entrance geometry, exact reciprocal collection links, and provider pose metadata.",
+    "forbidden_evidence": "No OCR, CLIP, DINOv2, patch matcher, per-frame score, sequence score, rank, threshold decision, or other learned-model output on the new neighbours was viewed before this truth file was frozen."
+  },
+  "episodes": [
+    {
+      "episode_id": "FP01",
+      "target_way_id": 305144115,
+      "target_name": "Rumillat",
+      "human_truth": "ALL_THREE_QUERY_FRAMES_SHOW_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "The already consumed anchor is heavily occluded by the vine screen. Both exact reciprocal neighbours show the Rumillat facade clearly, including its name and grey cladding, from the same collection on either side of the anchor."
+    },
+    {
+      "episode_id": "FP02",
+      "target_way_id": 378533157,
+      "target_name": "Halle Rebatet",
+      "human_truth": "ALL_THREE_QUERY_FRAMES_SHOW_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "The historic stone hall remains visible in the anchor and both exact reciprocal neighbours. The three views change occlusion and scale while retaining the hall, with the adjacent modern tower and black venue as strong distractors."
+    }
+  ],
+  "summary": {
+    "episodes_reviewed": 2,
+    "new_neighbor_images_reviewed": 4,
+    "valid_three_frame_sequences": 2,
+    "invalid_or_uncertain_sequences": 0,
+    "resampled_after_pixel_review": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-visible same-target truth for the two frozen reciprocal three-frame query sequences.",
+    "not_allowed": "This posthoc review is not fresh confirmation and does not prove portal ownership, access, traversability, waypoint, arrival, handoff, user benefit, provider-disjoint generalization, deployment performance, or safety."
+  }
+}

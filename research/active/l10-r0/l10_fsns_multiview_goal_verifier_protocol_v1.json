@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist-l10-fsns-multiview-goal-verifier-protocol-v1",
+  "frozen_at": "2026-08-31T14:02:00+08:00",
+  "question": "Can goal-conditioned evidence accumulated across four independent Street View observations of one physical French street sign recover at least three additional canonical street-name candidates over a single first view while reaching at least 90% correct and accepting no disjoint-label or synthetic challenges?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_fsns_multiview_goal_verifier.py",
+    "sha256": "d4468fc3d6bc14e72754db9c49db0858eef203e8554dec25e1ca4b89969e0add"
+  },
+  "inputs": {
+    "source_tfrecord": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-fsns-official-v1/validation-00000-of-00064.tfrecord",
+    "manifest": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-fsns-official-v1/validation-00000-adapter/manifest.jsonl",
+    "disjoint_reference_manifest": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-fsns-official-v1/testdata-adapter/manifest.jsonl",
+    "images": "F:/ba-data/blindassist-artifacts-20260805/datasets/l10-fsns-official-v1/validation-00000-adapter",
+    "models": "E:/linnan/linnan/artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_cache": "F:/ba-data/blindassist-artifacts-20260805/evidence/l10-fsns-multiview-goal-verifier-v1/ocr_cache.json"
+  },
+  "input_sha256": {
+    "source_tfrecord": "b8eb695d267ea5a0ae9d7ce86f270d614b15fe5e7b09bb68043e3696e2e67ea4",
+    "manifest": "258dcd60b1bc3bdfa53729823f837ab31c66314eb30bdac2517e62c76362c9a7",
+    "disjoint_reference_manifest": "cde741617c1d144a9d65d01d9d8323f131808c9bea85c2fa2e1e5ab79dc3397c"
+  },
+  "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+  },
+  "source_contract": {
+    "dataset": "official French Street Name Signs validation split",
+    "shard": "validation-00000-of-00064",
+    "shard_examples": 252,
+    "selected_pixel_status_before_freeze": "materialized but neither viewed nor OCR-processed",
+    "reference_development_source": "official 50-example FSNS testdata file",
+    "selection_disjointness": "all 40 selected image SHA-256 values, canonical normalized labels, and distinctive goal tokens are disjoint from all 50 reference examples",
+    "physical_view_semantics": "each 150x150 tile is intended to be a different position and/or time view of the same physical sign; selected examples have four views",
+    "truth_semantics": "image/text is the normalized canonical street name for the multi-view sign sample, not exhaustive text for every visible tile"
+  },
+  "selected_indices": [1, 2, 3, 4, 5, 7, 10, 11, 14, 16, 17, 18, 19, 20, 21, 22, 24, 25, 28, 30, 31, 33, 35, 37, 38, 41, 42, 43, 44, 45, 47, 48, 50, 52, 53, 57, 60, 61, 62, 63],
+  "selection_contract": {
+    "order": "official validation shard source order",
+    "cohort_size": 40,
+    "minimum_view_count": 4,
+    "canonical_label_unique_within_shard": true,
+    "reference_image_label_and_distinctive_token_disjoint": true,
+    "minimum_target_token_length": 6,
+    "maximum_target_token_length": 16,
+    "ignored_generic_tokens": ["rue", "avenue", "place", "chemin", "impasse", "route", "boulevard", "allee", "quai", "passage", "square", "cours", "montee", "sentier", "residence", "lotissement", "esplanade", "faubourg", "traverse", "voie", "rocade", "promenade", "des", "de", "du", "la", "le", "les"]
+  },
+  "algorithm_contract": {
+    "baseline": "OCR only the first 150x150 view enlarged 3x; accept one high-confidence exact normalized distinctive goal token or exact goal substring",
+    "successor": "OCR all four views independently at the same 3x scale; accept exact goal evidence from any view, or edit-distance-one evidence only when the same conditioned target token is observed in at least two different views",
+    "view_scale": 3.0,
+    "minimum_ocr_confidence": 0.45,
+    "minimum_edit_token_length": 6,
+    "minimum_edit_evidence_views": 2,
+    "candidate_output": "the already conditioned user goal only; no roster rerouting and no sign-instance or portal binding"
+  },
+  "synthetic_negative_salt": "l10-fsns-validation-multiview-goal-v1",
+  "gate": {
+    "minimum_correct_gain": 3,
+    "minimum_successor_correct_rate": 0.9,
+    "maximum_canonical_label_disjoint_challenge_accepts": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_FSNS_FRESH_MULTIVIEW_GOAL_EVIDENCE_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_FSNS_FRESH_MULTIVIEW_GOAL_EVIDENCE_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "authority": "FRESH_PIXEL_UNSEEN_REFERENCE_IMAGE_LABEL_TOKEN_DISJOINT_OFFICIAL_FSNS_VALIDATION_SHARD_MULTI_VIEW_DEVELOPMENT_ONLY",
+  "output": "research/active/l10-r0/l10_fsns_multiview_goal_verifier_result_v1.json",
+  "claim_boundary": "This is multi-view canonical street-name recognition Development evidence on pre-cropped signs. FSNS provides the canonical label for the sample but not exhaustive pixel text, per-tile target boxes, camera poses, action labels, metric distance, facade association, entrance or portal ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety. Canonical-label-disjoint challenges are collision diagnostics, not a pixel-absence false-positive rate. Multiple views are observations from different positions/times, not evidence that an L10-selected action caused the recovery. UNKNOWN is neither negative nor known-safe; no conformal, FDR, or open-world guarantee is claimed."
+}

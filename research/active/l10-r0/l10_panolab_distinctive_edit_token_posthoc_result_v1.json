@@ -1,0 +1,661 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-edit-token-posthoc-result-v1",
+  "decision": "L10_PANOLAB_CONSUMED_DISTINCTIVE_EDIT_TOKEN_MECHANISM_DEVELOPMENT_GATE_MET",
+  "authority": "CONSUMED_POSTHOC_DEVELOPMENT_MECHANISM_ONLY_REQUIRES_FRESH_PIXEL_AND_OCR_UNSEEN_CONFIRMATION",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_distinctive_edit_token_posthoc_protocol_v1.json",
+  "protocol_sha256": "5807c0b4fd9622aac7d2f1402d0bbd2ddc2cb1d9911ade023a9311fdd2ddf65a",
+  "evaluator_sha256": "42022c1f7a25b499f89cbfe9da43f0280a6dae3ee927aa028a732be8b81c9486",
+  "metrics": {
+    "consumed_posthoc_episodes": 3,
+    "lexical_correct_wrong_no_match_ambiguous": [
+      2,
+      0,
+      1,
+      0
+    ],
+    "appearance_fallback_correct_wrong_unknown": [
+      1,
+      0,
+      2
+    ],
+    "combined_correct_wrong_unknown": [
+      3,
+      0,
+      0
+    ],
+    "combined_correct_gain_over_appearance": 2,
+    "wrong_target_lexical_trials": 30,
+    "wrong_target_lexical_matches": 0,
+    "new_ocr_or_model_calls": 0,
+    "portal_ownership_bindings_emitted": 0
+  },
+  "gate": {
+    "three_consumed_sequences_replayed": true,
+    "three_of_three_combined_correct": true,
+    "minimum_two_correct_gain_over_appearance": true,
+    "zero_combined_wrong": true,
+    "zero_combined_unknown": true,
+    "zero_wrong_target_lexical_matches": true,
+    "zero_new_ocr_or_model_calls": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "PS01",
+      "target_name": "Département du Calvados - Direction de la Culture",
+      "frozen_ocr_rows_reused": 6,
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": true,
+          "tier": "DISTINCTIVE_EXACT_OR_ONE_EDIT_TOKEN_BANK",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [
+            "calvados"
+          ],
+          "distinctive_evidence_units": 2,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {
+            "calvados": [
+              {
+                "frame_key": "PS01_anchor",
+                "panorama_item_id": "c97d3942-c8d2-4cb6-ac46-36e5ce7d37e3",
+                "ocr_text": "Colvados",
+                "ocr_score": 0.97717249,
+                "observed_form": "colvados",
+                "edit_distance": 1,
+                "match_kind": "EDIT_NEIGHBOR",
+                "box_xyxy": [
+                  942.0,
+                  673.0,
+                  995.0,
+                  692.0
+                ]
+              }
+            ]
+          },
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "UNIQUE_OWN_TARGET_MATCH",
+        "matched_targets": [
+          "PS01"
+        ],
+        "candidate": "PS01",
+        "wrong_target_matches": []
+      },
+      "appearance_fallback": {
+        "candidate": null
+      },
+      "combined_router": {
+        "route": "POSTHOC_DISTINCTIVE_EDIT_TOKEN_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "PS01",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "PS02",
+      "target_name": "Crèche des Petits Lutins",
+      "frozen_ocr_rows_reused": 8,
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": true,
+          "tier": "DISTINCTIVE_EXACT_OR_ONE_EDIT_TOKEN_BANK",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [
+            "creche",
+            "petits"
+          ],
+          "distinctive_evidence_units": 2,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {
+            "creche": [
+              {
+                "frame_key": "PS02_anchor",
+                "panorama_item_id": "1a5c05bf-d2ea-4f55-93d6-7b8c464cdf12",
+                "ocr_text": "Creche",
+                "ocr_score": 0.99594849,
+                "observed_form": "creche",
+                "edit_distance": 0,
+                "match_kind": "EXACT",
+                "box_xyxy": [
+                  418.0,
+                  559.0,
+                  552.0,
+                  620.0
+                ]
+              },
+              {
+                "frame_key": "PS02_next",
+                "panorama_item_id": "c86a9855-4307-4da4-8a11-266a40525d1f",
+                "ocr_text": "Crèche",
+                "ocr_score": 0.95289946,
+                "observed_form": "creche",
+                "edit_distance": 0,
+                "match_kind": "EXACT",
+                "box_xyxy": [
+                  767.0,
+                  672.0,
+                  898.0,
+                  729.0
+                ]
+              }
+            ],
+            "petits": [
+              {
+                "frame_key": "PS02_anchor",
+                "panorama_item_id": "1a5c05bf-d2ea-4f55-93d6-7b8c464cdf12",
+                "ocr_text": "des ptits",
+                "ocr_score": 0.97953278,
+                "observed_form": "ptits",
+                "edit_distance": 1,
+                "match_kind": "EDIT_NEIGHBOR",
+                "box_xyxy": [
+                  430.0,
+                  598.0,
+                  660.0,
+                  718.0
+                ]
+              },
+              {
+                "frame_key": "PS02_next",
+                "panorama_item_id": "c86a9855-4307-4da4-8a11-266a40525d1f",
+                "ocr_text": "p'tits",
+                "ocr_score": 0.93149596,
+                "observed_form": "ptits",
+                "edit_distance": 1,
+                "match_kind": "EDIT_NEIGHBOR",
+                "box_xyxy": [
+                  862.0,
+                  732.0,
+                  993.0,
+                  800.0
+                ]
+              }
+            ]
+          },
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "UNIQUE_OWN_TARGET_MATCH",
+        "matched_targets": [
+          "PS02"
+        ],
+        "candidate": "PS02",
+        "wrong_target_matches": []
+      },
+      "appearance_fallback": {
+        "candidate": null
+      },
+      "combined_router": {
+        "route": "POSTHOC_DISTINCTIVE_EDIT_TOKEN_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "PS02",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "PS03",
+      "target_name": "Église Saint-Pierre",
+      "frozen_ocr_rows_reused": 2,
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "state": "NO_MATCH",
+        "matched_targets": [],
+        "candidate": null,
+        "wrong_target_matches": []
+      },
+      "appearance_fallback": {
+        "candidate": "PS03"
+      },
+      "combined_router": {
+        "route": "TEMPORAL_APPEARANCE_SEARCH_PRIORITY_CANDIDATE",
+        "candidate": "PS03",
+        "candidate_authority": "SEARCH_PRIORITY_ONLY",
+        "portal_ownership_binding": null
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Consumed Development mechanism evidence about whether a conservative, high-confidence, roster-unique exact-or-one-edit distinctive token branch explains and can recover the two already observed safe UNKNOWNs while preserving the sealed appearance fallback.",
+    "not_allowed": [
+      "fresh, blind, independent, provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, distribution-shift, deployment, or safety confirmation",
+      "a same-name or edit-neighbor OCR token proving exact physical identity, sign-to-building association, facade ownership, portal ownership, or entrance ownership",
+      "access, traversability, waypoint, arrival, handoff, user benefit, or deployment performance"
+    ]
+  }
+}

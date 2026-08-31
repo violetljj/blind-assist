@@ -1,0 +1,121 @@
+{
+  "schema": "blindassist-l10-scenenn-observed-extent-support-result-v1",
+  "authority": "CONSUMED_PROVIDER_DISJOINT_REAL_RGBD_SOURCE_NOT_EVALUABLE_RESULT",
+  "protocol_path": "l10_scenenn_observed_extent_support_protocol_v1.json",
+  "protocol_sha256": "deb0be3fe25ff5384b0344c3accfbab3074049a18c577e22a376cb5b595a8b7c",
+  "source_admission_path": "l10_scenenn_observed_extent_support_source_admission_v1.json",
+  "source_admission_sha256": "f7ecba9667b525fe88469ff4ae43571787ed55929a2b4203ed728cb2115d8235",
+  "cohort_path": "l10_scenenn_observed_extent_support_cohort_v1.json",
+  "cohort_sha256": "38981c8940927b44202b3afea7be70fcf8e077615f039efb1ad532c18ad7c817",
+  "receipt_path": "l10_scenenn_observed_extent_support_rgbd_receipt_v1.json",
+  "receipt_sha256": "25eb367897508fff9b060fe82dfe9c5b8d2d168480652ecafe43058c39eb6dc5",
+  "implementation": {
+    "path": "l10_scenenn_observed_extent_support.py",
+    "sha256": "0dd56ef4f04d40ae2606f8b2b567617089106e89e056ab452d8a333edc2b5bb5"
+  },
+  "conclusion": "L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT",
+  "gate_met": false,
+  "algorithm_evaluated": false,
+  "stop_stage": "FROZEN_OBSERVATION_CARRIER_MINIMUM_POINT_GATE",
+  "observed_failure": "The single-frame carrier stopped before any surface-score or extent-overlap matrix was computed because two frozen query observations supplied fewer than the preregistered 256 depth-consistent target points.",
+  "counts": {
+    "physical_targets": 4,
+    "selected_rgbd_frames": 8,
+    "selected_rgbd_frames_extracted": 8,
+    "observations_meeting_256_point_minimum": 6,
+    "observations_below_256_point_minimum": 2,
+    "surface_scores_computed": 0,
+    "extent_overlaps_computed": 0,
+    "scenarios_evaluated": 0
+  },
+  "observation_diagnostics": [
+    {
+      "episode_id": "SO01",
+      "role": "reference",
+      "frame": 6830,
+      "renderer_visible_pixels": 6221,
+      "valid_sensor_depth_pixels": 269478,
+      "depth_consistent_target_pixels": 4629,
+      "retained_points": 4096
+    },
+    {
+      "episode_id": "SO01",
+      "role": "query",
+      "frame": 7345,
+      "renderer_visible_pixels": 5516,
+      "valid_sensor_depth_pixels": 274252,
+      "depth_consistent_target_pixels": 159,
+      "retained_points": 159
+    },
+    {
+      "episode_id": "SO02",
+      "role": "reference",
+      "frame": 5775,
+      "renderer_visible_pixels": 15939,
+      "valid_sensor_depth_pixels": 273079,
+      "depth_consistent_target_pixels": 10971,
+      "retained_points": 4096
+    },
+    {
+      "episode_id": "SO02",
+      "role": "query",
+      "frame": 7095,
+      "renderer_visible_pixels": 3834,
+      "valid_sensor_depth_pixels": 275721,
+      "depth_consistent_target_pixels": 1410,
+      "retained_points": 1410
+    },
+    {
+      "episode_id": "SO03",
+      "role": "reference",
+      "frame": 6955,
+      "renderer_visible_pixels": 5873,
+      "valid_sensor_depth_pixels": 270782,
+      "depth_consistent_target_pixels": 2498,
+      "retained_points": 2498
+    },
+    {
+      "episode_id": "SO03",
+      "role": "query",
+      "frame": 7335,
+      "renderer_visible_pixels": 88975,
+      "valid_sensor_depth_pixels": 274510,
+      "depth_consistent_target_pixels": 80492,
+      "retained_points": 4096
+    },
+    {
+      "episode_id": "SO04",
+      "role": "reference",
+      "frame": 4830,
+      "renderer_visible_pixels": 3224,
+      "valid_sensor_depth_pixels": 271985,
+      "depth_consistent_target_pixels": 927,
+      "retained_points": 927
+    },
+    {
+      "episode_id": "SO04",
+      "role": "query",
+      "frame": 5285,
+      "renderer_visible_pixels": 2774,
+      "valid_sensor_depth_pixels": 270725,
+      "depth_consistent_target_pixels": 120,
+      "retained_points": 120
+    }
+  ],
+  "frozen_observation_carrier": {
+    "depth_consistency_tolerance_metres": 0.08,
+    "minimum_points_per_observation": 256,
+    "maximum_points_per_observation": 4096,
+    "single_frame_per_role": true
+  },
+  "forbidden_rescue": [
+    "lower the consumed 256-point minimum",
+    "increase the consumed 0.08 m depth-consistency tolerance",
+    "replace either sparse query frame",
+    "drop SO01 or SO04",
+    "compute support metrics on only the six passing observations",
+    "call missing source support an algorithm failure"
+  ],
+  "next_admissible_action": "A structurally different temporal registered-depth carrier may fuse a preregistered local frame window, reflecting standard RGB-D reconstruction practice. On this consumed scene it is posthoc mechanism Development only; fresh authority still requires a new scene/provider or phone capture.",
+  "claim_boundary": "This result says only that the frozen single-frame target-conditioned SceneNN depth carrier did not supply enough points to evaluate the support algorithm on all four targets. UNKNOWN/NOT_EVALUABLE is not negative evidence about registered extent support. It is not raw-phone perception, door detection, aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

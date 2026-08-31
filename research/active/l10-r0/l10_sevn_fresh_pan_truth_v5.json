@@ -1,0 +1,1887 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-evaluator-truth-v1",
+  "generated_at_utc": "2026-08-30T21:24:47.405111Z",
+  "truth_authority": "SEVN_HUMAN_DOOR_AND_TEXT_ANNOTATIONS_PLUS_FROZEN_VIEWPORT_GEOMETRY",
+  "episodes": {
+    "SEVN001": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6585"
+      },
+      "target_door_annotation": {
+        "frame_id": 117936,
+        "house_number": "6585",
+        "street_name": "saint_laurent",
+        "x_min": 149,
+        "x_max": 166,
+        "y_min": 30,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN001_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN001_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN002": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6595"
+      },
+      "target_door_annotation": {
+        "frame_id": 117984,
+        "house_number": "6595",
+        "street_name": "saint_laurent",
+        "x_min": 146,
+        "x_max": 174,
+        "y_min": 33,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN002_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN003": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6596"
+      },
+      "target_door_annotation": {
+        "frame_id": 113864,
+        "house_number": "6596",
+        "street_name": "saint_laurent",
+        "x_min": 165,
+        "x_max": 180,
+        "y_min": 30,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN003_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN003_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN004": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6597"
+      },
+      "target_door_annotation": {
+        "frame_id": 118161,
+        "house_number": "6597",
+        "street_name": "saint_laurent",
+        "x_min": 150,
+        "x_max": 165,
+        "y_min": 31,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN004_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN004_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN005": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6598"
+      },
+      "target_door_annotation": {
+        "frame_id": 113757,
+        "house_number": "6598",
+        "street_name": "saint_laurent",
+        "x_min": 151,
+        "x_max": 171,
+        "y_min": 29,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN005_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN005_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN006": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6602"
+      },
+      "target_door_annotation": {
+        "frame_id": 113673,
+        "house_number": "6602",
+        "street_name": "saint_laurent",
+        "x_min": 159,
+        "x_max": 196,
+        "y_min": 22,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN006_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN006_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN007": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6607"
+      },
+      "target_door_annotation": {
+        "frame_id": 118368,
+        "house_number": "6607",
+        "street_name": "saint_laurent",
+        "x_min": 165,
+        "x_max": 186,
+        "y_min": 29,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN007_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN007_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN008": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6609"
+      },
+      "target_door_annotation": {
+        "frame_id": 118428,
+        "house_number": "6609",
+        "street_name": "saint_laurent",
+        "x_min": 161,
+        "x_max": 185,
+        "y_min": 31,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN008_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN008_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN009": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6613"
+      },
+      "target_door_annotation": {
+        "frame_id": 118494,
+        "house_number": "6613",
+        "street_name": "saint_laurent",
+        "x_min": 162,
+        "x_max": 183,
+        "y_min": 27,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN009_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN009_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN010": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6615"
+      },
+      "target_door_annotation": {
+        "frame_id": 118542,
+        "house_number": "6615",
+        "street_name": "saint_laurent",
+        "x_min": 166,
+        "x_max": 188,
+        "y_min": 29,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN010_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN010_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN011": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6619"
+      },
+      "target_door_annotation": {
+        "frame_id": 118727,
+        "house_number": "6619",
+        "street_name": "saint_laurent",
+        "x_min": 169,
+        "x_max": 186,
+        "y_min": 26,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN011_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN011_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN012": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6623"
+      },
+      "target_door_annotation": {
+        "frame_id": 118749,
+        "house_number": "6623",
+        "street_name": "saint_laurent",
+        "x_min": 164,
+        "x_max": 184,
+        "y_min": 31,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN012_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN012_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN013": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6631"
+      },
+      "target_door_annotation": {
+        "frame_id": 118968,
+        "house_number": "6631",
+        "street_name": "saint_laurent",
+        "x_min": 148,
+        "x_max": 167,
+        "y_min": 27,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN013_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        },
+        "SEVN013_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN014": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6700"
+      },
+      "target_door_annotation": {
+        "frame_id": 169184,
+        "house_number": "6700",
+        "street_name": "saint_laurent",
+        "x_min": 180,
+        "x_max": 190,
+        "y_min": 33,
+        "y_max": 47,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN014_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN014_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN015": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6701"
+      },
+      "target_door_annotation": {
+        "frame_id": 121175,
+        "house_number": "6701",
+        "street_name": "saint_laurent",
+        "x_min": 149,
+        "x_max": 165,
+        "y_min": 25,
+        "y_max": 49,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN015_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN015_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN016": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6702"
+      },
+      "target_door_annotation": {
+        "frame_id": 169040,
+        "house_number": "6702",
+        "street_name": "saint_laurent",
+        "x_min": 148,
+        "x_max": 164,
+        "y_min": 30,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN016_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 2,
+          "target_house_number_visible": false
+        },
+        "SEVN016_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        },
+        "SEVN016_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN016_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN017": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6703"
+      },
+      "target_door_annotation": {
+        "frame_id": 121251,
+        "house_number": "6703",
+        "street_name": "saint_laurent",
+        "x_min": 150,
+        "x_max": 175,
+        "y_min": 27,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN017_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN017_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN017_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN017_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN018": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6705"
+      },
+      "target_door_annotation": {
+        "frame_id": 106572,
+        "house_number": "6705",
+        "street_name": "saint_laurent",
+        "x_min": 144,
+        "x_max": 165,
+        "y_min": 30,
+        "y_max": 57,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN018_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN018_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN018_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN018_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN019": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6706"
+      },
+      "target_door_annotation": {
+        "frame_id": 169022,
+        "house_number": "6706",
+        "street_name": "saint_laurent",
+        "x_min": 162,
+        "x_max": 176,
+        "y_min": 32,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN019_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN019_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        },
+        "SEVN019_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN019_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN020": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6709"
+      },
+      "target_door_annotation": {
+        "frame_id": 106695,
+        "house_number": "6709",
+        "street_name": "saint_laurent",
+        "x_min": 150,
+        "x_max": 175,
+        "y_min": 28,
+        "y_max": 58,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN020_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN020_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN021": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6710"
+      },
+      "target_door_annotation": {
+        "frame_id": 168924,
+        "house_number": "6710",
+        "street_name": "saint_laurent",
+        "x_min": 155,
+        "x_max": 181,
+        "y_min": 27,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN021_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN021_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN022": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6711"
+      },
+      "target_door_annotation": {
+        "frame_id": 106716,
+        "house_number": "6711",
+        "street_name": "saint_laurent",
+        "x_min": 150,
+        "x_max": 174,
+        "y_min": 28,
+        "y_max": 57,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN022_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN022_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN023": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6712"
+      },
+      "target_door_annotation": {
+        "frame_id": 168894,
+        "house_number": "6712",
+        "street_name": "saint_laurent",
+        "x_min": 157,
+        "x_max": 175,
+        "y_min": 31,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN023_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN023_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN023_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN023_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN024": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6713"
+      },
+      "target_door_annotation": {
+        "frame_id": 106745,
+        "house_number": "6713",
+        "street_name": "saint_laurent",
+        "x_min": 157,
+        "x_max": 180,
+        "y_min": 27,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN024_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN024_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN025": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6714"
+      },
+      "target_door_annotation": {
+        "frame_id": 168876,
+        "house_number": "6714",
+        "street_name": "saint_laurent",
+        "x_min": 156,
+        "x_max": 175,
+        "y_min": 32,
+        "y_max": 54,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN025_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN025_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN025_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN025_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN026": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6715"
+      },
+      "target_door_annotation": {
+        "frame_id": 106773,
+        "house_number": "6715",
+        "street_name": "saint_laurent",
+        "x_min": 167,
+        "x_max": 186,
+        "y_min": 28,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN026_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN026_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN026_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN026_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN027": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6717"
+      },
+      "target_door_annotation": {
+        "frame_id": 170349,
+        "house_number": "6717",
+        "street_name": "saint_laurent",
+        "x_min": 163,
+        "x_max": 179,
+        "y_min": 31,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN027_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN027_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN027_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN027_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN028": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6718"
+      },
+      "target_door_annotation": {
+        "frame_id": 168756,
+        "house_number": "6718",
+        "street_name": "saint_laurent",
+        "x_min": 141,
+        "x_max": 156,
+        "y_min": 28,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN028_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN028_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN028_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN028_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN029": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6722"
+      },
+      "target_door_annotation": {
+        "frame_id": 168669,
+        "house_number": "6722",
+        "street_name": "saint_laurent",
+        "x_min": 152,
+        "x_max": 176,
+        "y_min": 26,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN029_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN029_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN029_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN029_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN030": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6725"
+      },
+      "target_door_annotation": {
+        "frame_id": 170520,
+        "house_number": "6725",
+        "street_name": "saint_laurent",
+        "x_min": 163,
+        "x_max": 181,
+        "y_min": 33,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN030_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN030_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN030_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN030_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN031": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6728"
+      },
+      "target_door_annotation": {
+        "frame_id": 168633,
+        "house_number": "6728",
+        "street_name": "saint_laurent",
+        "x_min": 154,
+        "x_max": 183,
+        "y_min": 29,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN031_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN031_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN031_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN031_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN032": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6730"
+      },
+      "target_door_annotation": {
+        "frame_id": 168573,
+        "house_number": "6730",
+        "street_name": "saint_laurent",
+        "x_min": 174,
+        "x_max": 198,
+        "y_min": 24,
+        "y_max": 57,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN032_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN032_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN032_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN032_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN033": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6737"
+      },
+      "target_door_annotation": {
+        "frame_id": 170594,
+        "house_number": "6737",
+        "street_name": "saint_laurent",
+        "x_min": 146,
+        "x_max": 169,
+        "y_min": 27,
+        "y_max": 58,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN033_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN033_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN033_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN033_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        }
+      }
+    },
+    "SEVN034": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6740"
+      },
+      "target_door_annotation": {
+        "frame_id": 168401,
+        "house_number": "6740",
+        "street_name": "saint_laurent",
+        "x_min": 161,
+        "x_max": 174,
+        "y_min": 31,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN034_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN034_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN034_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN034_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN035": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6741"
+      },
+      "target_door_annotation": {
+        "frame_id": 170744,
+        "house_number": "6741",
+        "street_name": "saint_laurent",
+        "x_min": 149,
+        "x_max": 193,
+        "y_min": 19,
+        "y_max": 63,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN035_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN035_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN035_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN035_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        }
+      }
+    },
+    "SEVN036": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6743"
+      },
+      "target_door_annotation": {
+        "frame_id": 170904,
+        "house_number": "6743",
+        "street_name": "saint_laurent",
+        "x_min": 141,
+        "x_max": 170,
+        "y_min": 22,
+        "y_max": 61,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN036_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN036_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN036_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN036_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN037": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6744"
+      },
+      "target_door_annotation": {
+        "frame_id": 168306,
+        "house_number": "6744",
+        "street_name": "saint_laurent",
+        "x_min": 168,
+        "x_max": 179,
+        "y_min": 31,
+        "y_max": 47,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN037_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN037_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN037_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN037_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN038": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6745"
+      },
+      "target_door_annotation": {
+        "frame_id": 170988,
+        "house_number": "6745",
+        "street_name": "saint_laurent",
+        "x_min": 137,
+        "x_max": 172,
+        "y_min": 24,
+        "y_max": 63,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN038_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN038_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN038_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN038_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN039": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6746"
+      },
+      "target_door_annotation": {
+        "frame_id": 168257,
+        "house_number": "6746",
+        "street_name": "saint_laurent",
+        "x_min": 143,
+        "x_max": 165,
+        "y_min": 26,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN039_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN039_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN039_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN039_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN040": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6747"
+      },
+      "target_door_annotation": {
+        "frame_id": 171024,
+        "house_number": "6747",
+        "street_name": "saint_laurent",
+        "x_min": 162,
+        "x_max": 191,
+        "y_min": 23,
+        "y_max": 60,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN040_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN040_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN040_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN040_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    }
+  }
+}

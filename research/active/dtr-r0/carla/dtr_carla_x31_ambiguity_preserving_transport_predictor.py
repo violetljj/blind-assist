@@ -7,12 +7,12 @@ therefore contradict an otherwise causal motion history and permanently end
 the complete track's motion epoch.
 
 This successor retains the supported hypotheses in X27's finite inherited
-occupancy-lattice neighbourhood as a transport cone.  Each
-direction-consistent branch owns its aligned surface lineage.  Equal motion
-signatures coalesce into conservative timestamp and lineage envelopes rather
-than beam-pruning feasible ancestry.  A contradiction terminates only that
-branch; motion authority ends only when every feasible continuation has ended.
-Route risk consumes every still-authorized branch footprint and velocity.
+occupancy-lattice neighbourhood as a transport cone.  Each distinct current
+surface shift owns one non-dominated branch whose aligned lineage is the
+componentwise union of every feasible ancestry reaching that shift.  A
+contradiction terminates only that shift branch; motion authority ends only
+when every feasible continuation has ended.  Route risk consumes every
+still-authorized branch footprint and velocity.
 """
 
 from __future__ import annotations
@@ -108,6 +108,7 @@ def fixed_constants() -> dict[str, Any]:
         "branch_authority_pairs": x27.MINIMUM_AUTHORITY_PAIRS,
         "branch_authority_span_seconds": x24.MINIMUM_FIT_SPAN_S,
         "branch_motion_witness_steps": x27.MINIMUM_AUTHORITY_PAIRS,
+        "branch_prediction_rule": "RIGID_DYNAMIC_BRANCHES_ONLY",
         "branch_anchor_rule": (
             "AT_LEAST_ONE_NONZERO_PEAK_BEATS_ZERO_SHIFT_WITH_INHERITED_SUPPORT"
         ),
@@ -115,15 +116,19 @@ def fixed_constants() -> dict[str, Any]:
         "branch_conflict_rule": (
             "TERMINATE_ONLY_INCOMPATIBLE_BRANCH_AND_END_EPOCH_ONLY_IF_ALL_BRANCHES_END"
         ),
+        "branch_restart_rule": (
+            "NEW_ANCHORED_OR_CENTER_SHIFT_ONLY_WHEN_NO_LIVE_BRANCH_ACCEPTS_SHIFT"
+        ),
         "neutral_observation_rule": (
             "ZERO_SHIFT_WITH_INHERITED_SUPPORT_ADDS_PARALLEL_CARRY_WITHOUT_NEW_MOTION_EVIDENCE"
         ),
         "branch_merge_rule": (
-            "EXACT_INTERNING_THEN_FUTURE_STABLE_DOMINANCE_THEN_EQUAL_MOTION_SIGNATURE_CONSERVATIVE_ENVELOPE"
+            "EXACT_INTERNING_THEN_CURRENT_SHIFT_NONDOMINATED_LINEAGE_ENVELOPE"
         ),
         "ambiguity_envelope": (
             "TIMESTAMP_INTERVALS_PLUS_COMPONENTWISE_LINEAGE_UNION_PRESERVE_EXISTENTIAL_RISK"
         ),
+        "causal_time_rounding_decimals": 6,
         "route_consumption": "MINIMUM_ENTRY_ACROSS_ALL_AUTHORIZED_TRANSPORT_BRANCHES",
         "confirmation_identity": "STABLE_PARENT_TRACK_ANCESTRY_NOT_BRANCH_VELOCITY_KEY",
         "detector_threshold_change": False,
@@ -533,6 +538,44 @@ def _coalesce_motion_signature_envelopes(
     return output
 
 
+def _coalesce_current_shift_envelopes(
+    branches: Sequence[TransportBranch], now_s: float
+) -> list[TransportBranch]:
+    """Keep one strongest motion state and all geometry for each live shift."""
+
+    groups: dict[x27.Cell, list[TransportBranch]] = {}
+    for branch in branches:
+        groups.setdefault(branch.last_shift_cells, []).append(branch)
+
+    output: list[TransportBranch] = []
+    for shift, group in groups.items():
+        representative = max(group, key=lambda branch: _branch_priority(branch, now_s))
+        lineage_length = max(len(branch.world_lineage) for branch in group)
+        lineage = [frozenset() for _ in range(lineage_length)]
+        for branch in group:
+            offset = lineage_length - len(branch.world_lineage)
+            for ordinal, cells in enumerate(branch.world_lineage):
+                lineage[offset + ordinal] = lineage[offset + ordinal] | cells
+        output.append(
+            TransportBranch(
+                evidence=list(representative.evidence),
+                anchor_times_s=sorted(
+                    {
+                        value
+                        for branch in group
+                        for value in _trimmed_anchor_times(
+                            branch.anchor_times_s, now_s
+                        )
+                    }
+                ),
+                world_lineage=lineage,
+                last_shift_cells=shift,
+                last_state=representative.last_state,
+            )
+        )
+    return output
+
+
 def advance_transport_cone(
     branches: Mapping[str, TransportBranch],
     candidates: Sequence[SurfaceTransportCandidate],
@@ -548,6 +591,7 @@ def advance_transport_cone(
     proposals: list[TransportBranch] = []
     terminated = 0
     created = 0
+    continued_shifts: set[x27.Cell] = set()
     for branch in branches.values():
         branch.evidence = _trimmed_evidence(branch.evidence, now_s)
         branch.anchor_times_s = _trimmed_anchor_times(
@@ -559,6 +603,9 @@ def advance_transport_cone(
             if _candidate_consistent(branch.evidence, candidate, delta_s)
         ]
         if extensions:
+            continued_shifts.update(
+                candidate.shift_cells for candidate in extensions
+            )
             proposals.extend(
                 _extended_branch(
                     branch,
@@ -585,7 +632,10 @@ def advance_transport_cone(
             terminated += 1
 
     for candidate in candidates:
-        if not (candidate.occupancy_anchored or candidate.is_center_hypothesis):
+        if (
+            not (candidate.occupancy_anchored or candidate.is_center_hypothesis)
+            or candidate.shift_cells in continued_shifts
+        ):
             continue
         proposals.append(
             _new_branch(
@@ -603,7 +653,10 @@ def advance_transport_cone(
         for proposal in proposals
         if proposal.evidence
     }
-    retained = _prune_route_footprint_dominance(list(exact.values()))
+    shift_envelopes = _coalesce_current_shift_envelopes(
+        list(exact.values()), now_s
+    )
+    retained = _prune_route_footprint_dominance(shift_envelopes)
     enveloped = _coalesce_motion_signature_envelopes(retained)
     merged = {_branch_state_key(value): value for value in enveloped}
     return dict(sorted(merged.items())), terminated, created
@@ -684,7 +737,7 @@ class AmbiguityPreservingSurfaceTracker(x29.TemporalLineageTracker):
                 and track.last_wearer_cells is not None
                 and math.isfinite(track.last_measurement_time_s)
             ):
-                delta_s = now_s - track.last_measurement_time_s
+                delta_s = round(now_s - track.last_measurement_time_s, 6)
                 x24.require(delta_s > 0.0, f"x31_noncausal_track_time:{track_id}")
                 center_delta = measurement.value.position_xy - track.last_center_xy
                 world = x27.lattice_alignment(
@@ -734,6 +787,8 @@ class AmbiguityPreservingSurfaceTracker(x29.TemporalLineageTracker):
                         branch.evidence[-1].shift_cells
                         for branch in track.transport_branches.values()
                         if branch.evidence
+                        and resolve_branch_authority(branch, now_s)[0]
+                        == x27.RIGID_DYNAMIC
                     ],
                 )
                 zero_overlap = len(track.last_world_cells & measurement.world_cells)
@@ -786,9 +841,9 @@ class AmbiguityPreservingSurfaceTracker(x29.TemporalLineageTracker):
                     lineage_shift = candidates[0].shift_cells if candidates else (0, 0)
                     track.last_transport_shift_cells = lineage_shift
                     track.last_transport_state = (
-                        candidates[0].is_center_hypothesis
-                        and x29.TRANSPORT_CONTINUATION
-                        or BRANCH_NEUTRAL
+                        x29.TRANSPORT_CONTINUATION
+                        if candidates and candidates[0].is_center_hypothesis
+                        else BRANCH_NEUTRAL
                     )
                 else:
                     track.authority = occupancy_authority
@@ -1434,11 +1489,28 @@ def self_check() -> dict[str, Any]:
         ),
         "x31_conservative_ambiguity_envelope_lost_feasible_state",
     )
+    shift_enveloped = _coalesce_current_shift_envelopes(
+        [envelope_a, envelope_b], now_s=0.2
+    )
+    x24.require(
+        len(shift_enveloped) == 1
+        and all(
+            left <= merged
+            for branch in (envelope_a, envelope_b)
+            for left, merged in zip(
+                branch.world_lineage,
+                shift_enveloped[0].world_lineage,
+                strict=True,
+            )
+        ),
+        "x31_current_shift_envelope_lost_feasible_geometry",
+    )
     return {
         "status": "X31_AMBIGUITY_PRESERVING_TRANSPORT_STRUCTURAL_FALSIFIER_MET",
         "inherited_surface_hypothesis_retained": True,
         "live_branch_prediction_reached_real_generator": True,
         "conservative_ambiguity_envelope_preserved": True,
+        "current_shift_nondominated_envelope_preserved": True,
         "ep03_compatible_branch_retained": True,
         "ep07_alias_rebound_branch_retained": True,
         "zero_surface_abstention_preserved_authority": True,

@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist-l10-scenenn-efficientloftr-fresh-none-source-admission-v1",
+  "authority": "FROZEN_PRE_GEOMETRY_PRE_RGBD_RESOURCE_ORDERED_SOURCE_ADMISSION",
+  "frozen_at": "2026-08-31T21:13:00+08:00",
+  "protocol_path": "l10_scenenn_efficientloftr_fresh_none_protocol_v1.json",
+  "protocol_sha256": "f61d54ce43d05c72258dbe92f4e48efea621002c822cd89f66dc2b4689e16503",
+  "selection_inputs": ["previously materialized XML labels", "official HTTP HEAD status, ETag and Content-Length"],
+  "selection_rule": "Among all unconsumed scenes with at least one qualifying door, choose four smallest official ONI payloads, tie by scene ID; within each choose lowest numeric qualifying door instance.",
+  "selected": [
+    {"episode_id": "LF01", "scene_id": "021", "target_instance_id": 289, "target_label": "door", "oni_bytes": 463481795, "inventory_xml_sha256": "a724e0efceaa024b044bd08b0d8dc21229acc2cdc06acf4e89e31b1f3530c6e1"},
+    {"episode_id": "LF02", "scene_id": "273", "target_instance_id": 107842, "target_label": "door", "oni_bytes": 628310332, "inventory_xml_sha256": "44dc9e90ca1a7716c4c59f8ad1ee3838d4bd59912fde30204ee4d54013691ecf"},
+    {"episode_id": "LF03", "scene_id": "011", "target_instance_id": 1004135, "target_label": "door", "oni_bytes": 636668527, "inventory_xml_sha256": "3d36141d19ac156efbe6ee257145a996c71896e5ed9fd55b4586150e8d4fffb1"},
+    {"episode_id": "LF04", "scene_id": "279", "target_instance_id": 1443816, "target_label": "door", "oni_bytes": 705895486, "inventory_xml_sha256": "7362f8ab65a8c5856c54657eb30635e37552ae43e7f9eca20ae404bbec04da5f"}
+  ],
+  "total_selected_oni_bytes": 2434356140,
+  "geometry_members_opened": 0,
+  "trajectory_members_opened": 0,
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "model_calls": 0,
+  "claim_boundary": "This is source admission only. It proves neither frame eligibility nor algorithm performance and grants no portal, access, arrival, handoff, deployment, or safety authority."
+}

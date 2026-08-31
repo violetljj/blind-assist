@@ -1,0 +1,200 @@
+{
+  "schema": "blindassist-l10-panolab-track-token-bank-fresh-protocol-v1",
+  "name": "L10 PanoLab fresh long-short exact-token bank Development",
+  "status": "FROZEN_BEFORE_FIRST_MODEL_CALL_ON_SELECTED_PIXELS",
+  "question": "On four newly frozen target-way/item/sequence-disjoint active-view episodes across three cities, does a long-short exact-token bank recover more target-name lexical candidates than the frozen whole-row/group-sign predecessor while preserving zero wrong-target matches and never creating a portal-ownership binding?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_track_token_bank_fresh.py",
+    "sha256": "97f17615119050acbf59b39e9a684712400f6393d06ec80aca46a1c4d03c9bcd"
+  },
+  "frozen_inputs": {
+    "fresh_source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_source_protocol_v2.json",
+      "sha256": "ce2a80983cdf33af2b5d3c0aa318d5336729993863455d8883df4c2f0c549795",
+      "bytes": 5479
+    },
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "materialization_manifest": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "prior_consumed_active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "orientation_projection_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_entrance_ray.py",
+      "sha256": "e91b58dec522a7cd9f36cc7ccfcdffaf292239fe58138d0bf91ced948d12073f",
+      "bytes": 8898
+    },
+    "frozen_predecessor_evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_consensus.py",
+      "sha256": "23dd6f37c0f09f31b727319b12cd5e3b4ec238b7b72a8d38d8b5cf4a0fca003b",
+      "bytes": 4236
+    },
+    "frozen_predecessor_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_consensus_protocol_v1.json",
+      "sha256": "8e43b4d49f8fdc87ac0decc48bf8002b99f5e03e7f02792e237c27149074a021",
+      "bytes": 9161
+    },
+    "posthoc_predecessor_result": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_consensus_result_v1.json",
+      "sha256": "628610a4bf413814afac9f0d4033ba6c6359cfb23b370a972ba60c2dd6849a84",
+      "bytes": 43489
+    }
+  },
+  "source_receipt": {
+    "episodes": 4,
+    "source_cities": 3,
+    "distinct_target_ways": 4,
+    "distinct_sequences": 4,
+    "images": 8,
+    "selected_pixel_views_before_freeze": 0,
+    "selected_model_calls_before_freeze": 0,
+    "prior_active_target_way_overlap": 0,
+    "prior_active_item_overlap": 0,
+    "v1_selection": "Rejected before materialization because two Intermarche items appeared in prior reference-portal evidence; V2 excluded them without changing other ranking rules.",
+    "v2_console_transport": "The V2 selection file was fully written before a Windows GBK console print error; JSON, counts and SHA-256 were verified, and materialization then completed with UTF-8 console mode."
+  },
+  "runtime": {
+    "executable": "artifacts.local/runtime/l10-ppocrv6-medium-v1/.venv/Scripts/python.exe",
+    "pythonpath_order": [
+      "artifacts.local/runtime/semantic-anchor-v1/site-packages",
+      "artifacts.local/runtime/dtr-carla-c8-yolo/.venv/Lib/site-packages",
+      "artifacts.local/runtime/dtr-nuscenes-x21/.venv/Lib/site-packages"
+    ],
+    "versions": {
+      "python": "3.11.9",
+      "numpy": "2.4.6",
+      "opencv-python": "4.10.0.84",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2",
+      "onnxruntime-gpu": "1.26.0"
+    }
+  },
+  "models": {
+    "medium_detection": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_det_onnx",
+      "revision": "61323801669c338b7891481ec7bac61ce31b576a",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-det-6132380",
+      "sha256": {
+        "inference.json": "0f1a7ec35da36173529c7a60238b7f7919e3831929c3f700ad90ad4896adecd5",
+        "inference.onnx": "eb13b44b25bb36f89528b68720af8a61d9cf381176107f465db1757b65d086e1",
+        "inference.yml": "7298d5ead546584af2504d03355f881ac7a7bc0eb1e282d3e159277c1d0af871",
+        "README.md": "3046e3aab0194a2291bb3941c93b980c2b3a938a24a5be88354968f6d6187ac8"
+      }
+    },
+    "medium_recognition": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_rec_onnx",
+      "revision": "50c7eacafc52fa7bcf4194e8cd08e46f8558504b",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-rec-50c7eac",
+      "sha256": {
+        "inference.json": "0b2e25e990bd072f1bf77d59d67d508bce6c4bd44af6624e0fb27d6da2cd00e8",
+        "inference.onnx": "9c09abf0957f7968c7586464b7397b84ad2387a0497a351af40e9acc71b673ba",
+        "inference.yml": "991b700facf5b50a7de193468207d5f4255b538dde0d312ae3b7c7a9b6873129",
+        "README.md": "ebce8d28436623ecab4952e24935aed86b3f8ecaf8f8736b92d5544f60fae1e9"
+      }
+    }
+  },
+  "observation_window": {
+    "anchor": "strict OSM entrance ray under the unchanged zero-pose Panoramax contract",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "sampling": "native equirectangular pixels with horizontal seam wrap and no resampling",
+    "ocr": "frozen PP-OCRv6 medium detection and recognition ONNX"
+  },
+  "lexical_match": {
+    "normalization": "Unicode NFKD ASCII fold, lowercase alphanumeric tokens",
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ],
+    "minimum_exact_name_row_score": 0.7,
+    "exact_name_rule": "Frozen predecessor: all significant target-name tokens contiguous in one OCR row.",
+    "two_initial_brand_signature": {
+      "minimum_member_row_score": 0.7,
+      "minimum_group_geometric_mean_score": 0.85,
+      "minimum_canonical_characters": 2,
+      "maximum_canonical_characters": 4,
+      "minimum_distinct_rows": 2,
+      "maximum_pair_iou": 0.1
+    }
+  },
+  "long_short_token_bank": {
+    "minimum_ocr_row_score": 0.75,
+    "minimum_distinct_target_tokens": 2,
+    "minimum_target_token_coverage": 0.6,
+    "single_token_target_rule": "one exact token required",
+    "multi_token_target_rule": "require max(2, ceil(0.6 * significant target tokens)), capped by target length",
+    "association": "Exact normalized token equality only; union witnesses across rows and the two reciprocal same-sequence frames.",
+    "authority": "Lexical candidate only; no row, token, frame, or bank gains portal or entrance ownership authority."
+  },
+  "gate": {
+    "fresh_episodes": 4,
+    "minimum_source_cities": 3,
+    "strict_orientation_images": 8,
+    "reciprocal_action_receipts": 4,
+    "post_action_authorized_entrance_rays": 4,
+    "minimum_successor_long_short_track_candidates": 2,
+    "minimum_gain_over_frozen_predecessor_track": 1,
+    "long_short_track_not_worse_than_after_only": true,
+    "maximum_counterfactual_track_matches": 0,
+    "maximum_portal_ownership_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_LONG_SHORT_TOKEN_BANK_FRESH_TARGET_WAY_DISJOINT_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_LONG_SHORT_TOKEN_BANK_FRESH_TARGET_WAY_DISJOINT_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "evidence_semantics": {
+    "predecessor": "The frozen whole-row exact-name plus grouped two-initial brand-sign matcher, evaluated both after-only and as a two-frame union.",
+    "successor": "A long-short memory bank of exact target-name tokens pooled across OCR rows and the verified start/after action edge.",
+    "counterfactuals": "Each episode's two-frame bank is evaluated against all three other fresh target names, for twelve wrong-target trials.",
+    "component_separation": "Lexical candidates, geometry roles, and entrance rays remain separate fields; no ownership binding is emitted."
+  },
+  "research_basis": [
+    {
+      "title": "GoMatching++: Parameter- and Data-Efficient Arbitrary-Shaped Video Text Spotting and Benchmarking",
+      "url": "https://arxiv.org/abs/2505.22228",
+      "official_code": "https://github.com/Hxyz-123/GoMatching",
+      "use": "Its long- and short-term matching memory motivates pooling stable text evidence across recent and historical frames; this evaluator uses a deterministic exact-token bank rather than its learned tracker."
+    },
+    {
+      "title": "GloTSFormer: Global Video Text Spotting Transformer",
+      "url": "https://arxiv.org/abs/2401.03694",
+      "use": "Its global historical association motivates retaining evidence beyond adjacent-frame-only matching; this evaluator does not implement the Transformer or claim benchmark comparability."
+    }
+  ],
+  "execution_rule": "Freeze source selection before download, then freeze this evaluator, model hashes, exact-token rules, gates and counterfactuals before the first OCR/model call on the selected pixels. Run one output-bearing replay and refuse overwrite.",
+  "output": "research/active/l10-r0/l10_panolab_track_token_bank_fresh_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Fresh target-way/item/prior-active-sequence-disjoint Development evidence, on four selected Panoramax episodes across three cities, about whether a component-separated long-short exact-token bank improves lexical-candidate availability over the frozen predecessor while post-action geometry remains independently DIRECT.",
+    "not_allowed": [
+      "source-provider-disjoint confirmation or broad generalization",
+      "a lexical candidate being the target entity rather than a same-name sign, street, or distractor",
+      "pixel portal grounding or address/sign-to-door ownership",
+      "entrance affordance, public/legal access, walkability, collision-free traversability",
+      "waypoint accuracy, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

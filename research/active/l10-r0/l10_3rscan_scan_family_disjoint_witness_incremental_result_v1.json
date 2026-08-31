@@ -1,0 +1,3004 @@
+{
+  "schema": "blindassist-l10-3rscan-scan-family-disjoint-witness-incremental-result-v1",
+  "authority": "CONSUMED_SCAN_FAMILY_DISJOINT_SAME_CLASS_WITNESS_INCREMENTAL_RESULT",
+  "protocol_path": "l10_3rscan_scan_family_disjoint_witness_incremental_protocol_v1.json",
+  "protocol_sha256": "78e3989dac20d98c340318d01f5470f85a3c7be6a127922a7b6467ba7743576f",
+  "cohort_path": "l10_3rscan_scan_family_disjoint_witness_incremental_cohort_v1.json",
+  "cohort_sha256": "051669620123c9fc30f4cd58828961908546b0e6ea29e914173b712d657064cd",
+  "implementation": {
+    "path": "l10_3rscan_scan_family_disjoint_witness_incremental.py",
+    "sha256": "109d36814509f916cfba3bccedecd8ff7fff6bcb916c9a26cb9d8ca41b144c0d"
+  },
+  "conclusion": "L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "counts": {
+    "physical_targets": 6,
+    "registration_witnesses": 2,
+    "evaluated_targets": 4,
+    "scenarios": 15,
+    "balanced_swap_scenarios": 12,
+    "truth_matches_across_scenarios": 64,
+    "truth_unmatched_nodes_across_scenarios": 26
+  },
+  "witness_calibration": {
+    "episode_ids": [
+      "FI01",
+      "FI02"
+    ],
+    "surface_distances_metres": [
+      0.045033,
+      0.376774
+    ],
+    "maximum_witness_surface_distance_metres": 0.376774,
+    "coverage_claim": "NONE_ENGINEERING_CALIBRATION_ONLY"
+  },
+  "metrics": {
+    "aggregate": {
+      "complete_surface_hungarian": {
+        "true_positive": 50,
+        "false_positive": 26,
+        "false_negative": 14,
+        "precision": 0.657895,
+        "recall": 0.78125,
+        "f1": 0.714286,
+        "zero_assignment_exact_scenarios": 3,
+        "scenarios": 15
+      },
+      "rank_only_surface_zero": {
+        "true_positive": 64,
+        "false_positive": 2,
+        "false_negative": 0,
+        "precision": 0.969697,
+        "recall": 1.0,
+        "f1": 0.984615,
+        "zero_assignment_exact_scenarios": 13,
+        "scenarios": 15
+      },
+      "witness_calibrated_surface_zero": {
+        "true_positive": 48,
+        "false_positive": 0,
+        "false_negative": 16,
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857143,
+        "zero_assignment_exact_scenarios": 2,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-six",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -0.341691,
+            -1.239373
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.649928,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 6,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 6,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -0.341691,
+            -1.239373
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "FI06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "FI06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -1.653224
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -1.727995
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -0.341691
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.649928
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 5,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI03-FI04",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -0.341691,
+            -1.239373
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -0.649928,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 4,
+            "false_negative": 3,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.222222,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI04"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI04",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI03-FI05",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -2.027802
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -1.239373
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI05"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI05",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI03-FI06",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -1.727995
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -0.341691
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.649928
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI04-FI03",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -3.201245,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -0.730508,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -3.617588,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -1.621178,
+            -0.341691,
+            -1.239373
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -2.613983,
+            -0.649928,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 1,
+            "false_positive": 4,
+            "false_negative": 3,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.222222,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03"
+            ],
+            "predicted_unmatched_queries": [
+              "FI04"
+            ],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI04",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI04-FI05",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -0.692571
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -1.239373
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI05"
+            ],
+            "predicted_unmatched_queries": [
+              "FI04"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI05",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI04",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI04-FI06",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -1.653224
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -0.341691
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.649928
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI04"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI04"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI05-FI03",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -3.201245,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -0.730508,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -3.617588,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -0.040755,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -2.613983,
+            -0.649928,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03"
+            ],
+            "predicted_unmatched_queries": [
+              "FI05"
+            ],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI05",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI05-FI04",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -0.649928,
+            -0.448705
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 3,
+            "false_positive": 2,
+            "false_negative": 1,
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI04"
+            ],
+            "predicted_unmatched_queries": [
+              "FI05"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI04",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI05",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI05-FI06",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -5.168767
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -1.118991
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -1.653224
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -1.727995
+          ],
+          [
+            -5.83221,
+            -1.727212,
+            -1.28429,
+            -2.613983,
+            -0.649928
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI06",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI06"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI05"
+            ],
+            "truth_unmatched_references": [
+              "FI06"
+            ],
+            "truth_unmatched_queries": [
+              "FI05"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI06-FI03",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI04",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -3.201245,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -0.730508,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -3.617588,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -0.040755,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -1.621178,
+            -0.341691,
+            -1.239373
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI06"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03"
+            ],
+            "predicted_unmatched_queries": [
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI03"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI06-FI04",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI05",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -5.168767,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -1.118991,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -1.653224,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -1.727995,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -0.341691,
+            -1.239373
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 2,
+            "false_positive": 3,
+            "false_negative": 2,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.444444,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI05"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI04"
+            ],
+            "predicted_unmatched_queries": [
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI05"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI04"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI04"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FI06-FI05",
+        "reference_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI05"
+        ],
+        "query_targets": [
+          "FI01",
+          "FI02",
+          "FI03",
+          "FI04",
+          "FI06"
+        ],
+        "surface_score_matrix": [
+          [
+            -0.045033,
+            -4.08052,
+            -7.160423,
+            -3.201245,
+            -6.135341
+          ],
+          [
+            -4.023149,
+            -0.376774,
+            -3.023614,
+            -0.730508,
+            -2.027802
+          ],
+          [
+            -6.871115,
+            -2.731376,
+            -0.453274,
+            -3.617588,
+            -0.692571
+          ],
+          [
+            -3.08983,
+            -0.659848,
+            -3.729735,
+            -0.040755,
+            -2.703533
+          ],
+          [
+            -4.854138,
+            -0.749841,
+            -2.249762,
+            -1.621178,
+            -1.239373
+          ]
+        ],
+        "methods": {
+          "complete_surface_hungarian": {
+            "true_positive": 4,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1": 0.888889,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              },
+              {
+                "reference": "FI05",
+                "query": "FI06"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rank_only_surface_zero": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI03",
+                "query": "FI03"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI05"
+            ],
+            "predicted_unmatched_queries": [
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": true
+          },
+          "witness_calibrated_surface_zero": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "FI01",
+                "query": "FI01"
+              },
+              {
+                "reference": "FI02",
+                "query": "FI02"
+              },
+              {
+                "reference": "FI04",
+                "query": "FI04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FI03",
+              "FI05"
+            ],
+            "predicted_unmatched_queries": [
+              "FI03",
+              "FI06"
+            ],
+            "truth_unmatched_references": [
+              "FI05"
+            ],
+            "truth_unmatched_queries": [
+              "FI06"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_surface_score_matrix": [
+      [
+        -0.045033,
+        -4.08052,
+        -7.160423,
+        -3.201245,
+        -5.168767,
+        -6.135341
+      ],
+      [
+        -4.023149,
+        -0.376774,
+        -3.023614,
+        -0.730508,
+        -1.118991,
+        -2.027802
+      ],
+      [
+        -6.871115,
+        -2.731376,
+        -0.453274,
+        -3.617588,
+        -1.653224,
+        -0.692571
+      ],
+      [
+        -3.08983,
+        -0.659848,
+        -3.729735,
+        -0.040755,
+        -1.727995,
+        -2.703533
+      ],
+      [
+        -4.854138,
+        -0.749841,
+        -2.249762,
+        -1.621178,
+        -0.341691,
+        -1.239373
+      ],
+      [
+        -5.83221,
+        -1.727212,
+        -1.28429,
+        -2.613983,
+        -0.649928,
+        -0.448705
+      ]
+    ],
+    "full_centroid_score_matrix": [
+      [
+        -0.067819,
+        -4.158864,
+        -7.168383,
+        -3.242295,
+        -5.196771,
+        -6.181626
+      ],
+      [
+        -4.129121,
+        -0.410761,
+        -3.102592,
+        -0.989711,
+        -1.161667,
+        -2.127817
+      ],
+      [
+        -6.96977,
+        -2.841281,
+        -0.446741,
+        -3.761207,
+        -1.820976,
+        -0.8775
+      ],
+      [
+        -3.184867,
+        -0.958857,
+        -3.974493,
+        -0.207832,
+        -1.997047,
+        -2.98642
+      ],
+      [
+        -4.967849,
+        -0.872194,
+        -2.240678,
+        -1.775544,
+        -0.396393,
+        -1.273716
+      ],
+      [
+        -5.925905,
+        -1.80667,
+        -1.326271,
+        -2.717539,
+        -0.840907,
+        -0.494081
+      ]
+    ],
+    "pair_diagnostics": {
+      "FI01->FI01": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 0.067819,
+        "symmetric_median_surface_distance_metres": 0.045033
+      },
+      "FI01->FI02": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 4.158864,
+        "symmetric_median_surface_distance_metres": 4.08052
+      },
+      "FI01->FI03": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 7.168383,
+        "symmetric_median_surface_distance_metres": 7.160423
+      },
+      "FI01->FI04": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 3.242295,
+        "symmetric_median_surface_distance_metres": 3.201245
+      },
+      "FI01->FI05": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 5.196771,
+        "symmetric_median_surface_distance_metres": 5.168767
+      },
+      "FI01->FI06": {
+        "reference_target_instance_id": 6,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 6.181626,
+        "symmetric_median_surface_distance_metres": 6.135341
+      },
+      "FI02->FI01": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 4.129121,
+        "symmetric_median_surface_distance_metres": 4.023149
+      },
+      "FI02->FI02": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 0.410761,
+        "symmetric_median_surface_distance_metres": 0.376774
+      },
+      "FI02->FI03": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 3.102592,
+        "symmetric_median_surface_distance_metres": 3.023614
+      },
+      "FI02->FI04": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 0.989711,
+        "symmetric_median_surface_distance_metres": 0.730508
+      },
+      "FI02->FI05": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 1.161667,
+        "symmetric_median_surface_distance_metres": 1.118991
+      },
+      "FI02->FI06": {
+        "reference_target_instance_id": 26,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 2.127817,
+        "symmetric_median_surface_distance_metres": 2.027802
+      },
+      "FI03->FI01": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 6.96977,
+        "symmetric_median_surface_distance_metres": 6.871115
+      },
+      "FI03->FI02": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 2.841281,
+        "symmetric_median_surface_distance_metres": 2.731376
+      },
+      "FI03->FI03": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 0.446741,
+        "symmetric_median_surface_distance_metres": 0.453274
+      },
+      "FI03->FI04": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 3.761207,
+        "symmetric_median_surface_distance_metres": 3.617588
+      },
+      "FI03->FI05": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 1.820976,
+        "symmetric_median_surface_distance_metres": 1.653224
+      },
+      "FI03->FI06": {
+        "reference_target_instance_id": 29,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 0.8775,
+        "symmetric_median_surface_distance_metres": 0.692571
+      },
+      "FI04->FI01": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 3.184867,
+        "symmetric_median_surface_distance_metres": 3.08983
+      },
+      "FI04->FI02": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 0.958857,
+        "symmetric_median_surface_distance_metres": 0.659848
+      },
+      "FI04->FI03": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 3.974493,
+        "symmetric_median_surface_distance_metres": 3.729735
+      },
+      "FI04->FI04": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 0.207832,
+        "symmetric_median_surface_distance_metres": 0.040755
+      },
+      "FI04->FI05": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 1.997047,
+        "symmetric_median_surface_distance_metres": 1.727995
+      },
+      "FI04->FI06": {
+        "reference_target_instance_id": 25,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 2.98642,
+        "symmetric_median_surface_distance_metres": 2.703533
+      },
+      "FI05->FI01": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 4.967849,
+        "symmetric_median_surface_distance_metres": 4.854138
+      },
+      "FI05->FI02": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 0.872194,
+        "symmetric_median_surface_distance_metres": 0.749841
+      },
+      "FI05->FI03": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 2.240678,
+        "symmetric_median_surface_distance_metres": 2.249762
+      },
+      "FI05->FI04": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 1.775544,
+        "symmetric_median_surface_distance_metres": 1.621178
+      },
+      "FI05->FI05": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 0.396393,
+        "symmetric_median_surface_distance_metres": 0.341691
+      },
+      "FI05->FI06": {
+        "reference_target_instance_id": 27,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 1.273716,
+        "symmetric_median_surface_distance_metres": 1.239373
+      },
+      "FI06->FI01": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 6,
+        "centroid_distance_metres": 5.925905,
+        "symmetric_median_surface_distance_metres": 5.83221
+      },
+      "FI06->FI02": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 26,
+        "centroid_distance_metres": 1.80667,
+        "symmetric_median_surface_distance_metres": 1.727212
+      },
+      "FI06->FI03": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 29,
+        "centroid_distance_metres": 1.326271,
+        "symmetric_median_surface_distance_metres": 1.28429
+      },
+      "FI06->FI04": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 25,
+        "centroid_distance_metres": 2.717539,
+        "symmetric_median_surface_distance_metres": 2.613983
+      },
+      "FI06->FI05": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 27,
+        "centroid_distance_metres": 0.840907,
+        "symmetric_median_surface_distance_metres": 0.649928
+      },
+      "FI06->FI06": {
+        "reference_target_instance_id": 39,
+        "query_target_instance_id": 39,
+        "centroid_distance_metres": 0.494081,
+        "symmetric_median_surface_distance_metres": 0.448705
+      }
+    }
+  },
+  "incremental_gain_over_rank_only": {
+    "true_positive_delta": -16,
+    "false_positive_reduction": 2,
+    "false_negative_reduction": -16,
+    "f1_delta": -0.127472,
+    "exact_zero_assignment_scenario_gain": -11
+  },
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "decision_gate": {
+    "rank_only_incremental_opportunity": "Rank-only must emit at least one false positive across the frozen scenarios.",
+    "witness_true_matches": "All frozen truth correspondences across all scenarios.",
+    "witness_false_matches": 0,
+    "witness_missed_matches": 0,
+    "zero_assignment": "Exact unmatched reference and query sets in every frozen scenario.",
+    "no_true_match_regression": "Witness-calibrated true positives must be at least rank-only true positives.",
+    "single_replay": "One replay on the frozen scan-family-disjoint same-class cohort; do not tune or rerun after outcome."
+  },
+  "claim_boundary": "A pass is same-provider but scan-family-disjoint real-geometry Development evidence that the unchanged two-witness rejector adds decision-changing value over rank-only registered-surface matching for truth-proposed same-class indoor door targets under bounded missing/extra roster constructions. The witnesses, semantic labels, surfaces, and rigid transform remain privileged provider evidence; two witnesses have no statistical coverage guarantee. It is not raw-phone perception, open-world discovery, door detection, a portal aperture, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit, or mobility safety."
+}

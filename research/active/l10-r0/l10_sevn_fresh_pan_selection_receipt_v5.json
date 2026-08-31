@@ -1,0 +1,216 @@
+{
+  "schema": "blindassist-l10-sevn-dual-reference-fresh-pan-selection-receipt-v1",
+  "generated_at_utc": "2026-08-30T21:24:47.405111Z",
+  "selection": {
+    "metadata_only": true,
+    "pixel_payloads_opened": 0,
+    "rule": {
+      "pixel_blind": "Open only coord.hdf5, label.hdf5, graph.pkl, and the six consumed public-source manifests. Do not open images.hdf5, high-res-panos.zip, a viewport, a crop, or any model output.",
+      "reference_exclusion": "Exclude the union of every canonical street-name plus house-number pair and every panorama frame_id present in any of the six earlier public sources.",
+      "within_panel_exclusion": "Use each target address and panorama frame once across the full 40-episode panel.",
+      "scenario_scope": "Freeze only PAN_LEFT and PAN_RIGHT because cumulative exclusion leaves no strictly fresh APPROACH episode.",
+      "ordering": "Reuse the frozen materializer and original deterministic candidate-goal order: first twenty eligible PAN_LEFT rows, then first twenty remaining eligible PAN_RIGHT rows.",
+      "pan_recovery": "Keep the original plus or minus 90 degree start and 67.5 degree prescribed pan construction; require before != CORRECT_UNIQUE and after == CORRECT_UNIQUE from human metadata geometry.",
+      "prohibited_filters": "Do not filter or rank by OCR visibility, image appearance, portal output, local witness output, any earlier model output, or eventual pixel outcome."
+    },
+    "episode_count": 40,
+    "scenario_counts": {
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY": 20,
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": 20
+    },
+    "distinct_address_count": 40,
+    "distinct_panorama_frame_count": 40
+  },
+  "reference_exclusions": {
+    "reference_public_sources": [
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_source_v1.json",
+        "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_source_v2.json",
+        "sha256": "dc701be78e75978dc03f735e6141120a924b7a578355c8817bb4cb3db9b732e8"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_source_v3.json",
+        "sha256": "a1ecdf9f7984f0cc91a7d273949c747971c01fe3e9254702996828ce415ae283"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_source_v4.json",
+        "sha256": "2474b71d2cddd6cef05f62578d3fa5a0bae233fed85075af95f464118402fbfd"
+      }
+    ],
+    "excluded_address_count": 205,
+    "excluded_panorama_frame_count": 220,
+    "selected_address_overlap": [],
+    "selected_panorama_frame_overlap": [],
+    "within_panel_cross_episode_reused_frames": {}
+  },
+  "selected_episode_frames": {
+    "SEVN001": [
+      117936
+    ],
+    "SEVN002": [
+      117984
+    ],
+    "SEVN003": [
+      113864
+    ],
+    "SEVN004": [
+      118161
+    ],
+    "SEVN005": [
+      113757
+    ],
+    "SEVN006": [
+      113673
+    ],
+    "SEVN007": [
+      118368
+    ],
+    "SEVN008": [
+      118428
+    ],
+    "SEVN009": [
+      118494
+    ],
+    "SEVN010": [
+      118542
+    ],
+    "SEVN011": [
+      118727
+    ],
+    "SEVN012": [
+      118749
+    ],
+    "SEVN013": [
+      118968
+    ],
+    "SEVN014": [
+      169184
+    ],
+    "SEVN015": [
+      121175
+    ],
+    "SEVN016": [
+      169040
+    ],
+    "SEVN017": [
+      121251
+    ],
+    "SEVN018": [
+      106572
+    ],
+    "SEVN019": [
+      169022
+    ],
+    "SEVN020": [
+      106695
+    ],
+    "SEVN021": [
+      168924
+    ],
+    "SEVN022": [
+      106716
+    ],
+    "SEVN023": [
+      168894
+    ],
+    "SEVN024": [
+      106745
+    ],
+    "SEVN025": [
+      168876
+    ],
+    "SEVN026": [
+      106773
+    ],
+    "SEVN027": [
+      170349
+    ],
+    "SEVN028": [
+      168756
+    ],
+    "SEVN029": [
+      168669
+    ],
+    "SEVN030": [
+      170520
+    ],
+    "SEVN031": [
+      168633
+    ],
+    "SEVN032": [
+      168573
+    ],
+    "SEVN033": [
+      170594
+    ],
+    "SEVN034": [
+      168401
+    ],
+    "SEVN035": [
+      170744
+    ],
+    "SEVN036": [
+      170904
+    ],
+    "SEVN037": [
+      168306
+    ],
+    "SEVN038": [
+      170988
+    ],
+    "SEVN039": [
+      168257
+    ],
+    "SEVN040": [
+      171024
+    ]
+  },
+  "inputs": {
+    "protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_source_protocol_v5.json",
+      "sha256": "3f0cb3966dfae49af28735ed5638ffa7ff33480a8013f4c7cfecbad2e4592358"
+    },
+    "materializer": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_fresh_pan_panel.py",
+      "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+    },
+    "metadata": {
+      "coord.hdf5": {
+        "bytes": 419832,
+        "md5": "9d2d6f17aa31c9cb8309195cf2da00f9",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/coord.hdf5/content"
+      },
+      "label.hdf5": {
+        "bytes": 351434,
+        "md5": "36e24d0ee0b2f351282f3b84aa5d5d56",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/label.hdf5/content"
+      },
+      "graph.pkl": {
+        "bytes": 2793330,
+        "md5": "f68be888e8f3b964544678070689b777",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/graph.pkl/content"
+      }
+    }
+  },
+  "outputs": {
+    "public_source": {
+      "path": "research\\active\\l10-r0\\l10_sevn_fresh_pan_source_v5.json",
+      "sha256": "a8869b489f7e0a350883db2c9407f0cecc7067b7f7a96b4beb9a7ff2bb0d5a37"
+    },
+    "evaluator_truth": {
+      "path": "research\\active\\l10-r0\\l10_sevn_fresh_pan_truth_v5.json",
+      "sha256": "364f6eca52d389877da865eb9f97294a9a71f008c6e7956b0dd430e416465f0e"
+    }
+  }
+}

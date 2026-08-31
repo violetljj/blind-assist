@@ -1,0 +1,1126 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-open-set-negative-result-v1",
+  "decision": "L10_PANOLAB_DISTINCTIVE_EDIT_TOKEN_OPEN_SET_NEGATIVE_DEVELOPMENT_GATE_MET",
+  "authority": "PREEXISTING_PIXEL_FIRST_GOVERNED_OCR_OPEN_SET_NEGATIVE_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_distinctive_token_open_set_negative_protocol_v1.json",
+  "protocol_sha256": "cdd2065a4b36682391dd98080c83527e22d3394750ec98ab98ef662f9ce22861",
+  "evaluator_sha256": "4ff3e94c6574410b2e32318e273bf2258f2fefe159654902160e36adfd181813",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.3.5",
+    "opencv-python": "4.10.0.84",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2",
+    "onnxruntime-gpu": "1.26.0"
+  },
+  "metrics": {
+    "preexisting_pixel_but_governed_ocr_unseen_negative_queries": 4,
+    "negative_source_cities": 3,
+    "positive_roster": 13,
+    "wrong_target_lexical_trials": 52,
+    "matched_target_rows": 0,
+    "negative_false_accepts": 0,
+    "negative_rejected_unknown": 4,
+    "negative_rejection_rate": 1.0,
+    "portal_ownership_bindings_emitted": 0,
+    "wall_seconds": 13.38145
+  },
+  "gate": {
+    "four_exact_roster_absent_queries": true,
+    "three_source_cities": true,
+    "fifty_two_wrong_target_trials": true,
+    "zero_matched_target_rows": true,
+    "zero_negative_false_accepts": true,
+    "four_of_four_unknown": true,
+    "zero_portal_ownership_bindings": true,
+    "passed": true
+  },
+  "rows": [
+    {
+      "episode_id": "ON01",
+      "source_city": "Grenoble",
+      "negative_target_name": "Gare de Grenoble Universités Gières",
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "frame": {
+        "frame_key": "ON01_single",
+        "relation": "single",
+        "panorama_item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+        "strict_entrance_ray": {
+          "schema": "blindassist-l10-panolab-entrance-ray-v1",
+          "item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+          "entrance_node_id": 12278811127,
+          "camera_lon_lat": [
+            5.784649647,
+            45.184617164
+          ],
+          "entrance_lon_lat": [
+            5.7847649,
+            45.1848613
+          ],
+          "initial_bearing_degrees": 18.404132,
+          "view_azimuth_degrees": 70.0,
+          "relative_viewer_yaw_degrees": 308.404132,
+          "raw_x_degrees": 128.404132,
+          "raw_x_pixels": 2054.46611,
+          "world_horizon_raw_y_pixels": 1440,
+          "projection_gate": {
+            "eligible": true,
+            "failures": [],
+            "item_id": "5fad7a9e-1d89-4f82-a2dd-f36d9836cd07",
+            "view_azimuth_degrees": 70.0,
+            "camera_native_heading_degrees": 70.39626850537417,
+            "heading_circular_difference_degrees": 0.396269,
+            "pers_yaw_degrees": 0.0,
+            "pers_pitch_degrees": 0.0,
+            "pers_roll_degrees": 0.0,
+            "sensor_width_pixels": 5760,
+            "sensor_height_pixels": 2880,
+            "downloaded_image_size": [
+              5760,
+              2880
+            ]
+          }
+        },
+        "window": {
+          "center_raw_x_pixels": 2054.46611,
+          "horizontal_half_fov_degrees": 45.0,
+          "top_raw_y_pixels": 720,
+          "bottom_raw_y_pixels_exclusive": 2400,
+          "native_crop_width": 1440,
+          "native_crop_height": 1680,
+          "seam_wrapped": false,
+          "pixel_sha256": "4ec9a2dae908bd402aaf07868a016105c1851eee98d23a8e1c860593d341bcb2"
+        },
+        "ocr": {
+          "row_count": 1,
+          "seconds": 3.063316,
+          "text_detection_parameters": {
+            "limit_side_len": 64,
+            "limit_type": "min",
+            "thresh": 0.3,
+            "max_side_limit": 4000,
+            "box_thresh": 0.6,
+            "unclip_ratio": 1.5
+          }
+        },
+        "ocr_rows": [
+          {
+            "text": "2m",
+            "ascii_tokens": [
+              "2m"
+            ],
+            "score": 0.99808538,
+            "box_xyxy": [
+              218.0,
+              686.0,
+              252.0,
+              718.0
+            ]
+          }
+        ]
+      },
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "matched_targets": [],
+        "candidate": null,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "ON02",
+      "source_city": "Nantes",
+      "negative_target_name": "Le Chronographe",
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "frame": {
+        "frame_key": "ON02_single",
+        "relation": "single",
+        "panorama_item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+        "strict_entrance_ray": {
+          "schema": "blindassist-l10-panolab-entrance-ray-v1",
+          "item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+          "entrance_node_id": 8959780699,
+          "camera_lon_lat": [
+            -1.565213391,
+            47.19157959
+          ],
+          "entrance_lon_lat": [
+            -1.564848,
+            47.1916948
+          ],
+          "initial_bearing_degrees": 65.10887,
+          "view_azimuth_degrees": 86.0,
+          "relative_viewer_yaw_degrees": 339.10887,
+          "raw_x_degrees": 159.10887,
+          "raw_x_pixels": 2545.74192,
+          "world_horizon_raw_y_pixels": 1440,
+          "projection_gate": {
+            "eligible": true,
+            "failures": [],
+            "item_id": "9d666c71-ea51-48d2-b956-ff4ed79f203c",
+            "view_azimuth_degrees": 86.0,
+            "camera_native_heading_degrees": 85.75379820802493,
+            "heading_circular_difference_degrees": 0.246202,
+            "pers_yaw_degrees": 0.0,
+            "pers_pitch_degrees": 0.0,
+            "pers_roll_degrees": 0.0,
+            "sensor_width_pixels": 5760,
+            "sensor_height_pixels": 2880,
+            "downloaded_image_size": [
+              5760,
+              2880
+            ]
+          }
+        },
+        "window": {
+          "center_raw_x_pixels": 2545.74192,
+          "horizontal_half_fov_degrees": 45.0,
+          "top_raw_y_pixels": 720,
+          "bottom_raw_y_pixels_exclusive": 2400,
+          "native_crop_width": 1440,
+          "native_crop_height": 1680,
+          "seam_wrapped": false,
+          "pixel_sha256": "d7f2594d4c6b88da0a4a2eb561db9650b1de4e89035b099009e38aba17d4a30d"
+        },
+        "ocr": {
+          "row_count": 1,
+          "seconds": 2.664077,
+          "text_detection_parameters": {
+            "limit_side_len": 64,
+            "limit_type": "min",
+            "thresh": 0.3,
+            "max_side_limit": 4000,
+            "box_thresh": 0.6,
+            "unclip_ratio": 1.5
+          }
+        },
+        "ocr_rows": [
+          {
+            "text": "州",
+            "ascii_tokens": [],
+            "score": 0.23964489,
+            "box_xyxy": [
+              776.0,
+              412.0,
+              904.0,
+              471.0
+            ]
+          }
+        ]
+      },
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "matched_targets": [],
+        "candidate": null,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "ON03",
+      "source_city": "Paris",
+      "negative_target_name": "Centre commercial de la Vache Noire",
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "frame": {
+        "frame_key": "ON03_single",
+        "relation": "single",
+        "panorama_item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+        "strict_entrance_ray": {
+          "schema": "blindassist-l10-panolab-entrance-ray-v1",
+          "item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+          "entrance_node_id": 780946865,
+          "camera_lon_lat": [
+            2.327431,
+            48.8101773
+          ],
+          "entrance_lon_lat": [
+            2.3277485,
+            48.8104537
+          ],
+          "initial_bearing_degrees": 37.106633,
+          "view_azimuth_degrees": 205.0,
+          "relative_viewer_yaw_degrees": 192.106633,
+          "raw_x_degrees": 12.106633,
+          "raw_x_pixels": 193.70613,
+          "world_horizon_raw_y_pixels": 1440,
+          "projection_gate": {
+            "eligible": true,
+            "failures": [],
+            "item_id": "6e26f62d-5f86-4dd6-8d60-e053558098f6",
+            "view_azimuth_degrees": 205.0,
+            "camera_native_heading_degrees": 204.74920113999482,
+            "heading_circular_difference_degrees": 0.250799,
+            "pers_yaw_degrees": 0.0,
+            "pers_pitch_degrees": 0.0,
+            "pers_roll_degrees": 0.0,
+            "sensor_width_pixels": 5760,
+            "sensor_height_pixels": 2880,
+            "downloaded_image_size": [
+              5760,
+              2880
+            ]
+          }
+        },
+        "window": {
+          "center_raw_x_pixels": 193.70613,
+          "horizontal_half_fov_degrees": 45.0,
+          "top_raw_y_pixels": 720,
+          "bottom_raw_y_pixels_exclusive": 2400,
+          "native_crop_width": 1440,
+          "native_crop_height": 1680,
+          "seam_wrapped": true,
+          "pixel_sha256": "b007f90f65ed7f5bb2dbd23a90ae2b6dd771cfd1f7715cda225b9eee3b46a263"
+        },
+        "ocr": {
+          "row_count": 1,
+          "seconds": 2.894385,
+          "text_detection_parameters": {
+            "limit_side_len": 64,
+            "limit_type": "min",
+            "thresh": 0.3,
+            "max_side_limit": 4000,
+            "box_thresh": 0.6,
+            "unclip_ratio": 1.5
+          }
+        },
+        "ocr_rows": [
+          {
+            "text": "DARTY",
+            "ascii_tokens": [
+              "darty"
+            ],
+            "score": 0.99300545,
+            "box_xyxy": [
+              514.0,
+              543.0,
+              551.0,
+              577.0
+            ]
+          }
+        ]
+      },
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "matched_targets": [],
+        "candidate": null,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    },
+    {
+      "episode_id": "ON04",
+      "source_city": "Grenoble",
+      "negative_target_name": "Gymnase Malherbe",
+      "truth": "EXACT_POSITIVE_ROSTER_ENTITY_ABSENT",
+      "frame": {
+        "frame_key": "ON04_single",
+        "relation": "single",
+        "panorama_item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+        "strict_entrance_ray": {
+          "schema": "blindassist-l10-panolab-entrance-ray-v1",
+          "item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+          "entrance_node_id": 11232444037,
+          "camera_lon_lat": [
+            5.739127227,
+            45.172050837
+          ],
+          "entrance_lon_lat": [
+            5.7387451,
+            45.1719773
+          ],
+          "initial_bearing_degrees": 254.731871,
+          "view_azimuth_degrees": 158.0,
+          "relative_viewer_yaw_degrees": 96.731871,
+          "raw_x_degrees": 276.731871,
+          "raw_x_pixels": 4427.709938,
+          "world_horizon_raw_y_pixels": 1440,
+          "projection_gate": {
+            "eligible": true,
+            "failures": [],
+            "item_id": "5321a537-0e5d-4347-a1e0-e935dc93ec0e",
+            "view_azimuth_degrees": 158.0,
+            "camera_native_heading_degrees": 158.48012024825445,
+            "heading_circular_difference_degrees": 0.48012,
+            "pers_yaw_degrees": 0.0,
+            "pers_pitch_degrees": 0.0,
+            "pers_roll_degrees": 0.0,
+            "sensor_width_pixels": 5760,
+            "sensor_height_pixels": 2880,
+            "downloaded_image_size": [
+              5760,
+              2880
+            ]
+          }
+        },
+        "window": {
+          "center_raw_x_pixels": 4427.709938,
+          "horizontal_half_fov_degrees": 45.0,
+          "top_raw_y_pixels": 720,
+          "bottom_raw_y_pixels_exclusive": 2400,
+          "native_crop_width": 1440,
+          "native_crop_height": 1680,
+          "seam_wrapped": false,
+          "pixel_sha256": "c1b70dc807bc1a27869e85b7afa4dff93bf2a25e12b4735bbb6bb0f9193f86e5"
+        },
+        "ocr": {
+          "row_count": 1,
+          "seconds": 2.717772,
+          "text_detection_parameters": {
+            "limit_side_len": 64,
+            "limit_type": "min",
+            "thresh": 0.3,
+            "max_side_limit": 4000,
+            "box_thresh": 0.6,
+            "unclip_ratio": 1.5
+          }
+        },
+        "ocr_rows": [
+          {
+            "text": "icare",
+            "ascii_tokens": [
+              "icare"
+            ],
+            "score": 0.99646127,
+            "box_xyxy": [
+              586.0,
+              709.0,
+              645.0,
+              736.0
+            ]
+          }
+        ]
+      },
+      "target_matches": {
+        "FL01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "espace",
+            "village"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "viviani"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "gare",
+            "neuilly",
+            "porte",
+            "maillot"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FL04": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "notre",
+            "dame",
+            "delivrande"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "rumillat"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "FP02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "halle",
+            "rebatet"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "euromaster"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "CF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "bibliotheque",
+            "caen",
+            "maladrerie"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "departement",
+            "calvados",
+            "direction",
+            "culture"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "creche",
+            "des",
+            "petits",
+            "lutins"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "PS03": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "eglise",
+            "saint",
+            "pierre"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF01": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "monoprix"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        },
+        "DF02": {
+          "matched": false,
+          "tier": "NONE",
+          "target_tokens": [
+            "maison",
+            "quartier",
+            "chemin",
+            "vert"
+          ],
+          "observed_target_tokens": [],
+          "distinctive_evidence_units": 0,
+          "required_distinctive_evidence_units": 2,
+          "witnesses": {},
+          "portal_ownership_authority": "NONE"
+        }
+      },
+      "lexical": {
+        "matched_targets": [],
+        "candidate": null,
+        "route": "UNKNOWN_KEEP_SEARCHING",
+        "candidate_authority": "NONE",
+        "portal_ownership_binding": null
+      }
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence about whether the fixed distinctive-token branch abstains on these four exact-thirteen-roster-absent, three-city Panoramax entrance-ray images. Pixels were used previously by the appearance branch, but this is the first governed OCR replay recorded for them.",
+    "not_allowed": [
+      "fresh-pixel, formal open-set, conformal, FDR-controlled, calibrated-probability, arbitrary distribution-shift, deployment, or safety guarantees",
+      "UNKNOWN meaning negative, known-safe, or absence of all visually or lexically similar entities",
+      "exact identity, sign-to-building association, facade ownership, portal ownership, access, traversability, waypoint, arrival, handoff, or user benefit"
+    ]
+  }
+}

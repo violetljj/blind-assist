@@ -1,0 +1,88 @@
+{
+  "schema": "blindassist-l10-panolab-track-lexical-fresh-source-protocol-v1",
+  "name": "L10 PanoLab fresh target-way/image-disjoint active lexical panel",
+  "status": "FROZEN_BEFORE_SELECTED_PIXEL_DOWNLOAD_OR_MODEL_CALL",
+  "question": "Can a metadata-only rule freeze four previously unused named target ways and provider-linked occluded-to-DIRECT frame pairs across multiple cities for a fresh Development test of the track lexical consensus mechanism?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_panel.py",
+    "sha256": "087be1f9df912212c4703397829920c4296fb122aed60e7bc00dc850fe3493b5"
+  },
+  "inputs": {
+    "candidate_metadata": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+      "sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+      "bytes": 13885054,
+      "pixel_views_when_generated": 0,
+      "bearing_to_pixel_projection_calls_when_generated": 0
+    },
+    "orientation_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "prior_consumed_active_source": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "bytes": 92257
+    }
+  },
+  "selection": {
+    "episode_count": 4,
+    "prior_local_image_directory": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images",
+    "minimum_camera_displacement_m": 3.0,
+    "maximum_camera_displacement_m": 15.0,
+    "minimum_after_entrance_distance_m": 4.0,
+    "maximum_after_entrance_distance_m": 40.0,
+    "start_roles": [
+      "TARGET_SELF_OCCLUDED",
+      "OTHER_BUILDING_OCCLUDED"
+    ],
+    "after_role": "DIRECT",
+    "strict_orientation_required_for_both_frames": true,
+    "reciprocal_provider_links_required": true,
+    "target_name_required": true,
+    "ignored_name_tokens": [
+      "a",
+      "an",
+      "and",
+      "d",
+      "de",
+      "du",
+      "l",
+      "la",
+      "le",
+      "les",
+      "the"
+    ]
+  },
+  "selection_rule": {
+    "eligibility": "Require a named target way unused by the prior four active episodes; both item IDs absent from that source and the prior local Panoramax image directory; reciprocal same-sequence provider adjacency; 3-15 metre motion; metadata geometry transition from target/other-building occluded to DIRECT; 4-40 metre after-frame entrance range; and both items passing the unchanged strict orientation gate.",
+    "within_target_way": "Choose the pair by ascending significant target-name token count, after entrance distance, sequence ID, start item ID, after item ID.",
+    "panel": "Group the chosen target-way pairs by source city; within city sort by significant target-name token count, after entrance distance, target-way ID and sequence ID; select round-robin over city name order while requiring unique sequence IDs until four episodes are frozen.",
+    "forbidden_inputs": [
+      "selected full, SD, thumbnail, or tile pixels",
+      "OCR output",
+      "learned model output",
+      "human portal or sign visibility judgment",
+      "the post-hoc four-episode lexical outcomes"
+    ]
+  },
+  "materialization": {
+    "asset": "provider HD image",
+    "image_directory": "artifacts.local/datasets/l10-panolab-track-lexical-fresh-v1/images",
+    "selection_output": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v1.json",
+    "manifest_output": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v1.json",
+    "download_rule": "Only after the selection output exists; refuse existing destination or stale temporary; verify exact full-sensor 2:1 dimensions; record URL, bytes and SHA-256."
+  },
+  "claim_boundary": {
+    "allowed": "A fresh target-way-, item-, and prior-active-sequence-disjoint Development roster selected without viewing its pixels or model outputs.",
+    "not_allowed": [
+      "source-provider disjointness",
+      "pixel portal visibility",
+      "lexical readability",
+      "active-view causal success",
+      "address-to-door or sign-to-door ownership",
+      "access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment performance, or safety"
+    ]
+  }
+}

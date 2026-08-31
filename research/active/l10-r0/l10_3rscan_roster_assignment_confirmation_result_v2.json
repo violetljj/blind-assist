@@ -1,0 +1,323 @@
+{
+  "schema": "blindassist-l10-3rscan-roster-assignment-confirmation-result-v2",
+  "authority": "CONSUMED_TARGET_TRIPLE_DISJOINT_CLOSED_ROSTER_ASSIGNMENT_RESULT",
+  "protocol_path": "l10_3rscan_roster_assignment_confirmation_protocol_v2.json",
+  "protocol_sha256": "11eacf310a9d2ae310de321be4de152232fc8cdcb71458b04e0f29689895d699",
+  "cohort_path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+  "cohort_sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+  "implementation": {
+    "path": "l10_3rscan_roster_assignment_confirmation.py",
+    "sha256": "973a009919a259327eaaf65eaf92721ca6c4d50b44ed244ef407bdbde2ffebd3"
+  },
+  "conclusion": "L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "counts": {
+    "physical_targets": 3,
+    "directed_independent_anchors": 6,
+    "positive_pairs": 6,
+    "negative_pairs": 12,
+    "complete_assignments": 6
+  },
+  "metrics": {
+    "baseline": {
+      "pair_auroc": 1.0,
+      "pair_average_precision": 1.0,
+      "independent_retrieval": {
+        "anchors": 6,
+        "top1_correct": 6,
+        "top1_accuracy": 1.0,
+        "mrr": 1.0,
+        "mean_positive_margin": 0.269708,
+        "minimum_positive_margin": 0.029311,
+        "details": [
+          {
+            "anchor": "RA01_query",
+            "positive_rank": 1,
+            "positive_margin": 0.372259,
+            "ranking": [
+              "RA01_reference",
+              "RA02_reference",
+              "RA03_reference"
+            ]
+          },
+          {
+            "anchor": "RA01_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.2193,
+            "ranking": [
+              "RA01_query",
+              "RA02_query",
+              "RA03_query"
+            ]
+          },
+          {
+            "anchor": "RA02_query",
+            "positive_rank": 1,
+            "positive_margin": 0.029311,
+            "ranking": [
+              "RA02_reference",
+              "RA01_reference",
+              "RA03_reference"
+            ]
+          },
+          {
+            "anchor": "RA02_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.182269,
+            "ranking": [
+              "RA02_query",
+              "RA01_query",
+              "RA03_query"
+            ]
+          },
+          {
+            "anchor": "RA03_query",
+            "positive_rank": 1,
+            "positive_margin": 0.426497,
+            "ranking": [
+              "RA03_reference",
+              "RA01_reference",
+              "RA02_reference"
+            ]
+          },
+          {
+            "anchor": "RA03_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.388612,
+            "ranking": [
+              "RA03_query",
+              "RA02_query",
+              "RA01_query"
+            ]
+          }
+        ]
+      },
+      "roster_assignment": {
+        "assigned_correct": 3,
+        "assigned_accuracy": 1.0,
+        "bidirectional_identity_equivalent_correct": 6,
+        "selected_total_score": 2.270186,
+        "second_best_total_score": 1.868616,
+        "assignment_margin": 0.40157,
+        "assignment": [
+          {
+            "reference": "RA01",
+            "query": "RA01"
+          },
+          {
+            "reference": "RA02",
+            "query": "RA02"
+          },
+          {
+            "reference": "RA03",
+            "query": "RA03"
+          }
+        ]
+      },
+      "score_matrix": [
+        [
+          0.789792,
+          0.570492,
+          0.454094
+        ],
+        [
+          0.417533,
+          0.599803,
+          0.326547
+        ],
+        [
+          0.403285,
+          0.491979,
+          0.880591
+        ]
+      ]
+    },
+    "upgraded": {
+      "pair_auroc": 1.0,
+      "pair_average_precision": 1.0,
+      "independent_retrieval": {
+        "anchors": 6,
+        "top1_correct": 6,
+        "top1_accuracy": 1.0,
+        "mrr": 1.0,
+        "mean_positive_margin": 0.264676,
+        "minimum_positive_margin": 0.116947,
+        "details": [
+          {
+            "anchor": "RA01_query",
+            "positive_rank": 1,
+            "positive_margin": 0.282149,
+            "ranking": [
+              "RA01_reference",
+              "RA02_reference",
+              "RA03_reference"
+            ]
+          },
+          {
+            "anchor": "RA01_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.303013,
+            "ranking": [
+              "RA01_query",
+              "RA02_query",
+              "RA03_query"
+            ]
+          },
+          {
+            "anchor": "RA02_query",
+            "positive_rank": 1,
+            "positive_margin": 0.137812,
+            "ranking": [
+              "RA02_reference",
+              "RA01_reference",
+              "RA03_reference"
+            ]
+          },
+          {
+            "anchor": "RA02_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.116947,
+            "ranking": [
+              "RA02_query",
+              "RA01_query",
+              "RA03_query"
+            ]
+          },
+          {
+            "anchor": "RA03_query",
+            "positive_rank": 1,
+            "positive_margin": 0.382873,
+            "ranking": [
+              "RA03_reference",
+              "RA01_reference",
+              "RA02_reference"
+            ]
+          },
+          {
+            "anchor": "RA03_reference",
+            "positive_rank": 1,
+            "positive_margin": 0.365264,
+            "ranking": [
+              "RA03_query",
+              "RA01_query",
+              "RA02_query"
+            ]
+          }
+        ]
+      },
+      "roster_assignment": {
+        "assigned_correct": 3,
+        "assigned_accuracy": 1.0,
+        "bidirectional_identity_equivalent_correct": 6,
+        "selected_total_score": 2.418989,
+        "second_best_total_score": 1.999029,
+        "assignment_margin": 0.41996,
+        "assignment": [
+          {
+            "reference": "RA01",
+            "query": "RA01"
+          },
+          {
+            "reference": "RA02",
+            "query": "RA02"
+          },
+          {
+            "reference": "RA03",
+            "query": "RA03"
+          }
+        ]
+      },
+      "score_matrix": [
+        [
+          0.851815,
+          0.548803,
+          0.497687
+        ],
+        [
+          0.569667,
+          0.686614,
+          0.392141
+        ],
+        [
+          0.515295,
+          0.508132,
+          0.880559
+        ]
+      ]
+    }
+  },
+  "assignment_gain": {
+    "directed_correct_equivalent": 0,
+    "directed_accuracy_equivalent": 0.0
+  },
+  "rgb_members_opened": 6,
+  "rgb_receipts": {
+    "RA01_query": {
+      "zip_member": "frame-000281.color.jpg",
+      "rgb_sha256": "311cf1d7ee87d025e1e86597be2caa5875381cc5d9e9c93c9222e3faeaf92baf",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA01_query.png",
+      "crop_sha256": "38cb8d4a165e27f9bf8ce3dacd3debbcbe212fc7b1055a73d8ed92700046bcb8",
+      "crop_size": [
+        444,
+        444
+      ]
+    },
+    "RA01_reference": {
+      "zip_member": "frame-000018.color.jpg",
+      "rgb_sha256": "d1a62c581190a45c81a7194adef66bc47edb18daa6d9cbf8e3776a3044dd4ecb",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA01_reference.png",
+      "crop_sha256": "fb7bc2fa8033087e3009c520945e2c5db0a993bbba9359a580b401f859c58d0d",
+      "crop_size": [
+        759,
+        759
+      ]
+    },
+    "RA02_query": {
+      "zip_member": "frame-000385.color.jpg",
+      "rgb_sha256": "94c6feee1078eb3994150a307a494ce5dfff461ee5b236e8bd3ea676655e7c91",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA02_query.png",
+      "crop_sha256": "ff584fb19b5049ec48dc58ea7935690fa70a7775792cc1a186cd77b820e739f4",
+      "crop_size": [
+        496,
+        496
+      ]
+    },
+    "RA02_reference": {
+      "zip_member": "frame-000349.color.jpg",
+      "rgb_sha256": "096195208da04275c5edcf58ea76a9dc0b75db8d8441740bb2574cfdd07c2273",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA02_reference.png",
+      "crop_sha256": "da3eb565729efaf37dee8156192971a9e6d45f75f1f55eccdc5e6a0ee2f9ff01",
+      "crop_size": [
+        440,
+        440
+      ]
+    },
+    "RA03_query": {
+      "zip_member": "frame-000005.color.jpg",
+      "rgb_sha256": "ad31c5d23bd6c5bb6af65d95109a7b7c3a838372f0f1af41ed8dff0c2a25c32a",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA03_query.png",
+      "crop_sha256": "b22a5c3f4ed8ddf04e97e5889b0d8069d2d4719a8b6a542c500a400376815f4d",
+      "crop_size": [
+        475,
+        475
+      ]
+    },
+    "RA03_reference": {
+      "zip_member": "frame-000217.color.jpg",
+      "rgb_sha256": "68fbc3df39ddfaf2004fb1d29bb0a6a187c7ae7515e48982cf83f3cad02039b1",
+      "crop_path": "F:\\ba-data\\blindassist-artifacts-20260805\\results\\l10-3rscan-roster-assignment-confirmation-v2\\proposal-crops\\RA03_reference.png",
+      "crop_sha256": "d972dcfda5f2a7b8a9f852bde2da6d941ad294a9bccbac2a6a2cb65c46c5acd3",
+      "crop_size": [
+        462,
+        462
+      ]
+    }
+  },
+  "decision_gate": {
+    "assigned_target_identity": "3/3",
+    "bidirectional_identity_equivalent": "6/6",
+    "assignment_margin": "The selected assignment total must be strictly greater than the next-best complete assignment total.",
+    "single_replay": "One replay on the frozen target-triple-disjoint cohort; do not tune on its RGB or scores."
+  },
+  "claim_boundary": "A pass is a small physically target-disjoint real-image Development confirmation for closed-roster one-to-one matching of three truth-proposed stable indoor 3RScan doors or doorframes. The selected (reference_scan_id, target_instance_id) pairs do not occur in the five enumerated prior cohorts, but scan families and the single 3RScan provider may overlap prior Development; proposals use privileged geometry; and target RGB becomes consumed. It requires an externally justified complete one-to-one reference/query roster. It is not open-set retrieval, door detection, a portal aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+}

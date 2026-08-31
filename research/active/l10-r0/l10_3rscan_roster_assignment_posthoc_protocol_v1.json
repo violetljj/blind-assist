@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist-l10-3rscan-roster-assignment-posthoc-protocol-v1",
+  "authority": "CONSUMED_COHORT_MECHANISM_DEVELOPMENT_ONLY",
+  "question": "On the consumed 3RScan pairwise-retrieval failure, does the parameter-free closed-roster assignment repair sibling-door collisions without changing embeddings or pair scores?",
+  "predecessor": {
+    "protocol_path": "l10_3rscan_center_target_door_retrieval_protocol_v2.json",
+    "protocol_sha256": "80e667f14dfbb5660065fa7505696a3615d435d8614b0153e605d4ec79bb65dc",
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+    "result_path": "l10_3rscan_center_target_door_retrieval_result_v2.json",
+    "result_sha256": "6b2a9c2729b64f8c6de052894f6c58a7c7f32dd219d69324757d3b86ae62a4f8",
+    "implementation_path": "l10_3rscan_center_target_door_retrieval.py",
+    "implementation_sha256": "0f95e78bf4212143776b752293441d0324421e06acc5ceea63443807655400b6",
+    "required_conclusion": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "mechanism": {
+    "pair_score": "Reuse the predecessor baseline and frozen center-scale scores exactly.",
+    "assignment": "For each 3x3 matrix, maximize total score under a one-reference-to-one-query constraint with scipy.optimize.linear_sum_assignment. No score weight, threshold or identity feature is added.",
+    "diagnostics": "Report independent directed Top-1, assigned identity count, equivalent bidirectional identity count and the gap to the second-best complete assignment."
+  },
+  "claim_boundary": "This is post-hoc mechanism Development on an already consumed three-target cohort. A positive repair can motivate a successor but is not confirmation. It assumes a complete closed one-to-one roster and is not open-set retrieval, detection, entrance ownership, access, traversability, arrival, handoff, user-benefit or mobility-safety evidence."
+}

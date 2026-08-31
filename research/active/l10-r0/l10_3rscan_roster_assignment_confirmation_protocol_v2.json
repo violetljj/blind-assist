@@ -1,0 +1,17 @@
+{
+  "schema": "blindassist-l10-3rscan-roster-assignment-confirmation-protocol-v2",
+  "base_protocol_path": "l10_3rscan_roster_assignment_confirmation_protocol_v1.json",
+  "base_protocol_sha256": "5d58d023ccc6fc454b2be90b45282296497b639fa8146555dbdd6135d47d8c12",
+  "reason": "The v1 pre-RGB freeze opened zero RGB members but exposed that exact-triple exclusion could reuse the same physical reference target through another rescan and even repeat its reference frame. V2 strengthens only the pre-RGB exclusion unit to physical (reference_scan_id, target_instance_id); the algorithm, visibility rules, roster size and gate are unchanged.",
+  "overrides": {
+    "authority": "PHYSICAL_TARGET_DISJOINT_CLOSED_ROSTER_ASSIGNMENT_DEVELOPMENT",
+    "question": "Does parameter-free one-to-one global assignment repair sibling-door collisions for the frozen center-scale score on three physically unseen stable 3RScan targets?",
+    "source": {
+      "exclude_prior_physical_targets": true
+    },
+    "frozen_cohort": {
+      "selection_order": "Use candidate_protocol rows in descending area_proxy order. Exclude every prior physical (reference_scan_id, target_instance_id) found in the consumed cohorts, regardless of rescan; require physical-target uniqueness inside this cohort; permit at most two targets per reference_scan_id; select the first three rows whose reference and rescan pass unchanged frame_rules. Open pose, depth and geometry only; RGB remains unopened until replay."
+    },
+    "claim_boundary": "A pass is a small physically target-disjoint real-image Development confirmation for closed-roster one-to-one matching of three truth-proposed stable indoor 3RScan doors or doorframes. The selected (reference_scan_id, target_instance_id) pairs do not occur in the five enumerated prior cohorts, but scan families and the single 3RScan provider may overlap prior Development; proposals use privileged geometry; and target RGB becomes consumed. It requires an externally justified complete one-to-one reference/query roster. It is not open-set retrieval, door detection, a portal aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, provider-independent confirmation, user benefit or mobility-safety evidence."
+  }
+}

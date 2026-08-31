@@ -1,0 +1,125 @@
+{
+  "schema": "blindassist-l10-kartaview-jakarta-visual-source-audit-v1",
+  "reviewed_at_utc": "2026-08-31T01:51:36Z",
+  "decision": "L10_KARTAVIEW_JAKARTA_CODEX_VISUAL_SOURCE_AUDIT_NOT_EVALUABLE",
+  "authority": "PROVISIONAL_CODEX_FULL_FRAME_VISUAL_SOURCE_AUDIT_NO_OCR_NO_ROUTER_NO_APPEARANCE_CALL",
+  "materialization": {
+    "path": "research/active/l10-r0/l10_kartaview_jakarta_materialization_v1.json",
+    "bytes": 12739,
+    "sha256": "046ee065929610e0031894d309754aeb8a67d049bd56e81686049acd32b09b6d"
+  },
+  "review_contract": {
+    "reviewer_type": "Codex direct visual inspection of every full processed KartaView frame",
+    "reviewed_pixels": "All six frozen query-window images and both frozen geometric-negative candidates were displayed at original detail.",
+    "not_used": [
+      "OCR",
+      "appearance embedding or rank",
+      "router output",
+      "threshold tuning",
+      "neighbour walking or pixel-driven substitution"
+    ],
+    "formal_truth_boundary": "This is a source-admission audit, not independent human truth. A positive algorithm evaluation would still require independently recorded truth, but no such evaluation is admissible because neither target is visible in the frozen query window."
+  },
+  "rows": [
+    {
+      "candidate_id": "KVJ-CHAR-01",
+      "target_name": "Apotik Setia Budhi",
+      "query_frames": [
+        {
+          "photo_id": 1026416830,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "A different convenience storefront and Alfamidi-branded bins/sign elements are visible; no Apotik Setia Budhi identity is visible."
+        },
+        {
+          "photo_id": 1026416834,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "Close crates, sacks, plants, and pavement occupy the frame; no target facade or credential is visible."
+        },
+        {
+          "photo_id": 1026416838,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "A different roadside retail frontage and unrelated signage are visible; no Apotik Setia Budhi identity is visible."
+        }
+      ],
+      "negative_control": {
+        "photo_id": 1042789654,
+        "target_referent_visible": false,
+        "target_credential_visible": false,
+        "provisional_negative_valid": true,
+        "observation": "A road-facing streetscape with unrelated food signage is visible; no Apotik Setia Budhi identity is visible."
+      },
+      "episode_visibility_valid": false,
+      "disposition": "NOT_EVALUABLE_NO_TARGET_VISIBILITY"
+    },
+    {
+      "candidate_id": "KVJ-BRAND-01",
+      "target_name": "Alfamidi",
+      "query_frames": [
+        {
+          "photo_id": 926904574,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "Backlit buildings and unrelated RedDoorz/food signage are visible; no Alfamidi storefront or brand credential is visible."
+        },
+        {
+          "photo_id": 926904594,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "The frame faces a streetscape with Martha/Mie Aceh and other unrelated signs; no Alfamidi identity is visible."
+        },
+        {
+          "photo_id": 926904614,
+          "target_referent_visible": false,
+          "target_credential_visible": false,
+          "observation": "The frame looks along the road past buildings and trees; no Alfamidi storefront or brand credential is visible."
+        }
+      ],
+      "negative_control": {
+        "photo_id": 937703582,
+        "target_referent_visible": false,
+        "target_credential_visible": false,
+        "provisional_negative_valid": true,
+        "observation": "The frame looks along a different streetscape; no Alfamidi identity is visible."
+      },
+      "episode_visibility_valid": false,
+      "disposition": "NOT_EVALUABLE_NO_TARGET_VISIBILITY"
+    }
+  ],
+  "metrics": {
+    "candidate_episodes": 2,
+    "query_frames_reviewed": 6,
+    "query_frames_with_target_referent_visible": 0,
+    "query_frames_with_target_credential_visible": 0,
+    "episodes_with_any_target_visibility": 0,
+    "provisional_target_absent_controls": 2,
+    "admissible_ocr_or_router_episodes": 0,
+    "ocr_calls": 0,
+    "router_calls": 0,
+    "appearance_calls": 0
+  },
+  "source_diagnosis": {
+    "failed_assumption": "OSM target centroid plus KartaView camera coordinate, heading, and horizontal FOV did not establish that the named storefront occupied the returned pixels.",
+    "interpretation": "This is an observation-reachability/source-admission failure. It is not an OCR, character normalization, appearance, or router failure.",
+    "no_resampling": "Freeze both Jakarta rows and their neighbourhoods. Do not walk farther in either opened sequence, substitute a nearby named object, or tune the geometry after seeing pixels.",
+    "next_information_source": "A new KartaView city/cohort must add source-side facade/sign visibility authority before target selection, such as provider object/sign detections with exact frame geometry, an independently frozen street-side facade interval, or a query-independent visibility annotation. Point-bearing geometry alone is no longer admissible."
+  },
+  "provider_capability_scout": {
+    "official_faq": "https://kartaview.org/doc/faq",
+    "documented_public_mcp": "The official FAQ documents a public mcp-karta-view server with nearby_photo and object_search tools for public community imagery; private object-search data requires a Karta token.",
+    "current_codex_tool_exposure": "No KartaView, OpenStreetCam, nearby_photo, or object_search callable tool is exposed in the current task tool catalog.",
+    "resume_action": "After the requested pause, preflight the official open-source mcp-karta-view package inside E:/codex-tools without opening another target cohort. Admit it only if it can return source-side public sign/object evidence with exact photo IDs and reproducible metadata receipts.",
+    "boundary": "Documentation of a provider capability is not proof that the capability is currently callable, public for the needed object class, accurate, or sufficient for target visibility."
+  },
+  "claim_boundary": {
+    "allowed": "The exact frozen Jakarta source is not evaluable for target routing because zero of six query frames visibly supports either selected target; both geometric negative candidates provisionally lack the targets.",
+    "not_allowed": [
+      "claiming character-sequence, OCR, appearance, or router failure or success",
+      "claiming independent human truth or formal negative confirmation",
+      "claiming provider-wide or city-wide KartaView inadequacy",
+      "facade, portal, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

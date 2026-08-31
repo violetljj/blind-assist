@@ -1,0 +1,341 @@
+{
+  "schema": "blindassist-l10-scenenn-observed-extent-support-source-admission-v1",
+  "authority": "FROZEN_PRE_GEOMETRY_PRE_RGBD_PROVIDER_DISJOINT_SOURCE_ADMISSION",
+  "protocol_path": "l10_scenenn_observed_extent_support_protocol_v1.json",
+  "protocol_sha256": "deb0be3fe25ff5384b0344c3accfbab3074049a18c577e22a376cb5b595a8b7c",
+  "entrypoint_path": "l10_scenenn_observed_extent_support.py",
+  "entrypoint_sha256": "0dd56ef4f04d40ae2606f8b2b567617089106e89e056ab452d8a333edc2b5bb5",
+  "source_selection_frozen_by_entrypoint_sha256": "bde06a52d9e79355bbde1c4ff8c2265c86bbffd71248b395e5e988ac6013f9e5",
+  "transport_repair": {
+    "scope": "Import-order-only repair before cohort freeze and before any RGB-D access",
+    "observed_failure": "Torch-backed 3RScan helpers loaded CUDA 13 before the frozen SceneNN CuPy CUDA 12 renderer, causing cublas DLL load failure on the first visibility matrix multiply.",
+    "repair": "Preload the unchanged CuPy visibility renderer cuBLAS before importing the CPU-only 3RScan scoring helpers.",
+    "source_scene_changed": false,
+    "target_instances_changed": false,
+    "selector_or_algorithm_changed": false,
+    "rgb_members_opened": 0,
+    "depth_members_opened": 0
+  },
+  "selection_rule": {
+    "inventory": "Previously materialized provider XML inventory only; no scene 096 PLY, trajectory, RGB, depth, score, or support value may be opened before admission.",
+    "ordering": "Ascending three-digit SceneNN scene ID; within a scene, ascending numeric instance ID.",
+    "normalized_target_label": "lowercase text with whitespace removed must match door followed by zero or more digits; door mat and other compounds are excluded",
+    "physical_targets": 4,
+    "stop_rule": "Select the first unconsumed scene with at least four qualifying door instances, then stop.",
+    "expected_first_eligible_scene": "096",
+    "consumed_scene_ids": [
+      "014",
+      "032",
+      "038",
+      "073",
+      "225",
+      "246"
+    ],
+    "forbidden_before_source_admission": [
+      "scene 096 mesh geometry",
+      "scene 096 trajectory",
+      "scene 096 RGB-D stream",
+      "surface scores",
+      "extent overlaps",
+      "algorithm output"
+    ]
+  },
+  "audits_through_selection": [
+    {
+      "scene_id": "005",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "011",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "014",
+      "consumed": true,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "015",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "016",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "021",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "025",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "030",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "032",
+      "consumed": true,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "036",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "038",
+      "consumed": true,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "041",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "043",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "045",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "047",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "049",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "052",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "054",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "057",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "060",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "061",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "062",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "065",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "066",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "069",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "071",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "073",
+      "consumed": true,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "074",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "076",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "078",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "080",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "081",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "082",
+      "consumed": false,
+      "door_instances": 1,
+      "eligible": false
+    },
+    {
+      "scene_id": "084",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "086",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "087",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "089",
+      "consumed": false,
+      "door_instances": 2,
+      "eligible": false
+    },
+    {
+      "scene_id": "092",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "093",
+      "consumed": false,
+      "door_instances": 0,
+      "eligible": false
+    },
+    {
+      "scene_id": "096",
+      "consumed": false,
+      "door_instances": 4,
+      "eligible": true
+    }
+  ],
+  "selected": {
+    "scene_id": "096",
+    "inventory_xml_path": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\inventory\\xml\\096.xml",
+    "inventory_xml_bytes": 76566,
+    "inventory_xml_sha256": "faa2de296f1b956b91a7e347954bc4c5e6dc16b8fcfd3909dd87f3d5ebd28096",
+    "targets": [
+      {
+        "target_instance_id": 279277,
+        "instance_id": 279277,
+        "text": "door4",
+        "color_rgb": [
+          113,
+          100,
+          168
+        ],
+        "area": 30273
+      },
+      {
+        "target_instance_id": 533756,
+        "instance_id": 533756,
+        "text": "door2",
+        "color_rgb": [
+          16,
+          75,
+          161
+        ],
+        "area": 38496
+      },
+      {
+        "target_instance_id": 560309,
+        "instance_id": 560309,
+        "text": "door3",
+        "color_rgb": [
+          209,
+          163,
+          173
+        ],
+        "area": 32768
+      },
+      {
+        "target_instance_id": 1593514,
+        "instance_id": 1593514,
+        "text": "door1",
+        "color_rgb": [
+          32,
+          207,
+          20
+        ],
+        "area": 33955
+      }
+    ]
+  },
+  "geometry_members_opened": 0,
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "claim_boundary": "A pass is provider-disjoint real consumer-RGB-D Development evidence that the unchanged positive registered planar-extent support predicate can operate on privileged target-conditioned partial depth observations rather than complete provider surfaces. SceneNN instance masks, reconstruction and camera trajectory remain privileged; the sensor is not a phone and the query target proposal is truth-conditioned. This is not raw-phone perception, door detection, a doorway aperture, named entrance, venue ownership, public access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or mobility-safety evidence."
+}

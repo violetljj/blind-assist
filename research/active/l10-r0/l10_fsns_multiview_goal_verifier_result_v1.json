@@ -1,0 +1,3630 @@
+{
+  "schema": "blindassist-l10-fsns-multiview-goal-verifier-result-v1",
+  "decision": "L10_FSNS_FRESH_MULTIVIEW_GOAL_EVIDENCE_DEVELOPMENT_GATE_MET",
+  "authority": "FRESH_PIXEL_UNSEEN_REFERENCE_IMAGE_LABEL_TOKEN_DISJOINT_OFFICIAL_FSNS_VALIDATION_SHARD_MULTI_VIEW_DEVELOPMENT_ONLY",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_fsns_multiview_goal_verifier_protocol_v1.json",
+  "protocol_sha256": "2f22876af176f031d5567a72554abf37b73642ce506d2707dc9a102b89010194",
+  "evaluator_sha256": "d4468fc3d6bc14e72754db9c49db0858eef203e8554dec25e1ca4b89969e0add",
+  "ocr_cache": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\l10-fsns-multiview-goal-verifier-v1\\ocr_cache.json",
+  "ocr_cache_sha256": "52d7a3c26bdbeae67027da2c4226a6ff1de657bc9c2287f312fbabf040637ff8",
+  "metrics": {
+    "examples": 40,
+    "single_view_exact_correct_unknown": [
+      34,
+      6
+    ],
+    "multiview_goal_correct_unknown": [
+      40,
+      0
+    ],
+    "correct_gain": 6,
+    "canonical_label_disjoint_challenges": 40,
+    "canonical_label_disjoint_challenge_accepts": 0,
+    "synthetic_negative_queries": 40,
+    "synthetic_negative_accepts": 0,
+    "accepted_mean_views_to_first_candidate": 1.225,
+    "identity_bindings_emitted": 0,
+    "portal_bindings_emitted": 0
+  },
+  "gate": {
+    "cohort_size_met": true,
+    "minimum_correct_gain_met": true,
+    "minimum_successor_correct_rate_met": true,
+    "zero_synthetic_negative_accepts": true,
+    "canonical_label_disjoint_challenge_limit_met": true,
+    "zero_identity_or_portal_bindings": true,
+    "passed": true
+  },
+  "canonical_label_disjoint_challenge_accepts": [],
+  "synthetic_negative_accepts": [],
+  "rows": [
+    {
+      "index": 1,
+      "text": "Rue de Vercly",
+      "view_count": 4,
+      "target_tokens": [
+        "vercly"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "vercly",
+          "form": "devercly",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.66666603088379,
+              77.33333587646484
+            ],
+            [
+              118.0,
+              75.33333587646484
+            ],
+            [
+              118.66666412353516,
+              99.0
+            ],
+            [
+              26.0,
+              100.66666412353516
+            ]
+          ],
+          "text": "DE VERCLY",
+          "forms": [
+            "de",
+            "devercly",
+            "vercly"
+          ],
+          "confidence": 0.99978,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "vercly",
+          "form": "devercly",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.66666603088379,
+              77.33333587646484
+            ],
+            [
+              118.0,
+              75.33333587646484
+            ],
+            [
+              118.66666412353516,
+              99.0
+            ],
+            [
+              26.0,
+              100.66666412353516
+            ]
+          ],
+          "text": "DE VERCLY",
+          "forms": [
+            "de",
+            "devercly",
+            "vercly"
+          ],
+          "confidence": 0.99978,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 2,
+        "challenge_text": "Rue Max Prevel",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 2,
+      "text": "Rue Max Prevel",
+      "view_count": 4,
+      "target_tokens": [
+        "prevel"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "prevel",
+          "form": "maxprevel",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.66666603088379,
+              75.33333587646484
+            ],
+            [
+              117.66666412353516,
+              79.0
+            ],
+            [
+              116.66666412353516,
+              99.66666412353516
+            ],
+            [
+              31.0,
+              96.0
+            ]
+          ],
+          "text": "MAX PREVEL",
+          "forms": [
+            "max",
+            "maxprevel",
+            "prevel"
+          ],
+          "confidence": 0.99453,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "prevel",
+          "form": "maxprevel",
+          "kind": "EXACT",
+          "box": [
+            [
+              24.0,
+              79.33333587646484
+            ],
+            [
+              121.33333587646484,
+              77.0
+            ],
+            [
+              122.0,
+              99.0
+            ],
+            [
+              24.33333396911621,
+              101.33333587646484
+            ]
+          ],
+          "text": "MAX PREVEL",
+          "forms": [
+            "max",
+            "maxprevel",
+            "prevel"
+          ],
+          "confidence": 0.99815,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 3,
+        "challenge_text": "Rue Emile Cousin",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 3,
+      "text": "Rue Emile Cousin",
+      "view_count": 4,
+      "target_tokens": [
+        "cousin"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "cousin",
+          "form": "cousin",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.33333396911621,
+              69.0
+            ],
+            [
+              125.0,
+              75.0
+            ],
+            [
+              124.0,
+              94.0
+            ],
+            [
+              30.33333396911621,
+              87.66666412353516
+            ]
+          ],
+          "text": "EMILE COUSIN",
+          "forms": [
+            "cousin",
+            "emile",
+            "emilecousin"
+          ],
+          "confidence": 0.99538,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "cousin",
+          "form": "cousin",
+          "kind": "EXACT",
+          "box": [
+            [
+              33.0,
+              83.33333587646484
+            ],
+            [
+              124.0,
+              78.66666412353516
+            ],
+            [
+              125.0,
+              96.66666412353516
+            ],
+            [
+              34.0,
+              101.33333587646484
+            ]
+          ],
+          "text": "EMILE COUSIN",
+          "forms": [
+            "cousin",
+            "emile",
+            "emilecousin"
+          ],
+          "confidence": 0.99946,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 4,
+        "challenge_text": "Rue du Pré Fleurant",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 4,
+      "text": "Rue du Pré Fleurant",
+      "view_count": 4,
+      "target_tokens": [
+        "fleurant"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "fleurant",
+          "form": "duprefleurant",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.33333396911621,
+              89.0
+            ],
+            [
+              121.33333587646484,
+              80.66666412353516
+            ],
+            [
+              123.33333587646484,
+              105.0
+            ],
+            [
+              27.33333396911621,
+              113.0
+            ]
+          ],
+          "text": "DU PRÉ-FLEURANT",
+          "forms": [
+            "du",
+            "duprefleurant",
+            "fleurant",
+            "pre"
+          ],
+          "confidence": 0.95427,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "fleurant",
+          "form": "duprefleurant",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.66666603088379,
+              86.0
+            ],
+            [
+              126.0,
+              85.0
+            ],
+            [
+              126.33333587646484,
+              107.0
+            ],
+            [
+              25.66666603088379,
+              108.0
+            ]
+          ],
+          "text": "DU PRÉ-FLEURANT",
+          "forms": [
+            "du",
+            "duprefleurant",
+            "fleurant",
+            "pre"
+          ],
+          "confidence": 0.9856,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 5,
+        "challenge_text": "Rue Saint-Erhard",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 5,
+      "text": "Rue Saint-Erhard",
+      "view_count": 4,
+      "target_tokens": [
+        "erhard"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "erhard",
+          "form": "erhard",
+          "kind": "EXACT",
+          "box": [
+            [
+              10.333333015441895,
+              76.0
+            ],
+            [
+              138.3333282470703,
+              77.66666412353516
+            ],
+            [
+              138.0,
+              96.66666412353516
+            ],
+            [
+              10.0,
+              95.33333587646484
+            ]
+          ],
+          "text": "SAINT-ERHARD",
+          "forms": [
+            "erhard",
+            "saint",
+            "sainterhard"
+          ],
+          "confidence": 0.99552,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "erhard",
+          "form": "ainterhard",
+          "kind": "EXACT",
+          "box": [
+            [
+              7.0,
+              76.33333587646484
+            ],
+            [
+              147.3333282470703,
+              75.66666412353516
+            ],
+            [
+              147.3333282470703,
+              100.33333587646484
+            ],
+            [
+              7.0,
+              101.0
+            ]
+          ],
+          "text": "AINT-ERHARD",
+          "forms": [
+            "aint",
+            "ainterhard",
+            "erhard"
+          ],
+          "confidence": 0.99814,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 7,
+        "challenge_text": "Chemin Bénech",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 7,
+      "text": "Chemin Bénech",
+      "view_count": 4,
+      "target_tokens": [
+        "benech"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "benech",
+          "form": "benech",
+          "kind": "EXACT",
+          "box": [
+            [
+              40.66666793823242,
+              70.33333587646484
+            ],
+            [
+              110.33333587646484,
+              82.0
+            ],
+            [
+              105.0,
+              112.66666412353516
+            ],
+            [
+              35.66666793823242,
+              101.0
+            ]
+          ],
+          "text": "BENECH",
+          "forms": [
+            "benech"
+          ],
+          "confidence": 0.99978,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "benech",
+          "form": "benech",
+          "kind": "EXACT",
+          "box": [
+            [
+              39.33333206176758,
+              77.66666412353516
+            ],
+            [
+              117.0,
+              80.66666412353516
+            ],
+            [
+              116.0,
+              107.0
+            ],
+            [
+              38.33333206176758,
+              104.0
+            ]
+          ],
+          "text": "BENECH",
+          "forms": [
+            "benech"
+          ],
+          "confidence": 0.99992,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 10,
+        "challenge_text": "Route de Tarnaud",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 10,
+      "text": "Route de Tarnaud",
+      "view_count": 4,
+      "target_tokens": [
+        "tarnaud"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "tarnaud",
+          "form": "tarnaud",
+          "kind": "EXACT",
+          "box": [
+            [
+              36.0,
+              79.0
+            ],
+            [
+              119.33333587646484,
+              92.33333587646484
+            ],
+            [
+              114.0,
+              125.33333587646484
+            ],
+            [
+              31.0,
+              112.0
+            ]
+          ],
+          "text": "TARNAUD",
+          "forms": [
+            "tarnaud"
+          ],
+          "confidence": 0.99734,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_2"
+        ],
+        "first_acceptance_view_count": 3
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 11,
+        "challenge_text": "Mail du Champ Pillard",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 11,
+      "text": "Mail du Champ Pillard",
+      "view_count": 4,
+      "target_tokens": [
+        "pillard"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "pillard",
+          "form": "champpillard",
+          "kind": "EXACT",
+          "box": [
+            [
+              34.33333206176758,
+              85.0
+            ],
+            [
+              116.66666412353516,
+              70.66666412353516
+            ],
+            [
+              123.33333587646484,
+              109.66666412353516
+            ],
+            [
+              41.0,
+              124.0
+            ]
+          ],
+          "text": "Champ Pillard",
+          "forms": [
+            "champ",
+            "champpillard",
+            "pillard"
+          ],
+          "confidence": 0.86171,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "pillard",
+          "form": "champpillard",
+          "kind": "EXACT",
+          "box": [
+            [
+              26.0,
+              75.66666412353516
+            ],
+            [
+              124.33333587646484,
+              71.66666412353516
+            ],
+            [
+              125.66666412353516,
+              103.66666412353516
+            ],
+            [
+              27.33333396911621,
+              107.66666412353516
+            ]
+          ],
+          "text": "Champ Pillard",
+          "forms": [
+            "champ",
+            "champpillard",
+            "pillard"
+          ],
+          "confidence": 0.99785,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 14,
+        "challenge_text": "Impasse des Rougeottes",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 14,
+      "text": "Impasse des Rougeottes",
+      "view_count": 4,
+      "target_tokens": [
+        "rougeottes"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "rougeottes",
+          "form": "desrougeottes",
+          "kind": "EXACT",
+          "box": [
+            [
+              26.66666603088379,
+              82.0
+            ],
+            [
+              123.33333587646484,
+              75.33333587646484
+            ],
+            [
+              124.33333587646484,
+              91.33333587646484
+            ],
+            [
+              28.0,
+              97.66666412353516
+            ]
+          ],
+          "text": "DES ROUGEOTTES",
+          "forms": [
+            "des",
+            "desrougeottes",
+            "rougeottes"
+          ],
+          "confidence": 0.9998,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "rougeottes",
+          "form": "desrougeottes",
+          "kind": "EXACT",
+          "box": [
+            [
+              26.66666603088379,
+              82.0
+            ],
+            [
+              123.33333587646484,
+              75.33333587646484
+            ],
+            [
+              124.33333587646484,
+              91.33333587646484
+            ],
+            [
+              28.0,
+              97.66666412353516
+            ]
+          ],
+          "text": "DES ROUGEOTTES",
+          "forms": [
+            "des",
+            "desrougeottes",
+            "rougeottes"
+          ],
+          "confidence": 0.9998,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 16,
+        "challenge_text": "Rue des Tarètes",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 16,
+      "text": "Rue des Tarètes",
+      "view_count": 4,
+      "target_tokens": [
+        "taretes"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "taretes",
+          "form": "taretes",
+          "kind": "EXACT",
+          "box": [
+            [
+              47.0,
+              77.66666412353516
+            ],
+            [
+              108.0,
+              86.66666412353516
+            ],
+            [
+              105.0,
+              108.0
+            ],
+            [
+              43.66666793823242,
+              98.66666412353516
+            ]
+          ],
+          "text": "TARÈTES",
+          "forms": [
+            "taretes"
+          ],
+          "confidence": 0.94111,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "taretes",
+          "form": "taretes",
+          "kind": "EXACT",
+          "box": [
+            [
+              42.33333206176758,
+              88.33333587646484
+            ],
+            [
+              111.66666412353516,
+              77.33333587646484
+            ],
+            [
+              115.0,
+              99.33333587646484
+            ],
+            [
+              45.66666793823242,
+              110.0
+            ]
+          ],
+          "text": "TARÈTES",
+          "forms": [
+            "taretes"
+          ],
+          "confidence": 0.99438,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 17,
+        "challenge_text": "Rue du Bois Bonaudière",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 17,
+      "text": "Rue du Bois Bonaudière",
+      "view_count": 4,
+      "target_tokens": [
+        "bonaudiere"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "bonaudiere",
+          "form": "bonaudiere",
+          "kind": "EXACT",
+          "box": [
+            [
+              29.0,
+              80.66666412353516
+            ],
+            [
+              122.0,
+              78.33333587646484
+            ],
+            [
+              122.66666412353516,
+              113.0
+            ],
+            [
+              29.66666603088379,
+              115.0
+            ]
+          ],
+          "text": "Ou BOIS BONAUDIERE",
+          "forms": [
+            "bois",
+            "bonaudiere",
+            "ou",
+            "ouboisbonaudiere"
+          ],
+          "confidence": 0.88902,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "bonaudiere",
+          "form": "bonaudiere",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.33333396911621,
+              74.0
+            ],
+            [
+              128.3333282470703,
+              85.0
+            ],
+            [
+              126.0,
+              107.0
+            ],
+            [
+              23.0,
+              96.0
+            ]
+          ],
+          "text": "Du BOIS BONAUDIÈRE",
+          "forms": [
+            "bois",
+            "bonaudiere",
+            "du",
+            "duboisbonaudiere"
+          ],
+          "confidence": 0.95009,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 18,
+        "challenge_text": "Avenue Coeuilly",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 18,
+      "text": "Avenue Coeuilly",
+      "view_count": 4,
+      "target_tokens": [
+        "coeuilly"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "coeuilly",
+          "form": "coeuilly",
+          "kind": "EXACT",
+          "box": [
+            [
+              46.0,
+              83.0
+            ],
+            [
+              100.33333587646484,
+              87.66666412353516
+            ],
+            [
+              98.33333587646484,
+              109.66666412353516
+            ],
+            [
+              44.0,
+              105.0
+            ]
+          ],
+          "text": "COEUILLY",
+          "forms": [
+            "coeuilly"
+          ],
+          "confidence": 0.9965,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "coeuilly",
+          "form": "coeuilly",
+          "kind": "EXACT",
+          "box": [
+            [
+              46.0,
+              83.0
+            ],
+            [
+              100.33333587646484,
+              87.66666412353516
+            ],
+            [
+              98.33333587646484,
+              109.66666412353516
+            ],
+            [
+              44.0,
+              105.0
+            ]
+          ],
+          "text": "COEUILLY",
+          "forms": [
+            "coeuilly"
+          ],
+          "confidence": 0.9965,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 19,
+        "challenge_text": "Avenue de Montferrand",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 19,
+      "text": "Avenue de Montferrand",
+      "view_count": 4,
+      "target_tokens": [
+        "montferrand"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "montferrand",
+          "form": "montferrand",
+          "kind": "EXACT",
+          "box": [
+            [
+              20.66666603088379,
+              74.0
+            ],
+            [
+              132.3333282470703,
+              79.66666412353516
+            ],
+            [
+              131.0,
+              101.66666412353516
+            ],
+            [
+              19.66666603088379,
+              96.0
+            ]
+          ],
+          "text": "MONTFERRAND",
+          "forms": [
+            "montferrand"
+          ],
+          "confidence": 0.99975,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "montferrand",
+          "form": "montferrand",
+          "kind": "EXACT",
+          "box": [
+            [
+              24.0,
+              78.66666412353516
+            ],
+            [
+              127.0,
+              76.66666412353516
+            ],
+            [
+              127.33333587646484,
+              96.66666412353516
+            ],
+            [
+              24.66666603088379,
+              98.66666412353516
+            ]
+          ],
+          "text": "MONTFERRAND",
+          "forms": [
+            "montferrand"
+          ],
+          "confidence": 0.99981,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 20,
+        "challenge_text": "Rue des Pareuses",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 20,
+      "text": "Rue des Pareuses",
+      "view_count": 4,
+      "target_tokens": [
+        "pareuses"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "pareuses",
+          "form": "despareuses",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.66666603088379,
+              83.33333587646484
+            ],
+            [
+              127.0,
+              71.0
+            ],
+            [
+              130.0,
+              95.0
+            ],
+            [
+              28.66666603088379,
+              107.33333587646484
+            ]
+          ],
+          "text": "DES PAREUSES",
+          "forms": [
+            "des",
+            "despareuses",
+            "pareuses"
+          ],
+          "confidence": 0.99931,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "pareuses",
+          "form": "pareuses",
+          "kind": "EXACT",
+          "box": [
+            [
+              49.66666793823242,
+              82.66666412353516
+            ],
+            [
+              123.33333587646484,
+              76.0
+            ],
+            [
+              125.66666412353516,
+              103.33333587646484
+            ],
+            [
+              52.0,
+              109.66666412353516
+            ]
+          ],
+          "text": "PAREUSES",
+          "forms": [
+            "pareuses"
+          ],
+          "confidence": 0.99985,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 21,
+        "challenge_text": "Rue des Couvents",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 21,
+      "text": "Rue des Couvents",
+      "view_count": 4,
+      "target_tokens": [
+        "couvents"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "couvents",
+          "form": "couvents",
+          "kind": "EXACT",
+          "box": [
+            [
+              30.33333396911621,
+              81.66666412353516
+            ],
+            [
+              121.33333587646484,
+              74.0
+            ],
+            [
+              122.66666412353516,
+              91.0
+            ],
+            [
+              31.66666603088379,
+              99.0
+            ]
+          ],
+          "text": "des Couvents",
+          "forms": [
+            "couvents",
+            "des",
+            "descouvents"
+          ],
+          "confidence": 0.9987,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "couvents",
+          "form": "couvents",
+          "kind": "EXACT",
+          "box": [
+            [
+              30.33333396911621,
+              81.66666412353516
+            ],
+            [
+              121.33333587646484,
+              74.0
+            ],
+            [
+              122.66666412353516,
+              91.0
+            ],
+            [
+              31.66666603088379,
+              99.0
+            ]
+          ],
+          "text": "des Couvents",
+          "forms": [
+            "couvents",
+            "des",
+            "descouvents"
+          ],
+          "confidence": 0.9987,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 22,
+        "challenge_text": "Rue d'Hervelin",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 22,
+      "text": "Rue d'Hervelin",
+      "view_count": 4,
+      "target_tokens": [
+        "hervelin"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "hervelin",
+          "form": "dhervelin",
+          "kind": "EXACT",
+          "box": [
+            [
+              50.0,
+              77.0
+            ],
+            [
+              100.33333587646484,
+              71.0
+            ],
+            [
+              101.66666412353516,
+              82.66666412353516
+            ],
+            [
+              51.33333206176758,
+              89.0
+            ]
+          ],
+          "text": "D'Hervelin",
+          "forms": [
+            "d",
+            "dhervelin",
+            "hervelin"
+          ],
+          "confidence": 0.99892,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "hervelin",
+          "form": "dhervelin",
+          "kind": "EXACT",
+          "box": [
+            [
+              27.0,
+              77.33333587646484
+            ],
+            [
+              117.0,
+              76.66666412353516
+            ],
+            [
+              117.0,
+              95.66666412353516
+            ],
+            [
+              27.0,
+              96.33333587646484
+            ]
+          ],
+          "text": "D'Hervelin",
+          "forms": [
+            "d",
+            "dhervelin",
+            "hervelin"
+          ],
+          "confidence": 0.99982,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 24,
+        "challenge_text": "Route de Saint-Mazeran",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 24,
+      "text": "Route de Saint-Mazeran",
+      "view_count": 4,
+      "target_tokens": [
+        "mazeran"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "mazeran",
+          "form": "mazeran",
+          "kind": "EXACT",
+          "box": [
+            [
+              21.33333396911621,
+              89.33333587646484
+            ],
+            [
+              128.3333282470703,
+              76.66666412353516
+            ],
+            [
+              132.0,
+              108.66666412353516
+            ],
+            [
+              25.33333396911621,
+              121.33333587646484
+            ]
+          ],
+          "text": "St-MAZERAN",
+          "forms": [
+            "mazeran",
+            "st",
+            "stmazeran"
+          ],
+          "confidence": 0.97461,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "mazeran",
+          "form": "mazeran",
+          "kind": "EXACT",
+          "box": [
+            [
+              21.33333396911621,
+              89.33333587646484
+            ],
+            [
+              128.3333282470703,
+              76.66666412353516
+            ],
+            [
+              132.0,
+              108.66666412353516
+            ],
+            [
+              25.33333396911621,
+              121.33333587646484
+            ]
+          ],
+          "text": "St-MAZERAN",
+          "forms": [
+            "mazeran",
+            "st",
+            "stmazeran"
+          ],
+          "confidence": 0.97461,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 25,
+        "challenge_text": "Rue Trouvassot",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 25,
+      "text": "Rue Trouvassot",
+      "view_count": 4,
+      "target_tokens": [
+        "trouvassot"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "trouvassot",
+          "form": "trouvassot",
+          "kind": "EXACT",
+          "box": [
+            [
+              27.0,
+              77.0
+            ],
+            [
+              120.0,
+              72.0
+            ],
+            [
+              121.66666412353516,
+              101.66666412353516
+            ],
+            [
+              28.33333396911621,
+              106.33333587646484
+            ]
+          ],
+          "text": "TROUVASSOT",
+          "forms": [
+            "trouvassot"
+          ],
+          "confidence": 0.99987,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "trouvassot",
+          "form": "trouvassot",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.66666603088379,
+              75.33333587646484
+            ],
+            [
+              125.66666412353516,
+              75.33333587646484
+            ],
+            [
+              125.66666412353516,
+              106.33333587646484
+            ],
+            [
+              25.66666603088379,
+              106.33333587646484
+            ]
+          ],
+          "text": "TROUVASSOT",
+          "forms": [
+            "trouvassot"
+          ],
+          "confidence": 0.99988,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 28,
+        "challenge_text": "Rue du Machet",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 28,
+      "text": "Rue du Machet",
+      "view_count": 4,
+      "target_tokens": [
+        "machet"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "machet",
+          "form": "machet",
+          "kind": "EXACT",
+          "box": [
+            [
+              40.0,
+              86.33333587646484
+            ],
+            [
+              107.0,
+              87.66666412353516
+            ],
+            [
+              106.66666412353516,
+              112.66666412353516
+            ],
+            [
+              39.33333206176758,
+              111.33333587646484
+            ]
+          ],
+          "text": "MACHET",
+          "forms": [
+            "machet"
+          ],
+          "confidence": 0.99989,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "machet",
+          "form": "machet",
+          "kind": "EXACT",
+          "box": [
+            [
+              38.33333206176758,
+              88.0
+            ],
+            [
+              107.33333587646484,
+              84.33333587646484
+            ],
+            [
+              109.0,
+              111.66666412353516
+            ],
+            [
+              40.0,
+              115.33333587646484
+            ]
+          ],
+          "text": "MACHET",
+          "forms": [
+            "machet"
+          ],
+          "confidence": 0.99995,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 30,
+        "challenge_text": "Chemin de Maurepas",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 30,
+      "text": "Chemin de Maurepas",
+      "view_count": 4,
+      "target_tokens": [
+        "maurepas"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "maurepas",
+          "form": "demaurepas",
+          "kind": "EXACT",
+          "box": [
+            [
+              39.0,
+              69.66666412353516
+            ],
+            [
+              114.33333587646484,
+              84.33333587646484
+            ],
+            [
+              110.66666412353516,
+              104.66666412353516
+            ],
+            [
+              35.0,
+              90.33333587646484
+            ]
+          ],
+          "text": "de MAUREPAS",
+          "forms": [
+            "de",
+            "demaurepas",
+            "maurepas"
+          ],
+          "confidence": 0.99773,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "maurepas",
+          "form": "demaurepas",
+          "kind": "EXACT",
+          "box": [
+            [
+              28.0,
+              72.33333587646484
+            ],
+            [
+              122.0,
+              81.0
+            ],
+            [
+              120.0,
+              103.33333587646484
+            ],
+            [
+              26.0,
+              94.66666412353516
+            ]
+          ],
+          "text": "de MAUREPAS",
+          "forms": [
+            "de",
+            "demaurepas",
+            "maurepas"
+          ],
+          "confidence": 0.9998,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 31,
+        "challenge_text": "Rue Pierre Briand",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 31,
+      "text": "Rue Pierre Briand",
+      "view_count": 4,
+      "target_tokens": [
+        "briand",
+        "pierre"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "briand",
+          "form": "briand",
+          "kind": "EXACT",
+          "box": [
+            [
+              27.0,
+              80.66666412353516
+            ],
+            [
+              124.33333587646484,
+              65.66666412353516
+            ],
+            [
+              128.6666717529297,
+              93.66666412353516
+            ],
+            [
+              31.0,
+              108.33333587646484
+            ]
+          ],
+          "text": "PRerre BRIAND",
+          "forms": [
+            "briand",
+            "prerre",
+            "prerrebriand"
+          ],
+          "confidence": 0.84474,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "briand",
+          "form": "briand",
+          "kind": "EXACT",
+          "box": [
+            [
+              24.33333396911621,
+              76.66666412353516
+            ],
+            [
+              132.6666717529297,
+              74.33333587646484
+            ],
+            [
+              133.3333282470703,
+              107.33333587646484
+            ],
+            [
+              25.33333396911621,
+              110.0
+            ]
+          ],
+          "text": "Pirre BRIAND",
+          "forms": [
+            "briand",
+            "pirre",
+            "pirrebriand"
+          ],
+          "confidence": 0.90269,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 33,
+        "challenge_text": "Rue du Pontgoury",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 33,
+      "text": "Rue du Pontgoury",
+      "view_count": 4,
+      "target_tokens": [
+        "pontgoury"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "pontgoury",
+          "form": "dupontgoury",
+          "kind": "EXACT",
+          "box": [
+            [
+              24.66666603088379,
+              76.66666412353516
+            ],
+            [
+              126.66666412353516,
+              77.66666412353516
+            ],
+            [
+              126.33333587646484,
+              108.33333587646484
+            ],
+            [
+              24.33333396911621,
+              107.33333587646484
+            ]
+          ],
+          "text": "DU PONTGOURY",
+          "forms": [
+            "du",
+            "dupontgoury",
+            "pontgoury"
+          ],
+          "confidence": 0.97483,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "pontgoury",
+          "form": "dupontgoury",
+          "kind": "EXACT",
+          "box": [
+            [
+              27.66666603088379,
+              82.66666412353516
+            ],
+            [
+              126.33333587646484,
+              75.0
+            ],
+            [
+              128.3333282470703,
+              101.66666412353516
+            ],
+            [
+              29.66666603088379,
+              109.33333587646484
+            ]
+          ],
+          "text": "DU PONTGOURY",
+          "forms": [
+            "du",
+            "dupontgoury",
+            "pontgoury"
+          ],
+          "confidence": 0.9949,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 35,
+        "challenge_text": "Square des Fousseaux",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 35,
+      "text": "Square des Fousseaux",
+      "view_count": 4,
+      "target_tokens": [
+        "fousseaux"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "fousseaux",
+          "form": "desfousseaux",
+          "kind": "EXACT",
+          "box": [
+            [
+              21.66666603088379,
+              78.0
+            ],
+            [
+              128.0,
+              79.66666412353516
+            ],
+            [
+              127.66666412353516,
+              106.66666412353516
+            ],
+            [
+              21.33333396911621,
+              105.0
+            ]
+          ],
+          "text": "des FOUSSEAUX",
+          "forms": [
+            "des",
+            "desfousseaux",
+            "fousseaux"
+          ],
+          "confidence": 0.9985,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 2
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 37,
+        "challenge_text": "Rue de Curzay",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 37,
+      "text": "Rue de Curzay",
+      "view_count": 4,
+      "target_tokens": [
+        "curzay"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "curzay",
+          "form": "curzay",
+          "kind": "EXACT",
+          "box": [
+            [
+              34.0,
+              74.0
+            ],
+            [
+              120.0,
+              78.0
+            ],
+            [
+              118.66666412353516,
+              111.0
+            ],
+            [
+              32.33333206176758,
+              106.66666412353516
+            ]
+          ],
+          "text": "DE CURZAY",
+          "forms": [
+            "curzay",
+            "de",
+            "decurzay"
+          ],
+          "confidence": 0.99745,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_1",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 2
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 38,
+        "challenge_text": "Rue de Lespone",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 38,
+      "text": "Rue de Lespone",
+      "view_count": 4,
+      "target_tokens": [
+        "lespone"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "lespone",
+          "form": "delespone",
+          "kind": "EXACT",
+          "box": [
+            [
+              48.33333206176758,
+              61.0
+            ],
+            [
+              115.0,
+              96.0
+            ],
+            [
+              100.66666412353516,
+              123.33333587646484
+            ],
+            [
+              34.0,
+              88.33333587646484
+            ]
+          ],
+          "text": "de LESPONE",
+          "forms": [
+            "de",
+            "delespone",
+            "lespone"
+          ],
+          "confidence": 0.91624,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "lespone",
+          "form": "delespone",
+          "kind": "EXACT",
+          "box": [
+            [
+              33.33333206176758,
+              71.33333587646484
+            ],
+            [
+              121.33333587646484,
+              82.33333587646484
+            ],
+            [
+              118.33333587646484,
+              106.33333587646484
+            ],
+            [
+              30.33333396911621,
+              95.0
+            ]
+          ],
+          "text": "de LESPONE",
+          "forms": [
+            "de",
+            "delespone",
+            "lespone"
+          ],
+          "confidence": 0.9798,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 41,
+        "challenge_text": "Rue Gustave Legray",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 41,
+      "text": "Rue Gustave Legray",
+      "view_count": 4,
+      "target_tokens": [
+        "gustave",
+        "legray"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "gustave",
+          "form": "gustave",
+          "kind": "EXACT",
+          "box": [
+            [
+              28.33333396911621,
+              63.33333206176758
+            ],
+            [
+              121.33333587646484,
+              67.66666412353516
+            ],
+            [
+              120.0,
+              92.0
+            ],
+            [
+              27.33333396911621,
+              88.0
+            ]
+          ],
+          "text": "Gustave LEGRAY",
+          "forms": [
+            "gustave",
+            "gustavelegray",
+            "legray"
+          ],
+          "confidence": 0.99965,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "gustave",
+          "form": "gustave",
+          "kind": "EXACT",
+          "box": [
+            [
+              28.33333396911621,
+              63.33333206176758
+            ],
+            [
+              121.33333587646484,
+              67.66666412353516
+            ],
+            [
+              120.0,
+              92.0
+            ],
+            [
+              27.33333396911621,
+              88.0
+            ]
+          ],
+          "text": "Gustave LEGRAY",
+          "forms": [
+            "gustave",
+            "gustavelegray",
+            "legray"
+          ],
+          "confidence": 0.99965,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 42,
+        "challenge_text": "Rue Albert Aubès",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 42,
+      "text": "Rue Albert Aubès",
+      "view_count": 4,
+      "target_tokens": [
+        "albert"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "albert",
+          "form": "albert",
+          "kind": "EXACT",
+          "box": [
+            [
+              21.66666603088379,
+              75.33333587646484
+            ],
+            [
+              133.6666717529297,
+              77.33333587646484
+            ],
+            [
+              133.0,
+              115.66666412353516
+            ],
+            [
+              21.0,
+              113.66666412353516
+            ]
+          ],
+          "text": "ALBERT AUBES",
+          "forms": [
+            "albert",
+            "albertaubes",
+            "aubes"
+          ],
+          "confidence": 0.83167,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "albert",
+          "form": "albertauibes",
+          "kind": "EXACT",
+          "box": [
+            [
+              11.666666984558105,
+              74.0
+            ],
+            [
+              133.6666717529297,
+              66.33333587646484
+            ],
+            [
+              136.3333282470703,
+              110.66666412353516
+            ],
+            [
+              14.333333015441895,
+              118.33333587646484
+            ]
+          ],
+          "text": "ALBERTAUIBÈS",
+          "forms": [
+            "albertauibes"
+          ],
+          "confidence": 0.83228,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 43,
+        "challenge_text": "Rue Bonnelais",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 43,
+      "text": "Rue Bonnelais",
+      "view_count": 4,
+      "target_tokens": [
+        "bonnelais"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "bonnelais",
+          "form": "bonnelais",
+          "kind": "EXACT",
+          "box": [
+            [
+              42.0,
+              82.33333587646484
+            ],
+            [
+              109.0,
+              81.33333587646484
+            ],
+            [
+              109.0,
+              98.33333587646484
+            ],
+            [
+              42.0,
+              99.0
+            ]
+          ],
+          "text": "BONNELAIS",
+          "forms": [
+            "bonnelais"
+          ],
+          "confidence": 0.99994,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "bonnelais",
+          "form": "bonnelais",
+          "kind": "EXACT",
+          "box": [
+            [
+              42.0,
+              82.33333587646484
+            ],
+            [
+              109.0,
+              81.33333587646484
+            ],
+            [
+              109.0,
+              98.33333587646484
+            ],
+            [
+              42.0,
+              99.0
+            ]
+          ],
+          "text": "BONNELAIS",
+          "forms": [
+            "bonnelais"
+          ],
+          "confidence": 0.99994,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 44,
+        "challenge_text": "Rue Charles Delvert",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 44,
+      "text": "Rue Charles Delvert",
+      "view_count": 4,
+      "target_tokens": [
+        "charles",
+        "delvert"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "charles",
+          "form": "charles",
+          "kind": "EXACT",
+          "box": [
+            [
+              30.66666603088379,
+              74.0
+            ],
+            [
+              120.0,
+              61.66666793823242
+            ],
+            [
+              122.33333587646484,
+              80.0
+            ],
+            [
+              33.0,
+              92.33333587646484
+            ]
+          ],
+          "text": "Charles DELVERT",
+          "forms": [
+            "charles",
+            "charlesdelvert",
+            "delvert"
+          ],
+          "confidence": 0.99984,
+          "source": "view_2"
+        },
+        "evidence_sources": [
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 3
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 45,
+        "challenge_text": "Chemin des Tonderies",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 45,
+      "text": "Chemin des Tonderies",
+      "view_count": 4,
+      "target_tokens": [
+        "tonderies"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "tonderies",
+          "form": "tonderies",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.0,
+              82.66666412353516
+            ],
+            [
+              119.0,
+              87.0
+            ],
+            [
+              118.0,
+              110.0
+            ],
+            [
+              30.0,
+              106.0
+            ]
+          ],
+          "text": "TONDERIES",
+          "forms": [
+            "tonderies"
+          ],
+          "confidence": 0.99985,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "tonderies",
+          "form": "tonderies",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.0,
+              82.66666412353516
+            ],
+            [
+              119.0,
+              87.0
+            ],
+            [
+              118.0,
+              110.0
+            ],
+            [
+              30.0,
+              106.0
+            ]
+          ],
+          "text": "TONDERIES",
+          "forms": [
+            "tonderies"
+          ],
+          "confidence": 0.99985,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 47,
+        "challenge_text": "Rue Antoine Boutonnat",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 47,
+      "text": "Rue Antoine Boutonnat",
+      "view_count": 4,
+      "target_tokens": [
+        "boutonnat",
+        "antoine"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "boutonnat",
+          "form": "antoineboutonnat",
+          "kind": "EXACT",
+          "box": [
+            [
+              27.33333396911621,
+              93.33333587646484
+            ],
+            [
+              122.0,
+              84.66666412353516
+            ],
+            [
+              123.66666412353516,
+              103.33333587646484
+            ],
+            [
+              29.0,
+              112.0
+            ]
+          ],
+          "text": "ANTOINE BOUTONNAT",
+          "forms": [
+            "antoine",
+            "antoineboutonnat",
+            "boutonnat"
+          ],
+          "confidence": 0.99813,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "boutonnat",
+          "form": "antoineboutonnat",
+          "kind": "EXACT",
+          "box": [
+            [
+              25.0,
+              90.66666412353516
+            ],
+            [
+              128.0,
+              86.33333587646484
+            ],
+            [
+              128.6666717529297,
+              105.0
+            ],
+            [
+              25.66666603088379,
+              109.33333587646484
+            ]
+          ],
+          "text": "ANTOINE BOUTONNAT",
+          "forms": [
+            "antoine",
+            "antoineboutonnat",
+            "boutonnat"
+          ],
+          "confidence": 0.99961,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 48,
+        "challenge_text": "Place des Mouniers",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 48,
+      "text": "Place des Mouniers",
+      "view_count": 4,
+      "target_tokens": [
+        "mouniers"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "mouniers",
+          "form": "desmouniers",
+          "kind": "EXACT",
+          "box": [
+            [
+              42.0,
+              66.0
+            ],
+            [
+              119.0,
+              98.66666412353516
+            ],
+            [
+              110.0,
+              119.66666412353516
+            ],
+            [
+              33.0,
+              87.0
+            ]
+          ],
+          "text": "DES MOUNIERS",
+          "forms": [
+            "des",
+            "desmouniers",
+            "mouniers"
+          ],
+          "confidence": 0.95811,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "mouniers",
+          "form": "desmouniers",
+          "kind": "EXACT",
+          "box": [
+            [
+              28.66666603088379,
+              93.33333587646484
+            ],
+            [
+              112.66666412353516,
+              69.33333587646484
+            ],
+            [
+              118.66666412353516,
+              90.33333587646484
+            ],
+            [
+              34.66666793823242,
+              114.66666412353516
+            ]
+          ],
+          "text": "DES MOUNIERS",
+          "forms": [
+            "des",
+            "desmouniers",
+            "mouniers"
+          ],
+          "confidence": 0.96136,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 50,
+        "challenge_text": "Rue de l'Etenduère",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 50,
+      "text": "Rue de l'Etenduère",
+      "view_count": 4,
+      "target_tokens": [
+        "etenduere"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "etenduere",
+          "form": "etenduere",
+          "kind": "EXACT",
+          "box": [
+            [
+              42.0,
+              76.33333587646484
+            ],
+            [
+              127.0,
+              78.0
+            ],
+            [
+              126.66666412353516,
+              104.66666412353516
+            ],
+            [
+              41.33333206176758,
+              103.33333587646484
+            ]
+          ],
+          "text": "I'ÉTENDUÈRE",
+          "forms": [
+            "etenduere",
+            "i",
+            "ietenduere"
+          ],
+          "confidence": 0.88391,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "etenduere",
+          "form": "deletenduere",
+          "kind": "EXACT",
+          "box": [
+            [
+              23.0,
+              79.0
+            ],
+            [
+              127.66666412353516,
+              79.66666412353516
+            ],
+            [
+              127.33333587646484,
+              103.33333587646484
+            ],
+            [
+              22.66666603088379,
+              102.33333587646484
+            ]
+          ],
+          "text": "de l'ÉTENDUÈRE",
+          "forms": [
+            "de",
+            "deletenduere",
+            "etenduere",
+            "l"
+          ],
+          "confidence": 0.97473,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 52,
+        "challenge_text": "Rue des Gamays",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 52,
+      "text": "Rue des Gamays",
+      "view_count": 4,
+      "target_tokens": [
+        "gamays"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "gamays",
+          "form": "esgamays",
+          "kind": "EXACT",
+          "box": [
+            [
+              18.66666603088379,
+              83.66666412353516
+            ],
+            [
+              130.0,
+              72.0
+            ],
+            [
+              132.6666717529297,
+              95.33333587646484
+            ],
+            [
+              21.33333396911621,
+              107.0
+            ]
+          ],
+          "text": "ES GAMAYS",
+          "forms": [
+            "es",
+            "esgamays",
+            "gamays"
+          ],
+          "confidence": 0.99886,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "gamays",
+          "form": "desgamays",
+          "kind": "EXACT",
+          "box": [
+            [
+              32.0,
+              86.0
+            ],
+            [
+              116.66666412353516,
+              66.66666412353516
+            ],
+            [
+              121.0,
+              85.33333587646484
+            ],
+            [
+              36.33333206176758,
+              104.66666412353516
+            ]
+          ],
+          "text": "DES GAMAYS",
+          "forms": [
+            "des",
+            "desgamays",
+            "gamays"
+          ],
+          "confidence": 0.99979,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 53,
+        "challenge_text": "Rue du Clos de la Pointe",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 53,
+      "text": "Rue du Clos de la Pointe",
+      "view_count": 4,
+      "target_tokens": [
+        "pointe"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "pointe",
+          "form": "delapointe",
+          "kind": "EXACT",
+          "box": [
+            [
+              33.0,
+              90.66666412353516
+            ],
+            [
+              119.0,
+              84.66666412353516
+            ],
+            [
+              120.33333587646484,
+              104.0
+            ],
+            [
+              34.33333206176758,
+              110.0
+            ]
+          ],
+          "text": "de la POINTE",
+          "forms": [
+            "de",
+            "delapointe",
+            "la",
+            "pointe"
+          ],
+          "confidence": 0.97651,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "pointe",
+          "form": "delapointe",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.66666603088379,
+              90.33333587646484
+            ],
+            [
+              119.66666412353516,
+              86.66666412353516
+            ],
+            [
+              120.33333587646484,
+              103.33333587646484
+            ],
+            [
+              32.33333206176758,
+              106.66666412353516
+            ]
+          ],
+          "text": "de la POINTE",
+          "forms": [
+            "de",
+            "delapointe",
+            "la",
+            "pointe"
+          ],
+          "confidence": 0.98313,
+          "source": "view_1"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 57,
+        "challenge_text": "Avenue de le Chataigneraie",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 57,
+      "text": "Avenue de le Chataigneraie",
+      "view_count": 4,
+      "target_tokens": [
+        "chataigneraie"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "chataigneraie",
+          "form": "chataigneraie",
+          "kind": "EXACT",
+          "box": [
+            [
+              33.0,
+              88.33333587646484
+            ],
+            [
+              122.0,
+              89.0
+            ],
+            [
+              121.66666412353516,
+              108.33333587646484
+            ],
+            [
+              32.66666793823242,
+              107.66666412353516
+            ]
+          ],
+          "text": "CHATAIGNERAIE",
+          "forms": [
+            "chataigneraie"
+          ],
+          "confidence": 0.99954,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 3
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 60,
+        "challenge_text": "Sentier de la Havarde",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 60,
+      "text": "Sentier de la Havarde",
+      "view_count": 4,
+      "target_tokens": [
+        "havarde"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "havarde",
+          "form": "delahavarde",
+          "kind": "EXACT",
+          "box": [
+            [
+              24.66666603088379,
+              84.0
+            ],
+            [
+              129.0,
+              83.66666412353516
+            ],
+            [
+              129.0,
+              107.33333587646484
+            ],
+            [
+              25.0,
+              107.66666412353516
+            ]
+          ],
+          "text": "DE LA HAVARDE",
+          "forms": [
+            "de",
+            "delahavarde",
+            "havarde",
+            "la"
+          ],
+          "confidence": 0.99601,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "havarde",
+          "form": "delahavarde",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.0,
+              74.66666412353516
+            ],
+            [
+              119.0,
+              87.66666412353516
+            ],
+            [
+              115.33333587646484,
+              112.66666412353516
+            ],
+            [
+              27.33333396911621,
+              99.66666412353516
+            ]
+          ],
+          "text": "DE LA HAVARDE",
+          "forms": [
+            "de",
+            "delahavarde",
+            "havarde",
+            "la"
+          ],
+          "confidence": 0.99752,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 61,
+        "challenge_text": "Rue du Lissoir",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 61,
+      "text": "Rue du Lissoir",
+      "view_count": 4,
+      "target_tokens": [
+        "lissoir"
+      ],
+      "single_view_exact": {
+        "accepted": false,
+        "match": null,
+        "evidence_sources": []
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "lissoir",
+          "form": "dulissoir",
+          "kind": "EXACT",
+          "box": [
+            [
+              36.0,
+              71.0
+            ],
+            [
+              119.33333587646484,
+              80.0
+            ],
+            [
+              116.33333587646484,
+              108.33333587646484
+            ],
+            [
+              33.0,
+              99.0
+            ]
+          ],
+          "text": "du LISSOIR",
+          "forms": [
+            "du",
+            "dulissoir",
+            "lissoir"
+          ],
+          "confidence": 0.99863,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 2
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 62,
+        "challenge_text": "Avenue d'Armagnac",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 62,
+      "text": "Avenue d'Armagnac",
+      "view_count": 4,
+      "target_tokens": [
+        "armagnac"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "armagnac",
+          "form": "armagnac",
+          "kind": "EXACT",
+          "box": [
+            [
+              28.66666603088379,
+              77.33333587646484
+            ],
+            [
+              120.33333587646484,
+              80.33333587646484
+            ],
+            [
+              119.66666412353516,
+              103.0
+            ],
+            [
+              28.0,
+              100.33333587646484
+            ]
+          ],
+          "text": "D'ARMAGNAC",
+          "forms": [
+            "armagnac",
+            "d",
+            "darmagnac"
+          ],
+          "confidence": 0.98958,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "armagnac",
+          "form": "armagnac",
+          "kind": "EXACT",
+          "box": [
+            [
+              31.33333396911621,
+              80.33333587646484
+            ],
+            [
+              120.33333587646484,
+              73.0
+            ],
+            [
+              122.33333587646484,
+              96.66666412353516
+            ],
+            [
+              33.33333206176758,
+              104.0
+            ]
+          ],
+          "text": "D'ARMAGNAC",
+          "forms": [
+            "armagnac",
+            "d",
+            "darmagnac"
+          ],
+          "confidence": 0.99528,
+          "source": "view_3"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 63,
+        "challenge_text": "Rue de Mandon",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    },
+    {
+      "index": 63,
+      "text": "Rue de Mandon",
+      "view_count": 4,
+      "target_tokens": [
+        "mandon"
+      ],
+      "single_view_exact": {
+        "accepted": true,
+        "match": {
+          "target": "mandon",
+          "form": "mandon",
+          "kind": "EXACT",
+          "box": [
+            [
+              44.66666793823242,
+              79.33333587646484
+            ],
+            [
+              115.0,
+              78.0
+            ],
+            [
+              115.33333587646484,
+              101.66666412353516
+            ],
+            [
+              45.0,
+              102.66666412353516
+            ]
+          ],
+          "text": "MANDON",
+          "forms": [
+            "mandon"
+          ],
+          "confidence": 0.99993,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0"
+        ]
+      },
+      "multiview_goal": {
+        "accepted": true,
+        "match": {
+          "target": "mandon",
+          "form": "mandon",
+          "kind": "EXACT",
+          "box": [
+            [
+              44.66666793823242,
+              79.33333587646484
+            ],
+            [
+              115.0,
+              78.0
+            ],
+            [
+              115.33333587646484,
+              101.66666412353516
+            ],
+            [
+              45.0,
+              102.66666412353516
+            ]
+          ],
+          "text": "MANDON",
+          "forms": [
+            "mandon"
+          ],
+          "confidence": 0.99993,
+          "source": "view_0"
+        },
+        "evidence_sources": [
+          "view_0",
+          "view_1",
+          "view_2",
+          "view_3"
+        ],
+        "first_acceptance_view_count": 1
+      },
+      "canonical_label_disjoint_challenge": {
+        "challenge_index": 1,
+        "challenge_text": "Rue de Vercly",
+        "accepted": false,
+        "match": {
+          "accepted": false,
+          "match": null,
+          "evidence_sources": []
+        }
+      }
+    }
+  ],
+  "claim_boundary": "This is multi-view canonical street-name recognition Development evidence on pre-cropped signs. FSNS provides the canonical label for the sample but not exhaustive pixel text, per-tile target boxes, camera poses, action labels, metric distance, facade association, entrance or portal ownership, public access, traversability, waypoint, arrival, handoff, user benefit, deployment, or safety. Canonical-label-disjoint challenges are collision diagnostics, not a pixel-absence false-positive rate. Multiple views are observations from different positions/times, not evidence that an L10-selected action caused the recovery. UNKNOWN is neither negative nor known-safe; no conformal, FDR, or open-world guarantee is claimed."
+}

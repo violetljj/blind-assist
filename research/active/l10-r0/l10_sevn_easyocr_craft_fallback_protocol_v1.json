@@ -1,0 +1,150 @@
+{
+  "schema": "blindassist-l10-sevn-easyocr-craft-fallback-protocol-v1",
+  "name": "L10 SEVN independent EasyOCR CRAFT exact-token fallback fresh PAN Development",
+  "question": "Can a source-diverse CRAFT plus English-G2 full-view exact-token observation materially improve V2 OCR and address-to-door binding on forty additional fresh SEVN PAN episodes without weakening precision?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_easyocr_craft_fallback.py",
+    "sha256": "78afb74124fed5973a570ff3447378faf0b98d91ee19234cb7e3aea0b6ad8ab1"
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v3.json",
+      "sha256": "a1ecdf9f7984f0cc91a7d273949c747971c01fe3e9254702996828ce415ae283"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_truth_v3.json",
+      "sha256": "cabd8d5c3ba86a7d8c9254bcf0bfe2952c6dbb012709d406b7dc0ae90a33ae45"
+    },
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_protocol_v3.json",
+      "sha256": "73e9b0870fd2780e2cab67af6b1f8438b2a705139d6c47869d76db552c2b5e01"
+    },
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_panel.py",
+      "sha256": "27c85ceb7ad19620a9b59df1a51686a5b3b812bb9055b07cc4b35dc2bc939149"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_fresh_pan_selection_receipt_v3.json",
+      "sha256": "9531c287544baada0aa6395cb2e7ff660a6e121856ec6cd2fe71161fa4afe79e"
+    },
+    "reference_public_sources": [
+      {
+        "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json",
+        "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v2.json",
+        "sha256": "dc701be78e75978dc03f735e6141120a924b7a578355c8817bb4cb3db9b732e8"
+      }
+    ],
+    "v2_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "v2_evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "archive_integrity_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr_result_v1.json",
+      "sha256": "2cf15ecde0430b16db3d73d8ac274ebfb943511a49be93859e8d62a728843e46"
+    }
+  },
+  "cohort": {
+    "episodes_per_scenario": 20,
+    "episode_count": 40,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY"
+    ],
+    "disjointness": "No address or panorama frame may overlap any of the four earlier SEVN panels; no frame may be reused across new episodes."
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.13.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime-gpu": "1.26.0",
+      "opencv-python": "4.10.0.84",
+      "numpy": "2.4.6",
+      "easyocr": "1.7.2"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "primary_ocr_backend": "Frozen PP-OCRv6 through ONNX Runtime",
+    "fallback_ocr_backend": "EasyOCR 1.7.2 with CRAFT detector and English-G2 recognizer on CUDA, local weights only",
+    "archive_integrity": "Reuse the hash-bound full-archive MD5 receipt, verify current byte size, and record ZIP-member CRC plus SHA-256 for every selected panorama."
+  },
+  "models": {
+    "easyocr": {
+      "model_root": "artifacts.local/runtime/easyocr-craft-v0/models",
+      "user_network_root": "artifacts.local/runtime/easyocr-craft-v0/user-network",
+      "download_enabled": false,
+      "sha256": {
+        "craft_mlt_25k.pth": "4a5efbfb48b4081100544e75e1e2b57f8de3d84f213004b14b85fd4b3748db17",
+        "english_g2.pth": "e2272681d9d67a04e2dff396b6e95077bc19001f8f6d3593c307b9852e1c29e8"
+      }
+    }
+  },
+  "easyocr_observation": {
+    "trigger": "Run only when V2 emits no selected binding and its state is UNKNOWN_TARGET_TEXT or UNKNOWN_NO_ADMISSIBLE_MASK_TOPOLOGY.",
+    "scope": "One full 1440 by 1280 action-result viewport; no portal crops, tiles, rotations, super-resolution, temporal context, or evaluator labels.",
+    "allowlist": "0123456789",
+    "decoder": "greedy",
+    "beam_width": 5,
+    "batch_size": 1,
+    "workers": 0,
+    "min_size": 20,
+    "contrast_threshold": 0.1,
+    "adjust_contrast": 0.5,
+    "text_threshold": 0.7,
+    "low_text": 0.4,
+    "link_threshold": 0.4,
+    "canvas_size": 2560,
+    "magnification_ratio": 1.0,
+    "slope_threshold": 0.1,
+    "y_center_threshold": 0.5,
+    "height_threshold": 0.5,
+    "width_threshold": 0.5,
+    "add_margin": 0.1,
+    "paragraph_x_threshold": 1.0,
+    "paragraph_y_threshold": 0.5,
+    "recognition_threshold": 0.2,
+    "bbox_min_score": 0.2,
+    "bbox_min_size": 3,
+    "maximum_candidates": 0,
+    "minimum_exact_score": 0.5,
+    "identity_rule": "Delete punctuation and spaces, then require exact equality to the requested house number. The full EasyOCR box owns the token; no fuzzy, substring, sub-token, character repair, or target-conditioned recognition is allowed.",
+    "unique_admission": "Zero exact boxes preserves UNKNOWN. More than one exact box is an explicit set and preserves UNKNOWN. Exactly one exact box may enter the unchanged V2 mask-topology admission and ranking.",
+    "asymmetry": "Never run after a V2 proposal and never replace, rerank, or revoke a V2 proposal."
+  },
+  "representation_boundary": "The only new information is an independent CRAFT plus English-G2 full-view lexical observation and its detection box on V2-abstaining episodes. Renderer, prescribed PAN action, PP-OCRv6 baseline, portal weights and masks, spatial radii, topology admission and ranking, evaluator projection, and mask correctness remain fixed. Evaluator labels enter only after both outputs are sealed in memory.",
+  "gate": {
+    "episode_count": 40,
+    "minimum_truth_visible_house_number_opportunities": 36,
+    "minimum_successor_visible_text_exact_ocr_rate": 0.8,
+    "minimum_exact_ocr_rate_gain": 0.05,
+    "minimum_successor_correct_binding_rate": 0.55,
+    "minimum_correct_binding_gain": 4,
+    "minimum_successor_binding_precision": 0.9,
+    "maximum_successor_wrong_bindings": 2,
+    "maximum_wrong_binding_delta": 1,
+    "retain_all_baseline_correct_bindings": true,
+    "require_all_disjointness_checks": true
+  },
+  "execution_rule": "Freeze source, evaluator, runtime, weights, EasyOCR parameters, exact-box semantics, hashes, metrics, and gates before opening any selected panorama member. Run one output-bearing invocation. Do not tune the model, parameters, trigger, admission, topology, gates, cohort, or runtime after observing results.",
+  "output": "research/active/l10-r0/l10_sevn_easyocr_craft_fallback_result_v1.json",
+  "non_claims": [
+    "The panel is same-source SEVN and PAN-only; it does not confirm a new city, provider, or APPROACH behavior.",
+    "An independent exact-token fallback is Development binding evidence, not proof of portal ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, or safety.",
+    "Mask correctness uses evaluator door annotations after inference and does not enter OCR, topology, proposal generation, or selection.",
+    "A failed gate closes only this frozen EasyOCR fallback on this cohort; UNKNOWN remains unknown rather than negative evidence."
+  ]
+}

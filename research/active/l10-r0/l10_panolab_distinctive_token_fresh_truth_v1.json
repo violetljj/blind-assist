@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist-l10-panolab-distinctive-token-fresh-human-truth-v1",
+  "status": "FROZEN_AFTER_PIXEL_REVIEW_BEFORE_ANY_SELECTED_APPEARANCE_OR_OCR_CALL",
+  "reviewed_at_local": "2026-08-31T09:07:26+08:00",
+  "reviewer": "Codex visual review",
+  "appearance_calls_on_selected_images_before_truth_freeze": 0,
+  "ocr_calls_on_selected_images_before_truth_freeze": 0,
+  "inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_source_protocol_v1.json",
+      "sha256": "314ef72744182dcc8cfe2726110db091c52eecc192ad7bc7a9e79879c6f52bf0",
+      "bytes": 5703
+    },
+    "selection": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_selection_v1.json",
+      "sha256": "6430fc22533cc64ed76068c6461e6daf1da5493d78536344c50956a02e97d69d",
+      "bytes": 158134
+    },
+    "materialization": {
+      "path": "research/active/l10-r0/l10_panolab_distinctive_token_fresh_materialization_v1.json",
+      "sha256": "86ca0dcd25e3b7c00116f550814e7299b5df4b4c00f5a7a263602de5be87dea8",
+      "bytes": 7129
+    }
+  },
+  "review_method": {
+    "entrance_windows": "All ten strict entrance-ray windows were reviewed at native crop dimensions: two cross-collection references and reciprocal prev/anchor/next query frames for each target.",
+    "allowed_evidence": "Downloaded pixels, frozen OSM target-way/main-entrance geometry, frozen provider item metadata, and deterministic strict entrance-ray projection only.",
+    "forbidden_evidence": "No OCR, CLIP, DINOv2, patch matcher, score, rank, threshold decision, distinctive-token output, or router output was viewed before this truth file was frozen."
+  },
+  "episodes": [
+    {
+      "episode_id": "DF01",
+      "producer_stratum": "nlehuby",
+      "source_city": "Caen",
+      "target_way_id": 155629527,
+      "target_name": "Monoprix",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "The two reference views show the same curved pale corner building, dark storefront band, red Monoprix lettering and red window panels from across the street. All three query views show that identical rounded storefront at close range, with the same red lettering, glazing, entrances and surrounding street context."
+    },
+    {
+      "episode_id": "DF02",
+      "producer_stratum": "Nzau",
+      "source_city": "Caen",
+      "target_way_id": 155635139,
+      "target_name": "Maison de Quartier Chemin Vert",
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "MODERATE",
+      "observation": "The two reference views show the same low curved grey-brick community building from across the access road. All three query views face the same recessed central entrance from the walkway; the curved facade, shuttered upper windows, flanking panels, trees, railings and entrance geometry remain consistent despite the large viewpoint change."
+    }
+  ],
+  "summary": {
+    "episodes_reviewed": 2,
+    "valid_positive_episodes": 2,
+    "invalid_or_uncertain_episodes": 0,
+    "producer_strata": 2,
+    "reference_frames_reviewed": 4,
+    "query_frames_reviewed": 6,
+    "pixel_driven_resamples": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-visible same-target truth for this frozen two-producer, target-way/item-disjoint, pixel- and OCR-unseen, same-provider Development panel.",
+    "not_allowed": "The review does not prove exact entity authority, sign-to-building association, facade ownership, portal ownership, access, traversability, waypoint quality, arrival, handoff, user benefit, provider-disjoint generalization, deployment performance, or safety."
+  }
+}

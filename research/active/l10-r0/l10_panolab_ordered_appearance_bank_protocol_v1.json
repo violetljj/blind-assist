@@ -1,0 +1,175 @@
+{
+  "schema": "blindassist-l10-panolab-ordered-appearance-bank-protocol-v1",
+  "name": "L10 PanoLab ordered entrance-ray appearance bank Development",
+  "status": "POSTHOC_CONSUMED_PIXELS_EVALUATOR_FROZEN_BEFORE_FIRST_APPEARANCE_BANK_MODEL_CALL",
+  "question": "On the three fresh active-view episodes for which an older target-linked reference bank already exists, does carrying the strongest fixed facade-fingerprint score across the verified start-to-after action edge improve top-1 target retrieval over the after frame alone without increasing wrong top-1 retrievals or emitting any portal-ownership binding?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_ordered_appearance_bank.py",
+    "sha256": "4ff6de3e314fe17157f8cf41cc9b622281708f99cb8f7cf7ed8b0d6e666e7298"
+  },
+  "inputs": {
+    "fresh_selection": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_selection_v2.json",
+      "sha256": "2878a8532324a98266b09e926e0e09031194499c5a2d8f5dd1e75ad9e2cd81f5",
+      "bytes": 162389
+    },
+    "fresh_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_track_lexical_fresh_materialization_v2.json",
+      "sha256": "43fe6abbdbbd27ac5b89698da4e45c0a51ed329b1f085168f436649da3d5ebd1",
+      "bytes": 4641
+    },
+    "reference_portal_source": {
+      "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "bytes": 140196
+    },
+    "node_credential_source": {
+      "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "bytes": 417017
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "source_authority": {
+    "mode": "POSTHOC_CONSUMED_DEVELOPMENT_MECHANISM_ONLY",
+    "fresh_panel": "The four-way and item-disjoint panel was frozen before download, but all eight query panoramas have since been opened by the frozen OCR replay and visually audited. This experiment is not fresh, blind, or confirmation evidence.",
+    "reference_bank": "References come from older Panoramax Development sources whose pixels and outcomes were already consumed. Exact query/reference item overlap is forbidden, but same-collection history is allowed and reported rather than called source-disjoint.",
+    "coverage": "Three of four fresh targets have an existing target-linked prior reference bank. Le Viviani is excluded only because no such prior reference exists; source availability is therefore 3/4 and is not a performance metric.",
+    "selection_provenance": "For every supported target, enumerate eligible strict entrance-ray references in the named prior source, forbid current query item IDs, then select the unused item nearest 5 metres and the unused item nearest 30 metres, tie by item ID. This metadata-only rule was fixed before the first CLIP/DINO call by this evaluator."
+  },
+  "target_roster": [
+    {
+      "episode_id": "FL01",
+      "target_way_id": 190020630,
+      "target_name": "Espace Village",
+      "references": [
+        {
+          "source": "reference_portal",
+          "item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+          "camera_to_entrance_distance_m": 39.083,
+          "selection_anchor_m": 5.0
+        },
+        {
+          "source": "reference_portal",
+          "item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+          "camera_to_entrance_distance_m": 39.624,
+          "selection_anchor_m": 30.0
+        }
+      ]
+    },
+    {
+      "episode_id": "FL03",
+      "target_way_id": 84327114,
+      "target_name": "Gare de Neuilly - Porte Maillot",
+      "references": [
+        {
+          "source": "node_credential",
+          "item_id": "960ce887-e0c7-48a5-b03c-f5770811a39b",
+          "camera_to_entrance_distance_m": 4.705,
+          "selection_anchor_m": 5.0
+        },
+        {
+          "source": "node_credential",
+          "item_id": "8731f6bb-1881-45b2-88e3-dd684c768401",
+          "camera_to_entrance_distance_m": 28.013,
+          "selection_anchor_m": 30.0
+        }
+      ]
+    },
+    {
+      "episode_id": "FL04",
+      "target_way_id": 43471848,
+      "target_name": "Église Notre-Dame de la Délivrande",
+      "references": [
+        {
+          "source": "node_credential",
+          "item_id": "e713c126-0aaf-4a06-ba0e-ec1eb51b742b",
+          "camera_to_entrance_distance_m": 4.109,
+          "selection_anchor_m": 5.0
+        },
+        {
+          "source": "node_credential",
+          "item_id": "545723dc-96fa-4373-bf3b-c3761e6a2402",
+          "camera_to_entrance_distance_m": 27.87,
+          "selection_anchor_m": 30.0
+        }
+      ]
+    }
+  ],
+  "models": {
+    "clip": {
+      "path": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "revision": "3d74acf9",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    },
+    "dinov2": {
+      "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "revision": "ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "patch_grid": 9
+    }
+  },
+  "observation_window": {
+    "anchor": "strict OSM entrance ray under the unchanged zero-pose Panoramax contract",
+    "horizontal_half_fov_degrees": 45.0,
+    "above_horizon_degrees": 45.0,
+    "below_horizon_degrees": 60.0,
+    "sampling": "native equirectangular pixels with horizontal seam wrap and no resampling"
+  },
+  "score": {
+    "single_frame": "For each candidate target: 0.35 * maximum CLIP reference cosine + 0.25 * maximum pooled DINOv2 reference cosine + 0.40 * maximum mutual-patch affine-consistency score.",
+    "weights": {
+      "clip": 0.35,
+      "dino": 0.25,
+      "mutual_patch_geometry": 0.4
+    },
+    "ordered_bank": "For each candidate target, retain max(single-frame score at start, single-frame score at after) across the verified start-to-after provider edge. Rank the three candidates once from those retained scores.",
+    "change_control": "Weights, models, patch grid and local-geometry formula are copied unchanged from named_poi_facade_fingerprint_protocol_v1. Only the query representation changes from after-only to the two-frame ordered bank. No threshold is calibrated and no model family is swept."
+  },
+  "execution": {
+    "batch_size": 4,
+    "backend_rule": "Use the existing project CPU/CUDA representative probe once, then keep its selected backend for all twelve crops.",
+    "overwrite": "Refuse an existing output or artifact root."
+  },
+  "gate": {
+    "minimum_ordered_bank_top1": "2/3",
+    "minimum_top1_gain_over_after_only": 1,
+    "wrong_top1_not_increased": true,
+    "maximum_portal_ownership_bindings": 0,
+    "stop_rule": "Run once. If the gate fails, do not tune weights, models, pooling, crop, reference choice or roster on this consumed cohort. Localize the next missing information source."
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_ORDERED_APPEARANCE_BANK_POSTHOC_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_ORDERED_APPEARANCE_BANK_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "research_basis": [
+    {
+      "title": "JIST: Joint Image and Sequence Training for Sequential Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2403.19787",
+      "official_code": "https://github.com/ga1i13o/JIST",
+      "use": "Motivates aggregating frame descriptors into a compact sequence representation. This deterministic two-frame max bank does not implement or claim equivalence to learned SeqGeM."
+    },
+    {
+      "title": "Learning Sequential Descriptors for Sequence-based Visual Place Recognition",
+      "paper": "https://arxiv.org/abs/2207.03868",
+      "official_code": "https://github.com/vandal-vpr/vg-transformers",
+      "use": "Motivates treating a frame sequence as a retrieval representation rather than repeatedly deciding from isolated images. This evaluator is a small mechanism probe, not an MSLS or Oxford benchmark comparison."
+    }
+  ],
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-track-appearance-bank-v1",
+  "output": "research/active/l10-r0/l10_panolab_ordered_appearance_bank_result_v1.json",
+  "claim_boundary": {
+    "allowed": "Post-hoc consumed Development mechanism evidence on three Panoramax active-view episodes about whether a fixed entrance-ray appearance score benefits from carrying the best candidate evidence across one verified action edge.",
+    "not_allowed": [
+      "fresh, blind, source-provider-disjoint, or broad generalization evidence",
+      "appearance retrieval being exact-instance, address, sign, facade, portal, or entrance ownership",
+      "pixel portal grounding or an appearance candidate authorizing the OSM entrance ray",
+      "entrance affordance, public or legal access, walkability, or collision-free traversability",
+      "waypoint accuracy, metric localization, arrival, HANDOFF_READY, product benefit, user benefit, deployment performance, or safety"
+    ]
+  }
+}

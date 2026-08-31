@@ -1,0 +1,95 @@
+{
+  "schema": "blindassist-l10-panolab-temporal-query-router-protocol-v1",
+  "name": "L10 PanoLab reciprocal three-frame top-two appearance router",
+  "status": "FROZEN_AFTER_NEIGHBOR_HUMAN_TRUTH_BEFORE_NEIGHBOR_MODEL_CALL",
+  "authority": "CONSUMED_POSTHOC_MECHANISM_DEVELOPMENT",
+  "question": "Does a fixed top-two-of-three query score recover the frozen occlusion failure while preserving zero wrong-target candidates under the unchanged accept gate?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_temporal_query_router.py",
+    "sha256": "4d182dd6fc54f0c19db9adcafbd2221533d6869d100131b2079c5082387ede48",
+    "bytes": 15581
+  },
+  "inputs": {
+    "base_component_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_component_router_protocol_v1.json",
+      "sha256": "c3243c550638244ea6c05c5b098952620bb427c427eb788dd18238ba6da91efa",
+      "bytes": 10557
+    },
+    "single_frame_result": {
+      "path": "research/active/l10-r0/l10_panolab_cross_collection_positive_router_result_v1.json",
+      "sha256": "db5103503a07c79e300b97e7ec7b00d5b3361743eb2639874717236926df04bd",
+      "bytes": 39715
+    },
+    "temporal_selection": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_selection_v1.json",
+      "sha256": "a799a99613f9ef71d9a1d78b95a43ab09435ff5b8aa95496b530dc4e6c0ed801",
+      "bytes": 97697
+    },
+    "temporal_materialization": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_materialization_v1.json",
+      "sha256": "70a3a37716080429b8a6431eaa539ed50fae11bc8b949f2c1ec1ab127f109d62",
+      "bytes": 4496
+    },
+    "temporal_truth": {
+      "path": "research/active/l10-r0/l10_panolab_temporal_query_truth_v1.json",
+      "sha256": "90d58aab718f12ad4f0721dc52a40e16268f3998e9baab28dedd50d94e2ec77b",
+      "bytes": 3184
+    },
+    "orientation_projection_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    }
+  },
+  "target_roster": [
+    "FL01",
+    "FL02",
+    "FL03",
+    "FL04",
+    "FP01",
+    "FP02"
+  ],
+  "evaluated_episodes": [
+    "FP01",
+    "FP02"
+  ],
+  "aggregation": {
+    "sequence": "Exact reciprocal prev, consumed anchor, exact reciprocal next.",
+    "per_frame": "Unchanged strict entrance-ray crop and 0.35 CLIP + 0.25 DINOv2 + 0.40 mutual-patch-geometry target score against the unchanged two-reference bank.",
+    "per_target_sequence_score": "Arithmetic mean of the highest two of the three per-frame target scores; deterministic ties by relation name.",
+    "reason": "Require two supporting observations while discarding one worst occluded frame. This is the only structural hypothesis; no sweep or learned sequence head."
+  },
+  "accept_contract": {
+    "minimum_top1_score": 0.6617196786403656,
+    "minimum_top1_margin": 0.03464120683215921,
+    "source": "Unchanged minima frozen from the original four consumed positives before both open-set and cross-collection panels.",
+    "rule": "Emit SEARCH_PRIORITY_ONLY candidate only when the sequence aggregate has unique top-1 and meets both score and margin thresholds; otherwise UNKNOWN_KEEP_SEARCHING.",
+    "no_adaptation": "No frame, crop, reference, feature weight, sequence length, top-two aggregation, threshold, or roster may change after either temporal result is observed."
+  },
+  "gate": {
+    "required": [
+      "two valid reciprocal three-frame query sequences",
+      "six total query frames",
+      "2/2 temporal candidates correct",
+      "at least +1 correct over the frozen single-frame 1/2 baseline",
+      "0 temporal wrong candidates",
+      "0 wrong-target candidates across 10 counterfactual wrong-goal trials",
+      "0 portal-ownership bindings"
+    ]
+  },
+  "output_root": "artifacts.local/evidence/l10-r0/panolab-temporal-query-router-v1",
+  "output": "research/active/l10-r0/l10_panolab_temporal_query_router_result_v1.json",
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_RECIPROCAL_TEMPORAL_QUERY_ROUTER_POSTHOC_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_RECIPROCAL_TEMPORAL_QUERY_ROUTER_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "claim_boundary": {
+    "allowed": "Consumed posthoc Development evidence for or against a fixed reciprocal three-frame, top-two-mean query aggregation mechanism on exactly FP01 and FP02 in the six-target same-provider closed roster.",
+    "not_allowed": [
+      "fresh, blind, or independent confirmation",
+      "trained sequential descriptor performance or attribution to SeqNet, SeqVLAD, or JIST",
+      "provider-disjoint, city-disjoint, open-world, conformal, FDR-controlled, or deployment generalization",
+      "exact physical identity authority, pixel portal grounding, entrance ownership, access, traversability, waypoint, arrival, handoff, user benefit, or safety"
+    ]
+  }
+}

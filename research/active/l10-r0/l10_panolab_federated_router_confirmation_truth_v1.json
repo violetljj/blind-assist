@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist-l10-panolab-federated-router-confirmation-human-truth-v1",
+  "status": "FROZEN_AFTER_PIXEL_REVIEW_BEFORE_ROUTER_CALL",
+  "reviewed_at_local": "2026-08-31T08:29:27+08:00",
+  "reviewer": "Codex visual review",
+  "router_calls_on_selected_images_before_truth_freeze": 0,
+  "inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_source_protocol_v1.json",
+      "sha256": "582f3df4219ca3e4c171657c6ddca78e83599ebd6055f0f9920e012dd0c36152",
+      "bytes": 4927
+    },
+    "selection": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_selection_v1.json",
+      "sha256": "7cb2ae7b6badf32e5676fb1edea29178e741ea4be7c5eb679482d81dff8b69b5",
+      "bytes": 191679
+    },
+    "materialization": {
+      "path": "research/active/l10-r0/l10_panolab_federated_router_confirmation_materialization_v1.json",
+      "sha256": "b521986bddda64902dc173edaf7f76671543cd4b73629e946ffae504df485e2d",
+      "bytes": 7699
+    }
+  },
+  "review_method": {
+    "entrance_windows": "All ten strict entrance-ray windows were reviewed at their original 1440x1680 crop size: two cross-collection references and reciprocal prev/anchor/next query frames per episode.",
+    "allowed_evidence": "Downloaded pixels, frozen OSM target-way/main-entrance geometry, frozen item pose metadata, and deterministic entrance-ray projection only.",
+    "forbidden_evidence": "No OCR, CLIP, DINOv2, patch matcher, score, rank, threshold decision, or other learned-router output was viewed before this truth file was frozen."
+  },
+  "episodes": [
+    {
+      "episode_id": "CF01",
+      "source_city": "Caen",
+      "target_way_id": 155636324,
+      "target_name": "Euromaster",
+      "reference_collection": "bd32bf27-b19f-436d-a0e7-27a21b043485",
+      "query_collection": "c318aa73-0704-47fa-8594-66d16aced957",
+      "reference_query_collection_disjoint": true,
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "Both references and all three query frames show the same Euromaster service-building facade. The large EUROMASTER wordmark, blue structural bays, green revision band, garage doors, and adjacent parked vehicles provide continuous target evidence across the two collections."
+    },
+    {
+      "episode_id": "CF02",
+      "source_city": "Caen",
+      "target_way_id": 155700593,
+      "target_name": "Bibliotheque de Caen - Maladrerie",
+      "reference_collection": "8ac2e9ec-2a24-4261-83d3-1cb2c2c524df",
+      "query_collection": "ef41ce72-aa0c-418e-9ac7-8a92a9c78ebc",
+      "reference_query_collection_disjoint": true,
+      "human_truth": "VISIBLE_SAME_TARGET_BUILDING",
+      "valid_for_fixed_replay": true,
+      "confidence": "HIGH",
+      "observation": "Both references and all three query frames show the same Maladrerie library frontage. The curved beige facade, recessed glazed entrance, eye-shaped wall emblem, orange-and-white Bibliotheque Maladrerie sign, windows, and forecourt vegetation remain continuously identifiable."
+    }
+  ],
+  "summary": {
+    "episodes_reviewed": 2,
+    "valid_positive_episodes": 2,
+    "invalid_or_uncertain_episodes": 0,
+    "reference_frames_reviewed": 4,
+    "query_frames_reviewed": 6,
+    "resampled_after_pixel_review": 0
+  },
+  "claim_boundary": {
+    "allowed": "Human-visible same-target positive truth for this frozen two-episode, new-city, target-way/item-disjoint, same-provider cross-collection panel.",
+    "not_allowed": "The review does not prove portal ownership, access, traversability, waypoint quality, arrival, handoff, user benefit, provider-disjoint generalization, fully pixel-unseen generalization, deployment performance, or safety."
+  }
+}

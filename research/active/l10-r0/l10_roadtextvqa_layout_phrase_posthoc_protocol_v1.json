@@ -1,0 +1,111 @@
+{
+  "schema": "blindassist-l10-roadtextvqa-layout-phrase-verifier-protocol-v1",
+  "name": "Same-line compact phrase branch on the consumed third RoadTextVQA panel",
+  "status": "FROZEN_POSTHOC_AFTER_OBSERVING_THE_GOAL_CONDITIONED_UNKNOWN_ROWS_BEFORE_THIS_SINGLE_REPLAY",
+  "authority": "CONSUMED_POSTHOC_DEVELOPMENT_MECHANISM_ONLY_REQUIRES_ANOTHER_FRESH_OCR_UNSEEN_CONFIRMATION",
+  "question": "Can one box-layout branch recover split multi-token target names without changing the sealed background-IDF token branch?",
+  "observed_before_freeze": [
+    "The sealed goal-conditioned result retained eleven UNKNOWN rows.",
+    "Several have split or punctuated aliases, including red ribbon run, u-haul, t seva, high end, and one east river place.",
+    "The official OCR JSON retains quadrilateral word boxes that the token-only verifier did not use."
+  ],
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_roadtextvqa_layout_phrase_verifier.py",
+    "sha256": "e87d4f7b2756e71f95ceac7c24a50d6f031c2c6c17c0dea336dfc65e90a7de35",
+    "bytes": 11082
+  },
+  "inputs": {
+    "validation_annotations": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/val.json",
+      "sha256": "b9b69246cd773e22648acde7499113fe20b8832d6e7a8dd10faadc3d6819043f",
+      "bytes": 180371
+    },
+    "official_ocr_archive": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/ocr.zip",
+      "sha256": "38cefbca417c3970c1571e76c6516aee50a542050e094e3295d366936cfe1e95",
+      "bytes": 131119904
+    },
+    "training_token_df": {
+      "path": "artifacts.local/datasets/l10-roadtextvqa-ocr-v1/train_token_df_v1.json",
+      "sha256": "50596a531f524c1c272d9f72c07faea1f6886e8f060b557c9968b41fc4d6d345",
+      "bytes": 695535
+    },
+    "sealed_goal_conditioned_result": {
+      "path": "research/active/l10-r0/l10_roadtextvqa_goal_conditioned_idf_verifier_result_v1.json",
+      "sha256": "aba065110339c355f62c963e4ccd25192475a870b112cd740ef6cc43028178bf",
+      "bytes": 68268
+    }
+  },
+  "selected_question_ids": [
+    5746,
+    7030,
+    6764,
+    4755,
+    3853,
+    5701,
+    6310,
+    5567,
+    6763,
+    6589,
+    6076,
+    7304,
+    225,
+    5288,
+    6745,
+    5852,
+    6504,
+    4477,
+    5099,
+    332,
+    3432,
+    2477,
+    3199,
+    3565,
+    3389,
+    3608,
+    2508,
+    1897,
+    2171,
+    3558
+  ],
+  "idf_contract": {
+    "ignored_name_tokens": ["a", "an", "and", "d", "de", "du", "l", "la", "le", "les", "of", "the"],
+    "minimum_token_length": 4,
+    "short_exact_maximum_length": 5,
+    "long_maximum_edit_distance": 1,
+    "minimum_information_bits": 8.0
+  },
+  "layout_phrase_contract": {
+    "minimum_vertical_overlap_ratio": 0.5,
+    "maximum_overlap_height_ratio": 0.25,
+    "maximum_gap_height_ratio": 3.0,
+    "maximum_group_tokens": 4,
+    "short_compact_exact_maximum_length": 5,
+    "maximum_compact_edit_distance": 1,
+    "minimum_information_bits": 8.0,
+    "rule": "Within one sampled frame, concatenate two to four normalized OCR tokens only when their boxes form a left-to-right chain with at least 50% vertical overlap and no gap greater than three times local text height. Compare to the complete compact alias; length at most five is exact-only and longer aliases permit one edit."
+  },
+  "synthetic_negative_contract": {
+    "count": 30,
+    "salt": "blindassist-l10-roadtextvqa-layout-posthoc-negative-v1"
+  },
+  "gate": {
+    "minimum_additional_correct": 2,
+    "maximum_synthetic_negative_accepts": 0,
+    "candidate_always_equals_conditioned_goal": true,
+    "identity_or_portal_bindings": 0
+  },
+  "decision_names": {
+    "gate_met": "L10_ROADTEXTVQA_CONSUMED_LAYOUT_PHRASE_MECHANISM_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_ROADTEXTVQA_CONSUMED_LAYOUT_PHRASE_MECHANISM_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "execution_rule": "Run exactly once on the consumed panel. Do not tune layout thresholds or alias matching after observing the result; any authority increase requires a separate fresh OCR-unseen panel.",
+  "claim_boundary": {
+    "allowed": "Consumed posthoc mechanism evidence for using OCR box layout to rejoin split target-name phrases.",
+    "not_allowed": [
+      "fresh, blind, independent, provider-disjoint, target-absent specificity, open-world, conformal, FDR-controlled, deployment, benefit, reliability, or safety confirmation",
+      "a same-line phrase proving sign-to-entity, facade, portal, or entrance ownership",
+      "access, traversability, waypoint, arrival, or handoff"
+    ]
+  }
+}
