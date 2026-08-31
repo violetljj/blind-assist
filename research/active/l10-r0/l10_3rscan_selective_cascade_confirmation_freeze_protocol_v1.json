@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist-l10-3rscan-selective-cascade-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-selective-cascade-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T09:31:00+08:00",
+  "question": "Can one never-consumed target from a new scan family plus two fixed cross-scene query controls test the frozen 0.25 direct-exit cascade without opening RGB or models during source selection?",
+  "implementation": {
+    "path": "l10_3rscan_selective_cascade_confirmation_freeze.py",
+    "sha256": "47c25519663d2d216fc755f3de722c267bf0b18d2158b16fabd97d17a6a46302"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "l10_3rscan_registered_extent_ceiling.py", "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"}
+  ],
+  "source": {
+    "authority": "ONE_FRESH_PHYSICAL_TARGET_SCAN_FAMILY_TWO_FIXED_CROSS_SCENE_QUERY_CONTROLS",
+    "artifact_root": "artifacts.local",
+    "candidate_protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "candidate_protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+    "negative_control_cohort_path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+    "negative_control_cohort_sha256": "4a2ee76b236e1aa0c0b2ae10dde653711ac2da7c086e646ebca9fb9d3f1caca9",
+    "files": [
+      {"path": "datasets/3rscan/3RScan.json", "bytes": 3155995, "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"},
+      {"path": "datasets/3rscan/objects.json", "bytes": 20096813, "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"},
+      {"path": "datasets/3rscan/1c211546-f201-2d25-862b-6323518ec6e1/semseg.v2.json", "bytes": 39834, "sha256": "9fe8e515d54a4197b588b56418f16aa29bb60231e47f7e8128edb8a8ce47b694"},
+      {"path": "datasets/3rscan/1c211546-f201-2d25-862b-6323518ec6e1/labels.instances.annotated.v2.ply", "bytes": 6616611, "sha256": "c886beb4be2b0bf69bdc665239f630aa7f4d14a4a56ab87870030cc364596e38"},
+      {"path": "datasets/3rscan/1c211546-f201-2d25-862b-6323518ec6e1/sequence.zip", "bytes": 39273631, "sha256": "671a3195bdac7b8af3e582b0ac8177ded1501c269855788fd20a1b1e98c274fc"},
+      {"path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/semseg.v2.json", "bytes": 34752, "sha256": "7b49f243d166b7bf86289fee19f9f4530bb54273d7d48c3cb3221c7430fe9a45"},
+      {"path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/labels.instances.annotated.v2.ply", "bytes": 4380887, "sha256": "a4e6e1e5cd6976258c95864bec901ec91e5641fe04eea4ae225640ad0351825b"},
+      {"path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/sequence.zip", "bytes": 24179764, "sha256": "1c4cadf13b37b34c4ff42652de5f8b5ca34944d5091d3d4bd0a96491217eef29"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "physical_target_exclusions": [
+    {"path": "l10_3rscan_bounded_reference_mask_cohort_v1.json", "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"},
+    {"path": "l10_3rscan_reference_pixel_field_cohort_v1.json", "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"},
+    {"path": "l10_3rscan_registered_extent_cohort_v1.json", "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"},
+    {"path": "l10_3rscan_spatial_reference_mask_cohort_v1.json", "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"},
+    {"path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json", "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"},
+    {"path": "l10_3rscan_dual_surface_confirmation_cohort_v1.json", "sha256": "a99eb59bcf2959e1bbc3b3aaddaa7a7c8cf4f285a3eee5b6f554657989501198"},
+    {"path": "l10_3rscan_four_surface_confirmation_cohort_v1.json", "sha256": "9aa5addeabea11e7bda7765b20b99fc7f6e44cea0c3fa300f1cc63600a66bd3d"},
+    {"path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json", "sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1"},
+    {"path": "l10_3rscan_complementary_confirmation_cohort_v1.json", "sha256": "4a2ee76b236e1aa0c0b2ae10dde653711ac2da7c086e646ebca9fb9d3f1caca9"}
+  ],
+  "selection": {
+    "fresh_target": {"episode_id": "SC34", "reference_scan_id": "1c211546-f201-2d25-862b-6323518ec6e1", "rescan_id": "1c211548-f201-2d25-8686-8e8069116451", "target_instance_id": 34},
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "FC31"},
+      {"episode_id": "NC08", "source_episode_id": "FC08"}
+    ],
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "ranking": "Fix the only never-consumed downloaded scan-family-disjoint candidate with strict reference/query evaluability after geometry-only admission. Reuse the frozen FC31/FC08 pixels only as cross-scene queries for the new SC34 referent; do not use their labels or earlier decisions."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_SC34_SC34", "reference_episode": "SC34", "query_episode": "SC34", "label": "target_present"},
+      {"id": "N_SC34_NC31", "reference_episode": "SC34", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_SC34_NC08", "reference_episode": "SC34", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "The two queries come from a different physical 3RScan reference scan family and cannot contain the exact SC34 physical target."
+  },
+  "forbidden_after_freeze": [
+    "open RGB or call a model before the cohort is written",
+    "change target 34, its strict frame rule, either fixed query control or pair after observing output",
+    "reuse FC31/FC08 decisions, target identities or model receipts in the new SC34 decision",
+    "claim one fresh positive with reused negative-query pixels is full confirmation"
+  ],
+  "claim_boundary": "This pre-RGB/model-blind panel contributes one never-consumed physical target from a scan family not used by the coherent-cycle mechanism and two new cross-scene target-absent pairings whose query pixels were consumed for different targets. It is a narrow scan-family challenge, not provider independence, arbitrary sibling rejection, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety evidence."
+}

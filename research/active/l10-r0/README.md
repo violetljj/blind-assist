@@ -44,7 +44,11 @@ Status: `ACTIVE`
   requests complementary corroboration only for ambiguity. Across both consumed
   panels it reached `5/5` positives, `0/3` false commits, precision `1.0`, and
   requested the extra branch for only `1/8` rows. Its post-observation `0.25`
-  direct-exit point is Development only and is frozen for a fresh-source test.
+  direct-exit point is Development only. On a frozen never-consumed SC34 target
+  from a new scan family, cycles were strong (`0.443/0.981`) and both new
+  cross-scene negatives had zero cycles, but the extent gate rejected a stable
+  wrong-structure binding at IoU `0.065`. Robust projective transport raised IoU
+  only to `0.082`; geometry fitting is frozen as the wrong repair layer.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -3970,6 +3974,35 @@ provider correspondence still does not establish raw-camera initial binding,
 named entrance, ownership, access, traversability, waypoint, arrival, handoff,
 deployment, user benefit, reliability, or safety.
 
+The first frozen cascade challenge then selected never-consumed target SC34
+from `1c211546 -> 1c211548`, a scan family not used by the coherent-cycle
+mechanism. Both reference and query target geometry were fully in-frame before
+RGB/model access; two new negative pairings reused FC31/FC08 query pixels only
+as different-scene controls for the new SC34 referent. SC34 produced strong
+identity-cycle statistics (`0.442978` opportunity and `0.981006` component
+dominance), while both negatives produced zero cycles. It nevertheless failed
+the unchanged local commit because affine extent IoU was `0.065238`; the prompt
+and SAM query mask locked a different repeated structure. The extent gate was
+therefore decision-critical and correctly blocked the frozen `0.25` direct
+exit. Record
+`L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_SCAN_FAMILY_CHALLENGE_GATE_NOT_MET`.
+
+One consumed posthoc geometry intervention replaced only the affine fit with an
+OpenCV USAC-MAGSAC homography over the same largest coherent-cycle component.
+It reused the frozen six-pixel cycle-error scale as its sole reprojection scale,
+required majority inliers, and performed no threshold sweep. The fit itself was
+strong (`0.942384` inliers, `1.452 px` mean and `5.997 px` maximum inlier
+residual), but target extent IoU improved only `0.065238 -> 0.081832`. Record
+`L10_3RSCAN_PROJECTIVE_EXTENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET` and freeze both
+affine and projective geometry as insufficient for this repeated-structure
+failure. Following that attribution, the official downloader added the
+`422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
+The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
+candidates, so no model calls were spent on that family. The next admissible
+change is observation reachability or an independent instance-bearing cue, not
+another geometric estimator, local threshold, or reinterpretation of strong
+cycles as identity truth.
+
 Evidence:
 
 - partial physical-target confirmation implementation/protocol/result SHA-256:
@@ -3980,6 +4013,23 @@ Evidence:
   `57f07210286a61af35a0f657fa6a1a7b152d1bfb833472ee5ea45842849882aa`,
   `4205875135bc8fdf847c76d9831f26f217f286750422422743557ce247897e0c`,
   and `9c835d51daaafaf6b7eb4517bec255a42b914305e6dde3119302916b512ecc31`;
+- SC34 freeze implementation/protocol/cohort SHA-256:
+  `47c25519663d2d216fc755f3de722c267bf0b18d2158b16fabd97d17a6a46302`,
+  `c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a`,
+  and `2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8`;
+- SC34 local-carrier protocol and selective confirmation
+  implementation/protocol/result SHA-256:
+  `41a26f2a4a7bf41920dc30d735630c30d60437df67144e927a4d423ee5c95eda`,
+  `84015b72db646ded6158cd38203b4a80dd94bafd500e22bbc9ffe1eed17c41e4`,
+  `f832f13ba63e8e1ff0088f04424525b266e44bf3b9cac8011c0787b35643d7b2`,
+  and `304d770640f55e5031fa2120223494887838f54bf89430e758207a3af3ffbb30`;
+- projective-extent implementation/protocol/result SHA-256:
+  `9f8c7b90c7852d7bff01f101894bcafd3917f15c2372d66face6161676235358`,
+  `264becf3d7badfb91e71f3998c7fc7cfb92e961c9ef59ac27f8b0ffa29b3e0f2`,
+  and `a96a03c0274c3fd952c131a9bdcf978c0a617bf6b5e5ea9e45b4bc36651634f3`;
+- added official 3RScan `422885e5/422885e7` sequence SHA-256:
+  `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
+  and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;
 - SceneNN transfer result:
   `l10_scenenn_center_target_door_retrieval_result_v1.json`, SHA-256
   `5850b222eec2b1fbd870706ea8580dc973f871c718546771eab6ebeb1e48e282`;

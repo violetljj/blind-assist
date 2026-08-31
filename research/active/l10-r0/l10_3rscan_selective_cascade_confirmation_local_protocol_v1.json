@@ -1,0 +1,93 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-selective-cascade-confirmation-local-protocol-v1",
+  "frozen_at": "2026-09-01T09:36:00+08:00",
+  "question": "What unchanged local coherent-cycle receipts does the frozen SC34 scan-family challenge produce before the selective direct-exit adjudication?",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+    "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py", "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py", "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"},
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_selective_corroboration_cascade_posthoc_result_v1.json",
+    "result_sha256": "9c835d51daaafaf6b7eb4517bec255a42b914305e6dde3119302916b512ecc31",
+    "required_conclusion": "L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Replace all eight consumed rows with one frozen never-consumed SC34 positive and two new SC34-to-cross-scene query pairings. Keep models, surfaces, frames after freeze, local cycle thresholds and extent gate unchanged."
+  },
+  "source": {
+    "authority": "FROZEN_ONE_FRESH_TARGET_SCAN_FAMILY_CHALLENGE",
+    "source_protocol_path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json",
+    "source_protocol_sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a",
+    "cohort_path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "cohort_sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/1c211546-f201-2d25-862b-6323518ec6e1/sequence.zip", "bytes": 39273631, "sha256": "671a3195bdac7b8af3e582b0ac8177ded1501c269855788fd20a1b1e98c274fc"},
+      {"path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/sequence.zip", "bytes": 24179764, "sha256": "1c4cadf13b37b34c4ff42652de5f8b5ca34944d5091d3d4bd0a96491217eef29"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "models": {
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_DEVELOPMENT_ONLY",
+    "support_surface": "Native reference SAM2 mask.",
+    "extent_surface": "Provider reference bbox.",
+    "query_truth_isolation": "Positive query bbox opens only after transport; negative decisions receive no exact-target query truth."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Unchanged full-frame symmetric RoMa, bilateral 0.05 certainty, in-bounds target, 0.013888888888888888 round-trip error, largest 8-connected reference cycle component, ordinary affine fit and bound-extent transport.",
+    "component_tie_break": "Maximum area then lowest label; no fallback.",
+    "mask": "One native reference and query SAM2 identity-support mask; no selection, morphology or retry.",
+    "query_extent": "Transported bbox; query SAM mask is support only."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Frozen cycle opportunity plus dominant-component majority; global purity remains diagnostic only."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_SC34_SC34", "reference_episode": "SC34", "query_episode": "SC34", "label": "target_present"},
+      {"id": "N_SC34_NC31", "reference_episode": "SC34", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_SC34_NC08", "reference_episode": "SC34", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "A different physical 3RScan reference scan family cannot contain exact target SC34. Reused pixels carry no reused decision or target identity."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 1,
+    "required_target_absent_pairs": 2,
+    "minimum_positive_commits": 1,
+    "maximum_target_absent_false_commits": 0,
+    "minimum_reference_cycle_fraction": 0.01,
+    "minimum_dominant_component_cycle_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5
+  },
+  "forbidden_after_freeze": [
+    "change a model, surface, pair, frame, cycle, component, affine fit or local gate",
+    "use negative outcomes or positive query truth to tune the frozen 0.25 cascade threshold",
+    "reuse any FC31/FC08 prior decision or model receipt",
+    "retry, replace or remove a failed SC34 pair"
+  ],
+  "claim_boundary": "This inner local carrier evaluates one never-consumed physical target from a scan family not used by the coherent-cycle mechanism and two new exact-target-absent pairings with reused cross-scene query pixels. It is not the final cascade adjudication, full confirmation, provider independence, arbitrary sibling rejection, raw-camera binding, entrance, ownership, access, waypoint, arrival, handoff, deployment, benefit, reliability or safety evidence."
+}

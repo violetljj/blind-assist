@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist-l10-3rscan-projective-extent-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-projective-extent-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:52:00+08:00",
+  "question": "Can one robust planar homography fitted to the unchanged SC34 coherent-cycle component repair the failed affine extent transport without changing identity support or either negative decision?",
+  "implementation": {
+    "path": "l10_3rscan_projective_extent_posthoc.py",
+    "sha256": "9f8c7b90c7852d7bff01f101894bcafd3917f15c2372d66face6161676235358"
+  },
+  "predecessor": {
+    "result_path": "l10_3rscan_selective_cascade_confirmation_result_v1.json",
+    "result_sha256": "304d770640f55e5031fa2120223494887838f54bf89430e758207a3af3ffbb30",
+    "required_conclusion": "L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_SCAN_FAMILY_CHALLENGE_GATE_NOT_MET",
+    "failure_attribution": "SC34 retained 0.442978 primary cycle opportunity and 0.981006 dominant-component support, while both cross-scene negatives had zero cycles. The affine transported extent reached only 0.065238 target bbox IoU."
+  },
+  "local_carrier_protocol_path": "l10_3rscan_selective_cascade_confirmation_local_protocol_v1.json",
+  "local_carrier_protocol_sha256": "41a26f2a4a7bf41920dc30d735630c30d60437df67144e927a4d423ee5c95eda",
+  "projective_model": {
+    "family": "OpenCV USAC_MAGSAC homography",
+    "input": "All unchanged correspondences in the largest 8-connected coherent-cycle component.",
+    "reprojection_threshold_pixels": 6.0,
+    "threshold_origin": "Reuse the frozen six-pixel maximum cycle-error scale as the single MAGSAC reprojection scale; no numeric sweep.",
+    "rng_seed": 0,
+    "max_iterations": 10000,
+    "confidence": 0.999,
+    "extent": "Project the four corners of the already-bound reference extent through the homography; query truth remains evaluation-only."
+  },
+  "literature_motivation": {
+    "roma": "https://openaccess.thecvf.com/content/CVPR2024/papers/Edstedt_RoMa_Robust_Dense_Feature_Matching_CVPR_2024_paper.pdf",
+    "magsac_plus_plus": "https://openaccess.thecvf.com/content_CVPR_2020/html/Barath_MAGSAC_a_Fast_Reliable_and_Accurate_Robust_Estimator_CVPR_2020_paper.html",
+    "used_principle": "RoMa supplies robust dense correspondences under viewpoint change; MAGSAC++ robustly estimates homographies from contaminated correspondences. A planar projective model can express perspective that an affine envelope cannot."
+  },
+  "evaluation": {
+    "positive_pair_id": "P_SC34_SC34",
+    "negative_decisions": "Inherit the two zero-cycle non-commits unchanged from the predecessor; do not rerun or reinterpret them."
+  },
+  "decision_gate": {
+    "minimum_reference_cycle_fraction": 0.01,
+    "minimum_dominant_component_cycle_fraction": 0.5,
+    "minimum_direct_local_cycle_fraction": 0.25,
+    "minimum_projective_inlier_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5,
+    "maximum_target_absent_false_commits": 0
+  },
+  "forbidden_after_freeze": [
+    "change the model family, six-pixel scale, majority, cycle, direct-exit or extent threshold",
+    "crop, rectify, add query truth, select correspondences by target IoU or retry another estimator",
+    "change either inherited negative decision",
+    "claim a consumed one-positive mechanism repair is fresh confirmation"
+  ],
+  "claim_boundary": "This is one consumed SC34 posthoc Development intervention that changes only affine extent extrapolation to a robust projective homography. A pass can show mechanism plausibility on this failure and no more. It remains same-provider, privileged-reference, desktop-model evidence and does not establish arbitrary repeated-door identity, raw-camera initial binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

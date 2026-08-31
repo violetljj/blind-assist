@@ -1,0 +1,513 @@
+{
+  "schema": "blindassist-l10-3rscan-selective-cascade-confirmation-cohort-v1",
+  "authority": "FROZEN_PRE_RGB_MODEL_ONE_FRESH_TARGET_TWO_CONSUMED_CROSS_SCENE_QUERY_CONTROLS",
+  "protocol_path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json",
+  "protocol_sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a",
+  "implementation": {
+    "path": "l10_3rscan_selective_cascade_confirmation_freeze.py",
+    "sha256": "47c25519663d2d216fc755f3de722c267bf0b18d2158b16fabd97d17a6a46302"
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "selection": {
+    "fresh_target": {
+      "episode_id": "SC34",
+      "reference_scan_id": "1c211546-f201-2d25-862b-6323518ec6e1",
+      "rescan_id": "1c211548-f201-2d25-8686-8e8069116451",
+      "target_instance_id": 34
+    },
+    "negative_query_controls": [
+      {
+        "episode_id": "NC31",
+        "source_episode_id": "FC31"
+      },
+      {
+        "episode_id": "NC08",
+        "source_episode_id": "FC08"
+      }
+    ],
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "ranking": "Fix the only never-consumed downloaded scan-family-disjoint candidate with strict reference/query evaluability after geometry-only admission. Reuse the frozen FC31/FC08 pixels only as cross-scene queries for the new SC34 referent; do not use their labels or earlier decisions.",
+    "opened_members": {
+      "pose_members": 373,
+      "depth_members": 373,
+      "rgb_members": 0,
+      "model_calls": 0
+    },
+    "excluded_physical_targets": 21
+  },
+  "source_manifest": {
+    "1c211546-f201-2d25-862b-6323518ec6e1/sequence.zip": {
+      "path": "datasets/3rscan/1c211546-f201-2d25-862b-6323518ec6e1/sequence.zip",
+      "bytes": 39273631,
+      "sha256": "671a3195bdac7b8af3e582b0ac8177ded1501c269855788fd20a1b1e98c274fc"
+    },
+    "1c211548-f201-2d25-8686-8e8069116451/sequence.zip": {
+      "path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/sequence.zip",
+      "bytes": 24179764,
+      "sha256": "1c4cadf13b37b34c4ff42652de5f8b5ca34944d5091d3d4bd0a96491217eef29"
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+      "bytes": 46320073,
+      "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+    },
+    "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {
+      "path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip",
+      "bytes": 35895970,
+      "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "SC34",
+      "reference_scan_id": "1c211546-f201-2d25-862b-6323518ec6e1",
+      "rescan_id": "1c211548-f201-2d25-8686-8e8069116451",
+      "target_instance_id": 34,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        4,
+        34
+      ],
+      "area_proxy": 0.6475403071705476,
+      "transform": [
+        0.8598228693008423,
+        0.5105608105659485,
+        -0.005687396042048931,
+        0,
+        -0.5105924010276794,
+        0.8597747087478638,
+        -0.00909557193517685,
+        0,
+        0.0002460367977619171,
+        0.010724522173404694,
+        0.999942421913147,
+        0,
+        -0.47389814257621765,
+        1.1736514568328857,
+        0.018843594938516617,
+        1
+      ],
+      "reference": {
+        "frame": 221,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 519,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 47088.83770640078,
+        "image_margin_pixels": 108.11997985839844,
+        "bbox_xyxy": [
+          140.0350799560547,
+          108.11997985839844,
+          473.9436950683594,
+          271.78387451171875
+        ],
+        "depth_compared_vertices": 277,
+        "depth_visible_vertices": 142,
+        "depth_visible_ratio": 0.5126353790613718
+      },
+      "query": {
+        "frame": 39,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 386,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 19025.322973514907,
+        "image_margin_pixels": 3.1590576171875,
+        "bbox_xyxy": [
+          342.58160400390625,
+          491.1477966308594,
+          904.083740234375,
+          535.8409423828125
+        ],
+        "depth_compared_vertices": 351,
+        "depth_visible_vertices": 346,
+        "depth_visible_ratio": 0.9857549857549858
+      },
+      "active_query": null
+    },
+    {
+      "episode_id": "NC31",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.5432129035527118,
+      "transform": [
+        0.5583429336547852,
+        -0.8295769095420837,
+        -0.007440741639584303,
+        0,
+        0.8296099901199341,
+        0.5583280920982361,
+        0.004140521865338087,
+        0,
+        0.0007194934878498316,
+        -0.00848474446684122,
+        0.9999637603759766,
+        0,
+        -2.031255006790161,
+        -0.06366236507892609,
+        0.02755604311823845,
+        1
+      ],
+      "reference": {
+        "frame": 63,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 300,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 79990.05468282162,
+        "image_margin_pixels": 64.67919921875,
+        "bbox_xyxy": [
+          255.63841247558594,
+          114.4618911743164,
+          894.32080078125,
+          263.9335021972656
+        ],
+        "depth_compared_vertices": 297,
+        "depth_visible_vertices": 262,
+        "depth_visible_ratio": 0.8821548821548821
+      },
+      "query": {
+        "frame": 86,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 422,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 98896.05696893705,
+        "image_margin_pixels": 69.98004150390625,
+        "bbox_xyxy": [
+          111.62455749511719,
+          298.135986328125,
+          827.8693237304688,
+          469.01995849609375
+        ],
+        "depth_compared_vertices": 421,
+        "depth_visible_vertices": 367,
+        "depth_visible_ratio": 0.8717339667458432
+      },
+      "active_query_required": true,
+      "active_query": {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.7488844890524906,
+        "frame_gap": 28,
+        "inside_vertices": 422,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 49225.55588568747,
+        "image_margin_pixels": 26.3939208984375,
+        "bbox_xyxy": [
+          159.91644287109375,
+          400.9040832519531,
+          761.8023681640625,
+          512.6060791015625
+        ],
+        "depth_compared_vertices": 403,
+        "depth_visible_vertices": 256,
+        "depth_visible_ratio": 0.6352357320099256,
+        "foreign_target_instance_id": 30,
+        "foreign_target_inside_vertices": 0,
+        "zip_member": "frame-000058.color.jpg"
+      },
+      "negative_query_control_provenance": {
+        "cohort_path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+        "source_episode_id": "FC31",
+        "pixels_consumed_for_another_target": true
+      }
+    },
+    {
+      "episode_id": "NC08",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.4619358948681807,
+      "transform": [
+        0.5583429336547852,
+        -0.8295769095420837,
+        -0.007440741639584303,
+        0,
+        0.8296099901199341,
+        0.5583280920982361,
+        0.004140521865338087,
+        0,
+        0.0007194934878498316,
+        -0.00848474446684122,
+        0.9999637603759766,
+        0,
+        -2.031255006790161,
+        -0.06366236507892609,
+        0.02755604311823845,
+        1
+      ],
+      "reference": {
+        "frame": 63,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 629,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 72736.10033485247,
+        "image_margin_pixels": 97.495361328125,
+        "bbox_xyxy": [
+          261.27227783203125,
+          140.80148315429688,
+          861.504638671875,
+          277.3447570800781
+        ],
+        "depth_compared_vertices": 626,
+        "depth_visible_vertices": 450,
+        "depth_visible_ratio": 0.7188498402555911
+      },
+      "query": {
+        "frame": 82,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 959,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 62400.48323796131,
+        "image_margin_pixels": 90.1259765625,
+        "bbox_xyxy": [
+          275.2812194824219,
+          131.8151397705078,
+          868.8740234375,
+          271.384521484375
+        ],
+        "depth_compared_vertices": 954,
+        "depth_visible_vertices": 706,
+        "depth_visible_ratio": 0.740041928721174
+      },
+      "active_query_required": true,
+      "active_query": {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.6741453177864843,
+        "frame_gap": 24,
+        "inside_vertices": 959,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 46984.49483769515,
+        "image_margin_pixels": 20.12969970703125,
+        "bbox_xyxy": [
+          120.80289459228516,
+          416.5552062988281,
+          756.4935913085938,
+          518.8703002929688
+        ],
+        "depth_compared_vertices": 944,
+        "depth_visible_vertices": 266,
+        "depth_visible_ratio": 0.2817796610169492,
+        "foreign_target_instance_id": null,
+        "foreign_target_inside_vertices": null,
+        "zip_member": "frame-000058.color.jpg"
+      },
+      "negative_query_control_provenance": {
+        "cohort_path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+        "source_episode_id": "FC08",
+        "pixels_consumed_for_another_target": true
+      }
+    }
+  ],
+  "images": {
+    "SC34_reference": {
+      "episode_id": "SC34",
+      "role": "reference",
+      "scan_id": "1c211546-f201-2d25-862b-6323518ec6e1",
+      "target_instance_id": 34,
+      "target_label": "doorframe",
+      "frame": 221,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        140.0350799560547,
+        108.11997985839844,
+        473.9436950683594,
+        271.78387451171875
+      ],
+      "zip_member": "frame-000221.color.jpg"
+    },
+    "SC34_query": {
+      "episode_id": "SC34",
+      "role": "query",
+      "scan_id": "1c211548-f201-2d25-8686-8e8069116451",
+      "target_instance_id": 34,
+      "target_label": "doorframe",
+      "frame": 39,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        342.58160400390625,
+        491.1477966308594,
+        904.083740234375,
+        535.8409423828125
+      ],
+      "zip_member": "frame-000039.color.jpg"
+    },
+    "NC31_reference": {
+      "episode_id": "NC31",
+      "role": "reference",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "frame": 63,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        255.63841247558594,
+        114.4618911743164,
+        894.32080078125,
+        263.9335021972656
+      ],
+      "image_margin_pixels": 64.67919921875,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8821548821548821,
+      "zip_member": "frame-000063.color.jpg"
+    },
+    "NC31_query": {
+      "episode_id": "NC31",
+      "role": "query",
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "frame": 86,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        111.62455749511719,
+        298.135986328125,
+        827.8693237304688,
+        469.01995849609375
+      ],
+      "image_margin_pixels": 69.98004150390625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8717339667458432,
+      "zip_member": "frame-000086.color.jpg"
+    },
+    "NC08_reference": {
+      "episode_id": "NC08",
+      "role": "reference",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 63,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        261.27227783203125,
+        140.80148315429688,
+        861.504638671875,
+        277.3447570800781
+      ],
+      "image_margin_pixels": 97.495361328125,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.7188498402555911,
+      "zip_member": "frame-000063.color.jpg"
+    },
+    "NC08_query": {
+      "episode_id": "NC08",
+      "role": "query",
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 82,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        275.2812194824219,
+        131.8151397705078,
+        868.8740234375,
+        271.384521484375
+      ],
+      "image_margin_pixels": 90.1259765625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.740041928721174,
+      "zip_member": "frame-000082.color.jpg"
+    }
+  },
+  "evaluation": {
+    "pairs": [
+      {
+        "id": "P_SC34_SC34",
+        "reference_episode": "SC34",
+        "query_episode": "SC34",
+        "label": "target_present"
+      },
+      {
+        "id": "N_SC34_NC31",
+        "reference_episode": "SC34",
+        "query_episode": "NC31",
+        "label": "target_absent"
+      },
+      {
+        "id": "N_SC34_NC08",
+        "reference_episode": "SC34",
+        "query_episode": "NC08",
+        "label": "target_absent"
+      }
+    ],
+    "negative_authority": "The two queries come from a different physical 3RScan reference scan family and cannot contain the exact SC34 physical target."
+  },
+  "claim_boundary": "This pre-RGB/model-blind panel contributes one never-consumed physical target from a scan family not used by the coherent-cycle mechanism and two new cross-scene target-absent pairings whose query pixels were consumed for different targets. It is a narrow scan-family challenge, not provider independence, arbitrary sibling rejection, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety evidence."
+}

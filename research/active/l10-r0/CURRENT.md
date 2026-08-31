@@ -170,7 +170,24 @@ contract.
   `L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_POSTHOC_DEVELOPMENT_GATE_MET`.
   The `0.25` point was selected after seeing the failed confirmation, without a
   sweep, so this is Development only; freeze it and require another pre-model
-  source before any confirmation or efficiency claim. Correspondence still
+  source before any confirmation or efficiency claim.
+
+  That next source froze never-consumed target SC34 from a scan family not used
+  by the coherent-cycle mechanism plus two new cross-scene pairings. SC34 had
+  strong local cycle evidence (`0.442978` opportunity, `0.981006` component
+  dominance) and both negatives had zero cycles, but affine extent IoU was only
+  `0.065238`; the existing extent gate correctly prevented a false target
+  commit. One Exa-motivated USAC-MAGSAC homography used the same component,
+  inherited `6 px` scale, and no sweep. Despite `0.942384` inliers and `1.452 px`
+  mean inlier residual, extent IoU reached only `0.081832`. Record both
+  `L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_SCAN_FAMILY_CHALLENGE_GATE_NOT_MET`
+  and `L10_3RSCAN_PROJECTIVE_EXTENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET`. The stable
+  cycles bind the wrong repeated structure; stop changing geometric fit family.
+  Two official `422885` sequence archives were then added to local assets, but
+  the unchanged strict source selector admitted `0/7` candidate targets before
+  RGB/model access. The next mechanism needs better observation reachability or
+  an independent exact-instance cue, not another correspondence threshold.
+  Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
