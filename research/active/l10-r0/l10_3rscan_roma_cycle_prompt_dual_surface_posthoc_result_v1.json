@@ -1,0 +1,642 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-dual-surface-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_DUAL_SURFACE_REFERENCE_CONDITIONED_MULTI_DOOR_PROPOSAL_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_protocol_v1.json",
+  "protocol_sha256": "6229bebf245622a9e10e50f4df1dfa6fed3c66ff87f8ded7033e7a41a72f5b31",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py",
+    "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+  },
+  "conclusion": "L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "prompt_boxes": 3,
+    "sam_masks": 3,
+    "minimum_prompt_target_bbox_iou": 0.6373993154283342,
+    "minimum_sam_target_bbox_iou": 0.5821580436650404,
+    "true_pairs_with_absolute_support": 3,
+    "required_true_pairs": 3
+  },
+  "prompt_receipts": {
+    "DR01": {
+      "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+      "support_mask_sha256": "64a6514ffbc0732899da836d81069a6786335351427e501a610acfb103443583",
+      "support_mask_pixels_at_match_resolution": 29498,
+      "extent_mask_pixels_at_match_resolution": 96040,
+      "high_certainty_pixels": 28282,
+      "all_cycle_pixels": 20492,
+      "all_cycle_fraction": 0.6946911655027459,
+      "all_cycle_purity": 0.7245597906795842,
+      "component": {
+        "component_count": 4,
+        "selected_label": 1,
+        "selected_pixels": 20486
+      },
+      "selected_component_fraction_of_support": 0.6944877618821615,
+      "selected_component_fraction_of_cycles": 0.999707202810853,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.008905825146743084,
+      "affine_max_residual_normalized": 0.04222606574535019,
+      "projected_bound_extent_corners_normalized": [
+        [
+          -0.6451636877736739,
+          -0.47498474253281076
+        ],
+        [
+          0.6472059089502666,
+          -0.39860884716008094
+        ],
+        [
+          0.5559287220872879,
+          0.5139655482904286
+        ],
+        [
+          -0.7364408746366529,
+          0.43758965291769875
+        ]
+      ],
+      "prompt_box_xyxy": [
+        126.50838017440662,
+        141.7541195161411,
+        790.658836296128,
+        408.77069803841573
+      ],
+      "target_bbox_iou_evaluation_only": 0.6373993154283342,
+      "target_bbox_recall_evaluation_only": 0.8999549655037966,
+      "prompt_bbox_precision_evaluation_only": 0.6860082006025788
+    },
+    "DR02": {
+      "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+      "support_mask_sha256": "3039c93578a188ec391160b374e230d7c272aea945d35b8e4caee04d61aaf3d9",
+      "support_mask_pixels_at_match_resolution": 42720,
+      "extent_mask_pixels_at_match_resolution": 83160,
+      "high_certainty_pixels": 38551,
+      "all_cycle_pixels": 32857,
+      "all_cycle_fraction": 0.769124531835206,
+      "all_cycle_purity": 0.8522995512438069,
+      "component": {
+        "component_count": 23,
+        "selected_label": 3,
+        "selected_pixels": 32584
+      },
+      "selected_component_fraction_of_support": 0.7627340823970038,
+      "selected_component_fraction_of_cycles": 0.9916912682229053,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.012565980907306536,
+      "affine_max_residual_normalized": 0.055306073144763705,
+      "projected_bound_extent_corners_normalized": [
+        [
+          -0.7035776184817413,
+          0.05167451190443767
+        ],
+        [
+          0.5685503262548217,
+          0.1219230246317431
+        ],
+        [
+          0.5948939204663064,
+          0.8310623613980253
+        ],
+        [
+          -0.6772340242702566,
+          0.7608138486707199
+        ]
+      ],
+      "prompt_box_xyxy": [
+        142.2827431287642,
+        283.9521182141982,
+        765.5490818238271,
+        494.3868375774668
+      ],
+      "target_bbox_iou_evaluation_only": 0.7573020241713796,
+      "target_bbox_recall_evaluation_only": 0.9556592593177328,
+      "prompt_bbox_precision_evaluation_only": 0.7848806492644214
+    },
+    "DR03": {
+      "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+      "support_mask_sha256": "6ddbe99a3e1dc91b4bd40abf745ea2a6af369d265b8e5166dbf4cf6a2ecffe76",
+      "support_mask_pixels_at_match_resolution": 87460,
+      "extent_mask_pixels_at_match_resolution": 120992,
+      "high_certainty_pixels": 70627,
+      "all_cycle_pixels": 56261,
+      "all_cycle_fraction": 0.6432769265950149,
+      "all_cycle_purity": 0.7965933708071984,
+      "component": {
+        "component_count": 4,
+        "selected_label": 1,
+        "selected_pixels": 56193
+      },
+      "selected_component_fraction_of_support": 0.6424994283100847,
+      "selected_component_fraction_of_cycles": 0.9987913474698281,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.0009734979990314953,
+      "affine_max_residual_normalized": 0.005108929407246739,
+      "projected_bound_extent_corners_normalized": [
+        [
+          -0.5742765983445222,
+          -0.8740306137499608
+        ],
+        [
+          0.37339876223859675,
+          -0.932110203543922
+        ],
+        [
+          0.37940292054714325,
+          -0.21462366284504653
+        ],
+        [
+          -0.5682724400359755,
+          -0.1565440730510853
+        ]
+      ],
+      "prompt_box_xyxy": [
+        204.34723279462935,
+        18.330245043141048,
+        662.1134018626287,
+        227.73310027620695
+      ],
+      "target_bbox_iou_evaluation_only": 0.8369747377148635,
+      "target_bbox_recall_evaluation_only": 0.9633552379236805,
+      "prompt_bbox_precision_evaluation_only": 0.8644981228835344
+    }
+  },
+  "proposal_receipts": {
+    "DR01": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "80fdb40f4821f326ae6ebe03c67fd48be5fdb5bfc03a3131ef49704783a8db74",
+      "mask_pixels": 132290,
+      "mask_bbox_xyxy": [
+        128.0,
+        137.0,
+        785.0,
+        387.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.5821580436650404,
+      "target_bbox_recall_evaluation_only": 0.8150297734227401,
+      "proposal_bbox_precision_evaluation_only": 0.6707818879045495,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.10700530000030994
+      }
+    },
+    "DR02": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "2cf56fe4f96aa1c4555b010078a78f46d93998075c7c3cd37a5902513fdc3b21",
+      "mask_pixels": 70141,
+      "mask_bbox_xyxy": [
+        143.0,
+        287.0,
+        771.0,
+        481.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.7096292201034984,
+      "target_bbox_recall_evaluation_only": 0.8845386277732408,
+      "proposal_bbox_precision_evaluation_only": 0.7820725572588058,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.0979257000144571
+      }
+    },
+    "DR03": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "e0604bcc4bba7d8b93cf20f2e5e024ab0d081ba2044d268dbea2e0a333386266",
+      "mask_pixels": 66655,
+      "mask_bbox_xyxy": [
+        193.0,
+        38.0,
+        644.0,
+        227.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.908957011877414,
+      "target_bbox_recall_evaluation_only": 0.947979505970666,
+      "proposal_bbox_precision_evaluation_only": 0.956675135100616,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09665099997073412
+      }
+    }
+  },
+  "pair_support": {
+    "DR01": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.3232525885105133,
+        "source_mask_count": 29498,
+        "high_count": 28282,
+        "high_fraction": 0.9587768662282189,
+        "target_mask_hit_count": 25657,
+        "target_mask_hit_fraction": 0.8697877822225235,
+        "cycle_count": 17941,
+        "cycle_fraction": 0.6082107261509255,
+        "cycle_purity": 0.634361077717276
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.056511539965867996,
+        "source_mask_count": 190462,
+        "high_count": 45160,
+        "high_fraction": 0.23710766452100682,
+        "target_mask_hit_count": 41796,
+        "target_mask_hit_fraction": 0.21944534867847654,
+        "cycle_count": 41568,
+        "cycle_fraction": 0.21824825949533241,
+        "cycle_purity": 0.9204605845881311
+      },
+      "absolute_support": true
+    },
+    "DR02": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.27971452474594116,
+        "source_mask_count": 42720,
+        "high_count": 38551,
+        "high_fraction": 0.9024110486891386,
+        "target_mask_hit_count": 37111,
+        "target_mask_hit_fraction": 0.8687031835205993,
+        "cycle_count": 31420,
+        "cycle_fraction": 0.7354868913857678,
+        "cycle_purity": 0.8150242535861586
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.23834434151649475,
+        "source_mask_count": 100851,
+        "high_count": 82970,
+        "high_fraction": 0.8226988329317508,
+        "target_mask_hit_count": 68553,
+        "target_mask_hit_fraction": 0.6797453669274475,
+        "cycle_count": 66068,
+        "cycle_fraction": 0.6551050559736641,
+        "cycle_purity": 0.7962878148728456
+      },
+      "absolute_support": true
+    },
+    "DR03": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.16761581599712372,
+        "source_mask_count": 87460,
+        "high_count": 70627,
+        "high_fraction": 0.8075348730848387,
+        "target_mask_hit_count": 70024,
+        "target_mask_hit_fraction": 0.8006402927052367,
+        "cycle_count": 55658,
+        "cycle_fraction": 0.6363823462154128,
+        "cycle_purity": 0.7880555594885809
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.1342480331659317,
+        "source_mask_count": 95934,
+        "high_count": 64550,
+        "high_fraction": 0.6728584234994892,
+        "target_mask_hit_count": 60610,
+        "target_mask_hit_fraction": 0.6317885212750433,
+        "cycle_count": 58960,
+        "cycle_fraction": 0.614589196739425,
+        "cycle_purity": 0.9134004647560031
+      },
+      "absolute_support": true
+    }
+  },
+  "input_receipts": {
+    "DR01:reference": {
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "frame": 136,
+      "zip_member": "frame-000136.color.jpg",
+      "image_sha256": "32930e5c8d5b4ef67b1fca887f33850592fd736b9b300017c1004d1534cc6080",
+      "image_bytes": 79080,
+      "target_bbox_xyxy_evaluation_only": [
+        303.9808349609375,
+        160.3547821044922,
+        683.517822265625,
+        334.9356994628906
+      ]
+    },
+    "DR01:query": {
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "frame": 41,
+      "zip_member": "frame-000041.color.jpg",
+      "image_sha256": "50292f7cb9ad4a41cb8d1a54dce19fa41dccadc1d1da7d9980416fc3ed08b127",
+      "image_bytes": 88010,
+      "target_bbox_xyxy_evaluation_only": [
+        325.6840515136719,
+        147.1304168701172,
+        838.6398315429688,
+        410.6623840332031
+      ]
+    },
+    "DR02:reference": {
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "frame": 401,
+      "zip_member": "frame-000401.color.jpg",
+      "image_sha256": "fd5dd3fedecfd1e0c327bb4210e6ab7a09fd51041f88086e41a1894ff2ca6867",
+      "image_bytes": 121396,
+      "target_bbox_xyxy_evaluation_only": [
+        121.91268157958984,
+        346.1199951171875,
+        547.9120483398438,
+        480.12603759765625
+      ]
+    },
+    "DR02:query": {
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "frame": 171,
+      "zip_member": "frame-000171.color.jpg",
+      "image_sha256": "994244418e12f1655feb470b785e865f5574f1cab97531d41584138194ec2418",
+      "image_bytes": 95074,
+      "target_bbox_xyxy_evaluation_only": [
+        191.3870391845703,
+        314.5057678222656,
+        763.6679077148438,
+        502.73297119140625
+      ]
+    },
+    "DR03:reference": {
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "frame": 213,
+      "zip_member": "frame-000213.color.jpg",
+      "image_sha256": "3fea8cbafa443a0fc31d160d8c85be078b1b16eab5c7c0cdee70c299ea46dd7f",
+      "image_bytes": 97273,
+      "target_bbox_xyxy_evaluation_only": [
+        193.2668914794922,
+        37.35551071166992,
+        634.7501831054688,
+        226.70501708984375
+      ]
+    },
+    "DR03:query": {
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "frame": 174,
+      "zip_member": "frame-000174.color.jpg",
+      "image_sha256": "f8afbf6d6b2e3a948fb41cb8ae431396e409babcfc0436cdfdc9736f4f644289",
+      "image_bytes": 96330,
+      "target_bbox_xyxy_evaluation_only": [
+        204.04428100585938,
+        41.64945602416992,
+        649.6774291992188,
+        234.68016052246094
+      ]
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 3,
+    "sam2_calls": 6,
+    "grounding_dino_calls": 0,
+    "reference_masker_device": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "claim_boundary": "A pass is consumed posthoc Development evidence that separating a native reference appearance-support mask from its already-bound geometric extent enables target-conditioned localization and bilateral correspondence support across three provider-distinct multi-door pairs without category text or query truth. Both initial surfaces remain privileged, query frames and truth are consumed, only three targets and two scan families are tested, and desktop GPU models are used. It is not initial raw-camera discovery, open-world absence authority, fresh/provider-independent confirmation, named entrance, ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety.",
+  "reference_proposal_receipts": {
+    "DR01": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "64a6514ffbc0732899da836d81069a6786335351427e501a610acfb103443583",
+      "mask_pixels": 20455,
+      "mask_bbox_xyxy": [
+        302.0,
+        153.0,
+        690.0,
+        225.0
+      ],
+      "binding_bbox_iou": 0.3522109864378341,
+      "binding_bbox_recall": 0.3702879952383179,
+      "reference_mask_bbox_precision": 0.8782664391364585,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 1.0161776000168175
+      }
+    },
+    "DR02": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "3039c93578a188ec391160b374e230d7c272aea945d35b8e4caee04d61aaf3d9",
+      "mask_pixels": 29662,
+      "mask_bbox_xyxy": [
+        125.0,
+        349.0,
+        537.0,
+        478.0
+      ],
+      "binding_bbox_iou": 0.9310083823467024,
+      "binding_bbox_recall": 0.9310083823467024,
+      "reference_mask_bbox_precision": 1.0,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09400049998657778
+      }
+    },
+    "DR03": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "6ddbe99a3e1dc91b4bd40abf745ea2a6af369d265b8e5166dbf4cf6a2ecffe76",
+      "mask_pixels": 60718,
+      "mask_bbox_xyxy": [
+        192.0,
+        46.0,
+        619.0,
+        224.0
+      ],
+      "binding_bbox_iou": 0.9040844390316014,
+      "binding_bbox_recall": 0.9065233163945449,
+      "reference_mask_bbox_precision": 0.9970330410316343,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09084180003264919
+      }
+    }
+  }
+}

@@ -3843,6 +3843,41 @@ does not validate BlindAssist or this implementation:
 [Predictive Cycle Consistency](https://openaccess.thecvf.com/content/CVPR2025/html/Baade_Self-Supervised_Cross-View_Correspondence_with_Predictive_Cycle_Consistency_CVPR_2025_paper.html),
 and [MESA/DMESA](https://arxiv.org/html/2408.00279).
 
+The first frozen reference-conditioned implementation rasterized the privileged
+initial reference bbox, kept the largest eight-connected set of high-certainty
+bidirectional RoMa cycles, fitted one ordinary least-squares affine map, and
+projected the reference extent into the query as the sole SAM2 box. Query truth
+opened only for evaluation. All three doors were localized: prompt IoU was
+`0.638-0.838` and native query-mask bbox IoU was `0.584-0.916`. The full gate
+remained unmet at `2/3` bilateral supports because DR01 forward cycle purity was
+`0.494961`, just below the unchanged `0.5` gate. No threshold was changed.
+
+One structural ablation replaced the full reference rectangle with one native
+SAM2 reference mask. That restored absolute support to `3/3` and raised DR01
+forward purity to `0.690015`, but the same mask covered only `0.352211` IoU of
+the bound DR01 rectangle, reducing minimum prompt IoU to `0.309975` and query-
+mask bbox IoU to `0.487915`. This showed that semantic identity support and
+complete object extent were different responsibilities.
+
+The frozen dual-surface successor therefore used the native reference SAM2 mask
+only to select correspondence support and score bilateral cycles, while the
+original already-bound rectangle supplied only the four complete extent corners
+projected by the same affine map. It passed every frozen gate: prompt IoU
+`0.637-0.837`, query-mask bbox IoU `0.582-0.909`, and unchanged bilateral
+absolute support `3/3`. DR01 forward purity was `0.634361`; no model, certainty,
+cycle, component, SAM postprocess, frame, target, or gate changed. Record
+`L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET` and
+retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`.
+
+This is a substantive multi-door target-selection mechanism result, but only on
+three consumed physical targets and two scan families with a privileged initial
+reference bbox. It does not establish raw-camera initial referent discovery,
+open-world absence authority, named entrance, ownership, public access,
+traversability, waypoint, arrival, `HANDOFF_READY`, Android deployment, user
+benefit, reliability, or safety. The next claim-changing step is unchanged
+physically target-disjoint confirmation; raw-camera initial binding remains a
+separate problem.
+
 Evidence:
 
 - SceneNN transfer result:
@@ -3865,6 +3900,18 @@ Evidence:
   `e25c707d22a8b2b1a297bc79defebb3ae790ed8a05e47a9a0d6d4fa3d77cabae`,
   `b1bd1aa1dfcea82850cc0e5141ce01e4007104ecaea29667036a055bc6eb78e7`,
   and `db07154fa30bc1904b87a723adbd8e91a957039662068ae7f7b88cd4e4f0a0c2`;
+- 3RScan rectangle cycle-prompt implementation/protocol/result SHA-256:
+  `a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af`,
+  `22e766bd744341b70f66572ad00ffd053a0125c4307aefc2e9d91255ec33b1d0`,
+  and `daeb7185189bf8de8eb318acd62ff3ae9d7fb6f78f8edeb98b2d7bb5deeeb1ac`;
+- 3RScan reference-SAM-mask implementation/protocol/result SHA-256:
+  `9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0`,
+  `8f40345fde9206bb236d0a0ea90639019dbc63017f08976e4100e4da538ff1e3`,
+  and `52641980e558d8a028777021919dc438d169e27719a30a2082902644b811e5f8`;
+- 3RScan dual-surface implementation/protocol/result SHA-256:
+  `c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841`,
+  `6229bebf245622a9e10e50f4df1dfa6fed3c66ff87f8ded7033e7a41a72f5b31`,
+  and `a85344095cc4dc5789ec4bba18055fd24075ed644a2a827589857508a131e740`;
 - open-roster appearance protocol/cohort/result/evaluator SHA-256:
   `7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf`,
   `4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0`,

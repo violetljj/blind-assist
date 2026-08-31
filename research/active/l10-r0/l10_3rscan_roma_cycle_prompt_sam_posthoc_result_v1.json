@@ -1,0 +1,480 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-sam-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_REFERENCE_CONDITIONED_MULTI_DOOR_PROPOSAL_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_roma_cycle_prompt_sam_posthoc_protocol_v1.json",
+  "protocol_sha256": "22e766bd744341b70f66572ad00ffd053a0125c4307aefc2e9d91255ec33b1d0",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py",
+    "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+  },
+  "conclusion": "L10_3RSCAN_ROMA_CYCLE_PROMPT_SAM_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "prompt_boxes": 3,
+    "sam_masks": 3,
+    "minimum_prompt_target_bbox_iou": 0.6381873767579661,
+    "minimum_sam_target_bbox_iou": 0.5837001488776138,
+    "true_pairs_with_absolute_support": 2,
+    "required_true_pairs": 3
+  },
+  "prompt_receipts": {
+    "DR01": {
+      "selection_authority": "REFERENCE_BBOX_ONLY_TO_LARGEST_8_CONNECTED_BIDIRECTIONAL_CYCLE_COMPONENT",
+      "source_mask_pixels_at_match_resolution": 96040,
+      "high_certainty_pixels": 37013,
+      "all_cycle_pixels": 23164,
+      "all_cycle_fraction": 0.2411911703456893,
+      "all_cycle_purity": 0.6258341663739767,
+      "component": {
+        "component_count": 3,
+        "selected_label": 1,
+        "selected_pixels": 23157
+      },
+      "selected_component_fraction_of_source": 0.2411182840483132,
+      "selected_component_fraction_of_cycles": 0.9996978069418062,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.00880185594198795,
+      "affine_max_residual_normalized": 0.052307436602055654,
+      "projected_reference_corners_normalized": [
+        [
+          -0.6474588852953976,
+          -0.4753351016456321
+        ],
+        [
+          0.6455383302026764,
+          -0.39603184924424506
+        ],
+        [
+          0.5638821543977088,
+          0.5117574614136313
+        ],
+        [
+          -0.7291150611003652,
+          0.4324542090122443
+        ]
+      ],
+      "prompt_box_xyxy": [
+        130.0247706718247,
+        141.65952255567933,
+        789.8583984972847,
+        408.17451458168046
+      ],
+      "target_bbox_iou_evaluation_only": 0.6381873767579661,
+      "target_bbox_recall_evaluation_only": 0.8963585832464722,
+      "prompt_bbox_precision_evaluation_only": 0.6890312577159711
+    },
+    "DR02": {
+      "selection_authority": "REFERENCE_BBOX_ONLY_TO_LARGEST_8_CONNECTED_BIDIRECTIONAL_CYCLE_COMPONENT",
+      "source_mask_pixels_at_match_resolution": 83160,
+      "high_certainty_pixels": 76795,
+      "all_cycle_pixels": 69309,
+      "all_cycle_fraction": 0.8334415584415584,
+      "all_cycle_purity": 0.9025196952926623,
+      "component": {
+        "component_count": 7,
+        "selected_label": 1,
+        "selected_pixels": 69241
+      },
+      "selected_component_fraction_of_source": 0.8326238576238576,
+      "selected_component_fraction_of_cycles": 0.9990188864361049,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.015610968993646257,
+      "affine_max_residual_normalized": 0.08971032034463691,
+      "projected_reference_corners_normalized": [
+        [
+          -0.7096989811024177,
+          0.05217340857091152
+        ],
+        [
+          0.581216787857519,
+          0.11564233348856245
+        ],
+        [
+          0.6101953877763557,
+          0.8288074615371226
+        ],
+        [
+          -0.6807203811835809,
+          0.7653385366194718
+        ]
+      ],
+      "prompt_box_xyxy": [
+        139.3444890708395,
+        284.0868203141461,
+        772.8937861326508,
+        493.7780146150231
+      ],
+      "target_bbox_iou_evaluation_only": 0.7435729611449899,
+      "target_bbox_recall_evaluation_only": 0.9524247483036701,
+      "prompt_bbox_precision_evaluation_only": 0.7722566956581116
+    },
+    "DR03": {
+      "selection_authority": "REFERENCE_BBOX_ONLY_TO_LARGEST_8_CONNECTED_BIDIRECTIONAL_CYCLE_COMPONENT",
+      "source_mask_pixels_at_match_resolution": 120992,
+      "high_certainty_pixels": 102788,
+      "all_cycle_pixels": 88234,
+      "all_cycle_fraction": 0.729254826765406,
+      "all_cycle_purity": 0.8584075962174573,
+      "component": {
+        "component_count": 5,
+        "selected_label": 1,
+        "selected_pixels": 88097
+      },
+      "selected_component_fraction_of_source": 0.7281225204972229,
+      "selected_component_fraction_of_cycles": 0.9984473105605549,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.003131578793163968,
+      "affine_max_residual_normalized": 0.018804613791085126,
+      "projected_reference_corners_normalized": [
+        [
+          -0.5754842663257536,
+          -0.8790640094092507
+        ],
+        [
+          0.3757263710270108,
+          -0.9317844248073879
+        ],
+        [
+          0.3820431590076416,
+          -0.2064849720704704
+        ],
+        [
+          -0.5691674783451228,
+          -0.1537645566723332
+        ]
+      ],
+      "prompt_box_xyxy": [
+        203.7675521636383,
+        18.418205302005273,
+        663.380716323668,
+        228.48356969847003
+      ],
+      "target_bbox_iou_evaluation_only": 0.8383777627494421,
+      "target_bbox_recall_evaluation_only": 0.9678984188546762,
+      "prompt_bbox_precision_evaluation_only": 0.8623563254370199
+    }
+  },
+  "proposal_receipts": {
+    "DR01": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "5caa637f7e193afb715339a240933114e05f0e00f3058a48d16a5e80a5d29b27",
+      "mask_pixels": 131729,
+      "mask_bbox_xyxy": [
+        130.0,
+        137.0,
+        785.0,
+        387.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.5837001488776138,
+      "target_bbox_recall_evaluation_only": 0.8150297734227401,
+      "proposal_bbox_precision_evaluation_only": 0.6728300768752504,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.26032539998413995
+      }
+    },
+    "DR02": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "b55585e81264b6509e1dad4bbc01d3e19d58426653c6cabe9fd09ee0760c6a22",
+      "mask_pixels": 70808,
+      "mask_bbox_xyxy": [
+        143.0,
+        287.0,
+        771.0,
+        480.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.7056598699922306,
+      "target_bbox_recall_evaluation_only": 0.8792258994210118,
+      "proposal_bbox_precision_evaluation_only": 0.7814031131598342,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09882610000204295
+      }
+    },
+    "DR03": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+      "mask_sha256": "906b81f2c119a2ac5fc54074c1c9d77fa9dd8dfb4a48c4895a1c0954bab6b27f",
+      "mask_pixels": 67310,
+      "mask_bbox_xyxy": [
+        192.0,
+        38.0,
+        651.0,
+        227.0
+      ],
+      "target_bbox_iou_evaluation_only": 0.9159932262217468,
+      "target_bbox_recall_evaluation_only": 0.9602127519431556,
+      "proposal_bbox_precision_evaluation_only": 0.9521313463971696,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09674469998572022
+      }
+    }
+  },
+  "pair_support": {
+    "DR01": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.12246425449848175,
+        "source_mask_count": 96040,
+        "high_count": 37013,
+        "high_fraction": 0.3853915035401916,
+        "target_mask_hit_count": 31855,
+        "target_mask_hit_fraction": 0.3316847147022074,
+        "cycle_count": 18320,
+        "cycle_fraction": 0.19075385256143274,
+        "cycle_purity": 0.494961229838165
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.056311264634132385,
+        "source_mask_count": 189690,
+        "high_count": 44958,
+        "high_fraction": 0.23700774948600348,
+        "target_mask_hit_count": 42820,
+        "target_mask_hit_fraction": 0.22573672834624914,
+        "cycle_count": 42635,
+        "cycle_fraction": 0.22476145289683166,
+        "cycle_purity": 0.9483295520263357
+      },
+      "absolute_support": false
+    },
+    "DR02": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.4068177044391632,
+        "source_mask_count": 83160,
+        "high_count": 76795,
+        "high_fraction": 0.9234607984607984,
+        "target_mask_hit_count": 44862,
+        "target_mask_hit_fraction": 0.5394660894660894,
+        "cycle_count": 38782,
+        "cycle_fraction": 0.46635401635401635,
+        "cycle_purity": 0.505006836382577
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.23938915133476257,
+        "source_mask_count": 101782,
+        "high_count": 83884,
+        "high_fraction": 0.8241535831482973,
+        "target_mask_hit_count": 83854,
+        "target_mask_hit_fraction": 0.8238588355504902,
+        "cycle_count": 81350,
+        "cycle_fraction": 0.7992572360535262,
+        "cycle_purity": 0.9697916169948977
+      },
+      "absolute_support": true
+    },
+    "DR03": {
+      "a_to_b": {
+        "mean_certainty_on_source_mask": 0.2254963517189026,
+        "source_mask_count": 120992,
+        "high_count": 102788,
+        "high_fraction": 0.849543771489024,
+        "target_mask_hit_count": 74054,
+        "target_mask_hit_fraction": 0.612056995503835,
+        "cycle_count": 59688,
+        "cycle_fraction": 0.4933218725204972,
+        "cycle_purity": 0.5806903529594895
+      },
+      "b_to_a": {
+        "mean_certainty_on_source_mask": 0.1379215270280838,
+        "source_mask_count": 96889,
+        "high_count": 65505,
+        "high_fraction": 0.6760829402718574,
+        "target_mask_hit_count": 65093,
+        "target_mask_hit_fraction": 0.6718306515703537,
+        "cycle_count": 63443,
+        "cycle_fraction": 0.654800854586176,
+        "cycle_purity": 0.9685214869093962
+      },
+      "absolute_support": true
+    }
+  },
+  "input_receipts": {
+    "DR01:reference": {
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "frame": 136,
+      "zip_member": "frame-000136.color.jpg",
+      "image_sha256": "32930e5c8d5b4ef67b1fca887f33850592fd736b9b300017c1004d1534cc6080",
+      "image_bytes": 79080,
+      "target_bbox_xyxy_evaluation_only": [
+        303.9808349609375,
+        160.3547821044922,
+        683.517822265625,
+        334.9356994628906
+      ]
+    },
+    "DR01:query": {
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "frame": 41,
+      "zip_member": "frame-000041.color.jpg",
+      "image_sha256": "50292f7cb9ad4a41cb8d1a54dce19fa41dccadc1d1da7d9980416fc3ed08b127",
+      "image_bytes": 88010,
+      "target_bbox_xyxy_evaluation_only": [
+        325.6840515136719,
+        147.1304168701172,
+        838.6398315429688,
+        410.6623840332031
+      ]
+    },
+    "DR02:reference": {
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "frame": 401,
+      "zip_member": "frame-000401.color.jpg",
+      "image_sha256": "fd5dd3fedecfd1e0c327bb4210e6ab7a09fd51041f88086e41a1894ff2ca6867",
+      "image_bytes": 121396,
+      "target_bbox_xyxy_evaluation_only": [
+        121.91268157958984,
+        346.1199951171875,
+        547.9120483398438,
+        480.12603759765625
+      ]
+    },
+    "DR02:query": {
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "frame": 171,
+      "zip_member": "frame-000171.color.jpg",
+      "image_sha256": "994244418e12f1655feb470b785e865f5574f1cab97531d41584138194ec2418",
+      "image_bytes": 95074,
+      "target_bbox_xyxy_evaluation_only": [
+        191.3870391845703,
+        314.5057678222656,
+        763.6679077148438,
+        502.73297119140625
+      ]
+    },
+    "DR03:reference": {
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "frame": 213,
+      "zip_member": "frame-000213.color.jpg",
+      "image_sha256": "3fea8cbafa443a0fc31d160d8c85be078b1b16eab5c7c0cdee70c299ea46dd7f",
+      "image_bytes": 97273,
+      "target_bbox_xyxy_evaluation_only": [
+        193.2668914794922,
+        37.35551071166992,
+        634.7501831054688,
+        226.70501708984375
+      ]
+    },
+    "DR03:query": {
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "frame": 174,
+      "zip_member": "frame-000174.color.jpg",
+      "image_sha256": "f8afbf6d6b2e3a948fb41cb8ae431396e409babcfc0436cdfdc9736f4f644289",
+      "image_bytes": 96330,
+      "target_bbox_xyxy_evaluation_only": [
+        204.04428100585938,
+        41.64945602416992,
+        649.6774291992188,
+        234.68016052246094
+      ]
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 3,
+    "sam2_calls": 3,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "A pass is consumed posthoc Development evidence that an already-bound reference door can supply a target-conditioned prompt and SAM2 mask for three provider-distinct multi-door reference/rescan pairs without category text or query truth. Reference binding remains privileged, query frames and target boxes are consumed, only three physical targets and two scan families are tested, and models run on desktop GPU. It is not initial raw-camera discovery, open-world absence authority, fresh/provider-independent confirmation, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}

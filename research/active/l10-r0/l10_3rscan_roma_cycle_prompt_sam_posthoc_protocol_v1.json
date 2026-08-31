@@ -1,0 +1,113 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-sam-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-roma-cycle-prompt-sam-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T13:20:00+08:00",
+  "question": "Can an already-bound reference door, rather than a category text prompt, generate the correct SAM2 target proposal in provider-distinct multi-door 3RScan frames?",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py",
+    "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"
+  },
+  "dependencies": [
+    {
+      "path": "l10_scenenn_roma_full_context_mask_posthoc.py",
+      "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"
+    },
+    {
+      "path": "named_poi_grounded_sam_multiscale_part_topology.py",
+      "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"
+    }
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json",
+    "result_sha256": "db07154fa30bc1904b87a723adbd8e91a957039662068ae7f7b88cd4e4f0a0c2",
+    "required_conclusion": "L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE",
+    "single_change": "Replace the frozen single-category text proposal with an already-bound reference rectangle transported by bidirectional RoMa cycles into one target SAM2 box; keep the consumed three-target six-frame cohort, models and all RoMa support thresholds unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_PROVIDER_DISTINCT_MULTI_DOOR_DEVELOPMENT",
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {
+        "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip",
+        "bytes": 98742525,
+        "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"
+      },
+      {
+        "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip",
+        "bytes": 75831367,
+        "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"
+      },
+      {
+        "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip",
+        "bytes": 31139000,
+        "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"
+      },
+      {
+        "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+        "bytes": 46320073,
+        "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+      }
+    ],
+    "target_scope": "DR01 and DR02 are different physical doors in one reference/rescan family; DR03 is a second family. Every selected scan contains 11-17 provider-labelled doors."
+  },
+  "models": {
+    "masker": {
+      "path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+      "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"
+    },
+    "matcher": {
+      "path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth",
+      "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"
+    },
+    "matcher_backbone": {
+      "path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+      "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"
+    }
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_DEVELOPMENT_ONLY",
+    "mask": "The evaluator-projected reference target bbox is rasterized as one full rectangular mask. No query target bbox, scan transform, target identity, query label or target-side geometry is visible to proposal generation.",
+    "purpose": "Model the already-bound visual referent state; this experiment does not solve initial raw-camera door discovery."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Run symmetric full-frame RoMa once per true reference/query episode. Within the reference rectangle retain forward points at certainty >=0.05 whose mapped query coordinate is in bounds, whose sampled reverse certainty is >=0.05, and whose round-trip error is <=0.013888888888888888 normalized. Select the largest 8-connected component in the reference match grid, fit one ordinary least-squares affine map from its source/target coordinates, and project the four reference-domain rectangle corners. The enclosing clipped query box is the only SAM2 prompt.",
+    "component_tie_break": "Maximum component pixel area, then lowest connected-component label; no minimum area, truth access or fallback component.",
+    "mask": "One native SAM2.1-Hiera-Small full-frame mask from the transported box, multimask_output=false, mask_threshold=0.0, no score selection, morphology, expansion or second prompt."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent proposal-mask cycle fraction and majority cycle purity, evaluated between the reference rectangle and generated query SAM2 mask."
+  },
+  "evaluation": {
+    "query_target_bbox": "Provider-projected query target bbox is opened only after each prompt box has been generated and is used only for IoU scoring.",
+    "episodes": ["DR01", "DR02", "DR03"],
+    "no_cross_pair_assignment_claim": "The output tests target-conditioned proposal transport on three true pairs. It does not reuse the closed-roster assignment scenarios because each query proposal is now conditional on its reference."
+  },
+  "decision_gate": {
+    "required_prompt_boxes": 3,
+    "required_sam_masks": 3,
+    "minimum_prompt_target_bbox_iou": 0.5,
+    "minimum_sam_target_bbox_iou": 0.5,
+    "minimum_true_pairs_with_absolute_support": 3
+  },
+  "forbidden_after_freeze": [
+    "change the reference rectangle, RoMa model or thresholds, connected-component rule, affine transport, SAM2 postprocess, images, targets or decision gate",
+    "use a query provider bbox, semantic label, scan transform, target identity or target-side geometry to generate or select a prompt or mask",
+    "expand, shrink, retry, replace or choose a second prompt/component/mask after seeing target IoU",
+    "call the consumed result initial referent discovery, fresh/provider-independent confirmation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android, benefit, reliability or safety evidence"
+  ],
+  "claim_boundary": "A pass is consumed posthoc Development evidence that an already-bound reference door can supply a target-conditioned prompt and SAM2 mask for three provider-distinct multi-door reference/rescan pairs without category text or query truth. Reference binding remains privileged, query frames and target boxes are consumed, only three physical targets and two scan families are tested, and models run on desktop GPU. It is not initial raw-camera discovery, open-world absence authority, fresh/provider-independent confirmation, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}

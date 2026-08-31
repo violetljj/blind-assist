@@ -84,10 +84,21 @@ contract.
   GroundingDINO call and zero SAM2/RoMa calls, so record
   `L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE`, not a
   matcher or segmentation negative. Freeze the consumed six-frame cohort and
-  category-prompt carrier. The next structural successor must condition the
-  query proposal on an already-bound visual reference, with target truth used
-  only for evaluation; correspondence still proves no named entrance,
-  ownership, access, waypoint, arrival, or handoff.
+  category-prompt carrier. A target-conditioned successor then transported an
+  already-bound reference rectangle through the largest bidirectionally
+  cycle-consistent RoMa component and one affine envelope. It localized all
+  three target doors without category text or query truth: prompt IoU
+  `0.638-0.838` and query SAM2-mask bbox IoU `0.584-0.916`, but unchanged
+  bilateral support was `2/3` because DR01 forward purity was `0.494961`.
+  Replacing the rectangle entirely with a native reference SAM2 mask restored
+  support to `3/3` but collapsed DR01 extent. The final dual-surface split used
+  that SAM mask only for identity support and the already-bound rectangle only
+  for complete extent. It passed the frozen gate with prompt IoU `0.637-0.837`,
+  query-mask bbox IoU `0.582-0.909`, and absolute support `3/3`; record
+  `L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET` and
+  retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`. This is consumed posthoc
+  evidence with privileged initial binding; correspondence still proves no
+  named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -389,3 +400,9 @@ contract.
   [l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json)
 - 3RScan Grounded-SAM source-reachability result:
   [l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json)
+- 3RScan reference-conditioned cycle-prompt result:
+  [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
+- 3RScan native-reference-mask ablation result:
+  [l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_result_v1.json)
+- 3RScan dual-surface proposal result:
+  [l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_result_v1.json)
