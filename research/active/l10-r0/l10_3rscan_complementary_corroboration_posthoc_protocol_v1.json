@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-complementary-corroboration-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T05:41:00+08:00",
+  "question": "Can complementary majority-level corroboration retain all three local bindings while rejecting both same-scene sibling-door negatives without another model call?",
+  "implementation": {
+    "path": "l10_3rscan_complementary_corroboration_posthoc.py",
+    "sha256": "d179c3b63fcc896f90f1c1757a724acdc73bf793e9467a3672dc338638daf81b"
+  },
+  "inputs": {
+    "global_epipolar": {
+      "path": "l10_3rscan_cycle_component_global_epipolar_posthoc_result_v1.json",
+      "sha256": "d5db6b4096f766af2ac747d4e168fa1829edfa4545b90b6b64a9955e019932e7",
+      "required_conclusion": "L10_3RSCAN_GLOBAL_EPIPOLAR_CYCLE_COMPONENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+    },
+    "active_query": {
+      "path": "l10_3rscan_active_query_consensus_posthoc_result_v1.json",
+      "sha256": "7e245785a9f90696f8008d1fb732b2dbbd95b46bbd98cc30a8614c2f8ca1bebc",
+      "required_conclusion": "L10_3RSCAN_ACTIVE_QUERY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+    }
+  },
+  "decision_rule": {
+    "local_requirement": "The predecessor bilateral mask-paired binding must commit.",
+    "global_corroborator": "The target component must have at least 0.5 inliers under the target-excluded full-frame fundamental matrix, inherited unchanged from the frozen global-epipolar result.",
+    "active_corroborator": "Both reference-to-query branches must pass and at least half of each predicted query mask must form paired coherent cycles to the other query view.",
+    "minimum_directional_active_query_fraction": 0.5,
+    "composition": "local AND (global-majority OR bidirectional-active-query-majority)",
+    "threshold_origin": "The value 0.5 is the same majority principle already frozen for component dominance and global epipolar support; no numeric sweep is performed."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 3,
+    "required_target_absent_pairs": 2,
+    "minimum_positive_commits": 3,
+    "maximum_target_absent_false_commits": 0
+  },
+  "forbidden_after_freeze": [
+    "change the 0.5 majority, Boolean composition, pair, label or inherited decision",
+    "re-run, tune or repair either model result",
+    "use provider geometry, target identity or query truth in the recomposed binding decision",
+    "claim success on this consumed five-pair panel is fresh confirmation or arbitrary sibling-door generalization"
+  ],
+  "claim_boundary": "This is a zero-model posthoc Development recomposition of two already consumed five-pair results. It can establish only that complementary global-geometry and active-query majority receipts fit this observed panel better than either hard gate alone. It is not fresh confirmation, provider-independent generalization, raw-camera binding, arbitrary sibling-door rejection, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety evidence."
+}

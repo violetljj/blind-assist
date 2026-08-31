@@ -127,8 +127,34 @@ contract.
   evidence. The first execution aborted because zero cycles lacked a natural
   non-commit branch; the recorded implementation-only repair mapped that case
   to rejection without changing any model, pair, threshold, or gate. Stop
-  spending 3RScan positive targets on tuning; next address privileged initial
-  binding or the harder same-scene sibling-door negative. Correspondence still
+  spending 3RScan positive targets on tuning. The harder same-scene panel then
+  exposed one repeated-door false binding: the unchanged local mechanism kept
+  `3/3` positives but committed `1/2` negatives. Bilateral reference/query
+  masks, a target-excluded global fundamental matrix, the official ICCV 2023
+  Doppelgangers classifier with a frozen RoMa adapter, two bound references,
+  and a `0.594-1.035 m` second query were each tested once. Global geometry
+  rejected both negatives but lost DR03; the learned classifier, dual reference,
+  and active query all retained the DR01->DR02 false binding. The active-query
+  arm also lost edge-touching DR01, ending at `2/3` positives and `1/2` false
+  commits. This freezes repeated-door perceptual aliasing as a real ceiling for
+  any single local hard gate.
+
+  A zero-model posthoc recomposition now requires the retained local bilateral
+  binding plus either the unchanged `0.5` target-excluded global-epipolar
+  majority or `0.5` paired-cycle coverage in both directions between primary
+  and active query masks. It uses complementary failure modes: global geometry
+  preserves DR01/DR02, active-query majority preserves DR02/DR03, and neither
+  corroborates the false sibling. On the consumed five-pair panel it reached
+  `3/3` positive commits, rejected `2/2` target-absent siblings, made `0` false
+  commits, and had committed precision `1.0`. Record
+  `L10_3RSCAN_COMPLEMENTARY_CORROBORATION_POSTHOC_DEVELOPMENT_GATE_MET`; it is
+  mechanism evidence, not fresh confirmation. The first frozen physical-target-
+  disjoint confirmation source stopped before RGB/model access because FC30's
+  best second query covered only `0.591093` of the target versus the frozen
+  `0.98` requirement. Keep this as source-not-evaluable; do not replace FC30
+  after failure. Next either confirm the exact rule on a pre-frozen evaluable
+  sibling panel or improve observation reachability on a separate source.
+  Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.

@@ -1,0 +1,130 @@
+{
+  "schema": "blindassist-l10-3rscan-dual-reference-cohort-v1",
+  "authority": "FROZEN_PRE_RGB_MODEL_BLIND_ACTIVE_SECOND_REFERENCE_COHORT",
+  "protocol_path": "l10_3rscan_dual_reference_freeze_protocol_v2.json",
+  "protocol_sha256": "f65a06bdeb16bea0f4c934966b1a47e34d7bafceb4ffbc6235cf0547b464136a",
+  "implementation": {
+    "path": "l10_3rscan_dual_reference_freeze.py",
+    "sha256": "010bd89c07fc511610611de4a353f0ca4dfe821de1a945a15eb507b972d0c5e3"
+  },
+  "source_cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+  "source_cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+  "selection": {
+    "required_targets": 3,
+    "minimum_baseline_metres": 0.05,
+    "maximum_baseline_metres": 1.1,
+    "target_baseline_metres": 1.1,
+    "ranking": "Maximum available fully visible baseline up to 1.10m, then minimum frame gap, then maximum depth-visible ratio, visible vertices and projected area, then earliest frame.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "DR01",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 18,
+      "target_label": "door",
+      "primary_reference_frame": 338,
+      "active_reference": {
+        "frame": 339,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.10006417638076032,
+        "frame_gap": 1,
+        "inside_vertices": 1774,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 145723.8118353618,
+        "image_margin_pixels": 48.419639587402344,
+        "bbox_xyxy": [
+          48.419639587402344,
+          99.1068344116211,
+          700.2980346679688,
+          367.8327331542969
+        ],
+        "depth_compared_vertices": 1152,
+        "depth_visible_vertices": 468,
+        "depth_visible_ratio": 0.40625,
+        "zip_member": "frame-000339.color.jpg"
+      },
+      "candidate_frames": 1
+    },
+    {
+      "episode_id": "DR02",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "target_instance_id": 34,
+      "target_label": "doorframe",
+      "primary_reference_frame": 388,
+      "active_reference": {
+        "frame": 402,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 1.0659668517984084,
+        "frame_gap": 14,
+        "inside_vertices": 357,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 15445.611656747933,
+        "image_margin_pixels": 49.02925109863281,
+        "bbox_xyxy": [
+          185.8337860107422,
+          49.02925109863281,
+          604.2216796875,
+          114.00545501708984
+        ],
+        "depth_compared_vertices": 271,
+        "depth_visible_vertices": 121,
+        "depth_visible_ratio": 0.44649446494464945,
+        "zip_member": "frame-000402.color.jpg"
+      },
+      "candidate_frames": 5
+    },
+    {
+      "episode_id": "DR03",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "primary_reference_frame": 218,
+      "active_reference": {
+        "frame": 222,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.4508358678384536,
+        "frame_gap": 4,
+        "inside_vertices": 944,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 117443.33038511954,
+        "image_margin_pixels": 130.28622436523438,
+        "bbox_xyxy": [
+          141.95025634765625,
+          130.28622436523438,
+          680.2155151367188,
+          363.3340759277344
+        ],
+        "depth_compared_vertices": 944,
+        "depth_visible_vertices": 903,
+        "depth_visible_ratio": 0.9565677966101694,
+        "zip_member": "frame-000222.color.jpg"
+      },
+      "candidate_frames": 5
+    }
+  ],
+  "opened_members": {
+    "pose_members": 1185,
+    "depth_members": 400,
+    "rgb_members": 0,
+    "model_calls": 0
+  },
+  "claim_boundary": "This freeze selects the maximum available fully visible second reference in each recorded trajectory using provider geometry and depth before RGB/model access. Baselines may differ across targets and do not prove a user can execute the action. It is Development input selection, not raw-camera binding, provider-independent generalization, navigation, arrival, handoff, benefit, reliability or safety evidence."
+}

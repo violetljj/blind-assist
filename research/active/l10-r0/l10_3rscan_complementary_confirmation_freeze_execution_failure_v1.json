@@ -1,0 +1,25 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-confirmation-freeze-execution-failure-v1",
+  "authority": "PRE_RGB_MODEL_BLIND_SOURCE_EXECUTION_FAILURE_RECEIPT",
+  "protocol_path": "l10_3rscan_complementary_confirmation_freeze_protocol_v1.json",
+  "protocol_sha256": "ce51891865d4e5cba4b730e5fdffd789521c4526e58cc436173af30b06994b92",
+  "implementation": {
+    "path": "l10_3rscan_complementary_confirmation_freeze.py",
+    "sha256": "f45cdb487f5ef161a18b8d544b1e5cebf1c40a4936ce4776015a0cafe9a97c72"
+  },
+  "command": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe research/active/l10-r0/l10_3rscan_complementary_confirmation_freeze.py --protocol research/active/l10-r0/l10_3rscan_complementary_confirmation_freeze_protocol_v1.json --output research/active/l10-r0/l10_3rscan_complementary_confirmation_cohort_v1.json",
+  "exit_code": 1,
+  "failure": "ACTIVE_SOURCE_NOT_EVALUABLE:FC30",
+  "failed_stage": "Geometry/depth-only active-query source selection for the first fixed target.",
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "diagnosis": {
+    "primary_query_frame": 209,
+    "candidate_active_frames_with_minimum_geometry_and_depth_support": 31,
+    "maximum_observed_inside_vertex_fraction": 0.5910931174089069,
+    "maximum_inside_fraction_frame": 72,
+    "frame_72_baseline_metres": 0.21708763544202606,
+    "source_conclusion": "FC30 has no second query view meeting the frozen 0.98 completeness rule in the 0.05-1.10m interval."
+  },
+  "claim_boundary": "This is source reachability failure before RGB/model access, not an algorithm negative. The failed target may not be silently replaced or counted as an evaluated confirmation row."
+}

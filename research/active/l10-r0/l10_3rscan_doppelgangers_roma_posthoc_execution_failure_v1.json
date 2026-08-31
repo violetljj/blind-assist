@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist-l10-development-execution-failure-v1",
+  "recorded_at": "2026-09-01T05:17:00+08:00",
+  "protocol_path": "l10_3rscan_doppelgangers_roma_posthoc_protocol_v1.json",
+  "protocol_sha256": "6c9b0db875550e4ddc199091b1444ce0231528a935d3ae1337a9bdf83c817524",
+  "implementation_path": "l10_3rscan_doppelgangers_roma_posthoc.py",
+  "implementation_sha256": "d48f0d4db5e6355c79271eacde2c8fdd330ab5203a2181ddf8d57e9ccb452f2a",
+  "terminal_state": "ABORTED_BEFORE_FIRST_CLASSIFIER_CALL",
+  "error_class": "AttributeError",
+  "error_message": "module torch has no attribute flatnonzero",
+  "decision_impact": "No probability or gate outcome was observed. The successor uses the equivalent torch.nonzero(...).flatten() API without changing inputs, adapter rules, models, pairs or thresholds.",
+  "claim_boundary": "This receipt proves only an implementation compatibility abort and is not an adjudicated challenger result."
+}

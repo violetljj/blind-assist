@@ -1,0 +1,17 @@
+{
+  "schema": "blindassist-l10-3rscan-dual-reference-freeze-result-v1",
+  "authority": "PRE_RGB_MODEL_BLIND_SOURCE_REACHABILITY_RESULT",
+  "protocol_path": "l10_3rscan_dual_reference_freeze_protocol_v1.json",
+  "protocol_sha256": "c20ddeef5b101693d791dcd1f139357e3b91f611d74fed69f23afe620ce953bb",
+  "implementation": {"path": "l10_3rscan_dual_reference_freeze.py", "sha256": "010bd89c07fc511610611de4a353f0ca4dfe821de1a945a15eb507b972d0c5e3"},
+  "conclusion": "L10_3RSCAN_DUAL_REFERENCE_0P30_0P60_SOURCE_NOT_EVALUABLE",
+  "gate_met": false,
+  "failure": {"episode_id": "DR01", "error": "NO_ACTIVE_REFERENCE:DR01", "rgb_members": 0, "model_calls": 0},
+  "geometry_only_diagnostic": {
+    "DR01": {"eligible_complete_frames": 1, "available_baseline_min_metres": 0.10006417638076032, "available_baseline_max_metres": 0.10006417638076032},
+    "DR02": {"eligible_complete_frames": 9, "available_baseline_min_metres": 0.012115414355274872, "available_baseline_max_metres": 1.0659668517984084},
+    "DR03": {"eligible_complete_frames": 5, "available_baseline_min_metres": 0.0706642905294719, "available_baseline_max_metres": 0.4508358678384536}
+  },
+  "decision": "Freeze the uniform 0.30-0.60m active-reference source. A successor may select the maximum fully visible available baseline over a preregistered wider reachability interval; it must not loosen completeness rules after RGB/model access.",
+  "claim_boundary": "This is a source reachability failure, not an algorithm, matching, segmentation or active-observation negative."
+}

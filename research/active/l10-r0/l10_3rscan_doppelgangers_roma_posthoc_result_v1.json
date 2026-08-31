@@ -1,0 +1,192 @@
+{
+  "schema": "blindassist-l10-3rscan-doppelgangers-roma-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_OFFICIAL_DOPPELGANGERS_WITH_ROMA_ADAPTER_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_doppelgangers_roma_posthoc_protocol_v1.json",
+  "protocol_sha256": "bb4200e864d3dd0216bc8f85dba72754d76b9357b9a5093adf4b54db44251b1c",
+  "implementation": {
+    "path": "l10_3rscan_doppelgangers_roma_posthoc.py",
+    "sha256": "5a4e4bb901b8afe48e724297e70e57ff56ce03ebab63caf225d68ec7c0fb1bb0"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+    "cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1"
+  },
+  "conclusion": "L10_3RSCAN_DOPPELGANGERS_ROMA_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "positive_pairs": 3,
+    "positive_commits": 3,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 1
+  },
+  "decisions": {
+    "P_DR01_DR01": {
+      "id": "P_DR01_DR01",
+      "reference_episode": "DR01",
+      "query_episode": "DR01",
+      "label": "target_present",
+      "mask_paired_predecessor_commit": true,
+      "doppelgangers_positive_probability": 0.9998928308486938,
+      "doppelgangers_support": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR02_DR02": {
+      "id": "P_DR02_DR02",
+      "reference_episode": "DR02",
+      "query_episode": "DR02",
+      "label": "target_present",
+      "mask_paired_predecessor_commit": true,
+      "doppelgangers_positive_probability": 0.967808723449707,
+      "doppelgangers_support": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR03_DR03": {
+      "id": "P_DR03_DR03",
+      "reference_episode": "DR03",
+      "query_episode": "DR03",
+      "label": "target_present",
+      "mask_paired_predecessor_commit": true,
+      "doppelgangers_positive_probability": 0.9955183267593384,
+      "doppelgangers_support": true,
+      "commit": true,
+      "correct": true
+    },
+    "N_DR01_DR02": {
+      "id": "N_DR01_DR02",
+      "reference_episode": "DR01",
+      "query_episode": "DR02",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 18,
+        "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+        "query_frame": 551,
+        "projected_inside_vertices": 0
+      },
+      "mask_paired_predecessor_commit": true,
+      "doppelgangers_positive_probability": 0.9999994039535522,
+      "doppelgangers_support": true,
+      "commit": true,
+      "correct": false
+    },
+    "N_DR02_DR01": {
+      "id": "N_DR02_DR01",
+      "reference_episode": "DR02",
+      "query_episode": "DR01",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 34,
+        "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+        "query_frame": 237,
+        "projected_inside_vertices": 0
+      },
+      "mask_paired_predecessor_commit": false,
+      "doppelgangers_positive_probability": 0.9394824504852295,
+      "doppelgangers_support": true,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "roma_adapter_receipts": {
+    "P_DR01_DR01": {
+      "high_keypoints_before_cap": 310788,
+      "adapter_keypoints": 8192,
+      "cycle_keypoints": 5662,
+      "fundamental_inlier_matches": 4957,
+      "input_tensor_shape": [
+        1,
+        10,
+        1024,
+        1024
+      ],
+      "temporary_inputs_retained": false
+    },
+    "P_DR02_DR02": {
+      "high_keypoints_before_cap": 184550,
+      "adapter_keypoints": 8192,
+      "cycle_keypoints": 5887,
+      "fundamental_inlier_matches": 5219,
+      "input_tensor_shape": [
+        1,
+        10,
+        1024,
+        1024
+      ],
+      "temporary_inputs_retained": false
+    },
+    "P_DR03_DR03": {
+      "high_keypoints_before_cap": 222885,
+      "adapter_keypoints": 8192,
+      "cycle_keypoints": 6364,
+      "fundamental_inlier_matches": 5770,
+      "input_tensor_shape": [
+        1,
+        10,
+        1024,
+        1024
+      ],
+      "temporary_inputs_retained": false
+    },
+    "N_DR01_DR02": {
+      "high_keypoints_before_cap": 74067,
+      "adapter_keypoints": 8192,
+      "cycle_keypoints": 1319,
+      "fundamental_inlier_matches": 1163,
+      "input_tensor_shape": [
+        1,
+        10,
+        1024,
+        1024
+      ],
+      "temporary_inputs_retained": false
+    },
+    "N_DR02_DR01": {
+      "high_keypoints_before_cap": 31739,
+      "adapter_keypoints": 8192,
+      "cycle_keypoints": 2530,
+      "fundamental_inlier_matches": 2392,
+      "input_tensor_shape": [
+        1,
+        10,
+        1024,
+        1024
+      ],
+      "temporary_inputs_retained": false
+    }
+  },
+  "sibling_absence_receipts": {
+    "N_DR01_DR02": {
+      "authority": "PROVIDER_REGISTERED_EXACT_TARGET_ZERO_PROJECTED_VERTICES",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "reference_target_instance_id": 18,
+      "sibling_target_instance_id": 34,
+      "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "query_frame": 551,
+      "target_mesh_vertices": 1796,
+      "projected_inside_vertices": 0,
+      "ply_path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/labels.instances.annotated.v2.ply",
+      "ply_sha256": "044442f966bf0dd00534088aefa77864e9f1d8fdcd089b9c7e2592cb77d961d2"
+    },
+    "N_DR02_DR01": {
+      "authority": "PROVIDER_REGISTERED_EXACT_TARGET_ZERO_PROJECTED_VERTICES",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "reference_target_instance_id": 34,
+      "sibling_target_instance_id": 18,
+      "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "query_frame": 237,
+      "target_mesh_vertices": 319,
+      "projected_inside_vertices": 0,
+      "ply_path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/labels.instances.annotated.v2.ply",
+      "ply_sha256": "2a6c3ec9b773083f6d0f644a1bde317664531073aabc26b9231445b25133c626"
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 5,
+    "doppelgangers_calls": 5,
+    "sam2_calls": 0,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "This consumed posthoc Development test evaluates the official outdoor-trained Doppelgangers classifier through a deterministic RoMa-to-LoFTR-input adapter on three positives and two same-scene sibling-door negatives. A pass is challenger evidence only because matcher and domain differ from training. It does not establish arbitrary sibling-door rejection, raw-camera binding, provider-independent generalization, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit, reliability or safety."
+}

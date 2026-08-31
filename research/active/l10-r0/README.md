@@ -32,6 +32,17 @@ Status: `ACTIVE`
   first learned RGB successor improved one fresh rescan `0.0706 -> 0.3312` IoU,
   but its coordinate homography extrapolated outside the door and did not meet
   the canary.
+- **3RScan exact-target binding:** coherent-cycle transport confirmed on three
+  new physical targets and rejected `4/4` cross-scene target-absent pairs, but
+  one same-scene sibling door remained a stable false binding under bilateral
+  masks, an official Doppelgangers classifier, two references, and a displaced
+  second query. A zero-model complementary rule now requires local binding plus
+  either target-excluded global epipolar majority or bidirectional active-query
+  majority. On the consumed hard panel it reached `3/3` positives, rejected
+  `2/2` sibling negatives, made `0` false commits, and had committed precision
+  `1.0`. This is posthoc mechanism evidence only; a first physical-target-
+  disjoint confirmation source stopped pre-RGB because FC30 had no active view
+  above `0.5911` target completeness versus the frozen `0.98` requirement.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:

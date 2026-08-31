@@ -1,0 +1,103 @@
+{
+  "schema": "blindassist-l10-3rscan-active-query-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-active-query-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T05:29:41+08:00",
+  "question": "Can every positive target, including both same-scene sibling-door queries, supply a materially displaced second query observation while the exact foreign target remains outside the negative view?",
+  "implementation": {
+    "path": "l10_3rscan_active_query_freeze.py",
+    "sha256": "e3e5e767ea5c276f358b102a54af098f7fb0af00eb345fcba5d4bbc8f3002cc9"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    }
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_dual_reference_consensus_posthoc_result_v1.json",
+    "result_sha256": "96a221346e6a389c9dd8bd1de5d935d60011d26dae269478f35b0739f4e76ac5",
+    "required_conclusion": "L10_3RSCAN_DUAL_REFERENCE_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "single_change": "Move the active observation from the bound reference trajectory to the query trajectory. Select the maximum available fully visible baseline in the same fixed 0.05-1.10m interval before opening RGB or calling a model; retain the exact-target-absent sibling negatives."
+  },
+  "source": {
+    "authority": "CONSUMED_THIRD_COHORT_PRE_RGB_ACTIVE_QUERY_SOURCE_ASSESSMENT_DEVELOPMENT",
+    "cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+    "cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {
+        "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/labels.instances.annotated.v2.ply",
+        "bytes": 7729845,
+        "sha256": "2a6c3ec9b773083f6d0f644a1bde317664531073aabc26b9231445b25133c626"
+      },
+      {
+        "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip",
+        "bytes": 77742167,
+        "sha256": "7520e06c26cf44c8cfb778dd70baf2b7604b69b040a9c7d4bb398123d2d6b9f9"
+      },
+      {
+        "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/labels.instances.annotated.v2.ply",
+        "bytes": 8112937,
+        "sha256": "044442f966bf0dd00534088aefa77864e9f1d8fdcd089b9c7e2592cb77d961d2"
+      },
+      {
+        "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip",
+        "bytes": 98742525,
+        "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"
+      },
+      {
+        "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/labels.instances.annotated.v2.ply",
+        "bytes": 3130758,
+        "sha256": "86793221ea877a9d18a8dc7db694a004d625c4e858d89b6731338722c3b7a9f7"
+      },
+      {
+        "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip",
+        "bytes": 31139000,
+        "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"
+      }
+    ]
+  },
+  "same_scene_absence_constraints": [
+    {
+      "pair_id": "N_DR02_DR01",
+      "query_episode": "DR01",
+      "visible_sibling_target_instance_id": 18,
+      "foreign_target_instance_id": 34
+    },
+    {
+      "pair_id": "N_DR01_DR02",
+      "query_episode": "DR02",
+      "visible_sibling_target_instance_id": 34,
+      "foreign_target_instance_id": 18
+    }
+  ],
+  "selection": {
+    "required_targets": 3,
+    "minimum_baseline_metres": 0.05,
+    "maximum_baseline_metres": 1.1,
+    "target_baseline_metres": 1.1,
+    "maximum_foreign_target_inside_vertices": 0,
+    "ranking": "Maximum available fully visible baseline up to 1.10m, then minimum frame gap, maximum depth-visible ratio, visible vertices and projected area, then earliest frame; same-scene negative frames additionally require zero projected vertices from the exact foreign target.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    }
+  },
+  "forbidden_after_freeze": [
+    "open candidate RGB or call a model before all active query frames are fixed",
+    "change reachability, visibility, exact-target absence or ranking after observing selected RGB",
+    "replace an active frame after downstream failure",
+    "use provider geometry or target identity in a runtime binding decision",
+    "claim provider-selected recorded views prove a user can execute the observation action"
+  ],
+  "claim_boundary": "This zero-model source assessment uses privileged 3RScan pose, depth and registered instance geometry to freeze recorded active query views for three consumed targets and preserve two exact-target-absent sibling-door negatives. It measures source reachability only; it is not runtime binding, arbitrary sibling rejection, provider-independent generalization, user-action feasibility, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety evidence."
+}

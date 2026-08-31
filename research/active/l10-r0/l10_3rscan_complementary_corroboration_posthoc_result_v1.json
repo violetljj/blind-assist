@@ -1,0 +1,150 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-posthoc-result-v1",
+  "authority": "CONSUMED_ZERO_MODEL_POSTHOC_COMPLEMENTARY_CORROBORATION_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_complementary_corroboration_posthoc_protocol_v1.json",
+  "protocol_sha256": "1f65cd4e728fe6b68aaa3ffba203c918f2997d87643d399b2b7d55ed916132d4",
+  "implementation": {
+    "path": "l10_3rscan_complementary_corroboration_posthoc.py",
+    "sha256": "d179c3b63fcc896f90f1c1757a724acdc73bf793e9467a3672dc338638daf81b"
+  },
+  "inputs": {
+    "global_epipolar": {
+      "path": "l10_3rscan_cycle_component_global_epipolar_posthoc_result_v1.json",
+      "sha256": "d5db6b4096f766af2ac747d4e168fa1829edfa4545b90b6b64a9955e019932e7"
+    },
+    "active_query": {
+      "path": "l10_3rscan_active_query_consensus_posthoc_result_v1.json",
+      "sha256": "7e245785a9f90696f8008d1fb732b2dbbd95b46bbd98cc30a8614c2f8ca1bebc"
+    }
+  },
+  "conclusion": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "positive_pairs": 3,
+    "positive_commits": 3,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 0,
+    "committed_precision": 1.0
+  },
+  "decisions": {
+    "P_DR01_DR01": {
+      "id": "P_DR01_DR01",
+      "reference_episode": "DR01",
+      "query_episode": "DR01",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": true,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR02_DR02": {
+      "id": "P_DR02_DR02",
+      "reference_episode": "DR02",
+      "query_episode": "DR02",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": true,
+      "active_query_bidirectional_majority_support": true,
+      "complementary_corroboration": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR03_DR03": {
+      "id": "P_DR03_DR03",
+      "reference_episode": "DR03",
+      "query_episode": "DR03",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": true,
+      "complementary_corroboration": true,
+      "commit": true,
+      "correct": true
+    },
+    "N_DR01_DR02": {
+      "id": "N_DR01_DR02",
+      "reference_episode": "DR01",
+      "query_episode": "DR02",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 18,
+        "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+        "query_frame": 551,
+        "projected_inside_vertices": 0
+      },
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false,
+      "commit": false,
+      "correct": true
+    },
+    "N_DR02_DR01": {
+      "id": "N_DR02_DR01",
+      "reference_episode": "DR02",
+      "query_episode": "DR01",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 34,
+        "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+        "query_frame": 237,
+        "projected_inside_vertices": 0
+      },
+      "predecessor_bilateral_mask_paired_commit": false,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "corroboration_receipts": {
+    "P_DR01_DR01": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": true,
+      "active_query_forward_paired_fraction": 0.07484277882693753,
+      "active_query_reverse_paired_fraction": 0.09358350342806301,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": true
+    },
+    "P_DR02_DR02": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": true,
+      "active_query_forward_paired_fraction": 0.6316574639155285,
+      "active_query_reverse_paired_fraction": 0.5994553634856737,
+      "active_query_bidirectional_majority_support": true,
+      "complementary_corroboration": true
+    },
+    "P_DR03_DR03": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "active_query_forward_paired_fraction": 0.7165123952846094,
+      "active_query_reverse_paired_fraction": 0.680611491829204,
+      "active_query_bidirectional_majority_support": true,
+      "complementary_corroboration": true
+    },
+    "N_DR01_DR02": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "active_query_forward_paired_fraction": 0.5482855680655067,
+      "active_query_reverse_paired_fraction": 0.15455438624922768,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false
+    },
+    "N_DR02_DR01": {
+      "local_bilateral_commit": false,
+      "global_epipolar_support": false,
+      "active_query_forward_paired_fraction": 0.0,
+      "active_query_reverse_paired_fraction": 0.0,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false
+    }
+  },
+  "runtime": {
+    "model_calls": 0,
+    "receipt_recompositions": 5
+  },
+  "claim_boundary": "This is a zero-model posthoc Development recomposition of two already consumed five-pair results. It can establish only that complementary global-geometry and active-query majority receipts fit this observed panel better than either hard gate alone. It is not fresh confirmation, provider-independent generalization, raw-camera binding, arbitrary sibling-door rejection, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety evidence."
+}

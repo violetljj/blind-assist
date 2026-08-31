@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist-l10-3rscan-dual-reference-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-dual-reference-freeze-protocol-v2",
+  "frozen_at": "2026-09-01T05:28:00+08:00",
+  "question": "Can each target supply the maximum-baseline fully visible second reference available in the recorded trajectory before RGB/model access?",
+  "implementation": {"path": "l10_3rscan_dual_reference_freeze.py", "sha256": "010bd89c07fc511610611de4a353f0ca4dfe821de1a945a15eb507b972d0c5e3"},
+  "dependencies": [
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "l10_3rscan_registered_extent_ceiling.py", "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"}
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_dual_reference_freeze_result_v1.json",
+    "result_sha256": "eac5931ba61a3790bde08041802b97229a434b8fab558cf0bc9207e48724c754",
+    "required_conclusion": "L10_3RSCAN_DUAL_REFERENCE_0P30_0P60_SOURCE_NOT_EVALUABLE",
+    "single_change": "Replace the unavailable uniform 0.30-0.60m band with maximum fully visible displacement in a frozen 0.05-1.10m reachability interval. Keep target completeness, depth visibility, margin, ranking dimensions and RGB/model blindness unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_THIRD_COHORT_PRE_RGB_MAXIMUM_AVAILABLE_ACTIVE_REFERENCE_SELECTION_DEVELOPMENT",
+    "cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+    "cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/labels.instances.annotated.v2.ply", "bytes": 7989529, "sha256": "88686db6b3828f213f831a8b6913a5ce71e63ec3949cc13dbd7aaaf92f231d22"},
+      {"path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip", "bytes": 75831367, "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/labels.instances.annotated.v2.ply", "bytes": 2659248, "sha256": "3a1cec8fa45a219f383cdd29348c0b86898dfdcd00f5538824a7e43a205777f7"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"}
+    ]
+  },
+  "selection": {
+    "required_targets": 3,
+    "minimum_baseline_metres": 0.05,
+    "maximum_baseline_metres": 1.1,
+    "target_baseline_metres": 1.1,
+    "ranking": "Maximum available fully visible baseline up to 1.10m, then minimum frame gap, then maximum depth-visible ratio, visible vertices and projected area, then earliest frame.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    }
+  },
+  "forbidden_after_freeze": [
+    "open candidate RGB or call a model before all three active frames are fixed",
+    "change reachability, completeness or ranking after viewing selected RGB",
+    "replace an active frame after downstream failure",
+    "claim provider-selected reference views establish raw-camera binding or user-action feasibility"
+  ],
+  "claim_boundary": "This freeze selects the maximum available fully visible second reference in each recorded trajectory using provider geometry and depth before RGB/model access. Baselines may differ across targets and do not prove a user can execute the action. It is Development input selection, not raw-camera binding, provider-independent generalization, navigation, arrival, handoff, benefit, reliability or safety evidence."
+}

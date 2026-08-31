@@ -1,0 +1,118 @@
+{
+  "schema": "blindassist-l10-3rscan-active-query-freeze-result-v1",
+  "authority": "FROZEN_PRE_RGB_MODEL_BLIND_ACTIVE_QUERY_SOURCE_ASSESSMENT",
+  "protocol_path": "l10_3rscan_active_query_freeze_protocol_v1.json",
+  "protocol_sha256": "602a90df734a0cd1dce3405f1a485102f045dd237639331dd8f9c5c2a9415e98",
+  "implementation": {
+    "path": "l10_3rscan_active_query_freeze.py",
+    "sha256": "e3e5e767ea5c276f358b102a54af098f7fb0af00eb345fcba5d4bbc8f3002cc9"
+  },
+  "source_cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+  "source_cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+  "conclusion": "L10_3RSCAN_ACTIVE_QUERY_SOURCE_NOT_EVALUABLE",
+  "evaluable": false,
+  "selection": {
+    "required_targets": 3,
+    "minimum_baseline_metres": 0.05,
+    "maximum_baseline_metres": 1.1,
+    "target_baseline_metres": 1.1,
+    "maximum_foreign_target_inside_vertices": 0,
+    "ranking": "Maximum available fully visible baseline up to 1.10m, then minimum frame gap, maximum depth-visible ratio, visible vertices and projected area, then earliest frame; same-scene negative frames additionally require zero projected vertices from the exact foreign target.",
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 32.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "DR01",
+      "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "target_instance_id": 18,
+      "target_label": "door",
+      "primary_query_frame": 237,
+      "active_query": null,
+      "eligible_frames_before_absence_constraint": 0,
+      "eligible_frames_after_absence_constraint": 0
+    },
+    {
+      "episode_id": "DR02",
+      "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "target_instance_id": 34,
+      "target_label": "doorframe",
+      "primary_query_frame": 551,
+      "active_query": {
+        "frame": 546,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.5941556966244875,
+        "frame_gap": 5,
+        "inside_vertices": 258,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 18898.07777907187,
+        "image_margin_pixels": 217.725830078125,
+        "bbox_xyxy": [
+          307.15960693359375,
+          258.8346862792969,
+          705.4276733398438,
+          321.274169921875
+        ],
+        "depth_compared_vertices": 203,
+        "depth_visible_vertices": 75,
+        "depth_visible_ratio": 0.3694581280788177,
+        "foreign_target_instance_id": 18,
+        "foreign_target_inside_vertices": 0,
+        "zip_member": "frame-000546.color.jpg"
+      },
+      "eligible_frames_before_absence_constraint": 5,
+      "eligible_frames_after_absence_constraint": 5
+    },
+    {
+      "episode_id": "DR03",
+      "query_scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "primary_query_frame": 28,
+      "active_query": {
+        "frame": 169,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 1.034562317507307,
+        "frame_gap": 141,
+        "inside_vertices": 655,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 101995.8309710942,
+        "image_margin_pixels": 144.0636444091797,
+        "bbox_xyxy": [
+          236.66192626953125,
+          144.0636444091797,
+          740.3519287109375,
+          366.79327392578125
+        ],
+        "depth_compared_vertices": 655,
+        "depth_visible_vertices": 611,
+        "depth_visible_ratio": 0.932824427480916,
+        "foreign_target_instance_id": null,
+        "foreign_target_inside_vertices": null,
+        "zip_member": "frame-000169.color.jpg"
+      },
+      "eligible_frames_before_absence_constraint": 11,
+      "eligible_frames_after_absence_constraint": 11
+    }
+  ],
+  "opened_members": {
+    "pose_members": 1197,
+    "depth_members": 332,
+    "rgb_members": 0,
+    "model_calls": 0
+  },
+  "claim_boundary": "This zero-model source assessment uses privileged 3RScan pose, depth and registered instance geometry to freeze recorded active query views for three consumed targets and preserve two exact-target-absent sibling-door negatives. It measures source reachability only; it is not runtime binding, arbitrary sibling rejection, provider-independent generalization, user-action feasibility, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety evidence."
+}

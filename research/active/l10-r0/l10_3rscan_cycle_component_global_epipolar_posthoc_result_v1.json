@@ -1,0 +1,351 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-global-epipolar-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_TARGET_EXCLUDED_GLOBAL_EPIPOLAR_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_cycle_component_global_epipolar_posthoc_protocol_v1.json",
+  "protocol_sha256": "58ad6f8242b3528df329c99b34d372753c530ab5e6cd3b618bdc38186631e6a9",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_global_epipolar_posthoc.py",
+    "sha256": "6dfa24631386c2210f3dcfc3dacd17bacb534e241702c920a5e56aa2244a8f5d"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+    "cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1"
+  },
+  "conclusion": "L10_3RSCAN_GLOBAL_EPIPOLAR_CYCLE_COMPONENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "positive_pairs": 3,
+    "positive_commits": 2,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 0
+  },
+  "decisions": {
+    "P_DR01_DR01": {
+      "id": "P_DR01_DR01",
+      "reference_episode": "DR01",
+      "query_episode": "DR01",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR02_DR02": {
+      "id": "P_DR02_DR02",
+      "reference_episode": "DR02",
+      "query_episode": "DR02",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": true,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR03_DR03": {
+      "id": "P_DR03_DR03",
+      "reference_episode": "DR03",
+      "query_episode": "DR03",
+      "label": "target_present",
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": false,
+      "commit": false,
+      "correct": false
+    },
+    "N_DR01_DR02": {
+      "id": "N_DR01_DR02",
+      "reference_episode": "DR01",
+      "query_episode": "DR02",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 18,
+        "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+        "query_frame": 551,
+        "projected_inside_vertices": 0
+      },
+      "predecessor_bilateral_mask_paired_commit": true,
+      "global_epipolar_support": false,
+      "commit": false,
+      "correct": true
+    },
+    "N_DR02_DR01": {
+      "id": "N_DR02_DR01",
+      "reference_episode": "DR02",
+      "query_episode": "DR01",
+      "label": "target_absent",
+      "absence": {
+        "reference_target_instance_id": 34,
+        "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+        "query_frame": 237,
+        "projected_inside_vertices": 0
+      },
+      "predecessor_bilateral_mask_paired_commit": false,
+      "global_epipolar_support": false,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "global_epipolar_receipts": {
+    "P_DR01_DR01": {
+      "target_cycle_pixels": 44305,
+      "target_component": {
+        "component_count": 96,
+        "selected_label": 1,
+        "selected_pixels": 36553
+      },
+      "background_cycle_pixels": 169347,
+      "background_fit_points": 20000,
+      "background_ransac_inlier_fraction": 0.67785,
+      "target_component_points": 36553,
+      "target_epipolar_inlier_fraction": 0.8258419281591114,
+      "target_median_sampson_error_pixels_squared": 0.09017061771588512,
+      "global_epipolar_support": true
+    },
+    "P_DR02_DR02": {
+      "target_cycle_pixels": 10448,
+      "target_component": {
+        "component_count": 8,
+        "selected_label": 1,
+        "selected_pixels": 10072
+      },
+      "background_cycle_pixels": 123036,
+      "background_fit_points": 20000,
+      "background_ransac_inlier_fraction": 0.67165,
+      "target_component_points": 10072,
+      "target_epipolar_inlier_fraction": 0.9009134233518665,
+      "target_median_sampson_error_pixels_squared": 0.10750309944779052,
+      "global_epipolar_support": true
+    },
+    "P_DR03_DR03": {
+      "target_cycle_pixels": 76587,
+      "target_component": {
+        "component_count": 30,
+        "selected_label": 1,
+        "selected_pixels": 75079
+      },
+      "background_cycle_pixels": 96478,
+      "background_fit_points": 20000,
+      "background_ransac_inlier_fraction": 0.57755,
+      "target_component_points": 75079,
+      "target_epipolar_inlier_fraction": 0.12556107566696414,
+      "target_median_sampson_error_pixels_squared": 26.251863548169105,
+      "global_epipolar_support": false
+    },
+    "N_DR01_DR02": {
+      "target_cycle_pixels": 7630,
+      "target_component": {
+        "component_count": 16,
+        "selected_label": 6,
+        "selected_pixels": 5847
+      },
+      "background_cycle_pixels": 4486,
+      "background_fit_points": 4486,
+      "background_ransac_inlier_fraction": 0.7659384752563531,
+      "target_component_points": 5847,
+      "target_epipolar_inlier_fraction": 0.15358303403454762,
+      "target_median_sampson_error_pixels_squared": 50.94317582068307,
+      "global_epipolar_support": false
+    },
+    "N_DR02_DR01": {
+      "target_cycle_pixels": 0,
+      "target_component": {
+        "component_count": 0,
+        "selected_label": null,
+        "selected_pixels": 0
+      },
+      "background_cycle_pixels": 9766,
+      "background_fit_points": 9766,
+      "background_ransac_inlier_fraction": 0.8164038500921564,
+      "target_component_points": 0,
+      "target_epipolar_inlier_fraction": 0.0,
+      "target_median_sampson_error_pixels_squared": null,
+      "global_epipolar_support": false
+    }
+  },
+  "reference_support_receipts": {
+    "DR01": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "186de31e4f02ad93225d79d42ac504c8f2b35757b34e938c8a744ee9a0ca7025",
+      "mask_pixels": 60683,
+      "mask_bbox_xyxy": [
+        90.0,
+        45.0,
+        695.0,
+        308.0
+      ],
+      "binding_bbox_iou": 0.8880659481479511,
+      "binding_bbox_recall": 0.9133110346608615,
+      "reference_mask_bbox_precision": 0.9698142816212552,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 1.0559930999879725
+      }
+    },
+    "DR02": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "1a68ebd05cc01dc5c22d8797a1d90c564381653dfc8e3832b95f2a5b235bbbe0",
+      "mask_pixels": 12482,
+      "mask_bbox_xyxy": [
+        474.0,
+        282.0,
+        793.0,
+        339.0
+      ],
+      "binding_bbox_iou": 0.8076464858129425,
+      "binding_bbox_recall": 0.837636238593935,
+      "reference_mask_bbox_precision": 0.9575518825338453,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.0959959999890998
+      }
+    },
+    "DR03": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "1e5f1958175c02d6f7aa6f07fb37f69c34a5e1372acc759751db1092f36b313e",
+      "mask_pixels": 82468,
+      "mask_bbox_xyxy": [
+        188.0,
+        207.0,
+        636.0,
+        413.0
+      ],
+      "binding_bbox_iou": 0.90793445444442,
+      "binding_bbox_recall": 0.9330356871240217,
+      "reference_mask_bbox_precision": 0.9712219871008716,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09313439996913075
+      }
+    }
+  },
+  "sibling_absence_receipts": {
+    "N_DR01_DR02": {
+      "authority": "PROVIDER_REGISTERED_EXACT_TARGET_ZERO_PROJECTED_VERTICES",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "reference_target_instance_id": 18,
+      "sibling_target_instance_id": 34,
+      "query_scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "query_frame": 551,
+      "target_mesh_vertices": 1796,
+      "projected_inside_vertices": 0,
+      "ply_path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/labels.instances.annotated.v2.ply",
+      "ply_sha256": "044442f966bf0dd00534088aefa77864e9f1d8fdcd089b9c7e2592cb77d961d2"
+    },
+    "N_DR02_DR01": {
+      "authority": "PROVIDER_REGISTERED_EXACT_TARGET_ZERO_PROJECTED_VERTICES",
+      "reference_scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "reference_target_instance_id": 34,
+      "sibling_target_instance_id": 18,
+      "query_scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "query_frame": 237,
+      "target_mesh_vertices": 319,
+      "projected_inside_vertices": 0,
+      "ply_path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/labels.instances.annotated.v2.ply",
+      "ply_sha256": "2a6c3ec9b773083f6d0f644a1bde317664531073aabc26b9231445b25133c626"
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 5,
+    "sam2_calls": 3,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "This consumed posthoc Development test checks a target-excluded image-estimated global epipolar gate on three positives and two frozen same-scene sibling-door negatives. Provider geometry supplies negative labels only and does not enter F estimation. A pass would not establish arbitrary sibling-door rejection, raw-camera binding, provider-independent generalization, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit, reliability or safety."
+}
