@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist-l10-3rscan-partial-view-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-partial-view-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T07:01:00+08:00",
+  "question": "Does the pre-download-frozen third 3RScan family contain one anti-sliver, depth-consistent partial view on both sides before any RGB member or model is opened?",
+  "implementation": {
+    "path": "l10_3rscan_partial_view_confirmation_source.py",
+    "sha256": "d916eebea4ac657ac91677255b0d8afe421d937884f33c0b1236f874f673c9ac"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_multiview_observation_portfolio_posthoc.py",
+      "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_observation_adequacy_posthoc.py",
+      "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    }
+  ],
+  "candidate": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_v3.json",
+    "sha256": "8dd9929af8f483e3c04ae5caae346394ac8fcf9469fb603318a27bbd38a12c7e"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_THIRD_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {
+        "path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/semseg.v2.json",
+        "bytes": 18090,
+        "sha256": "35dfe5cf7987551ef648436deefe6051539633b707c50b97539f92fcfef0641d"
+      },
+      {
+        "path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/labels.instances.annotated.v2.ply",
+        "bytes": 2806279,
+        "sha256": "ab37bdb8b7501123c8815f9df0e45ba54a6fc770a88742e97bc4cd4141c67e50"
+      },
+      {
+        "path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip",
+        "bytes": 27142949,
+        "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"
+      },
+      {
+        "path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/semseg.v2.json",
+        "bytes": 16545,
+        "sha256": "ee5ef04188e507d3ca0d7538ba770018ad829cdbb525b4dc8456ff9f59fd52c7"
+      },
+      {
+        "path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/labels.instances.annotated.v2.ply",
+        "bytes": 2575791,
+        "sha256": "281216447e3486ea69c12693f2cfda0cb566a543d9cef56ca96093a1f0c1f3f7"
+      },
+      {
+        "path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip",
+        "bytes": 22804430,
+        "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"
+      }
+    ]
+  },
+  "partial_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.25,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15
+  },
+  "next_action": {
+    "evaluable": "Freeze the selected reference and query RGB members plus the unchanged NC31 and NC08 target-absent controls, then run the unchanged coherent-cycle component carrier once.",
+    "not_evaluable": "Retain the geometry/depth source receipt, do not open RGB or call a model, and select another pre-download-frozen family only under a new protocol."
+  },
+  "claim_boundary": "This source gate can establish only whether the frozen third family supplies one anti-sliver, depth-consistent partial observation on each side. It is not model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

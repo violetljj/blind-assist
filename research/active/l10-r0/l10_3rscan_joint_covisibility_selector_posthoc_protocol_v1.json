@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist-l10-3rscan-joint-covisibility-selector-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-joint-covisibility-selector-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T07:05:30+08:00",
+  "question": "After independent maximum-visible view selection produced zero reference cycles, does ranking consumed PV28 frame pairs by mutually visible registered physical target surface expose a stronger transport opportunity without RGB or model access?",
+  "implementation": {
+    "path": "l10_3rscan_joint_covisibility_selector_posthoc.py",
+    "sha256": "1c6f19baf5df0043f1ef24b5b6cabe1bf3354f331323cbbb8c7703fca14c02fd"
+  },
+  "source_result": {
+    "path": "l10_3rscan_partial_view_confirmation_source_result_v1.json",
+    "sha256": "24b507ed3bd8f468f6161dc576d44e470bd87b0ce8f7c5d9418cb170dcad7558"
+  },
+  "terminal_receipt": {
+    "path": "l10_3rscan_partial_view_confirmation_terminal_receipt_v1.json",
+    "sha256": "2254c99c4eb72494f76edad59ae08ad64ed7021c9a50274fa887446c11228c5b"
+  },
+  "source": {
+    "authority": "CONSUMED_PV28_OFFICIAL_3RSCAN_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/labels.instances.annotated.v2.ply", "bytes": 2806279, "sha256": "ab37bdb8b7501123c8815f9df0e45ba54a6fc770a88742e97bc4cd4141c67e50"},
+      {"path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip", "bytes": 27142949, "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"},
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/labels.instances.annotated.v2.ply", "bytes": 2575791, "sha256": "281216447e3486ea69c12693f2cfda0cb566a543d9cef56ca96093a1f0c1f3f7"},
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip", "bytes": 22804430, "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"}
+    ]
+  },
+  "candidate_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "surface_correspondence": {
+    "method": "Mutual nearest target-mesh vertices after the official rescan-to-reference transform.",
+    "maximum_distance_metres": 0.1
+  },
+  "ranking": "Maximize mutually corresponding physical target vertices that are depth-consistent visible in both frames; ties prefer aligned view direction, stronger minimum short side and depth visibility, then earlier frames.",
+  "report_top_pairs": 10,
+  "literature_motivation": [
+    {
+      "source": "Sattler et al., Improving Image-Based Localization by Active Correspondence Search, ECCV 2012",
+      "url": "https://graphics.rwth-aachen.de/media/papers/poster_eccv2012_small.pdf",
+      "use": "Prioritize correspondence opportunities using covisibility instead of treating views independently."
+    },
+    {
+      "source": "Jiang et al., R-SCoRe supplementary, CVPR 2025",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/supplemental/Jiang_R-SCoRe_Revisiting_Scene_CVPR_2025_supplemental.pdf",
+      "use": "Frustum overlap and covisibility graphs can approximate matchable image relationships without feature-model selection."
+    },
+    {
+      "source": "Learning Where to Look: Self-supervised Viewpoint Selection for Active Localization, 2024",
+      "url": "https://arxiv.org/abs/2407.15593",
+      "use": "Active localization should select viewpoints for localization quality, not visibility alone."
+    }
+  ],
+  "next_action": "If the selected pair materially increases jointly visible registered target surface over frames 92/111, freeze that one pair for one consumed-source unchanged-carrier Development replay; otherwise abandon this selector.",
+  "claim_boundary": "This consumed-source geometry/depth diagnostic can rank joint physical-surface visibility only. It is not RGB correspondence evidence, confirmation, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

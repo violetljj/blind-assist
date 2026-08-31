@@ -1,0 +1,151 @@
+{
+  "schema": "blindassist-l10-3rscan-joint-transport-opportunity-posthoc-result-v1",
+  "authority": "CONSUMED_SOURCE_GEOMETRY_DEPTH_ONLY_VIEWPOINT_TRANSPORT_OPPORTUNITY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_joint_transport_opportunity_posthoc_protocol_v1.json",
+  "protocol_sha256": "7ef4adf8490b18b750d0a7032a097015ef3f4fb5e961c536590518d7b2839154",
+  "implementation": {
+    "path": "l10_3rscan_joint_transport_opportunity_posthoc.py",
+    "sha256": "4b6bb75216519e331406a0235e372e202e4d2e7822104bf65d34794a5b2308e8"
+  },
+  "conclusion": "L10_3RSCAN_JOINT_TRANSPORT_OPPORTUNITY_POSTHOC_DIAGNOSTIC_ONLY",
+  "score": "joint_visible_surface_fraction * max(0, view_direction_cosine); no learned or fitted weight and no threshold",
+  "baseline": {
+    "reference": {
+      "frame": 92,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 112,
+      "inside_vertex_fraction": 0.3303834808259587,
+      "projected_area_pixels": 108732.23590138671,
+      "image_margin_pixels": 9.2596435546875,
+      "bbox_xyxy": [
+        675.2054443359375,
+        21.620155334472656,
+        949.7403564453125,
+        483.33978271484375
+      ],
+      "depth_compared_vertices": 85,
+      "depth_visible_vertices": 78,
+      "depth_visible_ratio": 0.9176470588235294,
+      "bbox_width_pixels": 274.534912109375,
+      "bbox_height_pixels": 461.7196273803711,
+      "bbox_short_side_pixels": 274.534912109375,
+      "bbox_short_side_fraction": 0.5083979853877315,
+      "bbox_aspect_ratio": 1.681824813582986,
+      "visible_target_vertices": 78,
+      "zip_member": "frame-000092.color.jpg"
+    },
+    "query": {
+      "frame": 111,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 108,
+      "inside_vertex_fraction": 0.2621359223300971,
+      "projected_area_pixels": 82447.05909038999,
+      "image_margin_pixels": 0.12322998046875,
+      "bbox_xyxy": [
+        46.785675048828125,
+        416.4000549316406,
+        914.1476440429688,
+        538.8767700195312
+      ],
+      "depth_compared_vertices": 100,
+      "depth_visible_vertices": 86,
+      "depth_visible_ratio": 0.86,
+      "bbox_width_pixels": 867.3619689941406,
+      "bbox_height_pixels": 122.47671508789062,
+      "bbox_short_side_pixels": 122.47671508789062,
+      "bbox_short_side_fraction": 0.2268087316442419,
+      "bbox_aspect_ratio": 7.081851994248149,
+      "visible_target_vertices": 86,
+      "zip_member": "frame-000111.color.jpg"
+    },
+    "mutual_surface_vertices": 162,
+    "joint_visible_surface_vertices": 15,
+    "joint_visible_surface_fraction": 0.09259259259259259,
+    "view_direction_cosine": 0.722006585832162,
+    "transport_opportunity_score": 0.06685246165112611
+  },
+  "selected": {
+    "reference": {
+      "frame": 92,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 112,
+      "inside_vertex_fraction": 0.3303834808259587,
+      "projected_area_pixels": 108732.23590138671,
+      "image_margin_pixels": 9.2596435546875,
+      "bbox_xyxy": [
+        675.2054443359375,
+        21.620155334472656,
+        949.7403564453125,
+        483.33978271484375
+      ],
+      "depth_compared_vertices": 85,
+      "depth_visible_vertices": 78,
+      "depth_visible_ratio": 0.9176470588235294,
+      "bbox_width_pixels": 274.534912109375,
+      "bbox_height_pixels": 461.7196273803711,
+      "bbox_short_side_pixels": 274.534912109375,
+      "bbox_short_side_fraction": 0.5083979853877315,
+      "bbox_aspect_ratio": 1.681824813582986,
+      "visible_target_vertices": 78,
+      "zip_member": "frame-000092.color.jpg"
+    },
+    "query": {
+      "frame": 64,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 88,
+      "inside_vertex_fraction": 0.21359223300970873,
+      "projected_area_pixels": 24219.990872781724,
+      "image_margin_pixels": 2.74462890625,
+      "bbox_xyxy": [
+        817.426513671875,
+        191.42828369140625,
+        956.25537109375,
+        533.6212158203125
+      ],
+      "depth_compared_vertices": 36,
+      "depth_visible_vertices": 34,
+      "depth_visible_ratio": 0.9444444444444444,
+      "bbox_width_pixels": 138.828857421875,
+      "bbox_height_pixels": 342.19293212890625,
+      "bbox_short_side_pixels": 138.828857421875,
+      "bbox_short_side_fraction": 0.25709047670717594,
+      "bbox_aspect_ratio": 2.464854486910065,
+      "visible_target_vertices": 34,
+      "zip_member": "frame-000064.color.jpg"
+    },
+    "mutual_surface_vertices": 162,
+    "joint_visible_surface_vertices": 12,
+    "joint_visible_surface_fraction": 0.07407407407407407,
+    "view_direction_cosine": 0.9889951278408142,
+    "transport_opportunity_score": 0.07325889835857882
+  },
+  "selected_minus_baseline_score": 0.006406436707452709,
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "literature_motivation": [
+    {
+      "source": "Lu and Du, Raising the Ceiling: Conflict-Free Local Feature Matching with Dynamic View Switching, ECCV 2024",
+      "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/05862.pdf",
+      "use": "Matchability is limited by the selected source/target view relationship, not only matcher capacity."
+    },
+    {
+      "source": "Learning Where to Look: Self-supervised Viewpoint Selection for Active Localization, 2024",
+      "url": "https://arxiv.org/abs/2407.15593",
+      "use": "View selection should optimize localization usefulness rather than independent visibility."
+    }
+  ],
+  "next_action": "If the selected pair differs from 92/111 and strictly improves the fixed transport-opportunity score, run the unchanged coherent-cycle component carrier once on that pair with the same two controls; otherwise stop.",
+  "claim_boundary": "This consumed-source reranking uses only previously opened geometry/depth diagnostics. It is not RGB match evidence, confirmation, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

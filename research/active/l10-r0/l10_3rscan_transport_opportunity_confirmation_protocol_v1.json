@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-transport-opportunity-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T07:22:00+08:00",
+  "question": "Does the unchanged coherent-cycle component carrier commit the pre-model transport-opportunity-admitted TO03 positive and reject both fixed cross-scene controls?",
+  "implementation": {"path": "l10_3rscan_cycle_component_open_set_posthoc.py", "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"},
+  "dependencies": [
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py", "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py", "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"},
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_transport_opportunity_source_result_v1.json",
+    "result_sha256": "8b6942b905a7ada15ee23de6436bdd634efbf68b53a5ed5ce73885dcb8c002f5",
+    "required_conclusion": "L10_3RSCAN_TRANSPORT_OPPORTUNITY_SOURCE_EVALUABLE",
+    "single_change": "Apply the unchanged carrier to the first new family whose geometry/depth-selected frame pair passed fixed 0.1 mutually visible surface and 0.9 viewing-direction floors before RGB/model access."
+  },
+  "source": {
+    "authority": "FROZEN_NEW_SOURCE_PRE_RGB_MODEL_TRANSPORT_OPPORTUNITY_CONFIRMATION",
+    "source_protocol_path": "l10_3rscan_transport_opportunity_confirmation_freeze_protocol_v1.json",
+    "source_protocol_sha256": "bbd60c712a73fbafd5d7436d3f703445948bee82e173d0e377186cfcd8c7e762",
+    "cohort_path": "l10_3rscan_transport_opportunity_confirmation_cohort_v1.json",
+    "cohort_sha256": "da6e5ce047df2d65b054b6226337a750fbfd1b502377988437cb31918371f1e6",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/1dd7209f-2ba0-22d9-8b9e-b5e270b2580f/sequence.zip", "bytes": 31411639, "sha256": "27c75f3d5304d6157b72261576cffec2b5b0d7ac386d1be514b9b3b8bfd7ab92"},
+      {"path": "datasets/3rscan/1dd720a1-2ba0-22d9-8b6e-bb00c888a414/sequence.zip", "bytes": 25148910, "sha256": "c074ec5759aba73c8778828717088b0e587b2fb484cf747d7ea35a40614eba74"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "models": {
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_NARROW_CONFIRMATION_ONLY",
+    "support_surface": "One native SAM2 mask from the frozen reference bbox.",
+    "extent_surface": "Frozen reference bbox transported independently to each query.",
+    "query_truth_isolation": "Positive query bbox opens only after transport; negatives receive no exact-target query truth."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Unchanged full-frame symmetric RoMa, bilateral 0.05 certainty, in-bounds target, 0.013888888888888888 round-trip error, largest 8-connected reference cycle component, ordinary affine fit and bound-extent transport.",
+    "component_tie_break": "Maximum area then lowest label; no fallback.",
+    "mask": "One native reference and query SAM2 identity-support mask; no selection, morphology or retry.",
+    "query_extent": "Transported bbox; query SAM mask is support only."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Frozen cycle opportunity plus dominant-component majority; global purity remains diagnostic only."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_TO03_TO03", "reference_episode": "TO03", "query_episode": "TO03", "label": "target_present"},
+      {"id": "N_TO03_NC31", "reference_episode": "TO03", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_TO03_NC08", "reference_episode": "TO03", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Different physical 3RScan reference families cannot contain exact target TO03."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 1,
+    "required_target_absent_pairs": 2,
+    "minimum_positive_commits": 1,
+    "maximum_target_absent_false_commits": 0,
+    "minimum_reference_cycle_fraction": 0.01,
+    "minimum_dominant_component_cycle_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5
+  },
+  "forbidden_after_freeze": [
+    "change source gate, views, models, mask, cycle, component, affine fit, controls or gates",
+    "use query truth or pair outcomes to repair the carrier",
+    "retry, replace or remove a failed pair"
+  ],
+  "claim_boundary": "This is one pre-download-frozen new physical target/family under a pre-model transport-opportunity gate and unchanged carrier, with two fixed target-absent controls. A pass is narrow same-provider action-plus-carrier confirmation, not arbitrary sibling rejection, provider independence, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

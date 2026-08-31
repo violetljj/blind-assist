@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist-l10-3rscan-partial-view-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-partial-view-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T07:04:00+08:00",
+  "question": "Does the unchanged coherent-cycle component carrier transfer to one pre-download-frozen, new-family partial-view doorframe and reject both fixed cross-scene exact-target-absent controls?",
+  "implementation": {
+    "path": "l10_3rscan_partial_view_confirmation_freeze.py",
+    "sha256": "31a235f6e505d70f3351a0f7caadb54ea50e2e62c1df8ad55360eb89d2343f45"
+  },
+  "source_result": {
+    "path": "l10_3rscan_partial_view_confirmation_source_result_v1.json",
+    "sha256": "24b507ed3bd8f468f6161dc576d44e470bd87b0ce8f7c5d9418cb170dcad7558",
+    "required_conclusion": "L10_3RSCAN_PARTIAL_VIEW_CONFIRMATION_SOURCE_EVALUABLE"
+  },
+  "controls": {
+    "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"
+  },
+  "source": {
+    "authority": "FROZEN_NEW_SOURCE_PRE_RGB_MODEL_PARTIAL_VIEW_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip": {
+        "path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip",
+        "bytes": 27142949,
+        "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"
+      },
+      "1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip": {
+        "path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip",
+        "bytes": 22804430,
+        "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"
+      },
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+        "bytes": 46320073,
+        "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+      },
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip",
+        "bytes": 35895970,
+        "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"
+      }
+    }
+  },
+  "selection": {
+    "episode_id": "PV28",
+    "positive_authority": "First pre-download-frozen new family that passed the fixed partial-view source gate; select its unique admitted reference and query views before RGB/model access.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_PV28_PV28", "reference_episode": "PV28", "query_episode": "PV28", "label": "target_present"},
+      {"id": "N_PV28_NC31", "reference_episode": "PV28", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_PV28_NC08", "reference_episode": "PV28", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Both control queries come from a different physical 3RScan reference family and cannot contain exact target PV28."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, reference/query frame, controls, models, carrier or gates",
+    "inspect RGB or model outcomes before the cohort is frozen",
+    "retry, replace or remove a failed pair",
+    "claim same-provider narrow confirmation as portal, navigation, benefit or safety evidence"
+  ],
+  "claim_boundary": "This freezes one new physical target and scan family selected before download, RGB and model access, plus two fixed target-absent controls. A success would be narrow same-provider partial-view carrier confirmation, not arbitrary sibling rejection, provider independence, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

@@ -49,6 +49,16 @@ Status: `ACTIVE`
   cross-scene negatives had zero cycles, but the extent gate rejected a stable
   wrong-structure binding at IoU `0.065`. Robust projective transport raised IoU
   only to `0.082`; geometry fitting is frozen as the wrong repair layer.
+  Observation admission is now upgraded from independent visibility to
+  pre-model transport opportunity. A third new family showed why: despite
+  strong per-view visibility, RoMa had zero cycles, whole-box support did not
+  help, and EfficientLoFTR missed the positive while falsely supporting one
+  negative. The next metadata-frozen family passed fixed joint-surface/view-
+  direction floors (`0.402` overlap, `0.979` cosine) and the unchanged carrier
+  then reached `1/1` positive and `0/2` false commits, with `0.132` cycle
+  fraction, `0.500` component dominance, and `0.648` transported-extent IoU.
+  This is narrow same-provider confirmation of the action-plus-carrier
+  component, not portal or navigation authority.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -4040,6 +4050,35 @@ that the one-frame `0.98` completeness requirement discarded. Because OA2 was
 consumed by source diagnosis, this remains Development; freeze the rule and
 require a third pre-RGB/model scan family before confirmation.
 
+That third family (`1d23401e -> 1d234014`, target `28`) passed the independent
+anti-sliver source gate on frames `92 -> 111` but produced zero RoMa reference
+cycles. A posthoc registered-surface audit found only `15/162` mutually visible
+target vertices (`0.092593`) and viewing-direction cosine `0.722007`. The same
+pair remained zero-cycle with the complete reference binding box as support.
+Frozen EfficientLoFTR also failed cleanly: the positive had `63` matches but
+only `5` homography inliers against the inherited `6`-inlier gate, while one
+cross-scene negative reached `6` inliers and falsely committed. A no-threshold
+surface-overlap times viewing-direction rerank selected frames `92 -> 64`
+(`0.988995` cosine) but the unchanged RoMa carrier again had zero cycles. Freeze
+that family for these carriers; it is a source-family transport failure, not a
+reason to lower match or cycle thresholds.
+
+The next source gate moved the missing condition before pixel/model access. It
+admitted a frame pair only with at least `0.10` mutually visible registered
+target surface and `0.90` viewing-direction cosine, then ranked by their
+scale-free product. The next metadata-frozen family
+`1dd7209f -> 1dd720a1`, target `3`, passed on frames `84 -> 0` with `179/445`
+mutual vertices (`0.402247`), cosine `0.978666`, and score `0.393666`; RGB and
+model calls were still zero. The unchanged RoMa/SAM coherent-component carrier
+then committed the new-source positive and rejected both fixed cross-scene
+target-absent controls. The positive had cycle fraction `0.132233`, dominant-
+component fraction `0.500136`, affine residual `0.008118` normalized, and
+transported extent IoU `0.648127`; both negatives had zero cycles. Record narrow
+same-provider confirmation of the transport-opportunity action policy plus
+unchanged carrier. This does not establish arbitrary sibling rejection,
+raw-camera initial binding, named entrance, ownership, access, traversability,
+waypoint, arrival, handoff, deployment, benefit, reliability, or safety.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4094,6 +4133,26 @@ Evidence:
   `54898b595e4ec69d7bd46bae259504abaca7a68f9fc746b8f281bf0414f206e6`,
   `024b40284017a9aa2c483a42de6a218fd53314724ea8684d56499757782b5803`,
   and `f9a77c57a0fe88a5c207badf237494fb920f1a4d8d37ef501285630880c2f8ef`;
+- failed third-family terminal, covisibility diagnostic, EfficientLoFTR result,
+  and aligned-view terminal SHA-256:
+  `2254c99c4eb72494f76edad59ae08ad64ed7021c9a50274fa887446c11228c5b`,
+  `68949cc33b23ed768b9755c31d5475d945f2a14f4a0a9bf7d57c24e2e22053cc`,
+  `970bd952255a20e31cba8bc21e9612142c810a980febc63499ae644bb6d66c5e`,
+  and `bc6db3c7e1b18d642b461ffb4a979d0d46fd7d0e1616ee34f00486d8b725c9ae`;
+- transport-opportunity candidate protocol/result and source
+  implementation/protocol/result SHA-256:
+  `ceff0009184d1ab8ccc7842afbae78beea4e21715265e80d323f24008a34e0b7`,
+  `f79ad24ca1d79e17bf3c3cb0acca22b647eadeafac11e7b5c6ba8a81edd419d8`,
+  `e12d8b62e5c41053e523cd4baeefe2e410d9438d9e3735b20f8441a7820c4cdb`,
+  `d469bbc55cd0c9c07e09c91a1cea8af71ee402e58f17e2989fb63a4c8a368aea`,
+  and `8b6942b905a7ada15ee23de6436bdd634efbf68b53a5ed5ce73885dcb8c002f5`;
+- transport-opportunity confirmation freeze implementation/protocol/cohort and
+  carrier protocol/result SHA-256:
+  `6d354e14cd9682c78c7369f59e90e08e3ab9523c63af8cf49f6d5af47634ec9e`,
+  `bbd60c712a73fbafd5d7436d3f703445948bee82e173d0e377186cfcd8c7e762`,
+  `da6e5ce047df2d65b054b6226337a750fbfd1b502377988437cb31918371f1e6`,
+  `0b964118f2e72886eafc821683555dc4b1311e16053f06b7e77b704001169cc5`,
+  and `89ee1c31008d8943181616a1c91d1edcfcbb609008561413d7b5a8bde3a33460`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist-l10-3rscan-efficientloftr-target-to-scene-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-efficientloftr-target-to-scene-posthoc-protocol-v2",
+  "frozen_at": "2026-09-01T07:11:45+08:00",
+  "question": "Can the already-frozen EfficientLoFTR absolute-support mechanism transport the consumed PV28 reference binding into the full query scene after fixed RoMa produced zero cycles, while rejecting both cross-scene controls?",
+  "implementation": {
+    "path": "l10_3rscan_efficientloftr_target_to_scene_posthoc.py",
+    "sha256": "3f849d9d0a5f67a443d1f09e8a378a5cfb48e22cdacf0d1b6f2650dd783decec"
+  },
+  "dependencies": [
+    {"path": "l10_scenenn_efficientloftr_fresh_none.py", "sha256": "a12cd318736150547d5acad97902cebd28a9256da858d25e421ec9601465ffda"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_reference_support_cascade_posthoc_terminal_receipt_v1.json",
+    "sha256": "e4f0ac63de5758850912096cc25d7abf283190747561c5ee4a6ac632054e2a32",
+    "required_conclusion": "L10_3RSCAN_REFERENCE_SUPPORT_CASCADE_POSTHOC_DEVELOPMENT_GATE_NOT_MET_ZERO_CYCLES",
+    "single_change": "Replace RoMa cycle transport with frozen EfficientLoFTR target-crop-to-full-scene homography support. Keep PV28 views, reference binding, two target-absent controls, 6-pixel RANSAC tolerance, 8-match/6-inlier absolute-support gate and 0.5 positive extent IoU gate fixed."
+  },
+  "source": {
+    "authority": "CONSUMED_PV28_POSTHOC_DEVELOPMENT_WITH_FIXED_CONTROLS",
+    "cohort_path": "l10_3rscan_partial_view_confirmation_cohort_v1.json",
+    "cohort_sha256": "68f1c81c6c0859ee4b82f8c21baa125631276c09307c450f6ceec7f97d77c01c",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip", "bytes": 27142949, "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"},
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip", "bytes": 22804430, "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "models": {
+    "matcher": {"path": "artifacts.local/models/p1_w2_efficientloftr_face1a79/model.safetensors", "sha256": "00a5edc343fa222eba763643553548ad37a05aa3d00d266553c9f6cf67bb0e64"},
+    "config": {"path": "artifacts.local/models/p1_w2_efficientloftr_face1a79/config.json", "sha256": "eaa141ed38f64ec65efe7b663338e2b44d260ff2b26f5829624e5241ff29f1d8"},
+    "preprocessor": {"path": "artifacts.local/models/p1_w2_efficientloftr_face1a79/preprocessor_config.json", "sha256": "22151d20a71d5d25bee2b5f5c3a5999befa3285597218a9d1ea63998f84dc606"}
+  },
+  "matcher": {
+    "path": "artifacts.local/models/p1_w2_efficientloftr_face1a79",
+    "reference_crop_expansion": 1.25,
+    "query_input": "full frozen 960x540 query frame",
+    "postprocess_score_threshold": 0.2,
+    "minimum_matches": 8,
+    "homography_ransac_reprojection_pixels": 6.0,
+    "minimum_homography_inliers": 6,
+    "absolute_support": "At least eight retained matches, a finite RANSAC homography and at least six inliers.",
+    "adaptation": "none; CPU inference; no threshold or score fitting"
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_PV28_PV28", "reference_episode": "PV28", "query_episode": "PV28", "label": "target_present"},
+      {"id": "N_PV28_NC31", "reference_episode": "PV28", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_PV28_NC08", "reference_episode": "PV28", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Different physical 3RScan reference families cannot contain exact target PV28."
+  },
+  "decision_gate": {
+    "minimum_positive_commits": 1,
+    "maximum_target_absent_false_commits": 0,
+    "minimum_positive_extent_target_bbox_iou": 0.5
+  },
+  "forbidden_after_freeze": [
+    "change matcher, processor, crop expansion, views, controls, score, match minimum, inlier minimum, RANSAC tolerance or extent gate",
+    "use positive query truth before homography transport",
+    "retry, replace or remove a failed pair",
+    "combine RoMa and EfficientLoFTR outcomes on this consumed cohort"
+  ],
+  "implementation_correction": "The first attempt completed all three matcher calls but failed before serialization because it referenced a nonexistent writer attribute. V2 uses the existing atomic JSON writer; no input, model, match, homography or decision rule changed.",
+  "claim_boundary": "This is a structurally different, consumed-source Development challenge of target-crop-to-scene local correspondence on one positive and two exact-target-absent controls. It is not confirmation, arbitrary sibling rejection, raw-camera referent acquisition, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

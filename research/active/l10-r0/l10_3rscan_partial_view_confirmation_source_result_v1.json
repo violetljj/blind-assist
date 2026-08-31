@@ -1,0 +1,199 @@
+{
+  "schema": "blindassist-l10-3rscan-partial-view-confirmation-source-result-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_PARTIAL_VIEW_SOURCE_RESULT",
+  "protocol_path": "l10_3rscan_partial_view_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "5cf835e32529f0c17a1fb8e8b1a08c5fe9a49ed74292c5e0a4714f2b4f79aec4",
+  "implementation": {
+    "path": "l10_3rscan_partial_view_confirmation_source.py",
+    "sha256": "d916eebea4ac657ac91677255b0d8afe421d937884f33c0b1236f874f673c9ac"
+  },
+  "candidate": {
+    "reference_scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+    "rescan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+    "target_instance_id": 28,
+    "target_label": "doorframe",
+    "rescan_door_instance_ids": [
+      6,
+      28
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.8743266463279724,
+      0.48527905344963074,
+      0.007565373554825783,
+      0,
+      -0.4853275716304779,
+      0.8743038177490234,
+      0.007069608196616173,
+      0,
+      -0.003183702239766717,
+      -0.009852830320596695,
+      0.9999463558197021,
+      0,
+      -0.21758173406124115,
+      0.9294885396957397,
+      0.16420958936214447,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_PARTIAL_VIEW_CONFIRMATION_SOURCE_EVALUABLE",
+  "source_evaluable": true,
+  "reference": {
+    "frame": 92,
+    "color_size": [
+      960,
+      540
+    ],
+    "inside_vertices": 112,
+    "inside_vertex_fraction": 0.3303834808259587,
+    "projected_area_pixels": 108732.23590138671,
+    "image_margin_pixels": 9.2596435546875,
+    "bbox_xyxy": [
+      675.2054443359375,
+      21.620155334472656,
+      949.7403564453125,
+      483.33978271484375
+    ],
+    "depth_compared_vertices": 85,
+    "depth_visible_vertices": 78,
+    "depth_visible_ratio": 0.9176470588235294,
+    "bbox_width_pixels": 274.534912109375,
+    "bbox_height_pixels": 461.7196273803711,
+    "bbox_short_side_pixels": 274.534912109375,
+    "bbox_short_side_fraction": 0.5083979853877315,
+    "bbox_aspect_ratio": 1.681824813582986,
+    "visible_target_vertices": 78,
+    "zip_member": "frame-000092.color.jpg",
+    "marginal_visible_target_vertices": 78,
+    "cumulative_visible_target_vertices": 78,
+    "cumulative_visible_target_fraction": 0.23008849557522124
+  },
+  "query": {
+    "frame": 111,
+    "color_size": [
+      960,
+      540
+    ],
+    "inside_vertices": 108,
+    "inside_vertex_fraction": 0.2621359223300971,
+    "projected_area_pixels": 82447.05909038999,
+    "image_margin_pixels": 0.12322998046875,
+    "bbox_xyxy": [
+      46.785675048828125,
+      416.4000549316406,
+      914.1476440429688,
+      538.8767700195312
+    ],
+    "depth_compared_vertices": 100,
+    "depth_visible_vertices": 86,
+    "depth_visible_ratio": 0.86,
+    "bbox_width_pixels": 867.3619689941406,
+    "bbox_height_pixels": 122.47671508789062,
+    "bbox_short_side_pixels": 122.47671508789062,
+    "bbox_short_side_fraction": 0.2268087316442419,
+    "bbox_aspect_ratio": 7.081851994248149,
+    "visible_target_vertices": 86,
+    "zip_member": "frame-000111.color.jpg",
+    "marginal_visible_target_vertices": 86,
+    "cumulative_visible_target_vertices": 86,
+    "cumulative_visible_target_fraction": 0.2087378640776699
+  },
+  "reference_diagnostic": {
+    "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+    "target_instance_id": 28,
+    "target_vertices": 339,
+    "eligible_partial_views": 1,
+    "portfolio_budget": 1,
+    "selected": [
+      {
+        "frame": 92,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 112,
+        "inside_vertex_fraction": 0.3303834808259587,
+        "projected_area_pixels": 108732.23590138671,
+        "image_margin_pixels": 9.2596435546875,
+        "bbox_xyxy": [
+          675.2054443359375,
+          21.620155334472656,
+          949.7403564453125,
+          483.33978271484375
+        ],
+        "depth_compared_vertices": 85,
+        "depth_visible_vertices": 78,
+        "depth_visible_ratio": 0.9176470588235294,
+        "bbox_width_pixels": 274.534912109375,
+        "bbox_height_pixels": 461.7196273803711,
+        "bbox_short_side_pixels": 274.534912109375,
+        "bbox_short_side_fraction": 0.5083979853877315,
+        "bbox_aspect_ratio": 1.681824813582986,
+        "visible_target_vertices": 78,
+        "zip_member": "frame-000092.color.jpg",
+        "marginal_visible_target_vertices": 78,
+        "cumulative_visible_target_vertices": 78,
+        "cumulative_visible_target_fraction": 0.23008849557522124
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 78,
+    "final_cumulative_visible_target_fraction": 0.23008849557522124,
+    "opened": {
+      "pose_members": 167,
+      "depth_members": 167,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "query_diagnostic": {
+    "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+    "target_instance_id": 28,
+    "target_vertices": 412,
+    "eligible_partial_views": 1,
+    "portfolio_budget": 1,
+    "selected": [
+      {
+        "frame": 111,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 108,
+        "inside_vertex_fraction": 0.2621359223300971,
+        "projected_area_pixels": 82447.05909038999,
+        "image_margin_pixels": 0.12322998046875,
+        "bbox_xyxy": [
+          46.785675048828125,
+          416.4000549316406,
+          914.1476440429688,
+          538.8767700195312
+        ],
+        "depth_compared_vertices": 100,
+        "depth_visible_vertices": 86,
+        "depth_visible_ratio": 0.86,
+        "bbox_width_pixels": 867.3619689941406,
+        "bbox_height_pixels": 122.47671508789062,
+        "bbox_short_side_pixels": 122.47671508789062,
+        "bbox_short_side_fraction": 0.2268087316442419,
+        "bbox_aspect_ratio": 7.081851994248149,
+        "visible_target_vertices": 86,
+        "zip_member": "frame-000111.color.jpg",
+        "marginal_visible_target_vertices": 86,
+        "cumulative_visible_target_vertices": 86,
+        "cumulative_visible_target_fraction": 0.2087378640776699
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 86,
+    "final_cumulative_visible_target_fraction": 0.2087378640776699,
+    "opened": {
+      "pose_members": 143,
+      "depth_members": 143,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Freeze the selected reference and query RGB members plus the unchanged NC31 and NC08 target-absent controls, then run the unchanged coherent-cycle component carrier once.",
+  "claim_boundary": "This source gate can establish only whether the frozen third family supplies one anti-sliver, depth-consistent partial observation on each side. It is not model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

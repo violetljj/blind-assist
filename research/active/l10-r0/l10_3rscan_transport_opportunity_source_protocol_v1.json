@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist-l10-3rscan-transport-opportunity-source-protocol-v1",
+  "protocol_id": "l10-3rscan-transport-opportunity-source-protocol-v1",
+  "frozen_at": "2026-09-01T07:20:00+08:00",
+  "question": "Does the metadata-frozen fourth family contain a geometry/depth-only frame pair with at least 10% mutually visible target surface and 0.9 aligned viewing direction before RGB/model access?",
+  "implementation": {"path": "l10_3rscan_transport_opportunity_source.py", "sha256": "e12d8b62e5c41053e523cd4baeefe2e410d9438d9e3735b20f8441a7820c4cdb"},
+  "dependencies": [
+    {"path": "l10_3rscan_joint_covisibility_selector_posthoc.py", "sha256": "1c6f19baf5df0043f1ef24b5b6cabe1bf3354f331323cbbb8c7703fca14c02fd"},
+    {"path": "l10_3rscan_multiview_observation_portfolio_posthoc.py", "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"},
+    {"path": "l10_3rscan_observation_adequacy_posthoc.py", "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "l10_3rscan_registered_extent_ceiling.py", "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"}
+  ],
+  "candidate": {"path": "l10_3rscan_transport_opportunity_candidate_v1.json", "sha256": "f79ad24ca1d79e17bf3c3cb0acca22b647eadeafac11e7b5c6ba8a81edd419d8"},
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_FOURTH_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/1dd7209f-2ba0-22d9-8b9e-b5e270b2580f/semseg.v2.json", "bytes": 21386, "sha256": "7dd0a9d2a7f8bba08c50a4a757c01980a38543ad064a9309cccdb56f1a9c0893"},
+      {"path": "datasets/3rscan/1dd7209f-2ba0-22d9-8b9e-b5e270b2580f/labels.instances.annotated.v2.ply", "bytes": 3845033, "sha256": "33067001cd24c1f908c3d7a8b6feb34b1260d4811537f87d14a3637a7cab970d"},
+      {"path": "datasets/3rscan/1dd7209f-2ba0-22d9-8b9e-b5e270b2580f/sequence.zip", "bytes": 31411639, "sha256": "27c75f3d5304d6157b72261576cffec2b5b0d7ac386d1be514b9b3b8bfd7ab92"},
+      {"path": "datasets/3rscan/1dd720a1-2ba0-22d9-8b6e-bb00c888a414/semseg.v2.json", "bytes": 19316, "sha256": "3256c3848d149ca0bdefd1708df565516ea311f95b4e4e91d651cc3669428f54"},
+      {"path": "datasets/3rscan/1dd720a1-2ba0-22d9-8b6e-bb00c888a414/labels.instances.annotated.v2.ply", "bytes": 3622465, "sha256": "e97a1fb9e75e7ebc97e86dfd0d2a2335fe2d0fbb59e0e322cd6ba6e28cd3b2ef"},
+      {"path": "datasets/3rscan/1dd720a1-2ba0-22d9-8b6e-bb00c888a414/sequence.zip", "bytes": 25148910, "sha256": "c074ec5759aba73c8778828717088b0e587b2fb484cf747d7ea35a40614eba74"}
+    ]
+  },
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "surface_correspondence": {"method": "Mutual nearest target-mesh vertices after official rescan-to-reference transform.", "maximum_distance_metres": 0.1},
+  "decision_gate": {"minimum_joint_visible_surface_fraction": 0.1, "minimum_view_direction_cosine": 0.9},
+  "next_action": {
+    "evaluable": "Freeze the selected RGB members plus unchanged NC31 and NC08 controls, then run the unchanged coherent-cycle component carrier once.",
+    "not_evaluable": "Retain the source receipt, do not open RGB or call a model, and move to another metadata-frozen family only under a new protocol."
+  },
+  "claim_boundary": "This source gate can establish only whether the frozen new family supplies a jointly visible and view-aligned partial observation pair. It is not RGB/model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

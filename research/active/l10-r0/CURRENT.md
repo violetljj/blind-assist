@@ -209,6 +209,34 @@ contract.
   consumed-source Development, but it establishes that observation admission,
   not another model threshold, was the decision-changing lever. Freeze the
   anti-sliver/max-new-visible-surface rule for a third pre-RGB/model family.
+
+  The third pre-download-frozen family passed that anti-sliver source gate but
+  exposed a sharper ceiling. Its independently maximum-visible frames had
+  strong per-view depth visibility (`0.918/0.860`) yet the unchanged RoMa
+  carrier produced zero reference cycles. Geometry showed that the selected
+  pair shared only `0.092593` of mutually registered target surface and had
+  viewing-direction cosine `0.722007`. Neither a whole-reference-box support
+  fallback nor a structurally different frozen EfficientLoFTR carrier repaired
+  it: EfficientLoFTR missed the positive (`5` inliers against `6`) and falsely
+  supported one negative (`6` inliers). A geometry-only rerank selected a
+  nearly aligned alternative (`0.988995` cosine), but RoMa still had zero
+  cycles. Freeze this family as RGB-transport-unreachable for the two tested
+  carriers; do not tune either matcher on it.
+
+  The successor therefore moved matchability into source admission. Before
+  RGB/model access it required at least `0.10` mutually visible registered
+  target surface and `0.90` viewing-direction cosine, then maximized their
+  product. The next metadata-frozen family (`1dd7209f -> 1dd720a1`, target `3`)
+  passed strongly on frames `84 -> 0`: mutual-surface fraction `0.402247`,
+  direction cosine `0.978666`, score `0.393666`, with `0` RGB/model calls. The
+  unchanged carrier then committed the new-source positive and rejected both
+  fixed cross-scene negatives with zero false commits. Positive cycle fraction
+  was `0.132233`, dominant-component fraction `0.500136`, and transported
+  extent IoU `0.648127`; both negatives had zero cycles. Record this as narrow
+  same-provider action-plus-carrier confirmation: the innovation is a
+  pre-model transport-opportunity observation gate, not a relaxed matcher.
+  It still proves no raw-camera referent acquisition, named entrance, ownership,
+  access, waypoint, arrival, handoff, user benefit, reliability, or safety.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

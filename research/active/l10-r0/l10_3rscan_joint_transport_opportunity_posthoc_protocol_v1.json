@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-joint-transport-opportunity-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-joint-transport-opportunity-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T07:13:00+08:00",
+  "question": "Does a scale-free product of jointly visible registered target surface and aligned viewing direction select a more matchable consumed PV28 pair than independent maximum visibility?",
+  "implementation": {
+    "path": "l10_3rscan_joint_transport_opportunity_posthoc.py",
+    "sha256": "4b6bb75216519e331406a0235e372e202e4d2e7822104bf65d34794a5b2308e8"
+  },
+  "joint_diagnostic": {
+    "path": "l10_3rscan_joint_covisibility_selector_posthoc_result_v1.json",
+    "sha256": "68949cc33b23ed768b9755c31d5475d945f2a14f4a0a9bf7d57c24e2e22053cc"
+  },
+  "matcher_challenge": {
+    "path": "l10_3rscan_efficientloftr_target_to_scene_posthoc_result_v1.json",
+    "sha256": "970bd952255a20e31cba8bc21e9612142c810a980febc63499ae644bb6d66c5e",
+    "required_conclusion": "L10_3RSCAN_EFFICIENTLOFTR_TARGET_TO_SCENE_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "score": "joint_visible_surface_fraction * max(0, view_direction_cosine); no learned or fitted weight and no threshold",
+  "ranking": "Maximum score, then earlier reference and query frames.",
+  "literature_motivation": [
+    {
+      "source": "Lu and Du, Raising the Ceiling: Conflict-Free Local Feature Matching with Dynamic View Switching, ECCV 2024",
+      "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/05862.pdf",
+      "use": "Matchability is limited by the selected source/target view relationship, not only matcher capacity."
+    },
+    {
+      "source": "Learning Where to Look: Self-supervised Viewpoint Selection for Active Localization, 2024",
+      "url": "https://arxiv.org/abs/2407.15593",
+      "use": "View selection should optimize localization usefulness rather than independent visibility."
+    }
+  ],
+  "next_action": "If the selected pair differs from 92/111 and strictly improves the fixed transport-opportunity score, run the unchanged coherent-cycle component carrier once on that pair with the same two controls; otherwise stop.",
+  "claim_boundary": "This consumed-source reranking uses only previously opened geometry/depth diagnostics. It is not RGB match evidence, confirmation, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

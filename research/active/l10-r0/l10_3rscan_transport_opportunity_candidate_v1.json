@@ -1,0 +1,93 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v3",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_protocol_v4.json",
+  "protocol_sha256": "ceff0009184d1ab8ccc7842afbae78beea4e21715265e80d323f24008a34e0b7",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude consumed targets, used reference families, and any candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 37,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "1dd7209f-2ba0-22d9-8b9e-b5e270b2580f",
+    "rescan_id": "1dd720a1-2ba0-22d9-8b6e-bb00c888a414",
+    "target_instance_id": 3,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      3,
+      5
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9583457112312317,
+      -0.2851255536079407,
+      0.016640685498714447,
+      0,
+      0.2852976322174072,
+      0.958396315574646,
+      -0.009042765013873577,
+      0,
+      -0.013370050117373466,
+      0.013413643464446068,
+      0.9998205900192261,
+      0,
+      -0.2554084360599518,
+      -0.22947907447814941,
+      0.047525979578495026,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "1dd7209f-2ba0-22d9-8b9e-b5e270b2580f",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1dd7209f-2ba0-22d9-8b9e-b5e270b2580f",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1dd7209f-2ba0-22d9-8b9e-b5e270b2580f",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "1dd720a1-2ba0-22d9-8b6e-bb00c888a414",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1dd720a1-2ba0-22d9-8b6e-bb00c888a414",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1dd720a1-2ba0-22d9-8b6e-bb00c888a414",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "surface_correspondence": "Mutual nearest target-mesh vertices after official rescan-to-reference transform, maximum distance 0.1 m.",
+    "pair_score": "joint_visible_surface_fraction * max(0, view_direction_cosine)",
+    "minimum_joint_visible_surface_fraction": 0.1,
+    "minimum_view_direction_cosine": 0.9,
+    "source_is_evaluable_only_if": "At least one pair independently meets both fixed joint-surface and viewpoint-agreement floors before RGB/model access."
+  },
+  "claim_boundary": "This freezes the first new family for the transport-opportunity source gate. It is metadata-only, not source evaluability, RGB/model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

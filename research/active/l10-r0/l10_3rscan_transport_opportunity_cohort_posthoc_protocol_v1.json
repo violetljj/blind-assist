@@ -1,0 +1,25 @@
+{
+  "schema": "blindassist-l10-3rscan-transport-opportunity-cohort-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-transport-opportunity-cohort-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T07:14:00+08:00",
+  "implementation": {
+    "path": "l10_3rscan_transport_opportunity_cohort_posthoc.py",
+    "sha256": "e9438f50964ff61589045c2d1304ffc9675c3e4fd6cb1261cf9e2e6121678829"
+  },
+  "base_cohort": {
+    "path": "l10_3rscan_partial_view_confirmation_cohort_v1.json",
+    "sha256": "68f1c81c6c0859ee4b82f8c21baa125631276c09307c450f6ceec7f97d77c01c"
+  },
+  "selection_result": {
+    "path": "l10_3rscan_joint_transport_opportunity_posthoc_result_v1.json",
+    "sha256": "60bbdbff2b918b4a0b96d33212b8cd94df161e8898358a63718b862f7ac5a40a",
+    "required_conclusion": "L10_3RSCAN_JOINT_TRANSPORT_OPPORTUNITY_POSTHOC_DIAGNOSTIC_ONLY"
+  },
+  "single_change": "Replace PV28 query frame 111 with geometry/depth-selected frame 64. Keep reference frame 92, exact target, controls and downstream carrier unchanged.",
+  "forbidden_after_freeze": [
+    "change score, selected frames, controls, model, cycle, affine extent or decision gates",
+    "inspect RGB/model outcome before cohort materialization",
+    "retry, replace or remove a failed pair"
+  ],
+  "claim_boundary": "This consumed-source cohort materializes one geometry/depth-selected alternative query observation and fixed controls. It is not confirmation, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

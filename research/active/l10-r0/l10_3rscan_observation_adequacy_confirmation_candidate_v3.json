@@ -1,0 +1,88 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v3",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_protocol_v3.json",
+  "protocol_sha256": "bdce85af6c54e2b84f26d22da88ddd34deda39bd5353862ddfd4378bca5db097",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude consumed targets, used reference families, and any candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 36,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+    "rescan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+    "target_instance_id": 28,
+    "target_label": "doorframe",
+    "rescan_door_instance_ids": [
+      6,
+      28
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.8743266463279724,
+      0.48527905344963074,
+      0.007565373554825783,
+      0,
+      -0.4853275716304779,
+      0.8743038177490234,
+      0.007069608196616173,
+      0,
+      -0.003183702239766717,
+      -0.009852830320596695,
+      0.9999463558197021,
+      0,
+      -0.21758173406124115,
+      0.9294885396957397,
+      0.16420958936214447,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "minimum_per_view_inside_vertex_fraction": 0.25,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15,
+    "selection": "For reference and query independently, choose the admitted view with the most depth-consistent target vertices; ties use larger short-side fraction, higher visible ratio, then earlier frame.",
+    "source_is_evaluable_only_if": "Both sides have at least one admitted partial view before RGB/model access."
+  },
+  "claim_boundary": "This freezes the first new family for the partial-view admission successor. It is metadata-only, not source evaluability, model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

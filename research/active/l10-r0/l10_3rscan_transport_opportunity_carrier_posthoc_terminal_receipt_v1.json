@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist-l10-3rscan-transport-opportunity-carrier-posthoc-terminal-receipt-v1",
+  "authority": "CONSUMED_SOURCE_POSTHOC_DEVELOPMENT_TERMINAL_RECEIPT",
+  "observed_at": "2026-09-01T07:15:25+08:00",
+  "protocol_path": "l10_3rscan_transport_opportunity_carrier_posthoc_protocol_v1.json",
+  "protocol_sha256": "927c869807444a2c8d7478301c6419129215e7d7f7efd7314ef065f82be623c0",
+  "terminal_pair": "P_PV28_PV28",
+  "selected_reference_frame": 92,
+  "selected_query_frame": 64,
+  "view_direction_cosine": 0.9889951278408142,
+  "terminal_exception": "ValueError: NO_REFERENCE_CYCLES",
+  "command_exit_code": 1,
+  "output_result_created": false,
+  "conclusion": "L10_3RSCAN_TRANSPORT_OPPORTUNITY_CARRIER_POSTHOC_DEVELOPMENT_GATE_NOT_MET_ZERO_CYCLES",
+  "retry_count": 0,
+  "next_action": "Treat the PV28 family as RGB-transport-unreachable for the frozen RoMa and EfficientLoFTR carriers. Add a pre-model joint transport-opportunity source gate to a new family rather than tuning either matcher.",
+  "claim_boundary": "This establishes only that the unchanged RoMa carrier still found no reference cycles after geometry/depth viewpoint-opportunity selection. It is not target absence, portal identity, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

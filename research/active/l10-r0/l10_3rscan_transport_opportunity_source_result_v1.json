@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist-l10-3rscan-transport-opportunity-source-result-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_TRANSPORT_OPPORTUNITY_SOURCE_RESULT",
+  "protocol_path": "l10_3rscan_transport_opportunity_source_protocol_v1.json",
+  "protocol_sha256": "d469bbc55cd0c9c07e09c91a1cea8af71ee402e58f17e2989fb63a4c8a368aea",
+  "implementation": {
+    "path": "l10_3rscan_transport_opportunity_source.py",
+    "sha256": "e12d8b62e5c41053e523cd4baeefe2e410d9438d9e3735b20f8441a7820c4cdb"
+  },
+  "candidate": {
+    "reference_scan_id": "1dd7209f-2ba0-22d9-8b9e-b5e270b2580f",
+    "rescan_id": "1dd720a1-2ba0-22d9-8b6e-bb00c888a414",
+    "target_instance_id": 3,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      3,
+      5
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9583457112312317,
+      -0.2851255536079407,
+      0.016640685498714447,
+      0,
+      0.2852976322174072,
+      0.958396315574646,
+      -0.009042765013873577,
+      0,
+      -0.013370050117373466,
+      0.013413643464446068,
+      0.9998205900192261,
+      0,
+      -0.2554084360599518,
+      -0.22947907447814941,
+      0.047525979578495026,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_TRANSPORT_OPPORTUNITY_SOURCE_EVALUABLE",
+  "source_evaluable": true,
+  "reference_candidate_views": 5,
+  "query_candidate_views": 5,
+  "joint_candidate_pairs": 25,
+  "mutual_target_surface_vertices": 445,
+  "selected": {
+    "reference": {
+      "frame": 84,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 980,
+      "inside_vertex_fraction": 1.0,
+      "projected_area_pixels": 306072.43759771535,
+      "image_margin_pixels": 18.42523193359375,
+      "bbox_xyxy": [
+        34.827415466308594,
+        132.63906860351562,
+        940.5747680664062,
+        509.0748291015625
+      ],
+      "depth_compared_vertices": 968,
+      "depth_visible_vertices": 925,
+      "depth_visible_ratio": 0.9555785123966942,
+      "bbox_width_pixels": 905.7473526000977,
+      "bbox_height_pixels": 376.4357604980469,
+      "bbox_short_side_pixels": 376.4357604980469,
+      "bbox_short_side_fraction": 0.6971032601815683,
+      "bbox_aspect_ratio": 2.406113997782092,
+      "visible_target_vertices": 925,
+      "zip_member": "frame-000084.color.jpg"
+    },
+    "query": {
+      "frame": 0,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 380,
+      "inside_vertex_fraction": 0.4293785310734463,
+      "projected_area_pixels": 147993.5453449936,
+      "image_margin_pixels": 0.48199462890625,
+      "bbox_xyxy": [
+        321.6599426269531,
+        1.7813721895217896,
+        958.5180053710938,
+        269.45343017578125
+      ],
+      "depth_compared_vertices": 351,
+      "depth_visible_vertices": 351,
+      "depth_visible_ratio": 1.0,
+      "bbox_width_pixels": 636.8580627441406,
+      "bbox_height_pixels": 267.67205798625946,
+      "bbox_short_side_pixels": 267.67205798625946,
+      "bbox_short_side_fraction": 0.49568899627085083,
+      "bbox_aspect_ratio": 2.3792474550213707,
+      "visible_target_vertices": 351,
+      "zip_member": "frame-000000.color.jpg"
+    },
+    "mutual_surface_vertices": 445,
+    "joint_visible_surface_vertices": 179,
+    "joint_visible_surface_fraction": 0.40224719101123596,
+    "view_direction_cosine": 0.9786662978906315,
+    "transport_opportunity_score": 0.39366576926387203
+  },
+  "decision_gate": {
+    "minimum_joint_visible_surface_fraction": 0.1,
+    "minimum_view_direction_cosine": 0.9
+  },
+  "opened": {
+    "reference": {
+      "pose_members": 181,
+      "depth_members": 181,
+      "rgb_members": 0,
+      "model_calls": 0
+    },
+    "query": {
+      "pose_members": 145,
+      "depth_members": 145,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Freeze the selected RGB members plus unchanged NC31 and NC08 controls, then run the unchanged coherent-cycle component carrier once.",
+  "claim_boundary": "This source gate can establish only whether the frozen new family supplies a jointly visible and view-aligned partial observation pair. It is not RGB/model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

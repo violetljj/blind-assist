@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist-l10-3rscan-reference-support-cascade-posthoc-terminal-receipt-v1",
+  "authority": "CONSUMED_SOURCE_POSTHOC_DEVELOPMENT_TERMINAL_RECEIPT",
+  "observed_at": "2026-09-01T07:09:10+08:00",
+  "protocol_path": "l10_3rscan_reference_support_cascade_posthoc_protocol_v1.json",
+  "protocol_sha256": "aad5b22a530f433c0ad4654a15d8dcb2d550012f0d1cc5566e70af4a2a9615b6",
+  "implementation_sha256": "4387279af697acb6e9f33fbec4c79f5f90dc668b4f34dbff12781b71a521ffcb",
+  "terminal_pair": "P_PV28_PV28",
+  "primary_support_result": "NO_REFERENCE_CYCLES",
+  "specialist_support": "FROZEN_REFERENCE_BOUND_EXTENT_SUPPORT",
+  "specialist_result": "NO_REFERENCE_CYCLES",
+  "command_exit_code": 1,
+  "output_result_created": false,
+  "retry_count_after_v2": 0,
+  "conclusion": "L10_3RSCAN_REFERENCE_SUPPORT_CASCADE_POSTHOC_DEVELOPMENT_GATE_NOT_MET_ZERO_CYCLES",
+  "next_action": "Do not tune or rerun RoMa on PV28. Test one structurally different frozen matcher with the same reference binding, positive and target-absent controls.",
+  "claim_boundary": "This establishes only that neither native SAM support nor the complete frozen reference binding box contains a RoMa cycle under the fixed matcher and cycle gate. It is not target absence, exact-instance failure, portal identity, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}
