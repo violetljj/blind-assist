@@ -16,9 +16,13 @@ future obstacle occupancy intersects the wearer's route, while preserving
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
   `8/18` dropout recovery. This is a same-source Development pass only.
-- **CARLA algorithm line:** X24 remains the same-source C2 Development
-  reference. X26 and X30 did not meet their frozen gates. X31 remains a
-  representation candidate, not a promoted result.
+- **CARLA algorithm line:** X59 failed its fresh C28 mixed-lighting gate, but
+  the failure localized two representation defects. X64 corrects them with a
+  synchronized conflict handback and an unanchored cross-route permanence
+  release. On consumed C26/C27/C28 it reached respectively `86.30/72.83/79.00`,
+  `89.36/72.83/80.25`, and `89.93/72.25/80.13` percent precision/recall/F1,
+  with every reference check met. This is multi-cohort post-hoc synthetic
+  Development evidence, not fresh promotion authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -36,6 +40,9 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
+4. Freeze X64 unchanged and run one new source-disjoint CARLA cohort containing
+   both longitudinal corridor occlusion and cross-route occlusion. Do not tune
+   X64 on consumed C26-C28.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -62,3 +69,5 @@ their result.
   [DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md](carla/DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md)
 - N3/N4 result:
   [DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md](carla/DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md)
+- X64 consumed transfer Development:
+  [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
