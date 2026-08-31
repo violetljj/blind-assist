@@ -1,0 +1,14 @@
+{
+  "schema": "blindassist-l10-development-execution-failure-v1",
+  "recorded_at": "2026-09-01T04:49:00+08:00",
+  "protocol_path": "l10_3rscan_cycle_component_open_set_posthoc_protocol_v1.json",
+  "protocol_sha256": "613047ead8bdef3199e911517359111f7204e701a491aa0a7e2c4e872e5f48b7",
+  "implementation_path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+  "implementation_sha256": "eaa12ff8b584dfe6619ac813185601d21247544b94670bcae0e1c70744a537a0",
+  "terminal_state": "ABORTED_BEFORE_RESULT_EMISSION",
+  "error_class": "ValueError",
+  "error_message": "NO_REFERENCE_CYCLES",
+  "failure_location": "The ordered evaluation loop reached a pair with zero reference cycles; the first newly introduced pair after the three previously confirmed positives is N_DR01_DR03.",
+  "decision_impact": "No threshold, pair or model is changed. The successor implementation maps zero reference cycles to the already frozen non-commit decision instead of raising an exception.",
+  "claim_boundary": "This receipt proves only an implementation abort. It is not an adjudicated open-set result and does not count as a pass or fail of the frozen decision gate."
+}

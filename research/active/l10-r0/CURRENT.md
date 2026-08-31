@@ -114,9 +114,21 @@ contract.
   Record
   `L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_MET`
   and retain the four-surface/coherent-cycle mechanism as
-  `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development. Stop
+  `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development. The
+  frozen cross-scene open-set successor kept those three positives and added
+  four exact-target-absent pairings whose query came from another physical
+  3RScan scene family. It retained `3/3` positives and rejected `4/4` negatives
+  with `0` false commits. Positive cycle opportunity was `0.508-0.645`; all
+  negatives stayed below the unchanged `0.01` minimum (`0-0.002821`) even when
+  the largest residual component held a majority of the few surviving cycles.
+  Record
+  `L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET` and retain
+  exact-target-absent cross-scene rejection as consumed posthoc Development
+  evidence. The first execution aborted because zero cycles lacked a natural
+  non-commit branch; the recorded implementation-only repair mapped that case
+  to rejection without changing any model, pair, threshold, or gate. Stop
   spending 3RScan positive targets on tuning; next address privileged initial
-  binding or frozen negative-pair/open-world rejection. Correspondence still
+  binding or the harder same-scene sibling-door negative. Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
@@ -431,3 +443,5 @@ contract.
   [l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json](l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json)
 - 3RScan coherent-cycle physical-target-disjoint confirmation:
   [l10_3rscan_cycle_component_support_confirmation_result_v1.json](l10_3rscan_cycle_component_support_confirmation_result_v1.json)
+- 3RScan coherent-cycle cross-scene open-set result:
+  [l10_3rscan_cycle_component_open_set_posthoc_result_v1.json](l10_3rscan_cycle_component_open_set_posthoc_result_v1.json)

@@ -1,0 +1,148 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-cycle-component-open-set-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T04:50:00+08:00",
+  "question": "Does the confirmed coherent cycle-component transport retain all three positives while rejecting exact-target-absent cross-scene queries?",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+    "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py",
+      "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"
+    },
+    {
+      "path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py",
+      "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"
+    },
+    {
+      "path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py",
+      "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"
+    },
+    {
+      "path": "l10_scenenn_roma_full_context_mask_posthoc.py",
+      "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"
+    },
+    {
+      "path": "named_poi_grounded_sam_multiscale_part_topology.py",
+      "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"
+    }
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_cycle_component_support_confirmation_result_v1.json",
+    "result_sha256": "b8d8a7b47d08f5998afc3bdca9b03bac74ee39eb5c65a04d63e37619d61a06d0",
+    "required_conclusion": "L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_MET",
+    "single_change": "Add four exact-target-absent cross-scene pairings to the three already confirmed positives. Keep models, four surfaces, transport, 0.01 cycle opportunity, 0.5 dominant-component majority and 0.5 positive extent IoU unchanged. Require zero false commits on negatives."
+  },
+  "execution_revision": {
+    "failure_receipt_path": "l10_3rscan_cycle_component_open_set_posthoc_execution_failure_v1.json",
+    "failure_receipt_sha256": "1184126b73c44bee32ec006780b80c41a9f92815c30557b73e5282d8096d7b60",
+    "single_fix": "Map NO_REFERENCE_CYCLES on a frozen target-absent pair to the already frozen non-commit decision; do not change models, pairs, thresholds or gates."
+  },
+  "source": {
+    "authority": "CONSUMED_THIRD_COHORT_CROSS_SCENE_TARGET_ABSENCE_POSTHOC_DEVELOPMENT",
+    "source_protocol_path": "l10_3rscan_cycle_component_confirmation_source_protocol_v1.json",
+    "source_protocol_sha256": "009702146e61f33f6f2e9fd531ede652fca2d36bb6b2b1fcd291f7d1ce24ea06",
+    "cohort_path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+    "cohort_sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {
+        "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip",
+        "bytes": 77742167,
+        "sha256": "7520e06c26cf44c8cfb778dd70baf2b7604b69b040a9c7d4bb398123d2d6b9f9"
+      },
+      {
+        "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip",
+        "bytes": 98742525,
+        "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"
+      },
+      {
+        "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip",
+        "bytes": 75831367,
+        "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"
+      },
+      {
+        "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip",
+        "bytes": 31139000,
+        "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"
+      },
+      {
+        "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+        "bytes": 46320073,
+        "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+      }
+    ]
+  },
+  "models": {
+    "masker": {
+      "path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+      "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"
+    },
+    "matcher": {
+      "path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth",
+      "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"
+    },
+    "matcher_backbone": {
+      "path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+      "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"
+    }
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_DEVELOPMENT_ONLY",
+    "support_surface": "Native reference SAM2 mask.",
+    "extent_surface": "Provider reference bbox.",
+    "query_truth_isolation": "Positive query bbox opens only after transport; negatives have no query target box because the exact physical reference target is in another scan family."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Unchanged full-frame symmetric RoMa, bilateral 0.05 certainty, in-bounds target, 0.013888888888888888 round-trip error, largest 8-connected reference cycle component, ordinary affine fit and bound-extent transport.",
+    "component_tie_break": "Maximum area then lowest label; no fallback.",
+    "mask": "One native reference and query SAM2 identity-support mask; no selection, morphology or retry.",
+    "query_extent": "Transported bbox; query SAM mask is support only."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Frozen cycle opportunity plus dominant-component majority; legacy global purity remains diagnostic only."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_DR01_DR01", "reference_episode": "DR01", "query_episode": "DR01", "label": "target_present"},
+      {"id": "P_DR02_DR02", "reference_episode": "DR02", "query_episode": "DR02", "label": "target_present"},
+      {"id": "P_DR03_DR03", "reference_episode": "DR03", "query_episode": "DR03", "label": "target_present"},
+      {"id": "N_DR01_DR03", "reference_episode": "DR01", "query_episode": "DR03", "label": "target_absent"},
+      {"id": "N_DR02_DR03", "reference_episode": "DR02", "query_episode": "DR03", "label": "target_absent"},
+      {"id": "N_DR03_DR01", "reference_episode": "DR03", "query_episode": "DR01", "label": "target_absent"},
+      {"id": "N_DR03_DR02", "reference_episode": "DR03", "query_episode": "DR02", "label": "target_absent"}
+    ],
+    "negative_authority": "A query from a different 3RScan reference scan family cannot contain the exact physical reference target. It may contain other doors, making this a direct referent-specific false-commit test."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 3,
+    "required_target_absent_pairs": 4,
+    "minimum_positive_commits": 3,
+    "maximum_target_absent_false_commits": 0,
+    "minimum_reference_cycle_fraction": 0.01,
+    "minimum_dominant_component_cycle_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5
+  },
+  "forbidden_after_freeze": [
+    "change a model, surface, pair, target, cycle, component, affine fit or gate",
+    "use negative outcomes or positive query truth to tune a threshold",
+    "add scene identity, target label or query truth to the decision",
+    "retry, replace or remove a failed pair",
+    "claim a pass covers sibling-door negatives, raw-camera binding, provider independence, navigation or safety"
+  ],
+  "claim_boundary": "This consumed posthoc Development test measures referent-specific target-absent rejection only across two different 3RScan physical scene families while retaining the three previously confirmed positives. A pass would not establish sibling-door rejection within one scene, raw-camera binding, provider-independent generalization, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit, reliability or safety."
+}

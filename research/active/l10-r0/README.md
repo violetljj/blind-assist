@@ -3898,14 +3898,30 @@ and retain the four-surface/coherent-cycle rule as
 `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development.
 
 Across the three successive target-disjoint panels, nine new physical targets
-were selected before RGB/model access. Scan families and backgrounds still
-overlap, initial reference boxes remain privileged, and no negative-pair or
-open-world absence gate was run. This does not establish raw-camera initial
-referent discovery, provider-independent generalization, named entrance,
-ownership, public access, traversability, waypoint, arrival, `HANDOFF_READY`,
-Android deployment, user benefit, reliability, or safety. Stop tuning positive
-3RScan targets; the next claim-changing source must address initial binding or
-negative-pair/open-world rejection.
+were selected before RGB/model access. A frozen consumed-cohort open-set test
+then retained the third panel's three positives and crossed scene families to
+construct four queries where the exact physical reference target was absent,
+although other doors could remain visible. The unchanged `0.01` cycle-
+opportunity and `0.5` dominant-component gates retained `3/3` positives and
+rejected `4/4` negatives with zero false commits. Positive cycle opportunity
+was `0.507526-0.644900`; negatives were `0`, `0.002674`, `0`, and `0.002821`.
+The latter two nonzero negatives could still have component dominance `0.604`
+and `0.528`, showing why cycle opportunity and spatial dominance play distinct
+roles. Record
+`L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET`.
+
+The first execution stopped before adjudication because a zero-cycle negative
+raised `NO_REFERENCE_CYCLES`. Its failure receipt is retained. The only repair
+mapped zero cycles to the already frozen non-commit decision; models, pairs,
+thresholds and gates remained unchanged. This result is consumed posthoc,
+cross-scene exact-target-absence Development evidence. It is not a same-scene
+sibling-door test. Scan families/backgrounds still overlap for the positives,
+and initial reference boxes remain privileged. This does not establish raw-
+camera initial referent discovery, provider-independent generalization, named
+entrance, ownership, public access, traversability, waypoint, arrival,
+`HANDOFF_READY`, Android deployment, user benefit, reliability, or safety.
+Stop tuning positive 3RScan targets; the next claim-changing source must address
+initial binding or frozen same-scene sibling-door rejection.
 
 Evidence:
 
@@ -3970,6 +3986,12 @@ Evidence:
   `9716169ba05b6457e9ef4a966b384d8d48917a30c292959c942a479171a0cc3a`,
   `7407631cfc9f5354e9614a8dc9a7357638ffba55409f4ae34c012ac7de901c90`,
   and `b8d8a7b47d08f5998afc3bdca9b03bac74ee39eb5c65a04d63e37619d61a06d0`;
+- coherent-cycle open-set implementation/protocol/result and initial execution-
+  failure receipt SHA-256:
+  `812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4`,
+  `d13e625f16a3e492343565b43c9ca74602924e255bb9f883a2b26e4a82773ec8`,
+  `22a423e589af3f120b2d9ff4d84921fbf274f27d00aa74e4d9710f4d4e21ed2e`,
+  and `1184126b73c44bee32ec006780b80c41a9f92815c30557b73e5282d8096d7b60`;
 - open-roster appearance protocol/cohort/result/evaluator SHA-256:
   `7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf`,
   `4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0`,
