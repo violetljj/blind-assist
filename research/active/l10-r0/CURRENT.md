@@ -69,10 +69,17 @@ contract.
   Record
   `L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET` and upgrade
   it to `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development.
-  Provider masks remain privileged; the next structural step is a separately
-  justified phone-side proposal carrier, not tuning any of the eight consumed
-  scenes. Correspondence still proves no named entrance, ownership, access,
-  waypoint, arrival, or handoff.
+  A first proposal-carrier bridge then replaced all eight provider masks with
+  truth-blind GroundingDINO top-one `door` boxes and native SAM2.1 masks while
+  keeping full-frame RoMa and every support/assignment threshold unchanged.
+  Despite proposal IoU spanning `0.60-0.95`, it retained `34/0/0`, F1 `1.0`,
+  `15/15` exact, and `4/4` true support. Record
+  `L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET` and
+  retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`: it is consumed posthoc,
+  exactly-one-door, and desktop-GPU evidence. The next structural check must
+  preserve prompt and thresholds on a multi-door or provider-disjoint source;
+  correspondence still proves no named entrance, ownership, access, waypoint,
+  arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -370,3 +377,5 @@ contract.
   [l10_3rscan_roster_assignment_confirmation_result_v2.json](l10_3rscan_roster_assignment_confirmation_result_v2.json)
 - Fresh full-context mask-gated RoMa confirmation:
   [l10_scenenn_roma_full_context_mask_fresh_result_v1.json](l10_scenenn_roma_full_context_mask_fresh_result_v1.json)
+- Grounded-SAM proposal-mask bridge result:
+  [l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json)

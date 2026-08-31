@@ -1,0 +1,2221 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-grounded-sam-proposal-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_TRUTH_BLIND_PROPOSAL_MASK_ROMA_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_roma_grounded_sam_proposal_posthoc_protocol_v1.json",
+  "protocol_sha256": "3283106267802df581e009ced318483208c5b05ea7523707c3c2f0fbbf6849b5",
+  "implementation": {
+    "path": "l10_scenenn_roma_grounded_sam_proposal_posthoc.py",
+    "sha256": "16cf009ec8ffd262ea3ec5a2f44902e59cb7bf59606100039dc02a2264117fd1"
+  },
+  "source": {
+    "cohort_path": "l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+    "cohort_sha256": "711e85ef355bcda520cc738172c076cabb486a9fefc1dfd0ba6aaaee97c5d7dd",
+    "rgb_receipt_path": "l10_scenenn_roma_full_context_mask_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "ff764bf0e3c24dd710379a37feb1aa0eb3d54508e837275078b2ed9a6980f03e",
+    "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-full-context-mask-fresh-v1"
+  },
+  "conclusion": "L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "aggregate": {
+      "true_positive": 34,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "zero_assignment_exact_scenarios": 15,
+      "scenarios": 15
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.143428,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.585542,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.143428,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.585542,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.143428,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.585542
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF02",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.585542,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF03",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.143428,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF04",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.143428,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.585542
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.585542,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF03",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF04",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.585542
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.143428,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF02",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403539
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF04",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.143428,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.143428,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.585542,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF02",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.585542,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF03",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "grounded_sam_proposal_mask_gated_roma_matrix": [
+          [
+            0.623514,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.143428,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "grounded_sam_proposal_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      }
+    ],
+    "full_matrix": [
+      [
+        0.623514,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.143428,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.585542,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.403539
+      ]
+    ],
+    "pair_diagnostics": {
+      "FF01->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.14159005880355835,
+          "source_mask_count": 56791,
+          "high_count": 33600,
+          "high_fraction": 0.5916430420313078,
+          "target_mask_hit_count": 33345,
+          "target_mask_hit_fraction": 0.587152893944463,
+          "cycle_count": 32596,
+          "cycle_fraction": 0.5739641844658485,
+          "cycle_purity": 0.9701190476190477
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.20046323537826538,
+          "source_mask_count": 68822,
+          "high_count": 50867,
+          "high_fraction": 0.7391095870506524,
+          "target_mask_hit_count": 50403,
+          "target_mask_hit_fraction": 0.7323675568858795,
+          "cycle_count": 46616,
+          "cycle_fraction": 0.6773415477608904,
+          "cycle_purity": 0.9164291190752354
+        },
+        "symmetric_cycle_score": 0.6235140648497154,
+        "absolute_support": true
+      },
+      "FF01->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0033676126040518284,
+          "source_mask_count": 56791,
+          "high_count": 159,
+          "high_fraction": 0.0027997393953267244,
+          "target_mask_hit_count": 156,
+          "target_mask_hit_fraction": 0.002746914123716786,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.011593666858971119,
+          "source_mask_count": 76938,
+          "high_count": 3281,
+          "high_fraction": 0.042644726922976946,
+          "target_mask_hit_count": 2103,
+          "target_mask_hit_fraction": 0.02733369726273103,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF01->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.01638564094901085,
+          "source_mask_count": 56791,
+          "high_count": 2657,
+          "high_fraction": 0.04678558222253526,
+          "target_mask_hit_count": 2603,
+          "target_mask_hit_fraction": 0.045834727333556376,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.02523125521838665,
+          "source_mask_count": 155956,
+          "high_count": 21326,
+          "high_fraction": 0.1367436969401626,
+          "target_mask_hit_count": 21326,
+          "target_mask_hit_fraction": 0.1367436969401626,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF01->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.025149213150143623,
+          "source_mask_count": 56791,
+          "high_count": 7935,
+          "high_fraction": 0.13972284340828653,
+          "target_mask_hit_count": 6615,
+          "target_mask_hit_fraction": 0.11647972389991372,
+          "cycle_count": 595,
+          "cycle_fraction": 0.010477012202637742,
+          "cycle_purity": 0.07498424700693132
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0503292940557003,
+          "source_mask_count": 34143,
+          "high_count": 9523,
+          "high_fraction": 0.27891515098263187,
+          "target_mask_hit_count": 9452,
+          "target_mask_hit_fraction": 0.27683566177547375,
+          "cycle_count": 685,
+          "cycle_fraction": 0.020062677562018568,
+          "cycle_purity": 0.0719311141447023
+        },
+        "symmetric_cycle_score": 0.014498169458067972,
+        "absolute_support": false
+      },
+      "FF02->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.016731945797801018,
+          "source_mask_count": 165963,
+          "high_count": 11023,
+          "high_fraction": 0.06641841856317372,
+          "target_mask_hit_count": 9731,
+          "target_mask_hit_fraction": 0.05863355085169586,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.03770841285586357,
+          "source_mask_count": 68822,
+          "high_count": 19781,
+          "high_fraction": 0.28742262648571676,
+          "target_mask_hit_count": 19403,
+          "target_mask_hit_fraction": 0.2819301967394147,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF02->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.027811085805296898,
+          "source_mask_count": 165963,
+          "high_count": 15232,
+          "high_fraction": 0.09177949301952845,
+          "target_mask_hit_count": 14990,
+          "target_mask_hit_fraction": 0.09032133668347764,
+          "cycle_count": 11910,
+          "cycle_fraction": 0.07176298331555829,
+          "cycle_purity": 0.7819065126050421
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.09102704375982285,
+          "source_mask_count": 76938,
+          "high_count": 25378,
+          "high_fraction": 0.3298500090982349,
+          "target_mask_hit_count": 23223,
+          "target_mask_hit_fraction": 0.3018404429540669,
+          "cycle_count": 22055,
+          "cycle_fraction": 0.2866593880787127,
+          "cycle_purity": 0.8690598155883048
+        },
+        "symmetric_cycle_score": 0.14342779676178816,
+        "absolute_support": true
+      },
+      "FF02->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0030926119070500135,
+          "source_mask_count": 165963,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.004479704424738884,
+          "source_mask_count": 155956,
+          "high_count": 49,
+          "high_fraction": 0.0003141911821282926,
+          "target_mask_hit_count": 49,
+          "target_mask_hit_fraction": 0.0003141911821282926,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF02->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.024076655507087708,
+          "source_mask_count": 165963,
+          "high_count": 19773,
+          "high_fraction": 0.11914101335839916,
+          "target_mask_hit_count": 13844,
+          "target_mask_hit_fraction": 0.0834161831251544,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.005942507181316614,
+          "source_mask_count": 34143,
+          "high_count": 484,
+          "high_fraction": 0.014175672905134289,
+          "target_mask_hit_count": 475,
+          "target_mask_hit_fraction": 0.013912075681691708,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF03->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0743757039308548,
+          "source_mask_count": 242407,
+          "high_count": 57332,
+          "high_fraction": 0.23651132186776785,
+          "target_mask_hit_count": 56595,
+          "target_mask_hit_fraction": 0.23347098062349686,
+          "cycle_count": 54,
+          "cycle_fraction": 0.0002227658442206702,
+          "cycle_purity": 0.0009418823693574269
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.06410884857177734,
+          "source_mask_count": 68822,
+          "high_count": 36660,
+          "high_fraction": 0.5326785039667549,
+          "target_mask_hit_count": 36660,
+          "target_mask_hit_fraction": 0.5326785039667549,
+          "cycle_count": 81,
+          "cycle_fraction": 0.0011769492313504402,
+          "cycle_purity": 0.00220949263502455
+        },
+        "symmetric_cycle_score": 0.0005120391480410943,
+        "absolute_support": false
+      },
+      "FF03->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.005240798927843571,
+          "source_mask_count": 242407,
+          "high_count": 3145,
+          "high_fraction": 0.012974047779148292,
+          "target_mask_hit_count": 2967,
+          "target_mask_hit_fraction": 0.01223974555190238,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0064822048880159855,
+          "source_mask_count": 76938,
+          "high_count": 1172,
+          "high_fraction": 0.015233044789310873,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF03->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.17741291224956512,
+          "source_mask_count": 242407,
+          "high_count": 150583,
+          "high_fraction": 0.6211990577829848,
+          "target_mask_hit_count": 141285,
+          "target_mask_hit_fraction": 0.5828420796429146,
+          "cycle_count": 112755,
+          "cycle_fraction": 0.46514745861299384,
+          "cycle_purity": 0.7487897040170537
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.33005672693252563,
+          "source_mask_count": 155956,
+          "high_count": 146581,
+          "high_fraction": 0.9398868911744338,
+          "target_mask_hit_count": 146383,
+          "target_mask_hit_fraction": 0.9386173023160379,
+          "cycle_count": 114955,
+          "cycle_fraction": 0.7370989253379159,
+          "cycle_purity": 0.7842421596250537
+        },
+        "symmetric_cycle_score": 0.5855422203968732,
+        "absolute_support": true
+      },
+      "FF03->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.00705202529206872,
+          "source_mask_count": 242407,
+          "high_count": 2454,
+          "high_fraction": 0.010123470031806012,
+          "target_mask_hit_count": 2273,
+          "target_mask_hit_fraction": 0.009376791924325618,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.003539868164807558,
+          "source_mask_count": 34143,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.029781809076666832,
+          "source_mask_count": 42099,
+          "high_count": 6334,
+          "high_fraction": 0.15045488016342431,
+          "target_mask_hit_count": 6167,
+          "target_mask_hit_fraction": 0.14648804009596428,
+          "cycle_count": 848,
+          "cycle_fraction": 0.020142996270695265,
+          "cycle_purity": 0.13388064414272183
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.14110785722732544,
+          "source_mask_count": 68822,
+          "high_count": 55590,
+          "high_fraction": 0.8077358984045799,
+          "target_mask_hit_count": 54336,
+          "target_mask_hit_fraction": 0.7895149806747842,
+          "cycle_count": 1283,
+          "cycle_fraction": 0.01864229461509401,
+          "cycle_purity": 0.023079690591833065
+        },
+        "symmetric_cycle_score": 0.019378123513618162,
+        "absolute_support": false
+      },
+      "FF04->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.024587836116552353,
+          "source_mask_count": 42099,
+          "high_count": 5586,
+          "high_fraction": 0.13268723722653744,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.024760734289884567,
+          "source_mask_count": 76938,
+          "high_count": 6619,
+          "high_fraction": 0.08603031011983675,
+          "target_mask_hit_count": 5171,
+          "target_mask_hit_fraction": 0.0672099612675141,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.012757601216435432,
+          "source_mask_count": 42099,
+          "high_count": 542,
+          "high_fraction": 0.01287441506924155,
+          "target_mask_hit_count": 481,
+          "target_mask_hit_fraction": 0.011425449535618424,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.00781689491122961,
+          "source_mask_count": 155956,
+          "high_count": 5107,
+          "high_fraction": 0.03274641565569776,
+          "target_mask_hit_count": 4607,
+          "target_mask_hit_fraction": 0.029540383185000896,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.16390275955200195,
+          "source_mask_count": 42099,
+          "high_count": 21971,
+          "high_fraction": 0.5218888809710445,
+          "target_mask_hit_count": 18577,
+          "target_mask_hit_fraction": 0.4412693888215872,
+          "cycle_count": 15808,
+          "cycle_fraction": 0.3754958550084325,
+          "cycle_purity": 0.7194938782941149
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.14153577387332916,
+          "source_mask_count": 34143,
+          "high_count": 18693,
+          "high_fraction": 0.5474914330902381,
+          "target_mask_hit_count": 18297,
+          "target_mask_hit_fraction": 0.5358931552587646,
+          "cycle_count": 14807,
+          "cycle_fraction": 0.4336760097238087,
+          "cycle_purity": 0.7921146953405018
+        },
+        "symmetric_cycle_score": 0.4035387764117432,
+        "absolute_support": true
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "proposal_runtime": {
+    "grounder_model_type": "GroundingDinoForObjectDetection",
+    "masker_model_type": "Sam2Model",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "proposal_receipts": {
+    "FF01:reference": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.46858087182044983,
+      "selected_box_xyxy": [
+        24.57697868347168,
+        0.23697853088378906,
+        231.34799194335938,
+        180.946044921875
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 2.113593799993396
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.2354367999942042
+      },
+      "proposal_mask_sha256": "102d0d328d65c9aa0c90df420238599486680e910eb605f79f42ce0d8f21aa2b",
+      "proposal_pixels": 23332,
+      "truth_pixels": 24236,
+      "intersection_pixels": 22004,
+      "union_pixels": 25564,
+      "truth_iou_evaluation_only": 0.8607416679705836,
+      "truth_recall_evaluation_only": 0.9079055949826704,
+      "proposal_precision_evaluation_only": 0.9430824618549631
+    },
+    "FF01:query": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.47173410654067993,
+      "selected_box_xyxy": [
+        0.8993005752563477,
+        0.2827119827270508,
+        157.31488037109375,
+        220.01754760742188
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.27175119996536523
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.10354580002604052
+      },
+      "proposal_mask_sha256": "767e78a5ba517a3761d53f534ccb9c197a917d7afa22aa32d0a8c3eafb8067d9",
+      "proposal_pixels": 28224,
+      "truth_pixels": 27183,
+      "intersection_pixels": 27000,
+      "union_pixels": 28407,
+      "truth_iou_evaluation_only": 0.9504699545886577,
+      "truth_recall_evaluation_only": 0.9932678512305485,
+      "proposal_precision_evaluation_only": 0.9566326530612245
+    },
+    "FF02:reference": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.4630238115787506,
+      "selected_box_xyxy": [
+        24.767742156982422,
+        0.16834259033203125,
+        392.297607421875,
+        313.6118469238281
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.29092170001240447
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.0931599999894388
+      },
+      "proposal_mask_sha256": "cd0f2d83e366d054e84c37eadc3aca8bfa043d78b56f0baea130a3e2c776cfa9",
+      "proposal_pixels": 68230,
+      "truth_pixels": 63402,
+      "intersection_pixels": 62252,
+      "union_pixels": 69380,
+      "truth_iou_evaluation_only": 0.897261458633612,
+      "truth_recall_evaluation_only": 0.981861770922053,
+      "proposal_precision_evaluation_only": 0.9123845815623626
+    },
+    "FF02:query": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.48851627111434937,
+      "selected_box_xyxy": [
+        180.41061401367188,
+        0.16729116439819336,
+        489.927978515625,
+        157.4169464111328
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.2513634999631904
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09213739994447678
+      },
+      "proposal_mask_sha256": "3f0091c3a218ca5ff754702eeeadd774ad484f2ef9686428595f78180f384f9f",
+      "proposal_pixels": 31587,
+      "truth_pixels": 32470,
+      "intersection_pixels": 28907,
+      "union_pixels": 35150,
+      "truth_iou_evaluation_only": 0.8223897581792319,
+      "truth_recall_evaluation_only": 0.8902679396365876,
+      "proposal_precision_evaluation_only": 0.9151549688162852
+    },
+    "FF03:reference": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.5062026977539062,
+      "selected_box_xyxy": [
+        237.18508911132812,
+        1.1451244354248047,
+        455.74261474609375,
+        478.33062744140625
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.2576116000418551
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.1104473999585025
+      },
+      "proposal_mask_sha256": "a52cd60fd599703359a07a1f34722423c962e2d80031ddbb7f1f3ac27cbc84eb",
+      "proposal_pixels": 99877,
+      "truth_pixels": 76582,
+      "intersection_pixels": 75640,
+      "union_pixels": 100819,
+      "truth_iou_evaluation_only": 0.7502554082067864,
+      "truth_recall_evaluation_only": 0.9876994594029929,
+      "proposal_precision_evaluation_only": 0.7573315177668533
+    },
+    "FF03:query": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.7866765260696411,
+      "selected_box_xyxy": [
+        238.07029724121094,
+        153.694580078125,
+        445.08697509765625,
+        478.3216247558594
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.26170279999496415
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09214740002062172
+      },
+      "proposal_mask_sha256": "c94620f622e80dba49f59b6c50ed4b9d1c4244968f790943f2eaaf150622b5ba",
+      "proposal_pixels": 64236,
+      "truth_pixels": 70004,
+      "intersection_pixels": 63051,
+      "union_pixels": 71189,
+      "truth_iou_evaluation_only": 0.8856845861017854,
+      "truth_recall_evaluation_only": 0.9006771041654763,
+      "proposal_precision_evaluation_only": 0.9815524005230711
+    },
+    "FF04:reference": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.6426334381103516,
+      "selected_box_xyxy": [
+        0.6305694580078125,
+        0.24823665618896484,
+        151.07940673828125,
+        164.7526092529297
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.2519765999750234
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09038959996541962
+      },
+      "proposal_mask_sha256": "9a30712859f4e8cd1a520583bcfeb3235cf7630d49e5c5bf15ec6d5033316bf9",
+      "proposal_pixels": 17249,
+      "truth_pixels": 20892,
+      "intersection_pixels": 17249,
+      "union_pixels": 20892,
+      "truth_iou_evaluation_only": 0.8256270342714915,
+      "truth_recall_evaluation_only": 0.8256270342714915,
+      "proposal_precision_evaluation_only": 1.0
+    },
+    "FF04:query": {
+      "selection_authority": "HIGHEST_SCORE_SINGLE_DOOR_PROMPT_WITHOUT_TRUTH_ACCESS",
+      "detected_box_count": 1,
+      "selected_score": 0.402495801448822,
+      "selected_box_xyxy": [
+        0.4088592529296875,
+        0.11714458465576172,
+        156.5824737548828,
+        199.8761749267578
+      ],
+      "grounder": {
+        "prompt_call_index": 0,
+        "class_id": "architectural_leaf",
+        "subtype": null,
+        "prompt_text": "door",
+        "prompt_serialization": "door.",
+        "decoded_labels_ignored": true,
+        "input_pixel_values_shape": [
+          1,
+          3,
+          800,
+          1066
+        ],
+        "input_ids_shape": [
+          1,
+          4
+        ],
+        "raw_logits_shape": [
+          1,
+          900,
+          256
+        ],
+        "raw_boxes_shape": [
+          1,
+          900,
+          4
+        ],
+        "postprocessed_box_count": 1,
+        "discarded_nonfinite_or_empty_box_count": 0,
+        "valid_box_count": 1,
+        "inference_and_postprocess_seconds": 0.26051860000006855
+      },
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          480,
+          640
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09618519997457042
+      },
+      "proposal_mask_sha256": "2c1b337a162562c5915a4be23bb5529e81ea1cdca10c4971531a9f414ee650b8",
+      "proposal_pixels": 13997,
+      "truth_pixels": 20811,
+      "intersection_pixels": 13115,
+      "union_pixels": 21693,
+      "truth_iou_evaluation_only": 0.604572903701655,
+      "truth_recall_evaluation_only": 0.6301955696506655,
+      "proposal_precision_evaluation_only": 0.9369864971065228
+    }
+  },
+  "input_receipts": {
+    "FF01:reference": {
+      "scene_id": "074",
+      "frame": 6615,
+      "image_sha256": "321d29388e9aa1a5f5d843d333bb2d9f68082ebd41acadbcb5052b844c6d3492"
+    },
+    "FF01:query": {
+      "scene_id": "074",
+      "frame": 6650,
+      "image_sha256": "49a13103478d2f02af47353c3d9fb443703bf0d028a74023b1081b664514ee07"
+    },
+    "FF02:reference": {
+      "scene_id": "109",
+      "frame": 4150,
+      "image_sha256": "e2c60e2c48cd3997279b8d957aabddc5792db01276aaf80e00492e18de77b139"
+    },
+    "FF02:query": {
+      "scene_id": "109",
+      "frame": 4210,
+      "image_sha256": "72af99af9a7c94634cadd2921ab49d7101a64e4ad9abb747370483417f3bfbed"
+    },
+    "FF03:reference": {
+      "scene_id": "005",
+      "frame": 9815,
+      "image_sha256": "c885d4745bc498dcf08813fd7e3b33cfe32625d8cc3371c19c822d449329a57c"
+    },
+    "FF03:query": {
+      "scene_id": "005",
+      "frame": 9835,
+      "image_sha256": "8f33f2df58ebd562d8143d6c74a9bb37c51c929b4b883ebdd99e9679427d8394"
+    },
+    "FF04:reference": {
+      "scene_id": "076",
+      "frame": 655,
+      "image_sha256": "122886337c3baa261d25d08c0727376dc9240bd634a6dc21523702bd11cc11c3"
+    },
+    "FF04:query": {
+      "scene_id": "076",
+      "frame": 675,
+      "image_sha256": "988f49de9b081ddeb7d35ff0f3703bed538cab3e86aeee8c79b6e372cc970243"
+    }
+  },
+  "comparison_to_exact_provider_mask": {
+    "aggregate": {
+      "true_positive": 34,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "zero_assignment_exact_scenarios": 15,
+      "scenarios": 15
+    },
+    "true_pair_absolute_support": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "claim_boundary": "A pass is consumed SceneNN Development evidence that one truth-blind open-vocabulary box-to-mask proposal carrier can preserve the confirmed full-context correspondence mechanism in exactly-one-door indoor scenes. GroundingDINO and SAM2.1 run on desktop GPU here; this is not measured Android deployment and does not establish multi-door target selection, provider-disjoint generalization, named entrance, venue ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, reliability or safety."
+}

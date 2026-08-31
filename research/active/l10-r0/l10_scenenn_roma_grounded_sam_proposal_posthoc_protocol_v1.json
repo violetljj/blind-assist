@@ -1,0 +1,86 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-grounded-sam-proposal-posthoc-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-grounded-sam-proposal-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T03:48:00+08:00",
+  "question": "Can a truth-blind single-door GroundingDINO top-1 box plus SAM2.1 native mask replace privileged provider target masks while retaining the unchanged full-context RoMa NONE-aware result?",
+  "implementation": {
+    "path": "l10_scenenn_roma_grounded_sam_proposal_posthoc.py",
+    "sha256": "16cf009ec8ffd262ea3ec5a2f44902e59cb7bf59606100039dc02a2264117fd1"
+  },
+  "dependencies": [
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_full_context_mask_fresh_result_v1.json",
+    "result_sha256": "2bea468259d5523ff5df0802f2712c8b0ff98e02e1ed4970a9c325d80e968891",
+    "required_conclusion": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET",
+    "observed_metrics": {"true_positive": 34, "false_positive": 0, "false_negative": 0, "f1": 1.0, "exact_scenarios": 15, "true_pairs_supported": 4},
+    "single_change": "Replace each exact provider target-visible mask with a highest-score single-prompt door box converted to one native SAM2.1 mask; preserve complete-frame RoMa input, matcher, cycle thresholds, assignment, cohort and scenarios."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_DEVELOPMENT",
+    "cohort_path": "l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+    "cohort_sha256": "711e85ef355bcda520cc738172c076cabb486a9fefc1dfd0ba6aaaee97c5d7dd",
+    "rgb_receipt_path": "l10_scenenn_roma_full_context_mask_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "ff764bf0e3c24dd710379a37feb1aa0eb3d54508e837275078b2ed9a6980f03e",
+    "scene_scope": "The consumed final four exactly-one-door SceneNN scenes 074, 109, 005 and 076; use truth only after proposal selection for evaluation diagnostics."
+  },
+  "models": {
+    "grounder": {"path": "artifacts.local/models/grounding-dino-tiny-a2bb814/model.safetensors", "sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3"},
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "proposal": {
+    "grounder_root": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "prompt": {"call_index": 0, "class_id": "architectural_leaf", "text": "door", "role": "PARENT"},
+    "processor": "Frozen Transformers 5.14.1 GroundingDINO-Tiny defaults; single candidate-label list [door].",
+    "box_threshold": 0.4,
+    "text_threshold": 0.3,
+    "selection": "Sort strict-threshold detections by descending score, box coordinates and postprocess index; retain exactly top one without truth, provider geometry, mask IoU or temporal information.",
+    "mask": "SAM2.1-Hiera-Small, full RGB plus the retained box, multimask_output=false, official native-size postprocess at mask_threshold 0.0, no morphology, no IoU-score selection.",
+    "failure_semantics": "If any of eight frames has no strict door proposal or no non-empty native mask, stop without a valid algorithm result."
+  },
+  "renderer": {
+    "numeric_type": "float32",
+    "image_width": 640,
+    "image_height": 480,
+    "near_plane_metres": 0.02,
+    "near_plane_face_rule": "reject unless every vertex is beyond near plane",
+    "triangle_sidedness": "double-sided",
+    "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+    "visibility_tolerance_metres": 0.005
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent proposal-mask cycle fraction and majority cycle purity.",
+    "zero_assignment": "Unchanged strict reciprocal maximum among absolutely supported pairs."
+  },
+  "decision_gate": {
+    "required_proposal_masks": 8,
+    "minimum_true_pairs_with_absolute_support": 4,
+    "minimum_true_positive": 34,
+    "maximum_false_positive": 0,
+    "maximum_false_negative": 0,
+    "minimum_exact_scenarios": 15
+  },
+  "forbidden_after_freeze": [
+    "change prompt, GroundingDINO thresholds, top-one selection, SAM mask postprocess, matcher, support thresholds, assignment, cohort, frames, targets, scenarios or gate",
+    "select a proposal using truth overlap, provider instance identity, geometry, temporal correspondence or RoMa outcome",
+    "merge, dilate, erode, expand, shrink or replace a failed proposal after outcome",
+    "call this consumed posthoc result fresh, source-disjoint, phone-runtime, named-entrance, ownership, access, traversability, arrival, handoff, benefit or safety evidence"
+  ],
+  "claim_boundary": "A pass is consumed SceneNN Development evidence that one truth-blind open-vocabulary box-to-mask proposal carrier can preserve the confirmed full-context correspondence mechanism in exactly-one-door indoor scenes. GroundingDINO and SAM2.1 run on desktop GPU here; this is not measured Android deployment and does not establish multi-door target selection, provider-disjoint generalization, named entrance, venue ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, reliability or safety."
+}

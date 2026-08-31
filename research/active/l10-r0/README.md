@@ -3797,14 +3797,26 @@ true pairs with absolute support. Same-crop DINOv2 on these scenes was
 unchanged correspondence mechanism as
 `COMPONENT_OR_CHALLENGER / COMPONENT` within same-provider Development.
 
-This confirmation closes the cross-scene reproducibility gap for the privileged
-mask-gated correspondence role, not the phone-side proposal gap. The next
-successor must replace exact provider masks with an independently justified
-target-conditioned phone proposal while freezing whole-image context, support
-thresholds, reciprocal NONE assignment, and exact target truth. None of these
-results proves raw-phone perception, door detection, aperture, named entrance,
-ownership, access, traversability, waypoint, arrival, `HANDOFF_READY`, user
-benefit, deployment, or safety.
+The first proposal-carrier bridge then changed only the mask source. On all
+eight consumed confirmation frames, one frozen GroundingDINO-Tiny call with the
+single prompt `door`, strict `0.4/0.3` box/text thresholds, and deterministic
+top-one selection supplied a box without truth access. Frozen SAM2.1-Hiera-Small
+converted that box to one native full-frame mask with no IoU-score selection or
+morphology. Proposal truth IoU ranged from `0.60` to `0.95`, yet unchanged
+full-context RoMa retained `TP=34, FP=0, FN=0`, precision/recall/F1 `1.0`,
+`15/15` exact NONE-aware assignments, and `4/4` true support. Record
+`L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET`.
+
+This is the first direct evidence that exact provider mask boundaries are not
+required by the correspondence mechanism, but it remains
+`COMPONENT_OR_CHALLENGER / CHALLENGER`: the source is consumed, every scene has
+exactly one labelled door, and GroundingDINO/SAM2.1 ran on desktop GPU. Freeze
+the prompt, thresholds, top-one rule, SAM postprocess, RoMa thresholds, and all
+eight frames. The next test must add source-disjoint multi-door target selection
+or provider-disjoint proposals; EdgeSAM-style deployment is a separate runtime
+question. None of these results proves raw-phone deployment, aperture, named
+entrance, ownership, access, traversability, waypoint, arrival,
+`HANDOFF_READY`, user benefit, reliability, or safety.
 
 Evidence:
 
