@@ -16,21 +16,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
   `8/18` dropout recovery. This is a same-source Development pass only.
-- **CARLA algorithm line:** X64 reached `94.35/68.02/79.05` percent
-  precision/recall/F1 on fresh C32 but did not exercise its new mechanisms.
-  Consumed diagnosis localized the remaining ep_05/ep_07 gap to loss of prior
-  cross-representation agreement at an X44 conflict. X65 adds a pre-conflict
-  joint credential plus a current measured suppressed-lineage join. Across
-  consumed C26/C27/C28/C32 it improved three cohorts, tied one, regressed none,
-  and pooled `+15 TP / +0 FP / +1.44 pp F1` over X64. C32 reached
-  `94.78/73.84/83.01`, with ep_05/ep_07 recall `56.52/64.58%`, all authority
-  invariants zero, and no added FP. This is consumed Development evidence, not
-  fresh promotion authority. Its first frozen fresh-source successor, C33,
-  terminated during source capture after 21 depth frames became durable. The
-  frozen no-retry rule makes C33 source-not-evaluable; no model prediction or
-  metric exists for that cohort. C34 is now preregistered as a distinct new
-  cohort with unchanged X65, seed `341066`, and four new render assignments;
-  its protocol SHA-256 is `EF8DED7A...B097DC41`.
+- **CARLA algorithm line:** X65 pooled `+15 TP / +0 FP / +1.44 pp F1` over X64
+  across consumed C26/C27/C28/C32 Development. C33 then terminated as frozen
+  source-not-evaluable before any prediction. The sole C34 scored invocation
+  completed on genuinely new pixels at `83.01/73.84/78.15` percent
+  precision/recall/F1 with all authority invariants zero and acceptable safe
+  segments. It improved X54 by `-9 FP / +2.11 pp F1`, but tied X64 exactly.
+  Although C34 contained 17 selected contact-loss ambiguity frames and 16
+  pre-conflict joint-credential frames, X65 recorded zero ancestry
+  synchronization and zero handback frames. C34 is therefore
+  mechanism-not-exercised, not incremental X65 confirmation; its 83.01%
+  precision also missed the frozen 85% floor.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -48,11 +44,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Keep X65 unchanged for its next scored model invocation. C33 is terminal and
-   must not be retried. Capture the frozen C34 identity, admit genuinely new
-   pixels that pass the physical source gate, and require the pre-conflict
-   credentialed handback to be exercised. Do not rescore C26-C28 or C32 as
-   fresh authority.
+4. Do not rerun or tune C34. Diagnose its 26 false-positive frames and the
+   unreachable X65 ancestry handback as consumed Development. Require a visible
+   cross-cohort effect from the next representation-independent conflict
+   credential before freezing any new confirmation source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -89,3 +84,5 @@ their result.
   [DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md](carla/DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md)
 - Frozen C34 X65 protocol:
   [dtr_carla_c34_x65_fresh_source_protocol.json](carla/dtr_carla_c34_x65_fresh_source_protocol.json)
+- C34 X65 fresh confirmation:
+  [DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md)
