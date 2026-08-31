@@ -28,7 +28,9 @@ future obstacle occupancy intersects the wearer's route, while preserving
   fresh promotion authority. Its first frozen fresh-source successor, C33,
   terminated during source capture after 21 depth frames became durable. The
   frozen no-retry rule makes C33 source-not-evaluable; no model prediction or
-  metric exists for that cohort.
+  metric exists for that cohort. C34 is now preregistered as a distinct new
+  cohort with unchanged X65, seed `341066`, and four new render assignments;
+  its protocol SHA-256 is `EF8DED7A...B097DC41`.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -47,9 +49,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
 4. Keep X65 unchanged for its next scored model invocation. C33 is terminal and
-   must not be retried. Freeze a new C34 identity, admit genuinely new pixels
-   that pass the physical source gate, and require the pre-conflict credentialed
-   handback to be exercised. Do not rescore C26-C28 or C32 as fresh authority.
+   must not be retried. Capture the frozen C34 identity, admit genuinely new
+   pixels that pass the physical source gate, and require the pre-conflict
+   credentialed handback to be exercised. Do not rescore C26-C28 or C32 as
+   fresh authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -84,3 +87,5 @@ their result.
   [DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
 - C33 terminal source result:
   [DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md](carla/DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md)
+- Frozen C34 X65 protocol:
+  [dtr_carla_c34_x65_fresh_source_protocol.json](carla/dtr_carla_c34_x65_fresh_source_protocol.json)
