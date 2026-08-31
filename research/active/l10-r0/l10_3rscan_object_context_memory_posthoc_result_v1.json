@@ -1,0 +1,178 @@
+{
+  "schema": "blindassist-l10-3rscan-object-context-memory-posthoc-result-v1",
+  "authority": "CONSUMED_PV28_OBJECT_CONTEXT_MEMORY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_object_context_memory_posthoc_protocol_v1.json",
+  "protocol_sha256": "03712fc6debaab4630269216845096d4367d09d6f64cbde468f5a2dee8783c82",
+  "implementation": {
+    "path": "l10_3rscan_object_context_memory_posthoc.py",
+    "sha256": "9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+    "cohort_sha256": "4a726a1d97b8979d343b3aefcfcb9866e8267f1b48291408a977a0be648d227a"
+  },
+  "conclusion": "L10_3RSCAN_OBJECT_CONTEXT_MEMORY_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "scores": {
+    "NC08_query": 0.4617730975151062,
+    "PV28M1_query": 0.5365691781044006,
+    "NC31_query": 0.47288092970848083,
+    "PV28M3_query": 0.6868418455123901,
+    "PV28M2_query": 0.43482571840286255
+  },
+  "metrics": {
+    "positive_queries": 3,
+    "negative_queries": 2,
+    "correct_pairwise_rankings": 4,
+    "pairwise_rankings": 6,
+    "minimum_positive_score": 0.43482571840286255,
+    "maximum_negative_score": 0.47288092970848083,
+    "separation_margin": -0.038055211305618286
+  },
+  "descriptor_receipts": {
+    "PV28M1_reference": {
+      "sha256": "5282a2c751104f47bff8fa4aaa74a8bb8de775ddca6a9b3dda059a71e404beab",
+      "dimensions": 2048
+    },
+    "PV28M1_query": {
+      "sha256": "185d3621df62c3c382f91d60ee537abd2f5e297811436ccd2c259d7be443b222",
+      "dimensions": 2048
+    },
+    "PV28M2_reference": {
+      "sha256": "5806ff562957650c555702ab11a5e52046211bb6f4c0fbe038d2c861bcf7255a",
+      "dimensions": 2048
+    },
+    "PV28M2_query": {
+      "sha256": "d490f0c911a23c71e4c12b31c7d00e35daccf766cea53c9c440af44f8d017a07",
+      "dimensions": 2048
+    },
+    "PV28M3_reference": {
+      "sha256": "608f180c107f9091c84768110c36bb97ca8ea8236a5608bce686d3541489f7fb",
+      "dimensions": 2048
+    },
+    "PV28M3_query": {
+      "sha256": "56d09221d1a2907ed916d2fcee2d85b0f3d10100fc0958eb7c2b65332d8a2f44",
+      "dimensions": 2048
+    },
+    "NC31_query": {
+      "sha256": "5ff480d2d64c8656afc265cc52ab6724c36d5bc407f3438da867497769082ed0",
+      "dimensions": 2048
+    },
+    "NC08_query": {
+      "sha256": "550eff8e6609fb310170656fb15aec32fc81a2e8ec981593051ae56c28424ecd",
+      "dimensions": 2048
+    }
+  },
+  "image_receipts": {
+    "PV28M1_reference": {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "frame": 92,
+      "image_sha256": "c403897ae1d60188896bd1f2b11329a2ea4b4606d92cb14974eeb401260be846",
+      "bbox_xyxy": [
+        675.2054443359375,
+        21.620155334472656,
+        949.7403564453125,
+        483.33978271484375
+      ]
+    },
+    "PV28M1_query": {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "frame": 111,
+      "image_sha256": "2a75ecf386f1641877ff4d08402595b676d722168564e52ce5edc64e1e80c20d",
+      "bbox_xyxy": [
+        46.785675048828125,
+        416.4000549316406,
+        914.1476440429688,
+        538.8767700195312
+      ]
+    },
+    "PV28M2_reference": {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "frame": 9,
+      "image_sha256": "03720682e43bf3a79b10baa8242db2663035dfdbb971281d0f898c9887f30ba1",
+      "bbox_xyxy": [
+        95.28555297851562,
+        0.639045000076294,
+        657.4240112304688,
+        197.96685791015625
+      ]
+    },
+    "PV28M2_query": {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "frame": 113,
+      "image_sha256": "e2c209cce07fc84c58c33d7357cd31058ba62ad41dee511c2fd6c9ef72e13640",
+      "bbox_xyxy": [
+        341.3602294921875,
+        390.8580627441406,
+        957.9130249023438,
+        538.5728149414062
+      ]
+    },
+    "PV28M3_reference": {
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "frame": 12,
+      "image_sha256": "edfaa77e98dfa8506de1c4f6e72d37dd1a4b1eb7ba2142e1359aba1c7e08563b",
+      "bbox_xyxy": [
+        43.87220764160156,
+        0.823922872543335,
+        810.588623046875,
+        117.03401947021484
+      ]
+    },
+    "PV28M3_query": {
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "frame": 64,
+      "image_sha256": "eab33930a5c3e5e9583bfcb748be6309c57e097b3d7a3ab95625a2af988d7223",
+      "bbox_xyxy": [
+        817.426513671875,
+        191.42828369140625,
+        956.25537109375,
+        533.6212158203125
+      ]
+    },
+    "NC31_query": {
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "frame": 86,
+      "image_sha256": "1a85e8ea5967ad405e1cf56c1675586f034dff51b393681ee169dba2a05275c1",
+      "bbox_xyxy": [
+        111.62455749511719,
+        298.135986328125,
+        827.8693237304688,
+        469.01995849609375
+      ]
+    },
+    "NC08_query": {
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "frame": 82,
+      "image_sha256": "85df3478a841d6d46e90cd2f9566db19f5c32c9337b81ec6df1d3f73e01b9a52",
+      "bbox_xyxy": [
+        275.2812194824219,
+        131.8151397705078,
+        868.8740234375,
+        271.384521484375
+      ]
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "dinov2_calls": 16
+  },
+  "literature_motivation": [
+    {
+      "source": "CLOVER and MapCLOVER",
+      "url": "https://arxiv.org/abs/2407.09718",
+      "use": "Summarize several viewpoint-varying object observations and retain surrounding context for instance re-identification."
+    },
+    {
+      "source": "Matching Anything by Segmenting Anything",
+      "url": "https://arxiv.org/abs/2406.04221",
+      "use": "Move from brittle pixel correspondence to domain-general instance association."
+    },
+    {
+      "source": "Towards Global Localization Using Multi-Modal Object-Instance Re-Identification",
+      "url": "https://arxiv.org/abs/2409.12002",
+      "use": "Treat object instances as reusable landmarks rather than only geometric correspondences."
+    }
+  ],
+  "claim_boundary": "This consumed Development test can establish only whether a fixed object-plus-context representation contains cross-family-separable PV28 signal under privileged target boxes. It cannot establish same-scene sibling rejection, open-set calibration, raw-camera initial binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

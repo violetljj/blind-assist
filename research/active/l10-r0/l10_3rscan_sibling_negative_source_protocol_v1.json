@@ -1,0 +1,32 @@
+{
+  "schema": "blindassist-l10-3rscan-sibling-negative-source-protocol-v1",
+  "protocol_id": "l10-3rscan-sibling-negative-source-protocol-v1",
+  "frozen_at": "2026-09-01T07:46:20+08:00",
+  "question": "Which anti-sliver depth-consistent view exposes same-scene sibling door instance 6 before adding it as a hard negative to the consumed PV28 set-memory test?",
+  "implementation": {"path": "l10_3rscan_sibling_negative_source.py", "sha256": "b862804806cc61ad75bb3e73200872e7483981fb2a2cecfb12f441ba0b8bb649"},
+  "candidate_source": {"path": "l10_3rscan_partial_view_confirmation_source_result_v1.json", "sha256": "24b507ed3bd8f468f6161dc576d44e470bd87b0ce8f7c5d9418cb170dcad7558"},
+  "source": {
+    "authority": "CONSUMED_PV28_QUERY_SCAN_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/labels.instances.annotated.v2.ply", "bytes": 2575791, "sha256": "281216447e3486ea69c12693f2cfda0cb566a543d9cef56ca96093a1f0c1f3f7"},
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip", "bytes": 22804430, "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"}
+    ]
+  },
+  "sibling_instance_id": 6,
+  "sibling_label": "door",
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": "Choose maximum depth-visible sibling vertices; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame. Do not open RGB or descriptors before freeze.",
+  "forbidden_after_freeze": ["change sibling, view rules or ranking", "inspect RGB or descriptor similarity before source receipt", "replace the sibling after its score is known"],
+  "claim_boundary": "This consumed geometry/depth source gate only selects a visible same-scene sibling negative. It is not descriptor evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

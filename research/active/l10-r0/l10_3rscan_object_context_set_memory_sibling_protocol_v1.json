@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist-l10-3rscan-object-context-set-memory-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-object-context-set-memory-sibling-protocol-v1",
+  "frozen_at": "2026-09-01T07:47:35+08:00",
+  "question": "Does the unchanged nearest-member object-context memory rank all three PV28 queries above the pre-descriptor same-scene sibling as well as both cross-family controls?",
+  "implementation": {"path": "l10_3rscan_object_context_set_memory_posthoc.py", "sha256": "342af35df625481420e5090eae0fae3333521b1b313f4ee99e18d955664122f6"},
+  "dependencies": [{"path": "l10_3rscan_object_context_memory_posthoc.py", "sha256": "9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505"}],
+  "cohort": {"path": "l10_3rscan_object_context_set_memory_sibling_cohort_v1.json", "sha256": "3166f72c6eca87d3774e4c03212a28ae23f5f1ac1adfb051c509fca1046fc999"},
+  "predecessor": {
+    "path": "l10_3rscan_object_context_set_memory_posthoc_result_v1.json",
+    "sha256": "ac746e9e4c3deb4807f4f71f4977f59aeac47a08a00264a52afc9d3b56b06e34",
+    "required_conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Add the geometry-frozen same-scene sibling SIB06 query as a third negative; keep descriptors, references, positive views, cross-family controls, scoring and strict ranking gate unchanged."
+  },
+  "source": {"authority": "CONSUMED_PV28_FIXED_MEMORY_WITH_PRE_DESCRIPTOR_SAME_SCENE_SIBLING", "artifact_root": "artifacts.local"},
+  "model": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"},
+  "descriptor": {"input_size": 518, "crop_scales": [1.0, 1.5], "feature": "Unchanged exact-bbox plus 1.5x-context DINOv2 CLS descriptor.", "memory": "Retain three normalized descriptors.", "score": "Maximum cosine to any frozen reference member."},
+  "memory": {"reference_images": ["PV28M1_reference", "PV28M2_reference", "PV28M3_reference"]},
+  "evaluation": {
+    "positive_query_images": ["PV28M1_query", "PV28M2_query", "PV28M3_query"],
+    "negative_query_images": ["NC31_query", "NC08_query", "SIB06_query"],
+    "decision_gate": "All nine positive-versus-negative nearest-member comparisons must be strictly ordered correctly; no threshold or margin is fitted.",
+    "negative_authority": "NC31/NC08 are cross-family exact-target-absent; SIB06 is a different provider instance in the same PV28 rescan and was selected before descriptor access."
+  },
+  "literature_motivation": [{"source": "CLOVER and MapCLOVER", "url": "https://arxiv.org/abs/2407.09718", "use": "Challenge viewpoint-preserving memory against another object in the same scene so context alone cannot establish success."}],
+  "forbidden_after_freeze": ["change any descriptor, view, memory member, negative or gate", "fit a threshold", "replace SIB06 after its score", "claim consumed ranking as fresh confirmation"],
+  "claim_boundary": "This consumed Development test can establish only whether nearest-member object-context memory separates PV28 from one same-scene sibling and two cross-family controls under privileged boxes. It cannot establish broad sibling rejection, calibrated open-set decisions, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

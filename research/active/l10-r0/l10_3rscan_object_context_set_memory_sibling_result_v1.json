@@ -1,0 +1,202 @@
+{
+  "schema": "blindassist-l10-3rscan-object-context-set-memory-posthoc-result-v1",
+  "authority": "CONSUMED_PV28_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_object_context_set_memory_sibling_protocol_v1.json",
+  "protocol_sha256": "3fa844a7eb08502cd7dbb2c1f3456c254a32701151ab7daa8201b69eb3aa1ab9",
+  "implementation": {
+    "path": "l10_3rscan_object_context_set_memory_posthoc.py",
+    "sha256": "342af35df625481420e5090eae0fae3333521b1b313f4ee99e18d955664122f6"
+  },
+  "conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "scores": {
+    "PV28M1_query": 0.4892773926258087,
+    "PV28M2_query": 0.43776097893714905,
+    "PV28M3_query": 0.5690528750419617,
+    "NC31_query": 0.4339597523212433,
+    "NC08_query": 0.3957241177558899,
+    "SIB06_query": 0.3898768723011017
+  },
+  "winning_reference": {
+    "PV28M1_query": "PV28M2_reference",
+    "PV28M2_query": "PV28M2_reference",
+    "PV28M3_query": "PV28M1_reference",
+    "NC31_query": "PV28M2_reference",
+    "NC08_query": "PV28M2_reference",
+    "SIB06_query": "PV28M2_reference"
+  },
+  "pair_scores": {
+    "PV28M1_query": {
+      "PV28M1_reference": 0.4574888348579407,
+      "PV28M2_reference": 0.4892773926258087,
+      "PV28M3_reference": 0.30587470531463623
+    },
+    "PV28M2_query": {
+      "PV28M1_reference": 0.284249871969223,
+      "PV28M2_reference": 0.43776097893714905,
+      "PV28M3_reference": 0.29310619831085205
+    },
+    "PV28M3_query": {
+      "PV28M1_reference": 0.5690528750419617,
+      "PV28M2_reference": 0.5012905597686768,
+      "PV28M3_reference": 0.5331148505210876
+    },
+    "NC31_query": {
+      "PV28M1_reference": 0.417060911655426,
+      "PV28M2_reference": 0.4339597523212433,
+      "PV28M3_reference": 0.2529376745223999
+    },
+    "NC08_query": {
+      "PV28M1_reference": 0.39498651027679443,
+      "PV28M2_reference": 0.3957241177558899,
+      "PV28M3_reference": 0.28731608390808105
+    },
+    "SIB06_query": {
+      "PV28M1_reference": 0.3000504672527313,
+      "PV28M2_reference": 0.3898768723011017,
+      "PV28M3_reference": 0.20161239802837372
+    }
+  },
+  "metrics": {
+    "positive_queries": 3,
+    "negative_queries": 3,
+    "correct_pairwise_rankings": 9,
+    "pairwise_rankings": 9,
+    "minimum_positive_score": 0.43776097893714905,
+    "maximum_negative_score": 0.4339597523212433,
+    "separation_margin": 0.0038012266159057617
+  },
+  "descriptor_receipts": {
+    "PV28M1_reference": {
+      "sha256": "5282a2c751104f47bff8fa4aaa74a8bb8de775ddca6a9b3dda059a71e404beab",
+      "dimensions": 2048
+    },
+    "PV28M1_query": {
+      "sha256": "185d3621df62c3c382f91d60ee537abd2f5e297811436ccd2c259d7be443b222",
+      "dimensions": 2048
+    },
+    "PV28M2_reference": {
+      "sha256": "5806ff562957650c555702ab11a5e52046211bb6f4c0fbe038d2c861bcf7255a",
+      "dimensions": 2048
+    },
+    "PV28M2_query": {
+      "sha256": "d490f0c911a23c71e4c12b31c7d00e35daccf766cea53c9c440af44f8d017a07",
+      "dimensions": 2048
+    },
+    "PV28M3_reference": {
+      "sha256": "608f180c107f9091c84768110c36bb97ca8ea8236a5608bce686d3541489f7fb",
+      "dimensions": 2048
+    },
+    "PV28M3_query": {
+      "sha256": "56d09221d1a2907ed916d2fcee2d85b0f3d10100fc0958eb7c2b65332d8a2f44",
+      "dimensions": 2048
+    },
+    "NC31_query": {
+      "sha256": "5ff480d2d64c8656afc265cc52ab6724c36d5bc407f3438da867497769082ed0",
+      "dimensions": 2048
+    },
+    "NC08_query": {
+      "sha256": "550eff8e6609fb310170656fb15aec32fc81a2e8ec981593051ae56c28424ecd",
+      "dimensions": 2048
+    },
+    "SIB06_query": {
+      "sha256": "e69bb38617cd9dfd0aec330647fbcfef6bfb6bbbfbb9ea2996ce7ab1d5d8d730",
+      "dimensions": 2048
+    }
+  },
+  "image_receipts": {
+    "PV28M1_reference": {
+      "image_sha256": "c403897ae1d60188896bd1f2b11329a2ea4b4606d92cb14974eeb401260be846",
+      "bbox_xyxy": [
+        675.2054443359375,
+        21.620155334472656,
+        949.7403564453125,
+        483.33978271484375
+      ]
+    },
+    "PV28M1_query": {
+      "image_sha256": "2a75ecf386f1641877ff4d08402595b676d722168564e52ce5edc64e1e80c20d",
+      "bbox_xyxy": [
+        46.785675048828125,
+        416.4000549316406,
+        914.1476440429688,
+        538.8767700195312
+      ]
+    },
+    "PV28M2_reference": {
+      "image_sha256": "03720682e43bf3a79b10baa8242db2663035dfdbb971281d0f898c9887f30ba1",
+      "bbox_xyxy": [
+        95.28555297851562,
+        0.639045000076294,
+        657.4240112304688,
+        197.96685791015625
+      ]
+    },
+    "PV28M2_query": {
+      "image_sha256": "e2c209cce07fc84c58c33d7357cd31058ba62ad41dee511c2fd6c9ef72e13640",
+      "bbox_xyxy": [
+        341.3602294921875,
+        390.8580627441406,
+        957.9130249023438,
+        538.5728149414062
+      ]
+    },
+    "PV28M3_reference": {
+      "image_sha256": "edfaa77e98dfa8506de1c4f6e72d37dd1a4b1eb7ba2142e1359aba1c7e08563b",
+      "bbox_xyxy": [
+        43.87220764160156,
+        0.823922872543335,
+        810.588623046875,
+        117.03401947021484
+      ]
+    },
+    "PV28M3_query": {
+      "image_sha256": "eab33930a5c3e5e9583bfcb748be6309c57e097b3d7a3ab95625a2af988d7223",
+      "bbox_xyxy": [
+        817.426513671875,
+        191.42828369140625,
+        956.25537109375,
+        533.6212158203125
+      ]
+    },
+    "NC31_query": {
+      "image_sha256": "1a85e8ea5967ad405e1cf56c1675586f034dff51b393681ee169dba2a05275c1",
+      "bbox_xyxy": [
+        111.62455749511719,
+        298.135986328125,
+        827.8693237304688,
+        469.01995849609375
+      ]
+    },
+    "NC08_query": {
+      "image_sha256": "85df3478a841d6d46e90cd2f9566db19f5c32c9337b81ec6df1d3f73e01b9a52",
+      "bbox_xyxy": [
+        275.2812194824219,
+        131.8151397705078,
+        868.8740234375,
+        271.384521484375
+      ]
+    },
+    "SIB06_query": {
+      "image_sha256": "5fc1a1a2a35091554ccf56f78ef0a7e7493df22b225b4a9461e2fa09a1a51948",
+      "bbox_xyxy": [
+        38.406494140625,
+        1.2359650135040283,
+        935.5510864257812,
+        535.9048461914062
+      ]
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "dinov2_calls": 18
+  },
+  "literature_motivation": [
+    {
+      "source": "CLOVER and MapCLOVER",
+      "url": "https://arxiv.org/abs/2407.09718",
+      "use": "Challenge viewpoint-preserving memory against another object in the same scene so context alone cannot establish success."
+    }
+  ],
+  "claim_boundary": "This consumed Development test can establish only whether nearest-member object-context memory separates PV28 from one same-scene sibling and two cross-family controls under privileged boxes. It cannot establish broad sibling rejection, calibrated open-set decisions, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

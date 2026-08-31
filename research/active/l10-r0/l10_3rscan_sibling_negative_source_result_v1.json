@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist-l10-3rscan-sibling-negative-source-result-v1",
+  "authority": "CONSUMED_PV28_SAME_SCENE_SIBLING_GEOMETRY_DEPTH_ONLY_SOURCE",
+  "protocol_path": "l10_3rscan_sibling_negative_source_protocol_v1.json",
+  "protocol_sha256": "490ec229386190bea38aa5ee1d11e4bb11eec16452b426c0101697f7f2b35ed4",
+  "implementation": {
+    "path": "l10_3rscan_sibling_negative_source.py",
+    "sha256": "b862804806cc61ad75bb3e73200872e7483981fb2a2cecfb12f441ba0b8bb649"
+  },
+  "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+  "sibling_instance_id": 6,
+  "sibling_label": "door",
+  "target_vertices": 496,
+  "candidate_views": 13,
+  "selected": {
+    "frame": 117,
+    "color_size": [
+      960,
+      540
+    ],
+    "inside_vertices": 171,
+    "inside_vertex_fraction": 0.34475806451612906,
+    "projected_area_pixels": 384393.7498764762,
+    "image_margin_pixels": 1.2359650135040283,
+    "bbox_xyxy": [
+      38.406494140625,
+      1.2359650135040283,
+      935.5510864257812,
+      535.9048461914062
+    ],
+    "depth_compared_vertices": 134,
+    "depth_visible_vertices": 133,
+    "depth_visible_ratio": 0.9925373134328358,
+    "bbox_width_pixels": 897.1445922851562,
+    "bbox_height_pixels": 534.6688811779022,
+    "bbox_short_side_pixels": 534.6688811779022,
+    "bbox_short_side_fraction": 0.990127557736856,
+    "bbox_aspect_ratio": 1.6779442826534097,
+    "visible_target_vertices": 133,
+    "zip_member": "frame-000117.color.jpg"
+  },
+  "opened": {
+    "pose_members": 143,
+    "depth_members": 143,
+    "rgb_members": 0,
+    "model_calls": 0
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "conclusion": "L10_3RSCAN_SAME_SCENE_SIBLING_NEGATIVE_SOURCE_EVALUABLE",
+  "claim_boundary": "This consumed geometry/depth source gate only selects a visible same-scene sibling negative. It is not descriptor evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

@@ -255,6 +255,16 @@ contract.
   controls remained non-commits. Freeze multi-view expansion of the same pixel
   carrier as insufficient for PV28. The next mechanism must add an instance-
   level appearance/geometry representation, not more RoMa views or thresholds.
+  A frozen DINOv2 object-plus-context successor then exposed that signal. A
+  three-view mean prototype reached only `4/6` cross-family rankings and margin
+  `-0.038055`; preserving the three reference descriptors as a set and scoring
+  the nearest member reached `6/6`, with minimum-positive `0.437761`, maximum-
+  negative `0.433960`, and margin `+0.003801`. A geometry-selected same-scene
+  sibling door was then added before descriptor access; the unchanged set
+  memory reached `9/9` positive-versus-negative rankings, with sibling score
+  `0.389877`. This is a promising consumed Development mechanism under
+  privileged boxes, not calibrated open-set or fresh-family evidence. Freeze
+  the representation and seek a wholly new family rather than tune the margin.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

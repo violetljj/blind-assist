@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist-l10-3rscan-sibling-negative-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-sibling-negative-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T07:47:10+08:00",
+  "question": "Does the frozen object-context set memory still separate all three PV28 query views after adding visible same-scene sibling door instance 6 as a hard negative?",
+  "implementation": {"path": "l10_3rscan_sibling_negative_freeze.py", "sha256": "bf8c84bf5954df409c3ecb3efff2c1f1ec9cf31b8230996e9907ae0dbcb39884"},
+  "cohort": {"path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json", "sha256": "4a726a1d97b8979d343b3aefcfcb9866e8267f1b48291408a977a0be648d227a"},
+  "sibling_source": {"path": "l10_3rscan_sibling_negative_source_result_v1.json", "sha256": "2d770a7c4569eb88df27bbf957fe47727c9c9a82b0202f9cb93249143b46947f"},
+  "episode_id": "SIB06",
+  "selection": "Append the sole pre-descriptor geometry-selected sibling query; preserve every earlier reference, positive query and cross-family control.",
+  "forbidden_after_freeze": ["change sibling or view", "remove an earlier control", "open descriptor scores before cohort freeze"],
+  "claim_boundary": "This freezes a consumed same-scene different-instance negative under a privileged geometry-derived box. It cannot establish raw-camera detection, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

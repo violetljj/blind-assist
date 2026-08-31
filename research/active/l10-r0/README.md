@@ -64,7 +64,11 @@ Status: `ACTIVE`
   three-view memory did not repair the frozen PV28 carrier failure: all `9/9`
   positive combinations remained zero-cycle, although all `6/6` cross-family
   controls were rejected. More views of the same pixel carrier are frozen as
-  the wrong repair layer for that family.
+  the wrong repair layer for that family. A DINOv2 object-plus-context mean
+  memory also failed (`4/6` rankings), but retaining the three view descriptors
+  as a nearest-member set reached `6/6` cross-family and `9/9` after adding a
+  same-scene sibling. Its margin is only `+0.0038`, so this is a Development
+  mechanism awaiting new-family confirmation.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -4112,6 +4116,23 @@ rerun that pair. This falsifies bounded multi-view expansion of the unchanged
 pixel-cycle carrier on PV28. It does not falsify learned instance memory; that
 is now the justified next representation layer.
 
+The frozen instance-level successor concatenated DINOv2 CLS descriptors from
+the exact target box and a `1.5x` context crop. Averaging three reference views
+lost viewpoint-specific structure: only `4/6` positive-versus-cross-family
+rankings were correct, with separation margin `-0.038055`. Keeping the same
+three descriptors as a set and scoring each query by its nearest member changed
+only the memory aggregation and reached `6/6`; minimum positive similarity was
+`0.437761`, maximum negative similarity `0.433960`, margin `+0.003801`.
+
+Before extending that claim, a geometry/depth-only source gate selected visible
+same-scene sibling door instance `6` at frame `117`, with `0` RGB/model calls.
+The unchanged set memory then ranked all three PV28 positives above that sibling
+(`0.389877`) and both cross-family negatives, `9/9` pairwise rankings. This is
+the strongest PV28 mechanism result, but remains consumed Development under
+privileged target boxes and has a thin margin. It does not establish calibrated
+open-set operation, broad sibling rejection, raw-camera binding, portal
+ownership/access, waypoint, arrival, handoff, benefit, reliability, or safety.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4209,6 +4230,23 @@ Evidence:
   `afc222cf391445fa90c139215dc7e0dcd7bda8622b42093e117e511cbd655dab`,
   `f89511e091d330518c119f6e6b8270a3276fc77c06e7062eada9c6ebba02ab58`,
   and `c3ff6a38960963a206bfda4f76c20c2a41375b50e49ac03e36c4203ab1153968`;
+- object-context mean/set implementations, protocols and results; sibling source
+  implementation/protocol/result; sibling freeze implementation/protocol/cohort;
+  and sibling evaluation protocol/result SHA-256:
+  `9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505`,
+  `03712fc6debaab4630269216845096d4367d09d6f64cbde468f5a2dee8783c82`,
+  `23c986e4d51d2a3b907efe6e423d6fa81b65b840a80dac61a9339783be389013`,
+  `342af35df625481420e5090eae0fae3333521b1b313f4ee99e18d955664122f6`,
+  `46526d611e10d1f69e1cfa7005cd78e9e2e728484f85795d9e839bff3f2371bd`,
+  `ac746e9e4c3deb4807f4f71f4977f59aeac47a08a00264a52afc9d3b56b06e34`,
+  `b862804806cc61ad75bb3e73200872e7483981fb2a2cecfb12f441ba0b8bb649`,
+  `490ec229386190bea38aa5ee1d11e4bb11eec16452b426c0101697f7f2b35ed4`,
+  `2d770a7c4569eb88df27bbf957fe47727c9c9a82b0202f9cb93249143b46947f`,
+  `bf8c84bf5954df409c3ecb3efff2c1f1ec9cf31b8230996e9907ae0dbcb39884`,
+  `38028fc1e010c0455e4a6fa04199bf39e435f77b627bc4e1600ae6b5770be6a2`,
+  `3166f72c6eca87d3774e4c03212a28ae23f5f1ac1adfb051c509fca1046fc999`,
+  `3fa844a7eb08502cd7dbb2c1f3456c254a32701151ab7daa8201b69eb3aa1ab9`,
+  and `9bd39411d5fdb19af690d71d1c9d58a4c914ff2b44ef32a1bcd77a2d06f71ebc`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;
