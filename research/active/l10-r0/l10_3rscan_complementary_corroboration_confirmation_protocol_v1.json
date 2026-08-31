@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-complementary-corroboration-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T06:15:00+08:00",
+  "question": "Does unchanged complementary corroboration retain both evaluable never-consumed positives and reject the fixed never-consumed exact-target-absent sibling negative?",
+  "implementation": {"path": "l10_3rscan_complementary_corroboration_confirmation.py", "sha256": "af4948bfbed6ca260dc1ea825eb432c1853ab2a973821e2df62dcff86f964f57"},
+  "dependencies": [
+    {"path": "l10_3rscan_active_query_consensus_posthoc.py", "sha256": "8d7560002739933a1e0ec8a00fed55862a249e0c6777a4c66787e0e12989bd19"},
+    {"path": "l10_3rscan_cycle_component_global_epipolar_posthoc.py", "sha256": "6dfa24631386c2210f3dcfc3dacd17bacb534e241702c920a5e56aa2244a8f5d"},
+    {"path": "l10_3rscan_cycle_component_open_set_posthoc.py", "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"},
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py", "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py", "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"},
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_complementary_corroboration_posthoc_result_v1.json",
+    "result_sha256": "7894a729510b96dc70f3374bedfd4acea3cb9a097850315e5afab9a6136a2df3",
+    "required_conclusion": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Replace the consumed five-pair panel with the pre-RGB/model-blind partial physical-target-disjoint cohort. Keep every model, mask, cycle, epipolar fit, 0.5 majority and Boolean composition unchanged."
+  },
+  "source": {
+    "authority": "FROZEN_PARTIAL_PHYSICAL_TARGET_DISJOINT_COMPLEMENTARY_CONFIRMATION",
+    "cohort_path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+    "cohort_sha256": "4a2ee76b236e1aa0c0b2ae10dde653711ac2da7c086e646ebca9fb9d3f1caca9",
+    "freeze_protocol_path": "l10_3rscan_complementary_confirmation_freeze_protocol_v2.json",
+    "freeze_protocol_sha256": "af1b9f68b86ee78729d77de09874f551a12e824ee3292c27774dd4cfcb64b388",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "models": {
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_DEVELOPMENT_ONLY",
+    "support_surface": "One native SAM2 mask from the fixed provider reference bbox.",
+    "extent_surface": "Fixed provider reference bbox transported independently to each query.",
+    "query_truth_isolation": "Positive bboxes open only after transport; exact-target absence is frozen for both negative query views before RGB/model access."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "branch": "Unchanged reference SAM support, RoMa coherent-cycle affine extent and native query SAM support in primary and active queries."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5
+  },
+  "epipolar_gate": {
+    "fit_domain": "All full-frame valid bidirectional cycles outside the native reference identity mask.",
+    "maximum_background_fit_points": 20000,
+    "deterministic_subsample": "Even indices over row-major cycle pixels.",
+    "opencv_rng_seed": 0,
+    "ransac_reprojection_threshold_pixels": 1.0,
+    "ransac_confidence": 0.999,
+    "ransac_max_iterations": 10000,
+    "target_sampson_threshold_pixels": 1.0,
+    "minimum_target_epipolar_inlier_fraction": 0.5
+  },
+  "corroboration_rule": {
+    "minimum_directional_active_query_fraction": 0.5,
+    "composition": "local bilateral primary binding AND (target-excluded global epipolar majority OR bidirectional active-query paired-cycle majority)"
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_FC31_FC31", "reference_episode": "FC31", "query_episode": "FC31", "label": "target_present"},
+      {"id": "P_FC08_FC08", "reference_episode": "FC08", "query_episode": "FC08", "label": "target_present"},
+      {"id": "N_FC30_FC31", "reference_episode": "FC30", "query_episode": "FC31", "label": "target_absent"}
+    ]
+  },
+  "decision_gate": {
+    "minimum_cycle_fraction": 0.01,
+    "minimum_component_dominance": 0.5,
+    "minimum_positive_extent_iou": 0.5,
+    "required_positive_pairs": 2,
+    "required_target_absent_pairs": 1,
+    "minimum_positive_commits": 2,
+    "maximum_target_absent_false_commits": 0
+  },
+  "forbidden_after_freeze": [
+    "change a model, mask, frame, pair, cycle, epipolar fit, majority, Boolean composition or extent gate",
+    "repair or replace FC30, FC31 or FC08 after observing output",
+    "claim a two-positive one-negative asymmetric same-family panel is full physical-target or scan-family confirmation"
+  ],
+  "claim_boundary": "This unchanged partial confirmation evaluates two never-consumed positive targets and one never-consumed exact-target-absent bound sibling reference from a previously used 3RScan scan family. The negative bound target lacks its own positive active-query row. A pass is limited physical-target-disjoint Development evidence, not full confirmation, scan-family/provider independence, raw-camera binding, arbitrary sibling rejection, user-action feasibility, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety."
+}

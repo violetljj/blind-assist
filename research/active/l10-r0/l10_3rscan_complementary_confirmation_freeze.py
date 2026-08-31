@@ -31,6 +31,12 @@ def load_protocol(path: Path) -> dict[str, Any]:
         pixel.require(pixel.sha256(HERE / row["path"]) == row["sha256"], f"DEPENDENCY_HASH:{row['path']}")
     candidate_path = HERE / protocol["source"]["candidate_protocol_path"]
     pixel.require(pixel.sha256(candidate_path) == protocol["source"]["candidate_protocol_sha256"], "CANDIDATE_PROTOCOL_HASH")
+    if "predecessor" in protocol:
+        failure_path = HERE / protocol["predecessor"]["failure_path"]
+        pixel.require(
+            pixel.sha256(failure_path) == protocol["predecessor"]["failure_sha256"],
+            "PREDECESSOR_FAILURE_HASH",
+        )
     artifact_root = ROOT / protocol["source"]["artifact_root"]
     for row in protocol["source"]["files"]:
         source = artifact_root / row["path"]
@@ -147,24 +153,30 @@ def freeze(protocol_path: Path, output_path: Path) -> None:
             for name, count in counts.items():
                 opened[name] += count
         pixel.require(reference is not None and query is not None, f"PRIMARY_SOURCE_NOT_EVALUABLE:{episode_id}")
+        active_required = bool(frozen.get("active_query_required", True))
         foreign_id = frozen.get("active_foreign_target_instance_id")
-        active, active_opened = active_query(
-            data_root, rescan_id, target_id, int(query["frame"]),
-            int(foreign_id) if foreign_id is not None else None,
-            rules,
-            float(protocol["selection"]["minimum_active_baseline_metres"]),
-            float(protocol["selection"]["maximum_active_baseline_metres"]),
-            float(protocol["selection"]["target_active_baseline_metres"]),
-        )
-        for name, count in active_opened.items():
-            opened[name] += count
-        pixel.require(active is not None, f"ACTIVE_SOURCE_NOT_EVALUABLE:{episode_id}")
+        if active_required:
+            active, active_opened = active_query(
+                data_root, rescan_id, target_id, int(query["frame"]),
+                int(foreign_id) if foreign_id is not None else None,
+                rules,
+                float(protocol["selection"]["minimum_active_baseline_metres"]),
+                float(protocol["selection"]["maximum_active_baseline_metres"]),
+                float(protocol["selection"]["target_active_baseline_metres"]),
+            )
+            for name, count in active_opened.items():
+                opened[name] += count
+            pixel.require(active is not None, f"ACTIVE_SOURCE_NOT_EVALUABLE:{episode_id}")
+        else:
+            pixel.require(foreign_id is None, f"OPTIONAL_ACTIVE_WITH_FOREIGN_CONSTRAINT:{episode_id}")
+            active = None
         row = candidate_keys[key]
         episodes.append({
             "episode_id": episode_id,
             **row,
             "reference": reference,
             "query": query,
+            "active_query_required": active_required,
             "active_query": active,
         })
 

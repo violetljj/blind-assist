@@ -1,0 +1,23 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-confirmation-execution-failure-v1",
+  "authority": "FORMAL_PARTIAL_CONFIRMATION_EXECUTION_FAILURE_RECEIPT",
+  "protocol_path": "l10_3rscan_complementary_corroboration_confirmation_protocol_v1.json",
+  "protocol_sha256": "3809c121af8c080d518ec37fb1e9b4782d58e05f73883915de6c74606ed5925f",
+  "implementation": {
+    "path": "l10_3rscan_complementary_corroboration_confirmation.py",
+    "sha256": "af4948bfbed6ca260dc1ea825eb432c1853ab2a973821e2df62dcff86f964f57"
+  },
+  "command": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe research/active/l10-r0/l10_3rscan_complementary_corroboration_confirmation.py --protocol research/active/l10-r0/l10_3rscan_complementary_corroboration_confirmation_protocol_v1.json --output research/active/l10-r0/l10_3rscan_complementary_corroboration_confirmation_result_v1.json",
+  "exit_code": 1,
+  "failure": "INSUFFICIENT_BACKGROUND_CYCLES",
+  "failed_stage": "Target-excluded global epipolar domain construction for the first frozen pair, before any pair decision.",
+  "completed_calls_before_abort": {
+    "reference_sam2_calls": 3,
+    "roma_calls": 2,
+    "query_sam2_calls": 0,
+    "grounding_dino_calls": 0
+  },
+  "result_written": false,
+  "repair_boundary": "A successor may map fewer than eight target-excluded background cycles to global-corroborator unavailable/false. It must not synthesize a fundamental matrix, count the missing cue as support, change any threshold, pair, model or active-query rule, or reuse a partial decision.",
+  "claim_boundary": "This is an implementation/evaluability abort, not a positive or negative algorithm result."
+}
