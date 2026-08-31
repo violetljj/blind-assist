@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-grounded-sam-proposal-posthoc-result-v1",
+  "authority": "PRE_SAM_PRE_CORRESPONDENCE_SOURCE_REACHABILITY_RESULT",
+  "protocol_path": "l10_3rscan_roma_grounded_sam_proposal_posthoc_protocol_v1.json",
+  "protocol_sha256": "e25c707d22a8b2b1a297bc79defebb3ae790ed8a05e47a9a0d6d4fa3d77cabae",
+  "implementation": {
+    "path": "l10_3rscan_roma_grounded_sam_proposal_posthoc.py",
+    "sha256": "b1bd1aa1dfcea82850cc0e5141ce01e4007104ecaea29667036a055bc6eb78e7"
+  },
+  "conclusion": "L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE",
+  "gate_met": false,
+  "failure_stage": "TRUTH_BLIND_PROPOSAL_REACHABILITY",
+  "failure": {
+    "code": "NO_DOOR_PROPOSAL",
+    "first_failed_key": "DR01:reference",
+    "image_sha256": "32930e5c8d5b4ef67b1fca887f33850592fd736b9b300017c1004d1534cc6080",
+    "frozen_prompt": "door",
+    "frozen_box_threshold": 0.4,
+    "frozen_text_threshold": 0.3,
+    "strict_retained_boxes": 0,
+    "provider_target_bbox_evaluation_only": [303.9808349609375, 160.3547821044922, 683.517822265625, 334.9356994628906]
+  },
+  "execution": {
+    "images_materialized": 6,
+    "grounding_dino_calls": 1,
+    "sam2_calls": 0,
+    "roma_calls": 0,
+    "algorithm_result_written_by_entrypoint": false,
+    "threshold_or_prompt_changes_after_outcome": 0
+  },
+  "decision": "Freeze the unchanged high-confidence category-prompt carrier for this cross-provider role. Do not lower its thresholds or alter its prompt on the consumed 3RScan frames. A successor must change the information source structurally, for example by using an already bound visual reference to generate target-conditioned prompts.",
+  "claim_boundary": "NOT_EVALUABLE is not a RoMa, SAM2, identity, or NONE negative. It proves only that the frozen SceneNN-successful single text prompt at 0.4/0.3 cannot supply the required six-of-six proposal opportunity on this consumed 3RScan source. It establishes no named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, deployment, reliability, or safety claim."
+}

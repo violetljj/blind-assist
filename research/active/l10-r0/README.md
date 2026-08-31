@@ -3818,6 +3818,31 @@ question. None of these results proves raw-phone deployment, aperture, named
 entrance, ownership, access, traversability, waypoint, arrival,
 `HANDOFF_READY`, user benefit, reliability, or safety.
 
+The frozen multi-door/provider-distinct 3RScan transfer then exposed the
+carrier's actual boundary before correspondence. The cohort selected three
+physical targets across two scan families and six full `960x540` frames, each
+containing `11-17` provider-labelled doors. On the first required reference
+frame, the unchanged single prompt `door` at box/text thresholds `0.4/0.3`
+retained zero GroundingDINO boxes despite the evaluation-only provider target
+box. Execution therefore stopped after one GroundingDINO call and before any
+SAM2 or RoMa call. Record
+`L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE`. This is
+not a negative for SAM2, RoMa, identity assignment, or NONE handling; it is a
+frozen negative control for high-confidence category-prompt reachability on
+this consumed source. Do not lower thresholds or alter the text prompt.
+
+An Exa review of cycle-consistent cross-view mask prediction, Predictive Cycle
+Consistency, and MESA/DMESA instead motivates a structural successor: use an
+already-bound reference mask to constrain dense correspondence, retain only
+bidirectionally cycle-consistent points, and derive the target SAM2 prompt from
+that target-conditioned support. This transfers object information instead of
+asking a category detector to choose among many doors. Target provider boxes
+remain evaluation-only. The literature supports the representation choice but
+does not validate BlindAssist or this implementation:
+[CCMP](https://arxiv.org/html/2602.18996v2),
+[Predictive Cycle Consistency](https://openaccess.thecvf.com/content/CVPR2025/html/Baade_Self-Supervised_Cross-View_Correspondence_with_Predictive_Cycle_Consistency_CVPR_2025_paper.html),
+and [MESA/DMESA](https://arxiv.org/html/2408.00279).
+
 Evidence:
 
 - SceneNN transfer result:
@@ -3835,6 +3860,11 @@ Evidence:
   and `46025f243e4c108271e0776d801cd3789680738986e2afdce367a842350c149f`;
 - confirmation evaluator SHA-256:
   `973a009919a259327eaaf65eaf92721ca6c4d50b44ed244ef407bdbde2ffebd3`;
+- 3RScan Grounded-SAM source-reachability protocol/implementation/result
+  SHA-256:
+  `e25c707d22a8b2b1a297bc79defebb3ae790ed8a05e47a9a0d6d4fa3d77cabae`,
+  `b1bd1aa1dfcea82850cc0e5141ce01e4007104ecaea29667036a055bc6eb78e7`,
+  and `db07154fa30bc1904b87a723adbd8e91a957039662068ae7f7b88cd4e4f0a0c2`;
 - open-roster appearance protocol/cohort/result/evaluator SHA-256:
   `7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf`,
   `4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0`,

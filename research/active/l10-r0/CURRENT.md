@@ -77,9 +77,17 @@ contract.
   `L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET` and
   retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`: it is consumed posthoc,
   exactly-one-door, and desktop-GPU evidence. The next structural check must
-  preserve prompt and thresholds on a multi-door or provider-disjoint source;
-  correspondence still proves no named entrance, ownership, access, waypoint,
-  arrival, or handoff.
+  preserve prompt and thresholds on a multi-door or provider-disjoint source.
+  That frozen 3RScan check stopped on its first required reference image:
+  GroundingDINO retained `0` boxes at the unchanged `door` prompt and `0.4/0.3`
+  thresholds despite an evaluation-only provider target box. It made one
+  GroundingDINO call and zero SAM2/RoMa calls, so record
+  `L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE`, not a
+  matcher or segmentation negative. Freeze the consumed six-frame cohort and
+  category-prompt carrier. The next structural successor must condition the
+  query proposal on an already-bound visual reference, with target truth used
+  only for evaluation; correspondence still proves no named entrance,
+  ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -379,3 +387,5 @@ contract.
   [l10_scenenn_roma_full_context_mask_fresh_result_v1.json](l10_scenenn_roma_full_context_mask_fresh_result_v1.json)
 - Grounded-SAM proposal-mask bridge result:
   [l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json)
+- 3RScan Grounded-SAM source-reachability result:
+  [l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json)

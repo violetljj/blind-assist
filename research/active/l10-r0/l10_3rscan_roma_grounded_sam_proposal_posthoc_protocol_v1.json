@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-grounded-sam-proposal-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-roma-grounded-sam-proposal-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T04:05:00+08:00",
+  "question": "Does the unchanged truth-blind door proposal plus full-context RoMa mechanism transfer from SceneNN to multi-door 3RScan reference/rescan frames?",
+  "implementation": {"path": "l10_3rscan_roma_grounded_sam_proposal_posthoc.py", "sha256": "b1bd1aa1dfcea82850cc0e5141ce01e4007104ecaea29667036a055bc6eb78e7"},
+  "dependencies": [
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json",
+    "result_sha256": "c4470f570b164a0a95ba06c722e30c295c3e0fb983257478afcffb025ff1a842",
+    "required_conclusion": "L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Replace six consumed SceneNN frames with six already frozen 3RScan full frames covering three physical doors across two scan families; keep prompt, proposal thresholds, top-one selection, SAM postprocess, RoMa and NONE assignment unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_PROVIDER_DISTINCT_MULTI_DOOR_DEVELOPMENT",
+    "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+    "cohort_sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip", "bytes": 98742525, "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"},
+      {"path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip", "bytes": 75831367, "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"},
+      {"path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip", "bytes": 31139000, "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"}
+    ],
+    "target_scope": "DR01 and DR02 are different physical doors in one reference/rescan family; DR03 is a second family. Each selected scan contains 11-17 provider-labelled doors, so top-one selection is no longer protected by exactly-one-door scene admission."
+  },
+  "models": {
+    "grounder": {"path": "artifacts.local/models/grounding-dino-tiny-a2bb814/model.safetensors", "sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3"},
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "proposal": {
+    "grounder_root": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "prompt": {"call_index": 0, "class_id": "architectural_leaf", "text": "door", "role": "PARENT"},
+    "box_threshold": 0.4,
+    "text_threshold": 0.3,
+    "selection": "Unchanged descending-score top one, with no provider target, projected bbox, scan transform, target identity, temporal match or RoMa access.",
+    "mask": "Unchanged SAM2.1-Hiera-Small single native mask from the retained full-frame box, multimask_output=false, mask_threshold=0.0, no IoU-score selection or morphology."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent proposal-mask cycle fraction and majority cycle purity.",
+    "zero_assignment": "Unchanged strict reciprocal maximum among absolutely supported pairs."
+  },
+  "scenarios": [
+    {"id": "closed-three", "reference_targets": ["DR01", "DR02", "DR03"], "query_targets": ["DR01", "DR02", "DR03"]},
+    {"id": "query-extra", "reference_targets": ["DR01", "DR02"], "query_targets": ["DR01", "DR02", "DR03"]},
+    {"id": "reference-extra", "reference_targets": ["DR01", "DR02", "DR03"], "query_targets": ["DR01", "DR02"]},
+    {"id": "balanced-swap-DR01-DR02", "reference_targets": ["DR02", "DR03"], "query_targets": ["DR01", "DR03"]},
+    {"id": "balanced-swap-DR01-DR03", "reference_targets": ["DR02", "DR03"], "query_targets": ["DR01", "DR02"]},
+    {"id": "balanced-swap-DR02-DR01", "reference_targets": ["DR01", "DR03"], "query_targets": ["DR02", "DR03"]},
+    {"id": "balanced-swap-DR02-DR03", "reference_targets": ["DR01", "DR03"], "query_targets": ["DR01", "DR02"]},
+    {"id": "balanced-swap-DR03-DR01", "reference_targets": ["DR01", "DR02"], "query_targets": ["DR02", "DR03"]},
+    {"id": "balanced-swap-DR03-DR02", "reference_targets": ["DR01", "DR02"], "query_targets": ["DR01", "DR03"]}
+  ],
+  "decision_gate": {
+    "required_proposal_masks": 6,
+    "minimum_target_bbox_iou": 0.5,
+    "minimum_true_pairs_with_absolute_support": 3,
+    "minimum_true_positive": 13,
+    "maximum_false_positive": 0,
+    "maximum_false_negative": 0,
+    "minimum_exact_scenarios": 9
+  },
+  "forbidden_after_freeze": [
+    "change prompt, thresholds, top-one selection, SAM postprocess, RoMa, support gates, assignment, images, targets, scenarios or decision gate",
+    "select a detected door using projected target boxes, provider labels, scan transforms, target identity or RoMa outcome",
+    "merge, resize, dilate, erode, replace or choose a second proposal after outcome",
+    "call the consumed source provider-disjoint confirmation, fresh evidence, open-world multi-door binding, Android deployment, named entrance, ownership, access, arrival, handoff, benefit, reliability or safety evidence"
+  ],
+  "claim_boundary": "A pass is consumed posthoc Development evidence that the unchanged truth-blind open-vocabulary proposal and full-context correspondence mechanism transfers from SceneNN to 3RScan frames containing many provider-labelled doors and across reference/rescan captures. The selected frames and target boxes were consumed by prior 3RScan work, only three physical targets are tested, target opportunity is verified posthoc by projected provider boxes, and models run on desktop GPU. It is not fresh/provider-disjoint confirmation, open-world target selection, named entrance, venue ownership, public access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}
