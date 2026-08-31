@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v2",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_protocol_v2.json",
+  "protocol_sha256": "a0ca5e285ad89f7d81129df1849ba565f8df7224f8b8f66a77e71335a59a6418",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v2.py",
+    "sha256": "a72c61d3523af5ddd00fd1c63bc1fff943ba7411369c66fea131e99c21f56f7a"
+  },
+  "selection": {
+    "ranking": "Use the unchanged predecessor candidate ordering. Exclude consumed targets, used reference families, and every candidate for which either scan now has any of semseg, instance PLY, or sequence materialized; select the first remaining row. No RGB, pose, depth, geometry or model output participates.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 34,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "1d234018-e280-2b1a-8f22-da2b997865e8",
+    "rescan_id": "1d234012-e280-2b1a-8dea-0d1d53e0572d",
+    "target_instance_id": 5,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      5,
+      171
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -7.529698632424697e-05,
+      -0.9999997019767761,
+      -0.0007116770721040666,
+      0,
+      0.9999607801437378,
+      -8.160063589457422e-05,
+      0.008861168287694454,
+      0,
+      -0.008861223235726357,
+      -0.0007109822472557425,
+      0.9999604225158691,
+      0,
+      -1.9248828887939453,
+      -0.9094781279563904,
+      -0.08939101547002792,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "1d234018-e280-2b1a-8f22-da2b997865e8",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d234018-e280-2b1a-8f22-da2b997865e8",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d234018-e280-2b1a-8f22-da2b997865e8",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "1d234012-e280-2b1a-8dea-0d1d53e0572d",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d234012-e280-2b1a-8dea-0d1d53e0572d",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d234012-e280-2b1a-8dea-0d1d53e0572d",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "minimum_inside_vertex_fraction": 0.98,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15,
+    "source_is_evaluable_only_if": "Both fixed target instances have at least one independently selected frame satisfying every rule before RGB/model access."
+  },
+  "claim_boundary": "This second freeze selects one official metadata-only download candidate after a source-not-evaluable result. It is not source evaluability, algorithm evidence, portal identity, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

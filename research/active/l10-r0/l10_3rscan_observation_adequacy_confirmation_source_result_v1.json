@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-source-result-v1",
+  "authority": "FROZEN_PRE_RGB_PRE_MODEL_OBSERVATION_ADEQUACY_SOURCE_RESULT",
+  "protocol_path": "l10_3rscan_observation_adequacy_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "69ce90f9a42a85955a0ad7282dba7e8dc720ef3751bfaebd8a7ccee93e21bd24",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_source.py",
+    "sha256": "8038b6a10f22ee247d5ff8ab3520c9d28d217a5cbdb4f73c43c7bf156e515cbb"
+  },
+  "candidate": {
+    "reference_scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+    "rescan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+    "target_instance_id": 27,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      16,
+      27
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.8861144781112671,
+      -0.4630168676376343,
+      0.02041003853082657,
+      0,
+      0.46318355202674866,
+      -0.8862529397010803,
+      0.004094722680747509,
+      0,
+      0.01619252748787403,
+      0.013081986457109451,
+      0.9997833371162415,
+      0,
+      0.37124213576316833,
+      -1.2843194007873535,
+      0.0404464453458786,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_OBSERVATION_ADEQUACY_CONFIRMATION_SOURCE_NOT_EVALUABLE",
+  "source_evaluable": false,
+  "reference": null,
+  "query": null,
+  "metrics": {
+    "reference_inherited_admitted_views": 0,
+    "query_inherited_admitted_views": 0,
+    "pose_members_opened": 359,
+    "depth_members_opened": 359,
+    "rgb_members_opened": 0,
+    "model_calls": 0
+  },
+  "rules": {
+    "inherited": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "observation_adequacy": {
+      "minimum_projected_bbox_short_side_fraction": 0.1,
+      "maximum_projected_bbox_aspect_ratio": 8.0
+    },
+    "ranking": "For each scan independently, rank adequate views by short-side fraction, depth-visible ratio, visible vertices, projected area, image margin, then earlier frame."
+  },
+  "next_action": "Retain the six official files, record source not evaluable, and freeze the next metadata-only family without opening RGB or models.",
+  "claim_boundary": "This post-download gate uses target geometry, poses and depth only to adjudicate whether one frozen scan family can support a later exact-instance Development experiment. It is not RGB/model evidence, portal binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

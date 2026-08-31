@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist-l10-3rscan-multiview-observation-portfolio-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-multiview-observation-portfolio-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T06:53:00+08:00",
+  "question": "Can a bounded three-view portfolio expose substantially more exact-target surface than the failed single-view 0.98-completeness source gate on either of two consumed new scan families?",
+  "implementation": {
+    "path": "l10_3rscan_multiview_observation_portfolio_posthoc.py",
+    "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"
+  },
+  "source": {
+    "authority": "TWO_CONSUMED_PRE_RGB_PRE_MODEL_SOURCE_NOT_EVALUABLE_FAMILIES",
+    "artifact_root": "artifacts.local"
+  },
+  "panels": [
+    {
+      "id": "OA1",
+      "source_protocol": {"path": "l10_3rscan_observation_adequacy_confirmation_source_protocol_v1.json", "sha256": "69ce90f9a42a85955a0ad7282dba7e8dc720ef3751bfaebd8a7ccee93e21bd24"},
+      "source_result": {"path": "l10_3rscan_observation_adequacy_confirmation_source_result_v1.json", "sha256": "baf7b184da93c73e53daba87fe5a10140464001da8d101f51cb998351f31886a"}
+    },
+    {
+      "id": "OA2",
+      "source_protocol": {"path": "l10_3rscan_observation_adequacy_confirmation_source_protocol_v2.json", "sha256": "054a270ce1ff9ca2f7a8b7fe1b0a446f8f4ff5b036ea671eb0965e3096a890ad"},
+      "source_result": {"path": "l10_3rscan_observation_adequacy_confirmation_source_result_v2.json", "sha256": "9ccf3e96c2b7df312c63440c5b127ba2a7397cbf5ec5ffc1d795bbd3215875a9"}
+    }
+  ],
+  "portfolio_budget": 3,
+  "partial_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.25,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15,
+    "selection": "Admit a partial view only when at least one quarter of target vertices project inside, the anti-sliver and inherited depth/area rules pass, then greedily add the view with the most previously unseen depth-consistent target vertices; ties use larger short-side fraction, higher visible ratio, then earlier frame. Stop at three views or zero marginal gain."
+  },
+  "next_decision": "No pass threshold is defined. Use only the observed cumulative-coverage curves to decide whether a future, separately frozen scan family should test a three-view carrier. If either side has zero eligible partial views or marginal gain saturates immediately, stop this source family without RGB/model calls.",
+  "literature_motivation": {
+    "next_best_view_object_visibility": "https://ceur-ws.org/Vol-1782/paper_6.pdf",
+    "active_3d_classification_visibility": "https://openaccess.thecvf.com/content_ICCVW_2019/papers/ACVR/Wang_Active_3D_Classification_of_Multiple_Objects_in_Cluttered_Scenes_ICCVW_2019_paper.pdf",
+    "used_principle": "View planning should maximize newly visible target surface and integrate observations, rather than equating one-frame completeness with all usable evidence."
+  },
+  "forbidden_after_freeze": [
+    "change the three-view budget, quarter-coverage admission, anti-sliver or depth rules after observing portfolio curves",
+    "open RGB or run any appearance/correspondence model",
+    "set a success threshold posthoc or claim a diagnostic portfolio is confirmation",
+    "reinterpret source not evaluable as an algorithm-negative row"
+  ],
+  "claim_boundary": "This is a geometry/depth-only posthoc diagnostic on two consumed source-not-evaluable families. It can expose bounded multi-view observation reachability but cannot establish image matching, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

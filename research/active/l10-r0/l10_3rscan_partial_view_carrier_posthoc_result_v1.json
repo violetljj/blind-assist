@@ -1,0 +1,347 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_CROSS_SCENE_TARGET_ABSENT_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_partial_view_carrier_posthoc_protocol_v1.json",
+  "protocol_sha256": "024b40284017a9aa2c483a42de6a218fd53314724ea8684d56499757782b5803",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+    "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_partial_view_carrier_posthoc_cohort_v1.json",
+    "cohort_sha256": "54898b595e4ec69d7bd46bae259504abaca7a68f9fc746b8f281bf0414f206e6"
+  },
+  "conclusion": "L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "positive_pairs": 1,
+    "positive_commits": 1,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 0
+  },
+  "decisions": {
+    "P_MV05_MV05": {
+      "id": "P_MV05_MV05",
+      "reference_episode": "MV05",
+      "query_episode": "MV05",
+      "label": "target_present",
+      "reference_cycle_fraction": 0.40232984575558195,
+      "dominant_component_cycle_fraction": 0.8222903102259671,
+      "coherent_component_support": true,
+      "positive_extent_gate": true,
+      "commit": true,
+      "correct": true
+    },
+    "N_MV05_NC31": {
+      "id": "N_MV05_NC31",
+      "reference_episode": "MV05",
+      "query_episode": "NC31",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "commit": false,
+      "correct": true
+    },
+    "N_MV05_NC08": {
+      "id": "N_MV05_NC08",
+      "reference_episode": "MV05",
+      "query_episode": "NC08",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "prompt_receipts": {
+    "P_MV05_MV05": {
+      "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+      "support_mask_sha256": "53f05903f03f79c3abc047f5c13f03f19e5603a322e19d43c680d3b30ac26448",
+      "support_mask_pixels_at_match_resolution": 129794,
+      "extent_mask_pixels_at_match_resolution": 196578,
+      "high_certainty_pixels": 108811,
+      "all_cycle_pixels": 52220,
+      "all_cycle_fraction": 0.40232984575558195,
+      "all_cycle_purity": 0.4799147145049673,
+      "component": {
+        "component_count": 50,
+        "selected_label": 17,
+        "selected_pixels": 42940
+      },
+      "selected_component_fraction_of_support": 0.33083193367952296,
+      "selected_component_fraction_of_cycles": 0.8222903102259671,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.012841951341875877,
+      "affine_max_residual_normalized": 0.057145789613959316,
+      "projected_bound_extent_corners_normalized": [
+        [
+          -0.3138968540535402,
+          -0.6382275148493288
+        ],
+        [
+          0.9934623947036922,
+          -0.9822984215880906
+        ],
+        [
+          1.1426106018237774,
+          0.4544044513328058
+        ],
+        [
+          -0.16474864693345526,
+          0.7984753580715676
+        ]
+      ],
+      "prompt_box_xyxy": [
+        329.3295100543007,
+        4.779426171215551,
+        960.0,
+        485.58834667932325
+      ],
+      "target_bbox_iou_evaluation_only": 0.6469933590947818,
+      "target_bbox_recall_evaluation_only": 0.6485195395049835,
+      "prompt_bbox_precision_evaluation_only": 0.9963758498808992
+    },
+    "N_MV05_NC31": {
+      "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+      "all_cycle_pixels": 0,
+      "all_cycle_fraction": 0.0,
+      "selected_component_fraction_of_cycles": 0.0,
+      "prompt_box_xyxy": null,
+      "target_bbox_iou_evaluation_only": null,
+      "target_absence_authority": "DIFFERENT_3RSCAN_REFERENCE_SCAN_FAMILY"
+    },
+    "N_MV05_NC08": {
+      "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+      "all_cycle_pixels": 0,
+      "all_cycle_fraction": 0.0,
+      "selected_component_fraction_of_cycles": 0.0,
+      "prompt_box_xyxy": null,
+      "target_bbox_iou_evaluation_only": null,
+      "target_absence_authority": "DIFFERENT_3RSCAN_REFERENCE_SCAN_FAMILY"
+    }
+  },
+  "reference_support_receipts": {
+    "MV05": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "53f05903f03f79c3abc047f5c13f03f19e5603a322e19d43c680d3b30ac26448",
+      "mask_pixels": 90025,
+      "mask_bbox_xyxy": [
+        0.0,
+        235.0,
+        656.0,
+        426.0
+      ],
+      "binding_bbox_iou": 0.9139529757538107,
+      "binding_bbox_recall": 0.9183753264906026,
+      "reference_mask_bbox_precision": 0.9947588458293821,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.9893688000156544
+      }
+    },
+    "NC31": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "5b8ab04a6ea5ee7bf07c0f1d96f8593027e40ac741267d772315a5b1922d0226",
+      "mask_pixels": 52600,
+      "mask_bbox_xyxy": [
+        260.0,
+        112.0,
+        815.0,
+        239.0
+      ],
+      "binding_bbox_iou": 0.7138053161982187,
+      "binding_bbox_recall": 0.7240217178026433,
+      "reference_mask_bbox_precision": 0.9806150301234928,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.2669171000015922
+      }
+    },
+    "NC08": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "c455f86c11aac02af377f6f31aa60f396833a4c523aa2d1c5e68e0fb4ee68737",
+      "mask_pixels": 42788,
+      "mask_bbox_xyxy": [
+        262.0,
+        134.0,
+        820.0,
+        233.0
+      ],
+      "binding_bbox_iou": 0.5999419359788238,
+      "binding_bbox_recall": 0.6277235407021743,
+      "reference_mask_bbox_precision": 0.9312981499565972,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09118340001441538
+      }
+    }
+  },
+  "query_support_receipts": {
+    "P_MV05_MV05": {
+      "mask_sha256": "0c5f7e4384122ec795c91e1cd8a289d4dbc762c18e5acda34582325390237340",
+      "mask_pixels": 207733,
+      "mask_bbox_xyxy": [
+        279.0,
+        0.0,
+        957.0,
+        483.0
+      ],
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.10012719995575026
+      },
+      "target_bbox_iou_diagnostic_only": 0.7013116386525114
+    },
+    "N_MV05_NC31": {
+      "status": "NOT_RUN_ZERO_REFERENCE_CYCLES",
+      "masker_calls": 0
+    },
+    "N_MV05_NC08": {
+      "status": "NOT_RUN_ZERO_REFERENCE_CYCLES",
+      "masker_calls": 0
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 3,
+    "sam2_calls": 4,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "This tests the unchanged carrier on one consumed-source, geometry/depth-selected, RGB/model-fresh partial-view positive and two new exact-target-absent pairings. It is not fresh confirmation, provider independence, arbitrary sibling rejection, raw-camera binding, named entrance, ownership, access, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

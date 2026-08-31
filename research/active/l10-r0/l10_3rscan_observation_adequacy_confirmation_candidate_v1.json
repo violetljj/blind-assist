@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v1",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_protocol_v1.json",
+  "protocol_sha256": "96be5a57e5773f83c259096db2ad1f43edd79d56ca03c89c07146e7a22e3a475",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze.py",
+    "sha256": "b6bcfaf855f6a63459682b22d32659ef83042c3fd215cc2bab7afb43d4ab3c03"
+  },
+  "selection": {
+    "ranking": "Use the predecessor candidate generator's deterministic order. Exclude every consumed physical target and every previously used reference scan family. Admit only a candidate for which neither scan has semseg, instance PLY, or sequence materialized locally; select the first row. The metadata catalog lacks usable OBB area for these rows, so ties resolve by stable reference scan ID, rescan ID, then target ID exactly as the inherited generator specifies.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 32,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+    "rescan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+    "target_instance_id": 27,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      16,
+      27
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.8861144781112671,
+      -0.4630168676376343,
+      0.02041003853082657,
+      0,
+      0.46318355202674866,
+      -0.8862529397010803,
+      0.004094722680747509,
+      0,
+      0.01619252748787403,
+      0.013081986457109451,
+      0.9997833371162415,
+      0,
+      0.37124213576316833,
+      -1.2843194007873535,
+      0.0404464453458786,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "minimum_inside_vertex_fraction": 0.98,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15,
+    "source_is_evaluable_only_if": "Both fixed target instances have at least one independently selected frame satisfying every rule before RGB/model access."
+  },
+  "claim_boundary": "This freezes one official 3RScan metadata-only download candidate. It is not source evaluability, algorithm evidence, portal identity, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

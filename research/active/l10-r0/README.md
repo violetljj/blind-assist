@@ -4015,6 +4015,31 @@ algorithm-transfer interpretation: `NOT_EVALUABLE` is neither a negative nor a
 known-safe row. Successor 3RScan admission must apply the adequacy rule before
 opening pixels or models.
 
+The next two source attempts were frozen from the official metadata catalog
+before download. Family `1d233ff6 -> 1d233fea`, target `27`, opened `359`
+pose/depth pairs; family `1d234018 -> 1d234012`, target `5`, opened `636`.
+Both had zero views passing the inherited `0.98` inside-target rule on either
+side, with zero RGB/model calls. Rather than relax that rule after observing a
+model outcome, a no-threshold three-view portfolio diagnostic admitted only
+anti-sliver views with at least quarter target projection and greedily maximized
+new depth-consistent target vertices. OA1 reached reference/query cumulative
+coverage `0.541117/0.698538`. OA2 reached `0.642241/0.898649`; its best single
+reference/query views already supplied `0.639163/0.799754`, and the second query
+view added `0.098894` absolute coverage.
+
+One consumed-source, RGB/model-fresh Development carrier then froze OA2's best
+reference frame `102` and query frame `64`, plus two fixed cross-scene negatives.
+The coherent-cycle/SAM/RoMa code and every threshold stayed unchanged. It
+committed the positive with cycle opportunity `0.402330`, component dominance
+`0.822290`, and transported extent IoU `0.646993`; both negatives produced zero
+cycles and no commit. Result: `1/1` positive, `0/2` false commits and
+`L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET`. The
+decision-changing intervention is now the observation admission policy:
+anti-sliver plus maximum newly visible surface recovered usable partial views
+that the one-frame `0.98` completeness requirement discarded. Because OA2 was
+consumed by source diagnosis, this remains Development; freeze the rule and
+require a third pre-RGB/model scan family before confirmation.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4055,6 +4080,20 @@ Evidence:
   `85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775`,
   `b9985d870f81f5a39270cfcfeff344ede23ce99b9b9f4c3c71e3c8689174a984`,
   and `a24b89fa4bdd93ae2e8934ef8fd9f4fefd50322eaa06733bfd8a27eed8fcdc11`;
+- first/second materialized source-gate result SHA-256:
+  `baf7b184da93c73e53daba87fe5a10140464001da8d101f51cb998351f31886a`
+  and `9ccf3e96c2b7df312c63440c5b127ba2a7397cbf5ec5ffc1d795bbd3215875a9`;
+- multi-view portfolio implementation/protocol/result SHA-256:
+  `2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f`,
+  `adf8f663cda2977d02e589a107962b3eefe83c8cc49c906bbab35946e6543c8c`,
+  and `58ed1722ae80969d4198da6f5f06bb24aaaddca7558216792015b03e48f70f28`;
+- partial-view freeze implementation/protocol/cohort and carrier protocol/result
+  SHA-256:
+  `818f03aa542af6a7756b395e01121f9d03ba28aef7e80c0f7924c8c4d654d54a`,
+  `b7944006d7931838f6a81f5bb3cfbe924f14b752ed8f868b7afa590b58b078c9`,
+  `54898b595e4ec69d7bd46bae259504abaca7a68f9fc746b8f281bf0414f206e6`,
+  `024b40284017a9aa2c483a42de6a218fd53314724ea8684d56499757782b5803`,
+  and `f9a77c57a0fe88a5c207badf237494fb920f1a4d8d37ef501285630880c2f8ef`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

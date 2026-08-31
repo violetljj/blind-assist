@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-observation-adequacy-confirmation-candidate-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T06:43:00+08:00",
+  "question": "Which completely unmaterialized 3RScan family should be downloaded next to test the observation-adequate selective binding carrier without pixel/model-guided source choice?",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze.py",
+    "sha256": "b6bcfaf855f6a63459682b22d32659ef83042c3fd215cc2bab7afb43d4ab3c03"
+  },
+  "candidate_protocol": {
+    "path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_observation_adequacy_posthoc_result_v1.json",
+    "sha256": "a24b89fa4bdd93ae2e8934ef8fd9f4fefd50322eaa06733bfd8a27eed8fcdc11",
+    "required_conclusion": "L10_3RSCAN_SC34_SOURCE_NOT_EVALUABLE_WITHIN_BOUNDED_ACTIVE_OBSERVATION"
+  },
+  "exclusion_authority": {
+    "path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json",
+    "sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_METADATA_AND_OBJECT_CATALOG_ONLY",
+    "artifact_root": "artifacts.local",
+    "metadata": [
+      {
+        "path": "datasets/3rscan/3RScan.json",
+        "bytes": 3155995,
+        "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+      },
+      {
+        "path": "datasets/3rscan/objects.json",
+        "bytes": 20096813,
+        "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+      }
+    ]
+  },
+  "selection": {
+    "ranking": "Use the predecessor candidate generator's deterministic order. Exclude every consumed physical target and every previously used reference scan family. Admit only a candidate for which neither scan has semseg, instance PLY, or sequence materialized locally; select the first row. The metadata catalog lacks usable OBB area for these rows, so ties resolve by stable reference scan ID, rescan ID, then target ID exactly as the inherited generator specifies."
+  },
+  "post_download_gate": {
+    "minimum_inside_vertex_fraction": 0.98,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "depth_consistency_metres": 0.15,
+    "source_is_evaluable_only_if": "Both fixed target instances have at least one independently selected frame satisfying every rule before RGB/model access."
+  },
+  "forbidden_after_freeze": [
+    "replace the selected family, target or six-file download plan after materialization",
+    "open RGB, run a model or use per-frame outcomes before the post-download source gate",
+    "relax the 0.1 short-side fraction, aspect 8, inherited visibility rules or target exclusion set",
+    "claim a metadata candidate is an evaluable or positive algorithm row"
+  ],
+  "claim_boundary": "This freezes one official 3RScan metadata-only download candidate. It is not source evaluability, algorithm evidence, portal identity, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

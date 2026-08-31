@@ -1,0 +1,365 @@
+{
+  "schema": "blindassist-l10-3rscan-multiview-observation-portfolio-posthoc-result-v1",
+  "authority": "CONSUMED_SOURCE_GEOMETRY_ONLY_MULTIVIEW_PORTFOLIO_POSTHOC_DIAGNOSTIC",
+  "protocol_path": "l10_3rscan_multiview_observation_portfolio_posthoc_protocol_v1.json",
+  "protocol_sha256": "adf8f663cda2977d02e589a107962b3eefe83c8cc49c906bbab35946e6543c8c",
+  "implementation": {
+    "path": "l10_3rscan_multiview_observation_portfolio_posthoc.py",
+    "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"
+  },
+  "conclusion": "L10_3RSCAN_MULTIVIEW_OBSERVATION_PORTFOLIO_POSTHOC_DIAGNOSTIC_ONLY",
+  "panels": [
+    {
+      "id": "OA1",
+      "reference": {
+        "scan_id": "1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f",
+        "target_instance_id": 27,
+        "target_vertices": 985,
+        "eligible_partial_views": 5,
+        "portfolio_budget": 3,
+        "selected": [
+          {
+            "frame": 1,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 499,
+            "inside_vertex_fraction": 0.5065989847715736,
+            "projected_area_pixels": 242284.3152224265,
+            "image_margin_pixels": 0.06491152197122574,
+            "bbox_xyxy": [
+              1.4682928323745728,
+              0.06491152197122574,
+              755.2783203125,
+              339.1542663574219
+            ],
+            "depth_compared_vertices": 472,
+            "depth_visible_vertices": 472,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 753.8100274801254,
+            "bbox_height_pixels": 339.08935483545065,
+            "bbox_short_side_pixels": 339.08935483545065,
+            "bbox_short_side_fraction": 0.6279432496952789,
+            "bbox_aspect_ratio": 2.2230424421489894,
+            "visible_target_vertices": 472,
+            "zip_member": "frame-000001.color.jpg",
+            "marginal_visible_target_vertices": 472,
+            "cumulative_visible_target_vertices": 472,
+            "cumulative_visible_target_fraction": 0.47918781725888326
+          },
+          {
+            "frame": 0,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 503,
+            "inside_vertex_fraction": 0.5106598984771573,
+            "projected_area_pixels": 266679.0568244544,
+            "image_margin_pixels": 0.025619978085160255,
+            "bbox_xyxy": [
+              0.025619978085160255,
+              0.03125042840838432,
+              902.1312866210938,
+              320.1396179199219
+            ],
+            "depth_compared_vertices": 463,
+            "depth_visible_vertices": 463,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 902.1056666430086,
+            "bbox_height_pixels": 320.1083674915135,
+            "bbox_short_side_pixels": 320.1083674915135,
+            "bbox_short_side_fraction": 0.5927932731324324,
+            "bbox_aspect_ratio": 2.818125854416863,
+            "visible_target_vertices": 463,
+            "zip_member": "frame-000000.color.jpg",
+            "marginal_visible_target_vertices": 52,
+            "cumulative_visible_target_vertices": 524,
+            "cumulative_visible_target_fraction": 0.531979695431472
+          },
+          {
+            "frame": 2,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 399,
+            "inside_vertex_fraction": 0.4050761421319797,
+            "projected_area_pixels": 161040.24609909716,
+            "image_margin_pixels": 0.030644824728369713,
+            "bbox_xyxy": [
+              3.5833048820495605,
+              0.030644824728369713,
+              486.95159912109375,
+              350.8946838378906
+            ],
+            "depth_compared_vertices": 368,
+            "depth_visible_vertices": 368,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 483.3682942390442,
+            "bbox_height_pixels": 350.86403901316226,
+            "bbox_short_side_pixels": 350.86403901316226,
+            "bbox_short_side_fraction": 0.6497482203947449,
+            "bbox_aspect_ratio": 1.377651285091976,
+            "visible_target_vertices": 368,
+            "zip_member": "frame-000002.color.jpg",
+            "marginal_visible_target_vertices": 9,
+            "cumulative_visible_target_vertices": 533,
+            "cumulative_visible_target_fraction": 0.5411167512690356
+          }
+        ],
+        "final_cumulative_visible_target_vertices": 533,
+        "final_cumulative_visible_target_fraction": 0.5411167512690356,
+        "opened": {
+          "pose_members": 179,
+          "depth_members": 179,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      },
+      "query": {
+        "scan_id": "1d233fea-e280-2b1a-8f15-cd60d12ae197",
+        "target_instance_id": 27,
+        "target_vertices": 1778,
+        "eligible_partial_views": 3,
+        "portfolio_budget": 3,
+        "selected": [
+          {
+            "frame": 100,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 812,
+            "inside_vertex_fraction": 0.4566929133858268,
+            "projected_area_pixels": 72530.95026488241,
+            "image_margin_pixels": 0.18280029296875,
+            "bbox_xyxy": [
+              558.1575927734375,
+              0.24591206014156342,
+              958.8171997070312,
+              190.16102600097656
+            ],
+            "depth_compared_vertices": 649,
+            "depth_visible_vertices": 649,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 400.65960693359375,
+            "bbox_height_pixels": 189.915113940835,
+            "bbox_short_side_pixels": 189.915113940835,
+            "bbox_short_side_fraction": 0.3516946554459907,
+            "bbox_aspect_ratio": 2.1096773111928986,
+            "visible_target_vertices": 649,
+            "zip_member": "frame-000100.color.jpg",
+            "marginal_visible_target_vertices": 649,
+            "cumulative_visible_target_vertices": 649,
+            "cumulative_visible_target_fraction": 0.36501687289088863
+          },
+          {
+            "frame": 104,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 816,
+            "inside_vertex_fraction": 0.45894263217097864,
+            "projected_area_pixels": 71887.34877150296,
+            "image_margin_pixels": 1.2529222965240479,
+            "bbox_xyxy": [
+              1.2529222965240479,
+              152.75332641601562,
+              283.0509338378906,
+              448.4661865234375
+            ],
+            "depth_compared_vertices": 593,
+            "depth_visible_vertices": 593,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 281.7980115413666,
+            "bbox_height_pixels": 295.7128601074219,
+            "bbox_short_side_pixels": 281.7980115413666,
+            "bbox_short_side_fraction": 0.5218481695210492,
+            "bbox_aspect_ratio": 1.0493788032425937,
+            "visible_target_vertices": 593,
+            "zip_member": "frame-000104.color.jpg",
+            "marginal_visible_target_vertices": 593,
+            "cumulative_visible_target_vertices": 1242,
+            "cumulative_visible_target_fraction": 0.6985376827896513
+          }
+        ],
+        "final_cumulative_visible_target_vertices": 1242,
+        "final_cumulative_visible_target_fraction": 0.6985376827896513,
+        "opened": {
+          "pose_members": 180,
+          "depth_members": 180,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      }
+    },
+    {
+      "id": "OA2",
+      "reference": {
+        "scan_id": "1d234018-e280-2b1a-8f22-da2b997865e8",
+        "target_instance_id": 5,
+        "target_vertices": 1624,
+        "eligible_partial_views": 4,
+        "portfolio_budget": 3,
+        "selected": [
+          {
+            "frame": 102,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 1148,
+            "inside_vertex_fraction": 0.7068965517241379,
+            "projected_area_pixels": 115307.559356177,
+            "image_margin_pixels": 3.438197135925293,
+            "bbox_xyxy": [
+              3.438197135925293,
+              224.28956604003906,
+              672.6725463867188,
+              427.0842590332031
+            ],
+            "depth_compared_vertices": 1050,
+            "depth_visible_vertices": 1038,
+            "depth_visible_ratio": 0.9885714285714285,
+            "bbox_width_pixels": 669.2343492507935,
+            "bbox_height_pixels": 202.79469299316406,
+            "bbox_short_side_pixels": 202.79469299316406,
+            "bbox_short_side_fraction": 0.37554572776511863,
+            "bbox_aspect_ratio": 3.3000584944959703,
+            "visible_target_vertices": 1038,
+            "zip_member": "frame-000102.color.jpg",
+            "marginal_visible_target_vertices": 1038,
+            "cumulative_visible_target_vertices": 1038,
+            "cumulative_visible_target_fraction": 0.6391625615763546
+          },
+          {
+            "frame": 101,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 1096,
+            "inside_vertex_fraction": 0.6748768472906403,
+            "projected_area_pixels": 95157.27540429855,
+            "image_margin_pixels": 0.416060209274292,
+            "bbox_xyxy": [
+              0.416060209274292,
+              181.74569702148438,
+              603.8778686523438,
+              375.6372375488281
+            ],
+            "depth_compared_vertices": 946,
+            "depth_visible_vertices": 932,
+            "depth_visible_ratio": 0.985200845665962,
+            "bbox_width_pixels": 603.4618084430695,
+            "bbox_height_pixels": 193.89154052734375,
+            "bbox_short_side_pixels": 193.89154052734375,
+            "bbox_short_side_fraction": 0.3590584083839699,
+            "bbox_aspect_ratio": 3.112367908376929,
+            "visible_target_vertices": 932,
+            "zip_member": "frame-000101.color.jpg",
+            "marginal_visible_target_vertices": 5,
+            "cumulative_visible_target_vertices": 1043,
+            "cumulative_visible_target_fraction": 0.6422413793103449
+          }
+        ],
+        "final_cumulative_visible_target_vertices": 1043,
+        "final_cumulative_visible_target_fraction": 0.6422413793103449,
+        "opened": {
+          "pose_members": 290,
+          "depth_members": 290,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      },
+      "query": {
+        "scan_id": "1d234012-e280-2b1a-8dea-0d1d53e0572d",
+        "target_instance_id": 5,
+        "target_vertices": 1628,
+        "eligible_partial_views": 5,
+        "portfolio_budget": 3,
+        "selected": [
+          {
+            "frame": 64,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 1443,
+            "inside_vertex_fraction": 0.8863636363636364,
+            "projected_area_pixels": 414323.84963043523,
+            "image_margin_pixels": 0.6468340158462524,
+            "bbox_xyxy": [
+              87.45313262939453,
+              0.6468340158462524,
+              957.71435546875,
+              535.981689453125
+            ],
+            "depth_compared_vertices": 1303,
+            "depth_visible_vertices": 1302,
+            "depth_visible_ratio": 0.9992325402916347,
+            "bbox_width_pixels": 870.2612228393555,
+            "bbox_height_pixels": 535.3348554372787,
+            "bbox_short_side_pixels": 535.3348554372787,
+            "bbox_short_side_fraction": 0.9913608434023681,
+            "bbox_aspect_ratio": 1.625639007063155,
+            "visible_target_vertices": 1302,
+            "zip_member": "frame-000064.color.jpg",
+            "marginal_visible_target_vertices": 1302,
+            "cumulative_visible_target_vertices": 1302,
+            "cumulative_visible_target_fraction": 0.7997542997542998
+          },
+          {
+            "frame": 1,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 1141,
+            "inside_vertex_fraction": 0.7008599508599509,
+            "projected_area_pixels": 186309.79394274155,
+            "image_margin_pixels": 0.0035569951869547367,
+            "bbox_xyxy": [
+              0.8919171094894409,
+              0.0035569951869547367,
+              679.594970703125,
+              322.9018859863281
+            ],
+            "depth_compared_vertices": 1002,
+            "depth_visible_vertices": 1000,
+            "depth_visible_ratio": 0.998003992015968,
+            "bbox_width_pixels": 678.7030535936356,
+            "bbox_height_pixels": 322.89832899114117,
+            "bbox_short_side_pixels": 322.89832899114117,
+            "bbox_short_side_fraction": 0.5979598685021132,
+            "bbox_aspect_ratio": 2.101909463929917,
+            "visible_target_vertices": 1000,
+            "zip_member": "frame-000001.color.jpg",
+            "marginal_visible_target_vertices": 161,
+            "cumulative_visible_target_vertices": 1463,
+            "cumulative_visible_target_fraction": 0.8986486486486487
+          }
+        ],
+        "final_cumulative_visible_target_vertices": 1463,
+        "final_cumulative_visible_target_fraction": 0.8986486486486487,
+        "opened": {
+          "pose_members": 346,
+          "depth_members": 346,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      }
+    }
+  ],
+  "decision_threshold": null,
+  "next_decision": "No pass threshold is defined. Use only the observed cumulative-coverage curves to decide whether a future, separately frozen scan family should test a three-view carrier. If either side has zero eligible partial views or marginal gain saturates immediately, stop this source family without RGB/model calls.",
+  "literature_motivation": {
+    "next_best_view_object_visibility": "https://ceur-ws.org/Vol-1782/paper_6.pdf",
+    "active_3d_classification_visibility": "https://openaccess.thecvf.com/content_ICCVW_2019/papers/ACVR/Wang_Active_3D_Classification_of_Multiple_Objects_in_Cluttered_Scenes_ICCVW_2019_paper.pdf",
+    "used_principle": "View planning should maximize newly visible target surface and integrate observations, rather than equating one-frame completeness with all usable evidence."
+  },
+  "claim_boundary": "This is a geometry/depth-only posthoc diagnostic on two consumed source-not-evaluable families. It can expose bounded multi-view observation reachability but cannot establish image matching, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

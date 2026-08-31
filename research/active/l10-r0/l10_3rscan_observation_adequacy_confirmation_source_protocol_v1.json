@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-observation-adequacy-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T06:46:00+08:00",
+  "question": "Does the pre-download-frozen 1d233ff6 to 1d233fea target-27 family supply one reference and one query view that pass both inherited visibility and the new anti-sliver observation-adequacy gate before RGB/model access?",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_source.py",
+    "sha256": "8038b6a10f22ee247d5ff8ab3520c9d28d217a5cbdb4f73c43c7bf156e515cbb"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_observation_adequacy_posthoc.py",
+      "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    }
+  ],
+  "candidate": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_v1.json",
+    "sha256": "6245509e4d63f8ee9c37c60c408ea153f88393ce791f5f454a3e9d2600f4f458"
+  },
+  "source": {
+    "authority": "OFFICIAL_DOWNLOADER_MATERIALIZED_FROZEN_SIX_FILE_PLAN",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f/semseg.v2.json", "bytes": 23899, "sha256": "773337911dfddc857c62b1cba1cf54eec909a3217e9348b5d4aaad3c587bcd8a"},
+      {"path": "datasets/3rscan/1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f/labels.instances.annotated.v2.ply", "bytes": 3969693, "sha256": "945ae014f83f33c6150f10027bad743eae212be70c33436c842cc4b96ca1d471"},
+      {"path": "datasets/3rscan/1d233ff6-e280-2b1a-8ed5-3eec62f9bb3f/sequence.zip", "bytes": 27390486, "sha256": "d7a4fb29df29ab2c723050915f2c80bf2c920f8f807db1e406804f2c75f0b5ee"},
+      {"path": "datasets/3rscan/1d233fea-e280-2b1a-8f15-cd60d12ae197/semseg.v2.json", "bytes": 19369, "sha256": "8d61ed24d3572508244be314a6dc897543dac56a5bd3ab5ac2c348d45299102e"},
+      {"path": "datasets/3rscan/1d233fea-e280-2b1a-8f15-cd60d12ae197/labels.instances.annotated.v2.ply", "bytes": 4048802, "sha256": "f7741a6b12d7f068054527a3cc93c04ccd66dc999bb6a9c81b86cfbe1daeeba3"},
+      {"path": "datasets/3rscan/1d233fea-e280-2b1a-8f15-cd60d12ae197/sequence.zip", "bytes": 28128230, "sha256": "d564a42565256fec434063a29936ecd045e0c208b0e76e2b6651e48679b5c94f"}
+    ]
+  },
+  "source_rules": {
+    "inherited": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "observation_adequacy": {
+      "minimum_projected_bbox_short_side_fraction": 0.1,
+      "maximum_projected_bbox_aspect_ratio": 8.0
+    },
+    "ranking": "For each scan independently, rank adequate views by short-side fraction, depth-visible ratio, visible vertices, projected area, image margin, then earlier frame."
+  },
+  "next_action": {
+    "evaluable": "Freeze the selected frames and run the unchanged selective coherent-cycle carrier once with fixed cross-scene exact-target-absent controls.",
+    "not_evaluable": "Retain the six official files, record source not evaluable, and freeze the next metadata-only family without opening RGB or models."
+  },
+  "forbidden_after_freeze": [
+    "change the selected family, target 27, source files, visibility gate, 0.1 short-side fraction, aspect 8 or ranking",
+    "open RGB or call a model before this result is written",
+    "replace a failed reference or query view after observing geometry/depth",
+    "claim source evaluability is algorithm confirmation"
+  ],
+  "claim_boundary": "This post-download gate uses target geometry, poses and depth only to adjudicate whether one frozen scan family can support a later exact-instance Development experiment. It is not RGB/model evidence, portal binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

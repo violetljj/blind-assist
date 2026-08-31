@@ -1,0 +1,62 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-source-protocol-v2",
+  "protocol_id": "l10-3rscan-observation-adequacy-confirmation-source-protocol-v2",
+  "frozen_at": "2026-09-01T06:51:00+08:00",
+  "question": "Does the second pre-download-frozen 1d234018 to 1d234012 target-5 family supply observation-adequate reference and query views before RGB/model access?",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_source_v2.py",
+    "sha256": "bf6b5665ce896a23afed4995d20aa66bb446b3cb7e0f9990a68d27015e9be8c9"
+  },
+  "base_implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_source.py",
+    "sha256": "8038b6a10f22ee247d5ff8ab3520c9d28d217a5cbdb4f73c43c7bf156e515cbb"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_observation_adequacy_posthoc.py", "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "l10_3rscan_registered_extent_ceiling.py", "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"}
+  ],
+  "candidate": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_v2.json",
+    "sha256": "bc8b205a6d300f3b980ae1568e513cca06bab21009b1c115e1d1251ee46a58b7"
+  },
+  "source": {
+    "authority": "OFFICIAL_DOWNLOADER_MATERIALIZED_SECOND_FROZEN_SIX_FILE_PLAN",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/1d234018-e280-2b1a-8f22-da2b997865e8/semseg.v2.json", "bytes": 30113, "sha256": "4071a3f57394065e0bd8254211d27f7fba9b078a092aa05883ab09c51dd50018"},
+      {"path": "datasets/3rscan/1d234018-e280-2b1a-8f22-da2b997865e8/labels.instances.annotated.v2.ply", "bytes": 8822011, "sha256": "9bbaf3aabb17ce80e9e74ee16d42420430c208520d71440615ee30bb585cc072"},
+      {"path": "datasets/3rscan/1d234018-e280-2b1a-8f22-da2b997865e8/sequence.zip", "bytes": 46315364, "sha256": "cb471d257f0560ba1d44158202d73cbf2ad0bd891a33676220e1475cf4c34aed"},
+      {"path": "datasets/3rscan/1d234012-e280-2b1a-8dea-0d1d53e0572d/semseg.v2.json", "bytes": 27924, "sha256": "3cc12d46c3280f51a8102f975c0202785a5891d35bcac355a22cffc5d5b38bf6"},
+      {"path": "datasets/3rscan/1d234012-e280-2b1a-8dea-0d1d53e0572d/labels.instances.annotated.v2.ply", "bytes": 8736719, "sha256": "eef740cd0fdfe4d61e96b0bfb236e10ad6f68f8a1c718115a4a19b8db616a4b4"},
+      {"path": "datasets/3rscan/1d234012-e280-2b1a-8dea-0d1d53e0572d/sequence.zip", "bytes": 55615918, "sha256": "e6c6e1d9f450145bbc16982fa247fd916a927cd5e3702180a6f5696d72114be0"}
+    ]
+  },
+  "source_rules": {
+    "inherited": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    },
+    "observation_adequacy": {
+      "minimum_projected_bbox_short_side_fraction": 0.1,
+      "maximum_projected_bbox_aspect_ratio": 8.0
+    },
+    "ranking": "For each scan independently, rank adequate views by short-side fraction, depth-visible ratio, visible vertices, projected area, image margin, then earlier frame."
+  },
+  "next_action": {
+    "evaluable": "Freeze selected frames and run the unchanged selective coherent-cycle carrier once with fixed exact-target-absent controls.",
+    "not_evaluable": "Retain the official files and continue only with the next metadata-frozen family; do not spend model calls."
+  },
+  "forbidden_after_freeze": [
+    "change family, target 5, source files, visibility or adequacy rules, or ranking",
+    "open RGB or call a model before this result",
+    "replace failed views after geometry/depth",
+    "claim source evaluability is algorithm confirmation"
+  ],
+  "claim_boundary": "This second post-download gate uses target geometry, poses and depth only to decide whether a later exact-instance Development experiment is evaluable. It is not RGB/model evidence, portal binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

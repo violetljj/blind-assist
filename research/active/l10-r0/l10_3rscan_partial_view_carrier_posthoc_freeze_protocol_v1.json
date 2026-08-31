@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist-l10-3rscan-partial-view-carrier-posthoc-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-partial-view-carrier-posthoc-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T06:54:00+08:00",
+  "question": "Can the unchanged coherent-cycle carrier use the highest-new-visible-surface partial views from consumed OA2 while still rejecting fixed cross-scene exact-target-absent controls?",
+  "implementation": {
+    "path": "l10_3rscan_partial_view_carrier_posthoc_freeze.py",
+    "sha256": "818f03aa542af6a7756b395e01121f9d03ba28aef7e80c0f7924c8c4d654d54a"
+  },
+  "portfolio": {
+    "path": "l10_3rscan_multiview_observation_portfolio_posthoc_result_v1.json",
+    "sha256": "58ed1722ae80969d4198da6f5f06bb24aaaddca7558216792015b03e48f70f28"
+  },
+  "source_result": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_source_result_v2.json",
+    "sha256": "9ccf3e96c2b7df312c63440c5b127ba2a7397cbf5ec5ffc1d795bbd3215875a9"
+  },
+  "controls": {
+    "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"
+  },
+  "source": {
+    "authority": "GEOMETRY_DEPTH_SELECTED_CONSUMED_SOURCE_RGB_MODEL_FRESH_CARRIER_POSTHOC",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "1d234018-e280-2b1a-8f22-da2b997865e8/sequence.zip": {"path": "datasets/3rscan/1d234018-e280-2b1a-8f22-da2b997865e8/sequence.zip", "bytes": 46315364, "sha256": "cb471d257f0560ba1d44158202d73cbf2ad0bd891a33676220e1475cf4c34aed"},
+      "1d234012-e280-2b1a-8dea-0d1d53e0572d/sequence.zip": {"path": "datasets/3rscan/1d234012-e280-2b1a-8dea-0d1d53e0572d/sequence.zip", "bytes": 55615918, "sha256": "e6c6e1d9f450145bbc16982fa247fd916a927cd5e3702180a6f5696d72114be0"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "panel_id": "OA2",
+    "episode_id": "MV05",
+    "reference_rule": "First greedy portfolio view: maximum depth-consistent target vertices under quarter-inside and anti-sliver admission.",
+    "query_rule": "First greedy portfolio view: maximum depth-consistent target vertices under quarter-inside and anti-sliver admission.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_MV05_MV05", "reference_episode": "MV05", "query_episode": "MV05", "label": "target_present"},
+      {"id": "N_MV05_NC31", "reference_episode": "MV05", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_MV05_NC08", "reference_episode": "MV05", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Both control queries come from a different physical scan family and cannot contain exact target MV05."
+  },
+  "forbidden_after_freeze": [
+    "change OA2, target 5, reference frame 102, query frame 64 or either fixed control",
+    "use portfolio second views, query truth, RGB or model output to alter the selected pair",
+    "change coherent-cycle models, masks, thresholds, affine extent gate or selective cascade threshold",
+    "claim a consumed-source posthoc result is fresh confirmation"
+  ],
+  "claim_boundary": "This freezes one consumed-source, geometry/depth-selected, RGB/model-fresh partial-view Development carrier test with two new exact-target-absent pairings. A pass can show only that the unchanged coherent-cycle carrier uses this observed partial-view pair; it is not confirmation, provider independence, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

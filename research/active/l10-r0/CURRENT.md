@@ -196,6 +196,19 @@ contract.
   `L10_3RSCAN_SC34_SOURCE_NOT_EVALUABLE_WITHIN_BOUNDED_ACTIVE_OBSERVATION`:
   SC34 is not positive transfer evidence and is not an algorithm-negative row.
   Apply the adequacy rule before RGB/model access to the successor source.
+  Two subsequent metadata-frozen, entirely new scan families opened `359` and
+  `636` pose/depth pairs but no RGB/models; neither had a single view with the
+  old `0.98` inside-target requirement. A three-view, no-threshold observation-
+  portfolio diagnostic instead admitted anti-sliver partial views. On the second
+  family, the best reference/query views exposed `0.639163/0.799754` of target
+  vertices, and a second query view raised cumulative coverage to `0.898649`.
+  Freezing the best single views and keeping the coherent-cycle carrier entirely
+  unchanged yielded `1/1` positive, `0/2` false commits, cycle opportunity
+  `0.402330`, dominance `0.822290`, and extent IoU `0.646993`. Record
+  `L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET`. This is
+  consumed-source Development, but it establishes that observation admission,
+  not another model threshold, was the decision-changing lever. Freeze the
+  anti-sliver/max-new-visible-surface rule for a third pre-RGB/model family.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or
