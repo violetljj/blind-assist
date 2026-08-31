@@ -68,7 +68,9 @@ Status: `ACTIVE`
   memory also failed (`4/6` rankings), but retaining the three view descriptors
   as a nearest-member set reached `6/6` cross-family and `9/9` after adding a
   same-scene sibling. Its margin is only `+0.0038`, so this is a Development
-  mechanism awaiting new-family confirmation.
+  mechanism. An unchanged, pre-download-frozen new-family test then reached
+  `9/9` at `+0.1322` margin, providing narrow same-provider confirmation under
+  privileged target boxes.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -4133,6 +4135,20 @@ privileged target boxes and has a thin margin. It does not establish calibrated
 open-set operation, broad sibling rejection, raw-camera binding, portal
 ownership/access, waypoint, arrival, handoff, benefit, reliability, or safety.
 
+The representation was frozen without margin tuning and moved to the next
+entirely unmaterialized metadata candidate: `3b7b33af -> 80b8588d`, door target
+`16`. Before RGB or DINOv2 access, the three-view source gate reached cumulative
+target coverage `0.927771` on the reference scan and `0.994361` on the rescan,
+and selected same-scene sibling door `32`. With those views and the two fixed
+cross-family controls frozen, the unchanged set-memory descriptor achieved
+`9/9` strict positive-versus-negative rankings. Its minimum positive similarity
+was `0.578135`, maximum negative `0.445939`, margin `+0.132196`, and sibling
+score `0.279386`. This is narrow same-provider new-family confirmation of the
+viewpoint-preserving instance-memory component under privileged boxes. It does
+not calibrate a deployment threshold or establish broad sibling rejection,
+provider independence, raw-camera referent acquisition, portal ownership or
+access, waypoint, arrival, handoff, user benefit, reliability, or safety.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4247,6 +4263,20 @@ Evidence:
   `3166f72c6eca87d3774e4c03212a28ae23f5f1ac1adfb051c509fca1046fc999`,
   `3fa844a7eb08502cd7dbb2c1f3456c254a32701151ab7daa8201b69eb3aa1ab9`,
   and `9bd39411d5fdb19af690d71d1c9d58a4c914ff2b44ef32a1bcd77a2d06f71ebc`;
+- set-memory new-family candidate protocol/result, source implementation/
+  protocol/result, freeze implementation/protocol/cohort, descriptor protocol/
+  result, and confirmation adjudication SHA-256:
+  `4725d72e8231b214f6b5ddee01283cf6f15b01a043099516c0f0d8f15523f779`,
+  `d1fe511535f94cfbf30360c1d4380ab4edfb100cf8fcafb8a13c3b06d1a74add`,
+  `8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11`,
+  `6187116513fd40a73d55d7e43e29f177c3ef8c233e5542c972c4aee5e4cbc970`,
+  `09e816e35bf7494c101b01abce48358137d9c91dd59d66e09547bb7305f94f3e`,
+  `69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86`,
+  `4d4e7b00e0eb808d345daf7df4d38b22957ccebada613821adfcb965fdc608f4`,
+  `947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082`,
+  `ecb8b2b1a31672a35ede93ba822f8b04b00a7d16a9c508d2befd62c2ca844d46`,
+  `96b9b2969f892d873938138f48160b61918b17bb36ef9b4658cd8200c21e5a3d`,
+  and `ec7145400f7f684bb413d52d37e60020f0c255b7ff3899cfa1f09a58e385c6a1`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

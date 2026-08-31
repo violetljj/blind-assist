@@ -265,6 +265,16 @@ contract.
   `0.389877`. This is a promising consumed Development mechanism under
   privileged boxes, not calibrated open-set or fresh-family evidence. Freeze
   the representation and seek a wholly new family rather than tune the margin.
+  That frozen mechanism then passed its first wholly new-family test. Candidate
+  `3b7b33af -> 80b8588d`, target door `16`, was fixed before download; the
+  geometry/depth source gate obtained three reference views with `0.927771`
+  cumulative target coverage, three query views with `0.994361`, and same-scene
+  sibling `32`, all before RGB/model access. The unchanged object-plus-context
+  set memory reached `9/9` strict positive-versus-negative rankings. Minimum
+  positive similarity was `0.578135`, maximum negative `0.445939`, separation
+  margin `+0.132196`, and sibling score `0.279386`. Record narrow same-provider
+  new-family confirmation under privileged boxes. This improves instance-
+  memory generalization, but it is not raw-camera binding or end-to-end L10.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

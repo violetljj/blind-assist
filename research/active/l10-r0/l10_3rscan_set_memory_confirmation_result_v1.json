@@ -1,0 +1,202 @@
+{
+  "schema": "blindassist-l10-3rscan-object-context-set-memory-posthoc-result-v1",
+  "authority": "CONSUMED_PV28_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_set_memory_confirmation_protocol_v1.json",
+  "protocol_sha256": "ecb8b2b1a31672a35ede93ba822f8b04b00a7d16a9c508d2befd62c2ca844d46",
+  "implementation": {
+    "path": "l10_3rscan_object_context_set_memory_posthoc.py",
+    "sha256": "342af35df625481420e5090eae0fae3333521b1b313f4ee99e18d955664122f6"
+  },
+  "conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "scores": {
+    "C16M1_query": 0.578135073184967,
+    "C16M2_query": 0.6486640572547913,
+    "C16M3_query": 0.6177788972854614,
+    "NC31_query": 0.41225239634513855,
+    "NC08_query": 0.4459390640258789,
+    "SIB32_query": 0.2793864607810974
+  },
+  "winning_reference": {
+    "C16M1_query": "C16M2_reference",
+    "C16M2_query": "C16M2_reference",
+    "C16M3_query": "C16M3_reference",
+    "NC31_query": "C16M2_reference",
+    "NC08_query": "C16M2_reference",
+    "SIB32_query": "C16M2_reference"
+  },
+  "pair_scores": {
+    "C16M1_query": {
+      "C16M1_reference": 0.41355079412460327,
+      "C16M2_reference": 0.578135073184967,
+      "C16M3_reference": 0.40530073642730713
+    },
+    "C16M2_query": {
+      "C16M1_reference": 0.3888297379016876,
+      "C16M2_reference": 0.6486640572547913,
+      "C16M3_reference": 0.4916321933269501
+    },
+    "C16M3_query": {
+      "C16M1_reference": 0.3123902678489685,
+      "C16M2_reference": 0.39556172490119934,
+      "C16M3_reference": 0.6177788972854614
+    },
+    "NC31_query": {
+      "C16M1_reference": 0.2712407410144806,
+      "C16M2_reference": 0.41225239634513855,
+      "C16M3_reference": 0.26035207509994507
+    },
+    "NC08_query": {
+      "C16M1_reference": 0.3221226632595062,
+      "C16M2_reference": 0.4459390640258789,
+      "C16M3_reference": 0.29913341999053955
+    },
+    "SIB32_query": {
+      "C16M1_reference": 0.15619242191314697,
+      "C16M2_reference": 0.2793864607810974,
+      "C16M3_reference": 0.1330775022506714
+    }
+  },
+  "metrics": {
+    "positive_queries": 3,
+    "negative_queries": 3,
+    "correct_pairwise_rankings": 9,
+    "pairwise_rankings": 9,
+    "minimum_positive_score": 0.578135073184967,
+    "maximum_negative_score": 0.4459390640258789,
+    "separation_margin": 0.13219600915908813
+  },
+  "descriptor_receipts": {
+    "C16M1_reference": {
+      "sha256": "77382115589664007dfcdf4abda44ad52bc9b9bad72ee51aba9a0b0065d19e19",
+      "dimensions": 2048
+    },
+    "C16M1_query": {
+      "sha256": "7c0d044d5cbae78dd55b3e9d43779d5f95524691ac47f82a44c7209caa17ff9a",
+      "dimensions": 2048
+    },
+    "C16M2_reference": {
+      "sha256": "440aeec3c2fc612cb33346fe12c969477bd7ea84fd1468fb6687daf87e84ac06",
+      "dimensions": 2048
+    },
+    "C16M2_query": {
+      "sha256": "33c844cef2f5b3d145e995879cff68c801360ec046a490cf733780130e9131ee",
+      "dimensions": 2048
+    },
+    "C16M3_reference": {
+      "sha256": "4fa893b5ebd72ae2102af09e56770b2a6c0ab508029b72b6ef15a94d1398dd1a",
+      "dimensions": 2048
+    },
+    "C16M3_query": {
+      "sha256": "ef4cc42eee5fe0451fd63be015fcfd92cc5d04cd8d999321cdeabf59aa3b03eb",
+      "dimensions": 2048
+    },
+    "SIB32_query": {
+      "sha256": "3a2df3649ba08919b4c5e844867eb484fa11be2f507f2bbeb37667887314bae7",
+      "dimensions": 2048
+    },
+    "NC31_query": {
+      "sha256": "5ff480d2d64c8656afc265cc52ab6724c36d5bc407f3438da867497769082ed0",
+      "dimensions": 2048
+    },
+    "NC08_query": {
+      "sha256": "550eff8e6609fb310170656fb15aec32fc81a2e8ec981593051ae56c28424ecd",
+      "dimensions": 2048
+    }
+  },
+  "image_receipts": {
+    "C16M1_reference": {
+      "image_sha256": "701f3b16defdad8b501cc19a6f50151817aaf44d21c400870c7f016319b69926",
+      "bbox_xyxy": [
+        128.89031982421875,
+        137.49488830566406,
+        669.8526611328125,
+        374.7518005371094
+      ]
+    },
+    "C16M1_query": {
+      "image_sha256": "3e5df10478c2f28a48aa4651bee352fa1cc40505539a988b2781c1ec4b679d0f",
+      "bbox_xyxy": [
+        159.25735473632812,
+        142.36619567871094,
+        660.5289306640625,
+        405.3429870605469
+      ]
+    },
+    "C16M2_reference": {
+      "image_sha256": "43e0c032ecafab67140540b2c341980695aeddd2acd0b4831471d6a9809846bb",
+      "bbox_xyxy": [
+        2.978768825531006,
+        141.57899475097656,
+        307.1446228027344,
+        513.1138305664062
+      ]
+    },
+    "C16M2_query": {
+      "image_sha256": "6744cf0fe2362eaba8c0a164a6d35a5ad410eff76d54d6a574a63ffd7c9e2d00",
+      "bbox_xyxy": [
+        2.6513774394989014,
+        3.5303094387054443,
+        607.9608764648438,
+        472.642578125
+      ]
+    },
+    "C16M3_reference": {
+      "image_sha256": "21e47c860ae4ea771dce447076a1688658b2331feb89331a273829b709615aa4",
+      "bbox_xyxy": [
+        336.6882629394531,
+        74.18411254882812,
+        958.4984741210938,
+        533.61181640625
+      ]
+    },
+    "C16M3_query": {
+      "image_sha256": "7b8f32295c7db0dafb2691116ed1fe4b94ad70a2f0ca8e5f54db39f7cd51985a",
+      "bbox_xyxy": [
+        2.3939318656921387,
+        1.3296087980270386,
+        957.0737915039062,
+        533.8334350585938
+      ]
+    },
+    "SIB32_query": {
+      "image_sha256": "d6a4005e431edf48b8159d11b53f1a6c16990546eb9826c4ee7f5b3c60f34bb7",
+      "bbox_xyxy": [
+        0.24341019988059998,
+        181.18313598632812,
+        958.3589477539062,
+        537.2970581054688
+      ]
+    },
+    "NC31_query": {
+      "image_sha256": "1a85e8ea5967ad405e1cf56c1675586f034dff51b393681ee169dba2a05275c1",
+      "bbox_xyxy": [
+        111.62455749511719,
+        298.135986328125,
+        827.8693237304688,
+        469.01995849609375
+      ]
+    },
+    "NC08_query": {
+      "image_sha256": "85df3478a841d6d46e90cd2f9566db19f5c32c9337b81ec6df1d3f73e01b9a52",
+      "bbox_xyxy": [
+        275.2812194824219,
+        131.8151397705078,
+        868.8740234375,
+        271.384521484375
+      ]
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "dinov2_calls": 18
+  },
+  "literature_motivation": [
+    {
+      "source": "CLOVER and MapCLOVER",
+      "url": "https://arxiv.org/abs/2407.09718",
+      "use": "Confirm viewpoint-preserving object memory on an entirely new family with a same-scene sibling challenge."
+    }
+  ],
+  "claim_boundary": "This new-family test can establish only narrow same-provider confirmation of nearest-member object-context memory under privileged boxes. It cannot establish calibrated open-set decisions, broad sibling rejection, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

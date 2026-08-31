@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist-l10-3rscan-object-context-set-memory-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-set-memory-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T07:55:45+08:00",
+  "question": "Does the unchanged nearest-member object-context memory rank all three new C16 query views above its pre-descriptor same-scene sibling and both fixed cross-family controls?",
+  "implementation": {"path": "l10_3rscan_object_context_set_memory_posthoc.py", "sha256": "342af35df625481420e5090eae0fae3333521b1b313f4ee99e18d955664122f6"},
+  "dependencies": [{"path": "l10_3rscan_object_context_memory_posthoc.py", "sha256": "9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505"}],
+  "cohort": {"path": "l10_3rscan_set_memory_confirmation_cohort_v1.json", "sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082"},
+  "predecessor": {
+    "path": "l10_3rscan_set_memory_confirmation_source_result_v1.json",
+    "sha256": "09e816e35bf7494c101b01abce48358137d9c91dd59d66e09547bb7305f94f3e",
+    "required_conclusion": "L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_EVALUABLE",
+    "single_change": "Apply the unchanged consumed-PV28 nearest-member object-context descriptor to the fully new pre-download-frozen C16 family with frozen same-scene and cross-family negatives."
+  },
+  "source": {"authority": "FROZEN_NEW_FAMILY_PRE_DESCRIPTOR_SET_MEMORY_CONFIRMATION", "artifact_root": "artifacts.local"},
+  "model": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"},
+  "descriptor": {"input_size": 518, "crop_scales": [1.0, 1.5], "feature": "Unchanged exact-bbox plus 1.5x-context DINOv2 CLS descriptor.", "memory": "Retain three normalized reference descriptors.", "score": "Maximum cosine to any frozen reference member."},
+  "memory": {"reference_images": ["C16M1_reference", "C16M2_reference", "C16M3_reference"]},
+  "evaluation": {
+    "positive_query_images": ["C16M1_query", "C16M2_query", "C16M3_query"],
+    "negative_query_images": ["NC31_query", "NC08_query", "SIB32_query"],
+    "decision_gate": "All nine positive-versus-negative nearest-member comparisons must be strictly ordered correctly; no threshold or margin is fitted.",
+    "negative_authority": "SIB32 is a different instance in the same new rescan selected before RGB/model access; NC31/NC08 are exact-target-absent cross-family controls."
+  },
+  "literature_motivation": [{"source": "CLOVER and MapCLOVER", "url": "https://arxiv.org/abs/2407.09718", "use": "Confirm viewpoint-preserving object memory on an entirely new family with a same-scene sibling challenge."}],
+  "forbidden_after_freeze": ["change descriptor, crop, memory member, negative or gate", "fit a threshold", "retry or replace any row", "use query truth to select a memory member"],
+  "claim_boundary": "This new-family test can establish only narrow same-provider confirmation of nearest-member object-context memory under privileged boxes. It cannot establish calibrated open-set decisions, broad sibling rejection, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

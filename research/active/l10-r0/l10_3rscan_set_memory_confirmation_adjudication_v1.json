@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-adjudication-v1",
+  "authority": "FROZEN_PRE_DOWNLOAD_NEW_FAMILY_SAME_PROVIDER_CONFIRMATION_ADJUDICATION",
+  "adjudicated_at": "2026-09-01T07:56:30+08:00",
+  "protocol": {"path": "l10_3rscan_set_memory_confirmation_protocol_v1.json", "sha256": "ecb8b2b1a31672a35ede93ba822f8b04b00a7d16a9c508d2befd62c2ca844d46"},
+  "source_result": {"path": "l10_3rscan_set_memory_confirmation_source_result_v1.json", "sha256": "09e816e35bf7494c101b01abce48358137d9c91dd59d66e09547bb7305f94f3e", "required_conclusion": "L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_EVALUABLE"},
+  "cohort": {"path": "l10_3rscan_set_memory_confirmation_cohort_v1.json", "sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082"},
+  "raw_result": {"path": "l10_3rscan_set_memory_confirmation_result_v1.json", "sha256": "96b9b2969f892d873938138f48160b61918b17bb36ef9b4658cd8200c21e5a3d", "generic_conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_MET"},
+  "provenance": {
+    "candidate_frozen_pre_download": true,
+    "source_selected_pre_rgb_pre_model": true,
+    "reference_scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+    "rescan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+    "target_instance_id": 16,
+    "same_scene_sibling_instance_id": 32,
+    "model_or_threshold_change_from_consumed_development": false
+  },
+  "conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_NEW_FAMILY_CONFIRMATION_GATE_MET",
+  "metrics": {
+    "correct_pairwise_rankings": 9,
+    "pairwise_rankings": 9,
+    "minimum_positive_score": 0.578135073184967,
+    "maximum_negative_score": 0.4459390640258789,
+    "separation_margin": 0.13219600915908813,
+    "same_scene_sibling_score": 0.2793864607810974
+  },
+  "claim_boundary": "This adjudicates one wholly new 3RScan physical target family as narrow same-provider confirmation of the frozen nearest-member object-context memory under privileged target boxes and three frozen negatives. It does not establish calibrated open-set decisions, broad sibling rejection, provider independence, raw-camera referent acquisition, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

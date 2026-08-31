@@ -1,0 +1,298 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-result-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_SET_MEMORY_CONFIRMATION_SOURCE",
+  "protocol_path": "l10_3rscan_set_memory_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "6187116513fd40a73d55d7e43e29f177c3ef8c233e5542c972c4aee5e4cbc970",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_source.py",
+    "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"
+  },
+  "candidate": {
+    "reference_scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+    "rescan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+    "target_instance_id": 16,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      16,
+      32
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.999823808670044,
+      -0.018766168504953384,
+      0,
+      0,
+      0.018766168504953384,
+      -0.999823808670044,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      -0.26188525557518005,
+      -0.039100680500268936,
+      0,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_EVALUABLE",
+  "source_evaluable": true,
+  "reference_memory": {
+    "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+    "target_instance_id": 16,
+    "target_vertices": 803,
+    "eligible_partial_views": 30,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 384,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 803,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 118698.66523331054,
+        "image_margin_pixels": 128.89031982421875,
+        "bbox_xyxy": [
+          128.89031982421875,
+          137.49488830566406,
+          669.8526611328125,
+          374.7518005371094
+        ],
+        "depth_compared_vertices": 731,
+        "depth_visible_vertices": 527,
+        "depth_visible_ratio": 0.7209302325581395,
+        "bbox_width_pixels": 540.9623413085938,
+        "bbox_height_pixels": 237.2569122314453,
+        "bbox_short_side_pixels": 237.2569122314453,
+        "bbox_short_side_fraction": 0.4393646522804543,
+        "bbox_aspect_ratio": 2.280069888041375,
+        "visible_target_vertices": 527,
+        "zip_member": "frame-000384.color.jpg",
+        "marginal_visible_target_vertices": 527,
+        "cumulative_visible_target_vertices": 527,
+        "cumulative_visible_target_fraction": 0.6562889165628891
+      },
+      {
+        "frame": 4,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 259,
+        "inside_vertex_fraction": 0.32254047322540474,
+        "projected_area_pixels": 97612.29864563463,
+        "image_margin_pixels": 2.978768825531006,
+        "bbox_xyxy": [
+          2.978768825531006,
+          141.57899475097656,
+          307.1446228027344,
+          513.1138305664062
+        ],
+        "depth_compared_vertices": 198,
+        "depth_visible_vertices": 198,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 304.16585397720337,
+        "bbox_height_pixels": 371.5348358154297,
+        "bbox_short_side_pixels": 304.16585397720337,
+        "bbox_short_side_fraction": 0.563270099957784,
+        "bbox_aspect_ratio": 1.2214876553608003,
+        "visible_target_vertices": 198,
+        "zip_member": "frame-000004.color.jpg",
+        "marginal_visible_target_vertices": 197,
+        "cumulative_visible_target_vertices": 724,
+        "cumulative_visible_target_fraction": 0.9016189290161893
+      },
+      {
+        "frame": 69,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 517,
+        "inside_vertex_fraction": 0.6438356164383562,
+        "projected_area_pixels": 272068.78130415105,
+        "image_margin_pixels": 0.50152587890625,
+        "bbox_xyxy": [
+          336.6882629394531,
+          74.18411254882812,
+          958.4984741210938,
+          533.61181640625
+        ],
+        "depth_compared_vertices": 402,
+        "depth_visible_vertices": 402,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 621.8102111816406,
+        "bbox_height_pixels": 459.4277038574219,
+        "bbox_short_side_pixels": 459.4277038574219,
+        "bbox_short_side_fraction": 0.8507920441804109,
+        "bbox_aspect_ratio": 1.353445179645963,
+        "visible_target_vertices": 402,
+        "zip_member": "frame-000069.color.jpg",
+        "marginal_visible_target_vertices": 21,
+        "cumulative_visible_target_vertices": 745,
+        "cumulative_visible_target_fraction": 0.9277708592777086
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 745,
+    "final_cumulative_visible_target_fraction": 0.9277708592777086,
+    "opened": {
+      "pose_members": 413,
+      "depth_members": 413,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "query_memory": {
+    "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+    "target_instance_id": 16,
+    "target_vertices": 1064,
+    "eligible_partial_views": 36,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 369,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1064,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 114640.55753979518,
+        "image_margin_pixels": 133.65701293945312,
+        "bbox_xyxy": [
+          159.25735473632812,
+          142.36619567871094,
+          660.5289306640625,
+          405.3429870605469
+        ],
+        "depth_compared_vertices": 1008,
+        "depth_visible_vertices": 956,
+        "depth_visible_ratio": 0.9484126984126984,
+        "bbox_width_pixels": 501.2715759277344,
+        "bbox_height_pixels": 262.97679138183594,
+        "bbox_short_side_pixels": 262.97679138183594,
+        "bbox_short_side_fraction": 0.486994058114511,
+        "bbox_aspect_ratio": 1.9061437828553478,
+        "visible_target_vertices": 956,
+        "zip_member": "frame-000369.color.jpg",
+        "marginal_visible_target_vertices": 956,
+        "cumulative_visible_target_vertices": 956,
+        "cumulative_visible_target_fraction": 0.8984962406015038
+      },
+      {
+        "frame": 80,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 562,
+        "inside_vertex_fraction": 0.5281954887218046,
+        "projected_area_pixels": 272819.9140999315,
+        "image_margin_pixels": 2.6513774394989014,
+        "bbox_xyxy": [
+          2.6513774394989014,
+          3.5303094387054443,
+          607.9608764648438,
+          472.642578125
+        ],
+        "depth_compared_vertices": 479,
+        "depth_visible_vertices": 479,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 605.3094990253448,
+        "bbox_height_pixels": 469.11226868629456,
+        "bbox_short_side_pixels": 469.11226868629456,
+        "bbox_short_side_fraction": 0.8687264234931381,
+        "bbox_aspect_ratio": 1.2903297130140254,
+        "visible_target_vertices": 479,
+        "zip_member": "frame-000080.color.jpg",
+        "marginal_visible_target_vertices": 81,
+        "cumulative_visible_target_vertices": 1037,
+        "cumulative_visible_target_fraction": 0.974624060150376
+      },
+      {
+        "frame": 180,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 639,
+        "inside_vertex_fraction": 0.6005639097744361,
+        "projected_area_pixels": 479840.23763290385,
+        "image_margin_pixels": 1.3296087980270386,
+        "bbox_xyxy": [
+          2.3939318656921387,
+          1.3296087980270386,
+          957.0737915039062,
+          533.8334350585938
+        ],
+        "depth_compared_vertices": 444,
+        "depth_visible_vertices": 444,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 954.6798596382141,
+        "bbox_height_pixels": 532.5038262605667,
+        "bbox_short_side_pixels": 532.5038262605667,
+        "bbox_short_side_fraction": 0.9861181967788273,
+        "bbox_aspect_ratio": 1.7928131452919678,
+        "visible_target_vertices": 444,
+        "zip_member": "frame-000180.color.jpg",
+        "marginal_visible_target_vertices": 21,
+        "cumulative_visible_target_vertices": 1058,
+        "cumulative_visible_target_fraction": 0.9943609022556391
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 1058,
+    "final_cumulative_visible_target_fraction": 0.9943609022556391,
+    "opened": {
+      "pose_members": 509,
+      "depth_members": 509,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "same_scene_sibling": {
+    "instance_id": 32,
+    "label": "door_or_doorframe",
+    "target_vertices": 662,
+    "candidate_views": 37,
+    "selected": {
+      "frame": 322,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 367,
+      "inside_vertex_fraction": 0.554380664652568,
+      "projected_area_pixels": 290783.3553940897,
+      "image_margin_pixels": 0.24341019988059998,
+      "bbox_xyxy": [
+        0.24341019988059998,
+        181.18313598632812,
+        958.3589477539062,
+        537.2970581054688
+      ],
+      "depth_compared_vertices": 317,
+      "depth_visible_vertices": 298,
+      "depth_visible_ratio": 0.9400630914826499,
+      "bbox_width_pixels": 958.1155375540257,
+      "bbox_height_pixels": 356.1139221191406,
+      "bbox_short_side_pixels": 356.1139221191406,
+      "bbox_short_side_fraction": 0.6594702261465567,
+      "bbox_aspect_ratio": 2.6904748116909643,
+      "visible_target_vertices": 298,
+      "zip_member": "frame-000322.color.jpg"
+    },
+    "opened": {
+      "pose_members": 509,
+      "depth_members": 509,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Freeze up to three target views per side and the selected sibling, then run the unchanged nearest-member object-context descriptor once.",
+  "claim_boundary": "This source gate can establish only whether the new family supplies bounded target memory and a same-scene sibling challenge. It is not descriptor evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

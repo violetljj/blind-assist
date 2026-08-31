@@ -1,0 +1,27 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T07:55:10+08:00",
+  "question": "Does the unchanged object-context set memory separate three views of new target C16 from its same-scene sibling and two fixed cross-family controls?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_set_memory_confirmation_source_result_v1.json", "sha256": "09e816e35bf7494c101b01abce48358137d9c91dd59d66e09547bb7305f94f3e"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_DESCRIPTOR_SET_MEMORY_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "3b7b33af-1b11-283e-9abd-170c6329c0e6/sequence.zip": {"path": "datasets/3rscan/3b7b33af-1b11-283e-9abd-170c6329c0e6/sequence.zip", "bytes": 68497000, "sha256": "3d7808b0a2fc36554baf51d99a0852d5fd70a007ddfa8ced8620796559a9d907"},
+      "80b8588d-4a8d-222f-84c5-8c51b9af1c2f/sequence.zip": {"path": "datasets/3rscan/80b8588d-4a8d-222f-84c5-8c51b9af1c2f/sequence.zip", "bytes": 84422341, "sha256": "5f1f71a1408e5d1ae4903e899919bae12b796f7fb13c323058d865674c8913f0"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["C16M1", "C16M2", "C16M3"],
+    "sibling_episode_id": "SIB32",
+    "positive_authority": "First metadata-frozen unmaterialized family after the consumed PV28 set-memory Development pass, admitted by geometry/depth only.",
+    "negative_query_controls": [{"episode_id": "NC31", "source_episode_id": "NC31"}, {"episode_id": "NC08", "source_episode_id": "NC08"}]
+  },
+  "forbidden_after_freeze": ["change target views, sibling, controls, descriptor, aggregation or gate", "inspect RGB or descriptor scores before cohort freeze", "retry, replace or remove a row"],
+  "claim_boundary": "This freezes one wholly new target family, one same-scene sibling and two fixed cross-family controls before descriptor access. A pass would be narrow same-provider instance-memory confirmation, not raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}
