@@ -26,7 +26,13 @@ future obstacle occupancy intersects the wearer's route, while preserving
   pre-conflict joint-credential frames, X65 recorded zero ancestry
   synchronization and zero handback frames. C34 is therefore
   mechanism-not-exercised, not incremental X65 confirmation; its 83.01%
-  precision also missed the frozen 85% floor.
+  precision also missed the frozen 85% floor. Consumed diagnosis then produced
+  X67, which separates existence from route-risk authority only after a dormant
+  track was reactivated and lost again beyond the inherited measurement hold
+  horizon with receding direction-only motion. Across C26/C27/C28/C32/C34 it
+  was identical on four cohorts and improved C34 by `0 TP / -4 FP / +0.97 pp
+  F1`, reaching `85.23/73.84/79.13%`. This is cross-cohort non-regressing
+  Development, not fresh X67 confirmation.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -44,10 +50,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C34. Diagnose its 26 false-positive frames and the
-   unreachable X65 ancestry handback as consumed Development. Require a visible
-   cross-cohort effect from the next representation-independent conflict
-   credential before freezing any new confirmation source.
+4. Do not rerun or tune C34 as confirmation. X67 removes its four-frame stale
+   post-contact tail without cross-cohort regression. Continue consumed
+   Development against the remaining `45 FN / 22 FP`, prioritizing object-local
+   surface-versus-metric near-miss disagreement; require visible cross-cohort
+   effect before freezing a new confirmation source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -86,3 +93,5 @@ their result.
   [dtr_carla_c34_x65_fresh_source_protocol.json](carla/dtr_carla_c34_x65_fresh_source_protocol.json)
 - C34 X65 fresh confirmation:
   [DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md)
+- X67 consumed cross-cohort Development:
+  [DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
