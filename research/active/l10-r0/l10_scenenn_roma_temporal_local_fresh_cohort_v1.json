@@ -1,0 +1,671 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-fresh-cohort-v1",
+  "authority": "FRESH_PRE_RGBD_TEMPORALLY_LOCAL_ROMA_NONE_CONFIRMATION_COHORT",
+  "protocol_path": "l10_scenenn_roma_temporal_local_fresh_protocol_v1.json",
+  "protocol_sha256": "c740bcae2cd7baeb8eeee2aeb79bde6f680cc25f62e8a1be641fd5b387a49449",
+  "source_admission_path": "l10_scenenn_roma_temporal_local_fresh_source_admission_v1.json",
+  "source_admission_sha256": "0dfd728e52b2c21e27b3849823afebcabd4b430d97a86d26a795d424ff45ba4e",
+  "entrypoint_path": "l10_scenenn_roma_temporal_local_fresh.py",
+  "entrypoint_sha256": "a5e0dd93075118ece5b5430786418077ee467b31de45e8baec0727d2fcf97793",
+  "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-temporal-local-fresh-v1",
+  "source_manifest": {
+    "payload/043/043.ply": {
+      "bytes": 106516403,
+      "sha256": "c50f7caff1fdc823e31ca643d4a052a90c063ee3e5020ae005c035c6ef2d8576"
+    },
+    "payload/043/043.xml": {
+      "bytes": 55380,
+      "sha256": "d54ae8640b6b48589db0c0933ddc8f158551745fd431b9c0c84ae1255d6f4a84"
+    },
+    "payload/043/trajectory.log": {
+      "bytes": 1053009,
+      "sha256": "f7fa40d5a51727f0b23d0a3c6975d5542c640b4b66ce82bba31957e8e23c028c"
+    },
+    "payload/082/082.ply": {
+      "bytes": 90212006,
+      "sha256": "4cfa4e17e38b989f0c084864c3a5eef70af58b7becfc45cd7e4d088e3f0e52b1"
+    },
+    "payload/082/082.xml": {
+      "bytes": 54803,
+      "sha256": "1956f0ffadd0c629294ec52bd142826f3480e17b6545a08d48e2ab895e38a954"
+    },
+    "payload/082/trajectory.log": {
+      "bytes": 1234554,
+      "sha256": "7bdaa3704edeca726c05135e762b53f83ed754940d0369a519868ae24735a371"
+    },
+    "payload/207/207.ply": {
+      "bytes": 56524832,
+      "sha256": "5b9d1e549842f58d71fb06d5aca22ad364d15a40fa30af0af68199c8775edcff"
+    },
+    "payload/207/207.xml": {
+      "bytes": 42621,
+      "sha256": "806c865914f79ea19f3de3d7d329c354995f18ce83f075199709edd6ae1b8cc7"
+    },
+    "payload/207/trajectory.log": {
+      "bytes": 1256608,
+      "sha256": "36a25d29bebf39fd3196148ea791de1b43af948eda5715cb0b0440b384147341"
+    },
+    "payload/213/213.ply": {
+      "bytes": 108043546,
+      "sha256": "675ff1be56e4391246d8f974259e8d789b10c3f4b9279b3e2c381e680da95e94"
+    },
+    "payload/213/213.xml": {
+      "bytes": 72456,
+      "sha256": "89c254fdcd4c2cb3d701774dfc2cb462cdb8ca1294f851707807292e0b8e5870"
+    },
+    "payload/213/trajectory.log": {
+      "bytes": 1254155,
+      "sha256": "d49fdafb56e9d1ff6e7cc6105cca329e3d9613080ac1079169de5416e0ef592d"
+    }
+  },
+  "intrinsic_receipt": {
+    "bytes": 253,
+    "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"
+  },
+  "renderer_runtime": {
+    "cupy_version": "14.1.1",
+    "cuda_runtime_version": 12090,
+    "cuda_driver_version": 13030,
+    "device_id": 0,
+    "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "episodes": [
+    {
+      "episode_id": "TF01",
+      "scene_id": "043",
+      "target_instance_id": 747444,
+      "target_label": "door",
+      "target_mesh_vertices": 75272,
+      "strict_target_faces": 148798,
+      "trajectory_frames": 6200,
+      "sampled_frames": 1241,
+      "eligible_frames": 378,
+      "reason_counts": {
+        "ELIGIBLE": 378,
+        "HEIGHT": 1,
+        "PIXELS": 1,
+        "PIXELS+HEIGHT": 4,
+        "PIXELS+WIDTH": 4,
+        "PIXELS+WIDTH+HEIGHT": 8,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 815,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 29,
+        "WIDTH": 1
+      },
+      "camera_baseline_m": 0.31008969948871234,
+      "reference": {
+        "frame": 4510,
+        "trajectory_header": [
+          4510,
+          4510,
+          4511
+        ],
+        "camera_center_world": [
+          -0.578881,
+          1.61817,
+          -1.44366
+        ],
+        "camera_to_target_centroid_m": 2.0700341529870245,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 37936,
+        "target_raster_pixels": 37936,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.12348958333333333,
+        "bbox_xyxy": [
+          0,
+          0,
+          144,
+          480
+        ],
+        "bbox_width": 144,
+        "bbox_height": 480,
+        "visible_mask_sha256": "d1b3e41755fbe0c71afd369d3a37d74a0b796f6e3777344c468cb4886b30f561",
+        "visible_mask_tight_bbox_xyxy": [
+          0,
+          0,
+          144,
+          480
+        ]
+      },
+      "query": {
+        "frame": 4530,
+        "trajectory_header": [
+          4530,
+          4530,
+          4531
+        ],
+        "camera_center_world": [
+          -0.751408,
+          1.80269,
+          -1.6235
+        ],
+        "camera_to_target_centroid_m": 2.102880116688566,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 38660,
+        "target_raster_pixels": 38757,
+        "visible_to_target_raster_ratio": 0.9974972263075057,
+        "visible_image_fraction": 0.12584635416666667,
+        "bbox_xyxy": [
+          0,
+          0,
+          124,
+          480
+        ],
+        "bbox_width": 124,
+        "bbox_height": 480,
+        "visible_mask_sha256": "be93a18db6a5e430f75db3e620d5b96d7fbb636270b7a7485e8fb577b0ae52d3",
+        "visible_mask_tight_bbox_xyxy": [
+          0,
+          0,
+          124,
+          480
+        ]
+      }
+    },
+    {
+      "episode_id": "TF02",
+      "scene_id": "082",
+      "target_instance_id": 284,
+      "target_label": "door",
+      "target_mesh_vertices": 31769,
+      "strict_target_faces": 62474,
+      "trajectory_frames": 7300,
+      "sampled_frames": 1461,
+      "eligible_frames": 101,
+      "reason_counts": {
+        "ELIGIBLE": 101,
+        "HEIGHT+RANGE": 7,
+        "PIXELS+HEIGHT+VISIBILITY+RANGE": 3,
+        "PIXELS+WIDTH+HEIGHT": 1,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 603,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 740,
+        "WIDTH": 5,
+        "WIDTH+VISIBILITY": 1
+      },
+      "camera_baseline_m": 0.3038887772262083,
+      "reference": {
+        "frame": 5790,
+        "trajectory_header": [
+          5790,
+          5790,
+          5791
+        ],
+        "camera_center_world": [
+          0.0445198,
+          1.08965,
+          0.577305
+        ],
+        "camera_to_target_centroid_m": 1.9428151482929028,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 13107,
+        "target_raster_pixels": 15346,
+        "visible_to_target_raster_ratio": 0.854098787957774,
+        "visible_image_fraction": 0.042666015625,
+        "bbox_xyxy": [
+          128,
+          0,
+          235,
+          198
+        ],
+        "bbox_width": 107,
+        "bbox_height": 198,
+        "visible_mask_sha256": "4271ba4fdf0f17f021793b9ff1d6d261107f3b27b79d142f39023ea4f0e09a2d",
+        "visible_mask_tight_bbox_xyxy": [
+          128,
+          0,
+          235,
+          198
+        ]
+      },
+      "query": {
+        "frame": 5815,
+        "trajectory_header": [
+          5815,
+          5815,
+          5816
+        ],
+        "camera_center_world": [
+          0.307045,
+          1.13635,
+          0.723072
+        ],
+        "camera_to_target_centroid_m": 1.6399738337828416,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 21007,
+        "target_raster_pixels": 24242,
+        "visible_to_target_raster_ratio": 0.8665539146935072,
+        "visible_image_fraction": 0.06838216145833333,
+        "bbox_xyxy": [
+          169,
+          0,
+          286,
+          268
+        ],
+        "bbox_width": 117,
+        "bbox_height": 268,
+        "visible_mask_sha256": "1018d2715533ce8db1090c4ff25415ff6d130dc18a7296503f1bab686713cde2",
+        "visible_mask_tight_bbox_xyxy": [
+          169,
+          0,
+          286,
+          268
+        ]
+      }
+    },
+    {
+      "episode_id": "TF03",
+      "scene_id": "213",
+      "target_instance_id": 29778,
+      "target_label": "door",
+      "target_mesh_vertices": 36163,
+      "strict_target_faces": 78401,
+      "trajectory_frames": 7400,
+      "sampled_frames": 1481,
+      "eligible_frames": 167,
+      "reason_counts": {
+        "ELIGIBLE": 167,
+        "PIXELS+WIDTH": 2,
+        "PIXELS+WIDTH+HEIGHT": 1,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 764,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 538,
+        "WIDTH": 9
+      },
+      "camera_baseline_m": 0.3044679170881558,
+      "reference": {
+        "frame": 275,
+        "trajectory_header": [
+          275,
+          275,
+          276
+        ],
+        "camera_center_world": [
+          -1.60959,
+          1.17766,
+          0.27744
+        ],
+        "camera_to_target_centroid_m": 2.067645124846421,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 3607,
+        "target_raster_pixels": 3607,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.011741536458333333,
+        "bbox_xyxy": [
+          605,
+          193,
+          640,
+          400
+        ],
+        "bbox_width": 35,
+        "bbox_height": 207,
+        "visible_mask_sha256": "67b174c4b2ebe43ea647681da126a78d6f70a08d0b66356c18eeb44df7a0d4da",
+        "visible_mask_tight_bbox_xyxy": [
+          605,
+          193,
+          640,
+          400
+        ]
+      },
+      "query": {
+        "frame": 325,
+        "trajectory_header": [
+          325,
+          325,
+          326
+        ],
+        "camera_center_world": [
+          -1.31069,
+          1.17041,
+          0.334946
+        ],
+        "camera_to_target_centroid_m": 2.3010124987954796,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 43871,
+        "target_raster_pixels": 43871,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.14280924479166668,
+        "bbox_xyxy": [
+          490,
+          0,
+          640,
+          334
+        ],
+        "bbox_width": 150,
+        "bbox_height": 334,
+        "visible_mask_sha256": "16f0238669c6cb2c1f5272e2ad657cd00c321271b0656afa27b8a71901ccae53",
+        "visible_mask_tight_bbox_xyxy": [
+          490,
+          0,
+          640,
+          334
+        ]
+      }
+    },
+    {
+      "episode_id": "TF04",
+      "scene_id": "207",
+      "target_instance_id": 12860,
+      "target_label": "door",
+      "target_mesh_vertices": 30275,
+      "strict_target_faces": 64878,
+      "trajectory_frames": 7400,
+      "sampled_frames": 1481,
+      "eligible_frames": 390,
+      "reason_counts": {
+        "ELIGIBLE": 390,
+        "PIXELS+WIDTH": 1,
+        "PIXELS+WIDTH+HEIGHT": 8,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 1024,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY+RANGE": 52,
+        "WIDTH": 6
+      },
+      "camera_baseline_m": 0.33502327612840577,
+      "reference": {
+        "frame": 7180,
+        "trajectory_header": [
+          7180,
+          7180,
+          7181
+        ],
+        "camera_center_world": [
+          0.0214809,
+          1.55666,
+          0.334526
+        ],
+        "camera_to_target_centroid_m": 2.2578035701150228,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 27946,
+        "target_raster_pixels": 27966,
+        "visible_to_target_raster_ratio": 0.999284845884288,
+        "visible_image_fraction": 0.09097005208333334,
+        "bbox_xyxy": [
+          0,
+          98,
+          155,
+          480
+        ],
+        "bbox_width": 155,
+        "bbox_height": 382,
+        "visible_mask_sha256": "20867518bbb529e5b6dba080a355071c8f03a91e15aabcc26004f54147a13e41",
+        "visible_mask_tight_bbox_xyxy": [
+          0,
+          98,
+          155,
+          480
+        ]
+      },
+      "query": {
+        "frame": 7215,
+        "trajectory_header": [
+          7215,
+          7215,
+          7216
+        ],
+        "camera_center_world": [
+          -0.0485332,
+          1.25853,
+          0.198669
+        ],
+        "camera_to_target_centroid_m": 2.0976423792941037,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 56627,
+        "target_raster_pixels": 58958,
+        "visible_to_target_raster_ratio": 0.960463380711693,
+        "visible_image_fraction": 0.18433268229166666,
+        "bbox_xyxy": [
+          0,
+          0,
+          174,
+          480
+        ],
+        "bbox_width": 174,
+        "bbox_height": 480,
+        "visible_mask_sha256": "32c4d9fa34a7a7312013106a5a797fc727cc1d92306b0a2b79f759e9208c929e",
+        "visible_mask_tight_bbox_xyxy": [
+          0,
+          0,
+          174,
+          480
+        ]
+      }
+    }
+  ],
+  "selected_frames_by_scene": {
+    "043": [
+      4510,
+      4530
+    ],
+    "082": [
+      5790,
+      5815
+    ],
+    "213": [
+      275,
+      325
+    ],
+    "207": [
+      7180,
+      7215
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "closed-four",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "query-extra",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "reference-extra",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF01-TF02",
+      "reference_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF01-TF03",
+      "reference_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF01-TF04",
+      "reference_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF02-TF01",
+      "reference_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF02-TF03",
+      "reference_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF02-TF04",
+      "reference_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF03-TF01",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF03-TF02",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF03-TF04",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF04-TF01",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ],
+      "query_targets": [
+        "TF02",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF04-TF02",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF03",
+        "TF04"
+      ]
+    },
+    {
+      "id": "balanced-swap-TF04-TF03",
+      "reference_targets": [
+        "TF01",
+        "TF02",
+        "TF03"
+      ],
+      "query_targets": [
+        "TF01",
+        "TF02",
+        "TF04"
+      ]
+    }
+  ],
+  "counts": {
+    "physical_targets": 4,
+    "selected_rgb_frames": 8,
+    "scenarios": 15,
+    "truth_matches_across_scenarios": 34,
+    "truth_unmatched_nodes_across_scenarios": 26
+  },
+  "geometry_members_opened": 12,
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "model_calls": 0,
+  "claim_boundary": "A pass is fresh source-disjoint SceneNN Development evidence for temporal-local active observation plus RoMa reciprocal cycle support under privileged geometry-conditioned crops. It does not prove raw-phone detection, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety.",
+  "selection_policy": "minimum qualifying frame gap, then minimum qualifying camera baseline, visibility and time tie-breaks"
+}

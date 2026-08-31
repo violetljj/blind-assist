@@ -1,0 +1,110 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-active-none-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-active-none-protocol-v1",
+  "frozen_at": "2026-08-31T23:08:00+08:00",
+  "question": "Can a geometry-controlled minimum qualifying active observation plus frozen RoMa indoor dense cycle evidence provide exact same-door support and NONE assignment on fresh SceneNN targets?",
+  "predecessor": {
+    "result_path": "l10_scenenn_efficientloftr_fresh_none_result_v1.json",
+    "result_sha256": "4fe0eff3200b538b685554a0373ce52e160b97470a3b59b780e66bb146fa4115",
+    "required_conclusion": "L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "The maximum-baseline view policy left only two of four true diagonals supported by EfficientLoFTR; a separate one-pass consumed-cohort RoMa diagnostic showed strong symmetric cycle support on the one easiest true pair and essentially zero cycle support on ordinary cross-door pairs.",
+    "structural_change": "Replace adversarial maximum-baseline selection with the minimum qualifying 0.3 m active displacement before applying symmetric dense cycle evidence. No matcher threshold sweep is performed."
+  },
+  "independent_motivation": {
+    "paper": "https://openaccess.thecvf.com/content/CVPR2024/html/Edstedt_RoMa_Robust_Dense_Feature_Matching_CVPR_2024_paper.html",
+    "official_repository": "https://github.com/Parskatt/RoMa",
+    "source_inference": "RoMa is a robust dense matcher with strong reported ScanNet indoor correspondence results. Dense symmetric warp certainty permits an explicit cycle-consistency support predicate instead of treating relative appearance rank as absolute identity evidence."
+  },
+  "source_selector": {
+    "inventory": "Previously materialized SceneNN XML labels plus official HTTP HEAD metadata only; no selected PLY, trajectory, ONI, RGB-D, or model score opened before admission.",
+    "consumed_scene_ids": ["011", "014", "021", "032", "038", "073", "096", "225", "246", "249", "273", "279", "521"],
+    "target_label": "normalized lowercase text must match door followed by zero or more digits",
+    "candidate_rule": "Among unconsumed candidates with at least one qualifying door and official ONI Content-Length, choose the four smallest ONI payloads, tie by scene ID; choose the lowest numeric qualifying door instance in each selected scene.",
+    "candidate_oni_bytes": {"005": 1863571168, "043": 1143737634, "074": 1553661552, "076": 3290768804, "082": 1334803126, "089": 1580239026, "109": 1703387621, "207": 1484883445, "213": 1467193699, "234": 806623531, "237": 918010779, "276": 771364524, "700": 709742770},
+    "expected_selected_scenes": ["700", "276", "234", "237"],
+    "expected_target_instance_ids": [292231, 237753, 716505, 1305878],
+    "forbidden_before_admission": ["selected scene mesh", "selected trajectory", "selected ONI or RGB-D", "frame visibility", "RoMa or baseline score"]
+  },
+  "provider": {
+    "name": "SceneNN",
+    "project_url": "https://scenenn.net/",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion PRO consumer RGB-D camera",
+    "license_boundary": "Educational and research use; raw SceneNN payloads remain local and are not redistributed.",
+    "scenes": {
+      "700": {
+        "target_instance_id": 292231,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/700/700.ply", "content_length": 103673184, "etag": "61a4d5fd-62ded60"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/700/700.xml", "content_length": 41442, "etag": "61a4d5fd-a1e2", "inventory_sha256": "6a4e205eea1bb4927e278c91af23320e70ef5d0ed35e1a94d55d989b6563a5ac"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/700/trajectory.log", "content_length": 826263, "etag": "61a4d5fd-c9b97"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/700.oni", "content_length": 709742770, "etag": "61a4e841-2a4dd0b2"}
+      },
+      "276": {
+        "target_instance_id": 237753,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/276/276.ply", "content_length": 102314882, "etag": "61a4d58b-6193382"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/276/276.xml", "content_length": 52952, "etag": "61a4d58b-ced8", "inventory_sha256": "5c048eda1b4f746278b1b0ea5ed2b0ae5bc1b0174bca8297b2a5d0a015f022b5"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/276/trajectory.log", "content_length": 884887, "etag": "61a4d58b-d8097"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/276.oni", "content_length": 771364524, "etag": "61a4e4a3-2dfa16ac"}
+      },
+      "234": {
+        "target_instance_id": 716505,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/234/234.ply", "content_length": 69555948, "etag": "61a4d54f-42556ec"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/234/234.xml", "content_length": 17098, "etag": "61a4d54f-42ca", "inventory_sha256": "b9092b0c6379aa9cd031ef4d87fb80b3f22f21ce85804a215d1713f1aeba4ec0"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/234/trajectory.log", "content_length": 853519, "etag": "61a4d54f-d060f"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/234.oni", "content_length": 806623531, "etag": "61a4e26f-3014192b"}
+      },
+      "237": {
+        "target_instance_id": 1305878,
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/237/237.ply", "content_length": 86443077, "etag": "61a4d553-5270445"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/237/237.xml", "content_length": 38908, "etag": "61a4d553-97fc", "inventory_sha256": "2261f4448bd5642cbe90a1df71afd555e0b77f4cc973c931e13bd29529ec3234"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/237/trajectory.log", "content_length": 890679, "etag": "61a4d553-d9737"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/237.oni", "content_length": 918010779, "etag": "61a4e29a-36b7bb9b"}
+      }
+    },
+    "intrinsic": {"url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini", "content_length": 253, "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"}
+  },
+  "pre_rgb_selector": {
+    "trajectory_stride": 5,
+    "minimum_pair_frame_gap": 20,
+    "minimum_pair_baseline_metres": 0.3,
+    "pair_ranking": "minimum qualifying camera-centre baseline, then maximum minimum visible target pixels, maximum minimum visibility ratio, earlier frames",
+    "eligible_frame": {"minimum_visible_target_pixels": 512, "minimum_bbox_width_pixels": 24, "minimum_bbox_height_pixels": 48, "minimum_visible_to_target_raster_ratio": 0.4, "maximum_visible_target_image_fraction": 0.8, "maximum_camera_to_target_centroid_metres": 2.5},
+    "renderer": {"numeric_type": "float32", "image_width": 640, "image_height": 480, "near_plane_metres": 0.02, "near_plane_face_rule": "reject unless every vertex is beyond near plane", "triangle_sidedness": "double-sided", "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m", "visibility_tolerance_metres": 0.005},
+    "failure_semantics": "If any selected target lacks a qualifying pair, stop NOT_EVALUABLE without substituting a scene or changing geometry rules."
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "wheel_path": "artifacts.local/sources/roma-pypi-v1/romatch-0.1.2-py3-none-any.whl",
+    "wheel_sha256": "4a9f1e21e9876aee471acddd0ae7092584d928a9f109b03a5344f859f5d67798",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "windows_runtime_reason": "Official package disables local custom correlation on non-Linux and uses the standard correlation path.",
+    "crop_expansion": 1.25,
+    "input": "expand the evaluator-visible target-mask tight box by 1.25, clamp and crop unmasked RGB",
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "both directions must have at least one percent of the 864-square grid above official certainty and within six-pixel normalized symmetric cycle error, and a majority of each direction's high-certainty pixels must be cycle consistent",
+    "rank_score": "geometric mean of the two directional cycle-consistent fractions",
+    "zero_assignment": "strict reciprocal maximum among absolutely supported pairs; unsupported pairs are NONE",
+    "adaptation": "none; CUDA inference; no fresh-result threshold or model fitting"
+  },
+  "baseline": {
+    "model": "unchanged local DINOv2-S",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "descriptor": "L2-normalized mean final patch tokens on the identical unmasked context crop",
+    "assignment": "strict reciprocal cosine with no absolute support"
+  },
+  "scenarios": {"closed": 1, "unequal_size": 2, "ordered_balanced_swaps": 12, "total": 15},
+  "decision_gate": {"true_positive": 34, "false_positive": 0, "false_negative": 0, "f1": 1.0, "exact_zero_assignment_scenarios": 15, "all_four_true_pairs_have_absolute_support": true, "incremental_f1_over_dinov2": "strictly positive"},
+  "forbidden_after_rgb_access": ["change scenes, targets, selected frames, action geometry, crop expansion, model, resolutions, certainty threshold, cycle tolerance, support fractions, score, reciprocity, scenarios, or decision gate", "drop a target or failed scenario", "fit a threshold or model on the fresh results"],
+  "claim_boundary": "A pass is fresh SceneNN Development evidence that a geometry-controlled active observation and truth-cropped RoMa dense cycle evidence can support same-door/NONE decisions. It remains same-provider, evaluator-mask-conditioned indoor RGB, not raw-phone detection, named entrance, portal ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety evidence."
+}

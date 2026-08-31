@@ -1,6 +1,6 @@
 # L10-R0 current
 
-Updated: 2026-08-31
+Updated: 2026-09-01
 
 Status: `L10_R0_ACTIVE`
 
@@ -34,9 +34,38 @@ contract.
   local correspondence plus explicit NONE with same-crop DINOv2. It improved
   F1 `0.1875 -> 0.349206` and TP/FP/FN `6/24/28 -> 11/18/23`, but supported
   only `2/4` true diagonals and reached `0/15` exact scenarios. Freeze all four
-  veto roles. Retain rank-only registered-surface matching only as a Development
-  component; next work needs calibrated dense certainty and spatially balanced
-  correspondence on fresh targets, not matcher-threshold tuning.
+  veto roles. A following four-scene fresh RoMa indoor challenger used frozen
+  `0.30 m` minimum-baseline active frames and bilateral dense-cycle support. It
+  removed all `23` DINOv2 false positives and improved F1
+  `0.268657 -> 0.418605` at precision `1.0`, but only `1/4` true diagonals had
+  absolute support. Failure attribution showed that minimum-baseline-first could
+  select temporally distant revisits (`90-525` frames). One consumed posthoc
+  action-only repair changed pair ranking to minimum frame gap while retaining
+  `0.30-0.37 m` displacement and every matcher/support value. Gaps fell to
+  `20-35` frames; DINOv2 reached `34/2/0`, F1 `0.971429`, `13/15` exact, and
+  unchanged RoMa reached `27/0/7`, F1 `0.885246`, precision `1.0`, with `3/4`
+  supported true diagonals. The full gate still failed on TL04. The unchanged
+  confirmation then admitted four new source-disjoint scenes (`043`, `082`,
+  `213`, `207`) before geometry or RGB. The temporal-local rule itself
+  generalized, selecting `20, 25, 50, 35` frame gaps at `0.30-0.34 m`.
+  Same-crop DINOv2 reached `25/4/9`, F1 `0.793651`, `5/15` exact; RoMa kept
+  precision `1.0` and removed all four false positives, but supported only
+  TF01/TF04 and fell to `16/0/18`, recall `0.470588`, F1 `0.64`, `2/15`
+  exact. Record
+  `L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET`. Retain the
+  action policy and precision branch as `COMPONENT_OR_CHALLENGER / COMPONENT`.
+  Two consumed-cohort repairs then failed without changing thresholds: exact
+  target-plane rectification and one fixed midpoint bridge both remained
+  `16/0/18`, F1 `0.64`, `2/15` exact, and `2/4` supported. An Exa-motivated
+  spatial-domain successor instead kept each complete `640x480` frame as RoMa
+  input and counted cycles only from the provider target-visible mask into the
+  paired target-visible mask. That single change reached `34/0/0`, precision
+  and recall `1.0`, F1 `1.0`, `15/15` exact, and `4/4` true support without
+  changing weights, resolutions, certainty, cycle error, support thresholds,
+  scenarios, or assignment. Retain it only as
+  `COMPONENT_OR_CHALLENGER / CHALLENGER` until the exact full-context/mask rule
+  passes on newly admitted scenes; provider masks remain privileged and prove
+  no ownership, access, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance

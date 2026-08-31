@@ -1,0 +1,109 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-midpoint-bridge-posthoc-rgb-receipt-v1",
+  "authority": "CONSUMED_POSTHOC_MIDPOINT_SPARSE_RGB_ONLY_RECEIPT",
+  "protocol_path": "l10_scenenn_roma_midpoint_bridge_posthoc_protocol_v1.json",
+  "protocol_sha256": "cdcb736840c3b102ae40687e09b2ee67d40203dea12203ae5888c67b5151814f",
+  "source_admission_path": "l10_scenenn_roma_midpoint_bridge_posthoc_source_admission_v1.json",
+  "source_admission_sha256": "f0bb69c8aaf1c694f6463f89577532400afe5108c63ecfd7a95ccc89dab1f83c",
+  "extractor_executable": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\tools\\bin\\ExtractSelectedSync.exe",
+  "extractor_sha256": "c867b8316dce9a3d000ff42abab2cca2891b1b4710f1697be60041c4987ac372",
+  "extractor_source_sha256": "33ffdc6b45ef939e925b55b6f6f0702435a2b1cfa172617402273a1ba72739e2",
+  "extraction_summaries": {
+    "043": {
+      "scanned": 4521,
+      "discarded_depth": 676,
+      "discarded_color": 0,
+      "requested": 1,
+      "saved": 1
+    },
+    "082": {
+      "scanned": 5801,
+      "discarded_depth": 1057,
+      "discarded_color": 0,
+      "requested": 1,
+      "saved": 1
+    },
+    "213": {
+      "scanned": 301,
+      "discarded_depth": 64,
+      "discarded_color": 0,
+      "requested": 1,
+      "saved": 1
+    },
+    "207": {
+      "scanned": 7196,
+      "discarded_depth": 1466,
+      "discarded_color": 0,
+      "requested": 1,
+      "saved": 1
+    }
+  },
+  "sealed_frames": {
+    "043:4520": {
+      "scene_id": "043",
+      "trajectory_frame": 4520,
+      "timestamp": {
+        "trajectory_frame": 4520,
+        "playback_index": 4521,
+        "color_timestamp": 180617724,
+        "depth_timestamp": 180616956,
+        "color_frame_id": 4521,
+        "depth_frame_id": 5390
+      },
+      "image_path": "payload/043/bridge_selected/image/frame.4520.png",
+      "image_sha256": "61b9b2913563d1ffdbe036eef3a14f216262841d658f36bdc62cedca15beb1f5",
+      "depth_extraction_sha256": "83b5ae32a361ac980396cf417ce75f6634898b5eaf2453ebdd79deeeb0f28460",
+      "depth_retained": false
+    },
+    "082:5800": {
+      "scene_id": "082",
+      "trajectory_frame": 5800,
+      "timestamp": {
+        "trajectory_frame": 5800,
+        "playback_index": 5801,
+        "color_timestamp": 231461496,
+        "depth_timestamp": 231461850,
+        "color_frame_id": 5802,
+        "depth_frame_id": 6897
+      },
+      "image_path": "payload/082/bridge_selected/image/frame.5800.png",
+      "image_sha256": "a00571adbc0fdbd723d2e7cf563cfcd008bd23635835cf8392205fce9264b3ac",
+      "depth_extraction_sha256": "d60f4331577f5e3cddeb92dea4fb9acdc6a3aff0a7547dbdcf0c1b0ae0fd521a",
+      "depth_retained": false
+    },
+    "213:300": {
+      "scene_id": "213",
+      "trajectory_frame": 300,
+      "timestamp": {
+        "trajectory_frame": 300,
+        "playback_index": 301,
+        "color_timestamp": 12467952,
+        "depth_timestamp": 12468193,
+        "color_frame_id": 301,
+        "depth_frame_id": 373
+      },
+      "image_path": "payload/213/bridge_selected/image/frame.0300.png",
+      "image_sha256": "b902a31175a9e2490819c549631a6ccbedb2e2206ab419c603e0fbba6e2b8d67",
+      "depth_extraction_sha256": "fdee99c66fce5df6500ff8355dcadb768872b273d13f73e7cf968995b22db564",
+      "depth_retained": false
+    },
+    "207:7195": {
+      "scene_id": "207",
+      "trajectory_frame": 7195,
+      "timestamp": {
+        "trajectory_frame": 7195,
+        "playback_index": 7196,
+        "color_timestamp": 292326552,
+        "depth_timestamp": 292324885,
+        "color_frame_id": 7196,
+        "depth_frame_id": 8708
+      },
+      "image_path": "payload/207/bridge_selected/image/frame.7195.png",
+      "image_sha256": "71ce791996363c7c6616f32cea0dfa9a30d0dbd933a228dbd1aff2c900a31b97",
+      "depth_extraction_sha256": "0ce57fc83767caf10586bffb7f168cbbdb296f7063bd274ae0b48a4691193119",
+      "depth_retained": false
+    }
+  },
+  "rgb_frames_retained": 4,
+  "depth_frames_retained": 0
+}

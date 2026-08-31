@@ -1,0 +1,101 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-planar-rectified-posthoc-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-planar-rectified-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T01:46:00+08:00",
+  "question": "On the consumed fresh SceneNN cohort, can target-plane rectification restore RoMa true-pair support without relaxing any matcher or absolute-support threshold?",
+  "implementation": {
+    "path": "l10_scenenn_roma_planar_rectified_posthoc.py",
+    "sha256": "a179a996b6599fb4ce6a3277e44a225f31d6740da3504ac305914dd378516622"
+  },
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_temporal_local_fresh_result_v1.json",
+    "result_sha256": "d2d049d55ab40d8b660dc212e9bc12092086cb0c5872b736b2070f4750852b8f",
+    "required_conclusion": "L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET",
+    "observed_metrics": {"true_positive": 16, "false_positive": 0, "false_negative": 18, "f1": 0.64, "exact_scenarios": 2, "true_pairs_supported": 2},
+    "failure_signature": "TF02 had high directional cycle coverage but only 0.35-0.39 purity, while edge-clipped TF03 had approximately one-percent cycle support.",
+    "single_change": "Rectify each truth-visible target proposal independently to its own complete target-mesh PCA plane and count cycle evidence only on rectified target-visible pixels; keep every RoMa weight, resolution, certainty, cycle-error, support fraction, assignment, scenario and target unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_SAME_FRESH_COHORT_NO_NEW_AUTHORITY",
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b"
+  },
+  "literature_basis": [
+    {
+      "title": "Single-Image Depth Prediction Makes Feature Matching Easier",
+      "venue": "ECCV 2020",
+      "url": "https://doi.org/10.1007/978-3-030-58517-4_28",
+      "used_for": "Perspective rectification of planar regions before off-the-shelf feature matching."
+    },
+    {
+      "title": "GPVK-VL: Geometry-Preserving Virtual Keyframes for Visual Localization under Large Viewpoint Changes",
+      "venue": "CVPR 2025",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Li_GPVK-VL_Geometry-Preserving_Virtual_Keyframes_for_Visual_Localization_under_Large_Viewpoint_CVPR_2025_paper.html",
+      "used_for": "Geometry-preserving virtual views to reduce viewpoint gaps before feature matching."
+    },
+    {
+      "title": "InLoc: Indoor Visual Localization with Dense Matching and View Synthesis",
+      "venue": "CVPR 2018",
+      "url": "https://openaccess.thecvf.com/content_cvpr_2018/CameraReady/2096.pdf",
+      "used_for": "Dense matching plus synthesized-view verification in low-texture, repetitive indoor scenes."
+    }
+  ],
+  "rectification": {
+    "plane_source": "All provider target-instance mesh vertices; no RGB score or matcher output enters plane fitting.",
+    "plane_fit": "SVD/PCA of centered target vertices; the two dominant right-singular vectors span the plane.",
+    "axis_rule": "The larger exact target-mesh planar extent is vertical; each axis sign is fixed by its largest-magnitude world component.",
+    "extent_rule": "Exact minimum and maximum target-vertex coordinates on the two plane axes; no percentile, padding or fitted crop.",
+    "output_width": 384,
+    "output_height": 768,
+    "warp": "One source-to-fronto-parallel homography with bilinear RGB and nearest-neighbour target-visible mask.",
+    "invalid_fill": "Per-view mean BGR over rectified target-visible pixels.",
+    "support_domain": "Directional cycle fraction denominator is the source rectified target-visible pixel count; forward matches must land on target-visible pixels."
+  },
+  "renderer": {
+    "numeric_type": "float32",
+    "image_width": 640,
+    "image_height": 480,
+    "near_plane_metres": 0.02,
+    "near_plane_face_rule": "reject unless every vertex is beyond near plane",
+    "triangle_sidedness": "double-sided",
+    "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+    "visibility_tolerance_metres": 0.005
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "rank_score": "unchanged geometric mean of directional cycle-consistent fractions",
+    "zero_assignment": "unchanged strict reciprocal maximum among supported pairs"
+  },
+  "baseline": {
+    "model": "unchanged local DINOv2-S evaluated on the same rectified views",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+  },
+  "decision_gate": {
+    "predecessor_true_positive": 16,
+    "predecessor_f1": 0.64,
+    "maximum_false_positive": 0,
+    "minimum_true_pairs_with_absolute_support": 3,
+    "minimum_exact_scenarios": 2
+  },
+  "forbidden_after_freeze": [
+    "change target plane, axes, extent, output size, fill, validity domain, matcher, threshold, assignment, scenarios or gate",
+    "claim freshness or confirmation authority from this consumed posthoc replay",
+    "drop TF02, TF03, any different-target pair, or any failed scenario"
+  ],
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged target-plane viewpoint normalization and visibility-aware cycle support only. It does not prove raw-phone target detection, phone-side geometry, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

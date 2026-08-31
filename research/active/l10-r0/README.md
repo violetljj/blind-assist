@@ -3709,6 +3709,81 @@ patch averaging. Exa review of RoMa and DKM admits a separately fixed dense-
 certainty and balanced-sampling successor on fresh targets. No consumed crop,
 threshold, or RANSAC parameter may be tuned.
 
+That successor used the official `romatch 0.1.2` wheel, RoMa indoor and DINOv2-
+L/14 weights, symmetric `560 -> 864` dense warps, the official `0.05`
+certainty, six-pixel cycle consistency, at least one-percent directional cycle
+coverage, and majority cycle purity. Four further SceneNN one-door scenes
+(`700`, `276`, `234`, `237`) were selected by XML labels and ONI byte order
+before geometry, RGB, or model access. Geometry then froze the minimum
+qualifying `0.30 m` pair in each scene. Same-crop DINOv2 reciprocal rank reached
+`TP=9, FP=23, FN=25`, F1 `0.268657`, and `4/15` exact scenarios. RoMa absolute
+support reached `TP=9, FP=0, FN=25`, precision `1.0`, F1 `0.418605`, but only
+RA02 had a supported true diagonal and exact assignment remained `0/15`.
+Record `L10_SCENENN_ROMA_ACTIVE_NONE_DEVELOPMENT_GATE_NOT_MET`. Retain the
+zero-false-positive dense-cycle branch as
+`COMPONENT_OR_CHALLENGER / COMPONENT`, not standalone full-recall authority.
+
+The failed pairs exposed an action-policy defect independent of matcher
+thresholds: minimum camera baseline could select a temporally distant revisit.
+A consumed posthoc protocol therefore changed only pair ranking to minimum
+qualifying frame gap before baseline. Original gaps `105, 90, 185, 525` became
+`20, 25, 35, 20` frames while displacement remained `0.30-0.37 m`; scenes,
+targets, crop, model, certainty, cycle, support, assignment, scenarios, and gate
+were unchanged. DINOv2 rose to `TP=34, FP=2, FN=0`, F1 `0.971429`, and `13/15`
+exact. RoMa rose to `TP=27, FP=0, FN=7`, precision `1.0`, F1 `0.885246`, and
+`8/15` exact, with TL01-TL03 supported and TL04 still unsupported. Record
+`L10_SCENENN_ROMA_TEMPORAL_LOCAL_POSTHOC_DEVELOPMENT_GATE_NOT_MET`. The large
+single-change effect retains the temporally local active-observation policy as
+a Development component, but the consumed replay cannot regain fresh authority.
+The next valid check freezes this action policy unchanged on new physical
+targets; fitting a DINOv2 margin, RoMa purity, cycle threshold, or fusion on
+TL01-TL04 is forbidden.
+
+That confirmation admitted the next four unconsumed one-door SceneNN recordings
+by XML labels and official ONI byte order (`043`, `082`, `213`, `207`) before
+opening their mesh, trajectory, ONI, RGB, visibility, or model scores. The
+unchanged temporal-local action rule selected gaps `20, 25, 50, 35` at
+`0.30-0.34 m`, so the action repair generalized. On the new fifteen-scenario
+roster, same-crop DINOv2 reached `TP=25, FP=4, FN=9`, precision `0.862069`,
+recall `0.735294`, F1 `0.793651`, and `5/15` exact. Frozen RoMa cycle support
+again removed every false positive and retained precision `1.0`, but supported
+only TF01 and TF04: `TP=16, FP=0, FN=18`, recall `0.470588`, F1 `0.64`, and
+`2/15` exact. TF02 had abundant cycle coverage but only `0.35-0.39` cycle
+purity; the edge-clipped TF03 view had approximately one-percent cycle support.
+Record `L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET`. The
+posthoc F1 `0.885246` does not confirm cross-scene. Preserve temporal-local
+selection and RoMa as components; use a consumed-cohort geometric
+viewpoint-normalization or multi-frame carrier before spending another fresh
+cohort. Threshold, purity, crop, scenario, or fusion fitting on TF01-TF04 is
+forbidden.
+
+Two frozen consumed-cohort repairs then isolated what did not work. Exact
+target-mesh PCA plane rectification changed no assignment metric: RoMa remained
+`TP=16, FP=0, FN=18`, F1 `0.64`, `2/15` exact, and `2/4` supported; TF04 purity
+rose to about `0.90`, but TF02 remained about `0.34` and TF03 produced zero
+cycles. One pre-RGB geometry-selected midpoint per episode also changed no
+metric under a strict both-edge support requirement. Record
+`L10_SCENENN_ROMA_PLANAR_RECTIFIED_POSTHOC_DEVELOPMENT_GATE_NOT_MET` and
+`L10_SCENENN_ROMA_MIDPOINT_BRIDGE_POSTHOC_DEVELOPMENT_GATE_NOT_MET`; both
+standalone recall-repair roles are closed.
+
+An Exa review of OAMatcher and O-MaMa instead motivated one spatial-domain
+change: preserve each complete `640x480` image for RoMa context, then count a
+cycle only when it starts inside the source provider target-visible mask and
+lands inside the paired target-visible mask. Nearest-neighbour mask resize,
+source-mask denominators, RoMa weights/resolutions, certainty `0.05`, normalized
+six-pixel cycle error, bilateral `0.01` cycle fraction, `0.5` purity, scenarios,
+and strict reciprocal assignment were frozen unchanged. On the consumed fresh
+cohort this recovered all four diagonals and reached `TP=34, FP=0, FN=0`,
+precision/recall/F1 `1.0`, and `15/15` exact scenarios, improving the cropped
+predecessor by `+18 TP`, `-18 FN`, `+0.36 F1`, and `+13` exact scenarios with no
+false-positive cost. Record
+`L10_SCENENN_ROMA_FULL_CONTEXT_MASK_POSTHOC_DEVELOPMENT_GATE_MET`. This is a
+`COMPONENT_OR_CHALLENGER / CHALLENGER`, not confirmation: the next valid run
+must freeze the identical full-context/mask-gated rule on newly admitted scenes.
+Provider masks and complete SceneNN geometry remain privileged and establish no
+raw-phone proposal, portal ownership, access, waypoint, arrival, or handoff.
+
 The honest provider-disjoint Development boundary is therefore the temporal
 rank-only registered-surface component at F1 `0.957746`, not the perfect
 complete-surface support result. A successor must be explicitly constructed or
@@ -3785,6 +3860,36 @@ Evidence:
   `b6952b081d3476db1c5f3d600fb18aa54fd8858bad7c13b02e8ed08860c76dd4`,
   `6cf8384a27bd95e9646bfc18fa3d3a421d03a8a4e8a4ba02216efcd9b357230b`,
   and `4fe0eff3200b538b685554a0373ce52e160b97470a3b59b780e66bb146fa4115`;
+- SceneNN RoMa active protocol/cohort/ONI receipt/RGB receipt/result SHA-256:
+  `667c5e8e6bdc766f1d1c3f119ef8b065f7594b9d20923d9278f27953e99e6889`,
+  `caa1803dff654f09801b6b230e9012841aa0fc7065bfd399549650a38b5401bd`,
+  `0f5f08397ffc634f0dbe334c341b25bf4715ffb283b326e104ed8a976f943a14`,
+  `6108bd2d75275e44dc3cc932c8c59f978a02567eb6f50b4dc63cd8435d419aa3`,
+  and `49acb6e611f8b305bc00003ebca179894fe8ed2195a6973b13acce1e43888e3a`;
+- SceneNN temporal-local posthoc protocol/cohort/RGB receipt/result SHA-256:
+  `de814db8b09ca487f2717a0b521328fd97c24a6eb61fbe4efdfb463432a77ff5`,
+  `3ef8cf33a1cad646c4c76464e11af085c32f2fdd553f50764ce2605035e3b2b1`,
+  `58b3bbefa720c0c6b39b7b5c48cd254abd590b20a500a05dabca40e58a54eb59`,
+  and `c833ab86a17a35d590508a667ed1fa0000a239169a4e3d589d4e42c2e62a8e7d`;
+- SceneNN temporal-local fresh protocol/admission/cohort/ONI receipt/RGB
+  receipt/result SHA-256:
+  `c740bcae2cd7baeb8eeee2aeb79bde6f680cc25f62e8a1be641fd5b387a49449`,
+  `0dfd728e52b2c21e27b3849823afebcabd4b430d97a86d26a795d424ff45ba4e`,
+  `836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79`,
+  `7ef564e483d94e06a29e27c67c6b7bf47fa55f60c277164685d9c9594c00590e`,
+  `e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b`,
+  and `d2d049d55ab40d8b660dc212e9bc12092086cb0c5872b736b2070f4750852b8f`;
+- SceneNN planar-rectified posthoc protocol/result SHA-256:
+  `eb65527dd7777397916baf57a42303900fffcde0acd4e56132d2c36bb783a7ca`
+  and `eb8824847e07d8edb93fe97c373e665e57db25510f7e4e7e99b8479762f45429`;
+- SceneNN midpoint-bridge posthoc protocol/admission/RGB receipt/result SHA-256:
+  `cdcb736840c3b102ae40687e09b2ee67d40203dea12203ae5888c67b5151814f`,
+  `f0bb69c8aaf1c694f6463f89577532400afe5108c63ecfd7a95ccc89dab1f83c`,
+  `8e58d58ca734b9f1ba6ec9406608d71e912331b63c859423dbb513e0068dbd24`,
+  and `7d5cdb9c37eb839b97ce700255065fbf3d1af53fa68ecd666ff0293f7357f331`;
+- SceneNN full-context mask-gated posthoc protocol/result SHA-256:
+  `f7f177f838d5dd2667a75fe58a07b327caffdc96ce1f2700758f84686b4723f7`
+  and `38cb51d184308dfe01b2cba955a596e5e9ffa28e4f8e2699a33f0bbe8b560b09`;
 - visual audits:
   `artifacts.local/results/l10-3rscan-center-target-door-retrieval-v2/proposal-crops-montage.jpg`
   and

@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-active-none-source-admission-v1",
+  "authority": "FROZEN_PRE_GEOMETRY_PRE_RGBD_RESOURCE_ORDERED_SOURCE_ADMISSION",
+  "frozen_at": "2026-08-31T23:09:00+08:00",
+  "protocol_path": "l10_scenenn_roma_active_none_protocol_v1.json",
+  "protocol_sha256": "667c5e8e6bdc766f1d1c3f119ef8b065f7594b9d20923d9278f27953e99e6889",
+  "selection_inputs": ["previously materialized XML labels", "official HTTP HEAD status, ETag and Content-Length"],
+  "selection_rule": "Among unconsumed scenes with at least one qualifying door, choose four smallest official ONI payloads, tie by scene ID; within each choose the lowest numeric qualifying door instance.",
+  "selected": [
+    {"episode_id": "RA01", "scene_id": "700", "target_instance_id": 292231, "target_label": "door", "oni_bytes": 709742770, "inventory_xml_sha256": "6a4e205eea1bb4927e278c91af23320e70ef5d0ed35e1a94d55d989b6563a5ac"},
+    {"episode_id": "RA02", "scene_id": "276", "target_instance_id": 237753, "target_label": "door", "oni_bytes": 771364524, "inventory_xml_sha256": "5c048eda1b4f746278b1b0ea5ed2b0ae5bc1b0174bca8297b2a5d0a015f022b5"},
+    {"episode_id": "RA03", "scene_id": "234", "target_instance_id": 716505, "target_label": "door", "oni_bytes": 806623531, "inventory_xml_sha256": "b9092b0c6379aa9cd031ef4d87fb80b3f22f21ce85804a215d1713f1aeba4ec0"},
+    {"episode_id": "RA04", "scene_id": "237", "target_instance_id": 1305878, "target_label": "door", "oni_bytes": 918010779, "inventory_xml_sha256": "2261f4448bd5642cbe90a1df71afd555e0b77f4cc973c931e13bd29529ec3234"}
+  ],
+  "total_selected_oni_bytes": 3200741604,
+  "geometry_members_opened": 0,
+  "trajectory_members_opened": 0,
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "model_calls": 0,
+  "claim_boundary": "This is source admission only. It proves neither frame eligibility nor algorithm performance and grants no portal, access, arrival, handoff, deployment, or safety authority."
+}

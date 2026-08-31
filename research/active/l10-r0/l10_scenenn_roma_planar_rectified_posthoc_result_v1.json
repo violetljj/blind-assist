@@ -1,0 +1,2721 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-planar-rectified-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_PLANE_RECTIFIED_VISIBILITY_MASKED_ROMA_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_roma_planar_rectified_posthoc_protocol_v1.json",
+  "protocol_sha256": "eb65527dd7777397916baf57a42303900fffcde0acd4e56132d2c36bb783a7ca",
+  "implementation": {
+    "path": "l10_scenenn_roma_planar_rectified_posthoc.py",
+    "sha256": "a179a996b6599fb4ce6a3277e44a225f31d6740da3504ac305914dd378516622"
+  },
+  "source": {
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b",
+    "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-temporal-local-fresh-v1"
+  },
+  "conclusion": "L10_SCENENN_ROMA_PLANAR_RECTIFIED_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "aggregate": {
+      "rectified_dinov2_reciprocal_no_none_support": {
+        "true_positive": 25,
+        "false_positive": 4,
+        "false_negative": 9,
+        "precision": 0.862069,
+        "recall": 0.735294,
+        "f1": 0.793651,
+        "zero_assignment_exact_scenarios": 5,
+        "scenarios": 15
+      },
+      "rectified_roma_visibility_masked_cycle_reciprocal": {
+        "true_positive": 16,
+        "false_positive": 0,
+        "false_negative": 18,
+        "precision": 1.0,
+        "recall": 0.470588,
+        "f1": 0.64,
+        "zero_assignment_exact_scenarios": 2,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.710974,
+            0.85359,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.662383,
+            0.609485
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.693558,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.710974,
+            0.85359,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.662383,
+            0.609485
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.717309
+          ],
+          [
+            0.710974,
+            0.85359,
+            0.699728
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.662383
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.693558
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF02",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.710974,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.662383,
+            0.609485
+          ],
+          [
+            0.766916,
+            0.693558,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF03",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF03",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.710974,
+            0.85359,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.609485
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF04",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.710974,
+            0.85359,
+            0.699728
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.662383
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.693558
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.769732,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.748143,
+            0.662383,
+            0.609485
+          ],
+          [
+            0.702598,
+            0.693558,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.773823
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.609485
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.717309
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.662383
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.693558
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.769732,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.85359,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.702598,
+            0.693558,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.710974,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.766916,
+            0.693558,
+            0.848779
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.486286
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.717309
+          ],
+          [
+            0.710974,
+            0.85359,
+            0.699728
+          ],
+          [
+            0.766916,
+            0.702598,
+            0.693558
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.769732,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.85359,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.748143,
+            0.662383,
+            0.609485
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF04"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.717309,
+            0.773823
+          ],
+          [
+            0.710974,
+            0.699728,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.662383,
+            0.609485
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "rectified_dinov2_patch_mean_cosine_matrix": [
+          [
+            0.957734,
+            0.769732,
+            0.773823
+          ],
+          [
+            0.710974,
+            0.85359,
+            0.593878
+          ],
+          [
+            0.768287,
+            0.748143,
+            0.609485
+          ]
+        ],
+        "rectified_roma_supported_symmetric_cycle_matrix": [
+          [
+            0.350114,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "rectified_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "rectified_roma_visibility_masked_cycle_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_rectified_dinov2_matrix": [
+      [
+        0.957734,
+        0.769732,
+        0.717309,
+        0.773823
+      ],
+      [
+        0.710974,
+        0.85359,
+        0.699728,
+        0.593878
+      ],
+      [
+        0.768287,
+        0.748143,
+        0.662383,
+        0.609485
+      ],
+      [
+        0.766916,
+        0.702598,
+        0.693558,
+        0.848779
+      ]
+    ],
+    "full_rectified_roma_matrix": [
+      [
+        0.350114,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.486286
+      ]
+    ],
+    "pair_diagnostics": {
+      "TF01->TF01": {
+        "a_to_b": {
+          "source_valid_count": 67972,
+          "eligible_count": 55484,
+          "mean_certainty_on_eligible": 0.1877281367778778,
+          "high_count": 42233,
+          "high_fraction_of_source_valid": 0.6213293709174366,
+          "cycle_count": 25909,
+          "cycle_fraction": 0.3811716589183782,
+          "cycle_purity": 0.613477612293704
+        },
+        "b_to_a": {
+          "source_valid_count": 81928,
+          "eligible_count": 65395,
+          "mean_certainty_on_eligible": 0.2224913239479065,
+          "high_count": 45619,
+          "high_fraction_of_source_valid": 0.5568181818181818,
+          "cycle_count": 26347,
+          "cycle_fraction": 0.321587247339127,
+          "cycle_purity": 0.5775444442008812
+        },
+        "symmetric_cycle_score": 0.35011418788053966,
+        "absolute_support": true
+      },
+      "TF01->TF02": {
+        "a_to_b": {
+          "source_valid_count": 67972,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 214921,
+          "eligible_count": 154409,
+          "mean_certainty_on_eligible": 0.04345564544200897,
+          "high_count": 49517,
+          "high_fraction_of_source_valid": 0.23039628514663527,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF03": {
+        "a_to_b": {
+          "source_valid_count": 67972,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 302271,
+          "eligible_count": 142426,
+          "mean_certainty_on_eligible": 0.0050115580670535564,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF04": {
+        "a_to_b": {
+          "source_valid_count": 67972,
+          "eligible_count": 51874,
+          "mean_certainty_on_eligible": 0.008719215169548988,
+          "high_count": 259,
+          "high_fraction_of_source_valid": 0.003810392514564821,
+          "cycle_count": 60,
+          "cycle_fraction": 0.000882716412640499,
+          "cycle_purity": 0.23166023166023167
+        },
+        "b_to_a": {
+          "source_valid_count": 210063,
+          "eligible_count": 186152,
+          "mean_certainty_on_eligible": 0.05742727965116501,
+          "high_count": 89258,
+          "high_fraction_of_source_valid": 0.4249106220514798,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF01": {
+        "a_to_b": {
+          "source_valid_count": 169983,
+          "eligible_count": 115701,
+          "mean_certainty_on_eligible": 0.10281037539243698,
+          "high_count": 72604,
+          "high_fraction_of_source_valid": 0.4271250654477212,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 81928,
+          "eligible_count": 3590,
+          "mean_certainty_on_eligible": 0.009350033476948738,
+          "high_count": 10,
+          "high_fraction_of_source_valid": 0.00012205839273508446,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF02": {
+        "a_to_b": {
+          "source_valid_count": 169983,
+          "eligible_count": 169661,
+          "mean_certainty_on_eligible": 0.2631467878818512,
+          "high_count": 145502,
+          "high_fraction_of_source_valid": 0.8559797156186207,
+          "cycle_count": 49939,
+          "cycle_fraction": 0.29378820234964675,
+          "cycle_purity": 0.3432186499154651
+        },
+        "b_to_a": {
+          "source_valid_count": 214921,
+          "eligible_count": 183809,
+          "mean_certainty_on_eligible": 0.30388519167900085,
+          "high_count": 150267,
+          "high_fraction_of_source_valid": 0.6991731845654915,
+          "cycle_count": 51139,
+          "cycle_fraction": 0.23794324426184504,
+          "cycle_purity": 0.3403208954727252
+        },
+        "symmetric_cycle_score": 0.26439538194327517,
+        "absolute_support": false
+      },
+      "TF02->TF03": {
+        "a_to_b": {
+          "source_valid_count": 169983,
+          "eligible_count": 168966,
+          "mean_certainty_on_eligible": 0.04619387537240982,
+          "high_count": 58674,
+          "high_fraction_of_source_valid": 0.3451756940399922,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 302271,
+          "eligible_count": 296132,
+          "mean_certainty_on_eligible": 0.02349856123328209,
+          "high_count": 39487,
+          "high_fraction_of_source_valid": 0.1306344306929874,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF04": {
+        "a_to_b": {
+          "source_valid_count": 169983,
+          "eligible_count": 69358,
+          "mean_certainty_on_eligible": 0.04195140674710274,
+          "high_count": 23967,
+          "high_fraction_of_source_valid": 0.14099645258643512,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 210063,
+          "eligible_count": 198474,
+          "mean_certainty_on_eligible": 0.013767706230282784,
+          "high_count": 8379,
+          "high_fraction_of_source_valid": 0.03988803358992302,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF01": {
+        "a_to_b": {
+          "source_valid_count": 24104,
+          "eligible_count": 23092,
+          "mean_certainty_on_eligible": 0.06789541989564896,
+          "high_count": 13235,
+          "high_fraction_of_source_valid": 0.5490789910388317,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 81928,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF02": {
+        "a_to_b": {
+          "source_valid_count": 24104,
+          "eligible_count": 24016,
+          "mean_certainty_on_eligible": 0.10678564757108688,
+          "high_count": 21009,
+          "high_fraction_of_source_valid": 0.8715980750082973,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 214921,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF03": {
+        "a_to_b": {
+          "source_valid_count": 24104,
+          "eligible_count": 24081,
+          "mean_certainty_on_eligible": 0.07887361198663712,
+          "high_count": 14100,
+          "high_fraction_of_source_valid": 0.5849651510122801,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 302271,
+          "eligible_count": 138997,
+          "mean_certainty_on_eligible": 0.040036093443632126,
+          "high_count": 31328,
+          "high_fraction_of_source_valid": 0.10364209599994707,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF04": {
+        "a_to_b": {
+          "source_valid_count": 24104,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 210063,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF01": {
+        "a_to_b": {
+          "source_valid_count": 110445,
+          "eligible_count": 107123,
+          "mean_certainty_on_eligible": 0.028484657406806946,
+          "high_count": 15710,
+          "high_fraction_of_source_valid": 0.14224274525782063,
+          "cycle_count": 401,
+          "cycle_fraction": 0.0036307664448367964,
+          "cycle_purity": 0.02552514322087842
+        },
+        "b_to_a": {
+          "source_valid_count": 81928,
+          "eligible_count": 36564,
+          "mean_certainty_on_eligible": 0.025605233386158943,
+          "high_count": 5509,
+          "high_fraction_of_source_valid": 0.06724196855775803,
+          "cycle_count": 627,
+          "cycle_fraction": 0.007653061224489796,
+          "cycle_purity": 0.1138137593029588
+        },
+        "symmetric_cycle_score": 0.005271288067840644,
+        "absolute_support": false
+      },
+      "TF04->TF02": {
+        "a_to_b": {
+          "source_valid_count": 110445,
+          "eligible_count": 45669,
+          "mean_certainty_on_eligible": 0.0072434996254742146,
+          "high_count": 280,
+          "high_fraction_of_source_valid": 0.0025351985150980126,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 214921,
+          "eligible_count": 150870,
+          "mean_certainty_on_eligible": 0.034007057547569275,
+          "high_count": 29109,
+          "high_fraction_of_source_valid": 0.1354404641705557,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF03": {
+        "a_to_b": {
+          "source_valid_count": 110445,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "source_valid_count": 302271,
+          "eligible_count": 0,
+          "mean_certainty_on_eligible": 0.0,
+          "high_count": 0,
+          "high_fraction_of_source_valid": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF04": {
+        "a_to_b": {
+          "source_valid_count": 110445,
+          "eligible_count": 87214,
+          "mean_certainty_on_eligible": 0.27694958448410034,
+          "high_count": 79442,
+          "high_fraction_of_source_valid": 0.7192901444157725,
+          "cycle_count": 74010,
+          "cycle_fraction": 0.6701072932228711,
+          "cycle_purity": 0.9316230709196647
+        },
+        "b_to_a": {
+          "source_valid_count": 210063,
+          "eligible_count": 87995,
+          "mean_certainty_on_eligible": 0.3125928044319153,
+          "high_count": 82161,
+          "high_fraction_of_source_valid": 0.391125519487011,
+          "cycle_count": 74129,
+          "cycle_fraction": 0.35288937128385295,
+          "cycle_purity": 0.9022407224839035
+        },
+        "symmetric_cycle_score": 0.48628565822790154,
+        "absolute_support": true
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "gain_over_predecessor_roma": {
+    "true_positive_delta": 0,
+    "false_positive_delta": 0,
+    "false_negative_reduction": 0,
+    "f1_delta": 0.0,
+    "exact_scenario_gain": 0,
+    "true_support_gain": 0
+  },
+  "rectification": {
+    "planes": {
+      "TF01": {
+        "scene_id": "043",
+        "target_instance_id": 747444,
+        "target_vertices": 75272,
+        "horizontal_axis_world": [
+          0.0477782157,
+          0.0048049049,
+          0.9988464121
+        ],
+        "vertical_axis_world": [
+          0.0111552655,
+          0.9999234996,
+          -0.0053436804
+        ],
+        "bounds_metres": [
+          -0.7971752073398839,
+          0.5600663635697936,
+          -1.366534695982019,
+          1.4240201656524125
+        ],
+        "singular_values": [
+          213.6063449690776,
+          85.25054190374222,
+          2.2739919287021024
+        ],
+        "planarity_residual_fraction": 9.775029781396918e-05
+      },
+      "TF02": {
+        "scene_id": "082",
+        "target_instance_id": 284,
+        "target_vertices": 31769,
+        "horizontal_axis_world": [
+          0.9861027882,
+          -0.0370350471,
+          0.1619558471
+        ],
+        "vertical_axis_world": [
+          0.0381446337,
+          0.999265207,
+          -0.0037460556
+        ],
+        "bounds_metres": [
+          -0.4201683085497441,
+          0.4451515232015304,
+          -1.1132631480899704,
+          1.1460369975638467
+        ],
+        "singular_values": [
+          110.96655550414471,
+          41.86630549043411,
+          0.4506667018727445
+        ],
+        "planarity_residual_fraction": 1.4438524700055875e-05
+      },
+      "TF03": {
+        "scene_id": "213",
+        "target_instance_id": 29778,
+        "target_vertices": 36163,
+        "horizontal_axis_world": [
+          -0.0300426843,
+          0.0076188146,
+          0.99951958
+        ],
+        "vertical_axis_world": [
+          -0.0023494003,
+          0.9999676497,
+          -0.0076928463
+        ],
+        "bounds_metres": [
+          -0.4470192359241966,
+          0.46617311931126454,
+          -1.0266552629620846,
+          1.0278980559675983
+        ],
+        "singular_values": [
+          112.0415905921163,
+          50.47560124972226,
+          1.7918501394460067
+        ],
+        "planarity_residual_fraction": 0.00021257017661317968
+      },
+      "TF04": {
+        "scene_id": "207",
+        "target_instance_id": 12860,
+        "target_vertices": 30275,
+        "horizontal_axis_world": [
+          0.0083092443,
+          -0.0027939767,
+          0.9999615743
+        ],
+        "vertical_axis_world": [
+          0.0076120797,
+          0.9999672991,
+          0.0027307396
+        ],
+        "bounds_metres": [
+          -0.43857836089305496,
+          0.6320445488621009,
+          -0.8529652793731357,
+          1.4779254837768891
+        ],
+        "singular_values": [
+          97.7148654349608,
+          48.4092658518316,
+          1.8814100126711426
+        ],
+        "planarity_residual_fraction": 0.0002975743257995334
+      }
+    },
+    "views": {
+      "TF01:reference": {
+        "scene_id": "043",
+        "frame": 4510,
+        "source_plane_corners_xy": [
+          [
+            116.521479,
+            871.00523
+          ],
+          [
+            -333.628082,
+            780.449832
+          ],
+          [
+            -210.802766,
+            -130.382839
+          ],
+          [
+            185.619568,
+            -128.983281
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.426505,
+          1.565774,
+          1.802259,
+          1.66299
+        ],
+        "homography_source_to_rectified": [
+          [
+            -0.9029597722,
+            -0.0623935126,
+            159.5592830382
+          ],
+          [
+            -0.003197476,
+            0.9056738346,
+            117.4102926232
+          ],
+          [
+            0.0001968462,
+            0.000181558,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 26859,
+        "valid_target_fraction": 0.09107462565104167,
+        "invalid_fill_bgr": [
+          80,
+          126,
+          94
+        ]
+      },
+      "TF01:query": {
+        "scene_id": "043",
+        "frame": 4530,
+        "source_plane_corners_xy": [
+          [
+            107.217051,
+            998.817892
+          ],
+          [
+            -273.715024,
+            812.498958
+          ],
+          [
+            -146.998203,
+            -41.427193
+          ],
+          [
+            192.012468,
+            -77.065031
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.316777,
+          1.671368,
+          1.966738,
+          1.612148
+        ],
+        "homography_source_to_rectified": [
+          [
+            -1.0236351299,
+            -0.0806775237,
+            190.3332899965
+          ],
+          [
+            0.1014197032,
+            0.9647711776,
+            54.876275236
+          ],
+          [
+            0.0006120791,
+            0.0002767891,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 32378,
+        "valid_target_fraction": 0.10978868272569445,
+        "invalid_fill_bgr": [
+          53,
+          106,
+          70
+        ]
+      },
+      "TF02:reference": {
+        "scene_id": "082",
+        "frame": 5790,
+        "source_plane_corners_xy": [
+          [
+            250.925768,
+            210.39734
+          ],
+          [
+            156.377691,
+            141.180599
+          ],
+          [
+            -40.835079,
+            -869.444545
+          ],
+          [
+            67.661904,
+            -1898.855132
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.839551,
+          2.456369,
+          1.09869,
+          0.481872
+        ],
+        "homography_source_to_rectified": [
+          [
+            -8.5653338299,
+            0.7442049758,
+            1992.684205757
+          ],
+          [
+            4.9999335568,
+            0.5269789457,
+            662.3516387399
+          ],
+          [
+            0.0102598397,
+            -0.0044230622,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 67171,
+        "valid_target_fraction": 0.22776624891493055,
+        "invalid_fill_bgr": [
+          206,
+          188,
+          171
+        ]
+      },
+      "TF02:query": {
+        "scene_id": "082",
+        "frame": 5815,
+        "source_plane_corners_xy": [
+          [
+            303.10447,
+            283.825372
+          ],
+          [
+            199.109159,
+            190.216708
+          ],
+          [
+            14.649261,
+            -898.129951
+          ],
+          [
+            167.649377,
+            -2666.092668
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.630404,
+          2.286298,
+          0.973333,
+          0.317439
+        ],
+        "homography_source_to_rectified": [
+          [
+            -15.103035339,
+            0.6935049471,
+            4380.9630919623
+          ],
+          [
+            10.8215685453,
+            0.9365023295,
+            682.5727974444
+          ],
+          [
+            0.0231214348,
+            -0.0087914917,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 84941,
+        "valid_target_fraction": 0.2880215115017361,
+        "invalid_fill_bgr": [
+          136,
+          124,
+          110
+        ]
+      },
+      "TF03:reference": {
+        "scene_id": "213",
+        "frame": 275,
+        "source_plane_corners_xy": [
+          [
+            876.323089,
+            561.420737
+          ],
+          [
+            607.362986,
+            383.465864
+          ],
+          [
+            710.863631,
+            -201.565661
+          ],
+          [
+            1256.203437,
+            -480.628068
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.419887,
+          2.26207,
+          1.702306,
+          0.860123
+        ],
+        "homography_source_to_rectified": [
+          [
+            3.3522618961,
+            1.2220720379,
+            -3623.760957295
+          ],
+          [
+            -2.1554199032,
+            -4.2120911071,
+            683.1967362235
+          ],
+          [
+            -0.0067412253,
+            0.0004496955,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 9572,
+        "valid_target_fraction": 0.03245713975694445,
+        "invalid_fill_bgr": [
+          115,
+          140,
+          142
+        ]
+      },
+      "TF03:query": {
+        "scene_id": "213",
+        "frame": 325,
+        "source_plane_corners_xy": [
+          [
+            701.678086,
+            357.186205
+          ],
+          [
+            491.807667,
+            281.292236
+          ],
+          [
+            510.89503,
+            -237.844057
+          ],
+          [
+            849.768958,
+            -414.973798
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          1.953637,
+          2.665757,
+          1.962151,
+          1.250032
+        ],
+        "homography_source_to_rectified": [
+          [
+            -8.1339592815,
+            -1.5599942928,
+            6264.6295608563
+          ],
+          [
+            3.7529368218,
+            7.1798933461,
+            -209.6617816877
+          ],
+          [
+            0.0093444706,
+            -0.0029486699,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 119479,
+        "valid_target_fraction": 0.4051344129774306,
+        "invalid_fill_bgr": [
+          134,
+          163,
+          166
+        ]
+      },
+      "TF04:reference": {
+        "scene_id": "207",
+        "frame": 7180,
+        "source_plane_corners_xy": [
+          [
+            138.741829,
+            669.881647
+          ],
+          [
+            -263.905646,
+            836.802469
+          ],
+          [
+            -181.005238,
+            -19.98579
+          ],
+          [
+            173.944013,
+            74.10287
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          2.088792,
+          1.438327,
+          1.5671,
+          2.217565
+        ],
+        "homography_source_to_rectified": [
+          [
+            -1.2502349636,
+            -0.0738714017,
+            222.9449725587
+          ],
+          [
+            -0.2966484018,
+            1.1191054316,
+            -31.3287068933
+          ],
+          [
+            -0.0009799626,
+            2.81523e-05,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 43657,
+        "valid_target_fraction": 0.1480339898003472,
+        "invalid_fill_bgr": [
+          39,
+          41,
+          42
+        ]
+      },
+      "TF04:query": {
+        "scene_id": "207",
+        "frame": 7215,
+        "source_plane_corners_xy": [
+          [
+            181.834033,
+            484.743755
+          ],
+          [
+            -165.718491,
+            587.587028
+          ],
+          [
+            -239.523476,
+            -265.955328
+          ],
+          [
+            178.12872,
+            -127.543838
+          ]
+        ],
+        "source_plane_corner_depths_m": [
+          2.219687,
+          1.635978,
+          1.36657,
+          1.95028
+        ],
+        "homography_source_to_rectified": [
+          [
+            -1.1440195682,
+            0.0069231254,
+            204.6657469188
+          ],
+          [
+            -0.3188502481,
+            0.9621203819,
+            179.508914165
+          ],
+          [
+            -0.0008365689,
+            -0.0001678694,
+            1.0
+          ]
+        ],
+        "rectified_size": [
+          384,
+          768
+        ],
+        "valid_target_pixels": 82996,
+        "valid_target_fraction": 0.2814263237847222,
+        "invalid_fill_bgr": [
+          45,
+          47,
+          48
+        ]
+      }
+    }
+  },
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged target-plane viewpoint normalization and visibility-aware cycle support only. It does not prove raw-phone target detection, phone-side geometry, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

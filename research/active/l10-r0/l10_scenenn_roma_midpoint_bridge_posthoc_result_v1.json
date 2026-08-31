@@ -1,0 +1,2439 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-midpoint-bridge-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_MIDPOINT_BRIDGE_ROMA_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_roma_midpoint_bridge_posthoc_protocol_v1.json",
+  "protocol_sha256": "cdcb736840c3b102ae40687e09b2ee67d40203dea12203ae5888c67b5151814f",
+  "implementation": {
+    "path": "l10_scenenn_roma_midpoint_bridge_posthoc.py",
+    "sha256": "aea5863b2a7c2c470f6221bf94a34c612eeef9ef3b3f6f126b3429d586851dd0"
+  },
+  "source": {
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "endpoint_rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "endpoint_rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b",
+    "bridge_rgb_receipt_path": "l10_scenenn_roma_midpoint_bridge_posthoc_rgb_receipt_v1.json",
+    "bridge_rgb_receipt_sha256": "8e58d58ca734b9f1ba6ec9406608d71e912331b63c859423dbb513e0068dbd24",
+    "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-temporal-local-fresh-v1"
+  },
+  "conclusion": "L10_SCENENN_ROMA_MIDPOINT_BRIDGE_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "aggregate": {
+      "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+        "true_positive": 27,
+        "false_positive": 3,
+        "false_negative": 7,
+        "precision": 0.9,
+        "recall": 0.794118,
+        "f1": 0.84375,
+        "zero_assignment_exact_scenarios": 7,
+        "scenarios": 15
+      },
+      "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+        "true_positive": 16,
+        "false_positive": 0,
+        "false_negative": 18,
+        "precision": 1.0,
+        "recall": 0.470588,
+        "f1": 0.64,
+        "zero_assignment_exact_scenarios": 2,
+        "scenarios": 15
+      }
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.613156,
+            0.879643,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.727921,
+            0.377461
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.667128,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.613156,
+            0.879643,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.727921,
+            0.377461
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.74586
+          ],
+          [
+            0.613156,
+            0.879643,
+            0.667127
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.727921
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.667128
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.666667,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 1.0,
+            "recall": 0.333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF02",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.613156,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.727921,
+            0.377461
+          ],
+          [
+            0.566003,
+            0.667128,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF03",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.613156,
+            0.879643,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.377461
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF04",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.613156,
+            0.879643,
+            0.667127
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.727921
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.667128
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01",
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.60466,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.509895,
+            0.727921,
+            0.377461
+          ],
+          [
+            0.565581,
+            0.667128,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.480992
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.377461
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.74586
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.727921
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.667128
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.60466,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.879643,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.565581,
+            0.667128,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 1,
+            "false_negative": 0,
+            "precision": 0.666667,
+            "recall": 1.0,
+            "f1": 0.8,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.613156,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.566003,
+            0.667128,
+            0.798549
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.589854
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.74586
+          ],
+          [
+            0.613156,
+            0.879643,
+            0.667127
+          ],
+          [
+            0.566003,
+            0.565581,
+            0.667128
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.60466,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.879643,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.509895,
+            0.727921,
+            0.377461
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 1,
+            "false_negative": 1,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "predicted_unmatched_references": [
+              "TF01",
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.74586,
+            0.480992
+          ],
+          [
+            0.613156,
+            0.667127,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.727921,
+            0.377461
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "midpoint_bridge_dinov2_matrix": [
+          [
+            0.878902,
+            0.60466,
+            0.480992
+          ],
+          [
+            0.613156,
+            0.879643,
+            0.483946
+          ],
+          [
+            0.582235,
+            0.509895,
+            0.377461
+          ]
+        ],
+        "midpoint_bridge_roma_matrix": [
+          [
+            0.749327,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "midpoint_bridge_dinov2_reciprocal_no_none_support": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          },
+          "midpoint_bridge_roma_both_edges_supported_reciprocal": {
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 1,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.666667,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02",
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02",
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": false
+          }
+        }
+      }
+    ],
+    "full_midpoint_bridge_dinov2_matrix": [
+      [
+        0.878902,
+        0.60466,
+        0.74586,
+        0.480992
+      ],
+      [
+        0.613156,
+        0.879643,
+        0.667127,
+        0.483946
+      ],
+      [
+        0.582235,
+        0.509895,
+        0.727921,
+        0.377461
+      ],
+      [
+        0.566003,
+        0.565581,
+        0.667128,
+        0.798549
+      ]
+    ],
+    "full_midpoint_bridge_roma_matrix": [
+      [
+        0.749327,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.589854
+      ]
+    ],
+    "entry_edge_diagnostics": {
+      "TF01->TF01:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.3343197703361511,
+          "high_count": 691782,
+          "high_fraction": 0.9267055684156379,
+          "cycle_count": 641471,
+          "cycle_fraction": 0.8593093599965707,
+          "cycle_purity": 0.9272733317721479
+        },
+        "b_to_a": {
+          "mean_certainty": 0.30770257115364075,
+          "high_count": 620799,
+          "high_fraction": 0.831617316100823,
+          "cycle_count": 581849,
+          "cycle_fraction": 0.7794402113340192,
+          "cycle_purity": 0.9372582752227372
+        },
+        "symmetric_cycle_score": 0.8184010442057291,
+        "absolute_support": true
+      },
+      "TF01->TF02:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.0326547808945179,
+          "high_count": 164343,
+          "high_fraction": 0.22015255272633744,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.04004855081439018,
+          "high_count": 162890,
+          "high_fraction": 0.21820612568587106,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF03:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.02314596064388752,
+          "high_count": 94886,
+          "high_fraction": 0.1271085176611797,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.03174231946468353,
+          "high_count": 167016,
+          "high_fraction": 0.22373328189300412,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF04:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.07300172746181488,
+          "high_count": 363774,
+          "high_fraction": 0.48730870627572015,
+          "cycle_count": 4872,
+          "cycle_fraction": 0.006526491769547325,
+          "cycle_purity": 0.013392930775701396
+        },
+        "b_to_a": {
+          "mean_certainty": 0.016299806535243988,
+          "high_count": 44460,
+          "high_fraction": 0.059558256172839504,
+          "cycle_count": 3089,
+          "cycle_fraction": 0.004137999399862826,
+          "cycle_purity": 0.06947818263607737
+        },
+        "symmetric_cycle_score": 0.0051967892997115545,
+        "absolute_support": false
+      },
+      "TF02->TF01:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.03637029230594635,
+          "high_count": 193988,
+          "high_fraction": 0.2598647548010974,
+          "cycle_count": 95,
+          "cycle_fraction": 0.00012726123113854595,
+          "cycle_purity": 0.0004897210136709487
+        },
+        "b_to_a": {
+          "mean_certainty": 0.04236606881022453,
+          "high_count": 227268,
+          "high_fraction": 0.3044463734567901,
+          "cycle_count": 129,
+          "cycle_fraction": 0.0001728073559670782,
+          "cycle_purity": 0.0005676118063255716
+        },
+        "symmetric_cycle_score": 0.00014829590982278414,
+        "absolute_support": false
+      },
+      "TF02->TF02:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.2117062509059906,
+          "high_count": 574594,
+          "high_fraction": 0.7697214720507545,
+          "cycle_count": 164785,
+          "cycle_fraction": 0.22074465234910837,
+          "cycle_purity": 0.2867851039168526
+        },
+        "b_to_a": {
+          "mean_certainty": 0.20304840803146362,
+          "high_count": 486594,
+          "high_fraction": 0.6518373842592593,
+          "cycle_count": 135299,
+          "cycle_fraction": 0.18124544538751713,
+          "cycle_purity": 0.27805316136245
+        },
+        "symmetric_cycle_score": 0.2000224058247645,
+        "absolute_support": false
+      },
+      "TF02->TF03:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.04787253588438034,
+          "high_count": 234734,
+          "high_fraction": 0.3144477666323731,
+          "cycle_count": 6911,
+          "cycle_fraction": 0.009257919667352538,
+          "cycle_purity": 0.02944183629129142
+        },
+        "b_to_a": {
+          "mean_certainty": 0.07003191858530045,
+          "high_count": 338135,
+          "high_fraction": 0.4529629093792867,
+          "cycle_count": 9674,
+          "cycle_fraction": 0.012959212105624143,
+          "cycle_purity": 0.028609874754166237
+        },
+        "symmetric_cycle_score": 0.010953325733586618,
+        "absolute_support": false
+      },
+      "TF02->TF04:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.014007633551955223,
+          "high_count": 51638,
+          "high_fraction": 0.0691738468792867,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.01959194242954254,
+          "high_count": 75918,
+          "high_fraction": 0.10169913837448559,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF01:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.1155705526471138,
+          "high_count": 495378,
+          "high_fraction": 0.6636043595679012,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.03174398094415665,
+          "high_count": 156150,
+          "high_fraction": 0.2091772762345679,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF02:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.07125034183263779,
+          "high_count": 347873,
+          "high_fraction": 0.466007855366941,
+          "cycle_count": 630,
+          "cycle_fraction": 0.0008439429012345679,
+          "cycle_purity": 0.0018110057406007364
+        },
+        "b_to_a": {
+          "mean_certainty": 0.06766528636217117,
+          "high_count": 284219,
+          "high_fraction": 0.38073747213648834,
+          "cycle_count": 530,
+          "cycle_fraction": 0.0007099837105624142,
+          "cycle_purity": 0.001864759217364075
+        },
+        "symmetric_cycle_score": 0.0007740708704771983,
+        "absolute_support": false
+      },
+      "TF03->TF03:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.11461526155471802,
+          "high_count": 455574,
+          "high_fraction": 0.6102832433127572,
+          "cycle_count": 1464,
+          "cycle_fraction": 0.0019611625514403294,
+          "cycle_purity": 0.003213528427873408
+        },
+        "b_to_a": {
+          "mean_certainty": 0.06401140242815018,
+          "high_count": 277422,
+          "high_fraction": 0.37163226594650206,
+          "cycle_count": 1647,
+          "cycle_fraction": 0.00220630787037037,
+          "cycle_purity": 0.005936803858381815
+        },
+        "symmetric_cycle_score": 0.002080127008698852,
+        "absolute_support": false
+      },
+      "TF03->TF04:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.06880372017621994,
+          "high_count": 395367,
+          "high_fraction": 0.5296304333847737,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.015302183106541634,
+          "high_count": 50574,
+          "high_fraction": 0.06774852109053497,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF01:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.01633441261947155,
+          "high_count": 45847,
+          "high_fraction": 0.06141627014746228,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.04050561413168907,
+          "high_count": 213482,
+          "high_fraction": 0.28597875943072704,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF02:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.016703959554433823,
+          "high_count": 58335,
+          "high_fraction": 0.07814509387860083,
+          "cycle_count": 542,
+          "cycle_fraction": 0.0007260588134430727,
+          "cycle_purity": 0.009291163109625439
+        },
+        "b_to_a": {
+          "mean_certainty": 0.019413799047470093,
+          "high_count": 76755,
+          "high_fraction": 0.10282037680041152,
+          "cycle_count": 573,
+          "cycle_fraction": 0.0007675861625514403,
+          "cycle_purity": 0.00746531170607778
+        },
+        "symmetric_cycle_score": 0.0007465337891866786,
+        "absolute_support": false
+      },
+      "TF04->TF03:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.021905958652496338,
+          "high_count": 80523,
+          "high_fraction": 0.10786795910493827,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty": 0.02606072649359703,
+          "high_count": 128380,
+          "high_fraction": 0.17197680898491083,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF04:midpoint": {
+        "a_to_b": {
+          "mean_certainty": 0.29985836148262024,
+          "high_count": 649767,
+          "high_fraction": 0.8704226144547325,
+          "cycle_count": 538902,
+          "cycle_fraction": 0.7219087577160493,
+          "cycle_purity": 0.8293772998628739
+        },
+        "b_to_a": {
+          "mean_certainty": 0.28388234972953796,
+          "high_count": 601183,
+          "high_fraction": 0.8053398812585734,
+          "cycle_count": 500421,
+          "cycle_fraction": 0.670359921553498,
+          "cycle_purity": 0.8323937968971179
+        },
+        "symmetric_cycle_score": 0.6956570262646055,
+        "absolute_support": true
+      }
+    },
+    "continuation_edge_diagnostics": {
+      "TF01:midpoint->query": {
+        "a_to_b": {
+          "mean_certainty": 0.24736924469470978,
+          "high_count": 544506,
+          "high_fraction": 0.7294158307613169,
+          "cycle_count": 466784,
+          "cycle_fraction": 0.6253000685871056,
+          "cycle_purity": 0.8572614443183363
+        },
+        "b_to_a": {
+          "mean_certainty": 0.3138657212257385,
+          "high_count": 650948,
+          "high_fraction": 0.8720046724965707,
+          "cycle_count": 561944,
+          "cycle_fraction": 0.752775634430727,
+          "cycle_purity": 0.8632701844079711
+        },
+        "symmetric_cycle_score": 0.6860835633071496,
+        "absolute_support": true
+      },
+      "TF02:midpoint->query": {
+        "a_to_b": {
+          "mean_certainty": 0.23349903523921967,
+          "high_count": 523186,
+          "high_fraction": 0.7008557313100137,
+          "cycle_count": 136609,
+          "cycle_fraction": 0.18300031078532236,
+          "cycle_purity": 0.2611098156296231
+        },
+        "b_to_a": {
+          "mean_certainty": 0.2889813780784607,
+          "high_count": 600613,
+          "high_fraction": 0.8045763138717421,
+          "cycle_count": 151040,
+          "cycle_fraction": 0.20233196159122085,
+          "cycle_purity": 0.25147640826955125
+        },
+        "symmetric_cycle_score": 0.19242352208864,
+        "absolute_support": false
+      },
+      "TF03:midpoint->query": {
+        "a_to_b": {
+          "mean_certainty": 0.18906308710575104,
+          "high_count": 684180,
+          "high_fraction": 0.9165219907407407,
+          "cycle_count": 313564,
+          "cycle_fraction": 0.4200477966392318,
+          "cycle_purity": 0.4583062936654097
+        },
+        "b_to_a": {
+          "mean_certainty": 0.13416340947151184,
+          "high_count": 396119,
+          "high_fraction": 0.5306378064986282,
+          "cycle_count": 184962,
+          "cycle_fraction": 0.24777359825102882,
+          "cycle_purity": 0.466935441117442
+        },
+        "symmetric_cycle_score": 0.32260929002544064,
+        "absolute_support": false
+      },
+      "TF04:midpoint->query": {
+        "a_to_b": {
+          "mean_certainty": 0.3053070604801178,
+          "high_count": 542679,
+          "high_fraction": 0.7269683963477366,
+          "cycle_count": 381779,
+          "cycle_fraction": 0.5114280585562414,
+          "cycle_purity": 0.703507966956525
+        },
+        "b_to_a": {
+          "mean_certainty": 0.22360952198505402,
+          "high_count": 518364,
+          "high_fraction": 0.6943962191358025,
+          "cycle_count": 365116,
+          "cycle_fraction": 0.48910643861454045,
+          "cycle_purity": 0.7043621856456082
+        },
+        "symmetric_cycle_score": 0.5001427359544391,
+        "absolute_support": true
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "gain_over_predecessor_roma": {
+    "true_positive_delta": 0,
+    "false_positive_delta": 0,
+    "false_negative_reduction": 0,
+    "f1_delta": 0.0,
+    "exact_scenario_gain": 0,
+    "true_support_gain": 0
+  },
+  "crop_receipts": {
+    "TF01:reference": {
+      "scene_id": "043",
+      "frame": 4510,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        144,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        162,
+        480
+      ],
+      "crop_size": [
+        162,
+        480
+      ],
+      "source_image_sha256": "e90c1d67ccee97055ac58a72046b7aa6feafa40b778e3345535c134d569ca58f"
+    },
+    "TF01:query": {
+      "scene_id": "043",
+      "frame": 4530,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        124,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        140,
+        480
+      ],
+      "crop_size": [
+        140,
+        480
+      ],
+      "source_image_sha256": "8f18de8dd58463afc52c299286035dd2375bd5aaffe2cb2214c0569275b87156"
+    },
+    "TF01:midpoint": {
+      "scene_id": "043",
+      "frame": 4520,
+      "visible_mask_sha256": "7a7028a38d31233bfc8c06544577474cc91a449ccb50f0af433ab845f4ad5f66",
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        155,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        175,
+        480
+      ],
+      "crop_size": [
+        175,
+        480
+      ],
+      "source_image_sha256": "61b9b2913563d1ffdbe036eef3a14f216262841d658f36bdc62cedca15beb1f5"
+    },
+    "TF02:reference": {
+      "scene_id": "082",
+      "frame": 5790,
+      "tight_bbox_xyxy": [
+        128,
+        0,
+        235,
+        198
+      ],
+      "expanded_bbox_xyxy": [
+        114,
+        0,
+        249,
+        223
+      ],
+      "crop_size": [
+        135,
+        223
+      ],
+      "source_image_sha256": "7a74a832e753caade5e713e5d2e3835c442aa99ef90376d72adb697478d40598"
+    },
+    "TF02:query": {
+      "scene_id": "082",
+      "frame": 5815,
+      "tight_bbox_xyxy": [
+        169,
+        0,
+        286,
+        268
+      ],
+      "expanded_bbox_xyxy": [
+        154,
+        0,
+        301,
+        302
+      ],
+      "crop_size": [
+        147,
+        302
+      ],
+      "source_image_sha256": "30e47fc941f9d7aaa1e68faa5b4be810722feede50b5dd21e83c3450dde99cb2"
+    },
+    "TF02:midpoint": {
+      "scene_id": "082",
+      "frame": 5800,
+      "visible_mask_sha256": "f8c2d213e6e3f4a1d09fcd32edb212690473a7f0f7e2c0bf89c75acc18f4768b",
+      "tight_bbox_xyxy": [
+        134,
+        0,
+        256,
+        235
+      ],
+      "expanded_bbox_xyxy": [
+        118,
+        0,
+        272,
+        265
+      ],
+      "crop_size": [
+        154,
+        265
+      ],
+      "source_image_sha256": "a00571adbc0fdbd723d2e7cf563cfcd008bd23635835cf8392205fce9264b3ac"
+    },
+    "TF03:reference": {
+      "scene_id": "213",
+      "frame": 275,
+      "tight_bbox_xyxy": [
+        605,
+        193,
+        640,
+        400
+      ],
+      "expanded_bbox_xyxy": [
+        600,
+        167,
+        640,
+        426
+      ],
+      "crop_size": [
+        40,
+        259
+      ],
+      "source_image_sha256": "5d6f2460b2ae5ff4678d0c8ee75b245e23476578ac13f9fc1f3a8e9ba92d8740"
+    },
+    "TF03:query": {
+      "scene_id": "213",
+      "frame": 325,
+      "tight_bbox_xyxy": [
+        490,
+        0,
+        640,
+        334
+      ],
+      "expanded_bbox_xyxy": [
+        471,
+        0,
+        640,
+        376
+      ],
+      "crop_size": [
+        169,
+        376
+      ],
+      "source_image_sha256": "5e6c331ef1dd1e1ed29e80ad7b0a2432d2f47569e097b1a51e9a453fc33742d0"
+    },
+    "TF03:midpoint": {
+      "scene_id": "213",
+      "frame": 300,
+      "visible_mask_sha256": "aa0941cb67ad76e33ee75d09d11e743d3ad0c00578369102b4bba258baf819f5",
+      "tight_bbox_xyxy": [
+        549,
+        0,
+        640,
+        325
+      ],
+      "expanded_bbox_xyxy": [
+        537,
+        0,
+        640,
+        366
+      ],
+      "crop_size": [
+        103,
+        366
+      ],
+      "source_image_sha256": "b902a31175a9e2490819c549631a6ccbedb2e2206ab419c603e0fbba6e2b8d67"
+    },
+    "TF04:reference": {
+      "scene_id": "207",
+      "frame": 7180,
+      "tight_bbox_xyxy": [
+        0,
+        98,
+        155,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        50,
+        175,
+        480
+      ],
+      "crop_size": [
+        175,
+        430
+      ],
+      "source_image_sha256": "1b49157b264a3d941aa3a722c3f7830d9c0af928299993a43d9449777796fb21"
+    },
+    "TF04:query": {
+      "scene_id": "207",
+      "frame": 7215,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        174,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        196,
+        480
+      ],
+      "crop_size": [
+        196,
+        480
+      ],
+      "source_image_sha256": "1aec25aa7ca0260ce43d04ec0f22f9006577805ee38c7f14035492d3850dbb7a"
+    },
+    "TF04:midpoint": {
+      "scene_id": "207",
+      "frame": 7195,
+      "visible_mask_sha256": "97b19dab7f32a6dc82998ab4a11d0f4e23a10e6e1802b6286763f144e615d19a",
+      "tight_bbox_xyxy": [
+        0,
+        21,
+        157,
+        480
+      ],
+      "expanded_bbox_xyxy": [
+        0,
+        0,
+        177,
+        480
+      ],
+      "crop_size": [
+        177,
+        480
+      ],
+      "source_image_sha256": "71ce791996363c7c6616f32cea0dfa9a30d0dbd933a228dbd1aff2c900a31b97"
+    }
+  },
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged truth-cropped three-frame temporal correspondence only. It does not prove raw-phone target detection, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

@@ -1,0 +1,171 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-fresh-rgb-receipt-v1",
+  "authority": "POST_FRESH_COHORT_FREEZE_TEMPORALLY_LOCAL_SPARSE_RGB_ONLY_RECEIPT",
+  "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+  "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+  "extractor_executable": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\tools\\bin\\ExtractSelectedSync.exe",
+  "extractor_sha256": "c867b8316dce9a3d000ff42abab2cca2891b1b4710f1697be60041c4987ac372",
+  "extractor_source_sha256": "33ffdc6b45ef939e925b55b6f6f0702435a2b1cfa172617402273a1ba72739e2",
+  "extraction_summaries": {
+    "043": {
+      "scanned": 4531,
+      "discarded_depth": 677,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    },
+    "082": {
+      "scanned": 5816,
+      "discarded_depth": 1064,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    },
+    "213": {
+      "scanned": 326,
+      "discarded_depth": 71,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    },
+    "207": {
+      "scanned": 7216,
+      "discarded_depth": 1469,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    }
+  },
+  "sealed_frames": {
+    "043:4510": {
+      "scene_id": "043",
+      "trajectory_frame": 4510,
+      "timestamp": {
+        "trajectory_frame": 4510,
+        "playback_index": 4511,
+        "color_timestamp": 180249048,
+        "depth_timestamp": 180247322,
+        "color_frame_id": 4511,
+        "depth_frame_id": 5379
+      },
+      "image_path": "payload/043/selected/image/frame.4510.png",
+      "image_sha256": "e90c1d67ccee97055ac58a72046b7aa6feafa40b778e3345535c134d569ca58f",
+      "depth_extraction_sha256": "3e71ebc6c9fd9c1ffa02ec595c8964fd471e7e3277b29e6c698011e366ae6623",
+      "depth_retained": false
+    },
+    "043:4530": {
+      "scene_id": "043",
+      "trajectory_frame": 4530,
+      "timestamp": {
+        "trajectory_frame": 4530,
+        "playback_index": 4531,
+        "color_timestamp": 180986400,
+        "depth_timestamp": 180986811,
+        "color_frame_id": 4531,
+        "depth_frame_id": 5401
+      },
+      "image_path": "payload/043/selected/image/frame.4530.png",
+      "image_sha256": "8f18de8dd58463afc52c299286035dd2375bd5aaffe2cb2214c0569275b87156",
+      "depth_extraction_sha256": "1c0ec79f626d7953305da0bc16d14aa4be9216c3b6ce8ac4ccdd3d34f35e2484",
+      "depth_retained": false
+    },
+    "082:5790": {
+      "scene_id": "082",
+      "trajectory_frame": 5790,
+      "timestamp": {
+        "trajectory_frame": 5790,
+        "playback_index": 5791,
+        "color_timestamp": 231059304,
+        "depth_timestamp": 231026494,
+        "color_frame_id": 5792,
+        "depth_frame_id": 6884
+      },
+      "image_path": "payload/082/selected/image/frame.5790.png",
+      "image_sha256": "7a74a832e753caade5e713e5d2e3835c442aa99ef90376d72adb697478d40598",
+      "depth_extraction_sha256": "6c11c1232627500a13f068bed8f46547eb13105ebfd7cb99b275db6f91c24587",
+      "depth_retained": false
+    },
+    "082:5815": {
+      "scene_id": "082",
+      "trajectory_frame": 5815,
+      "timestamp": {
+        "trajectory_frame": 5815,
+        "playback_index": 5816,
+        "color_timestamp": 232198848,
+        "depth_timestamp": 232196926,
+        "color_frame_id": 5817,
+        "depth_frame_id": 6919
+      },
+      "image_path": "payload/082/selected/image/frame.5815.png",
+      "image_sha256": "30e47fc941f9d7aaa1e68faa5b4be810722feede50b5dd21e83c3450dde99cb2",
+      "depth_extraction_sha256": "45fbe2fff19e56e0bf537b42c59779e0cf0a7bd38b606cc0b642e15214f1ef28",
+      "depth_retained": false
+    },
+    "213:275": {
+      "scene_id": "213",
+      "trajectory_frame": 275,
+      "timestamp": {
+        "trajectory_frame": 275,
+        "playback_index": 276,
+        "color_timestamp": 11395440,
+        "depth_timestamp": 11396123,
+        "color_frame_id": 276,
+        "depth_frame_id": 341
+      },
+      "image_path": "payload/213/selected/image/frame.0275.png",
+      "image_sha256": "5d6f2460b2ae5ff4678d0c8ee75b245e23476578ac13f9fc1f3a8e9ba92d8740",
+      "depth_extraction_sha256": "4a382ff28922f3367d45768cc2de1159e370021a084ca1f3c6126b0041d3569b",
+      "depth_retained": false
+    },
+    "213:325": {
+      "scene_id": "213",
+      "trajectory_frame": 325,
+      "timestamp": {
+        "trajectory_frame": 325,
+        "playback_index": 326,
+        "color_timestamp": 13540464,
+        "depth_timestamp": 13540359,
+        "color_frame_id": 326,
+        "depth_frame_id": 405
+      },
+      "image_path": "payload/213/selected/image/frame.0325.png",
+      "image_sha256": "5e6c331ef1dd1e1ed29e80ad7b0a2432d2f47569e097b1a51e9a453fc33742d0",
+      "depth_extraction_sha256": "b3e68510de61ad35855bd45b1d059ad805462edd1910bfa700c7deb82aacb2b8",
+      "depth_retained": false
+    },
+    "207:7180": {
+      "scene_id": "207",
+      "trajectory_frame": 7180,
+      "timestamp": {
+        "trajectory_frame": 7180,
+        "playback_index": 7181,
+        "color_timestamp": 291790296,
+        "depth_timestamp": 291789961,
+        "color_frame_id": 7181,
+        "depth_frame_id": 8692
+      },
+      "image_path": "payload/207/selected/image/frame.7180.png",
+      "image_sha256": "1b49157b264a3d941aa3a722c3f7830d9c0af928299993a43d9449777796fb21",
+      "depth_extraction_sha256": "d8c3e3df94490b5b83040602fddb13f8efebac99a6d1b5fd39fcf2102a8211fe",
+      "depth_retained": false
+    },
+    "207:7215": {
+      "scene_id": "207",
+      "trajectory_frame": 7215,
+      "timestamp": {
+        "trajectory_frame": 7215,
+        "playback_index": 7216,
+        "color_timestamp": 293130936,
+        "depth_timestamp": 293128890,
+        "color_frame_id": 7216,
+        "depth_frame_id": 8732
+      },
+      "image_path": "payload/207/selected/image/frame.7215.png",
+      "image_sha256": "1aec25aa7ca0260ce43d04ec0f22f9006577805ee38c7f14035492d3850dbb7a",
+      "depth_extraction_sha256": "c87bbe86e317dc9db08f7b4caae949836b715a79d3fd90dc2efec4d13cd9c9ff",
+      "depth_retained": false
+    }
+  },
+  "rgb_frames_retained": 8,
+  "depth_frames_retained": 0
+}

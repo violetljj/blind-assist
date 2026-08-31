@@ -1,0 +1,155 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-midpoint-bridge-posthoc-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-midpoint-bridge-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T02:01:22+08:00",
+  "question": "On the consumed fresh SceneNN cohort, can one preselected temporal midpoint turn the direct RoMa edge into a two-edge correspondence bridge and recover true-pair support without relaxing any matcher or NONE threshold?",
+  "implementation": {
+    "path": "l10_scenenn_roma_midpoint_bridge_posthoc.py",
+    "sha256": "aea5863b2a7c2c470f6221bf94a34c612eeef9ef3b3f6f126b3429d586851dd0"
+  },
+  "mechanical_amendment": {
+    "amended_at": "2026-09-01T02:07:00+08:00",
+    "reason": "The first replay attempt stopped before model construction because two crop-helper calls referenced the immediate module instead of its frozen predecessor; only those two namespace paths and this implementation hash changed.",
+    "model_scores_opened_before_amendment": 0,
+    "design_fields_changed": 0
+  },
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_temporal_local_fresh_result_v1.json",
+    "result_sha256": "d2d049d55ab40d8b660dc212e9bc12092086cb0c5872b736b2070f4750852b8f",
+    "required_conclusion": "L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET",
+    "observed_metrics": {
+      "true_positive": 16,
+      "false_positive": 0,
+      "false_negative": 18,
+      "f1": 0.64,
+      "exact_scenarios": 2,
+      "true_pairs_supported": 2
+    },
+    "failure_signature": "Direct endpoint RoMa support transferred on TF01 and TF04 but failed the low-purity TF02 and edge-clipped TF03 true pairs.",
+    "single_change": "Insert exactly one preselected midpoint frame and require unchanged absolute RoMa support on reference-to-midpoint and midpoint-to-query; keep crops, matcher weights, resolutions, support thresholds, reciprocal assignment, scenarios, targets and gate otherwise unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_SAME_FRESH_COHORT_NO_NEW_AUTHORITY",
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "endpoint_rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "endpoint_rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b"
+  },
+  "literature_basis": [
+    {
+      "title": "Predictive Cycle Consistency Learning for Human Motion Tracking",
+      "venue": "CVPR 2025",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Wu_Predictive_Cycle_Consistency_Learning_for_Human_Motion_Tracking_CVPR_2025_paper.html",
+      "used_for": "Treating temporal cycles as a stronger consistency signal than one direct long edge."
+    },
+    {
+      "title": "LocoTrack: Exploring Longer Contexts for Better Motion Tracking",
+      "venue": "ECCV 2024",
+      "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/6941_ECCV_2024_paper.php",
+      "used_for": "Testing whether an explicit intermediate observation bridges difficult appearance and viewpoint change."
+    }
+  ],
+  "midpoint_selector": {
+    "authority": "PRE_MIDPOINT_RGB_GEOMETRY_ONLY_SELECTION",
+    "rule": "Arithmetic midpoint of the frozen reference and query trajectory frames, rounded down to the nearest frozen trajectory stride of five; require a present pose and a non-empty provider target-mesh visibility mask before any midpoint RGB is opened.",
+    "tie_rule": "For half-stride midpoints choose the earlier stride-aligned frame.",
+    "forbidden_inputs": [
+      "midpoint RGB or depth appearance",
+      "DINOv2 or RoMa score",
+      "scenario outcome"
+    ],
+    "selected": [
+      {
+        "episode_id": "TF01",
+        "scene_id": "043",
+        "reference_frame": 4510,
+        "query_frame": 4530,
+        "arithmetic_midpoint": 4520.0,
+        "midpoint_frame": 4520,
+        "visible_target_pixels": 42446,
+        "tight_bbox_xyxy": [0, 0, 155, 480]
+      },
+      {
+        "episode_id": "TF02",
+        "scene_id": "082",
+        "reference_frame": 5790,
+        "query_frame": 5815,
+        "arithmetic_midpoint": 5802.5,
+        "midpoint_frame": 5800,
+        "visible_target_pixels": 16971,
+        "tight_bbox_xyxy": [134, 0, 256, 235]
+      },
+      {
+        "episode_id": "TF03",
+        "scene_id": "213",
+        "reference_frame": 275,
+        "query_frame": 325,
+        "arithmetic_midpoint": 300.0,
+        "midpoint_frame": 300,
+        "visible_target_pixels": 23838,
+        "tight_bbox_xyxy": [549, 0, 640, 325]
+      },
+      {
+        "episode_id": "TF04",
+        "scene_id": "207",
+        "reference_frame": 7180,
+        "query_frame": 7215,
+        "arithmetic_midpoint": 7197.5,
+        "midpoint_frame": 7195,
+        "visible_target_pixels": 39776,
+        "tight_bbox_xyxy": [0, 21, 157, 480]
+      }
+    ]
+  },
+  "renderer": {
+    "numeric_type": "float32",
+    "image_width": 640,
+    "image_height": 480,
+    "near_plane_metres": 0.02,
+    "near_plane_face_rule": "reject unless every vertex is beyond near plane",
+    "triangle_sidedness": "double-sided",
+    "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+    "visibility_tolerance_metres": 0.005
+  },
+  "crop": {
+    "source": "Provider target-mesh truth-visible tight box independently at reference, midpoint and query.",
+    "expansion": 1.25
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent cycle fraction and majority cycle purity on each of both bridge edges.",
+    "rank_score": "Geometric mean of unchanged reference-to-midpoint and midpoint-to-query symmetric cycle scores.",
+    "zero_assignment": "Unchanged strict reciprocal maximum among pairs supported on both bridge edges."
+  },
+  "baseline": {
+    "model": "Unchanged local DINOv2-S; bridge score is the geometric mean of reference-to-midpoint and midpoint-to-query cosine similarity.",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+  },
+  "decision_gate": {
+    "predecessor_true_positive": 16,
+    "predecessor_f1": 0.64,
+    "maximum_false_positive": 0,
+    "minimum_true_pairs_with_absolute_support": 3,
+    "minimum_exact_scenarios": 2
+  },
+  "forbidden_after_freeze": [
+    "change midpoint frames, crop expansion, matcher, threshold, assignment, scenarios or gate",
+    "inspect or replace a midpoint after seeing RGB, DINOv2, RoMa or scenario results",
+    "claim freshness or confirmation authority from this consumed posthoc replay",
+    "drop TF02, TF03, any different-target pair, or any failed scenario"
+  ],
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged truth-cropped three-frame temporal correspondence only. It does not prove raw-phone target detection, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

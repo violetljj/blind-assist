@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-fresh-oni-receipt-v1",
+  "authority": "POST_FRESH_COHORT_FREEZE_OFFICIAL_ONI_SOURCE_RECEIPT",
+  "materialized_at": "2026-09-01T01:27:00+08:00",
+  "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+  "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+  "source_root": "artifacts.local/sources/l10-scenenn-roma-temporal-local-fresh-v1",
+  "downloader": {
+    "path": "artifacts.local/sources/l10-scenenn-efficientloftr-fresh-none-v1/tools/resume_prefix_ranges.py",
+    "sha256": "1d3e7414ecc6ac5db6dff28fb74a192443b9d669135de489dd80db9c0ce26823",
+    "transport": "ordered exact HTTP byte ranges with fsync after every accepted batch"
+  },
+  "files": {
+    "043": {"relative_path": "payload/043/043.oni", "bytes": 1143737634, "sha256": "b368da002e1608cbf26058da85ba15aba2ce3c276b3caef95dbe8dbfc18fd988"},
+    "082": {"relative_path": "payload/082/082.oni", "bytes": 1334803126, "sha256": "83171e7c425621d066f56f720fa2868965394ec6a1a9684c9b4837cc5e81cfb9"},
+    "213": {"relative_path": "payload/213/213.oni", "bytes": 1467193699, "sha256": "fdf6c0606cdf167eea3c3ecd6b77fb012e8026296866414e72cf8ab97af50b1e"},
+    "207": {"relative_path": "payload/207/207.oni", "bytes": 1484883445, "sha256": "426f6c7831ea7c7b0a320e3898ed95f9369d143bbebef503f10f80e168deec98"}
+  },
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "model_calls": 0
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-active-none-oni-receipt-v1",
+  "authority": "POST_COHORT_FREEZE_PRE_RGBD_LOCAL_ONI_MATERIALIZATION_RECEIPT",
+  "cohort_path": "l10_scenenn_roma_active_none_cohort_v1.json",
+  "cohort_sha256": "caa1803dff654f09801b6b230e9012841aa0fc7065bfd399549650a38b5401bd",
+  "files": {
+    "payload/700/700.oni": {"bytes": 709742770, "sha256": "e21970fbccca007e27fefdc876cd4d686746678a6a0e204ed2b983894056ae1a"},
+    "payload/276/276.oni": {"bytes": 771364524, "sha256": "7b169a2ccccccda7d056dac20eecb8b7103665a25d8e6d25cfc550cf08c272d5"},
+    "payload/234/234.oni": {"bytes": 806623531, "sha256": "87beb28087f81163fe1191209cc37cef578c67eaa529015ba8f04dc2bc46eeb5"},
+    "payload/237/237.oni": {"bytes": 918010779, "sha256": "393ce6b00ea059ac2b4285274fd275987ff5d8ed2a2401eee4a84366dc695d6a"}
+  },
+  "total_bytes": 3200741604,
+  "rgb_members_opened_before_materialization": 0,
+  "depth_members_opened_before_materialization": 0,
+  "model_calls_before_materialization": 0,
+  "claim_boundary": "This receipt identifies local raw provider containers after the cohort was frozen. It does not establish synchronized extraction, frame validity, matcher performance, portal authority, access, arrival, handoff, deployment, or safety."
+}

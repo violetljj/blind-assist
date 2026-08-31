@@ -1,0 +1,19 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-posthoc-source-admission-v1",
+  "authority": "CONSUMED_POSTHOC_SAME_SOURCE_ADMISSION_NO_FRESH_AUTHORITY",
+  "frozen_at": "2026-09-01T00:15:00+08:00",
+  "protocol_path": "l10_scenenn_roma_temporal_local_posthoc_protocol_v1.json",
+  "protocol_sha256": "de814db8b09ca487f2717a0b521328fd97c24a6eb61fbe4efdfb463432a77ff5",
+  "selection_rule": "Reuse exactly the four consumed scenes and targets; select new frame pairs only by the frozen temporally local geometry rule before opening their RGB.",
+  "selected": [
+    {"episode_id": "TL01", "scene_id": "700", "target_instance_id": 292231, "target_label": "door"},
+    {"episode_id": "TL02", "scene_id": "276", "target_instance_id": 237753, "target_label": "door"},
+    {"episode_id": "TL03", "scene_id": "234", "target_instance_id": 716505, "target_label": "door"},
+    {"episode_id": "TL04", "scene_id": "237", "target_instance_id": 1305878, "target_label": "door"}
+  ],
+  "fresh_authority": false,
+  "new_posthoc_rgb_members_opened": 0,
+  "new_posthoc_depth_members_opened": 0,
+  "posthoc_model_calls": 0,
+  "claim_boundary": "This admission preserves a consumed-cohort mechanism test only; it cannot produce fresh confirmation authority."
+}

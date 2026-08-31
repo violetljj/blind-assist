@@ -1,0 +1,53 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-midpoint-bridge-posthoc-source-admission-v1",
+  "admitted_at": "2026-09-01T02:03:00+08:00",
+  "protocol_path": "l10_scenenn_roma_midpoint_bridge_posthoc_protocol_v1.json",
+  "protocol_sha256": "cdcb736840c3b102ae40687e09b2ee67d40203dea12203ae5888c67b5151814f",
+  "authority": "CONSUMED_POSTHOC_PRE_MIDPOINT_RGB_GEOMETRY_ONLY_ADMISSION",
+  "mechanical_amendment": "Protocol hash updated only for the recorded pre-model crop-helper namespace repair; selected midpoint rows and every design field remain byte-for-byte equal to the pre-RGB selection.",
+  "midpoint_rgb_frames_opened_before_admission": 0,
+  "midpoint_depth_frames_opened_before_admission": 0,
+  "selected": [
+    {
+      "episode_id": "TF01",
+      "scene_id": "043",
+      "reference_frame": 4510,
+      "query_frame": 4530,
+      "arithmetic_midpoint": 4520.0,
+      "midpoint_frame": 4520,
+      "visible_target_pixels": 42446,
+      "tight_bbox_xyxy": [0, 0, 155, 480]
+    },
+    {
+      "episode_id": "TF02",
+      "scene_id": "082",
+      "reference_frame": 5790,
+      "query_frame": 5815,
+      "arithmetic_midpoint": 5802.5,
+      "midpoint_frame": 5800,
+      "visible_target_pixels": 16971,
+      "tight_bbox_xyxy": [134, 0, 256, 235]
+    },
+    {
+      "episode_id": "TF03",
+      "scene_id": "213",
+      "reference_frame": 275,
+      "query_frame": 325,
+      "arithmetic_midpoint": 300.0,
+      "midpoint_frame": 300,
+      "visible_target_pixels": 23838,
+      "tight_bbox_xyxy": [549, 0, 640, 325]
+    },
+    {
+      "episode_id": "TF04",
+      "scene_id": "207",
+      "reference_frame": 7180,
+      "query_frame": 7215,
+      "arithmetic_midpoint": 7197.5,
+      "midpoint_frame": 7195,
+      "visible_target_pixels": 39776,
+      "tight_bbox_xyxy": [0, 21, 157, 480]
+    }
+  ],
+  "claim_boundary": "Admission fixes four consumed-cohort midpoint frames before midpoint RGB/depth access. It grants no new-source, confirmation, portal, access, arrival, handoff, deployment, benefit, or safety authority."
+}

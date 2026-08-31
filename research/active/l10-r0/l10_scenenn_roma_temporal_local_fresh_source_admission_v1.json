@@ -1,0 +1,20 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-fresh-source-admission-v1",
+  "authority": "FRESH_SOURCE_DISJOINT_PRE_GEOMETRY_PRE_RGBD_ADMISSION",
+  "frozen_at": "2026-09-01T00:39:00+08:00",
+  "protocol_path": "l10_scenenn_roma_temporal_local_fresh_protocol_v1.json",
+  "protocol_sha256": "c740bcae2cd7baeb8eeee2aeb79bde6f680cc25f62e8a1be641fd5b387a49449",
+  "selection_rule": "Among unconsumed SceneNN scenes having exactly one inventory label matching ^door[0-9]*$, take the four smallest official ONI content lengths, tie-breaking by numeric scene id.",
+  "selected": [
+    {"episode_id": "TF01", "scene_id": "043", "target_instance_id": 747444, "target_label": "door"},
+    {"episode_id": "TF02", "scene_id": "082", "target_instance_id": 284, "target_label": "door"},
+    {"episode_id": "TF03", "scene_id": "213", "target_instance_id": 29778, "target_label": "door"},
+    {"episode_id": "TF04", "scene_id": "207", "target_instance_id": 12860, "target_label": "door"}
+  ],
+  "fresh_authority": true,
+  "selected_geometry_members_opened": 0,
+  "selected_rgb_members_opened": 0,
+  "selected_depth_members_opened": 0,
+  "model_calls": 0,
+  "claim_boundary": "This admission preserves a source-disjoint Development confirmation opportunity for the frozen temporal-local action policy and RoMa cycle-support mechanism only."
+}

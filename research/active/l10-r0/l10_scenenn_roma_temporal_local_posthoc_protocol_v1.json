@@ -1,0 +1,96 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-posthoc-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-temporal-local-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T00:14:00+08:00",
+  "question": "On the consumed RoMa cohort, does temporally local active-frame selection repair true-pair recall without changing the dense matcher or absolute-support rule?",
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_active_none_result_v1.json",
+    "result_sha256": "49acb6e611f8b305bc00003ebca179894fe8ed2195a6973b13acce1e43888e3a",
+    "required_conclusion": "L10_SCENENN_ROMA_ACTIVE_NONE_DEVELOPMENT_GATE_NOT_MET",
+    "observed_metrics": {"true_positive": 9, "false_positive": 0, "false_negative": 25, "precision": 1.0, "f1": 0.418605, "true_pairs_supported": 1},
+    "failure_signature": "Minimum-baseline-first selection could choose temporally distant revisits, including a 525-frame gap, despite a 0.30 m camera-centre separation.",
+    "single_change": "Rank qualifying frame pairs by minimum frame gap before baseline and visibility; keep all model, crop, certainty, cycle, support, assignment, scenario and gate values unchanged."
+  },
+  "source_selector": {
+    "authority": "CONSUMED_POSTHOC_SAME_SCENES_AND_TARGETS",
+    "expected_selected_scenes": ["700", "276", "234", "237"],
+    "expected_target_instance_ids": [292231, 237753, 716505, 1305878]
+  },
+  "provider": {
+    "name": "SceneNN",
+    "project_url": "https://scenenn.net/",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion PRO consumer RGB-D camera",
+    "license_boundary": "Educational and research use; raw SceneNN payloads remain local and are not redistributed.",
+    "scenes": {
+      "700": {
+        "target_instance_id": 292231,
+        "ply": {"content_length": 103673184},
+        "xml": {"content_length": 41442, "inventory_sha256": "6a4e205eea1bb4927e278c91af23320e70ef5d0ed35e1a94d55d989b6563a5ac"},
+        "trajectory": {"content_length": 826263},
+        "oni": {"content_length": 709742770, "sha256": "e21970fbccca007e27fefdc876cd4d686746678a6a0e204ed2b983894056ae1a"}
+      },
+      "276": {
+        "target_instance_id": 237753,
+        "ply": {"content_length": 102314882},
+        "xml": {"content_length": 52952, "inventory_sha256": "5c048eda1b4f746278b1b0ea5ed2b0ae5bc1b0174bca8297b2a5d0a015f022b5"},
+        "trajectory": {"content_length": 884887},
+        "oni": {"content_length": 771364524, "sha256": "7b169a2ccccccda7d056dac20eecb8b7103665a25d8e6d25cfc550cf08c272d5"}
+      },
+      "234": {
+        "target_instance_id": 716505,
+        "ply": {"content_length": 69555948},
+        "xml": {"content_length": 17098, "inventory_sha256": "b9092b0c6379aa9cd031ef4d87fb80b3f22f21ce85804a215d1713f1aeba4ec0"},
+        "trajectory": {"content_length": 853519},
+        "oni": {"content_length": 806623531, "sha256": "87beb28087f81163fe1191209cc37cef578c67eaa529015ba8f04dc2bc46eeb5"}
+      },
+      "237": {
+        "target_instance_id": 1305878,
+        "ply": {"content_length": 86443077},
+        "xml": {"content_length": 38908, "inventory_sha256": "2261f4448bd5642cbe90a1df71afd555e0b77f4cc973c931e13bd29529ec3234"},
+        "trajectory": {"content_length": 890679},
+        "oni": {"content_length": 918010779, "sha256": "393ce6b00ea059ac2b4285274fd275987ff5d8ed2a2401eee4a84366dc695d6a"}
+      }
+    },
+    "intrinsic": {"content_length": 253, "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"}
+  },
+  "pre_rgb_selector": {
+    "trajectory_stride": 5,
+    "minimum_pair_frame_gap": 20,
+    "minimum_pair_baseline_metres": 0.3,
+    "pair_ranking": "minimum qualifying frame gap, then minimum qualifying camera-centre baseline, maximum minimum visible target pixels, maximum minimum visibility ratio, earlier frames",
+    "eligible_frame": {"minimum_visible_target_pixels": 512, "minimum_bbox_width_pixels": 24, "minimum_bbox_height_pixels": 48, "minimum_visible_to_target_raster_ratio": 0.4, "maximum_visible_target_image_fraction": 0.8, "maximum_camera_to_target_centroid_metres": 2.5},
+    "renderer": {"numeric_type": "float32", "image_width": 640, "image_height": 480, "near_plane_metres": 0.02, "near_plane_face_rule": "reject unless every vertex is beyond near plane", "triangle_sidedness": "double-sided", "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m", "visibility_tolerance_metres": 0.005},
+    "failure_semantics": "If any consumed target lacks a qualifying temporally local pair, stop NOT_EVALUABLE without changing the rules."
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "wheel_path": "artifacts.local/sources/roma-pypi-v1/romatch-0.1.2-py3-none-any.whl",
+    "wheel_sha256": "4a9f1e21e9876aee471acddd0ae7092584d928a9f109b03a5344f859f5d67798",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "crop_expansion": 1.25,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "unchanged bilateral one-percent cycle fraction and majority cycle purity",
+    "rank_score": "unchanged geometric mean of directional cycle-consistent fractions",
+    "zero_assignment": "unchanged strict reciprocal maximum among supported pairs"
+  },
+  "baseline": {
+    "model": "unchanged local DINOv2-S",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+  },
+  "scenarios": {"closed": 1, "unequal_size": 2, "ordered_balanced_swaps": 12, "total": 15},
+  "decision_gate": {"true_positive": 34, "false_positive": 0, "false_negative": 0, "f1": 1.0, "exact_zero_assignment_scenarios": 15, "all_four_true_pairs_have_absolute_support": true, "incremental_f1_over_dinov2": "strictly positive"},
+  "forbidden_after_rgb_access": ["change frame ranking, scenes, targets, crop, model, resolution, certainty threshold, cycle tolerance, support fractions, assignment, scenarios or gate", "claim freshness or confirmation authority from this consumed posthoc replay"],
+  "claim_boundary": "This is consumed posthoc Development evidence about active-frame temporal locality only. It cannot regain fresh authority and does not prove raw-phone detection, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

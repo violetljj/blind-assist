@@ -1,0 +1,1606 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_FULL_CONTEXT_MASK_GATED_ROMA_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_roma_full_context_mask_posthoc_protocol_v1.json",
+  "protocol_sha256": "f7f177f838d5dd2667a75fe58a07b327caffdc96ce1f2700758f84686b4723f7",
+  "implementation": {
+    "path": "l10_scenenn_roma_full_context_mask_posthoc.py",
+    "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"
+  },
+  "source": {
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b",
+    "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-temporal-local-fresh-v1"
+  },
+  "conclusion": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "aggregate": {
+      "true_positive": 34,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "zero_assignment_exact_scenarios": 15,
+      "scenarios": 15
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.514868,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.23001,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.514868,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.23001,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.514868,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.23001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF02",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.23001,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF03",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.514868,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF01-TF04",
+        "reference_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.514868,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.23001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF01"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.23001,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF02-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.23001
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF02"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.514868,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.408263
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF04",
+                "query": "TF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF03-TF04",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.514868,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF04"
+            ],
+            "predicted_unmatched_queries": [
+              "TF03"
+            ],
+            "truth_unmatched_references": [
+              "TF04"
+            ],
+            "truth_unmatched_queries": [
+              "TF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF01",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF02",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.514868,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.23001,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF01"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF01"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF02",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF03",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.23001,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF03",
+                "query": "TF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF02"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF02"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-TF04-TF03",
+        "reference_targets": [
+          "TF01",
+          "TF02",
+          "TF03"
+        ],
+        "query_targets": [
+          "TF01",
+          "TF02",
+          "TF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.470183,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.514868,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "TF01",
+                "query": "TF01"
+              },
+              {
+                "reference": "TF02",
+                "query": "TF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "TF03"
+            ],
+            "predicted_unmatched_queries": [
+              "TF04"
+            ],
+            "truth_unmatched_references": [
+              "TF03"
+            ],
+            "truth_unmatched_queries": [
+              "TF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      }
+    ],
+    "full_matrix": [
+      [
+        0.470183,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.514868,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.23001,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.408263
+      ]
+    ],
+    "pair_diagnostics": {
+      "TF01->TF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.18761809170246124,
+          "source_mask_count": 92617,
+          "high_count": 53394,
+          "high_fraction": 0.5765032337475842,
+          "target_mask_hit_count": 50796,
+          "target_mask_hit_fraction": 0.5484522279927011,
+          "cycle_count": 46085,
+          "cycle_fraction": 0.49758683611000143,
+          "cycle_purity": 0.8631119601453346
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.1666470170021057,
+          "source_mask_count": 94344,
+          "high_count": 46612,
+          "high_fraction": 0.4940642754176206,
+          "target_mask_hit_count": 45706,
+          "target_mask_hit_fraction": 0.4844611210039854,
+          "cycle_count": 41916,
+          "cycle_fraction": 0.4442889849910964,
+          "cycle_purity": 0.8992534111387626
+        },
+        "symmetric_cycle_score": 0.47018331569744537,
+        "absolute_support": true
+      },
+      "TF01->TF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.049862056970596313,
+          "source_mask_count": 92617,
+          "high_count": 19381,
+          "high_fraction": 0.20925963915911766,
+          "target_mask_hit_count": 5056,
+          "target_mask_hit_fraction": 0.054590409967932456,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.018322721123695374,
+          "source_mask_count": 51163,
+          "high_count": 4964,
+          "high_fraction": 0.09702323945038406,
+          "target_mask_hit_count": 4964,
+          "target_mask_hit_fraction": 0.09702323945038406,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.00516374921426177,
+          "source_mask_count": 92617,
+          "high_count": 903,
+          "high_fraction": 0.009749829944826543,
+          "target_mask_hit_count": 390,
+          "target_mask_hit_fraction": 0.004210890009393524,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0007169300806708634,
+          "source_mask_count": 106374,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF01->TF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.012912824749946594,
+          "source_mask_count": 92617,
+          "high_count": 8266,
+          "high_fraction": 0.08924927389140222,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.033564068377017975,
+          "source_mask_count": 137771,
+          "high_count": 31335,
+          "high_fraction": 0.22744264032343525,
+          "target_mask_hit_count": 29448,
+          "target_mask_hit_fraction": 0.213745998795102,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.002244721632450819,
+          "source_mask_count": 31894,
+          "high_count": 104,
+          "high_fraction": 0.003260801404652913,
+          "target_mask_hit_count": 104,
+          "target_mask_hit_fraction": 0.003260801404652913,
+          "cycle_count": 7,
+          "cycle_fraction": 0.00021947701762086913,
+          "cycle_purity": 0.0673076923076923
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.024013441056013107,
+          "source_mask_count": 94344,
+          "high_count": 8346,
+          "high_fraction": 0.08846349529381836,
+          "target_mask_hit_count": 1531,
+          "target_mask_hit_fraction": 0.016227847027897906,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.4580199122428894,
+          "source_mask_count": 31894,
+          "high_count": 29937,
+          "high_fraction": 0.938640496645137,
+          "target_mask_hit_count": 29520,
+          "target_mask_hit_fraction": 0.9255659371668652,
+          "cycle_count": 19753,
+          "cycle_fraction": 0.6193327898664326,
+          "cycle_purity": 0.6598189531349167
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.4087171256542206,
+          "source_mask_count": 51163,
+          "high_count": 41918,
+          "high_fraction": 0.8193030119422239,
+          "target_mask_hit_count": 39735,
+          "target_mask_hit_fraction": 0.7766354592185759,
+          "cycle_count": 21899,
+          "cycle_fraction": 0.42802415808298966,
+          "cycle_purity": 0.522424734004485
+        },
+        "symmetric_cycle_score": 0.514868328755779,
+        "absolute_support": true
+      },
+      "TF02->TF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.017231322824954987,
+          "source_mask_count": 31894,
+          "high_count": 2524,
+          "high_fraction": 0.07913714178215338,
+          "target_mask_hit_count": 1152,
+          "target_mask_hit_fraction": 0.03611964632846303,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.011615008115768433,
+          "source_mask_count": 106374,
+          "high_count": 2814,
+          "high_fraction": 0.026453832703480173,
+          "target_mask_hit_count": 2809,
+          "target_mask_hit_fraction": 0.026406828736345346,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF02->TF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.010199377313256264,
+          "source_mask_count": 31894,
+          "high_count": 940,
+          "high_fraction": 0.029472628080516712,
+          "target_mask_hit_count": 940,
+          "target_mask_hit_fraction": 0.029472628080516712,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.052289798855781555,
+          "source_mask_count": 137771,
+          "high_count": 52151,
+          "high_fraction": 0.3785339440085359,
+          "target_mask_hit_count": 13637,
+          "target_mask_hit_fraction": 0.0989830951361317,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0003352936764713377,
+          "source_mask_count": 8596,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.006631313357502222,
+          "source_mask_count": 94344,
+          "high_count": 1828,
+          "high_fraction": 0.019375900958195538,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0629153922200203,
+          "source_mask_count": 8596,
+          "high_count": 4459,
+          "high_fraction": 0.5187296416938111,
+          "target_mask_hit_count": 4459,
+          "target_mask_hit_fraction": 0.5187296416938111,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.019831186160445213,
+          "source_mask_count": 51163,
+          "high_count": 3157,
+          "high_fraction": 0.06170474757148721,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF03->TF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.26873907446861267,
+          "source_mask_count": 8596,
+          "high_count": 8596,
+          "high_fraction": 1.0,
+          "target_mask_hit_count": 8184,
+          "target_mask_hit_fraction": 0.9520707305723592,
+          "cycle_count": 8184,
+          "cycle_fraction": 0.9520707305723592,
+          "cycle_purity": 0.9520707305723592
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0337727926671505,
+          "source_mask_count": 106374,
+          "high_count": 7036,
+          "high_fraction": 0.0661439825521274,
+          "target_mask_hit_count": 5911,
+          "target_mask_hit_fraction": 0.05556808994679151,
+          "cycle_count": 5911,
+          "cycle_fraction": 0.05556808994679151,
+          "cycle_purity": 0.8401080159181353
+        },
+        "symmetric_cycle_score": 0.2300103301857383,
+        "absolute_support": true
+      },
+      "TF03->TF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0031625544652342796,
+          "source_mask_count": 8596,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.010417552664875984,
+          "source_mask_count": 137771,
+          "high_count": 3962,
+          "high_fraction": 0.028757866314391273,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.004919776227325201,
+          "source_mask_count": 67886,
+          "high_count": 216,
+          "high_fraction": 0.003181804790383879,
+          "target_mask_hit_count": 216,
+          "target_mask_hit_fraction": 0.003181804790383879,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.024018624797463417,
+          "source_mask_count": 94344,
+          "high_count": 10998,
+          "high_fraction": 0.11657339099465784,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.02865971438586712,
+          "source_mask_count": 67886,
+          "high_count": 7691,
+          "high_fraction": 0.11329287334649266,
+          "target_mask_hit_count": 3749,
+          "target_mask_hit_fraction": 0.05522493592198686,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.027638331055641174,
+          "source_mask_count": 51163,
+          "high_count": 8877,
+          "high_fraction": 0.17350429020972186,
+          "target_mask_hit_count": 2019,
+          "target_mask_hit_fraction": 0.0394621112913629,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.011816957034170628,
+          "source_mask_count": 67886,
+          "high_count": 1119,
+          "high_fraction": 0.016483516483516484,
+          "target_mask_hit_count": 804,
+          "target_mask_hit_fraction": 0.011843384497539994,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.019657807424664497,
+          "source_mask_count": 106374,
+          "high_count": 10529,
+          "high_fraction": 0.09898095399251697,
+          "target_mask_hit_count": 10335,
+          "target_mask_hit_fraction": 0.09715720006768572,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "TF04->TF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.24177375435829163,
+          "source_mask_count": 67886,
+          "high_count": 47515,
+          "high_fraction": 0.6999234009957871,
+          "target_mask_hit_count": 43144,
+          "target_mask_hit_fraction": 0.6355360457237132,
+          "cycle_count": 38338,
+          "cycle_fraction": 0.564740889137672,
+          "cycle_purity": 0.806860991265916
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.13927733898162842,
+          "source_mask_count": 137771,
+          "high_count": 51420,
+          "high_fraction": 0.3732280378308933,
+          "target_mask_hit_count": 50219,
+          "target_mask_hit_fraction": 0.36451067350893873,
+          "cycle_count": 40662,
+          "cycle_fraction": 0.2951419384340681,
+          "cycle_purity": 0.790781796966161
+        },
+        "symmetric_cycle_score": 0.4082630533529475,
+        "absolute_support": true
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "gain_over_predecessor_roma": {
+    "true_positive_delta": 18,
+    "false_positive_delta": 0,
+    "false_negative_reduction": 18,
+    "f1_delta": 0.36,
+    "exact_scenario_gain": 13,
+    "true_support_gain": 2
+  },
+  "predecessor_dinov2_baseline": {
+    "true_positive": 25,
+    "false_positive": 4,
+    "false_negative": 9,
+    "precision": 0.862069,
+    "recall": 0.735294,
+    "f1": 0.793651,
+    "zero_assignment_exact_scenarios": 5,
+    "scenarios": 15
+  },
+  "input_receipts": {
+    "TF01:reference": {
+      "scene_id": "043",
+      "frame": 4510,
+      "image_sha256": "e90c1d67ccee97055ac58a72046b7aa6feafa40b778e3345535c134d569ca58f",
+      "visible_mask_sha256": "d1b3e41755fbe0c71afd369d3a37d74a0b796f6e3777344c468cb4886b30f561",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 37936,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        144,
+        480
+      ]
+    },
+    "TF01:query": {
+      "scene_id": "043",
+      "frame": 4530,
+      "image_sha256": "8f18de8dd58463afc52c299286035dd2375bd5aaffe2cb2214c0569275b87156",
+      "visible_mask_sha256": "be93a18db6a5e430f75db3e620d5b96d7fbb636270b7a7485e8fb577b0ae52d3",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 38660,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        124,
+        480
+      ]
+    },
+    "TF02:reference": {
+      "scene_id": "082",
+      "frame": 5790,
+      "image_sha256": "7a74a832e753caade5e713e5d2e3835c442aa99ef90376d72adb697478d40598",
+      "visible_mask_sha256": "4271ba4fdf0f17f021793b9ff1d6d261107f3b27b79d142f39023ea4f0e09a2d",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 13107,
+      "tight_bbox_xyxy": [
+        128,
+        0,
+        235,
+        198
+      ]
+    },
+    "TF02:query": {
+      "scene_id": "082",
+      "frame": 5815,
+      "image_sha256": "30e47fc941f9d7aaa1e68faa5b4be810722feede50b5dd21e83c3450dde99cb2",
+      "visible_mask_sha256": "1018d2715533ce8db1090c4ff25415ff6d130dc18a7296503f1bab686713cde2",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 21007,
+      "tight_bbox_xyxy": [
+        169,
+        0,
+        286,
+        268
+      ]
+    },
+    "TF03:reference": {
+      "scene_id": "213",
+      "frame": 275,
+      "image_sha256": "5d6f2460b2ae5ff4678d0c8ee75b245e23476578ac13f9fc1f3a8e9ba92d8740",
+      "visible_mask_sha256": "67b174c4b2ebe43ea647681da126a78d6f70a08d0b66356c18eeb44df7a0d4da",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 3607,
+      "tight_bbox_xyxy": [
+        605,
+        193,
+        640,
+        400
+      ]
+    },
+    "TF03:query": {
+      "scene_id": "213",
+      "frame": 325,
+      "image_sha256": "5e6c331ef1dd1e1ed29e80ad7b0a2432d2f47569e097b1a51e9a453fc33742d0",
+      "visible_mask_sha256": "16f0238669c6cb2c1f5272e2ad657cd00c321271b0656afa27b8a71901ccae53",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 43871,
+      "tight_bbox_xyxy": [
+        490,
+        0,
+        640,
+        334
+      ]
+    },
+    "TF04:reference": {
+      "scene_id": "207",
+      "frame": 7180,
+      "image_sha256": "1b49157b264a3d941aa3a722c3f7830d9c0af928299993a43d9449777796fb21",
+      "visible_mask_sha256": "20867518bbb529e5b6dba080a355071c8f03a91e15aabcc26004f54147a13e41",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 27946,
+      "tight_bbox_xyxy": [
+        0,
+        98,
+        155,
+        480
+      ]
+    },
+    "TF04:query": {
+      "scene_id": "207",
+      "frame": 7215,
+      "image_sha256": "1aec25aa7ca0260ce43d04ec0f22f9006577805ee38c7f14035492d3850dbb7a",
+      "visible_mask_sha256": "32c4d9fa34a7a7312013106a5a797fc727cc1d92306b0a2b79f759e9208c929e",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 56627,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        174,
+        480
+      ]
+    }
+  },
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged whole-image correspondence with provider target-mask support only. It does not prove raw-phone target proposals, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

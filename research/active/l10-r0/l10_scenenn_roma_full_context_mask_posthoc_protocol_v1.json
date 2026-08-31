@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-posthoc-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-full-context-mask-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T02:16:13+08:00",
+  "question": "On the consumed fresh SceneNN cohort, can RoMa retain whole-image context and restrict cycle evidence to the exact co-visible target masks to recover true-pair support without relaxing any matcher or NONE threshold?",
+  "implementation": {
+    "path": "l10_scenenn_roma_full_context_mask_posthoc.py",
+    "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"
+  },
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_temporal_local_fresh_result_v1.json",
+    "result_sha256": "d2d049d55ab40d8b660dc212e9bc12092086cb0c5872b736b2070f4750852b8f",
+    "required_conclusion": "L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET",
+    "observed_metrics": {
+      "true_positive": 16,
+      "false_positive": 0,
+      "false_negative": 18,
+      "f1": 0.64,
+      "exact_scenarios": 2,
+      "true_pairs_supported": 2
+    },
+    "failure_signature": "Truth-visible crop resizing preserved zero false positives but left TF02 below cycle purity and reduced edge-clipped TF03 reference evidence to a 40-pixel-wide crop.",
+    "single_change": "Run the unchanged RoMa model on each complete 640x480 endpoint image, then compute support only for cycles starting inside the provider target-visible mask and landing inside the paired target-visible mask; keep weights, resolutions, thresholds, assignment, scenarios, targets and gate unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_SAME_FRESH_COHORT_NO_NEW_AUTHORITY",
+    "cohort_path": "l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+    "cohort_sha256": "836cf4e9b7d79ed73b5c628fd0fb1b442f17c2ec69735a2b719f22acbccb0e79",
+    "rgb_receipt_path": "l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "e17a13e2e0a1a3376b3cf0c7d96faa1af1f0a68f6e65ade24a288644ef0e813b"
+  },
+  "exa_literature_review": {
+    "searched_at": "2026-09-01T02:12:00+08:00",
+    "search_workstreams": 6,
+    "sources_reviewed": 54,
+    "selected_primary_sources": [
+      {
+        "title": "OAMatcher: An Overlapping Areas-based Network for Accurate Local Feature Matching",
+        "url": "https://arxiv.org/html/2302.05846",
+        "used_for": "Its whole-image message interaction followed by co-visible-area focus motivates preserving RoMa global context before support gating."
+      },
+      {
+        "title": "O-MaMa: Learning Object Mask Matching between Egocentric and Exocentric Views",
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Mur-Labadia_O-MaMa_Learning_Object_Mask_Matching_between_Egocentric_and_Exocentric_Views_ICCV_2025_paper.html",
+        "used_for": "Its mask-plus-extended-context evidence motivates retaining target identity evidence without discarding surrounding spatial context."
+      }
+    ]
+  },
+  "renderer": {
+    "numeric_type": "float32",
+    "image_width": 640,
+    "image_height": 480,
+    "near_plane_metres": 0.02,
+    "near_plane_face_rule": "reject unless every vertex is beyond near plane",
+    "triangle_sidedness": "double-sided",
+    "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m",
+    "visibility_tolerance_metres": 0.005
+  },
+  "context_and_support": {
+    "model_input": "Complete sealed 640x480 RGB frame independently resized by the unchanged RoMa implementation.",
+    "source_domain": "Nearest-neighbour resize of the exact provider target-visible mask to the 864x864 RoMa support grid.",
+    "target_domain": "A forward match counts only when its sampled target coordinate lies inside the paired resized target-visible mask.",
+    "cycle_fraction_denominator": "All source target-visible mask pixels.",
+    "cycle_purity_denominator": "All above-certainty source target-visible mask pixels, including those whose forward coordinate misses the target mask.",
+    "rank_score": "Geometric mean of bilateral target-mask-gated cycle fractions.",
+    "crop_or_padding": "None."
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent target-mask cycle fraction and majority cycle purity.",
+    "zero_assignment": "Unchanged strict reciprocal maximum among absolutely supported pairs."
+  },
+  "decision_gate": {
+    "predecessor_true_positive": 16,
+    "predecessor_f1": 0.64,
+    "maximum_false_positive": 0,
+    "minimum_true_pairs_with_absolute_support": 3,
+    "minimum_exact_scenarios": 2
+  },
+  "forbidden_after_freeze": [
+    "change full-image input, mask resize, source or target domain, denominator, matcher, threshold, assignment, scenarios or gate",
+    "add dilation, erosion, padding, a learned mask, or a context weight after outcome",
+    "drop TF02, TF03, any different-target pair, or any failed scenario",
+    "claim freshness or confirmation authority from this consumed posthoc replay"
+  ],
+  "claim_boundary": "This is consumed posthoc Development evidence for privileged whole-image correspondence with provider target-mask support only. It does not prove raw-phone target proposals, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

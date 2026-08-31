@@ -1,0 +1,171 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-temporal-local-posthoc-rgb-receipt-v1",
+  "authority": "CONSUMED_POSTHOC_TEMPORALLY_LOCAL_SPARSE_RGB_ONLY_RECEIPT",
+  "cohort_path": "l10_scenenn_roma_temporal_local_posthoc_cohort_v1.json",
+  "cohort_sha256": "3ef8cf33a1cad646c4c76464e11af085c32f2fdd553f50764ce2605035e3b2b1",
+  "extractor_executable": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-visible-portals-v3\\tools\\bin\\ExtractSelectedSync.exe",
+  "extractor_sha256": "c867b8316dce9a3d000ff42abab2cca2891b1b4710f1697be60041c4987ac372",
+  "extractor_source_sha256": "33ffdc6b45ef939e925b55b6f6f0702435a2b1cfa172617402273a1ba72739e2",
+  "extraction_summaries": {
+    "700": {
+      "scanned": 421,
+      "discarded_depth": 0,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    },
+    "276": {
+      "scanned": 2881,
+      "discarded_depth": 0,
+      "discarded_color": 0,
+      "requested": 2,
+      "saved": 2
+    },
+    "234": {
+      "scanned": 3756,
+      "discarded_depth": 3,
+      "discarded_color": 1,
+      "requested": 2,
+      "saved": 2
+    },
+    "237": {
+      "scanned": 1706,
+      "discarded_depth": 1,
+      "discarded_color": 1,
+      "requested": 2,
+      "saved": 2
+    }
+  },
+  "sealed_frames": {
+    "700:400": {
+      "scene_id": "700",
+      "trajectory_frame": 400,
+      "timestamp": {
+        "trajectory_frame": 400,
+        "playback_index": 401,
+        "color_timestamp": 13406400,
+        "depth_timestamp": 13404342,
+        "color_frame_id": 401,
+        "depth_frame_id": 401
+      },
+      "image_path": "payload/700/selected/image/frame.0400.png",
+      "image_sha256": "17f7e9ecc5bd931dff361af45133ea1f26e784a7f05e021cd275b281af2358d1",
+      "depth_extraction_sha256": "05a2138c06d79902a0f637d0e15654f5bd784b3dfb4ddb92de6a44f78b1d64ae",
+      "depth_retained": false
+    },
+    "700:420": {
+      "scene_id": "700",
+      "trajectory_frame": 420,
+      "timestamp": {
+        "trajectory_frame": 420,
+        "playback_index": 421,
+        "color_timestamp": 14076720,
+        "depth_timestamp": 14076616,
+        "color_frame_id": 421,
+        "depth_frame_id": 421
+      },
+      "image_path": "payload/700/selected/image/frame.0420.png",
+      "image_sha256": "c4fab5d64250b523ce63cd87ca7c7ae0aaf6c39477644b834a7dd25017f4b763",
+      "depth_extraction_sha256": "477f8a0de4ab8f1b61c73b22e6572c67b1c0957b54d4401ca7c5691166db3a35",
+      "depth_retained": false
+    },
+    "276:2855": {
+      "scene_id": "276",
+      "trajectory_frame": 2855,
+      "timestamp": {
+        "trajectory_frame": 2855,
+        "playback_index": 2856,
+        "color_timestamp": 95688180,
+        "depth_timestamp": 95688023,
+        "color_frame_id": 2856,
+        "depth_frame_id": 2856
+      },
+      "image_path": "payload/276/selected/image/frame.2855.png",
+      "image_sha256": "41c2b32211d1c868aca22fc3e4b7f01ec24b26fa554d0d1877d1dfd22fbae1ed",
+      "depth_extraction_sha256": "f77a562fdba90a77b9cd34dcb76a0117303c837906ba1ec2b97061e80eddf5de",
+      "depth_retained": false
+    },
+    "276:2880": {
+      "scene_id": "276",
+      "trajectory_frame": 2880,
+      "timestamp": {
+        "trajectory_frame": 2880,
+        "playback_index": 2881,
+        "color_timestamp": 96526080,
+        "depth_timestamp": 96526033,
+        "color_frame_id": 2881,
+        "depth_frame_id": 2881
+      },
+      "image_path": "payload/276/selected/image/frame.2880.png",
+      "image_sha256": "998417449437fc66cd1ac4073c8632450fd7e6e05c6e1ae089713a26a07bf729",
+      "depth_extraction_sha256": "da4b476e96adab90dcbde89cad5f3822497b033a8207293a9b4e6a1b833e6661",
+      "depth_retained": false
+    },
+    "234:3720": {
+      "scene_id": "234",
+      "trajectory_frame": 3720,
+      "timestamp": {
+        "trajectory_frame": 3720,
+        "playback_index": 3721,
+        "color_timestamp": 125617968,
+        "depth_timestamp": 125617129,
+        "color_frame_id": 3728,
+        "depth_frame_id": 3724
+      },
+      "image_path": "payload/234/selected/image/frame.3720.png",
+      "image_sha256": "40f61f160e0b1aa9ffaf59a60c91664c5882d1ea180eb9b9f71358c061ff417b",
+      "depth_extraction_sha256": "b04d33984ba81756fa0aeb13c3d57bdc79857ad2f6fe00e6db6dae2f22e2f7db",
+      "depth_retained": false
+    },
+    "234:3755": {
+      "scene_id": "234",
+      "trajectory_frame": 3755,
+      "timestamp": {
+        "trajectory_frame": 3755,
+        "playback_index": 3756,
+        "color_timestamp": 126791028,
+        "depth_timestamp": 126789466,
+        "color_frame_id": 3763,
+        "depth_frame_id": 3759
+      },
+      "image_path": "payload/234/selected/image/frame.3755.png",
+      "image_sha256": "b359c5574ad0601d34fcbc4ae0444df88ec70b0d867d52894cf36ed5c92ba8de",
+      "depth_extraction_sha256": "17f8b0b6c733f35ebb08f3983c9094c05b9a6179abf4923ce2a95369da50ce75",
+      "depth_retained": false
+    },
+    "237:1685": {
+      "scene_id": "237",
+      "trajectory_frame": 1685,
+      "timestamp": {
+        "trajectory_frame": 1685,
+        "playback_index": 1686,
+        "color_timestamp": 56575008,
+        "depth_timestamp": 56572627,
+        "color_frame_id": 1687,
+        "depth_frame_id": 1687
+      },
+      "image_path": "payload/237/selected/image/frame.1685.png",
+      "image_sha256": "a5f9add352928b56222cc8e5660d904b6dbdaee411f9a1593cc138d60294bb77",
+      "depth_extraction_sha256": "d1df3099523956cbb674926705c6533421749ca6aab8e153a789f87bd5e876be",
+      "depth_retained": false
+    },
+    "237:1705": {
+      "scene_id": "237",
+      "trajectory_frame": 1705,
+      "timestamp": {
+        "trajectory_frame": 1705,
+        "playback_index": 1706,
+        "color_timestamp": 57245328,
+        "depth_timestamp": 57244933,
+        "color_frame_id": 1707,
+        "depth_frame_id": 1707
+      },
+      "image_path": "payload/237/selected/image/frame.1705.png",
+      "image_sha256": "4526d567c58f3baf0a96f22c21560d9800d7ef7ee872b36884d826e703e73e71",
+      "depth_extraction_sha256": "76831497a552ceea086f25e8113c502436bafd5d8b7ac16c67939f977d26a11f",
+      "depth_retained": false
+    }
+  },
+  "rgb_frames_retained": 8,
+  "depth_frames_retained": 0
+}
