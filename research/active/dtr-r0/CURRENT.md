@@ -52,8 +52,13 @@ future obstacle occupancy intersects the wearer's route, while preserving
   associated at their later predicted route-entry time. It recovered three
   more true positives with no false-positive cost: pooled
   `643 TP / 51 FP / 220 FN` at `92.65/74.51/82.59%`; C34 is
-  `90.97/76.16/82.91%`. This is cross-cohort non-regressing Development, not
-  fresh X71 confirmation.
+  `90.97/76.16/82.91%`. X72 then lets a current X25 collision footprint
+  complete a still-live credentialed surface parent only when it intersects
+  measured fragments at their boundary while its rigid center lies inside none
+  of that parent's fragments. X72 recovered another eight true positives with
+  no false-positive cost: pooled `651 TP / 51 FP / 212 FN` at
+  `92.74/75.43/83.19%`; C34 is `91.22/78.49/84.38%`. This is cross-cohort
+  non-regressing Development, not fresh X72 confirmation.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -71,15 +76,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C34 as confirmation. X71 preserves X69 release
-   precedence and X70 handback, then recovers three surface-absent contact
-   frames through point-in-footprint entry-time co-transport with no
-   false-positive cost. Continue consumed Development against the remaining
-   pooled `220 FN / 51 FP` (C34 `41 FN / 13 FP`). Most opened misses lack
-   jointly confirmed point/footprint route risk, so prioritize observable
-   support or earlier object-local occupancy formation rather than weakening
-   X71 association. Require another visible cross-cohort effect before freezing
-   a new confirmation source.
+4. Do not rerun or tune C34 as confirmation. X72 preserves X69 release
+   precedence, X70 handback, and X71 entry-time co-transport, then recovers
+   eight fragmented-object contact frames through credentialed surface-boundary
+   completion with no false-positive cost. Continue consumed Development
+   against the remaining pooled `212 FN / 51 FP` (C34 `37 FN / 13 FP`). Target
+   frames with no live credentialed surface parent or no confirmed X25 collision
+   footprint rather than weakening the boundary-only separator. Require another
+   visible cross-cohort effect before freezing a new confirmation source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -128,3 +132,5 @@ their result.
   [DTR_CARLA_X70_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X70_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
 - X71 consumed cross-cohort Development:
   [DTR_CARLA_X71_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X71_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- X72 consumed cross-cohort Development:
+  [DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
