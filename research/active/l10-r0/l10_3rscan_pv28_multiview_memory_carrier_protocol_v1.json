@@ -1,0 +1,116 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-pv28-multiview-memory-carrier-protocol-v1",
+  "frozen_at": "2026-09-01T07:38:00+08:00",
+  "question": "Does bounded three-view instance memory rescue consumed PV28 when every reference-query combination uses the unchanged coherent-cycle carrier and every reference view must reject both cross-family controls?",
+  "implementation": {"path": "l10_3rscan_cycle_component_open_set_posthoc.py", "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"},
+  "dependencies": [
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py", "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py", "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"},
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "execution_revision": {
+    "failure_receipt_path": "l10_3rscan_pv28_multiview_memory_execution_failure_v1.json",
+    "failure_receipt_sha256": "cdd9c1b58d8b25394360d43c1206866e13314c27ab972267b96f6764304ae157",
+    "loader_path": "l10_3rscan_multiview_memory_carrier.py",
+    "loader_sha256": "75c1590510aac366e6f4f82821d99f3becb95241f9e6df27efc273a068ea767a",
+    "single_fix": "Remove the inherited exact-six image-count assertion for this frozen ten-image cohort; preserve all image receipts, pairs, model calls, carrier calculations, thresholds and gates."
+  },
+  "resume_revision": {
+    "failure_receipt_path": "l10_3rscan_pv28_multiview_memory_execution_failure_v2.json",
+    "failure_receipt_sha256": "afc222cf391445fa90c139215dc7e0dcd7bda8622b42093e117e511cbd655dab",
+    "consumed_pair": "P_M1_M1",
+    "resume_from_pair": "P_M1_M2",
+    "single_fix": "Do not rerun the consumed first pair; treat zero reference cycles as deterministic non-commit for every remaining ordered row so one memory miss cannot abort portfolio aggregation."
+  },
+  "predecessor": {
+    "result_path": "l10_3rscan_pv28_multiview_memory_source_result_v1.json",
+    "result_sha256": "8264e62535293fc898d25ef053b27bb7397a5e86f93ea3324671c848b1b0068d",
+    "required_conclusion": "L10_3RSCAN_MULTIVIEW_OBSERVATION_PORTFOLIO_POSTHOC_DIAGNOSTIC_ONLY",
+    "single_change": "Replace the failed single PV28 reference/query pair with the frozen three-view-by-three-view memory portfolio; keep the carrier, models, thresholds and cross-family controls unchanged."
+  },
+  "source": {
+    "authority": "CONSUMED_POSTHOC_PRE_MODEL_BOUNDED_MULTIVIEW_MEMORY_DEVELOPMENT_COHORT",
+    "source_protocol_path": "l10_3rscan_pv28_multiview_memory_freeze_protocol_v1.json",
+    "source_protocol_sha256": "e6209a378b27dc092c02efdec6660618ed509430afbb1ec91b2626c0e92bb183",
+    "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+    "cohort_sha256": "4a726a1d97b8979d343b3aefcfcb9866e8267f1b48291408a977a0be648d227a",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip", "bytes": 27142949, "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"},
+      {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip", "bytes": 22804430, "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    ]
+  },
+  "models": {
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_PER_VIEW_REFERENCE_BINDING_FOR_CONSUMED_DEVELOPMENT_ONLY",
+    "support_surface": "One native SAM2 mask from each frozen reference-view bbox.",
+    "extent_surface": "Each frozen reference bbox is transported independently to each query.",
+    "query_truth_isolation": "Positive query bboxes open only after transport; negatives receive no exact-target query truth."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Unchanged full-frame symmetric RoMa, bilateral 0.05 certainty, in-bounds target, 0.013888888888888888 round-trip error, largest 8-connected reference cycle component, ordinary affine fit and bound-extent transport.",
+    "component_tie_break": "Maximum area then lowest label; no fallback.",
+    "mask": "One native reference and query SAM2 identity-support mask; no selection, morphology or retry.",
+    "query_extent": "Transported bbox; query SAM mask is support only.",
+    "memory_aggregation": "Any of nine positive view pairs may support the instance memory; any of six negative commits fails the gate."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Frozen cycle opportunity plus dominant-component majority; global purity remains diagnostic only."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_M1_M1", "reference_episode": "PV28M1", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M1_M2", "reference_episode": "PV28M1", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M1_M3", "reference_episode": "PV28M1", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "P_M2_M1", "reference_episode": "PV28M2", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M2_M2", "reference_episode": "PV28M2", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M2_M3", "reference_episode": "PV28M2", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "P_M3_M1", "reference_episode": "PV28M3", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M3_M2", "reference_episode": "PV28M3", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M3_M3", "reference_episode": "PV28M3", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "N_M1_NC31", "reference_episode": "PV28M1", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M1_NC08", "reference_episode": "PV28M1", "query_episode": "NC08", "label": "target_absent"},
+      {"id": "N_M2_NC31", "reference_episode": "PV28M2", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M2_NC08", "reference_episode": "PV28M2", "query_episode": "NC08", "label": "target_absent"},
+      {"id": "N_M3_NC31", "reference_episode": "PV28M3", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M3_NC08", "reference_episode": "PV28M3", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Different physical 3RScan reference families cannot contain exact target PV28."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 9,
+    "required_target_absent_pairs": 6,
+    "minimum_positive_commits": 1,
+    "maximum_target_absent_false_commits": 0,
+    "minimum_reference_cycle_fraction": 0.01,
+    "minimum_dominant_component_cycle_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5
+  },
+  "forbidden_after_freeze": [
+    "change memory members, models, mask, cycle, component, affine fit, controls or gates",
+    "use query truth or pair outcomes to select a memory member",
+    "retry, replace or remove a failed pair"
+  ],
+  "claim_boundary": "This consumed-family Development test asks only whether bounded multi-view memory repairs the frozen PV28 carrier failure under privileged per-view initial binding. A pass is not fresh confirmation, provider independence, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

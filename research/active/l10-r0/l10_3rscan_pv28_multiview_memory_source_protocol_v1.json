@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist-l10-3rscan-multiview-observation-portfolio-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-pv28-multiview-memory-source-protocol-v1",
+  "frozen_at": "2026-09-01T07:35:30+08:00",
+  "question": "Can a bounded three-view reference/query memory expose complementary observations on consumed PV28 before testing whether memory aggregation repairs its frozen single-view zero-cycle failure?",
+  "implementation": {
+    "path": "l10_3rscan_multiview_observation_portfolio_posthoc.py",
+    "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"
+  },
+  "source": {
+    "authority": "CONSUMED_PV28_GEOMETRY_DEPTH_ONLY_MULTIVIEW_MEMORY_DEVELOPMENT_SOURCE",
+    "artifact_root": "artifacts.local"
+  },
+  "panels": [
+    {
+      "id": "PV28",
+      "source_protocol": {"path": "l10_3rscan_partial_view_confirmation_source_protocol_v1.json", "sha256": "5cf835e32529f0c17a1fb8e8b1a08c5fe9a49ed74292c5e0a4714f2b4f79aec4"},
+      "source_result": {"path": "l10_3rscan_partial_view_confirmation_source_result_v1.json", "sha256": "24b507ed3bd8f468f6161dc576d44e470bd87b0ce8f7c5d9418cb170dcad7558"}
+    }
+  ],
+  "portfolio_budget": 3,
+  "partial_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15,
+    "selection": "Use the already frozen anti-sliver partial-view admission. Greedily add the view exposing the most previously unseen depth-consistent target vertices; ties use larger short-side fraction, higher visible ratio, then earlier frame. Stop at three views or zero marginal gain."
+  },
+  "next_decision": "If both sides supply at least two complementary views, freeze the full bounded reference-by-query portfolio and run the unchanged coherent-cycle carrier once with every reference view against both fixed cross-family controls. Aggregate by any positive support but any negative false commit fails the memory gate.",
+  "literature_motivation": {
+    "mapclover": "https://arxiv.org/abs/2407.09718",
+    "masa": "https://arxiv.org/abs/2406.04221",
+    "dator": "https://arxiv.org/abs/2409.12002",
+    "used_principle": "Persist several complementary object observations as one instance memory instead of making downstream association depend on one privileged view."
+  },
+  "forbidden_after_freeze": [
+    "change the three-view budget, admission rules, greedy selection or family after observing the portfolio",
+    "use RGB/model outcomes to select memory members",
+    "change the existing carrier, controls or support thresholds during the memory test",
+    "claim consumed Development as fresh confirmation"
+  ],
+  "claim_boundary": "This is a geometry/depth-only posthoc source diagnostic on consumed PV28. It can establish only whether bounded complementary observations exist; it is not RGB/model evidence, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

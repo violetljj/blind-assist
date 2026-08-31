@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-3rscan-multiview-memory-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-pv28-multiview-memory-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T07:36:45+08:00",
+  "question": "Can a fixed three-view instance memory rescue consumed PV28 under the unchanged coherent-cycle carrier without increasing cross-family false commits?",
+  "implementation": {"path": "l10_3rscan_multiview_memory_freeze.py", "sha256": "eb4d1b1c42113873fa01d6790d0bd313dc905d2b252849d4399b4a00d11cf2fb"},
+  "memory_source": {"path": "l10_3rscan_pv28_multiview_memory_source_result_v1.json", "sha256": "8264e62535293fc898d25ef053b27bb7397a5e86f93ea3324671c848b1b0068d"},
+  "candidate_source": {"path": "l10_3rscan_partial_view_confirmation_source_result_v1.json", "sha256": "24b507ed3bd8f468f6161dc576d44e470bd87b0ce8f7c5d9418cb170dcad7558"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "CONSUMED_PV28_POSTHOC_PRE_MODEL_BOUNDED_MULTIVIEW_MEMORY_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip": {"path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip", "bytes": 27142949, "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae"},
+      "1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip": {"path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip", "bytes": 22804430, "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["PV28M1", "PV28M2", "PV28M3"],
+    "positive_authority": "Consumed PV28 reference and query views selected independently by the frozen three-view greedy complementary-surface policy before this model run.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ],
+    "aggregation": "Commit the memory if any of its nine positive reference-query combinations commits; fail the gate if any of the six reference-to-cross-family controls commits."
+  },
+  "evaluation": {
+    "pairs": [
+      {"id": "P_M1_M1", "reference_episode": "PV28M1", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M1_M2", "reference_episode": "PV28M1", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M1_M3", "reference_episode": "PV28M1", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "P_M2_M1", "reference_episode": "PV28M2", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M2_M2", "reference_episode": "PV28M2", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M2_M3", "reference_episode": "PV28M2", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "P_M3_M1", "reference_episode": "PV28M3", "query_episode": "PV28M1", "label": "target_present"},
+      {"id": "P_M3_M2", "reference_episode": "PV28M3", "query_episode": "PV28M2", "label": "target_present"},
+      {"id": "P_M3_M3", "reference_episode": "PV28M3", "query_episode": "PV28M3", "label": "target_present"},
+      {"id": "N_M1_NC31", "reference_episode": "PV28M1", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M1_NC08", "reference_episode": "PV28M1", "query_episode": "NC08", "label": "target_absent"},
+      {"id": "N_M2_NC31", "reference_episode": "PV28M2", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M2_NC08", "reference_episode": "PV28M2", "query_episode": "NC08", "label": "target_absent"},
+      {"id": "N_M3_NC31", "reference_episode": "PV28M3", "query_episode": "NC31", "label": "target_absent"},
+      {"id": "N_M3_NC08", "reference_episode": "PV28M3", "query_episode": "NC08", "label": "target_absent"}
+    ],
+    "negative_authority": "Both controls are from a different physical 3RScan reference family and cannot contain exact target PV28."
+  },
+  "forbidden_after_freeze": [
+    "change memory members, pair order, carrier, controls, models or gates",
+    "drop a weak memory member or failed pair",
+    "use query truth to choose which memory view to trust",
+    "retry or reinterpret a failed memory gate"
+  ],
+  "claim_boundary": "This freezes a consumed-family Development test of bounded multi-view memory under privileged per-view target boxes. A pass would show only that memory aggregation repairs this carrier failure; it is not fresh confirmation, raw-camera referent acquisition, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

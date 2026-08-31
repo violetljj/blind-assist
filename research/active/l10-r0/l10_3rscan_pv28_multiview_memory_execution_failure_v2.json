@@ -1,0 +1,24 @@
+{
+  "schema": "blindassist-l10-execution-failure-v1",
+  "authority": "CONSUMED_DEVELOPMENT_ORDERED_EXECUTION_FAILURE",
+  "recorded_at": "2026-09-01T07:40:15+08:00",
+  "protocol_path": "l10_3rscan_pv28_multiview_memory_carrier_protocol_v1.json",
+  "protocol_sha256_at_failure": "5ac8af07b09b8ade4805aefe7e995e614aa79952e7f9c1b994e3c868fdebbb82",
+  "runtime_loader_path": "l10_3rscan_multiview_memory_carrier.py",
+  "runtime_loader_sha256": "91a598402635e631ea0ba1441401e0db7946652e8f5aaf9052112643442ddd04",
+  "terminal_state": "ABORTED_AFTER_FIRST_ORDERED_PAIR",
+  "error_class": "ValueError",
+  "error_message": "NO_REFERENCE_CYCLES",
+  "consumed_pair": {
+    "id": "P_M1_M1",
+    "label": "target_present",
+    "adjudication": "DETERMINISTIC_NON_COMMIT_ZERO_REFERENCE_CYCLES",
+    "reference_cycle_fraction": 0.0,
+    "dominant_component_cycle_fraction": 0.0,
+    "commit": false
+  },
+  "runtime_before_abort": {"ordered_pairs_completed": 1, "roma_calls": 1, "reference_sam2_calls": 5},
+  "resume_rule": "Never rerun P_M1_M1. Resume at P_M1_M2, map any later zero-reference-cycle row to deterministic non-commit regardless of label, then merge this fixed receipt into the final 15-pair aggregation.",
+  "decision_impact": "No pair, model, threshold, memory member, control or gate changes. Only batch continuation semantics are made explicit.",
+  "claim_boundary": "This receipt fixes one consumed pair as a non-commit and authorizes only ordered Development continuation. It is not a completed memory result or confirmation."
+}

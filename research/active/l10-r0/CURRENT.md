@@ -246,6 +246,15 @@ contract.
   `0.995959`, and transported extent IoU `0.725189`, while both negatives had
   zero cycles. This is second-family Development replication of the same narrow
   component claim, not provider independence or end-to-end ten-metre evidence.
+  A literature-motivated bounded multi-view memory then tested whether the
+  frozen PV28 zero-cycle family merely suffered from one bad reference view.
+  Geometry/depth-only greedy portfolios raised visible-surface coverage from
+  `0.2301 -> 0.3864` on the reference side and `0.2087 -> 0.3932` on the query
+  side. Yet all `3 x 3 = 9` positive view combinations had zero reference
+  cycles; the memory produced `0/9` positive commits while all six cross-family
+  controls remained non-commits. Freeze multi-view expansion of the same pixel
+  carrier as insufficient for PV28. The next mechanism must add an instance-
+  level appearance/geometry representation, not more RoMa views or thresholds.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

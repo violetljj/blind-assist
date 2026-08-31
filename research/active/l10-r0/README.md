@@ -60,7 +60,11 @@ Status: `ACTIVE`
   An unchanged second-family replication then reached `1/1` positive and `0/2`
   false commits at `0.871` cycle fraction, `0.996` component dominance, and
   `0.725` extent IoU. This is narrow same-provider replication of the
-  action-plus-carrier component, not portal or navigation authority.
+  action-plus-carrier component, not portal or navigation authority. A bounded
+  three-view memory did not repair the frozen PV28 carrier failure: all `9/9`
+  positive combinations remained zero-cycle, although all `6/6` cross-family
+  controls were rejected. More views of the same pixel carrier are frozen as
+  the wrong repair layer for that family.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -4094,6 +4098,20 @@ initial reference binding. It adds no provider independence, raw-camera
 referent acquisition, named-entrance ownership/access, waypoint, arrival,
 handoff, deployment, user-benefit, reliability, or safety authority.
 
+To test whether the earlier PV28 failure was merely a single-view memory
+problem, an Exa-guided Development successor applied the object-map principle
+from CLOVER/MapCLOVER and the universal-instance-association principle from
+MASA without changing the carrier. A geometry/depth-only greedy three-view
+portfolio increased cumulative visible-target coverage from `0.230088` to
+`0.386431` on the reference scan and from `0.208738` to `0.393204` on the query
+scan. The fully frozen `3 x 3` positive panel plus two controls per reference
+then produced zero cycles on every positive: `0/9` commits, alongside `0/6`
+cross-family false commits. Two execution receipts preserve the pre-model image-
+cardinality abort and the consumed first zero-cycle row; ordered resume did not
+rerun that pair. This falsifies bounded multi-view expansion of the unchanged
+pixel-cycle carrier on PV28. It does not falsify learned instance memory; that
+is now the justified next representation layer.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4178,6 +4196,19 @@ Evidence:
   `f9c387ef6b464d3e1e450eda8edb1a017831249446df9bb859a1719f5248af72`,
   `fa66c51137215bd87e984e70660041125c7e19fd8dd910aab7551875d2667de0`,
   and `562735b9a4a8e2dd574cda5dd159681a48d94c14155b50a8d03af9a20e462b47`;
+- PV28 multi-view memory source protocol/result, freeze implementation/protocol/
+  cohort, runtime loader, two execution receipts, and carrier protocol/result
+  SHA-256:
+  `674847424dc7297449f92ad3e0cfbe47f96923b4a6ea9ac5492365eed8900722`,
+  `8264e62535293fc898d25ef053b27bb7397a5e86f93ea3324671c848b1b0068d`,
+  `eb4d1b1c42113873fa01d6790d0bd313dc905d2b252849d4399b4a00d11cf2fb`,
+  `e6209a378b27dc092c02efdec6660618ed509430afbb1ec91b2626c0e92bb183`,
+  `4a726a1d97b8979d343b3aefcfcb9866e8267f1b48291408a977a0be648d227a`,
+  `75c1590510aac366e6f4f82821d99f3becb95241f9e6df27efc273a068ea767a`,
+  `cdd9c1b58d8b25394360d43c1206866e13314c27ab972267b96f6764304ae157`,
+  `afc222cf391445fa90c139215dc7e0dcd7bda8622b42093e117e511cbd655dab`,
+  `f89511e091d330518c119f6e6b8270a3276fc77c06e7062eada9c6ebba02ab58`,
+  and `c3ff6a38960963a206bfda4f76c20c2a41375b50e49ac03e36c4203ab1153968`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

@@ -1,0 +1,15 @@
+{
+  "schema": "blindassist-l10-execution-failure-v1",
+  "authority": "PRE_MODEL_MECHANICAL_EXECUTION_FAILURE",
+  "recorded_at": "2026-09-01T07:38:40+08:00",
+  "protocol_path": "l10_3rscan_pv28_multiview_memory_carrier_protocol_v1.json",
+  "protocol_sha256_at_failure": "fd4a21db4d543a08374d8d1f910d662ec7fb327dea9222f2e16bcad2ee19937d",
+  "implementation_path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+  "implementation_sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4",
+  "terminal_state": "ABORTED_BEFORE_RGB_OR_MODEL_LOAD",
+  "error_class": "ValueError",
+  "error_message": "IMAGE_COUNT",
+  "failure_location": "The inherited single-pair image loader required exactly six cohort images; the frozen three-view memory cohort contains ten images.",
+  "decision_impact": "No frozen image was opened and no model was loaded or called. The successor loader removes only the exact-six assertion while preserving every image receipt, pair, model, carrier calculation, threshold and gate.",
+  "claim_boundary": "This receipt proves only a mechanical pre-model abort. It is not a model result and does not count as a pass or failure of the frozen memory decision gate."
+}
