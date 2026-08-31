@@ -29,10 +29,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   precision also missed the frozen 85% floor. Consumed diagnosis then produced
   X67, which separates existence from route-risk authority only after a dormant
   track was reactivated and lost again beyond the inherited measurement hold
-  horizon with receding direction-only motion. Across C26/C27/C28/C32/C34 it
-  was identical on four cohorts and improved C34 by `0 TP / -4 FP / +0.97 pp
-  F1`, reaching `85.23/73.84/79.13%`. This is cross-cohort non-regressing
-  Development, not fresh X67 confirmation.
+  horizon with receding direction-only motion. X68 then preserves each surface
+  footprint but uses a same-direction, lateral-nonexpanding object-local metric
+  velocity to remove lattice-quantized near-miss motion. Across
+  C26/C27/C28/C32/C34, X68 improved four cohorts and was classification-neutral
+  on one: pooled `636 TP / 63 FP / 227 FN`, or `90.99/73.70/81.43%`, for
+  `0 TP / -15 FP / +0.77 pp F1` over X67. C34 reached
+  `88.19/73.84/80.38%`. This is cross-cohort non-regressing Development, not
+  fresh X68 confirmation.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -50,11 +54,12 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C34 as confirmation. X67 removes its four-frame stale
-   post-contact tail without cross-cohort regression. Continue consumed
-   Development against the remaining `45 FN / 22 FP`, prioritizing object-local
-   surface-versus-metric near-miss disagreement; require visible cross-cohort
-   effect before freezing a new confirmation source.
+4. Do not rerun or tune C34 as confirmation. X68 resolves the object-local
+   surface-versus-metric lateral disagreement across four cohorts without true
+   positive loss. Continue consumed Development against the remaining pooled
+   `227 FN / 63 FP` (C34 `45 FN / 17 FP`), prioritizing missed contact onset;
+   require another visible cross-cohort effect before freezing a new
+   confirmation source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -95,3 +100,5 @@ their result.
   [DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md)
 - X67 consumed cross-cohort Development:
   [DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- X68 consumed cross-cohort Development:
+  [DTR_CARLA_X68_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X68_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
