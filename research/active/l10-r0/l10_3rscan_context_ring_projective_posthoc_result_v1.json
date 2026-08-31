@@ -1,0 +1,154 @@
+{
+  "schema": "blindassist-l10-3rscan-context-ring-projective-posthoc-result-v1",
+  "authority": "CONSUMED_SC34_CONTEXT_RING_PROJECTIVE_POSTHOC_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_context_ring_projective_posthoc_protocol_v1.json",
+  "protocol_sha256": "48872bf370d7ab48ef78d3be9d27df4743a56f195c8483334a533923aaaa84a1",
+  "implementation": {
+    "path": "l10_3rscan_context_ring_projective_posthoc.py",
+    "sha256": "09a053fd8f89ec74eb72b00a44a66eb9683544227931b3b2c0ae061ccee76c7c"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_projective_extent_posthoc_result_v1.json",
+    "sha256": "a96a03c0274c3fd952c131a9bdcf978c0a617bf6b5e5ea9e45b4bc36651634f3"
+  },
+  "conclusion": "L10_3RSCAN_CONTEXT_RING_PROJECTIVE_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "positive_pairs": 1,
+    "positive_commits": 0,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 0,
+    "target_internal_affine_extent_iou": 0.06523800567824538,
+    "target_internal_projective_extent_iou": 0.08183202442577928,
+    "context_ring_projective_extent_iou": 0.09411212961861008
+  },
+  "decision": {
+    "id": "P_SC34_SC34",
+    "label": "target_present",
+    "target_identity_cycle_opportunity": true,
+    "context_cycle_support": true,
+    "context_component_support": true,
+    "context_projective_inlier_support": true,
+    "context_extent_gate": false,
+    "commit": false
+  },
+  "context_receipt": {
+    "selection_authority": "DETERMINISTIC_TARGET_EXCLUDED_TWO_X_CONTEXT_RING_LARGEST_CYCLE_COMPONENT_USAC_MAGSAC",
+    "support_mask_sha256": "0b8c4257982ab452129cdb0ea74e803601bcbf0cf2fb8fb49ae0b441b4313160",
+    "support_mask_pixels_at_match_resolution": 223762,
+    "extent_mask_pixels_at_match_resolution": 79163,
+    "high_certainty_pixels": 71477,
+    "all_cycle_pixels": 22575,
+    "all_cycle_fraction": 0.10088844397171995,
+    "all_cycle_purity": 0.315835863284693,
+    "component": {
+      "component_count": 10,
+      "selected_label": 1,
+      "selected_pixels": 19297
+    },
+    "selected_component_fraction_of_cycles": 0.8547951273532669,
+    "homography": [
+      [
+        1.126567884003329,
+        -0.07371317951431768,
+        142.24652502343537
+      ],
+      [
+        -0.3446006553378868,
+        1.3042499281801505,
+        183.82634752270235
+      ],
+      [
+        -0.0003871550117872695,
+        -0.0002392326094717635,
+        0.9999999999999999
+      ]
+    ],
+    "homography_rank": 3,
+    "magsac_reprojection_threshold_pixels": 6.0,
+    "homography_inliers": 17941,
+    "homography_inlier_fraction": 0.9297300098460901,
+    "homography_inlier_mean_residual_pixels": 1.5430402418437335,
+    "homography_inlier_max_residual_pixels": 5.999804122497444,
+    "projected_bound_extent_corners_match_pixels": [
+      [
+        299.02445474832973,
+        402.98457334922983
+      ],
+      [
+        768.7930190258903,
+        331.67504880379494
+      ],
+      [
+        808.3093366759389,
+        827.7831489428509
+      ],
+      [
+        298.3509902574827,
+        836.3279576833573
+      ]
+    ],
+    "prompt_box_xyxy": [
+      331.5011002860919,
+      207.29690550237186,
+      898.1214851954877,
+      522.7049735520983
+    ],
+    "context_outer_box_xyxy": [
+      0.0,
+      26.28803253173828,
+      640.8980026245117,
+      353.6158218383789
+    ],
+    "context_ring_pixels": 155472,
+    "target_bbox_iou_evaluation_only": 0.09411212961861008,
+    "target_bbox_recall_evaluation_only": 0.6985878846979968,
+    "prompt_bbox_precision_evaluation_only": 0.09809534370798449
+  },
+  "inherited_negative_decisions": {
+    "N_SC34_NC31": {
+      "id": "N_SC34_NC31",
+      "reference_episode": "SC34",
+      "query_episode": "NC31",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "local_commit": false,
+      "strong_local_direct_exit": false,
+      "corroboration_requested": false,
+      "corroboration_status": "NOT_REQUESTED_LOCAL_NON_COMMIT",
+      "commit": false,
+      "correct": true
+    },
+    "N_SC34_NC08": {
+      "id": "N_SC34_NC08",
+      "reference_episode": "SC34",
+      "query_episode": "NC08",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "local_commit": false,
+      "strong_local_direct_exit": false,
+      "corroboration_requested": false,
+      "corroboration_status": "NOT_REQUESTED_LOCAL_NON_COMMIT",
+      "commit": false,
+      "correct": true
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 1,
+    "sam2_calls": 0,
+    "grounding_dino_calls": 0
+  },
+  "literature_motivation": {
+    "context_desc": "https://openaccess.thecvf.com/content_CVPR_2019/papers/Luo_ContextDesc_Local_Descriptor_Augmentation_With_Cross-Modality_Context_CVPR_2019_paper.pdf",
+    "repeated_structure_context": "https://openaccess.thecvf.com/content_iccv_2013/papers/Wilson_Network_Principles_for_2013_ICCV_paper.pdf",
+    "used_principle": "Locally indistinguishable repeated features require surrounding visual/geometric context; different background context can expose an otherwise stable bad track."
+  },
+  "claim_boundary": "This is a consumed SC34 posthoc Development test of one deterministic target-excluded context carrier. A pass can show only that surrounding context repairs this observed repeated-structure failure. It is not fresh confirmation, provider independence, raw-camera initial binding, arbitrary sibling rejection, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety evidence."
+}

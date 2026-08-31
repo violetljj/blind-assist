@@ -1,0 +1,75 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-observation-adequacy-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T06:41:00+08:00",
+  "question": "Was the consumed SC34 positive observation actually adequate for exact-instance visual binding, or can a bounded active view recover adequate projected target support without RGB or model access?",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_posthoc.py",
+    "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    }
+  ],
+  "source_cohort": {
+    "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_context_ring_projective_posthoc_result_v1.json",
+    "sha256": "83a5f166ae9f3c025dfb51fdf67b025dc8b05dba5564cac1fb20dba8bc5cbfaf",
+    "required_conclusion": "L10_3RSCAN_CONTEXT_RING_PROJECTIVE_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "Target-internal and target-excluded geometry both formed high-consistency projective fits on a different repeated structure while the true SC34 query extent was a bottom-edge sliver."
+  },
+  "source": {
+    "authority": "CONSUMED_SC34_GEOMETRY_ONLY_OBSERVATION_ADEQUACY_AUDIT",
+    "artifact_root": "artifacts.local",
+    "episode_id": "SC34",
+    "files": [
+      {
+        "path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/labels.instances.annotated.v2.ply",
+        "bytes": 4380887,
+        "sha256": "a4e6e1e5cd6976258c95864bec901ec91e5641fe04eea4ae225640ad0351825b"
+      },
+      {
+        "path": "datasets/3rscan/1c211548-f201-2d25-8686-8e8069116451/sequence.zip",
+        "bytes": 24179764,
+        "sha256": "1c4cadf13b37b34c4ff42652de5f8b5ca34944d5091d3d4bd0a96491217eef29"
+      }
+    ],
+    "inherited_frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15
+    }
+  },
+  "observation_adequacy": {
+    "maximum_camera_translation_metres": 1.1,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "selection": "Among inherited-source-admitted views within 1.1 m of primary frame 39, admit only views whose projected target bbox short side covers at least one tenth of the image short side and whose bbox aspect ratio is at most 8. Rank by short-side fraction, depth-visible ratio, visible vertices, projected area, margin, shorter motion, then earlier frame.",
+    "threshold_authority": "One scale-normalized minimum spatial-support rule and one permissive anti-sliver aspect rule were fixed after inspecting the SC34 geometry and before enumerating any alternative query pose; no RGB, model output, threshold sweep or alternative-frame outcome selected them."
+  },
+  "literature_motivation": {
+    "next_best_view_object_visibility": "https://ceur-ws.org/Vol-1782/paper_6.pdf",
+    "active_3d_classification_visibility": "https://openaccess.thecvf.com/content_ICCVW_2019/papers/ACVR/Wang_Active_3D_Classification_of_Multiple_Objects_in_Cluttered_Scenes_ICCVW_2019_paper.pdf",
+    "used_principle": "Active recognition should reason about target visibility and projected support at candidate views; a large but extremely foreshortened projected hull is not equivalent to an informative target observation."
+  },
+  "forbidden_after_freeze": [
+    "change the 1.1 m motion bound, 0.1 short-side fraction, aspect ratio 8, inherited source rules or ranking after enumerating alternative frames",
+    "open RGB, run RoMa, SAM, DINO, SALAD or MixVPR during this source audit",
+    "reinterpret UNKNOWN or NOT_EVALUABLE as a negative, known-safe or algorithm failure",
+    "erase or rewrite the already consumed SC34 confirmation result"
+  ],
+  "claim_boundary": "This is a consumed-source, geometry/depth-only Development audit of whether SC34 exposes enough projected exact-target support in the primary view or within one bounded 1.1 m active observation. It can change the interpretation of SC34 transfer evidence and successor source admission, but cannot make the consumed cohort fresh, prove a deployed active-view policy, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, product benefit, reliability or safety."
+}

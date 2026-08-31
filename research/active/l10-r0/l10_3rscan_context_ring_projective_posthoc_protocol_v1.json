@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-3rscan-context-ring-projective-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-context-ring-projective-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T06:33:00+08:00",
+  "question": "Can one fixed target-excluded central-surround context ring disambiguate the repeated SC34 structure and transport its bound extent where target-internal affine and projective fits failed?",
+  "implementation": {
+    "path": "l10_3rscan_context_ring_projective_posthoc.py",
+    "sha256": "09a053fd8f89ec74eb72b00a44a66eb9683544227931b3b2c0ae061ccee76c7c"
+  },
+  "predecessor": {
+    "result_path": "l10_3rscan_projective_extent_posthoc_result_v1.json",
+    "result_sha256": "a96a03c0274c3fd952c131a9bdcf978c0a617bf6b5e5ea9e45b4bc36651634f3",
+    "required_conclusion": "L10_3RSCAN_PROJECTIVE_EXTENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "failure_attribution": "The target-internal cycle component produced a 94.2%-inlier homography but remained bound to the wrong repeated structure at 0.081832 target extent IoU."
+  },
+  "local_carrier_protocol_path": "l10_3rscan_selective_cascade_confirmation_local_protocol_v1.json",
+  "local_carrier_protocol_sha256": "41a26f2a4a7bf41920dc30d735630c30d60437df67144e927a4d423ee5c95eda",
+  "context_carrier": {
+    "outer_scale": 2.0,
+    "definition": "Center one rectangle with twice the bound target width and height on the reference target, clip it to the image, and subtract the bound target rectangle. Use no SAM, semantics, query truth or alternate scale.",
+    "scale_origin": "One central-surround doubling, not a tuned or swept radius."
+  },
+  "projective_model": {
+    "family": "OpenCV USAC_MAGSAC homography",
+    "input": "Largest 8-connected coherent-cycle component inside the fixed target-excluded context ring.",
+    "reprojection_threshold_pixels": 6.0,
+    "threshold_origin": "Reuse the frozen six-pixel cycle-error scale; no numeric sweep.",
+    "rng_seed": 0,
+    "max_iterations": 10000,
+    "confidence": 0.999,
+    "extent": "Project the original bound target rectangle through the context homography; query truth is evaluation-only."
+  },
+  "literature_motivation": {
+    "context_desc": "https://openaccess.thecvf.com/content_CVPR_2019/papers/Luo_ContextDesc_Local_Descriptor_Augmentation_With_Cross-Modality_Context_CVPR_2019_paper.pdf",
+    "repeated_structure_context": "https://openaccess.thecvf.com/content_iccv_2013/papers/Wilson_Network_Principles_for_2013_ICCV_paper.pdf",
+    "used_principle": "Locally indistinguishable repeated features require surrounding visual/geometric context; different background context can expose an otherwise stable bad track."
+  },
+  "evaluation": {
+    "positive_pair_id": "P_SC34_SC34",
+    "negative_decisions": "Inherit the two zero-cycle cross-scene non-commits unchanged."
+  },
+  "decision_gate": {
+    "minimum_context_cycle_fraction": 0.01,
+    "minimum_context_component_cycle_fraction": 0.5,
+    "minimum_projective_inlier_fraction": 0.5,
+    "minimum_positive_extent_target_bbox_iou": 0.5,
+    "maximum_target_absent_false_commits": 0
+  },
+  "forbidden_after_freeze": [
+    "change or sweep the ring scale, correspondence, component, homography or threshold",
+    "include target pixels in the context ring or add query truth, semantics or provider geometry to the decision",
+    "change either inherited negative decision",
+    "retry a different ring, context descriptor or fit after observing SC34"
+  ],
+  "claim_boundary": "This is a consumed SC34 posthoc Development test of one deterministic target-excluded context carrier. A pass can show only that surrounding context repairs this observed repeated-structure failure. It is not fresh confirmation, provider independence, raw-camera initial binding, arbitrary sibling rejection, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety evidence."
+}

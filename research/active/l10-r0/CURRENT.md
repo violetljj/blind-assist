@@ -182,7 +182,20 @@ contract.
   mean inlier residual, extent IoU reached only `0.081832`. Record both
   `L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_SCAN_FAMILY_CHALLENGE_GATE_NOT_MET`
   and `L10_3RSCAN_PROJECTIVE_EXTENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET`. The stable
-  cycles bind the wrong repeated structure; stop changing geometric fit family.
+  cycles bind the wrong repeated structure. A target-excluded `2x` context ring
+  then produced `0.929730` homography inliers and `1.543 px` mean residual but
+  only `0.094112` extent IoU, so surrounding same-RoMa context is not an
+  independent instance cue either. Stop changing geometric fit family.
+
+  A geometry/depth-only observation-adequacy audit then found the actual source
+  defect. SC34 query truth is a bottom-edge sliver: bbox short side `44.693 px`
+  (`0.082765` of the image short side) and aspect ratio `12.5635`. Within `1.1 m`
+  of the primary pose, `143` poses were checked, only the original view passed
+  the inherited selector, and `0` views passed the frozen `0.1` short-side plus
+  aspect-at-most-`8` adequacy rule. No RGB or model was opened. Record
+  `L10_3RSCAN_SC34_SOURCE_NOT_EVALUABLE_WITHIN_BOUNDED_ACTIVE_OBSERVATION`:
+  SC34 is not positive transfer evidence and is not an algorithm-negative row.
+  Apply the adequacy rule before RGB/model access to the successor source.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

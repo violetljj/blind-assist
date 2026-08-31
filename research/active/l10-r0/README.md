@@ -3995,7 +3995,27 @@ strong (`0.942384` inliers, `1.452 px` mean and `5.997 px` maximum inlier
 residual), but target extent IoU improved only `0.065238 -> 0.081832`. Record
 `L10_3RSCAN_PROJECTIVE_EXTENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET` and freeze both
 affine and projective geometry as insufficient for this repeated-structure
-failure. Following that attribution, the official downloader added the
+failure. A second single-change posthoc used a deterministic target-excluded
+`2x` context ring. That larger support still formed a highly consistent wrong
+homography (`0.929730` inliers, `1.543 px` mean residual) and reached only
+`0.094112` extent IoU. Record
+`L10_3RSCAN_CONTEXT_RING_PROJECTIVE_POSTHOC_DEVELOPMENT_GATE_NOT_MET`; same-RoMa
+surrounding context is not an independent exact-instance source.
+
+The next geometry/depth-only audit evaluated observation adequacy before any
+new appearance call. The SC34 query target is a bottom-edge sliver with a
+`44.693 px` bbox short side (`0.082765` of the image short side) and `12.5635`
+aspect ratio. Within `1.1 m`, `143` poses were opened; only the original view
+passed the inherited selector and no view passed a frozen scale-normalized
+minimum short-side fraction of `0.1` plus permissive maximum aspect ratio `8`.
+RGB/model calls remained zero. Record
+`L10_3RSCAN_SC34_SOURCE_NOT_EVALUABLE_WITHIN_BOUNDED_ACTIVE_OBSERVATION`.
+This preserves the earlier consumed result but removes SC34 from positive
+algorithm-transfer interpretation: `NOT_EVALUABLE` is neither a negative nor a
+known-safe row. Successor 3RScan admission must apply the adequacy rule before
+opening pixels or models.
+
+Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
 candidates, so no model calls were spent on that family. The next admissible
@@ -4027,6 +4047,14 @@ Evidence:
   `9f8c7b90c7852d7bff01f101894bcafd3917f15c2372d66face6161676235358`,
   `264becf3d7badfb91e71f3998c7fc7cfb92e961c9ef59ac27f8b0ffa29b3e0f2`,
   and `a96a03c0274c3fd952c131a9bdcf978c0a617bf6b5e5ea9e45b4bc36651634f3`;
+- context-ring projective implementation/protocol/result SHA-256:
+  `09a053fd8f89ec74eb72b00a44a66eb9683544227931b3b2c0ae061ccee76c7c`,
+  `48872bf370d7ab48ef78d3be9d27df4743a56f195c8483334a533923aaaa84a1`,
+  and `83a5f166ae9f3c025dfb51fdf67b025dc8b05dba5564cac1fb20dba8bc5cbfaf`;
+- observation-adequacy implementation/protocol/result SHA-256:
+  `85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775`,
+  `b9985d870f81f5a39270cfcfeff344ede23ce99b9b9f4c3c71e3c8689174a984`,
+  and `a24b89fa4bdd93ae2e8934ef8fd9f4fefd50322eaa06733bfd8a27eed8fcdc11`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

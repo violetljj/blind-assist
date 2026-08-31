@@ -1,0 +1,63 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-posthoc-result-v1",
+  "authority": "CONSUMED_SC34_GEOMETRY_ONLY_OBSERVATION_ADEQUACY_POSTHOC_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_observation_adequacy_posthoc_protocol_v1.json",
+  "protocol_sha256": "b9985d870f81f5a39270cfcfeff344ede23ce99b9b9f4c3c71e3c8689174a984",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_posthoc.py",
+    "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"
+  },
+  "conclusion": "L10_3RSCAN_SC34_SOURCE_NOT_EVALUABLE_WITHIN_BOUNDED_ACTIVE_OBSERVATION",
+  "primary_observation_adequate": false,
+  "bounded_active_recovery_available": false,
+  "metrics": {
+    "poses_opened": 143,
+    "depth_members_opened": 102,
+    "inherited_source_admitted_views": 1,
+    "observation_adequate_views": 0,
+    "rgb_members_opened": 0,
+    "model_calls": 0
+  },
+  "rules": {
+    "maximum_camera_translation_metres": 1.1,
+    "minimum_projected_bbox_short_side_fraction": 0.1,
+    "maximum_projected_bbox_aspect_ratio": 8.0,
+    "selection": "Among inherited-source-admitted views within 1.1 m of primary frame 39, admit only views whose projected target bbox short side covers at least one tenth of the image short side and whose bbox aspect ratio is at most 8. Rank by short-side fraction, depth-visible ratio, visible vertices, projected area, margin, shorter motion, then earlier frame.",
+    "threshold_authority": "One scale-normalized minimum spatial-support rule and one permissive anti-sliver aspect rule were fixed after inspecting the SC34 geometry and before enumerating any alternative query pose; no RGB, model output, threshold sweep or alternative-frame outcome selected them."
+  },
+  "primary": {
+    "frame": 39,
+    "baseline_metres": 0.0,
+    "color_size": [
+      960,
+      540
+    ],
+    "inside_vertices": 386,
+    "inside_vertex_fraction": 1.0,
+    "projected_area_pixels": 19025.322973514907,
+    "image_margin_pixels": 3.1590576171875,
+    "bbox_xyxy": [
+      342.58160400390625,
+      491.1477966308594,
+      904.083740234375,
+      535.8409423828125
+    ],
+    "depth_compared_vertices": 351,
+    "depth_visible_vertices": 346,
+    "depth_visible_ratio": 0.9857549857549858,
+    "bbox_width_pixels": 561.5021362304688,
+    "bbox_height_pixels": 44.693145751953125,
+    "bbox_short_side_pixels": 44.693145751953125,
+    "bbox_short_side_fraction": 0.08276508472583911,
+    "bbox_aspect_ratio": 12.563495515549622,
+    "observation_adequate": false
+  },
+  "best_bounded_adequate_view": null,
+  "literature_motivation": {
+    "next_best_view_object_visibility": "https://ceur-ws.org/Vol-1782/paper_6.pdf",
+    "active_3d_classification_visibility": "https://openaccess.thecvf.com/content_ICCVW_2019/papers/ACVR/Wang_Active_3D_Classification_of_Multiple_Objects_in_Cluttered_Scenes_ICCVW_2019_paper.pdf",
+    "used_principle": "Active recognition should reason about target visibility and projected support at candidate views; a large but extremely foreshortened projected hull is not equivalent to an informative target observation."
+  },
+  "decision": "Do not use SC34 as positive algorithm-transfer evidence when neither the primary nor any bounded active view supplies adequate projected target support. Apply the frozen adequacy rule before RGB/model access to successor source selection.",
+  "claim_boundary": "This is a consumed-source, geometry/depth-only Development audit of whether SC34 exposes enough projected exact-target support in the primary view or within one bounded 1.1 m active observation. It can change the interpretation of SC34 transfer evidence and successor source admission, but cannot make the consumed cohort fresh, prove a deployed active-view policy, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, product benefit, reliability or safety."
+}
