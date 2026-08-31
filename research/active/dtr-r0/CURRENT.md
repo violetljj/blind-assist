@@ -16,16 +16,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
   `8/18` dropout recovery. This is a same-source Development pass only.
-- **CARLA algorithm line:** X59 failed its fresh C28 mixed-lighting gate, but
-  the failure localized two representation defects. X64 corrects them with a
-  synchronized conflict handback and an unanchored cross-route permanence
-  release. On consumed C26/C27/C28 it reached respectively `86.30/72.83/79.00`,
-  `89.36/72.83/80.25`, and `89.93/72.25/80.13` percent precision/recall/F1,
-  with every reference check met. Frozen X64 then reached
-  `94.35/68.02/79.05` on fresh C32, `+6 TP / +1 FP` versus X54, with all
-  authority invariants zero. C32 exercised neither new mechanism and two
-  contact episodes remained at 50% recall, so its terminal is
-  `DTR_CARLA_C32_X64_MECHANISM_NOT_EXERCISED`, not fresh promotion authority.
+- **CARLA algorithm line:** X64 reached `94.35/68.02/79.05` percent
+  precision/recall/F1 on fresh C32 but did not exercise its new mechanisms.
+  Consumed diagnosis localized the remaining ep_05/ep_07 gap to loss of prior
+  cross-representation agreement at an X44 conflict. X65 adds a pre-conflict
+  joint credential plus a current measured suppressed-lineage join. Across
+  consumed C26/C27/C28/C32 it improved three cohorts, tied one, regressed none,
+  and pooled `+15 TP / +0 FP / +1.44 pp F1` over X64. C32 reached
+  `94.78/73.84/83.01`, with ep_05/ep_07 recall `56.52/64.58%`, all authority
+  invariants zero, and no added FP. This is consumed Development evidence, not
+  fresh promotion authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -43,10 +43,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Treat C32 as consumed diagnostic material. Localize the ep_05/ep_07
-   visibility-to-route-risk gap and make one structural algorithm change
-   without weather labels or weaker authority invariants. Any subsequent
-   confirmation needs a new frozen source; do not rescore C32 as fresh.
+4. Freeze X65 before its next scored model invocation. Admit one genuinely new
+   source-disjoint cohort that passes the physical source gate and exercises
+   the pre-conflict credentialed handback. Do not rescore C26-C28 or C32 as
+   fresh authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -77,3 +77,5 @@ their result.
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
   [DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md)
+- X65 consumed cross-cohort Development:
+  [DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
