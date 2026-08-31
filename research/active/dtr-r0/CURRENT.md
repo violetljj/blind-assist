@@ -1,6 +1,6 @@
 # DTR-R2 current
 
-Updated: 2026-08-31
+Updated: 2026-09-01
 
 Status: `DTR_R2_DYNAMIC_RETAINED`
 
@@ -21,8 +21,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
   synchronized conflict handback and an unanchored cross-route permanence
   release. On consumed C26/C27/C28 it reached respectively `86.30/72.83/79.00`,
   `89.36/72.83/80.25`, and `89.93/72.25/80.13` percent precision/recall/F1,
-  with every reference check met. This is multi-cohort post-hoc synthetic
-  Development evidence, not fresh promotion authority.
+  with every reference check met. Frozen X64 then reached
+  `94.35/68.02/79.05` on fresh C32, `+6 TP / +1 FP` versus X54, with all
+  authority invariants zero. C32 exercised neither new mechanism and two
+  contact episodes remained at 50% recall, so its terminal is
+  `DTR_CARLA_C32_X64_MECHANISM_NOT_EXERCISED`, not fresh promotion authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -40,9 +43,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Freeze X64 unchanged and run one new source-disjoint CARLA cohort containing
-   both longitudinal corridor occlusion and cross-route occlusion. Do not tune
-   X64 on consumed C26-C28.
+4. Treat C32 as consumed diagnostic material. Localize the ep_05/ep_07
+   visibility-to-route-risk gap and make one structural algorithm change
+   without weather labels or weaker authority invariants. Any subsequent
+   confirmation needs a new frozen source; do not rescore C32 as fresh.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -71,3 +75,5 @@ their result.
   [DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md](carla/DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
+- X64 C29-C32 fresh confirmation:
+  [DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md)
