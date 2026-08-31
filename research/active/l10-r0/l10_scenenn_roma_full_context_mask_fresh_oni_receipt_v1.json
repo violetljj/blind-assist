@@ -1,0 +1,25 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-fresh-oni-receipt-v1",
+  "authority": "POST_FRESH_COHORT_FREEZE_OFFICIAL_ONI_SOURCE_RECEIPT",
+  "materialized_at": "2026-09-01T03:22:00+08:00",
+  "cohort_path": "l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+  "cohort_sha256": "711e85ef355bcda520cc738172c076cabb486a9fefc1dfd0ba6aaaee97c5d7dd",
+  "mechanical_amendment": {
+    "cohort_sha256_before": "67f5fd1e48b98bd84f9d2438b05e5f2d67da6ef2e6f0570608bd905f5d5b7339",
+    "reason": "Pre-model renderer namespace alias only; downloaded ONI bytes and hashes are unchanged."
+  },
+  "source_root": "artifacts.local/sources/l10-scenenn-roma-full-context-mask-fresh-v1",
+  "downloader": {
+    "path": "C:/Windows/System32/curl.exe",
+    "transport": "official HTTPS object resumed by exact local byte offset after cohort freeze; final size and SHA-256 verified"
+  },
+  "files": {
+    "005": {"relative_path": "payload/005/005.oni", "bytes": 1863571168, "sha256": "ebfff4f641360cb1867c29a9e9e81338577c54433636654106fabbed14ce4ca0"},
+    "074": {"relative_path": "payload/074/074.oni", "bytes": 1553661552, "sha256": "89ec8273a216e491752d75f4fcee0c2e5e2318c16b33064fbcda6e6f40b59650"},
+    "076": {"relative_path": "payload/076/076.oni", "bytes": 3290768804, "sha256": "90ff47e397b141800c257d5db083c602469739d79af4cefd081c66c6b99fe46e"},
+    "109": {"relative_path": "payload/109/109.oni", "bytes": 1703387621, "sha256": "91254e5b54067994fe30320231098d16a2b8a55be1f2ca8bb747930e6f043721"}
+  },
+  "rgb_members_opened": 0,
+  "depth_members_opened": 0,
+  "model_calls": 0
+}

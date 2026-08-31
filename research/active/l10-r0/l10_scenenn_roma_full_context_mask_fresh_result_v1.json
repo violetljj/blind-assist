@@ -1,0 +1,1606 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-fresh-result-v1",
+  "authority": "FRESH_SOURCE_DISJOINT_FULL_CONTEXT_MASK_GATED_ROMA_NONE_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_scenenn_roma_full_context_mask_fresh_protocol_v1.json",
+  "protocol_sha256": "f28ace9e096e42ae6435305a7c78c66e3247eec6eeef07b4b379c04610689059",
+  "implementation": {
+    "path": "l10_scenenn_roma_full_context_mask_fresh.py",
+    "sha256": "5033bceb4f481435ef9ab04605fa4def912401520af8567a39e02307e1e8057d"
+  },
+  "source": {
+    "cohort_path": "l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+    "cohort_sha256": "711e85ef355bcda520cc738172c076cabb486a9fefc1dfd0ba6aaaee97c5d7dd",
+    "rgb_receipt_path": "l10_scenenn_roma_full_context_mask_fresh_rgb_receipt_v1.json",
+    "rgb_receipt_sha256": "ff764bf0e3c24dd710379a37feb1aa0eb3d54508e837275078b2ed9a6980f03e",
+    "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-scenenn-roma-full-context-mask-fresh-v1"
+  },
+  "conclusion": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "aggregate": {
+      "true_positive": 34,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "zero_assignment_exact_scenarios": 15,
+      "scenarios": 15
+    },
+    "scenarios": [
+      {
+        "id": "closed-four",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153779,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.510029,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 4,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "query-extra",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153779,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.510029,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "reference-extra",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153779,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.510029
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 3,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF02",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.510029,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF03",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.153779,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF01-FF04",
+        "reference_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.153779,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.510029
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF01"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF01"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.510029,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF03",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF02-FF04",
+        "reference_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.510029
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF02"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF02"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.153779,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF02",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.400254
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF04",
+                "query": "FF04"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF03-FF04",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153779,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF04"
+            ],
+            "predicted_unmatched_queries": [
+              "FF03"
+            ],
+            "truth_unmatched_references": [
+              "FF04"
+            ],
+            "truth_unmatched_queries": [
+              "FF03"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF01",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF02",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.153779,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.510029,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF01"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF01"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF02",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF03",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.510029,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF03",
+                "query": "FF03"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF02"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF02"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      },
+      {
+        "id": "balanced-swap-FF04-FF03",
+        "reference_targets": [
+          "FF01",
+          "FF02",
+          "FF03"
+        ],
+        "query_targets": [
+          "FF01",
+          "FF02",
+          "FF04"
+        ],
+        "full_context_mask_gated_roma_matrix": [
+          [
+            0.602389,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.153779,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "methods": {
+          "full_context_mask_gated_roma_reciprocal": {
+            "true_positive": 2,
+            "false_positive": 0,
+            "false_negative": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "reference": "FF01",
+                "query": "FF01"
+              },
+              {
+                "reference": "FF02",
+                "query": "FF02"
+              }
+            ],
+            "predicted_unmatched_references": [
+              "FF03"
+            ],
+            "predicted_unmatched_queries": [
+              "FF04"
+            ],
+            "truth_unmatched_references": [
+              "FF03"
+            ],
+            "truth_unmatched_queries": [
+              "FF04"
+            ],
+            "zero_assignment_exact": true
+          }
+        }
+      }
+    ],
+    "full_matrix": [
+      [
+        0.602389,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.153779,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.510029,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.400254
+      ]
+    ],
+    "pair_diagnostics": {
+      "FF01->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.12869010865688324,
+          "source_mask_count": 58989,
+          "high_count": 32208,
+          "high_fraction": 0.5460001017138788,
+          "target_mask_hit_count": 32135,
+          "target_mask_hit_fraction": 0.5447625828544305,
+          "cycle_count": 31474,
+          "cycle_fraction": 0.5335571038668226,
+          "cycle_purity": 0.9772106308991555
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.20132732391357422,
+          "source_mask_count": 66302,
+          "high_count": 49103,
+          "high_fraction": 0.7405960604506652,
+          "target_mask_hit_count": 47338,
+          "target_mask_hit_fraction": 0.7139754456879129,
+          "cycle_count": 45092,
+          "cycle_fraction": 0.6801001478085126,
+          "cycle_purity": 0.9183145632649736
+        },
+        "symmetric_cycle_score": 0.6023887990360611,
+        "absolute_support": true
+      },
+      "FF01->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.003576382528990507,
+          "source_mask_count": 58989,
+          "high_count": 249,
+          "high_fraction": 0.004221125972638967,
+          "target_mask_hit_count": 218,
+          "target_mask_hit_fraction": 0.003695604265201987,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.022244179621338844,
+          "source_mask_count": 79091,
+          "high_count": 7444,
+          "high_fraction": 0.09411943204662983,
+          "target_mask_hit_count": 2097,
+          "target_mask_hit_fraction": 0.02651376262785905,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF01->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.016173258423805237,
+          "source_mask_count": 58989,
+          "high_count": 2585,
+          "high_fraction": 0.04382172947498686,
+          "target_mask_hit_count": 2570,
+          "target_mask_hit_fraction": 0.043567444777839935,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.023267142474651337,
+          "source_mask_count": 169994,
+          "high_count": 21010,
+          "high_fraction": 0.12359259738579009,
+          "target_mask_hit_count": 21003,
+          "target_mask_hit_fraction": 0.12355141946186336,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF01->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.023386677727103233,
+          "source_mask_count": 58989,
+          "high_count": 7128,
+          "high_fraction": 0.1208360880842191,
+          "target_mask_hit_count": 7115,
+          "target_mask_hit_fraction": 0.12061570801335843,
+          "cycle_count": 614,
+          "cycle_fraction": 0.010408720269880826,
+          "cycle_purity": 0.0861391694725028
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.04105988144874573,
+          "source_mask_count": 50849,
+          "high_count": 11329,
+          "high_fraction": 0.22279690849377567,
+          "target_mask_hit_count": 10458,
+          "target_mask_hit_fraction": 0.2056677614112372,
+          "cycle_count": 700,
+          "cycle_fraction": 0.013766249090444256,
+          "cycle_purity": 0.061788330832377086
+        },
+        "symmetric_cycle_score": 0.011970339842625004,
+        "absolute_support": false
+      },
+      "FF02->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.013391521759331226,
+          "source_mask_count": 154158,
+          "high_count": 4177,
+          "high_fraction": 0.02709557726488408,
+          "target_mask_hit_count": 3532,
+          "target_mask_hit_fraction": 0.022911558271383903,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.038198310881853104,
+          "source_mask_count": 66302,
+          "high_count": 19478,
+          "high_fraction": 0.2937769599710416,
+          "target_mask_hit_count": 19478,
+          "target_mask_hit_fraction": 0.2937769599710416,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF02->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.032413236796855927,
+          "source_mask_count": 154158,
+          "high_count": 15961,
+          "high_fraction": 0.10353663124845937,
+          "target_mask_hit_count": 14859,
+          "target_mask_hit_fraction": 0.09638812127816915,
+          "cycle_count": 12504,
+          "cycle_fraction": 0.08111158681352898,
+          "cycle_purity": 0.7834095608044609
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.15373112261295319,
+          "source_mask_count": 79091,
+          "high_count": 31868,
+          "high_fraction": 0.4029282724962385,
+          "target_mask_hit_count": 24283,
+          "target_mask_hit_fraction": 0.3070260838780645,
+          "cycle_count": 23059,
+          "cycle_fraction": 0.29155023959742576,
+          "cycle_purity": 0.7235785113593574
+        },
+        "symmetric_cycle_score": 0.1537793957902416,
+        "absolute_support": true
+      },
+      "FF02->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.0026663474272936583,
+          "source_mask_count": 154158,
+          "high_count": 0,
+          "high_fraction": 0.0,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.004264453891664743,
+          "source_mask_count": 169994,
+          "high_count": 70,
+          "high_fraction": 0.00041177923926726825,
+          "target_mask_hit_count": 70,
+          "target_mask_hit_fraction": 0.00041177923926726825,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF02->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.023825040087103844,
+          "source_mask_count": 154158,
+          "high_count": 17655,
+          "high_fraction": 0.11452535710115595,
+          "target_mask_hit_count": 16105,
+          "target_mask_hit_fraction": 0.10447073781445011,
+          "cycle_count": 48,
+          "cycle_fraction": 0.0003113688553302456,
+          "cycle_purity": 0.0027187765505522514
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.01008270401507616,
+          "source_mask_count": 50849,
+          "high_count": 2272,
+          "high_fraction": 0.04468131133355622,
+          "target_mask_hit_count": 2101,
+          "target_mask_hit_fraction": 0.041318413341461975,
+          "cycle_count": 53,
+          "cycle_fraction": 0.0010423017168479222,
+          "cycle_purity": 0.023327464788732395
+        },
+        "symmetric_cycle_score": 0.0005696843797083498,
+        "absolute_support": false
+      },
+      "FF03->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.09100182354450226,
+          "source_mask_count": 185997,
+          "high_count": 52201,
+          "high_fraction": 0.28065506432899456,
+          "target_mask_hit_count": 50792,
+          "target_mask_hit_fraction": 0.27307967332806443,
+          "cycle_count": 54,
+          "cycle_fraction": 0.00029032726334295714,
+          "cycle_purity": 0.0010344629413229633
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0662168636918068,
+          "source_mask_count": 66302,
+          "high_count": 36643,
+          "high_fraction": 0.552668094476788,
+          "target_mask_hit_count": 27990,
+          "target_mask_hit_fraction": 0.4221592108835329,
+          "cycle_count": 81,
+          "cycle_fraction": 0.0012216826038430214,
+          "cycle_purity": 0.0022105176977867532
+        },
+        "symmetric_cycle_score": 0.0005955566866784743,
+        "absolute_support": false
+      },
+      "FF03->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.00521415239199996,
+          "source_mask_count": 185997,
+          "high_count": 1761,
+          "high_fraction": 0.009467894643461991,
+          "target_mask_hit_count": 1761,
+          "target_mask_hit_fraction": 0.009467894643461991,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.007270956877619028,
+          "source_mask_count": 79091,
+          "high_count": 1382,
+          "high_fraction": 0.017473543133858467,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF03->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.1874091625213623,
+          "source_mask_count": 185997,
+          "high_count": 116820,
+          "high_fraction": 0.628074646365264,
+          "target_mask_hit_count": 115717,
+          "target_mask_hit_fraction": 0.6221444431899439,
+          "cycle_count": 88955,
+          "cycle_fraction": 0.47826040204949544,
+          "cycle_purity": 0.7614706385892827
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.31780076026916504,
+          "source_mask_count": 169994,
+          "high_count": 150202,
+          "high_fraction": 0.8835723613774604,
+          "target_mask_hit_count": 115770,
+          "target_mask_hit_fraction": 0.6810240361424521,
+          "cycle_count": 92461,
+          "cycle_fraction": 0.5439074320270127,
+          "cycle_purity": 0.6155776887125338
+        },
+        "symmetric_cycle_score": 0.5100288100871829,
+        "absolute_support": true
+      },
+      "FF03->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.00800127349793911,
+          "source_mask_count": 185997,
+          "high_count": 2179,
+          "high_fraction": 0.011715242718968585,
+          "target_mask_hit_count": 2179,
+          "target_mask_hit_fraction": 0.011715242718968585,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.004644081462174654,
+          "source_mask_count": 50849,
+          "high_count": 327,
+          "high_fraction": 0.006430804932250388,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF01": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.028172357007861137,
+          "source_mask_count": 50992,
+          "high_count": 7307,
+          "high_fraction": 0.14329698776278632,
+          "target_mask_hit_count": 6310,
+          "target_mask_hit_fraction": 0.12374490116096643,
+          "cycle_count": 842,
+          "cycle_fraction": 0.016512394101035457,
+          "cycle_purity": 0.11523196934446421
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.14315491914749146,
+          "source_mask_count": 66302,
+          "high_count": 54546,
+          "high_fraction": 0.8226901149286597,
+          "target_mask_hit_count": 54546,
+          "target_mask_hit_fraction": 0.8226901149286597,
+          "cycle_count": 1286,
+          "cycle_fraction": 0.019396096648668214,
+          "cycle_purity": 0.023576430902357642
+        },
+        "symmetric_cycle_score": 0.01789625636507766,
+        "absolute_support": false
+      },
+      "FF04->FF02": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.02067510411143303,
+          "source_mask_count": 50992,
+          "high_count": 5591,
+          "high_fraction": 0.10964465014119862,
+          "target_mask_hit_count": 0,
+          "target_mask_hit_fraction": 0.0,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.026010317727923393,
+          "source_mask_count": 79091,
+          "high_count": 8250,
+          "high_fraction": 0.10431022493077594,
+          "target_mask_hit_count": 6871,
+          "target_mask_hit_fraction": 0.0868746127878014,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF03": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.012396669946610928,
+          "source_mask_count": 50992,
+          "high_count": 731,
+          "high_fraction": 0.014335582052086602,
+          "target_mask_hit_count": 731,
+          "target_mask_hit_fraction": 0.014335582052086602,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.0076953452080488205,
+          "source_mask_count": 169994,
+          "high_count": 5583,
+          "high_fraction": 0.03284233561184512,
+          "target_mask_hit_count": 5583,
+          "target_mask_hit_fraction": 0.03284233561184512,
+          "cycle_count": 0,
+          "cycle_fraction": 0.0,
+          "cycle_purity": 0.0
+        },
+        "symmetric_cycle_score": 0.0,
+        "absolute_support": false
+      },
+      "FF04->FF04": {
+        "a_to_b": {
+          "mean_certainty_on_source_mask": 0.1650771200656891,
+          "source_mask_count": 50992,
+          "high_count": 27582,
+          "high_fraction": 0.5409083777847505,
+          "target_mask_hit_count": 25458,
+          "target_mask_hit_fraction": 0.4992547850643238,
+          "cycle_count": 20854,
+          "cycle_fraction": 0.4089661123313461,
+          "cycle_purity": 0.7560728011021681
+        },
+        "b_to_a": {
+          "mean_certainty_on_source_mask": 0.1541076898574829,
+          "source_mask_count": 50849,
+          "high_count": 25101,
+          "high_fraction": 0.4936380263132018,
+          "target_mask_hit_count": 24595,
+          "target_mask_hit_fraction": 0.48368699482782357,
+          "cycle_count": 19919,
+          "cycle_fraction": 0.39172845090365593,
+          "cycle_purity": 0.7935540416716466
+        },
+        "symmetric_cycle_score": 0.4002544961092239,
+        "absolute_support": true
+      }
+    },
+    "true_pair_absolute_support": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "gain_over_predecessor_roma": {
+    "true_positive_delta": 0,
+    "false_positive_delta": 0,
+    "false_negative_reduction": 0,
+    "f1_delta": 0.0,
+    "exact_scenario_gain": 0,
+    "true_support_gain": 0
+  },
+  "predecessor_dinov2_baseline": {
+    "true_positive": 25,
+    "false_positive": 4,
+    "false_negative": 9,
+    "precision": 0.862069,
+    "recall": 0.735294,
+    "f1": 0.793651,
+    "zero_assignment_exact_scenarios": 5,
+    "scenarios": 15
+  },
+  "input_receipts": {
+    "FF01:reference": {
+      "scene_id": "074",
+      "frame": 6615,
+      "image_sha256": "321d29388e9aa1a5f5d843d333bb2d9f68082ebd41acadbcb5052b844c6d3492",
+      "visible_mask_sha256": "4a5f61b3157887d6a2cfe5625e915b202e3708c4d53f0dca71a8e255af7f6b1c",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 24236,
+      "tight_bbox_xyxy": [
+        14,
+        0,
+        232,
+        179
+      ]
+    },
+    "FF01:query": {
+      "scene_id": "074",
+      "frame": 6650,
+      "image_sha256": "49a13103478d2f02af47353c3d9fb443703bf0d028a74023b1081b664514ee07",
+      "visible_mask_sha256": "1551a1fb283c27e69b8fbc2b0d7c02ae06a1114200481dbcf57a220a1654cbda",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 27183,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        164,
+        219
+      ]
+    },
+    "FF02:reference": {
+      "scene_id": "109",
+      "frame": 4150,
+      "image_sha256": "e2c60e2c48cd3997279b8d957aabddc5792db01276aaf80e00492e18de77b139",
+      "visible_mask_sha256": "e2e735376cd78c1d82ac3278c1775e5ce43ed136bf86732928c56ee4f74bd2d4",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 63402,
+      "tight_bbox_xyxy": [
+        51,
+        0,
+        394,
+        323
+      ]
+    },
+    "FF02:query": {
+      "scene_id": "109",
+      "frame": 4210,
+      "image_sha256": "72af99af9a7c94634cadd2921ab49d7101a64e4ad9abb747370483417f3bfbed",
+      "visible_mask_sha256": "9538e9682941f4bf6229334ece3be186a8dedfb8bc0b8df2d2abb04a2257ab73",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 32470,
+      "tight_bbox_xyxy": [
+        175,
+        0,
+        474,
+        176
+      ]
+    },
+    "FF03:reference": {
+      "scene_id": "005",
+      "frame": 9815,
+      "image_sha256": "c885d4745bc498dcf08813fd7e3b33cfe32625d8cc3371c19c822d449329a57c",
+      "visible_mask_sha256": "45db1241df3a33921c5b686fc928b20ab9b3065ffa36787abd874c23f6223041",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 76582,
+      "tight_bbox_xyxy": [
+        232,
+        0,
+        458,
+        463
+      ]
+    },
+    "FF03:query": {
+      "scene_id": "005",
+      "frame": 9835,
+      "image_sha256": "8f33f2df58ebd562d8143d6c74a9bb37c51c929b4b883ebdd99e9679427d8394",
+      "visible_mask_sha256": "bf66788f3e038991f113a28c4e2520e599001f1dcbd8d2255bc1db3a992c5a06",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 70004,
+      "tight_bbox_xyxy": [
+        238,
+        53,
+        456,
+        480
+      ]
+    },
+    "FF04:reference": {
+      "scene_id": "076",
+      "frame": 655,
+      "image_sha256": "122886337c3baa261d25d08c0727376dc9240bd634a6dc21523702bd11cc11c3",
+      "visible_mask_sha256": "da44442d172e91324c43487f858cb020be1ed9a35cc2bfd4e12c2d3354d6f11b",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 20892,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        163,
+        168
+      ]
+    },
+    "FF04:query": {
+      "scene_id": "076",
+      "frame": 675,
+      "image_sha256": "988f49de9b081ddeb7d35ff0f3703bed538cab3e86aeee8c79b6e372cc970243",
+      "visible_mask_sha256": "45c6afe64c558314fca8ac4d7b33620f2f377212de9c497be49ba66199fa6028",
+      "image_size": [
+        640,
+        480
+      ],
+      "visible_target_pixels": 20811,
+      "tight_bbox_xyxy": [
+        0,
+        0,
+        170,
+        200
+      ]
+    }
+  },
+  "claim_boundary": "A pass is fresh source-disjoint SceneNN Development confirmation for temporal-local action plus privileged whole-image target-mask-gated RoMa correspondence and explicit NONE. It does not prove raw-phone target proposals, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}

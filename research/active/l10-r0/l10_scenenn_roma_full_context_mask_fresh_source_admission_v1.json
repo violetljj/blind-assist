@@ -1,0 +1,25 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-fresh-source-admission-v1",
+  "authority": "FRESH_SOURCE_DISJOINT_PRE_GEOMETRY_PRE_RGBD_ADMISSION",
+  "frozen_at": "2026-09-01T02:34:00+08:00",
+  "protocol_path": "l10_scenenn_roma_full_context_mask_fresh_protocol_v1.json",
+  "protocol_sha256": "f28ace9e096e42ae6435305a7c78c66e3247eec6eeef07b4b379c04610689059",
+  "mechanical_amendment": {
+    "protocol_sha256_before": "83e3b61ee61b4e40206bf2fdf418c528055a262be2165cfa8c057604d17920de",
+    "reason": "Pre-model renderer namespace alias only; admission rule and selected members are unchanged."
+  },
+  "selection_rule": "Among all SceneNN scenes not consumed by prior L10 experiments and having exactly one inventory label matching ^door[0-9]*$, take the four smallest official ONI content lengths, tie-breaking by numeric scene id.",
+  "selected": [
+    {"episode_id": "FF01", "scene_id": "074", "target_instance_id": 501, "target_label": "door", "oni_content_length": 1553661552},
+    {"episode_id": "FF02", "scene_id": "109", "target_instance_id": 3852, "target_label": "door", "oni_content_length": 1703387621},
+    {"episode_id": "FF03", "scene_id": "005", "target_instance_id": 1348911, "target_label": "door1", "oni_content_length": 1863571168},
+    {"episode_id": "FF04", "scene_id": "076", "target_instance_id": 2634931, "target_label": "door1", "oni_content_length": 3290768804}
+  ],
+  "fresh_authority": true,
+  "remaining_unconsumed_exactly_one_door_scenes": 0,
+  "selected_geometry_members_opened": 0,
+  "selected_rgb_members_opened": 0,
+  "selected_depth_members_opened": 0,
+  "model_calls": 0,
+  "claim_boundary": "This admission preserves the final four-scene same-provider source-disjoint Development confirmation opportunity for the already frozen full-context mask-gated RoMa mechanism only."
+}

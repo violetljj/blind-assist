@@ -62,10 +62,17 @@ contract.
   paired target-visible mask. That single change reached `34/0/0`, precision
   and recall `1.0`, F1 `1.0`, `15/15` exact, and `4/4` true support without
   changing weights, resolutions, certainty, cycle error, support thresholds,
-  scenarios, or assignment. Retain it only as
-  `COMPONENT_OR_CHALLENGER / CHALLENGER` until the exact full-context/mask rule
-  passes on newly admitted scenes; provider masks remain privileged and prove
-  no ownership, access, arrival, or handoff.
+  scenarios, or assignment. The identical rule then admitted the final four
+  unconsumed exactly-one-door SceneNN scenes (`074`, `109`, `005`, `076`) before
+  selected geometry, RGB-D, or model access and independently retained
+  `34/0/0`, precision/recall/F1 `1.0`, `15/15` exact, and `4/4` true support.
+  Record
+  `L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET` and upgrade
+  it to `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development.
+  Provider masks remain privileged; the next structural step is a separately
+  justified phone-side proposal carrier, not tuning any of the eight consumed
+  scenes. Correspondence still proves no named entrance, ownership, access,
+  waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -361,3 +368,5 @@ contract.
   [l10_3rscan_roster_assignment_posthoc_result_v1.json](l10_3rscan_roster_assignment_posthoc_result_v1.json)
 - 3RScan physically target-disjoint assignment result:
   [l10_3rscan_roster_assignment_confirmation_result_v2.json](l10_3rscan_roster_assignment_confirmation_result_v2.json)
+- Fresh full-context mask-gated RoMa confirmation:
+  [l10_scenenn_roma_full_context_mask_fresh_result_v1.json](l10_scenenn_roma_full_context_mask_fresh_result_v1.json)

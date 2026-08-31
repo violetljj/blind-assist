@@ -3784,13 +3784,27 @@ must freeze the identical full-context/mask-gated rule on newly admitted scenes.
 Provider masks and complete SceneNN geometry remain privileged and establish no
 raw-phone proposal, portal ownership, access, waypoint, arrival, or handoff.
 
-The honest provider-disjoint Development boundary is therefore the temporal
-rank-only registered-surface component at F1 `0.957746`, not the perfect
-complete-surface support result. A successor must be explicitly constructed or
-trained for same physical identity under severe partial views, include NONE,
-and use fresh targets. None of these results proves raw-phone perception, door
-detection, aperture, named entrance, ownership, access, traversability,
-waypoint, arrival, `HANDOFF_READY`, user benefit, deployment, or safety.
+The unchanged confirmation then selected the final four unconsumed SceneNN
+recordings containing exactly one `^door[0-9]*$` label (`074`, `109`, `005`,
+`076`) by official ONI size before opening selected geometry, RGB-D, visibility,
+or any model score. Frozen temporal-local selection produced `20-60` frame gaps
+at `0.30-0.32 m`. Across the same fifteen closed, extra, missing, and ordered
+swap scenarios, full-context mask-gated RoMa again reached `TP=34, FP=0, FN=0`,
+precision/recall/F1 `1.0`, `15/15` exact NONE-aware assignments, and `4/4`
+true pairs with absolute support. Same-crop DINOv2 on these scenes was
+`25/4/9`, F1 `0.793651`, and `5/15` exact. Record
+`L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET`; retain the
+unchanged correspondence mechanism as
+`COMPONENT_OR_CHALLENGER / COMPONENT` within same-provider Development.
+
+This confirmation closes the cross-scene reproducibility gap for the privileged
+mask-gated correspondence role, not the phone-side proposal gap. The next
+successor must replace exact provider masks with an independently justified
+target-conditioned phone proposal while freezing whole-image context, support
+thresholds, reciprocal NONE assignment, and exact target truth. None of these
+results proves raw-phone perception, door detection, aperture, named entrance,
+ownership, access, traversability, waypoint, arrival, `HANDOFF_READY`, user
+benefit, deployment, or safety.
 
 Evidence:
 

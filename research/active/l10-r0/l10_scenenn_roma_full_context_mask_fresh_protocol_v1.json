@@ -1,0 +1,133 @@
+{
+  "schema": "blindassist-l10-scenenn-roma-full-context-mask-fresh-protocol-v1",
+  "protocol_id": "l10-scenenn-roma-full-context-mask-fresh-protocol-v1",
+  "frozen_at": "2026-09-01T02:32:00+08:00",
+  "question": "Does the unchanged full-image RoMa plus exact target-mask-gated cycle rule retain complete NONE-aware correspondence on the final four unconsumed SceneNN scenes that contain exactly one door label?",
+  "implementation": {
+    "path": "l10_scenenn_roma_full_context_mask_fresh.py",
+    "sha256": "5033bceb4f481435ef9ab04605fa4def912401520af8567a39e02307e1e8057d"
+  },
+  "mechanical_amendment": {
+    "amended_at": "2026-09-01T03:26:00+08:00",
+    "previous_implementation_sha256": "0f2a10a0edf5f25056722a20aca6fbe8ab75734e40db50c6fa092485fa418ff1",
+    "failure": "KeyError: renderer before matcher construction and before any model call or result artifact",
+    "change": "Expose the already frozen pre_rgb_selector.renderer object through the top-level renderer key expected by the unchanged posthoc replay implementation.",
+    "semantic_effect": "None: selected scenes, frames, RGB, masks, model, weights, resolutions, thresholds, assignment, scenarios and gate remain byte-for-byte unchanged.",
+    "observed_model_calls_before_amendment": 0,
+    "observed_result_artifacts_before_amendment": 0
+  },
+  "predecessor": {
+    "result_path": "l10_scenenn_roma_full_context_mask_posthoc_result_v1.json",
+    "result_sha256": "38cb51d184308dfe01b2cba955a596e5e9ffa28e4f8e2699a33f0bbe8b560b09",
+    "required_conclusion": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_POSTHOC_DEVELOPMENT_GATE_MET",
+    "observed_metrics": {
+      "true_positive": 34,
+      "false_positive": 0,
+      "false_negative": 0,
+      "f1": 1.0,
+      "exact_scenarios": 15,
+      "true_pairs_supported": 4
+    },
+    "single_change": "Replace the consumed four scenes with the final four unconsumed SceneNN scenes having exactly one inventory label matching ^door[0-9]*$; keep action selection, complete-frame input, mask domains, matcher, thresholds, assignment, scenarios and complete gate unchanged."
+  },
+  "source_selector": {
+    "authority": "PRE_GEOMETRY_PRE_RGBD_PROVIDER_INVENTORY_SELECTION",
+    "inventory": "Previously materialized provider XML labels plus fresh official HTTP HEAD metadata only; no selected PLY, trajectory, ONI, RGB-D, visibility or model score was opened before admission.",
+    "candidate_rule": "Exactly one inventory label matching ^door[0-9]*$; exclude every SceneNN scene consumed by prior L10 experiments.",
+    "ranking": "Ascending official ONI content_length, then numeric scene id.",
+    "take": 4,
+    "expected_selected_scenes": ["074", "109", "005", "076"],
+    "expected_target_instance_ids": [501, 3852, 1348911, 2634931],
+    "remaining_unconsumed_exactly_one_door_scenes_after_selection": 0,
+    "consumed_scene_ids": ["011", "014", "021", "032", "038", "043", "073", "082", "096", "207", "213", "225", "234", "237", "246", "249", "273", "276", "279", "521", "700"],
+    "forbidden_before_admission": ["selected scene mesh", "selected trajectory", "selected ONI or RGB-D", "frame visibility", "RoMa score", "scenario outcome"]
+  },
+  "provider": {
+    "name": "SceneNN",
+    "project_url": "https://scenenn.net/",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion PRO consumer RGB-D camera",
+    "license_boundary": "Educational and research use; raw SceneNN payloads remain local and are not redistributed.",
+    "scenes": {
+      "074": {
+        "target_instance_id": 501,
+        "target_label": "door",
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/074/074.ply", "content_length": 95216555, "etag": "61a4d4c7-5ace3ab"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/074/074.xml", "content_length": 121312, "etag": "61a4d4c7-1d9e0", "inventory_sha256": "440c27aa0ab72802dcf94e52c9837d6d97d7487209ce5da481eec0dcdfbd063e"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/074/trajectory.log", "content_length": 1242200, "etag": "61a4d4c7-12f458"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/074.oni", "content_length": 1553661552, "etag": "61a4dace-5c9afe70"}
+      },
+      "109": {
+        "target_instance_id": 3852,
+        "target_label": "door",
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/109/109.ply", "content_length": 45665007, "etag": "61a4d510-2b8caef"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/109/109.xml", "content_length": 1545772, "etag": "61a4d510-17962c", "inventory_sha256": "267ff85dcb581fc12cfdd956075c6aea0e88f0c7a5a3ddcac8dc21b30d55510e"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/109/trajectory.log", "content_length": 1543691, "etag": "61a4d510-178e0b"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/109.oni", "content_length": 1703387621, "etag": "61a4df10-6587a1e5"}
+      },
+      "005": {
+        "target_instance_id": 1348911,
+        "target_label": "door1",
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/005/005.ply", "content_length": 100075253, "etag": "61a4d454-5f706f5"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/005/005.xml", "content_length": 36943, "etag": "61a4d454-904f", "inventory_sha256": "53160a8a1b0786e867f79b8fc12d917a71822906e136e13255442391a76b33de"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/005/trajectory.log", "content_length": 1654577, "etag": "61a4d454-193f31"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/005.oni", "content_length": 1863571168, "etag": "61a4d64f-6f13d6e0"}
+      },
+      "076": {
+        "target_instance_id": 2634931,
+        "target_label": "door1",
+        "ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/076/076.ply", "content_length": 289870822, "etag": "61a4d4d4-114713e6"},
+        "xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/076/076.xml", "content_length": 176093, "etag": "61a4d4d4-2afdd", "inventory_sha256": "396e8dd1b3199955fda96e22feec45647a53dc4706031878100e428701cc077f"},
+        "trajectory": {"url": "https://hkust-vgd.ust.hk/scenenn/main/076/trajectory.log", "content_length": 2956164, "etag": "61a4d4d4-2d1b84"},
+        "oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/076.oni", "content_length": 3290768804, "etag": "61a4db70-c42525a4"}
+      }
+    },
+    "intrinsic": {"url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini", "content_length": 253, "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"}
+  },
+  "pre_rgb_selector": {
+    "trajectory_stride": 5,
+    "minimum_pair_frame_gap": 20,
+    "minimum_pair_baseline_metres": 0.3,
+    "pair_ranking": "Minimum qualifying frame gap, then minimum qualifying camera-centre baseline, maximum minimum visible target pixels, maximum minimum visibility ratio, earlier frames.",
+    "eligible_frame": {"minimum_visible_target_pixels": 512, "minimum_bbox_width_pixels": 24, "minimum_bbox_height_pixels": 48, "minimum_visible_to_target_raster_ratio": 0.4, "maximum_visible_target_image_fraction": 0.8, "maximum_camera_to_target_centroid_metres": 2.5},
+    "renderer": {"numeric_type": "float32", "image_width": 640, "image_height": 480, "near_plane_metres": 0.02, "near_plane_face_rule": "reject unless every vertex is beyond near plane", "triangle_sidedness": "double-sided", "visibility_rule": "target depth finite and no farther than full-scene depth plus 0.005 m", "visibility_tolerance_metres": 0.005},
+    "failure_semantics": "If any fresh target lacks a qualifying temporally local pair, stop NOT_EVALUABLE without changing the rules."
+  },
+  "source": {
+    "authority": "FRESH_SOURCE_DISJOINT_CONFIRMATION",
+    "cohort_path": "l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+    "rgb_receipt_path": "l10_scenenn_roma_full_context_mask_fresh_rgb_receipt_v1.json"
+  },
+  "context_and_support": {
+    "model_input": "Complete sealed 640x480 RGB frame independently resized by the unchanged RoMa implementation.",
+    "source_domain": "Nearest-neighbour resize of the exact provider target-visible mask to the 864x864 RoMa support grid.",
+    "target_domain": "A forward match counts only when its sampled target coordinate lies inside the paired resized target-visible mask.",
+    "cycle_fraction_denominator": "All source target-visible mask pixels.",
+    "cycle_purity_denominator": "All above-certainty source target-visible mask pixels, including target-mask misses.",
+    "crop_or_padding": "None."
+  },
+  "matcher": {
+    "package": "romatch 0.1.2 official PyPI wheel",
+    "wheel_path": "artifacts.local/sources/roma-pypi-v1/romatch-0.1.2-py3-none-any.whl",
+    "wheel_sha256": "4a9f1e21e9876aee471acddd0ae7092584d928a9f109b03a5344f859f5d67798",
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "roma_weights_sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6",
+    "dinov2_weights_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent target-mask cycle fraction and majority cycle purity.",
+    "zero_assignment": "Unchanged strict reciprocal maximum among absolutely supported pairs."
+  },
+  "scenarios": {"closed": 1, "unequal_size": 2, "ordered_balanced_swaps": 12, "total": 15},
+  "decision_gate": {"predecessor_true_positive": 33, "predecessor_f1": 0.999999, "maximum_false_positive": 0, "minimum_true_pairs_with_absolute_support": 4, "minimum_exact_scenarios": 15},
+  "forbidden_after_freeze": ["change selected scenes, frames, full-image input, mask resize, domain, denominator, matcher, threshold, assignment, scenarios or gate", "drop any target, different-target pair, or failed scenario", "use this same cohort to tune after outcome"],
+  "claim_boundary": "A pass is fresh source-disjoint SceneNN Development confirmation for temporal-local action plus privileged whole-image target-mask-gated RoMa correspondence and explicit NONE. It does not prove raw-phone target proposals, named entrance, venue ownership, access, traversability, approach waypoint, arrival, HANDOFF_READY, user benefit, deployment, or safety."
+}
