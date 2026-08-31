@@ -25,7 +25,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
   and pooled `+15 TP / +0 FP / +1.44 pp F1` over X64. C32 reached
   `94.78/73.84/83.01`, with ep_05/ep_07 recall `56.52/64.58%`, all authority
   invariants zero, and no added FP. This is consumed Development evidence, not
-  fresh promotion authority.
+  fresh promotion authority. Its first frozen fresh-source successor, C33,
+  terminated during source capture after 21 depth frames became durable. The
+  frozen no-retry rule makes C33 source-not-evaluable; no model prediction or
+  metric exists for that cohort.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -43,10 +46,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Freeze X65 before its next scored model invocation. Admit one genuinely new
-   source-disjoint cohort that passes the physical source gate and exercises
-   the pre-conflict credentialed handback. Do not rescore C26-C28 or C32 as
-   fresh authority.
+4. Keep X65 unchanged for its next scored model invocation. C33 is terminal and
+   must not be retried. Freeze a new C34 identity, admit genuinely new pixels
+   that pass the physical source gate, and require the pre-conflict credentialed
+   handback to be exercised. Do not rescore C26-C28 or C32 as fresh authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -79,3 +82,5 @@ their result.
   [DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md)
 - X65 consumed cross-cohort Development:
   [DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- C33 terminal source result:
+  [DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md](carla/DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md)
