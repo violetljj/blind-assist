@@ -66,7 +66,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   positives with no false-positive cost across four cohorts: pooled
   `663 TP / 51 FP / 200 FN` at `92.86/76.83/84.08%`; C34 remained
   classification-neutral at `91.22/78.49/84.38%`. This is consumed
-  cross-cohort Development, not fresh X73 confirmation.
+  cross-cohort Development. The sole C35 scored invocation then tested
+  unchanged X73 on genuinely new seed-, render-domain-, and pixel-disjoint
+  CARLA evidence. X73 improved X72 from `126/18/46` to `132/18/40`
+  TP/FP/FN, or from `87.50/73.26/79.75%` to
+  `88.00/76.74/81.99%` precision/recall/F1: `+6 TP / +0 FP / +2.24 pp F1`.
+  Parent-hull reconstruction was exercised on six frames, all primary transfer
+  checks passed, and all required authority invariants remained zero. Accept
+  `DTR_CARLA_C35_X73_GENERALIZATION_GATE_MET` as source-disjoint synthetic
+  Development confirmation within the frozen same-map/scripted boundary.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -84,13 +92,12 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C34 as confirmation. X73 preserves X69 release,
-   X70/X71 handback and birth, and X72 boundary completion, then recovers 12
-   additional fragmented-object contact frames through credentialed parent-hull
-   reconstruction with no false-positive cost. Freeze one genuinely new source
-   to confirm unchanged X73; do not change the arm after its pixels or outcomes
-   are opened. Remaining consumed error is `200 FN / 51 FP` (C34
-   `37 FN / 13 FP`).
+4. Do not rerun or tune C35 as confirmation. Unchanged X73 is now positively
+   confirmed on one genuinely new synthetic source after its four-cohort
+   consumed effect. Use C35 only for post-confirmation diagnosis against its
+   remaining `40 FN / 18 FP`; do not weaken X69 release or X73 rigid-center
+   containment. A successor needs a visible multi-cohort Development effect
+   and a later new source before inheriting confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -143,3 +150,5 @@ their result.
   [DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
 - X73 consumed cross-cohort Development:
   [DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- C35 X73 fresh confirmation:
+  [DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md)
