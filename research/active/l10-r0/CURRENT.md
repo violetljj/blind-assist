@@ -151,10 +151,26 @@ contract.
   mechanism evidence, not fresh confirmation. The first frozen physical-target-
   disjoint confirmation source stopped before RGB/model access because FC30's
   best second query covered only `0.591093` of the target versus the frozen
-  `0.98` requirement. Keep this as source-not-evaluable; do not replace FC30
-  after failure. Next either confirm the exact rule on a pre-frozen evaluable
-  sibling panel or improve observation reachability on a separate source.
-  Correspondence still
+  `0.98` requirement. A pre-RGB successor retained FC30 only as the absent-
+  target bound and admitted new positive targets FC31/FC08. The unchanged
+  universal corroboration then rejected both positives despite successful local
+  binding and extent localization: primary cycle opportunity was `0.613/0.324`,
+  while global epipolar support was only `0.415/0.363` and active-query paired
+  coverage only `0.298/0.435` and `0.287/0.184`. The exact-target-absent FC30
+  negative had zero local cycles and was correctly rejected. Record
+  `L10_3RSCAN_COMPLEMENTARY_CORROBORATION_PARTIAL_PHYSICAL_TARGET_CONFIRMATION_GATE_NOT_MET`;
+  universal specialist corroboration is not a general hard gate.
+
+  An Exa-motivated selective cascade now lets retained local bindings with at
+  least one-quarter primary coherent-cycle coverage exit directly and requests
+  complementary global/active corroboration only below that point. On the two
+  consumed panels it restored `5/5` positives, retained `0/3` false commits and
+  precision `1.0`, while only `1/8` rows requested the extra branch (a
+  counterfactual `87.5%` branch-avoidance rate). Record
+  `L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_POSTHOC_DEVELOPMENT_GATE_MET`.
+  The `0.25` point was selected after seeing the failed confirmation, without a
+  sweep, so this is Development only; freeze it and require another pre-model
+  source before any confirmation or efficiency claim. Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.

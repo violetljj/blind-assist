@@ -1,0 +1,65 @@
+{
+  "schema": "blindassist-l10-3rscan-selective-corroboration-cascade-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-selective-corroboration-cascade-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T08:52:00+08:00",
+  "question": "Can a confidence-selective cascade recover the two fresh-target positive bindings rejected by universal corroboration while preserving all three exact-target-absent rejections and requesting specialist corroboration only for ambiguous local bindings?",
+  "implementation": {
+    "path": "l10_3rscan_selective_corroboration_cascade_posthoc.py",
+    "sha256": "57f07210286a61af35a0f657fa6a1a7b152d1bfb833472ee5ea45842849882aa"
+  },
+  "inputs": {
+    "consumed_sibling_local": {
+      "path": "l10_3rscan_cycle_component_mask_paired_posthoc_result_v1.json",
+      "sha256": "3f6a0ca95de93f6101a14f783fe22f3131f063910bd397780d7066e86306a609",
+      "required_conclusion": "L10_3RSCAN_BILATERAL_MASK_PAIRED_CYCLE_COMPONENT_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+    },
+    "consumed_sibling_complementary": {
+      "path": "l10_3rscan_complementary_corroboration_posthoc_result_v1.json",
+      "sha256": "7894a729510b96dc70f3374bedfd4acea3cb9a097850315e5afab9a6136a2df3",
+      "required_conclusion": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_POSTHOC_DEVELOPMENT_GATE_MET"
+    },
+    "consumed_physical_target_partial_confirmation": {
+      "path": "l10_3rscan_complementary_corroboration_confirmation_result_v1.json",
+      "sha256": "ebd787a6963ccfc65b3ce0369789304caa8fcb4ef3bb0c3150c5f31ba82ddfac",
+      "required_conclusion": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_PARTIAL_PHYSICAL_TARGET_CONFIRMATION_GATE_NOT_MET"
+    }
+  },
+  "decision_rule": {
+    "base_requirement": "The inherited bilateral local binding must commit; otherwise reject without requesting another branch.",
+    "direct_exit": "If the inherited primary local all-cycle fraction is at least 0.25, commit directly.",
+    "ambiguous_branch": "If local binding commits below 0.25, request the inherited complementary corroborator and commit only when global epipolar majority or bidirectional active-query majority supports it.",
+    "composition": "local AND (primary-local-cycle >= 0.25 OR complementary-corroboration)",
+    "minimum_direct_local_cycle_fraction": 0.25,
+    "threshold_origin": "One structural quarter-coverage landmark selected after observing the partial-confirmation failure. No grid, threshold sweep or best-of-many selection is permitted. Because the target-disjoint panel was already observed, this is Development only and requires another frozen source before any confirmation claim."
+  },
+  "literature_motivation": {
+    "paper": "When Does Confidence-Based Cascade Deferral Suffice?",
+    "venue": "NeurIPS 2023",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2023/file/1f09e1ee5035a4c3fe38a5681cae5815-Paper-Conference.pdf",
+    "used_principle": "Inference cost should vary by sample and specialist downstream models should be invoked through a deferral rule rather than imposed as a universal gate; specialist and distribution-shift failure modes require validating the cascade on held-out data."
+  },
+  "decision_gate": {
+    "required_positive_pairs": 5,
+    "required_target_absent_pairs": 3,
+    "minimum_positive_commits": 5,
+    "maximum_target_absent_false_commits": 0,
+    "per_panel": {
+      "consumed_sibling_panel": {
+        "minimum_positive_commits": 3,
+        "maximum_target_absent_false_commits": 0
+      },
+      "consumed_physical_target_panel": {
+        "minimum_positive_commits": 2,
+        "maximum_target_absent_false_commits": 0
+      }
+    }
+  },
+  "forbidden_after_freeze": [
+    "change the 0.25 direct-exit threshold, Boolean composition, inherited pair, label or receipt",
+    "run a threshold sweep or select another threshold after viewing this recomposition",
+    "re-run, tune or repair any predecessor model result",
+    "count a local non-commit as a corroboration request or let corroboration override a local non-commit",
+    "claim success on these consumed panels as fresh confirmation or arbitrary sibling-door generalization"
+  ],
+  "claim_boundary": "This is a zero-model posthoc Development recomposition over eight consumed rows, including the already observed physical-target-disjoint panel. It can compare decision logic and counterfactual branch demand only on these rows. The 0.25 threshold is not calibrated, preregistered confirmation, provider-independent generalization or a reliability bound. Same-provider masks and geometry do not establish named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit or safety."
+}

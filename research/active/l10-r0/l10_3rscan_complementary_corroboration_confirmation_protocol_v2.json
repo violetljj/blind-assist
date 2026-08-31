@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-confirmation-protocol-v2",
+  "protocol_id": "l10-3rscan-complementary-corroboration-confirmation-protocol-v2",
+  "frozen_at": "2026-09-01T06:22:00+08:00",
+  "base_protocol_path": "l10_3rscan_complementary_corroboration_confirmation_protocol_v1.json",
+  "base_protocol_sha256": "3809c121af8c080d518ec37fb1e9b4782d58e05f73883915de6c74606ed5925f",
+  "overrides": {
+    "protocol_id": "l10-3rscan-complementary-corroboration-confirmation-protocol-v2",
+    "frozen_at": "2026-09-01T06:22:00+08:00",
+    "question": "Does unchanged complementary corroboration retain both never-consumed positives and reject the fixed sibling negative when an unfittable global epipolar cue is explicitly fail-closed?",
+    "implementation": {
+      "path": "l10_3rscan_complementary_corroboration_confirmation.py",
+      "sha256": "280a6641455c6da6d184ee4422243370ab2945130bfed03bc9621de1880e418d"
+    },
+    "execution_predecessor": {
+      "path": "l10_3rscan_complementary_corroboration_confirmation_execution_failure_v1.json",
+      "sha256": "edb6085acf4eb95b33870a98d8e0e0ef3d523db3698ebd94c1406cb6f7772982",
+      "single_change": "When fewer than eight target-excluded background cycles make the global fundamental matrix not evaluable, record global_epipolar_support=false. Do not synthesize geometry or count missing evidence as support; the unchanged OR composition still requires bidirectional active-query majority."
+    },
+    "global_missing_semantics": "NOT_EVALUABLE_INSUFFICIENT_TARGET_EXCLUDED_BACKGROUND_CYCLES is fail-closed non-support, never negative truth and never a successful corroborator.",
+    "forbidden_after_freeze": [
+      "change a model, mask, frame, pair, cycle, epipolar threshold, majority, Boolean composition or extent gate",
+      "fit a fundamental matrix with fewer than eight background cycles or count missing global evidence as support",
+      "repair or replace FC30, FC31 or FC08 after observing output",
+      "reuse any partial state from the aborted execution",
+      "claim a two-positive one-negative asymmetric same-family panel is full physical-target or scan-family confirmation"
+    ],
+    "claim_boundary": "This unchanged partial confirmation evaluates two never-consumed positive targets and one never-consumed exact-target-absent bound sibling reference from a previously used 3RScan scan family. A missing global epipolar fit is fail-closed and may be rescued only by the already frozen bidirectional active-query majority. The negative bound target lacks its own positive active-query row. A pass is limited physical-target-disjoint Development evidence, not full confirmation, scan-family/provider independence, raw-camera binding, arbitrary sibling rejection, user-action feasibility, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety."
+  }
+}

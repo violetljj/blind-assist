@@ -1,0 +1,917 @@
+{
+  "schema": "blindassist-l10-3rscan-complementary-corroboration-confirmation-result-v1",
+  "authority": "PHYSICAL_TARGET_DISJOINT_PARTIAL_COMPLEMENTARY_CORROBORATION_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_complementary_corroboration_confirmation_protocol_v2.json",
+  "protocol_sha256": "3680014ca75676e9f7216fcfbd62fc0c48d275541b41f8fd4485e47ca9ecf47c",
+  "implementation": {
+    "path": "l10_3rscan_complementary_corroboration_confirmation.py",
+    "sha256": "280a6641455c6da6d184ee4422243370ab2945130bfed03bc9621de1880e418d"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+    "cohort_sha256": "4a2ee76b236e1aa0c0b2ae10dde653711ac2da7c086e646ebca9fb9d3f1caca9"
+  },
+  "conclusion": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_PARTIAL_PHYSICAL_TARGET_CONFIRMATION_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "positive_pairs": 2,
+    "positive_commits": 0,
+    "target_absent_pairs": 1,
+    "target_absent_false_commits": 0,
+    "committed_precision": 0.0
+  },
+  "decisions": {
+    "P_FC31_FC31": {
+      "id": "P_FC31_FC31",
+      "reference_episode": "FC31",
+      "query_episode": "FC31",
+      "label": "target_present",
+      "positive_primary_extent_gate": true,
+      "positive_active_extent_gate": true,
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": false,
+      "commit": false,
+      "correct": false
+    },
+    "P_FC08_FC08": {
+      "id": "P_FC08_FC08",
+      "reference_episode": "FC08",
+      "query_episode": "FC08",
+      "label": "target_present",
+      "positive_primary_extent_gate": true,
+      "positive_active_extent_gate": true,
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": false,
+      "commit": false,
+      "correct": false
+    },
+    "N_FC30_FC31": {
+      "id": "N_FC30_FC31",
+      "reference_episode": "FC30",
+      "query_episode": "FC31",
+      "label": "target_absent",
+      "positive_primary_extent_gate": null,
+      "positive_active_extent_gate": null,
+      "local_bilateral_commit": false,
+      "global_epipolar_support": false,
+      "active_query_bidirectional_majority_support": false,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "corroboration_receipts": {
+    "P_FC31_FC31": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "both_reference_query_branches_supported": true,
+      "primary_to_active_query": {
+        "source_mask_pixels_at_match_resolution": 105773,
+        "high_certainty_pixels": 58138,
+        "target_mask_hit_pixels": 48999,
+        "target_mask_hit_fraction": 0.46324676429712686,
+        "paired_cycle_pixels": 31479,
+        "paired_cycle_fraction": 0.2976090306599983,
+        "component": {
+          "component_count": 23,
+          "selected_label": 1,
+          "selected_pixels": 28631
+        },
+        "dominant_component_fraction_of_paired_cycles": 0.9095269862447981
+      },
+      "active_to_primary_query": {
+        "source_mask_pixels_at_match_resolution": 51888,
+        "high_certainty_pixels": 36526,
+        "target_mask_hit_pixels": 27314,
+        "target_mask_hit_fraction": 0.5264030218933087,
+        "paired_cycle_pixels": 22577,
+        "paired_cycle_fraction": 0.43511023743447425,
+        "component": {
+          "component_count": 19,
+          "selected_label": 1,
+          "selected_pixels": 20619
+        },
+        "dominant_component_fraction_of_paired_cycles": 0.9132745714665368
+      },
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false
+    },
+    "P_FC08_FC08": {
+      "local_bilateral_commit": true,
+      "global_epipolar_support": false,
+      "both_reference_query_branches_supported": true,
+      "primary_to_active_query": {
+        "source_mask_pixels_at_match_resolution": 52086,
+        "high_certainty_pixels": 27091,
+        "target_mask_hit_pixels": 25268,
+        "target_mask_hit_fraction": 0.485120761816995,
+        "paired_cycle_pixels": 14970,
+        "paired_cycle_fraction": 0.2874092846446262,
+        "component": {
+          "component_count": 6,
+          "selected_label": 1,
+          "selected_pixels": 14413
+        },
+        "dominant_component_fraction_of_paired_cycles": 0.9627922511690047
+      },
+      "active_to_primary_query": {
+        "source_mask_pixels_at_match_resolution": 76057,
+        "high_certainty_pixels": 69272,
+        "target_mask_hit_pixels": 14051,
+        "target_mask_hit_fraction": 0.1847430216811076,
+        "paired_cycle_pixels": 13963,
+        "paired_cycle_fraction": 0.18358599471449044,
+        "component": {
+          "component_count": 10,
+          "selected_label": 1,
+          "selected_pixels": 13532
+        },
+        "dominant_component_fraction_of_paired_cycles": 0.9691327078708014
+      },
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false
+    },
+    "N_FC30_FC31": {
+      "local_bilateral_commit": false,
+      "global_epipolar_support": false,
+      "both_reference_query_branches_supported": false,
+      "primary_to_active_query": null,
+      "active_to_primary_query": null,
+      "active_query_bidirectional_majority_support": false,
+      "complementary_corroboration": false
+    }
+  },
+  "global_epipolar_receipts": {
+    "P_FC31_FC31": {
+      "status": "EVALUATED",
+      "target_cycle_pixels": 46413,
+      "target_component": {
+        "component_count": 23,
+        "selected_label": 1,
+        "selected_pixels": 45547
+      },
+      "background_cycle_pixels": 181719,
+      "background_fit_points": 20000,
+      "background_ransac_inlier_fraction": 0.74325,
+      "target_component_points": 45547,
+      "target_epipolar_inlier_fraction": 0.415395086394274,
+      "target_median_sampson_error_pixels_squared": 1.4508905011212503,
+      "global_epipolar_support": false
+    },
+    "P_FC08_FC08": {
+      "status": "EVALUATED",
+      "target_cycle_pixels": 19946,
+      "target_component": {
+        "component_count": 28,
+        "selected_label": 3,
+        "selected_pixels": 10428
+      },
+      "background_cycle_pixels": 486458,
+      "background_fit_points": 20000,
+      "background_ransac_inlier_fraction": 0.6743,
+      "target_component_points": 10428,
+      "target_epipolar_inlier_fraction": 0.3628691983122363,
+      "target_median_sampson_error_pixels_squared": 1.2933349425063936,
+      "global_epipolar_support": false
+    },
+    "N_FC30_FC31": {
+      "status": "NOT_EVALUABLE_INSUFFICIENT_TARGET_EXCLUDED_BACKGROUND_CYCLES",
+      "global_epipolar_support": false,
+      "repair_semantics": "Missing global corroborator is fail-closed non-support; active-query majority remains independently required by the frozen OR composition."
+    }
+  },
+  "branch_receipts": {
+    "P_FC31_FC31": {
+      "primary": {
+        "query_mask_sha256": "493b569a49b04f5f1027d063a695d27397dd1772123c3f68c0dbe1f05372317f",
+        "query_mask_pixels": 73503,
+        "query_mask_bbox_xyxy": [
+          98.0,
+          269.0,
+          798.0,
+          449.0
+        ],
+        "reference_to_query": {
+          "source_mask_pixels_at_match_resolution": 75687,
+          "high_certainty_pixels": 64147,
+          "target_mask_hit_pixels": 59374,
+          "target_mask_hit_fraction": 0.7844676100254998,
+          "paired_cycle_pixels": 41640,
+          "paired_cycle_fraction": 0.5501605295493281,
+          "component": {
+            "component_count": 18,
+            "selected_label": 1,
+            "selected_pixels": 40841
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9808117195004803
+        },
+        "query_to_reference": {
+          "source_mask_pixels_at_match_resolution": 105773,
+          "high_certainty_pixels": 68915,
+          "target_mask_hit_pixels": 53381,
+          "target_mask_hit_fraction": 0.5046751061234909,
+          "paired_cycle_pixels": 50487,
+          "paired_cycle_fraction": 0.4773146266060337,
+          "component": {
+            "component_count": 19,
+            "selected_label": 1,
+            "selected_pixels": 49547
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9813813456929507
+        },
+        "bilateral_mask_paired_support": true,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.10399370000232011
+        }
+      },
+      "active": {
+        "query_mask_sha256": "bdd8010547e7aa351be316dbb115e4eb53c84e04cff5efbf475e66bbd74e425c",
+        "query_mask_pixels": 36099,
+        "query_mask_bbox_xyxy": [
+          159.0,
+          383.0,
+          776.0,
+          540.0
+        ],
+        "reference_to_query": {
+          "source_mask_pixels_at_match_resolution": 75687,
+          "high_certainty_pixels": 38480,
+          "target_mask_hit_pixels": 32538,
+          "target_mask_hit_fraction": 0.4299020967933727,
+          "paired_cycle_pixels": 22504,
+          "paired_cycle_fraction": 0.2973297924346321,
+          "component": {
+            "component_count": 43,
+            "selected_label": 1,
+            "selected_pixels": 21595
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9596071809456097
+        },
+        "query_to_reference": {
+          "source_mask_pixels_at_match_resolution": 51888,
+          "high_certainty_pixels": 43551,
+          "target_mask_hit_pixels": 21191,
+          "target_mask_hit_fraction": 0.40839885908109774,
+          "paired_cycle_pixels": 16897,
+          "paired_cycle_fraction": 0.3256436941103916,
+          "component": {
+            "component_count": 45,
+            "selected_label": 4,
+            "selected_pixels": 16240
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9611173581109073
+        },
+        "bilateral_mask_paired_support": true,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.10225479997461662
+        }
+      }
+    },
+    "P_FC08_FC08": {
+      "primary": {
+        "query_mask_sha256": "6c9bb9e6c91935583d408272dcc1be3f1e92398c0bbe7a63d31da1c9f133ba4a",
+        "query_mask_pixels": 36175,
+        "query_mask_bbox_xyxy": [
+          313.0,
+          129.0,
+          831.0,
+          222.0
+        ],
+        "reference_to_query": {
+          "source_mask_pixels_at_match_resolution": 61617,
+          "high_certainty_pixels": 20177,
+          "target_mask_hit_pixels": 19525,
+          "target_mask_hit_fraction": 0.316876835938134,
+          "paired_cycle_pixels": 19294,
+          "paired_cycle_fraction": 0.3131278705552039,
+          "component": {
+            "component_count": 21,
+            "selected_label": 3,
+            "selected_pixels": 10428
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.540478905359179
+        },
+        "query_to_reference": {
+          "source_mask_pixels_at_match_resolution": 52086,
+          "high_certainty_pixels": 46472,
+          "target_mask_hit_pixels": 43525,
+          "target_mask_hit_fraction": 0.8356372153745728,
+          "paired_cycle_pixels": 15289,
+          "paired_cycle_fraction": 0.29353377107092116,
+          "component": {
+            "component_count": 21,
+            "selected_label": 4,
+            "selected_pixels": 8294
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.5424815226633527
+        },
+        "bilateral_mask_paired_support": true,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.09851939999498427
+        }
+      },
+      "active": {
+        "query_mask_sha256": "6c8100801ca5b7d752879c5ed80853cbe4f1fb61a05e5cb423d0d59d579e4bff",
+        "query_mask_pixels": 52928,
+        "query_mask_bbox_xyxy": [
+          166.0,
+          413.0,
+          731.0,
+          540.0
+        ],
+        "reference_to_query": {
+          "source_mask_pixels_at_match_resolution": 61617,
+          "high_certainty_pixels": 24702,
+          "target_mask_hit_pixels": 22362,
+          "target_mask_hit_fraction": 0.3629193242124738,
+          "paired_cycle_pixels": 13008,
+          "paired_cycle_fraction": 0.21111057013486537,
+          "component": {
+            "component_count": 13,
+            "selected_label": 1,
+            "selected_pixels": 12631
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9710178351783518
+        },
+        "query_to_reference": {
+          "source_mask_pixels_at_match_resolution": 76057,
+          "high_certainty_pixels": 68907,
+          "target_mask_hit_pixels": 13326,
+          "target_mask_hit_fraction": 0.17521069724022773,
+          "paired_cycle_pixels": 9266,
+          "paired_cycle_fraction": 0.12182968037130047,
+          "component": {
+            "component_count": 12,
+            "selected_label": 2,
+            "selected_pixels": 8988
+          },
+          "dominant_component_fraction_of_paired_cycles": 0.9699978415713361
+        },
+        "bilateral_mask_paired_support": true,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.10043130000121891
+        }
+      }
+    },
+    "N_FC30_FC31": {
+      "primary": {
+        "bilateral_mask_paired_support": false,
+        "query_mask": null
+      },
+      "active": {
+        "bilateral_mask_paired_support": false,
+        "query_mask": null
+      }
+    }
+  },
+  "prompt_receipts": {
+    "P_FC31_FC31": {
+      "primary": {
+        "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+        "support_mask_sha256": "5b8ab04a6ea5ee7bf07c0f1d96f8593027e40ac741267d772315a5b1922d0226",
+        "support_mask_pixels_at_match_resolution": 75687,
+        "extent_mask_pixels_at_match_resolution": 138240,
+        "high_certainty_pixels": 64147,
+        "all_cycle_pixels": 46413,
+        "all_cycle_fraction": 0.6132228784335487,
+        "all_cycle_purity": 0.7235412412115921,
+        "component": {
+          "component_count": 23,
+          "selected_label": 1,
+          "selected_pixels": 45547
+        },
+        "selected_component_fraction_of_support": 0.6017810191974844,
+        "selected_component_fraction_of_cycles": 0.9813414345118825,
+        "affine_rank": 3,
+        "affine_mean_residual_normalized": 0.009344428669452884,
+        "affine_max_residual_normalized": 0.04152201174822796,
+        "projected_bound_extent_corners_normalized": [
+          [
+            -0.7893947880535785,
+            0.12021587236437925
+          ],
+          [
+            0.7031594284938536,
+            -0.06858064591239676
+          ],
+          [
+            0.713065583624686,
+            0.5297182502516511
+          ],
+          [
+            -0.7794886329227462,
+            0.7185147685284272
+          ]
+        ],
+        "prompt_box_xyxy": [
+          101.0905017342823,
+          251.48322560365287,
+          822.2714801398492,
+          463.99898750267533
+        ],
+        "target_bbox_iou_evaluation_only": 0.7470197049052555
+      },
+      "active": {
+        "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+        "support_mask_sha256": "5b8ab04a6ea5ee7bf07c0f1d96f8593027e40ac741267d772315a5b1922d0226",
+        "support_mask_pixels_at_match_resolution": 75687,
+        "extent_mask_pixels_at_match_resolution": 138240,
+        "high_certainty_pixels": 38480,
+        "all_cycle_pixels": 27641,
+        "all_cycle_fraction": 0.36520142164440395,
+        "all_cycle_purity": 0.7183212058212058,
+        "component": {
+          "component_count": 33,
+          "selected_label": 1,
+          "selected_pixels": 23996
+        },
+        "selected_component_fraction_of_support": 0.31704255684595767,
+        "selected_component_fraction_of_cycles": 0.8681306754458956,
+        "affine_rank": 3,
+        "affine_mean_residual_normalized": 0.005195242587510774,
+        "affine_max_residual_normalized": 0.022305638571422214,
+        "projected_bound_extent_corners_normalized": [
+          [
+            -0.67584432610947,
+            0.5824197551753336
+          ],
+          [
+            0.5859712599721463,
+            0.40209973029063373
+          ],
+          [
+            0.5824885770102173,
+            0.8508777813955773
+          ],
+          [
+            -0.6793270090713991,
+            1.0311978062802771
+          ]
+        ],
+        "prompt_box_xyxy": [
+          153.92303564572845,
+          378.56692717847113,
+          761.2662047866302,
+          540.0
+        ],
+        "target_bbox_iou_evaluation_only": 0.6846935011365207
+      }
+    },
+    "P_FC08_FC08": {
+      "primary": {
+        "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+        "support_mask_sha256": "c455f86c11aac02af377f6f31aa60f396833a4c523aa2d1c5e68e0fb4ee68737",
+        "support_mask_pixels_at_match_resolution": 61617,
+        "extent_mask_pixels_at_match_resolution": 119561,
+        "high_certainty_pixels": 20177,
+        "all_cycle_pixels": 19946,
+        "all_cycle_fraction": 0.3237093659217424,
+        "all_cycle_purity": 0.9885513208108242,
+        "component": {
+          "component_count": 28,
+          "selected_label": 3,
+          "selected_pixels": 10428
+        },
+        "selected_component_fraction_of_support": 0.16923900871512731,
+        "selected_component_fraction_of_cycles": 0.5228115912965006,
+        "affine_rank": 3,
+        "affine_mean_residual_normalized": 0.0005756630725256189,
+        "affine_max_residual_normalized": 0.004102393393619096,
+        "projected_bound_extent_corners_normalized": [
+          [
+            -0.3594170018491471,
+            -0.48879277472831634
+          ],
+          [
+            0.7788905904176905,
+            -0.48168677196858845
+          ],
+          [
+            0.7725586121212675,
+            -0.033819583098986895
+          ],
+          [
+            -0.36574898014557,
+            -0.040925585858714794
+          ]
+        ],
+        "prompt_box_xyxy": [
+          304.4404895301264,
+          138.0259508233546,
+          853.8674834004914,
+          260.8687125632735
+        ],
+        "target_bbox_iou_evaluation_only": 0.8146682343110038
+      },
+      "active": {
+        "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+        "support_mask_sha256": "c455f86c11aac02af377f6f31aa60f396833a4c523aa2d1c5e68e0fb4ee68737",
+        "support_mask_pixels_at_match_resolution": 61617,
+        "extent_mask_pixels_at_match_resolution": 119561,
+        "high_certainty_pixels": 24702,
+        "all_cycle_pixels": 14291,
+        "all_cycle_fraction": 0.23193274583313048,
+        "all_cycle_purity": 0.5785361509189539,
+        "component": {
+          "component_count": 19,
+          "selected_label": 1,
+          "selected_pixels": 13309
+        },
+        "selected_component_fraction_of_support": 0.2159955856338348,
+        "selected_component_fraction_of_cycles": 0.9312854243929746,
+        "affine_rank": 3,
+        "affine_mean_residual_normalized": 0.0044322828971209965,
+        "affine_max_residual_normalized": 0.021372658568503178,
+        "projected_bound_extent_corners_normalized": [
+          [
+            -0.6652192222627804,
+            0.6601516713113724
+          ],
+          [
+            0.5186889430046403,
+            0.48717015488401466
+          ],
+          [
+            0.516951591688477,
+            0.8848502650910489
+          ],
+          [
+            -0.6669565735789437,
+            1.0578317815184066
+          ]
+        ],
+        "prompt_box_xyxy": [
+          159.86084468210703,
+          401.53594181868397,
+          728.9706926422273,
+          540.0
+        ],
+        "target_bbox_iou_evaluation_only": 0.6801326643374241
+      }
+    },
+    "N_FC30_FC31": {
+      "primary": {
+        "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+        "all_cycle_pixels": 0,
+        "all_cycle_fraction": 0.0,
+        "selected_component_fraction_of_cycles": 0.0,
+        "prompt_box_xyxy": null,
+        "target_bbox_iou_evaluation_only": null
+      },
+      "active": {
+        "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+        "all_cycle_pixels": 0,
+        "all_cycle_fraction": 0.0,
+        "selected_component_fraction_of_cycles": 0.0,
+        "prompt_box_xyxy": null,
+        "target_bbox_iou_evaluation_only": null
+      }
+    }
+  },
+  "reference_receipts": {
+    "FC30": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "7a65044c2ea4b6c5c9a6450933aff715405f9ce5141aaae756467f23fecf8b02",
+      "mask_pixels": 16858,
+      "mask_bbox_xyxy": [
+        129.0,
+        2.0,
+        929.0,
+        187.0
+      ],
+      "binding_bbox_iou": 0.9448624359009955,
+      "binding_bbox_recall": 0.9544010046897049,
+      "reference_mask_bbox_precision": 0.9895331954956055,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.8549596999655478
+      }
+    },
+    "FC31": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "5b8ab04a6ea5ee7bf07c0f1d96f8593027e40ac741267d772315a5b1922d0226",
+      "mask_pixels": 52600,
+      "mask_bbox_xyxy": [
+        260.0,
+        112.0,
+        815.0,
+        239.0
+      ],
+      "binding_bbox_iou": 0.7138053161982187,
+      "binding_bbox_recall": 0.7240217178026433,
+      "reference_mask_bbox_precision": 0.9806150301234928,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09203260001959279
+      }
+    },
+    "FC08": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "c455f86c11aac02af377f6f31aa60f396833a4c523aa2d1c5e68e0fb4ee68737",
+      "mask_pixels": 42788,
+      "mask_bbox_xyxy": [
+        262.0,
+        134.0,
+        820.0,
+        233.0
+      ],
+      "binding_bbox_iou": 0.5999419359788238,
+      "binding_bbox_recall": 0.6277235407021743,
+      "reference_mask_bbox_precision": 0.9312981499565972,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09371859999373555
+      }
+    }
+  },
+  "active_input_receipts": {
+    "FC31:query": {
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "frame": 58,
+      "zip_member": "frame-000058.color.jpg",
+      "image_sha256": "34807314ccfe4a25e09d8f073aff50c83d17ab0f9814c3c5d8c789feb4aa4460",
+      "image_bytes": 76738,
+      "target_bbox_xyxy_evaluation_only": [
+        159.91644287109375,
+        400.9040832519531,
+        761.8023681640625,
+        512.6060791015625
+      ],
+      "baseline_metres": 0.7488844890524906,
+      "inside_vertex_fraction": 1.0,
+      "foreign_target_instance_id": 30,
+      "foreign_target_inside_vertices": 0
+    },
+    "FC08:query": {
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "frame": 58,
+      "zip_member": "frame-000058.color.jpg",
+      "image_sha256": "34807314ccfe4a25e09d8f073aff50c83d17ab0f9814c3c5d8c789feb4aa4460",
+      "image_bytes": 76738,
+      "target_bbox_xyxy_evaluation_only": [
+        120.80289459228516,
+        416.5552062988281,
+        756.4935913085938,
+        518.8703002929688
+      ],
+      "baseline_metres": 0.6741453177864843,
+      "inside_vertex_fraction": 1.0,
+      "foreign_target_instance_id": null,
+      "foreign_target_inside_vertices": null
+    }
+  },
+  "sibling_absence_receipts": {
+    "N_FC30_FC31": {
+      "reference_target_instance_id": 30,
+      "query_sibling_target_instance_id": 31,
+      "query_scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "primary_query_frame": 86,
+      "active_query_frame": 58,
+      "primary_projected_inside_vertices": 0,
+      "active_projected_inside_vertices": 0
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 8,
+    "sam2_calls": 7,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "This unchanged partial confirmation evaluates two never-consumed positive targets and one never-consumed exact-target-absent bound sibling reference from a previously used 3RScan scan family. A missing global epipolar fit is fail-closed and may be rescued only by the already frozen bidirectional active-query majority. The negative bound target lacks its own positive active-query row. A pass is limited physical-target-disjoint Development evidence, not full confirmation, scan-family/provider independence, raw-camera binding, arbitrary sibling rejection, user-action feasibility, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety."
+}

@@ -36,13 +36,15 @@ Status: `ACTIVE`
   new physical targets and rejected `4/4` cross-scene target-absent pairs, but
   one same-scene sibling door remained a stable false binding under bilateral
   masks, an official Doppelgangers classifier, two references, and a displaced
-  second query. A zero-model complementary rule now requires local binding plus
-  either target-excluded global epipolar majority or bidirectional active-query
-  majority. On the consumed hard panel it reached `3/3` positives, rejected
-  `2/2` sibling negatives, made `0` false commits, and had committed precision
-  `1.0`. This is posthoc mechanism evidence only; a first physical-target-
-  disjoint confirmation source stopped pre-RGB because FC30 had no active view
-  above `0.5911` target completeness versus the frozen `0.98` requirement.
+  second query. A universal complementary corroboration fixed that consumed
+  panel (`3/3` positives, `0/2` false commits) but rejected both newly frozen
+  FC31/FC08 positives because its specialist global/active supports did not
+  transfer; the new exact-target-absent FC30 negative was correctly rejected.
+  A zero-model selective cascade now commits strong local bindings directly and
+  requests complementary corroboration only for ambiguity. Across both consumed
+  panels it reached `5/5` positives, `0/3` false commits, precision `1.0`, and
+  requested the extra branch for only `1/8` rows. Its post-observation `0.25`
+  direct-exit point is Development only and is frozen for a fresh-source test.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -3934,8 +3936,50 @@ entrance, ownership, public access, traversability, waypoint, arrival,
 Stop tuning positive 3RScan targets; the next claim-changing source must address
 initial binding or frozen same-scene sibling-door rejection.
 
+The consumed sibling panel next combined the retained local bilateral binding
+with either target-excluded global epipolar majority or bidirectional active-
+query majority. This complementary rule preserved `3/3` positives and rejected
+both siblings. Its first physical-target-disjoint source was not evaluable:
+FC30 had no active query above `0.591093` target completeness versus the frozen
+`0.98` gate. A successor froze FC31 and FC08 as positives and kept FC30 only as
+an exact-target-absent bound before opening RGB or models. Both positives passed
+the local bilateral and primary/active extent gates. They were nevertheless
+rejected because global epipolar support was only `0.415395/0.362869`, while
+primary-to-active/reverse paired coverage was `0.297609/0.435110` and
+`0.287409/0.183586`, all below the inherited `0.5` majority. The FC30 negative
+had zero primary and active local cycles and was correctly rejected. Record
+`L10_3RSCAN_COMPLEMENTARY_CORROBORATION_PARTIAL_PHYSICAL_TARGET_CONFIRMATION_GATE_NOT_MET`:
+the specialist corroborators did not transfer as a universal hard gate.
+
+Following the NeurIPS 2023 cascade-deferral analysis found through Exa, one
+zero-model Development successor made specialist verification conditional. An
+inherited local non-commit rejects immediately; a local commit with at least
+one-quarter primary coherent-cycle coverage exits directly; only a lower-
+coverage local commit requests the unchanged complementary corroborator. The
+quarter-coverage landmark was selected once after seeing the failed panel, with
+no sweep. Recomposition over the consumed sibling and physical-target panels
+restored `5/5` positives, retained `0/3` false commits and committed precision
+`1.0`. Only the `0.087404` DR01-to-DR02 ambiguity requested corroboration, so
+the decision graph requested the extra branch for `1/8` rows versus `8/8`
+under universal verification (`87.5%` counterfactual branch avoidance). Record
+`L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_POSTHOC_DEVELOPMENT_GATE_MET`.
+This is decision-logic and counterfactual-demand evidence on consumed rows, not
+measured runtime savings or confirmation. Freeze `0.25`; the next admissible
+check is a pre-model source with positive and exact-target-absent rows. Same-
+provider correspondence still does not establish raw-camera initial binding,
+named entrance, ownership, access, traversability, waypoint, arrival, handoff,
+deployment, user benefit, reliability, or safety.
+
 Evidence:
 
+- partial physical-target confirmation implementation/protocol/result SHA-256:
+  `280a6641455c6da6d184ee4422243370ab2945130bfed03bc9621de1880e418d`,
+  `3680014ca75676e9f7216fcfbd62fc0c48d275541b41f8fd4485e47ca9ecf47c`,
+  and `ebd787a6963ccfc65b3ce0369789304caa8fcb4ef3bb0c3150c5f31ba82ddfac`;
+- selective-cascade implementation/protocol/result SHA-256:
+  `57f07210286a61af35a0f657fa6a1a7b152d1bfb833472ee5ea45842849882aa`,
+  `4205875135bc8fdf847c76d9831f26f217f286750422422743557ce247897e0c`,
+  and `9c835d51daaafaf6b7eb4517bec255a42b914305e6dde3119302916b512ecc31`;
 - SceneNN transfer result:
   `l10_scenenn_center_target_door_retrieval_result_v1.json`, SHA-256
   `5850b222eec2b1fbd870706ea8580dc973f871c718546771eab6ebeb1e48e282`;

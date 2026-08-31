@@ -29,6 +29,7 @@ import l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc as reference_base
 
 
 PROTOCOL_SCHEMA = "blindassist-l10-3rscan-complementary-corroboration-confirmation-protocol-v1"
+OVERRIDE_SCHEMA = "blindassist-l10-3rscan-complementary-corroboration-confirmation-protocol-v2"
 RESULT_SCHEMA = "blindassist-l10-3rscan-complementary-corroboration-confirmation-result-v1"
 
 
@@ -83,13 +84,51 @@ def load_active_queries(
     return images, receipts
 
 
+def load_protocol(path: Path) -> dict[str, Any]:
+    base = open_set.base
+    raw = base.load_json(path)
+    if raw.get("schema") == OVERRIDE_SCHEMA:
+        base_path = HERE / raw["base_protocol_path"]
+        base.require(base.sha256(base_path) == raw["base_protocol_sha256"], "BASE_PROTOCOL_HASH")
+        protocol = base.load_json(base_path)
+        protocol.update(raw["overrides"])
+    else:
+        protocol = raw
+    base.require(protocol.get("schema") == PROTOCOL_SCHEMA, "PROTOCOL_SCHEMA")
+    base.require(protocol["implementation"]["sha256"] == base.sha256(Path(__file__)), "IMPLEMENTATION_HASH")
+    cohort_path = HERE / protocol["source"]["cohort_path"]
+    base.require(base.sha256(cohort_path) == protocol["source"]["cohort_sha256"], "COHORT_HASH")
+    predecessor_path = HERE / protocol["predecessor"]["result_path"]
+    base.require(base.sha256(predecessor_path) == protocol["predecessor"]["result_sha256"], "PREDECESSOR_HASH")
+    base.require(
+        base.load_json(predecessor_path)["conclusion"] == protocol["predecessor"]["required_conclusion"],
+        "PREDECESSOR_CONCLUSION",
+    )
+    for dependency in protocol["dependencies"]:
+        base.require(base.sha256(HERE / dependency["path"]) == dependency["sha256"], f"DEPENDENCY_HASH:{dependency['path']}")
+    for model in ("masker", "matcher", "matcher_backbone"):
+        row = protocol["models"][model]
+        base.require(base.sha256(ROOT / row["path"]) == row["sha256"], f"MODEL_HASH:{model}")
+    artifact_root = ROOT / protocol["source"]["artifact_root"]
+    for row in protocol["source"]["sequence_zips"]:
+        source = artifact_root / row["path"]
+        base.require(source.stat().st_size == int(row["bytes"]), f"ZIP_BYTES:{row['path']}")
+        base.require(base.sha256(source) == row["sha256"], f"ZIP_HASH:{row['path']}")
+    return protocol
+
+
 def replay(protocol_path: Path, output_path: Path) -> None:
     import romatch
     from transformers import Sam2Model, Sam2Processor
 
     base = open_set.base
-    with protocol_surface():
-        protocol = base.load_protocol(protocol_path)
+    protocol = load_protocol(protocol_path)
+    if "execution_predecessor" in protocol:
+        failure_path = HERE / protocol["execution_predecessor"]["path"]
+        base.require(
+            base.sha256(failure_path) == protocol["execution_predecessor"]["sha256"],
+            "EXECUTION_PREDECESSOR_HASH",
+        )
     cohort_path = HERE / protocol["source"]["cohort_path"]
     cohort = base.load_json(cohort_path)
     base.require(cohort["protocol_sha256"] == protocol["source"]["freeze_protocol_sha256"], "COHORT_FREEZE_BINDING")
@@ -172,15 +211,25 @@ def replay(protocol_path: Path, output_path: Path) -> None:
             prompt_receipts[pair_id][role] = receipt
 
         primary_warp, primary_certainty = pair_matches[(pair_id, "primary")]
-        target_source, target_query, background_source, background_query, domain_receipt = global_base.cycle_domains(
-            primary_warp, primary_certainty, reference_masks[reference_id], protocol["matcher"]
-        )
-        global_receipts[pair_id] = {
-            **domain_receipt,
-            **global_base.epipolar_receipt(
-                target_source, target_query, background_source, background_query, protocol
-            ),
-        }
+        try:
+            target_source, target_query, background_source, background_query, domain_receipt = global_base.cycle_domains(
+                primary_warp, primary_certainty, reference_masks[reference_id], protocol["matcher"]
+            )
+            global_receipts[pair_id] = {
+                "status": "EVALUATED",
+                **domain_receipt,
+                **global_base.epipolar_receipt(
+                    target_source, target_query, background_source, background_query, protocol
+                ),
+            }
+        except ValueError as exc:
+            if str(exc) != "INSUFFICIENT_BACKGROUND_CYCLES":
+                raise
+            global_receipts[pair_id] = {
+                "status": "NOT_EVALUABLE_INSUFFICIENT_TARGET_EXCLUDED_BACKGROUND_CYCLES",
+                "global_epipolar_support": False,
+                "repair_semantics": "Missing global corroborator is fail-closed non-support; active-query majority remains independently required by the frozen OR composition.",
+            }
 
     query_ids = sorted({str(row["query_episode"]) for row in protocol["evaluation"]["pairs"]})
     query_matches: dict[str, tuple[torch.Tensor, torch.Tensor]] = {}

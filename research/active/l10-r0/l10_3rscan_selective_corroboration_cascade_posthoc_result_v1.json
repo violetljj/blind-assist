@@ -1,0 +1,163 @@
+{
+  "schema": "blindassist-l10-3rscan-selective-corroboration-cascade-posthoc-result-v1",
+  "authority": "CONSUMED_ZERO_MODEL_POSTHOC_SELECTIVE_CASCADE_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_selective_corroboration_cascade_posthoc_protocol_v1.json",
+  "protocol_sha256": "4205875135bc8fdf847c76d9831f26f217f286750422422743557ce247897e0c",
+  "implementation": {
+    "path": "l10_3rscan_selective_corroboration_cascade_posthoc.py",
+    "sha256": "57f07210286a61af35a0f657fa6a1a7b152d1bfb833472ee5ea45842849882aa"
+  },
+  "inputs": {
+    "consumed_sibling_local": {
+      "path": "l10_3rscan_cycle_component_mask_paired_posthoc_result_v1.json",
+      "sha256": "3f6a0ca95de93f6101a14f783fe22f3131f063910bd397780d7066e86306a609"
+    },
+    "consumed_sibling_complementary": {
+      "path": "l10_3rscan_complementary_corroboration_posthoc_result_v1.json",
+      "sha256": "7894a729510b96dc70f3374bedfd4acea3cb9a097850315e5afab9a6136a2df3"
+    },
+    "consumed_physical_target_partial_confirmation": {
+      "path": "l10_3rscan_complementary_corroboration_confirmation_result_v1.json",
+      "sha256": "ebd787a6963ccfc65b3ce0369789304caa8fcb4ef3bb0c3150c5f31ba82ddfac"
+    }
+  },
+  "conclusion": "L10_3RSCAN_SELECTIVE_CORROBORATION_CASCADE_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "positive_pairs": 5,
+    "positive_commits": 5,
+    "positive_recall": 1.0,
+    "target_absent_pairs": 3,
+    "target_absent_false_commits": 0,
+    "committed_precision": 1.0,
+    "corroboration_requests": 1,
+    "corroboration_request_fraction": 0.125,
+    "counterfactual_universal_corroboration_requests": 8,
+    "counterfactual_extra_branch_avoidance_fraction": 0.875,
+    "panels": {
+      "consumed_sibling_panel": {
+        "positive_pairs": 3,
+        "positive_commits": 3,
+        "target_absent_pairs": 2,
+        "target_absent_false_commits": 0,
+        "corroboration_requests": 1
+      },
+      "consumed_physical_target_panel": {
+        "positive_pairs": 2,
+        "positive_commits": 2,
+        "target_absent_pairs": 1,
+        "target_absent_false_commits": 0,
+        "corroboration_requests": 0
+      }
+    }
+  },
+  "decisions": {
+    "P_DR01_DR01": {
+      "id": "P_DR01_DR01",
+      "panel": "consumed_sibling_panel",
+      "label": "target_present",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.5075261180351907,
+      "complementary_corroboration": true,
+      "strong_local_direct_exit": true,
+      "corroboration_requested": false,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR02_DR02": {
+      "id": "P_DR02_DR02",
+      "panel": "consumed_sibling_panel",
+      "label": "target_present",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.5819964349376114,
+      "complementary_corroboration": true,
+      "strong_local_direct_exit": true,
+      "corroboration_requested": false,
+      "commit": true,
+      "correct": true
+    },
+    "P_DR03_DR03": {
+      "id": "P_DR03_DR03",
+      "panel": "consumed_sibling_panel",
+      "label": "target_present",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.6448997120194008,
+      "complementary_corroboration": true,
+      "strong_local_direct_exit": true,
+      "corroboration_requested": false,
+      "commit": true,
+      "correct": true
+    },
+    "N_DR01_DR02": {
+      "id": "N_DR01_DR02",
+      "panel": "consumed_sibling_panel",
+      "label": "target_absent",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.08740377565982405,
+      "complementary_corroboration": false,
+      "strong_local_direct_exit": false,
+      "corroboration_requested": true,
+      "commit": false,
+      "correct": true
+    },
+    "N_DR02_DR01": {
+      "id": "N_DR02_DR01",
+      "panel": "consumed_sibling_panel",
+      "label": "target_absent",
+      "local_commit": false,
+      "primary_local_cycle_fraction": 0.0,
+      "complementary_corroboration": false,
+      "strong_local_direct_exit": false,
+      "corroboration_requested": false,
+      "commit": false,
+      "correct": true
+    },
+    "P_FC31_FC31": {
+      "id": "P_FC31_FC31",
+      "panel": "consumed_physical_target_panel",
+      "label": "target_present",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.6132228784335487,
+      "complementary_corroboration": false,
+      "strong_local_direct_exit": true,
+      "corroboration_requested": false,
+      "commit": true,
+      "correct": true
+    },
+    "P_FC08_FC08": {
+      "id": "P_FC08_FC08",
+      "panel": "consumed_physical_target_panel",
+      "label": "target_present",
+      "local_commit": true,
+      "primary_local_cycle_fraction": 0.3237093659217424,
+      "complementary_corroboration": false,
+      "strong_local_direct_exit": true,
+      "corroboration_requested": false,
+      "commit": true,
+      "correct": true
+    },
+    "N_FC30_FC31": {
+      "id": "N_FC30_FC31",
+      "panel": "consumed_physical_target_panel",
+      "label": "target_absent",
+      "local_commit": false,
+      "primary_local_cycle_fraction": 0.0,
+      "complementary_corroboration": false,
+      "strong_local_direct_exit": false,
+      "corroboration_requested": false,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "runtime": {
+    "model_calls": 0,
+    "receipt_recompositions": 8
+  },
+  "literature_motivation": {
+    "paper": "When Does Confidence-Based Cascade Deferral Suffice?",
+    "venue": "NeurIPS 2023",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2023/file/1f09e1ee5035a4c3fe38a5681cae5815-Paper-Conference.pdf",
+    "used_principle": "Inference cost should vary by sample and specialist downstream models should be invoked through a deferral rule rather than imposed as a universal gate; specialist and distribution-shift failure modes require validating the cascade on held-out data."
+  },
+  "claim_boundary": "This is a zero-model posthoc Development recomposition over eight consumed rows, including the already observed physical-target-disjoint panel. It can compare decision logic and counterfactual branch demand only on these rows. The 0.25 threshold is not calibrated, preregistered confirmation, provider-independent generalization or a reliability bound. Same-provider masks and geometry do not establish named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit or safety."
+}
