@@ -1,0 +1,347 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-open-set-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_CROSS_SCENE_TARGET_ABSENT_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_transport_opportunity_replication_confirmation_protocol_v1.json",
+  "protocol_sha256": "fa66c51137215bd87e984e70660041125c7e19fd8dd910aab7551875d2667de0",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_open_set_posthoc.py",
+    "sha256": "812f5bf5372389aeab462a6e8339e9aae78629dce7187ab74bc32e8b6f53b4c4"
+  },
+  "source": {
+    "cohort_path": "l10_3rscan_transport_opportunity_replication_confirmation_cohort_v1.json",
+    "cohort_sha256": "f9c387ef6b464d3e1e450eda8edb1a017831249446df9bb859a1719f5248af72"
+  },
+  "conclusion": "L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "positive_pairs": 1,
+    "positive_commits": 1,
+    "target_absent_pairs": 2,
+    "target_absent_false_commits": 0
+  },
+  "decisions": {
+    "P_TR23_TR23": {
+      "id": "P_TR23_TR23",
+      "reference_episode": "TR23",
+      "query_episode": "TR23",
+      "label": "target_present",
+      "reference_cycle_fraction": 0.8713155669828475,
+      "dominant_component_cycle_fraction": 0.9959591663122076,
+      "coherent_component_support": true,
+      "positive_extent_gate": true,
+      "commit": true,
+      "correct": true
+    },
+    "N_TR23_NC31": {
+      "id": "N_TR23_NC31",
+      "reference_episode": "TR23",
+      "query_episode": "NC31",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "commit": false,
+      "correct": true
+    },
+    "N_TR23_NC08": {
+      "id": "N_TR23_NC08",
+      "reference_episode": "TR23",
+      "query_episode": "NC08",
+      "label": "target_absent",
+      "reference_cycle_fraction": 0.0,
+      "dominant_component_cycle_fraction": 0.0,
+      "coherent_component_support": false,
+      "positive_extent_gate": null,
+      "commit": false,
+      "correct": true
+    }
+  },
+  "prompt_receipts": {
+    "P_TR23_TR23": {
+      "selection_authority": "REFERENCE_SAM_SUPPORT_TO_LARGEST_CYCLE_COMPONENT_WITH_BOUND_BBOX_EXTENT",
+      "support_mask_sha256": "205bc0aeff12adfdb0e8e7f57edf46ddbb028de8b3f0b9825190cc4d8efce104",
+      "support_mask_pixels_at_match_resolution": 86343,
+      "extent_mask_pixels_at_match_resolution": 164862,
+      "high_certainty_pixels": 75419,
+      "all_cycle_pixels": 75232,
+      "all_cycle_fraction": 0.8713155669828475,
+      "all_cycle_purity": 0.9975205187021838,
+      "component": {
+        "component_count": 48,
+        "selected_label": 1,
+        "selected_pixels": 74928
+      },
+      "selected_component_fraction_of_support": 0.8677947256870853,
+      "selected_component_fraction_of_cycles": 0.9959591663122076,
+      "affine_rank": 3,
+      "affine_mean_residual_normalized": 0.0035202261777949146,
+      "affine_max_residual_normalized": 0.01783494536376988,
+      "projected_bound_extent_corners_normalized": [
+        [
+          -0.8049833928382627,
+          -0.32053606637382454
+        ],
+        [
+          0.020716947417528858,
+          -0.2722014444288054
+        ],
+        [
+          -0.009601923031832466,
+          0.5049797103224246
+        ],
+        [
+          -0.835302263287624,
+          0.4566450883774055
+        ]
+      ],
+      "prompt_box_xyxy": [
+        79.05491362194047,
+        183.45526207906735,
+        489.9441347604138,
+        406.3445217870546
+      ],
+      "target_bbox_iou_evaluation_only": 0.725188934281284,
+      "target_bbox_recall_evaluation_only": 0.8915205105489061,
+      "prompt_bbox_precision_evaluation_only": 0.7953729615664629
+    },
+    "N_TR23_NC31": {
+      "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+      "all_cycle_pixels": 0,
+      "all_cycle_fraction": 0.0,
+      "selected_component_fraction_of_cycles": 0.0,
+      "prompt_box_xyxy": null,
+      "target_bbox_iou_evaluation_only": null,
+      "target_absence_authority": "DIFFERENT_3RSCAN_REFERENCE_SCAN_FAMILY"
+    },
+    "N_TR23_NC08": {
+      "selection_authority": "ZERO_REFERENCE_CYCLES_DETERMINISTIC_NON_COMMIT",
+      "all_cycle_pixels": 0,
+      "all_cycle_fraction": 0.0,
+      "selected_component_fraction_of_cycles": 0.0,
+      "prompt_box_xyxy": null,
+      "target_bbox_iou_evaluation_only": null,
+      "target_absence_authority": "DIFFERENT_3RSCAN_REFERENCE_SCAN_FAMILY"
+    }
+  },
+  "reference_support_receipts": {
+    "TR23": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "205bc0aeff12adfdb0e8e7f57edf46ddbb028de8b3f0b9825190cc4d8efce104",
+      "mask_pixels": 60012,
+      "mask_bbox_xyxy": [
+        46.0,
+        114.0,
+        508.0,
+        282.0
+      ],
+      "binding_bbox_iou": 0.6640990070539154,
+      "binding_bbox_recall": 0.6714860783875019,
+      "reference_mask_bbox_precision": 0.9837045215425038,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 1.1006937000202015
+      }
+    },
+    "NC31": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "5b8ab04a6ea5ee7bf07c0f1d96f8593027e40ac741267d772315a5b1922d0226",
+      "mask_pixels": 52600,
+      "mask_bbox_xyxy": [
+        260.0,
+        112.0,
+        815.0,
+        239.0
+      ],
+      "binding_bbox_iou": 0.7138053161982187,
+      "binding_bbox_recall": 0.7240217178026433,
+      "reference_mask_bbox_precision": 0.9806150301234928,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.25160720001440495
+      }
+    },
+    "NC08": {
+      "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+      "mask_sha256": "c455f86c11aac02af377f6f31aa60f396833a4c523aa2d1c5e68e0fb4ee68737",
+      "mask_pixels": 42788,
+      "mask_bbox_xyxy": [
+        262.0,
+        134.0,
+        820.0,
+        233.0
+      ],
+      "binding_bbox_iou": 0.5999419359788238,
+      "binding_bbox_recall": 0.6277235407021743,
+      "reference_mask_bbox_precision": 0.9312981499565972,
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09647059999406338
+      }
+    }
+  },
+  "query_support_receipts": {
+    "P_TR23_TR23": {
+      "mask_sha256": "86bf4abfdc7c4126053412d907fd5fedda7c6543287d7301a57d50c77d8b7e10",
+      "mask_pixels": 48398,
+      "mask_bbox_xyxy": [
+        84.0,
+        191.0,
+        474.0,
+        411.0
+      ],
+      "masker": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.10123900003964081
+      },
+      "target_bbox_iou_diagnostic_only": 0.7639983787715767
+    },
+    "N_TR23_NC31": {
+      "status": "NOT_RUN_ZERO_REFERENCE_CYCLES",
+      "masker_calls": 0
+    },
+    "N_TR23_NC08": {
+      "status": "NOT_RUN_ZERO_REFERENCE_CYCLES",
+      "masker_calls": 0
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "roma_calls": 3,
+    "sam2_calls": 4,
+    "grounding_dino_calls": 0
+  },
+  "claim_boundary": "This is a second pre-download-frozen new physical target/family under the unchanged pre-model transport-opportunity gate and unchanged carrier, with two fixed target-absent controls. A pass is narrow same-provider replication of the action-plus-carrier component, not arbitrary sibling rejection, provider independence, raw-camera binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, deployment, benefit, reliability or safety."
+}

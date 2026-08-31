@@ -237,6 +237,15 @@ contract.
   pre-model transport-opportunity observation gate, not a relaxed matcher.
   It still proves no raw-camera referent acquisition, named entrance, ownership,
   access, waypoint, arrival, handoff, user benefit, reliability, or safety.
+  The unchanged source gate and carrier then replicated on a second entirely
+  new pre-download-frozen family (`2ea047d1 -> 2ea047cd`, target `23`). Frames
+  `170 -> 115` were selected before RGB/model access with mutual-surface
+  fraction `0.672619`, direction cosine `0.999998`, and score `0.672618`.
+  The one frozen model run again reached `1/1` positive commit and `0/2` false
+  commits; positive cycle fraction was `0.871316`, component dominance
+  `0.995959`, and transported extent IoU `0.725189`, while both negatives had
+  zero cycles. This is second-family Development replication of the same narrow
+  component claim, not provider independence or end-to-end ten-metre evidence.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

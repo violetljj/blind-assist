@@ -57,8 +57,10 @@ Status: `ACTIVE`
   direction floors (`0.402` overlap, `0.979` cosine) and the unchanged carrier
   then reached `1/1` positive and `0/2` false commits, with `0.132` cycle
   fraction, `0.500` component dominance, and `0.648` transported-extent IoU.
-  This is narrow same-provider confirmation of the action-plus-carrier
-  component, not portal or navigation authority.
+  An unchanged second-family replication then reached `1/1` positive and `0/2`
+  false commits at `0.871` cycle fraction, `0.996` component dominance, and
+  `0.725` extent IoU. This is narrow same-provider replication of the
+  action-plus-carrier component, not portal or navigation authority.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -4079,6 +4081,19 @@ unchanged carrier. This does not establish arbitrary sibling rejection,
 raw-camera initial binding, named entrance, ownership, access, traversability,
 waypoint, arrival, handoff, deployment, benefit, reliability, or safety.
 
+The exact same source gate and carrier were then frozen on a second completely
+new physical scan family, `2ea047d1 -> 2ea047cd`, target `23`. Before opening
+RGB or calling a model, frames `170 -> 115` supplied `226/336` mutually visible
+vertices (`0.672619`), direction cosine `0.999998`, and opportunity score
+`0.672618`. The single frozen carrier run committed the positive and rejected
+both unchanged cross-family controls: cycle fraction `0.871316`, dominant-
+component fraction `0.995959`, normalized affine residual `0.003520`, and
+transported extent IoU `0.725189`; both negatives again had zero cycles. This
+is second-family Development replication under the same provider and privileged
+initial reference binding. It adds no provider independence, raw-camera
+referent acquisition, named-entrance ownership/access, waypoint, arrival,
+handoff, deployment, user-benefit, reliability, or safety authority.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4153,6 +4168,16 @@ Evidence:
   `da6e5ce047df2d65b054b6226337a750fbfd1b502377988437cb31918371f1e6`,
   `0b964118f2e72886eafc821683555dc4b1311e16053f06b7e77b704001169cc5`,
   and `89ee1c31008d8943181616a1c91d1edcfcbb609008561413d7b5a8bde3a33460`;
+- second-family replication candidate protocol/result, source protocol/result,
+  freeze protocol/cohort, and carrier protocol/result SHA-256:
+  `6d0bb6aac369f399ddd654e8a6864756b5c09326f0ea27db9dc52ce89d23bac6`,
+  `b5d7f3c7e6118e3a9ecc205cf69d60344b7acea5d208b4d523ae5e25c967d82b`,
+  `e948531bbdad1c0c1b4bf560235b0d9e8b91c314665a7536b0490b4d92bc1593`,
+  `ad77855d44c3e414237e040039a70719825bf1aeeb4546aa68a5e47f6a3a7c4a`,
+  `afed6888fee65395249f5a5cb05565cde1efe5c70ad13c699163358b8f70e7a0`,
+  `f9c387ef6b464d3e1e450eda8edb1a017831249446df9bb859a1719f5248af72`,
+  `fa66c51137215bd87e984e70660041125c7e19fd8dd910aab7551875d2667de0`,
+  and `562735b9a4a8e2dd574cda5dd159681a48d94c14155b50a8d03af9a20e462b47`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;
