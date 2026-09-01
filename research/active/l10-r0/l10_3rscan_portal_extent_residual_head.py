@@ -274,7 +274,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
                     points = np.concatenate([item["points"] for item in selected], axis=0)
                     local_frame, partial = _frame_and_bounds(points)
                     truth = _truth_bounds(truth_points, local_frame)
-                except (AssertionError, np.linalg.LinAlgError) as exc:
+                except (ValueError, np.linalg.LinAlgError) as exc:
                     dropped.append({"sample_id": "+".join(item["row"]["sample_id"] for item in selected), "reason": str(exc)})
                     continue
                 rows = [item["row"] for item in selected]
