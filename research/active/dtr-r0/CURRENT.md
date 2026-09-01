@@ -154,7 +154,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `92.17/77.66/84.30%`, a further `+0.49 pp F1` over X78. Every required check
   passes. X79 is the strongest current eight-cohort Development arm; X73
   continues to retain confirmation authority until unchanged X79 passes a
-  fresh source-disjoint gate.
+  fresh source-disjoint gate. The sole C39 invocation then tested unchanged
+  X79 at seed `391079` with four new weather/render assignments. X79 and X78
+  were classification-identical at `137 TP / 22 FP / 35 FN`, or
+  `86.16/79.65/82.78%`; X79 recorded zero lateral-only releases. Every full-arm,
+  contact-recall, safe-segment, and authority-invariant constraint passed, but
+  the frozen incremental mechanism and false-positive reduction requirements
+  did not. C39 is mechanism-not-exercised and now consumed diagnosis material;
+  it supplies no fresh promotion evidence. X73 therefore still retains the
+  latest positive source-disjoint confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -172,7 +180,7 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35, C36, C37, or C38 as confirmation. X73 remains positively
+4. Do not rerun C35, C36, C37, C38, or C39 as confirmation. X73 remains positively
    confirmed on C35; C36 and C37 are consumed successor-design evidence. X77
    reduced C37's remaining false positives from 24 to 23 and crossed its
    precision floor with zero TP loss across all eight consumed cohorts. C38
@@ -180,7 +188,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
    single-use X76/X77 runner is bound to protocol SHA-256
    `B11E8C0B138D075FEF9A74295AA8E4A3F730350C42F1237A453130A6838DD31D`;
    C38 admitted and scored its sole invocation, but the X77 mechanism was not
-   exercised and the full gate failed. Until a later full fresh gate passes,
+   exercised and the full gate failed. C39 then admitted and scored its sole
+   X78/X79 invocation under protocol SHA-256
+   `EC62FF07F2E1FBF2A43046083D4792D6A8A6ADF1CFAB65102505BCBE965637F3`.
+   Its full-arm constraints passed, but X79 exercised no lateral-only release
+   and produced no incremental effect. Until a later full fresh gate passes,
    X73 retains source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
@@ -248,3 +260,7 @@ their result.
   [DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
 - X79 consumed cross-cohort Development:
   [DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- Frozen C39 X79 protocol:
+  [dtr_carla_c39_x79_fresh_confirmation_protocol.json](carla/dtr_carla_c39_x79_fresh_confirmation_protocol.json)
+- C39 X79 fresh outcome:
+  [DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md)
