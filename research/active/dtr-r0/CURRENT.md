@@ -260,6 +260,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   X87 is `1,472 TP / 130 FP / 423 FN` at `91.89/77.68/84.19%`, or
   `0 TP / -3 FP / +0.07 pp F1` over X86. The other nine cohorts are
   classification-identical and every required check passes. X87 is consumed
+  Development-only and X73 retains fresh authority. X88 then treats a current
+  X68 object-local metric update as a new observation epoch: an older surface
+  transport contradiction remains diagnostic history but cannot independently
+  retain collision timing for a newly measured pure-lateral trajectory. It
+  removes one C27 and one C40 false-positive frame with zero TP loss. Pooled
+  X88 is `1,472 TP / 128 FP / 423 FN` at `92.00/77.68/84.23%`, or
+  `0 TP / -2 FP / +0.05 pp F1` over X87. The other nine cohorts are
+  classification-identical and every required check passes. X88 is consumed
   Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
@@ -310,8 +318,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    receding-handback forecasts that outlive their inherited evidence horizon,
    again with zero TP loss across three cohorts. X87 applies that same evidence
    horizon to isolated X72 completion proxies, removing three more false
-   positives across C35/C40 with zero TP loss. Any promotion requires a new
-   preregistered source testing frozen X87.
+   positives across C35/C40 with zero TP loss. X88 then expires historical
+   transport-conflict authority after a current X68 metric-motion epoch change,
+   removing two more false positives across C27/C40 with zero TP loss. Any
+   promotion requires a new preregistered source testing frozen X88.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -346,6 +356,8 @@ their result.
   [DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X87 consumed Development result:
   [DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X88 consumed Development result:
+  [DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
