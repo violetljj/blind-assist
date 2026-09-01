@@ -1,10 +1,11 @@
-"""Run the frozen C42 2/3/6-frame dropout survival stress once."""
+"""Run one frozen C42-or-successor X96 dropout survival stress."""
 
 from __future__ import annotations
 
 import argparse
 import copy
 import json
+import re
 import statistics
 import sys
 import time
@@ -155,7 +156,7 @@ def _inject_plan_conflict(core: dict[str, Any], start: int, length: int) -> None
                 "candidate_risk_parent_track_ids": [],
                 "confirmed_risk_parent_track_ids": [],
                 "route_mode_changed": True,
-                "c42_controlled_plan_conflict": True,
+                "controlled_plan_conflict": True,
             }
         )
 
@@ -321,6 +322,9 @@ def main() -> int:
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--protocol", type=Path, required=True)
+    parser.add_argument(
+        "--expected-protocol-sha256", default=PROTOCOL_SHA256
+    )
     parser.add_argument("--expected-source-result-sha256", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
@@ -329,12 +333,17 @@ def main() -> int:
     run_root = args.run_root.resolve(strict=True)
     source_root = args.source_root.resolve(strict=True)
     protocol_path = args.protocol.resolve(strict=True)
+    expected_protocol_sha256 = str(args.expected_protocol_sha256).upper()
     runner.base.require(
-        runner.base.sha256_file(protocol_path) == PROTOCOL_SHA256,
-        "c42_protocol_hash_drift",
+        runner.base.sha256_file(protocol_path) == expected_protocol_sha256,
+        "dropout_stress_protocol_hash_drift",
     )
     protocol = runner.base.read_json(protocol_path)
-    prereg = protocol["c42_x96_preregistration"]
+    match = re.search(r"DTR_CARLA_(C\d+)_", str(protocol.get("cohort_id", "")))
+    runner.base.require(match is not None, "dropout_stress_cohort_id")
+    cohort_tag = str(match.group(1))
+    cohort_lower = cohort_tag.lower()
+    prereg = protocol[f"{cohort_lower}_x96_preregistration"]
     for file_name, expected_sha256 in prereg["frozen_component_sha256"].items():
         path = HERE / file_name
         runner.base.require(
@@ -344,7 +353,7 @@ def main() -> int:
 
     args.output_dir.mkdir(parents=True, exist_ok=False)
     output_dir = args.output_dir.resolve(strict=True)
-    predictions_path = output_dir / "predictions-c42-x96-dropout-stress.json"
+    predictions_path = output_dir / f"predictions-{cohort_lower}-x96-dropout-stress.json"
     summary_path = output_dir / "summary.json"
     freeze, contract, candidate_values = x24.require_freeze(run_root)
     x54.x53.x52.x45.x44.x43.x42.x32 = x32
@@ -404,10 +413,10 @@ def main() -> int:
                 print(f"predicted_truth_blind {case_id}", flush=True)
 
     sealed = {
-        "schema": "blindassist-dtr-carla-c42-x96-dropout-stress-predictions-v1",
+        "schema": f"blindassist-dtr-carla-{cohort_lower}-x96-dropout-stress-predictions-v1",
         "status": "SEALED_TRUTH_BLIND_PENDING_SINGLE_SCORE",
         "experiment_id": x96.EXPERIMENT_ID,
-        "protocol_sha256": PROTOCOL_SHA256,
+        "protocol_sha256": expected_protocol_sha256,
         "arms": list(ARMS),
         "cases": cases,
         "predictions": predictions,
@@ -422,7 +431,7 @@ def main() -> int:
             "candidate_aggregate_sha256": freeze["candidates"]["aggregate_sha256"],
         },
         "claim_boundary": {
-            "fresh_c42_pixels": True,
+            "fresh_source_pixels": True,
             "controlled_candidate_dropout": True,
             "dropout_prevalence_claim": False,
             "truth_opened_during_prediction": False,
@@ -430,7 +439,7 @@ def main() -> int:
         },
     }
     runner.base.write_json_exclusive(predictions_path, sealed)
-    print("sealed_truth_blind all C42 cases and four arms", flush=True)
+    print(f"sealed_truth_blind all {cohort_tag} cases and four arms", flush=True)
 
     expected_source_hash = str(args.expected_source_result_sha256).upper()
     runner.base.require(
@@ -445,7 +454,7 @@ def main() -> int:
         "c42_source_gate_failed",
     )
     runner.base.require(
-        source_result.get("protocol_sha256") == PROTOCOL_SHA256,
+        source_result.get("protocol_sha256") == expected_protocol_sha256,
         "c42_source_protocol_drift",
     )
     runner.base.require(
@@ -471,7 +480,7 @@ def main() -> int:
     }
     for arm, values in scored_predictions.items():
         for case_id, rows in values.items():
-            metrics95._align(truth_by_case[case_id], rows, f"c42:{arm}:{case_id}")
+            metrics95._align(truth_by_case[case_id], rows, f"{cohort_lower}:{arm}:{case_id}")
 
     evaluability = _partition_evaluability(
         truth_by_case, cases, scored_predictions
@@ -502,20 +511,20 @@ def main() -> int:
         int(value["x96_survival_frames"]) for value in diagnostics.values()
     ) > 0
     if not evaluability["all_partitions_evaluable"]:
-        decision = "DTR_CARLA_C42_X96_PARTITION_NOT_EVALUABLE"
+        decision = f"DTR_CARLA_{cohort_tag}_X96_PARTITION_NOT_EVALUABLE"
         gate_met = False
     elif not mechanism_exercised:
-        decision = "DTR_CARLA_C42_X96_MECHANISM_NOT_EXERCISED"
+        decision = f"DTR_CARLA_{cohort_tag}_X96_MECHANISM_NOT_EXERCISED"
         gate_met = False
     elif all(gate_checks.values()):
-        decision = "DTR_CARLA_C42_X96_GENERALIZATION_GATE_MET"
+        decision = f"DTR_CARLA_{cohort_tag}_X96_GENERALIZATION_GATE_MET"
         gate_met = True
     else:
-        decision = "DTR_CARLA_C42_X96_GENERALIZATION_GATE_NOT_MET"
+        decision = f"DTR_CARLA_{cohort_tag}_X96_GENERALIZATION_GATE_NOT_MET"
         gate_met = False
 
     summary = {
-        "schema": "blindassist-dtr-carla-c42-x96-dropout-survival-stress-v1",
+        "schema": f"blindassist-dtr-carla-{cohort_lower}-x96-dropout-survival-stress-v1",
         "status": "COMPLETE",
         "decision": decision,
         "gate_met": gate_met,
@@ -533,7 +542,7 @@ def main() -> int:
         },
         "source": {
             "source_result_sha256": expected_source_hash,
-            "protocol_sha256": PROTOCOL_SHA256,
+            "protocol_sha256": expected_protocol_sha256,
             "model_manifest_sha256": runner.base.sha256_file(source_root / "model" / "manifest.json"),
             "x24_freeze_sha256": runner.base.sha256_file(run_root / "freeze-x24.json"),
             "predictions_sha256": runner.base.sha256_file(predictions_path),
@@ -543,7 +552,8 @@ def main() -> int:
         },
         "claim_boundary": {
             "fresh_scripted_carla_source": True,
-            "new_actor_trajectory_seed_weather_and_pixels": True,
+            "new_source_seed_weather_plan_receipts_and_pixels": True,
+            "trajectory_authority": prereg.get("trajectory_authority", "UNSPECIFIED"),
             "controlled_candidate_dropout": True,
             "controlled_plan_conflict": True,
             "natural_dropout_prevalence_evidence": False,
