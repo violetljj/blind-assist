@@ -292,7 +292,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `1,472 TP / 108 FP / 423 FN` at `93.16/77.68/84.72%`, or
   `0 TP / -14 FP / +0.34 pp F1` over X90. C32/C37/C41 are
   classification-identical and every required check passes. X91 is consumed
-  Development-only and X73 retains fresh authority.
+  Development-only and X73 retains fresh authority. X92 then latches X91's
+  held-only suppression across the same parent lineage until new support,
+  parent change, or entry into the inherited evidence horizon. It removes
+  eleven more false-positive frames across five cohorts with zero TP loss.
+  Pooled X92 is `1,472 TP / 97 FP / 423 FN` at
+  `93.82/77.68/84.99%`, or `0 TP / -11 FP / +0.27 pp F1` over X91.
+  The other six cohorts are classification-identical and every required check
+  passes. X92 is consumed Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -351,8 +358,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    lateral-dominant surface branch can independently authorize positive-time
    future entry, removing four C28 false positives with zero TP loss. X91 then
    applies the inherited evidence horizon to held-only alert births, removing
-   fourteen false positives across eight cohorts with zero TP loss. Any
-   promotion requires a new preregistered source testing frozen X91.
+   fourteen false positives across eight cohorts with zero TP loss. X92 carries
+   that suppression across the unchanged held parent lineage, removing eleven
+   more false positives across five cohorts with zero TP loss. Any promotion
+   requires a new preregistered source testing frozen X92.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -395,6 +404,8 @@ their result.
   [DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X91 consumed Development result:
   [DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X92 consumed Development result:
+  [DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
