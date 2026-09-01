@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-source-queue-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-source-queue-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T17:55:00+08:00",
+  "question": "Which fixed-order unmaterialized physical families may be screened for the next fresh consecutive-query-triplet active-view test without selecting on future geometry or model outcomes?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_source_queue_freeze.py",
+    "sha256": "2ffb0166441f4e4876509f94c8139e40f740fbef99bc5489e714db86319eb7db"
+  },
+  "candidate_protocol": {
+    "path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0"
+  },
+  "exclusion_authority": {
+    "path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json",
+    "sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a"
+  },
+  "additional_exclusions": [
+    {"path": "l10_3rscan_discriminative_view_confirmation_candidate_v1.json", "sha256": "88065c382a2ea7fa17775314bf78d16292ccab929a32bc62f51650eac6b37d58"},
+    {"path": "l10_3rscan_local_discriminative_view_candidate_v1.json", "sha256": "44ea4dcc0dfce925278ae4f039cf5b85253e749b1f9c9facac251f1abe58214a"}
+  ],
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_METADATA_ONLY",
+    "artifact_root": "artifacts.local",
+    "metadata": [
+      {"path": "datasets/3rscan/3RScan.json", "bytes": 3155995, "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"},
+      {"path": "datasets/3rscan/objects.json", "bytes": 20096813, "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"}
+    ]
+  },
+  "selection": {
+    "queue_length": 6,
+    "ranking": "Use unchanged metadata candidate order. Exclude governed consumed targets, used reference families, the two explicit active-view predecessors, families with any already materialized required source file, and rescans without a second same-class door. Keep only the first target row from each distinct reference scan family and freeze the first six rows."
+  },
+  "screening": {
+    "order": "Download and screen queue indices strictly in ascending order; stop at the first source-evaluable row. A failed row remains consumed as a source result and cannot be rescued or replaced within the queue.",
+    "official_url_template": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/{scan_id}/{file}",
+    "required_files_per_scan": ["semseg.v2.json", "labels.instances.annotated.v2.ply", "sequence.zip"],
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "reference_memory": "Require exactly three references under the unchanged positive-marginal plus maximum-angle vacancy rule.",
+    "query_triplet": "Require three consecutive source-admitted target frames, ranked by minimum visible target vertices, total visible vertices, minimum short-side fraction, minimum depth-visible ratio, then earlier frames.",
+    "same_scene_negative": "Require one source-admitted different-instance door or doorframe in the rescan.",
+    "rgb_model_boundary": "Pose and depth may be opened during source screening. RGB members and all models remain forbidden until the first evaluable row and its exact image cohort are separately frozen."
+  },
+  "forbidden_after_freeze": [
+    "reorder, add, drop or replace queue rows based on download size, source geometry, score margin, proposal recall, target IoU or action outcome",
+    "continue screening after the first evaluable row",
+    "open RGB or call a model during queue screening",
+    "change view rules, reference fill, triplet ranking, same-scene-negative requirement, trigger threshold, action or one-action budget"
+  ],
+  "claim_boundary": "This freezes only a metadata-selected ordered source queue before download, pose, depth, RGB and model access. It is not source evaluability, active-view confirmation, a deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
