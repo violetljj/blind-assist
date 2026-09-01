@@ -1,0 +1,85 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-view-reference-consensus-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T13:55:00+08:00",
+  "question": "Does the pre-download-frozen sixth family supply three complementary target views on each side and an admitted same-scene sibling before any RGB or model access?",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_source.py",
+    "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"
+  },
+  "candidate": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_candidate_v1.json",
+    "sha256": "2b2e70aa079f47f415082b8d464a9bfed547b849ca002152416a4fd7654a8bce"
+  },
+  "download_receipt": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_download_receipt_v1.json"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_NEW_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {
+        "path": "datasets/3rscan/4d3d829e-8cf4-2e04-8318-b76f02d91c93/semseg.v2.json",
+        "bytes": 20366,
+        "sha256": "e0083fe343ee96ed8981dbae6f266ca7ba0b99af8b0440af1e35507ca3fdcc98"
+      },
+      {
+        "path": "datasets/3rscan/4d3d829e-8cf4-2e04-8318-b76f02d91c93/labels.instances.annotated.v2.ply",
+        "bytes": 4330965,
+        "sha256": "5d9fc599c37ed59d5a22a6e89a6dc83b9b39c640c9c90489746ca49751e5d6c2"
+      },
+      {
+        "path": "datasets/3rscan/4d3d829e-8cf4-2e04-8318-b76f02d91c93/sequence.zip",
+        "bytes": 42000796,
+        "sha256": "c9468e183c42cb15e506ff58f40f16e420aad48b731974c4a70a6711c5d29378"
+      },
+      {
+        "path": "datasets/3rscan/4d3d82a0-8cf4-2e04-800f-97deb20e860b/semseg.v2.json",
+        "bytes": 19873,
+        "sha256": "fc3ff74ded435d2b7bdc07bd4e86026dc2a0535efae945b0feb499797dfb9c2d"
+      },
+      {
+        "path": "datasets/3rscan/4d3d82a0-8cf4-2e04-800f-97deb20e860b/labels.instances.annotated.v2.ply",
+        "bytes": 4337849,
+        "sha256": "5de32fef68068acadcac935310a77990b4280480c715a2aab03bb080862dff95"
+      },
+      {
+        "path": "datasets/3rscan/4d3d82a0-8cf4-2e04-800f-97deb20e860b/sequence.zip",
+        "bytes": 54276594,
+        "sha256": "8ac569511233824fed6e16d28f829fd3bdd31b37c4a686971961d2d4092ff1b3"
+      }
+    ]
+  },
+  "memory_budget": 3,
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": {
+    "memory": "Greedily add maximum newly visible target vertices; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "sibling": "Record the first different door or doorframe instance with an admitted view; its appearance is forbidden from target-only ranking."
+  },
+  "decision_gate": {
+    "minimum_memory_views_per_side": 3,
+    "minimum_same_scene_sibling_views": 1
+  },
+  "next_action": {
+    "evaluable": "Freeze three target views per side, then run the unchanged at-most-three proposal set contributed by semantic-local fusion, nearest-reference-scale mixture, and majority-reference cross-view consensus once.",
+    "not_evaluable": "Retain the source receipt and do not open RGB or call GroundingDINO, DINOv2 or SAM2 for this family."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, view rules, memory budget or sibling rule",
+    "change full-plus-40-percent proposal windows, layer-18 representation, semantic-local fusion, nearest-reference-scale penalty 0.05, majority-reference vote, deterministic tie order, exact deduplication, IoU gate or maximum set size three",
+    "use sibling appearance or query truth in hypothesis generation",
+    "open RGB/model before source result",
+    "reinterpret source scarcity as algorithm failure"
+  ],
+  "claim_boundary": "This source gate can establish only whether the sixth new family supplies three-view target memory and a sibling control. It is not algorithm evidence, top-one localization, calibrated uncertainty, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

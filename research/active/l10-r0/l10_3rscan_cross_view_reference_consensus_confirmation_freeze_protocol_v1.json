@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-view-reference-consensus-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T13:57:00+08:00",
+  "question": "Does the frozen at-most-three cross-view reference-consensus proposal set cover wholly new door 10 across all three query views without using query truth?",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_freeze.py",
+    "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"
+  },
+  "source_result": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_source_result_v1.json",
+    "sha256": "acb4e9da937e8d12ba23b999e4ae4b364e6852a3df44da546878eb38d711b1d8"
+  },
+  "controls": {
+    "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"
+  },
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_CROSS_VIEW_REFERENCE_CONSENSUS_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "4d3d829e-8cf4-2e04-8318-b76f02d91c93/sequence.zip": {
+        "path": "datasets/3rscan/4d3d829e-8cf4-2e04-8318-b76f02d91c93/sequence.zip",
+        "bytes": 42000796,
+        "sha256": "c9468e183c42cb15e506ff58f40f16e420aad48b731974c4a70a6711c5d29378"
+      },
+      "4d3d82a0-8cf4-2e04-800f-97deb20e860b/sequence.zip": {
+        "path": "datasets/3rscan/4d3d82a0-8cf4-2e04-800f-97deb20e860b/sequence.zip",
+        "bytes": 54276594,
+        "sha256": "8ac569511233824fed6e16d28f829fd3bdd31b37c4a686971961d2d4092ff1b3"
+      },
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+        "bytes": 46320073,
+        "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+      },
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip",
+        "bytes": 35895970,
+        "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"
+      }
+    }
+  },
+  "selection": {
+    "memory_episode_ids": [
+      "CVR1",
+      "CVR2",
+      "CVR3"
+    ],
+    "sibling_episode_id": "CVRS24",
+    "positive_authority": "First wholly unmaterialized sixth family selected after the consumed five-family 15/15 bounded cross-view reference-consensus Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {
+        "episode_id": "NC31",
+        "source_episode_id": "NC31"
+      },
+      {
+        "episode_id": "NC08",
+        "source_episode_id": "NC08"
+      }
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, full-plus-40-percent proposal windows, layer-18 representation, semantic-local fusion, nearest-reference-scale mixture, majority-reference vote, deterministic tie order, exact deduplication, IoU gate or maximum set size three",
+    "use sibling or negative-control appearance in positive hypothesis generation",
+    "use query truth before hypothesis-set generation is complete",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for bounded cross-view reference-consensus proposal-recall confirmation. A pass is narrow same-provider new-family bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
