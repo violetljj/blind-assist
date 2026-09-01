@@ -426,6 +426,29 @@ contract.
   high-scoring local parts can miss whole-object extent, and its Box Mining
   Strategy expands overlapping larger proposals. This supports the mechanism
   class, not the present numeric threshold or confirmation claim.
+  The frozen chain then moved to wholly untouched
+  `4a9a43e4 -> 4a9a43e6`, target door `8`, with three reference views at
+  `0.901163` cumulative coverage, three query views at `0.657407`, and sibling
+  door `27`. The unchanged scale-prior plus extent-guard chain failed all
+  `3/3` fresh queries: minimum IoU `0.059670`, mean `0.275421`, and the guard
+  fired `0/3`. Record
+  `L10_3RSCAN_SCALE_EXTENT_GUARD_FRESH_CONFIRMATION_GATE_NOT_MET`: one global
+  median reference scale does not represent this target's multimodal view
+  scale, so the consumed `9/9` result does not generalize as top-one ranking.
+  A single failure-driven structural successor keeps the disagreement instead
+  of hiding it: a truth-blind set of at most three proposals, contributed by
+  layer-18 local appearance, equal semantic/local fusion, and nearest
+  reference-scale mixture. Across the four consumed families it covers
+  `12/12` queries with mean set size `2.0`, minimum best-proposal IoU
+  `0.507007`, and mean best-proposal IoU `0.830661`; the individual mechanisms
+  cover only `7/12`, `8/12`, and `10/12`. Record
+  `L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FOUR_FAMILY_DEVELOPMENT_GATE_MET`.
+  This is bounded proposal-recall Development, not top-one localization,
+  calibrated uncertainty, or fresh confirmation. Freeze the set unchanged on
+  a fifth untouched family; if it transfers, use cross-view belief or active
+  observation to collapse the set rather than another global scalar ranker.
+  UncOS and Latent-MaskRCNN independently motivate retaining multiple structured
+  interpretations under ambiguity; they do not validate this set or its size.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This

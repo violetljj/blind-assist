@@ -4401,7 +4401,59 @@ proposals to repair this local-extent error. See the official
 This motivates the structure only; it does not validate the `0.8` threshold or
 upgrade the consumed replay to confirmation.
 
+The frozen scale-prior plus extent-guard chain then moved unchanged to wholly
+untouched `4a9a43e4 -> 4a9a43e6`, target door `8`. The source gate admitted
+three reference views at `0.901163` cumulative coverage, three query views at
+`0.657407`, and sibling door `27`. The fresh result failed all `3/3` queries:
+minimum IoU `0.059670`, mean `0.275421`, with the full-proposal guard firing
+`0/3`. Record
+`L10_3RSCAN_SCALE_EXTENT_GUARD_FRESH_CONFIRMATION_GATE_NOT_MET`. The reference
+target has multiple strongly separated visible scales, so one global reference
+median is not a transferable top-one prior. This is an algorithm failure, not
+a source-admission failure, and the consumed `9/9` Development result remains
+consumed evidence only.
+
+The next structural experiment retained complementary interpretations instead
+of fitting another scalar to the failed family. Without query truth, it forms a
+deduplicated set of at most three proposals: layer-18 local top one, equal
+semantic/local-fusion top one, and layer-18 local plus distance to the nearest
+reference target scale. On the four now-consumed families, at least one member
+reached IoU `0.5` on `12/12` queries; mean set size was `2.0`, minimum best IoU
+`0.507007`, and mean best IoU `0.830661`. No individual mechanism was sufficient:
+local, fusion, and reference-scale mixture covered `7/12`, `8/12`, and `10/12`.
+Record
+`L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FOUR_FAMILY_DEVELOPMENT_GATE_MET`.
+This is bounded proposal-recall Development, not top-one localization,
+calibrated uncertainty, open-set rejection, or fresh confirmation. Freeze the
+set unchanged on a fifth untouched family. A transfer pass would justify
+cross-view belief or active observation to resolve the set; it would still not
+prove named-entrance ownership, access, waypoint, arrival, handoff, safety, or
+user benefit.
+
+This representation class is independently motivated by
+[UncOS](https://arxiv.org/abs/2408.04760), which retains multiple object
+interpretations and can act to reduce ambiguity, and
+[Latent-MaskRCNN](https://arxiv.org/abs/2305.01910), which models multiple
+structured mask hypotheses for high-recall instance segmentation. Those works
+support set-valued inference as a mechanism class; they do not validate this
+cohort, hypothesis construction, or set size.
+
 Evidence:
+
+- scale/extent fresh source protocol/result, freeze protocol/cohort,
+  intermediate protocol, implementation, protocol/result SHA-256:
+  `754bc7fdb9066830e137d88a584bfcdd22b4898616273813357190a16452afe9`,
+  `0d3e11751e7e909f093f63a179dcb367e46e8d59043b7db810a7bf50d65f5a09`,
+  `869133931f121b8300288b1b1e545b8ecaff7bd108880b80557760f671474b98`,
+  `ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee`,
+  `cb2e9911b53afd5654c55dd5bc13b7e54b1cb5883b608acb02e27394e6dd912d`,
+  `0f41648c7a4a2b99987f618b159d4493bd3c18fab01c5e9bcef92a68d9c6516f`,
+  `3ab28b203beec67247317d03a0249320243176f29bb698ce741d4b70ba94ba7f`,
+  `eff163533e18c8637e095a78492f336a7e5297d078c9b5c1c3604a8027391793`.
+- tri-evidence hypothesis-set implementation/protocol/result SHA-256:
+  `820fcc4d1c331e8bc15a30d51b63388c32df1893d3f5fe4f56ad52542bb6e7ba`,
+  `0bdf30c2e9c7e9005c6e8f0af8876e6990e8331ba6b8e74013505b611dd96b5d`,
+  `f3472a6c5b1b14ca6810aba6a05645478b4e9ccd81634de2a0b97de538a7a2e8`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

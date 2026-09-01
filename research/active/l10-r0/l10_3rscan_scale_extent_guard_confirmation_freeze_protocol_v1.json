@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-scale-extent-guard-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T12:54:00+08:00",
+  "question": "Does the frozen layer-18, reference-scale and full-proposal extent-guard chain localize wholly new door 8 across all three query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_scale_extent_guard_confirmation_source_result_v1.json", "sha256": "0d3e11751e7e909f093f63a179dcb367e46e8d59043b7db810a7bf50d65f5a09"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_SCALE_EXTENT_GUARD_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "4a9a43e4-7736-2874-8479-0e81135ccdb0/sequence.zip": {"path": "datasets/3rscan/4a9a43e4-7736-2874-8479-0e81135ccdb0/sequence.zip", "bytes": 54048280, "sha256": "3b2455650c3267df55ce33725b67d14f0ea388b37e54a1e1609b3091a3e7bd69"},
+      "4a9a43e6-7736-2874-8723-08ae98eccd16/sequence.zip": {"path": "datasets/3rscan/4a9a43e6-7736-2874-8723-08ae98eccd16/sequence.zip", "bytes": 46363849, "sha256": "0e6a9a6d8035ba50453da2f6400956cd6e4693205a201e5950dd62d3239ef9e5"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["SEG1", "SEG2", "SEG3"],
+    "sibling_episode_id": "SEGS27",
+    "positive_authority": "First wholly unmaterialized family selected after the consumed three-family 9/9 scale-aware extent-guard Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, tiles, proposals, layer-18 score, reference-scale penalty 0.05, full-proposal mask extent retention 0.8, SAM or IoU gate",
+    "use sibling or negative-control appearance in positive ranking",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for the complete scale-aware extent-guard mechanism. A pass is narrow same-provider new-family exact-instance localization confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

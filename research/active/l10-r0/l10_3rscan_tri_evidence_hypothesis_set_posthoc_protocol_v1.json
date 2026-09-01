@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist-l10-3rscan-tri-evidence-hypothesis-set-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-tri-evidence-hypothesis-set-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T13:01:00+08:00",
+  "question": "Can a bounded set retain complementary local, semantic and reference-scale interpretations across all four consumed physical families without another tuned scalar blend?",
+  "implementation": {"path": "l10_3rscan_tri_evidence_hypothesis_set_posthoc.py", "sha256": "820fcc4d1c331e8bc15a30d51b63388c32df1893d3f5fe4f56ad52542bb6e7ba"},
+  "families": {
+    "fresh_consumed_door8_second": {
+      "candidate_result": {"path": "l10_3rscan_scale_extent_guard_confirmation_result_v1.json", "sha256": "eff163533e18c8637e095a78492f336a7e5297d078c9b5c1c3604a8027391793"},
+      "cohort": {"path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json", "sha256": "ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee"}
+    },
+    "consumed_door12": {
+      "candidate_result": {"path": "l10_3rscan_cross_scale_extent_confirmation_result_v1.json", "sha256": "5641cafbdef50d4c409e3ef6a5da6868ec2ee0db7a55e7ef38b32e2889a3a827"},
+      "cohort": {"path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json", "sha256": "104f210b116b9a585461d0fb638a473bf740bbf6cdec129bbc3168f3239be1c7"}
+    },
+    "consumed_door8_first": {
+      "candidate_result": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json", "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060"},
+      "cohort": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json", "sha256": "d893210355ab928eedd0420268427d15f8a0a47fc028c7184a1807dd8993aed5"}
+    },
+    "consumed_door15": {
+      "candidate_result": {"path": "l10_3rscan_foundpose_layer18_nids_posthoc_result_v1.json", "sha256": "04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8"},
+      "cohort": {"path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json", "sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"}
+    }
+  },
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "mechanisms": [
+      "layer18_local top one",
+      "equal semantic-local fusion top one",
+      "layer18 local minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale"
+    ],
+    "scale_mixture_log_area_penalty": 0.05,
+    "deduplication": "Deduplicate identical tile, proposal index and box while retaining all mechanism provenance.",
+    "downstream_contract": "A set is unresolved localization uncertainty; it requires cross-view belief or active observation before one target can be authorized."
+  },
+  "decision_gate": {"minimum_iou": 0.5, "required_covered_queries": 12, "maximum_hypotheses_per_query": 3},
+  "literature_motivation": [
+    {"source": "Embodied Uncertainty-Aware Object Segmentation", "url": "https://arxiv.org/abs/2408.04760", "use": "Retain multiple interpretations in uncertain regions and choose actions to reduce ambiguity."},
+    {"source": "Distributional Instance Segmentation", "url": "https://arxiv.org/abs/2305.01910", "use": "Multiple structured hypotheses improve high-recall perception under ambiguity."}
+  ],
+  "claim_boundary": "All four families were consumed before this set was defined. A pass is Development evidence for bounded proposal coverage, not top-one localization, fresh confirmation, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

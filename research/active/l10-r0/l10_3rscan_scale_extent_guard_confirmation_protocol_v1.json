@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-3rscan-scale-extent-guard-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-scale-extent-guard-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T12:56:00+08:00",
+  "question": "Does the complete scale-aware extent-guard chain localize wholly new door 8 in all three frozen queries?",
+  "implementation": {"path": "l10_3rscan_scale_extent_guard_confirmation.py", "sha256": "0f41648c7a4a2b99987f618b159d4493bd3c18fab01c5e9bcef92a68d9c6516f"},
+  "intermediate_protocol": {"path": "l10_3rscan_scale_extent_guard_confirmation_intermediate_protocol_v1.json", "sha256": "cb2e9911b53afd5654c55dd5bc13b7e54b1cb5883b608acb02e27394e6dd912d"},
+  "development_predecessor": {
+    "path": "l10_3rscan_full_proposal_mask_extent_guard_posthoc_result_v1.json",
+    "sha256": "a238d42ba49fa3ae0407f140e063b560fac322218da888901fb0620d87f81b90",
+    "required_conclusion": "L10_3RSCAN_FULL_PROPOSAL_MASK_EXTENT_GUARD_THREE_FAMILY_DEVELOPMENT_GATE_MET"
+  },
+  "source": {
+    "authority": "FRESH_PRE_RGB_PRE_MODEL_SCAN_FAMILY_SCALE_EXTENT_GUARD_CONFIRMATION",
+    "target_instance": "door 8",
+    "reference_scan": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+    "query_scan": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+    "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+    "cohort_sha256": "ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee"
+  },
+  "selection": {
+    "reference_scale": "Median target bounding-box area fraction across the three frozen reference-memory views.",
+    "score": "layer18_local_appearance_score - 0.05 * absolute(log(candidate_area_fraction / reference_median_area_fraction))",
+    "log_area_penalty": 0.05,
+    "minimum_mask_extent_retention": 0.8,
+    "extent_guard": "For a full-frame proposal only, retain the proposal box when the SAM mask bbox retains less than 80 percent of proposal area; tiles and extent-stable full proposals retain SAM refinement.",
+    "tie_break": "Raw local appearance, final-layer memory score, objectness, box coordinates and proposal index."
+  },
+  "evaluation": {
+    "query_images": ["SEG1_query", "SEG2_query", "SEG3_query"],
+    "truth_role": "Truth enters only after scale-aware ranking, SAM and the frozen provenance-aware extent guard."
+  },
+  "decision_gate": {"minimum_iou": 0.5, "required_queries": 3},
+  "literature_motivation": [
+    {"source": "FoundPose", "url": "https://arxiv.org/abs/2311.18809", "use": "Intermediate DINOv2 features retain local part discrimination."},
+    {"source": "SAPNet", "url": "https://openaccess.thecvf.com/content/CVPR2024/papers/Wei_Semantic-aware_SAM_for_Point-Prompted_Instance_Segmentation_CVPR_2024_paper.pdf", "use": "Whole-object proposal mining counters local-part masks."}
+  ],
+  "forbidden_after_freeze": [
+    "change family, rows, tiles, proposals, layer-18 score, scale penalty 0.05, extent retention 0.8, SAM or IoU gate",
+    "use query truth, sibling appearance, negative controls or target metrics in selection",
+    "retry, rescue, replace or remove a frozen query"
+  ],
+  "claim_boundary": "A pass is narrow same-provider new-family confirmation of an exact-instance localization component. It is not open-set rejection, provider-independent or raw-phone generalization, named entrance or portal ownership, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety evidence."
+}
