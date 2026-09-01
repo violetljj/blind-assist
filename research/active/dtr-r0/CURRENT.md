@@ -372,7 +372,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
    more false positives across five cohorts with zero TP loss. X93 then rejects
    contradicted, uncredentialed receding or lateral-dominant positive-time
    forecasts, removing thirteen C37/C40 false positives with zero TP loss. Any
-   promotion requires a new preregistered source testing frozen X93.
+   promotion requires a new preregistered source testing frozen X93. X94 then
+   transports an immediately previous confirmed rigid surface carrier through
+   exactly one total detector-plus-metric dropout observation only when a
+   current held same-parent witness and unchanged valid issued-plan receipt
+   preserve identity and route authority. Across all eleven consumed cohorts it
+   recovers six true-positive frames with zero added false positives, improving
+   pooled TP/FP/FN from `1472/84/423` to `1478/84/417` and pooled
+   precision/recall/F1 from `94.60/77.68/85.31%` to
+   `94.62/77.99/85.51%`. X94 is consumed post-hoc Development; X73 retains
+   source-disjoint confirmation authority, and promotion requires a new
+   preregistered source testing byte-frozen X94.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -419,6 +429,8 @@ their result.
   [DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X93 consumed Development result:
   [DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X94 consumed Development result:
+  [DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
