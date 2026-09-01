@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-negative-geometry-protocol-v1",
+  "authority": "PRE_RGB_PRE_FEATURE_TARGET_DISJOINT_GEOMETRY_DEPTH_NEGATIVE_SELECTION_FREEZE",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_negative_geometry.py",
+    "sha256": "11c723021e21a4fb393ecae06ecf0e5473ad67179ae5304a12357f5521c7c1de"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_joint_covisibility_selector_posthoc.py",
+      "sha256": "1c6f19baf5df0043f1ef24b5b6cabe1bf3354f331323cbbb8c7703fca14c02fd"
+    },
+    {
+      "path": "l10_3rscan_multiview_observation_portfolio_posthoc.py",
+      "sha256": "2b82b44c936af0b4137343db1613edd52474ca5e1bf021cc020fa0d81d216b5f"
+    },
+    {
+      "path": "l10_3rscan_observation_adequacy_posthoc.py",
+      "sha256": "85ce23b6248d49783a67adeb5978bf1d84dae16b2e7d9e6cc9f0879a356ca775"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    }
+  ],
+  "manifest": {
+    "path": "l10_3rscan_instance_head_manifest_v1.json",
+    "sha256": "a5fe5a0a180080c54b6dd2e1d5a732344c5e745afa7f49cfd7389e0eff7449cd",
+    "required_schema": "blindassist-l10-3rscan-instance-head-manifest-v1"
+  },
+  "source": {
+    "artifact_root": "artifacts.local"
+  },
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": "Walk each pre-frozen queue in order and keep the first source-admitted instance. For that instance choose the view maximizing visible vertices, then bbox short side, then depth-visible ratio, then earliest frame.",
+  "gate": {
+    "minimum_admitted_training_identities": 12
+  },
+  "next_action": "Freeze the exact positive, hard-negative, and ordinary-negative RGB members and their deterministic crops; then materialize frozen-backbone descriptors without accessing heldout-family scores.",
+  "claim_boundary": "This geometry/depth source selection is Development dataset construction only. It does not establish retrieval improvement, portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
