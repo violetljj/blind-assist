@@ -1,0 +1,93 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-candidate-v1",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_discriminative_view_confirmation_candidate_protocol_v1.json",
+  "protocol_sha256": "da0abdb59c8dfa5f6ff55f2d8f6bd80fd8aad478bf51c5d639dd39818c15781d",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_candidate_freeze.py",
+    "sha256": "c82f36858d193d291bceb15bc5e3f5cc3b43a9f62e25f48369ad839c2d213d4c"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access; do not select on future triplet availability, ambiguity, proposal recall or action success.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 136,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+    "rescan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+    "target_instance_id": 15,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      15,
+      46
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.944108784198761,
+      0.32961341738700867,
+      -0.0036918814294040203,
+      0,
+      -0.32957765460014343,
+      -0.9440951943397522,
+      -0.007932385429739952,
+      0,
+      -0.006100107915699482,
+      -0.006272273138165474,
+      0.9999617338180542,
+      0,
+      -1.0785936117172241,
+      -1.5743906497955322,
+      0.017056500539183617,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "reference_memory": "Require exactly three references under the unchanged positive-marginal plus maximum-angle vacancy rule.",
+    "query_triplet": "Among three-consecutive-frame runs of source-admitted target views, maximize minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio, then earlier frames. Freeze the first two as initial observations and the third as one fixed NEXT_FRAME_FORWARD action.",
+    "same_scene_negative": "Require one source-admitted different-instance door or doorframe in the rescan.",
+    "truth_free_trigger": "After materializing the unchanged scorer on the two initial frames, trigger exactly one NEXT_FRAME_FORWARD observation when the minimum per-frame Top-1-minus-Top-2 fused-score margin is at most 0.02. Never use IoU or target truth to trigger.",
+    "source_is_evaluable_only_if": "The reference rule yields three views, the query rule yields one consecutive triplet, and a same-scene sibling exists before RGB/model access."
+  },
+  "claim_boundary": "This freezes a twelfth family by metadata only. It is not source evaluability, RGB/model evidence, active-view confirmation, a deployable action policy, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
