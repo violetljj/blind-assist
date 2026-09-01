@@ -180,7 +180,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `0 TP / -2 FP / +0.06 pp F1` over X80. Every required check passes. X81 is
   the strongest current nine-cohort Development arm, but its effect was
   designed and measured on consumed C26; X73 retains fresh confirmation
-  authority until unchanged X81 passes a later source-disjoint gate.
+  authority until unchanged X81 passes a later source-disjoint gate. The sole
+  C40 invocation then tested unchanged X81 on seed `401081` with four changed
+  render assignments. X81 exercised three zero-shift shape releases and
+  improved X80 from `129 TP / 28 FP / 43 FN` to `129 / 25 / 43`, or from
+  `82.17/75.00/78.42%` to `83.77/75.00/79.14%` precision/recall/F1:
+  `0 TP / -3 FP / +0.72 pp F1`. Every incremental, recall, F1, contact, safe,
+  and authority constraint passed, but full-arm precision missed the frozen
+  85% floor. X81 therefore has fresh positive incremental evidence without a
+  complete generalization gate; X73 retains full fresh confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -198,9 +206,9 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35, C36, C37, C38, or C39 as confirmation. X73 remains positively
-   confirmed on C35; C36 and C37 are consumed successor-design evidence. X77
-   reduced C37's remaining false positives from 24 to 23 and crossed its
+4. Do not rerun C35, C36, C37, C38, C39, or C40 as confirmation. X73 remains
+   positively confirmed on C35; C36 and C37 are consumed successor-design
+   evidence. X77 reduced C37's remaining false positives from 24 to 23 and crossed its
    precision floor with zero TP loss across all eight consumed cohorts. C38
    froze X77 at seed `381077` with four changed render assignments. Its
    single-use X76/X77 runner is bound to protocol SHA-256
@@ -210,11 +218,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
    X78/X79 invocation under protocol SHA-256
    `EC62FF07F2E1FBF2A43046083D4792D6A8A6ADF1CFAB65102505BCBE965637F3`.
    Its full-arm constraints passed, but X79 exercised no lateral-only release
-   and produced no incremental effect. Until a later full fresh gate passes,
-   X73 retains source-disjoint confirmation authority. Freeze X81 unchanged for
-   that later gate; require its zero-shift shape release to exercise, zero TP
-   loss versus X80, at least one FP reduction, all full-arm checks, and every
-   authority invariant zero.
+   and produced no incremental effect. C40 then exercised X81 on three fresh
+   false-positive frames with zero TP loss, but its 83.77% full-arm precision
+   missed the 85% floor. Until a later full fresh gate passes, X73 retains
+   source-disjoint confirmation authority. Use C40 only for successor
+   diagnosis; any later promotion requires a new preregistered source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -289,3 +297,5 @@ their result.
   [DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
 - X81 consumed nine-cohort Development:
   [DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
+- C40 X81 fresh outcome:
+  [DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md)
