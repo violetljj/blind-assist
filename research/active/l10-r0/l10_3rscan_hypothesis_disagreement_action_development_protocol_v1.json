@@ -1,0 +1,81 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-disagreement-action-select-protocol-v1",
+  "authority": "CONSUMED_QUEUE_ROW_3_PRE_ACTION_HYPOTHESIS_DISAGREEMENT_DEVELOPMENT",
+  "implementation": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_select.py",
+    "sha256": "af8caf9e86dede902dfe935045916a1ab0f8b4a05364dd67e51def83f97e363c"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_hypothesis_3d_prompt_transport.py",
+      "sha256": "22224360df9e692576339bfebd074d1ecebe576325d4e1f268f9961186d69360"
+    },
+    {
+      "path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py",
+      "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"
+    },
+    {
+      "path": "l10_3rscan_query_mask_3d_track.py",
+      "sha256": "08e452411c75f95843c0aa5e4bfeab197d36fc99d7e424fdf15111369b881684"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_registered_extent_ceiling.py",
+      "sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a"
+    }
+  ],
+  "cohort": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_v2.json",
+    "sha256": "70a31d3c644e6fd87d8198f2b4b476c36866faa59f68f68a38adfe8316cd98cc"
+  },
+  "initial_result": {
+    "path": "l10_3rscan_query_mask_3d_track_region_coverage_confirmation_result_v1.json",
+    "sha256": "21cd121cbdee7c743b642cf73e0c808bc1357e6a288c080847d9402b525011ec",
+    "required_conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_REGION_COVERAGE_FRESH_CONFIRMATION_GATE_NOT_MET"
+  },
+  "motion_candidates": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_development_result_v1.json",
+    "sha256": "aa95f04e0c1e005be992af287e99132791d48706d38bc3cd8e70265e87309c2f",
+    "required_conclusion": "L10_3RSCAN_POSE_DEPTH_COVISIBILITY_ACTION_DEVELOPMENT_SOURCE_EVALUABLE"
+  },
+  "proposal": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Union unchanged full-frame proposals with fixed 40-percent corner-tile proposals; no NMS, target text, target identity, target box, or truth access."
+  },
+  "tiling": {
+    "tile_width_fraction": 0.4,
+    "tile_height_fraction": 0.4,
+    "offsets": ["top_left", "top_right", "bottom_left", "bottom_right"],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48,
+    "merge": "Retain up to 16 full-frame and 8 per tile, remap to full-image coordinates, then score without NMS or truth filtering."
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Replay only the three already-bounded current hypotheses and lift them through depth and pose."
+  },
+  "selection": {
+    "current_query_key": "FDV_initial_2_query",
+    "action_query_key": "FDV_action_query",
+    "candidate_budget": 3,
+    "support_iou_threshold": 0.3,
+    "depth_consistency_metres": 0.15,
+    "minimum_visible_projected_points": 16,
+    "utility": "For each pose/depth-admissible action, project each current Top-3 mask track, measure its maximum IoU with that action's generic object proposals, and maximize mean support multiplied by support range. This favors views that retain proposal evidence while separating at least one hypothesis.",
+    "tie_break": "Higher mean support, then higher mutual covisibility, then lower frame index.",
+    "truth_access": "No target instance geometry, target box, or proposal IoU is read until after the action rank is fixed."
+  },
+  "next_action": "Run the unchanged query-mask 3D track and the already frozen three-candidate IoU>=0.8 region gate on the selected action view.",
+  "claim_boundary": "This consumed-family Development screen evaluates whether a truth-free proposal-aware information-gain action can replace maximum-covisibility action selection. It is not fresh confirmation, target ownership, portal access, waypoint, arrival, handoff, user benefit, reliability, or safety evidence."
+}
