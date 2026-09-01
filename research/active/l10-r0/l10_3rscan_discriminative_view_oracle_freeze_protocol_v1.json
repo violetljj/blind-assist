@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-oracle-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-oracle-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T21:03:00+08:00",
+  "question": "Among every source-admitted extra query view on the consumed eleventh family, does any one view expose enough different evidence for the unchanged candidate scorer to recover target Top-1, and is a local one-step view sufficient?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_oracle_freeze.py",
+    "sha256": "c06bd4588e797beff547c413b3dc5eff559b7e10ddb20a563bef4d9c165d3b99"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_joint_covisibility_selector_posthoc.py",
+      "sha256": "1c6f19baf5df0043f1ef24b5b6cabe1bf3354f331323cbbb8c7703fca14c02fd"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    }
+  ],
+  "source_protocol": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_source_protocol_v1.json",
+    "sha256": "4498fb169483851331b0fb59a2a1629f9de9a2d9616b792e5569272c7af12f26"
+  },
+  "source_result": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_source_result_v1.json",
+    "sha256": "92bfa49879fdcb7c170f3342d6a284eb55156070e4eee1a180751dedecd713e6",
+    "required_conclusion": "L10_3RSCAN_TEMPORAL_SCALE_VACANCY_CONFIRMATION_SOURCE_EVALUABLE"
+  },
+  "base_cohort": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_cohort_v1.json",
+    "sha256": "9be262281c5bcb3a9f1a8f2e3c62af03736867f1bca8b2152c6fecdfb7a1f5df"
+  },
+  "baseline": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_result_v1.json",
+    "sha256": "f2e0af92b3b9c600ca03c35c66e299eb9d3a1ce309369faabac06747f1e8b5f6",
+    "required_conclusion": "L10_3RSCAN_DEPTH_POSE_PROPAGATION_FRESH_CONFIRMATION_GATE_MET",
+    "frozen_interpretation": "Initial Top-1 is 0/2 and Recall@3 is 2/2; the literal bounded-set gate passed, but propagation supplied zero direct or incremental hits."
+  },
+  "panel": {
+    "artifact_data_root": "artifacts.local/datasets/3rscan",
+    "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+    "target_instance_id": 4,
+    "initial_frames": [82, 83],
+    "local_frames": [84, 85],
+    "required_extra_views": 14,
+    "wide_baseline_definition": "Every other source-admitted view, reported separately from the one- and two-frame-forward local views."
+  },
+  "oracle_metrics": [
+    "initial_target_top1_queries",
+    "initial_target_recall_at_3_queries",
+    "local_one_extra_view_target_top1_views",
+    "all_extra_view_target_top1_views",
+    "oracle_one_extra_view_target_top1",
+    "wrong_top1_exclusion_fraction",
+    "best_true_candidate_margin_over_wrong_top1",
+    "view evidence receipt including target visibility, box geometry and frame baseline"
+  ],
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Motivates measuring an oracle ceiling before policy training because random, angular-farthest and MLLM next-best-view strategies showed no reliable separation in the reported benchmark."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Motivates selecting a view that minimizes ambiguity between visually similar candidates rather than choosing the clearest or most distant view."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "drop a source-admitted extra view after seeing RGB or model output",
+    "change the reference images, proposal pool, models, score, Top-1 definition or IoU 0.5 target-hit gate",
+    "tune on frames 82 or 83, train a policy, enlarge the initial three-slot set, or call a random or farthest view oracle",
+    "merge local one-step and wide-baseline results into one claim"
+  ],
+  "claim_boundary": "This is consumed-family Development and an oracle ceiling for query-side view informativeness under one unchanged scorer. It cannot establish a runnable view policy, fresh transfer, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

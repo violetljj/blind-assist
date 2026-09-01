@@ -1,0 +1,783 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-oracle-cohort-v1",
+  "authority": "CONSUMED_ELEVENTH_FAMILY_ALL_ADMITTED_VIEW_ORACLE_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_discriminative_view_oracle_freeze_protocol_v1.json",
+  "protocol_sha256": "59dd19a414c781aeb60e3e493b8814ba1076a76dd6db0c9eeb35bc2c18921de4",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_oracle_freeze.py",
+    "sha256": "c06bd4588e797beff547c413b3dc5eff559b7e10ddb20a563bef4d9c165d3b99"
+  },
+  "panel": {
+    "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+    "target_instance_id": 4,
+    "initial_frames": [
+      82,
+      83
+    ],
+    "admitted_view_count": 16,
+    "extra_view_count": 14,
+    "query_keys": [
+      "DVO_frame_000043_query",
+      "DVO_frame_000046_query",
+      "DVO_frame_000051_query",
+      "DVO_frame_000054_query",
+      "DVO_frame_000055_query",
+      "DVO_frame_000056_query",
+      "DVO_frame_000057_query",
+      "DVO_frame_000058_query",
+      "DVO_frame_000059_query",
+      "DVO_frame_000060_query",
+      "DVO_frame_000061_query",
+      "DVO_frame_000062_query",
+      "DVO_frame_000084_query",
+      "DVO_frame_000085_query"
+    ],
+    "local_one_step_query_keys": [
+      "DVO_frame_000084_query",
+      "DVO_frame_000085_query"
+    ],
+    "wide_baseline_query_keys": [
+      "DVO_frame_000043_query",
+      "DVO_frame_000046_query",
+      "DVO_frame_000051_query",
+      "DVO_frame_000054_query",
+      "DVO_frame_000055_query",
+      "DVO_frame_000056_query",
+      "DVO_frame_000057_query",
+      "DVO_frame_000058_query",
+      "DVO_frame_000059_query",
+      "DVO_frame_000060_query",
+      "DVO_frame_000061_query",
+      "DVO_frame_000062_query"
+    ],
+    "selection": "All source-admitted views except the two consumed initial frames; no RGB/model or outcome selection."
+  },
+  "images": {
+    "DPC1_reference": {
+      "episode_id": "DPC1",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 71,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        228.53858947753906,
+        136.0872039794922,
+        958.2261352539062,
+        482.7131042480469
+      ],
+      "zip_member": "frame-000071.color.jpg"
+    },
+    "DPC2_reference": {
+      "episode_id": "DPC2",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 188,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        18.93763542175293,
+        377.0268859863281,
+        955.7377319335938,
+        531.5775756835938
+      ],
+      "zip_member": "frame-000188.color.jpg"
+    },
+    "DPC1_extra_reference": {
+      "episode_id": "DPC1",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 74,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        396.87646484375,
+        1.1143616437911987,
+        957.3521118164062,
+        175.14602661132812
+      ],
+      "zip_member": "frame-000074.color.jpg"
+    },
+    "DVO_frame_000043_query": {
+      "episode_id": "DVO_frame_000043",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 43,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        313.26788330078125,
+        0.2317594289779663,
+        954.7693481445312,
+        109.98847198486328
+      ],
+      "zip_member": "frame-000043.color.jpg"
+    },
+    "DVO_frame_000046_query": {
+      "episode_id": "DVO_frame_000046",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 46,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.24101968109607697,
+        1.011348009109497,
+        956.6591796875,
+        190.47042846679688
+      ],
+      "zip_member": "frame-000046.color.jpg"
+    },
+    "DVO_frame_000051_query": {
+      "episode_id": "DVO_frame_000051",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 51,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        130.94647216796875,
+        118.7078628540039,
+        958.3970947265625,
+        428.6228942871094
+      ],
+      "zip_member": "frame-000051.color.jpg"
+    },
+    "DVO_frame_000054_query": {
+      "episode_id": "DVO_frame_000054",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 54,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        95.10386657714844,
+        235.6985321044922,
+        956.6874389648438,
+        538.589599609375
+      ],
+      "zip_member": "frame-000054.color.jpg"
+    },
+    "DVO_frame_000055_query": {
+      "episode_id": "DVO_frame_000055",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 55,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        74.93075561523438,
+        213.26736450195312,
+        958.4181518554688,
+        517.408203125
+      ],
+      "zip_member": "frame-000055.color.jpg"
+    },
+    "DVO_frame_000056_query": {
+      "episode_id": "DVO_frame_000056",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 56,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        35.17507553100586,
+        184.12513732910156,
+        953.934814453125,
+        489.847900390625
+      ],
+      "zip_member": "frame-000056.color.jpg"
+    },
+    "DVO_frame_000057_query": {
+      "episode_id": "DVO_frame_000057",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 57,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.006918949540704489,
+        143.3561553955078,
+        931.8943481445312,
+        441.11260986328125
+      ],
+      "zip_member": "frame-000057.color.jpg"
+    },
+    "DVO_frame_000058_query": {
+      "episode_id": "DVO_frame_000058",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 58,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        1.3784441947937012,
+        81.91008758544922,
+        909.0220947265625,
+        368.02423095703125
+      ],
+      "zip_member": "frame-000058.color.jpg"
+    },
+    "DVO_frame_000059_query": {
+      "episode_id": "DVO_frame_000059",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 59,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        114.71147155761719,
+        113.85957336425781,
+        922.18115234375,
+        387.1050109863281
+      ],
+      "zip_member": "frame-000059.color.jpg"
+    },
+    "DVO_frame_000060_query": {
+      "episode_id": "DVO_frame_000060",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 60,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        141.78834533691406,
+        146.00799560546875,
+        936.335205078125,
+        412.70062255859375
+      ],
+      "zip_member": "frame-000060.color.jpg"
+    },
+    "DVO_frame_000061_query": {
+      "episode_id": "DVO_frame_000061",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 61,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        143.29978942871094,
+        176.78067016601562,
+        929.5001220703125,
+        437.8626708984375
+      ],
+      "zip_member": "frame-000061.color.jpg"
+    },
+    "DVO_frame_000062_query": {
+      "episode_id": "DVO_frame_000062",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 62,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        183.74154663085938,
+        216.5732879638672,
+        958.4840698242188,
+        479.5577392578125
+      ],
+      "zip_member": "frame-000062.color.jpg"
+    },
+    "DVO_frame_000084_query": {
+      "episode_id": "DVO_frame_000084",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 84,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        4.055760383605957,
+        150.78025817871094,
+        447.5927429199219,
+        404.7514953613281
+      ],
+      "zip_member": "frame-000084.color.jpg"
+    },
+    "DVO_frame_000085_query": {
+      "episode_id": "DVO_frame_000085",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 85,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        1.0416406393051147,
+        215.82789611816406,
+        429.6139831542969,
+        474.0943908691406
+      ],
+      "zip_member": "frame-000085.color.jpg"
+    }
+  },
+  "source_receipt": {
+    "opened": {
+      "pose_members": 188,
+      "depth_members": 188,
+      "rgb_members": 0,
+      "model_calls": 0
+    },
+    "rgb_members_opened": 0,
+    "model_calls": 0,
+    "admitted_rows": [
+      {
+        "frame": 43,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1030,
+        "inside_vertex_fraction": 0.5303810504634398,
+        "projected_area_pixels": 42596.601309262136,
+        "image_margin_pixels": 0.2317594289779663,
+        "bbox_xyxy": [
+          313.26788330078125,
+          0.2317594289779663,
+          954.7693481445312,
+          109.98847198486328
+        ],
+        "depth_compared_vertices": 282,
+        "depth_visible_vertices": 118,
+        "depth_visible_ratio": 0.41843971631205673,
+        "bbox_width_pixels": 641.50146484375,
+        "bbox_height_pixels": 109.75671255588531,
+        "bbox_short_side_pixels": 109.75671255588531,
+        "bbox_short_side_fraction": 0.20325317139978763,
+        "bbox_aspect_ratio": 5.8447583742735905,
+        "visible_target_vertices": 118,
+        "zip_member": "frame-000043.color.jpg"
+      },
+      {
+        "frame": 46,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1641,
+        "inside_vertex_fraction": 0.845005149330587,
+        "projected_area_pixels": 76459.29660609251,
+        "image_margin_pixels": 0.24101968109607697,
+        "bbox_xyxy": [
+          0.24101968109607697,
+          1.011348009109497,
+          956.6591796875,
+          190.47042846679688
+        ],
+        "depth_compared_vertices": 693,
+        "depth_visible_vertices": 221,
+        "depth_visible_ratio": 0.3189033189033189,
+        "bbox_width_pixels": 956.4181600064039,
+        "bbox_height_pixels": 189.45908045768738,
+        "bbox_short_side_pixels": 189.45908045768738,
+        "bbox_short_side_fraction": 0.35085014899571737,
+        "bbox_aspect_ratio": 5.04815159925789,
+        "visible_target_vertices": 221,
+        "zip_member": "frame-000046.color.jpg"
+      },
+      {
+        "frame": 51,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1782,
+        "inside_vertex_fraction": 0.917610710607621,
+        "projected_area_pixels": 196715.28728998906,
+        "image_margin_pixels": 0.6029052734375,
+        "bbox_xyxy": [
+          130.94647216796875,
+          118.7078628540039,
+          958.3970947265625,
+          428.6228942871094
+        ],
+        "depth_compared_vertices": 554,
+        "depth_visible_vertices": 238,
+        "depth_visible_ratio": 0.4296028880866426,
+        "bbox_width_pixels": 827.4506225585938,
+        "bbox_height_pixels": 309.91503143310547,
+        "bbox_short_side_pixels": 309.91503143310547,
+        "bbox_short_side_fraction": 0.5739167248761212,
+        "bbox_aspect_ratio": 2.66992736277523,
+        "visible_target_vertices": 238,
+        "zip_member": "frame-000051.color.jpg"
+      },
+      {
+        "frame": 54,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1852,
+        "inside_vertex_fraction": 0.9536560247167868,
+        "projected_area_pixels": 203766.36215147097,
+        "image_margin_pixels": 0.410400390625,
+        "bbox_xyxy": [
+          95.10386657714844,
+          235.6985321044922,
+          956.6874389648438,
+          538.589599609375
+        ],
+        "depth_compared_vertices": 558,
+        "depth_visible_vertices": 258,
+        "depth_visible_ratio": 0.46236559139784944,
+        "bbox_width_pixels": 861.5835723876953,
+        "bbox_height_pixels": 302.8910675048828,
+        "bbox_short_side_pixels": 302.8910675048828,
+        "bbox_short_side_fraction": 0.5609093842683015,
+        "bbox_aspect_ratio": 2.844532786936036,
+        "visible_target_vertices": 258,
+        "zip_member": "frame-000054.color.jpg"
+      },
+      {
+        "frame": 55,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1888,
+        "inside_vertex_fraction": 0.972193614830072,
+        "projected_area_pixels": 202266.76864471746,
+        "image_margin_pixels": 0.58184814453125,
+        "bbox_xyxy": [
+          74.93075561523438,
+          213.26736450195312,
+          958.4181518554688,
+          517.408203125
+        ],
+        "depth_compared_vertices": 600,
+        "depth_visible_vertices": 280,
+        "depth_visible_ratio": 0.4666666666666667,
+        "bbox_width_pixels": 883.4873962402344,
+        "bbox_height_pixels": 304.1408386230469,
+        "bbox_short_side_pixels": 304.1408386230469,
+        "bbox_short_side_fraction": 0.5632237752278646,
+        "bbox_aspect_ratio": 2.9048627610816564,
+        "visible_target_vertices": 280,
+        "zip_member": "frame-000055.color.jpg"
+      },
+      {
+        "frame": 56,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1928,
+        "inside_vertex_fraction": 0.9927909371781668,
+        "projected_area_pixels": 199366.26373464143,
+        "image_margin_pixels": 5.065185546875,
+        "bbox_xyxy": [
+          35.17507553100586,
+          184.12513732910156,
+          953.934814453125,
+          489.847900390625
+        ],
+        "depth_compared_vertices": 634,
+        "depth_visible_vertices": 326,
+        "depth_visible_ratio": 0.5141955835962145,
+        "bbox_width_pixels": 918.7597389221191,
+        "bbox_height_pixels": 305.72276306152344,
+        "bbox_short_side_pixels": 305.72276306152344,
+        "bbox_short_side_fraction": 0.5661532649287471,
+        "bbox_aspect_ratio": 3.005205532364067,
+        "visible_target_vertices": 326,
+        "zip_member": "frame-000056.color.jpg"
+      },
+      {
+        "frame": 57,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1939,
+        "inside_vertex_fraction": 0.9984552008238929,
+        "projected_area_pixels": 194436.93637532662,
+        "image_margin_pixels": 0.006918949540704489,
+        "bbox_xyxy": [
+          0.006918949540704489,
+          143.3561553955078,
+          931.8943481445312,
+          441.11260986328125
+        ],
+        "depth_compared_vertices": 636,
+        "depth_visible_vertices": 351,
+        "depth_visible_ratio": 0.5518867924528302,
+        "bbox_width_pixels": 931.8874291949905,
+        "bbox_height_pixels": 297.75645446777344,
+        "bbox_short_side_pixels": 297.75645446777344,
+        "bbox_short_side_fraction": 0.5514008416069879,
+        "bbox_aspect_ratio": 3.1296968217219616,
+        "visible_target_vertices": 351,
+        "zip_member": "frame-000057.color.jpg"
+      },
+      {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1939,
+        "inside_vertex_fraction": 0.9984552008238929,
+        "projected_area_pixels": 188446.81369904598,
+        "image_margin_pixels": 1.3784441947937012,
+        "bbox_xyxy": [
+          1.3784441947937012,
+          81.91008758544922,
+          909.0220947265625,
+          368.02423095703125
+        ],
+        "depth_compared_vertices": 607,
+        "depth_visible_vertices": 339,
+        "depth_visible_ratio": 0.5584843492586491,
+        "bbox_width_pixels": 907.6436505317688,
+        "bbox_height_pixels": 286.11414337158203,
+        "bbox_short_side_pixels": 286.11414337158203,
+        "bbox_short_side_fraction": 0.5298410062436705,
+        "bbox_aspect_ratio": 3.1723131189393676,
+        "visible_target_vertices": 339,
+        "zip_member": "frame-000058.color.jpg"
+      },
+      {
+        "frame": 59,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1942,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 169669.43238586208,
+        "image_margin_pixels": 36.81884765625,
+        "bbox_xyxy": [
+          114.71147155761719,
+          113.85957336425781,
+          922.18115234375,
+          387.1050109863281
+        ],
+        "depth_compared_vertices": 1327,
+        "depth_visible_vertices": 924,
+        "depth_visible_ratio": 0.6963074604370761,
+        "bbox_width_pixels": 807.4696807861328,
+        "bbox_height_pixels": 273.2454376220703,
+        "bbox_short_side_pixels": 273.2454376220703,
+        "bbox_short_side_fraction": 0.5060100696705006,
+        "bbox_aspect_ratio": 2.9551076417347386,
+        "visible_target_vertices": 924,
+        "zip_member": "frame-000059.color.jpg"
+      },
+      {
+        "frame": 60,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1942,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 164524.21530515119,
+        "image_margin_pixels": 22.664794921875,
+        "bbox_xyxy": [
+          141.78834533691406,
+          146.00799560546875,
+          936.335205078125,
+          412.70062255859375
+        ],
+        "depth_compared_vertices": 1381,
+        "depth_visible_vertices": 994,
+        "depth_visible_ratio": 0.719768283852281,
+        "bbox_width_pixels": 794.5468597412109,
+        "bbox_height_pixels": 266.692626953125,
+        "bbox_short_side_pixels": 266.692626953125,
+        "bbox_short_side_fraction": 0.4938752350983796,
+        "bbox_aspect_ratio": 2.979260689801011,
+        "visible_target_vertices": 994,
+        "zip_member": "frame-000060.color.jpg"
+      },
+      {
+        "frame": 61,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1942,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 161351.99559750804,
+        "image_margin_pixels": 29.4998779296875,
+        "bbox_xyxy": [
+          143.29978942871094,
+          176.78067016601562,
+          929.5001220703125,
+          437.8626708984375
+        ],
+        "depth_compared_vertices": 1343,
+        "depth_visible_vertices": 936,
+        "depth_visible_ratio": 0.6969471332836932,
+        "bbox_width_pixels": 786.2003326416016,
+        "bbox_height_pixels": 261.0820007324219,
+        "bbox_short_side_pixels": 261.0820007324219,
+        "bbox_short_side_fraction": 0.483485186541522,
+        "bbox_aspect_ratio": 3.011315718571361,
+        "visible_target_vertices": 936,
+        "zip_member": "frame-000061.color.jpg"
+      },
+      {
+        "frame": 62,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1940,
+        "inside_vertex_fraction": 0.9989701338825953,
+        "projected_area_pixels": 161451.58351133578,
+        "image_margin_pixels": 0.51593017578125,
+        "bbox_xyxy": [
+          183.74154663085938,
+          216.5732879638672,
+          958.4840698242188,
+          479.5577392578125
+        ],
+        "depth_compared_vertices": 1506,
+        "depth_visible_vertices": 1046,
+        "depth_visible_ratio": 0.6945551128818062,
+        "bbox_width_pixels": 774.7425231933594,
+        "bbox_height_pixels": 262.9844512939453,
+        "bbox_short_side_pixels": 262.9844512939453,
+        "bbox_short_side_fraction": 0.48700824313693575,
+        "bbox_aspect_ratio": 2.945963228553795,
+        "visible_target_vertices": 1046,
+        "zip_member": "frame-000062.color.jpg"
+      },
+      {
+        "frame": 84,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1456,
+        "inside_vertex_fraction": 0.7497425334706488,
+        "projected_area_pixels": 97439.68410437144,
+        "image_margin_pixels": 4.055760383605957,
+        "bbox_xyxy": [
+          4.055760383605957,
+          150.78025817871094,
+          447.5927429199219,
+          404.7514953613281
+        ],
+        "depth_compared_vertices": 1209,
+        "depth_visible_vertices": 1174,
+        "depth_visible_ratio": 0.9710504549214226,
+        "bbox_width_pixels": 443.5369825363159,
+        "bbox_height_pixels": 253.9712371826172,
+        "bbox_short_side_pixels": 253.9712371826172,
+        "bbox_short_side_fraction": 0.47031710589373554,
+        "bbox_aspect_ratio": 1.7464063547376907,
+        "visible_target_vertices": 1174,
+        "zip_member": "frame-000084.color.jpg"
+      },
+      {
+        "frame": 85,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1420,
+        "inside_vertex_fraction": 0.7312049433573635,
+        "projected_area_pixels": 94731.30715904114,
+        "image_margin_pixels": 1.0416406393051147,
+        "bbox_xyxy": [
+          1.0416406393051147,
+          215.82789611816406,
+          429.6139831542969,
+          474.0943908691406
+        ],
+        "depth_compared_vertices": 1153,
+        "depth_visible_vertices": 1130,
+        "depth_visible_ratio": 0.9800520381613183,
+        "bbox_width_pixels": 428.57234251499176,
+        "bbox_height_pixels": 258.26649475097656,
+        "bbox_short_side_pixels": 258.26649475097656,
+        "bbox_short_side_fraction": 0.4782712865758825,
+        "bbox_aspect_ratio": 1.6594190544469425,
+        "visible_target_vertices": 1130,
+        "zip_member": "frame-000085.color.jpg"
+      }
+    ]
+  },
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Motivates measuring an oracle ceiling before policy training because random, angular-farthest and MLLM next-best-view strategies showed no reliable separation in the reported benchmark."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Motivates selecting a view that minimizes ambiguity between visually similar candidates rather than choosing the clearest or most distant view."
+    }
+  ],
+  "claim_boundary": "This is consumed-family Development and an oracle ceiling for query-side view informativeness under one unchanged scorer. It cannot establish a runnable view policy, fresh transfer, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
