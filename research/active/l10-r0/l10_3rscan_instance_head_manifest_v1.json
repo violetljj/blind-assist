@@ -1,0 +1,3109 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-manifest-v1",
+  "authority": "PRE_FEATURE_PRE_RGB_MODEL_TARGET_DISJOINT_INSTANCE_HEAD_MANIFEST",
+  "protocol_path": "l10_3rscan_instance_head_manifest_freeze_protocol_v1.json",
+  "protocol_sha256": "ff42461989c69046ca49ccd742d245912f83feb865833f53bd64953157111d1c",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_manifest_freeze.py",
+    "sha256": "0662b08d62e5fea211bf777016af208abdcb55e5e7ddbc738ab9edcdbec044cc"
+  },
+  "source": {
+    "metadata": [
+      {
+        "path": "datasets/3rscan/3RScan.json",
+        "bytes": 3155995,
+        "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+      },
+      {
+        "path": "datasets/3rscan/objects.json",
+        "bytes": 20096813,
+        "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+      }
+    ],
+    "cohort_inputs": [
+      {
+        "path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+        "sha256": "f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a",
+        "admitted_rows_before_dedupe": 5
+      },
+      {
+        "path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+        "sha256": "04ef5e7e4a5c939af5fb5dc5400a2b6b8f63eee3a1414d6e04a93513b0663a5e",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+        "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_complementary_confirmation_cohort_v1.json",
+        "sha256": "4a2ee76b236e1aa0c0b2ae10dde653711ac2da7c086e646ebca9fb9d3f1caca9",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+        "sha256": "104f210b116b9a585461d0fb638a473bf740bbf6cdec129bbc3168f3239be1c7",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+        "sha256": "853db9ff1a4ae45590efc7a508b7e47173b71f63f1a221837424ee15fb83daa2",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+        "sha256": "ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_depth_pose_propagation_confirmation_cohort_v1.json",
+        "sha256": "9be262281c5bcb3a9f1a8f2e3c62af03736867f1bca8b2152c6fecdfb7a1f5df",
+        "admitted_rows_before_dedupe": 5
+      },
+      {
+        "path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+        "sha256": "bfdcbcba2088b62fd241e71ac3b71d34fa7a657b9ef0c5c07d66e852b236bd5b",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+        "sha256": "457cfb97ca450013dc8c39133536e0abfb9c2c2faabbeb1b9f0f854727e6e130",
+        "admitted_rows_before_dedupe": 17
+      },
+      {
+        "path": "l10_3rscan_dual_surface_confirmation_cohort_v1.json",
+        "sha256": "a99eb59bcf2959e1bbc3b3aaddaa7a7c8cf4f285a3eee5b6f554657989501198",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+        "sha256": "d893210355ab928eedd0420268427d15f8a0a47fc028c7184a1807dd8993aed5",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_four_surface_confirmation_cohort_v1.json",
+        "sha256": "9aa5addeabea11e7bda7765b20b99fc7f6e44cea0c3fa300f1cc63600a66bd3d",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+        "sha256": "67ab13ddee706b9758e4c354551a46d2b93972e1f52d0e13ad759efb29c14ee7",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+        "sha256": "3fa452bce328d738d941ae3222935fd7acc3ab16c7a9c7a394e35a065e37b339",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_object_context_set_memory_sibling_cohort_v1.json",
+        "sha256": "3166f72c6eca87d3774e4c03212a28ae23f5f1ac1adfb051c509fca1046fc999",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+        "sha256": "db4ae4f2f27be9763d5167c0be19fb5f72ab3a76418b078621d14ff814fea6de",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+        "sha256": "4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0",
+        "admitted_rows_before_dedupe": 16
+      },
+      {
+        "path": "l10_3rscan_partial_view_carrier_posthoc_cohort_v1.json",
+        "sha256": "54898b595e4ec69d7bd46bae259504abaca7a68f9fc746b8f281bf0414f206e6",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_partial_view_confirmation_cohort_v1.json",
+        "sha256": "68f1c81c6c0859ee4b82f8c21baa125631276c09307c450f6ceec7f97d77c01c",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+        "sha256": "4a726a1d97b8979d343b3aefcfcb9866e8267f1b48291408a977a0be648d227a",
+        "admitted_rows_before_dedupe": 10
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v1.json",
+        "sha256": "ccedc318da39b5f0308075725f8391d0b0182f819f3b057185792ec331ff7eb4",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_roster_assignment_confirmation_cohort_v2.json",
+        "sha256": "c5e2c69fa6a0132494302b4a786909dfea5484eb156355c1d0f5d78e49cac72d",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+        "sha256": "ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+        "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+        "sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+        "sha256": "4b5dce5bc0296a18d2eebd3dd8ad90d76a31d2cf7bb9345733f1fa02ea4907f8",
+        "admitted_rows_before_dedupe": 5
+      },
+      {
+        "path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+        "sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705",
+        "admitted_rows_before_dedupe": 11
+      },
+      {
+        "path": "l10_3rscan_transport_opportunity_cohort_posthoc_v1.json",
+        "sha256": "d0a42c3c4b5feb5f865ead9c3529372487f65017da7e021a9ad7629465b6f48c",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_transport_opportunity_confirmation_cohort_v1.json",
+        "sha256": "da6e5ce047df2d65b054b6226337a750fbfd1b502377988437cb31918371f1e6",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_transport_opportunity_replication_confirmation_cohort_v1.json",
+        "sha256": "f9c387ef6b464d3e1e450eda8edb1a017831249446df9bb859a1719f5248af72",
+        "admitted_rows_before_dedupe": 6
+      },
+      {
+        "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+        "sha256": "187f734bd0e0546fb431bba20be8c3dbb536b20a37df1f51ff3f1ccf7fb203bf",
+        "admitted_rows_before_dedupe": 11
+      }
+    ],
+    "cohort_input_count": 32
+  },
+  "training": {
+    "identity_count": 18,
+    "identities": [
+      {
+        "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+        "reference_family": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+        "target_instance_id": 28,
+        "positive_images": [
+          {
+            "image_key": "PV28M2_reference",
+            "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+            "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+            "scan_role": "reference",
+            "frame": 9,
+            "zip_member": "frame-000009.color.jpg",
+            "bbox_xyxy": [
+              95.28555297851562,
+              0.639045000076294,
+              657.4240112304688,
+              197.96685791015625
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "PV28M3_reference",
+            "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+            "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+            "scan_role": "reference",
+            "frame": 12,
+            "zip_member": "frame-000012.color.jpg",
+            "bbox_xyxy": [
+              43.87220764160156,
+              0.823922872543335,
+              810.588623046875,
+              117.03401947021484
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "PV28_reference",
+            "cohort_path": "l10_3rscan_transport_opportunity_cohort_posthoc_v1.json",
+            "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+            "scan_role": "reference",
+            "frame": 92,
+            "zip_member": "frame-000092.color.jpg",
+            "bbox_xyxy": [
+              675.2054443359375,
+              21.620155334472656,
+              949.7403564453125,
+              483.33978271484375
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "PV28_query",
+            "cohort_path": "l10_3rscan_transport_opportunity_cohort_posthoc_v1.json",
+            "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+            "scan_role": "rescan",
+            "frame": 64,
+            "zip_member": "frame-000064.color.jpg",
+            "bbox_xyxy": [
+              817.426513671875,
+              191.42828369140625,
+              956.25537109375,
+              533.6212158203125
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "PV28M1_query",
+            "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+            "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+            "scan_role": "rescan",
+            "frame": 111,
+            "zip_member": "frame-000111.color.jpg",
+            "bbox_xyxy": [
+              46.785675048828125,
+              416.4000549316406,
+              914.1476440429688,
+              538.8767700195312
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "PV28M2_query",
+            "cohort_path": "l10_3rscan_pv28_multiview_memory_cohort_v1.json",
+            "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+            "scan_role": "rescan",
+            "frame": 113,
+            "zip_member": "frame-000113.color.jpg",
+            "bbox_xyxy": [
+              341.3602294921875,
+              390.8580627441406,
+              957.9130249023438,
+              538.5728149414062
+            ],
+            "target_instance_id": 28,
+            "target_label": "doorframe"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "1d234014-e280-2b1a-8eab-fe44989693aa",
+          "1d23401e-e280-2b1a-8cef-f28df9df2618"
+        ],
+        "negative_source": {
+          "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+          "same_scene_door_instance_queue": [
+            6
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 19,
+              "label": "shelf"
+            },
+            {
+              "instance_id": 1,
+              "label": "toilet"
+            },
+            {
+              "instance_id": 4,
+              "label": "sink"
+            },
+            {
+              "instance_id": 3,
+              "label": "bathtub"
+            },
+            {
+              "instance_id": 2,
+              "label": "bidet"
+            },
+            {
+              "instance_id": 11,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 26,
+              "label": "flush"
+            },
+            {
+              "instance_id": 21,
+              "label": "lamp"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+        "reference_family": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+        "target_instance_id": 16,
+        "positive_images": [
+          {
+            "image_key": "C16M2_reference",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+            "scan_role": "reference",
+            "frame": 4,
+            "zip_member": "frame-000004.color.jpg",
+            "bbox_xyxy": [
+              2.978768825531006,
+              141.57899475097656,
+              307.1446228027344,
+              513.1138305664062
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "C16M3_reference",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+            "scan_role": "reference",
+            "frame": 69,
+            "zip_member": "frame-000069.color.jpg",
+            "bbox_xyxy": [
+              336.6882629394531,
+              74.18411254882812,
+              958.4984741210938,
+              533.61181640625
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "C16M1_reference",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+            "scan_role": "reference",
+            "frame": 384,
+            "zip_member": "frame-000384.color.jpg",
+            "bbox_xyxy": [
+              128.89031982421875,
+              137.49488830566406,
+              669.8526611328125,
+              374.7518005371094
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "C16M2_query",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+            "scan_role": "rescan",
+            "frame": 80,
+            "zip_member": "frame-000080.color.jpg",
+            "bbox_xyxy": [
+              2.6513774394989014,
+              3.5303094387054443,
+              607.9608764648438,
+              472.642578125
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "C16M3_query",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+            "scan_role": "rescan",
+            "frame": 180,
+            "zip_member": "frame-000180.color.jpg",
+            "bbox_xyxy": [
+              2.3939318656921387,
+              1.3296087980270386,
+              957.0737915039062,
+              533.8334350585938
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "C16M1_query",
+            "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+            "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+            "scan_role": "rescan",
+            "frame": 369,
+            "zip_member": "frame-000369.color.jpg",
+            "bbox_xyxy": [
+              159.25735473632812,
+              142.36619567871094,
+              660.5289306640625,
+              405.3429870605469
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+          "80b8588d-4a8d-222f-84c5-8c51b9af1c2f"
+        ],
+        "negative_source": {
+          "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+          "same_scene_door_instance_queue": [
+            32
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 9,
+              "label": "chair"
+            },
+            {
+              "instance_id": 10,
+              "label": "table"
+            },
+            {
+              "instance_id": 7,
+              "label": "bed"
+            },
+            {
+              "instance_id": 13,
+              "label": "picture"
+            },
+            {
+              "instance_id": 14,
+              "label": "picture"
+            },
+            {
+              "instance_id": 15,
+              "label": "picture"
+            },
+            {
+              "instance_id": 35,
+              "label": "window"
+            },
+            {
+              "instance_id": 6,
+              "label": "air conditioner"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+        "reference_family": "422885ce-192d-25fc-851a-df2d675a6559",
+        "target_instance_id": 13,
+        "positive_images": [
+          {
+            "image_key": "D13M2_reference",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+            "scan_role": "reference",
+            "frame": 65,
+            "zip_member": "frame-000065.color.jpg",
+            "bbox_xyxy": [
+              0.9079028367996216,
+              0.13059349358081818,
+              621.5205078125,
+              190.17784118652344
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D13M3_reference",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+            "scan_role": "reference",
+            "frame": 67,
+            "zip_member": "frame-000067.color.jpg",
+            "bbox_xyxy": [
+              0.21261107921600342,
+              0.3142935037612915,
+              695.677734375,
+              181.8959503173828
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D13M1_reference",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+            "scan_role": "reference",
+            "frame": 68,
+            "zip_member": "frame-000068.color.jpg",
+            "bbox_xyxy": [
+              1.1029064655303955,
+              23.396913528442383,
+              873.6084594726562,
+              210.2009735107422
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D13M1_query",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+            "scan_role": "rescan",
+            "frame": 84,
+            "zip_member": "frame-000084.color.jpg",
+            "bbox_xyxy": [
+              22.256772994995117,
+              3.594653844833374,
+              725.0684814453125,
+              527.5355224609375
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D13M3_query",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+            "scan_role": "rescan",
+            "frame": 87,
+            "zip_member": "frame-000087.color.jpg",
+            "bbox_xyxy": [
+              0.1373918354511261,
+              2.637660503387451,
+              958.7086181640625,
+              538.2750244140625
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D13M2_query",
+            "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+            "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+            "scan_role": "rescan",
+            "frame": 88,
+            "zip_member": "frame-000088.color.jpg",
+            "bbox_xyxy": [
+              315.3691711425781,
+              3.1655585765838623,
+              956.790283203125,
+              494.6732482910156
+            ],
+            "target_instance_id": 13,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "1c211554-f201-2d25-8680-513a91547c2f",
+          "422885ce-192d-25fc-851a-df2d675a6559"
+        ],
+        "negative_source": {
+          "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+          "same_scene_door_instance_queue": [
+            57,
+            58,
+            59
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 16,
+              "label": "chair"
+            },
+            {
+              "instance_id": 17,
+              "label": "chair"
+            },
+            {
+              "instance_id": 19,
+              "label": "chair"
+            },
+            {
+              "instance_id": 43,
+              "label": "chair"
+            },
+            {
+              "instance_id": 50,
+              "label": "chair"
+            },
+            {
+              "instance_id": 20,
+              "label": "cabinet"
+            },
+            {
+              "instance_id": 7,
+              "label": "window"
+            },
+            {
+              "instance_id": 62,
+              "label": "armchair"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+        "reference_family": "422885e9-192d-25fc-87a9-7013fe4114f2",
+        "target_instance_id": 3,
+        "positive_images": [
+          {
+            "image_key": "D03M3_reference",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+            "scan_role": "reference",
+            "frame": 61,
+            "zip_member": "frame-000061.color.jpg",
+            "bbox_xyxy": [
+              333.60089111328125,
+              227.7938232421875,
+              958.7142333984375,
+              501.2525939941406
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D03M2_reference",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+            "scan_role": "reference",
+            "frame": 195,
+            "zip_member": "frame-000195.color.jpg",
+            "bbox_xyxy": [
+              1.4817639589309692,
+              119.5426025390625,
+              642.1171875,
+              484.03125
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D03M1_reference",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+            "scan_role": "reference",
+            "frame": 857,
+            "zip_member": "frame-000857.color.jpg",
+            "bbox_xyxy": [
+              159.09786987304688,
+              358.3951110839844,
+              808.4295654296875,
+              532.5924072265625
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D03M3_query",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+            "scan_role": "rescan",
+            "frame": 450,
+            "zip_member": "frame-000450.color.jpg",
+            "bbox_xyxy": [
+              1.0066009759902954,
+              0.22291043400764465,
+              537.2246704101562,
+              256.80853271484375
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D03M2_query",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+            "scan_role": "rescan",
+            "frame": 467,
+            "zip_member": "frame-000467.color.jpg",
+            "bbox_xyxy": [
+              295.98974609375,
+              103.21986389160156,
+              958.8717041015625,
+              321.7259826660156
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D03M1_query",
+            "cohort_path": "l10_3rscan_mask_ffa_target_only_confirmation_cohort_v1.json",
+            "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+            "scan_role": "rescan",
+            "frame": 469,
+            "zip_member": "frame-000469.color.jpg",
+            "bbox_xyxy": [
+              11.400550842285156,
+              240.34365844726562,
+              943.0512084960938,
+              517.0269775390625
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+          "422885e9-192d-25fc-87a9-7013fe4114f2"
+        ],
+        "negative_source": {
+          "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+          "same_scene_door_instance_queue": [
+            8,
+            22,
+            77
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 11,
+              "label": "chair"
+            },
+            {
+              "instance_id": 18,
+              "label": "chair"
+            },
+            {
+              "instance_id": 19,
+              "label": "chair"
+            },
+            {
+              "instance_id": 21,
+              "label": "chair"
+            },
+            {
+              "instance_id": 35,
+              "label": "chair"
+            },
+            {
+              "instance_id": 65,
+              "label": "chair"
+            },
+            {
+              "instance_id": 80,
+              "label": "chair"
+            },
+            {
+              "instance_id": 9,
+              "label": "table"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+        "reference_family": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+        "target_instance_id": 15,
+        "positive_images": [
+          {
+            "image_key": "D15M1_reference",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+            "scan_role": "reference",
+            "frame": 54,
+            "zip_member": "frame-000054.color.jpg",
+            "bbox_xyxy": [
+              0.05115661770105362,
+              0.4772131145000458,
+              532.8961181640625,
+              277.7972717285156
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D15M3_reference",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+            "scan_role": "reference",
+            "frame": 164,
+            "zip_member": "frame-000164.color.jpg",
+            "bbox_xyxy": [
+              188.12826538085938,
+              0.11443822830915451,
+              706.2281494140625,
+              125.57904052734375
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D15M2_reference",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+            "scan_role": "reference",
+            "frame": 165,
+            "zip_member": "frame-000165.color.jpg",
+            "bbox_xyxy": [
+              86.93978118896484,
+              23.688444137573242,
+              628.2582397460938,
+              157.2183074951172
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D15M3_query",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+            "scan_role": "rescan",
+            "frame": 61,
+            "zip_member": "frame-000061.color.jpg",
+            "bbox_xyxy": [
+              0.02780778519809246,
+              0.3403971493244171,
+              308.6156005859375,
+              136.10130310058594
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D15M1_query",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+            "scan_role": "rescan",
+            "frame": 63,
+            "zip_member": "frame-000063.color.jpg",
+            "bbox_xyxy": [
+              448.4269104003906,
+              11.779566764831543,
+              898.6480102539062,
+              122.86848449707031
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "D15M2_query",
+            "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+            "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+            "scan_role": "rescan",
+            "frame": 64,
+            "zip_member": "frame-000064.color.jpg",
+            "bbox_xyxy": [
+              532.3220825195312,
+              0.05371888354420662,
+              958.4244384765625,
+              104.12055969238281
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+          "43b8cae9-6678-2e38-9bc2-8c31ab832242"
+        ],
+        "negative_source": {
+          "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+          "same_scene_door_instance_queue": [
+            23,
+            24
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 9,
+              "label": "table"
+            },
+            {
+              "instance_id": 11,
+              "label": "table"
+            },
+            {
+              "instance_id": 17,
+              "label": "cabinet"
+            },
+            {
+              "instance_id": 5,
+              "label": "armchair"
+            },
+            {
+              "instance_id": 6,
+              "label": "armchair"
+            },
+            {
+              "instance_id": 7,
+              "label": "armchair"
+            },
+            {
+              "instance_id": 8,
+              "label": "armchair"
+            },
+            {
+              "instance_id": 4,
+              "label": "cupboard"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+        "reference_family": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+        "target_instance_id": 8,
+        "positive_images": [
+          {
+            "image_key": "F18C3_reference",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+            "scan_role": "reference",
+            "frame": 310,
+            "zip_member": "frame-000310.color.jpg",
+            "bbox_xyxy": [
+              0.5051798224449158,
+              1.1117279529571533,
+              686.1397094726562,
+              456.4576721191406
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "F18C2_reference",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+            "scan_role": "reference",
+            "frame": 382,
+            "zip_member": "frame-000382.color.jpg",
+            "bbox_xyxy": [
+              685.6554565429688,
+              2.541718006134033,
+              953.9064331054688,
+              361.08734130859375
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "F18C1_reference",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+            "scan_role": "reference",
+            "frame": 425,
+            "zip_member": "frame-000425.color.jpg",
+            "bbox_xyxy": [
+              9.353950500488281,
+              106.43822479248047,
+              786.3428344726562,
+              475.8136901855469
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "F18C2_query",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+            "scan_role": "rescan",
+            "frame": 276,
+            "zip_member": "frame-000276.color.jpg",
+            "bbox_xyxy": [
+              250.319091796875,
+              0.6016889810562134,
+              957.564208984375,
+              311.79718017578125
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "F18C1_query",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+            "scan_role": "rescan",
+            "frame": 326,
+            "zip_member": "frame-000326.color.jpg",
+            "bbox_xyxy": [
+              0.13275527954101562,
+              141.3572998046875,
+              864.1173095703125,
+              537.27685546875
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "F18C3_query",
+            "cohort_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+            "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+            "scan_role": "rescan",
+            "frame": 363,
+            "zip_member": "frame-000363.color.jpg",
+            "bbox_xyxy": [
+              4.596353530883789,
+              1.0979973077774048,
+              945.8507080078125,
+              246.2261962890625
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+          "47319776-f9f7-2a1a-9461-d2e201735263"
+        ],
+        "negative_source": {
+          "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+          "same_scene_door_instance_queue": [
+            9,
+            20,
+            21,
+            27,
+            28
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 13,
+              "label": "toilet"
+            },
+            {
+              "instance_id": 11,
+              "label": "sink"
+            },
+            {
+              "instance_id": 12,
+              "label": "sink"
+            },
+            {
+              "instance_id": 32,
+              "label": "flush"
+            },
+            {
+              "instance_id": 33,
+              "label": "flush"
+            },
+            {
+              "instance_id": 26,
+              "label": "hand dryer"
+            },
+            {
+              "instance_id": 42,
+              "label": "lamp"
+            },
+            {
+              "instance_id": 43,
+              "label": "lamp"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+        "reference_family": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+        "target_instance_id": 12,
+        "positive_images": [
+          {
+            "image_key": "CSX2_reference",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+            "scan_role": "reference",
+            "frame": 15,
+            "zip_member": "frame-000015.color.jpg",
+            "bbox_xyxy": [
+              72.27085876464844,
+              1.4625730514526367,
+              958.3660278320312,
+              471.4491882324219
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CSX1_reference",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+            "scan_role": "reference",
+            "frame": 57,
+            "zip_member": "frame-000057.color.jpg",
+            "bbox_xyxy": [
+              7.73235559463501,
+              0.08373647928237915,
+              749.9072875976562,
+              484.6262512207031
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CSX3_reference",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+            "scan_role": "reference",
+            "frame": 218,
+            "zip_member": "frame-000218.color.jpg",
+            "bbox_xyxy": [
+              150.5587615966797,
+              1.9100241661071777,
+              708.0491333007812,
+              398.2288513183594
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CSX2_query",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+            "scan_role": "rescan",
+            "frame": 19,
+            "zip_member": "frame-000019.color.jpg",
+            "bbox_xyxy": [
+              410.3819580078125,
+              0.22181129455566406,
+              957.847412109375,
+              327.16436767578125
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CSX1_query",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+            "scan_role": "rescan",
+            "frame": 222,
+            "zip_member": "frame-000222.color.jpg",
+            "bbox_xyxy": [
+              0.22916088998317719,
+              1.1923211812973022,
+              953.2696533203125,
+              485.38409423828125
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CSX3_query",
+            "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+            "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+            "scan_role": "rescan",
+            "frame": 252,
+            "zip_member": "frame-000252.color.jpg",
+            "bbox_xyxy": [
+              0.5423299074172974,
+              1.568202018737793,
+              943.2359619140625,
+              538.4072875976562
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+          "a7616234-a0aa-2dea-80e1-69c253cfa9b2"
+        ],
+        "negative_source": {
+          "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+          "same_scene_door_instance_queue": [
+            17
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 19,
+              "label": "bed"
+            },
+            {
+              "instance_id": 8,
+              "label": "shelf"
+            },
+            {
+              "instance_id": 10,
+              "label": "shelf"
+            },
+            {
+              "instance_id": 5,
+              "label": "window"
+            },
+            {
+              "instance_id": 41,
+              "label": "toilet"
+            },
+            {
+              "instance_id": 47,
+              "label": "sink"
+            },
+            {
+              "instance_id": 16,
+              "label": "air conditioner"
+            },
+            {
+              "instance_id": 25,
+              "label": "backpack"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+        "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+        "target_instance_id": 15,
+        "positive_images": [
+          {
+            "image_key": "OZ02_reference_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+            "scan_role": "reference",
+            "frame": 362,
+            "zip_member": "frame-000362.color.jpg",
+            "bbox_xyxy": [
+              192.26991271972656,
+              347.3018798828125,
+              503.06524658203125,
+              492.163330078125
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ02_reference_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+            "scan_role": "reference",
+            "frame": 390,
+            "zip_member": "frame-000390.color.jpg",
+            "bbox_xyxy": [
+              455.9413146972656,
+              292.9032287597656,
+              734.1780395507812,
+              427.01397705078125
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ02_query_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+            "scan_role": "rescan",
+            "frame": 32,
+            "zip_member": "frame-000032.color.jpg",
+            "bbox_xyxy": [
+              153.7132110595703,
+              128.42848205566406,
+              496.1466369628906,
+              290.8106384277344
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ02_query_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+            "scan_role": "rescan",
+            "frame": 302,
+            "zip_member": "frame-000302.color.jpg",
+            "bbox_xyxy": [
+              162.57208251953125,
+              216.7133026123047,
+              796.314208984375,
+              497.5544128417969
+            ],
+            "target_instance_id": 15,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 4,
+        "distinct_positive_scans": [
+          "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+          "4a9a43d6-7736-2874-84c3-86ec156a3b2d"
+        ],
+        "negative_source": {
+          "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+          "same_scene_door_instance_queue": [
+            5,
+            6,
+            8,
+            11,
+            13,
+            16,
+            17,
+            18,
+            33,
+            34,
+            35,
+            36,
+            37,
+            42,
+            46,
+            47
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 7,
+              "label": "picture"
+            },
+            {
+              "instance_id": 22,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 29,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 19,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 24,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 48,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 25,
+              "label": "commode"
+            },
+            {
+              "instance_id": 20,
+              "label": "heater"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+        "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+        "target_instance_id": 16,
+        "positive_images": [
+          {
+            "image_key": "RA01_reference",
+            "cohort_path": "l10_3rscan_roster_assignment_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+            "scan_role": "reference",
+            "frame": 401,
+            "zip_member": "frame-000401.color.jpg",
+            "bbox_xyxy": [
+              121.91268157958984,
+              346.1199951171875,
+              547.9120483398438,
+              480.12603759765625
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "RA01_query",
+            "cohort_path": "l10_3rscan_roster_assignment_confirmation_cohort_v1.json",
+            "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+            "scan_role": "rescan",
+            "frame": 284,
+            "zip_member": "frame-000284.color.jpg",
+            "bbox_xyxy": [
+              142.18556213378906,
+              227.30661010742188,
+              608.4486083984375,
+              413.82012939453125
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DR02_query",
+            "cohort_path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+            "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+            "scan_role": "rescan",
+            "frame": 171,
+            "zip_member": "frame-000171.color.jpg",
+            "bbox_xyxy": [
+              191.3870391845703,
+              314.5057678222656,
+              763.6679077148438,
+              502.73297119140625
+            ],
+            "target_instance_id": 16,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 3,
+        "distinct_positive_scans": [
+          "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+          "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+          "4a9a43d6-7736-2874-84c3-86ec156a3b2d"
+        ],
+        "negative_source": {
+          "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+          "same_scene_door_instance_queue": [
+            5,
+            6,
+            8,
+            11,
+            13,
+            15,
+            17,
+            18,
+            33,
+            34,
+            35,
+            36,
+            37,
+            42,
+            46,
+            47
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 7,
+              "label": "picture"
+            },
+            {
+              "instance_id": 22,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 29,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 19,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 24,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 48,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 25,
+              "label": "commode"
+            },
+            {
+              "instance_id": 20,
+              "label": "heater"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+        "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+        "target_instance_id": 35,
+        "positive_images": [
+          {
+            "image_key": "OZ01_reference_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+            "scan_role": "reference",
+            "frame": 393,
+            "zip_member": "frame-000393.color.jpg",
+            "bbox_xyxy": [
+              466.8647155761719,
+              55.06581115722656,
+              770.4168701171875,
+              203.20689392089844
+            ],
+            "target_instance_id": 35,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "OZ01_reference_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+            "scan_role": "reference",
+            "frame": 402,
+            "zip_member": "frame-000402.color.jpg",
+            "bbox_xyxy": [
+              203.8447723388672,
+              136.9771728515625,
+              533.2496948242188,
+              292.824462890625
+            ],
+            "target_instance_id": 35,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "OZ01_query_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+            "scan_role": "rescan",
+            "frame": 183,
+            "zip_member": "frame-000183.color.jpg",
+            "bbox_xyxy": [
+              131.1158447265625,
+              144.1390380859375,
+              876.3280029296875,
+              506.748291015625
+            ],
+            "target_instance_id": 35,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "OZ01_query_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+            "scan_role": "rescan",
+            "frame": 532,
+            "zip_member": "frame-000532.color.jpg",
+            "bbox_xyxy": [
+              491.2474060058594,
+              298.582275390625,
+              730.3102416992188,
+              418.73358154296875
+            ],
+            "target_instance_id": 35,
+            "target_label": "doorframe"
+          }
+        ],
+        "positive_image_count_before_cap": 4,
+        "distinct_positive_scans": [
+          "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+          "4a9a43d6-7736-2874-84c3-86ec156a3b2d"
+        ],
+        "negative_source": {
+          "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+          "same_scene_door_instance_queue": [
+            5,
+            6,
+            8,
+            11,
+            13,
+            15,
+            16,
+            17,
+            18,
+            33,
+            34,
+            36,
+            37,
+            42,
+            46,
+            47
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 7,
+              "label": "picture"
+            },
+            {
+              "instance_id": 29,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 19,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 24,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 48,
+              "label": "clothes dryer"
+            },
+            {
+              "instance_id": 25,
+              "label": "commode"
+            },
+            {
+              "instance_id": 20,
+              "label": "heater"
+            },
+            {
+              "instance_id": 40,
+              "label": "item"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+        "reference_family": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+        "target_instance_id": 8,
+        "positive_images": [
+          {
+            "image_key": "SEG2_reference",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+            "scan_role": "reference",
+            "frame": 51,
+            "zip_member": "frame-000051.color.jpg",
+            "bbox_xyxy": [
+              5.75893497467041,
+              0.07043357938528061,
+              847.5960693359375,
+              536.5110473632812
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "SEG1_reference",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+            "scan_role": "reference",
+            "frame": 264,
+            "zip_member": "frame-000264.color.jpg",
+            "bbox_xyxy": [
+              66.16796875,
+              215.18142700195312,
+              613.98095703125,
+              474.4951171875
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "SEG3_reference",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+            "scan_role": "reference",
+            "frame": 276,
+            "zip_member": "frame-000276.color.jpg",
+            "bbox_xyxy": [
+              0.8117238283157349,
+              0.14128334820270538,
+              725.5732421875,
+              193.40731811523438
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "SEG1_query",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+            "scan_role": "rescan",
+            "frame": 7,
+            "zip_member": "frame-000007.color.jpg",
+            "bbox_xyxy": [
+              11.065608024597168,
+              3.0959391593933105,
+              719.9000854492188,
+              537.1932983398438
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "SEG3_query",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+            "scan_role": "rescan",
+            "frame": 12,
+            "zip_member": "frame-000012.color.jpg",
+            "bbox_xyxy": [
+              374.7415771484375,
+              3.337017297744751,
+              957.96630859375,
+              527.5816040039062
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          },
+          {
+            "image_key": "SEG2_query",
+            "cohort_path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+            "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+            "scan_role": "rescan",
+            "frame": 16,
+            "zip_member": "frame-000016.color.jpg",
+            "bbox_xyxy": [
+              4.63847541809082,
+              4.227130889892578,
+              958.9934692382812,
+              533.2039184570312
+            ],
+            "target_instance_id": 8,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+          "4a9a43e6-7736-2874-8723-08ae98eccd16"
+        ],
+        "negative_source": {
+          "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+          "same_scene_door_instance_queue": [
+            27,
+            30,
+            32
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 18,
+              "label": "chair"
+            },
+            {
+              "instance_id": 19,
+              "label": "chair"
+            },
+            {
+              "instance_id": 20,
+              "label": "chair"
+            },
+            {
+              "instance_id": 21,
+              "label": "chair"
+            },
+            {
+              "instance_id": 22,
+              "label": "chair"
+            },
+            {
+              "instance_id": 23,
+              "label": "chair"
+            },
+            {
+              "instance_id": 24,
+              "label": "chair"
+            },
+            {
+              "instance_id": 16,
+              "label": "table"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+        "reference_family": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+        "target_instance_id": 4,
+        "positive_images": [
+          {
+            "image_key": "HYP3_reference",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+            "scan_role": "reference",
+            "frame": 269,
+            "zip_member": "frame-000269.color.jpg",
+            "bbox_xyxy": [
+              17.344118118286133,
+              110.95022583007812,
+              957.7505493164062,
+              537.6402587890625
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "HYP1_reference",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+            "scan_role": "reference",
+            "frame": 484,
+            "zip_member": "frame-000484.color.jpg",
+            "bbox_xyxy": [
+              0.5767261385917664,
+              140.3302001953125,
+              514.4483642578125,
+              410.1671142578125
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "HYP2_reference",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+            "scan_role": "reference",
+            "frame": 630,
+            "zip_member": "frame-000630.color.jpg",
+            "bbox_xyxy": [
+              449.168212890625,
+              0.2402159422636032,
+              949.4588012695312,
+              519.47265625
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "HYP1_query",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+            "scan_role": "rescan",
+            "frame": 58,
+            "zip_member": "frame-000058.color.jpg",
+            "bbox_xyxy": [
+              0.4191589653491974,
+              51.47195053100586,
+              435.1676940917969,
+              521.7101440429688
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "HYP3_query",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+            "scan_role": "rescan",
+            "frame": 71,
+            "zip_member": "frame-000071.color.jpg",
+            "bbox_xyxy": [
+              16.670475006103516,
+              130.06146240234375,
+              942.9393310546875,
+              538.6966552734375
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "HYP2_query",
+            "cohort_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+            "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+            "scan_role": "rescan",
+            "frame": 75,
+            "zip_member": "frame-000075.color.jpg",
+            "bbox_xyxy": [
+              38.21128463745117,
+              4.108514308929443,
+              957.825927734375,
+              525.3400268554688
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "185d741b-3698-223c-8ba0-48db6ecbe220",
+          "4acaebc0-6c10-2a2a-852e-0226d6539299"
+        ],
+        "negative_source": {
+          "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+          "same_scene_door_instance_queue": [
+            35
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 17,
+              "label": "window"
+            },
+            {
+              "instance_id": 16,
+              "label": "toilet"
+            },
+            {
+              "instance_id": 14,
+              "label": "sink"
+            },
+            {
+              "instance_id": 20,
+              "label": "basket"
+            },
+            {
+              "instance_id": 34,
+              "label": "basket"
+            },
+            {
+              "instance_id": 15,
+              "label": "bath cabinet"
+            },
+            {
+              "instance_id": 19,
+              "label": "bath cabinet"
+            },
+            {
+              "instance_id": 12,
+              "label": "bathtub"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+        "reference_family": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+        "target_instance_id": 10,
+        "positive_images": [
+          {
+            "image_key": "CVR2_reference",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+            "scan_role": "reference",
+            "frame": 50,
+            "zip_member": "frame-000050.color.jpg",
+            "bbox_xyxy": [
+              2.2395009994506836,
+              109.96721649169922,
+              801.2281494140625,
+              354.9819641113281
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CVR1_reference",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+            "scan_role": "reference",
+            "frame": 52,
+            "zip_member": "frame-000052.color.jpg",
+            "bbox_xyxy": [
+              47.2601432800293,
+              104.28742980957031,
+              933.9754638671875,
+              341.5970458984375
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CVR3_reference",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+            "scan_role": "reference",
+            "frame": 58,
+            "zip_member": "frame-000058.color.jpg",
+            "bbox_xyxy": [
+              503.3102111816406,
+              309.4745788574219,
+              958.1973876953125,
+              530.8242797851562
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CVR2_query",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+            "scan_role": "rescan",
+            "frame": 154,
+            "zip_member": "frame-000154.color.jpg",
+            "bbox_xyxy": [
+              0.6941390037536621,
+              234.7556610107422,
+              480.4631042480469,
+              441.4654846191406
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CVR1_query",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+            "scan_role": "rescan",
+            "frame": 228,
+            "zip_member": "frame-000228.color.jpg",
+            "bbox_xyxy": [
+              5.570342540740967,
+              99.53953552246094,
+              938.8550415039062,
+              234.51734924316406
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          },
+          {
+            "image_key": "CVR3_query",
+            "cohort_path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+            "scan_role": "rescan",
+            "frame": 231,
+            "zip_member": "frame-000231.color.jpg",
+            "bbox_xyxy": [
+              479.96124267578125,
+              0.03005124442279339,
+              958.486328125,
+              142.86782836914062
+            ],
+            "target_instance_id": 10,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+          "4d3d82a0-8cf4-2e04-800f-97deb20e860b"
+        ],
+        "negative_source": {
+          "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+          "same_scene_door_instance_queue": [
+            24
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 15,
+              "label": "chair"
+            },
+            {
+              "instance_id": 4,
+              "label": "bed"
+            },
+            {
+              "instance_id": 7,
+              "label": "bag"
+            },
+            {
+              "instance_id": 21,
+              "label": "bin"
+            },
+            {
+              "instance_id": 23,
+              "label": "blinds"
+            },
+            {
+              "instance_id": 16,
+              "label": "commode"
+            },
+            {
+              "instance_id": 14,
+              "label": "desk"
+            },
+            {
+              "instance_id": 20,
+              "label": "fan"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+        "reference_family": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+        "target_instance_id": 3,
+        "positive_images": [
+          {
+            "image_key": "AV3_reference",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+            "scan_role": "reference",
+            "frame": 107,
+            "zip_member": "frame-000107.color.jpg",
+            "bbox_xyxy": [
+              1.2137209177017212,
+              277.8559875488281,
+              520.4884033203125,
+              538.4471435546875
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "AV2_reference",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+            "scan_role": "reference",
+            "frame": 121,
+            "zip_member": "frame-000121.color.jpg",
+            "bbox_xyxy": [
+              229.78814697265625,
+              5.6310319900512695,
+              958.6253662109375,
+              257.3501281738281
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "AV1_reference",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+            "scan_role": "reference",
+            "frame": 123,
+            "zip_member": "frame-000123.color.jpg",
+            "bbox_xyxy": [
+              157.51437377929688,
+              0.581976592540741,
+              876.3521118164062,
+              255.8346405029297
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "AV1_query",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+            "scan_role": "rescan",
+            "frame": 64,
+            "zip_member": "frame-000064.color.jpg",
+            "bbox_xyxy": [
+              7.863204002380371,
+              0.44790223240852356,
+              837.8847045898438,
+              348.8631591796875
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "AV3_query",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+            "scan_role": "rescan",
+            "frame": 65,
+            "zip_member": "frame-000065.color.jpg",
+            "bbox_xyxy": [
+              0.7245742678642273,
+              0.05754704400897026,
+              897.0432739257812,
+              300.7224426269531
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          },
+          {
+            "image_key": "AV2_query",
+            "cohort_path": "l10_3rscan_axis_completion_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+            "scan_role": "rescan",
+            "frame": 82,
+            "zip_member": "frame-000082.color.jpg",
+            "bbox_xyxy": [
+              664.208251953125,
+              266.11871337890625,
+              958.4423217773438,
+              471.2113037109375
+            ],
+            "target_instance_id": 3,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+          "4d3d82b8-8cf4-2e04-803d-3091a545e57a"
+        ],
+        "negative_source": {
+          "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+          "same_scene_door_instance_queue": [
+            7,
+            9
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 16,
+              "label": "chair"
+            },
+            {
+              "instance_id": 17,
+              "label": "chair"
+            },
+            {
+              "instance_id": 18,
+              "label": "chair"
+            },
+            {
+              "instance_id": 19,
+              "label": "chair"
+            },
+            {
+              "instance_id": 20,
+              "label": "table"
+            },
+            {
+              "instance_id": 30,
+              "label": "table"
+            },
+            {
+              "instance_id": 38,
+              "label": "sink"
+            },
+            {
+              "instance_id": 29,
+              "label": "book"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+        "reference_family": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+        "target_instance_id": 4,
+        "positive_images": [
+          {
+            "image_key": "ARV1_reference",
+            "cohort_path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+            "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+            "scan_role": "reference",
+            "frame": 167,
+            "zip_member": "frame-000167.color.jpg",
+            "bbox_xyxy": [
+              20.599973678588867,
+              427.87091064453125,
+              949.9238891601562,
+              537.1534423828125
+            ],
+            "target_instance_id": 4,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "ARV2_reference",
+            "cohort_path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+            "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+            "scan_role": "reference",
+            "frame": 172,
+            "zip_member": "frame-000172.color.jpg",
+            "bbox_xyxy": [
+              16.104787826538086,
+              376.18389892578125,
+              914.2055053710938,
+              536.1361083984375
+            ],
+            "target_instance_id": 4,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "ARV1_extra_reference",
+            "cohort_path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+            "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+            "scan_role": "reference",
+            "frame": 410,
+            "zip_member": "frame-000410.color.jpg",
+            "bbox_xyxy": [
+              12.856319427490234,
+              455.297607421875,
+              949.2835083007812,
+              538.040771484375
+            ],
+            "target_instance_id": 4,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "ARV2_query",
+            "cohort_path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+            "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+            "scan_role": "rescan",
+            "frame": 541,
+            "zip_member": "frame-000541.color.jpg",
+            "bbox_xyxy": [
+              678.15283203125,
+              194.7046661376953,
+              948.821533203125,
+              536.0839233398438
+            ],
+            "target_instance_id": 4,
+            "target_label": "doorframe"
+          },
+          {
+            "image_key": "ARV1_query",
+            "cohort_path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+            "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+            "scan_role": "rescan",
+            "frame": 542,
+            "zip_member": "frame-000542.color.jpg",
+            "bbox_xyxy": [
+              657.1713256835938,
+              246.68850708007812,
+              954.5021362304688,
+              529.6486206054688
+            ],
+            "target_instance_id": 4,
+            "target_label": "doorframe"
+          }
+        ],
+        "positive_image_count_before_cap": 5,
+        "distinct_positive_scans": [
+          "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+          "531cff04-0021-28f6-8d49-e51826f43468"
+        ],
+        "negative_source": {
+          "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+          "same_scene_door_instance_queue": [
+            5
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 21,
+              "label": "window"
+            },
+            {
+              "instance_id": 9,
+              "label": "sink"
+            },
+            {
+              "instance_id": 34,
+              "label": "basket"
+            },
+            {
+              "instance_id": 35,
+              "label": "basket"
+            },
+            {
+              "instance_id": 36,
+              "label": "basket"
+            },
+            {
+              "instance_id": 25,
+              "label": "beverage crate"
+            },
+            {
+              "instance_id": 26,
+              "label": "beverage crate"
+            },
+            {
+              "instance_id": 27,
+              "label": "beverage crate"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+        "reference_family": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+        "target_instance_id": 23,
+        "positive_images": [
+          {
+            "image_key": "TSV1_extra_reference",
+            "cohort_path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+            "scan_role": "reference",
+            "frame": 1151,
+            "zip_member": "frame-001151.color.jpg",
+            "bbox_xyxy": [
+              391.94952392578125,
+              6.664907455444336,
+              958.9893798828125,
+              390.58636474609375
+            ],
+            "target_instance_id": 23,
+            "target_label": "door"
+          },
+          {
+            "image_key": "TSV1_reference",
+            "cohort_path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+            "scan_role": "reference",
+            "frame": 1159,
+            "zip_member": "frame-001159.color.jpg",
+            "bbox_xyxy": [
+              183.74368286132812,
+              12.225456237792969,
+              820.1882934570312,
+              369.778564453125
+            ],
+            "target_instance_id": 23,
+            "target_label": "door"
+          },
+          {
+            "image_key": "TSV2_reference",
+            "cohort_path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+            "scan_role": "reference",
+            "frame": 1164,
+            "zip_member": "frame-001164.color.jpg",
+            "bbox_xyxy": [
+              0.17524921894073486,
+              4.971428394317627,
+              552.9642333984375,
+              392.0657043457031
+            ],
+            "target_instance_id": 23,
+            "target_label": "door"
+          },
+          {
+            "image_key": "TSV1_query",
+            "cohort_path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+            "scan_role": "rescan",
+            "frame": 534,
+            "zip_member": "frame-000534.color.jpg",
+            "bbox_xyxy": [
+              30.11794090270996,
+              189.69097900390625,
+              430.323486328125,
+              399.0255126953125
+            ],
+            "target_instance_id": 23,
+            "target_label": "door"
+          },
+          {
+            "image_key": "TSV2_query",
+            "cohort_path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+            "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+            "scan_role": "rescan",
+            "frame": 535,
+            "zip_member": "frame-000535.color.jpg",
+            "bbox_xyxy": [
+              16.881412506103516,
+              2.247812032699585,
+              436.7922668457031,
+              223.31820678710938
+            ],
+            "target_instance_id": 23,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 5,
+        "distinct_positive_scans": [
+          "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+          "531cff08-0021-28f6-8e08-ba2eeb945e09"
+        ],
+        "negative_source": {
+          "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+          "same_scene_door_instance_queue": [
+            12,
+            40,
+            57,
+            58
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 34,
+              "label": "chair"
+            },
+            {
+              "instance_id": 35,
+              "label": "chair"
+            },
+            {
+              "instance_id": 33,
+              "label": "table"
+            },
+            {
+              "instance_id": 37,
+              "label": "table"
+            },
+            {
+              "instance_id": 54,
+              "label": "table"
+            },
+            {
+              "instance_id": 18,
+              "label": "sofa"
+            },
+            {
+              "instance_id": 29,
+              "label": "shelf"
+            },
+            {
+              "instance_id": 47,
+              "label": "shelf"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+        "reference_family": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+        "target_instance_id": 12,
+        "positive_images": [
+          {
+            "image_key": "OZ04_reference_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+            "scan_role": "reference",
+            "frame": 218,
+            "zip_member": "frame-000218.color.jpg",
+            "bbox_xyxy": [
+              195.35250854492188,
+              209.58993530273438,
+              663.320556640625,
+              414.8711853027344
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ04_reference_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+            "scan_role": "reference",
+            "frame": 222,
+            "zip_member": "frame-000222.color.jpg",
+            "bbox_xyxy": [
+              141.95025634765625,
+              130.28622436523438,
+              680.2155151367188,
+              363.3340759277344
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ04_query_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+            "scan_role": "rescan",
+            "frame": 28,
+            "zip_member": "frame-000028.color.jpg",
+            "bbox_xyxy": [
+              84.55748748779297,
+              57.1717414855957,
+              827.7830200195312,
+              421.6373291015625
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ04_query_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+            "scan_role": "rescan",
+            "frame": 183,
+            "zip_member": "frame-000183.color.jpg",
+            "bbox_xyxy": [
+              389.057373046875,
+              161.35853576660156,
+              884.2979125976562,
+              383.182373046875
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 4,
+        "distinct_positive_scans": [
+          "8eabc428-5af7-2f32-8659-97a21d90a06b",
+          "8eabc42c-5af7-2f32-87c4-bf646779aa62"
+        ],
+        "negative_source": {
+          "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+          "same_scene_door_instance_queue": [
+            4,
+            8,
+            9,
+            11,
+            15,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 18,
+              "label": "chair"
+            },
+            {
+              "instance_id": 32,
+              "label": "chair"
+            },
+            {
+              "instance_id": 7,
+              "label": "picture"
+            },
+            {
+              "instance_id": 14,
+              "label": "picture"
+            },
+            {
+              "instance_id": 5,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 17,
+              "label": "commode"
+            },
+            {
+              "instance_id": 22,
+              "label": "shoes"
+            },
+            {
+              "instance_id": 19,
+              "label": "stand"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      },
+      {
+        "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+        "reference_family": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+        "target_instance_id": 4,
+        "positive_images": [
+          {
+            "image_key": "OZ03_reference_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+            "scan_role": "reference",
+            "frame": 29,
+            "zip_member": "frame-000029.color.jpg",
+            "bbox_xyxy": [
+              180.39889526367188,
+              207.76773071289062,
+              721.3607788085938,
+              439.4028015136719
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ03_reference_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+            "scan_role": "reference",
+            "frame": 290,
+            "zip_member": "frame-000290.color.jpg",
+            "bbox_xyxy": [
+              242.74415588378906,
+              307.2855529785156,
+              695.6669311523438,
+              495.1255798339844
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ03_query_v2",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+            "scan_role": "rescan",
+            "frame": 113,
+            "zip_member": "frame-000113.color.jpg",
+            "bbox_xyxy": [
+              224.49954223632812,
+              184.67149353027344,
+              692.6047973632812,
+              431.52728271484375
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "OZ03_query_v1",
+            "cohort_path": "l10_3rscan_open_roster_zero_assignment_cohort_v2.json",
+            "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+            "scan_role": "rescan",
+            "frame": 115,
+            "zip_member": "frame-000115.color.jpg",
+            "bbox_xyxy": [
+              313.4827880859375,
+              115.23738861083984,
+              770.2280883789062,
+              375.0293273925781
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 4,
+        "distinct_positive_scans": [
+          "8eabc428-5af7-2f32-8659-97a21d90a06b",
+          "8eabc42c-5af7-2f32-87c4-bf646779aa62"
+        ],
+        "negative_source": {
+          "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+          "same_scene_door_instance_queue": [
+            8,
+            9,
+            11,
+            12,
+            15,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "ordinary_different_class_queue": [
+            {
+              "instance_id": 18,
+              "label": "chair"
+            },
+            {
+              "instance_id": 32,
+              "label": "chair"
+            },
+            {
+              "instance_id": 7,
+              "label": "picture"
+            },
+            {
+              "instance_id": 14,
+              "label": "picture"
+            },
+            {
+              "instance_id": 5,
+              "label": "clothes"
+            },
+            {
+              "instance_id": 17,
+              "label": "commode"
+            },
+            {
+              "instance_id": 22,
+              "label": "shoes"
+            },
+            {
+              "instance_id": 19,
+              "label": "stand"
+            }
+          ],
+          "selection": "For each queue, take the first source-admitted instance under the frozen pose/depth view rule before RGB/model access."
+        }
+      }
+    ],
+    "opened_pose_members": 0,
+    "opened_depth_members": 0,
+    "opened_rgb_members": 0,
+    "feature_calls": 0,
+    "model_calls": 0
+  },
+  "heldout": {
+    "reference_families": [
+      "185d7423-3698-223c-8879-80ad9339afce",
+      "54b263a3-0199-2df4-87db-40539528902d",
+      "634d11d3-6833-255d-8cb0-12c4fb3ea031"
+    ],
+    "required_identities": [
+      {
+        "identity_key": "54b263a3-0199-2df4-87db-40539528902d::4",
+        "reference_family": "54b263a3-0199-2df4-87db-40539528902d",
+        "target_instance_id": 4,
+        "positive_images": [
+          {
+            "image_key": "DPC1_reference",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+            "scan_role": "reference",
+            "frame": 71,
+            "zip_member": "frame-000071.color.jpg",
+            "bbox_xyxy": [
+              228.53858947753906,
+              136.0872039794922,
+              958.2261352539062,
+              482.7131042480469
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DPC1_extra_reference",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+            "scan_role": "reference",
+            "frame": 74,
+            "zip_member": "frame-000074.color.jpg",
+            "bbox_xyxy": [
+              396.87646484375,
+              1.1143616437911987,
+              957.3521118164062,
+              175.14602661132812
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DPC2_reference",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+            "scan_role": "reference",
+            "frame": 188,
+            "zip_member": "frame-000188.color.jpg",
+            "bbox_xyxy": [
+              18.93763542175293,
+              377.0268859863281,
+              955.7377319335938,
+              531.5775756835938
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DVO_frame_000043_query",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+            "scan_role": "rescan",
+            "frame": 43,
+            "zip_member": "frame-000043.color.jpg",
+            "bbox_xyxy": [
+              313.26788330078125,
+              0.2317594289779663,
+              954.7693481445312,
+              109.98847198486328
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DVO_frame_000046_query",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+            "scan_role": "rescan",
+            "frame": 46,
+            "zip_member": "frame-000046.color.jpg",
+            "bbox_xyxy": [
+              0.24101968109607697,
+              1.011348009109497,
+              956.6591796875,
+              190.47042846679688
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          },
+          {
+            "image_key": "DVO_frame_000051_query",
+            "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+            "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+            "scan_role": "rescan",
+            "frame": 51,
+            "zip_member": "frame-000051.color.jpg",
+            "bbox_xyxy": [
+              130.94647216796875,
+              118.7078628540039,
+              958.3970947265625,
+              428.6228942871094
+            ],
+            "target_instance_id": 4,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 19,
+        "distinct_positive_scans": [
+          "54b263a3-0199-2df4-87db-40539528902d",
+          "82def5da-25ba-20f9-8810-71be905b83db"
+        ]
+      },
+      {
+        "identity_key": "634d11d3-6833-255d-8cb0-12c4fb3ea031::12",
+        "reference_family": "634d11d3-6833-255d-8cb0-12c4fb3ea031",
+        "target_instance_id": 12,
+        "positive_images": [
+          {
+            "image_key": "FDV_reference_1",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11d3-6833-255d-8cb0-12c4fb3ea031",
+            "scan_role": "reference",
+            "frame": 309,
+            "zip_member": "frame-000309.color.jpg",
+            "bbox_xyxy": [
+              121.54637908935547,
+              190.80294799804688,
+              738.465087890625,
+              416.8858947753906
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "FDV_reference_3",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11d3-6833-255d-8cb0-12c4fb3ea031",
+            "scan_role": "reference",
+            "frame": 314,
+            "zip_member": "frame-000314.color.jpg",
+            "bbox_xyxy": [
+              503.5991516113281,
+              403.2805480957031,
+              958.5674438476562,
+              538.36962890625
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "FDV_reference_2",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11d3-6833-255d-8cb0-12c4fb3ea031",
+            "scan_role": "reference",
+            "frame": 323,
+            "zip_member": "frame-000323.color.jpg",
+            "bbox_xyxy": [
+              1.2002575397491455,
+              356.5923156738281,
+              477.9029541015625,
+              538.8612060546875
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "FDV_initial_1_query",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11cb-6833-255d-8ff4-b1812575e7dd",
+            "scan_role": "rescan",
+            "frame": 139,
+            "zip_member": "frame-000139.color.jpg",
+            "bbox_xyxy": [
+              125.74949645996094,
+              226.42599487304688,
+              744.8894653320312,
+              357.04669189453125
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "FDV_initial_2_query",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11cb-6833-255d-8ff4-b1812575e7dd",
+            "scan_role": "rescan",
+            "frame": 140,
+            "zip_member": "frame-000140.color.jpg",
+            "bbox_xyxy": [
+              232.91387939453125,
+              120.20576477050781,
+              858.9761352539062,
+              272.9019470214844
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          },
+          {
+            "image_key": "FDV_action_query",
+            "cohort_path": "l10_3rscan_discriminative_view_confirmation_cohort_v1.json",
+            "scan_id": "634d11cb-6833-255d-8ff4-b1812575e7dd",
+            "scan_role": "rescan",
+            "frame": 141,
+            "zip_member": "frame-000141.color.jpg",
+            "bbox_xyxy": [
+              422.7748107910156,
+              0.9914819002151489,
+              956.96533203125,
+              151.9437255859375
+            ],
+            "target_instance_id": 12,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "634d11cb-6833-255d-8ff4-b1812575e7dd",
+          "634d11d3-6833-255d-8cb0-12c4fb3ea031"
+        ]
+      },
+      {
+        "identity_key": "185d7423-3698-223c-8879-80ad9339afce::24",
+        "reference_family": "185d7423-3698-223c-8879-80ad9339afce",
+        "target_instance_id": 24,
+        "positive_images": [
+          {
+            "image_key": "LDV_reference_1",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7423-3698-223c-8879-80ad9339afce",
+            "scan_role": "reference",
+            "frame": 79,
+            "zip_member": "frame-000079.color.jpg",
+            "bbox_xyxy": [
+              311.5099182128906,
+              97.99703216552734,
+              910.2079467773438,
+              484.9046325683594
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          },
+          {
+            "image_key": "LDV_reference_3",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7423-3698-223c-8879-80ad9339afce",
+            "scan_role": "reference",
+            "frame": 119,
+            "zip_member": "frame-000119.color.jpg",
+            "bbox_xyxy": [
+              10.422496795654297,
+              0.6434605717658997,
+              639.521484375,
+              493.8988952636719
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          },
+          {
+            "image_key": "LDV_reference_2",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7423-3698-223c-8879-80ad9339afce",
+            "scan_role": "reference",
+            "frame": 121,
+            "zip_member": "frame-000121.color.jpg",
+            "bbox_xyxy": [
+              205.1663055419922,
+              0.4041898548603058,
+              692.0990600585938,
+              538.8161010742188
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          },
+          {
+            "image_key": "LDV_initial_1_query",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7425-3698-223c-8ac8-78643cbdc3d1",
+            "scan_role": "rescan",
+            "frame": 145,
+            "zip_member": "frame-000145.color.jpg",
+            "bbox_xyxy": [
+              0.6571325063705444,
+              111.48125457763672,
+              755.6285400390625,
+              538.21435546875
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          },
+          {
+            "image_key": "LDV_initial_2_query",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7425-3698-223c-8ac8-78643cbdc3d1",
+            "scan_role": "rescan",
+            "frame": 146,
+            "zip_member": "frame-000146.color.jpg",
+            "bbox_xyxy": [
+              0.0893479734659195,
+              1.0628557205200195,
+              824.198486328125,
+              335.1261291503906
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          },
+          {
+            "image_key": "LDV_action_query",
+            "cohort_path": "l10_3rscan_local_discriminative_view_cohort_v1.json",
+            "scan_id": "185d7425-3698-223c-8ac8-78643cbdc3d1",
+            "scan_role": "rescan",
+            "frame": 147,
+            "zip_member": "frame-000147.color.jpg",
+            "bbox_xyxy": [
+              0.003977964632213116,
+              0.4435773193836212,
+              853.9801635742188,
+              224.15188598632812
+            ],
+            "target_instance_id": 24,
+            "target_label": "door"
+          }
+        ],
+        "positive_image_count_before_cap": 6,
+        "distinct_positive_scans": [
+          "185d7423-3698-223c-8879-80ad9339afce",
+          "185d7425-3698-223c-8ac8-78643cbdc3d1"
+        ]
+      }
+    ]
+  },
+  "head": {
+    "backbone": "Frozen DINOv2 ViT-L/14 crop descriptor; no backbone updates.",
+    "projection": "LayerNorm(1024) -> Linear(1024,256) -> GELU -> Linear(256,128) -> L2 normalization.",
+    "training_signal": "Two-tier identity metric hierarchy: same physical door across views must outrank a same-scene different door, which must outrank an ordinary different-class instance.",
+    "loss_family": "Fixed-margin batch-hard triplet hierarchy with separately reported positive-hard and hard-ordinary gaps.",
+    "model_selection": "Training-family validation only; no heldout-family score may select an epoch, margin, crop rule, or architecture."
+  },
+  "literature_motivation": [
+    {
+      "name": "NearID",
+      "url": "https://arxiv.org/html/2604.01973",
+      "use": "Frozen backbone plus lightweight projection and an explicit same-identity versus near-identity versus random-negative hierarchy."
+    },
+    {
+      "name": "IDOW",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_Solving_Instance_Detection_from_an_Open-World_Perspective_CVPR_2025_paper.pdf",
+      "use": "Instance-level metric adaptation with batch-hard negative mining and distractor sampling."
+    },
+    {
+      "name": "PiRO",
+      "url": "https://github.com/sarkar-rohan/PiRO",
+      "use": "Multi-view physical identities motivate pose-varying positives rather than category-only crops."
+    }
+  ],
+  "next_action": "Use only geometry and depth to select the first source-admitted hard and ordinary negative for each training identity; freeze exact RGB members and boxes only after that selection.",
+  "claim_boundary": "This manifest is Development dataset construction only. It establishes neither physical-door retrieval improvement nor portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}

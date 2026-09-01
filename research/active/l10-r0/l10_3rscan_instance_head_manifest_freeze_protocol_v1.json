@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-manifest-freeze-protocol-v1",
+  "authority": "PRE_FEATURE_PRE_RGB_MODEL_TARGET_DISJOINT_INSTANCE_HEAD_MANIFEST_FREEZE",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_manifest_freeze.py",
+    "sha256": "0662b08d62e5fea211bf777016af208abdcb55e5e7ddbc738ab9edcdbec044cc"
+  },
+  "source": {
+    "artifact_root": "artifacts.local",
+    "metadata": [
+      {
+        "path": "datasets/3rscan/3RScan.json",
+        "bytes": 3155995,
+        "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+      },
+      {
+        "path": "datasets/3rscan/objects.json",
+        "bytes": 20096813,
+        "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+      }
+    ],
+    "cohort_glob": "l10_3rscan_*cohort*.json"
+  },
+  "split": {
+    "heldout_reference_families": [
+      "54b263a3-0199-2df4-87db-40539528902d",
+      "634d11d3-6833-255d-8cb0-12c4fb3ea031",
+      "185d7423-3698-223c-8879-80ad9339afce"
+    ],
+    "required_heldout_identities": [
+      "54b263a3-0199-2df4-87db-40539528902d::4",
+      "634d11d3-6833-255d-8cb0-12c4fb3ea031::12",
+      "185d7423-3698-223c-8879-80ad9339afce::24"
+    ],
+    "rule": "A reference family belongs to exactly one split. All scans, crops, and target identities from heldout families are excluded from training and model selection."
+  },
+  "selection": {
+    "minimum_positive_images": 3,
+    "minimum_distinct_scans": 2,
+    "maximum_positive_images_per_identity": 6,
+    "ordinary_negative_label_priority": [
+      "chair",
+      "table",
+      "cabinet",
+      "sofa",
+      "bed",
+      "shelf",
+      "picture",
+      "window",
+      "toilet",
+      "sink"
+    ],
+    "maximum_ordinary_negative_queue": 8,
+    "minimum_training_identities": 12,
+    "negative_rule": "For every training identity, freeze one same-scene same-class door queue and one different-class queue from a source-complete rescan before pose, depth, RGB, feature, or model access."
+  },
+  "head": {
+    "backbone": "Frozen DINOv2 ViT-L/14 crop descriptor; no backbone updates.",
+    "projection": "LayerNorm(1024) -> Linear(1024,256) -> GELU -> Linear(256,128) -> L2 normalization.",
+    "training_signal": "Two-tier identity metric hierarchy: same physical door across views must outrank a same-scene different door, which must outrank an ordinary different-class instance.",
+    "loss_family": "Fixed-margin batch-hard triplet hierarchy with separately reported positive-hard and hard-ordinary gaps.",
+    "model_selection": "Training-family validation only; no heldout-family score may select an epoch, margin, crop rule, or architecture."
+  },
+  "literature_motivation": [
+    {
+      "name": "NearID",
+      "url": "https://arxiv.org/html/2604.01973",
+      "use": "Frozen backbone plus lightweight projection and an explicit same-identity versus near-identity versus random-negative hierarchy."
+    },
+    {
+      "name": "IDOW",
+      "url": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_Solving_Instance_Detection_from_an_Open-World_Perspective_CVPR_2025_paper.pdf",
+      "use": "Instance-level metric adaptation with batch-hard negative mining and distractor sampling."
+    },
+    {
+      "name": "PiRO",
+      "url": "https://github.com/sarkar-rohan/PiRO",
+      "use": "Multi-view physical identities motivate pose-varying positives rather than category-only crops."
+    }
+  ],
+  "next_action": "Use only geometry and depth to select the first source-admitted hard and ordinary negative for each training identity; freeze exact RGB members and boxes only after that selection.",
+  "claim_boundary": "This manifest is Development dataset construction only. It establishes neither physical-door retrieval improvement nor portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
