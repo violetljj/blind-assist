@@ -499,6 +499,21 @@ contract.
   they do not validate this rule. Freeze the bounded vacancy rule unchanged on
   a seventh untouched family. A pass would still establish proposal recall only,
   not selection of one referent or any downstream portal/navigation authority.
+  That seventh family was frozen pre-download as
+  `4d3d82b6-8cf4-2e04-830a-4303fa0e79c7 ->
+  4d3d82b8-8cf4-2e04-803d-3091a545e57a`, target door `3`. The source gate
+  admitted three reference views with `1.0` cumulative coverage, three query
+  views with `0.911932`, and sibling door `7` with `29` admitted views. The
+  unchanged vacancy-set rule then passed fresh confirmation `3/3`, with proposal
+  opportunity `3/3`, maximum/mean set size `3/2.0`, minimum best IoU `0.646366`,
+  and mean best IoU `0.771816`. Record
+  `L10_3RSCAN_AXIS_COMPLETION_VACANCY_FRESH_CONFIRMATION_GATE_MET`. The axis
+  branch itself was not exercised: two queries had vacancies, but each proposed
+  axis output duplicated an existing box, so `vacancy_filled=0`. This is fresh
+  same-provider evidence that the whole frozen bounded set transfers without
+  regression, not fresh incremental evidence for axis completion. Freeze the
+  rule again on an eighth untouched family to seek a naturally activated branch;
+  do not select the family or views using RGB/model outcomes.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
@@ -742,12 +757,13 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
-4. Freeze the six-family axis-completion vacancy rule on a seventh untouched
-   3RScan family before source download, RGB inspection, or model execution.
-   Keep the set at no more than three and do not tune its `0.05` scale penalty,
-   axis modes, vacancy condition, or IoU gate. If it transfers, the next layer
-   must resolve the retained set with actual cross-view belief or active
-   observation; do not report proposal recall as top-one referent localization.
+4. The vacancy-set rule transferred `3/3` on its seventh untouched family, but
+   the axis branch did not activate. Freeze the identical rule on an eighth
+   untouched 3RScan family before source download, RGB inspection, or model
+   execution. Keep the set at no more than three and do not tune its `0.05`
+   scale penalty, axis modes, vacancy condition, or IoU gate. The branch's fresh
+   incremental value remains unconfirmed until it fills a naturally occurring
+   vacancy; regardless, proposal recall is not top-one referent localization.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -812,6 +828,8 @@ contract.
   [l10_3rscan_cross_view_reference_consensus_confirmation_result_v1.json](l10_3rscan_cross_view_reference_consensus_confirmation_result_v1.json)
 - Six-family axis-completion vacancy Development result:
   [l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json](l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json)
+- Seventh-family fresh axis-completion vacancy result:
+  [l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json](l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

@@ -4523,6 +4523,29 @@ uncertainty, open-set rejection, named entrance, access, traversability,
 waypoint, arrival, handoff, benefit, reliability, or safety. Freeze the rule
 unchanged on a seventh untouched family before attempting set resolution.
 
+The seventh family was frozen in Git before download as
+`4d3d82b6-8cf4-2e04-830a-4303fa0e79c7 ->
+4d3d82b8-8cf4-2e04-803d-3091a545e57a`, target door `3`. The geometry/depth
+source gate admitted all three reference views with cumulative target coverage
+`1.0`, all three query views with `0.911932`, and sibling door `7` with `29`
+admitted views; RGB/model use remained zero until the cohort was frozen and
+pushed. The fixed proposal generator then had IoU-`0.5` opportunity on `3/3`
+queries. The unchanged vacancy-set rule passed fresh confirmation `3/3`, with
+maximum set size `3`, mean set size `2.0`, minimum best IoU `0.646366`, and mean
+best IoU `0.771816`. Record
+`L10_3RSCAN_AXIS_COMPLETION_VACANCY_FRESH_CONFIRMATION_GATE_MET`.
+
+This pass confirms only the whole frozen bounded set on one same-provider new
+family. The axis branch supplied no new box: AV1 and AV3 had vacancies, but the
+highest-scoring axis option was the unchanged identity box already present, so
+`vacancy_filled=0` and `axis_vacancy_iou_gate_queries=0`. Therefore the result
+is fresh non-regression/coverage evidence for the rule, not fresh incremental
+evidence that horizontal or vertical completion repairs a target. Freeze the
+same rule on an eighth untouched metadata-selected family to seek natural branch
+activation without choosing a family or view from RGB/model outcomes. Even a
+branch-positive transfer would remain proposal-set recall, not top-one referent,
+portal ownership, navigation, handoff, benefit, reliability, or safety.
+
 Evidence:
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
@@ -4575,6 +4598,20 @@ Evidence:
   `3eaa8d2f0efcad0b5f4fcbe2ae0167d31e90d45ced718fd78755cc4d76cdb357`,
   `f905ca2f59856350d4614af1039523025273fcfc57c71a958d933b7602581fc5`,
   and `73c926f34d5a2d2b659f890d5aaff85b5d0b18fa8d37ee4906417729401e8bed`.
+- seventh-family candidate/download/source/freeze/cohort, intermediate
+  protocol/result, and confirmation implementation/protocol/result SHA-256:
+  `c5320e6078202bcd1aa13f36ecffc63d69361433b4a0c15287b08a831057083b`,
+  `7e52b3c8f4dd645a97923d3e78711e76ea22b7f105c025391a4e07b2fd722efc`,
+  `ecf8e6d52aae5948e0a97641e8bfd92e4ac5bbd1c473dc73145c7946b4e7bb4e`,
+  `3e054f3982cda32df903ba0ac30619b6596df1b69a3bc5c87b2e30a512debd66`,
+  `5958de7291c8c47ba5f704c6af8485417bdb5a954a9bd3aec85208d7f337b056`,
+  `f20651c76136efabbda2ce87d6dd6cb8e3922752249934e89b5e93af88d737d3`,
+  `04ef5e7e4a5c939af5fb5dc5400a2b6b8f63eee3a1414d6e04a93513b0663a5e`,
+  `773b5e6d757523887907c09989ce092a4e535e75c7d45868031ab9a0910956dd`,
+  `96c65596672b242e9e00cd1f0b0697a8511e4fd2647c8583c17c8ee737061cc9`,
+  `66b10bbf2328823fa9d1e887077f068bab211bec6ca18ffee2b4efffb8a1f9cc`,
+  `b333ec3995d618066d90adc7492e3d2e45aa670bf571e9b1ceef7026fa550d6c`,
+  and `767bf036cfebd1bbe0ebad6dee5952363431c54efb0ebb94cf1aa15be04921d3`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

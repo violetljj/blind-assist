@@ -1,0 +1,355 @@
+{
+  "schema": "blindassist-l10-3rscan-axis-completion-vacancy-confirmation-result-v1",
+  "authority": "FRESH_SEVENTH_FAMILY_AXIS_COMPLETION_VACANCY_CONFIRMATION",
+  "protocol_path": "l10_3rscan_axis_completion_vacancy_confirmation_protocol_v1.json",
+  "protocol_sha256": "b333ec3995d618066d90adc7492e3d2e45aa670bf571e9b1ceef7026fa550d6c",
+  "implementation": {
+    "path": "l10_3rscan_axis_completion_vacancy_confirmation.py",
+    "sha256": "66b10bbf2328823fa9d1e887077f068bab211bec6ca18ffee2b4efffb8a1f9cc"
+  },
+  "conclusion": "L10_3RSCAN_AXIS_COMPLETION_VACANCY_FRESH_CONFIRMATION_GATE_MET",
+  "gate_met": true,
+  "dominant_reference": "AV1_reference",
+  "semantic_local_fusion_reference_votes": [
+    "AV1_reference",
+    "AV2_reference",
+    "AV1_reference"
+  ],
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "preserved_contributors": [
+      "equal semantic-local fusion top one",
+      "nearest-reference-scale local-appearance mixture top one",
+      "best semantic-local fusion candidate constrained to the majority winning target reference across the three query observations"
+    ],
+    "vacancy_rule": "Deduplicate the three preserved contributors by exact original candidate key. Only when fewer than three distinct candidates remain, append at most one reference-scale axis completion if its output box is not already present. Never remove or replace a preserved candidate.",
+    "axis_completion": "For every detector proposal, consider its unchanged box, a full-width horizontal band retaining its y span, and a full-height vertical band retaining its x span. Rank all options by the parent layer-18 local score minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale.",
+    "scale_log_area_penalty": 0.05,
+    "reference_vote": "Each query contributes its semantic-local fusion top-one winning target reference. Select the majority reference; break ties by deterministic sorted reference order.",
+    "truth_boundary": "Reference vote, preserved contributors, deduplication, vacancy availability, axis mode and scores are fixed before target boxes or IoU are opened. Truth is used only to evaluate the resulting set.",
+    "downstream_contract": "The bounded set remains unresolved localization uncertainty and requires active or cross-view disambiguation before one target can be authorized."
+  },
+  "metrics": {
+    "query_count": 3,
+    "proposal_opportunity_queries": 3,
+    "covered_queries": 3,
+    "maximum_hypothesis_count": 3,
+    "mean_hypothesis_count": 2.0,
+    "minimum_best_hypothesis_iou": 0.6463663204426997,
+    "mean_best_hypothesis_iou": 0.7718162789117272,
+    "vacancy_available_queries": 2,
+    "vacancy_filled_queries": 0,
+    "axis_vacancy_iou_gate_queries": 0,
+    "axis_completion_modes": {
+      "identity": 0,
+      "horizontal_band": 0,
+      "vertical_band": 0
+    }
+  },
+  "query_receipts": {
+    "AV1_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "dominant_reference": "AV1_reference",
+      "reference_area_fractions": [
+        0.2610308444673453,
+        0.3539009376770011,
+        0.3539453077802671
+      ],
+      "vacancy_available": true,
+      "vacancy_filled": false,
+      "hypothesis_count": 1,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "reference_scale_mixture",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.10223022103309631,
+            "box_xyxy": [
+              3.160228729248047,
+              7.931777477264404,
+              793.9202270507812,
+              269.4242248535156
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 14,
+            "postprocess_index": 15,
+            "target_memory_score": 0.959453821182251,
+            "per_reference_scores": {
+              "AV1_reference": 0.959453821182251,
+              "AV2_reference": 0.9319635033607483,
+              "AV3_reference": 0.868916392326355
+            },
+            "winning_target_reference": "AV1_reference",
+            "layer18_local_appearance_score": 0.8793947100639343,
+            "layer18_nids_fused_score": 0.9194242656230927,
+            "target_metrics_evaluation_only": {
+              "iou": 0.7077563418295758,
+              "target_recall": 0.7107660827155725,
+              "proposal_precision": 0.994052588290866
+            },
+            "descriptor_sha256": "350742754c413f3ce871f414d6608fb7a92fcabc90cd1f66a95d2a3dd1fcaef7",
+            "layer18_patch_sha256": "b733b38402461beb52b017ace9d31e767e17074567f7f18150a53d266c4a4869",
+            "mask_sha256": "cac55896cc79b4495e637867d5852490df8eddb8c92337be9b83e850d51ccd0b"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.7077563418295758,
+      "target_covered_at_iou_gate": true
+    },
+    "AV2_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "dominant_reference": "AV1_reference",
+      "reference_area_fractions": [
+        0.2610308444673453,
+        0.3539009376770011,
+        0.3539453077802671
+      ],
+      "vacancy_available": false,
+      "vacancy_filled": false,
+      "hypothesis_count": 3,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion"
+          ],
+          "candidate": {
+            "objectness_score": 0.46970394253730774,
+            "box_xyxy": [
+              691.868522644043,
+              324.0,
+              959.6689758300781,
+              471.9093780517578
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 11,
+            "target_memory_score": 0.7063212394714355,
+            "per_reference_scores": {
+              "AV1_reference": 0.6920155882835388,
+              "AV2_reference": 0.7063212394714355,
+              "AV3_reference": 0.6665192246437073
+            },
+            "winning_target_reference": "AV2_reference",
+            "layer18_local_appearance_score": 0.7790774703025818,
+            "layer18_nids_fused_score": 0.7426993548870087,
+            "target_metrics_evaluation_only": {
+              "iou": 0.6463663204426997,
+              "target_recall": 0.6503029005376987,
+              "proposal_precision": 0.9907215317947063
+            },
+            "descriptor_sha256": "73c1b09ef728796d281ef5b1fe06d4b7e1a17547d0c5190b55b530256379b038",
+            "layer18_patch_sha256": "d40bb5c16ba55d292bb97684c5cdf18b95428beee6e2121a3cc3b4312d0ec774",
+            "mask_sha256": "93f5a4184ff605698cf4ca569cb02791cf405e65779b39aa705492901aee4d7d"
+          }
+        },
+        {
+          "mechanisms": [
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.33375295996665955,
+            "box_xyxy": [
+              576.0194320678711,
+              324.0,
+              960.0,
+              539.9103698730469
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 13,
+            "target_memory_score": 0.5752348899841309,
+            "per_reference_scores": {
+              "AV1_reference": 0.5625709891319275,
+              "AV2_reference": 0.5312498807907104,
+              "AV3_reference": 0.5752348899841309
+            },
+            "winning_target_reference": "AV3_reference",
+            "layer18_local_appearance_score": 0.7877641320228577,
+            "layer18_nids_fused_score": 0.6814995110034943,
+            "target_metrics_evaluation_only": {
+              "iou": 0.4334230579837798,
+              "target_recall": 0.7177797280370403,
+              "proposal_precision": 0.5224579833912267
+            },
+            "descriptor_sha256": "a82bb6e398b0e154477a81386e6458337ddb1b13ac0b71f1947dfd6a50e051c0",
+            "layer18_patch_sha256": "4743398ba7eef5a48e9dea4e5363afc28f8685b1daa6ac879601079ee18b9771",
+            "mask_sha256": "5694086183e0b1d9d729a21c51534c1d8131f05768e6132f6fe4268ab22b8b33"
+          }
+        },
+        {
+          "mechanisms": [
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.2566741108894348,
+            "box_xyxy": [
+              367.11260986328125,
+              1.2591361999511719,
+              957.4735107421875,
+              536.7586059570312
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 4,
+            "target_memory_score": 0.5777829885482788,
+            "per_reference_scores": {
+              "AV1_reference": 0.5777829885482788,
+              "AV2_reference": 0.5437784790992737,
+              "AV3_reference": 0.5667787194252014
+            },
+            "winning_target_reference": "AV1_reference",
+            "layer18_local_appearance_score": 0.7214917540550232,
+            "layer18_nids_fused_score": 0.649637371301651,
+            "target_metrics_evaluation_only": {
+              "iou": 0.1901345685472527,
+              "target_recall": 0.9967073458361397,
+              "proposal_precision": 0.19025407008638068
+            },
+            "descriptor_sha256": "cb879ded909f1e91ec817f0d3f5d21e9b2ec07b17903b8f08d20d90ac3006587",
+            "layer18_patch_sha256": "6476468a835295c1dfde41a3c786b279949556f8a748072f088c6c9a1f175e19",
+            "mask_sha256": "776314a37bf26005e9e6a06d9e68414d8275883a2c1d90487456e7f5b3cd766c"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.6463663204426997,
+      "target_covered_at_iou_gate": true
+    },
+    "AV3_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "dominant_reference": "AV1_reference",
+      "reference_area_fractions": [
+        0.2610308444673453,
+        0.3539009376770011,
+        0.3539453077802671
+      ],
+      "vacancy_available": true,
+      "vacancy_filled": false,
+      "hypothesis_count": 2,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.2329469472169876,
+            "box_xyxy": [
+              1.663370132446289,
+              0.7266265153884888,
+              882.095947265625,
+              294.9789123535156
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 6,
+            "target_memory_score": 0.9577006697654724,
+            "per_reference_scores": {
+              "AV1_reference": 0.9577006697654724,
+              "AV2_reference": 0.9317219257354736,
+              "AV3_reference": 0.8657434582710266
+            },
+            "winning_target_reference": "AV1_reference",
+            "layer18_local_appearance_score": 0.8460116386413574,
+            "layer18_nids_fused_score": 0.9018561542034149,
+            "target_metrics_evaluation_only": {
+              "iou": 0.961326174462906,
+              "target_recall": 0.961326174462906,
+              "proposal_precision": 1.0
+            },
+            "descriptor_sha256": "c5d821eedc7c1740cfc0e8a540159e35e3bec7942c0bd5b4be5ab1cef1bfd96c",
+            "layer18_patch_sha256": "a2e5a52509cbb5394a28f6649d8b70255d4314f5de6f17728b0a9a9dc8204b84",
+            "mask_sha256": "181565a36e3ec18f6807d9523803afa0b82ccfbc6fea98817c995f7ccedb3803"
+          }
+        },
+        {
+          "mechanisms": [
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.1312038153409958,
+            "box_xyxy": [
+              2.2840118408203125,
+              1.2030432224273682,
+              873.2783203125,
+              241.5260467529297
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 15,
+            "postprocess_index": 14,
+            "target_memory_score": 0.9384821653366089,
+            "per_reference_scores": {
+              "AV1_reference": 0.9384821653366089,
+              "AV2_reference": 0.9126870036125183,
+              "AV3_reference": 0.881453275680542
+            },
+            "winning_target_reference": "AV1_reference",
+            "layer18_local_appearance_score": 0.8627137541770935,
+            "layer18_nids_fused_score": 0.9005979597568512,
+            "target_metrics_evaluation_only": {
+              "iou": 0.7767217714290885,
+              "target_recall": 0.7767217714290885,
+              "proposal_precision": 1.0
+            },
+            "descriptor_sha256": "ef4ba1a14171392dba206da1ae02877289e9a2a87fb4b6402c7937f9c3a539fe",
+            "layer18_patch_sha256": "06023d7e8bbc945c1e95d75eec6d5622e0caf175f6c6f10311f71dba1263c389",
+            "mask_sha256": "7fbec332e2ab04657d51d7c2eaad7b1e6475f4781e54f84172cb5d3bd9317341"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.961326174462906,
+      "target_covered_at_iou_gate": true
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "Dynamic Tiling: A Model-Agnostic, Adaptive, Scalable, and Inference-Data-Centric Approach for Efficient and Accurate Small Object Detection",
+      "url": "https://arxiv.org/abs/2309.11069",
+      "use": "Initial near-boundary detections can guide adaptive spatial completion for objects fragmented by fixed tiling. Mechanism motivation only."
+    },
+    {
+      "source": "Aspect Ratio and Context Aware Region-based Convolutional Neural Networks for Object Detection",
+      "url": "https://arxiv.org/abs/1703.01634",
+      "use": "Multiple aspect-ratio configurations and surrounding context motivate a bounded elongated-object completion candidate. Mechanism motivation only."
+    }
+  ],
+  "claim_boundary": "This is the first wholly new physical family after the six-family vacancy rule was frozen. A pass is narrow same-provider fresh-family bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, referent ownership, named entrance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}
