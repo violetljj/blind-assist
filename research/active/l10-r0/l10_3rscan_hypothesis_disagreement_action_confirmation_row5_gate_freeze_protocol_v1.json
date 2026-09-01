@@ -1,0 +1,53 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-disagreement-action-confirmation-gate-freeze-protocol-v1",
+  "authority": "PRE_ROW5_DOWNLOAD_PRE_POSE_PRE_DEPTH_PRE_RGB_SOURCE_DISJOINT_CONFIRMATION_GATE_FREEZE",
+  "development_result": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_track_development_result_v1.json",
+    "sha256": "db1f47cacb03b75c81fc3c8fa5109b19dcbbfc1d050b5accbc454cdc8d6d9b98",
+    "required_conclusion": "L10_3RSCAN_HYPOTHESIS_DISAGREEMENT_ACTION_TRACK_DEVELOPMENT_GATE_MET"
+  },
+  "row4_terminal": {
+    "path": "l10_3rscan_hypothesis_disagreement_initial_track_confirmation_result_v1.json",
+    "sha256": "eedd84f0af13bc122ac8d6f7c2b60c72ab95bb52dfd8acc055a99ccf02b6231d",
+    "required_conclusion": "L10_3RSCAN_HYPOTHESIS_DISAGREEMENT_INITIAL_TOP3_CONFIRMATION_SOURCE_NOT_EVALUABLE"
+  },
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "selected_queue_index": 5
+  },
+  "candidate": {
+    "reference_scan_id": "6bde60d8-9162-246f-8f11-834bec23f91e",
+    "rescan_id": "6bde60da-9162-246f-8ec0-a5f4760ef7b8",
+    "target_instance_id": 11,
+    "target_label": "door",
+    "rescan_door_instance_ids": [11, 12]
+  },
+  "source_absent_before_freeze": true,
+  "initial_gate": {
+    "candidate_budget": 3,
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 2,
+    "required_track_top3_coverage_frames": 2
+  },
+  "action_roster": {
+    "translation_metres": [0.1, 1.5],
+    "maximum_rotation_degrees": 60.0,
+    "minimum_visible_projected_points": 16,
+    "depth_consistency_metres": 0.15
+  },
+  "action_utility": {
+    "candidate_budget": 3,
+    "information_gain_score": "mean projected-hypothesis proposal support multiplied by the range of projected-hypothesis proposal support",
+    "tie_break": "higher mean support, then higher mutual covisibility, then lower frame index",
+    "target_truth_access": "No target geometry, target box, target identity score, or target IoU before the single action is selected."
+  },
+  "final_gate": {
+    "candidate_budget": 3,
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 3,
+    "required_track_top3_coverage_frames": 3
+  },
+  "decision": "Acquire queue row 5 exactly. If the two initial frames satisfy the unchanged opportunity and Top-3 gate, execute the frozen information-gain action once and apply the unchanged three-frame gate. Otherwise seal source-not-evaluable without changing the mechanism.",
+  "claim_boundary": "A pass would be one source-family-disjoint confirmation of bounded portal-region candidate recovery under an offline recorded-view action oracle. It would not establish portal ownership, access, traversability, waypoint, physical arrival, handoff, user benefit, reliability, deployment, or safety."
+}
