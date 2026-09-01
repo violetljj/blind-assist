@@ -86,7 +86,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `92.66/76.81/83.99%`, or `0 TP / -6 FP / +0.27 pp F1` over X73. The other
   five cohorts were classification-neutral and all required authority
   invariants remained zero. X74 is the strongest current six-cohort CARLA
-  Development arm, but only C35 exercised it; it is not freshly confirmed.
+  Development arm, but only C35 exercised it. The sole C36 scored invocation
+  then tested unchanged X74 under a new seed and four new render assignments.
+  X74 and X73 were classification-identical at
+  `143 TP / 44 FP / 29 FN`, or `76.47/83.14/79.67%`; X74 recorded zero class
+  contradiction releases, so the incremental mechanism was not exercised and
+  is not freshly confirmed. All required authority invariants and contact/safe
+  constraints passed, but precision missed the frozen 85% floor. C36 is now
+  consumed diagnosis material for the line's render-domain false-alert gap.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -104,12 +111,12 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C35 as confirmation. Unchanged X73 is positively
-   confirmed there; C35 is now consumed Development evidence for X74. Freeze
-   unchanged X74 before one genuinely new source. Require exercised class
-   contradiction, zero TP loss versus X73, zero required authority-invariant
-   violations, and the inherited contact/safe constraints. Until then X73,
-   not X74, retains source-disjoint confirmation authority.
+4. Do not rerun C35 or C36 as confirmation. X73 remains positively confirmed
+   on C35. X74's C36 mechanism was not exercised and its full arm missed the
+   precision floor. Use C36 only as consumed diagnosis against `29 FN / 44 FP`.
+   A successor must show visible non-regressing multi-cohort Development before
+   any later new source; until then X73 retains source-disjoint confirmation
+   authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
