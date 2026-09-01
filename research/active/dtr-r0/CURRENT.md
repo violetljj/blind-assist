@@ -223,7 +223,19 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `1,472 TP / 142 FP / 423 FN` at `91.20/77.68/83.90%`. This is
   post-hoc Development-only because X83 was designed after C41 opened; X73
   retains fresh authority until a later source-disjoint gate exercises frozen
-  X83 without a classification regression.
+  X83 without a classification regression. Consumed C41 diagnosis then exposed
+  a narrower continuation-authority gap: its three remaining false-positive
+  frames were held, forward-closing, direction-consistent continuations whose
+  authorized branch hypotheses outnumbered their direct transport anchors.
+  X84 releases only that relational partition, while retaining occupancy-peak
+  carriers, non-closing motion, anchor-covered continuations, and all track
+  evidence. Across the same eleven consumed cohorts, X84 changes only C41:
+  `135 TP / 15 FP / 37 FN` becomes `135 / 12 / 37`, with zero TP loss.
+  Pooled X84 is `1,472 TP / 139 FP / 423 FN` at
+  `91.37/77.68/83.97%`, or `0 TP / -3 FP / +0.07 pp F1` over X83. All
+  contact, safe-segment, full-arm, and authority checks pass. This is post-hoc
+  Development-only; X73 still retains fresh authority until unchanged X84 is
+  exercised by a new preregistered source-disjoint gate.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -266,7 +278,9 @@ future obstacle occupancy intersects the wearer's route, while preserving
    Use C41 only for successor diagnosis; it supplies no incremental X82
    confirmation and cannot be retried. X83 has now corrected C41's mixed
    authority reference with classification identity across eleven consumed
-   cohorts; any promotion requires a new preregistered source.
+   cohorts. X84 then removes three branch-overloaded held-continuation false
+   positives with zero TP loss across those cohorts. Any promotion requires a
+   new preregistered source testing frozen X84.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -293,6 +307,8 @@ their result.
   [DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md](carla/DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md)
 - N3/N4 result:
   [DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md](carla/DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md)
+- X84 consumed Development result:
+  [DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
