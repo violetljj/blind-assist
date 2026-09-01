@@ -4287,6 +4287,20 @@ The next mechanism must learn reusable channel discrimination from other
 consumed families or introduce a genuinely independent instance-bearing cue.
 This remains consumed-cohort Development only.
 
+The next fixed experiment implemented NIDS-Net's published two-layer
+multiplicative Weight Adapter and InfoNCE loss. Training used `22` truth-masked
+FFA descriptors from consumed C16, D13, D03, NC08, and NC31 families; every D15
+image, target box, mask, proposal, descriptor, and result was excluded. With
+the official reduction, scalar, temperature, learning rate, weight decay, and
+`40` epochs, deterministic training loss fell from `0.698618` to `0.095535`.
+That fit did not transfer: the held-out D15 NIDS chain remained `1/3`, minimum
+IoU `0`, mean `0.382016`, and D15M2's best raw-IoU target moved from rank `25`
+to `32`. Freeze this as a negative cross-family transfer result from a small
+adapter bank. Do not tune its seed, optimizer, epochs, family roster, or fusion
+against D15. The next representation test should follow FoundPose's independent
+finding that intermediate DINOv2 layers preserve more positional information
+than final-layer descriptors when semantic appearance is ambiguous.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4492,6 +4506,10 @@ Evidence:
   `b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d`,
   `f9b579d872868c7a8fded24be815bacc88ac2cf2df83138bede988ebc7e1e871`,
   and `5f20b7adf7980d052b113032ea971f24ebd6c8fd966b8171c3b49472237ec143`;
+- held-out NIDS Weight Adapter implementation/protocol/result SHA-256:
+  `6961c33c27e64fc297260233797c2c61db2681170d6372fda4d26f7a31598aaa`,
+  `e6855b57c782093289927571fa963d543b1dda9b813446fbbdfc9b97c8caef14`,
+  and `db70a52254a3759f38eee209dd91a735e9469ea8163b242fb4be60c2f21054bb`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

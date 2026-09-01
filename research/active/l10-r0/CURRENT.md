@@ -358,6 +358,14 @@ contract.
   view mechanism, not a standalone repair. The remaining gap is reusable
   channel discrimination or another instance-bearing cue, not more score
   blending on D15.
+  The official NIDS Weight Adapter was then trained on `22` FFA descriptors
+  from consumed C16, D13, D03, NC08, and NC31 families while excluding every
+  D15 input. Its frozen InfoNCE loss fell `0.698618 -> 0.095535`, but the held-
+  out D15 chain was unchanged at `1/3`, minimum `0`, mean `0.382016`; D15M2's
+  best target fell to rank `32`. Freeze this as no cross-family transfer from
+  the small adapter bank. Do not tune epochs, seed, or optimizer on D15. Exa's
+  FoundPose evidence instead points to intermediate-layer DINOv2 patches for
+  positional discrimination when final-layer semantics are ambiguous.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or
