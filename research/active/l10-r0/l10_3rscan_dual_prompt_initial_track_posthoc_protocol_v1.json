@@ -1,0 +1,96 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-confirmation-protocol-v1",
+  "authority": "CONSUMED_QUEUE_ROW_4_POSTHOC_DUAL_PROPOSAL_BIRTH_DEVELOPMENT",
+  "implementation": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation.py",
+    "sha256": "99df3ce9c21268e0487c02696a385e7da808b54bff9fc0baf60f53ac4fb5201b"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_query_mask_3d_track.py", "sha256": "08e452411c75f95843c0aa5e4bfeab197d36fc99d7e424fdf15111369b881684"},
+    {"path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py", "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "gate_freeze": {
+    "path": "l10_3rscan_hypothesis_disagreement_initial_region_gate_freeze_protocol_v1.json",
+    "sha256": "2d9f1fcadcf815a24460da83aefb4d3aa1b1374d2740c7a6e8ece20e876a7a8a",
+    "required_schema": "blindassist-l10-3rscan-query-mask-3d-track-region-coverage-gate-freeze-protocol-v1"
+  },
+  "cohort": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_confirmation_cohort_v1.json",
+    "sha256": "e4da705e2913d9b92a2f606645cfa0cf2a67163aab5b1bc030360b811034b907",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_query_mask_3d_track_result_v1.json",
+    "sha256": "3fcc851366214d5b6de39481d480d320df546ef6147be41f09d6fba951b3bb6f",
+    "required_conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_DEVELOPMENT_GATE_MET"
+  },
+  "posthoc_trigger": {
+    "path": "l10_3rscan_hypothesis_disagreement_initial_track_confirmation_result_v1.json",
+    "sha256": "eedd84f0af13bc122ac8d6f7c2b60c72ab95bb52dfd8acc055a99ccf02b6231d",
+    "observed_failure": "Generic objects proposals supplied only one of two required initial target-region opportunities."
+  },
+  "source": {
+    "authority": "CONSUMED_QUEUE_ROW_4_TWO_INITIAL_FRAMES_POSTHOC",
+    "artifact_root": "F:/ba-data/blindassist-artifacts-20260805",
+    "cohort_path": "l10_3rscan_hypothesis_disagreement_action_confirmation_cohort_v1.json",
+    "cohort_sha256": "e4da705e2913d9b92a2f606645cfa0cf2a67163aab5b1bc030360b811034b907"
+  },
+  "memory": {"target_images": [], "sibling_images": []},
+  "evaluation": {
+    "query_images": ["FDV_initial_1_query", "FDV_initial_2_query"],
+    "edges": ["FDV_initial_1_query<->FDV_initial_2_query"],
+    "truth_role": "Union both proposal birth channels, generate masks, associate, rank and truncate Top-3 before reading target boxes or IoU. Placeholder frame 3 remains forbidden."
+  },
+  "proposal": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "prompts": ["objects", "door"],
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Independently retain unchanged full-frame plus fixed corner-tile proposals from generic objects and task-class door prompts, then concatenate without NMS or truth filtering."
+  },
+  "tiling": {
+    "tile_width_fraction": 0.4,
+    "tile_height_fraction": 0.4,
+    "offsets": ["top_left", "top_right", "bottom_left", "bottom_right"],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48,
+    "maximum_total_after_two_prompt_arms": 96,
+    "merge": "Each genuinely distinct prompt arm keeps its original cap; only the final bounded output remains Top-3."
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Apply unchanged native SAM2 once to every retained proposal from both birth channels."
+  },
+  "geometry": {
+    "depth_consistency_metres": 0.15,
+    "minimum_visible_projected_points": 16,
+    "pair_score": "Geometric mean of depth-consistent proposal-mask coverage in both directions.",
+    "candidate_score": "Unchanged ranking: depth support, mutual-best support, maximum symmetric track score, objectness and frozen concatenation index.",
+    "appearance_use": "None."
+  },
+  "literature_motivation": [
+    {"name": "MV3DIS", "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf", "use": "Use 3D mask association to arbitrate independently born proposals instead of fusing correlated appearance scores."}
+  ],
+  "gate": {
+    "mode": "target_region_coverage",
+    "candidate_budget": 3,
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 2,
+    "required_track_top3_coverage_frames": 2,
+    "requirements": "Both initial frames must offer IoU>=0.8 and unchanged 3D-track Top-3 must retain IoU>=0.8."
+  },
+  "conclusions": {
+    "met": "L10_3RSCAN_DUAL_PROMPT_INITIAL_TRACK_POSTHOC_DEVELOPMENT_GATE_MET",
+    "not_met": "L10_3RSCAN_DUAL_PROMPT_INITIAL_TRACK_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "next_action": "If met, treat this only as a consumed Development repair and freeze the dual proposal birth source before acquiring a new confirmation family.",
+  "fallback_action": "Close dual proposal birth as insufficient on row 4 without prompt or threshold sweeps.",
+  "claim_boundary": "This is posthoc Development on a consumed source family. A pass would show only that independent class-conditioned proposal birth repairs the observed initial opportunity gap while the output budget remains Top-3. It is not fresh confirmation, portal ownership, access, waypoint, arrival, handoff, user benefit, reliability, deployment, or safety."
+}

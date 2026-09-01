@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 import gc
 import hashlib
 import json
@@ -26,6 +27,36 @@ import l10_3rscan_reference_pixel_field as pixel  # noqa: E402
 
 PROTOCOL_SCHEMA = "blindassist-l10-3rscan-query-mask-3d-track-confirmation-protocol-v1"
 RESULT_SCHEMA = "blindassist-l10-3rscan-query-mask-3d-track-confirmation-result-v1"
+
+
+def _proposals(
+    protocol: dict[str, Any], images: dict[str, Any]
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, Any]]:
+    prompts = protocol["proposal"].get("prompts")
+    if prompts is None:
+        return nids.tiled._tiled_proposals(protocol, images)
+    pixel.require(len(prompts) >= 2 and len(set(prompts)) == len(prompts), "PROPOSAL_PROMPTS")
+    merged = {key: [] for key in images}
+    arms = []
+    for prompt in prompts:
+        arm_protocol = deepcopy(protocol)
+        arm_protocol["proposal"]["prompt"] = str(prompt)
+        proposals, runtime = nids.tiled._tiled_proposals(arm_protocol, images)
+        for key, rows in proposals.items():
+            for row in rows:
+                row["proposal_prompt"] = str(prompt)
+            merged[key].extend(rows)
+        arms.append({"prompt": str(prompt), **runtime})
+    return merged, {
+        "model_type": arms[0]["model_type"],
+        "device": arms[0]["device"],
+        "proposal_prompt_arms": arms,
+        "seconds_by_image": {
+            key: float(sum(arm["seconds_by_image"][key] for arm in arms)) for key in images
+        },
+        "grounding_dino_calls": int(sum(arm["grounding_dino_calls"] for arm in arms)),
+        "window_count_per_image": int(sum(arm["window_count_per_image"] for arm in arms)),
+    }
 
 
 def _edge(
@@ -130,7 +161,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
         pixel.require(pixel.sha256(ROOT / row["model_path"]) == row["model_sha256"], f"MODEL_HASH:{section}")
 
     images, image_rows = nids.ffa._load_images(protocol, cohort)
-    proposals, proposal_runtime = nids.tiled._tiled_proposals(protocol, images)
+    proposals, proposal_runtime = _proposals(protocol, images)
 
     import torch
     from transformers import Sam2Model, Sam2Processor
