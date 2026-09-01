@@ -4736,6 +4736,35 @@ same trigger and one fixed action without tuning. If the action cannot flip
 such errors, start the small physical-door instance head with same-door
 cross-view positives and same-scene same-class hard negatives.
 
+The successor froze six different reference families in metadata order before
+download, pose, depth, RGB or model access. Ordered row `1` was already source
+evaluable, so rows `2-6` were not downloaded: `634d11d3 -> 634d11cb`, target
+door `12`, same-scene hard negative door `31`. The source gate froze references
+`309/323/314` and query triplet `139/140/141`; the query scan exposed `35`
+admitted views and the triplet retained at least `571` visible target vertices.
+RGB/model calls remained zero until the exact six-image cohort was committed.
+
+This experiment then implemented the trigger as a real conditional decision,
+not a posthoc label. The initial-only scorer opened the three references and
+frames `139/140`, but not frame `141`. Their Top-1-minus-Top-2 margins were
+`0.064037/0.005333`, so the truth-free `<=0.02` rule authorized exactly one
+`NEXT_FRAME_FORWARD` observation. Only after that receipt was committed did
+the action-only scorer open frame `141`. Both initial views were already target
+Top-1, making the stronger wrong-Top-1 recovery tier
+`NOT_EVALUABLE_NO_INITIAL_WRONG_TOP1`.
+
+The weaker preregistered margin-sharpening tier also failed. Frame `141`
+retained target Top-1 and improved over the triggering frame to margin
+`0.017232` (`+0.011899`) and IoU `0.723535` versus the latest initial
+`0.709561`, but its margin remained `0.046804` below the other initial frame's
+`0.064037`. Record
+`L10_3RSCAN_DISCRIMINATIVE_VIEW_FRESH_CONFIRMATION_GATE_NOT_MET`. Freeze the
+view policy: it has a positive consumed oracle and local Development effect,
+but no fresh confirmation under the fixed gate. Do not mine additional
+families or retune the threshold/action. Begin the physical-door instance head
+with same-door cross-view positives, same-scene same-class hard negatives, and
+ordinary different-class negatives; keep its validation targets disjoint.
+
 Evidence:
 
 - depth-pose propagation implementation/protocol/result SHA-256:
@@ -4784,6 +4813,33 @@ Evidence:
   `cadc6ecfbf3763ca39ceb1f55ac79050dd2c196dc0020dce1a824db72c901983`,
   `9a044c03f0c36b89b8d267cfd5816e9255fdd720bcfa525a8e779a46df069b8b`,
   and `2c2d8a48ea4b295afa585636f77575a2b7e8b80237a17365f2e18150eae4382c`.
+
+- fresh ordered source queue freeze implementation/protocol/queue and source
+  implementation/protocol/result SHA-256:
+  `2ffb0166441f4e4876509f94c8139e40f740fbef99bc5489e714db86319eb7db`,
+  `48ad7b62f00fd1bbb2a5dec8d34dad181422f3ffa83180db0761f4bff2f3eead`,
+  `9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae`,
+  `2a081c312387fec1b42502b37afd130bf09825edfa08cd3b9ce1c87bfe51b7f5`,
+  `8e4f9c59173d2debff91d05f019c3ca84e422536116e70c71c59ce9bb46d2a9e`,
+  and `30f234cc6e013a812f05013e1eacaeee9fb4aec984c9ad8bb24bed0d53a45f06`.
+
+- fresh active-view cohort freeze implementation/protocol/cohort, scorer
+  implementation/initial protocol/result, trigger implementation/protocol/result,
+  action protocol/result, and final implementation/protocol/result SHA-256:
+  `febcad88bf957dde050fc840c4d45d3d7548539d26e4ff5a286b26e18ae8d903`,
+  `782d6fa25e101813834766f8efe15cf163d2e7528e8402aa765c519dcac6a835`,
+  `bfdcbcba2088b62fd241e71ac3b71d34fa7a657b9ef0c5c07d66e852b236bd5b`,
+  `fb787adbb0c39a43f3934af475284c184ce09f20ab681656e595cf3f7b2f296d`,
+  `44317b7e00d47a15f00ac8cb6e2412ce09dcc1f106f37d119992421472c2f55b`,
+  `796b4068400fe134089a709b58993e032070bf4b663f41c6d7c1fc20d043a0d7`,
+  `5f5c619eaca1c09997694d590751fac043a03303f1d0febc1d05425b608eb25b`,
+  `9e2b2e09267fd5bec3fec13e6d54b9ca33dc61bb512114069c508018eb9e9b4e`,
+  `91710034f160d49d41657ba0e7c3634dc153588eb81e1bf2f986cd3b7947cc5f`,
+  `8a127abeae2aca5081077785778c423c91b485613911fee67c451820f0be6f7b`,
+  `6d1ed092fb992a1f335aa4ac8ed3e324bbeeca9bb864e942cc4d26f1b88099a2`,
+  `e8a5324c40812c28dafad04f8c8d64c5fc77958f89108be3e941eae67b87ce82`,
+  `d552bb7389c31bda9d2363ec37e0737dd0e187982cd470f121c98abb7160162d`,
+  and `5e413bb1acd081b5c0d5b702fb0843de7af6353fde8733ac6ed12427782d94ad`.
 
 - tenth-family temporal-scale vacancy download/source/freeze/cohort,
   intermediate, confirmation implementation/protocol/result SHA-256:

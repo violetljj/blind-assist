@@ -845,11 +845,21 @@ contract.
    target Top-1 IoU from the latest initial `0.911720` to `0.946238`. Record
    `L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_TRIGGERED_MARGIN_SHARPENING_DEVELOPMENT_OBSERVED`.
    Both initial views were already correct, so this is ambiguity reduction,
-   not wrong-instance recovery or fresh confirmation. Next freeze a
-   multi-family pose/depth source queue and seek a fresh triplet with initial
-   wrong Top-1 but target Recall@3. Keep the same trigger and one action. If it
-   cannot flip that error, begin the physical-door instance head with same-door
-   cross-view positives and same-scene sibling-door hard negatives.
+   not wrong-instance recovery or fresh confirmation. The next six-family
+   pose/depth queue was frozen before download and stopped at its first
+   evaluable row (`634d11d3 -> 634d11cb`, door `12`), with references
+   `309/323/314`, consecutive queries `139/140/141`, and same-scene door `31`.
+   A true conditional run opened only initial frames `139/140`, observed
+   margins `0.064037/0.005333`, and truth-free-authorized frame `141`. The
+   action retained target Top-1 and improved margin over the triggering frame
+   to `0.017232`, but remained below the other initial margin by `0.046804`;
+   IoU improved only `0.709561 -> 0.723535`. Record
+   `L10_3RSCAN_DISCRIMINATIVE_VIEW_FRESH_CONFIRMATION_GATE_NOT_MET`.
+   Wrong-Top-1 recovery was `NOT_EVALUABLE` because both initial frames were
+   already correct. Freeze the trigger and action; do not mine more favorable
+   families or retune. Begin the physical-door instance head with same-door
+   cross-view positives, same-scene sibling-door hard negatives, ordinary
+   different-class negatives, and target-disjoint validation.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -932,6 +942,8 @@ contract.
   [l10_3rscan_discriminative_view_confirmation_source_result_v1.json](l10_3rscan_discriminative_view_confirmation_source_result_v1.json)
 - Local fixed-action Development policy result:
   [l10_3rscan_local_discriminative_view_policy_result_v1.json](l10_3rscan_local_discriminative_view_policy_result_v1.json)
+- Fresh ordered active-view confirmation result:
+  [l10_3rscan_discriminative_view_confirmation_result_v1.json](l10_3rscan_discriminative_view_confirmation_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

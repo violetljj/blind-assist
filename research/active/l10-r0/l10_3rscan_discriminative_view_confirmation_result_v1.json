@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-result-v1",
+  "authority": "FRESH_PRE_FROZEN_QUEUE_TRUTH_FREE_TRIGGER_ONE_AUTHORIZED_ACTION_CONFIRMATION",
+  "protocol_path": "l10_3rscan_discriminative_view_confirmation_protocol_v1.json",
+  "protocol_sha256": "d552bb7389c31bda9d2363ec37e0737dd0e187982cd470f121c98abb7160162d",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation.py",
+    "sha256": "e8a5324c40812c28dafad04f8c8d64c5fc77958f89108be3e941eae67b87ce82"
+  },
+  "conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_FRESH_CONFIRMATION_GATE_NOT_MET",
+  "gate_met": false,
+  "policy": {
+    "trigger_uses_target_truth": false,
+    "trigger_threshold": 0.02,
+    "trigger_value": 0.005332916975021362,
+    "triggered": true,
+    "fixed_action": "NEXT_FRAME_FORWARD",
+    "action_query_key": "FDV_action_query",
+    "action_executed_after_authorization": true
+  },
+  "tiered_gates": {
+    "wrong_top1_recovery": {
+      "evaluable": false,
+      "status": "NOT_EVALUABLE_NO_INITIAL_WRONG_TOP1",
+      "gate_met": false
+    },
+    "margin_sharpening": {
+      "evaluable": true,
+      "status": "GATE_NOT_MET",
+      "gate_met": false
+    }
+  },
+  "metrics": {
+    "initial_target_top1": 2,
+    "initial_target_recall_at_3": 2,
+    "initial_wrong_top1_count": 0,
+    "initial_margins": [
+      0.06403657793998718,
+      0.005332916975021362
+    ],
+    "minimum_initial_margin": 0.005332916975021362,
+    "maximum_initial_margin": 0.06403657793998718,
+    "action_first_target_rank_evaluation_only": 1,
+    "action_target_top1": 1,
+    "action_target_recall_at_3": 1,
+    "action_margin": 0.017232120037078857,
+    "action_margin_gain_over_trigger_view": 0.011899203062057495,
+    "action_margin_gain_over_initial_maximum": -0.046804457902908325,
+    "action_top1_target_iou": 0.7235347852648685,
+    "action_top1_iou_gain_over_latest_initial": 0.01397381615303206,
+    "action_refined_top1_target_iou": 0.71521872206758,
+    "wrong_top1_exclusion_fraction": "NOT_APPLICABLE_NO_INITIAL_WRONG_TOP1"
+  },
+  "initial_views_evaluation_only": [
+    {
+      "query_key": "FDV_initial_1_query",
+      "top1_minus_top2_fused_margin": 0.06403657793998718,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "top1_target_iou_evaluation_only": 0.8012684623322648,
+      "refined_top1_target_iou_evaluation_only": 0.7768577676002544
+    },
+    {
+      "query_key": "FDV_initial_2_query",
+      "top1_minus_top2_fused_margin": 0.005332916975021362,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "top1_target_iou_evaluation_only": 0.7095609691118364,
+      "refined_top1_target_iou_evaluation_only": 0.653039833684584
+    }
+  ],
+  "action_view_evaluation_only": {
+    "query_key": "FDV_action_query",
+    "top1_minus_top2_fused_margin": 0.017232120037078857,
+    "first_target_proposal_rank": 1,
+    "top1_target_iou": 0.7235347852648685,
+    "refined_top1_target_iou": 0.71521872206758,
+    "candidate_count": 34
+  },
+  "next_action": "Freeze the active-view policy as not confirmed on this family and begin the physical-door instance-head branch without changing the action or trigger.",
+  "claim_boundary": "A positive result can establish only fresh same-provider Development confirmation of one truth-free trigger and fixed local action at its exact tier. It cannot establish physical cross-view candidate association, provider transfer, a learned or deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
