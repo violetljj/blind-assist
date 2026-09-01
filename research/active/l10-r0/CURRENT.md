@@ -366,6 +366,15 @@ contract.
   the small adapter bank. Do not tune epochs, seed, or optimizer on D15. Exa's
   FoundPose evidence instead points to intermediate-layer DINOv2 patches for
   positional discrimination when final-layer semantics are ambiguous.
+  Replacing only the local score's final-layer patches with FoundPose's frozen
+  block `18/24` representation improved D15 `1/3 -> 2/3`, mean refined IoU
+  `0.382016 -> 0.456744`: D15M1 reached `0.646921` and D15M3 retained
+  `0.723311`. D15M2's true proposal became the highest layer-18 local match but
+  final-layer FFA fusion demoted it to rank `7`. Removing only that harmful
+  semantic fusion made the fixed local-only chain pass `3/3`, minimum refined
+  IoU `0.594841`, mean `0.705944` (D15M2 `0.876069`). Freeze layer-18 query-
+  directed local appearance plus SAM as the next candidate. This is strong
+  consumed D15 Development attribution; it now requires an untouched family.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

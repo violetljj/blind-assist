@@ -1,0 +1,295 @@
+{
+  "schema": "blindassist-l10-3rscan-foundpose-layer18-local-only-posthoc-result-v1",
+  "authority": "CONSUMED_D15_FOUNDPOSE_LAYER18_LOCAL_ONLY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_foundpose_layer18_local_only_posthoc_protocol_v1.json",
+  "protocol_sha256": "afa713710c07298ab37cf0975dad99e465adfecb43afed4ad34b0802bcef2794",
+  "implementation": {
+    "path": "l10_3rscan_foundpose_layer18_local_only_posthoc.py",
+    "sha256": "f62091b114c8ebede948450933a65646171096ed8763cb74b4b81c4bfc962601"
+  },
+  "conclusion": "L10_3RSCAN_FOUNDPOSE_LAYER18_LOCAL_ONLY_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 3,
+    "refined_iou_gate_queries": 3,
+    "minimum_refined_iou": 0.5948405792093939,
+    "mean_refined_iou": 0.7059436530951643
+  },
+  "query_receipts": {
+    "D15M1_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "LAYER18_QUERY_DIRECTED_LOCAL_APPEARANCE_ONLY",
+      "selected": {
+        "objectness_score": 0.12188594043254852,
+        "box_xyxy": [
+          576.0,
+          0.11921238899230957,
+          959.881591796875,
+          118.78621673583984
+        ],
+        "tile_id": "top_right",
+        "tile_xyxy": [
+          576,
+          0,
+          960,
+          216
+        ],
+        "tile_postprocess_index": 9,
+        "postprocess_index": 27,
+        "target_memory_score": 0.7968404293060303,
+        "per_reference_scores": {
+          "D15M1_reference": 0.7968404293060303,
+          "D15M2_reference": 0.6614716053009033,
+          "D15M3_reference": 0.6561914682388306
+        },
+        "winning_target_reference": "D15M1_reference",
+        "layer18_local_appearance_score": 0.8055185675621033,
+        "layer18_nids_fused_score": 0.8011794984340668,
+        "target_metrics_evaluation_only": {
+          "iou": 0.5655912428363346,
+          "target_recall": 0.6903084328585272,
+          "proposal_precision": 0.7579010226291572
+        },
+        "descriptor_sha256": "e44497dff8bd4745b1f4ec0d8f918d774eada2acdbe23dc93276a096664759e4",
+        "layer18_patch_sha256": "0baccdf3bfb1f27a83c509812d352d607d1403128258d756ae9280198eeb3629",
+        "mask_sha256": "038029befb0998fd8848a48df53de10736edad976d1f66c0bff453cdedda2eb6"
+      },
+      "top1_local_appearance_margin": 0.013146460056304932,
+      "refined_mask_bbox_xyxy": [
+        523.0,
+        0.0,
+        960.0,
+        118.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.6469210335127307,
+        "target_recall": 0.7977973343596834,
+        "proposal_precision": 0.77379463974516
+      },
+      "mask_sha256": "038029befb0998fd8848a48df53de10736edad976d1f66c0bff453cdedda2eb6",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.7423959000152536
+      }
+    },
+    "D15M2_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "LAYER18_QUERY_DIRECTED_LOCAL_APPEARANCE_ONLY",
+      "selected": {
+        "objectness_score": 0.18158447742462158,
+        "box_xyxy": [
+          500.3417053222656,
+          0.5714915990829468,
+          958.2745361328125,
+          111.84561920166016
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 6,
+        "postprocess_index": 8,
+        "target_memory_score": 0.6281166672706604,
+        "per_reference_scores": {
+          "D15M1_reference": 0.6281166672706604,
+          "D15M2_reference": 0.5782650113105774,
+          "D15M3_reference": 0.5750802755355835
+        },
+        "winning_target_reference": "D15M1_reference",
+        "layer18_local_appearance_score": 0.767759382724762,
+        "layer18_nids_fused_score": 0.6979380249977112,
+        "target_metrics_evaluation_only": {
+          "iou": 0.8615953229303175,
+          "target_recall": 0.9946745653046986,
+          "proposal_precision": 0.8655882255956902
+        },
+        "descriptor_sha256": "1353cccea57d56ba663de2a8a5e4869f1792d86ffda1208473240f4034156a35",
+        "layer18_patch_sha256": "d838d71144a02e7f3d35e56bc95a2c5ba99453b3fcfb2d1ed6dcd7bcb2f9f302",
+        "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909"
+      },
+      "top1_local_appearance_margin": 0.0004055500030517578,
+      "refined_mask_bbox_xyxy": [
+        504.0,
+        0.0,
+        960.0,
+        111.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.8760693465633684,
+        "target_recall": 1.0,
+        "proposal_precision": 0.8760693465633683
+      },
+      "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09219200001098216
+      }
+    },
+    "D15M3_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "LAYER18_QUERY_DIRECTED_LOCAL_APPEARANCE_ONLY",
+      "selected": {
+        "objectness_score": 0.1836160123348236,
+        "box_xyxy": [
+          0.5038490295410156,
+          34.14381408691406,
+          381.6024169921875,
+          215.48655700683594
+        ],
+        "tile_id": "top_left",
+        "tile_xyxy": [
+          0,
+          0,
+          384,
+          216
+        ],
+        "tile_postprocess_index": 5,
+        "postprocess_index": 12,
+        "target_memory_score": 0.7112609148025513,
+        "per_reference_scores": {
+          "D15M1_reference": 0.7112609148025513,
+          "D15M2_reference": 0.6321819424629211,
+          "D15M3_reference": 0.5656723380088806
+        },
+        "winning_target_reference": "D15M1_reference",
+        "layer18_local_appearance_score": 0.7536018490791321,
+        "layer18_nids_fused_score": 0.7324313819408417,
+        "target_metrics_evaluation_only": {
+          "iou": 0.394704987290598,
+          "target_recall": 0.7498491863053018,
+          "proposal_precision": 0.4545586188809477
+        },
+        "descriptor_sha256": "d97f2dede6dab30d651430f4c44304b751b8aab642504b5fac88410d83e97e4c",
+        "layer18_patch_sha256": "51f56d381f968f40d2fe11f711bae13cd1541949b499133b3430ea65d0da69b5",
+        "mask_sha256": "4a0e27b9668bb714808dfc1a7de57f91cdcf343aa051844004b3e5bb5ec865a1"
+      },
+      "top1_local_appearance_margin": 0.0010956525802612305,
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        30.0,
+        353.0,
+        160.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.5948405792093939,
+        "target_recall": 0.7815306060102203,
+        "proposal_precision": 0.7134793405337124
+      },
+      "mask_sha256": "4a0e27b9668bb714808dfc1a7de57f91cdcf343aa051844004b3e5bb5ec865a1",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09053169999970123
+      }
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "sam_model_type": "Sam2Model",
+    "sam2_calls": 3,
+    "grounding_dino_calls": 0,
+    "dinov2_calls": 0
+  },
+  "claim_boundary": "This consumed D15 Development ablation can establish only whether final-layer FFA fusion was harmful after FoundPose layer-18 local matching on the frozen roster. It cannot regain fresh authority or establish open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

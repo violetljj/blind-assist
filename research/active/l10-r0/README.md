@@ -4301,6 +4301,27 @@ against D15. The next representation test should follow FoundPose's independent
 finding that intermediate DINOv2 layers preserve more positional information
 than final-layer descriptors when semantic appearance is ambiguous.
 
+Following FoundPose exactly at the representation choice, the next run changed
+only local appearance patches from the final DINOv2 layer to block `18/24` of
+ViT-L/14. Final-layer FFA template selection, query-directed max-then-mean,
+arithmetic fusion, the full-plus-`40%` proposal roster, SAM, and the IoU gate
+remained fixed. This improved D15 from `1/3` to `2/3`; mean refined IoU rose
+`0.382016 -> 0.456744`. D15M1 refined to `0.646921`, D15M3 retained `0.723311`,
+and D15M2's true raw-IoU-`0.861595` proposal rose from rank `25` to rank `7`.
+
+The per-score receipt exposed a cleaner structural result: D15M2's true target
+was already the top layer-18 local match, but averaging with the final semantic
+FFA score demoted it. A single frozen ablation therefore removed only that
+fusion and retained the same ranking tie breaks and SAM. Layer-18 local-only
+ranking passed all `3/3`: D15M1 `0.646921`, D15M2 `0.876069`, and D15M3
+`0.594841`, for minimum `0.594841` and mean `0.705944`. In D15M3, SAM completed
+a raw-IoU-`0.394705` partial proposal past the gate. This is the strongest
+thin-view/repeated-door mechanism in this branch and a positive falsifiable
+effect independent of hand-built aspect or position. It is still posthoc
+Development on consumed D15, with thin margins on D15M2 (`0.000406`) and D15M3
+(`0.001096`); freeze it unchanged and require an untouched family before any
+confirmation claim.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4510,6 +4531,14 @@ Evidence:
   `6961c33c27e64fc297260233797c2c61db2681170d6372fda4d26f7a31598aaa`,
   `e6855b57c782093289927571fa963d543b1dda9b813446fbbdfc9b97c8caef14`,
   and `db70a52254a3759f38eee209dd91a735e9469ea8163b242fb4be60c2f21054bb`;
+- FoundPose layer-18 fused and layer-18 local-only
+  implementation/protocol/result SHA-256:
+  `7f78c0f39cc97a11c7872f82694534b756bf7e13f3d433c0c7ffe4dfd95c93c2`,
+  `3cce7c49c0e5591b5a4a89902756df089a6a51e5ab279a510e3f9596636b8283`,
+  `04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8`,
+  `f62091b114c8ebede948450933a65646171096ed8763cb74b4b81c4bfc962601`,
+  `afa713710c07298ab37cf0975dad99e465adfecb43afed4ad34b0802bcef2794`,
+  and `cac8cc19cf908d8a8dd427b65c7581a563ce6ddb815ddc5e6e98a9452d15b263`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;
