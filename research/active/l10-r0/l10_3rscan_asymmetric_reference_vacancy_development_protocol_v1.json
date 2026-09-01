@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist-l10-3rscan-axis-completion-vacancy-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-asymmetric-reference-vacancy-development-protocol-v1",
+  "frozen_at": "2026-09-01T15:25:06+08:00",
+  "question": "Does the unchanged at-most-three vacancy proposal carrier cover both unique sparse-query observations when the third reference-memory slot is filled by maximum-minimum view angle?",
+  "implementation": {
+    "path": "l10_3rscan_axis_completion_vacancy_posthoc.py",
+    "sha256": "3eaa8d2f0efcad0b5f4fcbe2ae0167d31e90d45ced718fd78755cc4d76cdb357"
+  },
+  "development_adapter": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_development.py",
+    "sha256": "bfef9e92ebc5a6f2b657387f33ea5036d832ab6a17dec976b147f501e29968a3",
+    "expected_unique_query_count": 2,
+    "normalization": "Retain every raw metric and receipt while replacing the base scorer's historical six-family authority label with exact one-family consumed Development authority."
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_cross_view_reference_consensus_posthoc.py", "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"},
+    {"path": "l10_3rscan_reference_scale_axis_completion_posthoc.py", "sha256": "bdf242adf72214a7a2623de3561c7e99fe951ba30d2c897c85496201f546f66c"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json",
+    "sha256": "767bf036cfebd1bbe0ebad6dee5952363431c54efb0ebb94cf1aa15be04921d3",
+    "required_conclusion": "L10_3RSCAN_AXIS_COMPLETION_VACANCY_FRESH_CONFIRMATION_GATE_MET"
+  },
+  "families": {
+    "consumed_asymmetric_doorframe4": {
+      "candidate_result": {
+        "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_result_v1.json",
+        "sha256": "4fbfb30a3696948018f4a560ffb2acca5ff6f01053114495a2b58ec2a97743c7"
+      },
+      "cohort": {
+        "path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+        "sha256": "f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a"
+      }
+    }
+  },
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "preserved_contributors": [
+      "equal semantic-local fusion top one",
+      "nearest-reference-scale local-appearance mixture top one",
+      "best semantic-local fusion candidate constrained to the plurality winning target reference across the two unique query observations"
+    ],
+    "vacancy_rule": "Deduplicate the three preserved contributors by exact original candidate key. Only when fewer than three distinct candidates remain, append at most one reference-scale axis completion if its output box is not already present. Never remove or replace a preserved candidate.",
+    "axis_completion": "For every detector proposal, consider its unchanged box, a full-width horizontal band retaining its y span, and a full-height vertical band retaining its x span. Rank all options by the parent layer-18 local score minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale.",
+    "scale_log_area_penalty": 0.05,
+    "reference_vote": "Each unique query contributes its semantic-local fusion top-one winning target reference. Select the plurality reference; break ties by deterministic sorted reference order.",
+    "truth_boundary": "Reference vote, preserved contributors, deduplication, vacancy availability, axis mode and scores are fixed before target boxes or IoU are opened. Truth is used only to evaluate the resulting set.",
+    "downstream_contract": "The bounded set remains unresolved localization uncertainty and requires active or cross-view disambiguation before one target can be authorized."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_covered_queries": 2,
+    "maximum_set_size": 3
+  },
+  "literature_motivation": [
+    {"source": "Simultaneous Multi-View Instance Detection With Learned Geometric Soft-Constraints", "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Nassar_Simultaneous_Multi-View_Instance_Detection_With_Learned_Geometric_Soft-Constraints_ICCV_2019_paper.pdf", "use": "View geometry motivates angularly diverse reference evidence; mechanism motivation only."},
+    {"source": "Dynamic Tiling", "url": "https://arxiv.org/abs/2309.11069", "use": "Near-boundary detections motivate bounded spatial completion; mechanism motivation only."},
+    {"source": "Aspect Ratio and Context Aware Region-based Convolutional Neural Networks for Object Detection", "url": "https://arxiv.org/abs/1703.01634", "use": "Bounded aspect-ratio and context configurations motivate horizontal or vertical completion; mechanism motivation only."}
+  ],
+  "forbidden_after_freeze": [
+    "change either unique query, any reference, score, vote, contributor, exact deduplication, vacancy condition, axis mode, 0.05 scale penalty, deterministic tie order, IoU gate or set-size bound",
+    "duplicate a query, inspect truth before the set is complete, retry or rescue",
+    "claim fresh confirmation from this post-source mechanism Development"
+  ],
+  "claim_boundary": "This consumed ninth family was used to design the asymmetric reference-memory vacancy mechanism before its RGB/model outcomes were known. A pass is Development evidence for bounded two-query proposal coverage, not fresh confirmation, top-one localization, calibrated uncertainty, open-set rejection, raw-phone operation, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
