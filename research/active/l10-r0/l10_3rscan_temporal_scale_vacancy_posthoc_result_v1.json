@@ -1,0 +1,333 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-posthoc-result-v1",
+  "authority": "CONSUMED_NINTH_FAMILY_TEMPORAL_SCALE_VACANCY_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_temporal_scale_vacancy_posthoc_protocol_v1.json",
+  "protocol_sha256": "b960a71ce236898303edd18baae6bdf67878aac43a71f5c483d49e81466ae46e",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_posthoc.py",
+    "sha256": "7a6f417dc760faa562a50a5abd5c66043cae2309caaf4d387e51419a170c773e"
+  },
+  "conclusion": "L10_3RSCAN_TEMPORAL_SCALE_VACANCY_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 2,
+    "covered_queries": 2,
+    "minimum_best_hypothesis_iou": 0.5846725420357044,
+    "mean_best_hypothesis_iou": 0.7337817644286764,
+    "maximum_hypothesis_count": 3,
+    "temporal_vacancy_fills": 2,
+    "temporal_vacancy_iou_gate_queries": 1,
+    "axis_fallback_queries": 0
+  },
+  "temporal_link": {
+    "query_images": [
+      "ARV1_query",
+      "ARV2_query"
+    ],
+    "maximum_frame_gap": 1,
+    "minimum_adjacent_box_iou": 0.5,
+    "scale_log_area_penalty": 0.05,
+    "selection": "Link proposal boxes only when adjacent-frame IoU is strictly greater than 0.5. Select the link maximizing mean semantic/local fused score minus 0.05 times mean nearest-reference log-area distance; ties use higher link IoU, higher unpenalized mean fused score, then earlier frozen candidate order.",
+    "vacancy_contract": "Remove only the failed axis-completion vacancy row from the predecessor set. Preserve every original contributor. Add each side of the selected temporal link only when it is not already present; otherwise fall back to the predecessor axis row. Keep at most three hypotheses per query.",
+    "truth_boundary": "Frames, reference scales, proposal boxes and frozen candidate scores determine the link. Query target boxes and IoU enter only after the bounded set is complete.",
+    "selected": {
+      "first_index": 4,
+      "second_index": 2,
+      "adjacent_box_iou": 0.5742839463876648,
+      "mean_fused_score": 0.6986483186483383,
+      "mean_reference_scale_log_distance": 0.061972123340496066,
+      "temporal_reference_scale_score": 0.6955497124813135
+    }
+  },
+  "query_receipts": {
+    "ARV1_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "frame_gap": 1,
+      "selected_temporal_link": {
+        "first_index": 4,
+        "second_index": 2,
+        "adjacent_box_iou": 0.5742839463876648,
+        "mean_fused_score": 0.6986483186483383,
+        "mean_reference_scale_log_distance": 0.061972123340496066,
+        "temporal_reference_scale_score": 0.6955497124813135
+      },
+      "hypothesis_count": 3,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.1944373995065689,
+            "box_xyxy": [
+              576.0,
+              138.07037353515625,
+              959.8981018066406,
+              215.6099853515625
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 14,
+            "target_memory_score": 0.7087260484695435,
+            "per_reference_scores": {
+              "ARV1_reference": 0.7087260484695435,
+              "ARV2_reference": 0.6426427960395813,
+              "ARV1_extra_reference": 0.6972532868385315
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.7713994383811951,
+            "layer18_nids_fused_score": 0.7400627434253693,
+            "target_metrics_evaluation_only": {
+              "iou": 0.0,
+              "target_recall": 0.0,
+              "proposal_precision": 0.0
+            },
+            "descriptor_sha256": "72a21190c1a0f477e1996f9322ca9f8afa48ccac5e532b6d031dfc6a3813baa9",
+            "layer18_patch_sha256": "a6a997a09ee2c5646792a64d366c3bb2265fee8fab379bd3dbc4892f1327ffe0",
+            "mask_sha256": "d55daa1f5cb256541da7e8ca11cdfc0689bcba5200d1fce6b2e2a5f58ccc1a48"
+          }
+        },
+        {
+          "mechanisms": [
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.5910028219223022,
+            "box_xyxy": [
+              0.028873443603515625,
+              0.30249524116516113,
+              383.93548583984375,
+              215.54273986816406
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 8,
+            "target_memory_score": 0.6789204478263855,
+            "per_reference_scores": {
+              "ARV1_reference": 0.6789204478263855,
+              "ARV2_reference": 0.6612017750740051,
+              "ARV1_extra_reference": 0.6253852844238281
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.7504271864891052,
+            "layer18_nids_fused_score": 0.7146738171577454,
+            "target_metrics_evaluation_only": {
+              "iou": 0.0,
+              "target_recall": 0.0,
+              "proposal_precision": 0.0
+            },
+            "descriptor_sha256": "63f14bc751b1c992b0dd118f97b780880f5b46aebca7d40d9255fd30c9864cd5",
+            "layer18_patch_sha256": "9fd1597baed1acf6e6f5338c8f2c01585cf755b1c1476e8a523552684a6a4cad",
+            "mask_sha256": "634203a33d785077dc3289b25071f4f09c7c7a4a9efc27af4f233ab217c2d031"
+          }
+        },
+        {
+          "mechanisms": [
+            "temporal_reference_scale_vacancy"
+          ],
+          "candidate": {
+            "objectness_score": 0.5055248141288757,
+            "box_xyxy": [
+              656.43359375,
+              223.20729064941406,
+              958.7435302734375,
+              538.42138671875
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 1,
+            "target_memory_score": 0.6568240523338318,
+            "per_reference_scores": {
+              "ARV1_reference": 0.6568240523338318,
+              "ARV2_reference": 0.5527259707450867,
+              "ARV1_extra_reference": 0.5337277054786682
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.7287180423736572,
+            "layer18_nids_fused_score": 0.6927710473537445,
+            "target_metrics_evaluation_only": {
+              "iou": 0.8828909868216483,
+              "target_recall": 1.0,
+              "proposal_precision": 0.8828909868216483
+            },
+            "descriptor_sha256": "7599d1b234676e9624b75ceff8d94efc316f12f1ab4c511b6299f7974af55706",
+            "layer18_patch_sha256": "68599186742bdf25301b7599f91980b59194e658f853b772253a973240bcf92a",
+            "mask_sha256": "4ab31dc66f4d3341eb0a404f877425d83d6f501d9e72222d9ce2d5e353edc528"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.8828909868216483,
+      "target_covered_at_iou_gate": true
+    },
+    "ARV2_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "frame_gap": 1,
+      "selected_temporal_link": {
+        "first_index": 4,
+        "second_index": 2,
+        "adjacent_box_iou": 0.5742839463876648,
+        "mean_fused_score": 0.6986483186483383,
+        "mean_reference_scale_log_distance": 0.061972123340496066,
+        "temporal_reference_scale_score": 0.6955497124813135
+      },
+      "hypothesis_count": 3,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.43413764238357544,
+            "box_xyxy": [
+              666.2147674560547,
+              324.18409395217896,
+              959.2735595703125,
+              539.3321228027344
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 28,
+            "target_memory_score": 0.695182204246521,
+            "per_reference_scores": {
+              "ARV1_reference": 0.695182204246521,
+              "ARV2_reference": 0.45836085081100464,
+              "ARV1_extra_reference": 0.461042582988739
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.727297306060791,
+            "layer18_nids_fused_score": 0.711239755153656,
+            "target_metrics_evaluation_only": {
+              "iou": 0.5846725420357044,
+              "target_recall": 0.6207167685709383,
+              "proposal_precision": 0.9096545982945567
+            },
+            "descriptor_sha256": "6de0d3b1585a34846624ec722ba623777eea8cf62faf92fc9fa977571c151703",
+            "layer18_patch_sha256": "146d105dce38bbedd3006e6a91acb076a87a9dc5222e55133e4204cc35362e6f",
+            "mask_sha256": "5dfb1672d46939539c73afe46c1803d7ce78ee6a4410aaaed678cd6f7b86056c"
+          }
+        },
+        {
+          "mechanisms": [
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.5920501947402954,
+            "box_xyxy": [
+              0.6599235534667969,
+              324.4047646522522,
+              383.25830078125,
+              538.8716735839844
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 23,
+            "target_memory_score": 0.5692479610443115,
+            "per_reference_scores": {
+              "ARV1_reference": 0.5692479610443115,
+              "ARV2_reference": 0.44317594170570374,
+              "ARV1_extra_reference": 0.4650592803955078
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.7401537895202637,
+            "layer18_nids_fused_score": 0.6547008752822876,
+            "target_metrics_evaluation_only": {
+              "iou": 0.0,
+              "target_recall": 0.0,
+              "proposal_precision": 0.0
+            },
+            "descriptor_sha256": "28578be44c4884631a05d9cd03f64921faebee5ed2261d92adf7aee24cd63d91",
+            "layer18_patch_sha256": "b9d0eb8a864dd1265b4671397dd8062db2b056858fa01266b83a56797056bb3b",
+            "mask_sha256": "b6e3567f9d34e1c72abfcb065b9923b73d545fccdc7b171ec7653c13ee121a55"
+          }
+        },
+        {
+          "mechanisms": [
+            "temporal_reference_scale_vacancy"
+          ],
+          "candidate": {
+            "objectness_score": 0.19603492319583893,
+            "box_xyxy": [
+              576.9532241821289,
+              324.0531463623047,
+              958.6344909667969,
+              539.6655731201172
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 31,
+            "target_memory_score": 0.6898789405822754,
+            "per_reference_scores": {
+              "ARV1_reference": 0.6898789405822754,
+              "ARV2_reference": 0.5072967410087585,
+              "ARV1_extra_reference": 0.4932667911052704
+            },
+            "winning_target_reference": "ARV1_reference",
+            "layer18_local_appearance_score": 0.7191722393035889,
+            "layer18_nids_fused_score": 0.7045255899429321,
+            "target_metrics_evaluation_only": {
+              "iou": 0.4892348925041587,
+              "target_recall": 0.6211003524797777,
+              "proposal_precision": 0.6973684753302254
+            },
+            "descriptor_sha256": "d7ae379300c363c971ad523cab0eebf34fa8bb2352ca642c40f9a1979577f2f1",
+            "layer18_patch_sha256": "fbd0d7c4036fa6df6a4c0a40116f1ddf02a05cbffcd5d6063a6ddcbc25b6d163",
+            "mask_sha256": "2d361404a8fd884a60e32817758c7c8dbc89841f00995c268f24a58c00f8e852"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.5846725420357044,
+      "target_covered_at_iou_gate": true
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "Seq-NMS for Video Object Detection",
+      "url": "https://arxiv.org/abs/1602.08465",
+      "use": "Associates adjacent-frame boxes when IoU exceeds 0.5 and maximizes a sequence detection score to repair single-frame ranking errors. The reference-scale term is this Development branch's bounded addition."
+    },
+    {
+      "source": "Leveraging Long-Range Temporal Relationships Between Proposals for Video Object Detection",
+      "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Shvets_Leveraging_Long-Range_Temporal_Relationships_Between_Proposals_for_Video_Object_Detection_ICCV_2019_paper.pdf",
+      "use": "Supports proposal-level temporal relationships as a light-weight source of context; mechanism motivation only."
+    }
+  ],
+  "claim_boundary": "This family and its RGB/model roster were consumed before the temporal-scale vacancy branch was defined. A pass is Development evidence that an adjacent-frame proposal link can carry a correct candidate inside a bounded set; it is not fresh confirmation, top-one localization, calibrated uncertainty, open-set rejection, raw-phone operation, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

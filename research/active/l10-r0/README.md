@@ -4560,6 +4560,41 @@ algorithm failure nor permission to relax the source gate or rescue the family.
 The ninth candidate must again be selected before download by the unchanged
 metadata rule.
 
+That ninth family was frozen before download as
+`50e7c0ad-0730-2a5f-8635-252404ee82e0 ->
+531cff04-0021-28f6-8d49-e51826f43468`, target doorframe `4`. Geometry/depth
+admitted two positive-marginal reference views, two unique adjacent query views
+(`541/542`), and sibling doorframe `5`; RGB/model counts remained zero. This
+met the candidate protocol's two-view source floor but could not be treated as
+unchanged confirmation because the confirmed scorer requires three reference
+scales and three queries. A consumed Development branch therefore kept both
+unique queries and added one source-admitted reference only: frame `410`, chosen
+by maximum minimum camera-to-target angle (`40.326262` degrees) from the two
+preserved references. It added zero new visible target vertices and was marked
+as reference-memory vacancy capacity, not evidence inflation.
+
+The unchanged fusion/scale/axis proposal set then failed at `1/2`: proposal
+opportunity was still `2/2`, but the first query's correct IoU-`0.882891`
+candidate ranked outside the three-slot set. Its minimum/mean best set IoU were
+`0/0.292336`. A single posthoc structural successor used adjacent-frame box
+links with IoU `>0.5`, following
+[Seq-NMS](https://arxiv.org/abs/1602.08465), and ranked each link by mean frozen
+semantic/local fusion minus the already fixed `0.05` mean nearest-reference
+log-area distance. It removed only the failed axis vacancy row, preserved the
+two original distinct contributors, and inserted at most one linked candidate.
+The selected link had cross-frame IoU `0.574284`; its first-frame candidate
+recovered IoU `0.882891`. Final bounded coverage rose to `2/2`, minimum/mean
+best IoU `0.584673/0.733782`, maximum set size `3`, with `2` temporal fills and
+one direct temporal IoU-gate hit. Record
+`L10_3RSCAN_TEMPORAL_SCALE_VACANCY_DEVELOPMENT_GATE_MET`.
+
+This panel was consumed before the temporal-scale rule was defined. It proves a
+visible Development repair, not fresh transfer, top-one localization, portal
+ownership, access, waypoint, arrival, handoff, benefit, reliability, or safety.
+The next decision-changing test is a tenth pre-download-frozen family with an
+adjacent admitted query pair and the exact same link IoU, scale penalty, ties,
+vacancy-only insertion, set bound, and truth boundary.
+
 Evidence:
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
@@ -4633,6 +4668,13 @@ Evidence:
   `e0cfd6857144db9394450aa5edf6cc882d7837a4cb64e40ca7ac19070b888270`,
   `cc1626e8045db41212eb51a4ca89ff43c5bd57fec0bce940c098fb80ec017830`,
   and `e17d72ddb7194e1a9f04088026acb4ee71ae9acb5e9e39b1860c6399fe723274`.
+- ninth-family asymmetric reference freeze protocol/cohort and temporal-scale
+  vacancy implementation/protocol/result SHA-256:
+  `0594ae9fd5377941299b248f302d15ad07a73855ab00951c1287540494e790e0`,
+  `f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a`,
+  `7a6f417dc760faa562a50a5abd5c66043cae2309caaf4d387e51419a170c773e`,
+  `b960a71ce236898303edd18baae6bdf67878aac43a71f5c483d49e81466ae46e`,
+  and `ea89a2df043e3b1f857ad588747231120db96eaaf3f852495795be9cbd210f37`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

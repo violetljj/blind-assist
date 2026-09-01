@@ -524,6 +524,26 @@ contract.
   at `0.526551`. RGB/model calls remained zero. Freeze this family as an
   observation-reachability result, not an algorithm failure; select the ninth
   candidate by the unchanged metadata rule without rescue or RGB inspection.
+  The ninth metadata-selected family was frozen pre-download as
+  `50e7c0ad-0730-2a5f-8635-252404ee82e0 ->
+  531cff04-0021-28f6-8d49-e51826f43468`, target doorframe `4`. Its source gate
+  admitted two reference views, two query views, and sibling doorframe `5`
+  before RGB/model access. Because the confirmation implementation requires
+  three positive-marginal references and three queries, this is not a valid
+  unchanged-rule confirmation. A consumed Development branch instead retained
+  both unique queries, filled only the third reference-memory slot with the
+  source-admitted view maximizing minimum camera angle (`40.326262` degrees),
+  and preserved the set bound at three. The old fusion/scale/axis set still
+  reached only `1/2`, minimum/mean best IoU `0/0.292336`, despite proposal
+  opportunity `2/2`. An Exa-motivated adjacent-frame successor linked boxes at
+  IoU `>0.5`, ranked links by mean fusion minus the already fixed `0.05`
+  nearest-reference-scale penalty, and used the link only as vacancy capacity.
+  It raised coverage to `2/2`, minimum/mean best IoU `0.584673/0.733782`, and
+  directly recovered the first query at IoU `0.882891`, while keeping maximum
+  set size `3`. Record
+  `L10_3RSCAN_TEMPORAL_SCALE_VACANCY_DEVELOPMENT_GATE_MET`. This is consumed
+  posthoc Development; freeze the same temporal-scale vacancy rule on a wholly
+  new family with an adjacent admitted query pair before claiming transfer.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
@@ -767,14 +787,14 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
-4. The vacancy-set rule transferred `3/3` on its seventh untouched family, but
-   the axis branch did not activate; the eighth metadata-selected family was
-   `NOT_EVALUABLE` before RGB/model because its reference scan admitted only one
-   view. Freeze a ninth untouched candidate using the identical metadata order
-   and source gate. Keep the set at no more than three and do not tune its
-   `0.05` scale penalty, axis modes, vacancy condition, or IoU gate. The branch's
-   fresh incremental value remains unconfirmed until it fills a naturally
-   occurring vacancy; regardless, proposal recall is not top-one localization.
+4. The ninth family exposed a sparse two-query ranking failure, then the
+   consumed temporal-scale vacancy branch repaired it from `1/2` to `2/2`
+   without exceeding three hypotheses. Freeze a tenth untouched family before
+   download and require an adjacent admitted query pair. Keep link IoU `>0.5`,
+   the `0.05` reference-scale penalty, deterministic pair order, preserved
+   contributors, vacancy-only insertion, IoU gate, and set bound unchanged.
+   Until that fresh replay passes, the temporal branch remains Development;
+   regardless, proposal recall is not top-one localization.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -843,6 +863,8 @@ contract.
   [l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json](l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json)
 - Eighth-family pre-RGB source result:
   [l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json](l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json)
+- Ninth-family temporal-scale vacancy Development result:
+  [l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json](l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:
