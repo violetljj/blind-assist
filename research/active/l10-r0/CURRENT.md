@@ -306,6 +306,21 @@ contract.
   candidate representation. These two posthoc runs use the already-consumed
   D13 roster, so they are Development attribution—not fresh-family confirmation,
   calibrated rejection, or end-to-end L10 evidence.
+  The frozen target-only FFA chain then moved to a pre-download/pre-RGB/pre-
+  model family, `422885e9 -> 422885d4`, target door `3`. Geometry/depth admitted
+  three reference views with `1.000000` cumulative coverage and three query
+  views with `0.971037`. Full-frame GroundingDINO supplied IoU-`0.5` opportunity
+  in only `2/3` frames; target-only FFA selected and SAM localized both reachable
+  targets (`2/2`), but the third roster's best possible proposal IoU was only
+  `0.265858`. The sealed full-frame confirmation therefore failed at `2/3`,
+  minimum refined IoU `0.265405`, mean `0.566257`, specifically at proposal
+  reachability rather than memory ranking. An Exa/literature-motivated fixed
+  four-corner `65% x 65%` overlapping-tile successor changed only the proposal
+  set. On consumed D03 it restored opportunity and full localization to `3/3`;
+  the repaired top-left-tile row refined to IoU `0.561599`, while overall minimum
+  was `0.558732` and mean `0.664988`. Freeze tiling plus target-only FFA as the
+  next candidate chain and seek another wholly new family. The tiled result is
+  posthoc Development and cannot inherit the earlier new-family authority.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

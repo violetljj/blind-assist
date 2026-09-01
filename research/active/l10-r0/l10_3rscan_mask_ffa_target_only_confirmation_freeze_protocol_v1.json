@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-mask-ffa-target-only-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T08:42:00+08:00",
+  "question": "Does the frozen full-frame objects proposal, target-only mask-foreground FFA memory and native SAM2 chain localize new target D03 across all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_mask_ffa_target_only_confirmation_source_result_v1.json", "sha256": "0b496f6a674d4ba716e1e43fb6a29fd9082ec4da289d5cae385851e9b9c4dc7a"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_TARGET_ONLY_FFA_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "422885e9-192d-25fc-87a9-7013fe4114f2/sequence.zip": {"path": "datasets/3rscan/422885e9-192d-25fc-87a9-7013fe4114f2/sequence.zip", "bytes": 178095048, "sha256": "3cd69de9b01d79902fb04676e84bc314aba4e80cf206074416cf421300efa5f7"},
+      "422885d4-192d-25fc-862e-b0cc5a8c13e1/sequence.zip": {"path": "datasets/3rscan/422885d4-192d-25fc-862e-b0cc5a8c13e1/sequence.zip", "bytes": 117123930, "sha256": "d340e28cbb27c902c63256c8cda974166292f2dcc52920f33976f5e8dad984c6"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["D03M1", "D03M2", "D03M3"],
+    "sibling_episode_id": "SIB08",
+    "positive_authority": "First metadata-frozen, fully unmaterialized family after the D13 target-only FFA Development pass, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, proposal prompt/threshold/cap, FFA descriptor, target-only formula, SAM settings or IoU gate",
+    "use sibling appearance in ranking",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before all RGB/model access for target-only FFA localization. A pass would be narrow same-provider new-family confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

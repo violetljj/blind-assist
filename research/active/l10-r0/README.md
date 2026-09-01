@@ -4206,6 +4206,29 @@ family confirmation, open-set rejection, provider independence, raw-phone
 operation, named-entrance ownership/access, waypoint, arrival, handoff, user
 benefit, reliability, or safety.
 
+The target-only FFA chain was next sealed and moved to the first entirely
+unmaterialized metadata candidate, `422885e9 -> 422885d4`, target door `3`.
+Before RGB or model access, geometry/depth selected three reference views with
+complete cumulative target-vertex coverage and three query views with
+`0.971037` coverage. Full-frame `objects` proposals had an IoU-`0.5`
+opportunity in only `2/3` query frames. Target-only FFA plus unchanged SAM2
+localized both reachable rows, but D03M3's best retained proposal IoU was just
+`0.265858`; the frozen new-family gate therefore failed at `2/3`, with minimum
+refined IoU `0.265405` and mean `0.566257`. This isolates proposal reachability,
+not instance-memory selection, as the next bottleneck.
+
+Grounding DINO already uses multi-scale backbone features, but that did not
+make the missing partial target reachable at full-frame inference. A single
+fixed successor, motivated by Exa discovery of overlapping multi-scale tiling,
+added four `65% x 65%` corner tiles while preserving the full-frame roster,
+prompt, thresholds, target-only FFA, SAM2, and IoU gate. On consumed D03, target
+opportunity and refined localization both changed `2/3 -> 3/3`. D03M1 and D03M2
+kept their full-frame winners; D03M3 selected a top-left-tile proposal with raw
+IoU `0.633011` and refined IoU `0.561599`. Overall minimum refined IoU was
+`0.558732` and mean `0.664988`. This is decision-changing Development evidence
+for a scale-aware proposal layer, not fresh confirmation. The fixed tiled chain
+must now move unchanged to another pre-download/pre-RGB/pre-model family.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4366,6 +4389,21 @@ Evidence:
   `11b43eabc1076ba7e444fff90d074aa8385098e580c848f6a27a3df34c316863`,
   `362f5e0a82142327fab1d9722829b94fff7b5cb0f348290aa6f08c76b6543035`,
   and `de356f237d6b7819f753ada3cceae36d13a583418a6c653e7b3cc3e22fb4be84`;
+- target-only FFA new-family candidate protocol/result, source protocol/result,
+  freeze protocol/cohort, confirmation implementation/protocol/result, and
+  fixed-tile Development implementation/protocol/result SHA-256:
+  `0631197cc4fb0ad7a6ae03e11439ed45ad55b092fa1bc94e3939d576eb2c218d`,
+  `0f6324c34e8f5e38483d668f2ce185783099ef45d10496b3c322b34007b8e899`,
+  `26cf446a3890ca22db34376aad832d521ed0af1d2081e5cdf32d03c5a574d77f`,
+  `0b496f6a674d4ba716e1e43fb6a29fd9082ec4da289d5cae385851e9b9c4dc7a`,
+  `03c54e3be4bb1058b48ecf175f861548028d7721993218ae11c3f5f2fe9f537e`,
+  `3fa452bce328d738d941ae3222935fd7acc3ab16c7a9c7a394e35a065e37b339`,
+  `e0038f0ef8544657b4b7ea0d46331d5b2c13e9ec31d724f912a492565d62749f`,
+  `b0b9937b255c70114b823e261d491fceb12cf8dd6b989360f65412a953c096c7`,
+  `ca06c7576f939f7ed943c053e671886260b90a4ae6056b67d7425c51fabf42f4`,
+  `22cfc409fd82d379f31e3c09e38820041a5e2774094a885b14f551b584f3d1bb`,
+  `ea8bf4ef88aeb3731d5b683761b5c0dd3817c7fdc359df39bde85a3f86af8e85`,
+  and `abcb93584870a8f60f84ecb11277e67fd52db7acc086b70587be792227e4c85a`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

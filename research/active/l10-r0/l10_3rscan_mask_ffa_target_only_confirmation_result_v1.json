@@ -1,0 +1,1156 @@
+{
+  "schema": "blindassist-l10-3rscan-mask-ffa-target-only-confirmation-result-v1",
+  "authority": "FROZEN_PRE_RGB_PRE_MODEL_NEW_FAMILY_SAME_PROVIDER_TARGET_ONLY_FFA_CONFIRMATION",
+  "protocol_path": "l10_3rscan_mask_ffa_target_only_confirmation_protocol_v1.json",
+  "protocol_sha256": "b0b9937b255c70114b823e261d491fceb12cf8dd6b989360f65412a953c096c7",
+  "implementation": {
+    "path": "l10_3rscan_mask_ffa_target_only_confirmation.py",
+    "sha256": "e0038f0ef8544657b4b7ea0d46331d5b2c13e9ec31d724f912a492565d62749f"
+  },
+  "conclusion": "L10_3RSCAN_MASK_FFA_TARGET_ONLY_NEW_FAMILY_CONFIRMATION_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "query_count": 3,
+    "opportunity_queries": 2,
+    "refined_iou_gate_queries": 2,
+    "minimum_refined_iou": 0.2654047974999885,
+    "mean_refined_iou": 0.5662568497012143
+  },
+  "query_receipts": {
+    "D03M1_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MAX_TARGET_MEMORY_FFA_COSINE",
+      "target_bbox_xyxy_evaluation_only": [
+        11.400550842285156,
+        240.34365844726562,
+        943.0512084960938,
+        517.0269775390625
+      ],
+      "proposal_count": 14,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.8696917854685363,
+      "selected": {
+        "postprocess_index": 13,
+        "objectness_score": 0.10869286209344864,
+        "box_xyxy": [
+          4.685354232788086,
+          102.47825622558594,
+          952.2997436523438,
+          530.26611328125
+        ],
+        "target_memory_score": 0.842085599899292,
+        "winning_target_reference": "D03M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.6358811809313588,
+          "target_recall": 1.0,
+          "proposal_precision": 0.6358811809313588
+        },
+        "descriptor_sha256": "b66d2b98fc5afe9d36e906fde6bf6b37555f25d1ce18b747eb044f82f3749426",
+        "mask_sha256": "cba88f688deb2bfae3eef44ff040270d9b524068ce575f49cc6a421a253dee5e"
+      },
+      "top1_target_memory_margin": 0.0024492740631103516,
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        233.0,
+        960.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.8746342161838733,
+        "target_recall": 1.0,
+        "proposal_precision": 0.8746342161838733
+      },
+      "ranked_candidates": [
+        {
+          "postprocess_index": 13,
+          "objectness_score": 0.10869286209344864,
+          "box_xyxy": [
+            4.685354232788086,
+            102.47825622558594,
+            952.2997436523438,
+            530.26611328125
+          ],
+          "target_memory_score": 0.842085599899292,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.6358811809313588,
+            "target_recall": 1.0,
+            "proposal_precision": 0.6358811809313588
+          },
+          "descriptor_sha256": "b66d2b98fc5afe9d36e906fde6bf6b37555f25d1ce18b747eb044f82f3749426",
+          "mask_sha256": "cba88f688deb2bfae3eef44ff040270d9b524068ce575f49cc6a421a253dee5e"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.39764827489852905,
+          "box_xyxy": [
+            2.4580764770507812,
+            225.59088134765625,
+            957.1978149414062,
+            536.03662109375
+          ],
+          "target_memory_score": 0.8396363258361816,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.8696917854685363,
+            "target_recall": 1.0,
+            "proposal_precision": 0.8696917854685363
+          },
+          "descriptor_sha256": "ba61cb72fa9bfd5832ca50db93c0d8a46ea169bc5132c969fe7616e92540152f",
+          "mask_sha256": "6b515ebf75cb831d42a1a4235a61c6efd3857b283e7f347eaf183580b60328fe"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.34374749660491943,
+          "box_xyxy": [
+            3.2494354248046875,
+            2.079779624938965,
+            956.181884765625,
+            535.8069458007812
+          ],
+          "target_memory_score": 0.8264743089675903,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.5068210535466878,
+            "target_recall": 1.0,
+            "proposal_precision": 0.5068210535466878
+          },
+          "descriptor_sha256": "ea30c431c7a7a78c35cfcbf4c36f8d4fdafce5c03292ef497f3db4da29d6e888",
+          "mask_sha256": "b6d0edd6ab192c9d534ddd2800d68f8219dd4acb51a98875475223893915c6cb"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.22618617117404938,
+          "box_xyxy": [
+            112.79109191894531,
+            0.3307405114173889,
+            577.0068359375,
+            187.4551239013672
+          ],
+          "target_memory_score": 0.7373408079147339,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "2bb0af5d46eabc8cb9ec3f1164f830a30d0330c945d8190a1051eee798187e32",
+          "mask_sha256": "abf9d7a8b9062199393ce404c9b01927cf51fd6479fa4d08799c5740a8b586b6"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.19976972043514252,
+          "box_xyxy": [
+            541.2398071289062,
+            0.19823670387268066,
+            854.6187133789062,
+            185.3360137939453
+          ],
+          "target_memory_score": 0.6804261803627014,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "786469331692ec9cda7c0b169c4d2fc13e96553ed2cebbe63e599fd8c6596f5d",
+          "mask_sha256": "babd4a712cff497503af1ecd0c02a609053bbda74ed28c9622759674159e14f1"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.25052013993263245,
+          "box_xyxy": [
+            112.01099395751953,
+            0.2308577299118042,
+            855.1564331054688,
+            187.96038818359375
+          ],
+          "target_memory_score": 0.6753072738647461,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "396827c89182d943b8f49b8dbae777bf4fa2ae858d3839a7c4ca6dc4817a1c42",
+          "mask_sha256": "102740b4c85a11ec8612ce4a1146ca988609c407b6e42434a1bfc5a74af63a09"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.11186733841896057,
+          "box_xyxy": [
+            423.87200927734375,
+            224.77017211914062,
+            787.7499389648438,
+            289.8946838378906
+          ],
+          "target_memory_score": 0.5776416063308716,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.06844287106622331,
+            "target_recall": 0.06994751489599661,
+            "proposal_precision": 0.7608659793814433
+          },
+          "descriptor_sha256": "08dee74cdddf4fc9e11a6f6a5c9afae7ea169532c0e76ea54246cf5ec129263b",
+          "mask_sha256": "156d66dc21de8712006684fd605b0106eeac25f5e6c84b1d0e286166acafc7e2"
+        },
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.17796291410923004,
+          "box_xyxy": [
+            783.679443359375,
+            0.325244665145874,
+            958.1497802734375,
+            372.80169677734375
+          ],
+          "target_memory_score": 0.48710134625434875,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.06998241723880401,
+            "target_recall": 0.08189429149817176,
+            "proposal_precision": 0.3248398341162188
+          },
+          "descriptor_sha256": "9cf5dc6baf8add86328c5b1ecf73d47e4249ed441ebc8e71efa111ecf25fe08c",
+          "mask_sha256": "e9133d275d704665e1be6251fb5ef7a634c45dfe3344df2cfaa5f5edc9075b94"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.2361983209848404,
+          "box_xyxy": [
+            129.88092041015625,
+            321.1930847167969,
+            306.17425537109375,
+            403.27764892578125
+          ],
+          "target_memory_score": 0.4289690852165222,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.056138566481942834,
+            "target_recall": 0.056138566481942834,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "68897ecf90fd0021ea17d82be4f70caf60a2ab813788bcef21c9e0787f19e232",
+          "mask_sha256": "7d3e146d935e7bd0acd5de05741552ddda0f912eb05e7936aa92c16d6119bab1"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.28913769125938416,
+          "box_xyxy": [
+            426.43231201171875,
+            232.0694122314453,
+            511.9020690917969,
+            289.9035339355469
+          ],
+          "target_memory_score": 0.4214909076690674,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.016387652621835398,
+            "target_recall": 0.016432612133696282,
+            "proposal_precision": 0.8569314105234608
+          },
+          "descriptor_sha256": "f29961716a5213f26bc499e6afdc03924089faf8331c98e0e2a53d15b29430d6",
+          "mask_sha256": "395c1f82d7521e0f2490894272b5b049bb4e8bb12c22e32cdf904883370734d5"
+        },
+        {
+          "postprocess_index": 12,
+          "objectness_score": 0.13882586359977722,
+          "box_xyxy": [
+            428.57000732421875,
+            233.65139770507812,
+            486.2600402832031,
+            286.7276306152344
+          ],
+          "target_memory_score": 0.40935927629470825,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.010365319122649031,
+            "target_recall": 0.010380843716472223,
+            "proposal_precision": 0.8739122885093279
+          },
+          "descriptor_sha256": "952979546f07381f2faca46f8bba2c8cee2b0f90ec81fa2b968f860f2efbe3f3",
+          "mask_sha256": "11669029db3d01f65be890c1782b85c565900fc7fc5b050dbd4573fdc404ddda"
+        },
+        {
+          "postprocess_index": 11,
+          "objectness_score": 0.10331246256828308,
+          "box_xyxy": [
+            716.1340942382812,
+            224.42604064941406,
+            748.9955444335938,
+            260.4398193359375
+          ],
+          "target_memory_score": 0.34189945459365845,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0025567211685288897,
+            "target_recall": 0.002561909313383851,
+            "proposal_precision": 0.5580131166905842
+          },
+          "descriptor_sha256": "9b6afcb04172ec450339f8b53887b18dcc624cac6d694221eb7bc8e6da956055",
+          "mask_sha256": "9021eb90f78abdcd6a9286f878655d611420156441f5f8a1210add5e25802b2b"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.21908320486545563,
+          "box_xyxy": [
+            721.0816040039062,
+            228.61776733398438,
+            742.539794921875,
+            255.1220703125
+          ],
+          "target_memory_score": 0.34065619111061096,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0012290260347225669,
+            "target_recall": 0.0012302257107289626,
+            "proposal_precision": 0.557585380653615
+          },
+          "descriptor_sha256": "c22bdf9124194b20530aa9a7ecc2d4081ad2b0c2073d4507336338e8451dfec0",
+          "mask_sha256": "f07bb8999aac9466096bd66f6afa78b942f5d676ee89148dd887be160d8d2865"
+        },
+        {
+          "postprocess_index": 10,
+          "objectness_score": 0.15053637325763702,
+          "box_xyxy": [
+            461.2064208984375,
+            248.17083740234375,
+            486.0712585449219,
+            285.5390319824219
+          ],
+          "target_memory_score": 0.3299545645713806,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.003604555126952627,
+            "target_recall": 0.003604555126952627,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "270605f417c51e23637d73798db8347e51517c413356c11c47c324b52eec4e61",
+          "mask_sha256": "0ebf99e41f7e12564d27fc4e538b23482cad72d1be09f203d4c9adc987864ed2"
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 14,
+        "input_boxes_shape": [
+          1,
+          14,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          14,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          14,
+          1
+        ],
+        "native_masks_shape": [
+          14,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.12416589999338612
+      }
+    },
+    "D03M2_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MAX_TARGET_MEMORY_FFA_COSINE",
+      "target_bbox_xyxy_evaluation_only": [
+        295.98974609375,
+        103.21986389160156,
+        958.8717041015625,
+        321.7259826660156
+      ],
+      "proposal_count": 14,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.6883760003781555,
+      "selected": {
+        "postprocess_index": 8,
+        "objectness_score": 0.12372493743896484,
+        "box_xyxy": [
+          230.22622680664062,
+          58.58646011352539,
+          770.1779174804688,
+          344.4438171386719
+        ],
+        "target_memory_score": 0.8549256920814514,
+        "winning_target_reference": "D03M3_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.5297733126529941,
+          "target_recall": 0.7153433060869793,
+          "proposal_precision": 0.6712897869915289
+        },
+        "descriptor_sha256": "4d09c9913490eec421d636b45923971646fc03162b56517d81b47860d7114155",
+        "mask_sha256": "b1f3ee76d6425aef383b8bc04dd142c4e762dfb0ffaf0aed43bd9475c3cda022"
+      },
+      "top1_target_memory_margin": 0.02743011713027954,
+      "refined_mask_bbox_xyxy": [
+        234.0,
+        69.0,
+        775.0,
+        341.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.5587315354197809,
+        "target_recall": 0.722617727213213,
+        "proposal_precision": 0.711282697035727
+      },
+      "ranked_candidates": [
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.12372493743896484,
+          "box_xyxy": [
+            230.22622680664062,
+            58.58646011352539,
+            770.1779174804688,
+            344.4438171386719
+          ],
+          "target_memory_score": 0.8549256920814514,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.5297733126529941,
+            "target_recall": 0.7153433060869793,
+            "proposal_precision": 0.6712897869915289
+          },
+          "descriptor_sha256": "4d09c9913490eec421d636b45923971646fc03162b56517d81b47860d7114155",
+          "mask_sha256": "b1f3ee76d6425aef383b8bc04dd142c4e762dfb0ffaf0aed43bd9475c3cda022"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.1737411469221115,
+          "box_xyxy": [
+            224.9687042236328,
+            54.02799987792969,
+            957.014404296875,
+            438.169677734375
+          ],
+          "target_memory_score": 0.8274955749511719,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.5128913013244404,
+            "target_recall": 0.9971981439798583,
+            "proposal_precision": 0.513631488108386
+          },
+          "descriptor_sha256": "7b4b23588a6cff9636a0726d8a30024272076c879e40225154fe8f4e1de437bc",
+          "mask_sha256": "2152410c08599cdd4f0047f14024c6464ecff3b2acb507fcd0cffdb9e603e0d0"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.5018427968025208,
+          "box_xyxy": [
+            228.8674774169922,
+            58.28899383544922,
+            958.2142333984375,
+            346.3020324707031
+          ],
+          "target_memory_score": 0.8174170851707458,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.6883760003781555,
+            "target_recall": 0.9990081632254694,
+            "proposal_precision": 0.6888467820254827
+          },
+          "descriptor_sha256": "b3ec47219da0b34925c793c2ee1bfbb0eb960e80988d949f2446249d06082e17",
+          "mask_sha256": "4ed11833d71606f5af29c1b973f7abea2a755c907ff4993b4be5e5ce40cc8af7"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.10915222764015198,
+          "box_xyxy": [
+            223.2217559814453,
+            51.080440521240234,
+            957.1856079101562,
+            531.5220947265625
+          ],
+          "target_memory_score": 0.8170713186264038,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.4092841190152404,
+            "target_recall": 0.9974564156241731,
+            "proposal_precision": 0.4097117365633459
+          },
+          "descriptor_sha256": "ab9247449b2346a5a1546ede3a2287c927b8d8f8375aa1ce2a841dcc9439a4f1",
+          "mask_sha256": "19c773ceea10a42aef91367066563fde614498f6a0a54bf399c24e84aa73a49f"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.2335473746061325,
+          "box_xyxy": [
+            4.11921501159668,
+            5.524476051330566,
+            956.8749389648438,
+            535.5371704101562
+          ],
+          "target_memory_score": 0.7795752882957458,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.28572399262377823,
+            "target_recall": 0.9969877515708533,
+            "proposal_precision": 0.28597086327366517
+          },
+          "descriptor_sha256": "682c3bc89d14b2f550aa24f93aa97aa3750ae7244363f04a4764b3aa5cde07dd",
+          "mask_sha256": "9bb4daf6b00db41badac0ea90b73f78de48d4e86f1d7e93ec9677edef39c9f39"
+        },
+        {
+          "postprocess_index": 13,
+          "objectness_score": 0.14162573218345642,
+          "box_xyxy": [
+            3.5560226440429688,
+            52.988067626953125,
+            956.2590942382812,
+            534.8076782226562
+          ],
+          "target_memory_score": 0.7237918376922607,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.3139083942566707,
+            "target_recall": 0.9960587102549403,
+            "proposal_precision": 0.3142987845912088
+          },
+          "descriptor_sha256": "d579660026487c0f9e9f466d076c9fd8f209b26c4f1e53d165127fcd1dad19d2",
+          "mask_sha256": "47862dd29f30ad40431b97f1a1b8bc055cdbc458ff79c457a193d48cc9adbab2"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.2908525764942169,
+          "box_xyxy": [
+            404.9067687988281,
+            0.21202661097049713,
+            958.6646118164062,
+            35.8903694152832
+          ],
+          "target_memory_score": 0.6877194046974182,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "f39e36ec5fe7e212e920c03d5e20023bb304ec15d5d419e9172faf11729a0e71",
+          "mask_sha256": "a545ab0a7fb0d9a2e181c5c42e71be3ef15ee8ea09f3767e1701ca1b16b5ec77"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.19326166808605194,
+          "box_xyxy": [
+            1.4403533935546875,
+            431.25811767578125,
+            958.5175170898438,
+            538.4044189453125
+          ],
+          "target_memory_score": 0.6837865710258484,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "21ea097cf140f9c564f0cbde6d50ecc5fff1c700e27b20761eda0b4ffe3870c2",
+          "mask_sha256": "ce0ec8a764e1f526984cbc6efa0a453b57fc6e8343982ae822b678bb997b4bd7"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.36700671911239624,
+          "box_xyxy": [
+            358.3109436035156,
+            466.8539123535156,
+            461.603759765625,
+            538.7966918945312
+          ],
+          "target_memory_score": 0.600806474685669,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ad314ce4a1c95012e858e00270944bc934848972e4c1cf423c60721cac93e75d",
+          "mask_sha256": "f12e1f66b08e8dbed4f7038fe60acd9da22e6094719bb76a49425453c032634c"
+        },
+        {
+          "postprocess_index": 12,
+          "objectness_score": 0.11373831331729889,
+          "box_xyxy": [
+            367.8069152832031,
+            504.7521667480469,
+            445.8668212890625,
+            538.5090942382812
+          ],
+          "target_memory_score": 0.5679754018783569,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "0b98c8775cd39bc789ecc953473eee3c0f8d899ab381557b317945a7811e7550",
+          "mask_sha256": "a1f5816f4795999832b3a6c1225c3a402c6531ed954d549058e05499bbcf4916"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.19245928525924683,
+          "box_xyxy": [
+            404.6636047363281,
+            170.58448791503906,
+            552.6861572265625,
+            234.99972534179688
+          ],
+          "target_memory_score": 0.5392467975616455,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.06582891530667473,
+            "target_recall": 0.06582891530667473,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "fb76cf5ee5ecabb065329c8b5c9d626de4af1fcecd6f617afe3aed3deaf07765",
+          "mask_sha256": "1ac7aaf876d611dccddfc05bc5d0d3a3d6994eb920291ec0ccfdeda7774065b7"
+        },
+        {
+          "postprocess_index": 11,
+          "objectness_score": 0.1112450659275055,
+          "box_xyxy": [
+            360.241455078125,
+            469.0204162597656,
+            458.65081787109375,
+            494.91748046875
+          ],
+          "target_memory_score": 0.5336577892303467,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "06fae77fef2d67f6d4b2d7033e6d0ca7e63cf393c34f719dc6b7c0e58e26507b",
+          "mask_sha256": "f269cacc5f3553b8c0b2be2fcb566254d7f32768dd17e496b713a3f350f4bc76"
+        },
+        {
+          "postprocess_index": 10,
+          "objectness_score": 0.15637384355068207,
+          "box_xyxy": [
+            675.037353515625,
+            93.94488525390625,
+            766.255126953125,
+            142.37745666503906
+          ],
+          "target_memory_score": 0.41202685236930847,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.024516941203013832,
+            "target_recall": 0.024660146429690315,
+            "proposal_precision": 0.8084970843492455
+          },
+          "descriptor_sha256": "4c6e92fc68da4b281bf1edb567c7f353bc43fffb25a5f1a5c80d45acfc163222",
+          "mask_sha256": "9859d2b7599d3ce1c91853d9fa336c129a76829624aaf2ffaa1cbc95ae8d7d79"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.1519216001033783,
+          "box_xyxy": [
+            692.2059326171875,
+            111.72775268554688,
+            765.8098754882812,
+            142.0796661376953
+          ],
+          "target_memory_score": 0.32100874185562134,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.015423656803587692,
+            "target_recall": 0.015423656803587692,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "d82b7f7f91461a88e0629160e19051b4f31dda2f1b82961337ea5520ff797cca",
+          "mask_sha256": "d1ff9095d3bf89808b47bc69d44e4fdb1f470dfec8ecb2e34449207015238793"
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 14,
+        "input_boxes_shape": [
+          1,
+          14,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          14,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          14,
+          1
+        ],
+        "native_masks_shape": [
+          14,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.12607320002280176
+      }
+    },
+    "D03M3_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MAX_TARGET_MEMORY_FFA_COSINE",
+      "target_bbox_xyxy_evaluation_only": [
+        1.0066009759902954,
+        0.22291043400764465,
+        537.2246704101562,
+        256.80853271484375
+      ],
+      "proposal_count": 11,
+      "target_opportunity_at_iou_gate": false,
+      "best_reachable_target_iou_evaluation_only": 0.2658579353103262,
+      "selected": {
+        "postprocess_index": 5,
+        "objectness_score": 0.13360296189785004,
+        "box_xyxy": [
+          5.453338623046875,
+          2.0691096782684326,
+          953.894775390625,
+          537.0618286132812
+        ],
+        "target_memory_score": 0.7078553438186646,
+        "winning_target_reference": "D03M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.2658579353103262,
+          "target_recall": 0.9845716341973434,
+          "proposal_precision": 0.26697014052144524
+        },
+        "descriptor_sha256": "4b97d3bca93290bd608f821699d97dd8197d0d126249de587d3e39856d378ede",
+        "mask_sha256": "2ea705781c508c74b634946b6a6ef50ad6aaa71f33bfe01722eedce5ffb14ab5"
+      },
+      "top1_target_memory_margin": 0.08280754089355469,
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        0.0,
+        960.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.2654047974999885,
+        "target_recall": 1.0,
+        "proposal_precision": 0.2654047974999885
+      },
+      "ranked_candidates": [
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.13360296189785004,
+          "box_xyxy": [
+            5.453338623046875,
+            2.0691096782684326,
+            953.894775390625,
+            537.0618286132812
+          ],
+          "target_memory_score": 0.7078553438186646,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.2658579353103262,
+            "target_recall": 0.9845716341973434,
+            "proposal_precision": 0.26697014052144524
+          },
+          "descriptor_sha256": "4b97d3bca93290bd608f821699d97dd8197d0d126249de587d3e39856d378ede",
+          "mask_sha256": "2ea705781c508c74b634946b6a6ef50ad6aaa71f33bfe01722eedce5ffb14ab5"
+        },
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.1204492375254631,
+          "box_xyxy": [
+            0.9891271591186523,
+            0.10301895439624786,
+            438.5116271972656,
+            63.594852447509766
+          ],
+          "target_memory_score": 0.6250478029251099,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.20143608021986378,
+            "target_recall": 0.20151449987058068,
+            "proposal_precision": 0.9980718396719249
+          },
+          "descriptor_sha256": "889d6d016cba93803385f024cdb9c6b5f8ebb748de65da87aaf173408b42ceab",
+          "mask_sha256": "f94c4cc835605d1d50988b201d3c29b7d65f088dcbb597c50177771165964149"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.3554295599460602,
+          "box_xyxy": [
+            228.85858154296875,
+            341.1999206542969,
+            719.8558349609375,
+            538.2337036132812
+          ],
+          "target_memory_score": 0.6173553466796875,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ec8feb1e7f72803b812ac87ef83688316280a48893d56ad8773a377f50f6eec7",
+          "mask_sha256": "13a04bf3c681c28938d86c1c4e2ccf54a237e5f95092f13a21817a6da4bfcafb"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.43451759219169617,
+          "box_xyxy": [
+            227.6987762451172,
+            281.39569091796875,
+            783.613037109375,
+            537.8903198242188
+          ],
+          "target_memory_score": 0.5947144031524658,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "39368a93dd13af5aba3220cb80efa271e157b27e886914ab8f9ad947ec655219",
+          "mask_sha256": "d8e12dcd4a1eb5bcda093a33fb54bb03faab5df5e49f6e39269e3c168b6b4007"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.18376658856868744,
+          "box_xyxy": [
+            361.12689208984375,
+            343.93267822265625,
+            717.8858032226562,
+            537.9039916992188
+          ],
+          "target_memory_score": 0.5924621224403381,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "99f42fdad3ee334c89439c21bef93bfb55d7a8ad15564625539fa268416bcad2",
+          "mask_sha256": "3a8c43c08f941bca197d83690c7999a3a7000958df349f54ad7cf001aa5e8c46"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.10237768292427063,
+          "box_xyxy": [
+            529.365478515625,
+            341.40802001953125,
+            718.229736328125,
+            537.0053100585938
+          ],
+          "target_memory_score": 0.47470855712890625,
+          "winning_target_reference": "D03M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "445a817c868023f341650e1e42b3099ec5fefc362a12400ae54cf9beea210286",
+          "mask_sha256": "50b8500921554a0b5d1f8079719b9b72b002867c7eafc3acea19a2c1cda771d4"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.14290817081928253,
+          "box_xyxy": [
+            228.3506317138672,
+            378.7420654296875,
+            424.6861572265625,
+            538.5352172851562
+          ],
+          "target_memory_score": 0.4400877356529236,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "cac9da977e8875921d65b995ef68e9fbe8af89e31bbadca92476dc2be3147b3c",
+          "mask_sha256": "386d692bccafc5c0c25490b1ba0d51e950d6c5f4fa7fa759b0b60667b99b3f11"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.32989734411239624,
+          "box_xyxy": [
+            540.5164794921875,
+            279.6700134277344,
+            783.839599609375,
+            467.0055236816406
+          ],
+          "target_memory_score": 0.42997491359710693,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "913b356849b5ab65ffc67f3a527a8cb379f747086a8023cfbf687ddb22de1be4",
+          "mask_sha256": "627c7ef1632d3b5bacfa15627cbc40c6e349ce9a751bd4bd87eaad2381f4b664"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.2042771428823471,
+          "box_xyxy": [
+            535.3717041015625,
+            243.47152709960938,
+            783.9375,
+            472.8190612792969
+          ],
+          "target_memory_score": 0.4282940924167633,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.00012701412399718622,
+            "target_recall": 0.00017961892590772922,
+            "proposal_precision": 0.0004335013105162621
+          },
+          "descriptor_sha256": "53bd90e0dd9d9c80f4c2965d94ced3bfd978c63d6bf43b9eb83b2fce11805fc9",
+          "mask_sha256": "322d2a2fc3b28cb35f518652632e27eb70ea2088a8ac0d22c99c196ddd917052"
+        },
+        {
+          "postprocess_index": 10,
+          "objectness_score": 0.15339934825897217,
+          "box_xyxy": [
+            532.34814453125,
+            244.43580627441406,
+            784.1281127929688,
+            507.7843322753906
+          ],
+          "target_memory_score": 0.42406487464904785,
+          "winning_target_reference": "D03M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0002960089675655192,
+            "target_recall": 0.0004385329013445751,
+            "proposal_precision": 0.0009099633015633375
+          },
+          "descriptor_sha256": "f1a3eaecdda3f3e06d7e8af0f9f8747913e06aef1b164601eebea2efb761953b",
+          "mask_sha256": "658e3dfce088926f56f7660e6d0b175f1618e5fb9e944d7e41ac087dfa29bd5e"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.10481864213943481,
+          "box_xyxy": [
+            227.76022338867188,
+            422.2926025390625,
+            315.32177734375,
+            538.3477783203125
+          ],
+          "target_memory_score": 0.397324800491333,
+          "winning_target_reference": "D03M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9bd5fd8de4186717dc8f1f9a0aad3dad16d0229ce1b6f7f8e102b774df7b2ce9",
+          "mask_sha256": "f1254cd149d24158bfb01ca0b1f50bff55e9c204db06d4275f2750b8f928445e"
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 11,
+        "input_boxes_shape": [
+          1,
+          11,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          11,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          11,
+          1
+        ],
+        "native_masks_shape": [
+          11,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.11858449998544529
+      }
+    }
+  },
+  "memory_receipts": {
+    "target": {
+      "D03M1_reference": "28fea147c495cde3cd239fe6ea4ba3e7480de293c81f4a5576ce747619024e12",
+      "D03M2_reference": "eb5ac56f162e5fe95099cadc8631dbe0c7444d47c1d50153bef6c2dd0b633291",
+      "D03M3_reference": "35d2004a48e09fd62883904b77a8710dcf0f83f855cfadf8420fc7b24fe7951e"
+    },
+    "sam": {
+      "D03M1_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.26874940004199743
+      },
+      "D03M2_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09386259998427704
+      },
+      "D03M3_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.0946678000036627
+      }
+    },
+    "sibling_appearance_used": false
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "proposal": {
+      "model_type": "GroundingDinoForObjectDetection",
+      "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "seconds_by_image": {
+        "D03M1_query": 1.1530921999947168,
+        "D03M2_query": 0.26928939996287227,
+        "D03M3_query": 0.2686381000094116
+      }
+    },
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 3,
+    "sam2_image_calls": 6,
+    "dinov2_ffa_calls": 42
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Class-agnostic objects proposals, direct instance-template FFA matching and SAM refinement."
+    }
+  ],
+  "claim_boundary": "A pass can establish only narrow same-provider new-family confirmation that the frozen target-only FFA pipeline acquires and localizes one bound physical door from full query frames. Same-provider geometry selected reference boxes. It cannot establish calibrated open-set absence, broad distractor coverage, raw-phone or provider-independent generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
