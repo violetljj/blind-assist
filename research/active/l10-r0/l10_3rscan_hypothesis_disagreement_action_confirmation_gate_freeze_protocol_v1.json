@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-disagreement-action-confirmation-gate-freeze-protocol-v1",
+  "authority": "PRE_ROW4_DOWNLOAD_PRE_POSE_PRE_DEPTH_PRE_RGB_SOURCE_DISJOINT_CONFIRMATION_GATE_FREEZE",
+  "development_result": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_track_development_result_v1.json",
+    "sha256": "db1f47cacb03b75c81fc3c8fa5109b19dcbbfc1d050b5accbc454cdc8d6d9b98",
+    "required_conclusion": "L10_3RSCAN_HYPOTHESIS_DISAGREEMENT_ACTION_TRACK_DEVELOPMENT_GATE_MET"
+  },
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "selected_queue_index": 4
+  },
+  "candidate": {
+    "reference_scan_id": "6bde60ba-9162-246f-8eaf-b462f3cf6234",
+    "rescan_id": "6bde60b7-9162-246f-8e93-2738e71ccafd",
+    "target_instance_id": 6,
+    "target_label": "door",
+    "rescan_door_instance_ids": [6, 13],
+    "transform": [0.5064846873283386, -0.860873281955719, -0.048687271773815155, 0, 0.8606213927268982, 0.5081897974014282, -0.03277008235454559, 0, 0.052953265607357025, -0.025303764268755913, 0.9982763528823853, 0, -3.596428632736206, -0.21442046761512756, 0.5186336636543274, 1]
+  },
+  "source_absent_before_freeze": {
+    "reference_scan_directory": true,
+    "rescan_directory": true,
+    "checked_at_local_date": "2026-09-01"
+  },
+  "initial_observation": {
+    "reference_views": 3,
+    "query_views": 2,
+    "candidate_budget": 3,
+    "proposal_prompt": "objects",
+    "proposal_box_threshold": 0.1,
+    "proposal_tiling": "unchanged full frame plus four fixed 40-percent corner tiles",
+    "masker": "unchanged frozen local SAM2",
+    "initial_track": "unchanged depth-pose symmetric mask coverage ranking"
+  },
+  "action_roster": {
+    "translation_metres": [0.1, 1.5],
+    "maximum_rotation_degrees": 60.0,
+    "motion_score": "translation multiplied by square root of bidirectional depth-visible fractions",
+    "minimum_visible_projected_points": 16,
+    "depth_consistency_metres": 0.15
+  },
+  "action_utility": {
+    "candidate_budget": 3,
+    "hypothesis_support": "For each current Top-3 mask track, maximum bbox IoU between its depth-visible projection and the generic proposal set in the action view.",
+    "information_gain_score": "mean hypothesis support multiplied by the range of hypothesis support",
+    "tie_break": "higher mean support, then higher mutual covisibility, then lower frame index",
+    "target_truth_access": "No target geometry, target bbox, target identity score, or target IoU before the single action is selected."
+  },
+  "confirmation_gate": {
+    "candidate_budget": 3,
+    "target_region_iou_threshold": 0.8,
+    "required_initial_opportunity_frames": 2,
+    "required_action_opportunity_frames": 1,
+    "required_track_top3_coverage_frames": 3,
+    "requirements": "Both initial views and the one selected action must contain a proposal with IoU at least 0.8, and unchanged 3D-track Top-3 must retain such a proposal in all three views."
+  },
+  "decision": "Acquire and screen queue row 4 exactly. If source-evaluable, freeze its exact three reference views and two initial query views before RGB/model access, run the fixed information-gain action once, and apply this gate without changing thresholds, candidate budget, proposal generator, track ranker, or action utility.",
+  "claim_boundary": "A pass would be one source-family-disjoint confirmation of bounded portal-region candidate recovery under an offline recorded-view action oracle. It would not establish portal ownership, access, traversability, waypoint, physical arrival, handoff, user benefit, reliability, deployment, or safety."
+}
