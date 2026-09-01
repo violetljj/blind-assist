@@ -253,7 +253,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `0 TP / -4 FP / +0.10 pp F1` over X85. All 30 receding-handback true
   positives and all five closing-handback true positives remain protected; all
   required checks pass. X86 is consumed Development-only and X73 retains fresh
-  authority.
+  authority. X87 then applies the same evidence-horizon principle to an
+  isolated X72 boundary-completion decision: completion proxies alone cannot
+  forecast route entry beyond the inherited `0.60 s` measurement hold window.
+  It removes two C35 and one C40 false-positive frames with zero TP loss. Pooled
+  X87 is `1,472 TP / 130 FP / 423 FN` at `91.89/77.68/84.19%`, or
+  `0 TP / -3 FP / +0.07 pp F1` over X86. The other nine cohorts are
+  classification-identical and every required check passes. X87 is consumed
+  Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -301,8 +308,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    C36 false positives caused by X72 reopening risk after same-frame X68
    geometric release, again with zero TP loss. X86 then removes four
    receding-handback forecasts that outlive their inherited evidence horizon,
-   again with zero TP loss across three cohorts. Any promotion requires a new
-   preregistered source testing frozen X86.
+   again with zero TP loss across three cohorts. X87 applies that same evidence
+   horizon to isolated X72 completion proxies, removing three more false
+   positives across C35/C40 with zero TP loss. Any promotion requires a new
+   preregistered source testing frozen X87.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -335,6 +344,8 @@ their result.
   [DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X86 consumed Development result:
   [DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X87 consumed Development result:
+  [DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
