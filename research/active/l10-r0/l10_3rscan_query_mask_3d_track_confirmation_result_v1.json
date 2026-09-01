@@ -1,0 +1,5724 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-confirmation-result-v1",
+  "authority": "FRESH_PRE_FROZEN_FAMILY_QUERY_MASK_3D_TRACK_CONFIRMATION",
+  "protocol_path": "l10_3rscan_query_mask_3d_track_confirmation_protocol_v1.json",
+  "protocol_sha256": "f79900d147da07ba5e1dbe5b3facd3dba17c203e15086704a357f72c9b47c037",
+  "implementation": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation.py",
+    "sha256": "5723dc369a628a3e6f9f8c86cbadbd9edc87ce04f0ff990b3d36972a9135e6ed"
+  },
+  "cohort": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_v1.json",
+    "sha256": "9d5464b662c758d084425d848821c2aa714c607b2c4a9b98c647262dc82bb9d4",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_query_mask_3d_track_result_v1.json",
+    "sha256": "3fcc851366214d5b6de39481d480d320df546ef6147be41f09d6fba951b3bb6f",
+    "required_conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_DEVELOPMENT_GATE_MET"
+  },
+  "proposal": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Union unchanged full-frame proposals with fixed 40-percent corner-tile proposals; no NMS, target text, target identity, target box, or truth access."
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Apply unchanged native SAM2 once to every retained proposal."
+  },
+  "geometry": {
+    "depth_consistency_metres": 0.15,
+    "minimum_visible_projected_points": 16,
+    "pair_score": "Geometric mean of depth-consistent proposal-mask coverage in both directions.",
+    "candidate_score": "Across incident consecutive-frame edges, rank depth-supported candidates first, then any mutual-best edge, maximum symmetric track score, objectness, and frozen proposal index.",
+    "appearance_use": "None."
+  },
+  "proposal_runtime": {
+    "model_type": "GroundingDinoForObjectDetection",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "seconds_by_image": {
+      "FDV_initial_1_query": 2.8443967000348493,
+      "FDV_initial_2_query": 1.9394044000073336,
+      "FDV_action_query": 1.8265156999696046
+    },
+    "grounding_dino_calls": 15,
+    "window_count_per_image": 5
+  },
+  "sam_receipts": {
+    "FDV_initial_1_query": {
+      "input_box_count": 38,
+      "input_boxes_shape": [
+        1,
+        38,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        38,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        38,
+        1
+      ],
+      "native_masks_shape": [
+        38,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.3656334000406787
+    },
+    "FDV_initial_2_query": {
+      "input_box_count": 47,
+      "input_boxes_shape": [
+        1,
+        47,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        47,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        47,
+        1
+      ],
+      "native_masks_shape": [
+        47,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.3273340000305325
+    },
+    "FDV_action_query": {
+      "input_box_count": 47,
+      "input_boxes_shape": [
+        1,
+        47,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        47,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        47,
+        1
+      ],
+      "native_masks_shape": [
+        47,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.3244808999588713
+    }
+  },
+  "geometry_receipts": {
+    "info_sha256": "a0454ae146f0e17de1723ee002cf86b00634a3021957dfb629f104f4ef778588",
+    "frames": {
+      "FDV_initial_1_query": {
+        "frame": 3,
+        "rgb_sha256": "2046e1f32aad65b8a0ab13aff9d3c9122ca90c0d37ca90a77bc22de5f9e05b76",
+        "pose_sha256": "910e684bf374f4136dd7d2c4863128ed5a5197d81b5cb874e955d3c36d39fdaf",
+        "depth_sha256": "1da49b70e24bb5d36a32329ba07923913f1ad43662bd559781ff4405665ef4dc"
+      },
+      "FDV_initial_2_query": {
+        "frame": 4,
+        "rgb_sha256": "d16de44eba089dc2ad4c4fd8a937b7463a38fe4df7e4dd10d17f6167ebb402eb",
+        "pose_sha256": "4b90ab4ad07a57022d2b1632e988518b6ed67f749f3c7f8aded8f7f164f3e14f",
+        "depth_sha256": "4ed3444734f92455131162a5bb58b3a6381796da3fa30cba65c0bf1f2224de35"
+      },
+      "FDV_action_query": {
+        "frame": 5,
+        "rgb_sha256": "b28429a0f6972ab54d90fbc50d3839505f54af6e42776f3b38ca2a3f8a5db144",
+        "pose_sha256": "4c893d2cd4ea3ed6200113a1269e20dcf1064b656d89ebaf5a80b6274341a13c",
+        "depth_sha256": "cffd200a65fabe46d48489b6084c5a19f9bfc97626bf14fe210a8ba12fbfc332"
+      }
+    }
+  },
+  "edge_receipts": [
+    {
+      "left_query": "FDV_initial_1_query",
+      "right_query": "FDV_initial_2_query",
+      "pair_count": 1786,
+      "score_matrix_sha256": "152b7df1a10dc3f96ca8ef582dbdec10a087dd152ea3242917333a720f56039b",
+      "maximum_track_score": 0.9208294390096011,
+      "positive_track_pairs": 223
+    },
+    {
+      "left_query": "FDV_initial_2_query",
+      "right_query": "FDV_action_query",
+      "pair_count": 2209,
+      "score_matrix_sha256": "22c5a682d60fdc903d370b943d178752c24caa72de49302ad18f1cb7c02ff8a4",
+      "maximum_track_score": 0.972045966521819,
+      "positive_track_pairs": 522
+    }
+  ],
+  "episodes": [
+    {
+      "query_key": "FDV_initial_1_query",
+      "frame": 3,
+      "candidate_count": 38,
+      "proposal_opportunity": true,
+      "best_reachable_iou_evaluation_only": 0.9696307215140909,
+      "objectness_rank": 4,
+      "track_rank": 1,
+      "rank_improvement_over_objectness": 3,
+      "track_recall_at_3": true,
+      "track_top1_iou_evaluation_only": 0.9696307215140909,
+      "ranked_candidates": [
+        {
+          "candidate_index": 0,
+          "proposal": {
+            "objectness_score": 0.5681838393211365,
+            "box_xyxy": [
+              175.37744140625,
+              1.1044800281524658,
+              956.5907592773438,
+              471.9886169433594
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 0,
+            "mask_sha256": "8a765f8783b584d8335b71a5e3ffb225201110a713e060b360457f84c41268c0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9208294390096011,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": true,
+              "track_score": 0.9208294390096011
+            }
+          ],
+          "lifted_depth_points": 21226,
+          "target_metrics_evaluation_only": {
+            "iou": 0.9696307215140909,
+            "target_recall": 0.9713557516885135,
+            "proposal_precision": 0.9981718268727782
+          }
+        },
+        {
+          "candidate_index": 7,
+          "proposal": {
+            "objectness_score": 0.153335303068161,
+            "box_xyxy": [
+              273.76416015625,
+              16.41227149963379,
+              886.94482421875,
+              402.8617858886719
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 10,
+            "postprocess_index": 7,
+            "mask_sha256": "4c7002458ddfc0784e69f53fbaf294e3a36a20c16f5a3c4542049067dd1610e9"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8609385763183514,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": true,
+              "track_score": 0.8609385763183514
+            }
+          ],
+          "lifted_depth_points": 13900,
+          "target_metrics_evaluation_only": {
+            "iou": 0.6268599546861965,
+            "target_recall": 0.6268599546861965,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 21,
+          "proposal": {
+            "objectness_score": 0.2650321424007416,
+            "box_xyxy": [
+              576.0009613037109,
+              0.0007596015930175781,
+              960.0,
+              215.9993133544922
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 21,
+            "mask_sha256": "38c8416f48dd5b2239859435c00fd68a7dea9c3d071b90918d9d3c19162a295e"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8012321079651569,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 17,
+              "mutual_best": true,
+              "track_score": 0.8012321079651569
+            }
+          ],
+          "lifted_depth_points": 2830,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2162001348277795,
+            "target_recall": 0.21677198854383026,
+            "proposal_precision": 0.9879452364269852
+          }
+        },
+        {
+          "candidate_index": 32,
+          "proposal": {
+            "objectness_score": 0.27743804454803467,
+            "box_xyxy": [
+              691.3838882446289,
+              324.03066086769104,
+              837.579833984375,
+              383.6376037597656
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 32,
+            "mask_sha256": "c9f5cb5eeaff2ebc04bf417d97bc1fd57177125c502b02c071167e8ab5785bf2"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6762767719153933,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 34,
+              "mutual_best": true,
+              "track_score": 0.6762767719153933
+            }
+          ],
+          "lifted_depth_points": 285,
+          "target_metrics_evaluation_only": {
+            "iou": 0.023052683467642113,
+            "target_recall": 0.023052683467642113,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 37,
+          "proposal": {
+            "objectness_score": 0.1048264428973198,
+            "box_xyxy": [
+              690.5927276611328,
+              324.0,
+              959.591064453125,
+              385.27978897094727
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 37,
+            "mask_sha256": "99a94da4abde9d166c2696db21484ff8909e6b2d5ed8a75f1340523e6545a3fd"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6735950360541886,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 35,
+              "mutual_best": true,
+              "track_score": 0.6735950360541886
+            }
+          ],
+          "lifted_depth_points": 246,
+          "target_metrics_evaluation_only": {
+            "iou": 0.043482171579698844,
+            "target_recall": 0.04348737302645985,
+            "proposal_precision": 0.9972568044551402
+          }
+        },
+        {
+          "candidate_index": 31,
+          "proposal": {
+            "objectness_score": 0.6396743655204773,
+            "box_xyxy": [
+              576.0,
+              324.0917122364044,
+              959.9350891113281,
+              468.0308837890625
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 31,
+            "mask_sha256": "05c8853234d4d40a2a933b9996844bccacb59c772025d76940b47e1e6943562d"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.5818675801446597,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 31,
+              "mutual_best": true,
+              "track_score": 0.5818675801446597
+            }
+          ],
+          "lifted_depth_points": 1782,
+          "target_metrics_evaluation_only": {
+            "iou": 0.14572083481050402,
+            "target_recall": 0.1457808682207737,
+            "proposal_precision": 0.9971819723491022
+          }
+        },
+        {
+          "candidate_index": 22,
+          "proposal": {
+            "objectness_score": 0.2617223262786865,
+            "box_xyxy": [
+              817.3014678955078,
+              0.0,
+              873.3734436035156,
+              55.22091293334961
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 22,
+            "mask_sha256": "71164da141bd88bc09966d65be7c638ac37acc0efcf3523b34cecd363031fcb3"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.5451881451722549,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": true,
+              "track_score": 0.5451881451722549
+            }
+          ],
+          "lifted_depth_points": 128,
+          "target_metrics_evaluation_only": {
+            "iou": 0.007897209509259583,
+            "target_recall": 0.007899511725032834,
+            "proposal_precision": 0.9644095389066092
+          }
+        },
+        {
+          "candidate_index": 35,
+          "proposal": {
+            "objectness_score": 0.15605281293392181,
+            "box_xyxy": [
+              827.3685607910156,
+              324.00325405597687,
+              894.5467529296875,
+              384.7020683288574
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 35,
+            "mask_sha256": "027a862a971931131cbd0a2031c291e16c30b4031af388e60d531a9b241e8fdc"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.1630032156406086,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 33,
+              "mutual_best": true,
+              "track_score": 0.1630032156406086
+            }
+          ],
+          "lifted_depth_points": 207,
+          "target_metrics_evaluation_only": {
+            "iou": 0.01078692922333907,
+            "target_recall": 0.01078692922333907,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 8,
+          "proposal": {
+            "objectness_score": 0.1442105919122696,
+            "box_xyxy": [
+              296.28070068359375,
+              39.13888931274414,
+              871.615234375,
+              390.2218017578125
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 12,
+            "postprocess_index": 8,
+            "mask_sha256": "32d733d8bca105ed5ca7a492724879d08ecfaa7f15c42266562d0c8f8610cd00"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.8091156825134128,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.8091156825134128
+            }
+          ],
+          "lifted_depth_points": 11920,
+          "target_metrics_evaluation_only": {
+            "iou": 0.5343421638385338,
+            "target_recall": 0.5343421638385338,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 10,
+          "proposal": {
+            "objectness_score": 0.11718612164258957,
+            "box_xyxy": [
+              694.5245971679688,
+              1.679009199142456,
+              873.5066528320312,
+              386.5187683105469
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 10,
+            "mask_sha256": "7ee49b195129f9243c3b4c79c1aa4ba7e00b16ab651edf5d45206f749e021466"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.709396884955197,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.709396884955197
+            }
+          ],
+          "lifted_depth_points": 3332,
+          "target_metrics_evaluation_only": {
+            "iou": 0.18205248781697278,
+            "target_recall": 0.18207716866510884,
+            "proposal_precision": 0.9992559798010097
+          }
+        },
+        {
+          "candidate_index": 5,
+          "proposal": {
+            "objectness_score": 0.16055861115455627,
+            "box_xyxy": [
+              695.0555419921875,
+              44.70717239379883,
+              865.34375,
+              384.0157470703125
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 5,
+            "mask_sha256": "67f0d89a66402d4108de228a426611959bed8d6f132eff24a75f41bc6e938158"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.703653134166755,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.703653134166755
+            }
+          ],
+          "lifted_depth_points": 3253,
+          "target_metrics_evaluation_only": {
+            "iou": 0.1528511532444929,
+            "target_recall": 0.1528511532444929,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 25,
+          "proposal": {
+            "objectness_score": 0.1031971201300621,
+            "box_xyxy": [
+              704.666748046875,
+              0.0,
+              873.1059265136719,
+              215.73150634765625
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 25,
+            "mask_sha256": "1034350919da51c057b6087de4dfa4c36d9bd094844bf3c143c9f33c7eca22ba"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5791590985161471,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 17,
+              "mutual_best": false,
+              "track_score": 0.5791590985161471
+            }
+          ],
+          "lifted_depth_points": 1572,
+          "target_metrics_evaluation_only": {
+            "iou": 0.09516806513317358,
+            "target_recall": 0.09525140654644125,
+            "proposal_precision": 0.9908898899999858
+          }
+        },
+        {
+          "candidate_index": 24,
+          "proposal": {
+            "objectness_score": 0.11051049828529358,
+            "box_xyxy": [
+              704.7037658691406,
+              38.1594352722168,
+              867.0827331542969,
+              215.64508056640625
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 24,
+            "mask_sha256": "14b1edc6482ab6ee495063a9c8344bfcb3222546aa22d87cf52848d5b4069326"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5656733719888482,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 17,
+              "mutual_best": false,
+              "track_score": 0.5656733719888482
+            }
+          ],
+          "lifted_depth_points": 1574,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07623990009334629,
+            "target_recall": 0.07623990009334629,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 34,
+          "proposal": {
+            "objectness_score": 0.20058485865592957,
+            "box_xyxy": [
+              691.0709228515625,
+              324.0,
+              893.74365234375,
+              384.95712661743164
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 34,
+            "mask_sha256": "aa9f1eb2acd43887cea1105b2702f934c3eb177fc2dd10cd50ef6f0e138e6fee"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5303848537675888,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 34,
+              "mutual_best": false,
+              "track_score": 0.5303848537675888
+            }
+          ],
+          "lifted_depth_points": 439,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03268203668604792,
+            "target_recall": 0.03268203668604792,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 11,
+          "proposal": {
+            "objectness_score": 0.10492934286594391,
+            "box_xyxy": [
+              499.7681884765625,
+              38.223087310791016,
+              716.1555786132812,
+              386.9308776855469
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 11,
+            "postprocess_index": 11,
+            "mask_sha256": "963c127fbaa9b5a0c5bed0f17aaaef3eeb1358c7bf5c70b75ef9fb3a251121e7"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.47949910197383255,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.47949910197383255
+            }
+          ],
+          "lifted_depth_points": 4929,
+          "target_metrics_evaluation_only": {
+            "iou": 0.19961028210926338,
+            "target_recall": 0.19961028210926338,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 19,
+          "proposal": {
+            "objectness_score": 0.578046441078186,
+            "box_xyxy": [
+              818.8687133789062,
+              0.0,
+              871.8961791992188,
+              39.97456359863281
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 19,
+            "mask_sha256": "2afd7fd9b0571eb894745bd807514980be370d0818eed53e0eb14275e5d2681d"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4745060289179695,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": false,
+              "track_score": 0.4745060289179695
+            }
+          ],
+          "lifted_depth_points": 102,
+          "target_metrics_evaluation_only": {
+            "iou": 0.005330396199463874,
+            "target_recall": 0.005331865757932373,
+            "proposal_precision": 0.9508352918363537
+          }
+        },
+        {
+          "candidate_index": 1,
+          "proposal": {
+            "objectness_score": 0.39713698625564575,
+            "box_xyxy": [
+              819.0451049804688,
+              0.20160019397735596,
+              871.4869995117188,
+              39.62030029296875
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 1,
+            "mask_sha256": "a1bafb3c1c652f16894182e92e5f1fe08c67cc3306db9b1e0723b068671be4d5"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4745060289179695,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": false,
+              "track_score": 0.4745060289179695
+            }
+          ],
+          "lifted_depth_points": 102,
+          "target_metrics_evaluation_only": {
+            "iou": 0.005222562563659927,
+            "target_recall": 0.005223840429607097,
+            "proposal_precision": 0.9552563236512289
+          }
+        },
+        {
+          "candidate_index": 33,
+          "proposal": {
+            "objectness_score": 0.2520540654659271,
+            "box_xyxy": [
+              576.0600814819336,
+              324.0,
+              960.0,
+              539.8560180664062
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 33,
+            "mask_sha256": "f7aa874afbb5bc24cf722556a1d28c72317a07bafae60137c252d9f48a9d9d43"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.1485413327406886,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 31,
+              "mutual_best": false,
+              "track_score": 0.1485413327406886
+            }
+          ],
+          "lifted_depth_points": 1740,
+          "target_metrics_evaluation_only": {
+            "iou": 0.15162808353927815,
+            "target_recall": 0.16052994316710223,
+            "proposal_precision": 0.7322161652493085
+          }
+        },
+        {
+          "candidate_index": 26,
+          "proposal": {
+            "objectness_score": 0.6389508247375488,
+            "box_xyxy": [
+              199.68026733398438,
+              324.03197407722473,
+              383.8979187011719,
+              473.0786437988281
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 26,
+            "mask_sha256": "c877aa5643698e2ffcbaf6a749ac821f0fda9227a84e0f9f8bce6cd64fa15e1f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 958,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07263447927492409,
+            "target_recall": 0.07263447927492409,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 13,
+          "proposal": {
+            "objectness_score": 0.5063885450363159,
+            "box_xyxy": [
+              172.94070434570312,
+              0.02563333511352539,
+              250.93966674804688,
+              216.0
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 13,
+            "mask_sha256": "c36859a140f1a84c4ea944862fb540dc68762de89d9d436ae20e49d682fe1c04"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 984,
+          "target_metrics_evaluation_only": {
+            "iou": 0.04414570554792998,
+            "target_recall": 0.04416337414847699,
+            "proposal_precision": 0.9910188211307869
+          }
+        },
+        {
+          "candidate_index": 14,
+          "proposal": {
+            "objectness_score": 0.4199698567390442,
+            "box_xyxy": [
+              173.41830444335938,
+              0.004918098449707031,
+              383.98492431640625,
+              216.0
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 14,
+            "mask_sha256": "b61b2ded0c7e2ee71dba5c07af6407678ec6793c52fa610ba98c0c81f0dd4431"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1013,
+          "target_metrics_evaluation_only": {
+            "iou": 0.11909374450864972,
+            "target_recall": 0.1192237964482726,
+            "proposal_precision": 0.9909237764231144
+          }
+        },
+        {
+          "candidate_index": 27,
+          "proposal": {
+            "objectness_score": 0.3724939823150635,
+            "box_xyxy": [
+              199.5689697265625,
+              324.004647731781,
+              262.81396484375,
+              472.27674865722656
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 27,
+            "mask_sha256": "88a2666aee115d82c7091043a7ecff012ec689d507ef6151fdc7567103d1c307"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 448,
+          "target_metrics_evaluation_only": {
+            "iou": 0.024807038136278003,
+            "target_recall": 0.024807038136278003,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 15,
+          "proposal": {
+            "objectness_score": 0.3485528230667114,
+            "box_xyxy": [
+              298.5604248046875,
+              40.712554931640625,
+              383.9927978515625,
+              216.0
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 15,
+            "mask_sha256": "e5dfa7740b3c2d90f81c296a74708e15d43898ec5e171271bbe2bb645058e8ff"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 285,
+          "target_metrics_evaluation_only": {
+            "iou": 0.039615267284049537,
+            "target_recall": 0.039615267284049537,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 16,
+          "proposal": {
+            "objectness_score": 0.3091910183429718,
+            "box_xyxy": [
+              0.1433258056640625,
+              0.004415988922119141,
+              384.0,
+              216.0
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 16,
+            "mask_sha256": "ff5e8adeaabb0f66569b79cab24ea5d2d4c9e6b621c84ead3cd74c8d81409df0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1545,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10905631007853187,
+            "target_recall": 0.11990006091232439,
+            "proposal_precision": 0.5466585256965684
+          }
+        },
+        {
+          "candidate_index": 2,
+          "proposal": {
+            "objectness_score": 0.2384193390607834,
+            "box_xyxy": [
+              301.4263916015625,
+              44.29206466674805,
+              449.8184814453125,
+              382.5296325683594
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 2,
+            "mask_sha256": "80832bda65f14eae301ce290dd6219566b5d8d146afc322fe03530b449a85248"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 3465,
+          "target_metrics_evaluation_only": {
+            "iou": 0.13277671009703,
+            "target_recall": 0.13277671009703,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 17,
+          "proposal": {
+            "objectness_score": 0.2362322211265564,
+            "box_xyxy": [
+              231.98455810546875,
+              0.0,
+              383.91619873046875,
+              215.9717254638672
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 17,
+            "mask_sha256": "97398a8492f21793557ad1208d349eb50bd26ddbde3235ad431f732ee0bb0fde"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1009,
+          "target_metrics_evaluation_only": {
+            "iou": 0.08594514681321987,
+            "target_recall": 0.08601303529427505,
+            "proposal_precision": 0.9909000229123756
+          }
+        },
+        {
+          "candidate_index": 3,
+          "proposal": {
+            "objectness_score": 0.23504775762557983,
+            "box_xyxy": [
+              501.82415771484375,
+              48.89077377319336,
+              646.8333129882812,
+              382.6507263183594
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 3,
+            "mask_sha256": "1364981e2d9d154540859a6a73039b810268de881c642eee636c69fd58cdecd7"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 3233,
+          "target_metrics_evaluation_only": {
+            "iou": 0.1280321260486927,
+            "target_recall": 0.1280321260486927,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 18,
+          "proposal": {
+            "objectness_score": 0.20889541506767273,
+            "box_xyxy": [
+              0.073974609375,
+              0.0,
+              250.27398681640625,
+              215.9511260986328
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 18,
+            "mask_sha256": "b72d06d2c8d61ebeae879cf914d6884ed1a0abb16b2e920059569c9db4e6cae0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1672,
+          "target_metrics_evaluation_only": {
+            "iou": 0.04020324348747857,
+            "target_recall": 0.04417368306150073,
+            "proposal_precision": 0.30905195957988174
+          }
+        },
+        {
+          "candidate_index": 4,
+          "proposal": {
+            "objectness_score": 0.20197203755378723,
+            "box_xyxy": [
+              345.6699523925781,
+              414.4195556640625,
+              405.15435791015625,
+              447.2269287109375
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 4,
+            "mask_sha256": "73d1d74b4d6bf74cc4863145ce5db3589c4622e71e2136c54dade76d2ee0e09f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 111,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0051625454984687,
+            "target_recall": 0.0051625454984687,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 28,
+          "proposal": {
+            "objectness_score": 0.17000612616539001,
+            "box_xyxy": [
+              252.83949279785156,
+              324.0359716415405,
+              384.0,
+              468.4012908935547
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 28,
+            "mask_sha256": "1755eee4a574a9afcc6f40e3f6d4d4fbb8fda77db8d20d5a1a4569d6692e1dd5"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 634,
+          "target_metrics_evaluation_only": {
+            "iou": 0.05009048914055795,
+            "target_recall": 0.05009048914055795,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 23,
+          "proposal": {
+            "objectness_score": 0.16377945244312286,
+            "box_xyxy": [
+              576.059326171875,
+              40.76633071899414,
+              656.2136688232422,
+              216.0
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 23,
+            "mask_sha256": "5bcd3f8254cb020b69dee3e8df691f29fe30bb6c98be5f3d109db1ac15116489"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 180,
+          "target_metrics_evaluation_only": {
+            "iou": 0.037156424963926384,
+            "target_recall": 0.037156424963926384,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 6,
+          "proposal": {
+            "objectness_score": 0.158991739153862,
+            "box_xyxy": [
+              173.08387756347656,
+              0.611962080001831,
+              263.90045166015625,
+              471.402587890625
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 6,
+            "mask_sha256": "846ffa3d6dbe878a7416e8a726c9061c02cb576f39ea0e2363a2f31c756ade26"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1910,
+          "target_metrics_evaluation_only": {
+            "iou": 0.11274331189386726,
+            "target_recall": 0.11277996945593743,
+            "proposal_precision": 0.99712531303918
+          }
+        },
+        {
+          "candidate_index": 36,
+          "proposal": {
+            "objectness_score": 0.15519505739212036,
+            "box_xyxy": [
+              881.8042297363281,
+              324.0,
+              959.9419860839844,
+              383.19840240478516
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 36,
+            "mask_sha256": "1a5a8ec27a26f32bc5248c339e8ffda080673e8ab23d460c7b249aec89c3906e"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 5,
+          "target_metrics_evaluation_only": {
+            "iou": 0.012064013168237207,
+            "target_recall": 0.012066070260815711,
+            "proposal_precision": 0.9860651659221268
+          }
+        },
+        {
+          "candidate_index": 9,
+          "proposal": {
+            "objectness_score": 0.14081932604312897,
+            "box_xyxy": [
+              883.27734375,
+              44.16861343383789,
+              958.5741577148438,
+              381.3818664550781
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 9,
+            "mask_sha256": "0c9bb61fc00f6a8f3e6bf7ae8fdbe039c37a992657c2dc203856d2082dcb8e76"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 9,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06716925705153132,
+            "target_recall": 0.06716925705153132,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 29,
+          "proposal": {
+            "objectness_score": 0.11472801864147186,
+            "box_xyxy": [
+              346.37152099609375,
+              413.1058349609375,
+              383.90740966796875,
+              446.89000701904297
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 29,
+            "mask_sha256": "4f41d092a14a820f6881f11d4d4e04b1463dfecc5abfc9bf5b624288c2736c02"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 58,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0033546660396444497,
+            "target_recall": 0.0033546660396444497,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 30,
+          "proposal": {
+            "objectness_score": 0.10844868421554565,
+            "box_xyxy": [
+              0.09610748291015625,
+              324.0,
+              384.0,
+              539.9143981933594
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 30,
+            "mask_sha256": "215f0daf956585dfe4fa9315b39f87ea25c9906bd8a718854c3d2c4844c7c2c2"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1433,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07855577826216553,
+            "target_recall": 0.08880511272942712,
+            "proposal_precision": 0.40499022457430495
+          }
+        },
+        {
+          "candidate_index": 12,
+          "proposal": {
+            "objectness_score": 0.10310187935829163,
+            "box_xyxy": [
+              225.80612182617188,
+              424.7443542480469,
+              253.64535522460938,
+              470.9620056152344
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 8,
+            "postprocess_index": 12,
+            "mask_sha256": "2ff259b2a0aa55593f6ff413da8ba7832cd588d045656db389e132a1b5601216"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 61,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0034037249170409713,
+            "target_recall": 0.0034037249170409713,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 20,
+          "proposal": {
+            "objectness_score": 0.3224385976791382,
+            "box_xyxy": [
+              902.6094970703125,
+              41.40358352661133,
+              959.9985656738281,
+              215.94171142578125
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 20,
+            "mask_sha256": "22cd7281fbdb4f4ddf816e9ac8857850aa4ba6eca3e07ec79c76ecd83391dd26"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_1_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.025955148420277678,
+            "target_recall": 0.025968875131066885,
+            "proposal_precision": 0.9800412118956142
+          }
+        }
+      ]
+    },
+    {
+      "query_key": "FDV_initial_2_query",
+      "frame": 4,
+      "candidate_count": 47,
+      "proposal_opportunity": true,
+      "best_reachable_iou_evaluation_only": 0.9763634339575743,
+      "objectness_rank": 9,
+      "track_rank": 1,
+      "rank_improvement_over_objectness": 8,
+      "track_recall_at_3": true,
+      "track_top1_iou_evaluation_only": 0.9763634339575743,
+      "ranked_candidates": [
+        {
+          "candidate_index": 1,
+          "proposal": {
+            "objectness_score": 0.33861470222473145,
+            "box_xyxy": [
+              1.7639636993408203,
+              1.2056905031204224,
+              681.4110717773438,
+              529.880126953125
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 1,
+            "mask_sha256": "596b99b0db6ca253aa6e832584ec361550112f1612600c3bb1d6ae0f33898b1e"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 2,
+          "track_score": 0.972045966521819,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": true,
+              "track_score": 0.9208294390096011
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": true,
+              "track_score": 0.972045966521819
+            }
+          ],
+          "lifted_depth_points": 17054,
+          "target_metrics_evaluation_only": {
+            "iou": 0.9763634339575743,
+            "target_recall": 0.9763634339575744,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 10,
+          "proposal": {
+            "objectness_score": 0.12704306840896606,
+            "box_xyxy": [
+              4.434642791748047,
+              1.8731904029846191,
+              824.4771118164062,
+              532.927734375
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 10,
+            "mask_sha256": "8817c7a24ae5aef75cbc83997b7f444e7b24b8bf84f116a80687ed006f57e335"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9642771047292775,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.898607838346781
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 12,
+              "mutual_best": true,
+              "track_score": 0.9642771047292775
+            }
+          ],
+          "lifted_depth_points": 18271,
+          "target_metrics_evaluation_only": {
+            "iou": 0.8249842016776937,
+            "target_recall": 0.9869859186239406,
+            "proposal_precision": 0.8340570563469477
+          }
+        },
+        {
+          "candidate_index": 7,
+          "proposal": {
+            "objectness_score": 0.14889328181743622,
+            "box_xyxy": [
+              4.082937240600586,
+              5.149680137634277,
+              677.0640869140625,
+              443.3609619140625
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 13,
+            "postprocess_index": 7,
+            "mask_sha256": "73ca4987d2b050d17e590e64590c226f8a312a0501ffa46e467725a67b9d0849"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9375443300402097,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 7,
+              "mutual_best": true,
+              "track_score": 0.8609385763183514
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.9375443300402097
+            }
+          ],
+          "lifted_depth_points": 15538,
+          "target_metrics_evaluation_only": {
+            "iou": 0.8013572601106789,
+            "target_recall": 0.8013572601106789,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 11,
+          "proposal": {
+            "objectness_score": 0.11539395898580551,
+            "box_xyxy": [
+              360.53955078125,
+              92.6725082397461,
+              485.1063537597656,
+              389.5606384277344
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 10,
+            "postprocess_index": 11,
+            "mask_sha256": "f3bae4afcbf0da5654e9e1ca0c19c981a8d4bafb0c26c869ab09c44829393bbd"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9326668206076916,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 7,
+              "mutual_best": true,
+              "track_score": 0.9326668206076916
+            }
+          ],
+          "lifted_depth_points": 2430,
+          "target_metrics_evaluation_only": {
+            "iou": 0.1004927832804098,
+            "target_recall": 0.1004927832804098,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 13,
+          "proposal": {
+            "objectness_score": 0.11481012403964996,
+            "box_xyxy": [
+              519.8936157226562,
+              98.39759826660156,
+              616.4152221679688,
+              359.3570251464844
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 11,
+            "postprocess_index": 13,
+            "mask_sha256": "73c170813f9ea7082bdcc40962b6517e1a9eace5bc7a2211fb6dd3ecde7164bd"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9272739327800826,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 8,
+              "mutual_best": true,
+              "track_score": 0.9272739327800826
+            }
+          ],
+          "lifted_depth_points": 1660,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06844429479675347,
+            "target_recall": 0.06844429479675347,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 5,
+          "proposal": {
+            "objectness_score": 0.17328575253486633,
+            "box_xyxy": [
+              3.6133861541748047,
+              2.043682336807251,
+              953.6439208984375,
+              535.5433349609375
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 5,
+            "mask_sha256": "a156c33ae8e6a678e72d4ff7c6f42cb479f3b1f833948a42684b5dfb971acbee"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9042646048078996,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.9042646048078996
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 3,
+              "mutual_best": true,
+              "track_score": 0.8693633181654251
+            }
+          ],
+          "lifted_depth_points": 19780,
+          "target_metrics_evaluation_only": {
+            "iou": 0.7170118933144284,
+            "target_recall": 0.9927208139923005,
+            "proposal_precision": 0.7208015315171934
+          }
+        },
+        {
+          "candidate_index": 44,
+          "proposal": {
+            "objectness_score": 0.17225609719753265,
+            "box_xyxy": [
+              576.0,
+              377.2130928039551,
+              959.9234619140625,
+              539.8301696777344
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 17,
+            "postprocess_index": 44,
+            "mask_sha256": "b6f037e66c5286efc1d5e32350bcd6a9d7a7cf3c5899b46a60d57b45f29dc3c5"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8871077178925194,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 44,
+              "mutual_best": true,
+              "track_score": 0.8871077178925194
+            }
+          ],
+          "lifted_depth_points": 741,
+          "target_metrics_evaluation_only": {
+            "iou": 0.04328286810602553,
+            "target_recall": 0.04852543042188753,
+            "proposal_precision": 0.2860347980864579
+          }
+        },
+        {
+          "candidate_index": 17,
+          "proposal": {
+            "objectness_score": 0.37762054800987244,
+            "box_xyxy": [
+              0.0373077392578125,
+              0.5933582782745361,
+              384.0,
+              215.64736938476562
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 17,
+            "mask_sha256": "a2f8120abfe668b983034beb601e6f5a4eaad3de353474eb5e75f2309edece2a"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8012321079651569,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 21,
+              "mutual_best": true,
+              "track_score": 0.8012321079651569
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 11,
+              "mutual_best": false,
+              "track_score": 0.5225604742929683
+            }
+          ],
+          "lifted_depth_points": 3407,
+          "target_metrics_evaluation_only": {
+            "iou": 0.22351423400163514,
+            "target_recall": 0.22367165345033757,
+            "proposal_precision": 0.9968611041604954
+          }
+        },
+        {
+          "candidate_index": 15,
+          "proposal": {
+            "objectness_score": 0.10025354474782944,
+            "box_xyxy": [
+              478.1878967285156,
+              0.11520355939865112,
+              862.2235717773438,
+              58.6053352355957
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 14,
+            "postprocess_index": 15,
+            "mask_sha256": "87a9addb5466ee4a0fa246536aa198502554b0b29511de83d285f9166c7cf700"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.769512943782276,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 4,
+              "mutual_best": true,
+              "track_score": 0.769512943782276
+            }
+          ],
+          "lifted_depth_points": 1175,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03215534398551106,
+            "target_recall": 0.033055114358394075,
+            "proposal_precision": 0.5415577472096832
+          }
+        },
+        {
+          "candidate_index": 20,
+          "proposal": {
+            "objectness_score": 0.16159997880458832,
+            "box_xyxy": [
+              0.0194549560546875,
+              0.7273989915847778,
+              306.4960021972656,
+              91.72264099121094
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 20,
+            "mask_sha256": "4c2e180db165ec1922fcff88248853109e50e6dcf2472c04530d86e094f693de"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.7421214475295541,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 21,
+              "mutual_best": false,
+              "track_score": 0.42800835261915166
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 22,
+              "mutual_best": true,
+              "track_score": 0.7421214475295541
+            }
+          ],
+          "lifted_depth_points": 1004,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07551476386951549,
+            "target_recall": 0.07553339968889657,
+            "proposal_precision": 0.9967434258482535
+          }
+        },
+        {
+          "candidate_index": 34,
+          "proposal": {
+            "objectness_score": 0.27138540148735046,
+            "box_xyxy": [
+              163.08892822265625,
+              324.0,
+              322.3421630859375,
+              425.4641418457031
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 34,
+            "mask_sha256": "cdb720e30abf7f4442329fb50e5ea80f015334b3b7c5aecf28149975e9bbecf7"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6762767719153933,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 32,
+              "mutual_best": true,
+              "track_score": 0.6762767719153933
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 32,
+              "mutual_best": false,
+              "track_score": 0.6555430912845931
+            }
+          ],
+          "lifted_depth_points": 174,
+          "target_metrics_evaluation_only": {
+            "iou": 0.043907688172235414,
+            "target_recall": 0.043907688172235414,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 35,
+          "proposal": {
+            "objectness_score": 0.23972050845623016,
+            "box_xyxy": [
+              162.55886840820312,
+              324.0,
+              383.84124755859375,
+              426.0677795410156
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 35,
+            "mask_sha256": "acc3633d482d74da8c82bb4c5d37cd57183de91b065ae0cef97c9d44267621de"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 2,
+          "track_score": 0.6735950360541886,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 37,
+              "mutual_best": true,
+              "track_score": 0.6735950360541886
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 32,
+              "mutual_best": true,
+              "track_score": 0.6690146823211657
+            }
+          ],
+          "lifted_depth_points": 136,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06137269874165692,
+            "target_recall": 0.06137269874165692,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 29,
+          "proposal": {
+            "objectness_score": 0.12725572288036346,
+            "box_xyxy": [
+              576.0,
+              0.0790243148803711,
+              858.7593383789062,
+              216.0
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 29,
+            "mask_sha256": "33951090891ee9ef645df01f693cd833fc86cc740c3a55284144ecede2c4d477"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6693754963502926,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 26,
+              "mutual_best": true,
+              "track_score": 0.6693754963502926
+            }
+          ],
+          "lifted_depth_points": 954,
+          "target_metrics_evaluation_only": {
+            "iou": 0.05975999532132393,
+            "target_recall": 0.06574535355695042,
+            "proposal_precision": 0.3962904006615223
+          }
+        },
+        {
+          "candidate_index": 26,
+          "proposal": {
+            "objectness_score": 0.2967076301574707,
+            "box_xyxy": [
+              674.4170837402344,
+              0.017528772354125977,
+              959.6896362304688,
+              215.94273376464844
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 26,
+            "mask_sha256": "f740623c645dfd7af3c1aa03ed9ba6f341f910f2f1271898e38d0e2f2f8fdd96"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6269732027218449,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 14,
+              "mutual_best": true,
+              "track_score": 0.6269732027218449
+            }
+          ],
+          "lifted_depth_points": 2611,
+          "target_metrics_evaluation_only": {
+            "iou": 0.007052371519959207,
+            "target_recall": 0.008175141932257457,
+            "proposal_precision": 0.0488418663552294
+          }
+        },
+        {
+          "candidate_index": 31,
+          "proposal": {
+            "objectness_score": 0.46859994530677795,
+            "box_xyxy": [
+              0.08132171630859375,
+              324.0,
+              384.0,
+              539.990234375
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 31,
+            "mask_sha256": "393d8b836a970a8a297408c76f042f50fbf4a8463c7ce42abce13915b88c9ea6"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.5818675801446597,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 31,
+              "mutual_best": true,
+              "track_score": 0.5818675801446597
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 12,
+              "mutual_best": false,
+              "track_score": 0.12197974934312254
+            }
+          ],
+          "lifted_depth_points": 1010,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2197333216967691,
+            "target_recall": 0.22074100083435458,
+            "proposal_precision": 0.9796477107188711
+          }
+        },
+        {
+          "candidate_index": 19,
+          "proposal": {
+            "objectness_score": 0.19297701120376587,
+            "box_xyxy": [
+              255.3525390625,
+              14.727017402648926,
+              306.3370666503906,
+              85.8612289428711
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 19,
+            "mask_sha256": "69d78ee239682d71fe447d7699629a763f8a3238aa56e744cba38137d15e7e89"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 2,
+          "track_score": 0.5451881451722549,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 22,
+              "mutual_best": true,
+              "track_score": 0.5451881451722549
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 15,
+              "mutual_best": true,
+              "track_score": 0.49508617321956194
+            }
+          ],
+          "lifted_depth_points": 127,
+          "target_metrics_evaluation_only": {
+            "iou": 0.009855000338544273,
+            "target_recall": 0.009855000338544272,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 46,
+          "proposal": {
+            "objectness_score": 0.16958488523960114,
+            "box_xyxy": [
+              576.1038036346436,
+              324.0,
+              674.8317260742188,
+              430.4783630371094
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 46,
+            "mask_sha256": "bba8592b5e0293a64335e0fd4f4890f752e9b8c585453060a296ecda3b2b3765"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.5107498031061545,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 43,
+              "mutual_best": true,
+              "track_score": 0.5107498031061545
+            }
+          ],
+          "lifted_depth_points": 197,
+          "target_metrics_evaluation_only": {
+            "iou": 0.028565451037977748,
+            "target_recall": 0.028565451037977748,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 33,
+          "proposal": {
+            "objectness_score": 0.2763569951057434,
+            "box_xyxy": [
+              358.868408203125,
+              324.0,
+              383.949951171875,
+              389.8736801147461
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 33,
+            "mask_sha256": "9c36481a4fa5993018c220dab9d2352f1dc626763fa56e1c28b9c1d00ef51d42"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.2974900251434683,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 35,
+              "mutual_best": true,
+              "track_score": 0.1630032156406086
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 34,
+              "mutual_best": false,
+              "track_score": 0.2974900251434683
+            }
+          ],
+          "lifted_depth_points": 69,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0044895818985099135,
+            "target_recall": 0.0044895818985099135,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 12,
+          "proposal": {
+            "objectness_score": 0.11490195989608765,
+            "box_xyxy": [
+              3.626861572265625,
+              1.6233426332473755,
+              881.4309692382812,
+              533.5885620117188
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 15,
+            "postprocess_index": 12,
+            "mask_sha256": "3c10b05fbdb842ef2b8b0b7746635e9262cae289ecf1d76dc84d05eb949035d0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.9649014049961314,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.8991191538122448
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.9649014049961314
+            }
+          ],
+          "lifted_depth_points": 17720,
+          "target_metrics_evaluation_only": {
+            "iou": 0.7739013578083606,
+            "target_recall": 0.9898461057930138,
+            "proposal_precision": 0.7800943092353484
+          }
+        },
+        {
+          "candidate_index": 41,
+          "proposal": {
+            "objectness_score": 0.23326653242111206,
+            "box_xyxy": [
+              576.0149002075195,
+              324.0,
+              960.0,
+              539.9297027587891
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 41,
+            "mask_sha256": "bc552cebefc5df951435e66b0999c886bfff748389fdbc1606bbb30c24d4fe3b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.787313489333944,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 44,
+              "mutual_best": false,
+              "track_score": 0.787313489333944
+            }
+          ],
+          "lifted_depth_points": 837,
+          "target_metrics_evaluation_only": {
+            "iou": 0.055809711624083325,
+            "target_recall": 0.06476905074905613,
+            "proposal_precision": 0.2874756410237561
+          }
+        },
+        {
+          "candidate_index": 21,
+          "proposal": {
+            "objectness_score": 0.1360470950603485,
+            "box_xyxy": [
+              0.0,
+              0.9114028215408325,
+              311.4363708496094,
+              98.76390075683594
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 10,
+            "postprocess_index": 21,
+            "mask_sha256": "13ce6bb5eb5b2860b183e467c18fbf7dcc1a2a2512e32ef265f3d1235a165a38"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.7243779061253635,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 21,
+              "mutual_best": false,
+              "track_score": 0.49574037667804866
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.7243779061253635
+            }
+          ],
+          "lifted_depth_points": 1219,
+          "target_metrics_evaluation_only": {
+            "iou": 0.08252518225076803,
+            "target_recall": 0.08254686863492446,
+            "proposal_precision": 0.9968266374938671
+          }
+        },
+        {
+          "candidate_index": 32,
+          "proposal": {
+            "objectness_score": 0.35814201831817627,
+            "box_xyxy": [
+              165.77682495117188,
+              386.6631088256836,
+              320.60540771484375,
+              425.39257049560547
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 32,
+            "mask_sha256": "18f84cf82cd6dbe98f5824b81a70552214e4ae297c50fed4ee876bfec522ff2b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6697018078930213,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 37,
+              "mutual_best": false,
+              "track_score": 0.6697018078930213
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 32,
+              "mutual_best": false,
+              "track_score": 0.6568178209767882
+            }
+          ],
+          "lifted_depth_points": 151,
+          "target_metrics_evaluation_only": {
+            "iou": 0.016294172914604887,
+            "target_recall": 0.016294172914604887,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 38,
+          "proposal": {
+            "objectness_score": 0.12223929166793823,
+            "box_xyxy": [
+              165.46612548828125,
+              373.64870834350586,
+              383.951904296875,
+              425.82486724853516
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 10,
+            "postprocess_index": 38,
+            "mask_sha256": "c9d98c2f13d06c598a2ab5d915c8118da09f15b3d54754e2c9bef13e2f495ee8"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.627775633572383,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 37,
+              "mutual_best": false,
+              "track_score": 0.627775633572383
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 32,
+              "mutual_best": false,
+              "track_score": 0.598270663244668
+            }
+          ],
+          "lifted_depth_points": 182,
+          "target_metrics_evaluation_only": {
+            "iou": 0.030976689323457752,
+            "target_recall": 0.030976689323457752,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 25,
+          "proposal": {
+            "objectness_score": 0.3940087854862213,
+            "box_xyxy": [
+              576.0387725830078,
+              0.05228376388549805,
+              960.0,
+              216.0
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 25,
+            "mask_sha256": "8517b8957d65b5c090eebf6421dc0e1b62c6d236f59e7a534c9ca1e8d5564550"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6209254778884485,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 14,
+              "mutual_best": false,
+              "track_score": 0.6209254778884485
+            }
+          ],
+          "lifted_depth_points": 2668,
+          "target_metrics_evaluation_only": {
+            "iou": 0.05667776147286663,
+            "target_recall": 0.06572267394302107,
+            "proposal_precision": 0.2917020732253199
+          }
+        },
+        {
+          "candidate_index": 23,
+          "proposal": {
+            "objectness_score": 0.12267520278692245,
+            "box_xyxy": [
+              149.35513305664062,
+              14.419365882873535,
+              309.64227294921875,
+              96.75799560546875
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 23,
+            "mask_sha256": "d706046c530549bfc585f35b0d55adb9be94526e3f6668f51a01ce579edc9af6"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6047604871880229,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.41849016188501004
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.6047604871880229
+            }
+          ],
+          "lifted_depth_points": 545,
+          "target_metrics_evaluation_only": {
+            "iou": 0.035862621831870535,
+            "target_recall": 0.03586262183187053,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 37,
+          "proposal": {
+            "objectness_score": 0.2106381356716156,
+            "box_xyxy": [
+              0.03092193603515625,
+              430.32801055908203,
+              384.0,
+              540.0
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 37,
+            "mask_sha256": "ed218ef2ac8a8b04c09f790169cdc6f806bc45b1427d008bf92681f78c9a8eb0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5754123253843133,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 31,
+              "mutual_best": false,
+              "track_score": 0.5754123253843133
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 12,
+              "mutual_best": false,
+              "track_score": 0.11042069541719683
+            }
+          ],
+          "lifted_depth_points": 891,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10960209470866981,
+            "target_recall": 0.11007876254685926,
+            "proposal_precision": 0.9619928503200372
+          }
+        },
+        {
+          "candidate_index": 14,
+          "proposal": {
+            "objectness_score": 0.11094485223293304,
+            "box_xyxy": [
+              256.9085693359375,
+              14.601678848266602,
+              306.44384765625,
+              85.92024230957031
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 14,
+            "mask_sha256": "ac0c552f1980f06ab5b4f925ba96c5234ce6cc4bb63ada7779b87cee4937b52f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5432117662463745,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.5432117662463745
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 15,
+              "mutual_best": false,
+              "track_score": 0.4875417378229602
+            }
+          ],
+          "lifted_depth_points": 126,
+          "target_metrics_evaluation_only": {
+            "iou": 0.009599683532303328,
+            "target_recall": 0.009599683532303328,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 28,
+          "proposal": {
+            "objectness_score": 0.15471301972866058,
+            "box_xyxy": [
+              576.0,
+              1.0645880699157715,
+              686.4419174194336,
+              215.68360900878906
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 28,
+            "mask_sha256": "8c25e53a8be6a4359e7d8999348b101f69c58845fac4e786e0ecff0133905cff"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4701957134361744,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 4,
+              "mutual_best": false,
+              "track_score": 0.4701957134361744
+            }
+          ],
+          "lifted_depth_points": 563,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06440830484687572,
+            "target_recall": 0.06440830484687572,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 16,
+          "proposal": {
+            "objectness_score": 0.47851499915122986,
+            "box_xyxy": [
+              261.80706787109375,
+              38.89838790893555,
+              305.65740966796875,
+              84.87443542480469
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 16,
+            "mask_sha256": "8bb93b89a07cc879cbfa073f983894a0d587177b0eca7ceab946bf508475cc9d"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.39759408281248354,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.39759408281248354
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 20,
+              "mutual_best": false,
+              "track_score": 0.276257956297823
+            }
+          ],
+          "lifted_depth_points": 88,
+          "target_metrics_evaluation_only": {
+            "iou": 0.00547828141302153,
+            "target_recall": 0.00547828141302153,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 0,
+          "proposal": {
+            "objectness_score": 0.4675377905368805,
+            "box_xyxy": [
+              261.5343933105469,
+              39.01392364501953,
+              305.4607849121094,
+              84.79411315917969
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 0,
+            "mask_sha256": "0c52166ad2911dba50bfaed0e9cf81e96788ccb185bf2fd1f0c8d1dac290711d"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.39759408281248354,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 22,
+              "mutual_best": false,
+              "track_score": 0.39759408281248354
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 20,
+              "mutual_best": false,
+              "track_score": 0.276257956297823
+            }
+          ],
+          "lifted_depth_points": 88,
+          "target_metrics_evaluation_only": {
+            "iou": 0.005464404458296619,
+            "target_recall": 0.005464404458296619,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 45,
+          "proposal": {
+            "objectness_score": 0.1698722243309021,
+            "box_xyxy": [
+              576.0420570373535,
+              324.0,
+              674.7193222045898,
+              398.50936126708984
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 8,
+            "postprocess_index": 45,
+            "mask_sha256": "cbb21efe0c82bde84a1620c98a6bde417e3165c182861803767a998cd4c8e680"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.3956873310600935,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 43,
+              "mutual_best": false,
+              "track_score": 0.3956873310600935
+            }
+          ],
+          "lifted_depth_points": 257,
+          "target_metrics_evaluation_only": {
+            "iou": 0.01997872029856257,
+            "target_recall": 0.019978720298562565,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 18,
+          "proposal": {
+            "objectness_score": 0.3153420388698578,
+            "box_xyxy": [
+              254.06640625,
+              14.926396369934082,
+              293.08416748046875,
+              27.41423988342285
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 18,
+            "mask_sha256": "9954aa84fbf2f1b06e553f2a0d00e2f1e11c2b2e64390c1ef16779f37c87eff0"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.3727207811644334,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 2,
+              "mutual_best": false,
+              "track_score": 0.3727207811644334
+            }
+          ],
+          "lifted_depth_points": 26,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0013240046686127374,
+            "target_recall": 0.0013240046686127374,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 9,
+          "proposal": {
+            "objectness_score": 0.129934161901474,
+            "box_xyxy": [
+              255.17137145996094,
+              14.128400802612305,
+              292.2059326171875,
+              27.58839988708496
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 9,
+            "mask_sha256": "d31a2136e71705d9ce99f15ef6d7202a9466b74b0de6dbd90fcfae9337fa6e6f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.3727207811644334,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 2,
+              "mutual_best": false,
+              "track_score": 0.3727207811644334
+            }
+          ],
+          "lifted_depth_points": 26,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0013545403761957052,
+            "target_recall": 0.0013545403761957052,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 42,
+          "proposal": {
+            "objectness_score": 0.21017830073833466,
+            "box_xyxy": [
+              576.0364751815796,
+              380.11970138549805,
+              642.4510803222656,
+              431.04078674316406
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 42,
+            "mask_sha256": "cba4a9a7a671690e8ef400e941a670de591cea004de2fc75c7d0ffe4f9833f4c"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.3437268510724004,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 45,
+              "mutual_best": false,
+              "track_score": 0.3437268510724004
+            }
+          ],
+          "lifted_depth_points": 180,
+          "target_metrics_evaluation_only": {
+            "iou": 0.009189692269989487,
+            "target_recall": 0.009189692269989487,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 30,
+          "proposal": {
+            "objectness_score": 0.1105387881398201,
+            "box_xyxy": [
+              576.0252885818481,
+              101.78775024414062,
+              620.0017204284668,
+              216.0
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 30,
+            "mask_sha256": "d51fae62981514f3b8192aabb81e4ac5540c8c3c4aea392315957d8a9b0beb53"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.2124642695389533,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 8,
+              "mutual_best": false,
+              "track_score": 0.2124642695389533
+            }
+          ],
+          "lifted_depth_points": 145,
+          "target_metrics_evaluation_only": {
+            "iou": 0.013648106317483324,
+            "target_recall": 0.013648106317483326,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 8,
+          "proposal": {
+            "objectness_score": 0.13273322582244873,
+            "box_xyxy": [
+              478.6490478515625,
+              0.06641987711191177,
+              536.20849609375,
+              21.58464241027832
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 12,
+            "postprocess_index": 8,
+            "mask_sha256": "f605a3f1043ce823f702722c19a2dc9bfaeca3cacf9b891bff4bdce88cf360d8"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.21072361150104751,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 4,
+              "mutual_best": false,
+              "track_score": 0.21072361150104751
+            }
+          ],
+          "lifted_depth_points": 44,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0032605173978979265,
+            "target_recall": 0.003260858914083601,
+            "proposal_precision": 0.9688783918094952
+          }
+        },
+        {
+          "candidate_index": 27,
+          "proposal": {
+            "objectness_score": 0.26974397897720337,
+            "box_xyxy": [
+              596.4758110046387,
+              103.36648559570312,
+              619.3042449951172,
+              215.8945770263672
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 27,
+            "mask_sha256": "1a4a2c1bc9044a388e516826f5242e03c2a768d6f7a29f8e450df8798b62df98"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.1890835077387748,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 8,
+              "mutual_best": false,
+              "track_score": 0.1890835077387748
+            }
+          ],
+          "lifted_depth_points": 128,
+          "target_metrics_evaluation_only": {
+            "iou": 0.006980343507964905,
+            "target_recall": 0.006980343507964905,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 24,
+          "proposal": {
+            "objectness_score": 0.5398308634757996,
+            "box_xyxy": [
+              576.0113754272461,
+              48.68457794189453,
+              684.9499282836914,
+              215.92369079589844
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 24,
+            "mask_sha256": "90c5638d21bdc054f1748c4081c18fdb94cea092b7b897b8b8a86b60afddee68"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.1768731584439343,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 12,
+              "mutual_best": false,
+              "track_score": 0.1768731584439343
+            }
+          ],
+          "lifted_depth_points": 596,
+          "target_metrics_evaluation_only": {
+            "iou": 0.04950615289193204,
+            "target_recall": 0.04950615289193204,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 6,
+          "proposal": {
+            "objectness_score": 0.15801839530467987,
+            "box_xyxy": [
+              549.9268798828125,
+              387.2785949707031,
+              596.97021484375,
+              406.2854309082031
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 6,
+            "mask_sha256": "d56d747ce5bb487337a488093201184df1e35fbd1d4a36df0e199337cd627a76"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0484355837663122,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 12,
+              "mutual_best": false,
+              "track_score": 0.0484355837663122
+            }
+          ],
+          "lifted_depth_points": 38,
+          "target_metrics_evaluation_only": {
+            "iou": 0.002429672004915123,
+            "target_recall": 0.002429672004915123,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 39,
+          "proposal": {
+            "objectness_score": 0.45073556900024414,
+            "box_xyxy": [
+              859.3190307617188,
+              482.2488098144531,
+              959.9041442871094,
+              539.9328918457031
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 39,
+            "mask_sha256": "e3d1ecc24620ef0dffea5d78768109dac5ad82f377b3147fd04a4aee54a54989"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 82,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 2,
+          "proposal": {
+            "objectness_score": 0.24398374557495117,
+            "box_xyxy": [
+              857.4276733398438,
+              481.5026550292969,
+              958.3901977539062,
+              538.7074584960938
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 2,
+            "mask_sha256": "e8aaf429257f389e7529dbd12833049cd1e3f85563ec774536e5303d29964067"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 82,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 43,
+          "proposal": {
+            "objectness_score": 0.18432436883449554,
+            "box_xyxy": [
+              859.6737365722656,
+              502.9544677734375,
+              959.807861328125,
+              539.9564819335938
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 43,
+            "mask_sha256": "fcd1f0b917a3e421d7f72142e200022842a8eb3a1c908bec5f1e1397cd1b56a1"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 83,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 40,
+          "proposal": {
+            "objectness_score": 0.2849629521369934,
+            "box_xyxy": [
+              882.908935546875,
+              482.4217834472656,
+              919.7285766601562,
+              515.0710144042969
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 40,
+            "mask_sha256": "d4a3a94adfb1d247011ee70406b7d1e6a73e2890421feb7795b5cc4980da9f4c"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 36,
+          "proposal": {
+            "objectness_score": 0.22066286206245422,
+            "box_xyxy": [
+              0.0065174102783203125,
+              427.4685287475586,
+              101.86933135986328,
+              462.2106170654297
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 36,
+            "mask_sha256": "98caa55d69d99746ba578f4e106d3fd7b2fd230cb87b32afe44a07bd4a6a7a91"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.009522805243250852,
+            "target_recall": 0.009523687867983119,
+            "proposal_precision": 0.9903617124448588
+          }
+        },
+        {
+          "candidate_index": 3,
+          "proposal": {
+            "objectness_score": 0.21519099175930023,
+            "box_xyxy": [
+              883.06298828125,
+              481.932861328125,
+              920.4359130859375,
+              514.1494750976562
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 3,
+            "mask_sha256": "6a6048c0a98fd0b3c3d12d37cecc7e0b3544c0fdead81fbc48da20f740343181"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 4,
+          "proposal": {
+            "objectness_score": 0.20859812200069427,
+            "box_xyxy": [
+              882.662109375,
+              481.9000549316406,
+              958.1488037109375,
+              534.0507202148438
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 8,
+            "postprocess_index": 4,
+            "mask_sha256": "7a7c58c45ddb91f775019e49b2bae8fb09c2fa994924bd1380a43488ad92a492"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 22,
+          "proposal": {
+            "objectness_score": 0.12685053050518036,
+            "box_xyxy": [
+              0.01968669891357422,
+              76.08245086669922,
+              87.59780883789062,
+              215.93603515625
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 22,
+            "mask_sha256": "858eb3ae6ff2f383ce9c62352c41357fe1db348f771c9c403f2d5126f749d319"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_initial_2_query->FDV_initial_1_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            },
+            {
+              "edge": "FDV_initial_2_query->FDV_action_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.032901754892484904,
+            "target_recall": 0.03291386597713439,
+            "proposal_precision": 0.9889400025973427
+          }
+        }
+      ]
+    },
+    {
+      "query_key": "FDV_action_query",
+      "frame": 5,
+      "candidate_count": 47,
+      "proposal_opportunity": true,
+      "best_reachable_iou_evaluation_only": 0.9579781778703162,
+      "objectness_rank": 31,
+      "track_rank": 14,
+      "rank_improvement_over_objectness": 17,
+      "track_recall_at_3": false,
+      "track_top1_iou_evaluation_only": 0.8835767205110783,
+      "ranked_candidates": [
+        {
+          "candidate_index": 0,
+          "proposal": {
+            "objectness_score": 0.4296741187572479,
+            "box_xyxy": [
+              2.6386356353759766,
+              52.332462310791016,
+              624.7272338867188,
+              534.7247924804688
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 0,
+            "mask_sha256": "32d3aa832bde7beb21b2f874e48b1178d36a30a52c4c896e6b79b461edb13a9f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.972045966521819,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": true,
+              "track_score": 0.972045966521819
+            }
+          ],
+          "lifted_depth_points": 15645,
+          "target_metrics_evaluation_only": {
+            "iou": 0.8835767205110783,
+            "target_recall": 0.8855074251292717,
+            "proposal_precision": 0.9975384480441111
+          }
+        },
+        {
+          "candidate_index": 12,
+          "proposal": {
+            "objectness_score": 0.11722363531589508,
+            "box_xyxy": [
+              3.6936092376708984,
+              42.36968994140625,
+              839.0722045898438,
+              534.7470703125
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 8,
+            "postprocess_index": 12,
+            "mask_sha256": "ad785b86d8e5be2b23853261b462387e2541dd70756b49f2b3a769b481fe2b0b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9642771047292775,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 10,
+              "mutual_best": true,
+              "track_score": 0.9642771047292775
+            }
+          ],
+          "lifted_depth_points": 16701,
+          "target_metrics_evaluation_only": {
+            "iou": 0.7237687432111395,
+            "target_recall": 0.9307478801306182,
+            "proposal_precision": 0.7649634609285227
+          }
+        },
+        {
+          "candidate_index": 7,
+          "proposal": {
+            "objectness_score": 0.1433703899383545,
+            "box_xyxy": [
+              301.32037353515625,
+              133.68063354492188,
+              437.6618347167969,
+              446.8250732421875
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 7,
+            "mask_sha256": "65d59f018c3974b114257e8030641a8524c5cfcde9e5b80452cd37b4f949da80"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9326668206076916,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 11,
+              "mutual_best": true,
+              "track_score": 0.9326668206076916
+            }
+          ],
+          "lifted_depth_points": 2628,
+          "target_metrics_evaluation_only": {
+            "iou": 0.12629395870861646,
+            "target_recall": 0.12629395870861646,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 8,
+          "proposal": {
+            "objectness_score": 0.13772422075271606,
+            "box_xyxy": [
+              465.22967529296875,
+              133.1170196533203,
+              562.646484375,
+              409.1640930175781
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 8,
+            "mask_sha256": "aa184e650f7394decc671e4f987445e0f49052f61a20d96342f010bd709b9e12"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.9272739327800826,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 13,
+              "mutual_best": true,
+              "track_score": 0.9272739327800826
+            }
+          ],
+          "lifted_depth_points": 1749,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07954758053624131,
+            "target_recall": 0.07954758053624131,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 44,
+          "proposal": {
+            "objectness_score": 0.15000075101852417,
+            "box_xyxy": [
+              576.2200698852539,
+              438.4943084716797,
+              847.27392578125,
+              539.9898223876953
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 44,
+            "mask_sha256": "0c132cd574a8ab9c3227c5202db266f33689205b968a2902063624233b38e196"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8871077178925194,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 44,
+              "mutual_best": true,
+              "track_score": 0.8871077178925194
+            }
+          ],
+          "lifted_depth_points": 564,
+          "target_metrics_evaluation_only": {
+            "iou": 0.018331011789800265,
+            "target_recall": 0.019465940860596893,
+            "proposal_precision": 0.23920102433008575
+          }
+        },
+        {
+          "candidate_index": 3,
+          "proposal": {
+            "objectness_score": 0.18417812883853912,
+            "box_xyxy": [
+              4.060020446777344,
+              3.49465012550354,
+              953.9576416015625,
+              535.7920532226562
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 3,
+            "mask_sha256": "25bf64ca8bc3d55ce7f92599b6e7d35c18cb6ca627b1bfc50bce9478174bf41b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.8693633181654251,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 5,
+              "mutual_best": true,
+              "track_score": 0.8693633181654251
+            }
+          ],
+          "lifted_depth_points": 23906,
+          "target_metrics_evaluation_only": {
+            "iou": 0.6666008743669981,
+            "target_recall": 0.9982161776409548,
+            "proposal_precision": 0.6673958913515229
+          }
+        },
+        {
+          "candidate_index": 4,
+          "proposal": {
+            "objectness_score": 0.1628880649805069,
+            "box_xyxy": [
+              420.929443359375,
+              0.1068994402885437,
+              789.7259521484375,
+              97.34953308105469
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 4,
+            "mask_sha256": "77a17fb8e738421d1e431b4b512428b41cb77b3ea93fee33f87c808e552e367c"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.769512943782276,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 15,
+              "mutual_best": true,
+              "track_score": 0.769512943782276
+            }
+          ],
+          "lifted_depth_points": 1660,
+          "target_metrics_evaluation_only": {
+            "iou": 0.05627622630663411,
+            "target_recall": 0.05892992837509904,
+            "proposal_precision": 0.5554979644260657
+          }
+        },
+        {
+          "candidate_index": 22,
+          "proposal": {
+            "objectness_score": 0.148980513215065,
+            "box_xyxy": [
+              0.0,
+              50.62445831298828,
+              383.9561462402344,
+              215.7965850830078
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 22,
+            "mask_sha256": "c7e9d819bef261e05cb7d85ba89ef8907ee4eb19ac1fbf733575365b68f6511c"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.7421214475295541,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 20,
+              "mutual_best": true,
+              "track_score": 0.7421214475295541
+            }
+          ],
+          "lifted_depth_points": 1287,
+          "target_metrics_evaluation_only": {
+            "iou": 0.18518335386002183,
+            "target_recall": 0.18556064650602833,
+            "proposal_precision": 0.9891395434557554
+          }
+        },
+        {
+          "candidate_index": 26,
+          "proposal": {
+            "objectness_score": 0.24601368606090546,
+            "box_xyxy": [
+              576.0854301452637,
+              0.0,
+              789.5302734375,
+              215.94757080078125
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 26,
+            "mask_sha256": "c3b338be4d544a1e01d5e9d606f35faf0feac06217628aff2b416b345a425d18"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6693754963502926,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": true,
+              "track_score": 0.6693754963502926
+            }
+          ],
+          "lifted_depth_points": 824,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03775448208204169,
+            "target_recall": 0.04134135135950469,
+            "proposal_precision": 0.30320806639173603
+          }
+        },
+        {
+          "candidate_index": 32,
+          "proposal": {
+            "objectness_score": 0.3451857268810272,
+            "box_xyxy": [
+              98.97366333007812,
+              324.0,
+              269.181640625,
+              502.5350341796875
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 32,
+            "mask_sha256": "0bafde36f3efc4278d816b08dcb0e03d39cb807e655ecf130c09221adcd385d8"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6690146823211657,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 35,
+              "mutual_best": true,
+              "track_score": 0.6690146823211657
+            }
+          ],
+          "lifted_depth_points": 217,
+          "target_metrics_evaluation_only": {
+            "iou": 0.08989039515305898,
+            "target_recall": 0.08989039515305898,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 14,
+          "proposal": {
+            "objectness_score": 0.10592825710773468,
+            "box_xyxy": [
+              617.1891479492188,
+              6.122775077819824,
+              957.6586303710938,
+              536.7715454101562
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 13,
+            "postprocess_index": 14,
+            "mask_sha256": "f87a8e286a8f699fceaa2e515f7e60cfcf86b5b001e8757756d8babcefb1df11"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.6269732027218449,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 26,
+              "mutual_best": true,
+              "track_score": 0.6269732027218449
+            }
+          ],
+          "lifted_depth_points": 8478,
+          "target_metrics_evaluation_only": {
+            "iou": 0.027253804062181714,
+            "target_recall": 0.040709709415541334,
+            "proposal_precision": 0.0761732914501165
+          }
+        },
+        {
+          "candidate_index": 43,
+          "proposal": {
+            "objectness_score": 0.16400647163391113,
+            "box_xyxy": [
+              576.0407037734985,
+              324.0,
+              625.2923583984375,
+              460.1538391113281
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 43,
+            "mask_sha256": "844b3ac630e893f614021bbb0d79e11b3740eb96b8531319747897afe540dd2a"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.5107498031061545,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 46,
+              "mutual_best": true,
+              "track_score": 0.5107498031061545
+            }
+          ],
+          "lifted_depth_points": 105,
+          "target_metrics_evaluation_only": {
+            "iou": 0.019836298945702546,
+            "target_recall": 0.019836298945702543,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 15,
+          "proposal": {
+            "objectness_score": 0.4132513701915741,
+            "box_xyxy": [
+              198.29705810546875,
+              79.61426544189453,
+              246.41763305664062,
+              134.0579833984375
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 15,
+            "mask_sha256": "98763262ffd3a874367f50e98c688e833bda4e6cbfebd90167aa792f9978faa4"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 1,
+          "track_score": 0.49508617321956194,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": true,
+              "track_score": 0.49508617321956194
+            }
+          ],
+          "lifted_depth_points": 103,
+          "target_metrics_evaluation_only": {
+            "iou": 0.007749764600978172,
+            "target_recall": 0.007749764600978172,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 5,
+          "proposal": {
+            "objectness_score": 0.1585804671049118,
+            "box_xyxy": [
+              1.4555168151855469,
+              1.9081610441207886,
+              626.1956176757812,
+              536.1669311523438
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 14,
+            "postprocess_index": 5,
+            "mask_sha256": "6a6469348b161cceb54c02710a91934975148d9ef99c20fd8c4ce80cb4566e88"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.959988306666305,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": false,
+              "track_score": 0.959988306666305
+            }
+          ],
+          "lifted_depth_points": 16897,
+          "target_metrics_evaluation_only": {
+            "iou": 0.9579781778703162,
+            "target_recall": 0.9723376018554953,
+            "proposal_precision": 0.9848182990834861
+          }
+        },
+        {
+          "candidate_index": 6,
+          "proposal": {
+            "objectness_score": 0.15148445963859558,
+            "box_xyxy": [
+              3.6005687713623047,
+              5.954342842102051,
+              792.1626586914062,
+              535.1416625976562
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 11,
+            "postprocess_index": 6,
+            "mask_sha256": "a5318af1bee6716736c4215aab4f44786cbcbb3d7592d6e4798ffe38c956868a"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.939019344502992,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": false,
+              "track_score": 0.939019344502992
+            }
+          ],
+          "lifted_depth_points": 19030,
+          "target_metrics_evaluation_only": {
+            "iou": 0.8057035415756211,
+            "target_recall": 0.9969867351043799,
+            "proposal_precision": 0.8076703285943273
+          }
+        },
+        {
+          "candidate_index": 9,
+          "proposal": {
+            "objectness_score": 0.13262268900871277,
+            "box_xyxy": [
+              83.36296844482422,
+              69.54187774658203,
+              568.8495483398438,
+              500.537841796875
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 12,
+            "postprocess_index": 9,
+            "mask_sha256": "b38e9b8ce457d7a70d3a91842054e38a370467cbe41c4679d69becaca0fd7c52"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.874159365042815,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.874159365042815
+            }
+          ],
+          "lifted_depth_points": 11906,
+          "target_metrics_evaluation_only": {
+            "iou": 0.6189568313609096,
+            "target_recall": 0.6189568313609096,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 29,
+          "proposal": {
+            "objectness_score": 0.18801350891590118,
+            "box_xyxy": [
+              576.0379943847656,
+              0.0,
+              788.5382385253906,
+              144.91302490234375
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 29,
+            "mask_sha256": "6c6685133acd8948b1fac7796df086e8b20686666d9ff5959a21db49c37c796f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6674523671946895,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.6674523671946895
+            }
+          ],
+          "lifted_depth_points": 790,
+          "target_metrics_evaluation_only": {
+            "iou": 0.025621708010198085,
+            "target_recall": 0.027257244902483685,
+            "proposal_precision": 0.29923002792735603
+          }
+        },
+        {
+          "candidate_index": 27,
+          "proposal": {
+            "objectness_score": 0.23998509347438812,
+            "box_xyxy": [
+              576.0772933959961,
+              0.0,
+              788.6986389160156,
+              135.28419494628906
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 27,
+            "mask_sha256": "1377d924994d59fc837df18ecea1a16404a54f7d9cb0901b8c42b25ed103fc26"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6603474087248647,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.6603474087248647
+            }
+          ],
+          "lifted_depth_points": 778,
+          "target_metrics_evaluation_only": {
+            "iou": 0.023901060966671578,
+            "target_recall": 0.02532933554493995,
+            "proposal_precision": 0.2976870522947989
+          }
+        },
+        {
+          "candidate_index": 35,
+          "proposal": {
+            "objectness_score": 0.1774209588766098,
+            "box_xyxy": [
+              97.49461364746094,
+              324.0,
+              319.0485534667969,
+              503.95062255859375
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 35,
+            "mask_sha256": "f924ee03ca45c64a9f45451712790dc10430ac92bf1254b7b8cb3a8be9f533b3"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6536952836514778,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 35,
+              "mutual_best": false,
+              "track_score": 0.6536952836514778
+            }
+          ],
+          "lifted_depth_points": 191,
+          "target_metrics_evaluation_only": {
+            "iou": 0.11793501283954891,
+            "target_recall": 0.11793501283954891,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 25,
+          "proposal": {
+            "objectness_score": 0.2610026001930237,
+            "box_xyxy": [
+              576.0736656188965,
+              0.0,
+              788.6577758789062,
+              108.2894058227539
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 25,
+            "mask_sha256": "e33b7ba493bb5cc007a069f0ad524f81df5d3a3d1f8d27356ccaa243c536d748"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.6210831142454596,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.6210831142454596
+            }
+          ],
+          "lifted_depth_points": 753,
+          "target_metrics_evaluation_only": {
+            "iou": 0.019053193345847957,
+            "target_recall": 0.019970159515128264,
+            "proposal_precision": 0.2932613540758805
+          }
+        },
+        {
+          "candidate_index": 28,
+          "proposal": {
+            "objectness_score": 0.2386236935853958,
+            "box_xyxy": [
+              576.1498031616211,
+              0.0,
+              788.2583618164062,
+              98.51294708251953
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 28,
+            "mask_sha256": "7dad8dee4c15aef3f3dbdb8c2b3c71873b462e96776991b51ec2fe2ab1dd9d8e"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5773502691896257,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.5773502691896257
+            }
+          ],
+          "lifted_depth_points": 722,
+          "target_metrics_evaluation_only": {
+            "iou": 0.017252631020146326,
+            "target_recall": 0.018008331643908294,
+            "proposal_precision": 0.291348004570376
+          }
+        },
+        {
+          "candidate_index": 31,
+          "proposal": {
+            "objectness_score": 0.5613672733306885,
+            "box_xyxy": [
+              0.06360626220703125,
+              324.0,
+              384.0,
+              539.9654693603516
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 31,
+            "mask_sha256": "2f02eb6fa1058ed906e075a7560216d3899431aa991bc01bf1bdcf6ea649b50d"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5656411465517371,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": false,
+              "track_score": 0.5656411465517371
+            }
+          ],
+          "lifted_depth_points": 5034,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2375378678165151,
+            "target_recall": 0.23902298954950277,
+            "proposal_precision": 0.9745096573750489
+          }
+        },
+        {
+          "candidate_index": 11,
+          "proposal": {
+            "objectness_score": 0.11883994936943054,
+            "box_xyxy": [
+              88.3127212524414,
+              62.94704055786133,
+              268.9547424316406,
+              502.3626403808594
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 11,
+            "mask_sha256": "9884a2946cbf97d17f3e4e4d0e8c4efed9595299bddc34b04cd1ed614522b71a"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5254613493984898,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.5254613493984898
+            }
+          ],
+          "lifted_depth_points": 4167,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2348032925647485,
+            "target_recall": 0.23480329256474852,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 10,
+          "proposal": {
+            "objectness_score": 0.1291569173336029,
+            "box_xyxy": [
+              87.61408996582031,
+              125.09532928466797,
+              268.4639892578125,
+              501.0016174316406
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 10,
+            "postprocess_index": 10,
+            "mask_sha256": "7ca35e1838fffea6ab094093c050a763b3b8ec577f1b30fb87fa91a7cef4f946"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5105546832906804,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.5105546832906804
+            }
+          ],
+          "lifted_depth_points": 3774,
+          "target_metrics_evaluation_only": {
+            "iou": 0.20109801775361572,
+            "target_recall": 0.20109801775361572,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 20,
+          "proposal": {
+            "objectness_score": 0.18509195744991302,
+            "box_xyxy": [
+              89.98277282714844,
+              56.372337341308594,
+              247.6793975830078,
+              153.09915161132812
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 20,
+            "mask_sha256": "1902ef2c016eb8ba0466ffabe76e9c65332e8eae6f3e1e8607ea8f0358a343ff"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5083855408181949,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 23,
+              "mutual_best": false,
+              "track_score": 0.5083855408181949
+            }
+          ],
+          "lifted_depth_points": 325,
+          "target_metrics_evaluation_only": {
+            "iou": 0.04512105133116959,
+            "target_recall": 0.04512105133116959,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 41,
+          "proposal": {
+            "objectness_score": 0.2844832241535187,
+            "box_xyxy": [
+              576.0,
+              324.0,
+              959.9300231933594,
+              539.9643402099609
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 20,
+            "postprocess_index": 41,
+            "mask_sha256": "13cf26f4122d9fb4003575ddd178da2b2dbaa78f716da7c51a78178e83aba31b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.5075138512080214,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 44,
+              "mutual_best": false,
+              "track_score": 0.5075138512080214
+            }
+          ],
+          "lifted_depth_points": 200,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03515504669548261,
+            "target_recall": 0.04229078297831564,
+            "proposal_precision": 0.17242557225071228
+          }
+        },
+        {
+          "candidate_index": 23,
+          "proposal": {
+            "objectness_score": 0.4548191428184509,
+            "box_xyxy": [
+              576.056339263916,
+              0.04361915588378906,
+              959.9814147949219,
+              216.0
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 23,
+            "mask_sha256": "fddad817ae14671a6373a39606ab31a43500180f72702db6367c9855087e5a69"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.49794871171510785,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.49794871171510785
+            }
+          ],
+          "lifted_depth_points": 756,
+          "target_metrics_evaluation_only": {
+            "iou": 0.034363401793490955,
+            "target_recall": 0.04136968365482166,
+            "proposal_precision": 0.1686785088449843
+          }
+        },
+        {
+          "candidate_index": 1,
+          "proposal": {
+            "objectness_score": 0.32968974113464355,
+            "box_xyxy": [
+              198.62161254882812,
+              79.88139343261719,
+              243.78256225585938,
+              129.2027587890625
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 1,
+            "mask_sha256": "85f38319ef405d9e5eb34d5cfbf169c780468ee5e4361664e7b83cb758c97768"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4808174708099782,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": false,
+              "track_score": 0.4808174708099782
+            }
+          ],
+          "lifted_depth_points": 99,
+          "target_metrics_evaluation_only": {
+            "iou": 0.006588826698365015,
+            "target_recall": 0.006588826698365015,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 16,
+          "proposal": {
+            "objectness_score": 0.38445189595222473,
+            "box_xyxy": [
+              196.13494873046875,
+              56.76593017578125,
+              247.09408569335938,
+              136.58860778808594
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 16,
+            "mask_sha256": "cde1bf8e34c87c304f240cd41c2463f994a763e04a1fb438a05bee3e7ba0a29b"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4613103074104106,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": false,
+              "track_score": 0.4613103074104106
+            }
+          ],
+          "lifted_depth_points": 157,
+          "target_metrics_evaluation_only": {
+            "iou": 0.01203256687121899,
+            "target_recall": 0.01203256687121899,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 2,
+          "proposal": {
+            "objectness_score": 0.2796296775341034,
+            "box_xyxy": [
+              194.31089782714844,
+              56.39434814453125,
+              245.8335723876953,
+              132.2433319091797
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 2,
+            "mask_sha256": "33cb0ff0c122706f9a22bf61bc09cee01a5a9fdaa7afd84b5a1256cb191ace8c"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4341889182587877,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 19,
+              "mutual_best": false,
+              "track_score": 0.4341889182587877
+            }
+          ],
+          "lifted_depth_points": 154,
+          "target_metrics_evaluation_only": {
+            "iou": 0.01156000690711244,
+            "target_recall": 0.01156000690711244,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 33,
+          "proposal": {
+            "objectness_score": 0.3030588924884796,
+            "box_xyxy": [
+              96.50841522216797,
+              324.0,
+              383.7987365722656,
+              539.9633331298828
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 33,
+            "mask_sha256": "ae5f384f1885f9a0c082d426e688c672270fef50f2cdd5552e596a73d9b57577"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.4337512671163825,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": false,
+              "track_score": 0.4337512671163825
+            }
+          ],
+          "lifted_depth_points": 2991,
+          "target_metrics_evaluation_only": {
+            "iou": 0.18029419043940156,
+            "target_recall": 0.18078872247337716,
+            "proposal_precision": 0.985054799304731
+          }
+        },
+        {
+          "candidate_index": 34,
+          "proposal": {
+            "objectness_score": 0.2730061411857605,
+            "box_xyxy": [
+              307.7318420410156,
+              324.0,
+              383.9313049316406,
+              447.82154846191406
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 34,
+            "mask_sha256": "81bf8adbd768fcb3a9223d11c69d474db01d9c8a15b5c8a37403424ca5a2eff1"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.39135404547133684,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 11,
+              "mutual_best": false,
+              "track_score": 0.39135404547133684
+            }
+          ],
+          "lifted_depth_points": 460,
+          "target_metrics_evaluation_only": {
+            "iou": 0.027909886398193313,
+            "target_recall": 0.027909886398193313,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 45,
+          "proposal": {
+            "objectness_score": 0.1493164300918579,
+            "box_xyxy": [
+              576.0,
+              412.5814971923828,
+              605.9536399841309,
+              458.35003662109375
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 45,
+            "mask_sha256": "4b5a2a2c7735bbe3f8072400554c261e3afac00b44aacefe339b04df792c79ba"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.37670462351616363,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 46,
+              "mutual_best": false,
+              "track_score": 0.37670462351616363
+            }
+          ],
+          "lifted_depth_points": 45,
+          "target_metrics_evaluation_only": {
+            "iou": 0.004055333608525575,
+            "target_recall": 0.004055333608525575,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 38,
+          "proposal": {
+            "objectness_score": 0.11957749724388123,
+            "box_xyxy": [
+              103.60810852050781,
+              412.594482421875,
+              383.75079345703125,
+              539.6614685058594
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 38,
+            "mask_sha256": "bb91a6670bdf7d4e8c5cdcf2d2c6519c8d90168498d91c64f0683b71aac20259"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.3629552685195626,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 38,
+              "mutual_best": false,
+              "track_score": 0.3629552685195626
+            }
+          ],
+          "lifted_depth_points": 1503,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10262510021459822,
+            "target_recall": 0.10287391726140552,
+            "proposal_precision": 0.9769747373209269
+          }
+        },
+        {
+          "candidate_index": 37,
+          "proposal": {
+            "objectness_score": 0.12654058635234833,
+            "box_xyxy": [
+              98.04792785644531,
+              324.0,
+              383.6873779296875,
+              504.6015167236328
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 37,
+            "mask_sha256": "b2e4537613ac5e9550101d22d92167336aadfd75a7899fb522893d01694a39e6"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.33004691176538803,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 34,
+              "mutual_best": false,
+              "track_score": 0.33004691176538803
+            }
+          ],
+          "lifted_depth_points": 1630,
+          "target_metrics_evaluation_only": {
+            "iou": 0.15259823462339633,
+            "target_recall": 0.15259823462339633,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 17,
+          "proposal": {
+            "objectness_score": 0.3544279634952545,
+            "box_xyxy": [
+              0.038177490234375,
+              0.2677466869354248,
+              384.0,
+              215.75901794433594
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 17,
+            "mask_sha256": "7ddcfe0ed96e59680f514f99334af7d8e94366689a186ca9529bcd0a106cf69f"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.2841248462770664,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 23,
+              "mutual_best": false,
+              "track_score": 0.2841248462770664
+            }
+          ],
+          "lifted_depth_points": 1801,
+          "target_metrics_evaluation_only": {
+            "iou": 0.23119689975123373,
+            "target_recall": 0.23374245551433345,
+            "proposal_precision": 0.9550144583901755
+          }
+        },
+        {
+          "candidate_index": 24,
+          "proposal": {
+            "objectness_score": 0.32824063301086426,
+            "box_xyxy": [
+              615.0391845703125,
+              0.0,
+              959.5736389160156,
+              215.9644317626953
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 24,
+            "mask_sha256": "0ac982e4ca37781e92282716bf318440beb53f0e4cc2586d2ba83024b84656b1"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.24424224932012578,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 29,
+              "mutual_best": false,
+              "track_score": 0.24424224932012578
+            }
+          ],
+          "lifted_depth_points": 613,
+          "target_metrics_evaluation_only": {
+            "iou": 0.014424738727098714,
+            "target_recall": 0.017349398095632164,
+            "proposal_precision": 0.07882420414914251
+          }
+        },
+        {
+          "candidate_index": 39,
+          "proposal": {
+            "objectness_score": 0.42507582902908325,
+            "box_xyxy": [
+              617.2490730285645,
+              324.0,
+              959.7208862304688,
+              539.9466247558594
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 39,
+            "mask_sha256": "46ec357ada3d73fa615d3f35ac59803cc98240cb5e181cb131c87553e3d0c339"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.1390147969090101,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 5,
+              "mutual_best": false,
+              "track_score": 0.1390147969090101
+            }
+          ],
+          "lifted_depth_points": 2841,
+          "target_metrics_evaluation_only": {
+            "iou": 0.013583439820871174,
+            "target_recall": 0.016333183080762842,
+            "proposal_precision": 0.07466028592064668
+          }
+        },
+        {
+          "candidate_index": 18,
+          "proposal": {
+            "objectness_score": 0.2743024528026581,
+            "box_xyxy": [
+              298.3478698730469,
+              130.11692810058594,
+              383.9888000488281,
+              215.97122192382812
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 18,
+            "mask_sha256": "ffda7b303f8b5cf0bd1506ae2e1b08d3b04991de6d9e5f4a90dcb410b1f3a606"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.09751145826955956,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 7,
+              "mutual_best": false,
+              "track_score": 0.09751145826955956
+            }
+          ],
+          "lifted_depth_points": 137,
+          "target_metrics_evaluation_only": {
+            "iou": 0.02174970264901179,
+            "target_recall": 0.02174970264901179,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 36,
+          "proposal": {
+            "objectness_score": 0.16029813885688782,
+            "box_xyxy": [
+              0.0,
+              324.0,
+              115.6136474609375,
+              539.8890686035156
+            ],
+            "tile_id": "bottom_left",
+            "tile_xyxy": [
+              0,
+              324,
+              384,
+              540
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 36,
+            "mask_sha256": "5ecdf802d864d467ee3f384b43b1a953a7d93a733189b534faede3cef5533b68"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.09141003855292908,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 1,
+              "mutual_best": false,
+              "track_score": 0.09141003855292908
+            }
+          ],
+          "lifted_depth_points": 122,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06987163063908512,
+            "target_recall": 0.07013033219576753,
+            "proposal_precision": 0.9498525932032068
+          }
+        },
+        {
+          "candidate_index": 13,
+          "proposal": {
+            "objectness_score": 0.11234438419342041,
+            "box_xyxy": [
+              196.7591552734375,
+              55.96330642700195,
+              229.93040466308594,
+              83.31765747070312
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 13,
+            "mask_sha256": "f83232c80a60f451c37c7502a877f1179b634616ce16f81b5c032ea610e15583"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.07897471897389846,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 9,
+              "mutual_best": false,
+              "track_score": 0.07897471897389846
+            }
+          ],
+          "lifted_depth_points": 60,
+          "target_metrics_evaluation_only": {
+            "iou": 0.002684096793841442,
+            "target_recall": 0.002684096793841442,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 40,
+          "proposal": {
+            "objectness_score": 0.28596198558807373,
+            "box_xyxy": [
+              828.1992797851562,
+              484.1759033203125,
+              959.6455688476562,
+              540.0
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 40,
+            "mask_sha256": "9eef3af1c87a710cdbaf9b2bad56b1132f0534b6893623b29108a130dbf38958"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 1,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 19,
+          "proposal": {
+            "objectness_score": 0.23436930775642395,
+            "box_xyxy": [
+              199.26512145996094,
+              56.65431213378906,
+              233.31619262695312,
+              81.75467681884766
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 19,
+            "mask_sha256": "f783cfe5eb47bcb9739ffbe35dbbf662d97433a06e67f5c65107c45d500617d5"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 47,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0025282542013620856,
+            "target_recall": 0.0025282542013620856,
+            "proposal_precision": 1.0
+          }
+        },
+        {
+          "candidate_index": 30,
+          "proposal": {
+            "objectness_score": 0.1870778650045395,
+            "box_xyxy": [
+              713.5397491455078,
+              0.0,
+              789.0055236816406,
+              57.738094329833984
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 30,
+            "mask_sha256": "258aa5f591eda6775088c1b416820a58922d049c282164be8368012bd3f97af8"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 233,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 42,
+          "proposal": {
+            "objectness_score": 0.18258148431777954,
+            "box_xyxy": [
+              786.9156188964844,
+              324.0068299770355,
+              959.8789672851562,
+              539.9001922607422
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 42,
+            "mask_sha256": "e00c6ef2a477c4cf2ce7652c83707e1dd4056a5e3bb20926af3d9177d307a499"
+          },
+          "depth_supported": true,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 3,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "candidate_index": 21,
+          "proposal": {
+            "objectness_score": 0.1568213403224945,
+            "box_xyxy": [
+              0.037767648696899414,
+              122.34600067138672,
+              19.86629867553711,
+              215.98500061035156
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 21,
+            "mask_sha256": "25f084262176e1658c63af940400c5fdf0674fd6c002b5d07b70375ab2513aa4"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.004342790069760613,
+            "target_recall": 0.004347760727467192,
+            "proposal_precision": 0.7916047645260547
+          }
+        },
+        {
+          "candidate_index": 46,
+          "proposal": {
+            "objectness_score": 0.13974879682064056,
+            "box_xyxy": [
+              871.5513305664062,
+              484.87628173828125,
+              959.6108093261719,
+              539.9742736816406
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 46,
+            "mask_sha256": "cbe4da0687d2a25621af3845a9a11fcbf9d129938ad2a96bbcf316af2dec7b85"
+          },
+          "depth_supported": false,
+          "mutual_best_edge_count": 0,
+          "track_score": 0.0,
+          "edges": [
+            {
+              "edge": "FDV_action_query->FDV_initial_2_query",
+              "partner_index": 0,
+              "mutual_best": false,
+              "track_score": 0.0
+            }
+          ],
+          "lifted_depth_points": 0,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "query_count": 3,
+    "proposal_opportunity_frames": 3,
+    "objectness_recall_at_3_frames": 0,
+    "track_recall_at_3_frames": 2,
+    "improved_over_objectness_frames": 3,
+    "regressed_from_objectness_frames": 0,
+    "minimum_best_reachable_iou": 0.9579781778703162,
+    "mean_best_reachable_iou": 0.9679907777806603,
+    "minimum_track_top1_iou": 0.8835767205110783,
+    "mean_track_top1_iou": 0.9431902919942479,
+    "depth_unsupported_candidates": 8
+  },
+  "literature_motivation": [
+    {
+      "name": "MV3DIS",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf",
+      "use": "Depth-consistent 3D coverage supplies multi-view mask association rather than per-frame appearance confidence."
+    },
+    {
+      "name": "SAMPro3D",
+      "url": "https://arxiv.org/html/2311.17707",
+      "use": "Posed RGB-D lifting gives view-consistent SAM evidence without task-specific training."
+    }
+  ],
+  "gate": {
+    "minimum_opportunity_iou": 0.5,
+    "required_opportunity_frames": 3,
+    "required_track_recall_at_3_frames": 3,
+    "requirements": "All three fresh frames must contain a proposal with IoU at least 0.5, and the highest-IoU reachable proposal must enter the geometry-only top three in all three frames.",
+    "met": false
+  },
+  "runtime": {
+    "rgb_members_opened": 3,
+    "grounding_dino_calls": 15,
+    "sam_mask_calls": 3,
+    "appearance_model_calls": 0,
+    "model_training_steps": 0
+  },
+  "conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_FRESH_CONFIRMATION_GATE_NOT_MET",
+  "next_action": "Seal this fresh confirmation negative and do not tune on queue row 2; return to active view selection that maximizes track separation rather than track persistence.",
+  "claim_boundary": "This fresh target-family confirmation evaluates proposal opportunity and geometry-only candidate recall. It does not identify target ownership or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
