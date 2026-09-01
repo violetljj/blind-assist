@@ -1,0 +1,99 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v3",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_temporal_scale_vacancy_confirmation_candidate_protocol_v1.json",
+  "protocol_sha256": "5b932fbfbf7f8c37ce7ae25007f89ae188e4e2f2d9c9b6d998a62479874bc9f8",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access; do not select on future adjacency, temporal-link success or vacancy activation.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 102,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+    "rescan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+    "target_instance_id": 23,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      12,
+      23,
+      40,
+      57,
+      58
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9995231032371521,
+      0.03072882443666458,
+      0.0030356228817254305,
+      0,
+      -0.030715977773070335,
+      0.9995193481445312,
+      -0.0041913981549441814,
+      0,
+      -0.0031629607547074556,
+      0.004096156917512417,
+      0.9999865889549255,
+      0,
+      0.03968368470668793,
+      -0.09062295407056808,
+      0.0719367116689682,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "implementation": {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py",
+      "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"
+    },
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "reference_memory": "Require at least two positive-marginal greedy references, then fill at most one remaining slot from source-admitted views by maximum minimum camera-to-target angle; require exactly three references.",
+    "query_pair": "Among source-admitted target views, select one pair at frame gap at most one by maximum minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio and deterministic earlier frames.",
+    "same_scene_negative": "Require one source-admitted different-instance door or doorframe in the rescan.",
+    "source_is_evaluable_only_if": "The reference rule yields exactly three views, the query rule yields two distinct adjacent views, and the sibling exists before RGB/model access."
+  },
+  "claim_boundary": "This freezes a tenth family by metadata only. It is not source evaluability, RGB/model evidence, temporal-scale vacancy confirmation, top-one localization, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
