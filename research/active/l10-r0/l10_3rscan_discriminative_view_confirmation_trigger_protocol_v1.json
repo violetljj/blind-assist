@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-trigger-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-confirmation-trigger-protocol-v1",
+  "frozen_at": "2026-09-01T18:44:00+08:00",
+  "question": "Do the two initial unchanged rankings authorize opening the already frozen next-frame RGB observation without target truth?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_trigger.py",
+    "sha256": "5f5c619eaca1c09997694d590751fac043a03303f1d0febc1d05425b608eb25b"
+  },
+  "scorer_protocol": {
+    "path": "l10_3rscan_discriminative_view_confirmation_scorer_protocol_v1.json",
+    "sha256": "44317b7e00d47a15f00ac8cb6e2412ce09dcc1f106f37d119992421472c2f55b"
+  },
+  "scorer_result": {
+    "path": "l10_3rscan_discriminative_view_confirmation_scorer_result_v1.json",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-scorer-result-v1",
+    "required_conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SCORER_MATERIALIZED"
+  },
+  "policy": {
+    "initial_query_keys": ["FDV_initial_1_query", "FDV_initial_2_query"],
+    "action_query_key": "FDV_action_query",
+    "truth_free_trigger_threshold": 0.02,
+    "fixed_action": "NEXT_FRAME_FORWARD"
+  },
+  "evaluation": {
+    "minimum_iou": 0.5,
+    "truth_role": "IoU is reported only after the trigger decision and never enters trigger_value or action_authorized."
+  },
+  "final_outcome_gates": {
+    "wrong_top1_recovery": "If at least one initial view has wrong Top-1 while target Recall@3 is 2/2, require the triggered action view to put the target at Top-1 with IoU at least 0.5 and positive Top-1-minus-Top-2 margin.",
+    "margin_sharpening": "If both initial views are already target Top-1, require the triggered action view to retain target Top-1, exceed the maximum initial margin, and exceed the latest initial Top-1 target IoU. This is weaker than wrong-instance recovery.",
+    "no_trigger": "If minimum initial margin is above 0.02, do not open action RGB; record the policy as a truthful no-action result."
+  },
+  "next_action": {
+    "triggered": "Freeze an action-only scorer protocol that requires this trigger receipt, then open only FDV_action_query and apply the preregistered tiered outcome gates.",
+    "not_triggered": "Do not open FDV_action_query. Retain the no-action result and move to the physical-door instance-head branch rather than changing the threshold."
+  },
+  "forbidden_after_freeze": [
+    "open FDV_action_query before this trigger receipt authorizes it",
+    "use IoU, target rank, target identity or future action outcome in the trigger",
+    "change the 0.02 threshold, action frame, action direction, one-action budget or tiered outcome gates"
+  ],
+  "claim_boundary": "This receipt can authorize one fixed RGB observation from initial score ambiguity only. It is not action success, a learned or deployable selector, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
