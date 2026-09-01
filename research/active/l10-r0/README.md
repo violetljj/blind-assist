@@ -4619,7 +4619,35 @@ confirmation. It is not permission to retune this family, inspect truth during
 generation, enlarge the unbounded set, or claim portal ownership, affordance,
 waypoint, arrival, handoff, benefit, reliability, or safety.
 
+A single failure-driven structural successor addressed that exact reachability
+gap. It selected the adjacent query candidate with the greatest agreement among
+the three preserved contributors, used official depth calibration to obtain its
+median metric depth, backprojected the four rectangle corners, and transformed
+them through the official camera poses into the missing frame. It added no
+padding, learned parameter, truth-selected anchor, extra model call, or fourth
+hypothesis. The anchor was frame `535`, supported by all three contributors;
+`4,541` valid depth pixels gave median depth `4.14 m`. The propagated frame-534
+box reached IoU `0.794542`, versus `0.020595` for the preserved set, and the
+anchor remained at `0.806581`. Final bounded coverage was `2/2`, minimum/mean
+best IoU `0.794542/0.800561`, with one propagated and one incremental IoU-gate
+hit. Record `L10_3RSCAN_DEPTH_POSE_PROPAGATION_DEVELOPMENT_GATE_MET`.
+
+This is a visible proposal-generation repair, not merely another ranking
+change. It remains posthoc Development because the tenth family was consumed
+before the mechanism was frozen. Following the RGB-D geometric persistence
+motivation in [Seeing Behind Objects](https://openaccess.thecvf.com/content/CVPR2021/papers/Muller_Seeing_Behind_Objects_for_3D_Multi-Object_Tracking_in_RGB-D_Sequences_CVPR_2021_paper.pdf),
+the next test must transport the exact anchor agreement, median depth,
+camera-to-world convention, four-corner projection, zero padding, clipping and
+three-slot rule to an eleventh family frozen before download. Success would
+still be referent proposal evidence, not portal ownership, affordance, access,
+safety, waypoint, arrival or handoff.
+
 Evidence:
+
+- depth-pose propagation implementation/protocol/result SHA-256:
+  `0d9ca3597c9ec28c07811a82345b8c9c194bebeb3edc0f043abd93cca9d22ea5`,
+  `7e1e3a6ee3962a055fb84194d85bd685e4f4f8fb2c1de05cad159eb1d1e07b47`,
+  and `e8ff052e99e50adad7cc234e631a96128a27794c70ad4ee9da318a093ae7d2bb`.
 
 - tenth-family temporal-scale vacancy download/source/freeze/cohort,
   intermediate, confirmation implementation/protocol/result SHA-256:

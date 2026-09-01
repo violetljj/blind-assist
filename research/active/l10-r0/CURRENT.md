@@ -787,16 +787,18 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
-4. The ninth family's consumed temporal-scale vacancy repair rose from `1/2`
-   to `2/2`, but the unchanged fresh tenth-family replay failed at `1/2`.
-   Tenth-family proposal opportunity was only `1/2`; the covered frame reached
-   IoU `0.806581`, while the other frame's bounded set reached only `0.020595`.
-   The temporal link added no IoU-gate hit and no incremental hit. Freeze the
-   negative confirmation: do not retune weights or links on this consumed
-   family. The next structural branch must address proposal reachability by
-   generating a bounded adjacent-frame propagated box, then test that mechanism
-   on a new family. Proposal propagation remains referent evidence only, not
-   affordance, waypoint, arrival, or handoff.
+4. The unchanged fresh tenth-family temporal-scale replay failed at `1/2`
+   because proposal opportunity was only `1/2`; ranking-only temporal vacancy
+   had zero incremental hits. A failure-driven calibrated depth-pose successor
+   then selected the adjacent frame's three-contributor-agreement box and
+   reprojected its four corners at median anchor depth through official poses.
+   The generated box raised the missing frame from IoU `0.020595` to `0.794542`,
+   producing `2/2` coverage with minimum/mean IoU `0.794542/0.800561` and one
+   direct incremental hit. Freeze this as consumed-family Development. The next
+   authority-changing step is an eleventh pre-download-frozen family with an
+   adjacent admitted query pair and unchanged anchor, depth, pose, clipping,
+   vacancy, set-size and IoU rules. Proposal propagation remains referent
+   evidence only, not affordance, waypoint, arrival, or handoff.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -869,6 +871,8 @@ contract.
   [l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json](l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json)
 - Tenth-family temporal-scale vacancy fresh confirmation result:
   [l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json](l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json)
+- Consumed tenth-family depth-pose propagation Development result:
+  [l10_3rscan_depth_pose_propagation_posthoc_result_v1.json](l10_3rscan_depth_pose_propagation_posthoc_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

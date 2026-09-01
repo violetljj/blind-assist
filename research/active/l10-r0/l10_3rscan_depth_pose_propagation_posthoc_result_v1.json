@@ -1,0 +1,301 @@
+{
+  "schema": "blindassist-l10-3rscan-depth-pose-propagation-posthoc-result-v1",
+  "authority": "CONSUMED_TENTH_FAMILY_DEPTH_POSE_PROPAGATION_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_depth_pose_propagation_posthoc_protocol_v1.json",
+  "protocol_sha256": "7e1e3a6ee3962a055fb84194d85bd685e4f4f8fb2c1de05cad159eb1d1e07b47",
+  "implementation": {
+    "path": "l10_3rscan_depth_pose_propagation_posthoc.py",
+    "sha256": "0d9ca3597c9ec28c07811a82345b8c9c194bebeb3edc0f043abd93cca9d22ea5"
+  },
+  "conclusion": "L10_3RSCAN_DEPTH_POSE_PROPAGATION_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "anchor_selection": {
+    "query": "TSV2_query",
+    "candidate_key": [
+      "top_left",
+      19,
+      [
+        0.05120086669921875,
+        0.0005021095275878906,
+        384.0,
+        215.99998474121094
+      ]
+    ],
+    "mechanisms": [
+      "semantic_local_fusion",
+      "reference_scale_mixture",
+      "cross_view_reference_consensus"
+    ],
+    "mechanism_agreement_count": 3,
+    "layer18_nids_fused_score": 0.7573456764221191,
+    "query_tie_index": 1
+  },
+  "target_query": "TSV1_query",
+  "dominant_reference": "TSV2_reference",
+  "semantic_local_fusion_reference_votes": [
+    "TSV2_reference",
+    "TSV2_reference"
+  ],
+  "reference_area_fractions": [
+    0.4127728618535189,
+    0.4199436108042117,
+    0.43897135170792884
+  ],
+  "geometry_receipt": {
+    "anchor_frame": 535,
+    "target_frame": 534,
+    "valid_anchor_depth_pixels": 4541,
+    "median_anchor_depth_m": 4.14,
+    "projected_corner_pixels": [
+      [
+        17.054159668920022,
+        191.73838337062313
+      ],
+      [
+        380.1334850621443,
+        184.6871012207081
+      ],
+      [
+        377.6680302874443,
+        390.3515110956257
+      ],
+      [
+        -8.000228020417367,
+        398.45683416760653
+      ]
+    ],
+    "color_intrinsic": [
+      [
+        756.832,
+        0.0,
+        492.889
+      ],
+      [
+        0.0,
+        756.026,
+        270.419
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "depth_intrinsic": [
+      [
+        176.594,
+        0.0,
+        114.613
+      ],
+      [
+        0.0,
+        240.808,
+        85.7915
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "info_sha256": "25f983dfd4f47ac13e0ae21bf571badebf4cad8cfb594d19541248d0a95ec33b",
+    "depth_member": "frame-000535.depth.pgm",
+    "depth_sha256": "d8065b9e238a90c410f57be25882fa2f70603046681b8c61e35126e541a837d2",
+    "anchor_pose_member": "frame-000535.pose.txt",
+    "anchor_pose_sha256": "39cac62d12ce180852fd0a181175a4f1f05f8ff7ce0358d1826b5969cf77ee52",
+    "target_pose_member": "frame-000534.pose.txt",
+    "target_pose_sha256": "78ec81b75bcf457c50161c12f25317760f0299d3c9b2c9ac2f599f7c12607d2e"
+  },
+  "metrics": {
+    "query_count": 2,
+    "preserved_covered_queries": 1,
+    "final_covered_queries": 2,
+    "minimum_best_hypothesis_iou": 0.7945418222832143,
+    "mean_best_hypothesis_iou": 0.8005612323808269,
+    "propagated_iou_gate_queries": 1,
+    "propagated_incremental_iou_gate_queries": 1
+  },
+  "query_receipts": {
+    "TSV1_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "is_anchor_query": false,
+      "propagated_candidate_added": true,
+      "preserved_best_iou_evaluation_only": 0.02059475748925344,
+      "propagated_iou_evaluation_only": 0.7945418222832143,
+      "hypothesis_count": 3,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.46800506114959717,
+            "box_xyxy": [
+              576.1143264770508,
+              0.3023214340209961,
+              959.4581909179688,
+              215.50070190429688
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 24,
+            "target_memory_score": 0.5534890294075012,
+            "per_reference_scores": {
+              "TSV1_reference": 0.5450085997581482,
+              "TSV2_reference": 0.5534890294075012,
+              "TSV1_extra_reference": 0.5489789247512817
+            },
+            "winning_target_reference": "TSV2_reference",
+            "layer18_local_appearance_score": 0.7027339935302734,
+            "layer18_nids_fused_score": 0.6281115114688873,
+            "target_metrics_evaluation_only": {
+              "iou": 0.0
+            },
+            "descriptor_sha256": "8aeaa0afe5418dca1446520ed283133367739ed8172e4d807dd2027775a3470b",
+            "layer18_patch_sha256": "a5eb9f4e1291c6f1163834867146d2995e225b926e3afa1ca109a1ce1568c3a8",
+            "mask_sha256": "451fc4381f6ff9012c6e8cce8c4bc4595fcaf8c9176c15186e85dc60159751e1"
+          }
+        },
+        {
+          "mechanisms": [
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.23657113313674927,
+            "box_xyxy": [
+              393.0435485839844,
+              0.886271595954895,
+              957.731689453125,
+              537.3903198242188
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 4,
+            "postprocess_index": 3,
+            "target_memory_score": 0.44182831048965454,
+            "per_reference_scores": {
+              "TSV1_reference": 0.4059905409812927,
+              "TSV2_reference": 0.4073372185230255,
+              "TSV1_extra_reference": 0.44182831048965454
+            },
+            "winning_target_reference": "TSV1_extra_reference",
+            "layer18_local_appearance_score": 0.7193775177001953,
+            "layer18_nids_fused_score": 0.5806029140949249,
+            "target_metrics_evaluation_only": {
+              "iou": 0.02059475748925344
+            },
+            "descriptor_sha256": "223d8c3ba0b2378e5153ed39637e2d38a1b5107a86666c9678c65347fc7c593f",
+            "layer18_patch_sha256": "655f510e8ef55e030e9f265befb407e19acfef693835b93d17b7648b1db08fa7",
+            "mask_sha256": "2c3a2afced7ab75ab69c29cc0ea7caa68bb874fa0c8f7d7d82d577bbbc2de86c"
+          }
+        },
+        {
+          "mechanisms": [
+            "depth_pose_rectangle_propagation"
+          ],
+          "candidate": {
+            "box_xyxy": [
+              0.0,
+              184.6871012207081,
+              380.1334850621443,
+              398.45683416760653
+            ],
+            "anchor_query": "TSV2_query",
+            "anchor_candidate_key": [
+              "top_left",
+              19,
+              [
+                0.05120086669921875,
+                0.0005021095275878906,
+                384.0,
+                215.99998474121094
+              ]
+            ],
+            "anchor_mechanisms": [
+              "semantic_local_fusion",
+              "reference_scale_mixture",
+              "cross_view_reference_consensus"
+            ],
+            "target_metrics_evaluation_only": {
+              "iou": 0.7945418222832143
+            }
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.7945418222832143,
+      "target_covered_at_iou_gate": true
+    },
+    "TSV2_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "is_anchor_query": true,
+      "propagated_candidate_added": false,
+      "preserved_best_iou_evaluation_only": 0.8065806424784395,
+      "propagated_iou_evaluation_only": null,
+      "hypothesis_count": 1,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "reference_scale_mixture",
+            "cross_view_reference_consensus"
+          ],
+          "candidate": {
+            "objectness_score": 0.2531871497631073,
+            "box_xyxy": [
+              0.05120086669921875,
+              0.0005021095275878906,
+              384.0,
+              215.99998474121094
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 19,
+            "target_memory_score": 0.7513418793678284,
+            "per_reference_scores": {
+              "TSV1_reference": 0.7352239489555359,
+              "TSV2_reference": 0.7513418793678284,
+              "TSV1_extra_reference": 0.7431974411010742
+            },
+            "winning_target_reference": "TSV2_reference",
+            "layer18_local_appearance_score": 0.7633494734764099,
+            "layer18_nids_fused_score": 0.7573456764221191,
+            "target_metrics_evaluation_only": {
+              "iou": 0.8065806424784395
+            },
+            "descriptor_sha256": "e8e341165f5e886ec7f11ab9c6e0127891dabfb9cb5895888a029bee1d038720",
+            "layer18_patch_sha256": "057071bcbd9e174f1355ee3aaa23cfde852ff68c1021f4c1a4f0adb986041d71",
+            "mask_sha256": "5a99679179da6fbcc9b59898d5ee63a3e7fccc540fd12e685f4df42d16ac9402"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.8065806424784395,
+      "target_covered_at_iou_gate": true
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "Seeing Behind Objects for 3D Multi-Object Tracking in RGB-D Sequences",
+      "url": "https://openaccess.thecvf.com/content/CVPR2021/papers/Muller_Seeing_Behind_Objects_for_3D_Multi-Object_Tracking_in_RGB-D_Sequences_CVPR_2021_paper.pdf",
+      "use": "Motivates backprojecting RGB-D observations and using 3D geometry and correspondences to persist object evidence across changing views."
+    }
+  ],
+  "claim_boundary": "This posthoc run is failure-driven Development on the already consumed tenth family. A positive result can establish only a physically plausible proposal-reachability mechanism under official RGB-D calibration and pose; it is not fresh confirmation, RGB-only or phone transfer, top-one localization, calibrated uncertainty, portal ownership, affordance, access, safety, waypoint, arrival or handoff."
+}
