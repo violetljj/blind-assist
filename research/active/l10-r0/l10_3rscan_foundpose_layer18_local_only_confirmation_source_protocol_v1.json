@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-foundpose-layer18-local-only-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T09:26:00+08:00",
+  "question": "Does the pre-download-frozen door-8 family supply three complementary target views on each side before any RGB or model access?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_source.py", "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"},
+  "candidate": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_candidate_v1.json", "sha256": "fb091608c78fb612b65f82e488db696afbf3c81078ffcfcbf9ffa80ef42582b6"},
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_NEW_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/semseg.v2.json", "bytes": 26457, "sha256": "fcdd16278034fcd460294c4a989a936a11a4bf54cd6a78aa35dc79e9fbd8dda8"},
+      {"path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/labels.instances.annotated.v2.ply", "bytes": 3503553, "sha256": "f363503339ec685088416e4ecab61e827ca41598590a547eb2ede718505428ca"},
+      {"path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip", "bytes": 68769519, "sha256": "cec9710e5038b5fecec262c2cac4c60de64cd28bbc4a20620688697cecb08e4e"},
+      {"path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/semseg.v2.json", "bytes": 25324, "sha256": "27eee975bd0245144b3d57a04883830d6ebe936dedee6d004997c19f2a5f96b3"},
+      {"path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/labels.instances.annotated.v2.ply", "bytes": 2940235, "sha256": "e2114cf451150a63132474aa0d8f5076fa1f24a7a70e6a0de43ee89e85bfa959"},
+      {"path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip", "bytes": 59767251, "sha256": "e0beaf50f4556dc64e401a973bc8ad9dad776bbb150d10cb78cb297f5b9eb596"}
+    ]
+  },
+  "memory_budget": 3,
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": {
+    "memory": "Greedily add maximum newly visible target vertices; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "sibling": "Record the first different door or doorframe instance with an admitted view; its appearance is forbidden from target-only ranking."
+  },
+  "decision_gate": {"minimum_memory_views_per_side": 3, "minimum_same_scene_sibling_views": 1},
+  "next_action": {
+    "evaluable": "Freeze three target views per side, then run the unchanged full-frame plus fixed-tile proposals, FoundPose layer-18 local-patch ranking and native SAM2 chain once.",
+    "not_evaluable": "Retain the source receipt and do not open RGB or call GroundingDINO, DINOv2 or SAM2 for this family."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, view rules, memory budget or tile geometry",
+    "use sibling appearance in ranking",
+    "open RGB/model before source result",
+    "reinterpret source scarcity as algorithm failure"
+  ],
+  "claim_boundary": "This source gate can establish only whether the new family supplies three-view target memory. It is not algorithm evidence, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

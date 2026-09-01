@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist-l10-3rscan-foundpose-layer18-local-only-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-foundpose-layer18-local-only-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T09:31:00+08:00",
+  "question": "Does the frozen FoundPose-inspired layer-18 local-only ranking plus unchanged multiscale proposals and native SAM2 localize wholly new physical door 8 at IoU at least 0.5 in all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation.py", "sha256": "b7f876d7cabe82ee9fc5f1fa562542a3032647554cb9a949891c5d0c4f5c2566"},
+  "intermediate_protocol": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_intermediate_protocol_v1.json", "sha256": "0ea35843fa0897dd683ecf9dcc444704d85a152cc87b1c8e4c1723a4c92b538e"},
+  "development_predecessor": {
+    "path": "l10_3rscan_foundpose_layer18_local_only_posthoc_result_v1.json",
+    "sha256": "cac8cc19cf908d8a8dd427b65c7581a563ce6ddb815ddc5e6e98a9452d15b263",
+    "required_conclusion": "L10_3RSCAN_FOUNDPOSE_LAYER18_LOCAL_ONLY_POSTHOC_DEVELOPMENT_GATE_MET"
+  },
+  "evaluation": {
+    "query_images": ["F18C1_query", "F18C2_query", "F18C3_query"],
+    "truth_role": "Provider truth enters only after frozen local-only ranking and SAM refinement."
+  },
+  "decision_gate": {"minimum_iou": 0.5, "required_refined_queries": 3},
+  "literature_motivation": [
+    {"source": "FoundPose", "url": "https://arxiv.org/abs/2311.18809", "use": "Intermediate DINOv2 features preserve stronger spatial identity under semantic appearance ambiguity."},
+    {"source": "NIDS-Net", "url": "https://arxiv.org/abs/2405.17859", "use": "Query-directed foreground patch matching and SAM refinement."}
+  ],
+  "forbidden_after_freeze": [
+    "change layer, local score, final-layer template choice, tie breaks, proposal roster, SAM or IoU gate",
+    "add geometry, position, sibling or query-truth ranking terms",
+    "retry, replace a frame or add post-outcome rescue"
+  ],
+  "claim_boundary": "A pass can establish only narrow same-provider new-family confirmation that the frozen layer-18 local-only pipeline acquires and localizes one bound physical door from full query frames. Same-provider geometry selected reference boxes. It cannot establish calibrated open-set absence, broad distractor coverage, raw-phone or provider-independent generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

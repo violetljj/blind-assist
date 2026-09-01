@@ -1,0 +1,29 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-scale-extent-completion-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-scale-extent-completion-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:35:00+08:00",
+  "question": "Can a discriminative tile-localized part vote for its best same-reference containing full-frame proposal and recover the single fresh-family extent failure without changing features or proposals?",
+  "implementation": {"path": "l10_3rscan_cross_scale_extent_completion_posthoc.py", "sha256": "70492bc638396dc262f8bd3f9c2f6a43f2bf276c4d48c44b76e130294875a1fc"},
+  "predecessor": {
+    "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json",
+    "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060",
+    "required_conclusion": "L10_3RSCAN_FOUNDPOSE_LAYER18_LOCAL_ONLY_FRESH_CONFIRMATION_GATE_NOT_MET",
+    "single_change": "If local-only top one came from a tile, treat it as a discriminative part anchor and select the highest local-score full-frame proposal with the same winning target reference that contains the anchor center; otherwise preserve top one."
+  },
+  "confirmation_protocol": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_protocol_v1.json", "sha256": "05221db4afa44e64377a241ae28cdab42590477d89fdf44155a251341f01cbf7"},
+  "evaluation": {
+    "query_images": ["F18C1_query", "F18C2_query", "F18C3_query"],
+    "truth_role": "Provider truth enters only after frozen part-to-whole selection and SAM refinement."
+  },
+  "decision_gate": {"minimum_iou": 0.5, "required_refined_queries": 3},
+  "literature_motivation": [
+    {"source": "DeepVoting", "url": "https://openaccess.thecvf.com/content_cvpr_2018/papers/Zhang_DeepVoting_A_Robust_CVPR_2018_paper.pdf", "use": "Intermediate local visual cues can vote for a larger semantic part under partial evidence."},
+    {"source": "FoundPose", "url": "https://arxiv.org/abs/2311.18809", "use": "Intermediate DINOv2 patches preserve positional identity."}
+  ],
+  "forbidden_after_freeze": [
+    "change features, proposals, tiles, local score, target reference, center-containment rule, SAM or IoU gate",
+    "use query truth to associate or select proposals",
+    "claim this consumed-family rescue as fresh confirmation"
+  ],
+  "claim_boundary": "This consumed fresh-family Development test can establish only whether deterministic cross-scale part-to-whole extent completion repairs the observed roster failure. It cannot regain fresh authority or establish open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

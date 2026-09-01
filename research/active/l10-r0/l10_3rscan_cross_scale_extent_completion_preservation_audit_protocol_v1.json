@@ -1,0 +1,26 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-scale-extent-completion-preservation-audit-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-scale-extent-completion-preservation-audit-protocol-v1",
+  "frozen_at": "2026-09-01T09:39:00+08:00",
+  "question": "Does requiring at least 80-percent tile-anchor containment preserve the sealed selected candidates and metrics on both consumed D15 and fresh-consumed door-8 while retaining the observed door-8 repair?",
+  "implementation": {"path": "l10_3rscan_cross_scale_extent_completion_preservation_audit.py", "sha256": "d476fdf81fdb9a0a86841c99540242edb6e18131ee1476dc6661f1078aac486d"},
+  "inputs": {
+    "fresh_confirmation": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json", "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060"},
+    "fresh_extent_result": {"path": "l10_3rscan_cross_scale_extent_completion_posthoc_result_v1.json", "sha256": "444aadcf8b21c455fc8391ffde154952a7af3d60153abd00215ffe4ea4fb6360"},
+    "d15_candidates": {"path": "l10_3rscan_foundpose_layer18_nids_posthoc_result_v1.json", "sha256": "04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8"},
+    "d15_local_only_result": {"path": "l10_3rscan_foundpose_layer18_local_only_posthoc_result_v1.json", "sha256": "cac8cc19cf908d8a8dd427b65c7581a563ce6ddb815ddc5e6e98a9452d15b263"}
+  },
+  "selection": {
+    "anchor": "Layer-18 local-only top one.",
+    "completion": "Only when the anchor came from a tile, select the highest-ranked full-frame proposal with the same winning reference whose intersection covers at least 80 percent of the tile anchor.",
+    "minimum_anchor_containment": 0.8,
+    "fallback": "Keep the tile anchor when no eligible completion exists."
+  },
+  "decision_gate": "The deterministic rule must reproduce every sealed selected candidate on both families, thereby preserving fresh-consumed door-8 3/3 with minimum IoU 0.8342449468 and consumed D15 3/3 with minimum IoU 0.5948405792.",
+  "forbidden_after_freeze": [
+    "change the 0.8 containment gate, ranking, reference identity or fallback",
+    "use truth IoU in selection",
+    "reinterpret a deterministic consumed replay as fresh confirmation"
+  ],
+  "claim_boundary": "This exact-candidate audit is two-family consumed Development evidence for non-regression of the tightened extent-completion rule. It cannot establish a fresh confirmation, broad generalization, open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

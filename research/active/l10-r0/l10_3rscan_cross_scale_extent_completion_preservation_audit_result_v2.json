@@ -1,0 +1,291 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-scale-extent-completion-preservation-audit-result-v2",
+  "authority": "CONSUMED_TWO_FAMILY_GEOMETRY_APPEARANCE_CONSENSUS_AUDIT_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_cross_scale_extent_completion_preservation_audit_protocol_v2.json",
+  "protocol_sha256": "17179f159f3f5241ea27e4f9422f339833f636c230b568bd13742c706c9e3b0d",
+  "implementation": {
+    "path": "l10_3rscan_cross_scale_extent_completion_preservation_audit_v2.py",
+    "sha256": "640b4f56aba22161fa75dfd743e02e0bb1d71d01892b09d787e266e824150763"
+  },
+  "conclusion": "L10_3RSCAN_CROSS_SCALE_EXTENT_COMPLETION_V2_TWO_FAMILY_PRESERVATION_GATE_MET",
+  "gate_met": true,
+  "selection": {
+    "anchor": "Layer-18 local-only top one.",
+    "completion": "Only when the anchor came from a tile, select the highest-ranked full-frame proposal with the same winning reference, at least 80-percent anchor containment and at least 99-percent retention of the anchor local score.",
+    "minimum_anchor_containment": 0.8,
+    "minimum_local_score_retention": 0.99,
+    "fallback": "Keep the tile anchor when no cross-scale geometry-and-appearance-consistent completion exists."
+  },
+  "families": {
+    "fresh_door8": {
+      "all_selected_candidates_preserved": true,
+      "sealed_metrics": {
+        "query_count": 3,
+        "refined_iou_gate_queries": 3,
+        "minimum_refined_iou": 0.8342449467725694,
+        "mean_refined_iou": 0.9144422992983179,
+        "extent_completions": 1
+      },
+      "query_receipts": {
+        "F18C1_query": {
+          "extent_completion_applied": false,
+          "anchor_containment": 1.0,
+          "selected": {
+            "objectness_score": 0.32184112071990967,
+            "box_xyxy": [
+              3.401670455932617,
+              154.54576110839844,
+              878.6891479492188,
+              535.2963256835938
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 3,
+            "target_memory_score": 0.8792154788970947,
+            "per_reference_scores": {
+              "F18C1_reference": 0.8792154788970947,
+              "F18C2_reference": 0.7742629647254944,
+              "F18C3_reference": 0.8054463863372803
+            },
+            "winning_target_reference": "F18C1_reference",
+            "layer18_local_appearance_score": 0.9119933843612671,
+            "layer18_nids_fused_score": 0.8956044316291809,
+            "target_metrics_evaluation_only": {
+              "iou": 0.9427569050280241,
+              "target_recall": 0.9580481093608596,
+              "proposal_precision": 0.9833519400727196
+            },
+            "descriptor_sha256": "147fa6ea177758809ec5675ced0ca4596a3d5a90267b254951fdd63fee5236b3",
+            "layer18_patch_sha256": "aa0fc0a6aba281c07e028c60cbc683cb4103e8934a70b3f525d4adeb25477c37",
+            "mask_sha256": "fb8eb94e2e7bf17076087a3574610c4b476880a119b0101d09f3b66e416e4ffd"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.9536596362157468
+        },
+        "F18C2_query": {
+          "extent_completion_applied": true,
+          "anchor_containment": 0.8470988435580674,
+          "selected": {
+            "objectness_score": 0.19080981612205505,
+            "box_xyxy": [
+              259.46490478515625,
+              1.1450833082199097,
+              957.0841674804688,
+              317.4347229003906
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 7,
+            "postprocess_index": 6,
+            "target_memory_score": 0.8857830762863159,
+            "per_reference_scores": {
+              "F18C1_reference": 0.7462179660797119,
+              "F18C2_reference": 0.8857830762863159,
+              "F18C3_reference": 0.7661342024803162
+            },
+            "winning_target_reference": "F18C2_reference",
+            "layer18_local_appearance_score": 0.824170708656311,
+            "layer18_nids_fused_score": 0.8549768924713135,
+            "target_metrics_evaluation_only": {
+              "iou": 0.96738094200708,
+              "target_recall": 0.9846672634111597,
+              "proposal_precision": 0.9821760120506049
+            },
+            "descriptor_sha256": "f1cc1219aa9e6123b9632f176dcff4d07a9fa7ca3332e1790dcdac6027571642",
+            "layer18_patch_sha256": "2e3d142c3f5765e6135ab76ce755db2c4655db2213821b0dd7a9b6bd64bfcff8",
+            "mask_sha256": "32f5fed52e541977e5876e48839b0d6a8dd43be99c2a910763bfc9785b400669"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.9554223149066378
+        },
+        "F18C3_query": {
+          "extent_completion_applied": false,
+          "anchor_containment": 1.0,
+          "selected": {
+            "objectness_score": 0.3328799903392792,
+            "box_xyxy": [
+              1.9303035736083984,
+              0.4004323482513428,
+              957.23291015625,
+              211.73043823242188
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 3,
+            "postprocess_index": 1,
+            "target_memory_score": 0.7285270690917969,
+            "per_reference_scores": {
+              "F18C1_reference": 0.701427698135376,
+              "F18C2_reference": 0.7266382575035095,
+              "F18C3_reference": 0.7285270690917969
+            },
+            "winning_target_reference": "F18C3_reference",
+            "layer18_local_appearance_score": 0.7836319208145142,
+            "layer18_nids_fused_score": 0.7560794949531555,
+            "target_metrics_evaluation_only": {
+              "iou": 0.8459818052853372,
+              "target_recall": 0.859274623645914,
+              "proposal_precision": 0.9820421560805792
+            },
+            "descriptor_sha256": "374584e588f1edea6d5df38923f75467fa7e28396709248e8a17df1aa682cfe3",
+            "layer18_patch_sha256": "4332b22f6ce3d3dcf12fa0f628e140bb6d70a36c273b9ca0380936d065d4a722",
+            "mask_sha256": "99a9adbc89208f112d1bb4a671341c7fccbd920bff79e7b02c1c5669118820b5"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.8342449467725694
+        }
+      }
+    },
+    "consumed_door15": {
+      "all_selected_candidates_preserved": true,
+      "sealed_metrics": {
+        "query_count": 3,
+        "refined_iou_gate_queries": 3,
+        "minimum_refined_iou": 0.5948405792093939,
+        "mean_refined_iou": 0.7059436530951643
+      },
+      "query_receipts": {
+        "D15M1_query": {
+          "extent_completion_applied": false,
+          "anchor_containment": 0.0,
+          "selected": {
+            "objectness_score": 0.12188594043254852,
+            "box_xyxy": [
+              576.0,
+              0.11921238899230957,
+              959.881591796875,
+              118.78621673583984
+            ],
+            "tile_id": "top_right",
+            "tile_xyxy": [
+              576,
+              0,
+              960,
+              216
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 27,
+            "target_memory_score": 0.7968404293060303,
+            "per_reference_scores": {
+              "D15M1_reference": 0.7968404293060303,
+              "D15M2_reference": 0.6614716053009033,
+              "D15M3_reference": 0.6561914682388306
+            },
+            "winning_target_reference": "D15M1_reference",
+            "layer18_local_appearance_score": 0.8055185675621033,
+            "layer18_nids_fused_score": 0.8011794984340668,
+            "target_metrics_evaluation_only": {
+              "iou": 0.5655912428363346,
+              "target_recall": 0.6903084328585272,
+              "proposal_precision": 0.7579010226291572
+            },
+            "descriptor_sha256": "e44497dff8bd4745b1f4ec0d8f918d774eada2acdbe23dc93276a096664759e4",
+            "layer18_patch_sha256": "0baccdf3bfb1f27a83c509812d352d607d1403128258d756ae9280198eeb3629",
+            "mask_sha256": "038029befb0998fd8848a48df53de10736edad976d1f66c0bff453cdedda2eb6"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.6469210335127307
+        },
+        "D15M2_query": {
+          "extent_completion_applied": false,
+          "anchor_containment": 1.0,
+          "selected": {
+            "objectness_score": 0.18158447742462158,
+            "box_xyxy": [
+              500.3417053222656,
+              0.5714915990829468,
+              958.2745361328125,
+              111.84561920166016
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 6,
+            "postprocess_index": 8,
+            "target_memory_score": 0.6281166672706604,
+            "per_reference_scores": {
+              "D15M1_reference": 0.6281166672706604,
+              "D15M2_reference": 0.5782650113105774,
+              "D15M3_reference": 0.5750802755355835
+            },
+            "winning_target_reference": "D15M1_reference",
+            "layer18_local_appearance_score": 0.767759382724762,
+            "layer18_nids_fused_score": 0.6979380249977112,
+            "target_metrics_evaluation_only": {
+              "iou": 0.8615953229303175,
+              "target_recall": 0.9946745653046986,
+              "proposal_precision": 0.8655882255956902
+            },
+            "descriptor_sha256": "1353cccea57d56ba663de2a8a5e4869f1792d86ffda1208473240f4034156a35",
+            "layer18_patch_sha256": "d838d71144a02e7f3d35e56bc95a2c5ba99453b3fcfb2d1ed6dcd7bcb2f9f302",
+            "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.8760693465633684
+        },
+        "D15M3_query": {
+          "extent_completion_applied": false,
+          "anchor_containment": 0.0,
+          "selected": {
+            "objectness_score": 0.1836160123348236,
+            "box_xyxy": [
+              0.5038490295410156,
+              34.14381408691406,
+              381.6024169921875,
+              215.48655700683594
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 5,
+            "postprocess_index": 12,
+            "target_memory_score": 0.7112609148025513,
+            "per_reference_scores": {
+              "D15M1_reference": 0.7112609148025513,
+              "D15M2_reference": 0.6321819424629211,
+              "D15M3_reference": 0.5656723380088806
+            },
+            "winning_target_reference": "D15M1_reference",
+            "layer18_local_appearance_score": 0.7536018490791321,
+            "layer18_nids_fused_score": 0.7324313819408417,
+            "target_metrics_evaluation_only": {
+              "iou": 0.394704987290598,
+              "target_recall": 0.7498491863053018,
+              "proposal_precision": 0.4545586188809477
+            },
+            "descriptor_sha256": "d97f2dede6dab30d651430f4c44304b751b8aab642504b5fac88410d83e97e4c",
+            "layer18_patch_sha256": "51f56d381f968f40d2fe11f711bae13cd1541949b499133b3430ea65d0da69b5",
+            "mask_sha256": "4a0e27b9668bb714808dfc1a7de57f91cdcf343aa051844004b3e5bb5ec865a1"
+          },
+          "matches_sealed_selected_candidate": true,
+          "sealed_refined_iou": 0.5948405792093939
+        }
+      }
+    }
+  },
+  "claim_boundary": "This exact-candidate audit is two-family consumed Development evidence for non-regression of geometry-and-appearance-consistent extent completion. It cannot establish fresh confirmation of the completed mechanism, broad generalization, open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

@@ -1,0 +1,824 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-cohort-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_DESCRIPTOR_SET_MEMORY_CONFIRMATION_COHORT",
+  "protocol_path": "l10_3rscan_foundpose_layer18_local_only_confirmation_freeze_protocol_v1.json",
+  "protocol_sha256": "34ca1d1fa14730c5df0b50491658f598785268dbaf52e4c31e240d2611cddd37",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_freeze.py",
+    "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip": {
+      "path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip",
+      "bytes": 68769519,
+      "sha256": "cec9710e5038b5fecec262c2cac4c60de64cd28bbc4a20620688697cecb08e4e"
+    },
+    "47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip": {
+      "path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip",
+      "bytes": 59767251,
+      "sha256": "e0beaf50f4556dc64e401a973bc8ad9dad776bbb150d10cb78cb297f5b9eb596"
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+      "bytes": 46320073,
+      "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+    },
+    "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {
+      "path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip",
+      "bytes": 35895970,
+      "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"
+    }
+  },
+  "selection": {
+    "memory_episode_ids": [
+      "F18C1",
+      "F18C2",
+      "F18C3"
+    ],
+    "sibling_episode_id": "F18S9",
+    "positive_authority": "First metadata-frozen, wholly unmaterialized family selected after the consumed D15 layer-18 local-only Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {
+        "episode_id": "NC31",
+        "source_episode_id": "NC31"
+      },
+      {
+        "episode_id": "NC08",
+        "source_episode_id": "NC08"
+      }
+    ],
+    "reference_cumulative_visible_fraction": 0.9686274509803922,
+    "query_cumulative_visible_fraction": 0.9053356282271945,
+    "opened_rgb_members_before_freeze": 0,
+    "model_calls_before_freeze": 0
+  },
+  "episodes": [
+    {
+      "episode_id": "F18C1",
+      "reference_scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "rescan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        8,
+        9,
+        20,
+        21,
+        27,
+        28
+      ],
+      "area_proxy": 0.0,
+      "transform": [
+        0.9747366905212402,
+        0.22334647178649902,
+        -0.0021754070185124874,
+        0,
+        -0.2233177274465561,
+        0.9747015833854675,
+        0.009273693896830082,
+        0,
+        0.004191619344055653,
+        -0.008553602732717991,
+        0.9999546408653259,
+        0,
+        -0.3633052408695221,
+        -0.31543004512786865,
+        0.29325002431869507,
+        1
+      ],
+      "reference": {
+        "frame": 425,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 453,
+        "inside_vertex_fraction": 0.888235294117647,
+        "projected_area_pixels": 257877.85221582567,
+        "image_margin_pixels": 9.353950500488281,
+        "bbox_xyxy": [
+          9.353950500488281,
+          106.43822479248047,
+          786.3428344726562,
+          475.8136901855469
+        ],
+        "depth_compared_vertices": 402,
+        "depth_visible_vertices": 381,
+        "depth_visible_ratio": 0.9477611940298507,
+        "bbox_width_pixels": 776.988883972168,
+        "bbox_height_pixels": 369.3754653930664,
+        "bbox_short_side_pixels": 369.3754653930664,
+        "bbox_short_side_fraction": 0.6840286396167896,
+        "bbox_aspect_ratio": 2.103520555013974,
+        "visible_target_vertices": 381,
+        "zip_member": "frame-000425.color.jpg",
+        "marginal_visible_target_vertices": 381,
+        "cumulative_visible_target_vertices": 381,
+        "cumulative_visible_target_fraction": 0.7470588235294118
+      },
+      "query": {
+        "frame": 326,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 511,
+        "inside_vertex_fraction": 0.8795180722891566,
+        "projected_area_pixels": 315343.47988163907,
+        "image_margin_pixels": 0.13275527954101562,
+        "bbox_xyxy": [
+          0.13275527954101562,
+          141.3572998046875,
+          864.1173095703125,
+          537.27685546875
+        ],
+        "depth_compared_vertices": 455,
+        "depth_visible_vertices": 428,
+        "depth_visible_ratio": 0.9406593406593406,
+        "bbox_width_pixels": 863.9845542907715,
+        "bbox_height_pixels": 395.9195556640625,
+        "bbox_short_side_pixels": 395.9195556640625,
+        "bbox_short_side_fraction": 0.7331843623408565,
+        "bbox_aspect_ratio": 2.1822224791135647,
+        "visible_target_vertices": 428,
+        "zip_member": "frame-000326.color.jpg",
+        "marginal_visible_target_vertices": 428,
+        "cumulative_visible_target_vertices": 428,
+        "cumulative_visible_target_fraction": 0.7366609294320138
+      },
+      "active_query": null,
+      "selection_authority": "PRE_MODEL_GREEDY_COMPLEMENTARY_SURFACE_SET_MEMORY"
+    },
+    {
+      "episode_id": "F18C2",
+      "reference_scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "rescan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        8,
+        9,
+        20,
+        21,
+        27,
+        28
+      ],
+      "area_proxy": 0.0,
+      "transform": [
+        0.9747366905212402,
+        0.22334647178649902,
+        -0.0021754070185124874,
+        0,
+        -0.2233177274465561,
+        0.9747015833854675,
+        0.009273693896830082,
+        0,
+        0.004191619344055653,
+        -0.008553602732717991,
+        0.9999546408653259,
+        0,
+        -0.3633052408695221,
+        -0.31543004512786865,
+        0.29325002431869507,
+        1
+      ],
+      "reference": {
+        "frame": 382,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 102,
+        "inside_vertex_fraction": 0.2,
+        "projected_area_pixels": 89503.27636964228,
+        "image_margin_pixels": 2.541718006134033,
+        "bbox_xyxy": [
+          685.6554565429688,
+          2.541718006134033,
+          953.9064331054688,
+          361.08734130859375
+        ],
+        "depth_compared_vertices": 81,
+        "depth_visible_vertices": 76,
+        "depth_visible_ratio": 0.9382716049382716,
+        "bbox_width_pixels": 268.2509765625,
+        "bbox_height_pixels": 358.5456233024597,
+        "bbox_short_side_pixels": 268.2509765625,
+        "bbox_short_side_fraction": 0.49676106770833334,
+        "bbox_aspect_ratio": 1.3366050998100352,
+        "visible_target_vertices": 76,
+        "zip_member": "frame-000382.color.jpg",
+        "marginal_visible_target_vertices": 76,
+        "cumulative_visible_target_vertices": 457,
+        "cumulative_visible_target_fraction": 0.8960784313725491
+      },
+      "query": {
+        "frame": 276,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 290,
+        "inside_vertex_fraction": 0.4991394148020654,
+        "projected_area_pixels": 209530.66159204266,
+        "image_margin_pixels": 0.6016889810562134,
+        "bbox_xyxy": [
+          250.319091796875,
+          0.6016889810562134,
+          957.564208984375,
+          311.79718017578125
+        ],
+        "depth_compared_vertices": 221,
+        "depth_visible_vertices": 218,
+        "depth_visible_ratio": 0.9864253393665159,
+        "bbox_width_pixels": 707.2451171875,
+        "bbox_height_pixels": 311.19549119472504,
+        "bbox_short_side_pixels": 311.19549119472504,
+        "bbox_short_side_fraction": 0.5762879466568982,
+        "bbox_aspect_ratio": 2.2726714788581366,
+        "visible_target_vertices": 218,
+        "zip_member": "frame-000276.color.jpg",
+        "marginal_visible_target_vertices": 78,
+        "cumulative_visible_target_vertices": 506,
+        "cumulative_visible_target_fraction": 0.8709122203098106
+      },
+      "active_query": null,
+      "selection_authority": "PRE_MODEL_GREEDY_COMPLEMENTARY_SURFACE_SET_MEMORY"
+    },
+    {
+      "episode_id": "F18C3",
+      "reference_scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "rescan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        8,
+        9,
+        20,
+        21,
+        27,
+        28
+      ],
+      "area_proxy": 0.0,
+      "transform": [
+        0.9747366905212402,
+        0.22334647178649902,
+        -0.0021754070185124874,
+        0,
+        -0.2233177274465561,
+        0.9747015833854675,
+        0.009273693896830082,
+        0,
+        0.004191619344055653,
+        -0.008553602732717991,
+        0.9999546408653259,
+        0,
+        -0.3633052408695221,
+        -0.31543004512786865,
+        0.29325002431869507,
+        1
+      ],
+      "reference": {
+        "frame": 310,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 352,
+        "inside_vertex_fraction": 0.6901960784313725,
+        "projected_area_pixels": 260756.41009049086,
+        "image_margin_pixels": 0.5051798224449158,
+        "bbox_xyxy": [
+          0.5051798224449158,
+          1.1117279529571533,
+          686.1397094726562,
+          456.4576721191406
+        ],
+        "depth_compared_vertices": 336,
+        "depth_visible_vertices": 336,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 685.6345296502113,
+        "bbox_height_pixels": 455.3459441661835,
+        "bbox_short_side_pixels": 455.3459441661835,
+        "bbox_short_side_fraction": 0.8432332299373768,
+        "bbox_aspect_ratio": 1.505744233443708,
+        "visible_target_vertices": 336,
+        "zip_member": "frame-000310.color.jpg",
+        "marginal_visible_target_vertices": 37,
+        "cumulative_visible_target_vertices": 494,
+        "cumulative_visible_target_fraction": 0.9686274509803922
+      },
+      "query": {
+        "frame": 363,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 155,
+        "inside_vertex_fraction": 0.2667814113597246,
+        "projected_area_pixels": 171015.60484017487,
+        "image_margin_pixels": 1.0979973077774048,
+        "bbox_xyxy": [
+          4.596353530883789,
+          1.0979973077774048,
+          945.8507080078125,
+          246.2261962890625
+        ],
+        "depth_compared_vertices": 136,
+        "depth_visible_vertices": 136,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 941.2543544769287,
+        "bbox_height_pixels": 245.1281989812851,
+        "bbox_short_side_pixels": 245.1281989812851,
+        "bbox_short_side_fraction": 0.453941109224602,
+        "bbox_aspect_ratio": 3.8398452662265554,
+        "visible_target_vertices": 136,
+        "zip_member": "frame-000363.color.jpg",
+        "marginal_visible_target_vertices": 20,
+        "cumulative_visible_target_vertices": 526,
+        "cumulative_visible_target_fraction": 0.9053356282271945
+      },
+      "active_query": null,
+      "selection_authority": "PRE_MODEL_GREEDY_COMPLEMENTARY_SURFACE_SET_MEMORY"
+    },
+    {
+      "episode_id": "F18S9",
+      "reference_scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "rescan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 9,
+      "target_label": "door_or_doorframe",
+      "reference": null,
+      "query": {
+        "frame": 92,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 564,
+        "inside_vertex_fraction": 0.3525,
+        "projected_area_pixels": 77046.86577788557,
+        "image_margin_pixels": 1.8067729473114014,
+        "bbox_xyxy": [
+          2.499019145965576,
+          1.8067729473114014,
+          605.2682495117188,
+          188.76007080078125
+        ],
+        "depth_compared_vertices": 547,
+        "depth_visible_vertices": 522,
+        "depth_visible_ratio": 0.9542961608775137,
+        "bbox_width_pixels": 602.7692303657532,
+        "bbox_height_pixels": 186.95329785346985,
+        "bbox_short_side_pixels": 186.95329785346985,
+        "bbox_short_side_fraction": 0.346209810839759,
+        "bbox_aspect_ratio": 3.2241700857194364,
+        "visible_target_vertices": 522,
+        "zip_member": "frame-000092.color.jpg"
+      },
+      "negative_authority": "SAME_RESCAN_DIFFERENT_INSTANCE_ID_FROM_TARGET"
+    },
+    {
+      "episode_id": "NC31",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.5432129035527118,
+      "transform": [
+        0.5583429336547852,
+        -0.8295769095420837,
+        -0.007440741639584303,
+        0,
+        0.8296099901199341,
+        0.5583280920982361,
+        0.004140521865338087,
+        0,
+        0.0007194934878498316,
+        -0.00848474446684122,
+        0.9999637603759766,
+        0,
+        -2.031255006790161,
+        -0.06366236507892609,
+        0.02755604311823845,
+        1
+      ],
+      "reference": {
+        "frame": 63,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 300,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 79990.05468282162,
+        "image_margin_pixels": 64.67919921875,
+        "bbox_xyxy": [
+          255.63841247558594,
+          114.4618911743164,
+          894.32080078125,
+          263.9335021972656
+        ],
+        "depth_compared_vertices": 297,
+        "depth_visible_vertices": 262,
+        "depth_visible_ratio": 0.8821548821548821
+      },
+      "query": {
+        "frame": 86,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 422,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 98896.05696893705,
+        "image_margin_pixels": 69.98004150390625,
+        "bbox_xyxy": [
+          111.62455749511719,
+          298.135986328125,
+          827.8693237304688,
+          469.01995849609375
+        ],
+        "depth_compared_vertices": 421,
+        "depth_visible_vertices": 367,
+        "depth_visible_ratio": 0.8717339667458432
+      },
+      "active_query_required": true,
+      "active_query": {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.7488844890524906,
+        "frame_gap": 28,
+        "inside_vertices": 422,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 49225.55588568747,
+        "image_margin_pixels": 26.3939208984375,
+        "bbox_xyxy": [
+          159.91644287109375,
+          400.9040832519531,
+          761.8023681640625,
+          512.6060791015625
+        ],
+        "depth_compared_vertices": 403,
+        "depth_visible_vertices": 256,
+        "depth_visible_ratio": 0.6352357320099256,
+        "foreign_target_instance_id": 30,
+        "foreign_target_inside_vertices": 0,
+        "zip_member": "frame-000058.color.jpg"
+      },
+      "negative_query_control_provenance": {
+        "cohort_path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+        "source_episode_id": "NC31"
+      }
+    },
+    {
+      "episode_id": "NC08",
+      "reference_scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "rescan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        4,
+        8,
+        9,
+        11,
+        12,
+        15,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "area_proxy": 1.4619358948681807,
+      "transform": [
+        0.5583429336547852,
+        -0.8295769095420837,
+        -0.007440741639584303,
+        0,
+        0.8296099901199341,
+        0.5583280920982361,
+        0.004140521865338087,
+        0,
+        0.0007194934878498316,
+        -0.00848474446684122,
+        0.9999637603759766,
+        0,
+        -2.031255006790161,
+        -0.06366236507892609,
+        0.02755604311823845,
+        1
+      ],
+      "reference": {
+        "frame": 63,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 629,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 72736.10033485247,
+        "image_margin_pixels": 97.495361328125,
+        "bbox_xyxy": [
+          261.27227783203125,
+          140.80148315429688,
+          861.504638671875,
+          277.3447570800781
+        ],
+        "depth_compared_vertices": 626,
+        "depth_visible_vertices": 450,
+        "depth_visible_ratio": 0.7188498402555911
+      },
+      "query": {
+        "frame": 82,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 959,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 62400.48323796131,
+        "image_margin_pixels": 90.1259765625,
+        "bbox_xyxy": [
+          275.2812194824219,
+          131.8151397705078,
+          868.8740234375,
+          271.384521484375
+        ],
+        "depth_compared_vertices": 954,
+        "depth_visible_vertices": 706,
+        "depth_visible_ratio": 0.740041928721174
+      },
+      "active_query_required": true,
+      "active_query": {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "baseline_metres": 0.6741453177864843,
+        "frame_gap": 24,
+        "inside_vertices": 959,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 46984.49483769515,
+        "image_margin_pixels": 20.12969970703125,
+        "bbox_xyxy": [
+          120.80289459228516,
+          416.5552062988281,
+          756.4935913085938,
+          518.8703002929688
+        ],
+        "depth_compared_vertices": 944,
+        "depth_visible_vertices": 266,
+        "depth_visible_ratio": 0.2817796610169492,
+        "foreign_target_instance_id": null,
+        "foreign_target_inside_vertices": null,
+        "zip_member": "frame-000058.color.jpg"
+      },
+      "negative_query_control_provenance": {
+        "cohort_path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+        "source_episode_id": "NC08"
+      }
+    }
+  ],
+  "images": {
+    "F18C1_reference": {
+      "episode_id": "F18C1",
+      "role": "reference",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 425,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        9.353950500488281,
+        106.43822479248047,
+        786.3428344726562,
+        475.8136901855469
+      ],
+      "zip_member": "frame-000425.color.jpg"
+    },
+    "F18C1_query": {
+      "episode_id": "F18C1",
+      "role": "query",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 326,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.13275527954101562,
+        141.3572998046875,
+        864.1173095703125,
+        537.27685546875
+      ],
+      "zip_member": "frame-000326.color.jpg"
+    },
+    "F18C2_reference": {
+      "episode_id": "F18C2",
+      "role": "reference",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 382,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        685.6554565429688,
+        2.541718006134033,
+        953.9064331054688,
+        361.08734130859375
+      ],
+      "zip_member": "frame-000382.color.jpg"
+    },
+    "F18C2_query": {
+      "episode_id": "F18C2",
+      "role": "query",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 276,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        250.319091796875,
+        0.6016889810562134,
+        957.564208984375,
+        311.79718017578125
+      ],
+      "zip_member": "frame-000276.color.jpg"
+    },
+    "F18C3_reference": {
+      "episode_id": "F18C3",
+      "role": "reference",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 310,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.5051798224449158,
+        1.1117279529571533,
+        686.1397094726562,
+        456.4576721191406
+      ],
+      "zip_member": "frame-000310.color.jpg"
+    },
+    "F18C3_query": {
+      "episode_id": "F18C3",
+      "role": "query",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 363,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        4.596353530883789,
+        1.0979973077774048,
+        945.8507080078125,
+        246.2261962890625
+      ],
+      "zip_member": "frame-000363.color.jpg"
+    },
+    "F18S9_query": {
+      "episode_id": "F18S9",
+      "role": "query",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "target_instance_id": 9,
+      "target_label": "door_or_doorframe",
+      "frame": 92,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        2.499019145965576,
+        1.8067729473114014,
+        605.2682495117188,
+        188.76007080078125
+      ],
+      "zip_member": "frame-000092.color.jpg"
+    },
+    "NC31_reference": {
+      "episode_id": "NC31",
+      "role": "reference",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "frame": 63,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        255.63841247558594,
+        114.4618911743164,
+        894.32080078125,
+        263.9335021972656
+      ],
+      "image_margin_pixels": 64.67919921875,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8821548821548821,
+      "zip_member": "frame-000063.color.jpg"
+    },
+    "NC31_query": {
+      "episode_id": "NC31",
+      "role": "query",
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 31,
+      "target_label": "doorframe",
+      "frame": 86,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        111.62455749511719,
+        298.135986328125,
+        827.8693237304688,
+        469.01995849609375
+      ],
+      "image_margin_pixels": 69.98004150390625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.8717339667458432,
+      "zip_member": "frame-000086.color.jpg"
+    },
+    "NC08_reference": {
+      "episode_id": "NC08",
+      "role": "reference",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 63,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        261.27227783203125,
+        140.80148315429688,
+        861.504638671875,
+        277.3447570800781
+      ],
+      "image_margin_pixels": 97.495361328125,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.7188498402555911,
+      "zip_member": "frame-000063.color.jpg"
+    },
+    "NC08_query": {
+      "episode_id": "NC08",
+      "role": "query",
+      "scan_id": "8eabc42a-5af7-2f32-855e-f114989e7025",
+      "target_instance_id": 8,
+      "target_label": "door",
+      "frame": 82,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        275.2812194824219,
+        131.8151397705078,
+        868.8740234375,
+        271.384521484375
+      ],
+      "image_margin_pixels": 90.1259765625,
+      "inside_vertex_fraction": 1.0,
+      "depth_visible_ratio": 0.740041928721174,
+      "zip_member": "frame-000082.color.jpg"
+    }
+  },
+  "claim_boundary": "This freezes one wholly new physical target family before all RGB/model access for layer-18 local-patch localization. A pass would be narrow same-provider new-family confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

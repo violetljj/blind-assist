@@ -377,8 +377,28 @@ contract.
   consumed D15 Development attribution; it now requires an untouched family.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
-  RGB/model access. The next mechanism needs better observation reachability or
-  an independent exact-instance cue, not another correspondence threshold.
+  RGB/model access. The next metadata-only selection therefore froze wholly
+  unmaterialized family `47319774 -> 47319776`, target door `8`, before download,
+  RGB, or model access. Its geometry/depth gate admitted three reference views
+  at `0.968627` cumulative vertex coverage and three query views at `0.905336`,
+  plus a same-scene sibling door. On this genuinely fresh family, unchanged
+  layer-18 local-only ranking supplied proposal opportunity `3/3` but localized
+  `2/3`: refined IoU `0.953660`, `0.145739`, `0.834245`, minimum `0.145739`,
+  mean `0.644548`. Record
+  `L10_3RSCAN_FOUNDPOSE_LAYER18_LOCAL_ONLY_FRESH_CONFIRMATION_GATE_NOT_MET`:
+  the representation transferred, but all-view extent reliability did not.
+  The failed row's tile anchor and correct containing full-frame proposal kept
+  the same target reference and differed by only `0.001192` local score. A
+  consumed posthoc part-to-whole completion repaired it to IoU `0.955422`,
+  producing `3/3`, minimum `0.834245`, mean `0.914442`. A first center-only
+  association then failed a D15 preservation audit. The tightened successor
+  requires at least `0.8` tile-anchor containment and `0.99` local-score
+  retention. It exactly preserved all six sealed selections across consumed
+  D15 and fresh-consumed door-8: D15 remains `3/3`, minimum `0.594841`, mean
+  `0.705944`; door-8 remains `3/3`, minimum `0.834245`, mean `0.914442`.
+  Retain geometry-and-appearance-consistent cross-scale extent completion as
+  the next candidate, but only as two-family consumed Development. It still
+  requires another untouched family for confirmation.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This

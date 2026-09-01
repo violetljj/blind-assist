@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-foundpose-layer18-local-only-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T09:27:00+08:00",
+  "question": "Does the frozen FoundPose layer-18 local-patch ranking with unchanged multiscale proposals and native SAM2 localize new target door 8 across all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_source_result_v1.json", "sha256": "d80e197e6b61b4c5492145162d2cd91498767e12d28168f6feafb478cce925c4"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_LAYER18_LOCAL_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip": {"path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip", "bytes": 68769519, "sha256": "cec9710e5038b5fecec262c2cac4c60de64cd28bbc4a20620688697cecb08e4e"},
+      "47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip": {"path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip", "bytes": 59767251, "sha256": "e0beaf50f4556dc64e401a973bc8ad9dad776bbb150d10cb78cb297f5b9eb596"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["F18C1", "F18C2", "F18C3"],
+    "sibling_episode_id": "F18S9",
+    "positive_authority": "First metadata-frozen, wholly unmaterialized family selected after the consumed D15 layer-18 local-only Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, tile scale/count/offsets, proposal caps, layer-18 local score, template choice, SAM or IoU gate",
+    "use sibling appearance in ranking",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before all RGB/model access for layer-18 local-patch localization. A pass would be narrow same-provider new-family confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

@@ -4330,7 +4330,63 @@ change is observation reachability or an independent instance-bearing cue, not
 another geometric estimator, local threshold, or reinterpretation of strong
 cycles as identity truth.
 
+The next metadata-only candidate freeze skipped every materialized family and
+selected wholly new `47319774 -> 47319776`, target door `8`, before download,
+RGB, or model access. The official six-file source passed the unchanged
+geometry/depth gate: the three reference views covered `0.968627` of target
+vertices, the three query views covered `0.905336`, and a separate sibling door
+had 11 admissible views. This is a valid source for a fresh algorithm test.
+
+The frozen FoundPose layer-18 local-only chain reached every target at proposal
+time but localized only `2/3`: refined IoU was `0.953660`, `0.145739`, and
+`0.834245`, for minimum `0.145739` and mean `0.644548`. In the failed second
+view, the top tile proposal captured only a discriminative part; the correct
+full-frame proposal was rank two, retained the same target reference, and lost
+only `0.001192` layer-18 local score. Record
+`L10_3RSCAN_FOUNDPOSE_LAYER18_LOCAL_ONLY_FRESH_CONFIRMATION_GATE_NOT_MET`.
+This is still meaningful transfer beyond D15, but not all-view confirmation.
+
+One consumed posthoc structural change treated the tile result as a part anchor
+and completed it with a same-reference containing full-frame proposal. It
+repaired the failed frame to IoU `0.955422` and produced `3/3`, minimum
+`0.834245`, mean `0.914442`. The first center-only rule was rejected because it
+changed two sealed D15 selections. The tightened rule requires both at least
+`0.8` anchor containment and at least `0.99` retention of the anchor's local
+score. A deterministic two-family audit then reproduced all six sealed selected
+candidates exactly: fresh-consumed door-8 retains `3/3`, minimum `0.834245`,
+mean `0.914442`; consumed D15 retains `3/3`, minimum `0.594841`, mean
+`0.705944`. This geometry-and-appearance consensus is the next candidate, not a
+freshly confirmed mechanism. It requires another untouched family unchanged.
+
 Evidence:
+
+- fresh layer-18 candidate protocol/candidate, source protocol/result, and
+  freeze protocol/cohort SHA-256:
+  `ead03a71173ab03052af41552b0a890ab4c8cd184b8881abd50934a8aff51d30`,
+  `fb091608c78fb612b65f82e488db696afbf3c81078ffcfcbf9ffa80ef42582b6`,
+  `fa8749ddc422ef2d9f7a400b772e2e3fea2efa69d7ab69aeb3644b1f97f7d8ee`,
+  `d80e197e6b61b4c5492145162d2cd91498767e12d28168f6feafb478cce925c4`,
+  `34ca1d1fa14730c5df0b50491658f598785268dbaf52e4c31e240d2611cddd37`,
+  and `d893210355ab928eedd0420268427d15f8a0a47fc028c7184a1807dd8993aed5`;
+- fresh layer-18 confirmation implementation/intermediate protocol/final
+  protocol/result SHA-256:
+  `b7f876d7cabe82ee9fc5f1fa562542a3032647554cb9a949891c5d0c4f5c2566`,
+  `0ea35843fa0897dd683ecf9dcc444704d85a152cc87b1c8e4c1723a4c92b538e`,
+  `05221db4afa44e64377a241ae28cdab42590477d89fdf44155a251341f01cbf7`,
+  and `96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060`;
+- cross-scale extent completion implementation/protocol/result SHA-256:
+  `70492bc638396dc262f8bd3f9c2f6a43f2bf276c4d48c44b76e130294875a1fc`,
+  `a5d1f9361b6e7fa0fae53dd727cbc9af3de282929e43e01ead22214f8353ad6d`,
+  and `444aadcf8b21c455fc8391ffde154952a7af3d60153abd00215ffe4ea4fb6360`;
+- rejected center-only preservation audit implementation/protocol/result and
+  successful geometry-plus-appearance audit implementation/protocol/result
+  SHA-256:
+  `d476fdf81fdb9a0a86841c99540242edb6e18131ee1476dc6661f1078aac486d`,
+  `0e46b378aaa798e1036d544b8f1d1853bf0a9aeaaa106dc0b4a75c9ff3054f89`,
+  `9410642bdbc269d418186346636edfcb3998a70eb65136b1c79aed56da6abadd`,
+  `640b4f56aba22161fa75dfd743e02e0bb1d71d01892b09d787e266e824150763`,
+  `17179f159f3f5241ea27e4f9422f339833f636c230b568bd13742c706c9e3b0d`,
+  and `02998bd2ff0528c1c1bf7ad36fae8a624c953184ad229fb8ca1bf121cd4f0004`;
 
 - partial physical-target confirmation implementation/protocol/result SHA-256:
   `280a6641455c6da6d184ee4422243370ab2945130bfed03bc9621de1880e418d`,
