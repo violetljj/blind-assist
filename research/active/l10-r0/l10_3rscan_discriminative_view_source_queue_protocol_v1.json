@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-source-queue-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-source-queue-protocol-v1",
+  "frozen_at": "2026-09-01T18:07:00+08:00",
+  "question": "Which first row in the pre-frozen six-family queue supplies three references, a consecutive query triplet and an observable same-scene sibling before RGB/model access?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_source_queue.py",
+    "sha256": "2a081c312387fec1b42502b37afd130bf09825edfa08cd3b9ce1c87bfe51b7f5"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py", "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"},
+    {"path": "l10_3rscan_discriminative_view_confirmation_source.py", "sha256": "6e17cebb342ba9774652d71e59f0aaf74e575c476cf05a189b6bbf23944f4314"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-source-queue-v1"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_FIXED_ORDER_DOWNLOAD",
+    "artifact_root": "artifacts.local",
+    "official_url_template": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/{scan_id}/{file}",
+    "resume": "A fully downloaded file may be reused only after JSON or ZIP integrity validation; incomplete .part files are deleted and restarted. Network failure pauses without a source conclusion and does not advance the queue."
+  },
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "reference_memory": {
+    "base_positive_marginal_budget": 3,
+    "minimum_positive_marginal_views": 2,
+    "required_views": 3,
+    "vacancy_fill": "If positive-marginal selection stops at two, fill one remaining admitted reference by maximum minimum camera-to-target angle."
+  },
+  "query_triplet": {
+    "required_consecutive_views": 3,
+    "selection": "Maximize minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio, then earlier first frame.",
+    "roles": "First two frames are initial observations; third is the fixed NEXT_FRAME_FORWARD action observation."
+  },
+  "next_action": {
+    "evaluable": "Stop the queue, freeze the selected row's three references and ordered query triplet, then run the unchanged scorer once before applying the unchanged 0.02 truth-free trigger.",
+    "not_evaluable": "Retain all six source-negative rows and move to an independently sourced trajectory panel rather than changing the admission rules."
+  },
+  "forbidden_after_freeze": [
+    "reorder, skip, replace or continue past queue rows based on source geometry or future model output",
+    "open RGB or call any model during source screening",
+    "change view rules, reference fill, triplet ranking, sibling requirement, trigger threshold, action or one-action budget",
+    "turn a network/download failure into a source-negative conclusion"
+  ],
+  "claim_boundary": "This run can establish only official-file integrity and fresh ordered pose/depth source evaluability. It is not RGB/model evidence, active-view success, a deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
