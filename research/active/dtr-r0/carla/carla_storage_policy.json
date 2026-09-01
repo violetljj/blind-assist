@@ -1,6 +1,6 @@
 {
   "schema_version": "blindassist-carla-storage-policy-v1",
-  "maximum_experiment_unique_bytes": 107374182400,
+  "maximum_experiment_unique_bytes": 120259084288,
   "minimum_volume_free_bytes": 107374182400,
   "default_run_reservation_bytes": 8589934592,
   "multimap_run_reservation_bytes": 17179869184,

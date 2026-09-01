@@ -77,7 +77,7 @@ Official C0, C1, C2, C4, N1, and N2 runners fail closed before creating a new
 run when either of these projected conditions is violated:
 
 - experiment unique bytes, counting each NTFS file identity once, would exceed
-  100 GiB;
+  112 GiB;
 - free space on the resolved backing volume would fall below 100 GiB.
 
 The normal reservation is 8 GiB and C4 reserves 16 GiB. Each runner acquires a
