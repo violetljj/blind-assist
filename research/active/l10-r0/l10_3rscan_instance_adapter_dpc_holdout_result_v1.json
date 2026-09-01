@@ -1,0 +1,647 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-adapter-dpc-holdout-result-v1",
+  "authority": "TARGET_FAMILY_DISJOINT_CONSUMED_DPC_PROPOSAL_HOLDOUT_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_instance_adapter_dpc_holdout_protocol_v1.json",
+  "protocol_sha256": "9e79c66f00024eda64d5fdb2e7c20153619de4b433b2a060e3e007b0a5f43a83",
+  "implementation": {
+    "path": "l10_3rscan_instance_adapter_dpc_holdout.py",
+    "sha256": "af331f0f10c7e606c344b15397230aab5ea3c5d5b7ce8ea065d418d7af3f631d"
+  },
+  "cohort": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_cohort_v1.json",
+    "sha256": "9be262281c5bcb3a9f1a8f2e3c62af03736867f1bca8b2152c6fecdfb7a1f5df",
+    "required_schema": "blindassist-l10-3rscan-depth-pose-propagation-confirmation-cohort-v1"
+  },
+  "intermediate": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_intermediate_result_v1.json",
+    "sha256": "dd05570729731018c722928846988bea18942b1b8859399db84b90da6166e91f",
+    "required_schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-result-v1",
+    "frozen_proposal_pool": "Use every ranked candidate exactly as recorded; do not regenerate, filter, or use truth during scoring."
+  },
+  "adapter_result": {
+    "path": "l10_3rscan_instance_residual_adapter_train_result_v1.json",
+    "sha256": "9564735c37a0f0816850a5d89f9d1d9172116fdb5347b902fbe3e0882f23c522",
+    "required_schema": "blindassist-l10-3rscan-instance-residual-adapter-train-result-v1",
+    "required_conclusion": "L10_3RSCAN_INSTANCE_RESIDUAL_ADAPTER_DEVELOPMENT_GATE_MET"
+  },
+  "descriptor": {
+    "name": "DINOv2 ViT-L/14 normalized CLS",
+    "input_size": 518,
+    "crop_expansion": 1.15,
+    "score": "Maximum cosine to the three frozen physical-door reference crops; compare raw frozen DINO and the fixed residual adapter."
+  },
+  "rgb_receipts": {
+    "DPC1_reference": {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "zip_member": "frame-000071.color.jpg",
+      "rgb_sha256": "09771778db4f6e64d0b51cdf3864f03964fc44af3a92c8d687b4b34f339aecd2"
+    },
+    "DPC1_query": {
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "zip_member": "frame-000082.color.jpg",
+      "rgb_sha256": "5dd1317f1ff6dda17e4e29205f672c3a40e5d47481f83e06d6a8631ba3b8df42"
+    },
+    "DPC2_reference": {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "zip_member": "frame-000188.color.jpg",
+      "rgb_sha256": "85f4ce8926d6951cb7512247df8f8b7dae9dea7219659bdca55a348c53eebc02"
+    },
+    "DPC2_query": {
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "zip_member": "frame-000083.color.jpg",
+      "rgb_sha256": "626e49b188b28ebf41fe8d760f56ead3802d3f4b45f507efda3742b4946ee555"
+    },
+    "DPC1_extra_reference": {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "zip_member": "frame-000074.color.jpg",
+      "rgb_sha256": "87c3f7378e22733feb26bb4ab35bfca664255c96136a410a4185915ea93e84ad"
+    }
+  },
+  "episodes": [
+    {
+      "query_key": "DPC1_query",
+      "candidate_count": 44,
+      "reachable_correct_candidate_index": 1,
+      "reachable_correct_iou_evaluation_only": 0.8832697662986355,
+      "original_fused_rank": 2,
+      "frozen_dino_rank": 22,
+      "adapted_rank": 23,
+      "frozen_dino_top1_iou_evaluation_only": 0.03542179705113923,
+      "adapted_top1_iou_evaluation_only": 0.03542179705113923,
+      "frozen_dino_recall_at_3": false,
+      "adapted_recall_at_3": false,
+      "correct_candidate_frozen_score": 0.37802478671073914,
+      "correct_candidate_adapted_score": 0.3626854419708252,
+      "frozen_top1_score_margin_over_correct": 0.1754675805568695,
+      "adapted_top1_score_margin_over_correct": 0.19523561000823975,
+      "ranking": [
+        {
+          "candidate_index": 0,
+          "truth_iou_evaluation_only": 0.07916617306422265,
+          "frozen_dino_score": 0.501582682132721,
+          "adapted_score": 0.512865424156189
+        },
+        {
+          "candidate_index": 1,
+          "truth_iou_evaluation_only": 0.8832697662986355,
+          "frozen_dino_score": 0.37802478671073914,
+          "adapted_score": 0.3626854419708252
+        },
+        {
+          "candidate_index": 2,
+          "truth_iou_evaluation_only": 0.08814613428091346,
+          "frozen_dino_score": 0.4525861144065857,
+          "adapted_score": 0.44088512659072876
+        },
+        {
+          "candidate_index": 3,
+          "truth_iou_evaluation_only": 0.03542179705113923,
+          "frozen_dino_score": 0.5534923672676086,
+          "adapted_score": 0.5579210519790649
+        },
+        {
+          "candidate_index": 4,
+          "truth_iou_evaluation_only": 0.24700194355240618,
+          "frozen_dino_score": 0.46833717823028564,
+          "adapted_score": 0.4617784321308136
+        },
+        {
+          "candidate_index": 5,
+          "truth_iou_evaluation_only": 0.07245594099363413,
+          "frozen_dino_score": 0.4845542013645172,
+          "adapted_score": 0.4848206341266632
+        },
+        {
+          "candidate_index": 6,
+          "truth_iou_evaluation_only": 0.004516370962752378,
+          "frozen_dino_score": 0.42514753341674805,
+          "adapted_score": 0.432503342628479
+        },
+        {
+          "candidate_index": 7,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.5324420928955078,
+          "adapted_score": 0.5367019176483154
+        },
+        {
+          "candidate_index": 8,
+          "truth_iou_evaluation_only": 0.24311058563785518,
+          "frozen_dino_score": 0.43463873863220215,
+          "adapted_score": 0.4344584345817566
+        },
+        {
+          "candidate_index": 9,
+          "truth_iou_evaluation_only": 0.547929524614272,
+          "frozen_dino_score": 0.36038845777511597,
+          "adapted_score": 0.34710779786109924
+        },
+        {
+          "candidate_index": 10,
+          "truth_iou_evaluation_only": 0.47947850775630874,
+          "frozen_dino_score": 0.3624821901321411,
+          "adapted_score": 0.3503572344779968
+        },
+        {
+          "candidate_index": 11,
+          "truth_iou_evaluation_only": 0.26561552611070194,
+          "frozen_dino_score": 0.3719044327735901,
+          "adapted_score": 0.36151444911956787
+        },
+        {
+          "candidate_index": 12,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.4137856662273407,
+          "adapted_score": 0.4046204686164856
+        },
+        {
+          "candidate_index": 13,
+          "truth_iou_evaluation_only": 0.0520248969720724,
+          "frozen_dino_score": 0.3546425700187683,
+          "adapted_score": 0.34855687618255615
+        },
+        {
+          "candidate_index": 14,
+          "truth_iou_evaluation_only": 0.09109420258457696,
+          "frozen_dino_score": 0.3473542332649231,
+          "adapted_score": 0.3488863706588745
+        },
+        {
+          "candidate_index": 15,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.48073551058769226,
+          "adapted_score": 0.46384716033935547
+        },
+        {
+          "candidate_index": 16,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.4612318277359009,
+          "adapted_score": 0.4484270215034485
+        },
+        {
+          "candidate_index": 17,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.45507198572158813,
+          "adapted_score": 0.4468526244163513
+        },
+        {
+          "candidate_index": 18,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.40274477005004883,
+          "adapted_score": 0.40606436133384705
+        },
+        {
+          "candidate_index": 19,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.3071524202823639,
+          "adapted_score": 0.29899272322654724
+        },
+        {
+          "candidate_index": 20,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.3804369270801544,
+          "adapted_score": 0.39224860072135925
+        },
+        {
+          "candidate_index": 21,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.5031326413154602,
+          "adapted_score": 0.4828200340270996
+        },
+        {
+          "candidate_index": 22,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.43584758043289185,
+          "adapted_score": 0.43007421493530273
+        },
+        {
+          "candidate_index": 23,
+          "truth_iou_evaluation_only": 0.2999680701863922,
+          "frozen_dino_score": 0.37105533480644226,
+          "adapted_score": 0.3939512073993683
+        },
+        {
+          "candidate_index": 24,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.5051204562187195,
+          "adapted_score": 0.4909111261367798
+        },
+        {
+          "candidate_index": 25,
+          "truth_iou_evaluation_only": 0.024669587234407753,
+          "frozen_dino_score": 0.4566284716129303,
+          "adapted_score": 0.47440361976623535
+        },
+        {
+          "candidate_index": 26,
+          "truth_iou_evaluation_only": 0.024333096767757103,
+          "frozen_dino_score": 0.4531054198741913,
+          "adapted_score": 0.47039785981178284
+        },
+        {
+          "candidate_index": 27,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.5224083065986633,
+          "adapted_score": 0.5105357766151428
+        },
+        {
+          "candidate_index": 28,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.317574679851532,
+          "adapted_score": 0.31525424122810364
+        },
+        {
+          "candidate_index": 29,
+          "truth_iou_evaluation_only": 0.11597953510216873,
+          "frozen_dino_score": 0.45397496223449707,
+          "adapted_score": 0.46602940559387207
+        },
+        {
+          "candidate_index": 30,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.1675533950328827,
+          "adapted_score": 0.1740690916776657
+        },
+        {
+          "candidate_index": 31,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.23027771711349487,
+          "adapted_score": 0.27251800894737244
+        },
+        {
+          "candidate_index": 32,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.22379375994205475,
+          "adapted_score": 0.2689090073108673
+        },
+        {
+          "candidate_index": 33,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2381349503993988,
+          "adapted_score": 0.2634788751602173
+        },
+        {
+          "candidate_index": 34,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2211032658815384,
+          "adapted_score": 0.2639279365539551
+        },
+        {
+          "candidate_index": 35,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.318589448928833,
+          "adapted_score": 0.31109461188316345
+        },
+        {
+          "candidate_index": 36,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.21217389404773712,
+          "adapted_score": 0.2292974591255188
+        },
+        {
+          "candidate_index": 37,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.19521068036556244,
+          "adapted_score": 0.20436908304691315
+        },
+        {
+          "candidate_index": 38,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.1926112174987793,
+          "adapted_score": 0.22535452246665955
+        },
+        {
+          "candidate_index": 39,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.3536941111087799,
+          "adapted_score": 0.3372204601764679
+        },
+        {
+          "candidate_index": 40,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.25863543152809143,
+          "adapted_score": 0.3039611279964447
+        },
+        {
+          "candidate_index": 41,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.21359848976135254,
+          "adapted_score": 0.23383863270282745
+        },
+        {
+          "candidate_index": 42,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.25637975335121155,
+          "adapted_score": 0.26937541365623474
+        },
+        {
+          "candidate_index": 43,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.25709259510040283,
+          "adapted_score": 0.29501277208328247
+        }
+      ]
+    },
+    {
+      "query_key": "DPC2_query",
+      "candidate_count": 43,
+      "reachable_correct_candidate_index": 2,
+      "reachable_correct_iou_evaluation_only": 0.8595016433387833,
+      "original_fused_rank": 3,
+      "frozen_dino_rank": 17,
+      "adapted_rank": 21,
+      "frozen_dino_top1_iou_evaluation_only": 0.2520359937546351,
+      "adapted_top1_iou_evaluation_only": 0.2520359937546351,
+      "frozen_dino_recall_at_3": false,
+      "adapted_recall_at_3": false,
+      "correct_candidate_frozen_score": 0.373403400182724,
+      "correct_candidate_adapted_score": 0.35855692625045776,
+      "frozen_top1_score_margin_over_correct": 0.19244840741157532,
+      "adapted_top1_score_margin_over_correct": 0.20461297035217285,
+      "ranking": [
+        {
+          "candidate_index": 0,
+          "truth_iou_evaluation_only": 0.009435065175596672,
+          "frozen_dino_score": 0.5174970626831055,
+          "adapted_score": 0.5317473411560059
+        },
+        {
+          "candidate_index": 1,
+          "truth_iou_evaluation_only": 0.08765777369868762,
+          "frozen_dino_score": 0.5590832233428955,
+          "adapted_score": 0.5591912269592285
+        },
+        {
+          "candidate_index": 2,
+          "truth_iou_evaluation_only": 0.8595016433387833,
+          "frozen_dino_score": 0.373403400182724,
+          "adapted_score": 0.35855692625045776
+        },
+        {
+          "candidate_index": 3,
+          "truth_iou_evaluation_only": 0.053204508374443134,
+          "frozen_dino_score": 0.45050275325775146,
+          "adapted_score": 0.4462260603904724
+        },
+        {
+          "candidate_index": 4,
+          "truth_iou_evaluation_only": 0.06268773962164488,
+          "frozen_dino_score": 0.5319967269897461,
+          "adapted_score": 0.5303757786750793
+        },
+        {
+          "candidate_index": 5,
+          "truth_iou_evaluation_only": 0.073742496243413,
+          "frozen_dino_score": 0.4254220426082611,
+          "adapted_score": 0.4295194447040558
+        },
+        {
+          "candidate_index": 6,
+          "truth_iou_evaluation_only": 0.2520359937546351,
+          "frozen_dino_score": 0.5658518075942993,
+          "adapted_score": 0.5631698966026306
+        },
+        {
+          "candidate_index": 7,
+          "truth_iou_evaluation_only": 0.5398870939932828,
+          "frozen_dino_score": 0.3745078444480896,
+          "adapted_score": 0.3674437999725342
+        },
+        {
+          "candidate_index": 8,
+          "truth_iou_evaluation_only": 0.23360413333713606,
+          "frozen_dino_score": 0.38070622086524963,
+          "adapted_score": 0.3684697449207306
+        },
+        {
+          "candidate_index": 9,
+          "truth_iou_evaluation_only": 0.45803096560496875,
+          "frozen_dino_score": 0.36508455872535706,
+          "adapted_score": 0.35727742314338684
+        },
+        {
+          "candidate_index": 10,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.4363129138946533,
+          "adapted_score": 0.4355449080467224
+        },
+        {
+          "candidate_index": 11,
+          "truth_iou_evaluation_only": 0.09989227430436147,
+          "frozen_dino_score": 0.4032118320465088,
+          "adapted_score": 0.4136963188648224
+        },
+        {
+          "candidate_index": 12,
+          "truth_iou_evaluation_only": 0.049632313088815626,
+          "frozen_dino_score": 0.3646538257598877,
+          "adapted_score": 0.37073826789855957
+        },
+        {
+          "candidate_index": 13,
+          "truth_iou_evaluation_only": 0.23252945588421464,
+          "frozen_dino_score": 0.3595920503139496,
+          "adapted_score": 0.3589596748352051
+        },
+        {
+          "candidate_index": 14,
+          "truth_iou_evaluation_only": 0.3039357101356177,
+          "frozen_dino_score": 0.4237356185913086,
+          "adapted_score": 0.4137328267097473
+        },
+        {
+          "candidate_index": 15,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.3624063730239868,
+          "adapted_score": 0.37589800357818604
+        },
+        {
+          "candidate_index": 16,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.3802318274974823,
+          "adapted_score": 0.38182467222213745
+        },
+        {
+          "candidate_index": 17,
+          "truth_iou_evaluation_only": 0.00839363774154692,
+          "frozen_dino_score": 0.305464506149292,
+          "adapted_score": 0.3249872922897339
+        },
+        {
+          "candidate_index": 18,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.40373578667640686,
+          "adapted_score": 0.42426472902297974
+        },
+        {
+          "candidate_index": 19,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.34555748105049133,
+          "adapted_score": 0.3467835485935211
+        },
+        {
+          "candidate_index": 20,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.330350786447525,
+          "adapted_score": 0.36321157217025757
+        },
+        {
+          "candidate_index": 21,
+          "truth_iou_evaluation_only": 0.02891586330293679,
+          "frozen_dino_score": 0.44475358724594116,
+          "adapted_score": 0.44859862327575684
+        },
+        {
+          "candidate_index": 22,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2565373182296753,
+          "adapted_score": 0.277286559343338
+        },
+        {
+          "candidate_index": 23,
+          "truth_iou_evaluation_only": 0.029716198988687693,
+          "frozen_dino_score": 0.4322604835033417,
+          "adapted_score": 0.4407040774822235
+        },
+        {
+          "candidate_index": 24,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.16780982911586761,
+          "adapted_score": 0.18910732865333557
+        },
+        {
+          "candidate_index": 25,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.32121947407722473,
+          "adapted_score": 0.31444960832595825
+        },
+        {
+          "candidate_index": 26,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2410953938961029,
+          "adapted_score": 0.2520066499710083
+        },
+        {
+          "candidate_index": 27,
+          "truth_iou_evaluation_only": 0.1282623632328363,
+          "frozen_dino_score": 0.3962247967720032,
+          "adapted_score": 0.40390050411224365
+        },
+        {
+          "candidate_index": 28,
+          "truth_iou_evaluation_only": 0.09248274119843777,
+          "frozen_dino_score": 0.3100935220718384,
+          "adapted_score": 0.3192656636238098
+        },
+        {
+          "candidate_index": 29,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.23885050415992737,
+          "adapted_score": 0.2568686008453369
+        },
+        {
+          "candidate_index": 30,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.18884271383285522,
+          "adapted_score": 0.21001207828521729
+        },
+        {
+          "candidate_index": 31,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.18116100132465363,
+          "adapted_score": 0.23229049146175385
+        },
+        {
+          "candidate_index": 32,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2765974700450897,
+          "adapted_score": 0.32335364818573
+        },
+        {
+          "candidate_index": 33,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2016911655664444,
+          "adapted_score": 0.24052578210830688
+        },
+        {
+          "candidate_index": 34,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.189510777592659,
+          "adapted_score": 0.2147398442029953
+        },
+        {
+          "candidate_index": 35,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.24233488738536835,
+          "adapted_score": 0.27047884464263916
+        },
+        {
+          "candidate_index": 36,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.20634286105632782,
+          "adapted_score": 0.24984851479530334
+        },
+        {
+          "candidate_index": 37,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.24110211431980133,
+          "adapted_score": 0.27628886699676514
+        },
+        {
+          "candidate_index": 38,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2528842091560364,
+          "adapted_score": 0.2954874038696289
+        },
+        {
+          "candidate_index": 39,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.23651787638664246,
+          "adapted_score": 0.2611609101295471
+        },
+        {
+          "candidate_index": 40,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.1221100389957428,
+          "adapted_score": 0.13089433312416077
+        },
+        {
+          "candidate_index": 41,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2376580387353897,
+          "adapted_score": 0.26814812421798706
+        },
+        {
+          "candidate_index": 42,
+          "truth_iou_evaluation_only": 0.0,
+          "frozen_dino_score": 0.2595323324203491,
+          "adapted_score": 0.28894543647766113
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "query_count": 2,
+    "original_fused_top1": 0,
+    "frozen_dino_top1": 0,
+    "adapted_top1": 0,
+    "incremental_rank_improvements": 0,
+    "incremental_rank_regressions": 2,
+    "minimum_adapted_top1_iou": 0.03542179705113923,
+    "mean_adapted_top1_iou": 0.14372889540288716
+  },
+  "gate": {
+    "minimum_top1_iou": 0.8,
+    "minimum_incremental_rank_improvements": 1,
+    "requirements": "The adapter must put the reachable highest-IoU proposal at Top-1 for both queries, improve over raw DINO on at least one query, regress on none, and retain minimum Top-1 IoU 0.8.",
+    "met": false
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "rgb_members_opened": 5,
+    "feature_calls": 90,
+    "adapter_training_steps": 0
+  },
+  "conclusion": "L10_3RSCAN_INSTANCE_ADAPTER_DPC_HOLDOUT_DEVELOPMENT_GATE_NOT_MET",
+  "next_action": "Close parametric adapter reranking for this consumed DPC family and test a non-parametric foreground patch-memory candidate generator on a new target-disjoint family; do not tune on DPC1 or DPC2.",
+  "claim_boundary": "The DPC family is target-family-disjoint from adapter training but its historical failure is already known, so this is consumed-holdout Development, not fresh confirmation. A result concerns proposal referent ranking only, not portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
