@@ -138,7 +138,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   authority invariants and safe-segment constraints passed, but full precision
   and F1 failed and episode 05 contact recall was only `52.17%`. C38 is now
   consumed diagnosis material for a measurement-backed existence/uncertainty
-  successor; X73 continues to retain confirmation authority.
+  successor. X78 separates identity continuity from collision-risk authority:
+  an all-carrier, zero-contradiction object-permanence belief with zero-shift
+  support and non-closing velocity remains in memory but no longer authorizes
+  route risk. Across C26/C27/C28/C32/C34/C35/C36/C37, however, the mechanism
+  was never exercised; X78 remains identical to X77 at pooled
+  `1,071 TP / 106 FP / 308 FN` and `90.99/77.66/83.80%`. This is a compatible
+  structural refinement, not an incremental metric result. X73 continues to
+  retain confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -226,3 +233,7 @@ their result.
   [dtr_carla_c38_x77_fresh_confirmation_protocol.json](carla/dtr_carla_c38_x77_fresh_confirmation_protocol.json)
 - C38 single-use confirmation runner:
   [run_dtr_carla_c38_x77_fresh_confirmation.py](carla/run_dtr_carla_c38_x77_fresh_confirmation.py)
+- C38 X77 fresh outcome:
+  [DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md)
+- X78 consumed cross-cohort Development:
+  [DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
