@@ -514,6 +514,16 @@ contract.
   regression, not fresh incremental evidence for axis completion. Freeze the
   rule again on an eighth untouched family to seek a naturally activated branch;
   do not select the family or views using RGB/model outcomes.
+  The metadata-ordered eighth candidate was frozen as
+  `4e858c93-fd93-2cb4-86d6-12f652012a40 ->
+  4e858c95-fd93-2cb4-853e-1233ae90402a`, target door `10`, without selecting
+  on branch activation. Its source gate is
+  `L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_NOT_EVALUABLE`: the query side
+  admitted three views at `0.858997` cumulative coverage and sibling door `11`
+  admitted seven views, but the reference side supplied only one admitted view
+  at `0.526551`. RGB/model calls remained zero. Freeze this family as an
+  observation-reachability result, not an algorithm failure; select the ninth
+  candidate by the unchanged metadata rule without rescue or RGB inspection.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
@@ -758,12 +768,13 @@ contract.
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
 4. The vacancy-set rule transferred `3/3` on its seventh untouched family, but
-   the axis branch did not activate. Freeze the identical rule on an eighth
-   untouched 3RScan family before source download, RGB inspection, or model
-   execution. Keep the set at no more than three and do not tune its `0.05`
-   scale penalty, axis modes, vacancy condition, or IoU gate. The branch's fresh
-   incremental value remains unconfirmed until it fills a naturally occurring
-   vacancy; regardless, proposal recall is not top-one referent localization.
+   the axis branch did not activate; the eighth metadata-selected family was
+   `NOT_EVALUABLE` before RGB/model because its reference scan admitted only one
+   view. Freeze a ninth untouched candidate using the identical metadata order
+   and source gate. Keep the set at no more than three and do not tune its
+   `0.05` scale penalty, axis modes, vacancy condition, or IoU gate. The branch's
+   fresh incremental value remains unconfirmed until it fills a naturally
+   occurring vacancy; regardless, proposal recall is not top-one localization.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -830,6 +841,8 @@ contract.
   [l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json](l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json)
 - Seventh-family fresh axis-completion vacancy result:
   [l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json](l10_3rscan_axis_completion_vacancy_confirmation_result_v1.json)
+- Eighth-family pre-RGB source result:
+  [l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json](l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

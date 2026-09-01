@@ -4546,6 +4546,20 @@ activation without choosing a family or view from RGB/model outcomes. Even a
 branch-positive transfer would remain proposal-set recall, not top-one referent,
 portal ownership, navigation, handoff, benefit, reliability, or safety.
 
+The next candidate was selected by the unchanged metadata order, without
+conditioning on whether axis completion would activate:
+`4e858c93-fd93-2cb4-86d6-12f652012a40 ->
+4e858c95-fd93-2cb4-853e-1233ae90402a`, target door `10`. Its official files
+were downloaded only after the candidate commit. The geometry/depth gate then
+returned `L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_NOT_EVALUABLE`: the query
+scan admitted three views with cumulative target coverage `0.858997`, and
+sibling door `11` admitted seven views, but the reference scan admitted only
+one target view at `0.526551`. RGB members opened and model calls both remained
+zero. Freeze this as observation-reachability evidence; it is neither an
+algorithm failure nor permission to relax the source gate or rescue the family.
+The ninth candidate must again be selected before download by the unchanged
+metadata rule.
+
 Evidence:
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
@@ -4612,6 +4626,13 @@ Evidence:
   `66b10bbf2328823fa9d1e887077f068bab211bec6ca18ffee2b4efffb8a1f9cc`,
   `b333ec3995d618066d90adc7492e3d2e45aa670bf571e9b1ceef7026fa550d6c`,
   and `767bf036cfebd1bbe0ebad6dee5952363431c54efb0ebb94cf1aa15be04921d3`.
+- eighth-family candidate protocol/candidate, download receipt, and pre-RGB
+  source protocol/result SHA-256:
+  `f24f9088b62cc85e46429ea5a534e71efdfebc8d751bd5fc16a4ee06f2ff08da`,
+  `828622c911b529121b9bf41eb3e8e6683f7fa71becda1b746bb63926d360512a`,
+  `e0cfd6857144db9394450aa5edf6cc882d7837a4cb64e40ca7ac19070b888270`,
+  `cc1626e8045db41212eb51a4ca89ff43c5bd57fec0bce940c098fb80ec017830`,
+  and `e17d72ddb7194e1a9f04088026acb4ee71ae9acb5e9e39b1860c6399fe723274`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

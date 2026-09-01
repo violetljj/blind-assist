@@ -1,0 +1,239 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-result-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_SET_MEMORY_CONFIRMATION_SOURCE",
+  "protocol_path": "l10_3rscan_axis_completion_vacancy_second_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "cc1626e8045db41212eb51a4ca89ff43c5bd57fec0bce940c098fb80ec017830",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_source.py",
+    "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"
+  },
+  "candidate": {
+    "reference_scan_id": "4e858c93-fd93-2cb4-86d6-12f652012a40",
+    "rescan_id": "4e858c95-fd93-2cb4-853e-1233ae90402a",
+    "target_instance_id": 10,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      10,
+      11,
+      37
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9866796731948853,
+      -0.16136927902698517,
+      -0.020573634654283524,
+      0,
+      0.16180600225925446,
+      0.9865841269493103,
+      0.02169382944703102,
+      0,
+      0.016796905547380447,
+      -0.02473379671573639,
+      0.9995529651641846,
+      0,
+      0.5428922772407532,
+      -0.30333366990089417,
+      0.08163459599018097,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_NOT_EVALUABLE",
+  "source_evaluable": false,
+  "reference_memory": {
+    "scan_id": "4e858c93-fd93-2cb4-86d6-12f652012a40",
+    "target_instance_id": 10,
+    "target_vertices": 2241,
+    "eligible_partial_views": 2,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 66,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1521,
+        "inside_vertex_fraction": 0.678714859437751,
+        "projected_area_pixels": 101820.03358198542,
+        "image_margin_pixels": 0.2181912511587143,
+        "bbox_xyxy": [
+          324.6486511230469,
+          0.2181912511587143,
+          902.6073608398438,
+          201.69906616210938
+        ],
+        "depth_compared_vertices": 1181,
+        "depth_visible_vertices": 1180,
+        "depth_visible_ratio": 0.9991532599491956,
+        "bbox_width_pixels": 577.9587097167969,
+        "bbox_height_pixels": 201.48087491095066,
+        "bbox_short_side_pixels": 201.48087491095066,
+        "bbox_short_side_fraction": 0.3731127313165753,
+        "bbox_aspect_ratio": 2.868553702539954,
+        "visible_target_vertices": 1180,
+        "zip_member": "frame-000066.color.jpg",
+        "marginal_visible_target_vertices": 1180,
+        "cumulative_visible_target_vertices": 1180,
+        "cumulative_visible_target_fraction": 0.5265506470325747
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 1180,
+    "final_cumulative_visible_target_fraction": 0.5265506470325747,
+    "opened": {
+      "pose_members": 124,
+      "depth_members": 124,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "query_memory": {
+    "scan_id": "4e858c95-fd93-2cb4-853e-1233ae90402a",
+    "target_instance_id": 10,
+    "target_vertices": 2773,
+    "eligible_partial_views": 5,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 53,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 2773,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 90633.93744237446,
+        "image_margin_pixels": 5.437735080718994,
+        "bbox_xyxy": [
+          150.2908172607422,
+          5.437735080718994,
+          661.0717163085938,
+          231.87435913085938
+        ],
+        "depth_compared_vertices": 2107,
+        "depth_visible_vertices": 2102,
+        "depth_visible_ratio": 0.9976269577598481,
+        "bbox_width_pixels": 510.78089904785156,
+        "bbox_height_pixels": 226.43662405014038,
+        "bbox_short_side_pixels": 226.43662405014038,
+        "bbox_short_side_fraction": 0.419327081574334,
+        "bbox_aspect_ratio": 2.2557344740078276,
+        "visible_target_vertices": 2102,
+        "zip_member": "frame-000053.color.jpg",
+        "marginal_visible_target_vertices": 2102,
+        "cumulative_visible_target_vertices": 2102,
+        "cumulative_visible_target_fraction": 0.7580238009376127
+      },
+      {
+        "frame": 54,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 975,
+        "inside_vertex_fraction": 0.3516047601875225,
+        "projected_area_pixels": 60322.54909747598,
+        "image_margin_pixels": 0.27327871322631836,
+        "bbox_xyxy": [
+          183.1768035888672,
+          0.27327871322631836,
+          785.907470703125,
+          174.665771484375
+        ],
+        "depth_compared_vertices": 657,
+        "depth_visible_vertices": 656,
+        "depth_visible_ratio": 0.9984779299847792,
+        "bbox_width_pixels": 602.7306671142578,
+        "bbox_height_pixels": 174.39249277114868,
+        "bbox_short_side_pixels": 174.39249277114868,
+        "bbox_short_side_fraction": 0.3229490606873124,
+        "bbox_aspect_ratio": 3.4561732419594895,
+        "visible_target_vertices": 656,
+        "zip_member": "frame-000054.color.jpg",
+        "marginal_visible_target_vertices": 270,
+        "cumulative_visible_target_vertices": 2372,
+        "cumulative_visible_target_fraction": 0.855391272989542
+      },
+      {
+        "frame": 52,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 2773,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 82025.8285012522,
+        "image_margin_pixels": 4.475970268249512,
+        "bbox_xyxy": [
+          161.46539306640625,
+          4.475970268249512,
+          646.93212890625,
+          203.55535888671875
+        ],
+        "depth_compared_vertices": 1932,
+        "depth_visible_vertices": 1922,
+        "depth_visible_ratio": 0.994824016563147,
+        "bbox_width_pixels": 485.46673583984375,
+        "bbox_height_pixels": 199.07938861846924,
+        "bbox_short_side_pixels": 199.07938861846924,
+        "bbox_short_side_fraction": 0.36866553447864675,
+        "bbox_aspect_ratio": 2.4385585027600665,
+        "visible_target_vertices": 1922,
+        "zip_member": "frame-000052.color.jpg",
+        "marginal_visible_target_vertices": 10,
+        "cumulative_visible_target_vertices": 2382,
+        "cumulative_visible_target_fraction": 0.858997475658132
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 2382,
+    "final_cumulative_visible_target_fraction": 0.858997475658132,
+    "opened": {
+      "pose_members": 158,
+      "depth_members": 158,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "same_scene_sibling": {
+    "instance_id": 11,
+    "label": "door_or_doorframe",
+    "target_vertices": 4250,
+    "candidate_views": 7,
+    "selected": {
+      "frame": 59,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 2704,
+      "inside_vertex_fraction": 0.636235294117647,
+      "projected_area_pixels": 229718.77593570796,
+      "image_margin_pixels": 0.0736941322684288,
+      "bbox_xyxy": [
+        0.0736941322684288,
+        1.150517225265503,
+        608.960693359375,
+        538.7896118164062
+      ],
+      "depth_compared_vertices": 2034,
+      "depth_visible_vertices": 998,
+      "depth_visible_ratio": 0.49065880039331367,
+      "bbox_width_pixels": 608.8869992271066,
+      "bbox_height_pixels": 537.6390945911407,
+      "bbox_short_side_pixels": 537.6390945911407,
+      "bbox_short_side_fraction": 0.9956279529465569,
+      "bbox_aspect_ratio": 1.1325199475870478,
+      "visible_target_vertices": 998,
+      "zip_member": "frame-000059.color.jpg"
+    },
+    "opened": {
+      "pose_members": 158,
+      "depth_members": 158,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Retain the source receipt and do not open RGB or call GroundingDINO, DINOv2 or SAM2 for this family.",
+  "claim_boundary": "This source gate can establish only whether the eighth new family supplies three-view target memory and a sibling control. It is not algorithm or incremental axis-completion evidence, top-one localization, calibrated uncertainty, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

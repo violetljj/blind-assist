@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-axis-completion-vacancy-second-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T14:37:05+08:00",
+  "question": "Does the pre-download-frozen eighth family supply three complementary target views on each side and an admitted same-scene sibling before any RGB or model access?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_source.py", "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"},
+  "candidate": {"path": "l10_3rscan_axis_completion_vacancy_second_confirmation_candidate_v1.json", "sha256": "828622c911b529121b9bf41eb3e8e6683f7fa71becda1b746bb63926d360512a"},
+  "download_receipt": {"path": "l10_3rscan_axis_completion_vacancy_second_confirmation_download_receipt_v1.json"},
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_NEW_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/4e858c93-fd93-2cb4-86d6-12f652012a40/semseg.v2.json", "bytes": 40255, "sha256": "09bc887353f4213621d0a16c0723b9341a46ef22d64379e2d896f40c1f01b6f8"},
+      {"path": "datasets/3rscan/4e858c93-fd93-2cb4-86d6-12f652012a40/labels.instances.annotated.v2.ply", "bytes": 8163954, "sha256": "a25e98fb8b8da1652a9485af9cc39f40e1c3488b4d3d85b81a7e4c58a07f3aef"},
+      {"path": "datasets/3rscan/4e858c93-fd93-2cb4-86d6-12f652012a40/sequence.zip", "bytes": 20540711, "sha256": "4bc4ef12c971179f0ef5d82d5874a36b68bb68ff225153cfd0d83d720fdd1e3c"},
+      {"path": "datasets/3rscan/4e858c95-fd93-2cb4-853e-1233ae90402a/semseg.v2.json", "bytes": 33708, "sha256": "3ab2b7ac08954988be5847349b1d53b8dd003499a8b4de267092851080e80686"},
+      {"path": "datasets/3rscan/4e858c95-fd93-2cb4-853e-1233ae90402a/labels.instances.annotated.v2.ply", "bytes": 5649700, "sha256": "7ffdabcc09b83a7bcde189ee3ff97cf10eab9e8d9ef8951ee3fdc241c8d057c3"},
+      {"path": "datasets/3rscan/4e858c95-fd93-2cb4-853e-1233ae90402a/sequence.zip", "bytes": 26561568, "sha256": "c1d73721631564c156351b46d51cc7c2cd622bfcd9d3f781c8023701ca7aeb65"}
+    ]
+  },
+  "memory_budget": 3,
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": {
+    "memory": "Greedily add maximum newly visible target vertices; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "sibling": "Record the first different door or doorframe instance with an admitted view; its appearance is forbidden from target-only ranking."
+  },
+  "decision_gate": {"minimum_memory_views_per_side": 3, "minimum_same_scene_sibling_views": 1},
+  "next_action": {
+    "evaluable": "Freeze three target views per side, then run the unchanged at-most-three vacancy rule once without activation-based family replacement.",
+    "not_evaluable": "Retain the source receipt and do not open RGB or call GroundingDINO, DINOv2 or SAM2 for this family."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, view rules, memory budget or sibling rule",
+    "change full-plus-40-percent proposal windows, layer-18 representation, semantic-local fusion, nearest-reference-scale penalty 0.05, majority-reference vote, deterministic tie order, exact deduplication, vacancy-only axis completion, IoU gate or maximum set size three",
+    "use sibling appearance or query truth in hypothesis generation",
+    "open RGB/model before source result",
+    "reinterpret source scarcity as algorithm failure"
+  ],
+  "claim_boundary": "This source gate can establish only whether the eighth new family supplies three-view target memory and a sibling control. It is not algorithm or incremental axis-completion evidence, top-one localization, calibrated uncertainty, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
