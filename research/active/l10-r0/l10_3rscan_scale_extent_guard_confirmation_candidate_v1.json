@@ -1,0 +1,93 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v3",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_scale_extent_guard_confirmation_candidate_protocol_v1.json",
+  "protocol_sha256": "6b39f605abe9066e4118523ea0e76483a4795c098248efb34a7437e5fe1f4255",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 73,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+    "rescan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+    "target_instance_id": 8,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      8,
+      27,
+      30,
+      32
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9914510846138,
+      -0.1303359866142273,
+      0.006107209715992212,
+      0,
+      0.1303442418575287,
+      0.9914685487747192,
+      -0.0009670762228779495,
+      0,
+      -0.005929062142968178,
+      0.0017548489850014448,
+      0.9999809861183167,
+      0,
+      0.1756211221218109,
+      0.02600555680692196,
+      -0.1544061303138733,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "memory_budget": 3,
+    "memory_selection": "Greedily maximize newly visible target vertices on each scan; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "source_is_evaluable_only_if": "Both target scans yield three memory views before RGB/model access. A same-scene sibling is recorded when available but is forbidden from ranking."
+  },
+  "claim_boundary": "This freezes only the next new physical family candidate for the completed scale-aware extent-guard mechanism. It is metadata-only, not source evaluability, algorithm evidence, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
