@@ -1,0 +1,707 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-source-queue-result-v1",
+  "authority": "FRESH_PRE_FROZEN_QUEUE_CONTINUATION_SOURCE_SCREEN",
+  "protocol_path": "l10_3rscan_discriminative_view_source_queue_continue_protocol_v2.json",
+  "protocol_sha256": "eb4540bcc1b56eba67d4b7a0ab55a391ef18184ff11c038acb2401cc81a4e1cf",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_source_queue_continue.py",
+    "sha256": "425fd77c6855e9747b8e248d1e377b209c01c772f1c3d0d08dd7db3e0d57a49b"
+  },
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-source-queue-v1"
+  },
+  "base_protocol": {
+    "path": "l10_3rscan_discriminative_view_source_queue_protocol_v1.json",
+    "sha256": "8e4f9c59173d2debff91d05f019c3ca84e422536116e70c71c59ce9bb46d2a9e",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-source-queue-protocol-v1"
+  },
+  "selected_queue_index": 3,
+  "selected_source": {
+    "queue_index": 3,
+    "candidate": {
+      "reference_scan_id": "6bde6070-9162-246f-8ea9-c8bbe5d7133a",
+      "rescan_id": "6bde606a-9162-246f-8d00-6f12f032e27d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        4,
+        10
+      ],
+      "area_proxy": 0.0,
+      "transform": [
+        0.983697772026062,
+        -0.179826557636261,
+        0.0010541327064856887,
+        0,
+        0.1798267811536789,
+        0.9836981296539307,
+        -0.0001090136356651783,
+        0,
+        -0.0010173452319577336,
+        0.00029679774888791144,
+        0.9999994039535522,
+        0,
+        0.657489001750946,
+        0.3506336212158203,
+        0.012041223235428333,
+        1
+      ]
+    },
+    "source_files": [
+      {
+        "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/semseg.v2.json",
+        "bytes": 17716,
+        "sha256": "6f92a348d25551c7a860d899d192eec50ae1484d52d6061d82bcc560fff28abb",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/semseg.v2.json"
+      },
+      {
+        "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/labels.instances.annotated.v2.ply",
+        "bytes": 3369038,
+        "sha256": "d7b968283f760443c56b97fca7b3276994e2242ecb61af199911287e5a26cc26",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/labels.instances.annotated.v2.ply"
+      },
+      {
+        "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/sequence.zip",
+        "bytes": 29834357,
+        "sha256": "eddd329618d26c13cae9a9ac7d70b891183a2e1ecbeb8c14f35c258e82cded85",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/sequence.zip"
+      },
+      {
+        "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/semseg.v2.json",
+        "bytes": 18185,
+        "sha256": "fced295a476bb5100e9cd6317f034afc21e8f3882fd2e43b1a9ba3a0b4f944f0",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/semseg.v2.json"
+      },
+      {
+        "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/labels.instances.annotated.v2.ply",
+        "bytes": 3496644,
+        "sha256": "f24183d42d9ebc37cead3e0d19ec8f61f59238d5ac9a303d62125e8d6ce3e05c",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/labels.instances.annotated.v2.ply"
+      },
+      {
+        "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/sequence.zip",
+        "bytes": 35133612,
+        "sha256": "f535be901920eb83ff713cef17e58a6be5777f045e0a6a73e556fc9dab1e1b98",
+        "downloaded_now": true,
+        "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/sequence.zip"
+      }
+    ],
+    "source_evaluable": true,
+    "reference_memory": {
+      "scan_id": "6bde6070-9162-246f-8ea9-c8bbe5d7133a",
+      "target_instance_id": 4,
+      "target_vertices": 979,
+      "eligible_partial_views": 9,
+      "portfolio_budget": 3,
+      "selected": [
+        {
+          "frame": 165,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 530,
+          "inside_vertex_fraction": 0.5413687436159347,
+          "projected_area_pixels": 215360.6971521187,
+          "image_margin_pixels": 0.4157971739768982,
+          "bbox_xyxy": [
+            272.3929748535156,
+            0.4157971739768982,
+            957.1625366210938,
+            332.1008605957031
+          ],
+          "depth_compared_vertices": 453,
+          "depth_visible_vertices": 452,
+          "depth_visible_ratio": 0.9977924944812362,
+          "bbox_width_pixels": 684.7695617675781,
+          "bbox_height_pixels": 331.6850634217262,
+          "bbox_short_side_pixels": 331.6850634217262,
+          "bbox_short_side_fraction": 0.6142315989291226,
+          "bbox_aspect_ratio": 2.0645173306972735,
+          "visible_target_vertices": 452,
+          "zip_member": "frame-000165.color.jpg",
+          "marginal_visible_target_vertices": 452,
+          "cumulative_visible_target_vertices": 452,
+          "cumulative_visible_target_fraction": 0.4616956077630235
+        },
+        {
+          "frame": 166,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 414,
+          "inside_vertex_fraction": 0.42288049029622066,
+          "projected_area_pixels": 167916.4800243514,
+          "image_margin_pixels": 0.09039140492677689,
+          "bbox_xyxy": [
+            0.09039140492677689,
+            0.43318477272987366,
+            583.7319946289062,
+            322.2063903808594
+          ],
+          "depth_compared_vertices": 375,
+          "depth_visible_vertices": 339,
+          "depth_visible_ratio": 0.904,
+          "bbox_width_pixels": 583.6416032239795,
+          "bbox_height_pixels": 321.7732056081295,
+          "bbox_short_side_pixels": 321.7732056081295,
+          "bbox_short_side_fraction": 0.5958763066817213,
+          "bbox_aspect_ratio": 1.81382909779867,
+          "visible_target_vertices": 339,
+          "zip_member": "frame-000166.color.jpg",
+          "marginal_visible_target_vertices": 288,
+          "cumulative_visible_target_vertices": 740,
+          "cumulative_visible_target_fraction": 0.7558733401430031
+        },
+        {
+          "frame": 41,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 329,
+          "inside_vertex_fraction": 0.33605720122574056,
+          "projected_area_pixels": 96785.97046212445,
+          "image_margin_pixels": 0.8367276191711426,
+          "bbox_xyxy": [
+            0.8367276191711426,
+            1.1161836385726929,
+            352.3412780761719,
+            324.05224609375
+          ],
+          "depth_compared_vertices": 258,
+          "depth_visible_vertices": 188,
+          "depth_visible_ratio": 0.7286821705426356,
+          "bbox_width_pixels": 351.50455045700073,
+          "bbox_height_pixels": 322.9360624551773,
+          "bbox_short_side_pixels": 322.9360624551773,
+          "bbox_short_side_fraction": 0.5980297452873654,
+          "bbox_aspect_ratio": 1.0884648428070454,
+          "visible_target_vertices": 188,
+          "zip_member": "frame-000041.color.jpg",
+          "marginal_visible_target_vertices": 48,
+          "cumulative_visible_target_vertices": 788,
+          "cumulative_visible_target_fraction": 0.804902962206333
+        }
+      ],
+      "final_cumulative_visible_target_vertices": 788,
+      "final_cumulative_visible_target_fraction": 0.804902962206333,
+      "opened": {
+        "pose_members": 185,
+        "depth_members": 185,
+        "rgb_members": 0,
+        "model_calls": 0
+      },
+      "eligible_admitted_views": 9,
+      "required_views": 3,
+      "vacancy_fills": []
+    },
+    "query_triplet": {
+      "scan_id": "6bde606a-9162-246f-8d00-6f12f032e27d",
+      "target_instance_id": 4,
+      "eligible_admitted_views": 12,
+      "selected": [
+        {
+          "frame": 106,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 632,
+          "inside_vertex_fraction": 0.6390293225480284,
+          "projected_area_pixels": 325451.01648403006,
+          "image_margin_pixels": 1.558837890625,
+          "bbox_xyxy": [
+            1.5797975063323975,
+            48.034175872802734,
+            831.7056274414062,
+            537.441162109375
+          ],
+          "depth_compared_vertices": 581,
+          "depth_visible_vertices": 577,
+          "depth_visible_ratio": 0.9931153184165232,
+          "bbox_width_pixels": 830.1258299350739,
+          "bbox_height_pixels": 489.40698623657227,
+          "bbox_short_side_pixels": 489.40698623657227,
+          "bbox_short_side_fraction": 0.9063092337714301,
+          "bbox_aspect_ratio": 1.696187127034192,
+          "visible_target_vertices": 577,
+          "zip_member": "frame-000106.color.jpg"
+        },
+        {
+          "frame": 107,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 587,
+          "inside_vertex_fraction": 0.5935288169868554,
+          "projected_area_pixels": 306977.952419553,
+          "image_margin_pixels": 0.19773370027542114,
+          "bbox_xyxy": [
+            1.1152279376983643,
+            0.19773370027542114,
+            887.9071044921875,
+            390.5095520019531
+          ],
+          "depth_compared_vertices": 540,
+          "depth_visible_vertices": 536,
+          "depth_visible_ratio": 0.9925925925925926,
+          "bbox_width_pixels": 886.7918765544891,
+          "bbox_height_pixels": 390.3118183016777,
+          "bbox_short_side_pixels": 390.3118183016777,
+          "bbox_short_side_fraction": 0.7227996635216254,
+          "bbox_aspect_ratio": 2.2720087759911864,
+          "visible_target_vertices": 536,
+          "zip_member": "frame-000107.color.jpg"
+        },
+        {
+          "frame": 108,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 307,
+          "inside_vertex_fraction": 0.3104145601617796,
+          "projected_area_pixels": 157812.4383888272,
+          "image_margin_pixels": 0.72393798828125,
+          "bbox_xyxy": [
+            571.5927124023438,
+            28.54527473449707,
+            958.2760620117188,
+            495.3472900390625
+          ],
+          "depth_compared_vertices": 264,
+          "depth_visible_vertices": 264,
+          "depth_visible_ratio": 1.0,
+          "bbox_width_pixels": 386.683349609375,
+          "bbox_height_pixels": 466.80201530456543,
+          "bbox_short_side_pixels": 386.683349609375,
+          "bbox_short_side_fraction": 0.7160802770543981,
+          "bbox_aspect_ratio": 1.2071945062442584,
+          "visible_target_vertices": 264,
+          "zip_member": "frame-000108.color.jpg"
+        }
+      ],
+      "triplet_receipt": {
+        "frames": [
+          106,
+          107,
+          108
+        ],
+        "minimum_visible_target_vertices": 264,
+        "sum_visible_target_vertices": 1377,
+        "minimum_bbox_short_side_fraction": 0.7160802770543981,
+        "minimum_depth_visible_ratio": 0.9925925925925926,
+        "initial_frames": [
+          106,
+          107
+        ],
+        "fixed_action": "NEXT_FRAME_FORWARD",
+        "action_frame": 108
+      },
+      "opened": {
+        "pose_members": 218,
+        "depth_members": 218,
+        "rgb_members": 0,
+        "model_calls": 0
+      }
+    },
+    "same_scene_sibling": {
+      "instance_id": 10,
+      "label": "door_or_doorframe",
+      "target_vertices": 1633,
+      "candidate_views": 17,
+      "selected": {
+        "frame": 40,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1633,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 175463.51650405268,
+        "image_margin_pixels": 78.814208984375,
+        "bbox_xyxy": [
+          121.57118225097656,
+          152.25599670410156,
+          772.4844360351562,
+          460.185791015625
+        ],
+        "depth_compared_vertices": 1532,
+        "depth_visible_vertices": 1513,
+        "depth_visible_ratio": 0.987597911227154,
+        "bbox_width_pixels": 650.9132537841797,
+        "bbox_height_pixels": 307.92979431152344,
+        "bbox_short_side_pixels": 307.92979431152344,
+        "bbox_short_side_fraction": 0.5702403598361545,
+        "bbox_aspect_ratio": 2.113836549137788,
+        "visible_target_vertices": 1513,
+        "zip_member": "frame-000040.color.jpg"
+      },
+      "opened": {
+        "pose_members": 218,
+        "depth_members": 218,
+        "rgb_members": 0,
+        "model_calls": 0
+      }
+    },
+    "rgb_members_opened": 0,
+    "model_calls": 0
+  },
+  "source_evaluable": true,
+  "rows": [
+    {
+      "queue_index": 3,
+      "candidate": {
+        "reference_scan_id": "6bde6070-9162-246f-8ea9-c8bbe5d7133a",
+        "rescan_id": "6bde606a-9162-246f-8d00-6f12f032e27d",
+        "target_instance_id": 4,
+        "target_label": "door",
+        "rescan_door_instance_ids": [
+          4,
+          10
+        ],
+        "area_proxy": 0.0,
+        "transform": [
+          0.983697772026062,
+          -0.179826557636261,
+          0.0010541327064856887,
+          0,
+          0.1798267811536789,
+          0.9836981296539307,
+          -0.0001090136356651783,
+          0,
+          -0.0010173452319577336,
+          0.00029679774888791144,
+          0.9999994039535522,
+          0,
+          0.657489001750946,
+          0.3506336212158203,
+          0.012041223235428333,
+          1
+        ]
+      },
+      "source_files": [
+        {
+          "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/semseg.v2.json",
+          "bytes": 17716,
+          "sha256": "6f92a348d25551c7a860d899d192eec50ae1484d52d6061d82bcc560fff28abb",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/semseg.v2.json"
+        },
+        {
+          "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/labels.instances.annotated.v2.ply",
+          "bytes": 3369038,
+          "sha256": "d7b968283f760443c56b97fca7b3276994e2242ecb61af199911287e5a26cc26",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/labels.instances.annotated.v2.ply"
+        },
+        {
+          "path": "datasets/3rscan/6bde6070-9162-246f-8ea9-c8bbe5d7133a/sequence.zip",
+          "bytes": 29834357,
+          "sha256": "eddd329618d26c13cae9a9ac7d70b891183a2e1ecbeb8c14f35c258e82cded85",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde6070-9162-246f-8ea9-c8bbe5d7133a/sequence.zip"
+        },
+        {
+          "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/semseg.v2.json",
+          "bytes": 18185,
+          "sha256": "fced295a476bb5100e9cd6317f034afc21e8f3882fd2e43b1a9ba3a0b4f944f0",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/semseg.v2.json"
+        },
+        {
+          "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/labels.instances.annotated.v2.ply",
+          "bytes": 3496644,
+          "sha256": "f24183d42d9ebc37cead3e0d19ec8f61f59238d5ac9a303d62125e8d6ce3e05c",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/labels.instances.annotated.v2.ply"
+        },
+        {
+          "path": "datasets/3rscan/6bde606a-9162-246f-8d00-6f12f032e27d/sequence.zip",
+          "bytes": 35133612,
+          "sha256": "f535be901920eb83ff713cef17e58a6be5777f045e0a6a73e556fc9dab1e1b98",
+          "downloaded_now": true,
+          "url": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/6bde606a-9162-246f-8d00-6f12f032e27d/sequence.zip"
+        }
+      ],
+      "source_evaluable": true,
+      "reference_memory": {
+        "scan_id": "6bde6070-9162-246f-8ea9-c8bbe5d7133a",
+        "target_instance_id": 4,
+        "target_vertices": 979,
+        "eligible_partial_views": 9,
+        "portfolio_budget": 3,
+        "selected": [
+          {
+            "frame": 165,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 530,
+            "inside_vertex_fraction": 0.5413687436159347,
+            "projected_area_pixels": 215360.6971521187,
+            "image_margin_pixels": 0.4157971739768982,
+            "bbox_xyxy": [
+              272.3929748535156,
+              0.4157971739768982,
+              957.1625366210938,
+              332.1008605957031
+            ],
+            "depth_compared_vertices": 453,
+            "depth_visible_vertices": 452,
+            "depth_visible_ratio": 0.9977924944812362,
+            "bbox_width_pixels": 684.7695617675781,
+            "bbox_height_pixels": 331.6850634217262,
+            "bbox_short_side_pixels": 331.6850634217262,
+            "bbox_short_side_fraction": 0.6142315989291226,
+            "bbox_aspect_ratio": 2.0645173306972735,
+            "visible_target_vertices": 452,
+            "zip_member": "frame-000165.color.jpg",
+            "marginal_visible_target_vertices": 452,
+            "cumulative_visible_target_vertices": 452,
+            "cumulative_visible_target_fraction": 0.4616956077630235
+          },
+          {
+            "frame": 166,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 414,
+            "inside_vertex_fraction": 0.42288049029622066,
+            "projected_area_pixels": 167916.4800243514,
+            "image_margin_pixels": 0.09039140492677689,
+            "bbox_xyxy": [
+              0.09039140492677689,
+              0.43318477272987366,
+              583.7319946289062,
+              322.2063903808594
+            ],
+            "depth_compared_vertices": 375,
+            "depth_visible_vertices": 339,
+            "depth_visible_ratio": 0.904,
+            "bbox_width_pixels": 583.6416032239795,
+            "bbox_height_pixels": 321.7732056081295,
+            "bbox_short_side_pixels": 321.7732056081295,
+            "bbox_short_side_fraction": 0.5958763066817213,
+            "bbox_aspect_ratio": 1.81382909779867,
+            "visible_target_vertices": 339,
+            "zip_member": "frame-000166.color.jpg",
+            "marginal_visible_target_vertices": 288,
+            "cumulative_visible_target_vertices": 740,
+            "cumulative_visible_target_fraction": 0.7558733401430031
+          },
+          {
+            "frame": 41,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 329,
+            "inside_vertex_fraction": 0.33605720122574056,
+            "projected_area_pixels": 96785.97046212445,
+            "image_margin_pixels": 0.8367276191711426,
+            "bbox_xyxy": [
+              0.8367276191711426,
+              1.1161836385726929,
+              352.3412780761719,
+              324.05224609375
+            ],
+            "depth_compared_vertices": 258,
+            "depth_visible_vertices": 188,
+            "depth_visible_ratio": 0.7286821705426356,
+            "bbox_width_pixels": 351.50455045700073,
+            "bbox_height_pixels": 322.9360624551773,
+            "bbox_short_side_pixels": 322.9360624551773,
+            "bbox_short_side_fraction": 0.5980297452873654,
+            "bbox_aspect_ratio": 1.0884648428070454,
+            "visible_target_vertices": 188,
+            "zip_member": "frame-000041.color.jpg",
+            "marginal_visible_target_vertices": 48,
+            "cumulative_visible_target_vertices": 788,
+            "cumulative_visible_target_fraction": 0.804902962206333
+          }
+        ],
+        "final_cumulative_visible_target_vertices": 788,
+        "final_cumulative_visible_target_fraction": 0.804902962206333,
+        "opened": {
+          "pose_members": 185,
+          "depth_members": 185,
+          "rgb_members": 0,
+          "model_calls": 0
+        },
+        "eligible_admitted_views": 9,
+        "required_views": 3,
+        "vacancy_fills": []
+      },
+      "query_triplet": {
+        "scan_id": "6bde606a-9162-246f-8d00-6f12f032e27d",
+        "target_instance_id": 4,
+        "eligible_admitted_views": 12,
+        "selected": [
+          {
+            "frame": 106,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 632,
+            "inside_vertex_fraction": 0.6390293225480284,
+            "projected_area_pixels": 325451.01648403006,
+            "image_margin_pixels": 1.558837890625,
+            "bbox_xyxy": [
+              1.5797975063323975,
+              48.034175872802734,
+              831.7056274414062,
+              537.441162109375
+            ],
+            "depth_compared_vertices": 581,
+            "depth_visible_vertices": 577,
+            "depth_visible_ratio": 0.9931153184165232,
+            "bbox_width_pixels": 830.1258299350739,
+            "bbox_height_pixels": 489.40698623657227,
+            "bbox_short_side_pixels": 489.40698623657227,
+            "bbox_short_side_fraction": 0.9063092337714301,
+            "bbox_aspect_ratio": 1.696187127034192,
+            "visible_target_vertices": 577,
+            "zip_member": "frame-000106.color.jpg"
+          },
+          {
+            "frame": 107,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 587,
+            "inside_vertex_fraction": 0.5935288169868554,
+            "projected_area_pixels": 306977.952419553,
+            "image_margin_pixels": 0.19773370027542114,
+            "bbox_xyxy": [
+              1.1152279376983643,
+              0.19773370027542114,
+              887.9071044921875,
+              390.5095520019531
+            ],
+            "depth_compared_vertices": 540,
+            "depth_visible_vertices": 536,
+            "depth_visible_ratio": 0.9925925925925926,
+            "bbox_width_pixels": 886.7918765544891,
+            "bbox_height_pixels": 390.3118183016777,
+            "bbox_short_side_pixels": 390.3118183016777,
+            "bbox_short_side_fraction": 0.7227996635216254,
+            "bbox_aspect_ratio": 2.2720087759911864,
+            "visible_target_vertices": 536,
+            "zip_member": "frame-000107.color.jpg"
+          },
+          {
+            "frame": 108,
+            "color_size": [
+              960,
+              540
+            ],
+            "inside_vertices": 307,
+            "inside_vertex_fraction": 0.3104145601617796,
+            "projected_area_pixels": 157812.4383888272,
+            "image_margin_pixels": 0.72393798828125,
+            "bbox_xyxy": [
+              571.5927124023438,
+              28.54527473449707,
+              958.2760620117188,
+              495.3472900390625
+            ],
+            "depth_compared_vertices": 264,
+            "depth_visible_vertices": 264,
+            "depth_visible_ratio": 1.0,
+            "bbox_width_pixels": 386.683349609375,
+            "bbox_height_pixels": 466.80201530456543,
+            "bbox_short_side_pixels": 386.683349609375,
+            "bbox_short_side_fraction": 0.7160802770543981,
+            "bbox_aspect_ratio": 1.2071945062442584,
+            "visible_target_vertices": 264,
+            "zip_member": "frame-000108.color.jpg"
+          }
+        ],
+        "triplet_receipt": {
+          "frames": [
+            106,
+            107,
+            108
+          ],
+          "minimum_visible_target_vertices": 264,
+          "sum_visible_target_vertices": 1377,
+          "minimum_bbox_short_side_fraction": 0.7160802770543981,
+          "minimum_depth_visible_ratio": 0.9925925925925926,
+          "initial_frames": [
+            106,
+            107
+          ],
+          "fixed_action": "NEXT_FRAME_FORWARD",
+          "action_frame": 108
+        },
+        "opened": {
+          "pose_members": 218,
+          "depth_members": 218,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      },
+      "same_scene_sibling": {
+        "instance_id": 10,
+        "label": "door_or_doorframe",
+        "target_vertices": 1633,
+        "candidate_views": 17,
+        "selected": {
+          "frame": 40,
+          "color_size": [
+            960,
+            540
+          ],
+          "inside_vertices": 1633,
+          "inside_vertex_fraction": 1.0,
+          "projected_area_pixels": 175463.51650405268,
+          "image_margin_pixels": 78.814208984375,
+          "bbox_xyxy": [
+            121.57118225097656,
+            152.25599670410156,
+            772.4844360351562,
+            460.185791015625
+          ],
+          "depth_compared_vertices": 1532,
+          "depth_visible_vertices": 1513,
+          "depth_visible_ratio": 0.987597911227154,
+          "bbox_width_pixels": 650.9132537841797,
+          "bbox_height_pixels": 307.92979431152344,
+          "bbox_short_side_pixels": 307.92979431152344,
+          "bbox_short_side_fraction": 0.5702403598361545,
+          "bbox_aspect_ratio": 2.113836549137788,
+          "visible_target_vertices": 1513,
+          "zip_member": "frame-000040.color.jpg"
+        },
+        "opened": {
+          "pose_members": 218,
+          "depth_members": 218,
+          "rgb_members": 0,
+          "model_calls": 0
+        }
+      },
+      "rgb_members_opened": 0,
+      "model_calls": 0
+    }
+  ],
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_SOURCE_QUEUE_EVALUABLE",
+  "next_action": "Freeze the exact three-reference and three-adjacent-query cohort, bind the already-frozen target-region-equivalence gate, then run unchanged geometry-only 3D mask-track ranking.",
+  "claim_boundary": "Source acquisition and pose/depth screening establish only that a new RGB-D family can evaluate the mechanism. They do not establish candidate recovery, target identity, portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
