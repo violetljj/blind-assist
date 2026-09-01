@@ -300,6 +300,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `93.82/77.68/84.99%`, or `0 TP / -11 FP / +0.27 pp F1` over X91.
   The other six cohorts are classification-identical and every required check
   passes. X92 is consumed Development-only and X73 retains fresh authority.
+  X93 then prevents contradicted transport history from substituting for a
+  collision credential when every carrier is uncredentialed surface evidence
+  and the motion consensus is entirely receding or entirely lateral-dominant.
+  It preserves current overlap and removes thirteen positive-time future false
+  positives across C37/C40 with zero TP loss. Pooled X93 is
+  `1,472 TP / 84 FP / 423 FN` at `94.60/77.68/85.31%`, or
+  `0 TP / -13 FP / +0.32 pp F1` over X92. The other nine cohorts are
+  classification-identical and every required check passes. X93 is consumed
+  Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -360,8 +369,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    applies the inherited evidence horizon to held-only alert births, removing
    fourteen false positives across eight cohorts with zero TP loss. X92 carries
    that suppression across the unchanged held parent lineage, removing eleven
-   more false positives across five cohorts with zero TP loss. Any promotion
-   requires a new preregistered source testing frozen X92.
+   more false positives across five cohorts with zero TP loss. X93 then rejects
+   contradicted, uncredentialed receding or lateral-dominant positive-time
+   forecasts, removing thirteen C37/C40 false positives with zero TP loss. Any
+   promotion requires a new preregistered source testing frozen X93.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -406,6 +417,8 @@ their result.
   [DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X92 consumed Development result:
   [DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X93 consumed Development result:
+  [DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
