@@ -1,0 +1,194 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1",
+  "authority": "FRESH_PRE_FROZEN_QUEUE_SOURCE_ACTIVE_VIEW_CONFIRMATION_COHORT",
+  "protocol_path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_freeze_protocol_v1.json",
+  "protocol_sha256": "4921a4d5284c89c740dde85c293f47c9b51790b40ddb685665117ad28b1409ef",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_cohort_freeze.py",
+    "sha256": "febcad88bf957dde050fc840c4d45d3d7548539d26e4ff5a286b26e18ae8d903"
+  },
+  "source_queue_index": 2,
+  "candidate": {
+    "reference_scan_id": "68bae772-3567-2f7c-804c-d77a47cdc508",
+    "rescan_id": "05c6ede7-2e69-23b1-8b27-c1cb868f1938",
+    "target_instance_id": 2,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      2,
+      32,
+      45
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.9926437139511108,
+      -0.12092176824808121,
+      -0.006025581620633602,
+      0,
+      0.12092694640159607,
+      -0.9926612973213196,
+      -0.0005006117280572653,
+      0,
+      -0.00592082692310214,
+      -0.0012255844194442034,
+      0.9999817609786987,
+      0,
+      0.1847747564315796,
+      0.6070095300674438,
+      0.1546444594860077,
+      1
+    ]
+  },
+  "panel": {
+    "reference_keys": [
+      "FDV_reference_1",
+      "FDV_reference_2",
+      "FDV_reference_3"
+    ],
+    "initial_query_keys": [
+      "FDV_initial_1_query",
+      "FDV_initial_2_query"
+    ],
+    "action_query_key": "FDV_action_query",
+    "ordered_query_keys": [
+      "FDV_initial_1_query",
+      "FDV_initial_2_query",
+      "FDV_action_query"
+    ],
+    "fixed_action": "NEXT_FRAME_FORWARD",
+    "truth_free_trigger_threshold": 0.02,
+    "same_scene_hard_negative_instance_id": 32,
+    "selection": "First evaluable row of the pre-download ordered queue; pose/depth source gate only, with no RGB/model or outcome selection."
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "68bae772-3567-2f7c-804c-d77a47cdc508/sequence.zip": {
+      "path": "datasets/3rscan/68bae772-3567-2f7c-804c-d77a47cdc508/sequence.zip",
+      "bytes": 19501326,
+      "sha256": "839b7681a4747484ab1e911470b634349e40f9c9e3f8cd699b33a9f1276ec0b0"
+    },
+    "05c6ede7-2e69-23b1-8b27-c1cb868f1938/sequence.zip": {
+      "path": "datasets/3rscan/05c6ede7-2e69-23b1-8b27-c1cb868f1938/sequence.zip",
+      "bytes": 22070126,
+      "sha256": "6c6d9a61c9a52d298525fae1657fce022e9154ae4de291eb98e645b1775f5c1e"
+    }
+  },
+  "images": {
+    "FDV_reference_1": {
+      "episode_id": "FDV_reference_1",
+      "role": "reference",
+      "scan_id": "68bae772-3567-2f7c-804c-d77a47cdc508",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 34,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        2.9077107906341553,
+        1.444503664970398,
+        914.1275634765625,
+        479.8182067871094
+      ],
+      "zip_member": "frame-000034.color.jpg"
+    },
+    "FDV_reference_2": {
+      "episode_id": "FDV_reference_2",
+      "role": "reference",
+      "scan_id": "68bae772-3567-2f7c-804c-d77a47cdc508",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 37,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        270.0589904785156,
+        2.945925712585449,
+        958.821533203125,
+        301.5208740234375
+      ],
+      "zip_member": "frame-000037.color.jpg"
+    },
+    "FDV_reference_3": {
+      "episode_id": "FDV_reference_3",
+      "role": "reference",
+      "scan_id": "68bae772-3567-2f7c-804c-d77a47cdc508",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 35,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        182.54949951171875,
+        239.7808074951172,
+        957.1425170898438,
+        538.772705078125
+      ],
+      "zip_member": "frame-000035.color.jpg"
+    },
+    "FDV_initial_1_query": {
+      "episode_id": "FDV_initial_1",
+      "role": "query",
+      "scan_id": "05c6ede7-2e69-23b1-8b27-c1cb868f1938",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 3,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        172.23899841308594,
+        1.9653377532958984,
+        958.8531494140625,
+        482.52679443359375
+      ],
+      "zip_member": "frame-000003.color.jpg"
+    },
+    "FDV_initial_2_query": {
+      "episode_id": "FDV_initial_2",
+      "role": "query",
+      "scan_id": "05c6ede7-2e69-23b1-8b27-c1cb868f1938",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 4,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.9883005023002625,
+        0.7361015677452087,
+        688.3968505859375,
+        536.0953979492188
+      ],
+      "zip_member": "frame-000004.color.jpg"
+    },
+    "FDV_action_query": {
+      "episode_id": "FDV_action",
+      "role": "query",
+      "scan_id": "05c6ede7-2e69-23b1-8b27-c1cb868f1938",
+      "target_instance_id": 2,
+      "target_label": "door",
+      "frame": 5,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        4.169939041137695,
+        7.7230916023254395,
+        643.2040405273438,
+        536.7357177734375
+      ],
+      "zip_member": "frame-000005.color.jpg"
+    }
+  },
+  "rgb_members_opened_during_freeze": 0,
+  "model_calls_during_freeze": 0,
+  "claim_boundary": "This freezes a fresh target-family and exact RGB-D observations before RGB/model access. It is not candidate recovery, target recognition, portal ownership, access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}

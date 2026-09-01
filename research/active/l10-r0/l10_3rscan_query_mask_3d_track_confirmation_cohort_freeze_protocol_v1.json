@@ -1,0 +1,27 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-query-mask-3d-track-confirmation-cohort-freeze-protocol-v1",
+  "question": "Which exact pre-frozen queue-row-2 references and consecutive query frames form the fresh 3D mask-track confirmation panel?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_cohort_freeze.py",
+    "sha256": "febcad88bf957dde050fc840c4d45d3d7548539d26e4ff5a286b26e18ae8d903"
+  },
+  "source_result": {
+    "path": "l10_3rscan_discriminative_view_source_queue_continue_result_v1.json",
+    "sha256": "84b398a312903478649270cd735d93a3a1ba161cb75f3915f333fba5b615358b",
+    "required_conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_SOURCE_QUEUE_EVALUABLE"
+  },
+  "truth_free_trigger_threshold": 0.02,
+  "roles": {
+    "reference": "Retain the three geometry-selected target reference images for later target scoring, but the 3D-track confirmation may not use them.",
+    "query": "Use consecutive rescan frames 3, 4, and 5 in this exact order. Build geometry tracks from frames 3 and 4 first; frame 5 is reserved as a pre-frozen replication edge.",
+    "truth": "Target boxes are evaluation-only and may be read only after proposal generation, mask replay, lifting, association, and ranking are complete."
+  },
+  "forbidden_after_freeze": [
+    "change source family, references, query frames, query order, proposal rules, mask model, depth tolerance or track ranking",
+    "use target identity, target box or IoU to generate or associate candidates",
+    "replace frame 3, 4 or 5 after seeing RGB, proposal, mask, track or outcome evidence",
+    "open a later queue family while this source remains evaluable"
+  ],
+  "claim_boundary": "This freezes a fresh target-family and exact RGB-D observations before RGB/model access. It is not candidate recovery, target recognition, portal ownership, access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
