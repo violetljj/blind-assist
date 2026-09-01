@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-oracle-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-oracle-protocol-v1",
+  "frozen_at": "2026-09-01T21:44:00+08:00",
+  "question": "Can one additional source-admitted query view reverse the initial correlated Top-1 error while the target was already reachable in the initial Top-3, and can a local one-step view do so?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_oracle.py",
+    "sha256": "1e7f3a5f3d99c04d659a69b5d6ed2af7baa5c3635bbbc2d79544edfb7123d50b"
+  },
+  "baseline_roster": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_intermediate_result_v1.json",
+    "sha256": "dd05570729731018c722928846988bea18942b1b8859399db84b90da6166e91f"
+  },
+  "cohort": {
+    "path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
+    "sha256": "457cfb97ca450013dc8c39133536e0abfb9c2c2faabbeb1b9f0f854727e6e130"
+  },
+  "extra_view_roster": {
+    "path": "l10_3rscan_discriminative_view_oracle_intermediate_result_v1.json",
+    "sha256": "7c5c2652b288a63eccf6f54dc8d85722d8bc11990ca76ac48038c21a9a689ec2",
+    "interpretation": "All fourteen extra-view rankings were produced by the unchanged generic materializer. Its inherited authority label does not change this consumed-family oracle authority."
+  },
+  "panel": {
+    "initial_query_keys": ["DPC1_query", "DPC2_query"],
+    "initial_frames": {
+      "DPC1_query": 82,
+      "DPC2_query": 83
+    },
+    "local_one_step_frames": [84, 85],
+    "oracle_selection": "Among extra views whose unchanged Top-1 proposal overlaps target truth at IoU at least 0.5, maximize best target fused score minus best wrong fused score; tie by higher Top-1 IoU then earlier frame.",
+    "local_oracle_selection": "Apply the same margin rule within frames 84 and 85 only."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_initial_target_top1_queries": 0,
+    "required_initial_target_recall_at_3_queries": 2,
+    "required_minimum_local_one_step_target_top1_views": 1,
+    "interpretation": "A pass establishes a view-conditioned scoring ceiling only: an initially misranked but reachable target becomes Top-1 from at least one local additional observation."
+  },
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Evaluate the oracle ceiling before policy learning because reported random, angular-farthest and MLLM NBV strategies did not show reliable gains."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Choose a view by reduction in ambiguity between the target and current wrong candidates, not by visibility or distance alone."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change query views, proposal roster, model scores, IoU gate, Top-1 definition, local-view group or margin selection",
+    "claim that every extra view helps, conflate local and wide-baseline evidence, or present the oracle as a learned/runnable action policy",
+    "claim cross-view persistence of the same three hypotheses: the experiment reruns the unchanged detector/scorer per view and does not yet associate hypothesis identities across views"
+  ],
+  "claim_boundary": "This consumed-family Development result can establish only that query-side observation choice has a nonzero local oracle ceiling for target Top-1 under the unchanged scorer. It does not establish a deployable view selector, cross-view identity association, fresh transfer, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
