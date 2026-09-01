@@ -1,0 +1,321 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-3d-prompt-transport-result-v1",
+  "authority": "CONSUMED_QUEUE_ROW_3_TWO_FRAME_TRACK_UNION_3D_PROMPT_TRANSPORT_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_track_union_3d_prompt_transport_development_protocol_v1.json",
+  "protocol_sha256": "f0a3ffc6557feaf3f04091359d397192d99ff460908578e7cddfa24e923dd811",
+  "implementation": {
+    "path": "l10_3rscan_hypothesis_3d_prompt_transport.py",
+    "sha256": "22224360df9e692576339bfebd074d1ecebe576325d4e1f268f9961186d69360"
+  },
+  "cohort": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_development_cohort_v1.json",
+    "sha256": "37f5ae80d6d293ea3f7615bc4b55b670fc8b71363a809e65d41c5beb9d57b5b1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_track_development_result_v1.json",
+    "sha256": "857de925066022b4c5b71d926a4142043264a8a4fa734dab6adb05a36ab27bdd",
+    "required_conclusion": "L10_3RSCAN_POSE_DEPTH_COVISIBILITY_ACTION_TRACK_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "current_frame": 107,
+  "action_frame": 200,
+  "candidate_budget": 3,
+  "candidates": [
+    {
+      "hypothesis_rank": 1,
+      "source_candidate_index": 0,
+      "source_box_xyxy": [
+        3.0774307250976562,
+        1.5181249380111694,
+        954.517578125,
+        536.7937622070312
+      ],
+      "source_mask_sha256": "a6a3c62e40b813fce6170b3843b6234feac5b4261bd0e537cf2dc4bcf0953998",
+      "lifted_points": 54497,
+      "transport_mode": "two_frame_track_union",
+      "initial_partner_candidate_index": 2,
+      "initial_partner_box_xyxy": [
+        2.6340579986572266,
+        1.923803687095642,
+        894.8671875,
+        536.6402587890625
+      ],
+      "initial_partner_mask_sha256": "df2c62213e2582a65ab94f98f32edf0a44cbce347d188e6705be896b170c11a6",
+      "initial_partner_lifted_points": 25912,
+      "transported_prompt_xyxy": [
+        292.6430430044384,
+        199.4974572341539,
+        833.6486240733427,
+        504.69486910588824
+      ],
+      "projected_inside_points": 54490,
+      "depth_visible_points": 48877,
+      "action_mask_bbox_xyxy": [
+        0.0,
+        275.0,
+        824.0,
+        505.0
+      ],
+      "action_mask_sha256": "b125bc7ad3a121a7e30a1a41dbb130854df21af16e3719f11e7554702204149f",
+      "action_mask_pixels": 102116,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.48807486586654847,
+        "target_recall": 0.606540252139492,
+        "proposal_precision": 0.714198578160927
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.46537128633978203,
+        "target_recall": 0.6271534721210084,
+        "proposal_precision": 0.6433698855226222
+      }
+    },
+    {
+      "hypothesis_rank": 2,
+      "source_candidate_index": 3,
+      "source_box_xyxy": [
+        2.1882247924804688,
+        0.7828402519226074,
+        853.0794677734375,
+        368.9986572265625
+      ],
+      "source_mask_sha256": "5fac9f05f8c9a11d65c698d7ebdd85cc83b80a2624e91b98166ec77b9d54cb25",
+      "lifted_points": 31363,
+      "transport_mode": "two_frame_track_union",
+      "initial_partner_candidate_index": 9,
+      "initial_partner_box_xyxy": [
+        3.3013343811035156,
+        118.34869384765625,
+        817.3375854492188,
+        529.3372192382812
+      ],
+      "initial_partner_mask_sha256": "532c429953eb0673d585eba333ed6e18f55043a076378c3763f3d151b6d70ac6",
+      "initial_partner_lifted_points": 14910,
+      "transported_prompt_xyxy": [
+        292.6430430044384,
+        268.63869243622963,
+        833.6486240733427,
+        405.6183485031194
+      ],
+      "projected_inside_points": 31363,
+      "depth_visible_points": 28144,
+      "action_mask_bbox_xyxy": [
+        237.0,
+        277.0,
+        826.0,
+        398.0
+      ],
+      "action_mask_sha256": "129cb66646aaaa577c09150d27a2bda7f294e267484ba24da81909ddbbd5e94a",
+      "action_mask_pixels": 54528,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.3811675066097749,
+        "target_recall": 0.38116750660977483,
+        "proposal_precision": 1.0
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.36657151933090204,
+        "target_recall": 0.3665715193309021,
+        "proposal_precision": 1.0
+      }
+    },
+    {
+      "hypothesis_rank": 3,
+      "source_candidate_index": 4,
+      "source_box_xyxy": [
+        736.0228271484375,
+        1.4273911714553833,
+        958.1959228515625,
+        535.9226684570312
+      ],
+      "source_mask_sha256": "0827d69d97adca1fa9cec86c86a51cc17a3f9bd61a1364d4e99bb3f9c3dc99c1",
+      "lifted_points": 4458,
+      "transport_mode": "two_frame_track_union",
+      "initial_partner_candidate_index": 10,
+      "initial_partner_box_xyxy": [
+        701.3939208984375,
+        0.5009829998016357,
+        956.0868530273438,
+        537.0388793945312
+      ],
+      "initial_partner_mask_sha256": "646c83a269229f9b6e547800d01923bf2e8eba139acc394a0f3d585935e8502e",
+      "initial_partner_lifted_points": 2341,
+      "transported_prompt_xyxy": [
+        711.9238589418255,
+        171.42855332133266,
+        891.328886242061,
+        505.9113865061393
+      ],
+      "projected_inside_points": 4384,
+      "depth_visible_points": 3334,
+      "action_mask_bbox_xyxy": [
+        695.0,
+        169.0,
+        955.0,
+        374.0
+      ],
+      "action_mask_sha256": "875313a864d9819cc9cda961ebf50e2b16af264c6ee741c07ae42b2cd4b12b11",
+      "action_mask_pixels": 22769,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.18161164538861876,
+        "target_recall": 0.20113724202027788,
+        "proposal_precision": 0.6516673981195175
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.15763703611446228,
+        "target_recall": 0.17350251079780313,
+        "proposal_precision": 0.632878730692263
+      }
+    }
+  ],
+  "metrics": {
+    "detector_track_top3_best_iou": 0.39844736970060735,
+    "transport_sam_top3_best_iou": 0.46537128633978203,
+    "absolute_iou_gain": 0.06692391663917469,
+    "single_view_transport_top3_best_iou": 0.46418465705803835,
+    "transported_candidates_at_or_above_gate": 0
+  },
+  "receipts": {
+    "current_image_sha256": "17be0ddcae6e71c03abcddc56b78bf427cee7f90c475ee0c6e1627619d9a01da",
+    "action_image_sha256": "b1cd5003edabc375ca6350fa15b4ba75c0b6bcd3553231a17a4311114f915c40",
+    "initial_image_sha256": "7f1dc34c5e55cc6e2b076d4b810f6028ee5d766e309b23fe7d268dcb5ed5d894",
+    "info_sha256": "0747e5352762cd10944b32f2d00ea59a424ad8f94eea79ae933126ed2b77c041",
+    "current_sam": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.7600768000120297
+    },
+    "initial_sam": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.1555608000489883
+    },
+    "action_sam": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.15586460003396496
+    }
+  },
+  "gate": {
+    "minimum_iou": 0.8,
+    "required_action_frames": 1,
+    "requirements": "At least one of three fixed-budget union-transport candidates must reach action-view IoU 0.8, and the result must report its delta over both detector-track and single-view transport ceilings.",
+    "met": false
+  },
+  "runtime": {
+    "rgb_members_opened": 3,
+    "sam_mask_calls": 3,
+    "sam_masks_generated": 9,
+    "grounding_dino_calls": 0,
+    "appearance_model_calls": 0,
+    "model_training_steps": 0
+  },
+  "literature_motivation": [
+    {
+      "name": "SAMPro3D",
+      "url": "https://arxiv.org/abs/2311.17707",
+      "use": "Accumulate view-consistent 3D prompt evidence before re-prompting SAM."
+    },
+    {
+      "name": "MV3DIS",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf",
+      "use": "Use 3D-guided multi-view mask tracks as a distinct candidate source."
+    }
+  ],
+  "conclusion": "L10_3RSCAN_TRACK_UNION_3D_PROMPT_TRANSPORT_DEVELOPMENT_GATE_NOT_MET",
+  "next_action": "Seal the consumed Development negative; do not add scale expansion, more candidates, or tuned prompt margins on row 3.",
+  "claim_boundary": "This consumed-family Development test evaluates only whether two initial views provide enough 3D extent to recover one action-view target-region candidate. It does not confirm generalization, select the correct target identity, or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
