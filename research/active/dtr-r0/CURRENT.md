@@ -144,8 +144,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
   route risk. Across C26/C27/C28/C32/C34/C35/C36/C37, however, the mechanism
   was never exercised; X78 remains identical to X77 at pooled
   `1,071 TP / 106 FP / 308 FN` and `90.99/77.66/83.80%`. This is a compatible
-  structural refinement, not an incremental metric result. X73 continues to
-  retain confirmation authority.
+  structural refinement, not an incremental metric result. X79 then assigns
+  lateral-only collision timing to the existing X75 triple credential: an
+  uncredentialed, conflict-free surface branch may retain identity and lateral
+  motion but cannot independently authorize route risk. Across the eight
+  consumed cohorts, the credential protects all three lateral-only true
+  positives while X79 removes 15 false positives across five cohorts with zero
+  TP loss. Pooled X79 is `1,071 TP / 91 FP / 308 FN` at
+  `92.17/77.66/84.30%`, a further `+0.49 pp F1` over X78. Every required check
+  passes. X79 is the strongest current eight-cohort Development arm; X73
+  continues to retain confirmation authority until unchanged X79 passes a
+  fresh source-disjoint gate.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -237,3 +246,5 @@ their result.
   [DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md)
 - X78 consumed cross-cohort Development:
   [DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- X79 consumed cross-cohort Development:
+  [DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
