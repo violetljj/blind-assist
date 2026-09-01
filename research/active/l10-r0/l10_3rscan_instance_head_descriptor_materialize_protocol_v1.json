@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-descriptor-materialize-protocol-v1",
+  "authority": "FROZEN_BACKBONE_EXACT_MEMBER_DESCRIPTOR_MATERIALIZATION_FREEZE",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_descriptor_materialize.py",
+    "sha256": "5e7601a0e28fcd9bb281d14129ccec48d7022e7d9dfa48183d9d7d078dd1adb4"
+  },
+  "manifest": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_v1.json",
+    "sha256": "76d8207a0560be66c5cf1aec31ec7130fc840bc256de0532460f736f7566539b",
+    "required_schema": "blindassist-l10-3rscan-instance-head-rgb-manifest-v1"
+  },
+  "source": {
+    "artifact_root": "artifacts.local"
+  },
+  "model": {
+    "path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "training": "frozen"
+  },
+  "descriptor": {
+    "name": "DINOv2 ViT-L/14 normalized CLS",
+    "input_size": 518,
+    "dimension": 1024,
+    "crop": "Use the manifest-frozen 1.15x box; no augmentation and no multi-scale score fusion."
+  },
+  "runtime": {
+    "device": "cuda:0",
+    "batch_size": 1,
+    "seed": 104729
+  },
+  "next_action": "Freeze and run the 1024-256-128 projection-head training protocol. Select its epoch only from the three pre-frozen validation families; do not open final heldout-family RGB or scores during training.",
+  "claim_boundary": "This descriptor materialization provides fixed Development inputs only. It does not establish learned instance retrieval, portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
