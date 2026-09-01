@@ -1,0 +1,3133 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-scorer-result-v1",
+  "authority": "FRESH_PRE_FROZEN_QUEUE_UNCHANGED_SCORER_ACTIVE_VIEW_CONFIRMATION",
+  "protocol_path": "l10_3rscan_discriminative_view_confirmation_scorer_protocol_v1.json",
+  "protocol_sha256": "44317b7e00d47a15f00ac8cb6e2412ce09dcc1f106f37d119992421472c2f55b",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_scorer.py",
+    "sha256": "fb787adbb0c39a43f3934af475284c184ce09f20ab681656e595cf3f7b2f296d"
+  },
+  "conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SCORER_MATERIALIZED",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 2,
+    "opportunity_queries": 2,
+    "refined_iou_gate_queries": 2,
+    "minimum_refined_iou": 0.653039833684584,
+    "mean_refined_iou": 0.7149488006424192
+  },
+  "query_receipts": {
+    "FDV_initial_1_query": {
+      "query_truth_used_for_selection": false,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.8012684623322648,
+      "selected": {
+        "objectness_score": 0.33527272939682007,
+        "box_xyxy": [
+          70.02722930908203,
+          225.7423095703125,
+          744.4784545898438,
+          375.2118225097656
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 1,
+        "postprocess_index": 1,
+        "target_memory_score": 0.8474560976028442,
+        "per_reference_scores": {
+          "FDV_reference_1": 0.8474560976028442,
+          "FDV_reference_2": 0.8219753503799438,
+          "FDV_reference_3": 0.8371530771255493
+        },
+        "winning_target_reference": "FDV_reference_1",
+        "layer18_local_appearance_score": 0.8046483993530273,
+        "layer18_nids_fused_score": 0.8260522484779358,
+        "target_metrics_evaluation_only": {
+          "iou": 0.8012684623322648,
+          "target_recall": 0.9993361586024946,
+          "proposal_precision": 0.8016951794370616
+        },
+        "descriptor_sha256": "a6831c2c9f91f0ac36364de0c7e03a006e02dde8cf1e0c9f21aa1f1d574e7d6e",
+        "layer18_patch_sha256": "0ed1642e35a9e26526da9e62b9f1fbe4d1ed8585e31e01c074356ae0701d04c9",
+        "mask_sha256": "327e496b5ff3dd7ef9c318ddc1d9aa091a1dc8235cbff6938e2926c64b88f80c"
+      },
+      "top1_layer18_nids_fused_margin": 0.06403657793998718,
+      "refined_mask_bbox_xyxy": [
+        72.0,
+        223.0,
+        737.0,
+        376.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.7768577676002544,
+        "target_recall": 0.9872573800292621,
+        "proposal_precision": 0.78472619614854
+      },
+      "ranked_candidates": [
+        {
+          "objectness_score": 0.33527272939682007,
+          "box_xyxy": [
+            70.02722930908203,
+            225.7423095703125,
+            744.4784545898438,
+            375.2118225097656
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 1,
+          "target_memory_score": 0.8474560976028442,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.8474560976028442,
+            "FDV_reference_2": 0.8219753503799438,
+            "FDV_reference_3": 0.8371530771255493
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.8046483993530273,
+          "layer18_nids_fused_score": 0.8260522484779358,
+          "target_metrics_evaluation_only": {
+            "iou": 0.8012684623322648,
+            "target_recall": 0.9993361586024946,
+            "proposal_precision": 0.8016951794370616
+          },
+          "descriptor_sha256": "a6831c2c9f91f0ac36364de0c7e03a006e02dde8cf1e0c9f21aa1f1d574e7d6e",
+          "layer18_patch_sha256": "0ed1642e35a9e26526da9e62b9f1fbe4d1ed8585e31e01c074356ae0701d04c9",
+          "mask_sha256": "327e496b5ff3dd7ef9c318ddc1d9aa091a1dc8235cbff6938e2926c64b88f80c"
+        },
+        {
+          "objectness_score": 0.153228759765625,
+          "box_xyxy": [
+            5.965976715087891,
+            211.83676147460938,
+            956.7890625,
+            532.9448852539062
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 8,
+          "target_memory_score": 0.7287523150444031,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7287523150444031,
+            "FDV_reference_2": 0.6956764459609985,
+            "FDV_reference_3": 0.6683409810066223
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.7952790260314941,
+          "layer18_nids_fused_score": 0.7620156705379486,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2648804021804636,
+            "target_recall": 1.0,
+            "proposal_precision": 0.2648804021804636
+          },
+          "descriptor_sha256": "d5626b72acf3e7887545891a32b6e7098031c399aface635cb346d3b49e2e70c",
+          "layer18_patch_sha256": "606e22ab101dbab8bf73e5f7d3aec2b89a1ddc60d8fbdf352716cf8d300d4dd6",
+          "mask_sha256": "901b08fde490d8f0ea26b35b30af7a84cf4b93fae059bc5dc3b63aca84fbe224"
+        },
+        {
+          "objectness_score": 0.16988764703273773,
+          "box_xyxy": [
+            3.0800914764404297,
+            120.36571502685547,
+            956.4086303710938,
+            533.5595703125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 7,
+          "target_memory_score": 0.7538735270500183,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7538735270500183,
+            "FDV_reference_2": 0.6940468549728394,
+            "FDV_reference_3": 0.6805409789085388
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.7681741714477539,
+          "layer18_nids_fused_score": 0.7610238492488861,
+          "target_metrics_evaluation_only": {
+            "iou": 0.20530729888471422,
+            "target_recall": 1.0,
+            "proposal_precision": 0.20530729888471422
+          },
+          "descriptor_sha256": "27e947df90e655a0c80306e1ba8ff9e46c16bbbc4b96f05138ccc5799bfc31ff",
+          "layer18_patch_sha256": "ab461c4dd946e2e38ee817d6b766ac9dbf38e12c281ac6239d1f67c72fddb7cf",
+          "mask_sha256": "d701f8c862e5ffb367112b2b325e184df4539caa50489f6fd830b02e412d7cef"
+        },
+        {
+          "objectness_score": 0.12778949737548828,
+          "box_xyxy": [
+            3.7082290649414062,
+            79.41819763183594,
+            954.9010009765625,
+            529.212646484375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 10,
+          "target_memory_score": 0.7535319328308105,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7535319328308105,
+            "FDV_reference_2": 0.686323881149292,
+            "FDV_reference_3": 0.674648642539978
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.7632092237472534,
+          "layer18_nids_fused_score": 0.758370578289032,
+          "target_metrics_evaluation_only": {
+            "iou": 0.1890245466842986,
+            "target_recall": 1.0,
+            "proposal_precision": 0.1890245466842986
+          },
+          "descriptor_sha256": "eb6b4c42a06f5f99c12e37e84f3374dfad7d468b6d03746076fc88a378f6d5f4",
+          "layer18_patch_sha256": "e21baba41cc6cf10ee18c12fbe42ad6b3195f422080cadf985c90c9673f2a9b3",
+          "mask_sha256": "76bd224af14a0d8dbd64a5aabb5a18eb93e77e57daf301375439f96ac555d5c2"
+        },
+        {
+          "objectness_score": 0.24721750617027283,
+          "box_xyxy": [
+            2.520303726196289,
+            2.3155455589294434,
+            956.3040161132812,
+            534.8135986328125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 2,
+          "target_memory_score": 0.7507555484771729,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7507555484771729,
+            "FDV_reference_2": 0.6956875920295715,
+            "FDV_reference_3": 0.7166885137557983
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.734689474105835,
+          "layer18_nids_fused_score": 0.7427225112915039,
+          "target_metrics_evaluation_only": {
+            "iou": 0.15923293931120386,
+            "target_recall": 1.0,
+            "proposal_precision": 0.15923293931120386
+          },
+          "descriptor_sha256": "f5f44ec73b05f410d962f5cdd82220d436f2055801ad1365e5bf4708398c96b7",
+          "layer18_patch_sha256": "2719f6da6f8a5b3d51a1fcbe747f4dc55e5dddf4d947fa9cf4be13d131ecd54c",
+          "mask_sha256": "8544ed7b4bb16a68b2cbc7c0f493ecc06170eb3a11280a7c2aa09b9ce8df3844"
+        },
+        {
+          "objectness_score": 0.21532683074474335,
+          "box_xyxy": [
+            1.1713027954101562,
+            0.13513505458831787,
+            625.1558837890625,
+            126.66921997070312
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 3,
+          "target_memory_score": 0.6992875933647156,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.612259030342102,
+            "FDV_reference_2": 0.6579779982566833,
+            "FDV_reference_3": 0.6992875933647156
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7044175863265991,
+          "layer18_nids_fused_score": 0.7018525898456573,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5bcda03c4e178b246e390ef8b26b412bb929e7e44e6abaea99b4e97cd5826758",
+          "layer18_patch_sha256": "aaa068bbe812e0a14b8eaa8b6a1a473d8f6b93e7c7d090b690ae4fcc615d5e5c",
+          "mask_sha256": "1c57aa40013165415eb5eecb4e625044601ed48a5bd13ed8a9d4075c65993917"
+        },
+        {
+          "objectness_score": 0.14714792370796204,
+          "box_xyxy": [
+            67.33657836914062,
+            349.4788589477539,
+            382.9909973144531,
+            538.2371520996094
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 36,
+          "target_memory_score": 0.6303590536117554,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5898415446281433,
+            "FDV_reference_2": 0.6063536405563354,
+            "FDV_reference_3": 0.6303590536117554
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7721027135848999,
+          "layer18_nids_fused_score": 0.7012308835983276,
+          "target_metrics_evaluation_only": {
+            "iou": 0.014055209646085738,
+            "target_recall": 0.02407197555344386,
+            "proposal_precision": 0.032673424594328516
+          },
+          "descriptor_sha256": "336d7f86ca9eb63c6e75cbf364ec35c9631f26956fbc5abcacb3b04bf2b99706",
+          "layer18_patch_sha256": "6e18f8f61fa82c05ce298ee6438d85aeb192ac0ddf2a929c19e816950538f74d",
+          "mask_sha256": "fb3c9c30731b4ea134f99db2e1f577db9d3c194e2c11e9fdd293ff7e6bf2a8a0"
+        },
+        {
+          "objectness_score": 0.3815368413925171,
+          "box_xyxy": [
+            1.1573524475097656,
+            324.56094002723694,
+            382.9558410644531,
+            538.7678680419922
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 32,
+          "target_memory_score": 0.5993736386299133,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5752906799316406,
+            "FDV_reference_2": 0.5837064981460571,
+            "FDV_reference_3": 0.5993736386299133
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.769905149936676,
+          "layer18_nids_fused_score": 0.6846393942832947,
+          "target_metrics_evaluation_only": {
+            "iou": 0.05415098067805046,
+            "target_recall": 0.10331746984045194,
+            "proposal_precision": 0.10216611574093055
+          },
+          "descriptor_sha256": "00075dd9dc0a9aaf6ee4e6440d7e237b3af22d4037d77079a913d291f8946275",
+          "layer18_patch_sha256": "668fcb9c1ae5a4b0c30c214091c9edf0c7d2aab26974f46638725d27bc307f06",
+          "mask_sha256": "bd42dc4c6cd497dd28d64c3bd18e6d2df61c01ca782e81faabb2d3936b985bd3"
+        },
+        {
+          "objectness_score": 0.40038397908210754,
+          "box_xyxy": [
+            1.0787773132324219,
+            0.7161819934844971,
+            383.0196533203125,
+            214.29983520507812
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 15,
+          "target_memory_score": 0.637271523475647,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.559577226638794,
+            "FDV_reference_2": 0.5784924626350403,
+            "FDV_reference_3": 0.637271523475647
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7202755808830261,
+          "layer18_nids_fused_score": 0.6787735521793365,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "1ba28908348984421158b1fb2ab020d0972623dda87371b0190121153bede44e",
+          "layer18_patch_sha256": "33395905115d6e21789b4bf752e36bd82610a497bb60b8ac1133da438cf66778",
+          "mask_sha256": "f7a8b9ff66bc9467f4ac3f9020099fda2a670ab76c83bc0851195fcd0ffb57aa"
+        },
+        {
+          "objectness_score": 0.3037617802619934,
+          "box_xyxy": [
+            66.07559967041016,
+            324.58981132507324,
+            382.9249267578125,
+            538.46875
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 33,
+          "target_memory_score": 0.5825539827346802,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5628634691238403,
+            "FDV_reference_2": 0.5764265060424805,
+            "FDV_reference_3": 0.5825539827346802
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7724698185920715,
+          "layer18_nids_fused_score": 0.6775119006633759,
+          "target_metrics_evaluation_only": {
+            "iou": 0.059497803343729075,
+            "target_recall": 0.1032132407943071,
+            "proposal_precision": 0.12317297842158917
+          },
+          "descriptor_sha256": "9e8391c5f8660f12934a65f581383892483e6c5b0919d5e9addcc4ac70074a95",
+          "layer18_patch_sha256": "7e86f27b0cb74c7adc1f4351d0c59020fddcc41ecc6bb65c2ed3cbc20d974bd6",
+          "mask_sha256": "e9dbfb5a6dc2bdca429a1975029c2aa2e1adb6cccc8618114fe2d879bad31bf9"
+        },
+        {
+          "objectness_score": 0.190800741314888,
+          "box_xyxy": [
+            1.1378402709960938,
+            0.37421321868896484,
+            382.830078125,
+            126.46837615966797
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 22,
+          "target_memory_score": 0.6064324378967285,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5343319177627563,
+            "FDV_reference_2": 0.582992434501648,
+            "FDV_reference_3": 0.6064324378967285
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7201906442642212,
+          "layer18_nids_fused_score": 0.6633115410804749,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "f035fe5e965135129d16b7ef5399db4dcd2df2b444e24a1866e2edc24bb577da",
+          "layer18_patch_sha256": "0c5c6da80e8c6d729399b63d2888fd70404746fa3c38be968da53a22c1c9e6e3",
+          "mask_sha256": "722ed17b24ecef8f946945ef4d0d8ff18bd32b2d3a775f9098f2852c51f316d1"
+        },
+        {
+          "objectness_score": 0.11394733935594559,
+          "box_xyxy": [
+            794.0739135742188,
+            493.34088134765625,
+            958.8958129882812,
+            538.9935302734375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 11,
+          "postprocess_index": 13,
+          "target_memory_score": 0.5896004438400269,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4716658294200897,
+            "FDV_reference_2": 0.5141502618789673,
+            "FDV_reference_3": 0.5896004438400269
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7310823798179626,
+          "layer18_nids_fused_score": 0.6603414118289948,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "40070d6b2e4cb1b0aaa142ef46ad23da94569e0e62d73400b2f9e17aa4bf8bff",
+          "layer18_patch_sha256": "c93e2e46ca65c42d4227ffd56f3b025f317bebefd061d8c858ae1976035dcf82",
+          "mask_sha256": "09e8ee3a74d7f858f97eb28df9f98960025b58643366f74f792ead8fffa65500"
+        },
+        {
+          "objectness_score": 0.2736637592315674,
+          "box_xyxy": [
+            0.9224281311035156,
+            124.19593811035156,
+            383.150390625,
+            213.7547149658203
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 17,
+          "target_memory_score": 0.5959614515304565,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5353929400444031,
+            "FDV_reference_2": 0.539150059223175,
+            "FDV_reference_3": 0.5959614515304565
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7113920450210571,
+          "layer18_nids_fused_score": 0.6536767482757568,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "da76ecc4c617d441d27abaf39c2b09489473c463cb9a7a41b056ac73d0624756",
+          "layer18_patch_sha256": "5fab3a1e44e50095120c839fe9a9ae2344be18c7bfbe94e3a94aaed98a49db1f",
+          "mask_sha256": "5722780f64227fd0f39d4850fb658a52466dff58b62604eea7115cf346b47a9c"
+        },
+        {
+          "objectness_score": 0.19917751848697662,
+          "box_xyxy": [
+            0.7941055297851562,
+            124.54804992675781,
+            679.6243286132812,
+            211.68673706054688
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 4,
+          "target_memory_score": 0.5524555444717407,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.51723313331604,
+            "FDV_reference_2": 0.5173509120941162,
+            "FDV_reference_3": 0.5524555444717407
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.721402108669281,
+          "layer18_nids_fused_score": 0.6369288265705109,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "02da440e3d79cc16bf205f98852e8007cf15d98afbb1bd397e5f947503bd5ad7",
+          "layer18_patch_sha256": "b845ea97f793c5e961f8d45e06439603cb24fb5caf036cba0b3b998335d9e1b5",
+          "mask_sha256": "83dbc62d58de3e867b1928da77147276ba05c9d249e2119240c96731e053abfd"
+        },
+        {
+          "objectness_score": 0.30294346809387207,
+          "box_xyxy": [
+            0.8161354064941406,
+            158.40948486328125,
+            383.27105712890625,
+            214.04920959472656
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 16,
+          "target_memory_score": 0.5529125928878784,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5075193643569946,
+            "FDV_reference_2": 0.5234633684158325,
+            "FDV_reference_3": 0.5529125928878784
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7063653469085693,
+          "layer18_nids_fused_score": 0.6296389698982239,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "cfd39e3be9ccdad999b5f156adcfd15d94db883c29352f6ff0ded935ec0b7bd3",
+          "layer18_patch_sha256": "642a670c6fdcf7c46008c5844acf8f1ea2f855fadea17c1c8d280dea6be89e77",
+          "mask_sha256": "54cefbca48fe0c981e3ae4f7f738672c6b805e01f5c13d995081ef30a5700b65"
+        },
+        {
+          "objectness_score": 0.1619652956724167,
+          "box_xyxy": [
+            576.0,
+            0.006321430206298828,
+            959.9750061035156,
+            216.0
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 27,
+          "target_memory_score": 0.5154188871383667,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3869420886039734,
+            "FDV_reference_2": 0.43594133853912354,
+            "FDV_reference_3": 0.5154188871383667
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7243121862411499,
+          "layer18_nids_fused_score": 0.6198655366897583,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "4b8f0904862f04ab4eed2712011363d2e5eb77f0ee7da560642227c6214159ff",
+          "layer18_patch_sha256": "3f895bd04073156c9ef7aee5203161f1f906e2b9289070eea71aaded125060b0",
+          "mask_sha256": "eab95e2b4a198ac5dc14c9f8c615cc516e9847a940a3dd84f31ace2d095b1d30"
+        },
+        {
+          "objectness_score": 0.5318356156349182,
+          "box_xyxy": [
+            68.47645568847656,
+            324.1568030118942,
+            383.24163818359375,
+            377.1236038208008
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 31,
+          "target_memory_score": 0.5316070318222046,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4822468161582947,
+            "FDV_reference_2": 0.5067239999771118,
+            "FDV_reference_3": 0.5316070318222046
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6977620124816895,
+          "layer18_nids_fused_score": 0.614684522151947,
+          "target_metrics_evaluation_only": {
+            "iou": 0.09507516501006971,
+            "target_recall": 0.10471901483946774,
+            "proposal_precision": 0.5079675344086501
+          },
+          "descriptor_sha256": "8969480e142961b8c9584e851722d42425713bb5b7b0eb5b6c1f4ba58b17e342",
+          "layer18_patch_sha256": "db4a85a80d586b7c3b0abc451e94ca675a9521927e7b3a63d3158c4c2dd1aeeb",
+          "mask_sha256": "e7c3899b5f498474c5d63fe7753f58b53d49081a4bea8ded1dc365b096659459"
+        },
+        {
+          "objectness_score": 0.17617179453372955,
+          "box_xyxy": [
+            257.54241943359375,
+            324.1080211400986,
+            383.160400390625,
+            343.53819274902344
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 35,
+          "target_memory_score": 0.5758181810379028,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4699789881706238,
+            "FDV_reference_2": 0.5002037882804871,
+            "FDV_reference_3": 0.5758181810379028
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6515007019042969,
+          "layer18_nids_fused_score": 0.6136594414710999,
+          "target_metrics_evaluation_only": {
+            "iou": 0.030180581774464373,
+            "target_recall": 0.030180581774464373,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "e62140548942777e5216d646bf04fa87e5541109ab0c9983aa2af37383e6fd26",
+          "layer18_patch_sha256": "b09546ed0eacef4574fdf477fb8f3a25fea19f72ed838350bf427da8de79e354",
+          "mask_sha256": "8455379b6193d777401445508c31ad975894f2d46922e4f01af1c527df9b4e91"
+        },
+        {
+          "objectness_score": 0.22480732202529907,
+          "box_xyxy": [
+            0.45970916748046875,
+            124.8462142944336,
+            383.49603271484375,
+            161.49407958984375
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 19,
+          "target_memory_score": 0.5316580533981323,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.474399209022522,
+            "FDV_reference_2": 0.5121970176696777,
+            "FDV_reference_3": 0.5316580533981323
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6886929869651794,
+          "layer18_nids_fused_score": 0.6101755201816559,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "57235ef78c95568757beb4c129d83b5d099a23666c09039895aad44187ae0dc6",
+          "layer18_patch_sha256": "eac475c3f6e93b9fc1368e287bc03f19652ec0e1eac37b36c692fd1a8d6bd7f4",
+          "mask_sha256": "0980445430e374a1bfe7688d1c796b139a36888ae609c7dd4cac8bd184dd4572"
+        },
+        {
+          "objectness_score": 0.18440407514572144,
+          "box_xyxy": [
+            576.0333251953125,
+            134.4960479736328,
+            671.3795318603516,
+            209.0547332763672
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 10,
+          "postprocess_index": 26,
+          "target_memory_score": 0.5147122740745544,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4788553714752197,
+            "FDV_reference_2": 0.512176513671875,
+            "FDV_reference_3": 0.5147122740745544
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7014527320861816,
+          "layer18_nids_fused_score": 0.608082503080368,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "a6d5ce73a9117783d686f16b80b95d3f04ed2f2732ac8513a60bbb3905af5559",
+          "layer18_patch_sha256": "281226b92372ec52b8af1d724a31c75b2c0498a5c8476f1da0d82090e8b149e4",
+          "mask_sha256": "aed85c0cf7a647c3629b533fda2ce39270a417306c4c29baa83ef657872785b8"
+        },
+        {
+          "objectness_score": 0.12487936019897461,
+          "box_xyxy": [
+            215.4015350341797,
+            265.6578674316406,
+            632.9186401367188,
+            293.77093505859375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 12,
+          "target_memory_score": 0.5286564826965332,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.39621904492378235,
+            "FDV_reference_2": 0.46133479475975037,
+            "FDV_reference_3": 0.5286564826965332
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6583830118179321,
+          "layer18_nids_fused_score": 0.5935197472572327,
+          "target_metrics_evaluation_only": {
+            "iou": 0.14513817972978235,
+            "target_recall": 0.14513817972978235,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "e034b687ce38a537aa476592e038a3507f202c866840193527e673a90b6506c7",
+          "layer18_patch_sha256": "b0a663fbaf0d164a7356ec0f87ad8767259860818addc4070a47369540135cdb",
+          "mask_sha256": "f8aaac1f0645d66ba52e5397f921a124140c8eb7fa911c42884f46901663e6a0"
+        },
+        {
+          "objectness_score": 0.1311502605676651,
+          "box_xyxy": [
+            576.0,
+            126.91703796386719,
+            670.3435516357422,
+            162.76516723632812
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 29,
+          "target_memory_score": 0.512204110622406,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.46300840377807617,
+            "FDV_reference_2": 0.4817768633365631,
+            "FDV_reference_3": 0.512204110622406
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6694650053977966,
+          "layer18_nids_fused_score": 0.5908345580101013,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "f7f1d32c1f8337f8f69329d03cd7785f7f718cd8cf13818d9024d3ee1d2348f6",
+          "layer18_patch_sha256": "2e9c0bf49ed0b1ede856d9693a49dba2eba3eb3109b7c59b4d3d2891f0636348",
+          "mask_sha256": "86c2b745007b1d7f1126a10f87626bfdddf2e826c9a9bb1b950abd7f7a1b4f57"
+        },
+        {
+          "objectness_score": 0.20336084067821503,
+          "box_xyxy": [
+            0.6761512756347656,
+            131.124755859375,
+            383.2137451171875,
+            160.73951721191406
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 20,
+          "target_memory_score": 0.47406262159347534,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.40705621242523193,
+            "FDV_reference_2": 0.47325631976127625,
+            "FDV_reference_3": 0.47406262159347534
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6958199143409729,
+          "layer18_nids_fused_score": 0.5849412679672241,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "1aef29b3a073741707ed571a2d87a451e98829a7703852cd96489f287bc903ce",
+          "layer18_patch_sha256": "c6fa9499f06be0544e60b78f0b2728601202b3fc596def07a43810c11c4a51c3",
+          "mask_sha256": "6584b290ddd703266e5787894af12e16b25f440a7db6cb2f0b4c572ee081e37b"
+        },
+        {
+          "objectness_score": 0.11544613540172577,
+          "box_xyxy": [
+            576.018479347229,
+            135.21533203125,
+            670.0044021606445,
+            162.36837768554688
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 11,
+          "postprocess_index": 30,
+          "target_memory_score": 0.49931201338768005,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.47968220710754395,
+            "FDV_reference_2": 0.4877490699291229,
+            "FDV_reference_3": 0.49931201338768005
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.667449951171875,
+          "layer18_nids_fused_score": 0.5833809822797775,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "1031d3bd0c8d0f9944b64f8ad092d6a7687659ce6ef060e971ac7b609be6c969",
+          "layer18_patch_sha256": "ff749fd53f7164f5b1e11d5d5786482c02b28bff67a245be524c4adb7dd87b35",
+          "mask_sha256": "b2224ebd42dfeba62c0a32dd0299b2ad1eb130bc131a86f7973e8f826cb7b02d"
+        },
+        {
+          "objectness_score": 0.1564975082874298,
+          "box_xyxy": [
+            576.0,
+            0.08288025856018066,
+            625.5748901367188,
+            132.2407989501953
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 28,
+          "target_memory_score": 0.49587810039520264,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.38798853754997253,
+            "FDV_reference_2": 0.41205620765686035,
+            "FDV_reference_3": 0.49587810039520264
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6699760556221008,
+          "layer18_nids_fused_score": 0.5829270780086517,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "128ca848ff2ccb308256a94e107709df05dc273ccfe56c3b5a466f836982d3e0",
+          "layer18_patch_sha256": "d121b69bad7b1c17095e0aede78778c441038369097a03dc6b320d19e4106f94",
+          "mask_sha256": "7ed3455b7303c193a661976e917db790a36a61df4ce56c56f4592edf60b103f8"
+        },
+        {
+          "objectness_score": 0.20230278372764587,
+          "box_xyxy": [
+            160.3636932373047,
+            0.08931192755699158,
+            383.3553771972656,
+            17.741994857788086
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 21,
+          "target_memory_score": 0.5103718042373657,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4312625229358673,
+            "FDV_reference_2": 0.49397456645965576,
+            "FDV_reference_3": 0.5103718042373657
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6341171264648438,
+          "layer18_nids_fused_score": 0.5722444653511047,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b051963190a3bde7d924e80d89069d38c356c9aeb89648cb506ed19f62beb1e4",
+          "layer18_patch_sha256": "041b0292f5bf97e8c91c6e19bd2155bfda3bde51e54c4fe1ffa1757edae9ad45",
+          "mask_sha256": "0b334e8c66fa8ecbc4a1719acbdb2dcb80da6a85da68887b1faa36760375a62c"
+        },
+        {
+          "objectness_score": 0.17413029074668884,
+          "box_xyxy": [
+            259.69189453125,
+            305.0437316894531,
+            352.1270446777344,
+            341.4386901855469
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 6,
+          "target_memory_score": 0.49333956837654114,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.43796300888061523,
+            "FDV_reference_2": 0.48112642765045166,
+            "FDV_reference_3": 0.49333956837654114
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6415438652038574,
+          "layer18_nids_fused_score": 0.5674417167901993,
+          "target_metrics_evaluation_only": {
+            "iou": 0.041598487628983494,
+            "target_recall": 0.041598487628983494,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "fcab7f78029af5c0f7c3265bf11fab5814a897778b91cabb0eb375ba610ab34d",
+          "layer18_patch_sha256": "a3caa20c6ce9d01f4d651f0d4b525d061b61160a62eea3bcabf9c5ab986215a3",
+          "mask_sha256": "916c5606d218acce73fe572ebdffbfcc95d759b14dd80b2cab76bb627ec7e961"
+        },
+        {
+          "objectness_score": 0.1282806694507599,
+          "box_xyxy": [
+            257.51861572265625,
+            324.1402808725834,
+            383.3388977050781,
+            345.5574321746826
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 37,
+          "target_memory_score": 0.47864294052124023,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.37990647554397583,
+            "FDV_reference_2": 0.4382587969303131,
+            "FDV_reference_3": 0.47864294052124023
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6556842923164368,
+          "layer18_nids_fused_score": 0.5671636164188385,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03332050086765406,
+            "target_recall": 0.03332050086765406,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "95267d6ff57ebc1b4b42482f18ac18cf60049c8b6bfb6bb3e6405269ff216416",
+          "layer18_patch_sha256": "6d630e61efc7a441b52c2d49e29ed420e4d298455aaa62dec00f80c761dec00e",
+          "mask_sha256": "91178127c31bdb8934dbd9de21fde2ede013a5271c47d78c881d54ea4ec2db76"
+        },
+        {
+          "objectness_score": 0.4352262020111084,
+          "box_xyxy": [
+            576.0207223892212,
+            0.0,
+            623.0109024047852,
+            7.920135498046875
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 24,
+          "target_memory_score": 0.5218257904052734,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4133949279785156,
+            "FDV_reference_2": 0.4685019850730896,
+            "FDV_reference_3": 0.5218257904052734
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5958046913146973,
+          "layer18_nids_fused_score": 0.5588152408599854,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "eed799747265df4c51aa073a720b8c69b59aaca2209058e6577a5e9276a93c82",
+          "layer18_patch_sha256": "e08e51fc3c94bdad009ca1b7260d279f7d17b969ad505c0054f97206b4280f56",
+          "mask_sha256": "a359c879e7dae89e9c74aef5b4029a32857f33c48ada48fec0e22cbf210b6443"
+        },
+        {
+          "objectness_score": 0.23859131336212158,
+          "box_xyxy": [
+            257.552978515625,
+            324.11379620432854,
+            352.14801025390625,
+            342.27027130126953
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 34,
+          "target_memory_score": 0.4708462953567505,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3732096552848816,
+            "FDV_reference_2": 0.4395259618759155,
+            "FDV_reference_3": 0.4708462953567505
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6383209824562073,
+          "layer18_nids_fused_score": 0.5545836389064789,
+          "target_metrics_evaluation_only": {
+            "iou": 0.021237286585171905,
+            "target_recall": 0.021237286585171905,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "66ea30da8a3c80a0660a0c6e04227ad8fdac1df20194a29ef5e065be00609f42",
+          "layer18_patch_sha256": "69d8dc890e2a4c23496d61ef8eed4c84b2f129fd231eb7e5645be65de8dac4b3",
+          "mask_sha256": "cdb6b3d8bd94c73bf7d6f890e32faf5b7f3dcaaa4737514b2f3976091826efba"
+        },
+        {
+          "objectness_score": 0.44523775577545166,
+          "box_xyxy": [
+            576.003267288208,
+            126.6584701538086,
+            685.0385055541992,
+            215.61744689941406
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 23,
+          "target_memory_score": 0.43047410249710083,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.35073935985565186,
+            "FDV_reference_2": 0.3518606424331665,
+            "FDV_reference_3": 0.43047410249710083
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.645367443561554,
+          "layer18_nids_fused_score": 0.5379207730293274,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "6e72d42a1a30a22424cbc2dfba13cd6cd9a99d4a528b4f80b795141cc4acb0d7",
+          "layer18_patch_sha256": "2a8b39c80a5ab60976bc48603fe2a5dc6f5ed61daf766bbab2e44573d736627b",
+          "mask_sha256": "dc9c9cc158dff71b169a9bab604996bb3390842ebc3170fc1f716e5de2850137"
+        },
+        {
+          "objectness_score": 0.17587819695472717,
+          "box_xyxy": [
+            366.69097900390625,
+            298.94879150390625,
+            433.85406494140625,
+            344.3091735839844
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 5,
+          "target_memory_score": 0.4073602855205536,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.36007362604141235,
+            "FDV_reference_2": 0.4073602855205536,
+            "FDV_reference_3": 0.3966084420681
+          },
+          "winning_target_reference": "FDV_reference_2",
+          "layer18_local_appearance_score": 0.651006281375885,
+          "layer18_nids_fused_score": 0.5291832834482193,
+          "target_metrics_evaluation_only": {
+            "iou": 0.037670944449364065,
+            "target_recall": 0.037670944449364065,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "c432bb7f7530c4a2ae415078fb06527d9e89edcf0ba3442f9cac1f2e7c7d5e8b",
+          "layer18_patch_sha256": "87b1d1e8f2d9aa6dc7e8b81a87cf3422bf3fc78949470eec80b108a949128570",
+          "mask_sha256": "261b66f3556bab5e928e311a1bf7d3550b095dbab51569a7f02849b40d3047d4"
+        },
+        {
+          "objectness_score": 0.3266899883747101,
+          "box_xyxy": [
+            576.0962734222412,
+            0.0,
+            686.7600860595703,
+            215.9709014892578
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 25,
+          "target_memory_score": 0.45012956857681274,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3643410801887512,
+            "FDV_reference_2": 0.3606427311897278,
+            "FDV_reference_3": 0.45012956857681274
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5822408199310303,
+          "layer18_nids_fused_score": 0.5161851942539215,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b682826aa624e16b26989a3c74fc97c29b589935b89df9dd184d2ec0b64eb93d",
+          "layer18_patch_sha256": "23a3f58c7b5b628cec19fd30502d0ea7bcf1b3b05573a091add2e24cb04c9a59",
+          "mask_sha256": "e15351ad0ba39de28c828212ef600549d4e2f06d25593c63daeef398ac10bbaa"
+        },
+        {
+          "objectness_score": 0.4410953223705292,
+          "box_xyxy": [
+            577.2741279602051,
+            324.2916033267975,
+            958.7864990234375,
+            501.29307556152344
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 38,
+          "target_memory_score": 0.3639524579048157,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3264274597167969,
+            "FDV_reference_2": 0.3540883958339691,
+            "FDV_reference_3": 0.3639524579048157
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6165335774421692,
+          "layer18_nids_fused_score": 0.49024301767349243,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03841744020857109,
+            "target_recall": 0.0678877938570537,
+            "proposal_precision": 0.0813030859061825
+          },
+          "descriptor_sha256": "f051d9ff24f88eac3d8bb33463d7541ba7fc3ac633af4bbb510e6bfe7d658ce8",
+          "layer18_patch_sha256": "422da8f70d9ffad7ba4846786a5b6a3ff66374ed589286680d876eadd3598bdd",
+          "mask_sha256": "9e98a50124fde5c2e63373d32283a821de632ee5f062c197b1791dc505c53c8c"
+        },
+        {
+          "objectness_score": 0.23038259148597717,
+          "box_xyxy": [
+            320.41033935546875,
+            13.460461616516113,
+            341.87188720703125,
+            18.094467163085938
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 18,
+          "target_memory_score": 0.3941496014595032,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3122017979621887,
+            "FDV_reference_2": 0.37350723147392273,
+            "FDV_reference_3": 0.3941496014595032
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5804215669631958,
+          "layer18_nids_fused_score": 0.4872855842113495,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d6f477595af352aa18ccaf6befe383e3b4f3293e3ce05b6defe41c69469e53d9",
+          "layer18_patch_sha256": "990c3c5290f9147eea924616e89bf0dcd58e85c311be3db5cc87d83cba3d95f6",
+          "mask_sha256": "87fa3e917f3dea62052a1b84307f7e7a028aeeedd0228362b165c87257aec40f"
+        },
+        {
+          "objectness_score": 0.6283453106880188,
+          "box_xyxy": [
+            553.3897705078125,
+            272.64202880859375,
+            958.4489135742188,
+            500.6656799316406
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 0,
+          "target_memory_score": 0.3564724922180176,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3300068974494934,
+            "FDV_reference_2": 0.34625160694122314,
+            "FDV_reference_3": 0.3564724922180176
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6058608889579773,
+          "layer18_nids_fused_score": 0.48116669058799744,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10290476836912045,
+            "target_recall": 0.19986359225117153,
+            "proposal_precision": 0.17499925182444173
+          },
+          "descriptor_sha256": "7a22cb3885d47398a1543e9f55403d0c0cb3878ad5235fa7e5afb4079cf45e66",
+          "layer18_patch_sha256": "7072083abfd85ce89841ff7e70aec00b5872962f19f4918e3d226db1a0397a41",
+          "mask_sha256": "089d9d25ccfc210173ff5956f67bb16ba448484f58bf6e1508877727f0608e18"
+        },
+        {
+          "objectness_score": 0.37428951263427734,
+          "box_xyxy": [
+            577.2952194213867,
+            324.59913897514343,
+            958.6920471191406,
+            537.1913604736328
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 39,
+          "target_memory_score": 0.3418463170528412,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.31410664319992065,
+            "FDV_reference_2": 0.337043821811676,
+            "FDV_reference_3": 0.3418463170528412
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6146860122680664,
+          "layer18_nids_fused_score": 0.4782661646604538,
+          "target_metrics_evaluation_only": {
+            "iou": 0.034744095386621876,
+            "target_recall": 0.06724193696573232,
+            "proposal_precision": 0.06706819317201951
+          },
+          "descriptor_sha256": "f4d7f594970af5119f0ee971de73c56c7a3bf4b51b84d14284c5e4c3dfb122cb",
+          "layer18_patch_sha256": "9992dac91789240750404329d8ec787935cd04bcc9213154e09f4c2cce863187",
+          "mask_sha256": "e2de8ef6837c8aac5fc971fd877bd92c0b82a92f0a1be42ffd836974000a8b69"
+        },
+        {
+          "objectness_score": 0.10565485060214996,
+          "box_xyxy": [
+            780.9196166992188,
+            282.9941711425781,
+            873.436279296875,
+            425.7267150878906
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 14,
+          "postprocess_index": 14,
+          "target_memory_score": 0.3097986578941345,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.20488713681697845,
+            "FDV_reference_2": 0.2752808630466461,
+            "FDV_reference_3": 0.3097986578941345
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.573686420917511,
+          "layer18_nids_fused_score": 0.44174253940582275,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "11d2721572588ce661d3cb8c4ae45c11256118c138ca74aff7e560609372a933",
+          "layer18_patch_sha256": "36530ad6933eab9598d8425ad87dcc6c0ecde708d7b995a9e1928fe7a40bb6f0",
+          "mask_sha256": "265bb73ce89f2890405d3ccfcf9bd7b5606af65b7422e8fe8db25ec9c5c3663d"
+        },
+        {
+          "objectness_score": 0.14134806394577026,
+          "box_xyxy": [
+            593.0830078125,
+            331.7388610839844,
+            740.914794921875,
+            476.2580261230469
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 10,
+          "postprocess_index": 9,
+          "target_memory_score": 0.2534611225128174,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.19081875681877136,
+            "FDV_reference_2": 0.22415423393249512,
+            "FDV_reference_3": 0.2534611225128174
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5634758472442627,
+          "layer18_nids_fused_score": 0.40846848487854004,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03798441089098605,
+            "target_recall": 0.04626173446888762,
+            "proposal_precision": 0.17511747181563322
+          },
+          "descriptor_sha256": "03060052959576ebe2b7302340fc51f5710d406889497b59cd5fd971a68ab53b",
+          "layer18_patch_sha256": "56eef992ab5f1e4453c68b7ae6fde41701b2bd206dde0427e223fde5ab14fcef",
+          "mask_sha256": "be51839b64169db32aa830169cce0a2e148f43e553c46820878c37c3142e0524"
+        },
+        {
+          "objectness_score": 0.12186481058597565,
+          "box_xyxy": [
+            592.8663425445557,
+            330.77173233032227,
+            740.5039367675781,
+            476.1879119873047
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 40,
+          "target_memory_score": 0.24804861843585968,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.18604010343551636,
+            "FDV_reference_2": 0.2206645905971527,
+            "FDV_reference_3": 0.24804861843585968
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5626295804977417,
+          "layer18_nids_fused_score": 0.4053390994668007,
+          "target_metrics_evaluation_only": {
+            "iou": 0.039397567117508615,
+            "target_recall": 0.04796651633565316,
+            "proposal_precision": 0.18068800615026573
+          },
+          "descriptor_sha256": "2da52d4e1adf73562e8b31dcd37005b9913d6c96868a4356e465474df2061e32",
+          "layer18_patch_sha256": "2540f995925843995b99ff1eb1c4f49d36da47612a80ea6c6bf5be8ee4966635",
+          "mask_sha256": "ec3a8b43d49c12ea1bf9418cb44fe3eba88f2d8d4269df15dae899ca07c701e4"
+        },
+        {
+          "objectness_score": 0.12588980793952942,
+          "box_xyxy": [
+            705.8785400390625,
+            310.3684387207031,
+            830.6180419921875,
+            437.92742919921875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 12,
+          "postprocess_index": 11,
+          "target_memory_score": 0.23099184036254883,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.15286123752593994,
+            "FDV_reference_2": 0.2128591686487198,
+            "FDV_reference_3": 0.23099184036254883
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5630353093147278,
+          "layer18_nids_fused_score": 0.3970135748386383,
+          "target_metrics_evaluation_only": {
+            "iou": 0.019175451975832862,
+            "target_recall": 0.022516454616662726,
+            "proposal_precision": 0.1144420865357257
+          },
+          "descriptor_sha256": "23edd326012b039c2b479b931a00fa08b927842a125eee5c312e57ee573da2ff",
+          "layer18_patch_sha256": "c7ce49efec5d250288345c76f544d4980e7e98e69412355fac6b9910e17b71a2",
+          "mask_sha256": "55e9390da645d9384f187139f8362d2408f85d3a3bbc5183913bc3f9c279418e"
+        },
+        {
+          "objectness_score": 0.10588287562131882,
+          "box_xyxy": [
+            591.7561912536621,
+            330.14604568481445,
+            741.2945709228516,
+            494.0711212158203
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 41,
+          "target_memory_score": 0.22876058518886566,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.1812613606452942,
+            "FDV_reference_2": 0.2097814381122589,
+            "FDV_reference_3": 0.22876058518886566
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5614461302757263,
+          "layer18_nids_fused_score": 0.395103357732296,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03968590905557636,
+            "target_recall": 0.0497410038069711,
+            "proposal_precision": 0.16410330221033592
+          },
+          "descriptor_sha256": "6d4c86058ca8dd844be674822acc4a698c5124d6cd9ea056b52117dec2bd6302",
+          "layer18_patch_sha256": "eea590ff2873282db86cb5ca1ec817947f6eae94f2df49b631bccd1fb33daa09",
+          "mask_sha256": "7b12632a3fe1198abb82714bf4a690e8d404f98b864d50d8e2d1e4066bfa8689"
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 42,
+        "input_boxes_shape": [
+          1,
+          42,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          42,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          42,
+          1
+        ],
+        "native_masks_shape": [
+          42,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.28013740002643317
+      }
+    },
+    "FDV_initial_2_query": {
+      "query_truth_used_for_selection": false,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.7567054963572547,
+      "selected": {
+        "objectness_score": 0.36356115341186523,
+        "box_xyxy": [
+          182.9862823486328,
+          138.2599639892578,
+          857.8965454101562,
+          297.013671875
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 1,
+        "postprocess_index": 1,
+        "target_memory_score": 0.8535269498825073,
+        "per_reference_scores": {
+          "FDV_reference_1": 0.8535269498825073,
+          "FDV_reference_2": 0.8171813488006592,
+          "FDV_reference_3": 0.8401144742965698
+        },
+        "winning_target_reference": "FDV_reference_1",
+        "layer18_local_appearance_score": 0.8195203542709351,
+        "layer18_nids_fused_score": 0.8365236520767212,
+        "target_metrics_evaluation_only": {
+          "iou": 0.7095609691118364,
+          "target_recall": 0.8802433870676031,
+          "proposal_precision": 0.785377692843797
+        },
+        "descriptor_sha256": "db30ddaf1cc60fff36caa99c34c92843b9cb4906dea670bcf6d6c7e6e56411a6",
+        "layer18_patch_sha256": "f1685f5de333d6d5b3bade143772e21bb108019fc213f2ccda555eff7a1367ba",
+        "mask_sha256": "f0cab16409dc49b6148e1e28229c010f0f6f69cbf94f324e9ef6e8809e6a030a"
+      },
+      "top1_layer18_nids_fused_margin": 0.005332916975021362,
+      "refined_mask_bbox_xyxy": [
+        186.0,
+        149.0,
+        848.0,
+        296.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.653039833684584,
+        "target_recall": 0.797201959863384,
+        "proposal_precision": 0.7831387871108899
+      },
+      "ranked_candidates": [
+        {
+          "objectness_score": 0.36356115341186523,
+          "box_xyxy": [
+            182.9862823486328,
+            138.2599639892578,
+            857.8965454101562,
+            297.013671875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 1,
+          "target_memory_score": 0.8535269498825073,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.8535269498825073,
+            "FDV_reference_2": 0.8171813488006592,
+            "FDV_reference_3": 0.8401144742965698
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.8195203542709351,
+          "layer18_nids_fused_score": 0.8365236520767212,
+          "target_metrics_evaluation_only": {
+            "iou": 0.7095609691118364,
+            "target_recall": 0.8802433870676031,
+            "proposal_precision": 0.785377692843797
+          },
+          "descriptor_sha256": "db30ddaf1cc60fff36caa99c34c92843b9cb4906dea670bcf6d6c7e6e56411a6",
+          "layer18_patch_sha256": "f1685f5de333d6d5b3bade143772e21bb108019fc213f2ccda555eff7a1367ba",
+          "mask_sha256": "f0cab16409dc49b6148e1e28229c010f0f6f69cbf94f324e9ef6e8809e6a030a"
+        },
+        {
+          "objectness_score": 0.23718953132629395,
+          "box_xyxy": [
+            182.59849548339844,
+            111.21327209472656,
+            859.0769653320312,
+            297.965087890625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 14,
+          "postprocess_index": 5,
+          "target_memory_score": 0.8521090745925903,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.8521090745925903,
+            "FDV_reference_2": 0.8086190223693848,
+            "FDV_reference_3": 0.8283171653747559
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.8102723956108093,
+          "layer18_nids_fused_score": 0.8311907351016998,
+          "target_metrics_evaluation_only": {
+            "iou": 0.7567054963572547,
+            "target_recall": 1.0,
+            "proposal_precision": 0.7567054963572547
+          },
+          "descriptor_sha256": "63b0c796d5bee5dd91c20c17b91f469cb6d13266daa03b943bcfb7f5d67e1b82",
+          "layer18_patch_sha256": "45df9da53e3f8fe23ad61e6e8f5f2584c5637c5468849cfbf6b815a2d541e35e",
+          "mask_sha256": "af2e49b386714c9c0e1e53962ec2d897ecbe2d096ecf92891f28ecd49e34baf0"
+        },
+        {
+          "objectness_score": 0.1035391315817833,
+          "box_xyxy": [
+            181.66903686523438,
+            29.423070907592773,
+            858.8721923828125,
+            297.253662109375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 12,
+          "target_memory_score": 0.8710904121398926,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.8710904121398926,
+            "FDV_reference_2": 0.8155333399772644,
+            "FDV_reference_3": 0.8032193183898926
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.7517684698104858,
+          "layer18_nids_fused_score": 0.8114294409751892,
+          "target_metrics_evaluation_only": {
+            "iou": 0.5269342584349392,
+            "target_recall": 0.9998339735862992,
+            "proposal_precision": 0.5269803689708175
+          },
+          "descriptor_sha256": "5ae1098fa400a3b9125481ba792ae25d927a8f3900df6cdc50dac821d54f9bea",
+          "layer18_patch_sha256": "3e0c47cc968b9cd44ecac55d2b9aa97f778af139b8d4e57328d450c2bc864a6f",
+          "mask_sha256": "27ddbdf7f8ad19e3a252decf93c57f07c90be23e654b617be5faa5641ac05669"
+        },
+        {
+          "objectness_score": 0.2645552158355713,
+          "box_xyxy": [
+            2.8987884521484375,
+            7.2571563720703125,
+            956.350830078125,
+            535.3623657226562
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 4,
+          "target_memory_score": 0.7549857497215271,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7549857497215271,
+            "FDV_reference_2": 0.6982556581497192,
+            "FDV_reference_3": 0.7081601619720459
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.77267986536026,
+          "layer18_nids_fused_score": 0.7638328075408936,
+          "target_metrics_evaluation_only": {
+            "iou": 0.18985690467068428,
+            "target_recall": 1.0,
+            "proposal_precision": 0.18985690467068428
+          },
+          "descriptor_sha256": "e72ea76d9e9d1fe402b985a6f59f4cc76a6f9ef9d409fb891f694b9bb8f58711",
+          "layer18_patch_sha256": "280678b4f0760b23591e2723e1a74f4c028ddbd392cc92e28c9d27a6953a997d",
+          "mask_sha256": "c2865f1694198aa4848ead67726274cf3d796218eb45f373f3dcbb761aa99339"
+        },
+        {
+          "objectness_score": 0.10634496062994003,
+          "box_xyxy": [
+            3.904695510864258,
+            120.05001068115234,
+            955.784423828125,
+            535.1307983398438
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 11,
+          "target_memory_score": 0.7207876443862915,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.7207876443862915,
+            "FDV_reference_2": 0.6931004524230957,
+            "FDV_reference_3": 0.6890652179718018
+          },
+          "winning_target_reference": "FDV_reference_1",
+          "layer18_local_appearance_score": 0.7935221195220947,
+          "layer18_nids_fused_score": 0.7571548819541931,
+          "target_metrics_evaluation_only": {
+            "iou": 0.24195298836287477,
+            "target_recall": 1.0,
+            "proposal_precision": 0.24195298836287477
+          },
+          "descriptor_sha256": "8f1820662307a51aec92c69419e63bca6c64daa6870189780ea71400775dbe88",
+          "layer18_patch_sha256": "1fd6f39b3d7bfa8d25b3af6c14064a9aad5d83f3745d413ca5a78c09b08d8b80",
+          "mask_sha256": "911e8ddab3b9585b911ecb47f66a2a47363548a892e52ee52f0664d88db16755"
+        },
+        {
+          "objectness_score": 0.14865119755268097,
+          "box_xyxy": [
+            0.9676094055175781,
+            134.5484161376953,
+            382.82781982421875,
+            215.2130584716797
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 22,
+          "target_memory_score": 0.7151866555213928,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5765731930732727,
+            "FDV_reference_2": 0.5670617818832397,
+            "FDV_reference_3": 0.7151866555213928
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7496782541275024,
+          "layer18_nids_fused_score": 0.7324324548244476,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10579173125470287,
+            "target_recall": 0.1264967977240406,
+            "proposal_precision": 0.3925885345983291
+          },
+          "descriptor_sha256": "a0aba9c0bcf07231eb33752cbccf10bfa5f70a7bc323fb4ac9484d67e01a5c6f",
+          "layer18_patch_sha256": "26216e5bae56a2833033d1ea1d890a0f9fd9f4e3f9db75696705f379c22d057f",
+          "mask_sha256": "cfb56503c1f0422f7b3b1caff8461b8add5793bf7611149b21e676c91d3087db"
+        },
+        {
+          "objectness_score": 0.38798829913139343,
+          "box_xyxy": [
+            214.57455444335938,
+            138.99697875976562,
+            383.26727294921875,
+            215.17091369628906
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 16,
+          "target_memory_score": 0.6707019209861755,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5540077686309814,
+            "FDV_reference_2": 0.5537166595458984,
+            "FDV_reference_3": 0.6707019209861755
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7363123297691345,
+          "layer18_nids_fused_score": 0.703507125377655,
+          "target_metrics_evaluation_only": {
+            "iou": 0.11807920902824075,
+            "target_recall": 0.11980471899068491,
+            "proposal_precision": 0.8912856161569601
+          },
+          "descriptor_sha256": "6e76bdc88e19ace530861bdf2064dacea13476423cc144f82d877d77cdc90315",
+          "layer18_patch_sha256": "fbec56eb35e45f7ee51b0b705a6055bdc1908d4ac5b6ec383902a6d192e7159c",
+          "mask_sha256": "e0b170c081020d2d53a410a16738f74121d3a989fc202f0d69ebe3e1773fff67"
+        },
+        {
+          "objectness_score": 0.15444618463516235,
+          "box_xyxy": [
+            1.0012321472167969,
+            28.176340103149414,
+            382.6419677734375,
+            215.114013671875
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 21,
+          "target_memory_score": 0.6276558041572571,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.49433737993240356,
+            "FDV_reference_2": 0.5125354528427124,
+            "FDV_reference_3": 0.6276558041572571
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7142989039421082,
+          "layer18_nids_fused_score": 0.6709773540496826,
+          "target_metrics_evaluation_only": {
+            "iou": 0.09304287573735667,
+            "target_recall": 0.14864884524217165,
+            "proposal_precision": 0.19918456545806376
+          },
+          "descriptor_sha256": "2c68db655ba185a74aa93fcb63665778e6ff635bd4daaa164ab26d04bdc59493",
+          "layer18_patch_sha256": "745ef8f4a162da90bf0d046775a401dbe1b99caff17163adbdfa36ffbb97641b",
+          "mask_sha256": "abbf4afe77c7700b6212c8e44adfc7807fd039107405b29acbcc35d573ff789f"
+        },
+        {
+          "objectness_score": 0.19384373724460602,
+          "box_xyxy": [
+            0.9760322570800781,
+            47.04166793823242,
+            382.73614501953125,
+            214.52157592773438
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 18,
+          "target_memory_score": 0.6157867312431335,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.48846352100372314,
+            "FDV_reference_2": 0.49424564838409424,
+            "FDV_reference_3": 0.6157867312431335
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7194671630859375,
+          "layer18_nids_fused_score": 0.6676269471645355,
+          "target_metrics_evaluation_only": {
+            "iou": 0.09718180015797212,
+            "target_recall": 0.14781386189088552,
+            "proposal_precision": 0.2210077995374093
+          },
+          "descriptor_sha256": "1b654acb153ae6b33cced8f42549df532417d23014c4f1e2639da5f6632868d1",
+          "layer18_patch_sha256": "7f51ce13b41561cd6689cfab0fc5bdfd428f5aabc11d8b30125423e84ffa9cd4",
+          "mask_sha256": "8529cff978a2b57ee0d3cbd51babbd1fa13a6fb67f6ed2ae4d2c99b6ca01dc71"
+        },
+        {
+          "objectness_score": 0.315714955329895,
+          "box_xyxy": [
+            576.2392272949219,
+            25.32134437561035,
+            796.1272277832031,
+            196.21725463867188
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 24,
+          "target_memory_score": 0.6366762518882751,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5327258706092834,
+            "FDV_reference_2": 0.5622374415397644,
+            "FDV_reference_3": 0.6366762518882751
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6920850872993469,
+          "layer18_nids_fused_score": 0.664380669593811,
+          "target_metrics_evaluation_only": {
+            "iou": 0.14351565716376757,
+            "target_recall": 0.17483769591496542,
+            "proposal_precision": 0.444782380989451
+          },
+          "descriptor_sha256": "d066ef1a893576da5c64164b0f671cefef73778951fca79eddaf89638886bf35",
+          "layer18_patch_sha256": "ae6c0b8973ce8ebf0128778adfe2371a3ec80900fa2803ac0606cca8810d1876",
+          "mask_sha256": "ce9a6a80c50adea7b6ceb5039eed6524a0a8c146af00e6c49ee8207cb654c721"
+        },
+        {
+          "objectness_score": 0.19179180264472961,
+          "box_xyxy": [
+            0.9334487915039062,
+            77.28594970703125,
+            382.8725891113281,
+            214.92001342773438
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 19,
+          "target_memory_score": 0.5921659469604492,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4520276188850403,
+            "FDV_reference_2": 0.4654920995235443,
+            "FDV_reference_3": 0.5921659469604492
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7221596837043762,
+          "layer18_nids_fused_score": 0.6571628153324127,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10602435309928088,
+            "target_recall": 0.14857348581541346,
+            "proposal_precision": 0.27018853366650936
+          },
+          "descriptor_sha256": "5dccf74373908b2c9d432d643512a2ae20156c0b6186e03a5f2776a22816e5bd",
+          "layer18_patch_sha256": "81ec3fb993d2870881704b67f44b3bd8c33a73ea8328babb3879ff7eeb448a0d",
+          "mask_sha256": "b8954e93175fd8c154d71dc8993c1ff652650cd447deec0e60b0dc30df642fec"
+        },
+        {
+          "objectness_score": 0.5008771419525146,
+          "box_xyxy": [
+            0.9373512268066406,
+            324.28660798072815,
+            383.0975646972656,
+            539.4289398193359
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            324,
+            384,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 31,
+          "target_memory_score": 0.582477331161499,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.5050927400588989,
+            "FDV_reference_2": 0.5613754391670227,
+            "FDV_reference_3": 0.582477331161499
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7246239185333252,
+          "layer18_nids_fused_score": 0.6535506248474121,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7354c28aa3b9620064f15ab432da2e4ca338826de145693a0cc985969c451d56",
+          "layer18_patch_sha256": "06c8e483dc26a95455ebabb3a4201ebc7dd19dd990a3578d469aa82f9fb29ea0",
+          "mask_sha256": "506080158ddce68f7425993757ab44466cfd9ec947385cdff90c756f82173e85"
+        },
+        {
+          "objectness_score": 0.3047269284725189,
+          "box_xyxy": [
+            1.2804508209228516,
+            27.58803367614746,
+            787.0836791992188,
+            143.8190460205078
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 2,
+          "target_memory_score": 0.5755480527877808,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.46222764253616333,
+            "FDV_reference_2": 0.5170968174934387,
+            "FDV_reference_3": 0.5755480527877808
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6944215297698975,
+          "layer18_nids_fused_score": 0.6349847912788391,
+          "target_metrics_evaluation_only": {
+            "iou": 0.07527206979347469,
+            "target_recall": 0.13688425414665875,
+            "proposal_precision": 0.1432726736304617
+          },
+          "descriptor_sha256": "ea49e9415ef38dabe1689fb3b30568fd39b6a22c125fa1aeca4a6ca8f9264a3f",
+          "layer18_patch_sha256": "95f8f7bc3904ccfed1d20f4e960732644f1a8a792d935715acd46eee56af9a27",
+          "mask_sha256": "a3aa17394407c8821b4e2d94d9e5fdd7c9acf0c0df4f84cc2d6138bb0887d6c5"
+        },
+        {
+          "objectness_score": 0.186532124876976,
+          "box_xyxy": [
+            0.31182861328125,
+            77.45247650146484,
+            383.734375,
+            146.25399780273438
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 20,
+          "target_memory_score": 0.5731507539749146,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.44982749223709106,
+            "FDV_reference_2": 0.5213155746459961,
+            "FDV_reference_3": 0.5731507539749146
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6762335896492004,
+          "layer18_nids_fused_score": 0.6246921718120575,
+          "target_metrics_evaluation_only": {
+            "iou": 0.03327953044552472,
+            "target_recall": 0.04109537345555743,
+            "proposal_precision": 0.14892340031622278
+          },
+          "descriptor_sha256": "4aaf79e149b5cf72c1206c2d30f38ab37a9bfb22289895594864ebdf38bafc43",
+          "layer18_patch_sha256": "44d8b14d955feac13d7520bba12a67f41389a2400a5b59711bc30e1f6f7056e1",
+          "mask_sha256": "cf055a485518a779e3420ac9c9de484032b8841ceb6c340aa77a7c318a15c5a7"
+        },
+        {
+          "objectness_score": 0.45200037956237793,
+          "box_xyxy": [
+            0.9639701843261719,
+            1.0416069030761719,
+            382.8463439941406,
+            214.86495971679688
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 15,
+          "target_memory_score": 0.5243170857429504,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.40114110708236694,
+            "FDV_reference_2": 0.42251938581466675,
+            "FDV_reference_3": 0.5243170857429504
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.707338273525238,
+          "layer18_nids_fused_score": 0.6158276796340942,
+          "target_metrics_evaluation_only": {
+            "iou": 0.08703832352140996,
+            "target_recall": 0.14846113825656082,
+            "proposal_precision": 0.1738095911363945
+          },
+          "descriptor_sha256": "bb7f3862f6aed605ab0b189ebd18da013e0a37e31a63ef29c906330b1aa24279",
+          "layer18_patch_sha256": "5f54dc7b181e37fa4b2bd0e491ac06d25fa90264c7b766c1fe9467a52b49e26f",
+          "mask_sha256": "81dd7808cdb58d9758a0ed84a7166bb5dadac3a1582a54b3c4b7bcfb806f275c"
+        },
+        {
+          "objectness_score": 0.128090038895607,
+          "box_xyxy": [
+            632.619255065918,
+            324.4124057292938,
+            958.5359497070312,
+            538.4538116455078
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 36,
+          "target_memory_score": 0.43284544348716736,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.33096617460250854,
+            "FDV_reference_2": 0.40713828802108765,
+            "FDV_reference_3": 0.43284544348716736
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7809309959411621,
+          "layer18_nids_fused_score": 0.6068882197141647,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d831b5c62d41e6821d3a0638ac80d4215f7ae7662116597db697cd350060f712",
+          "layer18_patch_sha256": "c916aa2e19c796eceac258e8bced1f6e33923a96d0ba0d621c0147afdeff577a",
+          "mask_sha256": "481ae020167dd23ec7d037f04907d5566f1447276ee71c445637d04f5a989fb4"
+        },
+        {
+          "objectness_score": 0.2941226065158844,
+          "box_xyxy": [
+            576.1437377929688,
+            26.914928436279297,
+            788.1790771484375,
+            115.6184310913086
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 26,
+          "target_memory_score": 0.5169354677200317,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.40507209300994873,
+            "FDV_reference_2": 0.48846662044525146,
+            "FDV_reference_3": 0.5169354677200317
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6868721842765808,
+          "layer18_nids_fused_score": 0.6019038259983063,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5dcc8650d6b6ff7b9a3be31463a1baab7037deecc914b6f221d12a83127bdff7",
+          "layer18_patch_sha256": "a17783c5e93cf0ca0b5e692ca80dde83598b190236262fec0f6dbaf3b667edd4",
+          "mask_sha256": "f2905435369b67760407f8074e89e4bd46a1587ce7c2c106d7e023fef8b8dfc1"
+        },
+        {
+          "objectness_score": 0.21498969197273254,
+          "box_xyxy": [
+            576.0236549377441,
+            24.012853622436523,
+            853.88037109375,
+            214.95826721191406
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 30,
+          "target_memory_score": 0.5180931687355042,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.42244085669517517,
+            "FDV_reference_2": 0.44727665185928345,
+            "FDV_reference_3": 0.5180931687355042
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6845159530639648,
+          "layer18_nids_fused_score": 0.6013045608997345,
+          "target_metrics_evaluation_only": {
+            "iou": 0.21522652076082158,
+            "target_recall": 0.2754012370753697,
+            "proposal_precision": 0.4962282186317346
+          },
+          "descriptor_sha256": "24581da23df971c8950e694cb5b70f69c518908e7b7737531fc2b1163d38dc78",
+          "layer18_patch_sha256": "7bb549babda74967dc8a8eb6e9ede958cfe345c0082f05294b8287e3cc1a5c90",
+          "mask_sha256": "ef4abf50292fadc7c527ae41567679837199e1f6763c2760de935b07bed781a1"
+        },
+        {
+          "objectness_score": 0.3028997480869293,
+          "box_xyxy": [
+            800.7078857421875,
+            437.37982177734375,
+            958.671142578125,
+            538.486328125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 3,
+          "target_memory_score": 0.483754426240921,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.35588914155960083,
+            "FDV_reference_2": 0.47247686982154846,
+            "FDV_reference_3": 0.483754426240921
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7153664827346802,
+          "layer18_nids_fused_score": 0.5995604544878006,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "20dea00e7662902077e94b7c33d97913a896189890c8b6a9ec17849f524c0cbb",
+          "layer18_patch_sha256": "e6dda97dec3965b24031d9d578c12552f86f579db7c4c266017809ce744a1d09",
+          "mask_sha256": "80ab66920eaf92d85be4cb991750f22506a7111fe96b7b5066d4970a257f7fc0"
+        },
+        {
+          "objectness_score": 0.2884179949760437,
+          "box_xyxy": [
+            577.2200889587402,
+            324.42327189445496,
+            958.65966796875,
+            538.9285278320312
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 34,
+          "target_memory_score": 0.4796951413154602,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3964308500289917,
+            "FDV_reference_2": 0.4796951413154602,
+            "FDV_reference_3": 0.4518769383430481
+          },
+          "winning_target_reference": "FDV_reference_2",
+          "layer18_local_appearance_score": 0.7176862359046936,
+          "layer18_nids_fused_score": 0.5986906886100769,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7d5fa236d8f9ed273bb5edb0b35a49d0f7ddaba5a9cc3836360198e963be1e94",
+          "layer18_patch_sha256": "3e024abfe385a5086a0544d552a9c7c903fca5c5c50e817351b5a013d8dd44c7",
+          "mask_sha256": "c10f86461add69ec8bc814689bc8e1004d395899d4405ee8f6ca99b26dda12e0"
+        },
+        {
+          "objectness_score": 0.3617149591445923,
+          "box_xyxy": [
+            801.0188598632812,
+            437.69358825683594,
+            959.3796997070312,
+            539.2156524658203
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 33,
+          "target_memory_score": 0.48403215408325195,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.35445189476013184,
+            "FDV_reference_2": 0.4687264561653137,
+            "FDV_reference_3": 0.48403215408325195
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7132756114006042,
+          "layer18_nids_fused_score": 0.5986538827419281,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ab3081abb286b4d86dadf23317570b3aef8f216d5f1bb25c1f012d9b81053313",
+          "layer18_patch_sha256": "003f33ecd6bf664bf3fabdfd08175072ad0517bd95f25ca47f2720542c46d2b5",
+          "mask_sha256": "5cc29b84184a2609da58930aae75cda0e9213fbc1ef21767e589854c8b9d342f"
+        },
+        {
+          "objectness_score": 0.11362624168395996,
+          "box_xyxy": [
+            718.9696044921875,
+            0.4560425877571106,
+            958.7785034179688,
+            204.23223876953125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 12,
+          "postprocess_index": 9,
+          "target_memory_score": 0.49898913502693176,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3765457272529602,
+            "FDV_reference_2": 0.4410432279109955,
+            "FDV_reference_3": 0.49898913502693176
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6979421377182007,
+          "layer18_nids_fused_score": 0.5984656363725662,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0886527436691373,
+            "target_recall": 0.12306051643982181,
+            "proposal_precision": 0.24073857625164655
+          },
+          "descriptor_sha256": "580eb659571d2615c773b94f59e67110a374a4308c975d9e901d07a075e469b4",
+          "layer18_patch_sha256": "3c17cff2ec7f9965714a89d66e186698fb1db9ade20c43efa0544a3b4140f72a",
+          "mask_sha256": "3de2284ac46039c32f22dee41e36d78c0594a8614787516ba9d5177b267c95ca"
+        },
+        {
+          "objectness_score": 0.26527342200279236,
+          "box_xyxy": [
+            678.4512023925781,
+            324.4157531261444,
+            959.0365600585938,
+            538.6408996582031
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 35,
+          "target_memory_score": 0.4624861180782318,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.340437114238739,
+            "FDV_reference_2": 0.43372276425361633,
+            "FDV_reference_3": 0.4624861180782318
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7317211627960205,
+          "layer18_nids_fused_score": 0.5971036404371262,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "2454316d238aaa64795ef954db7b2904dd3fcefc276f458d243bfee2aec05bbc",
+          "layer18_patch_sha256": "458d5490066cad000e18829b83facb38441092081b517f0bd1dd3a59714cb076",
+          "mask_sha256": "69e651c9b52b209c76d840704464af6983a423a534718b82d6080b5682b93374"
+        },
+        {
+          "objectness_score": 0.21486937999725342,
+          "box_xyxy": [
+            317.8393859863281,
+            192.59512329101562,
+            383.43133544921875,
+            214.0670166015625
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            384,
+            216
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 17,
+          "target_memory_score": 0.5309526920318604,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.4358327388763428,
+            "FDV_reference_2": 0.4909445345401764,
+            "FDV_reference_3": 0.5309526920318604
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6483633518218994,
+          "layer18_nids_fused_score": 0.5896580219268799,
+          "target_metrics_evaluation_only": {
+            "iou": 0.014732456883689963,
+            "target_recall": 0.014732456883689963,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "0793283aa1ad5ec98ca01345623308b5579de20cd974a33b3076734d8e68563b",
+          "layer18_patch_sha256": "bee5cfd025cce838f71861bdda4bb158d141c43c0c9a5d0e91ac8009748693be",
+          "mask_sha256": "e4cf0baccaf2e742e1bb8611e2d16c3b4c700b182773ad736217d4658aba8288"
+        },
+        {
+          "objectness_score": 0.3120611310005188,
+          "box_xyxy": [
+            576.714168548584,
+            0.9604196548461914,
+            958.765869140625,
+            214.95860290527344
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 25,
+          "target_memory_score": 0.46453797817230225,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.35448259115219116,
+            "FDV_reference_2": 0.39074695110321045,
+            "FDV_reference_3": 0.46453797817230225
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.7064693570137024,
+          "layer18_nids_fused_score": 0.5855036675930023,
+          "target_metrics_evaluation_only": {
+            "iou": 0.17757799840545627,
+            "target_recall": 0.2797685486586188,
+            "proposal_precision": 0.327123969044282
+          },
+          "descriptor_sha256": "b11e248b52610376a67a73ff00a43bce958bb92f1da4a1189bbf9dcb52f94cbe",
+          "layer18_patch_sha256": "47646c831705af5dc353369021af7d7de4541bc30170026a211bdab70fdd8385",
+          "mask_sha256": "8c4ffe6c391a03ebe7717c0045b79658e2cc32b2975132f271dc399fbb1b265e"
+        },
+        {
+          "objectness_score": 0.24674126505851746,
+          "box_xyxy": [
+            576.1817893981934,
+            26.443025588989258,
+            795.5510559082031,
+            156.4031524658203
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 28,
+          "target_memory_score": 0.46197283267974854,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.39533424377441406,
+            "FDV_reference_2": 0.4558258056640625,
+            "FDV_reference_3": 0.46197283267974854
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6968077421188354,
+          "layer18_nids_fused_score": 0.579390287399292,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06835559268568006,
+            "target_recall": 0.08306294249540026,
+            "proposal_precision": 0.27852687255082753
+          },
+          "descriptor_sha256": "7dbc72b7bf3d272d81234852e6f342defcc18208e000489b48f9dec38a056295",
+          "layer18_patch_sha256": "b85b4021c8a94482d96e1302283580786e99eee1af31fe7df1af490dbf5a00c1",
+          "mask_sha256": "16ba71a9f2b2118d3ae2ce219aea99f992c2911658a3791d103e2e4179776c7c"
+        },
+        {
+          "objectness_score": 0.11578087508678436,
+          "box_xyxy": [
+            820.9163818359375,
+            187.46951293945312,
+            958.1845092773438,
+            345.1974182128906
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 11,
+          "postprocess_index": 8,
+          "target_memory_score": 0.48557525873184204,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.2980037331581116,
+            "FDV_reference_2": 0.4053708612918854,
+            "FDV_reference_3": 0.48557525873184204
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6366892457008362,
+          "layer18_nids_fused_score": 0.5611322522163391,
+          "target_metrics_evaluation_only": {
+            "iou": 0.02852306003758075,
+            "target_recall": 0.034012852035881315,
+            "proposal_precision": 0.15017944862543917
+          },
+          "descriptor_sha256": "21efb264a6da3c86ee125e25f20c99130033279472e599d1d01569095220d010",
+          "layer18_patch_sha256": "97fe431797da402cf8a1270ae679c9c9f14c84195b386ccfd775c350b1c4d132",
+          "mask_sha256": "8df451adca559d7bf48535147be9a5a02fd0e9084faea34d4db538ab226dfd8a"
+        },
+        {
+          "objectness_score": 0.10178351402282715,
+          "box_xyxy": [
+            315.2786560058594,
+            166.8268585205078,
+            724.6203002929688,
+            215.20095825195312
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 13,
+          "target_memory_score": 0.4529080390930176,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3588668704032898,
+            "FDV_reference_2": 0.3836943507194519,
+            "FDV_reference_3": 0.4529080390930176
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.651903510093689,
+          "layer18_nids_fused_score": 0.5524057745933533,
+          "target_metrics_evaluation_only": {
+            "iou": 0.2071348264469568,
+            "target_recall": 0.2071348264469568,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "1e6ab6556332c4564aef70e6f4b112b4de04d403650250a8eaa9271ae463dc7f",
+          "layer18_patch_sha256": "5e982a9a8c5458814a38a1179942c18dada7542bb969cb047af69970c1057f39",
+          "mask_sha256": "3e9a800e610801db865afbad3e61f9f04e9563ca4572a54c3becd1bb058c1a95"
+        },
+        {
+          "objectness_score": 0.24858705699443817,
+          "box_xyxy": [
+            576.8314418792725,
+            158.0056610107422,
+            724.9837646484375,
+            197.32553100585938
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 27,
+          "target_memory_score": 0.48423200845718384,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.3533320724964142,
+            "FDV_reference_2": 0.4244944453239441,
+            "FDV_reference_3": 0.48423200845718384
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6069265604019165,
+          "layer18_nids_fused_score": 0.5455792844295502,
+          "target_metrics_evaluation_only": {
+            "iou": 0.060936125562227335,
+            "target_recall": 0.060936125562227335,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "18cca756c1f42bda690d428265e602082828e7381107b6440e60c47db3b1a28c",
+          "layer18_patch_sha256": "d4b3674787566c8311dd8a6bbacb4f6ff9e1c61b7324f28a627e0f08a890ead3",
+          "mask_sha256": "dd8e91d81e7a274578021880a8dd2b7f53be4dbb513720cfb2c880243718b4ec"
+        },
+        {
+          "objectness_score": 0.2358369678258896,
+          "box_xyxy": [
+            839.44921875,
+            173.13735961914062,
+            959.5194702148438,
+            215.54066467285156
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 29,
+          "target_memory_score": 0.43616318702697754,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.2785520553588867,
+            "FDV_reference_2": 0.35229143500328064,
+            "FDV_reference_3": 0.43616318702697754
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6037984490394592,
+          "layer18_nids_fused_score": 0.5199808180332184,
+          "target_metrics_evaluation_only": {
+            "iou": 0.008291609343333414,
+            "target_recall": 0.008661391649236065,
+            "proposal_precision": 0.16262909643046494
+          },
+          "descriptor_sha256": "e8af201d101ed37ee02224fa91010bafe83861961b1ffd4a721deceb7a00e5a2",
+          "layer18_patch_sha256": "ea4795e37559e8de88db9c0c41c02208ecb3187680f5d8144e7e4a0ee783e86f",
+          "mask_sha256": "5fb72f30730e60c86751fc984255aa6ae0d2cc0e5959f5166d113f0c847f6b13"
+        },
+        {
+          "objectness_score": 0.3901103436946869,
+          "box_xyxy": [
+            577.7401714324951,
+            169.10809326171875,
+            717.1839752197266,
+            196.45558166503906
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            576,
+            0,
+            960,
+            216
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 23,
+          "target_memory_score": 0.3898192346096039,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.2906973361968994,
+            "FDV_reference_2": 0.3594512343406677,
+            "FDV_reference_3": 0.3898192346096039
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6011326909065247,
+          "layer18_nids_fused_score": 0.49547596275806427,
+          "target_metrics_evaluation_only": {
+            "iou": 0.039890636617610505,
+            "target_recall": 0.039890636617610505,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "a21b9c7080021bb2f145e8f2e2b3eb8c9826f0f557fdd9c46e4e017f5897451f",
+          "layer18_patch_sha256": "7e5d8e1a1788296f3f49ee37a7b0222cff96de76b903d1ad60d4689833791f3d",
+          "mask_sha256": "e2fd791e370efa07d18579319de3080f0dca3671ddc810f6d1cdbfe732070271"
+        },
+        {
+          "objectness_score": 0.61814945936203,
+          "box_xyxy": [
+            653.269287109375,
+            173.9449920654297,
+            958.3944091796875,
+            423.2754821777344
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 0,
+          "target_memory_score": 0.3630955219268799,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.29224681854248047,
+            "FDV_reference_2": 0.3419221341609955,
+            "FDV_reference_3": 0.3630955219268799
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.6009265780448914,
+          "layer18_nids_fused_score": 0.4820110499858856,
+          "target_metrics_evaluation_only": {
+            "iou": 0.13452529010127628,
+            "target_recall": 0.2129361376380447,
+            "proposal_precision": 0.26757264763822514
+          },
+          "descriptor_sha256": "058fbb3931e255d9d2f98e1c2b0a8072bb343aec62b3e711ecd7eee5308d183d",
+          "layer18_patch_sha256": "46dd3db58bd6065637be4104afc04037de198c0acf915f39ab1e6154dabc311a",
+          "mask_sha256": "5dd17e52441457492018d7cc5d869b6aed6e06ff880f800d3d6625eb5dc2d61f"
+        },
+        {
+          "objectness_score": 0.10144731402397156,
+          "box_xyxy": [
+            653.1633911132812,
+            173.58978271484375,
+            958.260986328125,
+            536.5615844726562
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 14,
+          "target_memory_score": 0.3462400436401367,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.2733372449874878,
+            "FDV_reference_2": 0.3169955015182495,
+            "FDV_reference_3": 0.3462400436401367
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.598504364490509,
+          "layer18_nids_fused_score": 0.4723722040653229,
+          "target_metrics_evaluation_only": {
+            "iou": 0.10995035832500455,
+            "target_recall": 0.2138104901797329,
+            "proposal_precision": 0.1845708184354433
+          },
+          "descriptor_sha256": "63f5a2db7826f7f7343891be5ae9d680d5f3a69c81c97c5b658bcc2648c92081",
+          "layer18_patch_sha256": "c337c82fb7e6d59d2e6f01502191c7da4943c8f9895ab6f20c6681c35b01dd31",
+          "mask_sha256": "f1d0530804e9ecf22ae28fe52157f6b473995bce53c07532f2d40de53627678e"
+        },
+        {
+          "objectness_score": 0.6418706774711609,
+          "box_xyxy": [
+            691.5794525146484,
+            324.0376936197281,
+            959.3052062988281,
+            411.8276824951172
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            576,
+            324,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 32,
+          "target_memory_score": 0.3026178479194641,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.23015666007995605,
+            "FDV_reference_2": 0.2897171974182129,
+            "FDV_reference_3": 0.3026178479194641
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5985233783721924,
+          "layer18_nids_fused_score": 0.45057061314582825,
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "4a8529263e92e1a4868feacae82e7916e3d7830eb270f040261f1cb46b1f0d9c",
+          "layer18_patch_sha256": "4efc3b869d62ebc10b48e97fd05e5df777b3b2361905ed2b833e97f4ed016303",
+          "mask_sha256": "75b6ba4900fa84f99548cd09584f8eb5da1f3ec21751fb8efda565811b103563"
+        },
+        {
+          "objectness_score": 0.1384933590888977,
+          "box_xyxy": [
+            655.4244995117188,
+            234.43545532226562,
+            864.7868041992188,
+            397.114501953125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 7,
+          "target_memory_score": 0.3027898073196411,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.23315858840942383,
+            "FDV_reference_2": 0.2922815680503845,
+            "FDV_reference_3": 0.3027898073196411
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5721261501312256,
+          "layer18_nids_fused_score": 0.43745797872543335,
+          "target_metrics_evaluation_only": {
+            "iou": 0.06427117898730994,
+            "target_recall": 0.08190519993609996,
+            "proposal_precision": 0.22989369806982074
+          },
+          "descriptor_sha256": "dd0c2aeb88e76deb2de926677094b94a872eb4121d8bad8c345fee74d1ce4c5b",
+          "layer18_patch_sha256": "9f6edd092815b1b6ae5a3ab98f99ed200a7eaa67650d426352caf68368142279",
+          "mask_sha256": "ae36476935ba1e0490839bc0eacc2a32c695b0f61a20a191aac7741cece0bdf1"
+        },
+        {
+          "objectness_score": 0.16852785646915436,
+          "box_xyxy": [
+            711.6320190429688,
+            234.8271942138672,
+            863.4295654296875,
+            387.12176513671875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 6,
+          "target_memory_score": 0.27914342284202576,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.1571027785539627,
+            "FDV_reference_2": 0.24478790163993835,
+            "FDV_reference_3": 0.27914342284202576
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5531302094459534,
+          "layer18_nids_fused_score": 0.41613681614398956,
+          "target_metrics_evaluation_only": {
+            "iou": 0.049600658536041765,
+            "target_recall": 0.05868460557554859,
+            "proposal_precision": 0.24267258544397338
+          },
+          "descriptor_sha256": "8dcac79b4eee6f23b648030ceff990f24ddcb7ec05bf95342753bde012ea6f31",
+          "layer18_patch_sha256": "6e4052e664ba36d1d834c776070d96afd0382a16ff39a518cf0d6b66dba35644",
+          "mask_sha256": "5220eb347e4179bf0192eb80e4106180164ebbbfd1235e550881495520bd715f"
+        },
+        {
+          "objectness_score": 0.11334944516420364,
+          "box_xyxy": [
+            820.6058349609375,
+            210.71762084960938,
+            957.2645263671875,
+            344.7995910644531
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 10,
+          "postprocess_index": 10,
+          "target_memory_score": 0.253135085105896,
+          "per_reference_scores": {
+            "FDV_reference_1": 0.1556950807571411,
+            "FDV_reference_2": 0.22174282371997833,
+            "FDV_reference_3": 0.253135085105896
+          },
+          "winning_target_reference": "FDV_reference_3",
+          "layer18_local_appearance_score": 0.5714583992958069,
+          "layer18_nids_fused_score": 0.41229674220085144,
+          "target_metrics_evaluation_only": {
+            "iou": 0.02139271602419028,
+            "target_recall": 0.024959186727740883,
+            "proposal_precision": 0.13021724120355965
+          },
+          "descriptor_sha256": "efde7a3c45e4bb2864a63cd60bda39c7f35fa1f8f959e02b8de7a6e93ece1a48",
+          "layer18_patch_sha256": "b52e831f290df3af1a44479487ba3c5a3adb88a9c787d25933d560c4717a78a5",
+          "mask_sha256": "67580ffc738f3a79deca327fb6788af8bc9a0374e38932fdd48212d86ea0cf48"
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 37,
+        "input_boxes_shape": [
+          1,
+          37,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          37,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          37,
+          1
+        ],
+        "native_masks_shape": [
+          37,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.268101200053934
+      }
+    }
+  },
+  "memory_receipts": {
+    "target": {
+      "FDV_reference_1": {
+        "final_ffa_sha256": "f7aebcb0f8c794fadef8491ed09ddcd2cc2924118c9f3e9e05ca208c31248431",
+        "layer18_patch_sha256": "95203f292051074cf26be13888ee5f1c4f9fae35c8a87f6cfce9109621133268"
+      },
+      "FDV_reference_2": {
+        "final_ffa_sha256": "7163ac622fd78b7d4163452f84a712337533d974ade0d0efff118c7cb9078baa",
+        "layer18_patch_sha256": "6007f869b3be2867817a787a8cd68c2870aadd74fbbe6e9e25c96ef4005b61bc"
+      },
+      "FDV_reference_3": {
+        "final_ffa_sha256": "bb46232a53b64088037ca9ce732784ae44e30266df1ac228fd4d388fddd97d67",
+        "layer18_patch_sha256": "2894100d87b1509f65e8ef04ff44a8fef74332e079a2009b24dc291a6074e8ed"
+      }
+    },
+    "sam": {
+      "FDV_reference_1": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.32843140000477433
+      },
+      "FDV_reference_2": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.14478249999228865
+      },
+      "FDV_reference_3": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.14025539997965097
+      }
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "proposal": {
+      "model_type": "GroundingDinoForObjectDetection",
+      "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "seconds_by_image": {
+        "FDV_initial_1_query": 2.8530972999869846,
+        "FDV_initial_2_query": 1.833692100015469
+      },
+      "grounding_dino_calls": 10,
+      "window_count_per_image": 5
+    },
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 10,
+    "sam2_image_calls": 5,
+    "dinov2_representation_calls": 82,
+    "empty_mask_candidates_skipped": 0
+  },
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Demand fixed-policy fresh evidence rather than inferring value from a consumed oracle."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Evaluate whether ambiguity triggers a view that separates competing instances."
+    }
+  ],
+  "claim_boundary": "This materializes unchanged rankings on two initial views of one fresh pre-frozen queue-selected same-provider family before action-view RGB access. It cannot by itself establish active-view success, provider transfer, a deployable selector, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety.",
+  "base_implementation": {
+    "path": "l10_3rscan_foundpose_layer18_nids_posthoc.py",
+    "sha256": "7f78c0f39cc97a11c7872f82694534b756bf7e13f3d433c0c7ffe4dfd95c93c2"
+  },
+  "base_conclusion": "L10_3RSCAN_FOUNDPOSE_LAYER18_NIDS_POSTHOC_DEVELOPMENT_GATE_MET"
+}

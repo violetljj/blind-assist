@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-trigger-result-v1",
+  "authority": "FRESH_INITIAL_SCORE_ONLY_ACTION_AUTHORIZATION",
+  "protocol_path": "l10_3rscan_discriminative_view_confirmation_trigger_protocol_v1.json",
+  "protocol_sha256": "9e2b2e09267fd5bec3fec13e6d54b9ca33dc61bb512114069c508018eb9e9b4e",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_trigger.py",
+    "sha256": "5f5c619eaca1c09997694d590751fac043a03303f1d0febc1d05425b608eb25b"
+  },
+  "conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_ACTION_TRIGGERED",
+  "trigger_uses_target_truth": false,
+  "trigger_statistic": "minimum initial Top-1-minus-Top-2 fused-score margin",
+  "trigger_threshold": 0.02,
+  "trigger_value": 0.005332916975021362,
+  "triggered": true,
+  "action_authorized": true,
+  "authorized_action": "NEXT_FRAME_FORWARD",
+  "authorized_query_key": "FDV_action_query",
+  "initial_views_evaluation_only": [
+    {
+      "query_key": "FDV_initial_1_query",
+      "top1_minus_top2_fused_margin": 0.06403657793998718,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "top1_target_iou_evaluation_only": 0.8012684623322648,
+      "refined_top1_target_iou_evaluation_only": 0.7768577676002544
+    },
+    {
+      "query_key": "FDV_initial_2_query",
+      "top1_minus_top2_fused_margin": 0.005332916975021362,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "top1_target_iou_evaluation_only": 0.7095609691118364,
+      "refined_top1_target_iou_evaluation_only": 0.653039833684584
+    }
+  ],
+  "initial_target_top1": 2,
+  "initial_target_recall_at_3": 2,
+  "initial_wrong_top1_count": 0,
+  "next_action": "Freeze an action-only scorer protocol that requires this trigger receipt, then open only FDV_action_query and apply the preregistered tiered outcome gates.",
+  "claim_boundary": "This receipt can authorize one fixed RGB observation from initial score ambiguity only. It is not action success, a learned or deployable selector, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
