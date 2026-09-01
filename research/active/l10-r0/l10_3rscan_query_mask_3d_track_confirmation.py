@@ -94,11 +94,23 @@ def run(protocol_path: Path, output_path: Path) -> None:
     pixel.require(pixel.sha256(Path(__file__)) == protocol["implementation"]["sha256"], "IMPLEMENTATION_HASH")
     for dependency in protocol["dependencies"]:
         pixel.require(pixel.sha256(HERE / dependency["path"]) == dependency["sha256"], f"DEPENDENCY_HASH:{dependency['path']}")
+    gate_freeze = None
+    if "gate_freeze" in protocol:
+        gate_freeze_row = protocol["gate_freeze"]
+        gate_freeze_path = HERE / gate_freeze_row["path"]
+        pixel.require(pixel.sha256(gate_freeze_path) == gate_freeze_row["sha256"], "GATE_FREEZE_HASH")
+        gate_freeze = pixel.load_json(gate_freeze_path)
+        pixel.require(gate_freeze["schema"] == gate_freeze_row["required_schema"], "GATE_FREEZE_SCHEMA")
     cohort_row = protocol["cohort"]
     cohort_path = HERE / cohort_row["path"]
     pixel.require(pixel.sha256(cohort_path) == cohort_row["sha256"], "COHORT_HASH")
     cohort = pixel.load_json(cohort_path)
     pixel.require(cohort["schema"] == cohort_row["required_schema"], "COHORT_SCHEMA")
+    if gate_freeze is not None:
+        pixel.require(
+            int(cohort["source_queue_index"]) == int(gate_freeze["queue"]["selected_queue_index"]),
+            "GATE_FREEZE_QUEUE_INDEX",
+        )
     predecessor_row = protocol["predecessor"]
     predecessor_path = HERE / predecessor_row["path"]
     pixel.require(pixel.sha256(predecessor_path) == predecessor_row["sha256"], "PREDECESSOR_HASH")
@@ -219,7 +231,18 @@ def run(protocol_path: Path, output_path: Path) -> None:
             ),
         )
 
-    threshold = float(protocol["gate"]["minimum_opportunity_iou"])
+    gate_mode = protocol["gate"].get("mode", "exact_best_proposal")
+    if gate_mode == "target_region_coverage":
+        threshold = float(protocol["gate"]["target_region_iou_threshold"])
+        pixel.require(gate_freeze is not None, "REGION_COVERAGE_GATE_NOT_FROZEN")
+        frozen_gate = gate_freeze["gate"]
+        pixel.require(threshold == float(frozen_gate["target_region_iou_threshold"]), "FROZEN_IOU_THRESHOLD")
+        pixel.require(int(protocol["gate"]["candidate_budget"]) == int(gate_freeze["mechanism"]["candidate_budget"]), "FROZEN_CANDIDATE_BUDGET")
+        pixel.require(int(protocol["gate"]["required_opportunity_frames"]) == int(frozen_gate["required_opportunity_frames"]), "FROZEN_OPPORTUNITY_FRAMES")
+        pixel.require(int(protocol["gate"]["required_track_top3_coverage_frames"]) == int(frozen_gate["required_track_top3_coverage_frames"]), "FROZEN_COVERAGE_FRAMES")
+    else:
+        pixel.require(gate_mode == "exact_best_proposal", "UNKNOWN_GATE_MODE")
+        threshold = float(protocol["gate"]["minimum_opportunity_iou"])
     episodes = []
     for key in query_keys:
         truth = image_rows[key]["bbox_xyxy"]
@@ -236,6 +259,15 @@ def run(protocol_path: Path, output_path: Path) -> None:
         )
         objectness_rank = objectness_order.index(best) + 1
         best_iou = float(best["target_metrics_evaluation_only"]["iou"])
+        candidate_budget = int(protocol["gate"].get("candidate_budget", 3))
+        track_topk_best_iou = max(
+            float(row["target_metrics_evaluation_only"]["iou"])
+            for row in ordered[:candidate_budget]
+        )
+        objectness_topk_best_iou = max(
+            float(row["target_metrics_evaluation_only"]["iou"])
+            for row in objectness_order[:candidate_budget]
+        )
         episodes.append(
             {
                 "query_key": key,
@@ -248,13 +280,24 @@ def run(protocol_path: Path, output_path: Path) -> None:
                 "rank_improvement_over_objectness": objectness_rank - correct_rank,
                 "track_recall_at_3": correct_rank <= 3,
                 "track_top1_iou_evaluation_only": float(ordered[0]["target_metrics_evaluation_only"]["iou"]),
+                "track_top3_best_iou_evaluation_only": track_topk_best_iou,
+                "objectness_top3_best_iou_evaluation_only": objectness_topk_best_iou,
+                "track_top3_region_coverage": track_topk_best_iou >= threshold,
+                "objectness_top3_region_coverage": objectness_topk_best_iou >= threshold,
                 "ranked_candidates": ordered,
             }
         )
-    gate_met = (
-        sum(row["proposal_opportunity"] for row in episodes) == int(protocol["gate"]["required_opportunity_frames"])
-        and sum(row["track_recall_at_3"] for row in episodes) == int(protocol["gate"]["required_track_recall_at_3_frames"])
-    )
+    if gate_mode == "target_region_coverage":
+        gate_met = (
+            sum(row["proposal_opportunity"] for row in episodes) == int(protocol["gate"]["required_opportunity_frames"])
+            and sum(row["track_top3_region_coverage"] for row in episodes)
+            == int(protocol["gate"]["required_track_top3_coverage_frames"])
+        )
+    else:
+        gate_met = (
+            sum(row["proposal_opportunity"] for row in episodes) == int(protocol["gate"]["required_opportunity_frames"])
+            and sum(row["track_recall_at_3"] for row in episodes) == int(protocol["gate"]["required_track_recall_at_3_frames"])
+        )
     result = {
         "schema": RESULT_SCHEMA,
         "authority": "FRESH_PRE_FROZEN_FAMILY_QUERY_MASK_3D_TRACK_CONFIRMATION",
@@ -276,12 +319,16 @@ def run(protocol_path: Path, output_path: Path) -> None:
             "proposal_opportunity_frames": sum(row["proposal_opportunity"] for row in episodes),
             "objectness_recall_at_3_frames": sum(row["objectness_rank"] <= 3 for row in episodes),
             "track_recall_at_3_frames": sum(row["track_recall_at_3"] for row in episodes),
+            "objectness_top3_region_coverage_frames": sum(row["objectness_top3_region_coverage"] for row in episodes),
+            "track_top3_region_coverage_frames": sum(row["track_top3_region_coverage"] for row in episodes),
             "improved_over_objectness_frames": sum(row["rank_improvement_over_objectness"] > 0 for row in episodes),
             "regressed_from_objectness_frames": sum(row["rank_improvement_over_objectness"] < 0 for row in episodes),
             "minimum_best_reachable_iou": min(row["best_reachable_iou_evaluation_only"] for row in episodes),
             "mean_best_reachable_iou": float(np.mean([row["best_reachable_iou_evaluation_only"] for row in episodes])),
             "minimum_track_top1_iou": min(row["track_top1_iou_evaluation_only"] for row in episodes),
             "mean_track_top1_iou": float(np.mean([row["track_top1_iou_evaluation_only"] for row in episodes])),
+            "minimum_track_top3_best_iou": min(row["track_top3_best_iou_evaluation_only"] for row in episodes),
+            "mean_track_top3_best_iou": float(np.mean([row["track_top3_best_iou_evaluation_only"] for row in episodes])),
             "depth_unsupported_candidates": sum(
                 not row["depth_supported"] for rows in ranked_without_truth.values() for row in rows
             ),
@@ -295,7 +342,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
             "appearance_model_calls": 0,
             "model_training_steps": 0,
         },
-        "conclusion": (
+        "conclusion": protocol["conclusions"]["met" if gate_met else "not_met"] if "conclusions" in protocol else (
             "L10_3RSCAN_QUERY_MASK_3D_TRACK_FRESH_CONFIRMATION_GATE_MET"
             if gate_met
             else "L10_3RSCAN_QUERY_MASK_3D_TRACK_FRESH_CONFIRMATION_GATE_NOT_MET"

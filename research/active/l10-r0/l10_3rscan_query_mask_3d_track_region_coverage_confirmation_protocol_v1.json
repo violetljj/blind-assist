@@ -1,0 +1,122 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-confirmation-protocol-v1",
+  "authority": "PRE_RGB_PRE_PROPOSAL_FRESH_QUEUE_ROW_3_REGION_COVERAGE_CONFIRMATION",
+  "implementation": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation.py",
+    "sha256": "ede84f28ccd4f476dd26dc8da9939a8c707166361e31a9a1994a6ab22b146af2"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_query_mask_3d_track.py",
+      "sha256": "08e452411c75f95843c0aa5e4bfeab197d36fc99d7e424fdf15111369b881684"
+    },
+    {
+      "path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py",
+      "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    }
+  ],
+  "gate_freeze": {
+    "path": "l10_3rscan_query_mask_3d_track_region_coverage_gate_freeze_protocol_v1.json",
+    "sha256": "1ea538e3a6b9cf2f8acda708225d218149e881e6ec3d2dc83e8ca473fb5dc356",
+    "required_schema": "blindassist-l10-3rscan-query-mask-3d-track-region-coverage-gate-freeze-protocol-v1"
+  },
+  "cohort": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_v2.json",
+    "sha256": "70a31d3c644e6fd87d8198f2b4b476c36866faa59f68f68a38adfe8316cd98cc",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_query_mask_3d_track_result_v1.json",
+    "sha256": "3fcc851366214d5b6de39481d480d320df546ef6147be41f09d6fba951b3bb6f",
+    "required_conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_DEVELOPMENT_GATE_MET"
+  },
+  "source": {
+    "authority": "FRESH_PRE_FROZEN_QUEUE_ROW_3_SOURCE",
+    "artifact_root": "F:/ba-data/blindassist-artifacts-20260805",
+    "cohort_path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_v2.json",
+    "cohort_sha256": "70a31d3c644e6fd87d8198f2b4b476c36866faa59f68f68a38adfe8316cd98cc"
+  },
+  "memory": {
+    "target_images": [],
+    "sibling_images": []
+  },
+  "evaluation": {
+    "query_images": [
+      "FDV_initial_1_query",
+      "FDV_initial_2_query",
+      "FDV_action_query"
+    ],
+    "edges": [
+      "FDV_initial_1_query<->FDV_initial_2_query",
+      "FDV_initial_2_query<->FDV_action_query"
+    ],
+    "truth_role": "Generate proposals, replay masks, lift to 3D, associate, rank, and truncate to three candidates before reading target boxes or IoU."
+  },
+  "proposal": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Union unchanged full-frame proposals with fixed 40-percent corner-tile proposals; no NMS, target text, target identity, target box, or truth access."
+  },
+  "tiling": {
+    "tile_width_fraction": 0.4,
+    "tile_height_fraction": 0.4,
+    "offsets": [
+      "top_left",
+      "top_right",
+      "bottom_left",
+      "bottom_right"
+    ],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48,
+    "merge": "Retain up to 16 full-frame and 8 per tile, remap to full-image coordinates, then track without NMS or truth filtering."
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Apply unchanged native SAM2 once to every retained proposal."
+  },
+  "geometry": {
+    "depth_consistency_metres": 0.15,
+    "minimum_visible_projected_points": 16,
+    "pair_score": "Geometric mean of depth-consistent proposal-mask coverage in both directions.",
+    "candidate_score": "Across incident consecutive-frame edges, rank depth-supported candidates first, then any mutual-best edge, maximum symmetric track score, objectness, and frozen proposal index.",
+    "appearance_use": "None."
+  },
+  "literature_motivation": [
+    {
+      "name": "MV3DIS",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf",
+      "use": "Depth-consistent 3D coverage supplies multi-view mask association rather than per-frame appearance confidence."
+    },
+    {
+      "name": "SAMPro3D",
+      "url": "https://arxiv.org/html/2311.17707",
+      "use": "Posed RGB-D lifting gives view-consistent SAM evidence without task-specific training."
+    }
+  ],
+  "gate": {
+    "mode": "target_region_coverage",
+    "candidate_budget": 3,
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 3,
+    "required_track_top3_coverage_frames": 3,
+    "requirements": "All three fresh frames must contain a proposal with IoU at least 0.8, and at least one of the first three geometry-ranked proposals must reach IoU 0.8 in every frame."
+  },
+  "conclusions": {
+    "met": "L10_3RSCAN_QUERY_MASK_3D_TRACK_REGION_COVERAGE_FRESH_CONFIRMATION_GATE_MET",
+    "not_met": "L10_3RSCAN_QUERY_MASK_3D_TRACK_REGION_COVERAGE_FRESH_CONFIRMATION_GATE_NOT_MET"
+  },
+  "next_action": "Integrate one geometry-track region hypothesis with two target-identity hypotheses under the fixed three-candidate budget, then evaluate exact target selection on another source-disjoint family.",
+  "fallback_action": "Seal this fresh negative without tuning on queue row 3; classify the failure as proposal opportunity, depth support, association ambiguity, or identity selection before changing the information source.",
+  "claim_boundary": "This fresh target-family confirmation evaluates only geometry-ranked Top-3 coverage of an annotated target region. It does not identify target ownership or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
