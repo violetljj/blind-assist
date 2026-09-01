@@ -4380,6 +4380,19 @@ but SAM truncates its extent. This is consumed three-family Development evidence
 for a scale-aware candidate. It requires an untouched family and a frozen
 mask-extent/stability mechanism; do not tune the `0.05` penalty on door 12.
 
+A single proposal-provenance-aware guard then reused the already frozen `0.8`
+extent threshold. For full-frame proposals only, if the SAM mask bbox retains
+less than `0.8` of proposal area, the chain keeps the proposal box; tiled
+partial proposals retain SAM refinement. It fired only on the door-12 truncated
+full proposal and preserved every other decision. The combined consumed
+three-family chain passed `9/9`, minimum IoU `0.594841`, mean `0.827756`; door
+12 reached `3/3`, minimum `0.740937`, mean `0.826845`, while door 8 and door 15
+remained `3/3`. Record
+`L10_3RSCAN_FULL_PROPOSAL_MASK_EXTENT_GUARD_THREE_FAMILY_DEVELOPMENT_GATE_MET`.
+This is failure-driven Development on consumed families, not fresh confirmation
+or mask-quality authority. Freeze the scale prior and extent guard unchanged
+for one wholly untouched family.
+
 Evidence:
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and

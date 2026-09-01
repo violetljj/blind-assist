@@ -1,0 +1,24 @@
+{
+  "schema": "blindassist-l10-3rscan-full-proposal-mask-extent-guard-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-full-proposal-mask-extent-guard-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:50:00+08:00",
+  "question": "Can proposal-provenance-aware extent stability prevent SAM from truncating an already complete full-frame target while preserving useful tile refinement?",
+  "implementation": {
+    "path": "l10_3rscan_full_proposal_mask_extent_guard_posthoc.py",
+    "sha256": "15452674e67093359ea0793dc3cc86d83b3536066cb3970ada5a743fe1fc83e2"
+  },
+  "input": {
+    "path": "l10_3rscan_reference_scale_prior_posthoc_result_v1.json",
+    "sha256": "84f824997290c913e1f45a987fe4946c122c8bb6d8a7dbaec6302ecc33947812"
+  },
+  "selection": {
+    "minimum_mask_extent_retention": 0.8,
+    "rule": "For a full-frame proposal only, retain the proposal box when the SAM mask bounding box retains less than 80 percent of proposal area; keep SAM refinement unchanged for tiles and extent-stable full proposals.",
+    "threshold_origin": "Reuse the already frozen 0.8 part-to-whole containment threshold; no new numeric search."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_queries": 9
+  },
+  "claim_boundary": "Door 12 and all three families are consumed; this is failure-driven Development attribution. A pass requires an untouched family and does not prove pixel-mask quality, source-independent generalization, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

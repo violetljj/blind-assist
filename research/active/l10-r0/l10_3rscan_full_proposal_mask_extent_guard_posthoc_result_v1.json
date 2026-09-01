@@ -1,0 +1,220 @@
+{
+  "schema": "blindassist-l10-3rscan-full-proposal-mask-extent-guard-posthoc-result-v1",
+  "authority": "CONSUMED_THREE_FAMILY_FULL_PROPOSAL_MASK_EXTENT_GUARD_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_full_proposal_mask_extent_guard_posthoc_protocol_v1.json",
+  "protocol_sha256": "4fa83776216699125e39b88be93d8ec72bee78fac8a84a0e606c434d2f52142c",
+  "implementation": {
+    "path": "l10_3rscan_full_proposal_mask_extent_guard_posthoc.py",
+    "sha256": "15452674e67093359ea0793dc3cc86d83b3536066cb3970ada5a743fe1fc83e2"
+  },
+  "conclusion": "L10_3RSCAN_FULL_PROPOSAL_MASK_EXTENT_GUARD_THREE_FAMILY_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "selection": {
+    "minimum_mask_extent_retention": 0.8,
+    "rule": "For a full-frame proposal only, retain the proposal box when the SAM mask bounding box retains less than 80 percent of proposal area; keep SAM refinement unchanged for tiles and extent-stable full proposals.",
+    "threshold_origin": "Reuse the already frozen 0.8 part-to-whole containment threshold; no new numeric search."
+  },
+  "metrics": {
+    "family_count": 3,
+    "query_count": 9,
+    "iou_gate_queries": 9,
+    "guard_applied_queries": 1,
+    "minimum_iou": 0.5948405792093939,
+    "mean_iou": 0.8277556860181058
+  },
+  "families": {
+    "fresh_consumed_door12": {
+      "metrics": {
+        "query_count": 3,
+        "iou_gate_queries": 3,
+        "minimum_iou": 0.7409370793737734,
+        "mean_iou": 0.8268450929646619
+      },
+      "query_receipts": {
+        "CSX1_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 0.6536037547987029,
+          "guard_applied": true,
+          "final_box_source": "FULL_PROPOSAL",
+          "final_box_xyxy": [
+            0.9849929809570312,
+            55.270416259765625,
+            869.9736328125,
+            534.8590698242188
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.7409370793737734,
+            "target_recall": 0.8099693657276698,
+            "proposal_precision": 0.8968387279010377
+          }
+        },
+        "CSX2_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 1.0131638802602638,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            328.0,
+            0.0,
+            960.0,
+            371.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.7633736868128108,
+            "target_recall": 1.0,
+            "proposal_precision": 0.7633736868128108
+          }
+        },
+        "CSX3_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 1.0161147730644113,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            0.0,
+            0.0,
+            960.0,
+            540.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.9762245127074015,
+            "target_recall": 1.0,
+            "proposal_precision": 0.9762245127074014
+          }
+        }
+      }
+    },
+    "consumed_door8": {
+      "metrics": {
+        "query_count": 3,
+        "iou_gate_queries": 3,
+        "minimum_iou": 0.8342449467725694,
+        "mean_iou": 0.9144422992983179
+      },
+      "query_receipts": {
+        "F18C1_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 0.992935973667474,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            0.0,
+            157.0,
+            864.0,
+            540.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.9536596362157468,
+            "target_recall": 0.9603597928649529,
+            "proposal_precision": 0.9927374025866371
+          }
+        },
+        "F18C2_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 1.0016326999574166,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            265.0,
+            0.0,
+            960.0,
+            318.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.9554223149066378,
+            "target_recall": 0.9792421215129677,
+            "proposal_precision": 0.9751724320111252
+          }
+        },
+        "F18C3_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 0.9985927298753348,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            0.0,
+            0.0,
+            960.0,
+            210.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.8342449467725694,
+            "target_recall": 0.8522153043198907,
+            "proposal_precision": 0.9753468238740357
+          }
+        }
+      }
+    },
+    "consumed_door15": {
+      "metrics": {
+        "query_count": 3,
+        "iou_gate_queries": 3,
+        "minimum_iou": 0.5948405792093939,
+        "mean_iou": 0.7419796657913375
+      },
+      "query_receipts": {
+        "D15M1_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 0.98922434354357,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            433.0,
+            0.0,
+            960.0,
+            120.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.7550290716012501,
+            "target_recall": 0.9741784819257641,
+            "proposal_precision": 0.7704478570171015
+          }
+        },
+        "D15M2_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "full",
+          "mask_extent_retention": 0.9933260903496524,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            504.0,
+            0.0,
+            960.0,
+            111.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.8760693465633684,
+            "target_recall": 1.0,
+            "proposal_precision": 0.8760693465633683
+          }
+        },
+        "D15M3_query": {
+          "query_truth_used_for_selection": false,
+          "proposal_tile_id": "top_left",
+          "mask_extent_retention": 0.6640190827841187,
+          "guard_applied": false,
+          "final_box_source": "SAM_MASK_BBOX",
+          "final_box_xyxy": [
+            0.0,
+            30.0,
+            353.0,
+            160.0
+          ],
+          "final_target_metrics_evaluation_only": {
+            "iou": 0.5948405792093939,
+            "target_recall": 0.7815306060102203,
+            "proposal_precision": 0.7134793405337124
+          }
+        }
+      }
+    }
+  },
+  "claim_boundary": "Door 12 and all three families are consumed; this is failure-driven Development attribution. A pass requires an untouched family and does not prove pixel-mask quality, source-independent generalization, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

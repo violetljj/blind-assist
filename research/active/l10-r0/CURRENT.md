@@ -414,7 +414,14 @@ contract.
   and door 12 improved to `2/3`. Freeze this as a promising scale-aware
   Development candidate, not confirmation. The remaining miss is a correct
   large proposal whose SAM mask truncates the target; the next untouched test
-  must freeze a mask-extent/stability mechanism without tuning on door 12.
+  must freeze a mask-extent/stability mechanism without tuning on door 12. A
+  provenance-aware successor reuses the existing `0.8` threshold: only for a
+  full-frame proposal, retain the proposal box when the SAM mask bbox keeps
+  less than `0.8` of its area; tiles retain SAM refinement. It fired once and
+  passed all consumed doors `12/8/15`: `9/9`, minimum IoU `0.594841`, mean
+  `0.827756`; door 12 became `3/3` with minimum `0.740937`. Freeze this complete
+  scale-prior plus full-proposal extent-guard chain for an untouched family.
+  This is Development, not fresh confirmation or pixel-mask evidence.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
