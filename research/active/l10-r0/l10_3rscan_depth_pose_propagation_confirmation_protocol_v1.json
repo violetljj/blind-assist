@@ -1,0 +1,78 @@
+{
+  "schema": "blindassist-l10-3rscan-depth-pose-propagation-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-depth-pose-propagation-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T20:26:00+08:00",
+  "question": "Does the frozen calibrated depth-pose vacancy rule transfer unchanged from consumed Development to a wholly fresh physical target family?",
+  "implementation": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation.py",
+    "sha256": "59425a5a247b1d5b652b0faae696db0640365455774bdeee96a6d5f71b67d7f8"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_depth_pose_propagation_posthoc.py",
+      "sha256": "0d9ca3597c9ec28c07811a82345b8c9c194bebeb3edc0f043abd93cca9d22ea5"
+    },
+    {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation.py",
+      "sha256": "8763a87a7e9fea3e75ef9e799bfaedf37d23b8e823e0a7862a4dd18385a772c6"
+    }
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_depth_pose_propagation_posthoc_result_v1.json",
+    "sha256": "e8ff052e99e50adad7cc234e631a96128a27794c70ad4ee9da318a093ae7d2bb",
+    "required_conclusion": "L10_3RSCAN_DEPTH_POSE_PROPAGATION_DEVELOPMENT_GATE_MET",
+    "single_change": "Transport the already frozen physical rectangle propagation mechanism unchanged to the preselected fresh eleventh family."
+  },
+  "source_result": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_source_result_v1.json",
+    "sha256": "92bfa49879fdcb7c170f3342d6a284eb55156070e4eee1a180751dedecd713e6",
+    "required_conclusion": "L10_3RSCAN_TEMPORAL_SCALE_VACANCY_CONFIRMATION_SOURCE_EVALUABLE"
+  },
+  "cohort": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_cohort_v1.json",
+    "sha256": "9be262281c5bcb3a9f1a8f2e3c62af03736867f1bca8b2152c6fecdfb7a1f5df"
+  },
+  "candidate_result": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_intermediate_result_v1.json",
+    "sha256": "dd05570729731018c722928846988bea18942b1b8859399db84b90da6166e91f",
+    "interpretation": "Fresh frozen roster output produced by the unchanged generic posthoc materializer; its inherited hard-coded authority label does not consume or redefine this eleventh-family confirmation authority."
+  },
+  "hypothesis_generation": {
+    "preserved_contributors": [
+      "semantic_local_fusion",
+      "reference_scale_mixture",
+      "cross_view_reference_consensus"
+    ],
+    "scale_log_area_penalty": 0.05,
+    "anchor_selection": "Across the adjacent pair, select the exact-deduplicated candidate supported by the most preserved contributors; tie by higher frozen semantic/local fusion, then earlier query order.",
+    "vacancy_rule": "Append the propagated rectangle only to the non-anchor query when exact deduplication leaves fewer than three hypotheses."
+  },
+  "geometry": {
+    "query_images": ["DPC1_query", "DPC2_query"],
+    "sequence_zip": "F:/ba-data/blindassist-artifacts-20260805/datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/sequence.zip",
+    "sequence_sha256": "e907b62d0b587e9ca45ff428acb68cf6ebf3adfea9dbf1d1f3237b8d317195f0",
+    "depth_selection": "Backproject every valid anchor-frame depth pixel through the official depth intrinsic, project into color coordinates, keep pixels inside the frozen anchor rectangle, and take median metric depth.",
+    "pose_convention": "Treat official poses as camera-to-world and use inverse(target_pose) times anchor_pose.",
+    "rectangle_propagation": "Backproject the four anchor rectangle corners through the official color intrinsic at median depth, transform into the target camera, project, take min/max, and clip to target image bounds.",
+    "padding_pixels": 0,
+    "learned_parameters": 0
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "maximum_set_size": 3,
+    "required_covered_queries": 2
+  },
+  "literature_motivation": [
+    {
+      "source": "Seeing Behind Objects for 3D Multi-Object Tracking in RGB-D Sequences",
+      "url": "https://openaccess.thecvf.com/content/CVPR2021/papers/Muller_Seeing_Behind_Objects_for_3D_Multi-Object_Tracking_in_RGB-D_Sequences_CVPR_2021_paper.pdf",
+      "use": "Motivates backprojecting RGB-D observations and using 3D geometry and correspondences to persist object evidence across changing views."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change the fresh family, five images, candidate roster, preserved contributors, anchor rule, depth statistic, intrinsics, pose convention, projection, clipping, set size or IoU gate",
+    "add padding, optical flow, truth-guided anchor selection, truth-guided geometry, retries, rescue or retuning",
+    "read target truth before the bounded hypothesis sets and propagated rectangle are fixed"
+  ],
+  "claim_boundary": "A pass establishes only fresh same-provider bounded proposal coverage for one preselected physical family using official RGB-D calibration and poses. It does not establish top-one localization, calibrated uncertainty, source/provider independence, RGB-only or phone transfer, exact referent binding, named entrance, ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
