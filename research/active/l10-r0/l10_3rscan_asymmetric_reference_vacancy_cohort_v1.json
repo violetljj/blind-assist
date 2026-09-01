@@ -1,0 +1,148 @@
+{
+  "schema": "blindassist-l10-3rscan-asymmetric-reference-vacancy-cohort-v1",
+  "authority": "CONSUMED_PRE_RGB_PRE_MODEL_ASYMMETRIC_REFERENCE_VACANCY_DEVELOPMENT_COHORT",
+  "protocol_path": "l10_3rscan_asymmetric_reference_vacancy_freeze_protocol_v1.json",
+  "protocol_sha256": "0594ae9fd5377941299b248f302d15ad07a73855ab00951c1287540494e790e0",
+  "implementation": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_freeze.py",
+    "sha256": "260a05fcbea24ff7dc1b6b2423f322a451958922f14029ff5f8a0e8ea12e6c38"
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip": {
+      "path": "datasets/3rscan/50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip",
+      "bytes": 73697244,
+      "sha256": "cdb98813a9ef4e6633a721ea50c0d644456a4ccd740bb0772682bcb3ecb374fc"
+    },
+    "531cff04-0021-28f6-8d49-e51826f43468/sequence.zip": {
+      "path": "datasets/3rscan/531cff04-0021-28f6-8d49-e51826f43468/sequence.zip",
+      "bytes": 141840987,
+      "sha256": "bfa52ae91537a5602878b5ee847c397a5a200aabfa8c9b0e7c46346a82ca6221"
+    }
+  },
+  "selection": {
+    "query_episode_ids": [
+      "ARV1",
+      "ARV2"
+    ],
+    "extra_reference_image_key": "ARV1_extra_reference",
+    "base_memory": "Preserve the two positive-marginal reference views and two unique query views selected by the frozen source gate.",
+    "reference_vacancy_fill": "From the remaining source-admitted reference views, add exactly one view that maximizes its minimum camera-to-target angular separation from the two preserved references; ties use more visible target vertices, larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "query_policy": "Do not duplicate, synthesize or replace a query observation. Evaluate exactly the two source-admitted unique query frames.",
+    "reference_memory_count": 3,
+    "unique_query_count": 2,
+    "base_reference_frames": [
+      167,
+      172
+    ],
+    "vacancy_reference_frame": 410,
+    "vacancy_reference_marginal_vertices": 0,
+    "vacancy_reference_minimum_angular_separation_degrees": 40.326262424395274,
+    "opened": {
+      "pose_members": 429,
+      "depth_members": 429,
+      "rgb_members": 0,
+      "model_calls": 0
+    },
+    "opened_rgb_members_before_freeze": 0,
+    "model_calls_before_freeze": 0
+  },
+  "images": {
+    "ARV1_reference": {
+      "episode_id": "ARV1",
+      "role": "reference",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "target_instance_id": 4,
+      "target_label": "doorframe",
+      "frame": 167,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        20.599973678588867,
+        427.87091064453125,
+        949.9238891601562,
+        537.1534423828125
+      ],
+      "zip_member": "frame-000167.color.jpg"
+    },
+    "ARV1_query": {
+      "episode_id": "ARV1",
+      "role": "query",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "target_instance_id": 4,
+      "target_label": "doorframe",
+      "frame": 542,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        657.1713256835938,
+        246.68850708007812,
+        954.5021362304688,
+        529.6486206054688
+      ],
+      "zip_member": "frame-000542.color.jpg"
+    },
+    "ARV2_reference": {
+      "episode_id": "ARV2",
+      "role": "reference",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "target_instance_id": 4,
+      "target_label": "doorframe",
+      "frame": 172,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        16.104787826538086,
+        376.18389892578125,
+        914.2055053710938,
+        536.1361083984375
+      ],
+      "zip_member": "frame-000172.color.jpg"
+    },
+    "ARV2_query": {
+      "episode_id": "ARV2",
+      "role": "query",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "target_instance_id": 4,
+      "target_label": "doorframe",
+      "frame": 541,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        678.15283203125,
+        194.7046661376953,
+        948.821533203125,
+        536.0839233398438
+      ],
+      "zip_member": "frame-000541.color.jpg"
+    },
+    "ARV1_extra_reference": {
+      "episode_id": "ARV1",
+      "role": "reference",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "target_instance_id": 4,
+      "target_label": "doorframe",
+      "frame": 410,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        12.856319427490234,
+        455.297607421875,
+        949.2835083007812,
+        538.040771484375
+      ],
+      "zip_member": "frame-000410.color.jpg"
+    }
+  },
+  "claim_boundary": "This is consumed-family Development of asymmetric three-reference/two-query memory support. It can test a mechanism under sparse query observations, but cannot provide fresh confirmation, top-one localization, calibrated uncertainty, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

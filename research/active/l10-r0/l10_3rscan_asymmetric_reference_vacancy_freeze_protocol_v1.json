@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist-l10-3rscan-asymmetric-reference-vacancy-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-asymmetric-reference-vacancy-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T15:17:47+08:00",
+  "question": "Can a maximum-minimum-view-angle reference-only vacancy fill preserve a three-reference descriptor memory while evaluating exactly two unique query observations from the source-scarce ninth family?",
+  "implementation": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_freeze.py",
+    "sha256": "260a05fcbea24ff7dc1b6b2423f322a451958922f14029ff5f8a0e8ea12e6c38"
+  },
+  "source_result": {
+    "path": "l10_3rscan_axis_completion_vacancy_third_confirmation_source_result_v1.json",
+    "sha256": "d25ec0bdb34e0aab4ebc5e12d693ee8bd99d90273c1dae0d42f39083cdb3c371"
+  },
+  "source_protocol": {
+    "path": "l10_3rscan_axis_completion_vacancy_third_confirmation_source_protocol_v1.json",
+    "sha256": "56777c94b552322e66fcbfc60f6c0406f1dc3ab17050b4657ab1d0b6ed3884df"
+  },
+  "source": {
+    "authority": "CONSUMED_NINTH_FAMILY_GEOMETRY_DEPTH_ONLY_ASYMMETRIC_MEMORY_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip": {
+        "path": "datasets/3rscan/50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip",
+        "bytes": 73697244,
+        "sha256": "cdb98813a9ef4e6633a721ea50c0d644456a4ccd740bb0772682bcb3ecb374fc"
+      },
+      "531cff04-0021-28f6-8d49-e51826f43468/sequence.zip": {
+        "path": "datasets/3rscan/531cff04-0021-28f6-8d49-e51826f43468/sequence.zip",
+        "bytes": 141840987,
+        "sha256": "bfa52ae91537a5602878b5ee847c397a5a200aabfa8c9b0e7c46346a82ca6221"
+      }
+    }
+  },
+  "selection": {
+    "query_episode_ids": ["ARV1", "ARV2"],
+    "extra_reference_image_key": "ARV1_extra_reference",
+    "base_memory": "Preserve the two positive-marginal reference views and two unique query views selected by the frozen source gate.",
+    "reference_vacancy_fill": "From the remaining source-admitted reference views, add exactly one view that maximizes its minimum camera-to-target angular separation from the two preserved references; ties use more visible target vertices, larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "query_policy": "Do not duplicate, synthesize or replace a query observation. Evaluate exactly the two source-admitted unique query frames."
+  },
+  "forbidden_after_freeze": [
+    "change the two preserved reference views or either unique query view",
+    "change the maximum-minimum-angle vacancy rule or deterministic ties",
+    "open RGB or call a model before the cohort is materialized",
+    "count this post-source mechanism design as fresh confirmation",
+    "duplicate a query row to increase the denominator"
+  ],
+  "claim_boundary": "This is consumed-family Development of asymmetric three-reference/two-query memory support. It can test a mechanism under sparse query observations, but cannot provide fresh confirmation, top-one localization, calibrated uncertainty, exact-instance binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

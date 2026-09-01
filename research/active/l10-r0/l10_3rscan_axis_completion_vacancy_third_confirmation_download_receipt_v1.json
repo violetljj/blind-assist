@@ -1,0 +1,39 @@
+{
+  "schema": "blindassist-l10-3rscan-axis-completion-vacancy-third-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_axis_completion_vacancy_third_confirmation_candidate_v1.json",
+  "candidate_sha256": "c5fb73721f97f0ae24785dfe6d793c9d333717d66c314eb6240e7ddd5a009071",
+  "candidate_frozen_commit": "35a08b180473a47e4737cfb9183ca3fbaad51083",
+  "candidate_frozen_commit_time": "2026-09-01T14:40:24+08:00",
+  "completed_at": "2026-09-01T15:12:19+08:00",
+  "files": {
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0/semseg.v2.json": {
+      "bytes": 39255,
+      "sha256": "b1c829932bb0291ac1b736568a02f0c7af031cf1ca1930815b46523b6397f6f6"
+    },
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0/labels.instances.annotated.v2.ply": {
+      "bytes": 4422595,
+      "sha256": "bd316d74466ade2c36a9ed82ac405db893853e914eb589a3bfe1ecbd36618932"
+    },
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip": {
+      "bytes": 73697244,
+      "sha256": "cdb98813a9ef4e6633a721ea50c0d644456a4ccd740bb0772682bcb3ecb374fc"
+    },
+    "531cff04-0021-28f6-8d49-e51826f43468/semseg.v2.json": {
+      "bytes": 37435,
+      "sha256": "de3084ed5f6506e1b64f558f7126a943358e999b4a9719481e70b9183c0f402b"
+    },
+    "531cff04-0021-28f6-8d49-e51826f43468/labels.instances.annotated.v2.ply": {
+      "bytes": 4428704,
+      "sha256": "abe454add0a211643d495425ce9c5f6b1d14630069e8074b9d7975ddb689f171"
+    },
+    "531cff04-0021-28f6-8d49-e51826f43468/sequence.zip": {
+      "bytes": 141840987,
+      "sha256": "bfa52ae91537a5602878b5ee847c397a5a200aabfa8c9b0e7c46346a82ca6221"
+    }
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "next_action": "Run the frozen geometry/depth source-admission gate; do not inspect RGB or run the vacancy proposal set unless both scans admit the frozen target-view minimum and the rescan admits a same-scene sibling.",
+  "claim_boundary": "This receipt proves only complete official-file materialization and hashes. The frozen Git commit establishes that candidate identity and download plan preceded materialization. It is not source evaluability or algorithm evidence."
+}
