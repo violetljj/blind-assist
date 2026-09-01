@@ -162,7 +162,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
   the frozen incremental mechanism and false-positive reduction requirements
   did not. C39 is mechanism-not-exercised and now consumed diagnosis material;
   it supplies no fresh promotion evidence. X73 therefore still retains the
-  latest positive source-disjoint confirmation authority.
+  latest positive source-disjoint confirmation authority. X80 then requires an
+  otherwise uncredentialed X71 entry-cotransport birth to carry a rigid
+  footprint whose lateral span strictly exceeds its route-forward span before
+  it can authorize cross-route occupancy. This ordinal shape credential adds no
+  fitted numeric threshold. Across C26/C27/C28/C32/C34/C35/C36/C37/C39, X80
+  changes only C39: it removes six false positives with zero TP loss, moving
+  C39 to `137 TP / 16 FP / 35 FN` at `89.54/79.65/84.31%`. Nine-cohort pooled
+  X80 is `1,208 TP / 107 FP / 343 FN` at `91.86/77.89/84.30%`, or
+  `0 TP / -6 FP / +0.18 pp F1` over X79. Every required check passes. Because
+  X80 was designed after C39 opened, this is Development-only and X73 retains
+  confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -264,3 +274,5 @@ their result.
   [dtr_carla_c39_x79_fresh_confirmation_protocol.json](carla/dtr_carla_c39_x79_fresh_confirmation_protocol.json)
 - C39 X79 fresh outcome:
   [DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md)
+- X80 consumed nine-cohort Development:
+  [DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
