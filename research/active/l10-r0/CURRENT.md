@@ -294,8 +294,18 @@ contract.
   Class-agnostic proposal opportunity stayed strong at `3/3`, but unchanged
   target-minus-sibling CLS ranking plus SAM2 localized only `1/3`; minimum
   refined IoU was `0.018747`, mean `0.325531`. Freeze this as a new-family
-  representation failure. The next Development change is mask-foreground patch
-  aggregation, not score-weight or threshold tuning.
+  representation failure. A NIDS-Net-style foreground feature aggregation
+  successor then replaced global CLS crops with SAM-masked DINOv2 patch means
+  on the exact frozen proposals. Keeping the scene-specific sibling subtraction
+  improved localization to `2/3` (minimum refined IoU `0.402587`, mean
+  `0.712768`), but on the remaining failure it ranked a partial target above the
+  full target because the sibling term reversed their target-only order. The
+  smallest structural ablation removed only that subtraction: direct max-over-
+  target-memory FFA ranking plus unchanged SAM2 reached `3/3`, with minimum
+  refined IoU `0.926509` and mean `0.934408`. Freeze target-only FFA as the next
+  candidate representation. These two posthoc runs use the already-consumed
+  D13 roster, so they are Development attribution—not fresh-family confirmation,
+  calibrated rejection, or end-to-end L10 evidence.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

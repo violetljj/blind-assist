@@ -4186,6 +4186,26 @@ new-family representation failure, not permission to tune the score. The
 justified next layer is mask-foreground DINOv2 patch aggregation, following the
 FFA mechanism in NIDS-Net.
 
+That structural successor kept the candidate roster, reference views, SAM2
+contract, and IoU gate fixed. It formed one DINOv2 descriptor by mask-weighted
+mean pooling of foreground patch tokens for every reference and proposal. With
+the same single-sibling subtraction, FFA improved the full chain from `1/3` to
+`2/3`; minimum refined IoU rose to `0.402587` and mean to `0.712768`. The sole
+failure was diagnostic: a partial target scored `0.61 - 0.55 = 0.06`, while the
+full target scored `0.68 - 0.63 = 0.05`. Thus the scene-specific negative—not
+foreground representation—reversed the correct target-only ranking.
+
+The next frozen ablation removed only that negative term and ranked the same
+proposals by maximum cosine to the three target FFA references. Direct target-
+memory ranking selected the full target in all `3/3` queries; unchanged SAM2
+refinement produced minimum IoU `0.926509` and mean `0.934408`. This repairs the
+observed D13 failure without threshold or proposal tuning and is the strongest
+raw-query instance-localization mechanism in this branch. Both FFA runs are
+posthoc Development on the consumed D13 roster. They do not establish fresh-
+family confirmation, open-set rejection, provider independence, raw-phone
+operation, named-entrance ownership/access, waypoint, arrival, handoff, user
+benefit, reliability, or safety.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4338,6 +4358,14 @@ Evidence:
   `4d46500180b3d6b2ba6f8cb9536ed54f4bee0b47e8460ab2bee8e2e8f1b1b3e3`,
   `be08a874c495a7e6059759a7c3b33cf170648de3b89a28646398ae38675b6cdf`,
   and `124166a2fde1efb2ba0dad36ec8a17074a2f3de5e9a495b394efd411304f627b`;
+- mask-foreground FFA implementation/protocol/result and target-only FFA
+  implementation/protocol/result SHA-256:
+  `0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992`,
+  `d990445826b1b0e708546df6dcb499bc1055fa8dd3b9785a756363512cbe1933`,
+  `1c5a9be9a101eeccfdda9667ec7bad725f7b46bae16e1d744e41e2af487a810f`,
+  `11b43eabc1076ba7e444fff90d074aa8385098e580c848f6a27a3df34c316863`,
+  `362f5e0a82142327fab1d9722829b94fff7b5cb0f348290aa6f08c76b6543035`,
+  and `de356f237d6b7819f753ada3cceae36d13a583418a6c653e7b3cc3e22fb4be84`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

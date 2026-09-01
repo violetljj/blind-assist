@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist-l10-3rscan-mask-ffa-memory-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-mask-ffa-memory-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T08:42:00+08:00",
+  "question": "Does NIDS-Net-style SAM-mask foreground feature averaging repair the D13 new-family failure when proposals, target/sibling memories, contrastive formula, SAM settings and IoU gate remain unchanged?",
+  "implementation": {"path": "l10_3rscan_mask_ffa_memory_posthoc.py", "sha256": "0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992"},
+  "dependencies": [
+    {"path": "l10_3rscan_contrastive_sam_refinement_posthoc.py", "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"},
+    {"path": "l10_3rscan_object_context_memory_posthoc.py", "sha256": "9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505"},
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_objectness_pipeline_confirmation_result_v1.json",
+    "sha256": "124166a2fde1efb2ba0dad36ec8a17074a2f3de5e9a495b394efd411304f627b",
+    "required_conclusion": "L10_3RSCAN_OBJECTNESS_PIPELINE_NEW_FAMILY_CONFIRMATION_GATE_NOT_MET",
+    "observed_failure": "All three query frames contained an IoU-at-least-0.5 proposal, but global exact-box plus context CLS target-minus-sibling ranking localized only 1/3; qualifying targets ranked second and third in the two failures.",
+    "single_change": "Replace the global CLS-plus-context descriptor with the normalized weighted average of DINOv2 patch tokens under each native SAM2 proposal mask."
+  },
+  "source": {
+    "authority": "CONSUMED_D13_SUCCESSOR_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_objectness_pipeline_confirmation_cohort_v1.json",
+    "cohort_sha256": "db4ae4f2f27be9763d5167c0be19fb5f72ab3a76418b078621d14ff814fea6de"
+  },
+  "descriptor": {
+    "model_path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "patch_size": 14,
+    "feature": "Crop RGB and native mask to the proposal box, resize both to 518, bilinearly resize the mask to the 37x37 DINOv2 patch grid, compute its weighted mean of normalized patch tokens, then L2-normalize.",
+    "score": "Maximum target-memory FFA cosine minus sibling-memory FFA cosine, coefficients +1/-1, no fitted scale or threshold."
+  },
+  "masker": {
+    "model_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Native SAM2.1-Hiera-Small, box prompts only, multimask false, mask threshold zero, no morphology, no IoU-score selection."
+  },
+  "memory": {
+    "target_images": ["D13M1_reference", "D13M2_reference", "D13M3_reference"],
+    "sibling_images": ["SIB59_query"]
+  },
+  "evaluation": {
+    "query_images": ["D13M1_query", "D13M2_query", "D13M3_query"],
+    "proposal_authority": "Reuse the predecessor's exact class-agnostic proposal rosters; GroundingDINO is not rerun.",
+    "truth_role": "Provider target boxes enter only after FFA ranking to evaluate the tight bbox of the selected native mask."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_queries": 3,
+    "interpretation": "The unchanged target-minus-sibling FFA top-one native mask must have tight-bbox IoU at least 0.5 in all three query frames."
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "code": "https://github.com/YoungSean/NIDS-Net/blob/main/src/model/dinov2.py",
+      "use": "Use its Foreground Feature Averaging formula over DINOv2 patch tokens under proposal masks instead of global CLS crops."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change proposals, images, memory members, SAM model/settings, crop size, mask interpolation, FFA formula, contrastive coefficients, tie-break or IoU gate",
+    "use provider query boxes in mask generation, descriptor construction or ranking",
+    "fit an adapter, threshold or score weight on D13, replace a frame or add post-outcome rescue"
+  ],
+  "claim_boundary": "This consumed D13 Development test can establish only whether mask-foreground patch averaging repairs the observed representation failure on fixed proposals. It cannot establish fresh-family confirmation, open-set absence, raw-phone or provider-independent generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
