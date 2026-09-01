@@ -4438,6 +4438,45 @@ structured mask hypotheses for high-recall instance segmentation. Those works
 support set-valued inference as a mechanism class; they do not validate this
 cohort, hypothesis construction, or set size.
 
+The unchanged set was next frozen before pixels on a fifth physical family,
+`4acaebc0-6c10-2a2a-852e-0226d6539299 ->
+185d741b-3698-223c-8ba0-48db6ecbe220`, target door `4`. The official source gate
+admitted three reference frames at `0.853837` cumulative target-vertex coverage,
+three query frames at `0.765778`, and a separate sibling door `35`. The fixed
+tri-evidence mechanism then failed fresh confirmation at `2/3`: minimum best
+IoU `0.072349`, mean best IoU `0.534691`, and mean/max set size `1.667/2`.
+HYP3 exposed correlated evidence collapse: local, semantic/local fusion, and
+nearest-reference-scale mixture all selected the same top-left tile, while an
+already-generated full proposal at IoU `0.735693` remained reachable. Record
+`L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FRESH_CONFIRMATION_GATE_NOT_MET`.
+This is a ranking failure on an evaluable source; it does not invalidate the
+source gate or authorize enlarging the set after truth.
+
+One truth-blind structural successor replaced standalone local top one with
+cross-view reference consensus. It first takes each query's semantic/local
+fusion winner, selects the majority winning target-reference view across the
+three observations, and then gives each query one additional best fusion
+candidate constrained to that reference. The other contributors remain fusion
+top one and nearest-reference-scale mixture top one, exact proposals are
+deduplicated, and the set remains bounded at three. On the five now-consumed
+families this reached `15/15`, mean set size `1.733`, maximum set size `3`,
+minimum best IoU `0.507007`, and mean best IoU `0.803731`. The fifth-family HYP3
+failure was repaired by retaining the full proposal at IoU `0.735693`. Record
+`L10_3RSCAN_CROSS_VIEW_REFERENCE_CONSENSUS_FIVE_FAMILY_DEVELOPMENT_GATE_MET`.
+
+The structure is independently motivated by Nassar et al.'s
+[multi-view instance detection with geometric soft constraints](https://openaccess.thecvf.com/content_ICCV_2019/papers/Nassar_Simultaneous_Multi-View_Instance_Detection_With_Learned_Geometric_Soft-Constraints_ICCV_2019_paper.pdf),
+which combines appearance and geometry to disambiguate similar neighboring
+instances, and [CoMatcher](https://arxiv.org/abs/2504.01872), which uses
+complementary views and cross-view consistency instead of independent pairwise
+decisions. These sources motivate the mechanism class only. All five families
+were consumed before the rule was defined, so the result is Development for
+bounded proposal recall, not fresh confirmation, top-one localization, calibrated
+uncertainty, entrance authority, access, waypoint, arrival, handoff, benefit, or
+safety. Freeze it unchanged on a sixth untouched family; after any transfer pass,
+the next algorithmic layer must actually resolve the retained set through
+cross-view belief or active observation.
+
 Evidence:
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
@@ -4454,6 +4493,22 @@ Evidence:
   `820fcc4d1c331e8bc15a30d51b63388c32df1893d3f5fe4f56ad52542bb6e7ba`,
   `0bdf30c2e9c7e9005c6e8f0af8876e6990e8331ba6b8e74013505b611dd96b5d`,
   `f3472a6c5b1b14ca6810aba6a05645478b4e9ccd81634de2a0b97de538a7a2e8`.
+- fifth-family tri-evidence download/source/freeze/cohort, intermediate, and
+  confirmation implementation/protocol/result SHA-256:
+  `442817c572d26efc5a9d2b68d445f38ade5351290e0040deb02945df2a12053a`,
+  `445d3643222dc3050ac90b9beb9770f1f3b98c1bdf992b58a8ca2cba6546d731`,
+  `1f6a70fcd76bd91ab0206f7b72ed2a5c238a2feec946ae9c969e62bfaef94421`,
+  `acd03746a41efcebf999076c1d19a7be1f304dd7bb8c1ad78664c04da83ea1d5`,
+  `187f734bd0e0546fb431bba20be8c3dbb536b20a37df1f51ff3f1ccf7fb203bf`,
+  `c1a14a90dcd615ca57aa9cecfe6c8bc467d896f92aec2134c48b4dadcf2b538b`,
+  `1be57b5f085f8d6cd98c1604189f90f75202bb871e76655fd3441487298c261a`,
+  `68c61aa14198a55a0d4813d19a2f5c9b2a44486aaea310c4c06685c7385bc05d`,
+  `1e1d4e444a2d2a1049abb332c92d748f4c2c0506c87fa2e8287492fd917263fe`,
+  and `355936d85f33515b7380ef225a066e9f8fd8f7028584ea6f4b01e868e203c24e`.
+- cross-view reference-consensus implementation/protocol/result SHA-256:
+  `dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b`,
+  `387cfcbbbf06d1f0a0f2bd3f8af079e688af7c470deb4da5dbbfb638a27ef378`,
+  and `183245555c9cc27158c2dd1f66eaab995d1ef20eefc2b4c0cf9256648b70e5c3`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

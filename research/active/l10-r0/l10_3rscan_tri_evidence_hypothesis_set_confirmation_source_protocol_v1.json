@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-tri-evidence-hypothesis-set-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T13:17:00+08:00",
+  "question": "Does the pre-download-frozen fifth family supply three complementary target views on each side and an admitted same-scene sibling before any RGB or model access?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_source.py", "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"},
+  "candidate": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_candidate_v1.json", "sha256": "3e235e14672696b33f253bac81a0de00bb69ac9a5317f0704f6c2bbdbffb5d00"},
+  "download_receipt": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_download_receipt_v1.json"},
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_NEW_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/4acaebc0-6c10-2a2a-852e-0226d6539299/semseg.v2.json", "bytes": 20797, "sha256": "3433d3f91a1757b94839b20b6dc3180509333a541a9e062655caee3f5cc8bbe1"},
+      {"path": "datasets/3rscan/4acaebc0-6c10-2a2a-852e-0226d6539299/labels.instances.annotated.v2.ply", "bytes": 2751926, "sha256": "01ad05f7effd9ed942b7ee580f0f2cb31b48058820cdb95bff9df73ace27fa46"},
+      {"path": "datasets/3rscan/4acaebc0-6c10-2a2a-852e-0226d6539299/sequence.zip", "bytes": 112192395, "sha256": "e65d570f66856b1c25ae887588213b328e2b7600065f2bd1a4bb00ffe426f1dd"},
+      {"path": "datasets/3rscan/185d741b-3698-223c-8ba0-48db6ecbe220/semseg.v2.json", "bytes": 18013, "sha256": "b7f6f5d3e8382ceb9c3b394d4bdd97f9a9e7800bb1de3801ea5cee31ee555e57"},
+      {"path": "datasets/3rscan/185d741b-3698-223c-8ba0-48db6ecbe220/labels.instances.annotated.v2.ply", "bytes": 2605453, "sha256": "d74a7d47fcc490f185388ec46837cb0028f064bef753976ee987772c1ea8e9d4"},
+      {"path": "datasets/3rscan/185d741b-3698-223c-8ba0-48db6ecbe220/sequence.zip", "bytes": 25370768, "sha256": "e84092ebb5c6669dc30747a60bac9c4dbc09f4a45a5ce5e940649c50affe8a85"}
+    ]
+  },
+  "memory_budget": 3,
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "selection": {
+    "memory": "Greedily add maximum newly visible target vertices; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "sibling": "Record the first different door or doorframe instance with an admitted view; its appearance is forbidden from target-only ranking."
+  },
+  "decision_gate": {"minimum_memory_views_per_side": 3, "minimum_same_scene_sibling_views": 1},
+  "next_action": {
+    "evaluable": "Freeze three target views per side, then run the unchanged at-most-three proposal set contributed by layer-18 local, equal semantic/local fusion, and nearest reference-scale mixture once.",
+    "not_evaluable": "Retain the source receipt and do not open RGB or call GroundingDINO, DINOv2 or SAM2 for this family."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, view rules, memory budget or sibling rule",
+    "change full-plus-40-percent proposal windows, layer-18 representation, the three proposal contributors, their scores, deduplication, IoU gate or maximum set size",
+    "use sibling appearance or query truth in hypothesis generation",
+    "open RGB/model before source result",
+    "reinterpret source scarcity as algorithm failure"
+  ],
+  "claim_boundary": "This source gate can establish only whether the fifth new family supplies three-view target memory and a sibling control. It is not algorithm evidence, top-one localization, calibrated uncertainty, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

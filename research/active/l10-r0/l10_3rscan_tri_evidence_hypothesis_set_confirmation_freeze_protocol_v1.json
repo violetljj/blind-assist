@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-tri-evidence-hypothesis-set-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T13:18:00+08:00",
+  "question": "Does the frozen at-most-three tri-evidence proposal set cover wholly new door 4 across all three query views without using query truth?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_source_result_v1.json", "sha256": "1f6a70fcd76bd91ab0206f7b72ed2a5c238a2feec946ae9c969e62bfaef94421"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_TRI_EVIDENCE_HYPOTHESIS_SET_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "4acaebc0-6c10-2a2a-852e-0226d6539299/sequence.zip": {"path": "datasets/3rscan/4acaebc0-6c10-2a2a-852e-0226d6539299/sequence.zip", "bytes": 112192395, "sha256": "e65d570f66856b1c25ae887588213b328e2b7600065f2bd1a4bb00ffe426f1dd"},
+      "185d741b-3698-223c-8ba0-48db6ecbe220/sequence.zip": {"path": "datasets/3rscan/185d741b-3698-223c-8ba0-48db6ecbe220/sequence.zip", "bytes": 25370768, "sha256": "e84092ebb5c6669dc30747a60bac9c4dbc09f4a45a5ce5e940649c50affe8a85"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["HYP1", "HYP2", "HYP3"],
+    "sibling_episode_id": "HYPS35",
+    "positive_authority": "First wholly unmaterialized fifth family selected after the consumed four-family 12/12 bounded tri-evidence hypothesis-set Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, full-plus-40-percent proposal windows, layer-18 representation, the three proposal contributors, their scores, deduplication, IoU gate or maximum set size three",
+    "use sibling or negative-control appearance in positive hypothesis generation",
+    "use query truth before hypothesis-set generation is complete",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for bounded tri-evidence proposal-recall confirmation. A pass is narrow same-provider new-family bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

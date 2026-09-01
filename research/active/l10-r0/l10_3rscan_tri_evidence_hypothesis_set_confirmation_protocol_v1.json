@@ -1,0 +1,38 @@
+{
+  "schema": "blindassist-l10-3rscan-tri-evidence-hypothesis-set-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-tri-evidence-hypothesis-set-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T13:26:00+08:00",
+  "question": "Does the bounded tri-evidence proposal set cover target door 4 in all three query views of the preselected fifth family?",
+  "implementation": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation.py", "sha256": "68c61aa14198a55a0d4813d19a2f5c9b2a44486aaea310c4c06685c7385bc05d"},
+  "development_predecessor": {
+    "path": "l10_3rscan_tri_evidence_hypothesis_set_posthoc_result_v1.json",
+    "sha256": "f3472a6c5b1b14ca6810aba6a05645478b4e9ccd81634de2a0b97de538a7a2e8",
+    "required_conclusion": "L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FOUR_FAMILY_DEVELOPMENT_GATE_MET"
+  },
+  "source_result": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_source_result_v1.json", "sha256": "1f6a70fcd76bd91ab0206f7b72ed2a5c238a2feec946ae9c969e62bfaef94421"},
+  "cohort": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json", "sha256": "187f734bd0e0546fb431bba20be8c3dbb536b20a37df1f51ff3f1ccf7fb203bf"},
+  "candidate_result": {"path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_intermediate_result_v1.json", "sha256": "1be57b5f085f8d6cd98c1604189f90f75202bb871e76655fd3441487298c261a"},
+  "hypothesis_generation": {
+    "truth_blind": true,
+    "maximum_set_size": 3,
+    "contributors": [
+      "highest layer18_local_appearance_score",
+      "highest equal semantic/local layer18_nids_fused_score",
+      "highest layer18_local_appearance_score minus 0.05 times minimum absolute log-area deviation to any of the three reference target boxes"
+    ],
+    "scale_mixture_log_area_penalty": 0.05,
+    "deduplication": "Merge contributors only when tile_id, postprocess_index and exact box coordinates are identical.",
+    "tie_break": "Higher layer-18 local, target-memory and objectness scores, then lexicographic box and postprocess index."
+  },
+  "decision_gate": {"minimum_iou": 0.5, "required_covered_queries": 3, "maximum_set_size": 3},
+  "literature_motivation": [
+    {"source": "UncOS", "url": "https://arxiv.org/abs/2408.04760", "use": "Retain multiple object interpretations under ambiguity and resolve them with later evidence or action."},
+    {"source": "Latent-MaskRCNN", "url": "https://arxiv.org/abs/2305.01910", "use": "Model multiple structured instance-mask hypotheses for recall."}
+  ],
+  "forbidden_after_freeze": [
+    "change any contributor, score, 0.05 penalty, tie break, deduplication, maximum set size or IoU gate",
+    "use query truth, sibling appearance or controls in hypothesis generation",
+    "add a fourth hypothesis, rescue a failed query or reinterpret proposal coverage as top-one localization"
+  ],
+  "claim_boundary": "A pass confirms only bounded proposal recall on one wholly new fifth 3RScan family under provider truth and a maximum set size of three. It does not confirm top-one localization, calibrated uncertainty, open-set rejection, instance ownership, referent identity, named entrance, affordance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}

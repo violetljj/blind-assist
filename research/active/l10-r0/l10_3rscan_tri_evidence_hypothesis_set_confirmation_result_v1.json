@@ -1,0 +1,314 @@
+{
+  "schema": "blindassist-l10-3rscan-tri-evidence-hypothesis-set-confirmation-result-v1",
+  "authority": "FRESH_FIFTH_FAMILY_BOUNDED_TRI_EVIDENCE_PROPOSAL_SET_CONFIRMATION",
+  "protocol_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_protocol_v1.json",
+  "protocol_sha256": "1e1d4e444a2d2a1049abb332c92d748f4c2c0506c87fa2e8287492fd917263fe",
+  "implementation": {
+    "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation.py",
+    "sha256": "68c61aa14198a55a0d4813d19a2f5c9b2a44486aaea310c4c06685c7385bc05d"
+  },
+  "conclusion": "L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FRESH_CONFIRMATION_GATE_NOT_MET",
+  "gate_met": false,
+  "hypothesis_generation": {
+    "truth_blind": true,
+    "maximum_set_size": 3,
+    "contributors": [
+      "highest layer18_local_appearance_score",
+      "highest equal semantic/local layer18_nids_fused_score",
+      "highest layer18_local_appearance_score minus 0.05 times minimum absolute log-area deviation to any of the three reference target boxes"
+    ],
+    "scale_mixture_log_area_penalty": 0.05,
+    "deduplication": "Merge contributors only when tile_id, postprocess_index and exact box coordinates are identical.",
+    "tie_break": "Higher layer-18 local, target-memory and objectness scores, then lexicographic box and postprocess index."
+  },
+  "metrics": {
+    "query_count": 3,
+    "covered_queries": 2,
+    "maximum_hypothesis_count": 2,
+    "mean_hypothesis_count": 1.6666666666666667,
+    "minimum_best_hypothesis_iou": 0.07234923793098771,
+    "mean_best_hypothesis_iou": 0.5346914873174708,
+    "individual_mechanism_iou_gate_queries": {
+      "layer18_local": 0,
+      "semantic_local_fusion": 2,
+      "reference_scale_mixture": 1
+    }
+  },
+  "query_receipts": {
+    "HYP1_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "reference_area_fractions": [
+        0.26747981684863475,
+        0.5010939488174628,
+        0.7740394504683
+      ],
+      "hypothesis_count": 2,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "layer18_local",
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.47269967198371887,
+            "box_xyxy": [
+              576.7450561523438,
+              324.34979009628296,
+              958.9495849609375,
+              539.1125640869141
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 37,
+            "target_memory_score": 0.5874720811843872,
+            "per_reference_scores": {
+              "HYP1_reference": 0.5874720811843872,
+              "HYP2_reference": 0.553098738193512,
+              "HYP3_reference": 0.5758073329925537
+            },
+            "winning_target_reference": "HYP1_reference",
+            "layer18_local_appearance_score": 0.7866048216819763,
+            "layer18_nids_fused_score": 0.6870384514331818,
+            "target_metrics_evaluation_only": {
+              "iou": 0.0,
+              "target_recall": 0.0,
+              "proposal_precision": 0.0
+            },
+            "descriptor_sha256": "cde5540ebc06690ef23459cd8f2fb89c74053e79a97797a72fece7a798f87f2c",
+            "layer18_patch_sha256": "d8e496b29bb8a60fc316bc6fd706c8a42c35d40a3dda65aa9371bc2f7c5be57c",
+            "mask_sha256": "a753d8a44da21138606124617935d46b6a65de0d667d2f796551902a0e3c5205"
+          }
+        },
+        {
+          "mechanisms": [
+            "semantic_local_fusion"
+          ],
+          "candidate": {
+            "objectness_score": 0.20132963359355927,
+            "box_xyxy": [
+              1.3210630416870117,
+              46.877685546875,
+              434.8027038574219,
+              361.86175537109375
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 9,
+            "postprocess_index": 11,
+            "target_memory_score": 0.7854145765304565,
+            "per_reference_scores": {
+              "HYP1_reference": 0.7854145765304565,
+              "HYP2_reference": 0.5203602313995361,
+              "HYP3_reference": 0.5879956483840942
+            },
+            "winning_target_reference": "HYP1_reference",
+            "layer18_local_appearance_score": 0.7316497564315796,
+            "layer18_nids_fused_score": 0.7585321664810181,
+            "target_metrics_evaluation_only": {
+              "iou": 0.651796277273954,
+              "target_recall": 0.6581458221513279,
+              "proposal_precision": 0.9854142941682901
+            },
+            "descriptor_sha256": "a1bcd0e815b682567f8feb5110a9d6dc137941ee1fc1246ba1d8e6b4f49f578a",
+            "layer18_patch_sha256": "bfdcaaf359b608e83061b4ffda757dd35a89ef444c4860ad0e3515b4775313c7",
+            "mask_sha256": "b540998f201a57cc08f67e86edf50eaa722858bac575670d9872429f4d1425bd"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.651796277273954,
+      "target_covered_at_iou_gate": true
+    },
+    "HYP2_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "reference_area_fractions": [
+        0.26747981684863475,
+        0.5010939488174628,
+        0.7740394504683
+      ],
+      "hypothesis_count": 2,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "layer18_local"
+          ],
+          "candidate": {
+            "objectness_score": 0.3294519782066345,
+            "box_xyxy": [
+              576.1645545959473,
+              324.49756479263306,
+              959.6097106933594,
+              539.0692291259766
+            ],
+            "tile_id": "bottom_right",
+            "tile_xyxy": [
+              576,
+              324,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 1,
+            "postprocess_index": 14,
+            "target_memory_score": 0.5448912382125854,
+            "per_reference_scores": {
+              "HYP1_reference": 0.5031387805938721,
+              "HYP2_reference": 0.5448912382125854,
+              "HYP3_reference": 0.5386636257171631
+            },
+            "winning_target_reference": "HYP2_reference",
+            "layer18_local_appearance_score": 0.7508411407470703,
+            "layer18_nids_fused_score": 0.6478661894798279,
+            "target_metrics_evaluation_only": {
+              "iou": 0.15806382766783914,
+              "target_recall": 0.15991794590214706,
+              "proposal_precision": 0.9316614362708914
+            },
+            "descriptor_sha256": "9eb70da4428a039b42ad17547656fe996fc0fe29fcab2006a115469b305d6f71",
+            "layer18_patch_sha256": "f5298c2d5333295a0e727e11606ceb1f623b27a3573cffccd30a9eb6df46b3b0",
+            "mask_sha256": "262d0851981eb9754e278ef267456a80dd64aeafe6c64069e22908f748b6a59f"
+          }
+        },
+        {
+          "mechanisms": [
+            "semantic_local_fusion",
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.7553311586380005,
+            "box_xyxy": [
+              3.0112838745117188,
+              0.753212571144104,
+              957.7532958984375,
+              481.952392578125
+            ],
+            "tile_id": "full",
+            "tile_xyxy": [
+              0,
+              0,
+              960,
+              540
+            ],
+            "tile_postprocess_index": 0,
+            "postprocess_index": 0,
+            "target_memory_score": 0.6931065917015076,
+            "per_reference_scores": {
+              "HYP1_reference": 0.6931065917015076,
+              "HYP2_reference": 0.500481367111206,
+              "HYP3_reference": 0.6409169435501099
+            },
+            "winning_target_reference": "HYP1_reference",
+            "layer18_local_appearance_score": 0.7393258810043335,
+            "layer18_nids_fused_score": 0.7162162363529205,
+            "target_metrics_evaluation_only": {
+              "iou": 0.8799289467474709,
+              "target_recall": 0.9166869736567324,
+              "proposal_precision": 0.9564156857940493
+            },
+            "descriptor_sha256": "9368cb09679a9947e2fb001452acd9dba408300ea7bf90258ef51c7745b51101",
+            "layer18_patch_sha256": "b43ce4196e081873c9b1a0dbab236f2224d72d10e2e226eeac66a1c488a36240",
+            "mask_sha256": "a3fa52da55a8da4561615ea5d2cf22b070a1b995f4a7cccdda50da7f34b378e5"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.8799289467474709,
+      "target_covered_at_iou_gate": true
+    },
+    "HYP3_query": {
+      "query_truth_used_for_hypothesis_generation": false,
+      "reference_area_fractions": [
+        0.26747981684863475,
+        0.5010939488174628,
+        0.7740394504683
+      ],
+      "hypothesis_count": 1,
+      "hypotheses": [
+        {
+          "mechanisms": [
+            "layer18_local",
+            "semantic_local_fusion",
+            "reference_scale_mixture"
+          ],
+          "candidate": {
+            "objectness_score": 0.34788355231285095,
+            "box_xyxy": [
+              0.3087730407714844,
+              0.460827112197876,
+              383.4575500488281,
+              214.79051208496094
+            ],
+            "tile_id": "top_left",
+            "tile_xyxy": [
+              0,
+              0,
+              384,
+              216
+            ],
+            "tile_postprocess_index": 2,
+            "postprocess_index": 17,
+            "target_memory_score": 0.6806826591491699,
+            "per_reference_scores": {
+              "HYP1_reference": 0.5198343396186829,
+              "HYP2_reference": 0.5681160688400269,
+              "HYP3_reference": 0.6806826591491699
+            },
+            "winning_target_reference": "HYP3_reference",
+            "layer18_local_appearance_score": 0.7502225041389465,
+            "layer18_nids_fused_score": 0.7154525816440582,
+            "target_metrics_evaluation_only": {
+              "iou": 0.07234923793098771,
+              "target_recall": 0.08210574200153908,
+              "proposal_precision": 0.37843961291586603
+            },
+            "descriptor_sha256": "c14e70eac607ad813e7e9a30741cbaa782c737d036f21093af6c9b7f4124bf0e",
+            "layer18_patch_sha256": "3d90c46effbeb022cd66018d3ddf53cf69509ae28cf1648d181ee36fbd00c09f",
+            "mask_sha256": "c4337222ed9cc1557a37d0e443007e008a3836cf6a6da58ee4d9a3f49e96cf51"
+          }
+        }
+      ],
+      "best_hypothesis_iou_evaluation_only": 0.07234923793098771,
+      "target_covered_at_iou_gate": false
+    }
+  },
+  "intermediate_runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "proposal": {
+      "model_type": "GroundingDinoForObjectDetection",
+      "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "seconds_by_image": {
+        "HYP1_query": 2.666158700012602,
+        "HYP2_query": 1.408704100002069,
+        "HYP3_query": 1.4020705000148155
+      },
+      "grounding_dino_calls": 15,
+      "window_count_per_image": 5
+    },
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 15,
+    "sam2_image_calls": 6,
+    "dinov2_representation_calls": 94,
+    "empty_mask_candidates_skipped": 0
+  },
+  "literature_motivation": [
+    {
+      "source": "UncOS",
+      "url": "https://arxiv.org/abs/2408.04760",
+      "use": "Retain multiple object interpretations under ambiguity and resolve them with later evidence or action."
+    },
+    {
+      "source": "Latent-MaskRCNN",
+      "url": "https://arxiv.org/abs/2305.01910",
+      "use": "Model multiple structured instance-mask hypotheses for recall."
+    }
+  ],
+  "claim_boundary": "A pass confirms only bounded proposal recall on one wholly new fifth 3RScan family under provider truth and a maximum set size of three. It does not confirm top-one localization, calibrated uncertainty, open-set rejection, instance ownership, referent identity, named entrance, affordance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}

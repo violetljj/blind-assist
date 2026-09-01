@@ -449,6 +449,29 @@ contract.
   observation to collapse the set rather than another global scalar ranker.
   UncOS and Latent-MaskRCNN independently motivate retaining multiple structured
   interpretations under ambiguity; they do not validate this set or its size.
+  That fifth family was frozen before pixels as
+  `4acaebc0-6c10-2a2a-852e-0226d6539299 ->
+  185d741b-3698-223c-8ba0-48db6ecbe220`, target door `4`. The source gate
+  admitted three reference views with `0.853837` cumulative target coverage,
+  three query views with `0.765778`, and sibling door `35`. The unchanged
+  tri-evidence set failed fresh confirmation at `2/3`: minimum best IoU
+  `0.072349`, mean best IoU `0.534691`, and mean/max set size `1.667/2`. In the
+  missed view all three contributors collapsed onto the same wrong tile even
+  though a full proposal at IoU `0.735693` remained reachable. Record
+  `L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FRESH_CONFIRMATION_GATE_NOT_MET`.
+  This is correlated ranking failure, not source unreachability.
+  A consumed structural successor drops the weakest standalone local top one
+  and adds truth-blind cross-view reference consensus: the three query fusion
+  winners vote for one target-reference view, and each query may retain its
+  best fusion candidate constrained to that reference. Across five consumed
+  families it covers `15/15`, with mean/max set size `1.733/3`, minimum best IoU
+  `0.507007`, and mean best IoU `0.803731`. Record
+  `L10_3RSCAN_CROSS_VIEW_REFERENCE_CONSENSUS_FIVE_FAMILY_DEVELOPMENT_GATE_MET`.
+  Nassar et al. and CoMatcher independently motivate joint multi-view evidence
+  and consistency; they do not validate these metrics. Freeze this rule for a
+  sixth untouched family. A future pass would establish bounded proposal recall
+  only; choosing one referent still requires actual cross-view belief or active
+  disambiguation.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This

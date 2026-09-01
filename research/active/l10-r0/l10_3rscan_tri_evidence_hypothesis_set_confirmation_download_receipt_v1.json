@@ -1,0 +1,19 @@
+{
+  "schema": "blindassist-l10-3rscan-tri-evidence-hypothesis-set-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_candidate_v1.json",
+  "candidate_sha256": "3e235e14672696b33f253bac81a0de00bb69ac9a5317f0704f6c2bbdbffb5d00",
+  "completed_at": "2026-09-01T13:16:23+08:00",
+  "files": {
+    "4acaebc0-6c10-2a2a-852e-0226d6539299/semseg.v2.json": {"bytes": 20797, "sha256": "3433d3f91a1757b94839b20b6dc3180509333a541a9e062655caee3f5cc8bbe1"},
+    "4acaebc0-6c10-2a2a-852e-0226d6539299/labels.instances.annotated.v2.ply": {"bytes": 2751926, "sha256": "01ad05f7effd9ed942b7ee580f0f2cb31b48058820cdb95bff9df73ace27fa46"},
+    "4acaebc0-6c10-2a2a-852e-0226d6539299/sequence.zip": {"bytes": 112192395, "sha256": "e65d570f66856b1c25ae887588213b328e2b7600065f2bd1a4bb00ffe426f1dd"},
+    "185d741b-3698-223c-8ba0-48db6ecbe220/semseg.v2.json": {"bytes": 18013, "sha256": "b7f6f5d3e8382ceb9c3b394d4bdd97f9a9e7800bb1de3801ea5cee31ee555e57"},
+    "185d741b-3698-223c-8ba0-48db6ecbe220/labels.instances.annotated.v2.ply": {"bytes": 2605453, "sha256": "d74a7d47fcc490f185388ec46837cb0028f064bef753976ee987772c1ea8e9d4"},
+    "185d741b-3698-223c-8ba0-48db6ecbe220/sequence.zip": {"bytes": 25370768, "sha256": "e84092ebb5c6669dc30747a60bac9c4dbc09f4a45a5ce5e940649c50affe8a85"}
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "next_action": "Run the frozen geometry/depth source-admission gate; do not inspect RGB or run the hypothesis set unless both scans admit the required views and a same-scene sibling.",
+  "claim_boundary": "This receipt proves only complete official-file materialization and hashes. It is not source evaluability or algorithm evidence."
+}

@@ -1,0 +1,298 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-source-result-v1",
+  "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_SET_MEMORY_CONFIRMATION_SOURCE",
+  "protocol_path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "445d3643222dc3050ac90b9beb9770f1f3b98c1bdf992b58a8ca2cba6546d731",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_source.py",
+    "sha256": "8ab178997c9440bcd49343fe968a08924d4af24f811f83eb96ce442d98117d11"
+  },
+  "candidate": {
+    "reference_scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+    "rescan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+    "target_instance_id": 4,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      4,
+      35
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.16557934880256653,
+      -0.9861841797828674,
+      0.004912964068353176,
+      0,
+      0.9861960411071777,
+      -0.1655813306570053,
+      3.246706455684034e-06,
+      0,
+      0.000810293247923255,
+      0.004845682997256517,
+      0.9999878406524658,
+      0,
+      -1.4550178050994873,
+      -0.6408774852752686,
+      -0.1694473773241043,
+      1
+    ]
+  },
+  "conclusion": "L10_3RSCAN_SET_MEMORY_CONFIRMATION_SOURCE_EVALUABLE",
+  "source_evaluable": true,
+  "reference_memory": {
+    "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+    "target_instance_id": 4,
+    "target_vertices": 821,
+    "eligible_partial_views": 50,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 484,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 531,
+        "inside_vertex_fraction": 0.6467722289890377,
+        "projected_area_pixels": 117431.95266606633,
+        "image_margin_pixels": 0.5767261385917664,
+        "bbox_xyxy": [
+          0.5767261385917664,
+          140.3302001953125,
+          514.4483642578125,
+          410.1671142578125
+        ],
+        "depth_compared_vertices": 437,
+        "depth_visible_vertices": 420,
+        "depth_visible_ratio": 0.9610983981693364,
+        "bbox_width_pixels": 513.8716381192207,
+        "bbox_height_pixels": 269.8369140625,
+        "bbox_short_side_pixels": 269.8369140625,
+        "bbox_short_side_fraction": 0.49969798900462964,
+        "bbox_aspect_ratio": 1.9043785758689675,
+        "visible_target_vertices": 420,
+        "zip_member": "frame-000484.color.jpg",
+        "marginal_visible_target_vertices": 420,
+        "cumulative_visible_target_vertices": 420,
+        "cumulative_visible_target_fraction": 0.5115712545676004
+      },
+      {
+        "frame": 630,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 205,
+        "inside_vertex_fraction": 0.2496954933008526,
+        "projected_area_pixels": 229225.90568433265,
+        "image_margin_pixels": 0.2402159422636032,
+        "bbox_xyxy": [
+          449.168212890625,
+          0.2402159422636032,
+          949.4588012695312,
+          519.47265625
+        ],
+        "depth_compared_vertices": 181,
+        "depth_visible_vertices": 181,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 500.29058837890625,
+        "bbox_height_pixels": 519.2324403077364,
+        "bbox_short_side_pixels": 500.29058837890625,
+        "bbox_short_side_fraction": 0.92646405255353,
+        "bbox_aspect_ratio": 1.0378616995178893,
+        "visible_target_vertices": 181,
+        "zip_member": "frame-000630.color.jpg",
+        "marginal_visible_target_vertices": 181,
+        "cumulative_visible_target_vertices": 601,
+        "cumulative_visible_target_fraction": 0.7320341047503045
+      },
+      {
+        "frame": 269,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 212,
+        "inside_vertex_fraction": 0.2582216808769793,
+        "projected_area_pixels": 352328.4094334062,
+        "image_margin_pixels": 1.24945068359375,
+        "bbox_xyxy": [
+          17.344118118286133,
+          110.95022583007812,
+          957.7505493164062,
+          537.6402587890625
+        ],
+        "depth_compared_vertices": 153,
+        "depth_visible_vertices": 153,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 940.4064311981201,
+        "bbox_height_pixels": 426.6900329589844,
+        "bbox_short_side_pixels": 426.6900329589844,
+        "bbox_short_side_fraction": 0.790166727701823,
+        "bbox_aspect_ratio": 2.203956873978626,
+        "visible_target_vertices": 153,
+        "zip_member": "frame-000269.color.jpg",
+        "marginal_visible_target_vertices": 100,
+        "cumulative_visible_target_vertices": 701,
+        "cumulative_visible_target_fraction": 0.853836784409257
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 701,
+    "final_cumulative_visible_target_fraction": 0.853836784409257,
+    "opened": {
+      "pose_members": 675,
+      "depth_members": 675,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "query_memory": {
+    "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+    "target_instance_id": 4,
+    "target_vertices": 713,
+    "eligible_partial_views": 8,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 58,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 326,
+        "inside_vertex_fraction": 0.45722300140252453,
+        "projected_area_pixels": 142526.27459747434,
+        "image_margin_pixels": 0.4191589653491974,
+        "bbox_xyxy": [
+          0.4191589653491974,
+          51.47195053100586,
+          435.1676940917969,
+          521.7101440429688
+        ],
+        "depth_compared_vertices": 277,
+        "depth_visible_vertices": 264,
+        "depth_visible_ratio": 0.9530685920577617,
+        "bbox_width_pixels": 434.7485351264477,
+        "bbox_height_pixels": 470.2381935119629,
+        "bbox_short_side_pixels": 434.7485351264477,
+        "bbox_short_side_fraction": 0.805089879863792,
+        "bbox_aspect_ratio": 1.081632611769912,
+        "visible_target_vertices": 264,
+        "zip_member": "frame-000058.color.jpg",
+        "marginal_visible_target_vertices": 264,
+        "cumulative_visible_target_vertices": 264,
+        "cumulative_visible_target_fraction": 0.3702664796633941
+      },
+      {
+        "frame": 75,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 272,
+        "inside_vertex_fraction": 0.3814866760168303,
+        "projected_area_pixels": 433862.4110356689,
+        "image_margin_pixels": 1.174072265625,
+        "bbox_xyxy": [
+          38.21128463745117,
+          4.108514308929443,
+          957.825927734375,
+          525.3400268554688
+        ],
+        "depth_compared_vertices": 210,
+        "depth_visible_vertices": 210,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 919.6146430969238,
+        "bbox_height_pixels": 521.2315125465393,
+        "bbox_short_side_pixels": 521.2315125465393,
+        "bbox_short_side_fraction": 0.9652435417528505,
+        "bbox_aspect_ratio": 1.7643112915488086,
+        "visible_target_vertices": 210,
+        "zip_member": "frame-000075.color.jpg",
+        "marginal_visible_target_vertices": 210,
+        "cumulative_visible_target_vertices": 474,
+        "cumulative_visible_target_fraction": 0.664796633941094
+      },
+      {
+        "frame": 71,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 108,
+        "inside_vertex_fraction": 0.1514726507713885,
+        "projected_area_pixels": 350628.25013551454,
+        "image_margin_pixels": 0.3033447265625,
+        "bbox_xyxy": [
+          16.670475006103516,
+          130.06146240234375,
+          942.9393310546875,
+          538.6966552734375
+        ],
+        "depth_compared_vertices": 81,
+        "depth_visible_vertices": 81,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 926.268856048584,
+        "bbox_height_pixels": 408.63519287109375,
+        "bbox_short_side_pixels": 408.63519287109375,
+        "bbox_short_side_fraction": 0.7567318386501736,
+        "bbox_aspect_ratio": 2.266737843944784,
+        "visible_target_vertices": 81,
+        "zip_member": "frame-000071.color.jpg",
+        "marginal_visible_target_vertices": 72,
+        "cumulative_visible_target_vertices": 546,
+        "cumulative_visible_target_fraction": 0.7657784011220197
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 546,
+    "final_cumulative_visible_target_fraction": 0.7657784011220197,
+    "opened": {
+      "pose_members": 158,
+      "depth_members": 158,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "same_scene_sibling": {
+    "instance_id": 35,
+    "label": "door_or_doorframe",
+    "target_vertices": 416,
+    "candidate_views": 7,
+    "selected": {
+      "frame": 57,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 227,
+      "inside_vertex_fraction": 0.5456730769230769,
+      "projected_area_pixels": 66041.89488907687,
+      "image_margin_pixels": 0.043905600905418396,
+      "bbox_xyxy": [
+        0.043905600905418396,
+        177.8952178955078,
+        385.2538146972656,
+        467.34210205078125
+      ],
+      "depth_compared_vertices": 126,
+      "depth_visible_vertices": 113,
+      "depth_visible_ratio": 0.8968253968253969,
+      "bbox_width_pixels": 385.2099090963602,
+      "bbox_height_pixels": 289.44688415527344,
+      "bbox_short_side_pixels": 289.44688415527344,
+      "bbox_short_side_fraction": 0.5360127484356916,
+      "bbox_aspect_ratio": 1.3308483531289796,
+      "visible_target_vertices": 113,
+      "zip_member": "frame-000057.color.jpg"
+    },
+    "opened": {
+      "pose_members": 158,
+      "depth_members": 158,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Freeze three target views per side, then run the unchanged at-most-three proposal set contributed by layer-18 local, equal semantic/local fusion, and nearest reference-scale mixture once.",
+  "claim_boundary": "This source gate can establish only whether the fifth new family supplies three-view target memory and a sibling control. It is not algorithm evidence, top-one localization, calibrated uncertainty, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

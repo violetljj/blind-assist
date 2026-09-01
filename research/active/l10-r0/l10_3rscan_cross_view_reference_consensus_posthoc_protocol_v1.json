@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-view-reference-consensus-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-view-reference-consensus-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T13:42:00+08:00",
+  "question": "Can truth-blind agreement over the reference view selected by three query observations recover correlated proposal failures while keeping the unresolved proposal set bounded?",
+  "implementation": {
+    "path": "l10_3rscan_cross_view_reference_consensus_posthoc.py",
+    "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_result_v1.json",
+    "sha256": "355936d85f33515b7380ef225a066e9f8fd8f7028584ea6f4b01e868e203c24e",
+    "required_conclusion": "L10_3RSCAN_TRI_EVIDENCE_HYPOTHESIS_SET_FRESH_CONFIRMATION_GATE_NOT_MET"
+  },
+  "families": {
+    "fresh_consumed_door8_second": {
+      "candidate_result": {
+        "path": "l10_3rscan_scale_extent_guard_confirmation_result_v1.json",
+        "sha256": "eff163533e18c8637e095a78492f336a7e5297d078c9b5c1c3604a8027391793"
+      },
+      "cohort": {
+        "path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+        "sha256": "ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee"
+      }
+    },
+    "consumed_door12": {
+      "candidate_result": {
+        "path": "l10_3rscan_cross_scale_extent_confirmation_result_v1.json",
+        "sha256": "5641cafbdef50d4c409e3ef6a5da6868ec2ee0db7a55e7ef38b32e2889a3a827"
+      },
+      "cohort": {
+        "path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+        "sha256": "104f210b116b9a585461d0fb638a473bf740bbf6cdec129bbc3168f3239be1c7"
+      }
+    },
+    "consumed_door8_first": {
+      "candidate_result": {
+        "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json",
+        "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060"
+      },
+      "cohort": {
+        "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+        "sha256": "d893210355ab928eedd0420268427d15f8a0a47fc028c7184a1807dd8993aed5"
+      }
+    },
+    "consumed_door15": {
+      "candidate_result": {
+        "path": "l10_3rscan_foundpose_layer18_nids_posthoc_result_v1.json",
+        "sha256": "04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8"
+      },
+      "cohort": {
+        "path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+        "sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"
+      }
+    },
+    "fresh_consumed_door4": {
+      "candidate_result": {
+        "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_intermediate_result_v1.json",
+        "sha256": "1be57b5f085f8d6cd98c1604189f90f75202bb871e76655fd3441487298c261a"
+      },
+      "cohort": {
+        "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+        "sha256": "187f734bd0e0546fb431bba20be8c3dbb536b20a37df1f51ff3f1ccf7fb203bf"
+      }
+    }
+  },
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "mechanisms": [
+      "equal semantic-local fusion top one",
+      "layer18 local minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale",
+      "best semantic-local fusion candidate constrained to the majority winning target reference across the three query observations"
+    ],
+    "scale_mixture_log_area_penalty": 0.05,
+    "reference_vote": "Each query contributes its semantic-local fusion top-one winning target reference. Select the majority reference; break ties by deterministic sorted reference order.",
+    "deduplication": "Deduplicate identical tile, proposal index and box while retaining all mechanism provenance.",
+    "truth_boundary": "No target box, IoU, target mask or target coverage enters reference voting, candidate generation, candidate ranking or deduplication. Truth is opened only for evaluation.",
+    "downstream_contract": "The bounded set remains unresolved localization uncertainty and requires cross-view belief or active observation before one target can be authorized."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_covered_queries": 15,
+    "maximum_set_size": 3
+  },
+  "literature_motivation": [
+    {
+      "source": "Simultaneous Multi-View Instance Detection With Learned Geometric Soft-Constraints",
+      "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Nassar_Simultaneous_Multi-View_Instance_Detection_With_Learned_Geometric_Soft-Constraints_ICCV_2019_paper.pdf",
+      "use": "Appearance and cross-view geometry can jointly disambiguate highly similar neighboring instances under viewpoint and scale change. Mechanism motivation only."
+    },
+    {
+      "source": "CoMatcher: Multi-View Collaborative Feature Matching",
+      "url": "https://arxiv.org/abs/2504.01872",
+      "use": "Complementary views and cross-view consistency can reduce ambiguity from independent pairwise matching. Mechanism motivation only."
+    }
+  ],
+  "claim_boundary": "All five families were consumed before this consensus rule was defined. A pass is Development evidence for bounded proposal coverage only, not top-one localization, calibrated uncertainty, fresh confirmation, open-set rejection, raw-phone operation, referent ownership, named entrance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}
