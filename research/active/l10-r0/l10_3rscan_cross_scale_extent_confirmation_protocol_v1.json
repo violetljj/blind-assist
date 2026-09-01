@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-scale-extent-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-scale-extent-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T09:44:00+08:00",
+  "question": "Does the completed layer-18 local-ranking and 0.8/0.99 cross-scale extent rule localize new physical door 12 in all three frozen queries?",
+  "implementation": {
+    "path": "l10_3rscan_cross_scale_extent_confirmation.py",
+    "sha256": "5f7c20d9b00acb565f043c2e74acd544d1ebae8b91e32b86c91b595996bdee47"
+  },
+  "intermediate_protocol": {
+    "path": "l10_3rscan_cross_scale_extent_confirmation_intermediate_protocol_v1.json",
+    "sha256": "c8b1757ba378ca0c7f9da999376143f5498ebf35da3106411f0f3bf6507fe326"
+  },
+  "development_predecessor": {
+    "path": "l10_3rscan_cross_scale_extent_completion_preservation_audit_result_v2.json",
+    "sha256": "02998bd2ff0528c1c1bf7ad36fae8a624c953184ad229fb8ca1bf121cd4f0004",
+    "required_conclusion": "L10_3RSCAN_CROSS_SCALE_EXTENT_COMPLETION_V2_TWO_FAMILY_PRESERVATION_GATE_MET"
+  },
+  "source": {
+    "authority": "FRESH_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CROSS_SCALE_EXTENT_CONFIRMATION",
+    "target_instance": "door 12",
+    "reference_scan": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+    "query_scan": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+    "cohort_path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+    "cohort_sha256": "104f210b116b9a585461d0fb638a473bf740bbf6cdec129bbc3168f3239be1c7"
+  },
+  "selection": {
+    "anchor_ranking": "Layer-18 local appearance descending, then final-layer target-memory score, objectness and deterministic box/index ties.",
+    "minimum_anchor_containment": 0.8,
+    "minimum_local_score_retention": 0.99,
+    "completion": "If the top local anchor is tiled, take the highest-ranked full-frame proposal from the same winning reference only when it contains at least 80 percent of the anchor and retains at least 99 percent of its local score; otherwise retain the anchor."
+  },
+  "evaluation": {
+    "query_images": ["CSX1_query", "CSX2_query", "CSX3_query"],
+    "truth_role": "Truth enters only after frozen anchor ranking, extent completion and SAM refinement."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_refined_queries": 3
+  },
+  "literature_motivation": [
+    {
+      "source": "FoundPose",
+      "url": "https://arxiv.org/abs/2311.18809",
+      "use": "Intermediate DINOv2 features preserve local part appearance under viewpoint change."
+    },
+    {
+      "source": "DeepVoting",
+      "url": "https://openaccess.thecvf.com/content_cvpr_2018/papers/Zhang_DeepVoting_A_Robust_CVPR_2018_paper.pdf",
+      "use": "Reliable local evidence can vote for a larger object extent."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change family, rows, proposal tiles, layer-18 score, 0.8 containment, 0.99 retention, SAM or IoU gate",
+    "use query truth, sibling appearance or target metrics in selection",
+    "retry, rescue, replace or remove a frozen query"
+  ],
+  "claim_boundary": "A pass is narrow same-provider new-family confirmation of an exact-instance localization component. It is not source-independent generalization, raw-phone operation, named entrance or portal ownership, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety evidence."
+}

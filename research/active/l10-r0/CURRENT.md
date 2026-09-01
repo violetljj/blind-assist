@@ -399,6 +399,22 @@ contract.
   Retain geometry-and-appearance-consistent cross-scale extent completion as
   the next candidate, but only as two-family consumed Development. It still
   requires another untouched family for confirmation.
+  That untouched check froze wholly new `48699c02 -> a7616234`, door `12`,
+  before RGB/model access. The geometry gate admitted three reference views at
+  `0.791815` cumulative coverage and three queries at `0.652356`, plus sibling
+  door `17`. The fixed layer-18 plus `0.8/0.99` extent chain then failed `1/3`:
+  refined IoU `0.449737`, `0`, `0.976225`, minimum `0`, mean `0.475321`, and
+  extent completion triggered `0/3`. Record
+  `L10_3RSCAN_CROSS_SCALE_EXTENT_FRESH_CONFIRMATION_GATE_NOT_MET`; proposal
+  opportunity remained `3/3`, so this is ranking/mask failure, not source
+  unreachability. A consumed failure-driven successor adds one reference-derived
+  scale cue: subtract `0.05 * abs(log(candidate area / reference median target
+  area))` from local appearance. Across consumed doors `12/8/15` it reached
+  `8/9`, mean `0.795400`, minimum `0.449737`; door 8 and door 15 remained `3/3`,
+  and door 12 improved to `2/3`. Freeze this as a promising scale-aware
+  Development candidate, not confirmation. The remaining miss is a correct
+  large proposal whose SAM mask truncates the target; the next untouched test
+  must freeze a mask-extent/stability mechanism without tuning on door 12.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This

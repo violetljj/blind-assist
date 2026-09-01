@@ -1,0 +1,39 @@
+{
+  "schema": "blindassist-l10-3rscan-reference-scale-prior-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-reference-scale-prior-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:49:00+08:00",
+  "question": "Can a weak reference-memory scale prior prevent local appearance from selecting background fragments while preserving cross-family exact-instance localization?",
+  "implementation": {
+    "path": "l10_3rscan_reference_scale_prior_posthoc.py",
+    "sha256": "61f7d8d3385f44b0ce1993aa4bb1a437b24074fa59d5d291073a8b46f0e2b336"
+  },
+  "families": {
+    "fresh_consumed_door12": {
+      "candidate_result": {"path": "l10_3rscan_cross_scale_extent_confirmation_result_v1.json", "sha256": "5641cafbdef50d4c409e3ef6a5da6868ec2ee0db7a55e7ef38b32e2889a3a827"},
+      "intermediate_protocol": {"path": "l10_3rscan_cross_scale_extent_confirmation_intermediate_protocol_v1.json", "sha256": "c8b1757ba378ca0c7f9da999376143f5498ebf35da3106411f0f3bf6507fe326"}
+    },
+    "consumed_door8": {
+      "candidate_result": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json", "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060"},
+      "intermediate_protocol": {"path": "l10_3rscan_foundpose_layer18_local_only_confirmation_intermediate_protocol_v1.json", "sha256": "0ea35843fa0897dd683ecf9dcc444704d85a152cc87b1c8e4c1723a4c92b538e"}
+    },
+    "consumed_door15": {
+      "candidate_result": {"path": "l10_3rscan_foundpose_layer18_nids_posthoc_result_v1.json", "sha256": "04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8"},
+      "intermediate_protocol": {"path": "l10_3rscan_foundpose_layer18_nids_posthoc_protocol_v1.json", "sha256": "3cce7c49c0e5591b5a4a89902756df089a6a51e5ab279a510e3f9596636b8283"}
+    }
+  },
+  "selection": {
+    "reference_scale": "Median target bounding-box area fraction across the three frozen reference-memory views.",
+    "score": "layer18_local_appearance_score - 0.05 * absolute(log(candidate_area_fraction / reference_median_area_fraction))",
+    "log_area_penalty": 0.05,
+    "tie_break": "Raw local appearance, final-layer memory score, objectness, box coordinates and proposal index."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_refined_queries": 9
+  },
+  "literature_motivation": [
+    {"source": "FoundPose", "url": "https://arxiv.org/abs/2311.18809", "use": "Local appearance remains the primary score."},
+    {"source": "DeepVoting", "url": "https://openaccess.thecvf.com/content_cvpr_2018/papers/Zhang_DeepVoting_A_Robust_CVPR_2018_paper.pdf", "use": "Object-level context regularizes ambiguous local evidence."}
+  ],
+  "claim_boundary": "Door 12 was inspected before this fixed penalty was chosen, and all three families are consumed. A pass is only multi-family Development evidence for a scale-aware candidate; it requires a wholly untouched family and does not prove open-set rejection, provider independence, raw-phone operation or any downstream navigation/safety claim."
+}

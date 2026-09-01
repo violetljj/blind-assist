@@ -4358,6 +4358,28 @@ mean `0.914442`; consumed D15 retains `3/3`, minimum `0.594841`, mean
 `0.705944`. This geometry-and-appearance consensus is the next candidate, not a
 freshly confirmed mechanism. It requires another untouched family unchanged.
 
+The next family was frozen before RGB/model access as `48699c02 -> a7616234`,
+target door `12`. Its source gate admitted all six target views (`0.791815`
+reference and `0.652356` query cumulative coverage) plus sibling door `17`.
+The unchanged completed chain failed its fresh gate at `1/3`: refined IoU
+`0.449737`, `0`, and `0.976225` (minimum `0`, mean `0.475321`), with no extent
+completion firing. All three queries still had a reachable IoU-`0.5` proposal,
+so the failure localizes to ranking and mask extent rather than observation
+reachability. Freeze
+`L10_3RSCAN_CROSS_SCALE_EXTENT_FRESH_CONFIRMATION_GATE_NOT_MET`.
+
+One posthoc structural successor used scale already present in reference memory
+instead of a query-specific position/aspect heuristic. It ranks by layer-18
+local appearance minus `0.05 * abs(log(candidate area fraction / median
+reference target area fraction))`. A fixed replay over consumed door 12, door 8,
+and door 15 reached `8/9`, minimum refined IoU `0.449737`, mean `0.795400`.
+Door 8 and door 15 were preserved at `3/3`; door 12 improved from `1/3` to
+`2/3`, including repair of the zero-IoU background fragment. The strict `9/9`
+gate remains unmet because door-12 view one selects a correct large proposal
+but SAM truncates its extent. This is consumed three-family Development evidence
+for a scale-aware candidate. It requires an untouched family and a frozen
+mask-extent/stability mechanism; do not tune the `0.05` penalty on door 12.
+
 Evidence:
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and

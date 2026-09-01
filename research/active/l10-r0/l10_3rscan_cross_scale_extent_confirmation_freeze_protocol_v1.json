@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-scale-extent-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T09:42:00+08:00",
+  "question": "Does the completed layer-18 and cross-scale extent chain localize new door 12 across all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_cross_scale_extent_confirmation_source_result_v1.json", "sha256": "9adcb4b8e869374fbdcec684e816b193457d218df2b9e2ddaaaa2aadf7b31522"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_CROSS_SCALE_EXTENT_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "48699c02-d4a2-2f10-81c3-552d06ffcbb8/sequence.zip": {"path": "datasets/3rscan/48699c02-d4a2-2f10-81c3-552d06ffcbb8/sequence.zip", "bytes": 37559524, "sha256": "27e2e4a6b1795bd19c3b19888454c7e6b29269b00eaedababa12eda537c9eebe"},
+      "a7616234-a0aa-2dea-80e1-69c253cfa9b2/sequence.zip": {"path": "datasets/3rscan/a7616234-a0aa-2dea-80e1-69c253cfa9b2/sequence.zip", "bytes": 42680688, "sha256": "6db8fdac3fefa8e5869974f2728fa3df9897c4cce42d82a73d51409aaa2c8fae"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["CSX1", "CSX2", "CSX3"],
+    "sibling_episode_id": "CSXS17",
+    "positive_authority": "Next wholly unmaterialized family selected after the two-family 0.8/0.99 preservation gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, tiles, proposals, layer-18 score, 0.8 containment, 0.99 retention, SAM or IoU gate",
+    "use sibling appearance in ranking",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for the completed cross-scale extent mechanism. A pass would be narrow same-provider new-family confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
