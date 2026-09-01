@@ -123,6 +123,8 @@ def run(protocol_path: Path, output_path: Path) -> None:
             "wide_baseline_query_keys": wide_keys,
             "selection": "All source-admitted views except the two consumed initial frames; no RGB/model or outcome selection.",
         },
+        "artifact_root": base_cohort["artifact_root"],
+        "source_manifest": deepcopy(base_cohort["source_manifest"]),
         "images": images,
         "source_receipt": {
             "opened": opened,

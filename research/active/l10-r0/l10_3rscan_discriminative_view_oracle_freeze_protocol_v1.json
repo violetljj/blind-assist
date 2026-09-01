@@ -5,7 +5,7 @@
   "question": "Among every source-admitted extra query view on the consumed eleventh family, does any one view expose enough different evidence for the unchanged candidate scorer to recover target Top-1, and is a local one-step view sufficient?",
   "implementation": {
     "path": "l10_3rscan_discriminative_view_oracle_freeze.py",
-    "sha256": "c06bd4588e797beff547c413b3dc5eff559b7e10ddb20a563bef4d9c165d3b99"
+    "sha256": "f919735c6c471d126d9285f2e9dc9b4c01bfdbb7f56ce904f3a044df2f125d37"
   },
   "dependencies": [
     {

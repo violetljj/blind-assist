@@ -25,7 +25,7 @@
     "authority": "CONSUMED_ELEVENTH_FAMILY_ALL_ADMITTED_VIEW_ORACLE_DEVELOPMENT",
     "artifact_root": "F:/ba-data/blindassist-artifacts-20260805",
     "cohort_path": "l10_3rscan_discriminative_view_oracle_cohort_v1.json",
-    "cohort_sha256": "e5172be578b001f58600879a53f1b23e9618be997295d3ae8a5a9b3fea4adf58"
+    "cohort_sha256": "457cfb97ca450013dc8c39133536e0abfb9c2c2faabbeb1b9f0f854727e6e130"
   },
   "proposal": {
     "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",

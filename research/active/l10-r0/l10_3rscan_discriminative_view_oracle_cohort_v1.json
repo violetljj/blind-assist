@@ -2,10 +2,10 @@
   "schema": "blindassist-l10-3rscan-discriminative-view-oracle-cohort-v1",
   "authority": "CONSUMED_ELEVENTH_FAMILY_ALL_ADMITTED_VIEW_ORACLE_DEVELOPMENT",
   "protocol_path": "l10_3rscan_discriminative_view_oracle_freeze_protocol_v1.json",
-  "protocol_sha256": "59dd19a414c781aeb60e3e493b8814ba1076a76dd6db0c9eeb35bc2c18921de4",
+  "protocol_sha256": "f565d37dd2adf2e93b3446eef74d391683634552c214d38e873f19c8575f06b9",
   "implementation": {
     "path": "l10_3rscan_discriminative_view_oracle_freeze.py",
-    "sha256": "c06bd4588e797beff547c413b3dc5eff559b7e10ddb20a563bef4d9c165d3b99"
+    "sha256": "f919735c6c471d126d9285f2e9dc9b4c01bfdbb7f56ce904f3a044df2f125d37"
   },
   "panel": {
     "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
@@ -51,6 +51,19 @@
       "DVO_frame_000062_query"
     ],
     "selection": "All source-admitted views except the two consumed initial frames; no RGB/model or outcome selection."
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "54b263a3-0199-2df4-87db-40539528902d/sequence.zip": {
+      "path": "datasets/3rscan/54b263a3-0199-2df4-87db-40539528902d/sequence.zip",
+      "bytes": 43630148,
+      "sha256": "333fb12bc0e043779725f29c97d9c9045f79caafe55492a2514f8f87021df2a6"
+    },
+    "82def5da-25ba-20f9-8810-71be905b83db/sequence.zip": {
+      "path": "datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/sequence.zip",
+      "bytes": 39252447,
+      "sha256": "e907b62d0b587e9ca45ff428acb68cf6ebf3adfea9dbf1d1f3237b8d317195f0"
+    }
   },
   "images": {
     "DPC1_reference": {
