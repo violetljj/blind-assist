@@ -104,7 +104,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `91.42/77.71/84.01%`, or `0 TP / -19 FP / +0.71 pp F1` over X74. C36 alone
   rose to `85.12/83.14/84.12%`, restoring its precision floor. All required
   authority invariants and contact/safe constraints passed. X75 is the
-  strongest current seven-cohort Development arm, but is not freshly confirmed.
+  strongest current seven-cohort Development arm. The sole C37 invocation then
+  exercised X75 once on a new seed and four new render assignments. X75 changed
+  X74 from `133 TP / 35 FP / 39 FN` to `133 / 34 / 39`, a fresh
+  `0 TP / -1 FP / +0.23 pp F1` effect. All incremental, authority, contact, and
+  safe constraints passed, but full-arm precision was `79.64%`, below the
+  frozen 85% floor. The incremental direction therefore has fresh positive
+  evidence, while the full X75 generalization gate did not pass. Across all
+  eight consumed cohorts, X75 is `1,071 TP / 122 FP / 308 FN` at
+  `89.77/77.67/83.28%`, a cumulative `0 TP / -20 FP / +0.64 pp F1` over X74.
+  C37 is now consumed diagnosis material; X73 retains confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -122,12 +131,12 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35 or C36 as confirmation. X73 remains positively confirmed
-   on C35; C36 is consumed X75 design evidence. Freeze unchanged X75 before one
-   genuinely new source. Require an exercised permanence release, zero TP loss
-   and strict FP reduction versus X74, zero required authority-invariant
-   violations, and the inherited contact/safe constraints. Until then X73
-   retains source-disjoint confirmation authority.
+4. Do not rerun C35, C36, or C37 as confirmation. X73 remains positively
+   confirmed on C35; C36 and C37 are consumed successor-design evidence. A new
+   arm should reduce C37's remaining 34 false-positive frames without losing
+   true positives, then replay every consumed cohort before any later new
+   source. Until a full fresh gate passes, X73 retains source-disjoint
+   confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
