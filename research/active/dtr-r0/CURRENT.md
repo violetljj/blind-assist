@@ -189,6 +189,19 @@ future obstacle occupancy intersects the wearer's route, while preserving
   and authority constraint passed, but full-arm precision missed the frozen
   85% floor. X81 therefore has fresh positive incremental evidence without a
   complete generalization gate; X73 retains full fresh confirmation authority.
+  Consumed C40 diagnosis then exposed a narrower authority failure: multiple
+  X72 completion proxies were all carried (`HOLD`) with no current measured
+  risk carrier, yet their multiplicity still owned route risk. X82 clears only
+  this held-only proxy consensus while retaining single proxies, any current
+  measurement, mixed direct carriers, and all track state. Across
+  C26/C27/C28/C32/C34/C35/C36/C37/C39/C40 it changes only C40, removing three
+  false positives with zero TP loss. C40 moves to `129 TP / 22 FP / 43 FN` at
+  `85.43/75.00/79.88%`, crossing the formerly missed precision floor. Pooled
+  ten-cohort X82 is `1,337 TP / 127 FP / 386 FN` at
+  `91.33/77.60/83.90%`, or `0 TP / -3 FP / +0.08 pp F1` over X81. Every
+  required check passes. Because X82 was designed after C40 opened, this is
+  Development-only; C40 cannot retroactively confirm X82 and X73 retains full
+  fresh authority until a new source-disjoint gate tests frozen X82.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -222,7 +235,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    false-positive frames with zero TP loss, but its 83.77% full-arm precision
    missed the 85% floor. Until a later full fresh gate passes, X73 retains
    source-disjoint confirmation authority. Use C40 only for successor
-   diagnosis; any later promotion requires a new preregistered source.
+   diagnosis. X82 used that consumed diagnosis to reject held-only completion
+   proxy consensus and reaches 85.43% precision on C40 with zero TP loss across
+   ten consumed cohorts. Any later promotion still requires a new
+   preregistered source testing byte-frozen X82.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -299,3 +315,5 @@ their result.
   [DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
 - C40 X81 fresh outcome:
   [DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md)
+- X82 consumed ten-cohort Development:
+  [DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md)
