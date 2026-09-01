@@ -1,0 +1,39 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-region-coverage-gate-freeze-protocol-v1",
+  "authority": "PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_QUEUE_ROW_3_TARGET_REGION_EQUIVALENCE_GATE",
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "selected_queue_index": 3,
+    "reference_scan_id": "6bde6070-9162-246f-8ea9-c8bbe5d7133a",
+    "rescan_id": "6bde606a-9162-246f-8d00-6f12f032e27d",
+    "target_instance_id": 4
+  },
+  "mechanism": {
+    "proposal_pool": "Unchanged GroundingDINO objects prompt over full frame plus four fixed 40-percent corner tiles, capped at 48 proposals without truth filtering.",
+    "masker": "Unchanged SAM2.1 small mask per retained proposal.",
+    "association": "Lift query masks through registered depth and pose; on both consecutive-frame edges use symmetric depth-consistent coverage, then rank depth support, mutual-best support, maximum track score, objectness, and frozen proposal index.",
+    "appearance_use": "None",
+    "training_steps": 0,
+    "candidate_budget": 3
+  },
+  "gate": {
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 3,
+    "required_track_top3_coverage_frames": 3,
+    "success_unit": "A frame succeeds when any of the first three geometry-ranked proposals has IoU at least 0.8 with the target region.",
+    "equivalence_rationale": "The bounded hypothesis set is responsible for preserving a task-usable target region, not for selecting one exact maximum-IoU member among overlapping duplicate proposals. The 0.8 threshold requires strong localization and is frozen on queue row 3 before source acquisition."
+  },
+  "comparison": {
+    "baseline": "Objectness-only Top-3 target-region coverage under the identical proposal pool.",
+    "report": [
+      "proposal opportunity frames at IoU>=0.8",
+      "objectness Top-3 coverage frames at IoU>=0.8",
+      "3D-track Top-3 coverage frames at IoU>=0.8",
+      "minimum and mean Top-1 IoU",
+      "frames improved or regressed against objectness"
+    ]
+  },
+  "fallback_action": "Seal a negative without tuning on queue row 3; diagnose whether failure is proposal opportunity, depth support, association ambiguity, or target-instance selection before changing information source.",
+  "claim_boundary": "This gate evaluates only bounded proposal-set coverage of the annotated target region on one new physical-door family. It does not identify target ownership or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
