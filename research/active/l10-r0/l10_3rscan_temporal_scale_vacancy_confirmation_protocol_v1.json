@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-temporal-scale-vacancy-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T19:28:00+08:00",
+  "question": "Does the unchanged adjacent-frame temporal scale-vacancy set rule cover both observations of a wholly fresh tenth 3RScan door family at IoU at least 0.5?",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation.py",
+    "sha256": "8763a87a7e9fea3e75ef9e799bfaedf37d23b8e823e0a7862a4dd18385a772c6"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_cross_view_reference_consensus_posthoc.py",
+      "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"
+    }
+  ],
+  "development_predecessor": {
+    "path": "l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json",
+    "sha256": "ea89a2df043e3b1f857ad588747231120db96eaaf3f852495795be9cbd210f37",
+    "required_conclusion": "L10_3RSCAN_TEMPORAL_SCALE_VACANCY_DEVELOPMENT_GATE_MET"
+  },
+  "source_result": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source_result_v1.json",
+    "sha256": "bf0d968bfdf04c5351f8f6dbec469309c705845f2d6c648e7af16894cdf223b1"
+  },
+  "cohort": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+    "sha256": "4b5dce5bc0296a18d2eebd3dd8ad90d76a31d2cf7bb9345733f1fa02ea4907f8"
+  },
+  "candidate_result": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_intermediate_result_v1.json",
+    "sha256": "899bd2fff6ece219a0ff9ced18b96efc099111f40a31a834c1baea080daf6fec"
+  },
+  "hypothesis_generation": {
+    "preserved_contributors": [
+      "semantic_local_fusion",
+      "reference_scale_mixture",
+      "cross_view_reference_consensus"
+    ],
+    "scale_log_area_penalty": 0.05,
+    "deduplication": "Exact candidate identity by tile, postprocess index and box coordinates; merge contributor labels without changing rank.",
+    "vacancy_rule": "Only when preserved exact deduplication leaves fewer than three candidates, append the current-frame member of the selected adjacent proposal link if it is not already present."
+  },
+  "temporal_link": {
+    "query_images": ["TSV1_query", "TSV2_query"],
+    "maximum_frame_gap": 1,
+    "minimum_adjacent_box_iou": 0.5,
+    "scale_log_area_penalty": 0.05,
+    "score": "Mean layer-18 semantic/local fusion minus 0.05 times mean nearest-reference log-area distance.",
+    "tie_order": "Higher path score, adjacent IoU and mean fusion, then earlier first-frame and second-frame ranked-candidate indices."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "maximum_set_size": 3,
+    "required_covered_queries": 2
+  },
+  "literature_motivation": [
+    {
+      "source": "Seq-NMS for Video Object Detection",
+      "url": "https://arxiv.org/abs/1602.08465",
+      "use": "Motivates fixed-overlap links and sequence scoring across adjacent detections."
+    },
+    {
+      "source": "Leveraging Long-Range Temporal Relationships Between Proposals for Video Object Detection",
+      "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Shvets_Leveraging_Long-Range_Temporal_Relationships_Between_Proposals_for_Video_Object_Detection_ICCV_2019_paper.pdf",
+      "use": "Motivates proposal-level temporal consistency without replacing frame-specific evidence."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change the fresh family, five frozen images, candidate roster, models, features, contributors, penalties, link threshold, link score, tie order, exact deduplication, vacancy condition, set size or IoU gate",
+    "use query truth before the complete set is fixed",
+    "retry, retune, rescue or relabel a failed fresh confirmation"
+  ],
+  "claim_boundary": "A positive result would freshly confirm only the bounded at-most-three temporal scale-vacancy proposal-set rule on this tenth family. A negative result remains informative and cannot be repaired on this consumed family. Neither result establishes top-one localization, calibrated uncertainty, referent identity beyond this cohort, portal ownership, affordance, access, safety, waypoint, arrival or handoff."
+}
