@@ -4393,6 +4393,14 @@ This is failure-driven Development on consumed families, not fresh confirmation
 or mask-quality authority. Freeze the scale prior and extent guard unchanged
 for one wholly untouched family.
 
+The mechanism class has independent primary-literature support: SAPNet reports
+that SAM can assign its highest score to a discriminative object part instead
+of the whole instance, and its Box Mining Strategy uses overlapping larger
+proposals to repair this local-extent error. See the official
+[CVPR 2024 paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Wei_Semantic-aware_SAM_for_Point-Prompted_Instance_Segmentation_CVPR_2024_paper.pdf).
+This motivates the structure only; it does not validate the `0.8` threshold or
+upgrade the consumed replay to confirmation.
+
 Evidence:
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and

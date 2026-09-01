@@ -422,6 +422,10 @@ contract.
   `0.827756`; door 12 became `3/3` with minimum `0.740937`. Freeze this complete
   scale-prior plus full-proposal extent-guard chain for an untouched family.
   This is Development, not fresh confirmation or pixel-mask evidence.
+  Exa's official CVPR source independently identifies the same SAM failure mode:
+  high-scoring local parts can miss whole-object extent, and its Box Mining
+  Strategy expands overlapping larger proposals. This supports the mechanism
+  class, not the present numeric threshold or confirmation claim.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
