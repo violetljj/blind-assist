@@ -106,6 +106,15 @@ def run(protocol_path: Path, output_path: Path) -> None:
     pixel.require(pixel.sha256(cohort_path) == cohort_row["sha256"], "COHORT_HASH")
     cohort = pixel.load_json(cohort_path)
     pixel.require(cohort["schema"] == cohort_row["required_schema"], "COHORT_SCHEMA")
+    if "selector" in protocol:
+        selector_row = protocol["selector"]
+        selector_path = HERE / selector_row["path"]
+        pixel.require(pixel.sha256(selector_path) == selector_row["sha256"], "SELECTOR_HASH")
+        selector = pixel.load_json(selector_path)
+        pixel.require(selector["conclusion"] == selector_row["required_conclusion"], "SELECTOR_CONCLUSION")
+        pixel.require(int(selector["selected_action"]["frame"]) == int(selector_row["selected_frame"]), "SELECTOR_FRAME")
+        action_key = str(cohort["panel"]["action_query_key"])
+        pixel.require(int(cohort["images"][action_key]["frame"]) == int(selector_row["selected_frame"]), "SELECTOR_COHORT_FRAME")
     if gate_freeze is not None:
         pixel.require(
             int(cohort["source_queue_index"]) == int(gate_freeze["queue"]["selected_queue_index"]),
