@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist-l10-3rscan-depth-pose-propagation-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-depth-pose-propagation-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T19:52:00+08:00",
+  "question": "On the consumed tenth family, can calibrated depth and camera pose generate one missing-frame proposal from the adjacent frame's highest contributor-agreement box, without changing the three-slot bound?",
+  "implementation": {
+    "path": "l10_3rscan_depth_pose_propagation_posthoc.py",
+    "sha256": "0d9ca3597c9ec28c07811a82345b8c9c194bebeb3edc0f043abd93cca9d22ea5"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation.py",
+      "sha256": "8763a87a7e9fea3e75ef9e799bfaedf37d23b8e823e0a7862a4dd18385a772c6"
+    }
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json",
+    "sha256": "03cb9c7fd9a1339956eeddf6fff367d50f46568e9c08684094eac55f8018c52a",
+    "required_conclusion": "L10_3RSCAN_TEMPORAL_SCALE_VACANCY_FRESH_CONFIRMATION_GATE_NOT_MET",
+    "single_change": "Replace ranking-only temporal vacancy insertion with one physically generated rectangle: select the adjacent query candidate supported by the most preserved mechanisms, estimate its median metric depth, and reproject its four corners through official camera poses into the other frame."
+  },
+  "cohort": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_cohort_v1.json",
+    "sha256": "4b5dce5bc0296a18d2eebd3dd8ad90d76a31d2cf7bb9345733f1fa02ea4907f8"
+  },
+  "candidate_result": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_intermediate_result_v1.json",
+    "sha256": "899bd2fff6ece219a0ff9ced18b96efc099111f40a31a834c1baea080daf6fec"
+  },
+  "hypothesis_generation": {
+    "preserved_contributors": [
+      "semantic_local_fusion",
+      "reference_scale_mixture",
+      "cross_view_reference_consensus"
+    ],
+    "scale_log_area_penalty": 0.05,
+    "anchor_selection": "Across both adjacent queries, select the exact-deduplicated candidate supported by the greatest number of preserved contributors; tie by higher frozen semantic/local fusion, then earlier query order.",
+    "vacancy_rule": "Append the propagated rectangle only to the non-anchor query when exact deduplication leaves fewer than three hypotheses."
+  },
+  "geometry": {
+    "query_images": ["TSV1_query", "TSV2_query"],
+    "sequence_zip": "F:/ba-data/blindassist-artifacts-20260805/datasets/3rscan/19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip",
+    "sequence_sha256": "f639ecf41d167c577b5adea33ac704ef9faab9e0c811e2190dfeeac3fca01fd7",
+    "depth_selection": "Backproject all valid anchor-frame depth pixels through the official depth intrinsic, project them into color coordinates, retain those inside the frozen anchor rectangle, and use their median metric depth.",
+    "rectangle_propagation": "Backproject the four anchor rectangle corners through the official color intrinsic at the median depth, transform camera-to-world with the anchor pose and world-to-camera with the target pose inverse, project into the target color frame, take the four-corner min/max rectangle, and clip to image bounds.",
+    "padding_pixels": 0,
+    "learned_parameters": 0
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "maximum_set_size": 3,
+    "required_covered_queries": 2
+  },
+  "literature_motivation": [
+    {
+      "source": "Seeing Behind Objects for 3D Multi-Object Tracking in RGB-D Sequences",
+      "url": "https://openaccess.thecvf.com/content/CVPR2021/papers/Muller_Seeing_Behind_Objects_for_3D_Multi-Object_Tracking_in_RGB-D_Sequences_CVPR_2021_paper.pdf",
+      "use": "Motivates backprojecting RGB-D observations and using 3D geometry and correspondences to persist object evidence across changing views."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change the consumed family, images, candidate roster, preserved contributors, anchor rule, depth statistic, intrinsics, pose convention, corner propagation, clipping, set size or IoU gate",
+    "add padding, percentile tuning, optical flow, truth-guided anchor selection or truth-guided geometry",
+    "reinterpret a positive consumed-family Development result as fresh transfer"
+  ],
+  "claim_boundary": "This posthoc run is failure-driven Development on the already consumed tenth family. A positive result can establish only a physically plausible proposal-reachability mechanism under official RGB-D calibration and pose; it is not fresh confirmation, RGB-only or phone transfer, top-one localization, calibrated uncertainty, portal ownership, affordance, access, safety, waypoint, arrival or handoff."
+}
