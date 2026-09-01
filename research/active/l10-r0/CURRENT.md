@@ -546,6 +546,20 @@ contract.
   new family with an adjacent admitted query pair before claiming transfer.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
+- **Fresh eleventh-family bounded-set result, but no propagation attribution:**
+  the pre-download-frozen `54b263a3 -> 82def5da` target door `4` had reachable
+  proposals at IoU `0.883270/0.859502`, while the unchanged fusion Top-1 boxes
+  were only `0.079166/0.009435`. The frozen three-slot set nevertheless covered
+  `2/2`, minimum/mean best IoU `0.859502/0.871386`, so the literal result token
+  is `L10_3RSCAN_DEPTH_POSE_PROPAGATION_FRESH_CONFIRMATION_GATE_MET`. That name
+  must not be read as causal propagation confirmation: both hits were already
+  supplied by the preserved scale contributor, the one propagated rectangle
+  reached only IoU `0.008391`, and propagated/incremental hits were `0/0`.
+  Close depth-pose propagation as unconfirmed transfer. The decision-changing
+  successor is query-side active disambiguation: keep the initial three
+  hypotheses fixed, enumerate nearby query views, and measure the oracle view
+  that most increases the true-versus-current-distractor margin. Do not add
+  another correlated appearance score or tune this consumed family.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -794,11 +808,17 @@ contract.
    reprojected its four corners at median anchor depth through official poses.
    The generated box raised the missing frame from IoU `0.020595` to `0.794542`,
    producing `2/2` coverage with minimum/mean IoU `0.794542/0.800561` and one
-   direct incremental hit. Freeze this as consumed-family Development. The next
-   authority-changing step is an eleventh pre-download-frozen family with an
-   adjacent admitted query pair and unchanged anchor, depth, pose, clipping,
-   vacancy, set-size and IoU rules. Proposal propagation remains referent
-   evidence only, not affordance, waypoint, arrival, or handoff.
+   direct incremental hit. Freeze this as consumed-family Development. On the
+   eleventh pre-download-frozen family the literal bounded-set gate passed
+   `2/2`, but the propagated box missed (`0.008391`) and contributed `0`
+   incremental hits; preserved scale candidates alone supplied both hits. The
+   propagation transfer claim is therefore not established. Freeze this
+   attribution boundary and move to a query-side discriminative-view oracle:
+   initial Top-1 and Recall@3, oracle-one-view Top-1, wrong-candidate exclusion,
+   and the asymmetric/context evidence exposed by that view. Only if this
+   ceiling is absent should the line train a physical-door instance head with
+   same-door positives and same-scene sibling-door hard negatives. All of this
+   remains referent evidence, not affordance, waypoint, arrival, or handoff.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -873,6 +893,8 @@ contract.
   [l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json](l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json)
 - Consumed tenth-family depth-pose propagation Development result:
   [l10_3rscan_depth_pose_propagation_posthoc_result_v1.json](l10_3rscan_depth_pose_propagation_posthoc_result_v1.json)
+- Fresh eleventh-family bounded-set/propagation-attribution result:
+  [l10_3rscan_depth_pose_propagation_confirmation_result_v1.json](l10_3rscan_depth_pose_propagation_confirmation_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

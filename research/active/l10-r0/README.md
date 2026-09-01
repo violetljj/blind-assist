@@ -4642,12 +4642,49 @@ three-slot rule to an eleventh family frozen before download. Success would
 still be referent proposal evidence, not portal ownership, affordance, access,
 safety, waypoint, arrival or handoff.
 
+That eleventh family was frozen before official-file download as
+`54b263a3-0199-2df4-87db-40539528902d ->
+82def5da-25ba-20f9-8810-71be905b83db`, target door `4`, with references
+`71/188/74` and adjacent queries `82/83`. Both queries had reachable proposals
+at IoU `0.883270/0.859502`, yet unchanged fusion Top-1 IoU was only
+`0.079166/0.009435`; the correct candidates ranked second and third. The frozen
+three-slot set covered `2/2`, minimum/mean best IoU `0.859502/0.871386`, and
+therefore emitted the literal token
+`L10_3RSCAN_DEPTH_POSE_PROPAGATION_FRESH_CONFIRMATION_GATE_MET`.
+
+That token does **not** establish causal transfer of the propagation mechanism.
+Both covered queries were already hits from the preserved scale contributor.
+The contributor-agreement anchor was a wrong top-edge rectangle in frame `83`;
+its median depth was `3.155 m`, and the propagated frame-82 rectangle reached
+only IoU `0.008391`. Propagated and incremental IoU-gate hits were both zero.
+The honest result is narrower: fresh same-provider bounded proposal Recall@3
+was `2/2`, while top-one instance ranking remained `0/2` and depth-pose
+propagation was not causally confirmed. Do not rescue or retune this family.
+
+This closes further scale/axis/correlated-score elaboration. The next mechanism
+is a query-side discriminative-view oracle over nearby available views: keep the
+initial at-most-three hypotheses fixed, choose the extra view that maximally
+separates the true hypothesis from current distractors, and report initial
+Top-1, initial Recall@3, oracle-one-view Top-1, wrong-candidate exclusion, and
+the asymmetric texture/frame/context evidence exposed. If that oracle ceiling
+is absent, train a small physical-door instance head with same-door cross-view
+positives and same-scene adjacent/same-looking door hard negatives. Neither
+branch upgrades referent evidence to portal ownership, affordance, access,
+waypoint, arrival, handoff, benefit, reliability, or safety.
+
 Evidence:
 
 - depth-pose propagation implementation/protocol/result SHA-256:
   `0d9ca3597c9ec28c07811a82345b8c9c194bebeb3edc0f043abd93cca9d22ea5`,
   `7e1e3a6ee3962a055fb84194d85bd685e4f4f8fb2c1de05cad159eb1d1e07b47`,
   and `e8ff052e99e50adad7cc234e631a96128a27794c70ad4ee9da318a093ae7d2bb`.
+
+- fresh eleventh-family candidate roster and confirmation
+  implementation/protocol/result SHA-256:
+  `dd05570729731018c722928846988bea18942b1b8859399db84b90da6166e91f`,
+  `59425a5a247b1d5b652b0faae696db0640365455774bdeee96a6d5f71b67d7f8`,
+  `426a864b3a36255ea855dcae22bcf4de591faecc8557cca3333514cf0254cc62`,
+  and `f2e0af92b3b9c600ca03c35c66e299eb9d3a1ce309369faabac06747f1e8b5f6`.
 
 - tenth-family temporal-scale vacancy download/source/freeze/cohort,
   intermediate, confirmation implementation/protocol/result SHA-256:
