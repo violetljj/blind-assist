@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist-l10-3rscan-official-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_POST_CANDIDATE_FREEZE_DOWNLOAD",
+  "candidate_path": "l10_3rscan_discriminative_view_confirmation_candidate_v1.json",
+  "endpoint_template": "https://campar.in.tum.de/public_datasets/3RScan/Dataset/{scan_id}/{file}",
+  "files": [
+    {"scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a", "file": "semseg.v2.json", "bytes": 52802, "sha256": "89568ca6d96d661898523d164c892ebddfc687ab11af2176b79476540ad219bf"},
+    {"scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a", "file": "labels.instances.annotated.v2.ply", "bytes": 7855159, "sha256": "e24e257d86a3e557d2e7295e2f199d7afc05dcef9b1cc872b3fb448ee5e7fae6"},
+    {"scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a", "file": "sequence.zip", "bytes": 58260115, "sha256": "4f308ffb9e209a63c44162b32a3eb6405c679bc60f1a496d16b76bc1efdbb8ad", "zip_entries": 889, "zip_testzip": null},
+    {"scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966", "file": "semseg.v2.json", "bytes": 31757, "sha256": "530747339982fe5d72ffeefa33480e72560b9352e86ffdb077b1b39450f62997"},
+    {"scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966", "file": "labels.instances.annotated.v2.ply", "bytes": 4076903, "sha256": "8aab225683edaba1a09034248c94717aeb32ec516cb0e2f93d1b0cb2d49ca83e"},
+    {"scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966", "file": "sequence.zip", "bytes": 33918208, "sha256": "547873c43eab43fa57d73af58d85ba9e9709f9b038ef2a5d0fed7c8bd1d53948", "zip_entries": 535, "zip_testzip": null}
+  ],
+  "cleanup": {
+    "task_owned_part_files_remaining": 0
+  },
+  "claim_boundary": "This receipt proves only byte identity and ZIP readability after the metadata-only candidate freeze. It does not establish source evaluability, RGB/model results, active-view utility, referent binding, portal ownership, affordance, waypoint, arrival or handoff."
+}

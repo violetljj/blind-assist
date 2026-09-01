@@ -1,0 +1,231 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-source-result-v1",
+  "authority": "FRESH_TWELFTH_FAMILY_PRE_RGB_PRE_MODEL_QUERY_TRIPLET_SOURCE",
+  "protocol_path": "l10_3rscan_discriminative_view_confirmation_source_protocol_v1.json",
+  "protocol_sha256": "de54f4ed7a3e4f5e5d645563a279c4039f6913c669d99ec3c5a577e04d7cdfe8",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_source.py",
+    "sha256": "6e17cebb342ba9774652d71e59f0aaf74e575c476cf05a189b6bbf23944f4314"
+  },
+  "candidate": {
+    "reference_scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+    "rescan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+    "target_instance_id": 15,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      15,
+      46
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      -0.944108784198761,
+      0.32961341738700867,
+      -0.0036918814294040203,
+      0,
+      -0.32957765460014343,
+      -0.9440951943397522,
+      -0.007932385429739952,
+      0,
+      -0.006100107915699482,
+      -0.006272273138165474,
+      0.9999617338180542,
+      0,
+      -1.0785936117172241,
+      -1.5743906497955322,
+      0.017056500539183617,
+      1
+    ]
+  },
+  "source_manifest": {
+    "569d8f09-72aa-2f24-887c-26497a35f26a/sequence.zip": {
+      "path": "datasets/3rscan/569d8f09-72aa-2f24-887c-26497a35f26a/sequence.zip",
+      "bytes": 58260115,
+      "sha256": "4f308ffb9e209a63c44162b32a3eb6405c679bc60f1a496d16b76bc1efdbb8ad"
+    },
+    "569d8f07-72aa-2f24-8b3d-47a4ceb4b966/sequence.zip": {
+      "path": "datasets/3rscan/569d8f07-72aa-2f24-8b3d-47a4ceb4b966/sequence.zip",
+      "bytes": 33918208,
+      "sha256": "547873c43eab43fa57d73af58d85ba9e9709f9b038ef2a5d0fed7c8bd1d53948"
+    }
+  },
+  "conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SOURCE_NOT_EVALUABLE",
+  "source_evaluable": false,
+  "reference_memory": {
+    "scan_id": "569d8f09-72aa-2f24-887c-26497a35f26a",
+    "target_instance_id": 15,
+    "target_vertices": 288,
+    "eligible_partial_views": 10,
+    "portfolio_budget": 3,
+    "selected": [
+      {
+        "frame": 90,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 288,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 265879.18882426986,
+        "image_margin_pixels": 5.106429100036621,
+        "bbox_xyxy": [
+          103.7952651977539,
+          5.106429100036621,
+          927.1319580078125,
+          376.885498046875
+        ],
+        "depth_compared_vertices": 258,
+        "depth_visible_vertices": 258,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 823.3366928100586,
+        "bbox_height_pixels": 371.7790689468384,
+        "bbox_short_side_pixels": 371.7790689468384,
+        "bbox_short_side_fraction": 0.6884797573089599,
+        "bbox_aspect_ratio": 2.2145859236841265,
+        "visible_target_vertices": 258,
+        "zip_member": "frame-000090.color.jpg",
+        "marginal_visible_target_vertices": 258,
+        "cumulative_visible_target_vertices": 258,
+        "cumulative_visible_target_fraction": 0.8958333333333334
+      },
+      {
+        "frame": 89,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 256,
+        "inside_vertex_fraction": 0.8888888888888888,
+        "projected_area_pixels": 237246.44294234144,
+        "image_margin_pixels": 15.001016616821289,
+        "bbox_xyxy": [
+          15.001016616821289,
+          35.74260711669922,
+          748.7562866210938,
+          403.90509033203125
+        ],
+        "depth_compared_vertices": 238,
+        "depth_visible_vertices": 238,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 733.7552700042725,
+        "bbox_height_pixels": 368.16248321533203,
+        "bbox_short_side_pixels": 368.16248321533203,
+        "bbox_short_side_fraction": 0.681782376324689,
+        "bbox_aspect_ratio": 1.9930202110656434,
+        "visible_target_vertices": 238,
+        "zip_member": "frame-000089.color.jpg",
+        "marginal_visible_target_vertices": 29,
+        "cumulative_visible_target_vertices": 287,
+        "cumulative_visible_target_fraction": 0.9965277777777778
+      },
+      {
+        "frame": 94,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 123,
+        "inside_vertex_fraction": 0.4270833333333333,
+        "projected_area_pixels": 156684.88816365006,
+        "image_margin_pixels": 2.29034423828125,
+        "bbox_xyxy": [
+          506.18731689453125,
+          49.72663879394531,
+          956.7096557617188,
+          423.8583984375
+        ],
+        "depth_compared_vertices": 107,
+        "depth_visible_vertices": 107,
+        "depth_visible_ratio": 1.0,
+        "bbox_width_pixels": 450.5223388671875,
+        "bbox_height_pixels": 374.1317596435547,
+        "bbox_short_side_pixels": 374.1317596435547,
+        "bbox_short_side_fraction": 0.6928365919325087,
+        "bbox_aspect_ratio": 1.204180952978737,
+        "visible_target_vertices": 107,
+        "zip_member": "frame-000094.color.jpg",
+        "marginal_visible_target_vertices": 1,
+        "cumulative_visible_target_vertices": 288,
+        "cumulative_visible_target_fraction": 1.0
+      }
+    ],
+    "final_cumulative_visible_target_vertices": 288,
+    "final_cumulative_visible_target_fraction": 1.0,
+    "opened": {
+      "pose_members": 296,
+      "depth_members": 296,
+      "rgb_members": 0,
+      "model_calls": 0
+    },
+    "eligible_admitted_views": 10,
+    "required_views": 3,
+    "vacancy_fills": []
+  },
+  "query_triplet": {
+    "scan_id": "569d8f07-72aa-2f24-8b3d-47a4ceb4b966",
+    "target_instance_id": 15,
+    "eligible_admitted_views": 7,
+    "selected": [],
+    "triplet_receipt": null,
+    "opened": {
+      "pose_members": 178,
+      "depth_members": 178,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "same_scene_sibling": {
+    "instance_id": 46,
+    "label": "door_or_doorframe",
+    "target_vertices": 258,
+    "candidate_views": 14,
+    "selected": {
+      "frame": 146,
+      "color_size": [
+        960,
+        540
+      ],
+      "inside_vertices": 216,
+      "inside_vertex_fraction": 0.8372093023255814,
+      "projected_area_pixels": 204879.4383783194,
+      "image_margin_pixels": 5.285826683044434,
+      "bbox_xyxy": [
+        5.285826683044434,
+        123.57719421386719,
+        638.4129028320312,
+        517.6990356445312
+      ],
+      "depth_compared_vertices": 187,
+      "depth_visible_vertices": 187,
+      "depth_visible_ratio": 1.0,
+      "bbox_width_pixels": 633.1270761489868,
+      "bbox_height_pixels": 394.12184143066406,
+      "bbox_short_side_pixels": 394.12184143066406,
+      "bbox_short_side_fraction": 0.7298552619086371,
+      "bbox_aspect_ratio": 1.6064247387323998,
+      "visible_target_vertices": 187,
+      "zip_member": "frame-000146.color.jpg"
+    },
+    "opened": {
+      "pose_members": 178,
+      "depth_members": 178,
+      "rgb_members": 0,
+      "model_calls": 0
+    }
+  },
+  "rgb_members_opened": 0,
+  "model_calls": 0,
+  "next_action": "Retain the source result and do not open RGB or call GroundingDINO, SAM2 or DINOv2 for this family.",
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Test a minimal deterministic local observation before learned next-best-view policies."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Use ambiguity to trigger one new view and evaluate whether it resolves ranking confusion."
+    }
+  ],
+  "claim_boundary": "This source gate can establish only fresh-family geometry/depth reachability for three references and an ordered consecutive query triplet. It is not RGB/model evidence, active-view confirmation, a deployable action policy, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

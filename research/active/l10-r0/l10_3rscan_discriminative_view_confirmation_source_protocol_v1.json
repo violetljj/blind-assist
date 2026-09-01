@@ -1,0 +1,71 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T22:41:00+08:00",
+  "question": "Does the metadata-frozen twelfth family supply three reference views, one source-admitted consecutive query triplet and a same-scene sibling before RGB/model access?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation_source.py",
+    "sha256": "6e17cebb342ba9774652d71e59f0aaf74e575c476cf05a189b6bbf23944f4314"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py", "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "candidate": {
+    "path": "l10_3rscan_discriminative_view_confirmation_candidate_v1.json",
+    "sha256": "88065c382a2ea7fa17775314bf78d16292ccab929a32bc62f51650eac6b37d58"
+  },
+  "download_receipt": {
+    "path": "l10_3rscan_discriminative_view_confirmation_download_receipt_v1.json",
+    "sha256": "e71fd26104e0a98d5161e6ab088dfa5f7c183007f4aec5756205bd9feb349e9a"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_POST_CANDIDATE_FREEZE_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/569d8f09-72aa-2f24-887c-26497a35f26a/semseg.v2.json", "bytes": 52802, "sha256": "89568ca6d96d661898523d164c892ebddfc687ab11af2176b79476540ad219bf"},
+      {"path": "datasets/3rscan/569d8f09-72aa-2f24-887c-26497a35f26a/labels.instances.annotated.v2.ply", "bytes": 7855159, "sha256": "e24e257d86a3e557d2e7295e2f199d7afc05dcef9b1cc872b3fb448ee5e7fae6"},
+      {"path": "datasets/3rscan/569d8f09-72aa-2f24-887c-26497a35f26a/sequence.zip", "bytes": 58260115, "sha256": "4f308ffb9e209a63c44162b32a3eb6405c679bc60f1a496d16b76bc1efdbb8ad"},
+      {"path": "datasets/3rscan/569d8f07-72aa-2f24-8b3d-47a4ceb4b966/semseg.v2.json", "bytes": 31757, "sha256": "530747339982fe5d72ffeefa33480e72560b9352e86ffdb077b1b39450f62997"},
+      {"path": "datasets/3rscan/569d8f07-72aa-2f24-8b3d-47a4ceb4b966/labels.instances.annotated.v2.ply", "bytes": 4076903, "sha256": "8aab225683edaba1a09034248c94717aeb32ec516cb0e2f93d1b0cb2d49ca83e"},
+      {"path": "datasets/3rscan/569d8f07-72aa-2f24-8b3d-47a4ceb4b966/sequence.zip", "bytes": 33918208, "sha256": "547873c43eab43fa57d73af58d85ba9e9709f9b038ef2a5d0fed7c8bd1d53948"}
+    ]
+  },
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "reference_memory": {
+    "base_positive_marginal_budget": 3,
+    "minimum_positive_marginal_views": 2,
+    "required_views": 3,
+    "vacancy_fill": "If positive-marginal selection stops at two, fill one remaining admitted reference by maximum minimum camera-to-target angle."
+  },
+  "query_triplet": {
+    "required_consecutive_views": 3,
+    "selection": "Maximize minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio, then earlier first frame.",
+    "roles": "First two frames are initial observations; third is the fixed NEXT_FRAME_FORWARD action observation."
+  },
+  "next_action": {
+    "evaluable": "Freeze three references and the ordered query triplet, then run the unchanged scorer on all six images once and apply the truth-free 0.02 ambiguity trigger.",
+    "not_evaluable": "Retain the source result and do not open RGB or call GroundingDINO, SAM2 or DINOv2 for this family."
+  },
+  "literature_motivation": [
+    {"source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification", "url": "https://doi.org/10.48550/arxiv.2605.30639", "use": "Test a minimal deterministic local observation before learned next-best-view policies."},
+    {"source": "Active Perception for Ambiguous Objects Classification", "url": "https://arxiv.org/abs/2108.00737", "use": "Use ambiguity to trigger one new view and evaluate whether it resolves ranking confusion."}
+  ],
+  "forbidden_after_freeze": [
+    "change family, target, source hashes, view admission, reference fill, triplet ranking, initial/action roles or sibling rule",
+    "open RGB or call a model before source result",
+    "replace a source-inadequate family using RGB/model outcomes",
+    "change the 0.02 trigger, one-action budget, NEXT_FRAME_FORWARD action, unchanged scorer or IoU gate"
+  ],
+  "claim_boundary": "This source gate can establish only fresh-family geometry/depth reachability for three references and an ordered consecutive query triplet. It is not RGB/model evidence, active-view confirmation, a deployable action policy, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
