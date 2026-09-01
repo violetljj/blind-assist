@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-discriminative-view-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T18:58:00+08:00",
+  "question": "After one truth-free-authorized fixed action, does the fresh family meet the preregistered wrong-Top-1 recovery tier or the weaker margin-sharpening tier?",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_confirmation.py",
+    "sha256": "e8a5324c40812c28dafad04f8c8d64c5fc77958f89108be3e941eae67b87ce82"
+  },
+  "trigger_protocol": {
+    "path": "l10_3rscan_discriminative_view_confirmation_trigger_protocol_v1.json",
+    "sha256": "9e2b2e09267fd5bec3fec13e6d54b9ca33dc61bb512114069c508018eb9e9b4e"
+  },
+  "initial_scorer_result": {
+    "path": "l10_3rscan_discriminative_view_confirmation_scorer_result_v1.json",
+    "sha256": "796b4068400fe134089a709b58993e032070bf4b663f41c6d7c1fc20d043a0d7",
+    "required_conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SCORER_MATERIALIZED"
+  },
+  "trigger_result": {
+    "path": "l10_3rscan_discriminative_view_confirmation_trigger_result_v1.json",
+    "sha256": "91710034f160d49d41657ba0e7c3634dc153588eb81e1bf2f986cd3b7947cc5f",
+    "required_conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_ACTION_TRIGGERED"
+  },
+  "action_scorer_protocol": {
+    "path": "l10_3rscan_discriminative_view_confirmation_action_scorer_protocol_v1.json",
+    "sha256": "f0756ceb2dfc67baa956a7a8452af6184b642101bc4d05d40e150b57e00d0de0"
+  },
+  "action_scorer_result": {
+    "path": "l10_3rscan_discriminative_view_confirmation_action_scorer_result_v1.json",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-scorer-result-v1",
+    "required_conclusion": "L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SCORER_MATERIALIZED"
+  },
+  "policy": {
+    "initial_query_keys": ["FDV_initial_1_query", "FDV_initial_2_query"],
+    "action_query_key": "FDV_action_query",
+    "fixed_action": "NEXT_FRAME_FORWARD",
+    "one_action_budget": 1
+  },
+  "evaluation": {
+    "minimum_iou": 0.5,
+    "wrong_top1_recovery_gate": "If at least one initial view has wrong Top-1 while target Recall@3 is 2/2, require action target Top-1, action IoU at least 0.5 and positive action margin.",
+    "margin_sharpening_gate": "If both initial views are target Top-1, require action target Top-1, action margin greater than the maximum initial margin, and action target IoU greater than the latest initial target IoU.",
+    "tier_order": "Wrong-Top-1 recovery is the stronger tier and takes precedence. Absence of an initial wrong Top-1 makes that tier NOT_EVALUABLE rather than failed."
+  },
+  "next_action": {
+    "wrong_recovery_met": "Retain the truth-free active-view policy as a fresh same-provider component and expand to a second source family without tuning.",
+    "margin_sharpening_met": "Retain the active trigger/action as a fresh same-provider ambiguity-reduction component. Wrong-instance recovery remains not evaluable; begin a small physical-door instance head on separate same-door positives and same-scene same-class hard negatives rather than mining more favorable scorer families.",
+    "not_met": "Freeze the active-view policy as not confirmed on this family and begin the physical-door instance-head branch without changing the action or trigger."
+  },
+  "forbidden_after_freeze": [
+    "change the trigger, action, scorer, IoU threshold or tiered gates after opening action RGB",
+    "call margin sharpening wrong-instance recovery when no initial wrong Top-1 exists",
+    "associate per-view proposals as the same physical hypothesis without an explicit cross-view association mechanism",
+    "claim provider transfer, deployment, portal ownership, access, arrival or handoff"
+  ],
+  "claim_boundary": "A positive result can establish only fresh same-provider Development confirmation of one truth-free trigger and fixed local action at its exact tier. It cannot establish physical cross-view candidate association, provider transfer, a learned or deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
