@@ -1,0 +1,96 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-v3",
+  "authority": "FROZEN_PRE_DOWNLOAD_PRE_RGB_PRE_MODEL_SCAN_FAMILY_CANDIDATE",
+  "protocol_path": "l10_3rscan_depth_pose_propagation_confirmation_candidate_protocol_v1.json",
+  "protocol_sha256": "ebe922d8a13829f3e80304c5d21873f3fe81d36cd6fe0b88bfdcde41bd911909",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access; do not select on future adjacency, propagation opportunity, anchor agreement or IoU success.",
+    "metadata_candidates": 464,
+    "eligible_candidates_considered_before_selection": 132,
+    "excluded_physical_targets": 21,
+    "excluded_reference_scan_families": 6,
+    "opened_rgb_members": 0,
+    "model_calls": 0
+  },
+  "candidate": {
+    "reference_scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+    "rescan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+    "target_instance_id": 4,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      4,
+      5
+    ],
+    "area_proxy": 0.0,
+    "transform": [
+      0.9571279883384705,
+      -0.28962504863739014,
+      0.004828998818993568,
+      0,
+      0.28963497281074524,
+      0.9571360349655151,
+      -0.0014873071340844035,
+      0,
+      -0.004191247280687094,
+      0.0028221902903169394,
+      0.9999872446060181,
+      0,
+      -0.7084681987762451,
+      -0.11998777836561203,
+      -0.0094686821103096,
+      1
+    ]
+  },
+  "download_plan": [
+    {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "file": "sequence.zip"
+    },
+    {
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "file": "semseg.v2.json"
+    },
+    {
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "file": "labels.instances.annotated.v2.ply"
+    },
+    {
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "file": "sequence.zip"
+    }
+  ],
+  "post_download_gate": {
+    "implementation": {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py",
+      "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"
+    },
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "reference_memory": "Require at least two positive-marginal greedy references, then fill at most one remaining slot from source-admitted views by maximum minimum camera-to-target angle; require exactly three references.",
+    "query_pair": "Among source-admitted target views, select one pair at frame gap at most one by maximum minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio and deterministic earlier frames.",
+    "same_scene_negative": "Require one source-admitted different-instance door or doorframe in the rescan.",
+    "source_is_evaluable_only_if": "The reference rule yields exactly three views, the query rule yields two distinct adjacent views, and the sibling exists before RGB/model access."
+  },
+  "claim_boundary": "This freezes an eleventh family by metadata only. It is not source evaluability, RGB/model evidence, depth-pose propagation confirmation, top-one localization, exact-instance binding, named entrance, ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

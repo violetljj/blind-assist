@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-freeze-protocol-v3",
+  "protocol_id": "l10-3rscan-depth-pose-propagation-confirmation-candidate-protocol-v1",
+  "frozen_at": "2026-09-01T20:12:00+08:00",
+  "question": "Which entirely unmaterialized 3RScan family should receive the first fresh calibrated depth-pose propagation confirmation attempt?",
+  "implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py",
+    "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"
+  },
+  "base_implementation": {
+    "path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze.py",
+    "sha256": "b6bcfaf855f6a63459682b22d32659ef83042c3fd215cc2bab7afb43d4ab3c03"
+  },
+  "candidate_protocol": {
+    "path": "l10_3rscan_registered_extent_protocol_v1.json",
+    "sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_depth_pose_propagation_posthoc_result_v1.json",
+    "sha256": "e8ff052e99e50adad7cc234e631a96128a27794c70ad4ee9da318a093ae7d2bb"
+  },
+  "exclusion_authority": {
+    "path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json",
+    "sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_METADATA_ONLY_DEPTH_POSE_PROPAGATION_CONFIRMATION_CANDIDATE",
+    "artifact_root": "artifacts.local",
+    "metadata": [
+      {"path": "datasets/3rscan/3RScan.json", "bytes": 3155995, "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"},
+      {"path": "datasets/3rscan/objects.json", "bytes": 20096813, "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"}
+    ]
+  },
+  "selection": {
+    "ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access; do not select on future adjacency, propagation opportunity, anchor agreement or IoU success."
+  },
+  "post_download_gate": {
+    "implementation": {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py",
+      "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"
+    },
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "reference_memory": "Require at least two positive-marginal greedy references, then fill at most one remaining slot from source-admitted views by maximum minimum camera-to-target angle; require exactly three references.",
+    "query_pair": "Among source-admitted target views, select one pair at frame gap at most one by maximum minimum visible target vertices, then total visible vertices, minimum short-side fraction, minimum depth-visible ratio and deterministic earlier frames.",
+    "same_scene_negative": "Require one source-admitted different-instance door or doorframe in the rescan.",
+    "source_is_evaluable_only_if": "The reference rule yields exactly three views, the query rule yields two distinct adjacent views, and the sibling exists before RGB/model access."
+  },
+  "forbidden_after_freeze": [
+    "replace the selected family, target or six-file download plan",
+    "change view admission, reference vacancy fill, adjacent-pair selection or sibling rule",
+    "open RGB or run a model before the source result",
+    "select or replace the family using future proposal recall, anchor agreement, depth availability, propagated IoU or final coverage",
+    "change preserved contributors, anchor selection, median-depth statistic, camera-to-world pose convention, four-corner projection, zero padding, clipping, vacancy-only insertion, IoU gate or maximum set size three"
+  ],
+  "claim_boundary": "This freezes an eleventh family by metadata only. It is not source evaluability, RGB/model evidence, depth-pose propagation confirmation, top-one localization, exact-instance binding, named entrance, ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
