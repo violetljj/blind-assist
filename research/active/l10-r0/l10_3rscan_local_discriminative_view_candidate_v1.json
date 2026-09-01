@@ -1,0 +1,63 @@
+{
+  "schema": "blindassist-l10-3rscan-local-discriminative-view-candidate-v1",
+  "authority": "LOCALLY_MATERIALIZED_PRE_POSE_DEPTH_SCREEN_PRE_CURRENT_RGB_MODEL_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_local_discriminative_view_candidate_protocol_v1.json",
+  "protocol_sha256": "342f2ff57bcff06a3b194fb3547b3a78f5b28f289ca54cdd781f0d578c715d4f",
+  "selection": {
+    "complete_local_groups_considered": 29,
+    "complete_groups_without_prior_l10_candidate_or_cohort_reference_at_freeze": 1,
+    "metadata_family_rows": 2,
+    "selected_metadata_row_index": 0,
+    "opened_rgb_members": 0,
+    "model_calls": 0,
+    "freshness_limit": "All six source files predated this freeze; result authority is Development only."
+  },
+  "candidate": {
+    "reference_scan_id": "185d7423-3698-223c-8879-80ad9339afce",
+    "rescan_id": "185d7425-3698-223c-8ac8-78643cbdc3d1",
+    "target_instance_id": 24,
+    "target_label": "door",
+    "rescan_door_instance_ids": [
+      13,
+      24
+    ],
+    "area_proxy": 3.6456535028572916,
+    "transform": [
+      -0.14644530415534973,
+      0.9891095757484436,
+      -0.014686835929751396,
+      0,
+      -0.9891974329948425,
+      -0.146523118019104,
+      -0.004360020160675049,
+      0,
+      -0.006464498583227396,
+      0.013889681547880173,
+      0.999882698059082,
+      0,
+      -0.07880252599716187,
+      1.079897403717041,
+      -0.09937337785959244,
+      1
+    ]
+  },
+  "same_scene_hard_negative": {
+    "instance_id": 13,
+    "label": "door",
+    "role": "same-scene same-class hard negative only"
+  },
+  "source_files": [
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/semseg.v2.json", "bytes": 33057, "sha256": "fc7d95a1626b6e59ce1176628ec15a03aa12bf19316b515dab959b69067bc996"},
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/labels.instances.annotated.v2.ply", "bytes": 5631094, "sha256": "f533c5a45964731fff93c81f2586e29113dcaf012fdc2707abd65f4548255189"},
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/sequence.zip", "bytes": 30910928, "sha256": "967290b1b4325cf309be58bee66a42121f57f7f760aa10aa8a50d52bb0f3449f"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/semseg.v2.json", "bytes": 32876, "sha256": "f628ff32ac528584432c944203969c69e57121cfe0faeb6f8196223389673d16"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/labels.instances.annotated.v2.ply", "bytes": 6149491, "sha256": "cc9ff1e0d242003040fdf6afba320673883d93a4c9895593f9fa695d04d8b113"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/sequence.zip", "bytes": 28513041, "sha256": "65040b3a4903af3fbc2c74812623df7bf0dfbf098721b568697ce1ef1410d5b8"}
+  ],
+  "post_freeze_gate": {
+    "source_first": "Three references, one consecutive query triplet and observable instance 13 are required before RGB/model access.",
+    "action": "Use the first two triplet frames as initial observations and the third as one fixed NEXT_FRAME_FORWARD observation.",
+    "truth_free_trigger": "minimum initial Top-1-minus-Top-2 fused-score margin <= 0.02"
+  },
+  "claim_boundary": "This locally materialized family is frozen for Development before current pose/depth screening and current RGB/model access. It is not fresh confirmation, source evaluability, active-view success, a deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

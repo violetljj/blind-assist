@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist-l10-3rscan-local-discriminative-view-candidate-protocol-v1",
+  "protocol_id": "l10-3rscan-local-discriminative-view-candidate-protocol-v1",
+  "frozen_at": "2026-09-01T17:10:43+08:00",
+  "question": "Can one fixed next-frame observation convert the positive query-view oracle ceiling into an executable truth-free ambiguity policy on a locally complete but previously ungoverned physical family?",
+  "selection": {
+    "authority": "LOCALLY_MATERIALIZED_PRE_POSE_DEPTH_SCREEN_PRE_CURRENT_RGB_MODEL_DEVELOPMENT",
+    "inventory_rule": "Among complete local 3RScan reference-rescan groups, select the first metadata-ordered physical family for which no prior L10 candidate or cohort JSON contains either scan id. Within that family select the first unchanged metadata candidate row; retain the other door instance only as the same-scene hard negative.",
+    "selected_reference_scan_id": "185d7423-3698-223c-8879-80ad9339afce",
+    "selected_rescan_id": "185d7425-3698-223c-8ac8-78643cbdc3d1",
+    "selected_target_instance_id": 24,
+    "same_scene_hard_negative_instance_id": 13,
+    "opened_rgb_members_during_selection": 0,
+    "model_calls_during_selection": 0,
+    "freshness_limit": "The six source files were already present locally before this freeze. This is Development and cannot be claimed as pre-download fresh confirmation."
+  },
+  "metadata": [
+    {"path": "datasets/3rscan/3RScan.json", "bytes": 3155995, "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"},
+    {"path": "datasets/3rscan/objects.json", "bytes": 20096813, "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"}
+  ],
+  "source_files": [
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/semseg.v2.json", "bytes": 33057, "sha256": "fc7d95a1626b6e59ce1176628ec15a03aa12bf19316b515dab959b69067bc996"},
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/labels.instances.annotated.v2.ply", "bytes": 5631094, "sha256": "f533c5a45964731fff93c81f2586e29113dcaf012fdc2707abd65f4548255189"},
+    {"path": "datasets/3rscan/185d7423-3698-223c-8879-80ad9339afce/sequence.zip", "bytes": 30910928, "sha256": "967290b1b4325cf309be58bee66a42121f57f7f760aa10aa8a50d52bb0f3449f"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/semseg.v2.json", "bytes": 32876, "sha256": "f628ff32ac528584432c944203969c69e57121cfe0faeb6f8196223389673d16"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/labels.instances.annotated.v2.ply", "bytes": 6149491, "sha256": "cc9ff1e0d242003040fdf6afba320673883d93a4c9895593f9fa695d04d8b113"},
+    {"path": "datasets/3rscan/185d7425-3698-223c-8ac8-78643cbdc3d1/sequence.zip", "bytes": 28513041, "sha256": "65040b3a4903af3fbc2c74812623df7bf0dfbf098721b568697ce1ef1410d5b8"}
+  ],
+  "post_freeze_gate": {
+    "source_first": "Run only pose/depth view admission. Do not decode RGB or call a model unless there are exactly three admitted references, one admitted consecutive query triplet, and the same-scene hard negative is observable.",
+    "query_triplet": "Rank consecutive triplets by minimum visible target vertices, total visible vertices, minimum projected short side, minimum depth-visible ratio, then earlier frames. First two are initial observations; the third is one fixed NEXT_FRAME_FORWARD action.",
+    "truth_free_trigger": "Trigger the one action if the minimum initial per-frame Top-1-minus-Top-2 fused-score margin is at most 0.02. IoU and target truth are forbidden from triggering.",
+    "decision": "If source-evaluable, materialize the unchanged scorer exactly once. If source-inadequate, retain the negative source result and move to a pre-frozen multi-family source queue rather than rescuing this family."
+  },
+  "literature_motivation": [
+    {"source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification", "url": "https://doi.org/10.48550/arxiv.2605.30639", "use": "Test one deterministic local observation before learned next-best-view policies."},
+    {"source": "Active Perception for Ambiguous Objects Classification", "url": "https://arxiv.org/abs/2108.00737", "use": "Use ambiguity to trigger a view intended to separate competing instances."}
+  ],
+  "forbidden_after_freeze": [
+    "replace the physical family, target instance, hard negative, source hashes, view rules, trigger threshold, action direction or one-action budget",
+    "open RGB or call a model before the source gate",
+    "use IoU, target identity or action outcome in the trigger",
+    "represent this locally pre-existing family as fresh confirmation"
+  ],
+  "claim_boundary": "This freezes one Development candidate before current pose/depth screening and current RGB/model access. It is not fresh confirmation, source evaluability, active-view success, a deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
