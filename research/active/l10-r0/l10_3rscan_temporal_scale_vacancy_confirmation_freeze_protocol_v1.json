@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-temporal-scale-vacancy-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T15:49:23+08:00",
+  "question": "Does the frozen temporal-scale vacancy rule cover both adjacent queries of wholly new door 23 without query truth?",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_freeze.py",
+    "sha256": "643e145e1c8262f2da094254683e2997177c5f7df498983f3767fc53c3c18b57"
+  },
+  "source_result": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source_result_v1.json",
+    "sha256": "bf0d968bfdf04c5351f8f6dbec469309c705845f2d6c648e7af16894cdf223b1"
+  },
+  "source": {
+    "authority": "FRESH_TENTH_FAMILY_PRE_RGB_PRE_MODEL_TEMPORAL_SCALE_VACANCY_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip": {
+        "path": "datasets/3rscan/531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip",
+        "bytes": 215634586,
+        "sha256": "99bb57e82600796a45679866d1bce114263dd13e79b91f7b220a9bbef406d33e"
+      },
+      "19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip": {
+        "path": "datasets/3rscan/19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip",
+        "bytes": 139028984,
+        "sha256": "f639ecf41d167c577b5adea33ac704ef9faab9e0c811e2190dfeeac3fca01fd7"
+      }
+    }
+  },
+  "selection": {
+    "query_episode_ids": ["TSV1", "TSV2"],
+    "extra_reference_image_key": "TSV1_extra_reference",
+    "positive_authority": "First wholly unmaterialized family selected after the consumed temporal-scale vacancy Development gate, admitted by frozen geometry/depth rules with three references and an adjacent query pair."
+  },
+  "forbidden_after_freeze": [
+    "change any of the five image members or source hashes",
+    "change proposal windows, descriptor memory, temporal link IoU 0.5, scale penalty 0.05, link score, deterministic ties, preserved contributors, vacancy-only insertion, IoU gate or maximum set size three",
+    "use query truth before the bounded set is complete",
+    "retry, rescue, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for temporal-scale vacancy proposal-recall confirmation. A pass is narrow same-provider bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, exact referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

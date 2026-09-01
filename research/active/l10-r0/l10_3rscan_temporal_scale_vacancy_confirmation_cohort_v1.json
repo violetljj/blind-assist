@@ -1,0 +1,141 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-confirmation-cohort-v1",
+  "authority": "FROZEN_FRESH_FAMILY_PRE_RGB_PRE_MODEL_TEMPORAL_SCALE_VACANCY_CONFIRMATION_COHORT",
+  "protocol_path": "l10_3rscan_temporal_scale_vacancy_confirmation_freeze_protocol_v1.json",
+  "protocol_sha256": "b6845c74bb3e11e628858f62504c569f656b9f99ff7210e6db875925dbed275e",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_freeze.py",
+    "sha256": "643e145e1c8262f2da094254683e2997177c5f7df498983f3767fc53c3c18b57"
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip": {
+      "path": "datasets/3rscan/531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip",
+      "bytes": 215634586,
+      "sha256": "99bb57e82600796a45679866d1bce114263dd13e79b91f7b220a9bbef406d33e"
+    },
+    "19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip": {
+      "path": "datasets/3rscan/19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip",
+      "bytes": 139028984,
+      "sha256": "f639ecf41d167c577b5adea33ac704ef9faab9e0c811e2190dfeeac3fca01fd7"
+    }
+  },
+  "selection": {
+    "query_episode_ids": [
+      "TSV1",
+      "TSV2"
+    ],
+    "extra_reference_image_key": "TSV1_extra_reference",
+    "positive_authority": "First wholly unmaterialized family selected after the consumed temporal-scale vacancy Development gate, admitted by frozen geometry/depth rules with three references and an adjacent query pair.",
+    "reference_frames": [
+      1159,
+      1164,
+      1151
+    ],
+    "query_frames": [
+      534,
+      535
+    ],
+    "query_frame_gap": 1,
+    "opened_rgb_members_before_freeze": 0,
+    "model_calls_before_freeze": 0
+  },
+  "images": {
+    "TSV1_reference": {
+      "episode_id": "TSV1",
+      "role": "reference",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "target_instance_id": 23,
+      "target_label": "door",
+      "frame": 1159,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        183.74368286132812,
+        12.225456237792969,
+        820.1882934570312,
+        369.778564453125
+      ],
+      "zip_member": "frame-001159.color.jpg"
+    },
+    "TSV1_query": {
+      "episode_id": "TSV1",
+      "role": "query",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "target_instance_id": 23,
+      "target_label": "door",
+      "frame": 534,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        30.11794090270996,
+        189.69097900390625,
+        430.323486328125,
+        399.0255126953125
+      ],
+      "zip_member": "frame-000534.color.jpg"
+    },
+    "TSV2_reference": {
+      "episode_id": "TSV2",
+      "role": "reference",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "target_instance_id": 23,
+      "target_label": "door",
+      "frame": 1164,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.17524921894073486,
+        4.971428394317627,
+        552.9642333984375,
+        392.0657043457031
+      ],
+      "zip_member": "frame-001164.color.jpg"
+    },
+    "TSV2_query": {
+      "episode_id": "TSV2",
+      "role": "query",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "target_instance_id": 23,
+      "target_label": "door",
+      "frame": 535,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        16.881412506103516,
+        2.247812032699585,
+        436.7922668457031,
+        223.31820678710938
+      ],
+      "zip_member": "frame-000535.color.jpg"
+    },
+    "TSV1_extra_reference": {
+      "episode_id": "TSV1",
+      "role": "reference",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "target_instance_id": 23,
+      "target_label": "door",
+      "frame": 1151,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        391.94952392578125,
+        6.664907455444336,
+        958.9893798828125,
+        390.58636474609375
+      ],
+      "zip_member": "frame-001151.color.jpg"
+    }
+  },
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for temporal-scale vacancy proposal-recall confirmation. A pass is narrow same-provider bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, exact referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

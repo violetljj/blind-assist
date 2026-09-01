@@ -1,0 +1,21 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_temporal_scale_vacancy_confirmation_candidate_v1.json",
+  "candidate_sha256": "25c8f3f948ada183e56d6ed0661ef2717367ee79dc91f2a1e16497c1af7dd80d",
+  "candidate_frozen_commit": "7f82b5ae103ac785e5a95e3324375b05d3ece1ae",
+  "candidate_frozen_commit_time": "2026-09-01T15:37:58+08:00",
+  "completed_at": "2026-09-01T15:46:51+08:00",
+  "files": {
+    "531cff08-0021-28f6-8e08-ba2eeb945e09/semseg.v2.json": {"bytes": 62892, "sha256": "470152357af07bca000a4f965e81bc97d0ebaea9d848f2cfe6423f611ab0d54f"},
+    "531cff08-0021-28f6-8e08-ba2eeb945e09/labels.instances.annotated.v2.ply": {"bytes": 10862703, "sha256": "3b8039ec186fde7d60a6ab69919e22a336dcf3f637abe1e3872142f987477bb1"},
+    "531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip": {"bytes": 215634586, "sha256": "99bb57e82600796a45679866d1bce114263dd13e79b91f7b220a9bbef406d33e"},
+    "19eda6f4-55aa-29a0-8893-8eac3a4d8193/semseg.v2.json": {"bytes": 58188, "sha256": "cd05851ada59d83bf0f1b6ae566f7d05416dba739c33b586634d9b2b035748eb"},
+    "19eda6f4-55aa-29a0-8893-8eac3a4d8193/labels.instances.annotated.v2.ply": {"bytes": 9304867, "sha256": "5c6723ba4e4ec8bafb8fcd31afc0d6eda3cebd5f57eb0286433650555242d77a"},
+    "19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip": {"bytes": 139028984, "sha256": "f639ecf41d167c577b5adea33ac704ef9faab9e0c811e2190dfeeac3fca01fd7"}
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "next_action": "Run the frozen geometry/depth source gate; do not inspect RGB or run models unless it yields three references, one adjacent query pair and a same-scene sibling.",
+  "claim_boundary": "This receipt proves only complete official-file materialization, archive readability and hashes after the metadata candidate freeze. It is not source evaluability or algorithm evidence."
+}
