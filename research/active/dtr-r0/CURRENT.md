@@ -172,7 +172,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   X80 is `1,208 TP / 107 FP / 343 FN` at `91.86/77.89/84.30%`, or
   `0 TP / -6 FP / +0.18 pp F1` over X79. Every required check passes. Because
   X80 was designed after C39 opened, this is Development-only and X73 retains
-  confirmation authority.
+  confirmation authority. X81 then applies the same ordinal cross-route shape
+  credential to an uncredentialed zero-shift surface-support carrier. Across
+  the same nine consumed cohorts it changes only C26, removing two false
+  positives with zero TP loss. Pooled X81 is
+  `1,208 TP / 105 FP / 343 FN` at `92.00/77.89/84.36%`, or
+  `0 TP / -2 FP / +0.06 pp F1` over X80. Every required check passes. X81 is
+  the strongest current nine-cohort Development arm, but its effect was
+  designed and measured on consumed C26; X73 retains fresh confirmation
+  authority until unchanged X81 passes a later source-disjoint gate.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -203,7 +211,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    `EC62FF07F2E1FBF2A43046083D4792D6A8A6ADF1CFAB65102505BCBE965637F3`.
    Its full-arm constraints passed, but X79 exercised no lateral-only release
    and produced no incremental effect. Until a later full fresh gate passes,
-   X73 retains source-disjoint confirmation authority.
+   X73 retains source-disjoint confirmation authority. Freeze X81 unchanged for
+   that later gate; require its zero-shift shape release to exercise, zero TP
+   loss versus X80, at least one FP reduction, all full-arm checks, and every
+   authority invariant zero.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -276,3 +287,5 @@ their result.
   [DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md)
 - X80 consumed nine-cohort Development:
   [DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
+- X81 consumed nine-cohort Development:
+  [DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
