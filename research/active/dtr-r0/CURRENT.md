@@ -94,6 +94,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
   is not freshly confirmed. All required authority invariants and contact/safe
   constraints passed, but precision missed the frozen 85% floor. C36 is now
   consumed diagnosis material for the line's render-domain false-alert gap.
+  X75 then separates object-existence memory from collision-risk authority: an
+  occupancy-peak permanence belief may retain route risk only if its parent
+  previously earned spatially agreeing surface + X25 + X24 collision
+  credentials, or if its transport history contains a contradiction that
+  warrants conservative retention. Across consumed
+  C26/C27/C28/C32/C34/C35/C36, X75 removed 19 C36 false positives with no TP
+  loss and changed no earlier cohort: pooled `938 TP / 88 FP / 269 FN` at
+  `91.42/77.71/84.01%`, or `0 TP / -19 FP / +0.71 pp F1` over X74. C36 alone
+  rose to `85.12/83.14/84.12%`, restoring its precision floor. All required
+  authority invariants and contact/safe constraints passed. X75 is the
+  strongest current seven-cohort Development arm, but is not freshly confirmed.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -112,11 +123,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
 4. Do not rerun C35 or C36 as confirmation. X73 remains positively confirmed
-   on C35. X74's C36 mechanism was not exercised and its full arm missed the
-   precision floor. Use C36 only as consumed diagnosis against `29 FN / 44 FP`.
-   A successor must show visible non-regressing multi-cohort Development before
-   any later new source; until then X73 retains source-disjoint confirmation
-   authority.
+   on C35; C36 is consumed X75 design evidence. Freeze unchanged X75 before one
+   genuinely new source. Require an exercised permanence release, zero TP loss
+   and strict FP reduction versus X74, zero required authority-invariant
+   violations, and the inherited contact/safe constraints. Until then X73
+   retains source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
