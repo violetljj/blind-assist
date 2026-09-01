@@ -1,0 +1,60 @@
+{
+  "schema": "blindassist-l10-3rscan-clipped-portal-depth-child-posthoc-protocol-v1",
+  "authority": "posthoc Development on a consumed source; not fresh confirmation",
+  "objective": "Test whether one explicitly independent geometry slot can recover a clipped portal whose detector and SAM extents absorb a nearer lower occluder, while retaining a maximum of three final hypotheses.",
+  "implementation": {
+    "path": "l10_3rscan_clipped_portal_depth_child_posthoc.py",
+    "sha256": "35252f5e6a3a155e0f5906d3f62c1691b48ead276aeedd6e151254d98c80a836"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_dual_prompt_initial_track_posthoc_result_v1.json",
+    "sha256": "a9b2b0feb0c063c2501b08819c23ed3672699f4bfa36f01482572ea4fcf5f0d5",
+    "required_conclusion": "L10_3RSCAN_DUAL_PROMPT_INITIAL_TRACK_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "cohort": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_confirmation_cohort_v1.json",
+    "sha256": "e4da705e2913d9b92a2f606645cfa0cf2a67163aab5b1bc030360b811034b907",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1"
+  },
+  "source": {
+    "artifact_root": "artifacts.local"
+  },
+  "bounded_set": {
+    "ordinary_track_slots": 2,
+    "independent_clipped_portal_depth_slots": 1,
+    "maximum_candidates": 3
+  },
+  "depth_child": {
+    "required_prompt": "door",
+    "border_margin_pixels": 3.0,
+    "horizontal_inset_fraction": 0.1,
+    "vertical_bin_count": 24,
+    "minimum_depth_points": 48,
+    "minimum_points_per_bin": 3,
+    "minimum_valid_bins": 12,
+    "dominant_depth_quantile": 0.75,
+    "absolute_depth_tolerance_metres": 0.2,
+    "relative_depth_tolerance": 0.08,
+    "consecutive_low_bins": 2,
+    "search_start_divisor": 4,
+    "minimum_retained_fraction": 0.35,
+    "maximum_retained_fraction": 0.9,
+    "full_occlusion_fraction": 0.25
+  },
+  "selection": {
+    "truth_available": false,
+    "requirements": [
+      "same class-conditioned door prompt in both views",
+      "mutual-best 3D track",
+      "same left or right image border touched in both views",
+      "valid sustained post-plane depth drop in both views"
+    ],
+    "order": "highest 3D track score, then pair depth score, then original rank"
+  },
+  "gate": {
+    "minimum_iou": 0.8,
+    "required_track_top3_coverage_frames": 2,
+    "maximum_candidates": 3
+  },
+  "claim_boundary": "A positive result is a consumed-source Development mechanism result for referent-region hypothesis recovery only. It is not source-disjoint confirmation and does not establish portal ownership, affordance, waypoint, arrival, safety, or handoff."
+}
