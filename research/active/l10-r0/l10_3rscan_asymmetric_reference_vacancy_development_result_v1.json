@@ -1,0 +1,374 @@
+{
+  "schema": "blindassist-l10-3rscan-asymmetric-reference-vacancy-development-result-v1",
+  "authority": "CONSUMED_NINTH_FAMILY_ASYMMETRIC_REFERENCE_VACANCY_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_asymmetric_reference_vacancy_development_protocol_v1.json",
+  "protocol_sha256": "31b5b3792c49b7404ed8d429b3cb6293c8063fba6d2479ff687846ac4aeecd55",
+  "implementation": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_development.py",
+    "sha256": "bfef9e92ebc5a6f2b657387f33ea5036d832ab6a17dec976b147f501e29968a3",
+    "base_path": "l10_3rscan_axis_completion_vacancy_posthoc.py",
+    "base_sha256": "3eaa8d2f0efcad0b5f4fcbe2ae0167d31e90d45ced718fd78755cc4d76cdb357"
+  },
+  "conclusion": "L10_3RSCAN_ASYMMETRIC_REFERENCE_VACANCY_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "preserved_contributors": [
+      "equal semantic-local fusion top one",
+      "nearest-reference-scale local-appearance mixture top one",
+      "best semantic-local fusion candidate constrained to the plurality winning target reference across the two unique query observations"
+    ],
+    "vacancy_rule": "Deduplicate the three preserved contributors by exact original candidate key. Only when fewer than three distinct candidates remain, append at most one reference-scale axis completion if its output box is not already present. Never remove or replace a preserved candidate.",
+    "axis_completion": "For every detector proposal, consider its unchanged box, a full-width horizontal band retaining its y span, and a full-height vertical band retaining its x span. Rank all options by the parent layer-18 local score minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale.",
+    "scale_log_area_penalty": 0.05,
+    "reference_vote": "Each unique query contributes its semantic-local fusion top-one winning target reference. Select the plurality reference; break ties by deterministic sorted reference order.",
+    "truth_boundary": "Reference vote, preserved contributors, deduplication, vacancy availability, axis mode and scores are fixed before target boxes or IoU are opened. Truth is used only to evaluate the resulting set.",
+    "downstream_contract": "The bounded set remains unresolved localization uncertainty and requires active or cross-view disambiguation before one target can be authorized."
+  },
+  "metrics": {
+    "family_count": 1,
+    "query_count": 2,
+    "covered_queries": 1,
+    "maximum_hypothesis_count": 3,
+    "mean_hypothesis_count": 3.0,
+    "minimum_best_hypothesis_iou": 0.0,
+    "mean_best_hypothesis_iou": 0.2923362710178522,
+    "vacancy_available_queries": 2,
+    "vacancy_filled_queries": 2,
+    "axis_vacancy_iou_gate_queries": 0,
+    "axis_completion_modes": {
+      "identity": 0,
+      "horizontal_band": 2,
+      "vertical_band": 0
+    }
+  },
+  "families": {
+    "consumed_asymmetric_doorframe4": {
+      "dominant_reference": "ARV1_reference",
+      "semantic_local_fusion_reference_votes": [
+        "ARV1_reference",
+        "ARV1_reference"
+      ],
+      "query_count": 2,
+      "covered_queries": 1,
+      "query_receipts": {
+        "ARV1_query": {
+          "query_truth_used_for_hypothesis_generation": false,
+          "dominant_reference": "ARV1_reference",
+          "reference_area_fractions": [
+            0.14946556427763966,
+            0.19590831460022798,
+            0.27710878491556645
+          ],
+          "vacancy_available": true,
+          "vacancy_filled": true,
+          "hypothesis_count": 3,
+          "hypotheses": [
+            {
+              "mechanisms": [
+                "semantic_local_fusion",
+                "cross_view_reference_consensus"
+              ],
+              "candidate": {
+                "objectness_score": 0.1944373995065689,
+                "box_xyxy": [
+                  576.0,
+                  138.07037353515625,
+                  959.8981018066406,
+                  215.6099853515625
+                ],
+                "tile_id": "top_right",
+                "tile_xyxy": [
+                  576,
+                  0,
+                  960,
+                  216
+                ],
+                "tile_postprocess_index": 4,
+                "postprocess_index": 14,
+                "target_memory_score": 0.7087260484695435,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.7087260484695435,
+                  "ARV2_reference": 0.6426427960395813,
+                  "ARV1_extra_reference": 0.6972532868385315
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.7713994383811951,
+                "layer18_nids_fused_score": 0.7400627434253693,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.0,
+                  "target_recall": 0.0,
+                  "proposal_precision": 0.0
+                },
+                "descriptor_sha256": "72a21190c1a0f477e1996f9322ca9f8afa48ccac5e532b6d031dfc6a3813baa9",
+                "layer18_patch_sha256": "a6a997a09ee2c5646792a64d366c3bb2265fee8fab379bd3dbc4892f1327ffe0",
+                "mask_sha256": "d55daa1f5cb256541da7e8ca11cdfc0689bcba5200d1fce6b2e2a5f58ccc1a48"
+              }
+            },
+            {
+              "mechanisms": [
+                "reference_scale_mixture"
+              ],
+              "candidate": {
+                "objectness_score": 0.5910028219223022,
+                "box_xyxy": [
+                  0.028873443603515625,
+                  0.30249524116516113,
+                  383.93548583984375,
+                  215.54273986816406
+                ],
+                "tile_id": "top_left",
+                "tile_xyxy": [
+                  0,
+                  0,
+                  384,
+                  216
+                ],
+                "tile_postprocess_index": 0,
+                "postprocess_index": 8,
+                "target_memory_score": 0.6789204478263855,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.6789204478263855,
+                  "ARV2_reference": 0.6612017750740051,
+                  "ARV1_extra_reference": 0.6253852844238281
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.7504271864891052,
+                "layer18_nids_fused_score": 0.7146738171577454,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.0,
+                  "target_recall": 0.0,
+                  "proposal_precision": 0.0
+                },
+                "descriptor_sha256": "63f14bc751b1c992b0dd118f97b780880f5b46aebca7d40d9255fd30c9864cd5",
+                "layer18_patch_sha256": "9fd1597baed1acf6e6f5338c8f2c01585cf755b1c1476e8a523552684a6a4cad",
+                "mask_sha256": "634203a33d785077dc3289b25071f4f09c7c7a4a9efc27af4f233ab217c2d031"
+              }
+            },
+            {
+              "mechanisms": [
+                "reference_scale_axis_vacancy"
+              ],
+              "candidate": {
+                "objectness_score": 0.1944373995065689,
+                "box_xyxy": [
+                  0.0,
+                  138.07037353515625,
+                  960.0,
+                  215.6099853515625
+                ],
+                "tile_id": "top_right",
+                "tile_xyxy": [
+                  576,
+                  0,
+                  960,
+                  216
+                ],
+                "tile_postprocess_index": 4,
+                "postprocess_index": 14,
+                "target_memory_score": 0.7087260484695435,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.7087260484695435,
+                  "ARV2_reference": 0.6426427960395813,
+                  "ARV1_extra_reference": 0.6972532868385315
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.7713994383811951,
+                "layer18_nids_fused_score": 0.7400627434253693,
+                "descriptor_sha256": "72a21190c1a0f477e1996f9322ca9f8afa48ccac5e532b6d031dfc6a3813baa9",
+                "layer18_patch_sha256": "a6a997a09ee2c5646792a64d366c3bb2265fee8fab379bd3dbc4892f1327ffe0",
+                "mask_sha256": "d55daa1f5cb256541da7e8ca11cdfc0689bcba5200d1fce6b2e2a5f58ccc1a48",
+                "source_box_xyxy": [
+                  576.0,
+                  138.07037353515625,
+                  959.8981018066406,
+                  215.6099853515625
+                ],
+                "source_tile_id": "top_right",
+                "source_postprocess_index": 14,
+                "completion_mode": "horizontal_band",
+                "reference_scale_axis_score": 0.7693948903011348,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.0,
+                  "target_recall": 0.0,
+                  "proposal_precision": 0.0
+                }
+              }
+            }
+          ],
+          "best_hypothesis_iou_evaluation_only": 0.0,
+          "target_covered_at_iou_gate": false
+        },
+        "ARV2_query": {
+          "query_truth_used_for_hypothesis_generation": false,
+          "dominant_reference": "ARV1_reference",
+          "reference_area_fractions": [
+            0.14946556427763966,
+            0.19590831460022798,
+            0.27710878491556645
+          ],
+          "vacancy_available": true,
+          "vacancy_filled": true,
+          "hypothesis_count": 3,
+          "hypotheses": [
+            {
+              "mechanisms": [
+                "semantic_local_fusion",
+                "cross_view_reference_consensus"
+              ],
+              "candidate": {
+                "objectness_score": 0.43413764238357544,
+                "box_xyxy": [
+                  666.2147674560547,
+                  324.18409395217896,
+                  959.2735595703125,
+                  539.3321228027344
+                ],
+                "tile_id": "bottom_right",
+                "tile_xyxy": [
+                  576,
+                  324,
+                  960,
+                  540
+                ],
+                "tile_postprocess_index": 1,
+                "postprocess_index": 28,
+                "target_memory_score": 0.695182204246521,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.695182204246521,
+                  "ARV2_reference": 0.45836085081100464,
+                  "ARV1_extra_reference": 0.461042582988739
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.727297306060791,
+                "layer18_nids_fused_score": 0.711239755153656,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.5846725420357044,
+                  "target_recall": 0.6207167685709383,
+                  "proposal_precision": 0.9096545982945567
+                },
+                "descriptor_sha256": "6de0d3b1585a34846624ec722ba623777eea8cf62faf92fc9fa977571c151703",
+                "layer18_patch_sha256": "146d105dce38bbedd3006e6a91acb076a87a9dc5222e55133e4204cc35362e6f",
+                "mask_sha256": "5dfb1672d46939539c73afe46c1803d7ce78ee6a4410aaaed678cd6f7b86056c"
+              }
+            },
+            {
+              "mechanisms": [
+                "reference_scale_mixture"
+              ],
+              "candidate": {
+                "objectness_score": 0.5920501947402954,
+                "box_xyxy": [
+                  0.6599235534667969,
+                  324.4047646522522,
+                  383.25830078125,
+                  538.8716735839844
+                ],
+                "tile_id": "bottom_left",
+                "tile_xyxy": [
+                  0,
+                  324,
+                  384,
+                  540
+                ],
+                "tile_postprocess_index": 0,
+                "postprocess_index": 23,
+                "target_memory_score": 0.5692479610443115,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.5692479610443115,
+                  "ARV2_reference": 0.44317594170570374,
+                  "ARV1_extra_reference": 0.4650592803955078
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.7401537895202637,
+                "layer18_nids_fused_score": 0.6547008752822876,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.0,
+                  "target_recall": 0.0,
+                  "proposal_precision": 0.0
+                },
+                "descriptor_sha256": "28578be44c4884631a05d9cd03f64921faebee5ed2261d92adf7aee24cd63d91",
+                "layer18_patch_sha256": "b9d0eb8a864dd1265b4671397dd8062db2b056858fa01266b83a56797056bb3b",
+                "mask_sha256": "b6e3567f9d34e1c72abfcb065b9923b73d545fccdc7b171ec7653c13ee121a55"
+              }
+            },
+            {
+              "mechanisms": [
+                "reference_scale_axis_vacancy"
+              ],
+              "candidate": {
+                "objectness_score": 0.10016997903585434,
+                "box_xyxy": [
+                  0.0,
+                  324.14707946777344,
+                  960.0,
+                  538.6575469970703
+                ],
+                "tile_id": "bottom_left",
+                "tile_xyxy": [
+                  0,
+                  324,
+                  384,
+                  540
+                ],
+                "tile_postprocess_index": 3,
+                "postprocess_index": 26,
+                "target_memory_score": 0.6032534837722778,
+                "per_reference_scores": {
+                  "ARV1_reference": 0.6032534837722778,
+                  "ARV2_reference": 0.497151255607605,
+                  "ARV1_extra_reference": 0.5768588185310364
+                },
+                "winning_target_reference": "ARV1_reference",
+                "layer18_local_appearance_score": 0.7587811350822449,
+                "layer18_nids_fused_score": 0.6810173094272614,
+                "descriptor_sha256": "70808c4f3611bc16f79cb89558f424cc4cc080d0cc3418484df574432a3b79d4",
+                "layer18_patch_sha256": "5c032ad7dc2368865ac25ebeab5f1d661f2b56bf9838239958e98b328a850397",
+                "mask_sha256": "6f4989eb8440e55ccc9707bb5419bc529aeaf6a647f07606dc7c0a6a25f94e77",
+                "source_box_xyxy": [
+                  0.06980037689208984,
+                  324.14707946777344,
+                  69.98387145996094,
+                  538.6575469970703
+                ],
+                "source_tile_id": "bottom_left",
+                "source_postprocess_index": 26,
+                "completion_mode": "horizontal_band",
+                "reference_scale_axis_score": 0.7407744089895589,
+                "target_metrics_evaluation_only": {
+                  "iou": 0.23806120482637358,
+                  "target_recall": 0.6208251948552675,
+                  "proposal_precision": 0.2785638647092144
+                }
+              }
+            }
+          ],
+          "best_hypothesis_iou_evaluation_only": 0.5846725420357044,
+          "target_covered_at_iou_gate": true
+        }
+      }
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "Simultaneous Multi-View Instance Detection With Learned Geometric Soft-Constraints",
+      "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Nassar_Simultaneous_Multi-View_Instance_Detection_With_Learned_Geometric_Soft-Constraints_ICCV_2019_paper.pdf",
+      "use": "View geometry motivates angularly diverse reference evidence; mechanism motivation only."
+    },
+    {
+      "source": "Dynamic Tiling",
+      "url": "https://arxiv.org/abs/2309.11069",
+      "use": "Near-boundary detections motivate bounded spatial completion; mechanism motivation only."
+    },
+    {
+      "source": "Aspect Ratio and Context Aware Region-based Convolutional Neural Networks for Object Detection",
+      "url": "https://arxiv.org/abs/1703.01634",
+      "use": "Bounded aspect-ratio and context configurations motivate horizontal or vertical completion; mechanism motivation only."
+    }
+  ],
+  "claim_boundary": "This consumed ninth family was used to design the asymmetric reference-memory vacancy mechanism before its RGB/model outcomes were known. A pass is Development evidence for bounded two-query proposal coverage, not fresh confirmation, top-one localization, calibrated uncertainty, open-set rejection, raw-phone operation, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety.",
+  "base_result": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_development_raw_result_v1.json",
+    "sha256": "4d6f8ee8b88f92590f5ff6e41c5db9587512376869afaa052f3f5461f869f82f"
+  }
+}

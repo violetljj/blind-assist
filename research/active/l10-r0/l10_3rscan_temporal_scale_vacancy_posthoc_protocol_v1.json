@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-temporal-scale-vacancy-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T15:31:05+08:00",
+  "question": "Can one scale-aware adjacent-frame proposal link occupy the unused third set slot and recover the first sparse-query miss without displacing either preserved contributor?",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_posthoc.py",
+    "sha256": "7a6f417dc760faa562a50a5abd5c66043cae2309caaf4d387e51419a170c773e"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_cross_view_reference_consensus_posthoc.py", "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_development_result_v1.json",
+    "sha256": "bc76eadc307fe845315fbb9012012da8e94be8b843f71d86fdd674a65280236f",
+    "required_conclusion": "L10_3RSCAN_ASYMMETRIC_REFERENCE_VACANCY_DEVELOPMENT_GATE_NOT_MET",
+    "family_key": "consumed_asymmetric_doorframe4"
+  },
+  "candidate_result": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_result_v1.json",
+    "sha256": "4fbfb30a3696948018f4a560ffb2acca5ff6f01053114495a2b58ec2a97743c7"
+  },
+  "cohort": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+    "sha256": "f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a"
+  },
+  "temporal_link": {
+    "query_images": ["ARV1_query", "ARV2_query"],
+    "maximum_frame_gap": 1,
+    "minimum_adjacent_box_iou": 0.5,
+    "scale_log_area_penalty": 0.05,
+    "selection": "Link proposal boxes only when adjacent-frame IoU is strictly greater than 0.5. Select the link maximizing mean semantic/local fused score minus 0.05 times mean nearest-reference log-area distance; ties use higher link IoU, higher unpenalized mean fused score, then earlier frozen candidate order.",
+    "vacancy_contract": "Remove only the failed axis-completion vacancy row from the predecessor set. Preserve every original contributor. Add each side of the selected temporal link only when it is not already present; otherwise fall back to the predecessor axis row. Keep at most three hypotheses per query.",
+    "truth_boundary": "Frames, reference scales, proposal boxes and frozen candidate scores determine the link. Query target boxes and IoU enter only after the bounded set is complete."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_covered_queries": 2,
+    "maximum_set_size": 3
+  },
+  "literature_motivation": [
+    {"source": "Seq-NMS for Video Object Detection", "url": "https://arxiv.org/abs/1602.08465", "use": "Associates adjacent-frame boxes when IoU exceeds 0.5 and maximizes a sequence detection score to repair single-frame ranking errors. The reference-scale term is this Development branch's bounded addition."},
+    {"source": "Leveraging Long-Range Temporal Relationships Between Proposals for Video Object Detection", "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Shvets_Leveraging_Long-Range_Temporal_Relationships_Between_Proposals_for_Video_Object_Detection_ICCV_2019_paper.pdf", "use": "Supports proposal-level temporal relationships as a light-weight source of context; mechanism motivation only."}
+  ],
+  "forbidden_after_freeze": [
+    "change frame pair, link IoU, 0.05 scale penalty, link score, deterministic ties, preserved contributors, vacancy-only rule, fallback, IoU gate or set-size bound",
+    "use truth to select the temporal pair, add more than one new candidate per query, retry or rescue",
+    "claim fresh confirmation from this consumed posthoc Development"
+  ],
+  "claim_boundary": "This family and its RGB/model roster were consumed before the temporal-scale vacancy branch was defined. A pass is Development evidence that an adjacent-frame proposal link can carry a correct candidate inside a bounded set; it is not fresh confirmation, top-one localization, calibrated uncertainty, open-set rejection, raw-phone operation, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
