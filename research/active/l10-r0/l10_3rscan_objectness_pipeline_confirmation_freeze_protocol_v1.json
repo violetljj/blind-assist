@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-objectness-pipeline-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T08:26:30+08:00",
+  "question": "Does the unchanged full-frame objectness, target-minus-sibling memory and native SAM2 chain localize new target D13 across all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_objectness_pipeline_confirmation_source_result_v1.json", "sha256": "ca9450c9208082e9177d575dc8821a5f6b2d6e55ca0ae963911414e48e7e2e12"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_OBJECTNESS_PIPELINE_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "422885ce-192d-25fc-851a-df2d675a6559/sequence.zip": {"path": "datasets/3rscan/422885ce-192d-25fc-851a-df2d675a6559/sequence.zip", "bytes": 40709038, "sha256": "538840784e513a9a16630e5826d4f1400ba8d8ea6a6f2a14b55ae16754a65c7f"},
+      "1c211554-f201-2d25-8680-513a91547c2f/sequence.zip": {"path": "datasets/3rscan/1c211554-f201-2d25-8680-513a91547c2f/sequence.zip", "bytes": 35548562, "sha256": "2495bac5fe07fe3ea7af7e958c17120e716453944c8cf0546308c257a04fe129"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["D13M1", "D13M2", "D13M3"],
+    "sibling_episode_id": "SIB59",
+    "positive_authority": "First metadata-frozen, fully unmaterialized family after the C16 full-frame pipeline Development pass, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, sibling, controls, objects prompt, thresholds, proposal cap, descriptor, contrastive formula, SAM settings or IoU gate",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family and same-scene sibling before all RGB/model access for the full query-acquisition chain. A pass would be narrow same-provider new-family confirmation, not provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

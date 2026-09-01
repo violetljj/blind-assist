@@ -4171,6 +4171,21 @@ consumed same-scene Development with a thin minimum margin, not fresh-family,
 provider-independent, raw-phone, named-entrance, access, waypoint, arrival,
 handoff, benefit, reliability, or safety evidence.
 
+The chain was then sealed and moved without parameter changes to the next
+entirely unmaterialized family, `422885ce -> 1c211554`, target door `13` and
+sibling door `59`. Metadata fixed the six-file download before pixels. The
+geometry/depth-only source gate selected three views per side with cumulative
+coverage `0.544934` reference and `0.936099` query; the sibling had `9`
+admitted views. GroundingDINO retained an IoU-`0.5` opportunity in all `3/3`
+full query frames, so proposal reachability generalized. The unchanged
+target-minus-sibling CLS ranking and native SAM2 refinement, however, passed
+only `1/3`: minimum refined IoU `0.018747`, mean `0.325531`. In the two failed
+frames, small non-target regions won by thin contrastive margins while strong
+target proposals remained in the roster at ranks `2` and `3`. Freeze this as a
+new-family representation failure, not permission to tune the score. The
+justified next layer is mask-foreground DINOv2 patch aggregation, following the
+FFA mechanism in NIDS-Net.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4311,6 +4326,18 @@ Evidence:
   `4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e`,
   `2546da6236880ba56f4eb61ba08047f7025fc26db9ff1e53ec04719758690ffc`,
   and `f63a4b86f07da7ff657fabc7c14543004d295b4ff459b2ed56f52c15e930b66f`;
+- full-pipeline new-family candidate protocol/result, source protocol/result,
+  freeze protocol/cohort, and confirmation implementation/protocol/result
+  SHA-256:
+  `ab2ae5436d2b92e360211dee4ba4d244f9c814776ca2396feaa0dcef2e0d8475`,
+  `2b4cb12888f51852a7259d79a7e4429e1dd757da9886de825ca5d0e7e6652d73`,
+  `1c9fd8f1439b1007be9219f30cddb4e4d3754b33666a75e6be3809091ddc5dd8`,
+  `ca9450c9208082e9177d575dc8821a5f6b2d6e55ca0ae963911414e48e7e2e12`,
+  `94c2ea5a5edfae6ab021768f98c8b3e6d0f43d7e5faa4183a285d2e4d2b1499a`,
+  `db4ae4f2f27be9763d5167c0be19fb5f72ab3a76418b078621d14ff814fea6de`,
+  `4d46500180b3d6b2ba6f8cb9536ed54f4bee0b47e8460ab2bee8e2e8f1b1b3e3`,
+  `be08a874c495a7e6059759a7c3b33cf170648de3b89a28646398ae38675b6cdf`,
+  and `124166a2fde1efb2ba0dad36ec8a17074a2f3de5e9a495b394efd411304f627b`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

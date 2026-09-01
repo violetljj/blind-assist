@@ -1,0 +1,935 @@
+{
+  "schema": "blindassist-l10-3rscan-objectness-pipeline-confirmation-result-v1",
+  "authority": "FROZEN_PRE_RGB_PRE_MODEL_NEW_FAMILY_SAME_PROVIDER_OBJECTNESS_PIPELINE_CONFIRMATION",
+  "protocol_path": "l10_3rscan_objectness_pipeline_confirmation_protocol_v1.json",
+  "protocol_sha256": "be08a874c495a7e6059759a7c3b33cf170648de3b89a28646398ae38675b6cdf",
+  "implementation": {
+    "path": "l10_3rscan_objectness_pipeline_confirmation.py",
+    "sha256": "4d46500180b3d6b2ba6f8cb9536ed54f4bee0b47e8460ab2bee8e2e8f1b1b3e3"
+  },
+  "conclusion": "L10_3RSCAN_OBJECTNESS_PIPELINE_NEW_FAMILY_CONFIRMATION_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "query_count": 3,
+    "opportunity_queries": 3,
+    "refined_iou_gate_queries": 1,
+    "minimum_refined_iou": 0.01874676209924625,
+    "mean_refined_iou": 0.325530958176849
+  },
+  "query_receipts": {
+    "D13M1_query": {
+      "query_truth_used_for_selection": false,
+      "target_bbox_xyxy_evaluation_only": [
+        22.256772994995117,
+        3.594653844833374,
+        725.0684814453125,
+        527.5355224609375
+      ],
+      "proposal_count": 12,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.9326572788643802,
+      "selected_before_sam": {
+        "postprocess_index": 8,
+        "objectness_score": 0.1147284209728241,
+        "box_xyxy": [
+          156.7486114501953,
+          467.6566467285156,
+          311.19512939453125,
+          528.7528076171875
+        ],
+        "target_memory_score": 0.0842016190290451,
+        "sibling_memory_score": 0.07109959423542023,
+        "contrastive_score": 0.013102024793624878,
+        "winning_target_reference": "D13M1_reference",
+        "winning_sibling_reference": "SIB59_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.02510202843540327,
+          "target_recall": 0.02511484459777784,
+          "proposal_precision": 0.9800759141238332
+        },
+        "descriptor_sha256": "28f3f77c25941073fe6c4a79064cc1815e6cf5e8425899d05ee90448a4471ba4"
+      },
+      "top1_contrastive_margin": 0.0006803572177886963,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.1147284209728241,
+          "box_xyxy": [
+            156.7486114501953,
+            467.6566467285156,
+            311.19512939453125,
+            528.7528076171875
+          ],
+          "target_memory_score": 0.0842016190290451,
+          "sibling_memory_score": 0.07109959423542023,
+          "contrastive_score": 0.013102024793624878,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.02510202843540327,
+            "target_recall": 0.02511484459777784,
+            "proposal_precision": 0.9800759141238332
+          },
+          "descriptor_sha256": "28f3f77c25941073fe6c4a79064cc1815e6cf5e8425899d05ee90448a4471ba4"
+        },
+        {
+          "postprocess_index": 10,
+          "objectness_score": 0.10600776225328445,
+          "box_xyxy": [
+            1.6843128204345703,
+            57.91320037841797,
+            657.2175903320312,
+            532.4784545898438
+          ],
+          "target_memory_score": 0.364166259765625,
+          "sibling_memory_score": 0.3517445921897888,
+          "contrastive_score": 0.012421667575836182,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.7823818013513235,
+            "target_recall": 0.8097937008571127,
+            "proposal_precision": 0.9585283825354277
+          },
+          "descriptor_sha256": "f556078a14bcad0d9c0aa157afafea84aca9cd56bdf8ae4c4b612078052a1685"
+        },
+        {
+          "postprocess_index": 11,
+          "objectness_score": 0.12544873356819153,
+          "box_xyxy": [
+            1.066732406616211,
+            62.13893508911133,
+            661.389892578125,
+            532.2356567382812
+          ],
+          "target_memory_score": 0.3600425720214844,
+          "sibling_memory_score": 0.3563828468322754,
+          "contrastive_score": 0.0036597251892089844,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.7803058527444793,
+            "target_recall": 0.8077802930383261,
+            "proposal_precision": 0.9582322096178202
+          },
+          "descriptor_sha256": "a3db5575dab9eec94331125d043ecdc6ca0da0fa1d6dc39d98748639c8ef6aa3"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.31429997086524963,
+          "box_xyxy": [
+            1.8645000457763672,
+            1.2497860193252563,
+            739.430908203125,
+            536.55078125
+          ],
+          "target_memory_score": 0.39013779163360596,
+          "sibling_memory_score": 0.38777369260787964,
+          "contrastive_score": 0.0023640990257263184,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.9326572788643802,
+            "target_recall": 1.0,
+            "proposal_precision": 0.9326572788643802
+          },
+          "descriptor_sha256": "ca6a740b261ad6c62586384d487a2a72f53f75f7fdac39e8b479597b0bd85377"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.50655597448349,
+          "box_xyxy": [
+            1.0591506958007812,
+            157.2765350341797,
+            596.248779296875,
+            531.96337890625
+          ],
+          "target_memory_score": 0.34714651107788086,
+          "sibling_memory_score": 0.34716689586639404,
+          "contrastive_score": -2.0384788513183594e-05,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.5611746281998927,
+            "target_recall": 0.5771519795939517,
+            "proposal_precision": 0.9529884874993755
+          },
+          "descriptor_sha256": "d3016438defa82cc9b31f3a1480195ebcc22c4c973ff9506606528381ff05024"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.1931525021791458,
+          "box_xyxy": [
+            2.69805908203125,
+            1.5465295314788818,
+            955.9774169921875,
+            537.4677734375
+          ],
+          "target_memory_score": 0.3915187120437622,
+          "sibling_memory_score": 0.3973577618598938,
+          "contrastive_score": -0.005839049816131592,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.7207756425265271,
+            "target_recall": 1.0,
+            "proposal_precision": 0.720775642526527
+          },
+          "descriptor_sha256": "fdb604a3f01cd5d68643fd2c68a2903cbc220486b3193ccacb6333ed7db72c15"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.12182897329330444,
+          "box_xyxy": [
+            1.5684127807617188,
+            82.63567352294922,
+            711.5918579101562,
+            533.0704956054688
+          ],
+          "target_memory_score": 0.3724019229412079,
+          "sibling_memory_score": 0.38225147128105164,
+          "contrastive_score": -0.00984954833984375,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.8041752184977355,
+            "target_recall": 0.8328587979174338,
+            "proposal_precision": 0.9589324043780258
+          },
+          "descriptor_sha256": "c93b7a6877ec9fed4467e74c73cc4f31c2fc087e1f0057f00ed2dbc576798881"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.3024178445339203,
+          "box_xyxy": [
+            1.4412403106689453,
+            156.90443420410156,
+            595.6669311523438,
+            394.17938232421875
+          ],
+          "target_memory_score": 0.24450822174549103,
+          "sibling_memory_score": 0.25999003648757935,
+          "contrastive_score": -0.015481814742088318,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.36459410086847277,
+            "target_recall": 0.36948431402945553,
+            "proposal_precision": 0.9649703252398216
+          },
+          "descriptor_sha256": "410723aa0b1e701537dc546036c37038f5fc71ebd90adebb9807d5dd2738542d"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.19483055174350739,
+          "box_xyxy": [
+            154.79876708984375,
+            257.96270751953125,
+            326.515869140625,
+            530.1487426757812
+          ],
+          "target_memory_score": 0.21164724230766296,
+          "sibling_memory_score": 0.23949740827083588,
+          "contrastive_score": -0.027850165963172913,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.1255565757255542,
+            "target_recall": 0.12570958147789643,
+            "proposal_precision": 0.9903991392749315
+          },
+          "descriptor_sha256": "06bb2f576024b8b3a7fc71fbe0e25c928d2457b81cf2b9844dd3071870c8aa6b"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.33630868792533875,
+          "box_xyxy": [
+            156.04676818847656,
+            384.21319580078125,
+            311.9588317871094,
+            530.3126831054688
+          ],
+          "target_memory_score": 0.10660386085510254,
+          "sibling_memory_score": 0.14031055569648743,
+          "contrastive_score": -0.03370669484138489,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.060612462966485564,
+            "target_recall": 0.06068373536757891,
+            "proposal_precision": 0.9809913046529757
+          },
+          "descriptor_sha256": "e6c200665116a099eafa01167fc4b3e12fcc7c0301c4d9ebd3593a964942517b"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.11185074597597122,
+          "box_xyxy": [
+            2.114138603210449,
+            363.4674377441406,
+            316.53900146484375,
+            531.5223388671875
+          ],
+          "target_memory_score": 0.17000974714756012,
+          "sibling_memory_score": 0.22330352663993835,
+          "contrastive_score": -0.053293779492378235,
+          "winning_target_reference": "D13M2_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.12951610647543166,
+            "target_recall": 0.1311193780849783,
+            "proposal_precision": 0.9137346233266238
+          },
+          "descriptor_sha256": "94510b4e5a62dd01f7935d8ffa1cffc61a56b4cbfb3d24e23790483845e5193b"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.1447482854127884,
+          "box_xyxy": [
+            635.6656494140625,
+            0.5000817775726318,
+            958.52783203125,
+            537.9944458007812
+          ],
+          "target_memory_score": 0.4196506142616272,
+          "sibling_memory_score": 0.5087335705757141,
+          "contrastive_score": -0.08908295631408691,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.09464393119359049,
+            "target_recall": 0.12720737426014295,
+            "proposal_precision": 0.26992459528972973
+          },
+          "descriptor_sha256": "b38e192e776b6eb1f636ce6420726606b2539034ed4fcfa2f5ded665cd37c89c"
+        }
+      ],
+      "sam_refinement": {
+        "selection_changed": false,
+        "refined_mask_bbox_xyxy": [
+          158.0,
+          467.0,
+          311.0,
+          528.0
+        ],
+        "refined_mask_bbox_target_metrics_evaluation_only": {
+          "iou": 0.02514760647693186,
+          "target_recall": 0.025152459714382285,
+          "proposal_precision": 0.9923856141137295
+        },
+        "mask_sha256": "5b1769c3d6cf1a9b08f48166e42bcc582b25389950e393ade363d77e7e9ab22c",
+        "mask_pixels": 5852,
+        "sam_receipt": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.2814685999765061
+        }
+      }
+    },
+    "D13M2_query": {
+      "query_truth_used_for_selection": false,
+      "target_bbox_xyxy_evaluation_only": [
+        315.3691711425781,
+        3.1655585765838623,
+        956.790283203125,
+        494.6732482910156
+      ],
+      "proposal_count": 7,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.9439962306462049,
+      "selected_before_sam": {
+        "postprocess_index": 3,
+        "objectness_score": 0.3050192594528198,
+        "box_xyxy": [
+          616.4483642578125,
+          0.1070442795753479,
+          805.4911499023438,
+          36.620906829833984
+        ],
+        "target_memory_score": 0.1303168088197708,
+        "sibling_memory_score": 0.16367381811141968,
+        "contrastive_score": -0.033357009291648865,
+        "winning_target_reference": "D13M1_reference",
+        "winning_sibling_reference": "SIB59_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.020024253451145405,
+          "target_recall": 0.020060977739564393,
+          "proposal_precision": 0.916236900634692
+        },
+        "descriptor_sha256": "c340e19136c5c274f0783f6c5be2ec2a75bd40c8428f954d3bf4f1bb1082e53c"
+      },
+      "top1_contrastive_margin": 0.01222681999206543,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.3050192594528198,
+          "box_xyxy": [
+            616.4483642578125,
+            0.1070442795753479,
+            805.4911499023438,
+            36.620906829833984
+          ],
+          "target_memory_score": 0.1303168088197708,
+          "sibling_memory_score": 0.16367381811141968,
+          "contrastive_score": -0.033357009291648865,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.020024253451145405,
+            "target_recall": 0.020060977739564393,
+            "proposal_precision": 0.916236900634692
+          },
+          "descriptor_sha256": "c340e19136c5c274f0783f6c5be2ec2a75bd40c8428f954d3bf4f1bb1082e53c"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.3088732659816742,
+          "box_xyxy": [
+            568.044189453125,
+            89.82701110839844,
+            612.7772216796875,
+            154.91403198242188
+          ],
+          "target_memory_score": 0.16186438500881195,
+          "sibling_memory_score": 0.20744821429252625,
+          "contrastive_score": -0.045583829283714294,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.009235260800597054,
+            "target_recall": 0.009235260800597054,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "fa41266327397a27d5531a2f7587c8aee2276c73557b34603c934782812bd03b"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.19689805805683136,
+          "box_xyxy": [
+            3.7134933471679688,
+            0.6950998306274414,
+            956.7009887695312,
+            532.2555541992188
+          ],
+          "target_memory_score": 0.36114683747291565,
+          "sibling_memory_score": 0.4190346598625183,
+          "contrastive_score": -0.05788782238960266,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.6222080304805035,
+            "target_recall": 0.999860786569206,
+            "proposal_precision": 0.6222619381366553
+          },
+          "descriptor_sha256": "f415c04e23f0d268b028adcf173ed5e8d53355d46a406627968502474c58dbb5"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.10331835597753525,
+          "box_xyxy": [
+            170.1975860595703,
+            2.447655200958252,
+            952.6666259765625,
+            520.078857421875
+          ],
+          "target_memory_score": 0.3623032867908478,
+          "sibling_memory_score": 0.4206196665763855,
+          "contrastive_score": -0.05831637978553772,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.769514948764909,
+            "target_recall": 0.9935710609628746,
+            "proposal_precision": 0.7733656721797705
+          },
+          "descriptor_sha256": "79c93165e53ce7ad433bfcc67160707fa104a514b2a1ad885ff2b3b6e4d95152"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.3374541103839874,
+          "box_xyxy": [
+            299.0106506347656,
+            1.259458065032959,
+            958.0484619140625,
+            508.008544921875
+          ],
+          "target_memory_score": 0.3563200533390045,
+          "sibling_memory_score": 0.43362700939178467,
+          "contrastive_score": -0.07730695605278015,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.9439962306462049,
+            "target_recall": 1.0,
+            "proposal_precision": 0.9439962306462049
+          },
+          "descriptor_sha256": "540fd47c7136af668fdfeb363691d481bef016e42e0bbf193ea01f7baf298c86"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.5020222067832947,
+          "box_xyxy": [
+            394.0057678222656,
+            58.487403869628906,
+            541.87158203125,
+            190.63511657714844
+          ],
+          "target_memory_score": 0.21755683422088623,
+          "sibling_memory_score": 0.3453662395477295,
+          "contrastive_score": -0.12780940532684326,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.06198032687050106,
+            "target_recall": 0.06198032687050106,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "9eccb806eca7292f2f7adcbf3f1936ea83a1a0adb1f10082d9870a8e7e6296d2"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.37296923995018005,
+          "box_xyxy": [
+            396.6365661621094,
+            207.66009521484375,
+            958.58251953125,
+            395.88824462890625
+          ],
+          "target_memory_score": 0.26261064410209656,
+          "sibling_memory_score": 0.4022095501422882,
+          "contrastive_score": -0.13959890604019165,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.3340825229019857,
+            "target_recall": 0.3344400097247264,
+            "proposal_precision": 0.9968106606740743
+          },
+          "descriptor_sha256": "d78eca4922de9feacb6be17fd24f388c101a20e2c11e5819a90c3fcbb95ede46"
+        }
+      ],
+      "sam_refinement": {
+        "selection_changed": false,
+        "refined_mask_bbox_xyxy": [
+          617.0,
+          0.0,
+          803.0,
+          35.0
+        ],
+        "refined_mask_bbox_target_metrics_evaluation_only": {
+          "iou": 0.01874676209924625,
+          "target_recall": 0.018781774025042997,
+          "proposal_precision": 0.909555469240461
+        },
+        "mask_sha256": "0fdb5a82329e13f0733835b934de87d136f44785ba3b006f89b21100e47ddd8c",
+        "mask_pixels": 4624,
+        "sam_receipt": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.09593269997276366
+        }
+      }
+    },
+    "D13M3_query": {
+      "query_truth_used_for_selection": false,
+      "target_bbox_xyxy_evaluation_only": [
+        0.1373918354511261,
+        2.637660503387451,
+        958.7086181640625,
+        538.2750244140625
+      ],
+      "proposal_count": 10,
+      "target_opportunity_at_iou_gate": true,
+      "best_reachable_target_iou_evaluation_only": 0.9558253199987651,
+      "selected_before_sam": {
+        "postprocess_index": 4,
+        "objectness_score": 0.2816683351993561,
+        "box_xyxy": [
+          25.78542709350586,
+          8.334953308105469,
+          957.0684204101562,
+          535.3125
+        ],
+        "target_memory_score": 0.44119498133659363,
+        "sibling_memory_score": 0.42111605405807495,
+        "contrastive_score": 0.020078927278518677,
+        "winning_target_reference": "D13M1_reference",
+        "winning_sibling_reference": "SIB59_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.9558253199987651,
+          "target_recall": 0.9558253199987652,
+          "proposal_precision": 1.0
+        },
+        "descriptor_sha256": "dc3ec7b32186841a1ea6a2e97722d45433ad2d96c805185a3bf483ea18629b9e"
+      },
+      "top1_contrastive_margin": 0.007920831441879272,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.2816683351993561,
+          "box_xyxy": [
+            25.78542709350586,
+            8.334953308105469,
+            957.0684204101562,
+            535.3125
+          ],
+          "target_memory_score": 0.44119498133659363,
+          "sibling_memory_score": 0.42111605405807495,
+          "contrastive_score": 0.020078927278518677,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.9558253199987651,
+            "target_recall": 0.9558253199987652,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "dc3ec7b32186841a1ea6a2e97722d45433ad2d96c805185a3bf483ea18629b9e"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.37127137184143066,
+          "box_xyxy": [
+            148.599609375,
+            277.212646484375,
+            958.187255859375,
+            534.9201049804688
+          ],
+          "target_memory_score": 0.3804187774658203,
+          "sibling_memory_score": 0.3682606816291809,
+          "contrastive_score": 0.012158095836639404,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.40634564356299574,
+            "target_recall": 0.4063456435629958,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "53a2c3d36f58de58ec03a61d4245b3d7b6f56e71b10a1dbc7fc70b4c255f0121"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.10482390224933624,
+          "box_xyxy": [
+            701.2987060546875,
+            494.08203125,
+            805.1817626953125,
+            536.8557739257812
+          ],
+          "target_memory_score": 0.19186416268348694,
+          "sibling_memory_score": 0.18780936300754547,
+          "contrastive_score": 0.004054799675941467,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.008654195855660272,
+            "target_recall": 0.008654195855660272,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "a871e7842c595ca9817bfbc2ef811fa00bb24c82e646064f8ebf41185a919e78"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.2288741171360016,
+          "box_xyxy": [
+            700.5953369140625,
+            438.3818054199219,
+            805.20361328125,
+            536.9676513671875
+          ],
+          "target_memory_score": 0.18827980756759644,
+          "sibling_memory_score": 0.19665995240211487,
+          "contrastive_score": -0.008380144834518433,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.020085625507956794,
+            "target_recall": 0.020085625507956794,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "b5a236c166bbe9406028ad0294e52f0252d0eca41b25552ed98db531c39ca1e6"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.19594542682170868,
+          "box_xyxy": [
+            701.7127075195312,
+            438.82757568359375,
+            774.0953369140625,
+            535.9932861328125
+          ],
+          "target_memory_score": 0.1616365611553192,
+          "sibling_memory_score": 0.17067554593086243,
+          "contrastive_score": -0.009038984775543213,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.013697841394968024,
+            "target_recall": 0.013697841394968024,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "34b9093f2b6a1737cf19bf8243104dc329d71cc6d4de4245e104c415f44a27f7"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.13962322473526,
+          "box_xyxy": [
+            723.64501953125,
+            440.1201477050781,
+            772.9375610351562,
+            533.8736572265625
+          ],
+          "target_memory_score": 0.16248276829719543,
+          "sibling_memory_score": 0.17158076167106628,
+          "contrastive_score": -0.00909799337387085,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0090006420845434,
+            "target_recall": 0.0090006420845434,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "3978771f0a8e7a12382250735b315a3ab4dfb1d5b5886368deabe5b5e2975ad2"
+        },
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.14147813618183136,
+          "box_xyxy": [
+            150.2401885986328,
+            278.2510681152344,
+            957.54443359375,
+            493.75250244140625
+          ],
+          "target_memory_score": 0.2694776654243469,
+          "sibling_memory_score": 0.28250887989997864,
+          "contrastive_score": -0.013031214475631714,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.3388380304088257,
+            "target_recall": 0.33883803040882576,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "925086bef3536d35f321aac28a6b08562a02276626fca6cacbd8f4ec020f7a0f"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.31462839245796204,
+          "box_xyxy": [
+            342.03515625,
+            165.85963439941406,
+            388.6761169433594,
+            236.27377319335938
+          ],
+          "target_memory_score": 0.1489040106534958,
+          "sibling_memory_score": 0.18813857436180115,
+          "contrastive_score": -0.03923456370830536,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0063963483348655715,
+            "target_recall": 0.0063963483348655715,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "cbf079d6ee7fcebe416d226a7682bc0baa24405b8f7edb612450e151924ba3cb"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.5659373998641968,
+          "box_xyxy": [
+            154.21441650390625,
+            130.2291259765625,
+            316.142333984375,
+            270.7240905761719
+          ],
+          "target_memory_score": 0.20297056436538696,
+          "sibling_memory_score": 0.32660338282585144,
+          "contrastive_score": -0.12363281846046448,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.04430851931662056,
+            "target_recall": 0.04430851931662057,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "8ec02c0dc06a5a77a56c058724c292407e770bbda79e9adf745dbc662a8a637a"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.39274516701698303,
+          "box_xyxy": [
+            393.0644836425781,
+            43.83308029174805,
+            571.90625,
+            122.73960876464844
+          ],
+          "target_memory_score": 0.15659809112548828,
+          "sibling_memory_score": 0.2906494140625,
+          "contrastive_score": -0.13405132293701172,
+          "winning_target_reference": "D13M1_reference",
+          "winning_sibling_reference": "SIB59_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.027484423690637107,
+            "target_recall": 0.027484423690637104,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "9b62cb619f6f39587697fae7a424717dba973c75641dc5d9cba6bb4a971a4a73"
+        }
+      ],
+      "sam_refinement": {
+        "selection_changed": false,
+        "refined_mask_bbox_xyxy": [
+          43.0,
+          13.0,
+          960.0,
+          540.0
+        ],
+        "refined_mask_bbox_target_metrics_evaluation_only": {
+          "iou": 0.9326985059543689,
+          "target_recall": 0.9368041384361481,
+          "proposal_precision": 0.9953231429984654
+        },
+        "mask_sha256": "cbd3459fc05bbbcb10aed844bd700a5f014ef863deaa89929ac4e16f791fd290",
+        "mask_pixels": 463625,
+        "sam_receipt": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.09463589999359101
+        }
+      }
+    }
+  },
+  "memory_receipts": {
+    "target": {
+      "D13M1_reference": "fffcf9fe93fa011742c796d555652f1b369a9cb288cecb3ca822ae2b9a321455",
+      "D13M2_reference": "8c1f5e2516fda22a820354421fbb13fd04f4a0166572a58bcd624fb359f19b10",
+      "D13M3_reference": "6a478eee5b4597e488469c1219301575a759615400eb179dddbaec9d28b095a4"
+    },
+    "sibling": {
+      "SIB59_query": "66ddb3a1088a11f6e4a99226ff16bd3f5f07f9d654fb197eea2418e10f60565a"
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "proposal": {
+      "model_type": "GroundingDinoForObjectDetection",
+      "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "seconds_by_image": {
+        "D13M1_query": 2.2923550000414252,
+        "D13M2_query": 0.29222060000756755,
+        "D13M3_query": 0.2923756999662146
+      }
+    },
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 3,
+    "sam2_calls": 3
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Class-agnostic objects proposals, instance-template matching and SAM refinement."
+    },
+    {
+      "source": "REMIND",
+      "url": "https://arxiv.org/abs/2607.09267",
+      "use": "Explicit distractor memory for long-term generic indoor instance disambiguation."
+    }
+  ],
+  "claim_boundary": "A pass can establish only narrow same-provider new-family confirmation that the sealed pipeline acquires and localizes one bound physical door from full query frames. Same-provider geometry selected the reference and sibling boxes. It cannot establish open-set absence, broad distractor coverage, raw-phone or provider-independent generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

@@ -287,6 +287,15 @@ contract.
   `0.773318`. This is consumed same-scene Development evidence that the bound
   memory can drive class-agnostic query acquisition; the minimum margin is thin
   and no fresh-family or raw-phone confirmation exists yet.
+  The sealed full chain then received a pre-download, pre-RGB, pre-model new-
+  family test on `422885ce -> 1c211554`, target door `13`, sibling door `59`.
+  The source gate supplied three views per side (`0.544934` reference and
+  `0.936099` query cumulative coverage) and a sibling from `9` eligible views.
+  Class-agnostic proposal opportunity stayed strong at `3/3`, but unchanged
+  target-minus-sibling CLS ranking plus SAM2 localized only `1/3`; minimum
+  refined IoU was `0.018747`, mean `0.325531`. Freeze this as a new-family
+  representation failure. The next Development change is mask-foreground patch
+  aggregation, not score-weight or threshold tuning.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-3rscan-observation-adequacy-confirmation-candidate-freeze-protocol-v3",
+  "protocol_id": "l10-3rscan-objectness-pipeline-confirmation-candidate-protocol-v1",
+  "frozen_at": "2026-09-01T08:17:30+08:00",
+  "question": "Which entirely unmaterialized 3RScan family should test the unchanged full-frame class-agnostic proposal, target-minus-sibling memory and native SAM2 refinement chain?",
+  "implementation": {"path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze_v3.py", "sha256": "00c62f3b7692067951164ff0b39d0237891e48a0de9cfd616d8aabb65716e6ed"},
+  "base_implementation": {"path": "l10_3rscan_observation_adequacy_confirmation_candidate_freeze.py", "sha256": "b6bcfaf855f6a63459682b22d32659ef83042c3fd215cc2bab7afb43d4ab3c03"},
+  "candidate_protocol": {"path": "l10_3rscan_registered_extent_protocol_v1.json", "sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0"},
+  "predecessor": {"path": "l10_3rscan_contrastive_sam_refinement_posthoc_result_v1.json", "sha256": "f63a4b86f07da7ff657fabc7c14543004d295b4ff459b2ed56f52c15e930b66f"},
+  "exclusion_authority": {"path": "l10_3rscan_selective_cascade_confirmation_freeze_protocol_v1.json", "sha256": "c763bb2d7ff5fca4c3f6d3306e71bf0474bd4f1a749e4568f0a2e3771dc9354a"},
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_METADATA_ONLY_OBJECTNESS_PIPELINE_CONFIRMATION_CANDIDATE",
+    "artifact_root": "artifacts.local",
+    "metadata": [
+      {"path": "datasets/3rscan/3RScan.json", "bytes": 3155995, "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"},
+      {"path": "datasets/3rscan/objects.json", "bytes": 20096813, "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"}
+    ]
+  },
+  "selection": {"ranking": "Use unchanged metadata candidate order; exclude governed consumed targets, used reference families, and every candidate whose scans already have semseg, instance PLY, or sequence materialized. Select the first remaining row before pose, depth, RGB or model access."},
+  "post_download_gate": {
+    "candidate_view_rules": {
+      "minimum_per_view_inside_vertex_fraction": 0.15,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 0.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "minimum_projected_bbox_short_side_fraction": 0.08,
+      "maximum_projected_bbox_aspect_ratio": 12.0,
+      "depth_consistency_metres": 0.15
+    },
+    "memory_budget": 3,
+    "memory_selection": "Greedily maximize newly visible target vertices on each scan; ties use larger short-side fraction, higher depth-visible ratio, then earlier frame.",
+    "same_scene_negative": "Select the first different door or doorframe instance with at least one admitted view, using maximum visible vertices and the same deterministic ties.",
+    "source_is_evaluable_only_if": "Both target scans yield at least two memory views and the rescan yields at least one admitted different-instance door or doorframe before RGB/model access."
+  },
+  "forbidden_after_freeze": [
+    "replace selected family, target or six-file download plan",
+    "change view admission, three-view memory selection or sibling rule",
+    "open RGB or run a model before source result",
+    "claim a metadata candidate or source gate as confirmation"
+  ],
+  "claim_boundary": "This freezes only the next new physical family candidate for the full objectness-memory-SAM pipeline. It is metadata-only, not source evaluability, RGB/model evidence, referent binding, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
