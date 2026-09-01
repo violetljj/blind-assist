@@ -4477,6 +4477,52 @@ safety. Freeze it unchanged on a sixth untouched family; after any transfer pass
 the next algorithmic layer must actually resolve the retained set through
 cross-view belief or active observation.
 
+That rule was frozen before any source download, RGB inspection, or model call
+on a sixth physical family, `4d3d829e-8cf4-2e04-8318-b76f02d91c93 ->
+4d3d82a0-8cf4-2e04-800f-97deb20e860b`, target door `10`. The official source
+gate admitted three reference views at `0.983495` cumulative target-vertex
+coverage, three query views at `0.999151`, and independently visible sibling
+door `24`. The unchanged cross-view set failed fresh confirmation at `2/3`:
+minimum best IoU `0`, mean `0.499487`, mean set size `2.0`, maximum `3`. This was
+also a proposal-opportunity failure: CVR1's best detector proposal reached only
+IoU `0.433665`, while CVR2/CVR3 retained proposals at `0.617468/0.880993`.
+Record
+`L10_3RSCAN_CROSS_VIEW_REFERENCE_CONSENSUS_FRESH_CONFIRMATION_GATE_NOT_MET`.
+The source is evaluable; the result limits the fixed proposal carrier and does
+not falsify multi-view consensus as a ranking mechanism.
+
+One failure-driven consumed successor tested reference-scale axis completion:
+for every proposal it considered the unchanged box, a full-width horizontal
+band preserving its y span, and a full-height vertical band preserving its x
+span. That candidate repaired sixth-family CVR1 to IoU `0.728335` and the fresh
+family to `3/3`, but replacing an original contributor regressed earlier
+families, leaving the six-family replay at `16/18`, mean best IoU `0.686549`.
+Record
+`L10_3RSCAN_REFERENCE_SCALE_AXIS_COMPLETION_SIX_FAMILY_DEVELOPMENT_GATE_NOT_MET`.
+The repair mechanism was useful; the replacement role was not.
+
+The next structural change preserved all three original mechanisms and used
+axis completion only as bounded missing capacity. It first reconstructs fusion,
+nearest-reference-scale mixture, and cross-view reference consensus exactly;
+after exact-candidate deduplication, it appends at most one axis-completion box
+only when fewer than three distinct candidates remain. It never removes an
+existing candidate. Across all six consumed families the rule covered `18/18`
+queries at IoU `0.5`, with maximum set size `3`, mean set size `2.5`, minimum
+best IoU `0.507007`, and mean best IoU `0.800938`. It filled `13/16` available
+vacancies; four appended candidates independently crossed the IoU gate, including
+sixth-family CVR1 at `0.728335`. Record
+`L10_3RSCAN_AXIS_COMPLETION_VACANCY_SIX_FAMILY_DEVELOPMENT_GATE_MET`.
+
+[Dynamic Tiling](https://arxiv.org/abs/2309.11069) motivates using initial
+near-boundary detections to guide spatial completion, while
+[ARC-RCNN](https://arxiv.org/abs/1703.01634) motivates multiple aspect-ratio and
+context configurations. They support only the mechanism class. All six families
+were consumed before the vacancy rule was defined; this is bounded proposal-set
+Development, not fresh confirmation, top-one referent localization, calibrated
+uncertainty, open-set rejection, named entrance, access, traversability,
+waypoint, arrival, handoff, benefit, reliability, or safety. Freeze the rule
+unchanged on a seventh untouched family before attempting set resolution.
+
 Evidence:
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
@@ -4509,6 +4555,26 @@ Evidence:
   `dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b`,
   `387cfcbbbf06d1f0a0f2bd3f8af079e688af7c470deb4da5dbbfb638a27ef378`,
   and `183245555c9cc27158c2dd1f66eaab995d1ef20eefc2b4c0cf9256648b70e5c3`.
+- sixth-family candidate/source/freeze/cohort, intermediate, and confirmation
+  implementation/protocol/result SHA-256:
+  `d5ab84a048168f5c449ffda614069e984a2915fd0b11d1a0eceb58bafee2f8d8`,
+  `2b2e70aa079f47f415082b8d464a9bfed547b849ca002152416a4fd7654a8bce`,
+  `9a20f28f7b074bd68d74563dc150e59f39c73c056dcb009dfe613897dcb94752`,
+  `acb4e9da937e8d12ba23b999e4ae4b364e6852a3df44da546878eb38d711b1d8`,
+  `b1beaa06d2f804366d33fcb1295cf3dc2410ece776311418e2a8e97765386e64`,
+  `853db9ff1a4ae45590efc7a508b7e47173b71f63f1a221837424ee15fb83daa2`,
+  `ba59e9d656167e1373fdd02e8a455cebc777585aebf587eda8fb21963ca32afd`,
+  `88f4e12a8d4407e2903f28968e80c8cc005da8db921f6dbb340daa452f5b29da`,
+  `14a99e3db86406652b388cb176388bab74112d11d510dda87f0599d7d3b9152b`,
+  and `4e06e93abe61b32ec09ed628bc5095080b1a0a9d42b466d9ac1eeccef0de280e`.
+- axis-completion replacement implementation/protocol/result and vacancy-only
+  implementation/protocol/result SHA-256:
+  `bdf242adf72214a7a2623de3561c7e99fe951ba30d2c897c85496201f546f66c`,
+  `f2dd0d9e28845f773b64b440fb980ab03df005a4866310427b783aafb722529b`,
+  `8aad2dc373ec639845e1f2bcfd769cdf9a3c330447f1950ae4a961f4bb823a6c`,
+  `3eaa8d2f0efcad0b5f4fcbe2ae0167d31e90d45ced718fd78755cc4d76cdb357`,
+  `f905ca2f59856350d4614af1039523025273fcfc57c71a958d933b7602581fc5`,
+  and `73c926f34d5a2d2b659f890d5aaff85b5d0b18fa8d37ee4906417729401e8bed`.
 
 - fresh layer-18 candidate protocol/candidate, source protocol/result, and
   freeze protocol/cohort SHA-256:

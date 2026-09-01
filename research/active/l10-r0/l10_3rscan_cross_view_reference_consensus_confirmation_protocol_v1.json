@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist-l10-3rscan-cross-view-reference-consensus-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-cross-view-reference-consensus-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T13:59:59+08:00",
+  "question": "Does the bounded cross-view reference-consensus proposal set cover target door 10 in all three query views of the preselected sixth family?",
+  "implementation": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation.py",
+    "sha256": "88f4e12a8d4407e2903f28968e80c8cc005da8db921f6dbb340daa452f5b29da"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_cross_view_reference_consensus_posthoc.py",
+      "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"
+    }
+  ],
+  "development_predecessor": {
+    "path": "l10_3rscan_cross_view_reference_consensus_posthoc_result_v1.json",
+    "sha256": "183245555c9cc27158c2dd1f66eaab995d1ef20eefc2b4c0cf9256648b70e5c3",
+    "required_conclusion": "L10_3RSCAN_CROSS_VIEW_REFERENCE_CONSENSUS_FIVE_FAMILY_DEVELOPMENT_GATE_MET"
+  },
+  "source_result": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_source_result_v1.json",
+    "sha256": "acb4e9da937e8d12ba23b999e4ae4b364e6852a3df44da546878eb38d711b1d8"
+  },
+  "cohort": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+    "sha256": "853db9ff1a4ae45590efc7a508b7e47173b71f63f1a221837424ee15fb83daa2"
+  },
+  "candidate_result": {
+    "path": "l10_3rscan_cross_view_reference_consensus_confirmation_intermediate_result_v1.json",
+    "sha256": "ba59e9d656167e1373fdd02e8a455cebc777585aebf587eda8fb21963ca32afd"
+  },
+  "hypothesis_generation": {
+    "truth_blind": true,
+    "maximum_set_size": 3,
+    "contributors": [
+      "highest equal semantic/local layer18_nids_fused_score",
+      "highest layer18_local_appearance_score minus 0.05 times minimum absolute log-area deviation to any of the three reference target boxes",
+      "highest layer18_nids_fused_score constrained to the majority winning target reference across all three query observations"
+    ],
+    "scale_mixture_log_area_penalty": 0.05,
+    "reference_vote": "Each query contributes its semantic-local fusion top-one winning target reference. Select the majority reference; break ties by deterministic sorted reference order.",
+    "deduplication": "Merge contributors only when tile_id, postprocess_index and exact box coordinates are identical.",
+    "tie_break": "Use the frozen base scorer's deterministic higher layer-18 local, target-memory and objectness scores, then lexicographic box and postprocess index.",
+    "truth_boundary": "No target box, IoU, target mask or target coverage enters reference voting, candidate generation, candidate ranking or deduplication."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_covered_queries": 3,
+    "maximum_set_size": 3
+  },
+  "literature_motivation": [
+    {
+      "source": "Simultaneous Multi-View Instance Detection With Learned Geometric Soft-Constraints",
+      "url": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Nassar_Simultaneous_Multi-View_Instance_Detection_With_Learned_Geometric_Soft-Constraints_ICCV_2019_paper.pdf",
+      "use": "Appearance and cross-view geometry can jointly disambiguate similar neighboring instances. Mechanism motivation only."
+    },
+    {
+      "source": "CoMatcher: Multi-View Collaborative Feature Matching",
+      "url": "https://arxiv.org/abs/2504.01872",
+      "use": "Complementary views and cross-view consistency can reduce ambiguity from independent pairwise matching. Mechanism motivation only."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change any contributor, score, 0.05 penalty, reference vote, deterministic tie break, deduplication, maximum set size or IoU gate",
+    "use query truth, sibling appearance or controls in hypothesis generation",
+    "add a fourth hypothesis, rescue a failed query or reinterpret proposal coverage as top-one localization"
+  ],
+  "claim_boundary": "A pass confirms only bounded proposal recall on one wholly new sixth 3RScan family under provider truth and a maximum set size of three. A failure with no reachable candidate is a proposal-carrier limitation, not evidence against source observability. Neither outcome confirms top-one localization, calibrated uncertainty, open-set rejection, instance ownership, referent identity, named entrance, affordance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}

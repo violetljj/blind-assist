@@ -472,6 +472,33 @@ contract.
   sixth untouched family. A future pass would establish bounded proposal recall
   only; choosing one referent still requires actual cross-view belief or active
   disambiguation.
+  The sixth family was frozen before source download and model execution as
+  `4d3d829e-8cf4-2e04-8318-b76f02d91c93 ->
+  4d3d82a0-8cf4-2e04-800f-97deb20e860b`, target door `10`. The source gate was
+  positive: three reference views covered `0.983495` cumulative target vertices,
+  three query views covered `0.999151`, and sibling door `24` was independently
+  visible. The unchanged consensus set nevertheless failed fresh confirmation
+  at `2/3`, with proposal opportunity also only `2/3`: CVR1's best reachable
+  detector proposal was IoU `0.433665`. Minimum/mean best set IoU were
+  `0/0.499487`. Record
+  `L10_3RSCAN_CROSS_VIEW_REFERENCE_CONSENSUS_FRESH_CONFIRMATION_GATE_NOT_MET`.
+  This localizes the failure to the proposal carrier, not source observability
+  or evidence against cross-view ranking.
+  A first consumed elongated-target successor replaced one contributor with a
+  reference-scale axis-completion candidate. It repaired the sixth family to
+  `3/3` and CVR1 to IoU `0.728335`, but regressed the six-family replay to
+  `16/18`; record its role as not met. The next structural successor instead
+  preserves all original fusion, scale-mixture, and reference-consensus
+  candidates, deduplicates them, and fills only an otherwise unused slot with
+  one horizontal/vertical axis completion. It reached `18/18` across all six
+  consumed families, maximum set size `3`, mean set size `2.5`, minimum best IoU
+  `0.507007`, and mean best IoU `0.800938`; CVR1 remained repaired at
+  `0.728335`. Record
+  `L10_3RSCAN_AXIS_COMPLETION_VACANCY_SIX_FAMILY_DEVELOPMENT_GATE_MET`.
+  Dynamic Tiling and ARC-RCNN motivate adaptive spatial/aspect completion only;
+  they do not validate this rule. Freeze the bounded vacancy rule unchanged on
+  a seventh untouched family. A pass would still establish proposal recall only,
+  not selection of one referent or any downstream portal/navigation authority.
   Correspondence still
   proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
@@ -715,7 +742,13 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
-4. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
+4. Freeze the six-family axis-completion vacancy rule on a seventh untouched
+   3RScan family before source download, RGB inspection, or model execution.
+   Keep the set at no more than three and do not tune its `0.05` scale penalty,
+   axis modes, vacancy condition, or IoU gate. If it transfers, the next layer
+   must resolve the retained set with actual cross-view belief or active
+   observation; do not report proposal recall as top-one referent localization.
+5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
 ## Stop and claim boundary
@@ -775,6 +808,10 @@ contract.
   [l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json)
 - 3RScan Grounded-SAM source-reachability result:
   [l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json](l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json)
+- Sixth-family fresh cross-view consensus result:
+  [l10_3rscan_cross_view_reference_consensus_confirmation_result_v1.json](l10_3rscan_cross_view_reference_consensus_confirmation_result_v1.json)
+- Six-family axis-completion vacancy Development result:
+  [l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json](l10_3rscan_axis_completion_vacancy_posthoc_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

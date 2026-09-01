@@ -1,0 +1,119 @@
+{
+  "schema": "blindassist-l10-3rscan-axis-completion-vacancy-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-axis-completion-vacancy-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T14:05:28+08:00",
+  "question": "Can one truth-blind axis-completion candidate fill only an unused slot in the original cross-view hypothesis set, recovering the sixth-family fragmented target without displacing any previously useful candidate?",
+  "implementation": {
+    "path": "l10_3rscan_axis_completion_vacancy_posthoc.py",
+    "sha256": "3eaa8d2f0efcad0b5f4fcbe2ae0167d31e90d45ced718fd78755cc4d76cdb357"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_cross_view_reference_consensus_posthoc.py",
+      "sha256": "dbef4d5e4799bca322a2b8fd475a2d08512efcf26ccba5c5e47fad11c9b6858b"
+    },
+    {
+      "path": "l10_3rscan_reference_scale_axis_completion_posthoc.py",
+      "sha256": "bdf242adf72214a7a2623de3561c7e99fe951ba30d2c897c85496201f546f66c"
+    }
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_reference_scale_axis_completion_posthoc_result_v1.json",
+    "sha256": "8aad2dc373ec639845e1f2bcfd769cdf9a3c330447f1950ae4a961f4bb823a6c",
+    "required_conclusion": "L10_3RSCAN_REFERENCE_SCALE_AXIS_COMPLETION_SIX_FAMILY_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "families": {
+    "consumed_door8_second": {
+      "candidate_result": {
+        "path": "l10_3rscan_scale_extent_guard_confirmation_result_v1.json",
+        "sha256": "eff163533e18c8637e095a78492f336a7e5297d078c9b5c1c3604a8027391793"
+      },
+      "cohort": {
+        "path": "l10_3rscan_scale_extent_guard_confirmation_cohort_v1.json",
+        "sha256": "ef64d8a5009bae1385b566ee9ee9f9337e40834ec41b931a97fcd61ac1fe51ee"
+      }
+    },
+    "consumed_door12": {
+      "candidate_result": {
+        "path": "l10_3rscan_cross_scale_extent_confirmation_result_v1.json",
+        "sha256": "5641cafbdef50d4c409e3ef6a5da6868ec2ee0db7a55e7ef38b32e2889a3a827"
+      },
+      "cohort": {
+        "path": "l10_3rscan_cross_scale_extent_confirmation_cohort_v1.json",
+        "sha256": "104f210b116b9a585461d0fb638a473bf740bbf6cdec129bbc3168f3239be1c7"
+      }
+    },
+    "consumed_door8_first": {
+      "candidate_result": {
+        "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_result_v1.json",
+        "sha256": "96e7bbf4015c4fefa1f921ff37d56ce124444b96fc5a0350601791ecd86e2060"
+      },
+      "cohort": {
+        "path": "l10_3rscan_foundpose_layer18_local_only_confirmation_cohort_v1.json",
+        "sha256": "d893210355ab928eedd0420268427d15f8a0a47fc028c7184a1807dd8993aed5"
+      }
+    },
+    "consumed_door15": {
+      "candidate_result": {
+        "path": "l10_3rscan_foundpose_layer18_nids_posthoc_result_v1.json",
+        "sha256": "04b514b63e52778a8d5015969864890cf0dc74b9e1e841234542a054e0c5cfd8"
+      },
+      "cohort": {
+        "path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+        "sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"
+      }
+    },
+    "consumed_door4": {
+      "candidate_result": {
+        "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_intermediate_result_v1.json",
+        "sha256": "1be57b5f085f8d6cd98c1604189f90f75202bb871e76655fd3441487298c261a"
+      },
+      "cohort": {
+        "path": "l10_3rscan_tri_evidence_hypothesis_set_confirmation_cohort_v1.json",
+        "sha256": "187f734bd0e0546fb431bba20be8c3dbb536b20a37df1f51ff3f1ccf7fb203bf"
+      }
+    },
+    "consumed_door10": {
+      "candidate_result": {
+        "path": "l10_3rscan_cross_view_reference_consensus_confirmation_intermediate_result_v1.json",
+        "sha256": "ba59e9d656167e1373fdd02e8a455cebc777585aebf587eda8fb21963ca32afd"
+      },
+      "cohort": {
+        "path": "l10_3rscan_cross_view_reference_consensus_confirmation_cohort_v1.json",
+        "sha256": "853db9ff1a4ae45590efc7a508b7e47173b71f63f1a221837424ee15fb83daa2"
+      }
+    }
+  },
+  "hypothesis_generation": {
+    "maximum_hypotheses": 3,
+    "preserved_contributors": [
+      "equal semantic-local fusion top one",
+      "nearest-reference-scale local-appearance mixture top one",
+      "best semantic-local fusion candidate constrained to the majority winning target reference across the three query observations"
+    ],
+    "vacancy_rule": "Deduplicate the three preserved contributors by exact original candidate key. Only when fewer than three distinct candidates remain, append at most one reference-scale axis completion if its output box is not already present. Never remove or replace a preserved candidate.",
+    "axis_completion": "For every detector proposal, consider its unchanged box, a full-width horizontal band retaining its y span, and a full-height vertical band retaining its x span. Rank all options by the parent layer-18 local score minus 0.05 times minimum absolute log-area deviation to any frozen reference target scale.",
+    "scale_log_area_penalty": 0.05,
+    "reference_vote": "Each query contributes its semantic-local fusion top-one winning target reference. Select the majority reference; break ties by deterministic sorted reference order.",
+    "truth_boundary": "Reference vote, preserved contributors, deduplication, vacancy availability, axis mode and scores are fixed before target boxes or IoU are opened. Truth is used only to evaluate the resulting set.",
+    "downstream_contract": "The bounded set remains unresolved localization uncertainty and requires active or cross-view disambiguation before one target can be authorized."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_covered_queries": 18,
+    "maximum_set_size": 3
+  },
+  "literature_motivation": [
+    {
+      "source": "Dynamic Tiling: A Model-Agnostic, Adaptive, Scalable, and Inference-Data-Centric Approach for Efficient and Accurate Small Object Detection",
+      "url": "https://arxiv.org/abs/2309.11069",
+      "use": "Initial near-boundary detections can guide adaptive spatial completion for objects fragmented by fixed tiling. Mechanism motivation only."
+    },
+    {
+      "source": "Aspect Ratio and Context Aware Region-based Convolutional Neural Networks for Object Detection",
+      "url": "https://arxiv.org/abs/1703.01634",
+      "use": "Multiple aspect-ratio configurations and surrounding context motivate a bounded elongated-object completion candidate. Mechanism motivation only."
+    }
+  ],
+  "claim_boundary": "All six families were consumed before this vacancy rule was defined. A pass is Development evidence for a bounded proposal carrier, not fresh confirmation, a learned dynamic detector, top-one localization, calibrated uncertainty, open-set rejection, raw-phone operation, referent ownership, named entrance, access, traversability, waypoint, arrival, handoff, user benefit, reliability or safety."
+}
