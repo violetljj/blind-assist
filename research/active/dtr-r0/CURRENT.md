@@ -235,7 +235,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `91.37/77.68/83.97%`, or `0 TP / -3 FP / +0.07 pp F1` over X83. All
   contact, safe-segment, full-arm, and authority checks pass. This is post-hoc
   Development-only; X73 still retains fresh authority until unchanged X84 is
-  exercised by a new preregistered source-disjoint gate.
+  exercised by a new preregistered source-disjoint gate. Cross-cohort diagnosis
+  then found two C36 frames where X68 current object-local geometry had already
+  released surface risk, but X72 reopened it in the same frame using only
+  historical boundary-completion proxies. X85 gives the current X68 geometric
+  falsifier precedence over that pure X72 reopening while preserving direct
+  carriers and later independent evidence. It changes only C36, from
+  `143 TP / 23 FP / 29 FN` to `143 / 21 / 29`; pooled X85 is
+  `1,472 TP / 137 FP / 423 FN` at `91.49/77.68/84.02%`, or
+  `0 TP / -2 FP / +0.05 pp F1` over X84. All required checks pass. X85 is
+  consumed Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -279,8 +288,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    confirmation and cannot be retried. X83 has now corrected C41's mixed
    authority reference with classification identity across eleven consumed
    cohorts. X84 then removes three branch-overloaded held-continuation false
-   positives with zero TP loss across those cohorts. Any promotion requires a
-   new preregistered source testing frozen X84.
+   positives with zero TP loss across those cohorts. X85 further removes two
+   C36 false positives caused by X72 reopening risk after same-frame X68
+   geometric release, again with zero TP loss. Any promotion requires a new
+   preregistered source testing frozen X85.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -309,6 +320,8 @@ their result.
   [DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md](carla/DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md)
 - X84 consumed Development result:
   [DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X85 consumed Development result:
+  [DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
