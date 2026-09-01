@@ -3,7 +3,7 @@
   "authority": "POST_PATCH_NEGATIVE_PRE_GEOMETRY_SCORE_ADJACENT_QUERY_TRACK_PROTOCOL",
   "implementation": {
     "path": "l10_3rscan_query_mask_3d_track.py",
-    "sha256": "f36d2576f2f739a148ed490f657ce8ed2b97e8adab4db3d93a7ac54f70c70efc"
+    "sha256": "08e452411c75f95843c0aa5e4bfeab197d36fc99d7e424fdf15111369b881684"
   },
   "dependencies": [
     {
@@ -43,7 +43,7 @@
     "minimum_visible_projected_points": 16,
     "lift": "Lift each proposal SAM mask through its RGB-D frame into scan coordinates using the frozen intrinsics and camera pose.",
     "pair_score": "Geometric mean of depth-consistent mask coverage in both projection directions.",
-    "candidate_score": "Best cross-frame pair score; rank mutual-best pairs first, then symmetric coverage, objectness, and frozen candidate index.",
+    "candidate_score": "Best cross-frame pair score; rank depth-supported candidates first, then mutual-best pairs, symmetric coverage, objectness, and frozen candidate index. A proposal with no valid depth is explicitly unsupported and receives zero track score.",
     "appearance_use": "None."
   },
   "literature_motivation": [

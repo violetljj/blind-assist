@@ -48,11 +48,14 @@ def _lift(
     projected = camera @ info["color_intrinsic"].T
     with np.errstate(divide="ignore", invalid="ignore"):
         pixels = projected[..., :2] / projected[..., 2:3]
-    xs = np.rint(pixels[..., 0]).astype(np.int64)
-    ys = np.rint(pixels[..., 1]).astype(np.int64)
+    finite = np.isfinite(pixels).all(axis=-1)
+    xs = np.zeros(depth.shape, dtype=np.int64)
+    ys = np.zeros(depth.shape, dtype=np.int64)
+    xs[finite] = np.rint(pixels[..., 0][finite]).astype(np.int64)
+    ys[finite] = np.rint(pixels[..., 1][finite]).astype(np.int64)
     inside = (
         valid
-        & np.isfinite(pixels).all(axis=-1)
+        & finite
         & (xs >= 0)
         & (xs < int(info["color_width"]))
         & (ys >= 0)
@@ -61,7 +64,8 @@ def _lift(
     selected = np.zeros_like(inside)
     selected[inside] = mask[ys[inside], xs[inside]]
     points = camera[selected]
-    pixel.require(len(points) > 0, "MASK_HAS_NO_VALID_DEPTH")
+    if not len(points):
+        return np.empty((0, 3), dtype=np.float64)
     scan = np.column_stack((points, np.ones(len(points), dtype=np.float64))) @ pose.T
     return scan[:, :3]
 
@@ -74,6 +78,8 @@ def _coverage(
     info: dict[str, Any],
     tolerance_metres: float,
 ) -> tuple[float, int, int]:
+    if not len(points_scan):
+        return 0.0, 0, 0
     camera, color_pixels, color_inside = pixel.project_points(
         points_scan,
         target_pose,
@@ -230,6 +236,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
                 "mutual_best": int(best_first[partner]) == index,
                 "track_score": float(matrix[index, partner]),
                 "lifted_depth_points": int(len(lifted[first][index])),
+                "depth_supported": bool(len(lifted[first][index])),
             }
         )
     for index in range(len(candidates[second])):
@@ -241,6 +248,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
                 "mutual_best": int(best_second[partner]) == index,
                 "track_score": float(matrix[partner, index]),
                 "lifted_depth_points": int(len(lifted[second][index])),
+                "depth_supported": bool(len(lifted[second][index])),
             }
         )
 
@@ -251,6 +259,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
         order = sorted(
             range(len(candidates[key])),
             key=lambda index: (
+                -int(candidate_scores[key][index]["depth_supported"]),
                 -int(candidate_scores[key][index]["mutual_best"]),
                 -candidate_scores[key][index]["track_score"],
                 -float(candidates[key][index]["objectness_score"]),
@@ -308,6 +317,11 @@ def run(protocol_path: Path, output_path: Path) -> None:
             "mean_rank_improvement": float(np.mean([row["rank_improvement"] for row in episodes])),
             "minimum_track_top1_iou": min(row["track_top1_iou_evaluation_only"] for row in episodes),
             "mean_track_top1_iou": float(np.mean([row["track_top1_iou_evaluation_only"] for row in episodes])),
+            "depth_unsupported_candidates": sum(
+                not row["depth_supported"]
+                for rows in candidate_scores.values()
+                for row in rows
+            ),
         },
         "literature_motivation": protocol["literature_motivation"],
         "gate": {**protocol["gate"], "met": gate_met},
