@@ -129,7 +129,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `1,071 TP / 106 FP / 308 FN` at `90.99/77.66/83.80%`. C37 reaches
   `133 TP / 23 FP / 39 FN` at `85.26/77.33/81.10%`, crossing the 85% precision
   reference. All required constraints pass. X77 is Development-only; X73
-  retains confirmation authority until unchanged X77 passes a fresh gate.
+  retains confirmation authority until unchanged X77 passes a fresh gate. The
+  sole C38 invocation then tested unchanged X77 on seed `381077` and four new
+  render assignments. X77 and X76 were classification-identical at
+  `124 TP / 48 FP / 48 FN`, or `72.09/72.09/72.09%`; X77 recorded zero
+  receding temporal-handoff releases. C38 is therefore
+  mechanism-not-exercised, not negative incremental evidence. All required
+  authority invariants and safe-segment constraints passed, but full precision
+  and F1 failed and episode 05 contact recall was only `52.17%`. C38 is now
+  consumed diagnosis material for a measurement-backed existence/uncertainty
+  successor; X73 continues to retain confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -147,16 +156,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35, C36, or C37 as confirmation. X73 remains positively
-   confirmed on C35; C36 and C37 are consumed successor-design evidence. Any
-   X77 reduced C37's remaining false positives from 24 to 23 and crossed its
-   precision floor with zero TP loss across all eight consumed cohorts. Freeze
-   unchanged X77 before any later new source. C38 now freezes X77 at seed
-   `381077` with four changed render assignments. Its single-use X76/X77 runner
-   is statically validated and bound to protocol SHA-256
+4. Do not rerun C35, C36, C37, or C38 as confirmation. X73 remains positively
+   confirmed on C35; C36 and C37 are consumed successor-design evidence. X77
+   reduced C37's remaining false positives from 24 to 23 and crossed its
+   precision floor with zero TP loss across all eight consumed cohorts. C38
+   froze X77 at seed `381077` with four changed render assignments. Its
+   single-use X76/X77 runner is bound to protocol SHA-256
    `B11E8C0B138D075FEF9A74295AA8E4A3F730350C42F1237A453130A6838DD31D`;
-   no C38 pixels have been admitted. Until a full fresh gate passes, X73
-   retains source-disjoint confirmation authority.
+   C38 admitted and scored its sole invocation, but the X77 mechanism was not
+   exercised and the full gate failed. Until a later full fresh gate passes,
+   X73 retains source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
