@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-3rscan-small-tile-proposal-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-small-tile-proposal-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:13:00+08:00",
+  "question": "Does a fixed 40%-width by 40%-height corner-tile scale make all three consumed D15 targets reachable without changing the GroundingDINO prompt or thresholds?",
+  "implementation": {"path": "l10_3rscan_small_tile_proposal_posthoc.py", "sha256": "c8c7a6270f23e675c3366e1da3e00931dd4135ba2c4cf83d3ed44fe536dfd9c4"},
+  "dependencies": [
+    {"path": "l10_3rscan_tiled_mask_ffa_posthoc.py", "sha256": "22cfc409fd82d379f31e3c09e38820041a5e2774094a885b14f551b584f3d1bb"},
+    {"path": "l10_3rscan_mask_ffa_memory_posthoc.py", "sha256": "0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992"},
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_geometry_conditioned_ffa_posthoc_result_v1.json",
+    "sha256": "c3da0adb6839e32a0e7ba154739784dc629f00f79530c4114e27b6d4f18e04e8",
+    "required_conclusion": "L10_3RSCAN_GEOMETRY_CONDITIONED_FFA_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Test full-frame plus four fixed 40% corner tiles instead of the prior 65% tile scale for proposal opportunity only."
+  },
+  "source": {
+    "authority": "CONSUMED_D15_SMALL_TILE_PROPOSAL_REACHABILITY_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+    "cohort_sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"
+  },
+  "proposal": {
+    "model_root": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+    "model_path": "artifacts.local/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16
+  },
+  "tiling": {
+    "tile_width_fraction": 0.4,
+    "tile_height_fraction": 0.4,
+    "offsets": ["top_left", "top_right", "bottom_left", "bottom_right"],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48
+  },
+  "memory": {
+    "target_images": ["D15M1_reference", "D15M2_reference", "D15M3_reference"],
+    "sibling_images": []
+  },
+  "evaluation": {
+    "query_images": ["D15M1_query", "D15M2_query", "D15M3_query"],
+    "truth_role": "Provider truth is used only after all tile proposals are frozen to measure opportunity."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_opportunity_queries": 3
+  },
+  "forbidden_after_freeze": [
+    "change tile scale/count/offsets, caps, prompt or thresholds",
+    "use query truth to select a tile or proposal",
+    "run FFA or SAM before the proposal-only result is sealed"
+  ],
+  "claim_boundary": "This consumed D15 Development probe can establish only whether the fixed smaller tile scale supplies IoU-0.5 proposal opportunity. It is not localization, fresh confirmation, open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

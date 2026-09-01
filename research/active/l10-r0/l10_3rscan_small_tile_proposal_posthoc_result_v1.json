@@ -1,0 +1,114 @@
+{
+  "schema": "blindassist-l10-3rscan-small-tile-proposal-posthoc-result-v1",
+  "authority": "CONSUMED_D15_SMALL_FIXED_TILE_PROPOSAL_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_small_tile_proposal_posthoc_protocol_v1.json",
+  "protocol_sha256": "7c7b129c236003ea5e3e80e57b6c39ded315ae8d9cacdcbcad6745372ec3e8e3",
+  "implementation": {
+    "path": "l10_3rscan_small_tile_proposal_posthoc.py",
+    "sha256": "c8c7a6270f23e675c3366e1da3e00931dd4135ba2c4cf83d3ed44fe536dfd9c4"
+  },
+  "conclusion": "L10_3RSCAN_SMALL_TILE_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 3,
+    "opportunity_queries": 3
+  },
+  "query_receipts": {
+    "D15M1_query": {
+      "query_truth_used_for_proposal_generation": false,
+      "opportunity_at_iou_gate": true,
+      "best": {
+        "objectness_score": 0.11132177710533142,
+        "box_xyxy": [
+          421.56951904296875,
+          0.866847038269043,
+          956.4342651367188,
+          120.39028930664062
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 11,
+        "postprocess_index": 7,
+        "target_metrics_evaluation_only": {
+          "iou": 0.7517738661539884,
+          "target_recall": 0.9776917874346119,
+          "proposal_precision": 0.764894400204325
+        }
+      },
+      "proposal_count": 42
+    },
+    "D15M2_query": {
+      "query_truth_used_for_proposal_generation": false,
+      "opportunity_at_iou_gate": true,
+      "best": {
+        "objectness_score": 0.18158447742462158,
+        "box_xyxy": [
+          500.3417053222656,
+          0.5714915990829468,
+          958.2745361328125,
+          111.84561920166016
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 6,
+        "postprocess_index": 8,
+        "target_metrics_evaluation_only": {
+          "iou": 0.8615953229303175,
+          "target_recall": 0.9946745653046986,
+          "proposal_precision": 0.8655882255956902
+        }
+      },
+      "proposal_count": 45
+    },
+    "D15M3_query": {
+      "query_truth_used_for_proposal_generation": false,
+      "opportunity_at_iou_gate": true,
+      "best": {
+        "objectness_score": 0.2829730212688446,
+        "box_xyxy": [
+          0.700103759765625,
+          0.7782182693481445,
+          382.5284729003906,
+          215.42530822753906
+        ],
+        "tile_id": "top_left",
+        "tile_xyxy": [
+          0,
+          0,
+          384,
+          216
+        ],
+        "tile_postprocess_index": 3,
+        "postprocess_index": 11,
+        "target_metrics_evaluation_only": {
+          "iou": 0.5070069114908019,
+          "target_recall": 0.9946034619776396,
+          "proposal_precision": 0.5084054981877462
+        }
+      },
+      "proposal_count": 39
+    }
+  },
+  "runtime": {
+    "model_type": "GroundingDinoForObjectDetection",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "seconds_by_image": {
+      "D15M1_query": 3.2203249000012875,
+      "D15M2_query": 1.4497875000233762,
+      "D15M3_query": 1.4615389999817125
+    },
+    "grounding_dino_calls": 15,
+    "window_count_per_image": 5
+  },
+  "claim_boundary": "This consumed D15 Development probe can establish only whether the fixed smaller tile scale supplies IoU-0.5 proposal opportunity. It is not localization, fresh confirmation, open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety evidence."
+}

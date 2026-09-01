@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-3rscan-robust-ffa-consensus-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-robust-ffa-consensus-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T09:02:00+08:00",
+  "question": "Does requiring support from the best two of three target FFA references repair max-memory context leakage on the two D15 queries that have a reachable target proposal?",
+  "implementation": {"path": "l10_3rscan_robust_ffa_consensus_posthoc.py", "sha256": "769c51b6c7fd60060afb23700186b0a7d48433bc842ed817c8a5e6fefdeab6f4"},
+  "dependencies": [
+    {"path": "l10_3rscan_mask_ffa_memory_posthoc.py", "sha256": "0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992"},
+    {"path": "l10_3rscan_contrastive_sam_refinement_posthoc.py", "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"},
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_tiled_mask_ffa_confirmation_result_v1.json",
+    "sha256": "8294b61ba04e08124f3f7ec366eb41c17c7321ab0f70abcbc00d4cafb713deb3",
+    "required_conclusion": "L10_3RSCAN_TILED_MASK_FFA_NEW_FAMILY_CONFIRMATION_GATE_NOT_MET",
+    "single_change": "Replace maximum cosine to any one target reference with the arithmetic mean of the two highest of three reference cosines; preserve candidates, masks, descriptors and IoU gate."
+  },
+  "source": {
+    "authority": "CONSUMED_D15_ROBUST_MEMORY_AGGREGATION_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+    "cohort_sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"
+  },
+  "descriptor": {
+    "model_path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "feature": "Unchanged SAM-mask-weighted mean of normalized DINOv2 patch tokens."
+  },
+  "masker": {
+    "model_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Reproduce unchanged SAM2 masks for the exact frozen D15 candidate roster."
+  },
+  "memory": {
+    "target_images": ["D15M1_reference", "D15M2_reference", "D15M3_reference"],
+    "sibling_images": [],
+    "consensus_reference_count": 2,
+    "score": "Arithmetic mean of the two largest of three target-reference FFA cosines, fixed before execution."
+  },
+  "evaluation": {
+    "query_images": ["D15M1_query", "D15M2_query", "D15M3_query"],
+    "truth_role": "Provider truth is used only after ranking; the gate asks whether both predecessor-reachable queries are localized."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_refined_queries": 2,
+    "interpretation": "At least the two queries with an existing IoU-0.5 proposal must be selected and refined above IoU 0.5; D15M3 proposal absence remains a separate gap."
+  },
+  "forbidden_after_freeze": [
+    "change candidate roster, masks, descriptor, consensus count/statistic or IoU gate",
+    "use query truth or sibling appearance in ranking",
+    "claim consumed D15 evidence as fresh confirmation"
+  ],
+  "claim_boundary": "This consumed D15 Development ablation can establish only whether top-two target-memory consensus repairs the observed single-reference context leakage. It cannot repair missing proposals, regain fresh authority, or establish open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

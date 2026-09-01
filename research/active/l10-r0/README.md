@@ -4245,6 +4245,28 @@ aggregation is not robust to a context-heavy memory view, and the fixed two-
 scale proposal set still misses one thin edge view. The next Development step
 must first replace max aggregation with a robust multi-reference statistic.
 
+On the now-consumed D15 roster, a top-two mean over the three reference FFA
+scores repaired D15M1 and changed refined success `0/3 -> 1/3`, with IoU
+`0.760687`. A second structural test retained that consensus and multiplied it
+by agreement with the median reference-mask aspect ratio. On the original
+fixed proposal roster it selected both reachable targets: D15M1 refined to
+`0.760687` and D15M2 to `0.876069`, for reachable success `2/2`. This isolates
+the earlier max-memory failure but does not make aspect ratio an identity cue.
+
+A separate fixed proposal audit added the full image plus four `40% x 40%`
+corner tiles. It restored IoU-`0.5` target opportunity to `3/3`; D15M3 gained a
+top-left-tile proposal with raw IoU `0.507007`. The decisive integration test
+then composed these small tiles with top-two FFA and median-aspect conditioning.
+It passed only `1/3`, minimum refined IoU `0`, mean `0.251676`, with one empty
+SAM mask skipped. The extra candidates exposed the weakness of the proxy:
+D15M2 gained a geometry-mimicking distractor and D15M3's correct thin proposal
+matched one reference aspect but not the cross-view median. Freeze median
+aspect as insufficient across views. Do not rescue this consumed family with a
+vertical-position prior or another hand-built D15 geometry score. The next
+candidate must improve local foreground representation or learn a reusable,
+target-independent channel weighting. These four results are posthoc
+Development attribution, not fresh-family confirmation or any higher L10 claim.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4432,6 +4454,20 @@ Evidence:
   `01a410fbe23e9b530d470e3628e0bb3d51d7a8cf079dc2db22dff06c2471360f`,
   `d79167b1adfe005be6b34c211e26ef25701b3b715d3a80fc3db9478f1cb839c5`,
   and `8294b61ba04e08124f3f7ec366eb41c17c7321ab0f70abcbc00d4cafb713deb3`;
+- robust FFA consensus, geometry-conditioned FFA, small-tile proposal, and
+  integrated small-tile pipeline implementation/protocol/result SHA-256:
+  `769c51b6c7fd60060afb23700186b0a7d48433bc842ed817c8a5e6fefdeab6f4`,
+  `6cb1cb9d628b8f223eacd89e80f8f14f7ec1efa601a2db7ceb8a0208d70cde95`,
+  `950f5696d35dccd949693031fade255dfb5a02d675cf279224c73f4ce1c8978b`,
+  `64b64620b52fa8705c9b3366a9fda5558b14727aeadec4fe3350075d5d831d3c`,
+  `24e8d219edd50ed230f09bf76fbd32b21d09bf26540d91a95d62c67ba3221873`,
+  `c3da0adb6839e32a0e7ba154739784dc629f00f79530c4114e27b6d4f18e04e8`,
+  `c8c7a6270f23e675c3366e1da3e00931dd4135ba2c4cf83d3ed44fe536dfd9c4`,
+  `7c7b129c236003ea5e3e80e57b6c39ded315ae8d9cacdcbcad6745372ec3e8e3`,
+  `ef4449f08042d20299550423dcd8c4173afd9ca7ffb2fb2bfe90514a6edd6865`,
+  `fc4db693f98c5f2930eb7d5d75d230b143a64bf32718539e8f6dab31df4fe88a`,
+  `672f190e450998681358434a3460961cadf919a1fe79a7f3006f62b92ebdcc55`,
+  and `e0348038e0f2b8df7cfd6984c30968316f1e75cf4f8c88288b72b53a788a44d3`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

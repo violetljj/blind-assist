@@ -1,0 +1,5033 @@
+{
+  "schema": "blindassist-l10-3rscan-robust-ffa-consensus-posthoc-result-v1",
+  "authority": "CONSUMED_D15_ROBUST_TOP_TWO_FFA_CONSENSUS_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_robust_ffa_consensus_posthoc_protocol_v1.json",
+  "protocol_sha256": "6cb1cb9d628b8f223eacd89e80f8f14f7ec1efa601a2db7ceb8a0208d70cde95",
+  "implementation": {
+    "path": "l10_3rscan_robust_ffa_consensus_posthoc.py",
+    "sha256": "769c51b6c7fd60060afb23700186b0a7d48433bc842ed817c8a5e6fefdeab6f4"
+  },
+  "conclusion": "L10_3RSCAN_ROBUST_FFA_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "query_count": 3,
+    "predecessor_opportunity_queries": 2,
+    "refined_iou_gate_queries": 1,
+    "minimum_refined_iou": 0.21753888366194785,
+    "mean_refined_iou": 0.41509495794168094
+  },
+  "query_receipts": {
+    "D15M1_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MEAN_OF_TOP_TWO_TARGET_MEMORY_FFA_COSINES",
+      "predecessor_target_opportunity_at_iou_gate": true,
+      "selected": {
+        "objectness_score": 0.21733753383159637,
+        "box_xyxy": [
+          432.49613189697266,
+          0.8372362852096558,
+          956.9268798828125,
+          121.17027282714844
+        ],
+        "tile_id": "top_right",
+        "tile_xyxy": [
+          336,
+          0,
+          960,
+          351
+        ],
+        "tile_postprocess_index": 4,
+        "postprocess_index": 24,
+        "target_memory_score": 0.7088465988636017,
+        "winning_target_reference": "D15M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.7710865568484774,
+          "target_recall": 0.9847130415473564,
+          "proposal_precision": 0.7804287270281255
+        },
+        "descriptor_sha256": "57873a6d15fc589f50c03599e798d20825e171f988c166c8e30617fb090ae541",
+        "mask_sha256": "a6e310b88ec865d0a05b7a5aef887afc8982d9b8aa129f7fce87e14082fae0bb",
+        "per_reference_scores": {
+          "D15M1_reference": 0.7898122668266296,
+          "D15M2_reference": 0.6278809309005737,
+          "D15M3_reference": 0.6179680824279785
+        },
+        "consensus_references": [
+          "D15M1_reference",
+          "D15M2_reference"
+        ]
+      },
+      "top1_consensus_margin": 0.006313920021057129,
+      "refined_mask_bbox_xyxy": [
+        437.0,
+        0.0,
+        960.0,
+        120.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.7606872408021811,
+        "target_recall": 0.9741784819257641,
+        "proposal_precision": 0.7763403836482075
+      },
+      "ranked_candidates": [
+        {
+          "objectness_score": 0.21733753383159637,
+          "box_xyxy": [
+            432.49613189697266,
+            0.8372362852096558,
+            956.9268798828125,
+            121.17027282714844
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 24,
+          "target_memory_score": 0.7088465988636017,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.7710865568484774,
+            "target_recall": 0.9847130415473564,
+            "proposal_precision": 0.7804287270281255
+          },
+          "descriptor_sha256": "57873a6d15fc589f50c03599e798d20825e171f988c166c8e30617fb090ae541",
+          "mask_sha256": "a6e310b88ec865d0a05b7a5aef887afc8982d9b8aa129f7fce87e14082fae0bb",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7898122668266296,
+            "D15M2_reference": 0.6278809309005737,
+            "D15M3_reference": 0.6179680824279785
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2784741520881653,
+          "box_xyxy": [
+            427.8953857421875,
+            2.778632164001465,
+            623.0770263671875,
+            120.27690887451172
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 14,
+          "target_memory_score": 0.7025326788425446,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.35091521432459266,
+            "target_recall": 0.3788710288253553,
+            "proposal_precision": 0.8262614985849989
+          },
+          "descriptor_sha256": "b3898d6fa611df552a89b8cbe0b4bfb8b684e5bfcce768b73256c3738ab8a106",
+          "mask_sha256": "9d8ea5c6b60641784b4af1d8a1966501c765aea302ebbfa97ee7d593d0b192bd",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7244474291801453,
+            "D15M2_reference": 0.6806179285049438,
+            "D15M3_reference": 0.610722541809082
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11132177710533142,
+          "box_xyxy": [
+            421.56951904296875,
+            0.866847038269043,
+            956.4342651367188,
+            120.39028930664062
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 11,
+          "postprocess_index": 7,
+          "target_memory_score": 0.6843809485435486,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.7517738661539884,
+            "target_recall": 0.9776917874346119,
+            "proposal_precision": 0.764894400204325
+          },
+          "descriptor_sha256": "5073c9928e0e522cc802dfde9c96c057327908db58cd336661c831259827f5c4",
+          "mask_sha256": "1f41dc57484ad5351b92cb2a8343ce9effe372debc39ccc46b541b0943e92287",
+          "per_reference_scores": {
+            "D15M1_reference": 0.778076171875,
+            "D15M2_reference": 0.5906857252120972,
+            "D15M3_reference": 0.5870243906974792
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.21245066821575165,
+          "box_xyxy": [
+            3.6010265350341797,
+            2.1754860877990723,
+            955.9011840820312,
+            536.7332763671875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 3,
+          "target_memory_score": 0.6762641966342926,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.09824898244043334,
+            "target_recall": 1.0,
+            "proposal_precision": 0.09824898244043336
+          },
+          "descriptor_sha256": "96f94fffe4c45cd14f32b717132ea87c391bdb9236aca7ec8239d7fb52909082",
+          "mask_sha256": "7a2b86727eb8b1cc026a1b05aca9de090b6e940f79d010ee22d4ab2ab19aa150",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7658095955848694,
+            "D15M2_reference": 0.5437047481536865,
+            "D15M3_reference": 0.5867187976837158
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.14534994959831238,
+          "box_xyxy": [
+            421.107177734375,
+            1.904783844947815,
+            957.4388427734375,
+            347.08148193359375
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 27,
+          "target_memory_score": 0.6731279790401459,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.2701603882856903,
+            "target_recall": 1.0,
+            "proposal_precision": 0.2701603882856903
+          },
+          "descriptor_sha256": "2b4d577ef628f672715a915a380f98cafe293798fffef39c74c5eb83ee79b2f2",
+          "mask_sha256": "26118280fb03a8cdb6a3c4b27d64ca9913c9ce768a1df0a2ae90ab692b0a6def",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7922003865242004,
+            "D15M2_reference": 0.5040675401687622,
+            "D15M3_reference": 0.5540555715560913
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.29658231139183044,
+          "box_xyxy": [
+            344.28614616394043,
+            1.5861639976501465,
+            956.6215209960938,
+            348.712158203125
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 22,
+          "target_memory_score": 0.6658178269863129,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.23529900689426006,
+            "target_recall": 1.0,
+            "proposal_precision": 0.23529900689426006
+          },
+          "descriptor_sha256": "ac2e9782de539b0beb65f969cf32749b0c295ece5ef8b30ba2219665deeca387",
+          "mask_sha256": "dcda742f6e713158dd34bd1fb1a97b06bc34a65c09d824df848b7cd6b62568a4",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7599966526031494,
+            "D15M2_reference": 0.5215728282928467,
+            "D15M3_reference": 0.5716390013694763
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.15191957354545593,
+          "box_xyxy": [
+            156.7140350341797,
+            189.0,
+            328.5318908691406,
+            286.22027587890625
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 35,
+          "target_memory_score": 0.6604146063327789,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "cb8f3623157fc47a68b21d4ff1575baba6c8fdf93cc44c2933ed50cf3f27dee6",
+          "mask_sha256": "c5fa3a19894bda87536cfdf7ddf68bf8f7652b9690b01ac2c497265bd348c15e",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6435558795928955,
+            "D15M2_reference": 0.6772733330726624,
+            "D15M3_reference": 0.5795934200286865
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.14129802584648132,
+          "box_xyxy": [
+            726.0062255859375,
+            189.51472502946854,
+            958.4915771484375,
+            536.9905090332031
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 43,
+          "target_memory_score": 0.6454340219497681,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "afb5c353ad14d9a1a271d5ccbfe23d351bbea02687fcac1057f9f82bea20909e",
+          "mask_sha256": "b10c3b723ed8ce270ff41600cd05210d23a06b7d338fbd9afc167a36414cdf6d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7600111961364746,
+            "D15M2_reference": 0.5308568477630615,
+            "D15M3_reference": 0.5252374410629272
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10950763523578644,
+          "box_xyxy": [
+            330.39556884765625,
+            397.2237854003906,
+            730.8424072265625,
+            537.3277587890625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 10,
+          "postprocess_index": 9,
+          "target_memory_score": 0.6424512267112732,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7102dd148fd4319416251c1e134d1da1337857f7ee962071e45e832e2e4016e5",
+          "mask_sha256": "562d1dc6ee1504b4079414a8edd38005bd74fe696817c9faa8efca358e3fb94e",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6903331279754639,
+            "D15M2_reference": 0.5945693254470825,
+            "D15M3_reference": 0.5811761021614075
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17742708325386047,
+          "box_xyxy": [
+            331.9896240234375,
+            190.05988001823425,
+            622.8373413085938,
+            537.16943359375
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 33,
+          "target_memory_score": 0.6398764848709106,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5428484e2390d2cd7442c2e57ae9c4158424a333fda6a359f357be6b49cfb4d0",
+          "mask_sha256": "f2269e4f59c4e966848306fe1c839b19206f3396fc20a239536e191023296d80",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7040590047836304,
+            "D15M2_reference": 0.5357050895690918,
+            "D15M3_reference": 0.5756939649581909
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5679224133491516,
+          "box_xyxy": [
+            349.7677001953125,
+            117.28031921386719,
+            623.0396728515625,
+            349.69354248046875
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 12,
+          "target_memory_score": 0.6369135081768036,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.00866954938843381,
+            "target_recall": 0.01950961259870875,
+            "proposal_precision": 0.01536346942254843
+          },
+          "descriptor_sha256": "066a5223b5de9a8f24438eb70fa755eb5196b19bfbd64d0058d9daf962f3a766",
+          "mask_sha256": "f09b7b5bee7d96f458c5da55eb7e6d117abe866fa366940703c86abdd7ca6a1e",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6862770915031433,
+            "D15M2_reference": 0.5653916597366333,
+            "D15M3_reference": 0.5875499248504639
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.18661268055438995,
+          "box_xyxy": [
+            268.06396484375,
+            189.85845041275024,
+            622.8688354492188,
+            537.3310241699219
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 32,
+          "target_memory_score": 0.6332518458366394,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "8b9c8f007ccd93a6e48a86001789278e3c82d6d0f780fa7519076b5a7ef19105",
+          "mask_sha256": "cd7f2952101f81c6acbf0ff6f7781d287dacad989f604d382dbd531c2ebd1938",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6937675476074219,
+            "D15M2_reference": 0.532210648059845,
+            "D15M3_reference": 0.5727361440658569
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2513703405857086,
+          "box_xyxy": [
+            1.3165497779846191,
+            0.7358938455581665,
+            329.06787109375,
+            288.13616943359375
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 17,
+          "target_memory_score": 0.6318043172359467,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "c14eb55efd340b18deba0cd93bef94f047be6185e8fe8b20b1eab7e15c80a55e",
+          "mask_sha256": "c4b7dcc02e5adeca53d083f1568fa173c8bb59ee1ddb7112c4770ec8919800ab",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6794670820236206,
+            "D15M2_reference": 0.5841415524482727,
+            "D15M3_reference": 0.5049313306808472
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1085178405046463,
+          "box_xyxy": [
+            1.8653583526611328,
+            0.745970606803894,
+            328.15313720703125,
+            286.8545227050781
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 10,
+          "target_memory_score": 0.6271466612815857,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9590914d0a90709378789f7c0eac8d955180771dff6c1453286b4ae2ee1aaa55",
+          "mask_sha256": "4d2ac29a24fd469897653d5c087f5dc8d95622af40428e7df522820ab929cf01",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6739975214004517,
+            "D15M2_reference": 0.5802958011627197,
+            "D15M3_reference": 0.5035123825073242
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11894351243972778,
+          "box_xyxy": [
+            339.584716796875,
+            116.01708984375,
+            753.6879272460938,
+            534.1741333007812
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 5,
+          "target_memory_score": 0.6140037775039673,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.009460071560224914,
+            "target_recall": 0.04181708452524877,
+            "proposal_precision": 0.012078202789635398
+          },
+          "descriptor_sha256": "faee536e3f3e5b7d16d6d4dcfc17dd46733537182562b888a71661e499deb56a",
+          "mask_sha256": "a0edae6e52489f7d0aefac2938ef9ca74200dc6fecd7d01b166d5c6639da5176",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6866118907928467,
+            "D15M2_reference": 0.5003781318664551,
+            "D15M3_reference": 0.5413956642150879
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.20656532049179077,
+          "box_xyxy": [
+            777.628662109375,
+            189.0615136474371,
+            958.2927856445312,
+            322.2410888671875
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 40,
+          "target_memory_score": 0.6124665439128876,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5f0bf98937271fe41cf0bcbdc1d2a9fb58f0032c82ab818c5c1b2ac6b439c32f",
+          "mask_sha256": "acbc79ccf3f31b9859a21438553955a6111e9dc0dbe95175ac25175a367ddf92",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5718016624450684,
+            "D15M2_reference": 0.5942477583885193,
+            "D15M3_reference": 0.6306853294372559
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5429933071136475,
+          "box_xyxy": [
+            345.89630126953125,
+            189.4071062207222,
+            623.04638671875,
+            401.89173889160156
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 28,
+          "target_memory_score": 0.6120316088199615,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ae2bec3c807cea0ad29cca1a021d5c80188ac665a45ad0edbb7359c7a8688e9e",
+          "mask_sha256": "a8d28699e9739814eb16b50e29aa534867b35ced746566f69a77bbf0dcfc727a",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6394258737564087,
+            "D15M2_reference": 0.5508009195327759,
+            "D15M3_reference": 0.5846373438835144
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1959257274866104,
+          "box_xyxy": [
+            2.2112159729003906,
+            0.5203423500061035,
+            307.89501953125,
+            217.17576599121094
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 19,
+          "target_memory_score": 0.6069710552692413,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "2e58b0d1393effce947b9f9e34d8d4b2783e3ace6c59d7dcb84041fda84de499",
+          "mask_sha256": "d6b08c561a774b10a2a9b2cc13edb593962db000ccec44b55a48f9e6768679ab",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6839767098426819,
+            "D15M2_reference": 0.5299654006958008,
+            "D15M3_reference": 0.48767751455307007
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5012559294700623,
+          "box_xyxy": [
+            350.84256172180176,
+            119.10404205322266,
+            742.2173156738281,
+            349.6230163574219
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 20,
+          "target_memory_score": 0.6026147603988647,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.007949209874082853,
+            "target_recall": 0.02211269569586385,
+            "proposal_precision": 0.012258540991125865
+          },
+          "descriptor_sha256": "8c136c5da4e9b6e00e9efd511fb6c30736d1d101e4f7bcb3f883ccfa03aa1b4d",
+          "mask_sha256": "a73110770d39180d2632e289496f265acab7bc46a7c378b4b3690b1ef4edc9db",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6573668718338013,
+            "D15M2_reference": 0.5270875692367554,
+            "D15M3_reference": 0.5478626489639282
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.23293867707252502,
+          "box_xyxy": [
+            1.9479525089263916,
+            482.49749755859375,
+            300.27362060546875,
+            538.9252014160156
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 31,
+          "target_memory_score": 0.6013568639755249,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "af650e40b6884c2a930acaa508fe5259ddf0328713c704ef9d2444df6eeaeb7f",
+          "mask_sha256": "285d8e0fecaa92b5a646f1415e2ffbe75261cd34639fdd0f889f7d70e56dcec0",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6239715814590454,
+            "D15M2_reference": 0.5787421464920044,
+            "D15M3_reference": 0.5504061579704285
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11121958494186401,
+          "box_xyxy": [
+            1.3285589218139648,
+            2.4511795043945312,
+            329.8823547363281,
+            536.527587890625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 8,
+          "target_memory_score": 0.5966459512710571,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d362a7653887a37c7798881ff0f30ff31165bab098a1da76a2b72ecbd52ec977",
+          "mask_sha256": "a818ccd6df533f6c08b5cc759516fd8162c5c7d5986afd589f6c6713ac13e3e3",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6505237221717834,
+            "D15M2_reference": 0.5427681803703308,
+            "D15M3_reference": 0.48107755184173584
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.6140671372413635,
+          "box_xyxy": [
+            346.07794189453125,
+            117.9135971069336,
+            748.9156494140625,
+            404.59979248046875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 0,
+          "target_memory_score": 0.5883216559886932,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.009077826394105648,
+            "target_recall": 0.029769079754543373,
+            "proposal_precision": 0.012892142373947648
+          },
+          "descriptor_sha256": "e199a3977fa071967a05a26de3ed6bf03bb0bf03b0d4de55e874adfe77915308",
+          "mask_sha256": "221594d17a5ef11dc1bfacf2b845a1779d656bd44a6e02bee5a23357781514be",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6373891830444336,
+            "D15M2_reference": 0.5013469457626343,
+            "D15M3_reference": 0.5392541289329529
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.48937904834747314,
+          "box_xyxy": [
+            775.501708984375,
+            157.583740234375,
+            949.9371948242188,
+            321.3271789550781
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 21,
+          "target_memory_score": 0.5843677520751953,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "c07f6d023e1eed444b9b6f74106e103adb8d8d9c86688a24aabf90fdc958ade9",
+          "mask_sha256": "ee737e23696c25d3cebaadeeb61ba6e53d42f8f3c67900ea33d77df4e8d9cf8d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.553266167640686,
+            "D15M2_reference": 0.5556814670562744,
+            "D15M3_reference": 0.6130540370941162
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.4177347719669342,
+          "box_xyxy": [
+            776.9150390625,
+            157.03842163085938,
+            955.6673583984375,
+            323.7171630859375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 1,
+          "target_memory_score": 0.5841493010520935,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "aaffe452081843cb4dbf9bf77ceccd1b2ae327d1a3dc6201a36efd34db9a26f1",
+          "mask_sha256": "1e2cbfeaad5e6efb5b90b3e2c5dbcf317047f7a301faa0561c3974984b54af67",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5416290163993835,
+            "D15M2_reference": 0.5524742007255554,
+            "D15M3_reference": 0.6158244013786316
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2536986172199249,
+          "box_xyxy": [
+            1.1413321495056152,
+            100.71846771240234,
+            329.47943115234375,
+            348.9977722167969
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 16,
+          "target_memory_score": 0.584012359380722,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "28a471413d551a2a8d22719a51ce2d5db3791793fd3824fd2647ac33fdc25634",
+          "mask_sha256": "e804667f397b90cd3644b2d90c115a56bffdb630e28e6c1113815b8a44642ebd",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5939690470695496,
+            "D15M2_reference": 0.5740556716918945,
+            "D15M3_reference": 0.47756531834602356
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2705878019332886,
+          "box_xyxy": [
+            1.8710460662841797,
+            100.88115692138672,
+            329.0006103515625,
+            288.2512512207031
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 15,
+          "target_memory_score": 0.5777391195297241,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "034ee19267a83f2aadb16762386093aefc972cf73987f40336a87316c2ec452c",
+          "mask_sha256": "104f357446c3bd59fab2603f9214ff765c996e3cc6c94f1e7ec852408f9a5e72",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5951457023620605,
+            "D15M2_reference": 0.5603325366973877,
+            "D15M3_reference": 0.4575974643230438
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5062782168388367,
+          "box_xyxy": [
+            346.542272567749,
+            189.44944033026695,
+            749.4337158203125,
+            403.5323181152344
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 36,
+          "target_memory_score": 0.5704529583454132,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "016ac52efaa6e58f93abc6ac91897f48efa407b69f551e3b4397052be13142d0",
+          "mask_sha256": "560d93736d83f9698abff725341ccda6b9a79d774efb8651842912f22b30b6bd",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6159970760345459,
+            "D15M2_reference": 0.5002949833869934,
+            "D15M3_reference": 0.5249088406562805
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17526689171791077,
+          "box_xyxy": [
+            377.09619522094727,
+            160.14129638671875,
+            681.9696044921875,
+            348.50927734375
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 25,
+          "target_memory_score": 0.5695180594921112,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "104aa534e016fd6fac003d3b49d0c0e23d84aa4512241c5ead3ba422c0ee5278",
+          "mask_sha256": "28f84d6d3e3d98c203d04cfcfbb3f21c8be6b6ca9dda53a0818708797e746b03",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6199449896812439,
+            "D15M2_reference": 0.5127531290054321,
+            "D15M3_reference": 0.5190911293029785
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.35347089171409607,
+          "box_xyxy": [
+            1.2306890487670898,
+            189.69299483299255,
+            330.5995788574219,
+            537.906494140625
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 29,
+          "target_memory_score": 0.568334698677063,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "96f827330c0a54bc9c722908577016fed090ddfb76e54b8d042aed06f8efee5f",
+          "mask_sha256": "388309d3f5a7e08a42f9351ff82b962ce7e25e53654808565dcf98f56015a01e",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6256897449493408,
+            "D15M2_reference": 0.5109796524047852,
+            "D15M3_reference": 0.44966861605644226
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17735983431339264,
+          "box_xyxy": [
+            1.548757553100586,
+            102.26447296142578,
+            328.113037109375,
+            536.9108276367188
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 4,
+          "target_memory_score": 0.5600967407226562,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ad63a5eb4385fea07b677fe5f5841e16044f43cfcad6e71d1068a3c391428aca",
+          "mask_sha256": "624b343eabef825b36ee22a1eb569566386dc3edd0dcfa615af66a57a6480c00",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6095882654190063,
+            "D15M2_reference": 0.5106052160263062,
+            "D15M3_reference": 0.43730100989341736
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.34508782625198364,
+          "box_xyxy": [
+            338.9017095565796,
+            189.9721468091011,
+            956.9273681640625,
+            537.5687866210938
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 37,
+          "target_memory_score": 0.5600129216909409,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "1db6ff1ad3ca0996115823232b09b905645eefa23b3633a72ab89391e61290a6",
+          "mask_sha256": "46756fd5352d35e31c1dddadf778e2c107cc736feab4af203facf17cd72a747e",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6507419347763062,
+            "D15M2_reference": 0.43824702501296997,
+            "D15M3_reference": 0.46928390860557556
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2829962968826294,
+          "box_xyxy": [
+            1.9824399948120117,
+            1.316206932067871,
+            621.7898559570312,
+            349.1827392578125
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 13,
+          "target_memory_score": 0.542956680059433,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.07817106213912842,
+            "target_recall": 0.3850617965551729,
+            "proposal_precision": 0.08932182684319767
+          },
+          "descriptor_sha256": "24926b78d634f245913c961d96f93e73a09eb16edce11011ab01de86d2990c97",
+          "mask_sha256": "7bd136f66d9d045fce61aa8c5bbf8157864ed674f8767b0ebdb106d7a44db6c4",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5466101765632629,
+            "D15M2_reference": 0.539303183555603,
+            "D15M3_reference": 0.4549930989742279
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11663425713777542,
+          "box_xyxy": [
+            774.3370361328125,
+            154.9041748046875,
+            957.44873046875,
+            534.1611938476562
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 6,
+          "target_memory_score": 0.5299789905548096,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "0a619eb7da645d6f60b84d4a87f82063ee3598c067e99da172fb5b803423ffc7",
+          "mask_sha256": "1a451794f4bc99ad6f417601b83f53ccf3974b4612d953a19e4c6f9e883f6f61",
+          "per_reference_scores": {
+            "D15M1_reference": 0.49204808473587036,
+            "D15M2_reference": 0.4682881236076355,
+            "D15M3_reference": 0.5679098963737488
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.30773094296455383,
+          "box_xyxy": [
+            2.017606258392334,
+            189.7564593553543,
+            621.962646484375,
+            538.0918884277344
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 30,
+          "target_memory_score": 0.5276970863342285,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "e2b61536f9d2f7a015f1de104837a609cdbd7f6c53479513f313fcbd2152ca7e",
+          "mask_sha256": "b1069c0b15f185289d09499a1f2e32d709e9f9b2cf867437655812b93ee81539",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6046262979507446,
+            "D15M2_reference": 0.4507678747177124,
+            "D15M3_reference": 0.42007070779800415
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1519560068845749,
+          "box_xyxy": [
+            1.537459373474121,
+            189.0,
+            329.0953063964844,
+            287.5188293457031
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 34,
+          "target_memory_score": 0.5211983919143677,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "39d7d6cbe437aa8c6ccab06e0d32d606b0cda95aea63e62f4f8d60d739afd8dd",
+          "mask_sha256": "aad10cff646b501dad567d3647e6bc0afe943a866f8169f7783328e91c4338a1",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5378973484039307,
+            "D15M2_reference": 0.5044994354248047,
+            "D15M3_reference": 0.4586944580078125
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.22652244567871094,
+          "box_xyxy": [
+            348.8044128417969,
+            2.2400152683258057,
+            622.871337890625,
+            349.4397888183594
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 18,
+          "target_memory_score": 0.5082899481058121,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.15405501055280346,
+            "target_recall": 0.38746390950355675,
+            "proposal_precision": 0.203653452070804
+          },
+          "descriptor_sha256": "1d7c1fc6601ef17482a9740f8c3ae969e3ce389e730afafaf754cf5dc2e89fb9",
+          "mask_sha256": "bb4892c15309eed9525999a9aea6f03ec50beddc368e9b01472dc050592a592b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5363057255744934,
+            "D15M2_reference": 0.4636014699935913,
+            "D15M3_reference": 0.48027417063713074
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2499653697013855,
+          "box_xyxy": [
+            406.1382751464844,
+            182.22569274902344,
+            660.24072265625,
+            355.6441345214844
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 2,
+          "target_memory_score": 0.5052462816238403,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "2dbf63b10e7d7e397fd6375c2fa5ac44df0d6d8e03b87c7ebfc0f9158d52bb04",
+          "mask_sha256": "631bec7e631353be9c625f1de7c6795a6038a37e2e90a8b798fe9199156cc061",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5465876460075378,
+            "D15M2_reference": 0.4591846466064453,
+            "D15M3_reference": 0.4639049172401428
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.15796446800231934,
+          "box_xyxy": [
+            776.8334350585938,
+            161.56752014160156,
+            816.8133850097656,
+            318.1766052246094
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 26,
+          "target_memory_score": 0.49395112693309784,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d23f26c48fa2994fe1d8ed98b6e783321c9092c22c77578516e7c6136896d65a",
+          "mask_sha256": "1900b63c5d84df36bdbef57af2a373016eba7dcdfbc070bb3ea7face0a76d0ec",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5054042935371399,
+            "D15M2_reference": 0.4824979603290558,
+            "D15M3_reference": 0.4742008447647095
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.19039452075958252,
+          "box_xyxy": [
+            397.736515045166,
+            194.84012985229492,
+            673.5028076171875,
+            364.79896545410156
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 41,
+          "target_memory_score": 0.49333374202251434,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "0ede9ffe0688ff1ca7af376abe741c3b245a8bd5ff71b8e12af4bd389d5d6034",
+          "mask_sha256": "c5d0e09cc45846a0f914325d8b9384dd212d424ab0ad740651619a7a618cb9a7",
+          "per_reference_scores": {
+            "D15M1_reference": 0.529615044593811,
+            "D15M2_reference": 0.4535852074623108,
+            "D15M3_reference": 0.45705243945121765
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.25774890184402466,
+          "box_xyxy": [
+            411.89076232910156,
+            185.48709106445312,
+            656.7078857421875,
+            343.1214904785156
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 23,
+          "target_memory_score": 0.48951637744903564,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "8f464575390ea83e27cdf11284d4da8677486beb0f374fbef5ee41bb1ac05932",
+          "mask_sha256": "61d19d6b24a120f1cc7c25bc9ae7aa4e35e9d18353bdb25b8b4f471ef44647e4",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5240485668182373,
+            "D15M2_reference": 0.45475125312805176,
+            "D15M3_reference": 0.454984188079834
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.22609272599220276,
+          "box_xyxy": [
+            413.2883987426758,
+            199.4365348815918,
+            655.4725036621094,
+            345.56617736816406
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 38,
+          "target_memory_score": 0.4886103570461273,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "6d5e30a695909f2f8d586df2b739e2daca4acf8df4622a5de37b10b8d15609d0",
+          "mask_sha256": "7124ae9cac4eb439f7550e25e7aa244eac0ab4a0caf343f7adef76101df6b39c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5151796340942383,
+            "D15M2_reference": 0.4604780077934265,
+            "D15M3_reference": 0.46204107999801636
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2239300012588501,
+          "box_xyxy": [
+            778.1379089355469,
+            189.11013981699944,
+            817.2814025878906,
+            318.6949005126953
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 39,
+          "target_memory_score": 0.473598375916481,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d2cf53af7fd01d5d31af3535a12861bfa78c321492c7d68521604aaa1c93c583",
+          "mask_sha256": "6c3cac23d0337d53a84beea6cc7095759341ad31d414449578cfb8fffaa91c2f",
+          "per_reference_scores": {
+            "D15M1_reference": 0.4743020534515381,
+            "D15M2_reference": 0.47289469838142395,
+            "D15M3_reference": 0.4467576742172241
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.15099842846393585,
+          "box_xyxy": [
+            688.487548828125,
+            491.6175537109375,
+            734.0389099121094,
+            538.8157958984375
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 42,
+          "target_memory_score": 0.3957909494638443,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7e6b08dea5164ab5ee1dc310d169c72d9e53b75c53f3dec58d151346135ba35e",
+          "mask_sha256": "2f88ba733cc5f3e4f05ee025d9c9f3d5f05a3adf84f88dcd23d45f7bcd1211e2",
+          "per_reference_scores": {
+            "D15M1_reference": 0.3593669831752777,
+            "D15M2_reference": 0.4182355999946594,
+            "D15M3_reference": 0.3733462989330292
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1011923998594284,
+          "box_xyxy": [
+            311.2590637207031,
+            82.7303695678711,
+            349.2110595703125,
+            121.96650695800781
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 11,
+          "target_memory_score": 0.3349144756793976,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ce90eff665a125a2e6295fa6d1e95d6a79aa3c118d9551f5450af34fbe62070b",
+          "mask_sha256": "5ce3f94cb338d1532deb0cfec7daf57077f758ca2d22df5b237b2bceebef7315",
+          "per_reference_scores": {
+            "D15M1_reference": 0.36673474311828613,
+            "D15M2_reference": 0.30309420824050903,
+            "D15M3_reference": 0.2525167763233185
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 44,
+        "input_boxes_shape": [
+          1,
+          44,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          44,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          44,
+          1
+        ],
+        "native_masks_shape": [
+          44,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.2028942999895662
+      }
+    },
+    "D15M2_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MEAN_OF_TOP_TWO_TARGET_MEMORY_FFA_COSINES",
+      "predecessor_target_opportunity_at_iou_gate": true,
+      "selected": {
+        "objectness_score": 0.10915900021791458,
+        "box_xyxy": [
+          436.5570373535156,
+          4.698924541473389,
+          956.6489868164062,
+          401.0919189453125
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 11,
+        "postprocess_index": 14,
+        "target_memory_score": 0.6826158165931702,
+        "winning_target_reference": "D15M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.20251512938673044,
+          "target_recall": 0.9513825123715178,
+          "proposal_precision": 0.20463285744420354
+        },
+        "descriptor_sha256": "51af3e2a0e11d58cca17a3bc855c85dbb396a82b9b7faa2afe554670401cd7d7",
+        "mask_sha256": "7b534a3b71b6c655dbaa33724158b5159c461fdc70655f58f8c8d558d45a0afe",
+        "per_reference_scores": {
+          "D15M1_reference": 0.7337113618850708,
+          "D15M2_reference": 0.5830857753753662,
+          "D15M3_reference": 0.6315202713012695
+        },
+        "consensus_references": [
+          "D15M1_reference",
+          "D15M3_reference"
+        ]
+      },
+      "top1_consensus_margin": 0.0033518970012664795,
+      "refined_mask_bbox_xyxy": [
+        440.0,
+        0.0,
+        960.0,
+        392.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.21753888366194785,
+        "target_recall": 1.0,
+        "proposal_precision": 0.21753888366194785
+      },
+      "ranked_candidates": [
+        {
+          "objectness_score": 0.10915900021791458,
+          "box_xyxy": [
+            436.5570373535156,
+            4.698924541473389,
+            956.6489868164062,
+            401.0919189453125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 11,
+          "postprocess_index": 14,
+          "target_memory_score": 0.6826158165931702,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.20251512938673044,
+            "target_recall": 0.9513825123715178,
+            "proposal_precision": 0.20463285744420354
+          },
+          "descriptor_sha256": "51af3e2a0e11d58cca17a3bc855c85dbb396a82b9b7faa2afe554670401cd7d7",
+          "mask_sha256": "7b534a3b71b6c655dbaa33724158b5159c461fdc70655f58f8c8d558d45a0afe",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7337113618850708,
+            "D15M2_reference": 0.5830857753753662,
+            "D15M3_reference": 0.6315202713012695
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.23998668789863586,
+          "box_xyxy": [
+            3.1992530822753906,
+            2.0451788902282715,
+            956.3644409179688,
+            536.3119506835938
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 4,
+          "target_memory_score": 0.6792639195919037,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.08482069932361229,
+            "target_recall": 0.9761216465704929,
+            "proposal_precision": 0.08499706180235868
+          },
+          "descriptor_sha256": "b80745403b8fb93dad82ee31e17590354a6ce52706420803292038192fa8b903",
+          "mask_sha256": "a19767150e6219622e1b95f287311217e27d859127301e94fbcdf5ae9e78bb20",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7694590091705322,
+            "D15M2_reference": 0.5890688300132751,
+            "D15M3_reference": 0.5886199474334717
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11753001809120178,
+          "box_xyxy": [
+            431.5816650390625,
+            2.5138468742370605,
+            956.7947387695312,
+            534.1618041992188
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 17,
+          "postprocess_index": 13,
+          "target_memory_score": 0.6749646961688995,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.15379017127333064,
+            "target_recall": 0.9726258640030806,
+            "proposal_precision": 0.15445872394647991
+          },
+          "descriptor_sha256": "6422b9bc0d534e5eae3cdcafdaf070e4e27c126b052eb4434f944d119d2636ce",
+          "mask_sha256": "bddf9d1bc349daca9e161843049d227beffe2b4ef94d60db7f4e13a2e6163ca2",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7515333294868469,
+            "D15M2_reference": 0.5518649816513062,
+            "D15M3_reference": 0.5983960628509521
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5578564405441284,
+          "box_xyxy": [
+            439.00775146484375,
+            104.50122833251953,
+            623.0430297851562,
+            349.6826171875
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 16,
+          "target_memory_score": 0.6534802913665771,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "174842bc0ca0142ecc144c289e88391c68fb9293b928e23677d2479ba4493821",
+          "mask_sha256": "9a16a47631d2bcdf583d18dc3d425ce845929231c517237eb467df28d9278fe5",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6393600702285767,
+            "D15M2_reference": 0.6264606714248657,
+            "D15M3_reference": 0.6676005125045776
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2643228769302368,
+          "box_xyxy": [
+            436.098388671875,
+            95.86183166503906,
+            953.2340087890625,
+            395.1011047363281
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 2,
+          "target_memory_score": 0.6428719162940979,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.017770677378197014,
+            "target_recall": 0.07839314528584798,
+            "proposal_precision": 0.022463703170165408
+          },
+          "descriptor_sha256": "9d4b145db47fbcf7b49756852eaf62ddd3c92b256db6331698ab589ff37f78bb",
+          "mask_sha256": "1b650e6159d238df7f76596214b03363175d35e07c64524c622f423265b0da2b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.693810224533081,
+            "D15M2_reference": 0.5471694469451904,
+            "D15M3_reference": 0.5919336080551147
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.19619044661521912,
+          "box_xyxy": [
+            438.1833801269531,
+            96.81592559814453,
+            955.5846557617188,
+            348.741455078125
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 29,
+          "target_memory_score": 0.6405785381793976,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.018017572103886104,
+            "target_recall": 0.06972395721801189,
+            "proposal_precision": 0.023719670884978988
+          },
+          "descriptor_sha256": "1b3a460c60a4b6042cb3010858add3e4935a9cf4b8b0fea8bdee6a8e74c29c24",
+          "mask_sha256": "8cb82314e5e3d17f55f781027a1b2929a8e24b4f2e81e3f3b634d7f809959e4b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6952778100967407,
+            "D15M2_reference": 0.5482836961746216,
+            "D15M3_reference": 0.5858792662620544
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5348489880561829,
+          "box_xyxy": [
+            436.27459716796875,
+            189.25968477129936,
+            623.0372314453125,
+            388.6389923095703
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 32,
+          "target_memory_score": 0.6322619616985321,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "8d2627a6c4a60d6ecc2fc9dcfddbb402cad7b81e3c64bbcabeab19ece38b1841",
+          "mask_sha256": "2adf538a99550be721ba1263869ee6a37816d5ec95b5bbb4ae564bcdb13ec9ad",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6541198492050171,
+            "D15M2_reference": 0.5932071208953857,
+            "D15M3_reference": 0.6104040741920471
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.19013434648513794,
+          "box_xyxy": [
+            438.2815856933594,
+            1.0755813121795654,
+            622.9428100585938,
+            350.0434265136719
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 21,
+          "target_memory_score": 0.6317727267742157,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0939003690772768,
+            "target_recall": 0.2105853092190086,
+            "proposal_precision": 0.14490829764242324
+          },
+          "descriptor_sha256": "5269be6da42a5faa6cd7efe7650f6a7f22bfdc43e4569727a81b3e4fc61d4e05",
+          "mask_sha256": "fa53dbc5e292a3de96c8a8f4475f2be415642a0514a99a1053a7bac1c6bd1b4c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6419485211372375,
+            "D15M2_reference": 0.5859308838844299,
+            "D15M3_reference": 0.6215969324111938
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.16593016684055328,
+          "box_xyxy": [
+            432.14080810546875,
+            93.16500854492188,
+            953.84619140625,
+            532.2943725585938
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 9,
+          "target_memory_score": 0.6316656172275543,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.017178809078329416,
+            "target_recall": 0.10414306221988182,
+            "proposal_precision": 0.02015760138644367
+          },
+          "descriptor_sha256": "5dddd695ed5a7c769ed791f5f508fc3af9aa29d1b72f390366931918efcf9e67",
+          "mask_sha256": "1122e6d200d9c6c4473a4cb6cadd3c370a3b55cba98c7794cc4f46f613c76263",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7091091871261597,
+            "D15M2_reference": 0.5125340819358826,
+            "D15M3_reference": 0.554222047328949
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17912764847278595,
+          "box_xyxy": [
+            428.8884582519531,
+            189.78123009204865,
+            622.9238891601562,
+            536.9723205566406
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 39,
+          "target_memory_score": 0.6277857422828674,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7e87d2567a23f57b5e0e784050a241a79183c2cd58dabf4daea28a418fc984fa",
+          "mask_sha256": "d33c4e9ecd5b3ca6ea3e6664cd1be91508ad9138b4a19bcb6cd8916c6a0f2ca4",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6894530057907104,
+            "D15M2_reference": 0.5497221946716309,
+            "D15M3_reference": 0.5661184787750244
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17692479491233826,
+          "box_xyxy": [
+            872.6756591796875,
+            133.0262451171875,
+            958.5460815429688,
+            348.244873046875
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 31,
+          "target_memory_score": 0.6241836249828339,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9f8706119a03ac9f2e5b24c4612e60c66fedae893b2b1cfd566317216fa9074a",
+          "mask_sha256": "0209028fec2cc77d0987ffdd4b282c2d3fc8a86320f88316bf5e5e76b4272259",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5712336897850037,
+            "D15M2_reference": 0.5981616973876953,
+            "D15M3_reference": 0.6502055525779724
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2986886203289032,
+          "box_xyxy": [
+            445.55572509765625,
+            189.25554236769676,
+            793.863037109375,
+            384.91896057128906
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 42,
+          "target_memory_score": 0.6209058165550232,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "92b8e8e913a2bc56154cebcccb5b87ffd21c6213f6abf1529200f6377671acb9",
+          "mask_sha256": "01fcdb2becdb5fe163e03d3be2a55a8d54da193c4f0ed3a9fd05ad6325211333",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6618834733963013,
+            "D15M2_reference": 0.5684945583343506,
+            "D15M3_reference": 0.5799281597137451
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2160578817129135,
+          "box_xyxy": [
+            472.80535888671875,
+            157.66232299804688,
+            769.1961059570312,
+            355.85552978515625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 5,
+          "target_memory_score": 0.6201780438423157,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "607c77bf4685f79c6a5321123dde5e959148c913ae1d1758b9951f3c215cd20c",
+          "mask_sha256": "07667c5b48e5b6033c1d7422f7f23229e927b617a47752293663269eed4086bd",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6547423601150513,
+            "D15M2_reference": 0.5732420682907104,
+            "D15M3_reference": 0.5856137275695801
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10443834215402603,
+          "box_xyxy": [
+            446.3659362792969,
+            129.80137634277344,
+            786.4025268554688,
+            373.0408935546875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 16,
+          "postprocess_index": 15,
+          "target_memory_score": 0.6194420754909515,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "779ea5695b794a3b64df016cd7f4193d664ae201a661be53eeb31f2e165358eb",
+          "mask_sha256": "3ea570060eaf1e2db17b4d61f5fa72e03a3982f0bb9c7c1ecab7a71b7df4df48",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6651520133018494,
+            "D15M2_reference": 0.5491129755973816,
+            "D15M3_reference": 0.5737321376800537
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2529914081096649,
+          "box_xyxy": [
+            11.143280029296875,
+            463.81610107421875,
+            395.5123291015625,
+            538.7222290039062
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 35,
+          "target_memory_score": 0.6131854951381683,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d129a439875de1a8011d0d58723a6d47d8125174345e6f97d2a897de24461a30",
+          "mask_sha256": "3acfe201a47264db68476d7fdc88b37637e46fbee9b5ae4ce363e8e57a193225",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6424885988235474,
+            "D15M2_reference": 0.5838823914527893,
+            "D15M3_reference": 0.521599292755127
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.18180400133132935,
+          "box_xyxy": [
+            81.65526580810547,
+            464.15301513671875,
+            393.50225830078125,
+            538.6155395507812
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 38,
+          "target_memory_score": 0.6124715805053711,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "3fdf74fde52772643b16b4c1830bf871a3a511dac480c3739528e91eb58f90bf",
+          "mask_sha256": "f323f15d116f72a1184535bf12ebb7f29744d5f1e7e4cec01a7dd6de86e71416",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6174650192260742,
+            "D15M2_reference": 0.607478141784668,
+            "D15M3_reference": 0.5281201004981995
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1251659244298935,
+          "box_xyxy": [
+            3.6572742462158203,
+            0.8451533317565918,
+            417.74652099609375,
+            275.1613464355469
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 11,
+          "target_memory_score": 0.6115570366382599,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "bc17bf5dcd7d395f728faa1302c007500b8bdc00842031c76585ba5f8e38f779",
+          "mask_sha256": "ff22b7e971eeaef864748017fe7a62b8a256a03d045e6e975426f82ccb5c82b0",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6432329416275024,
+            "D15M2_reference": 0.5798811316490173,
+            "D15M3_reference": 0.48407283425331116
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.257822185754776,
+          "box_xyxy": [
+            5.104947566986084,
+            0.5789741277694702,
+            417.9417724609375,
+            276.1926574707031
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 19,
+          "target_memory_score": 0.6104769110679626,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "7e99cb8ebb50b1b61ee6c06a4347fefd477d67190062b9762623d7034d716be1",
+          "mask_sha256": "103ca9c4d006fb85bf78c747fb48a15ce8c10afe1b36b1f437850e009fd538ca",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6434285640716553,
+            "D15M2_reference": 0.57752525806427,
+            "D15M3_reference": 0.4821818470954895
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.4638882577419281,
+          "box_xyxy": [
+            436.990478515625,
+            98.04109954833984,
+            853.3299560546875,
+            392.08953857421875
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 0,
+          "target_memory_score": 0.604888916015625,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.011840840460159725,
+            "target_recall": 0.04401030660472231,
+            "proposal_precision": 0.01594095108729765
+          },
+          "descriptor_sha256": "acafe6c1f72a32deb5e87be4d7c4ea14d637cc5bae6a5181670ac94fd5251c4f",
+          "mask_sha256": "0d86321679f2939d8f343df20137177bab65acb71b73e2affa744141f8d06502",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6568300127983093,
+            "D15M2_reference": 0.5168497562408447,
+            "D15M3_reference": 0.5529478192329407
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5223993062973022,
+          "box_xyxy": [
+            438.9075164794922,
+            98.84513854980469,
+            845.6025695800781,
+            349.2610168457031
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 24,
+          "target_memory_score": 0.6038594245910645,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.011434638697129068,
+            "target_recall": 0.03727041037420171,
+            "proposal_precision": 0.016227803042821315
+          },
+          "descriptor_sha256": "6f0cbdcf7a8a8dc7770b0b67e05de442741351785ce90bdb86a3c84750d88857",
+          "mask_sha256": "d8695265245dabcf6a6eb5288fd75bb6025b65a9cc6a03deef1d22b86bccaac9",
+          "per_reference_scores": {
+            "D15M1_reference": 0.660650372505188,
+            "D15M2_reference": 0.5233063101768494,
+            "D15M3_reference": 0.5470684766769409
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.18158447742462158,
+          "box_xyxy": [
+            500.3417053222656,
+            0.5714915990829468,
+            958.2745361328125,
+            111.84561920166016
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 8,
+          "target_memory_score": 0.6031908392906189,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.8615953229303175,
+            "target_recall": 0.9946745653046986,
+            "proposal_precision": 0.8655882255956902
+          },
+          "descriptor_sha256": "1353cccea57d56ba663de2a8a5e4869f1792d86ffda1208473240f4034156a35",
+          "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6281166672706604,
+            "D15M2_reference": 0.5782650113105774,
+            "D15M3_reference": 0.5750802755355835
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.24644866585731506,
+          "box_xyxy": [
+            85.80655670166016,
+            1.1265977621078491,
+            418.1270751953125,
+            274.97576904296875
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 20,
+          "target_memory_score": 0.6016303896903992,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "8a188ba09b16bdb110a4e829f9dfe80e017bce19afa1245f8fd01907123f968b",
+          "mask_sha256": "25bdec810e784cd1c9b1e9b469fad3bc3ea160fc97c4fbccf555d719bc355e0b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6559088230133057,
+            "D15M2_reference": 0.5473519563674927,
+            "D15M3_reference": 0.4695696234703064
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.36453548073768616,
+          "box_xyxy": [
+            436.93067169189453,
+            189.224390655756,
+            846.0896606445312,
+            390.18336486816406
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 40,
+          "target_memory_score": 0.6009585857391357,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "beef9f0611301284eb0dd09e4a706420ebc0f50c130c93fe0576494fdae417f4",
+          "mask_sha256": "cf4eac39f1129d9152127d1832ee8821f3f1ea4576fb9e03faa89a0529410d13",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6481984853744507,
+            "D15M2_reference": 0.5453536510467529,
+            "D15M3_reference": 0.5537186861038208
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.21119560301303864,
+          "box_xyxy": [
+            435.21366119384766,
+            189.33048221468925,
+            955.3948974609375,
+            392.5809326171875
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 46,
+          "target_memory_score": 0.5994654297828674,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "08738033100b14863c88ee6a2645bf48eec86a2ee738ee9ac790dc416bb5d7da",
+          "mask_sha256": "91ba327b095598743cf094423edbedd88c6be6f2949d17917c42a6017767fff9",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6526485681533813,
+            "D15M2_reference": 0.533668577671051,
+            "D15M3_reference": 0.5462822914123535
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.35742297768592834,
+          "box_xyxy": [
+            436.93578338623047,
+            189.14042329788208,
+            857.8223266601562,
+            391.1613311767578
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 41,
+          "target_memory_score": 0.5942798852920532,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "c3b75dab5250a506eaba961a8b337094a9182caeffad1ed208de93019727aff3",
+          "mask_sha256": "30afee6341117578afb4ec8b563047e367f573f018015a4845e9d5eece955dff",
+          "per_reference_scores": {
+            "D15M1_reference": 0.644356369972229,
+            "D15M2_reference": 0.5369318723678589,
+            "D15M3_reference": 0.5442034006118774
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.3080059885978699,
+          "box_xyxy": [
+            874.0322875976562,
+            134.06004333496094,
+            958.2637329101562,
+            308.8360900878906
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 25,
+          "target_memory_score": 0.5883999168872833,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "eaa2c142433ce086db22fa356e289fd20bd93a2d0fbcfd8d960d5f5c308f7ae9",
+          "mask_sha256": "d9785cac710e0ee25a52351b576b2e4fdb9b65cef48bcc4d5914b12afd869cf7",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5084108114242554,
+            "D15M2_reference": 0.5707391500473022,
+            "D15M3_reference": 0.6060606837272644
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.35436052083969116,
+          "box_xyxy": [
+            875.6348876953125,
+            133.18324279785156,
+            958.3948974609375,
+            309.7526550292969
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 1,
+          "target_memory_score": 0.5866856575012207,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "e8145894d574057903d7f73f14b26ed2875f341ad3d71be936eb9100364fdc1f",
+          "mask_sha256": "30819d504a8a7136d98b3a9549757017a9bb115f6d27b1e9a5d2612cceba4d14",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5093416571617126,
+            "D15M2_reference": 0.5666955709457397,
+            "D15M3_reference": 0.6066757440567017
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1688959300518036,
+          "box_xyxy": [
+            102.09152221679688,
+            0.7799121141433716,
+            397.5694274902344,
+            206.46124267578125
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 23,
+          "target_memory_score": 0.5796278119087219,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "22050f5ce441713e45237ce6bc0f76ae69fc901f78c3be18b99b70a6162e41b5",
+          "mask_sha256": "03ad9dfe0d4ad4c8f55130a87a6b839a9f3c5aa0208d085cb02529fd693c7207",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6541754007339478,
+            "D15M2_reference": 0.5050802230834961,
+            "D15M3_reference": 0.4530355930328369
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.18880389630794525,
+          "box_xyxy": [
+            479.95668029785156,
+            162.8601531982422,
+            769.1600646972656,
+            347.16485595703125
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 30,
+          "target_memory_score": 0.5756847262382507,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "499e3916dade8a07910d8ece8128c0d8348a3f74c9030e4e262a405947a361b1",
+          "mask_sha256": "eeb58fd1b926e8d3b5b820ca89bb1fe735b1ccc0da331c743ecba7cb87245e4c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6154093742370605,
+            "D15M2_reference": 0.5359600782394409,
+            "D15M3_reference": 0.5285067558288574
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2636815309524536,
+          "box_xyxy": [
+            1.961517333984375,
+            3.177967071533203,
+            418.4851379394531,
+            536.220703125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 3,
+          "target_memory_score": 0.5725163519382477,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "c0f6c24aed83ed2e2cb8388a8b0f85498346b2c67cb52ab914dcd42c424d5bbf",
+          "mask_sha256": "9540147162088229b9891350f663d46ff2aca3b5ba7d7da62fc0683f333cfae3",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6189855933189392,
+            "D15M2_reference": 0.5260471105575562,
+            "D15M3_reference": 0.4516438841819763
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2578701376914978,
+          "box_xyxy": [
+            2.7551679611206055,
+            1.410017728805542,
+            621.178466796875,
+            348.9342041015625
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 18,
+          "target_memory_score": 0.57236447930336,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.03648643770337235,
+            "target_recall": 0.2058151555813657,
+            "proposal_precision": 0.04246516144857849
+          },
+          "descriptor_sha256": "2cb24c005333feb390c2db8da32ac5098a6c2308a6fc308074e771c33532b6a0",
+          "mask_sha256": "27bcc3acbec618a8a8d1e4dfb59744cb206ac22faaf985577e103222e4ec63bb",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6320861577987671,
+            "D15M2_reference": 0.5126428008079529,
+            "D15M3_reference": 0.477634996175766
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.20654170215129852,
+          "box_xyxy": [
+            265.5887451171875,
+            189.06542330235243,
+            418.6544189453125,
+            274.4053039550781
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 36,
+          "target_memory_score": 0.5722751021385193,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "783929227b1ac1e7e699980eaf66c13ebb1e6f81b1a5efb64b89ceb50501edda",
+          "mask_sha256": "a3e310ff8ddc15680a3a11982b4ab7a0ebbbadc0f94afd9deb1dce9bc4ac86a0",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5661468505859375,
+            "D15M2_reference": 0.5784033536911011,
+            "D15M3_reference": 0.4710094928741455
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2293083816766739,
+          "box_xyxy": [
+            496.1683349609375,
+            190.40878331661224,
+            762.5407104492188,
+            343.9107360839844
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 44,
+          "target_memory_score": 0.5632421672344208,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "05c26e752fcda63695afc7bb5f98c7773613a1b330647dd4882e8808c6d7daa5",
+          "mask_sha256": "bcc4ee855883dc2635580aef97fc39a9f3c9a716aff9fbb6c705cc6a0facb636",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5890787839889526,
+            "D15M2_reference": 0.5374055504798889,
+            "D15M3_reference": 0.5275053977966309
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.20578360557556152,
+          "box_xyxy": [
+            500.4913787841797,
+            181.77613830566406,
+            749.6447143554688,
+            333.25738525390625
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 14,
+          "postprocess_index": 28,
+          "target_memory_score": 0.5510937571525574,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "24084c0669afe3be7ede26d426616f227e3d5df371f324a855976aeb7e632365",
+          "mask_sha256": "3a65fe5026fe8c5eb296d360c84478ab3db21dadf95b888782bcc40e878a387d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5712677240371704,
+            "D15M2_reference": 0.5309197902679443,
+            "D15M3_reference": 0.5195325613021851
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2115006297826767,
+          "box_xyxy": [
+            336.7410578727722,
+            192.87118339538574,
+            418.80228424072266,
+            274.27174377441406
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 45,
+          "target_memory_score": 0.5495739579200745,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "ec4ab9f20ae1033223741b05ed7cdd091b4010bf59bd8506cd3352f6276f8ebc",
+          "mask_sha256": "831ba828490fb9a995ef95c11dad01bf27ad1e5cbae993f6fae3cdc857a88435",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5367236137390137,
+            "D15M2_reference": 0.5624243021011353,
+            "D15M3_reference": 0.46086397767066956
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.20939022302627563,
+          "box_xyxy": [
+            499.7158660888672,
+            191.2293872833252,
+            751.0035400390625,
+            333.0205078125
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 13,
+          "postprocess_index": 47,
+          "target_memory_score": 0.5472072064876556,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d0f112690c37e11b6773961ad39acee5a1da00e8f93ac4de61149bbf3b7dd6c0",
+          "mask_sha256": "776b05cfcc8c7675ae45f248a4516ddd65a605ce2df4c6a395c137736bcdf584",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5770406723022461,
+            "D15M2_reference": 0.5173737406730652,
+            "D15M3_reference": 0.499994158744812
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2032986432313919,
+          "box_xyxy": [
+            499.78936767578125,
+            178.85752868652344,
+            748.01904296875,
+            335.1986083984375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 14,
+          "postprocess_index": 6,
+          "target_memory_score": 0.5437496602535248,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "fa70780a9830c7672d3ae4eaa2cd24c9e4dd40b8fb3debb47e428bfe96c89fd7",
+          "mask_sha256": "d6c7187e12f6a234553b5714e8a89e323c421d0e6f9e290906a50d697bd72b02",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5734848976135254,
+            "D15M2_reference": 0.5140144228935242,
+            "D15M3_reference": 0.49594640731811523
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2014518678188324,
+          "box_xyxy": [
+            2.419424057006836,
+            78.10125732421875,
+            417.3909606933594,
+            533.1328125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 7,
+          "target_memory_score": 0.5326267778873444,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "81bdf2fce1ea466ce20732dcb41257f8e9107adc66956011f8a8d6bd3fe85c1f",
+          "mask_sha256": "e5fc1491375144eadf7ab17f630e169cce18866e9aec4cd8bfd774bdecc2411c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5842854380607605,
+            "D15M2_reference": 0.4809681177139282,
+            "D15M3_reference": 0.4076535701751709
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.3308217227458954,
+          "box_xyxy": [
+            1.4705300331115723,
+            189.6712995171547,
+            419.919921875,
+            537.2331848144531
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 33,
+          "target_memory_score": 0.5230376422405243,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "97e78494b991da9f561c79366583b53e1be22d34ced7d570b5f066d875eef532",
+          "mask_sha256": "c27b636d56359cc9aa318eee3c5ab9ac56ac5b37e4742dee66036fb600443e32",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5758374929428101,
+            "D15M2_reference": 0.4702377915382385,
+            "D15M3_reference": 0.4053877890110016
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2624449133872986,
+          "box_xyxy": [
+            339.61937284469604,
+            190.104860663414,
+            956.7353515625,
+            536.6625671386719
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 43,
+          "target_memory_score": 0.5174421966075897,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "29c71db4cb9ef6db8ae89c62d36b2a5c20c47ded5663eeea89a6d89fb96df10f",
+          "mask_sha256": "f7438c4f52b09b100d57b828862797677edc3ce897f22dad0502a60ba404b592",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5930666923522949,
+            "D15M2_reference": 0.4366886615753174,
+            "D15M3_reference": 0.4418177008628845
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2721520960330963,
+          "box_xyxy": [
+            2.262077808380127,
+            190.08175313472748,
+            621.5186767578125,
+            537.8819580078125
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 34,
+          "target_memory_score": 0.5139239430427551,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9d03c3f1dbcae852f804712bcb8337c43352d043fbe1e986938da980e958e5a7",
+          "mask_sha256": "a17a88781851e5a3160e89b8b65e90b043e18ea3a1b2cb213e7186193456c13f",
+          "per_reference_scores": {
+            "D15M1_reference": 0.576727569103241,
+            "D15M2_reference": 0.4511203169822693,
+            "D15M3_reference": 0.3861502408981323
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.24814026057720184,
+          "box_xyxy": [
+            874.5885009765625,
+            136.20408630371094,
+            926.7025756835938,
+            305.70831298828125
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 26,
+          "target_memory_score": 0.5038771033287048,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "d6632656687c877b45604ea8dee317e058e125bf681491c0a2ab7c3a2fc60ff6",
+          "mask_sha256": "cf70c82094de00a079efbf939fe8c7f6d5087bf7212361fa6901fc40423c8285",
+          "per_reference_scores": {
+            "D15M1_reference": 0.42996248602867126,
+            "D15M2_reference": 0.4880768060684204,
+            "D15M3_reference": 0.5196774005889893
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1219654232263565,
+          "box_xyxy": [
+            377.06951904296875,
+            78.4128189086914,
+            436.5400695800781,
+            117.15687561035156
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 12,
+          "target_memory_score": 0.5021181404590607,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "23cdae704dd04fec542286730370b037b6740f8a764d930528fed647c0ab9fda",
+          "mask_sha256": "e891c492527d9a08f3f1e43f804187ab1f1b50548b90ffde1c76cb2ea89ca6e6",
+          "per_reference_scores": {
+            "D15M1_reference": 0.4343276917934418,
+            "D15M2_reference": 0.5006572008132935,
+            "D15M3_reference": 0.5035790801048279
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.29653477668762207,
+          "box_xyxy": [
+            1.699343204498291,
+            0.9811743497848511,
+            418.3449401855469,
+            348.98150634765625
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 17,
+          "target_memory_score": 0.49636563658714294,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "a1abd18532e626dc73bd63149720a315efc3ce46538cd132204f606699a34148",
+          "mask_sha256": "479689cae250879a79c432943e7f632c50d80b2b7a805fc81349876a812fc545",
+          "per_reference_scores": {
+            "D15M1_reference": 0.49829214811325073,
+            "D15M2_reference": 0.49443912506103516,
+            "D15M3_reference": 0.40297210216522217
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1528373807668686,
+          "box_xyxy": [
+            875.9202270507812,
+            135.70968627929688,
+            926.8118286132812,
+            306.580322265625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 12,
+          "postprocess_index": 10,
+          "target_memory_score": 0.49419721961021423,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "462bfd6d9cd38c4bee17146f15017c810894cfcbe0429595f6e87dea609ade63",
+          "mask_sha256": "28f018c26caa1cee62a38525d1f8ea906a2d6b9e66ce098ac10424f51bcc70cb",
+          "per_reference_scores": {
+            "D15M1_reference": 0.40664130449295044,
+            "D15M2_reference": 0.47963178157806396,
+            "D15M3_reference": 0.5087626576423645
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.18221938610076904,
+          "box_xyxy": [
+            500.0926818847656,
+            264.31214904785156,
+            622.3493041992188,
+            330.9928894042969
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 37,
+          "target_memory_score": 0.47672319412231445,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "67e069a7be313bf99d779f97c6afef2677960b42d74f3ae87754b2a9fd7d5d32",
+          "mask_sha256": "1ef488aebb29786e4a8086b6ebff85faeea76653ad280da33962d9643162d544",
+          "per_reference_scores": {
+            "D15M1_reference": 0.4783726930618286,
+            "D15M2_reference": 0.47379881143569946,
+            "D15M3_reference": 0.4750736951828003
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2144872397184372,
+          "box_xyxy": [
+            339.07702016830444,
+            1.7966105937957764,
+            956.6646728515625,
+            348.85369873046875
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 27,
+          "target_memory_score": 0.4551313817501068,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.20171063051521004,
+            "target_recall": 0.9791914437605465,
+            "proposal_precision": 0.20257898593330623
+          },
+          "descriptor_sha256": "f22a626bc1cba22b4da497d01bc843e1555d1b9f1444dc04320fd5d1f32b3e48",
+          "mask_sha256": "e32563cecf83fa7a98af31323364b5a6d77ee968baaf662406c0c97506ae108c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5059884190559387,
+            "D15M2_reference": 0.393745481967926,
+            "D15M3_reference": 0.4042743444442749
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1709159016609192,
+          "box_xyxy": [
+            397.3151550292969,
+            78.21015930175781,
+            433.3071594238281,
+            114.06550598144531
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 8,
+          "postprocess_index": 22,
+          "target_memory_score": 0.28655269742012024,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "cf084c02a3be173492fb563e8bd4d2ef6fa26c3174d9c3941b9808477a180703",
+          "mask_sha256": "5a6ae31f59c24b56ec98b1ff7c58e24db5c9911471e2e92054c31c785f859e89",
+          "per_reference_scores": {
+            "D15M1_reference": 0.3066900074481964,
+            "D15M2_reference": 0.26641538739204407,
+            "D15M3_reference": 0.21644236147403717
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 48,
+        "input_boxes_shape": [
+          1,
+          48,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          48,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          48,
+          1
+        ],
+        "native_masks_shape": [
+          48,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.2159076000098139
+      }
+    },
+    "D15M3_query": {
+      "query_truth_used_for_selection": false,
+      "selection_score": "MEAN_OF_TOP_TWO_TARGET_MEMORY_FFA_COSINES",
+      "predecessor_target_opportunity_at_iou_gate": false,
+      "selected": {
+        "objectness_score": 0.30225151777267456,
+        "box_xyxy": [
+          0.9586758613586426,
+          37.700748443603516,
+          315.58721923828125,
+          349.3050231933594
+        ],
+        "tile_id": "top_left",
+        "tile_xyxy": [
+          0,
+          0,
+          624,
+          351
+        ],
+        "tile_postprocess_index": 4,
+        "postprocess_index": 10,
+        "target_memory_score": 0.6417136788368225,
+        "winning_target_reference": "D15M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.2760675899098357,
+          "target_recall": 0.7226213212954133,
+          "proposal_precision": 0.3087896352365075
+        },
+        "descriptor_sha256": "a950f3f02b560ac022b01e6441bb37fbd44190d648425845bc383f75b1d66ea8",
+        "mask_sha256": "cf293774cc3c787766f4534add47de770f3d2f8f9c2f200f6ae6ef919747b70b",
+        "per_reference_scores": {
+          "D15M1_reference": 0.7120507955551147,
+          "D15M2_reference": 0.5713765621185303,
+          "D15M3_reference": 0.5664854645729065
+        },
+        "consensus_references": [
+          "D15M1_reference",
+          "D15M2_reference"
+        ]
+      },
+      "top1_consensus_margin": 0.0021706819534301758,
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        41.0,
+        311.0,
+        354.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.26705874936091395,
+        "target_recall": 0.7005058078702533,
+        "proposal_precision": 0.3014813722227991
+      },
+      "ranked_candidates": [
+        {
+          "objectness_score": 0.30225151777267456,
+          "box_xyxy": [
+            0.9586758613586426,
+            37.700748443603516,
+            315.58721923828125,
+            349.3050231933594
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 10,
+          "target_memory_score": 0.6417136788368225,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.2760675899098357,
+            "target_recall": 0.7226213212954133,
+            "proposal_precision": 0.3087896352365075
+          },
+          "descriptor_sha256": "a950f3f02b560ac022b01e6441bb37fbd44190d648425845bc383f75b1d66ea8",
+          "mask_sha256": "cf293774cc3c787766f4534add47de770f3d2f8f9c2f200f6ae6ef919747b70b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7120507955551147,
+            "D15M2_reference": 0.5713765621185303,
+            "D15M3_reference": 0.5664854645729065
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5813587307929993,
+          "box_xyxy": [
+            336.9877052307129,
+            330.8501281738281,
+            769.8570251464844,
+            538.8467102050781
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 29,
+          "target_memory_score": 0.6395429968833923,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5d216925e7283f287336842d7101e7f76d9b9a047513ce9b757bb9d9902a7e8b",
+          "mask_sha256": "6fc49f0aedb2c40e6e3d6620c10f9c628348a553e5717d2a47852c452ba520f6",
+          "per_reference_scores": {
+            "D15M1_reference": 0.684088945388794,
+            "D15M2_reference": 0.5852890014648438,
+            "D15M3_reference": 0.5949970483779907
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.6265583634376526,
+          "box_xyxy": [
+            146.6212615966797,
+            156.41067504882812,
+            315.9555358886719,
+            331.58740234375
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 8,
+          "target_memory_score": 0.6322647631168365,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b301e59e9fb90205628d54092c4960e33c0548706552b08bb1734ca040166513",
+          "mask_sha256": "b920e4613e6005de670cd746d8ac4e846135fc2d33099ec03d964b9cc70956da",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6392871737480164,
+            "D15M2_reference": 0.5871710777282715,
+            "D15M3_reference": 0.6252423524856567
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5377767086029053,
+          "box_xyxy": [
+            146.00296020507812,
+            156.17117309570312,
+            314.8919677734375,
+            333.9337463378906
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 1,
+          "target_memory_score": 0.63135626912117,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "4bc77612e2047f6d3df165ca3d496fd8552bdd5abaf5d3dd9cf66ca767987d91",
+          "mask_sha256": "3c4fd894a401e33f27431c41fbe27279fde100ca9ba96adfeeae35a160918a5d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.633987307548523,
+            "D15M2_reference": 0.5897243022918701,
+            "D15M3_reference": 0.6287252306938171
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5477736592292786,
+          "box_xyxy": [
+            260.9343566894531,
+            331.2015380859375,
+            767.5734252929688,
+            538.3179931640625
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 0,
+          "target_memory_score": 0.6225343942642212,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9a0f5a349f7c1cf19f1810f861b6a6ade55a23edc25e47b955373a9f38f6ac4d",
+          "mask_sha256": "d37a01c48158a3140f552142c87a1a6bbdd7518467c49c1e6971bc56b99e8c1c",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6411277055740356,
+            "D15M2_reference": 0.5845526456832886,
+            "D15M3_reference": 0.6039410829544067
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.32948049902915955,
+          "box_xyxy": [
+            145.9409637451172,
+            189.05988179147243,
+            319.8101806640625,
+            335.3695526123047
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 22,
+          "target_memory_score": 0.6207945942878723,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "54a7f9a07d19d6eaf4c477c0a3e3d6a6f5b006b6c2f7571d8fb99e43c8b08172",
+          "mask_sha256": "40bcea061696f6b2a3147dcd606fb2d40fb92f73a4cdedeec59231834be5972d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6062625646591187,
+            "D15M2_reference": 0.6057130694389343,
+            "D15M3_reference": 0.635326623916626
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10155748575925827,
+          "box_xyxy": [
+            1.6889476776123047,
+            81.02374267578125,
+            312.3469543457031,
+            538.325927734375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 7,
+          "postprocess_index": 7,
+          "target_memory_score": 0.619868665933609,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.10119347082150335,
+            "target_recall": 0.40351141903794446,
+            "proposal_precision": 0.11899356367504561
+          },
+          "descriptor_sha256": "e01505766431d2320d93b6e12cbbcd3e49b1795763cbe0557ac15de6ef2427f9",
+          "mask_sha256": "5f77d54c2eaea0dd2e61c4b8cab5f37b57775a631e3f3d858ae0ab050f3604b0",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7112308144569397,
+            "D15M2_reference": 0.5112547874450684,
+            "D15M3_reference": 0.5285065174102783
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.13229946792125702,
+          "box_xyxy": [
+            404.1403045654297,
+            0.07906655967235565,
+            559.8621063232422,
+            56.686744689941406
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 18,
+          "target_memory_score": 0.6102396845817566,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "edbdc2e3f992949b6c356be3d8e2eedc7c3972252bf5b91b0fe85983ee8a5b00",
+          "mask_sha256": "6887f20065da39e439da27616b4943e2bd9ec41fdc74d2049bd6582aa8d965c1",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6278843879699707,
+            "D15M2_reference": 0.5925949811935425,
+            "D15M3_reference": 0.562349796295166
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.21709387004375458,
+          "box_xyxy": [
+            1.9548983573913574,
+            1.4580633640289307,
+            621.6054077148438,
+            348.85382080078125
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 12,
+          "target_memory_score": 0.6026717126369476,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.19127303773448057,
+            "target_recall": 0.9855739345894239,
+            "proposal_precision": 0.19181004949951527
+          },
+          "descriptor_sha256": "f6a1a242ac37d69b3766cc14f48814e47044df93dd0757731ee8ff7249f7ef6e",
+          "mask_sha256": "0523dc5267adcda8d8b3556a438bff04645afc1c3e5d86e5692dbbe284e7e57d",
+          "per_reference_scores": {
+            "D15M1_reference": 0.7120215892791748,
+            "D15M2_reference": 0.4735395908355713,
+            "D15M3_reference": 0.49332183599472046
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.6196819543838501,
+          "box_xyxy": [
+            260.9332580566406,
+            338.509033203125,
+            623.0354614257812,
+            538.796630859375
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 21,
+          "target_memory_score": 0.6008886694908142,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "9653ed12ce592161a6c5fc48a57f076423a76e8fec37a238dcbb097714b2b574",
+          "mask_sha256": "58d89ce0b98a9ada95f79fdaf292c588b82215fe36f8c39a740ea28d266b2dcb",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5866014361381531,
+            "D15M2_reference": 0.6011942028999329,
+            "D15M3_reference": 0.6005831360816956
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17488132417201996,
+          "box_xyxy": [
+            1.1091599464416504,
+            189.65316081047058,
+            312.0283508300781,
+            538.0608825683594
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 9,
+          "postprocess_index": 26,
+          "target_memory_score": 0.5910604000091553,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "f4cc21b4f9a4c899c32a513c5b26d6cd9f9802add8e30c18fd780f9ad24b330f",
+          "mask_sha256": "6d2375cef0761bbfd1081d19e7d17213aa60f5c995b1d198413d2c33356daa43",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6879301071166992,
+            "D15M2_reference": 0.49419069290161133,
+            "D15M3_reference": 0.49300965666770935
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1654510647058487,
+          "box_xyxy": [
+            250.3028564453125,
+            331.19873046875,
+            956.6068115234375,
+            538.0429077148438
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 4,
+          "target_memory_score": 0.5853410363197327,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "516e89c0cf1770bd3998222a82565909dce52612b8672b4487a3f1941670f1c2",
+          "mask_sha256": "6bfaeebbb54adf2518f3ed9de3f4c68ad29dca70bf6fe360cf49cb62092cbf86",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5802321434020996,
+            "D15M2_reference": 0.5722974538803101,
+            "D15M3_reference": 0.5904499292373657
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.21988976001739502,
+          "box_xyxy": [
+            214.8482666015625,
+            330.5262145996094,
+            955.4879150390625,
+            538.306396484375
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 2,
+          "target_memory_score": 0.582192450761795,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "de7a7df4017309aaaec21837d9be148fe9f35eb65802b0ab35b484ed02df700b",
+          "mask_sha256": "1c7dc5e2b18a7a3478c0c250ee7139cb06f01953f6419571fa80146d6160fb07",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5751659274101257,
+            "D15M2_reference": 0.5703147649765015,
+            "D15M3_reference": 0.5892189741134644
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10530026257038116,
+          "box_xyxy": [
+            144.7555694580078,
+            1.372861623764038,
+            622.537841796875,
+            346.8934631347656
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 13,
+          "target_memory_score": 0.5713339447975159,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.11939679253678857,
+            "target_recall": 0.526961454807659,
+            "proposal_precision": 0.13372984469512217
+          },
+          "descriptor_sha256": "d0b28c55c3fcff9e6a9cc3d5f31a87ba66a0600d7c75bff9111b387ba6b57a8c",
+          "mask_sha256": "d35e8689097e938d0688e3d8bdef83ef2a62a5635144fb9af513f7a8dd183d7a",
+          "per_reference_scores": {
+            "D15M1_reference": 0.6189127564430237,
+            "D15M2_reference": 0.46008217334747314,
+            "D15M3_reference": 0.5237551331520081
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.27737298607826233,
+          "box_xyxy": [
+            337.86542987823486,
+            330.8577880859375,
+            957.2420043945312,
+            538.2818298339844
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 30,
+          "target_memory_score": 0.5644282102584839,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "0cce556efdbd4edb4066d12da151ee5c0391aa1d80b8e78e68c46586650381e5",
+          "mask_sha256": "f8796d670df68c69ca5c12de2be33c790605fd1291a22a6713d1ca6d366c9495",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5027749538421631,
+            "D15M2_reference": 0.5540200471878052,
+            "D15M3_reference": 0.5748363733291626
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1649491786956787,
+          "box_xyxy": [
+            259.1713562011719,
+            189.53214192390442,
+            622.7114868164062,
+            538.5054626464844
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 27,
+          "target_memory_score": 0.5599711239337921,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "24e614d0330283c93c8043fc5f66bf90b00c4e770860fd0243c869424140ba21",
+          "mask_sha256": "753120c59c87e381b99792c006e0e635f1d22460a484b387c96a93da9db237d1",
+          "per_reference_scores": {
+            "D15M1_reference": 0.49386781454086304,
+            "D15M2_reference": 0.5379260182380676,
+            "D15M3_reference": 0.5820162296295166
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.2919297516345978,
+          "box_xyxy": [
+            0.6806327104568481,
+            37.67626953125,
+            138.5502471923828,
+            349.7743225097656
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 11,
+          "target_memory_score": 0.5283711105585098,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.19017824237495595,
+            "target_recall": 0.3239072457591494,
+            "proposal_precision": 0.31536574044603655
+          },
+          "descriptor_sha256": "9cffcaa9a60b917f2e7607c180afb65efb28abfb5ebc3693580741675aeaede8",
+          "mask_sha256": "6ac93ded997594c7d36e513b4c0fa2e67d2ada4574350f8b8e319aa5825ad45b",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5968192219734192,
+            "D15M2_reference": 0.45992299914360046,
+            "D15M3_reference": 0.4510544538497925
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.11522970348596573,
+          "box_xyxy": [
+            606.8757629394531,
+            0.14624202251434326,
+            706.9022216796875,
+            28.24910545349121
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 19,
+          "target_memory_score": 0.522874504327774,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "6496c681f15d6ee37dd50ca7030b8f8ac19beb4189c5501fd04d3f1c77e69be4",
+          "mask_sha256": "3c4f12e4d13c06f56ede414c09ba582f5002b5ee275017cc2e068f3f8b34b032",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5307297110557556,
+            "D15M2_reference": 0.5150192975997925,
+            "D15M3_reference": 0.49249908328056335
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.17869113385677338,
+          "box_xyxy": [
+            336.0,
+            330.7255859375,
+            770.2951965332031,
+            350.1764831542969
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 16,
+          "target_memory_score": 0.5227022171020508,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "4fc9038190f6eca910ffc36b86e15fd1b0a03d930fc34399884ef903e681e244",
+          "mask_sha256": "8e3217780f3cc6e7e0a40821343bb332fb9afdab64b3077f21ea5f56046e7dab",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5077632665634155,
+            "D15M2_reference": 0.537641167640686,
+            "D15M3_reference": 0.500572681427002
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.34334760904312134,
+          "box_xyxy": [
+            301.18768310546875,
+            0.5151957273483276,
+            622.89990234375,
+            344.2394714355469
+          ],
+          "tile_id": "top_left",
+          "tile_xyxy": [
+            0,
+            0,
+            624,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 9,
+          "target_memory_score": 0.5199325680732727,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.006649106318001725,
+            "target_recall": 0.024039686141126244,
+            "proposal_precision": 0.009107611583781561
+          },
+          "descriptor_sha256": "7b487b58789e18b158e801a42c5c9f3a189e0b5c11f1e42e2f84cefcc6da99ba",
+          "mask_sha256": "354ec6107ee9e8712423234f99e0c98583e874810733db686498a2d39b208654",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5725576281547546,
+            "D15M2_reference": 0.4282549321651459,
+            "D15M3_reference": 0.46730750799179077
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.3168504536151886,
+          "box_xyxy": [
+            368.4361457824707,
+            330.4464111328125,
+            769.4922180175781,
+            350.2999267578125
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 1,
+          "postprocess_index": 15,
+          "target_memory_score": 0.5137363970279694,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "bb4aec8d3bbd41bc72ef2a34ae62dd49c32cf3f955bc9fa1b57ddfbff75eb339",
+          "mask_sha256": "43676be8bc04f158e7e6b0fef6d9303781563c16270954fee50fea7334e59396",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5066368579864502,
+            "D15M2_reference": 0.5208359360694885,
+            "D15M3_reference": 0.47337090969085693
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.1392049938440323,
+          "box_xyxy": [
+            169.62063598632812,
+            190.02939772605896,
+            622.58447265625,
+            538.4276428222656
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 10,
+          "postprocess_index": 28,
+          "target_memory_score": 0.5134648978710175,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b7d5cc5a3084b19a9ccfefc7d608736746343798a5f85a955ba54f3e2f5eeb34",
+          "mask_sha256": "55135a3673c8ca24a64712b5f2be37fcb9d2a1182a419cdc6d22bbd7a5dfac7a",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5132462382316589,
+            "D15M2_reference": 0.4605669379234314,
+            "D15M3_reference": 0.513683557510376
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.24377188086509705,
+          "box_xyxy": [
+            308.5582275390625,
+            189.17057079076767,
+            622.7946166992188,
+            341.70774841308594
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 25,
+          "target_memory_score": 0.5059999823570251,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "977856cf4955f5c74977c9146c6a5e8d59b21011407e4c5f011b6f24a0ce4538",
+          "mask_sha256": "585ec0580024cc3993b5f340515d891e1e16065d9430d294144e070afccbee58",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5406110286712646,
+            "D15M2_reference": 0.4394255578517914,
+            "D15M3_reference": 0.47138893604278564
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.3154113292694092,
+          "box_xyxy": [
+            1.9144692420959473,
+            189.85301089286804,
+            621.8014526367188,
+            538.5793762207031
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 23,
+          "target_memory_score": 0.5015251487493515,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "889b0ee62edfa2539f4f6a645e76736dbe8b51c43cefbf229d90e2e79c0c52ef",
+          "mask_sha256": "4c4e31141c8ae02f8b5e0702b76d25087476f2c9fadd6be7e7e5f2d822ddabf3",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5861379504203796,
+            "D15M2_reference": 0.3732810616493225,
+            "D15M3_reference": 0.41691234707832336
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.24728180468082428,
+          "box_xyxy": [
+            0.7409137487411499,
+            189.221147865057,
+            117.60556030273438,
+            394.0809020996094
+          ],
+          "tile_id": "bottom_left",
+          "tile_xyxy": [
+            0,
+            189,
+            624,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 24,
+          "target_memory_score": 0.49923986196517944,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "f59987424d79c07fddcff32af0e75ebe9c6bc5359d42aaf477f617e031be06f6",
+          "mask_sha256": "7297b20b51dc7f0695145b1a1f511ecc39076d1e1816ecf929e21560a3bad317",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5764180421829224,
+            "D15M2_reference": 0.4220616817474365,
+            "D15M3_reference": 0.40872371196746826
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10445398837327957,
+          "box_xyxy": [
+            759.1812744140625,
+            401.5035705566406,
+            858.5038452148438,
+            537.3321533203125
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 6,
+          "target_memory_score": 0.4928376376628876,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "5ccad42b4021f8de46ec362b2c8eba9ed1ca0f53c781c8d86831efb2faaa14cf",
+          "mask_sha256": "949ac0ba768107aa30cb5333a7ea328580197dcf3111b2927b9a236ed500c017",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5312780737876892,
+            "D15M2_reference": 0.45439720153808594,
+            "D15M3_reference": 0.4362785816192627
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.15001194179058075,
+          "box_xyxy": [
+            757.6357727050781,
+            402.5286865234375,
+            857.2365112304688,
+            538.2422485351562
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 32,
+          "target_memory_score": 0.4892193377017975,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b1e1567cc4ea8cbd78fd2e47f1096e99569a2741df553286cb0e31c92be7a68d",
+          "mask_sha256": "fbbf496f7b0f52388fac832b15511a52eeed06f10fa10da85f13afbe3b26add8",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5247592926025391,
+            "D15M2_reference": 0.4536793828010559,
+            "D15M3_reference": 0.428816020488739
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M2_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.5502946972846985,
+          "box_xyxy": [
+            337.9460835456848,
+            0.9244673252105713,
+            957.6339111328125,
+            348.9065246582031
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 0,
+          "postprocess_index": 14,
+          "target_memory_score": 0.4766193777322769,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "75e7a39a5823b3b172e961b02e22ed54c976524e9c6ab9b31b043a09b433b9cb",
+          "mask_sha256": "33a1702aeebab6a86c38bb3626459c3ddf85f3bc8e347a7df095d4d8e64c3d1f",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5050891041755676,
+            "D15M2_reference": 0.41786596179008484,
+            "D15M3_reference": 0.4481496512889862
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10084284096956253,
+          "box_xyxy": [
+            337.8458662033081,
+            2.094926357269287,
+            764.6757202148438,
+            344.66766357421875
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 20,
+          "target_memory_score": 0.4749695509672165,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "11b00fc52d14042be08954deada00c832598070a6ca93b3180c18399574585fc",
+          "mask_sha256": "78489911b1a97ff2af81a2097301843035bba74a6cdeafba4f1b6b6a52162f42",
+          "per_reference_scores": {
+            "D15M1_reference": 0.5090104937553406,
+            "D15M2_reference": 0.40999066829681396,
+            "D15M3_reference": 0.4409286081790924
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10107240080833435,
+          "box_xyxy": [
+            758.7177429199219,
+            402.51441955566406,
+            958.6630249023438,
+            538.7147216796875
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 35,
+          "target_memory_score": 0.4672235697507858,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "17b9cc39bec5786940db32d932bc1a2818d2dc3ea5e24e7ba1d7ffeb87deafe0",
+          "mask_sha256": "115c144c3a27619d2079c68d1ac95261c207fc183b3f7733fd5508ad114f8c14",
+          "per_reference_scores": {
+            "D15M1_reference": 0.42380669713020325,
+            "D15M2_reference": 0.4973714053630829,
+            "D15M3_reference": 0.43707573413848877
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10916929692029953,
+          "box_xyxy": [
+            676.5272827148438,
+            260.4331588745117,
+            741.7076721191406,
+            332.2212371826172
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 3,
+          "postprocess_index": 34,
+          "target_memory_score": 0.46091926097869873,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "e396b0c77600d66d4e2c557b12ee4cb65a8e7a2103a3a3a5318bc004720a4bb4",
+          "mask_sha256": "12b75cfabd2f6c5235c98a5be9404b2708f46e9ee42c20f62536829e0faca218",
+          "per_reference_scores": {
+            "D15M1_reference": 0.3703348636627197,
+            "D15M2_reference": 0.4690247178077698,
+            "D15M3_reference": 0.4528138041496277
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.15185099840164185,
+          "box_xyxy": [
+            676.3164978027344,
+            260.1752014160156,
+            742.0434265136719,
+            332.42034912109375
+          ],
+          "tile_id": "top_right",
+          "tile_xyxy": [
+            336,
+            0,
+            960,
+            351
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 17,
+          "target_memory_score": 0.4382617920637131,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "a2f47d3594962bc32fb64784ab9d6ea97ee8ea276228e57a3c30495b23f6e55a",
+          "mask_sha256": "e3d3a56129267870877f0c0a2bace2d0ea461cff28331d165f650d4b2f23aac4",
+          "per_reference_scores": {
+            "D15M1_reference": 0.34184330701828003,
+            "D15M2_reference": 0.4437705874443054,
+            "D15M3_reference": 0.4327529966831207
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.12634162604808807,
+          "box_xyxy": [
+            337.6190986633301,
+            189.44983783364296,
+            958.3671875,
+            462.9159240722656
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 6,
+          "postprocess_index": 33,
+          "target_memory_score": 0.4109616279602051,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "b22bcaea06888a12947da1ff4ab38c9407c96bf6cba2883dd47722df220e6a00",
+          "mask_sha256": "05d8511ec6974b0e2b8696eaf06dd719301edf3944e003a69092af7f645d3e61",
+          "per_reference_scores": {
+            "D15M1_reference": 0.42675161361694336,
+            "D15M2_reference": 0.33223792910575867,
+            "D15M3_reference": 0.3951716423034668
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.10722874104976654,
+          "box_xyxy": [
+            846.2228393554688,
+            442.155029296875,
+            958.5578002929688,
+            538.4193725585938
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 5,
+          "postprocess_index": 5,
+          "target_memory_score": 0.38814446330070496,
+          "winning_target_reference": "D15M2_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "dd9899dbad542737836d96f2e16100c9421930a5284e9a96f6352d0c08913c66",
+          "mask_sha256": "27d8183d1e14e70da8c61969c964144b2ee881b7f7eda7752c442acad4befefb",
+          "per_reference_scores": {
+            "D15M1_reference": 0.37742695212364197,
+            "D15M2_reference": 0.39886197447776794,
+            "D15M3_reference": 0.33478623628616333
+          },
+          "consensus_references": [
+            "D15M2_reference",
+            "D15M1_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.16932934522628784,
+          "box_xyxy": [
+            3.036203384399414,
+            1.5539807081222534,
+            956.3765869140625,
+            537.4186401367188
+          ],
+          "tile_id": "full",
+          "tile_xyxy": [
+            0,
+            0,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 4,
+          "postprocess_index": 3,
+          "target_memory_score": 0.3723430633544922,
+          "winning_target_reference": "D15M1_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.08035891317705315,
+            "target_recall": 0.9813991096687461,
+            "proposal_precision": 0.08048149276300232
+          },
+          "descriptor_sha256": "5cb7da90dcf675cef68fe79b0e7b10494c3c4f6a30a52f193c1a7d140a0cdbbd",
+          "mask_sha256": "a47c3afadfb3f7a66671ffdc788b1c6ce3cbbc0bde5613187c8424110780bec2",
+          "per_reference_scores": {
+            "D15M1_reference": 0.3869977593421936,
+            "D15M2_reference": 0.297383189201355,
+            "D15M3_reference": 0.35768836736679077
+          },
+          "consensus_references": [
+            "D15M1_reference",
+            "D15M3_reference"
+          ]
+        },
+        {
+          "objectness_score": 0.239702507853508,
+          "box_xyxy": [
+            337.824405670166,
+            190.102276802063,
+            957.8760986328125,
+            537.8927001953125
+          ],
+          "tile_id": "bottom_right",
+          "tile_xyxy": [
+            336,
+            189,
+            960,
+            540
+          ],
+          "tile_postprocess_index": 2,
+          "postprocess_index": 31,
+          "target_memory_score": 0.2727948725223541,
+          "winning_target_reference": "D15M3_reference",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "02c45c43301e852a2d5fba88d0ca6b06b6dba0de2a3ea840bc9e2a59a5479e27",
+          "mask_sha256": "c2f04d151ea21ebf719c8393bf00adcb1b1b15fe5870fb736f90456acba86235",
+          "per_reference_scores": {
+            "D15M1_reference": 0.26196134090423584,
+            "D15M2_reference": 0.24302467703819275,
+            "D15M3_reference": 0.2836284041404724
+          },
+          "consensus_references": [
+            "D15M3_reference",
+            "D15M1_reference"
+          ]
+        }
+      ],
+      "query_sam_receipt": {
+        "input_box_count": 36,
+        "input_boxes_shape": [
+          1,
+          36,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          36,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          36,
+          1
+        ],
+        "native_masks_shape": [
+          36,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.1905661000055261
+      }
+    }
+  },
+  "memory_receipts": {
+    "target": {
+      "D15M1_reference": "87a0d327f945e996974b5f063340c7c8c55af1578391c723d4706ac599996903",
+      "D15M2_reference": "e6120a8caf89c8b7db9934823a82e7adc3b9a763d8df200fbb7e6bfd27398569",
+      "D15M3_reference": "30607b723f7dc7aeb08446d9974ec4091a74ef82f801919e40d04eeda314f8f9"
+    },
+    "sam": {
+      "D15M1_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.6133016000385396
+      },
+      "D15M2_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09142700000666082
+      },
+      "D15M3_reference": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09209850005572662
+      }
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 0,
+    "sam2_image_calls": 6,
+    "dinov2_ffa_calls": 131
+  },
+  "claim_boundary": "This consumed D15 Development ablation can establish only whether top-two target-memory consensus repairs the observed single-reference context leakage. It cannot repair missing proposals, regain fresh authority, or establish open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

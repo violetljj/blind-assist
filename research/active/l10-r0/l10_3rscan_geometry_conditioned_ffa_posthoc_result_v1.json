@@ -1,0 +1,316 @@
+{
+  "schema": "blindassist-l10-3rscan-geometry-conditioned-ffa-posthoc-result-v1",
+  "authority": "CONSUMED_D15_GEOMETRY_CONDITIONED_ROBUST_FFA_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_geometry_conditioned_ffa_posthoc_protocol_v1.json",
+  "protocol_sha256": "24e8d219edd50ed230f09bf76fbd32b21d09bf26540d91a95d62c67ba3221873",
+  "implementation": {
+    "path": "l10_3rscan_geometry_conditioned_ffa_posthoc.py",
+    "sha256": "64b64620b52fa8705c9b3366a9fda5558b14727aeadec4fe3350075d5d831d3c"
+  },
+  "conclusion": "L10_3RSCAN_GEOMETRY_CONDITIONED_FFA_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 3,
+    "predecessor_opportunity_queries": 2,
+    "refined_iou_gate_queries": 2,
+    "minimum_refined_iou": 0.0,
+    "mean_refined_iou": 0.5455855291218499
+  },
+  "reference_geometry": {
+    "aspect_ratios": [
+      1.9214079364089383,
+      4.053913071922173,
+      4.129450654124376
+    ],
+    "median_aspect_ratio": 4.053913071922173
+  },
+  "query_receipts": {
+    "D15M1_query": {
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "objectness_score": 0.21733753383159637,
+        "box_xyxy": [
+          432.49613189697266,
+          0.8372362852096558,
+          956.9268798828125,
+          121.17027282714844
+        ],
+        "tile_id": "top_right",
+        "tile_xyxy": [
+          336,
+          0,
+          960,
+          351
+        ],
+        "tile_postprocess_index": 4,
+        "postprocess_index": 24,
+        "target_memory_score": 0.7088465988636017,
+        "winning_target_reference": "D15M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.7710865568484774,
+          "target_recall": 0.9847130415473564,
+          "proposal_precision": 0.7804287270281255
+        },
+        "descriptor_sha256": "57873a6d15fc589f50c03599e798d20825e171f988c166c8e30617fb090ae541",
+        "mask_sha256": "a6e310b88ec865d0a05b7a5aef887afc8982d9b8aa129f7fce87e14082fae0bb",
+        "per_reference_scores": {
+          "D15M1_reference": 0.7898122668266296,
+          "D15M2_reference": 0.6278809309005737,
+          "D15M3_reference": 0.6179680824279785
+        },
+        "consensus_references": [
+          "D15M1_reference",
+          "D15M2_reference"
+        ],
+        "candidate_aspect_ratio": 4.358161009284129,
+        "reference_median_aspect_ratio": 4.053913071922173,
+        "shape_similarity": 0.9301889175930349,
+        "geometry_conditioned_score": 0.6593612505364379
+      },
+      "top1_geometry_conditioned_margin": 0.03937585138498023,
+      "refined_mask_bbox_xyxy": [
+        437.0,
+        0.0,
+        960.0,
+        120.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.7606872408021811,
+        "target_recall": 0.9741784819257641,
+        "proposal_precision": 0.7763403836482075
+      },
+      "mask_sha256": "a6e310b88ec865d0a05b7a5aef887afc8982d9b8aa129f7fce87e14082fae0bb",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 1.083779200038407
+      }
+    },
+    "D15M2_query": {
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "objectness_score": 0.18158447742462158,
+        "box_xyxy": [
+          500.3417053222656,
+          0.5714915990829468,
+          958.2745361328125,
+          111.84561920166016
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 6,
+        "postprocess_index": 8,
+        "target_memory_score": 0.6031908392906189,
+        "winning_target_reference": "D15M1_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.8615953229303175,
+          "target_recall": 0.9946745653046986,
+          "proposal_precision": 0.8655882255956902
+        },
+        "descriptor_sha256": "1353cccea57d56ba663de2a8a5e4869f1792d86ffda1208473240f4034156a35",
+        "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909",
+        "per_reference_scores": {
+          "D15M1_reference": 0.6281166672706604,
+          "D15M2_reference": 0.5782650113105774,
+          "D15M3_reference": 0.5750802755355835
+        },
+        "consensus_references": [
+          "D15M1_reference",
+          "D15M2_reference"
+        ],
+        "candidate_aspect_ratio": 4.115357636827168,
+        "reference_median_aspect_ratio": 4.053913071922173,
+        "shape_similarity": 0.9850694470985595,
+        "geometry_conditioned_score": 0.594184866554926
+      },
+      "top1_geometry_conditioned_margin": 0.0013188335985259148,
+      "refined_mask_bbox_xyxy": [
+        504.0,
+        0.0,
+        960.0,
+        111.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.8760693465633684,
+        "target_recall": 1.0,
+        "proposal_precision": 0.8760693465633683
+      },
+      "mask_sha256": "132f672328604f7ed46e36f4dbf3a0a662ffb8f2b23a47a64753487b4a52e909",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.1318420999450609
+      }
+    },
+    "D15M3_query": {
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "objectness_score": 0.21988976001739502,
+        "box_xyxy": [
+          214.8482666015625,
+          330.5262145996094,
+          955.4879150390625,
+          538.306396484375
+        ],
+        "tile_id": "full",
+        "tile_xyxy": [
+          0,
+          0,
+          960,
+          540
+        ],
+        "tile_postprocess_index": 3,
+        "postprocess_index": 2,
+        "target_memory_score": 0.582192450761795,
+        "winning_target_reference": "D15M3_reference",
+        "target_metrics_evaluation_only": {
+          "iou": 0.0,
+          "target_recall": 0.0,
+          "proposal_precision": 0.0
+        },
+        "descriptor_sha256": "de7a7df4017309aaaec21837d9be148fe9f35eb65802b0ab35b484ed02df700b",
+        "mask_sha256": "1c7dc5e2b18a7a3478c0c250ee7139cb06f01953f6419571fa80146d6160fb07",
+        "per_reference_scores": {
+          "D15M1_reference": 0.5751659274101257,
+          "D15M2_reference": 0.5703147649765015,
+          "D15M3_reference": 0.5892189741134644
+        },
+        "consensus_references": [
+          "D15M3_reference",
+          "D15M1_reference"
+        ],
+        "candidate_aspect_ratio": 3.5645346044034985,
+        "reference_median_aspect_ratio": 4.053913071922173,
+        "shape_similarity": 0.8792824466542806,
+        "geometry_conditioned_score": 0.5119116025294829
+      },
+      "top1_geometry_conditioned_margin": 0.01887078074082782,
+      "refined_mask_bbox_xyxy": [
+        212.0,
+        333.0,
+        960.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.0,
+        "target_recall": 0.0,
+        "proposal_precision": 0.0
+      },
+      "mask_sha256": "1c7dc5e2b18a7a3478c0c250ee7139cb06f01953f6419571fa80146d6160fb07",
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09829080000054091
+      }
+    }
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "sam_model_type": "Sam2Model",
+    "grounding_dino_calls": 0,
+    "dinov2_calls": 0,
+    "sam2_calls": 3
+  },
+  "claim_boundary": "This consumed D15 Development ablation can establish only whether parameter-free reference-aspect conditioning repairs context leakage on reachable queries. It cannot repair missing proposals, regain fresh authority, or establish open-set rejection, provider independence, raw-phone operation, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

@@ -333,6 +333,20 @@ contract.
   thin/partial target views, plus a remaining scale-reachability gap. The next
   Development change must make memory robust to one context-heavy reference
   before adding further proposal scales.
+  On this now-consumed D15 roster, replacing max-over-reference with a top-two
+  mean repaired D15M1 and changed refined success `0/3 -> 1/3` (IoU
+  `0.760687`). Multiplying that consensus by agreement with the median
+  reference-mask aspect ratio repaired both originally reachable rows `2/2`
+  (D15M1 `0.760687`, D15M2 `0.876069`). A separate fixed full-plus-four-corner
+  `40% x 40%` proposal audit then restored IoU-`0.5` opportunity to `3/3`,
+  including D15M3 at raw IoU `0.507007`. But composing those two changes did
+  not generalize: the enlarged roster introduced geometry-mimicking distractors
+  and the integrated chain passed only `1/3` (minimum `0`, mean `0.251676`;
+  one empty SAM mask skipped). Freeze median aspect as an insufficient ranking
+  proxy across views. The next structural successor must improve the foreground
+  representation or learn target-independent channel discrimination, not add a
+  vertical-position prior or another D15-specific geometry term. All four runs
+  are consumed-cohort Development attribution only.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or
