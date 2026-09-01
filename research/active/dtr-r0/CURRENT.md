@@ -121,7 +121,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   eight cohorts X76 is `1,071 TP / 112 FP / 308 FN` at
   `90.53/77.67/83.61%`. All required constraints pass, but C37 remains 0.29 pp
   below the 85% precision reference. X76 is Development-only; X73 retains
-  confirmation authority.
+  confirmation authority. X77 then rejects only a metric temporal handoff
+  whose forward velocity is positive, meaning its obstacle is already
+  receding. Across the eight consumed cohorts, all seven true-positive metric
+  handoffs were approaching while all six false-positive handoffs were
+  receding. X77 removes those six false positives with zero TP loss: pooled
+  `1,071 TP / 106 FP / 308 FN` at `90.99/77.66/83.80%`. C37 reaches
+  `133 TP / 23 FP / 39 FN` at `85.26/77.33/81.10%`, crossing the 85% precision
+  reference. All required constraints pass. X77 is Development-only; X73
+  retains confirmation authority until unchanged X77 passes a fresh gate.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -141,10 +149,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    invocation cannot be resumed or reported as a three-town result.
 4. Do not rerun C35, C36, or C37 as confirmation. X73 remains positively
    confirmed on C35; C36 and C37 are consumed successor-design evidence. Any
-   successor to X76 must reduce C37's remaining 24 false-positive frames with
-   zero TP loss across all eight consumed cohorts. Freeze an unchanged arm
-   before any later new source. Until a full fresh gate passes, X73 retains
-   source-disjoint confirmation authority.
+   X77 reduced C37's remaining false positives from 24 to 23 and crossed its
+   precision floor with zero TP loss across all eight consumed cohorts. Freeze
+   unchanged X77 before any later new source. Until a full fresh gate passes,
+   X73 retains source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -199,3 +207,5 @@ their result.
   [DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
 - C35 X73 fresh confirmation:
   [DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md)
+- X77 consumed cross-cohort Development:
+  [DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
