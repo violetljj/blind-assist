@@ -4595,7 +4595,45 @@ The next decision-changing test is a tenth pre-download-frozen family with an
 adjacent admitted query pair and the exact same link IoU, scale penalty, ties,
 vacancy-only insertion, set bound, and truth boundary.
 
+That tenth family was frozen before official-file download as
+`531cff08-0021-28f6-8e08-ba2eeb945e09 ->
+19eda6f4-55aa-29a0-8893-8eac3a4d8193`, target door `23`. The unchanged source
+gate admitted three reference views (`1159/1164/1151`), two unique adjacent
+query views (`534/535`), and sibling door `12`; RGB/model counts remained zero
+until the five-row cohort and candidate-roster protocols were committed. The
+source was therefore evaluable without weakening the ninth-family rules.
+
+The unchanged temporal-scale vacancy confirmation failed at `1/2`. Proposal
+opportunity itself was only `1/2`: the covered query reached IoU `0.806581`,
+while the other query's best complete-set IoU was `0.020595`. The selected
+adjacent link had cross-frame IoU `0.994862`, but it followed a stable wrong
+object; temporal vacancy produced zero IoU-gate hits and zero incremental hits.
+Record
+`L10_3RSCAN_TEMPORAL_SCALE_VACANCY_FRESH_CONFIRMATION_GATE_NOT_MET`.
+This consumed-family result rejects fresh transfer of the ranking-only temporal
+vacancy rule. It also localizes the next bottleneck: reweighting cannot recover
+a target absent from the current proposal roster. The legal successor is one
+bounded structural change that propagates or geometrically extrapolates an
+adjacent-frame localized box into the missing frame, followed by a new-family
+confirmation. It is not permission to retune this family, inspect truth during
+generation, enlarge the unbounded set, or claim portal ownership, affordance,
+waypoint, arrival, handoff, benefit, reliability, or safety.
+
 Evidence:
+
+- tenth-family temporal-scale vacancy download/source/freeze/cohort,
+  intermediate, confirmation implementation/protocol/result SHA-256:
+  `3c2aa2fd7eb4c3d08ef85c2185034fa55ee8f95a5a7b1b26dd385d1dbe3104cd`,
+  `9496213001b291f7e8420096429b0020377ebd1e926663d39c1dd1a481176e12`,
+  `bf0d968bfdf04c5351f8f6dbec469309c705845f2d6c648e7af16894cdf223b1`,
+  `643e145e1c8262f2da094254683e2997177c5f7df498983f3767fc53c3c18b57`,
+  `b6845c74bb3e11e628858f62504c569f656b9f99ff7210e6db875925dbed275e`,
+  `4b5dce5bc0296a18d2eebd3dd8ad90d76a31d2cf7bb9345733f1fa02ea4907f8`,
+  `820da80658390c9588cfb8424eb39921e8e252a3f0340b46795b87b3fdabb8a1`,
+  `899bd2fff6ece219a0ff9ced18b96efc099111f40a31a834c1baea080daf6fec`,
+  `8763a87a7e9fea3e75ef9e799bfaedf37d23b8e823e0a7862a4dd18385a772c6`,
+  `93fe58b23a6336db074c8cce08376fa6f1abc04e75451f98a231140fdd788c33`,
+  and `03cb9c7fd9a1339956eeddf6fff367d50f46568e9c08684094eac55f8018c52a`.
 
 - scale/extent fresh source protocol/result, freeze protocol/cohort,
   intermediate protocol, implementation, protocol/result SHA-256:

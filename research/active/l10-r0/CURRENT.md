@@ -787,14 +787,16 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
-4. The ninth family exposed a sparse two-query ranking failure, then the
-   consumed temporal-scale vacancy branch repaired it from `1/2` to `2/2`
-   without exceeding three hypotheses. Freeze a tenth untouched family before
-   download and require an adjacent admitted query pair. Keep link IoU `>0.5`,
-   the `0.05` reference-scale penalty, deterministic pair order, preserved
-   contributors, vacancy-only insertion, IoU gate, and set bound unchanged.
-   Until that fresh replay passes, the temporal branch remains Development;
-   regardless, proposal recall is not top-one localization.
+4. The ninth family's consumed temporal-scale vacancy repair rose from `1/2`
+   to `2/2`, but the unchanged fresh tenth-family replay failed at `1/2`.
+   Tenth-family proposal opportunity was only `1/2`; the covered frame reached
+   IoU `0.806581`, while the other frame's bounded set reached only `0.020595`.
+   The temporal link added no IoU-gate hit and no incremental hit. Freeze the
+   negative confirmation: do not retune weights or links on this consumed
+   family. The next structural branch must address proposal reachability by
+   generating a bounded adjacent-frame propagated box, then test that mechanism
+   on a new family. Proposal propagation remains referent evidence only, not
+   affordance, waypoint, arrival, or handoff.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -865,6 +867,8 @@ contract.
   [l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json](l10_3rscan_axis_completion_vacancy_second_confirmation_source_result_v1.json)
 - Ninth-family temporal-scale vacancy Development result:
   [l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json](l10_3rscan_temporal_scale_vacancy_posthoc_result_v1.json)
+- Tenth-family temporal-scale vacancy fresh confirmation result:
+  [l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json](l10_3rscan_temporal_scale_vacancy_confirmation_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:
