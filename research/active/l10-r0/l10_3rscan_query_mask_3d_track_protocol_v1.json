@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-protocol-v1",
+  "authority": "POST_PATCH_NEGATIVE_PRE_GEOMETRY_SCORE_ADJACENT_QUERY_TRACK_PROTOCOL",
+  "implementation": {
+    "path": "l10_3rscan_query_mask_3d_track.py",
+    "sha256": "f36d2576f2f739a148ed490f657ce8ed2b97e8adab4db3d93a7ac54f70c70efc"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py",
+      "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    }
+  ],
+  "source_protocol": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_protocol_v2.json",
+    "sha256": "06477a5d65e4350a4f45ba2ca023872751eb35f1bbdaa8a4ca781a117a4aca83",
+    "required_schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-protocol-v1"
+  },
+  "cohort": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+    "sha256": "f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a",
+    "required_schema": "blindassist-l10-3rscan-asymmetric-reference-vacancy-cohort-v1"
+  },
+  "intermediate": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_result_v1.json",
+    "sha256": "4fbfb30a3696948018f4a560ffb2acca5ff6f01053114495a2b58ec2a97743c7",
+    "required_schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-result-v1",
+    "candidate_rule": "Replay the exact 25 and 35 proposals and require the regenerated SAM masks to match every frozen mask hash."
+  },
+  "evaluation": {
+    "query_keys": [
+      "ARV1_query",
+      "ARV2_query"
+    ],
+    "truth_timing": "Build and rank all 3D tracks without target identity, target box, or IoU; evaluate the already-frozen truth afterward."
+  },
+  "geometry": {
+    "depth_consistency_metres": 0.15,
+    "minimum_visible_projected_points": 16,
+    "lift": "Lift each proposal SAM mask through its RGB-D frame into scan coordinates using the frozen intrinsics and camera pose.",
+    "pair_score": "Geometric mean of depth-consistent mask coverage in both projection directions.",
+    "candidate_score": "Best cross-frame pair score; rank mutual-best pairs first, then symmetric coverage, objectness, and frozen candidate index.",
+    "appearance_use": "None."
+  },
+  "literature_motivation": [
+    {
+      "name": "MV3DIS",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf",
+      "use": "Cross-view 2D masks are associated by 3D coverage and depth consistency instead of independent per-frame confidence."
+    },
+    {
+      "name": "SAMPro3D",
+      "url": "https://arxiv.org/html/2311.17707",
+      "use": "3D-located evidence aligns SAM masks across posed RGB-D views without task-specific training."
+    }
+  ],
+  "gate": {
+    "minimum_improved_queries": 1,
+    "requirements": "The reachable correct proposal in both frames must enter the geometry-only top three, at least one rank must improve over the original fused order, and neither may regress."
+  },
+  "next_action": "On the next unopened source-queue family, freeze three adjacent query views and use the same 3D mask-track candidate generator before any target appearance scoring.",
+  "fallback_action": "Close adjacent-frame persistence as insufficient on ARV and move to active viewpoint selection that explicitly maximizes candidate-track separation; do not add ARV-specific thresholds or appearance weights.",
+  "claim_boundary": "ARV is a consumed Development family. Geometry-only persistence can diversify proposal hypotheses but cannot identify target ownership or establish portal access, waypoint, arrival, handoff, user benefit, or safety."
+}
