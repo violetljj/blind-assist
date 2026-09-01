@@ -835,9 +835,21 @@ contract.
    The consumed-family oracle is now positive: unchanged initial Top-1 was
    `0/2` with Recall@3 `2/2`; all-view Top-1 was only `5/14`, but both fixed
    local forward views recovered the target (`2/2`, IoU
-   `0.876683/0.922963`). The next authority-changing step is therefore a fresh
-   family confirmation of a truth-free ambiguity trigger followed by exactly
-   one fixed local re-observation, not an instance-head training branch yet.
+   `0.876683/0.922963`). The first pre-download-frozen successor was
+   `NOT_EVALUABLE` before RGB/model access because its seven admitted query
+   views contained no consecutive triplet. A locally complete but previously
+   ungoverned physical family then supplied query frames `145/146/147` for a
+   bounded Development test. The truth-free minimum-margin trigger fired at
+   `0.017617 <= 0.02`; fixed frame `147` retained target Top-1, raised the
+   score margin to `0.027464` (`+55.9%` over the triggering view), and raised
+   target Top-1 IoU from the latest initial `0.911720` to `0.946238`. Record
+   `L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_TRIGGERED_MARGIN_SHARPENING_DEVELOPMENT_OBSERVED`.
+   Both initial views were already correct, so this is ambiguity reduction,
+   not wrong-instance recovery or fresh confirmation. Next freeze a
+   multi-family pose/depth source queue and seek a fresh triplet with initial
+   wrong Top-1 but target Recall@3. Keep the same trigger and one action. If it
+   cannot flip that error, begin the physical-door instance head with same-door
+   cross-view positives and same-scene sibling-door hard negatives.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -916,6 +928,10 @@ contract.
   [l10_3rscan_depth_pose_propagation_confirmation_result_v1.json](l10_3rscan_depth_pose_propagation_confirmation_result_v1.json)
 - Consumed eleventh-family query-side discriminative-view oracle result:
   [l10_3rscan_discriminative_view_oracle_result_v1.json](l10_3rscan_discriminative_view_oracle_result_v1.json)
+- First fresh active-view source result (not evaluable before RGB/model):
+  [l10_3rscan_discriminative_view_confirmation_source_result_v1.json](l10_3rscan_discriminative_view_confirmation_source_result_v1.json)
+- Local fixed-action Development policy result:
+  [l10_3rscan_local_discriminative_view_policy_result_v1.json](l10_3rscan_local_discriminative_view_policy_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:

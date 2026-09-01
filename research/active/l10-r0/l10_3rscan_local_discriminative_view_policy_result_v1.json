@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist-l10-3rscan-local-discriminative-view-policy-result-v1",
+  "authority": "POSTHOC_SUMMARY_OF_FROZEN_LOCAL_ACTIVE_VIEW_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_local_discriminative_view_policy_protocol_v1.json",
+  "protocol_sha256": "9a044c03f0c36b89b8d267cfd5816e9255fdd720bcfa525a8e779a46df069b8b",
+  "implementation": {
+    "path": "l10_3rscan_local_discriminative_view_policy.py",
+    "sha256": "cadc6ecfbf3763ca39ceb1f55ac79050dd2c196dc0020dce1a824db72c901983"
+  },
+  "conclusion": "L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_TRIGGERED_MARGIN_SHARPENING_DEVELOPMENT_OBSERVED",
+  "observed": true,
+  "policy": {
+    "trigger_uses_target_truth": false,
+    "trigger_statistic": "minimum initial Top-1-minus-Top-2 fused-score margin",
+    "trigger_threshold": 0.02,
+    "trigger_value": 0.01761651039123535,
+    "triggered": true,
+    "fixed_action": "NEXT_FRAME_FORWARD",
+    "action_executed": true
+  },
+  "metrics": {
+    "initial_query_count": 2,
+    "initial_target_top1": 2,
+    "initial_target_recall_at_3": 2,
+    "initial_wrong_top1_count": 0,
+    "initial_margins": [
+      0.022678643465042114,
+      0.01761651039123535
+    ],
+    "minimum_initial_margin": 0.01761651039123535,
+    "mean_initial_margin": 0.020147576928138733,
+    "maximum_initial_margin": 0.022678643465042114,
+    "action_target_top1": 1,
+    "action_target_recall_at_3": 1,
+    "action_margin": 0.027464181184768677,
+    "action_margin_gain_over_trigger_view": 0.009847670793533325,
+    "action_margin_relative_gain_over_trigger_view": 0.5590023548836769,
+    "action_margin_gain_over_initial_mean": 0.007316604256629944,
+    "action_margin_gain_over_initial_maximum": 0.0047855377197265625,
+    "initial_top1_target_ious": [
+      0.7613423940729726,
+      0.9117203665881426
+    ],
+    "mean_initial_top1_target_iou": 0.8365313803305576,
+    "action_top1_target_iou": 0.9462382943050703,
+    "action_top1_iou_gain_over_latest_initial": 0.03451792771692774,
+    "mean_initial_refined_top1_target_iou": 0.8385757179568928,
+    "action_refined_top1_target_iou": 0.9164191299687396,
+    "wrong_top1_exclusion_fraction": "NOT_APPLICABLE_NO_INITIAL_WRONG_TOP1"
+  },
+  "views": {
+    "LDV_initial_1_query": {
+      "top1_minus_top2_fused_margin": 0.022678643465042114,
+      "top1_target_iou_evaluation_only": 0.7613423940729726,
+      "refined_top1_target_iou_evaluation_only": 0.7657041403497888,
+      "best_reachable_target_iou_evaluation_only": 0.7613423940729726,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "candidate_count": 44
+    },
+    "LDV_initial_2_query": {
+      "top1_minus_top2_fused_margin": 0.01761651039123535,
+      "top1_target_iou_evaluation_only": 0.9117203665881426,
+      "refined_top1_target_iou_evaluation_only": 0.9114472955639967,
+      "best_reachable_target_iou_evaluation_only": 0.9117203665881426,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "candidate_count": 42
+    },
+    "LDV_action_query": {
+      "top1_minus_top2_fused_margin": 0.027464181184768677,
+      "top1_target_iou_evaluation_only": 0.9462382943050703,
+      "refined_top1_target_iou_evaluation_only": 0.9164191299687396,
+      "best_reachable_target_iou_evaluation_only": 0.9462382943050703,
+      "first_target_proposal_rank_evaluation_only": 1,
+      "target_top1_evaluation_only": true,
+      "target_recall_at_3_evaluation_only": true,
+      "candidate_count": 45
+    }
+  },
+  "interpretation": "A positive result means one frozen local observation reduced score ambiguity on this Development family. Because both initial views were already target Top-1, it is margin sharpening, not wrong-instance recovery; wrong-candidate exclusion is not applicable.",
+  "next_action": "Seek a fresh pre-frozen source family whose initial frozen scorer ranking contains a wrong Top-1 but target Recall@3, then test whether the same truth-free trigger and fixed local action flips it. If such a family remains unavailable or the action does not flip it, train a small physical-instance head using same-door cross-view positives and same-scene door hard negatives.",
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Do not infer general NBV value from a single action; demand controlled transfer."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Treat increased separation between competing hypotheses as the immediate active-perception effect."
+    }
+  ],
+  "claim_boundary": "This is a posthoc Development summary of one locally pre-existing physical family with a trigger and action frozen before current model output. It is not a preregistered confirmation gate, wrong-instance recovery, fresh transfer, physical cross-view candidate association, a deployable action selector, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

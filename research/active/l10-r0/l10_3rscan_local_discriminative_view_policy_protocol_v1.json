@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist-l10-3rscan-local-discriminative-view-policy-protocol-v1",
+  "protocol_id": "l10-3rscan-local-discriminative-view-policy-protocol-v1",
+  "frozen_at": "2026-09-01T17:41:00+08:00",
+  "authority": "POSTHOC_DEVELOPMENT_SUMMARY_OF_PREVIOUSLY_FROZEN_TRIGGER_ACTION_AND_SCORER",
+  "question": "Did the already frozen truth-free ambiguity trigger execute the already frozen next-frame action, and did that action sharpen the fixed scorer ranking without losing target Top-1?",
+  "implementation": {
+    "path": "l10_3rscan_local_discriminative_view_policy.py",
+    "sha256": "cadc6ecfbf3763ca39ceb1f55ac79050dd2c196dc0020dce1a824db72c901983"
+  },
+  "scorer_result": {
+    "path": "l10_3rscan_local_discriminative_view_scorer_result_v1.json",
+    "sha256": "7230b1da8a143c7cc78d4f1a581eb0e595d8a06303f99acfff954cbded6fd692",
+    "required_conclusion": "L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_SCORER_MATERIALIZED"
+  },
+  "policy": {
+    "initial_query_keys": ["LDV_initial_1_query", "LDV_initial_2_query"],
+    "action_query_key": "LDV_action_query",
+    "truth_free_trigger_threshold": 0.02,
+    "fixed_action": "NEXT_FRAME_FORWARD"
+  },
+  "evaluation": {
+    "minimum_iou": 0.5,
+    "observed_if": "The truth-free trigger fires, the action view retains target Top-1, its score margin exceeds both initial margins, and its target Top-1 IoU exceeds the latest initial view. This rule is a posthoc Development summary, not a preregistered confirmation gate."
+  },
+  "interpretation": "A positive result means one frozen local observation reduced score ambiguity on this Development family. Because both initial views were already target Top-1, it is margin sharpening, not wrong-instance recovery; wrong-candidate exclusion is not applicable.",
+  "next_action": "Seek a fresh pre-frozen source family whose initial frozen scorer ranking contains a wrong Top-1 but target Recall@3, then test whether the same truth-free trigger and fixed local action flips it. If such a family remains unavailable or the action does not flip it, train a small physical-instance head using same-door cross-view positives and same-scene door hard negatives.",
+  "literature_motivation": [
+    {"source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification", "url": "https://doi.org/10.48550/arxiv.2605.30639", "use": "Do not infer general NBV value from a single action; demand controlled transfer."},
+    {"source": "Active Perception for Ambiguous Objects Classification", "url": "https://arxiv.org/abs/2108.00737", "use": "Treat increased separation between competing hypotheses as the immediate active-perception effect."}
+  ],
+  "claim_boundary": "This is a posthoc Development summary of one locally pre-existing physical family with a trigger and action frozen before current model output. It is not a preregistered confirmation gate, wrong-instance recovery, fresh transfer, physical cross-view candidate association, a deployable action selector, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

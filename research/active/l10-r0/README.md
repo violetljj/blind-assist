@@ -4698,6 +4698,44 @@ local re-observation. If that fails despite a positive oracle ceiling, then
 train a physical-door instance head with same-door cross-view positives and
 same-scene sibling-door hard negatives. This remains referent evidence only.
 
+The first pre-download-frozen confirmation family (`569d8f09 -> 569d8f07`,
+target door `15`) stopped correctly at the source gate. The reference side had
+`10` admitted views and the query side had `7`, but no three query frames were
+consecutive. The same-scene sibling door existed; RGB members opened and model
+calls were both zero. Record
+`L10_3RSCAN_DISCRIMINATIVE_VIEW_CONFIRMATION_SOURCE_NOT_EVALUABLE`. Do not
+replace or rescue this family after observing its pose/depth result.
+
+To test the executable mechanism without turning source scarcity into a
+download search, the only complete local physical family not found in a prior
+L10 candidate/cohort ledger was frozen for Development before current
+pose/depth screening or RGB/model access: `185d7423 -> 185d7425`, target door
+`24`, with same-scene door `13` retained as a hard negative. The source gate
+admitted `17` reference views and four query views, froze references
+`79/121/119`, and selected consecutive query frames `145/146/147`. The first
+two query frames were the initial observations and frame `147` was the sole
+`NEXT_FRAME_FORWARD` action.
+
+The truth-free trigger executed: initial Top-1-minus-Top-2 margins were
+`0.022679/0.017617`, so the frozen minimum-margin threshold `<=0.02` fired.
+The action view retained target Top-1 and raised the margin to `0.027464`, a
+gain of `0.009848` (`55.9%`) over the triggering view and `0.004786` over the
+larger initial margin. Target Top-1 IoU rose from the latest initial
+`0.911720` to `0.946238`; across all three views the refined IoU minimum/mean
+was `0.765704/0.864524`. Record
+`L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_TRIGGERED_MARGIN_SHARPENING_DEVELOPMENT_OBSERVED`.
+
+This does not demonstrate wrong-instance recovery: both initial frames were
+already target Top-1, so wrong-candidate exclusion is not applicable. It is a
+posthoc Development summary on locally pre-existing source bytes, not fresh
+confirmation or physical association of the same candidate identities across
+views. The next decision-changing source is a pre-frozen multi-family
+pose/depth queue that can yield a fresh consecutive triplet. Prefer a row whose
+unchanged initial scorer has wrong Top-1 with target Recall@3, then test the
+same trigger and one fixed action without tuning. If the action cannot flip
+such errors, start the small physical-door instance head with same-door
+cross-view positives and same-scene same-class hard negatives.
+
 Evidence:
 
 - depth-pose propagation implementation/protocol/result SHA-256:
@@ -4721,6 +4759,31 @@ Evidence:
   `1e7f3a5f3d99c04d659a69b5d6ed2af7baa5c3635bbbc2d79544edfb7123d50b`,
   `25b8702743b70161ce15d3a3a4cd2b1f28e4d941ebb2b7939bd375042482c86b`,
   and `591956e07e4fd905858d48d4711b4e737c5a11da97c83f603dda1ad8a56669ce`.
+
+- first fresh active-view candidate/source result SHA-256:
+  `88065c382a2ea7fa17775314bf78d16292ccab929a32bc62f51650eac6b37d58`
+  and `f45b2bb68d318c9de0e299a12dde84590aa7db7a48b3424871edbb4e6dd699fa`.
+
+- local active-view candidate protocol/candidate, source
+  implementation/protocol/result, and cohort freeze
+  implementation/protocol/cohort SHA-256:
+  `342f2ff57bcff06a3b194fb3547b3a78f5b28f289ca54cdd781f0d578c715d4f`,
+  `44ea4dcc0dfce925278ae4f039cf5b85253e749b1f9c9facac251f1abe58214a`,
+  `c07184cc48c89e5f3071353865a3d6dcde6e879ea36f26fb3abf0f0aa775ebfe`,
+  `0b99d3f04ec1058ef68af6f8d721e81980df9a2f553907d0798556150b2c7fb6`,
+  `9ad1149c92a3a3cb9026b6e081461d2bee02cae59bfa020fab8451996f53b5aa`,
+  `2f139907fbb5d27e59eadf7ce1ee0a93ef4c9429afe3776202fd09b5c26c7c61`,
+  `29fafa099c01f6a5e90c29e17eb88f9278d8c423ac70686e993423310bf932cf`,
+  and `67ab13ddee706b9758e4c354551a46d2b93972e1f52d0e13ad759efb29c14ee7`.
+
+- local active-view unchanged scorer and policy-summary
+  implementation/protocol/result SHA-256:
+  `78d6583c5cce9a9dd3cc45fd34e27a8efe6481685fa31af32daf94a33aec37e8`,
+  `9aee538068aa142c6f57c58a2acb2d7967f98babc50daa25eb994bd4f9e496fc`,
+  `7230b1da8a143c7cc78d4f1a581eb0e595d8a06303f99acfff954cbded6fd692`,
+  `cadc6ecfbf3763ca39ceb1f55ac79050dd2c196dc0020dce1a824db72c901983`,
+  `9a044c03f0c36b89b8d267cfd5816e9255fdd720bcfa525a8e779a46df069b8b`,
+  and `2c2d8a48ea4b295afa585636f77575a2b7e8b80237a17365f2e18150eae4382c`.
 
 - tenth-family temporal-scale vacancy download/source/freeze/cohort,
   intermediate, confirmation implementation/protocol/result SHA-256:
