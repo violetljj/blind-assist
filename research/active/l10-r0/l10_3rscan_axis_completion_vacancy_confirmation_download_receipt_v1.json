@@ -1,0 +1,39 @@
+{
+  "schema": "blindassist-l10-3rscan-axis-completion-vacancy-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_axis_completion_vacancy_confirmation_candidate_v1.json",
+  "candidate_sha256": "7e52b3c8f4dd645a97923d3e78711e76ea22b7f105c025391a4e07b2fd722efc",
+  "candidate_frozen_commit": "472e189e12bdb2f53dfed73aadd2f4fcc6b9c878",
+  "candidate_frozen_commit_time": "2026-09-01T14:10:31+08:00",
+  "completed_at": "2026-09-01T14:23:37+08:00",
+  "files": {
+    "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/semseg.v2.json": {
+      "bytes": 34397,
+      "sha256": "29e75bb7277969202bf1d9bdace11c89a7cd13471d46b4a14fbe1d79243826c6"
+    },
+    "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/labels.instances.annotated.v2.ply": {
+      "bytes": 4949973,
+      "sha256": "9fb4828bf0ac927296357117cf402b9510372d70a4a9cdf3f2903fce84449727"
+    },
+    "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/sequence.zip": {
+      "bytes": 64479801,
+      "sha256": "079a3f64e8352fe393fe5559383cfd88d4d6fa0eb0db0bf812aa8d2197a18a57"
+    },
+    "4d3d82b8-8cf4-2e04-803d-3091a545e57a/semseg.v2.json": {
+      "bytes": 35829,
+      "sha256": "e263a10181e98f578dd97fa0d4c5d45659a21c477d0169f784e9a6250799f7e5"
+    },
+    "4d3d82b8-8cf4-2e04-803d-3091a545e57a/labels.instances.annotated.v2.ply": {
+      "bytes": 5741489,
+      "sha256": "0040298e4ad1065ff153cf48e55794a6ebc2ce967b321880dbc599389f27ad7a"
+    },
+    "4d3d82b8-8cf4-2e04-803d-3091a545e57a/sequence.zip": {
+      "bytes": 80814084,
+      "sha256": "f6c5a5ab30e0afe8232b5587ba34fb0aced0951cb91cc60a92f6ea3627e822aa"
+    }
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "next_action": "Run the frozen geometry/depth source-admission gate; do not inspect RGB or run the vacancy proposal set unless both scans admit three target views and a same-scene sibling.",
+  "claim_boundary": "This receipt proves only complete official-file materialization and hashes. The frozen Git commit establishes that candidate identity and download plan preceded materialization. It is not source evaluability or algorithm evidence."
+}

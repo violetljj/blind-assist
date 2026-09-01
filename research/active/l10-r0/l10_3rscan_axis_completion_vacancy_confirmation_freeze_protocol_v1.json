@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-axis-completion-vacancy-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T14:24:53+08:00",
+  "question": "Does the frozen at-most-three axis-completion vacancy proposal set cover wholly new door 3 across all three query views without using query truth?",
+  "implementation": {
+    "path": "l10_3rscan_set_memory_confirmation_freeze.py",
+    "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"
+  },
+  "source_result": {
+    "path": "l10_3rscan_axis_completion_vacancy_confirmation_source_result_v1.json",
+    "sha256": "5958de7291c8c47ba5f704c6af8485417bdb5a954a9bd3aec85208d7f337b056"
+  },
+  "controls": {
+    "path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json",
+    "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"
+  },
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_AXIS_COMPLETION_VACANCY_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/sequence.zip": {
+        "path": "datasets/3rscan/4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/sequence.zip",
+        "bytes": 64479801,
+        "sha256": "079a3f64e8352fe393fe5559383cfd88d4d6fa0eb0db0bf812aa8d2197a18a57"
+      },
+      "4d3d82b8-8cf4-2e04-803d-3091a545e57a/sequence.zip": {
+        "path": "datasets/3rscan/4d3d82b8-8cf4-2e04-803d-3091a545e57a/sequence.zip",
+        "bytes": 80814084,
+        "sha256": "f6c5a5ab30e0afe8232b5587ba34fb0aced0951cb91cc60a92f6ea3627e822aa"
+      },
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+        "bytes": 46320073,
+        "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"
+      },
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {
+        "path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip",
+        "bytes": 35895970,
+        "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"
+      }
+    }
+  },
+  "selection": {
+    "memory_episode_ids": [
+      "AV1",
+      "AV2",
+      "AV3"
+    ],
+    "sibling_episode_id": "AVS7",
+    "positive_authority": "First wholly unmaterialized seventh family selected after the consumed six-family 18/18 bounded axis-completion vacancy Development gate, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {
+        "episode_id": "NC31",
+        "source_episode_id": "NC31"
+      },
+      {
+        "episode_id": "NC08",
+        "source_episode_id": "NC08"
+      }
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, full-plus-40-percent proposal windows, layer-18 representation, preserved semantic-local fusion, nearest-reference-scale mixture, majority-reference consensus, exact deduplication, vacancy-only axis completion, 0.05 scale penalty, deterministic tie order, IoU gate or maximum set size three",
+    "use sibling or negative-control appearance in positive hypothesis generation",
+    "use query truth before hypothesis-set generation is complete",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for bounded axis-completion vacancy proposal-recall confirmation. A pass is narrow same-provider new-family bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
