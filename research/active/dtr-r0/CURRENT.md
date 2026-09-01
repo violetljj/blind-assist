@@ -151,8 +151,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    confirmed on C35; C36 and C37 are consumed successor-design evidence. Any
    X77 reduced C37's remaining false positives from 24 to 23 and crossed its
    precision floor with zero TP loss across all eight consumed cohorts. Freeze
-   unchanged X77 before any later new source. Until a full fresh gate passes,
-   X73 retains source-disjoint confirmation authority.
+   unchanged X77 before any later new source. C38 now freezes X77 at seed
+   `381077` with four changed render assignments; add and freeze its single-use
+   runner before admitting pixels. Until a full fresh gate passes, X73 retains
+   source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -209,3 +211,5 @@ their result.
   [DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md)
 - X77 consumed cross-cohort Development:
   [DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
+- Frozen C38 X77 protocol:
+  [dtr_carla_c38_x77_fresh_confirmation_protocol.json](carla/dtr_carla_c38_x77_fresh_confirmation_protocol.json)
