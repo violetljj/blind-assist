@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-train-protocol-v1",
+  "authority": "PRE_VALIDATION_SCORE_FIXED_INSTANCE_HEAD_TRAINING_PROTOCOL",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_train.py",
+    "sha256": "b1b2c4156ac09eacc3c276901215c5149a778c10aaf886dfb788ae572466eb3d"
+  },
+  "manifest": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_v1.json",
+    "sha256": "76d8207a0560be66c5cf1aec31ec7130fc840bc256de0532460f736f7566539b",
+    "required_schema": "blindassist-l10-3rscan-instance-head-rgb-manifest-v1"
+  },
+  "descriptor_result": {
+    "path": "l10_3rscan_instance_head_descriptor_materialize_result_v1.json",
+    "sha256": "56c7e83e8f1daf760d24d0756fb023deae39ffb8248bd9cb17dc6d472f0a602a",
+    "required_schema": "blindassist-l10-3rscan-instance-head-descriptor-materialize-result-v1"
+  },
+  "source": {
+    "artifact_root": "artifacts.local"
+  },
+  "head": {
+    "input_dimension": 1024,
+    "hidden_dimension": 256,
+    "output_dimension": 128,
+    "architecture": "LayerNorm(1024) -> Linear(1024,256) -> GELU -> Linear(256,128) -> L2 normalization",
+    "backbone_updates": 0
+  },
+  "loss": {
+    "positive_hard_margin": 0.1,
+    "hard_ordinary_margin": 0.05,
+    "hard_ordinary_weight": 0.5,
+    "positive_rule": "For each positive anchor, optimize against its least-similar other physical-instance view.",
+    "hierarchy": "same physical door > same-scene different door > ordinary different-class instance"
+  },
+  "training": {
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.001,
+    "epochs": 300,
+    "validation_interval_epochs": 5,
+    "seed": 104729,
+    "device": "cpu deterministic full cohort"
+  },
+  "selection": {
+    "split": "Only the three manifest-frozen validation families may select an epoch.",
+    "order": "Lexicographically maximize validation ranking accuracy, positive-hard accuracy, hierarchy accuracy, mean positive-hard gap, mean hard-ordinary gap, then prefer the earliest epoch.",
+    "final_heldout_access": "Forbidden during training and epoch selection."
+  },
+  "gate": {
+    "minimum_ranking_accuracy_gain": 0.0,
+    "requirements": "Validation ranking accuracy must not decrease, and both mean positive-hard and mean hard-ordinary gaps must strictly improve over raw DINOv2."
+  },
+  "next_action": "Freeze one final evaluation on the three untouched heldout families, including the eleventh-family reachable-correct-proposal failure, the fresh active-view family, and the local Development family.",
+  "fallback_action": "Keep the raw DINOv2 baseline and open a new Development protocol for foreground patch pooling; do not inspect final heldout families.",
+  "claim_boundary": "This is target-family-disjoint Development train/validation only. Even a positive gate establishes neither final heldout proposal reranking nor portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
