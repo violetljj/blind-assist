@@ -1,0 +1,19 @@
+{
+  "schema": "blindassist-l10-3rscan-scale-extent-guard-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_scale_extent_guard_confirmation_candidate_v1.json",
+  "candidate_sha256": "419173116e5a9dd4a5cadc331daa6aa5e08658c4a038aa4fcb8119921fdb2259",
+  "completed_at": "2026-09-01T09:58:40+08:00",
+  "files": {
+    "4a9a43e4-7736-2874-8479-0e81135ccdb0/semseg.v2.json": {"bytes": 36510, "sha256": "d9a23510aa30cd13cd8fc1b702bb2e22080710cb525b97cad1ec4bd3ae05e4ca"},
+    "4a9a43e4-7736-2874-8479-0e81135ccdb0/labels.instances.annotated.v2.ply": {"bytes": 8153480, "sha256": "c41bf56dd9c064c97464db90719901e4da59287b6d626b61a8c5cd63dbd5d973"},
+    "4a9a43e4-7736-2874-8479-0e81135ccdb0/sequence.zip": {"bytes": 54048280, "sha256": "3b2455650c3267df55ce33725b67d14f0ea388b37e54a1e1609b3091a3e7bd69"},
+    "4a9a43e6-7736-2874-8723-08ae98eccd16/semseg.v2.json": {"bytes": 37375, "sha256": "29539d765b4c8fe4347ff0c3973d3a7c264e68ca42756d092667ce27971ca1dd"},
+    "4a9a43e6-7736-2874-8723-08ae98eccd16/labels.instances.annotated.v2.ply": {"bytes": 7978208, "sha256": "62915fe3d1b35390d15ce84d0bb5f1212ccbb6ff63a6bfcb75c706cfafb39ee1"},
+    "4a9a43e6-7736-2874-8723-08ae98eccd16/sequence.zip": {"bytes": 46363849, "sha256": "0e6a9a6d8035ba50453da2f6400956cd6e4693205a201e5950dd62d3239ef9e5"}
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "next_action": "Run the frozen geometry/depth source-admission gate; do not inspect RGB or run the algorithm unless both scans admit three views.",
+  "claim_boundary": "This receipt proves only complete official-file materialization and hashes. It is not source evaluability or algorithm evidence."
+}
