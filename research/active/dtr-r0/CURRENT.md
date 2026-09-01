@@ -201,7 +201,17 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `91.33/77.60/83.90%`, or `0 TP / -3 FP / +0.08 pp F1` over X81. Every
   required check passes. Because X82 was designed after C40 opened, this is
   Development-only; C40 cannot retroactively confirm X82 and X73 retains full
-  fresh authority until a new source-disjoint gate tests frozen X82.
+  fresh authority until a new source-disjoint gate tests frozen X82. C41 then
+  froze unchanged X82 at seed `411082` with four changed render assignments.
+  Its final four-sensor source passed after the protocol-authorized single
+  recovery of an empty, zero-frame witness shard. X81 and X82 were identical at
+  `135 TP / 15 FP / 37 FN`, or `90.00/78.49/83.85%`; X82 recorded zero
+  held-proxy consensus releases. Full-arm, contact, and safe-segment metrics
+  passed, but the mechanism and incremental-FP requirements did not. One
+  inherited non-rigid risk reference and one parent-identity mismatch also
+  failed the authority gate. C41 is mechanism-not-exercised, supplies no fresh
+  incremental promotion or rejection evidence for X82, and is now consumed
+  successor-design material. X73 still retains full fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -219,7 +229,7 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35, C36, C37, C38, C39, or C40 as confirmation. X73 remains
+4. Do not rerun C35, C36, C37, C38, C39, C40, or C41 as confirmation. X73 remains
    positively confirmed on C35; C36 and C37 are consumed successor-design
    evidence. X77 reduced C37's remaining false positives from 24 to 23 and crossed its
    precision floor with zero TP loss across all eight consumed cohorts. C38
@@ -239,6 +249,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    proxy consensus and reaches 85.43% precision on C40 with zero TP loss across
    ten consumed cohorts. Any later promotion still requires a new
    preregistered source testing byte-frozen X82.
+   C41 subsequently produced strong inherited full-arm metrics but exercised
+   X82 zero times and exposed one non-rigid reference plus one parent mismatch.
+   Use C41 only for successor diagnosis; it supplies no incremental X82
+   confirmation and cannot be retried.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -317,3 +331,5 @@ their result.
   [DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md)
 - X82 consumed ten-cohort Development:
   [DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md)
+- C41 X82 fresh outcome:
+  [DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md)
