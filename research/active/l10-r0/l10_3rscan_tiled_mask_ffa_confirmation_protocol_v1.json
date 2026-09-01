@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist-l10-3rscan-tiled-mask-ffa-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-tiled-mask-ffa-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T08:55:00+08:00",
+  "question": "Does the frozen full-frame plus four-corner tile proposal, target-only FFA and native SAM2 chain localize wholly new physical door 15 at IoU at least 0.5 in all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_tiled_mask_ffa_confirmation.py", "sha256": "01a410fbe23e9b530d470e3628e0bb3d51d7a8cf079dc2db22dff06c2471360f"},
+  "dependencies": [
+    {"path": "l10_3rscan_tiled_mask_ffa_posthoc.py", "sha256": "22cfc409fd82d379f31e3c09e38820041a5e2774094a885b14f551b584f3d1bb"},
+    {"path": "l10_3rscan_mask_ffa_target_only_confirmation.py", "sha256": "e0038f0ef8544657b4b7ea0d46331d5b2c13e9ec31d724f912a492565d62749f"},
+    {"path": "l10_3rscan_mask_ffa_memory_posthoc.py", "sha256": "0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992"},
+    {"path": "l10_3rscan_contrastive_sam_refinement_posthoc.py", "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"},
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_tiled_mask_ffa_posthoc_result_v1.json",
+    "sha256": "abcb93584870a8f60f84ecb11277e67fd52db7acc086b70587be792227e4c85a",
+    "required_conclusion": "L10_3RSCAN_TILED_MASK_FFA_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Move the sealed fixed-tile target-only FFA chain from consumed D03 to pre-download, pre-RGB, pre-model family 43b8cae9 -> 43b8cae5, target door 15."
+  },
+  "source": {
+    "authority": "FROZEN_PRE_RGB_PRE_MODEL_NEW_FAMILY_TILED_FFA_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_tiled_mask_ffa_confirmation_cohort_v1.json",
+    "cohort_sha256": "f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705"
+  },
+  "proposal": {
+    "model_root": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+    "model_path": "artifacts.local/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Union unchanged full-frame proposals with fixed overlapping corner-tile proposals; no query truth access."
+  },
+  "tiling": {
+    "tile_width_fraction": 0.65,
+    "tile_height_fraction": 0.65,
+    "offsets": ["top_left", "top_right", "bottom_left", "bottom_right"],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48,
+    "merge": "Retain up to 16 full-frame and 8 per tile, remap to full-image coordinates, then rank their SAM-masked FFA descriptors together without NMS or truth filtering."
+  },
+  "descriptor": {
+    "model_path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "feature": "SAM-mask-weighted mean of normalized 37x37 DINOv2 patch tokens inside the unmasked RGB box crop, followed by L2 normalization.",
+    "score": "Maximum cosine to the three target FFA memories only; no sibling subtraction, fitted scale or threshold."
+  },
+  "masker": {
+    "model_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Apply unchanged native SAM2 to every retained proposal and use the selected mask tight bbox."
+  },
+  "memory": {
+    "target_images": ["D15M1_reference", "D15M2_reference", "D15M3_reference"],
+    "sibling_images": []
+  },
+  "evaluation": {
+    "query_images": ["D15M1_query", "D15M2_query", "D15M3_query"],
+    "truth_role": "Provider boxes enter only post-ranking proposal opportunity and tight-mask-box IoU evaluation."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_opportunity_queries": 3,
+    "required_refined_queries": 3,
+    "interpretation": "All three frames must contain a retained IoU-at-least-0.5 proposal and all three FFA top-one masks must reach IoU at least 0.5."
+  },
+  "literature_motivation": [
+    {"source": "Grounding DINO", "url": "https://arxiv.org/abs/2303.05499", "use": "Open-vocabulary object proposals."},
+    {"source": "NIDS-Net", "url": "https://arxiv.org/abs/2405.17859", "use": "Direct instance-template FFA matching and SAM refinement."},
+    {"source": "Multi-scale tiling for pseudo-labeling in dense scene object detection", "url": "https://doi.org/10.1016/j.patcog.2026.113436", "use": "Fixed overlapping tiles for proposal reachability."}
+  ],
+  "forbidden_after_freeze": [
+    "change images, tile geometry, proposal prompt/threshold/caps, FFA, memory, SAM or IoU gate",
+    "use sibling appearance or provider query boxes to generate, filter, rank or prompt proposals",
+    "retry, replace a frame or add any post-outcome rescue on this family"
+  ],
+  "claim_boundary": "A pass can establish only narrow same-provider new-family confirmation that the frozen tiled target-only FFA pipeline acquires and localizes one bound physical door from full query frames. Same-provider geometry selected reference boxes. It cannot establish calibrated open-set absence, broad distractor coverage, raw-phone or provider-independent generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

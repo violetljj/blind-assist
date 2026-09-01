@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-3rscan-set-memory-confirmation-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-tiled-mask-ffa-confirmation-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T08:52:00+08:00",
+  "question": "Does the frozen full-frame plus four-corner tile proposal, target-only FFA and native SAM2 chain localize new target D15 across all three frozen query views?",
+  "implementation": {"path": "l10_3rscan_set_memory_confirmation_freeze.py", "sha256": "69fc3ab9f37a61700f1fc3231aebd1dc1e3e959fe016f859b5d3bffdbbe40f86"},
+  "source_result": {"path": "l10_3rscan_tiled_mask_ffa_confirmation_source_result_v1.json", "sha256": "2fab80015d3f577c19bd1ddb1cd88a2265c8f5d4fe7b2c2c9560b0086c4b2390"},
+  "controls": {"path": "l10_3rscan_selective_cascade_confirmation_cohort_v1.json", "sha256": "2675e7724d0ad8207a6211efcc062a5be87094a3120662f472b8bd23f83646e8"},
+  "source": {
+    "authority": "FROZEN_NEW_FAMILY_PRE_RGB_PRE_MODEL_TILED_FFA_CONFIRMATION",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": {
+      "43b8cae9-6678-2e38-9bc2-8c31ab832242/sequence.zip": {"path": "datasets/3rscan/43b8cae9-6678-2e38-9bc2-8c31ab832242/sequence.zip", "bytes": 34219324, "sha256": "60d0d8d16c28bbf7de8657c4e93041dcace8813057c6208e5247fe365cd6ceba"},
+      "43b8cae5-6678-2e38-98db-a2d49b1ecdfb/sequence.zip": {"path": "datasets/3rscan/43b8cae5-6678-2e38-98db-a2d49b1ecdfb/sequence.zip", "bytes": 20865154, "sha256": "4b0f852ed0839f86170ee330ac121d5a77aa5630baf61ff0d9ed1acb1dcefe8c"},
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip": {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"},
+      "8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip": {"path": "datasets/3rscan/8eabc42a-5af7-2f32-855e-f114989e7025/sequence.zip", "bytes": 35895970, "sha256": "a8d765f1f27e697c02c26c96a8a07e70b2bc3560fed4876f44fd0746432b2b16"}
+    }
+  },
+  "selection": {
+    "memory_episode_ids": ["D15M1", "D15M2", "D15M3"],
+    "sibling_episode_id": "SIB23",
+    "positive_authority": "First metadata-frozen, fully unmaterialized family after the D03 fixed-tile Development pass, admitted by unchanged geometry/depth rules.",
+    "negative_query_controls": [
+      {"episode_id": "NC31", "source_episode_id": "NC31"},
+      {"episode_id": "NC08", "source_episode_id": "NC08"}
+    ]
+  },
+  "forbidden_after_freeze": [
+    "change target views, tile scale/count/offsets, proposal caps, FFA, target-only formula, SAM or IoU gate",
+    "use sibling appearance in ranking",
+    "inspect RGB or model scores before cohort freeze",
+    "retry, replace or remove a row"
+  ],
+  "claim_boundary": "This freezes one wholly new physical target family before all RGB/model access for tiled target-only FFA localization. A pass would be narrow same-provider new-family confirmation, not open-set rejection, provider independence, raw-phone operation, named entrance, ownership, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

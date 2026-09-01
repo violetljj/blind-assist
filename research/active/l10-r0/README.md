@@ -4229,6 +4229,22 @@ IoU `0.633011` and refined IoU `0.561599`. Overall minimum refined IoU was
 for a scale-aware proposal layer, not fresh confirmation. The fixed tiled chain
 must now move unchanged to another pre-download/pre-RGB/pre-model family.
 
+That exact tiled chain was frozen and moved to the next wholly unmaterialized
+family, `43b8cae9 -> 43b8cae5`, target door `15`. Geometry/depth admitted three
+reference views with `0.666952` cumulative vertex coverage and three much
+thinner query views with only `0.206753`, all before RGB/model access. The fixed
+proposal union retained an IoU-`0.5` target opportunity in `2/3`, but max-over-
+reference FFA selected oversized context-bearing masks in every row: refined
+success `0/3`, minimum IoU `0.085538`, mean `0.232151`. D15M1 exposed a near
+tie—the IoU-`0.771087` target proposal ranked second by only `0.002388` cosine.
+D15M2 was more decisive: the IoU-`0.8616` target proposal ranked `26`, while
+several large context regions matched one partial reference more strongly.
+D15M3 still lacked any IoU-`0.5` proposal. This is a valid new-family failure,
+not permission to tune D15. It separates two gaps: single-reference maximum
+aggregation is not robust to a context-heavy memory view, and the fixed two-
+scale proposal set still misses one thin edge view. The next Development step
+must first replace max aggregation with a robust multi-reference statistic.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4404,6 +4420,18 @@ Evidence:
   `22cfc409fd82d379f31e3c09e38820041a5e2774094a885b14f551b584f3d1bb`,
   `ea8bf4ef88aeb3731d5b683761b5c0dd3817c7fdc359df39bde85a3f86af8e85`,
   and `abcb93584870a8f60f84ecb11277e67fd52db7acc086b70587be792227e4c85a`;
+- tiled FFA new-family candidate protocol/result, source protocol/result,
+  freeze protocol/cohort, and confirmation implementation/protocol/result
+  SHA-256:
+  `e94459e83dc1766cc06d0a58f2e47e1843653c233d87a039f3a9ba511a59008e`,
+  `71d32a906b95b7ef6163424e42c8a2d2bc89727399487bf8f13b91b7d218d3be`,
+  `24e4320114a1efdc0de1ebe1c1ab94dc9fd91562308abadfa33cbdfa3ba46a4c`,
+  `2fab80015d3f577c19bd1ddb1cd88a2265c8f5d4fe7b2c2c9560b0086c4b2390`,
+  `fe8e8a501c7c43052c1a431826bc8750fbf8730be5c31e797c82312302cbcd57`,
+  `f40468f82648b4be668e768d187b29ac7755d50360d7fc651bba0e731e842705`,
+  `01a410fbe23e9b530d470e3628e0bb3d51d7a8cf079dc2db22dff06c2471360f`,
+  `d79167b1adfe005be6b34c211e26ef25701b3b715d3a80fc3db9478f1cb839c5`,
+  and `8294b61ba04e08124f3f7ec366eb41c17c7321ab0f70abcbc00d4cafb713deb3`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

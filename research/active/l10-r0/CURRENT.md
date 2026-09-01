@@ -321,6 +321,18 @@ contract.
   was `0.558732` and mean `0.664988`. Freeze tiling plus target-only FFA as the
   next candidate chain and seek another wholly new family. The tiled result is
   posthoc Development and cannot inherit the earlier new-family authority.
+  That frozen tiled chain then moved unchanged to pre-download/pre-RGB/pre-model
+  family `43b8cae9 -> 43b8cae5`, target door `15`. Three reference views covered
+  `0.666952` of target vertices and three thin/edge query views covered only
+  `0.206753`. The fixed proposal union supplied IoU-`0.5` opportunity in `2/3`,
+  but target-only max-memory FFA selected oversized context-bearing masks in all
+  three rows: refined `0/3`, minimum IoU `0.085538`, mean `0.232151`. In D15M1
+  an IoU-`0.771087` proposal was rank `2` by only `0.002388`; in D15M2 an IoU-
+  `0.8616` proposal fell to rank `26`; D15M3 still had no reachable proposal.
+  Freeze this as a fresh failure of single-reference maximum aggregation under
+  thin/partial target views, plus a remaining scale-reachability gap. The next
+  Development change must make memory robust to one context-heavy reference
+  before adding further proposal scales.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or
