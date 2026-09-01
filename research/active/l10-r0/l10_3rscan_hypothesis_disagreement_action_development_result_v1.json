@@ -1,0 +1,2251 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-disagreement-action-select-result-v1",
+  "authority": "CONSUMED_QUEUE_ROW_3_TRUTH_FREE_HYPOTHESIS_DISAGREEMENT_ACTION_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_hypothesis_disagreement_action_development_protocol_v1.json",
+  "protocol_sha256": "8651f9c59eb0a6fbe19b4c74e1fb2fcedc707d50d9a75dacb89253c3f1072f0a",
+  "implementation": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_select.py",
+    "sha256": "af8caf9e86dede902dfe935045916a1ab0f8b4a05364dd67e51def83f97e363c"
+  },
+  "current_frame": 107,
+  "candidate_budget": 3,
+  "admissible_action_count": 44,
+  "ranked_actions": [
+    {
+      "frame": 97,
+      "translation_metres": 0.16681474198993923,
+      "rotation_degrees": 36.163842765780245,
+      "current_to_candidate_inside_points": 3859,
+      "current_to_candidate_visible_points": 3202,
+      "candidate_to_current_inside_points": 3680,
+      "candidate_to_current_visible_points": 3218,
+      "mutual_covisibility": 0.10131768433157692,
+      "selection_score": 0.016901283370790113,
+      "rank": 21,
+      "proposal_count": 26,
+      "hypothesis_support_iou": [
+        0.6847174954917784,
+        0.6718902999575502,
+        0.0
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.4522025984831095,
+      "hypothesis_support_range": 0.6847174954917784,
+      "information_gain_score": 0.309631030688229,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            550.5833086381277,
+            378.1653630485021,
+            891.9446282427408,
+            540.9774059766085
+          ],
+          "projected_inside_points": 3578,
+          "depth_visible_points": 2928
+        },
+        {
+          "bbox_xyxy": [
+            550.5833086381277,
+            381.3604076688363,
+            891.9446282427408,
+            540.9774059766085
+          ],
+          "projected_inside_points": 3398,
+          "depth_visible_points": 2773
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 1
+    },
+    {
+      "frame": 121,
+      "translation_metres": 0.20059089420322648,
+      "rotation_degrees": 21.611798494273046,
+      "current_to_candidate_inside_points": 8613,
+      "current_to_candidate_visible_points": 7485,
+      "candidate_to_current_inside_points": 7633,
+      "candidate_to_current_visible_points": 7378,
+      "mutual_covisibility": 0.24045864138093925,
+      "selection_score": 0.04823381389349556,
+      "rank": 9,
+      "proposal_count": 45,
+      "hypothesis_support_iou": [
+        0.3751529189460868,
+        0.0,
+        0.6897985006696251
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.35498380653857065,
+      "hypothesis_support_range": 0.6897985006696251,
+      "information_gain_score": 0.2448672975123023,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            167.5857138297241,
+            1.0797271563006656,
+            887.125227702012,
+            198.22382112608383
+          ],
+          "projected_inside_points": 7383,
+          "depth_visible_points": 6727
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            758.8611705134203,
+            156.7463436053133,
+            887.6600567390398,
+            205.94906799314361
+          ],
+          "projected_inside_points": 726,
+          "depth_visible_points": 367
+        }
+      ],
+      "information_gain_rank": 2
+    },
+    {
+      "frame": 201,
+      "translation_metres": 1.1604163425435243,
+      "rotation_degrees": 34.45524229583999,
+      "current_to_candidate_inside_points": 12472,
+      "current_to_candidate_visible_points": 7080,
+      "candidate_to_current_inside_points": 5643,
+      "candidate_to_current_visible_points": 3667,
+      "mutual_covisibility": 0.16238110570848016,
+      "selection_score": 0.18842968878440794,
+      "rank": 3,
+      "proposal_count": 45,
+      "hypothesis_support_iou": [
+        0.6004696651499966,
+        0.5417630701017904,
+        0.15659324540747022
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.43294199355308577,
+      "hypothesis_support_range": 0.44387641974252634,
+      "information_gain_score": 0.19217274205453563,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.60609891390925,
+            1.0799782251526635,
+            425.67298048946236,
+            185.92893805799554
+          ],
+          "projected_inside_points": 10371,
+          "depth_visible_points": 5978
+        },
+        {
+          "bbox_xyxy": [
+            89.93993907590225,
+            1.0799782251526635,
+            398.5481992757794,
+            87.25312054747808
+          ],
+          "projected_inside_points": 3694,
+          "depth_visible_points": 1768
+        },
+        {
+          "bbox_xyxy": [
+            360.21934206949476,
+            1.0747694131327743,
+            459.8615389078594,
+            190.77895863930877
+          ],
+          "projected_inside_points": 1434,
+          "depth_visible_points": 842
+        }
+      ],
+      "information_gain_rank": 3
+    },
+    {
+      "frame": 199,
+      "translation_metres": 1.1391340170480206,
+      "rotation_degrees": 57.749996356319706,
+      "current_to_candidate_inside_points": 28003,
+      "current_to_candidate_visible_points": 24997,
+      "candidate_to_current_inside_points": 7884,
+      "candidate_to_current_visible_points": 7082,
+      "mutual_covisibility": 0.42523428063210517,
+      "selection_score": 0.48439883428297525,
+      "rank": 2,
+      "proposal_count": 40,
+      "hypothesis_support_iou": [
+        0.5529856861696438,
+        0.4099763807653004,
+        0.14621089880974783
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.36972432191489735,
+      "hypothesis_support_range": 0.40677478735989603,
+      "information_gain_score": 0.15039453242871412,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            394.4103758819245,
+            322.7659250018038,
+            891.685526662256,
+            540.9989199792731
+          ],
+          "projected_inside_points": 26284,
+          "depth_visible_points": 24288
+        },
+        {
+          "bbox_xyxy": [
+            394.4103758819245,
+            350.59500945058653,
+            891.5691430530712,
+            491.6419025681432
+          ],
+          "projected_inside_points": 16425,
+          "depth_visible_points": 15298
+        },
+        {
+          "bbox_xyxy": [
+            852.5086466703658,
+            306.56177661616397,
+            891.9279245028646,
+            388.4807428153826
+          ],
+          "projected_inside_points": 1260,
+          "depth_visible_points": 357
+        }
+      ],
+      "information_gain_rank": 4
+    },
+    {
+      "frame": 103,
+      "translation_metres": 0.1886790053875176,
+      "rotation_degrees": 35.214290032737516,
+      "current_to_candidate_inside_points": 2120,
+      "current_to_candidate_visible_points": 1985,
+      "candidate_to_current_inside_points": 1964,
+      "candidate_to_current_visible_points": 1905,
+      "mutual_covisibility": 0.06149336165093435,
+      "selection_score": 0.011602506314233211,
+      "rank": 25,
+      "proposal_count": 36,
+      "hypothesis_support_iou": [
+        0.5550511059466982,
+        0.5152714667927766,
+        0.2835217289683568
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.45128143390261055,
+      "hypothesis_support_range": 0.27152937697834134,
+      "information_gain_score": 0.12253616658946836,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            482.97754344792355,
+            432.30284283718856,
+            850.2141116474081,
+            540.9422910546338
+          ],
+          "projected_inside_points": 1363,
+          "depth_visible_points": 1357
+        },
+        {
+          "bbox_xyxy": [
+            496.80815623398183,
+            474.2508515998489,
+            792.6313195516921,
+            540.9422910546338
+          ],
+          "projected_inside_points": 665,
+          "depth_visible_points": 659
+        },
+        {
+          "bbox_xyxy": [
+            775.4349174180769,
+            420.8678907581841,
+            891.8009697624617,
+            540.7707570282863
+          ],
+          "projected_inside_points": 654,
+          "depth_visible_points": 575
+        }
+      ],
+      "information_gain_rank": 5
+    },
+    {
+      "frame": 119,
+      "translation_metres": 0.22126556298294586,
+      "rotation_degrees": 29.65871446025132,
+      "current_to_candidate_inside_points": 4651,
+      "current_to_candidate_visible_points": 3863,
+      "candidate_to_current_inside_points": 3750,
+      "candidate_to_current_visible_points": 3467,
+      "mutual_covisibility": 0.11953093802018848,
+      "selection_score": 0.02644808029491661,
+      "rank": 18,
+      "proposal_count": 44,
+      "hypothesis_support_iou": [
+        0.584974587069904,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.19499152902330133,
+      "hypothesis_support_range": 0.584974587069904,
+      "information_gain_score": 0.1140650891725349,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            459.1841680731338,
+            1.0753203528763724,
+            887.6470647294202,
+            158.18546326725178
+          ],
+          "projected_inside_points": 4603,
+          "depth_visible_points": 3859
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 6
+    },
+    {
+      "frame": 205,
+      "translation_metres": 1.2418521181981572,
+      "rotation_degrees": 34.1325157625124,
+      "current_to_candidate_inside_points": 2111,
+      "current_to_candidate_visible_points": 727,
+      "candidate_to_current_inside_points": 622,
+      "candidate_to_current_visible_points": 618,
+      "mutual_covisibility": 0.021248403959915497,
+      "selection_score": 0.02638737546595117,
+      "rank": 19,
+      "proposal_count": 33,
+      "hypothesis_support_iou": [
+        0.18461606433044497,
+        0.0,
+        0.4731750550042411
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.21926370644489537,
+      "hypothesis_support_range": 0.4731750550042411,
+      "information_gain_score": 0.10375011635749715,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            92.38732423019782,
+            1.0994866051682437,
+            272.83507628568253,
+            68.4172005931523
+          ],
+          "projected_inside_points": 1307,
+          "depth_visible_points": 429
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 12,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            242.93650760230167,
+            1.3747729129435644,
+            316.30551261703965,
+            78.09159426334412
+          ],
+          "projected_inside_points": 288,
+          "depth_visible_points": 93
+        }
+      ],
+      "information_gain_rank": 7
+    },
+    {
+      "frame": 47,
+      "translation_metres": 0.3152565459673915,
+      "rotation_degrees": 26.57014880852621,
+      "current_to_candidate_inside_points": 8023,
+      "current_to_candidate_visible_points": 7367,
+      "candidate_to_current_inside_points": 6890,
+      "candidate_to_current_visible_points": 6040,
+      "mutual_covisibility": 0.21620316287857458,
+      "selection_score": 0.06815946235632478,
+      "rank": 4,
+      "proposal_count": 43,
+      "hypothesis_support_iou": [
+        0.4755580420420211,
+        0.0021890168797189394,
+        0.17794845766865694
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.21856517219679902,
+      "hypothesis_support_range": 0.47336902516230217,
+      "information_gain_score": 0.10346198249722946,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.89430618754892,
+            1.0872042208739898,
+            608.1306367174186,
+            181.40691993821136
+          ],
+          "projected_inside_points": 6643,
+          "depth_visible_points": 6011
+        },
+        {
+          "bbox_xyxy": [
+            503.430782388475,
+            1.1624254814079409,
+            580.5378540357907,
+            14.758272798521544
+          ],
+          "projected_inside_points": 58,
+          "depth_visible_points": 58
+        },
+        {
+          "bbox_xyxy": [
+            426.04954953837574,
+            1.6947619396741858,
+            627.8594195119578,
+            193.93311713961137
+          ],
+          "projected_inside_points": 804,
+          "depth_visible_points": 780
+        }
+      ],
+      "information_gain_rank": 8
+    },
+    {
+      "frame": 202,
+      "translation_metres": 1.1889713924570096,
+      "rotation_degrees": 34.382865881113595,
+      "current_to_candidate_inside_points": 4489,
+      "current_to_candidate_visible_points": 1958,
+      "candidate_to_current_inside_points": 1412,
+      "candidate_to_current_visible_points": 1408,
+      "mutual_covisibility": 0.052567698800119904,
+      "selection_score": 0.06250149004063923,
+      "rank": 5,
+      "proposal_count": 40,
+      "hypothesis_support_iou": [
+        0.30779783127019156,
+        0.0,
+        0.42082674169614287
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.2428748576554448,
+      "hypothesis_support_range": 0.42082674169614287,
+      "information_gain_score": 0.10220823498705534,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.69122977348157,
+            1.1003157773170156,
+            295.8965316303363,
+            109.61943758234032
+          ],
+          "projected_inside_points": 3243,
+          "depth_visible_points": 1466
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 304,
+          "depth_visible_points": 7
+        },
+        {
+          "bbox_xyxy": [
+            268.46535827839875,
+            2.788697122111177,
+            364.5534225357369,
+            117.33949203610226
+          ],
+          "projected_inside_points": 630,
+          "depth_visible_points": 260
+        }
+      ],
+      "information_gain_rank": 9
+    },
+    {
+      "frame": 122,
+      "translation_metres": 0.2313648945859333,
+      "rotation_degrees": 24.323266361745127,
+      "current_to_candidate_inside_points": 5435,
+      "current_to_candidate_visible_points": 5155,
+      "candidate_to_current_inside_points": 5734,
+      "candidate_to_current_visible_points": 5094,
+      "mutual_covisibility": 0.16700268727334808,
+      "selection_score": 0.03863855913656576,
+      "rank": 14,
+      "proposal_count": 47,
+      "hypothesis_support_iou": [
+        0.2841810475616545,
+        0.0,
+        0.41449219422506345
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.23289108059557265,
+      "hypothesis_support_range": 0.41449219422506345,
+      "information_gain_score": 0.096531535011505,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            167.77357239775097,
+            1.0819027424377594,
+            844.4787177627255,
+            155.73672445822388
+          ],
+          "projected_inside_points": 4190,
+          "depth_visible_points": 4182
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            642.361306283125,
+            1.8493581290218881,
+            853.8027878645809,
+            164.4106779843492
+          ],
+          "projected_inside_points": 740,
+          "depth_visible_points": 507
+        }
+      ],
+      "information_gain_rank": 10
+    },
+    {
+      "frame": 22,
+      "translation_metres": 1.171550557623652,
+      "rotation_degrees": 46.49999769877151,
+      "current_to_candidate_inside_points": 8292,
+      "current_to_candidate_visible_points": 1162,
+      "candidate_to_current_inside_points": 1090,
+      "candidate_to_current_visible_points": 866,
+      "mutual_covisibility": 0.032845221334504945,
+      "selection_score": 0.03847983736971154,
+      "rank": 15,
+      "proposal_count": 48,
+      "hypothesis_support_iou": [
+        0.308851112094084,
+        0.417784708292002,
+        0.06483518436365389
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.26382366824991327,
+      "hypothesis_support_range": 0.3529495239283481,
+      "information_gain_score": 0.09311643810983733,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.53662165347608,
+            1.871972504585082,
+            163.2176822341619,
+            271.1826133036499
+          ],
+          "projected_inside_points": 5760,
+          "depth_visible_points": 959
+        },
+        {
+          "bbox_xyxy": [
+            89.53662165347608,
+            1.871972504585082,
+            163.2176822341619,
+            171.50629317801491
+          ],
+          "projected_inside_points": 3086,
+          "depth_visible_points": 622
+        },
+        {
+          "bbox_xyxy": [
+            94.37508178976825,
+            289.79064140560047,
+            141.43632283654904,
+            347.038768879139
+          ],
+          "projected_inside_points": 1918,
+          "depth_visible_points": 145
+        }
+      ],
+      "information_gain_rank": 11
+    },
+    {
+      "frame": 96,
+      "translation_metres": 0.16511788296777544,
+      "rotation_degrees": 34.90479391788403,
+      "current_to_candidate_inside_points": 2531,
+      "current_to_candidate_visible_points": 2033,
+      "candidate_to_current_inside_points": 2334,
+      "candidate_to_current_visible_points": 2325,
+      "mutual_covisibility": 0.06855455195267597,
+      "selection_score": 0.011319582486230231,
+      "rank": 26,
+      "proposal_count": 30,
+      "hypothesis_support_iou": [
+        0.35988149511508954,
+        0.3355827461527895,
+        0.0
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.2318214137559597,
+      "hypothesis_support_range": 0.35988149511508954,
+      "information_gain_score": 0.08342823698218856,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            390.5929514710732,
+            419.1309376505281,
+            891.9293501753353,
+            540.9896440937398
+          ],
+          "projected_inside_points": 2250,
+          "depth_visible_points": 1752
+        },
+        {
+          "bbox_xyxy": [
+            390.5929514710732,
+            429.2595822887517,
+            891.9293501753353,
+            540.9896440937398
+          ],
+          "projected_inside_points": 1878,
+          "depth_visible_points": 1498
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 12
+    },
+    {
+      "frame": 49,
+      "translation_metres": 0.34194340162197895,
+      "rotation_degrees": 29.58795013746244,
+      "current_to_candidate_inside_points": 5095,
+      "current_to_candidate_visible_points": 4579,
+      "candidate_to_current_inside_points": 5168,
+      "candidate_to_current_visible_points": 4349,
+      "mutual_covisibility": 0.1412722195622484,
+      "selection_score": 0.04830710331180229,
+      "rank": 8,
+      "proposal_count": 38,
+      "hypothesis_support_iou": [
+        0.44151320304807595,
+        0.0,
+        0.12080987295555554
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.18744102533454385,
+      "hypothesis_support_range": 0.44151320304807595,
+      "information_gain_score": 0.08275768747807001,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.72844520502505,
+            1.0934279008979486,
+            518.4663543657629,
+            156.96455197234093
+          ],
+          "projected_inside_points": 3759,
+          "depth_visible_points": 3451
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            323.1223769129749,
+            1.2622617123586297,
+            538.2156190048775,
+            166.72224863958797
+          ],
+          "projected_inside_points": 781,
+          "depth_visible_points": 631
+        }
+      ],
+      "information_gain_rank": 13
+    },
+    {
+      "frame": 48,
+      "translation_metres": 0.33270329099497953,
+      "rotation_degrees": 28.49039762680605,
+      "current_to_candidate_inside_points": 4156,
+      "current_to_candidate_visible_points": 3908,
+      "candidate_to_current_inside_points": 3960,
+      "candidate_to_current_visible_points": 3347,
+      "mutual_covisibility": 0.11855058563570499,
+      "selection_score": 0.0394421699903812,
+      "rank": 13,
+      "proposal_count": 48,
+      "hypothesis_support_iou": [
+        0.4403443639932172,
+        0.0,
+        0.10507804686592183
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.18180747028637967,
+      "hypothesis_support_range": 0.4403443639932172,
+      "information_gain_score": 0.08005789487247159,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            90.45163074289208,
+            1.072899187743424,
+            585.3430340506715,
+            120.26313224842171
+          ],
+          "projected_inside_points": 2923,
+          "depth_visible_points": 2830
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            399.7075583953188,
+            1.3442864751914787,
+            592.2968531989624,
+            128.45286327736693
+          ],
+          "projected_inside_points": 732,
+          "depth_visible_points": 587
+        }
+      ],
+      "information_gain_rank": 14
+    },
+    {
+      "frame": 120,
+      "translation_metres": 0.1945407744714717,
+      "rotation_degrees": 23.14293842559408,
+      "current_to_candidate_inside_points": 8236,
+      "current_to_candidate_visible_points": 7104,
+      "candidate_to_current_inside_points": 7214,
+      "candidate_to_current_visible_points": 6742,
+      "mutual_covisibility": 0.22522981102521555,
+      "selection_score": 0.043816381870908645,
+      "rank": 11,
+      "proposal_count": 42,
+      "hypothesis_support_iou": [
+        0.46934876893859256,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.1564495896461975,
+      "hypothesis_support_range": 0.46934876893859256,
+      "information_gain_score": 0.07342942230139078,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            316.8341159223359,
+            1.0813212443617761,
+            887.5687928180935,
+            223.0314629418816
+          ],
+          "projected_inside_points": 7773,
+          "depth_visible_points": 6965
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 192,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 15
+    },
+    {
+      "frame": 105,
+      "translation_metres": 0.11075970589812886,
+      "rotation_degrees": 19.594810422292998,
+      "current_to_candidate_inside_points": 14119,
+      "current_to_candidate_visible_points": 13380,
+      "candidate_to_current_inside_points": 14360,
+      "candidate_to_current_visible_points": 13603,
+      "mutual_covisibility": 0.42798566585015135,
+      "selection_score": 0.04740356647817762,
+      "rank": 10,
+      "proposal_count": 43,
+      "hypothesis_support_iou": [
+        0.46033898140101864,
+        0.3755220975709006,
+        0.5224390359092589
+      ],
+      "supported_hypotheses": 3,
+      "mean_hypothesis_support": 0.45276670496039273,
+      "hypothesis_support_range": 0.14691693833835828,
+      "information_gain_score": 0.06651909807432768,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            94.16687216718596,
+            239.05955190814262,
+            872.0193793317563,
+            540.9783284789478
+          ],
+          "projected_inside_points": 12195,
+          "depth_visible_points": 11507
+        },
+        {
+          "bbox_xyxy": [
+            94.16687216718596,
+            276.2122585529591,
+            818.7556666351437,
+            540.9783284789478
+          ],
+          "projected_inside_points": 11121,
+          "depth_visible_points": 10443
+        },
+        {
+          "bbox_xyxy": [
+            724.186684761262,
+            232.12145714803978,
+            885.6450255887763,
+            539.4923920260045
+          ],
+          "projected_inside_points": 1379,
+          "depth_visible_points": 1375
+        }
+      ],
+      "information_gain_rank": 16
+    },
+    {
+      "frame": 102,
+      "translation_metres": 0.20261802664882117,
+      "rotation_degrees": 39.14010968610636,
+      "current_to_candidate_inside_points": 799,
+      "current_to_candidate_visible_points": 620,
+      "candidate_to_current_inside_points": 534,
+      "candidate_to_current_visible_points": 533,
+      "mutual_covisibility": 0.018195630341823667,
+      "selection_score": 0.0036867627134917267,
+      "rank": 30,
+      "proposal_count": 27,
+      "hypothesis_support_iou": [
+        0.39474605177216776,
+        0.015707768888764816,
+        0.08412521742227307
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.16485967936106855,
+      "hypothesis_support_range": 0.37903828288340297,
+      "information_gain_score": 0.06248812978172781,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            688.9110434898474,
+            484.934244232419,
+            872.5836661082498,
+            540.920933920746
+          ],
+          "projected_inside_points": 363,
+          "depth_visible_points": 357
+        },
+        {
+          "bbox_xyxy": [
+            787.0113358812465,
+            529.0340769169197,
+            820.3044007243656,
+            540.9185008073681
+          ],
+          "projected_inside_points": 19,
+          "depth_visible_points": 19
+        },
+        {
+          "bbox_xyxy": [
+            839.2414957285072,
+            470.90559258833736,
+            891.8806748224087,
+            540.7854932835454
+          ],
+          "projected_inside_points": 337,
+          "depth_visible_points": 213
+        }
+      ],
+      "information_gain_rank": 17
+    },
+    {
+      "frame": 200,
+      "translation_metres": 1.1275866686231972,
+      "rotation_degrees": 50.77817865662895,
+      "current_to_candidate_inside_points": 31751,
+      "current_to_candidate_visible_points": 28403,
+      "candidate_to_current_inside_points": 9901,
+      "candidate_to_current_visible_points": 8484,
+      "mutual_covisibility": 0.4950318364610893,
+      "selection_score": 0.558191299337583,
+      "rank": 1,
+      "proposal_count": 27,
+      "hypothesis_support_iou": [
+        0.30813670691454603,
+        0.1713651751056263,
+        0.36884436755658573
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.2827820831922527,
+      "hypothesis_support_range": 0.19747919245095943,
+      "information_gain_score": 0.05584357742840609,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            292.6430430044384,
+            245.5432763693364,
+            828.6469740729743,
+            504.69486910588824
+          ],
+          "projected_inside_points": 28585,
+          "depth_visible_points": 26003
+        },
+        {
+          "bbox_xyxy": [
+            292.6430430044384,
+            268.63869243622963,
+            822.660037586957,
+            401.91954824175843
+          ],
+          "projected_inside_points": 16453,
+          "depth_visible_points": 15064
+        },
+        {
+          "bbox_xyxy": [
+            747.2133433441651,
+            230.6090560770677,
+            891.215118874904,
+            505.9113865061393
+          ],
+          "projected_inside_points": 2117,
+          "depth_visible_points": 1726
+        }
+      ],
+      "information_gain_rank": 18
+    },
+    {
+      "frame": 46,
+      "translation_metres": 0.5490981606631632,
+      "rotation_degrees": 42.256425421441776,
+      "current_to_candidate_inside_points": 3944,
+      "current_to_candidate_visible_points": 3919,
+      "candidate_to_current_inside_points": 2999,
+      "candidate_to_current_visible_points": 2447,
+      "mutual_covisibility": 0.104300140765764,
+      "selection_score": 0.05727101545139002,
+      "rank": 6,
+      "proposal_count": 46,
+      "hypothesis_support_iou": [
+        0.2475883397231433,
+        0.0,
+        0.3031526488156386
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.18358032951292733,
+      "hypothesis_support_range": 0.3031526488156386,
+      "information_gain_score": 0.05565286316229167,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            116.69236372016137,
+            1.071807652424305,
+            566.4318297677779,
+            93.49218011990733
+          ],
+          "projected_inside_points": 2701,
+          "depth_visible_points": 2688
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            374.7706054269115,
+            13.728981077264285,
+            569.8300836254043,
+            136.36375322303715
+          ],
+          "projected_inside_points": 739,
+          "depth_visible_points": 730
+        }
+      ],
+      "information_gain_rank": 19
+    },
+    {
+      "frame": 124,
+      "translation_metres": 0.34271021871400337,
+      "rotation_degrees": 34.24405333058088,
+      "current_to_candidate_inside_points": 1246,
+      "current_to_candidate_visible_points": 857,
+      "candidate_to_current_inside_points": 1072,
+      "candidate_to_current_visible_points": 739,
+      "mutual_covisibility": 0.026393713582314845,
+      "selection_score": 0.009045395354469882,
+      "rank": 27,
+      "proposal_count": 40,
+      "hypothesis_support_iou": [
+        0.31206049222568616,
+        0.0,
+        0.21614237548585458
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.17606762257051356,
+      "hypothesis_support_range": 0.31206049222568616,
+      "information_gain_score": 0.05494374896436079,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            401.95514178500315,
+            1.1748932370224345,
+            668.1832739700128,
+            38.477589609260846
+          ],
+          "projected_inside_points": 138,
+          "depth_visible_points": 138
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            479.2059186262882,
+            2.1475594022234032,
+            630.6250217106688,
+            55.806607021762105
+          ],
+          "projected_inside_points": 725,
+          "depth_visible_points": 470
+        }
+      ],
+      "information_gain_rank": 20
+    },
+    {
+      "frame": 50,
+      "translation_metres": 0.3255720162287294,
+      "rotation_degrees": 32.536926053232015,
+      "current_to_candidate_inside_points": 3653,
+      "current_to_candidate_visible_points": 3355,
+      "candidate_to_current_inside_points": 4216,
+      "candidate_to_current_visible_points": 3435,
+      "mutual_covisibility": 0.1076240050812798,
+      "selection_score": 0.03503936432892328,
+      "rank": 16,
+      "proposal_count": 41,
+      "hypothesis_support_iou": [
+        0.35877736354753403,
+        0.0,
+        0.10030022530286196
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.153025862950132,
+      "hypothesis_support_range": 0.35877736354753403,
+      "information_gain_score": 0.05490221566383463,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            90.60798138419493,
+            1.1231311467129816,
+            538.149733172124,
+            126.08325830266706
+          ],
+          "projected_inside_points": 2398,
+          "depth_visible_points": 2349
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            330.91005120953105,
+            1.234638165214439,
+            549.8351236239818,
+            141.30933070344415
+          ],
+          "projected_inside_points": 745,
+          "depth_visible_points": 570
+        }
+      ],
+      "information_gain_rank": 21
+    },
+    {
+      "frame": 23,
+      "translation_metres": 1.1492462879465175,
+      "rotation_degrees": 54.10038681408851,
+      "current_to_candidate_inside_points": 4859,
+      "current_to_candidate_visible_points": 1749,
+      "candidate_to_current_inside_points": 1393,
+      "candidate_to_current_visible_points": 1158,
+      "mutual_covisibility": 0.046777424103469405,
+      "selection_score": 0.05375878101061217,
+      "rank": 7,
+      "proposal_count": 44,
+      "hypothesis_support_iou": [
+        0.12683290695955685,
+        0.0,
+        0.33442544936646
+      ],
+      "supported_hypotheses": 1,
+      "mean_hypothesis_support": 0.15375278544200563,
+      "hypothesis_support_range": 0.33442544936646,
+      "information_gain_score": 0.051418844362787645,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            89.54649952163247,
+            1.46070303322268,
+            197.3338573032822,
+            111.33660292731663
+          ],
+          "projected_inside_points": 3426,
+          "depth_visible_points": 1081
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 84,
+          "depth_visible_points": 10
+        },
+        {
+          "bbox_xyxy": [
+            93.84957291669164,
+            122.32660157141903,
+            193.1660013560281,
+            193.64302617630958
+          ],
+          "projected_inside_points": 879,
+          "depth_visible_points": 478
+        }
+      ],
+      "information_gain_rank": 22
+    },
+    {
+      "frame": 98,
+      "translation_metres": 0.21356033847819214,
+      "rotation_degrees": 46.709238732473075,
+      "current_to_candidate_inside_points": 1402,
+      "current_to_candidate_visible_points": 875,
+      "candidate_to_current_inside_points": 1313,
+      "candidate_to_current_visible_points": 799,
+      "mutual_covisibility": 0.02633958537804385,
+      "selection_score": 0.005625090768710285,
+      "rank": 28,
+      "proposal_count": 18,
+      "hypothesis_support_iou": [
+        0.2726328434823056,
+        0.2726328434823056,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.18175522898820373,
+      "hypothesis_support_range": 0.2726328434823056,
+      "information_gain_score": 0.04955244489683156,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            784.1182023848078,
+            428.9928923395342,
+            894.8022768915929,
+            540.1506832207185
+          ],
+          "projected_inside_points": 1402,
+          "depth_visible_points": 875
+        },
+        {
+          "bbox_xyxy": [
+            784.1182023848078,
+            428.9928923395342,
+            894.8022768915929,
+            540.1506832207185
+          ],
+          "projected_inside_points": 1374,
+          "depth_visible_points": 868
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 23
+    },
+    {
+      "frame": 104,
+      "translation_metres": 0.1635105773840029,
+      "rotation_degrees": 29.518202120185506,
+      "current_to_candidate_inside_points": 5400,
+      "current_to_candidate_visible_points": 5268,
+      "candidate_to_current_inside_points": 5578,
+      "candidate_to_current_visible_points": 5283,
+      "mutual_covisibility": 0.167232672961691,
+      "selection_score": 0.027344310913436226,
+      "rank": 17,
+      "proposal_count": 41,
+      "hypothesis_support_iou": [
+        0.357118114463863,
+        0.25215606614560315,
+        0.3824019939410924
+      ],
+      "supported_hypotheses": 2,
+      "mean_hypothesis_support": 0.33055872485018617,
+      "hypothesis_support_range": 0.13024592779548927,
+      "information_gain_score": 0.043053927809006354,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            182.94862744753613,
+            359.33935420111703,
+            862.3051467729565,
+            540.9805856285398
+          ],
+          "projected_inside_points": 3964,
+          "depth_visible_points": 3951
+        },
+        {
+          "bbox_xyxy": [
+            191.93719832922358,
+            398.99300646666217,
+            804.7558533142924,
+            540.9805856285398
+          ],
+          "projected_inside_points": 2995,
+          "depth_visible_points": 2983
+        },
+        {
+          "bbox_xyxy": [
+            744.696475322741,
+            349.03630745711166,
+            891.3483489777948,
+            540.7054591303487
+          ],
+          "projected_inside_points": 1040,
+          "depth_visible_points": 975
+        }
+      ],
+      "information_gain_rank": 24
+    },
+    {
+      "frame": 21,
+      "translation_metres": 1.1997267333752966,
+      "rotation_degrees": 39.42644690169785,
+      "current_to_candidate_inside_points": 7491,
+      "current_to_candidate_visible_points": 117,
+      "candidate_to_current_inside_points": 74,
+      "candidate_to_current_visible_points": 72,
+      "mutual_covisibility": 0.0029643844993289645,
+      "selection_score": 0.0035564513318483027,
+      "rank": 31,
+      "proposal_count": 44,
+      "hypothesis_support_iou": [
+        0.23350451963749205,
+        0.2376344994695887,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.15704633970236026,
+      "hypothesis_support_range": 0.2376344994695887,
+      "information_gain_score": 0.03731962832870138,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            93.95340557384111,
+            135.03658066184246,
+            129.0693320059058,
+            319.57942454767283
+          ],
+          "projected_inside_points": 5320,
+          "depth_visible_points": 117
+        },
+        {
+          "bbox_xyxy": [
+            94.2861273010924,
+            151.98096694781373,
+            129.0693320059058,
+            319.57942454767283
+          ],
+          "projected_inside_points": 2882,
+          "depth_visible_points": 64
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 1611,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 25
+    },
+    {
+      "frame": 20,
+      "translation_metres": 1.2423653454106163,
+      "rotation_degrees": 33.02541997729645,
+      "current_to_candidate_inside_points": 4875,
+      "current_to_candidate_visible_points": 133,
+      "candidate_to_current_inside_points": 93,
+      "candidate_to_current_visible_points": 93,
+      "mutual_covisibility": 0.0035115039156211614,
+      "selection_score": 0.004362570775041416,
+      "rank": 29,
+      "proposal_count": 27,
+      "hypothesis_support_iou": [
+        0.2274022964480558,
+        0.20053541476101835,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.14264590373635805,
+      "hypothesis_support_range": 0.2274022964480558,
+      "information_gain_score": 0.03243800608855612,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            93.8432115549357,
+            321.13223038213846,
+            128.9592077942849,
+            527.2747973998112
+          ],
+          "projected_inside_points": 3294,
+          "depth_visible_points": 133
+        },
+        {
+          "bbox_xyxy": [
+            95.42316960606294,
+            345.80364541355556,
+            124.66403098256039,
+            527.2747973998112
+          ],
+          "projected_inside_points": 2567,
+          "depth_visible_points": 86
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 1354,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 26
+    },
+    {
+      "frame": 206,
+      "translation_metres": 1.2410283671811255,
+      "rotation_degrees": 35.47770813493573,
+      "current_to_candidate_inside_points": 3250,
+      "current_to_candidate_visible_points": 1154,
+      "candidate_to_current_inside_points": 902,
+      "candidate_to_current_visible_points": 893,
+      "mutual_covisibility": 0.03212218545265321,
+      "selection_score": 0.03986454336259552,
+      "rank": 12,
+      "proposal_count": 30,
+      "hypothesis_support_iou": [
+        0.2147114329361792,
+        0.0,
+        0.16955861830525712
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.12809001708047876,
+      "hypothesis_support_range": 0.2147114329361792,
+      "information_gain_score": 0.027502391112169264,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            90.73837479746174,
+            1.1956256589280656,
+            257.45126121008894,
+            88.41605966062089
+          ],
+          "projected_inside_points": 2172,
+          "depth_visible_points": 781
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 164,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            233.7968911633477,
+            1.1348620342735953,
+            292.56765128535005,
+            97.92219428773882
+          ],
+          "projected_inside_points": 471,
+          "depth_visible_points": 162
+        }
+      ],
+      "information_gain_rank": 27
+    },
+    {
+      "frame": 123,
+      "translation_metres": 0.3118707080889291,
+      "rotation_degrees": 32.830701715527965,
+      "current_to_candidate_inside_points": 2278,
+      "current_to_candidate_visible_points": 1923,
+      "candidate_to_current_inside_points": 2382,
+      "candidate_to_current_visible_points": 1860,
+      "mutual_covisibility": 0.06200704160196586,
+      "selection_score": 0.019338179970904777,
+      "rank": 20,
+      "proposal_count": 47,
+      "hypothesis_support_iou": [
+        0.22768160284350455,
+        0.0,
+        0.11090166559742766
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.11286108948031075,
+      "hypothesis_support_range": 0.22768160284350455,
+      "information_gain_score": 0.02569639375154134,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            296.9016662337276,
+            1.067799859570651,
+            670.2853079293587,
+            82.85837692237797
+          ],
+          "projected_inside_points": 1053,
+          "depth_visible_points": 1047
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            471.1886440849484,
+            48.74656026767309,
+            618.0500293882774,
+            101.1892355867064
+          ],
+          "projected_inside_points": 726,
+          "depth_visible_points": 505
+        }
+      ],
+      "information_gain_rank": 28
+    },
+    {
+      "frame": 45,
+      "translation_metres": 0.6353853190567202,
+      "rotation_degrees": 49.95445618096879,
+      "current_to_candidate_inside_points": 807,
+      "current_to_candidate_visible_points": 806,
+      "candidate_to_current_inside_points": 796,
+      "candidate_to_current_visible_points": 413,
+      "mutual_covisibility": 0.01932362014543454,
+      "selection_score": 0.012277944551437792,
+      "rank": 23,
+      "proposal_count": 48,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.2045593052330576
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.06818643507768586,
+      "hypothesis_support_range": 0.2045593052330576,
+      "information_gain_score": 0.013948169785810408,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 7,
+          "depth_visible_points": 7
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            384.52049506545427,
+            1.2552073247253828,
+            525.5010603127348,
+            56.84156908078083
+          ],
+          "projected_inside_points": 682,
+          "depth_visible_points": 681
+        }
+      ],
+      "information_gain_rank": 29
+    },
+    {
+      "frame": 204,
+      "translation_metres": 1.2353076275864083,
+      "rotation_degrees": 31.25378396599988,
+      "current_to_candidate_inside_points": 1381,
+      "current_to_candidate_visible_points": 420,
+      "candidate_to_current_inside_points": 352,
+      "candidate_to_current_visible_points": 347,
+      "mutual_covisibility": 0.012112358527296262,
+      "selection_score": 0.014962488876830349,
+      "rank": 22,
+      "proposal_count": 45,
+      "hypothesis_support_iou": [
+        0.08701604416822738,
+        0.0,
+        0.07859596284778449
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.05520400233867062,
+      "hypothesis_support_range": 0.08701604416822738,
+      "information_gain_score": 0.0048036339057646905,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            164.5390376856901,
+            1.2173600560611788,
+            308.33462018105837,
+            51.39631945004493
+          ],
+          "projected_inside_points": 726,
+          "depth_visible_points": 190
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            285.93067561033473,
+            2.712473385596406,
+            309.80694646419624,
+            60.94192025479427
+          ],
+          "projected_inside_points": 188,
+          "depth_visible_points": 46
+        }
+      ],
+      "information_gain_rank": 30
+    },
+    {
+      "frame": 203,
+      "translation_metres": 1.2173113870003682,
+      "rotation_degrees": 33.26002238171182,
+      "current_to_candidate_inside_points": 1115,
+      "current_to_candidate_visible_points": 342,
+      "candidate_to_current_inside_points": 297,
+      "candidate_to_current_visible_points": 295,
+      "mutual_covisibility": 0.010072274364611562,
+      "selection_score": 0.012261094277033554,
+      "rank": 24,
+      "proposal_count": 33,
+      "hypothesis_support_iou": [
+        0.06937283488682819,
+        0.0,
+        0.08382503190347762
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0510659555967686,
+      "hypothesis_support_range": 0.08382503190347762,
+      "information_gain_score": 0.0042806053570807,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            131.34144383034973,
+            1.1278923300495143,
+            262.49865807683705,
+            44.99455135932761
+          ],
+          "projected_inside_points": 517,
+          "depth_visible_points": 136
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": [
+            239.54649764607842,
+            1.5887721239425687,
+            257.18321981972275,
+            54.86343213439156
+          ],
+          "projected_inside_points": 147,
+          "depth_visible_points": 34
+        }
+      ],
+      "information_gain_rank": 31
+    },
+    {
+      "frame": 19,
+      "translation_metres": 1.3012568794269985,
+      "rotation_degrees": 28.690028501057835,
+      "current_to_candidate_inside_points": 841,
+      "current_to_candidate_visible_points": 68,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 36,
+      "proposal_count": 15,
+      "hypothesis_support_iou": [
+        0.030710057994486065,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.010236685998162022,
+      "hypothesis_support_range": 0.030710057994486065,
+      "information_gain_score": 0.0003143692206748992,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": [
+            99.00669629088834,
+            517.5204927380954,
+            153.9860164069096,
+            540.174794283972
+          ],
+          "projected_inside_points": 486,
+          "depth_visible_points": 68
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 97,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 264,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 32
+    },
+    {
+      "frame": 125,
+      "translation_metres": 0.3680909957144023,
+      "rotation_degrees": 34.31199738567046,
+      "current_to_candidate_inside_points": 11,
+      "current_to_candidate_visible_points": 11,
+      "candidate_to_current_inside_points": 112,
+      "candidate_to_current_visible_points": 11,
+      "mutual_covisibility": 0.00038890145070088003,
+      "selection_score": 0.00014315112222326246,
+      "rank": 32,
+      "proposal_count": 45,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 9,
+          "depth_visible_points": 9
+        }
+      ],
+      "information_gain_rank": 33
+    },
+    {
+      "frame": 18,
+      "translation_metres": 1.370223234149954,
+      "rotation_degrees": 28.92304949330932,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 35,
+      "proposal_count": 28,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 34
+    },
+    {
+      "frame": 44,
+      "translation_metres": 0.7091188261842792,
+      "rotation_degrees": 59.06808020331121,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 37,
+      "proposal_count": 48,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 35
+    },
+    {
+      "frame": 51,
+      "translation_metres": 0.33389119083804836,
+      "rotation_degrees": 41.88098752374318,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 63,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 41,
+      "proposal_count": 42,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 36
+    },
+    {
+      "frame": 52,
+      "translation_metres": 0.36697927520229257,
+      "rotation_degrees": 57.26564107929488,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 40,
+      "proposal_count": 41,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 37
+    },
+    {
+      "frame": 108,
+      "translation_metres": 0.20276370625030504,
+      "rotation_degrees": 57.36745336806119,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 44,
+      "proposal_count": 24,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 38
+    },
+    {
+      "frame": 117,
+      "translation_metres": 0.28802448366998257,
+      "rotation_degrees": 53.43259551840614,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 42,
+      "proposal_count": 39,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 39
+    },
+    {
+      "frame": 118,
+      "translation_metres": 0.252730025269575,
+      "rotation_degrees": 39.59035490703174,
+      "current_to_candidate_inside_points": 30,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 43,
+      "proposal_count": 48,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 30,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 40
+    },
+    {
+      "frame": 126,
+      "translation_metres": 0.4074366919856875,
+      "rotation_degrees": 46.44539951639105,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 39,
+      "proposal_count": 43,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 41
+    },
+    {
+      "frame": 127,
+      "translation_metres": 0.4339208699449466,
+      "rotation_degrees": 59.84340850359543,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 38,
+      "proposal_count": 43,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 42
+    },
+    {
+      "frame": 141,
+      "translation_metres": 1.4908349548902575,
+      "rotation_degrees": 20.59922939810152,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 34,
+      "proposal_count": 37,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 43
+    },
+    {
+      "frame": 142,
+      "translation_metres": 1.4926617308684647,
+      "rotation_degrees": 23.00263585084358,
+      "current_to_candidate_inside_points": 0,
+      "current_to_candidate_visible_points": 0,
+      "candidate_to_current_inside_points": 0,
+      "candidate_to_current_visible_points": 0,
+      "mutual_covisibility": 0.0,
+      "selection_score": 0.0,
+      "rank": 33,
+      "proposal_count": 22,
+      "hypothesis_support_iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "supported_hypotheses": 0,
+      "mean_hypothesis_support": 0.0,
+      "hypothesis_support_range": 0.0,
+      "information_gain_score": 0.0,
+      "projected_hypotheses": [
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        },
+        {
+          "bbox_xyxy": null,
+          "projected_inside_points": 0,
+          "depth_visible_points": 0
+        }
+      ],
+      "information_gain_rank": 44
+    }
+  ],
+  "selected_action": {
+    "frame": 97,
+    "translation_metres": 0.16681474198993923,
+    "rotation_degrees": 36.163842765780245,
+    "current_to_candidate_inside_points": 3859,
+    "current_to_candidate_visible_points": 3202,
+    "candidate_to_current_inside_points": 3680,
+    "candidate_to_current_visible_points": 3218,
+    "mutual_covisibility": 0.10131768433157692,
+    "selection_score": 0.016901283370790113,
+    "rank": 21,
+    "proposal_count": 26,
+    "hypothesis_support_iou": [
+      0.6847174954917784,
+      0.6718902999575502,
+      0.0
+    ],
+    "supported_hypotheses": 2,
+    "mean_hypothesis_support": 0.4522025984831095,
+    "hypothesis_support_range": 0.6847174954917784,
+    "information_gain_score": 0.309631030688229,
+    "projected_hypotheses": [
+      {
+        "bbox_xyxy": [
+          550.5833086381277,
+          378.1653630485021,
+          891.9446282427408,
+          540.9774059766085
+        ],
+        "projected_inside_points": 3578,
+        "depth_visible_points": 2928
+      },
+      {
+        "bbox_xyxy": [
+          550.5833086381277,
+          381.3604076688363,
+          891.9446282427408,
+          540.9774059766085
+        ],
+        "projected_inside_points": 3398,
+        "depth_visible_points": 2773
+      },
+      {
+        "bbox_xyxy": null,
+        "projected_inside_points": 0,
+        "depth_visible_points": 0
+      }
+    ],
+    "information_gain_rank": 1
+  },
+  "selected_target_evaluation_only": {
+    "target_bbox_xyxy": [
+      72.31131744384766,
+      328.4776916503906,
+      958.5367431640625,
+      537.3355102539062
+    ],
+    "best_proposal_iou": 0.8434727905077136,
+    "proposal_opportunity_at_0_8": true,
+    "visibility": {
+      "inside_vertices": 299,
+      "inside_vertex_fraction": 0.3023255813953488,
+      "projected_area_pixels": 163551.53067355952,
+      "image_margin_pixels": 0.4632568359375,
+      "bbox_xyxy": [
+        72.31131744384766,
+        328.4776916503906,
+        958.5367431640625,
+        537.3355102539062
+      ],
+      "depth_compared_vertices": 270,
+      "depth_visible_vertices": 267,
+      "depth_visible_ratio": 0.9888888888888889
+    }
+  },
+  "selected_action_target_evaluable": true,
+  "development_cohort": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_development_cohort_v1.json",
+    "sha256": "002a206c73ad2756070180115ddf06a8383cc806a1041a53e5ee8e0edc97e7d0"
+  },
+  "runtime": {
+    "current_rgb_sha256": "17be0ddcae6e71c03abcddc56b78bf427cee7f90c475ee0c6e1627619d9a01da",
+    "action_rgb_members_opened": 44,
+    "sam_mask_calls": 1,
+    "sam_masks_generated": 3,
+    "sam_receipt": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.8960205999901518
+    },
+    "grounding_dino_calls": 220,
+    "selected_rgb_sha256": "91d45fd2dd6a2afd61dadd6b4f3d41cb0e1d2bcd7dbbc92f3015cb36eee1f34f",
+    "selected_pose_sha256": "99cd2b53758de852c64323b8ba4d413fe7ac008bff81e0fcf4330fb49960404c",
+    "selected_depth_sha256": "a471bb587bebe489822372518e12738572d7caa0bf87d5efb42014bb4ac012d0",
+    "info_sha256": "0747e5352762cd10944b32f2d00ea59a424ad8f94eea79ae933126ed2b77c041"
+  },
+  "conclusion": "L10_3RSCAN_HYPOTHESIS_DISAGREEMENT_ACTION_DEVELOPMENT_SOURCE_EVALUABLE",
+  "next_action": "Run the unchanged query-mask 3D track and the already frozen three-candidate IoU>=0.8 region gate on the selected action view.",
+  "claim_boundary": "This consumed-family Development screen evaluates whether a truth-free proposal-aware information-gain action can replace maximum-covisibility action selection. It is not fresh confirmation, target ownership, portal access, waypoint, arrival, handoff, user benefit, reliability, or safety evidence."
+}
