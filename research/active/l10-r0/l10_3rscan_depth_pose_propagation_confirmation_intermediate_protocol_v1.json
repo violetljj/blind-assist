@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-depth-pose-propagation-confirmation-intermediate-protocol-v1",
+  "frozen_at": "2026-09-01T16:34:00+08:00",
+  "question": "Materialize the unchanged proposal, mask and descriptor roster for a wholly fresh three-reference family with two adjacent queries, before applying the frozen calibrated depth-pose propagation rule.",
+  "implementation": {
+    "path": "l10_3rscan_foundpose_layer18_nids_posthoc.py",
+    "sha256": "7f78c0f39cc97a11c7872f82694534b756bf7e13f3d433c0c7ffe4dfd95c93c2"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py", "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"},
+    {"path": "l10_3rscan_mask_ffa_memory_posthoc.py", "sha256": "0f554f5e82d72cc4165c8c3237e1cc2295475cac1c7d1753c92e0fe629aa0992"},
+    {"path": "l10_3rscan_contrastive_sam_refinement_posthoc.py", "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"},
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_depth_pose_propagation_posthoc_result_v1.json",
+    "sha256": "e8ff052e99e50adad7cc234e631a96128a27794c70ad4ee9da318a093ae7d2bb",
+    "required_conclusion": "L10_3RSCAN_DEPTH_POSE_PROPAGATION_DEVELOPMENT_GATE_MET",
+    "single_change": "Transport the frozen depth-pose proposal rule unchanged to a wholly fresh family: select the adjacent query candidate with greatest preserved-contributor agreement, estimate its median metric depth from official depth pixels inside the box, and reproject its four corners through official camera poses into the other frame."
+  },
+  "source": {
+    "authority": "FRESH_ELEVENTH_FAMILY_DEPTH_POSE_PROPAGATION_CONFIRMATION_INTERMEDIATE",
+    "artifact_root": "F:/ba-data/blindassist-artifacts-20260805",
+    "cohort_path": "l10_3rscan_depth_pose_propagation_confirmation_cohort_v1.json",
+    "cohort_sha256": "9be262281c5bcb3a9f1a8f2e3c62af03736867f1bca8b2152c6fecdfb7a1f5df"
+  },
+  "proposal": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Union unchanged full-frame proposals with fixed 40-percent corner-tile proposals; no query truth access."
+  },
+  "tiling": {
+    "tile_width_fraction": 0.4,
+    "tile_height_fraction": 0.4,
+    "offsets": ["top_left", "top_right", "bottom_left", "bottom_right"],
+    "maximum_proposals_per_tile": 8,
+    "maximum_total_proposals": 48,
+    "merge": "Retain up to 16 full-frame and 8 per tile, remap to full-image coordinates, then score without NMS or truth filtering."
+  },
+  "descriptor": {
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "feature": "Final-layer foreground mean chooses among three target references; normalized foreground patches from DINOv2 ViT-L/14 zero-based block 18 supply query-directed local score."
+  },
+  "appearance": {
+    "zero_based_block_index": 18,
+    "human_layer_number": 19,
+    "patch_mask_threshold": 0.5,
+    "score": "For the final-layer-selected target reference, average each query patch maximum cosine to reference foreground patches.",
+    "frozen_confirmation_rule": [
+      "preserve equal semantic/local-fusion top one",
+      "preserve layer-18 local minus 0.05 times distance to the nearest of three reference target log-area fractions",
+      "preserve best fusion constrained to the plurality winning target reference across the adjacent pair",
+      "select the exact-deduplicated candidate with greatest contributor agreement and reproject its four corners at median official depth through official camera poses into the other frame only when a set vacancy exists"
+    ]
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Apply unchanged native SAM2 to every retained proposal; confirmation coverage is evaluated only after preserved contributor deduplication and the frozen depth-pose vacancy rule completes."
+  },
+  "memory": {
+    "target_images": ["DPC1_reference", "DPC2_reference", "DPC1_extra_reference"],
+    "sibling_images": []
+  },
+  "evaluation": {
+    "query_images": ["DPC1_query", "DPC2_query"],
+    "truth_role": "Truth enters only after contributor agreement, anchor choice, median depth, pose transform, projected rectangle and bounded set are complete."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_opportunity_queries": 2,
+    "required_refined_queries": 2
+  },
+  "literature_motivation": [
+    {"source": "Seeing Behind Objects for 3D Multi-Object Tracking in RGB-D Sequences", "url": "https://openaccess.thecvf.com/content/CVPR2021/papers/Muller_Seeing_Behind_Objects_for_3D_Multi-Object_Tracking_in_RGB-D_Sequences_CVPR_2021_paper.pdf", "use": "Motivates backprojecting RGB-D observations and using 3D geometry and correspondences to persist object evidence across changing views."}
+  ],
+  "forbidden_after_freeze": [
+    "change the five frozen images, candidate roster, model bytes, features, preserved contributors, anchor agreement, median depth, pose convention, four-corner projection, zero padding, clipping, vacancy condition, set size three or IoU gate",
+    "use query truth before the complete set is fixed",
+    "retry, rescue or retune this fresh family after the confirmation result is materialized"
+  ],
+  "claim_boundary": "This artifact freezes only the fresh proposal and descriptor roster. It cannot by itself establish depth-pose propagation, whole-rule confirmation, top-one localization, calibrated uncertainty, portal ownership, affordance, access, safety, waypoint, arrival or handoff."
+}
