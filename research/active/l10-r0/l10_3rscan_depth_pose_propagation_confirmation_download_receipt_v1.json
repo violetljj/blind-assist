@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist-l10-3rscan-depth-pose-propagation-confirmation-download-receipt-v1",
+  "authority": "OFFICIAL_3RSCAN_FROZEN_CANDIDATE_DOWNLOAD_RECEIPT_PRE_RGB_PRE_MODEL",
+  "candidate_path": "l10_3rscan_depth_pose_propagation_confirmation_candidate_v1.json",
+  "candidate_sha256": "f9e5857724fa6fc5765c68ad8266c1e51ebe11691218b47897f36e22af2d9f96",
+  "candidate_frozen_commit": "b450b6f33cfa166f76cf996676c2399eea55566d",
+  "candidate_frozen_commit_time": "2026-09-01T16:09:18+08:00",
+  "completed_at": "2026-09-01T16:25:17+08:00",
+  "files": {
+    "54b263a3-0199-2df4-87db-40539528902d/semseg.v2.json": {"bytes": 19100, "sha256": "1e904fb0f3bfa9dacba1679dadded5a2d42b674bdd7ddffc0f48537bb52e82a0"},
+    "54b263a3-0199-2df4-87db-40539528902d/labels.instances.annotated.v2.ply": {"bytes": 4843230, "sha256": "019a714edb4296b6b458da79fe03b4238179c92c9c987fc00340e2c73d34c11a"},
+    "54b263a3-0199-2df4-87db-40539528902d/sequence.zip": {"bytes": 43630148, "sha256": "333fb12bc0e043779725f29c97d9c9045f79caafe55492a2514f8f87021df2a6"},
+    "82def5da-25ba-20f9-8810-71be905b83db/semseg.v2.json": {"bytes": 19361, "sha256": "6683953f3df0060237d5e87a3d4b6190e1d6a19e083885b9042e5bd6c066da19"},
+    "82def5da-25ba-20f9-8810-71be905b83db/labels.instances.annotated.v2.ply": {"bytes": 4837922, "sha256": "7a793e0f3e140642b7279a5ad9695f51735d5588378d0545afebb59ad02433d0"},
+    "82def5da-25ba-20f9-8810-71be905b83db/sequence.zip": {"bytes": 39252447, "sha256": "e907b62d0b587e9ca45ff428acb68cf6ebf3adfea9dbf1d1f3237b8d317195f0"}
+  },
+  "opened_rgb_members": 0,
+  "model_calls": 0,
+  "temporary_range_parts_removed": 11,
+  "next_action": "Run the frozen geometry/depth source gate; do not inspect RGB or run models unless it yields three references, one adjacent query pair and a same-scene sibling.",
+  "claim_boundary": "This receipt proves only complete official-file materialization, archive readability and hashes after the metadata candidate freeze. It is not source evaluability or algorithm evidence."
+}

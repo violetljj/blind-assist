@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist-l10-3rscan-temporal-scale-vacancy-confirmation-source-protocol-v1",
+  "protocol_id": "l10-3rscan-depth-pose-propagation-confirmation-source-protocol-v1",
+  "frozen_at": "2026-09-01T16:25:18+08:00",
+  "question": "Does the metadata-frozen eleventh family supply three reference-memory views, a unique adjacent query pair and a same-scene sibling before RGB or model access?",
+  "implementation": {
+    "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py",
+    "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"
+  },
+  "candidate": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_candidate_v1.json",
+    "sha256": "f9e5857724fa6fc5765c68ad8266c1e51ebe11691218b47897f36e22af2d9f96"
+  },
+  "download_receipt": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_download_receipt_v1.json"
+  },
+  "source": {
+    "authority": "OFFICIAL_3RSCAN_PRE_DOWNLOAD_FROZEN_NEW_FAMILY_GEOMETRY_DEPTH_ONLY",
+    "artifact_root": "artifacts.local",
+    "files": [
+      {"path": "datasets/3rscan/54b263a3-0199-2df4-87db-40539528902d/semseg.v2.json", "bytes": 19100, "sha256": "1e904fb0f3bfa9dacba1679dadded5a2d42b674bdd7ddffc0f48537bb52e82a0"},
+      {"path": "datasets/3rscan/54b263a3-0199-2df4-87db-40539528902d/labels.instances.annotated.v2.ply", "bytes": 4843230, "sha256": "019a714edb4296b6b458da79fe03b4238179c92c9c987fc00340e2c73d34c11a"},
+      {"path": "datasets/3rscan/54b263a3-0199-2df4-87db-40539528902d/sequence.zip", "bytes": 43630148, "sha256": "333fb12bc0e043779725f29c97d9c9045f79caafe55492a2514f8f87021df2a6"},
+      {"path": "datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/semseg.v2.json", "bytes": 19361, "sha256": "6683953f3df0060237d5e87a3d4b6190e1d6a19e083885b9042e5bd6c066da19"},
+      {"path": "datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/labels.instances.annotated.v2.ply", "bytes": 4837922, "sha256": "7a793e0f3e140642b7279a5ad9695f51735d5588378d0545afebb59ad02433d0"},
+      {"path": "datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/sequence.zip", "bytes": 39252447, "sha256": "e907b62d0b587e9ca45ff428acb68cf6ebf3adfea9dbf1d1f3237b8d317195f0"}
+    ]
+  },
+  "candidate_view_rules": {
+    "minimum_per_view_inside_vertex_fraction": 0.15,
+    "minimum_projected_area_pixels": 2000.0,
+    "minimum_image_margin_pixels": 0.0,
+    "minimum_depth_compared_vertices": 16,
+    "minimum_depth_visible_vertices": 16,
+    "minimum_depth_visible_ratio": 0.15,
+    "minimum_projected_bbox_short_side_fraction": 0.08,
+    "maximum_projected_bbox_aspect_ratio": 12.0,
+    "depth_consistency_metres": 0.15
+  },
+  "reference_memory": {
+    "base_positive_marginal_budget": 3,
+    "minimum_positive_marginal_views": 2,
+    "required_views": 3,
+    "vacancy_fill": "If the positive-marginal greedy portfolio stops at two, fill exactly one remaining source-admitted reference by maximum minimum camera-to-target angle; ties use visible vertices, short-side fraction, depth-visible ratio, then earlier frame."
+  },
+  "query_pair": {
+    "maximum_frame_gap": 1,
+    "selection": "Among distinct source-admitted target views at gap at most one, maximize minimum visible target vertices, then total visible target vertices, minimum short-side fraction, minimum depth-visible ratio and deterministic earlier frames."
+  },
+  "same_scene_sibling": {
+    "selection": "Use the first different door or doorframe instance with an admitted view; choose its maximum-visible view with fixed quality ties."
+  },
+  "next_action": {
+    "evaluable": "Freeze the three references and two unique adjacent queries, then run the unchanged proposal roster and calibrated depth-pose propagation rule once.",
+    "not_evaluable": "Retain the source result and do not open RGB or call GroundingDINO, SAM2 or DINOv2 for this family."
+  },
+  "forbidden_after_freeze": [
+    "change family, target, source hashes, view admission, reference vacancy fill, adjacent-pair selection or sibling rule",
+    "open RGB or call a model before source result",
+    "change preserved contributors, anchor agreement, median-depth statistic, pose convention, four-corner projection, zero padding, clipping, vacancy-only insertion, IoU gate or maximum set size three",
+    "replace a source-inadequate family using RGB/model outcomes"
+  ],
+  "claim_boundary": "This gate can establish only fresh-family geometry/depth reachability for a three-reference and adjacent-two-query replay. It is not RGB/model evidence, depth-pose propagation confirmation, top-one localization, exact-instance binding, named entrance, ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
