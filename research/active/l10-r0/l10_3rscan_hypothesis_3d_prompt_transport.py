@@ -106,11 +106,25 @@ def run(protocol_path: Path, output_path: Path) -> None:
     pixel.require(pixel.sha256(predecessor_path) == predecessor_row["sha256"], "PREDECESSOR_HASH")
     predecessor = pixel.load_json(predecessor_path)
     pixel.require(predecessor["conclusion"] == predecessor_row["required_conclusion"], "PREDECESSOR_CONCLUSION")
+    single_view_result = None
+    if "single_view_result" in protocol:
+        single_row = protocol["single_view_result"]
+        single_path = HERE / single_row["path"]
+        pixel.require(pixel.sha256(single_path) == single_row["sha256"], "SINGLE_VIEW_RESULT_HASH")
+        single_view_result = pixel.load_json(single_path)
+        pixel.require(single_view_result["conclusion"] == single_row["required_conclusion"], "SINGLE_VIEW_RESULT_CONCLUSION")
     masker = protocol["masker"]
     pixel.require(pixel.sha256(Path(masker["model_path"])) == masker["model_sha256"], "MASKER_HASH")
 
     current_key = str(protocol["evaluation"]["current_query_key"])
     action_key = str(protocol["evaluation"]["action_query_key"])
+    transport_mode = str(protocol["transport"].get("mode", "single_view"))
+    pixel.require(transport_mode in {"single_view", "two_frame_track_union"}, "TRANSPORT_MODE")
+    initial_key = (
+        str(protocol["evaluation"]["initial_query_key"])
+        if transport_mode == "two_frame_track_union"
+        else None
+    )
     current_frame = int(cohort["images"][current_key]["frame"])
     action_frame = int(cohort["images"][action_key]["frame"])
     current_episode = next(row for row in predecessor["episodes"] if int(row["frame"]) == current_frame)
@@ -118,9 +132,23 @@ def run(protocol_path: Path, output_path: Path) -> None:
     budget = int(protocol["transport"]["candidate_budget"])
     hypotheses = current_episode["ranked_candidates"][:budget]
     pixel.require(len(hypotheses) == budget, "HYPOTHESIS_BUDGET")
+    initial_hypotheses = None
+    if initial_key is not None:
+        initial_frame = int(cohort["images"][initial_key]["frame"])
+        initial_episode = next(row for row in predecessor["episodes"] if int(row["frame"]) == initial_frame)
+        initial_by_index = {
+            int(row["candidate_index"]): row for row in initial_episode["ranked_candidates"]
+        }
+        initial_hypotheses = []
+        for hypothesis in hypotheses:
+            edge_name = f"{current_key}->{initial_key}"
+            edge = next(row for row in hypothesis["edges"] if row["edge"] == edge_name)
+            initial_hypotheses.append(initial_by_index[int(edge["partner_index"])])
 
     current_image, current_image_hash = _load_image(cohort, current_key)
     action_image, action_image_hash = _load_image(cohort, action_key)
+    if initial_key is not None:
+        initial_image, initial_image_hash = _load_image(cohort, initial_key)
     scan_id = str(cohort["candidate"]["rescan_id"])
     zip_path = Path(cohort["artifact_root"]) / cohort["source_manifest"][f"{scan_id}/sequence.zip"]["path"]
     with zipfile.ZipFile(zip_path) as archive:
@@ -130,6 +158,9 @@ def run(protocol_path: Path, output_path: Path) -> None:
         action_pose = pixel.read_pose(archive, action_frame)
         current_depth = pixel.decode_depth(archive, current_frame)
         action_depth = pixel.decode_depth(archive, action_frame)
+        if initial_key is not None:
+            initial_pose = pixel.read_pose(archive, initial_frame)
+            initial_depth = pixel.decode_depth(archive, initial_frame)
 
     import torch
     from transformers import Sam2Model, Sam2Processor
@@ -148,6 +179,18 @@ def run(protocol_path: Path, output_path: Path) -> None:
         torch,
         np,
     )
+    initial_masks = None
+    initial_sam_receipt = None
+    if initial_hypotheses is not None:
+        initial_masks, initial_sam_receipt = nids.sam_base._sam_masks(
+            processor,
+            model,
+            initial_image,
+            [row["proposal"]["box_xyxy"] for row in initial_hypotheses],
+            initial_image.size,
+            torch,
+            np,
+        )
     prompts: list[list[float]] = []
     transport_receipts = []
     for rank, (hypothesis, mask) in enumerate(zip(hypotheses, current_masks, strict=True), start=1):
@@ -155,6 +198,23 @@ def run(protocol_path: Path, output_path: Path) -> None:
         mask_hash = hashlib.sha256(mask.astype(np.uint8).tobytes(order="C")).hexdigest()
         pixel.require(mask_hash == hypothesis["proposal"]["mask_sha256"], f"CURRENT_MASK_REPLAY:{rank}")
         points = track._lift(mask, current_depth, current_pose, info)
+        initial_receipt = {}
+        if initial_masks is not None and initial_hypotheses is not None:
+            initial_mask = np.ascontiguousarray(initial_masks[rank - 1], dtype=np.bool_)
+            initial_hypothesis = initial_hypotheses[rank - 1]
+            initial_mask_hash = hashlib.sha256(initial_mask.astype(np.uint8).tobytes(order="C")).hexdigest()
+            pixel.require(
+                initial_mask_hash == initial_hypothesis["proposal"]["mask_sha256"],
+                f"INITIAL_MASK_REPLAY:{rank}",
+            )
+            initial_points = track._lift(initial_mask, initial_depth, initial_pose, info)
+            points = np.concatenate((points, initial_points), axis=0)
+            initial_receipt = {
+                "initial_partner_candidate_index": int(initial_hypothesis["candidate_index"]),
+                "initial_partner_box_xyxy": initial_hypothesis["proposal"]["box_xyxy"],
+                "initial_partner_mask_sha256": initial_mask_hash,
+                "initial_partner_lifted_points": int(len(initial_points)),
+            }
         prompt, geometry = _visible_prompt(
             points,
             action_depth,
@@ -172,6 +232,8 @@ def run(protocol_path: Path, output_path: Path) -> None:
                 "source_box_xyxy": hypothesis["proposal"]["box_xyxy"],
                 "source_mask_sha256": mask_hash,
                 "lifted_points": int(len(points)),
+                "transport_mode": transport_mode,
+                **initial_receipt,
                 "transported_prompt_xyxy": prompt,
                 **geometry,
             }
@@ -212,7 +274,7 @@ def run(protocol_path: Path, output_path: Path) -> None:
     gate_met = transported_best >= threshold
     result = {
         "schema": RESULT_SCHEMA,
-        "authority": "CONSUMED_QUEUE_ROW_3_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT",
+        "authority": protocol.get("result_authority", "CONSUMED_QUEUE_ROW_3_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT"),
         "protocol_path": protocol_path.name,
         "protocol_sha256": pixel.sha256(protocol_path),
         "implementation": {"path": Path(__file__).name, "sha256": pixel.sha256(Path(__file__))},
@@ -226,6 +288,11 @@ def run(protocol_path: Path, output_path: Path) -> None:
             "detector_track_top3_best_iou": baseline_best,
             "transport_sam_top3_best_iou": transported_best,
             "absolute_iou_gain": transported_best - baseline_best,
+            "single_view_transport_top3_best_iou": (
+                float(single_view_result["metrics"]["transport_sam_top3_best_iou"])
+                if single_view_result is not None
+                else None
+            ),
             "transported_candidates_at_or_above_gate": sum(
                 float(row["action_mask_bbox_target_metrics_evaluation_only"]["iou"])
                 >= threshold
@@ -235,21 +302,23 @@ def run(protocol_path: Path, output_path: Path) -> None:
         "receipts": {
             "current_image_sha256": current_image_hash,
             "action_image_sha256": action_image_hash,
+            "initial_image_sha256": initial_image_hash if initial_key is not None else None,
             "info_sha256": hashlib.sha256(info_payload).hexdigest(),
             "current_sam": current_sam_receipt,
+            "initial_sam": initial_sam_receipt,
             "action_sam": action_sam_receipt,
         },
         "gate": {**protocol["gate"], "met": gate_met},
         "runtime": {
-            "rgb_members_opened": 2,
-            "sam_mask_calls": 2,
-            "sam_masks_generated": budget * 2,
+            "rgb_members_opened": 3 if initial_key is not None else 2,
+            "sam_mask_calls": 3 if initial_key is not None else 2,
+            "sam_masks_generated": budget * (3 if initial_key is not None else 2),
             "grounding_dino_calls": 0,
             "appearance_model_calls": 0,
             "model_training_steps": 0,
         },
         "literature_motivation": protocol["literature_motivation"],
-        "conclusion": (
+        "conclusion": protocol["conclusions"]["met" if gate_met else "not_met"] if "conclusions" in protocol else (
             "L10_3RSCAN_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT_GATE_MET"
             if gate_met
             else "L10_3RSCAN_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT_GATE_NOT_MET"
