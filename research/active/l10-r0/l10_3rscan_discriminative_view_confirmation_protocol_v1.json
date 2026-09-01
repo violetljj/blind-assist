@@ -23,7 +23,7 @@
   },
   "action_scorer_protocol": {
     "path": "l10_3rscan_discriminative_view_confirmation_action_scorer_protocol_v1.json",
-    "sha256": "f0756ceb2dfc67baa956a7a8452af6184b642101bc4d05d40e150b57e00d0de0"
+    "sha256": "8a127abeae2aca5081077785778c423c91b485613911fee67c451820f0be6f7b"
   },
   "action_scorer_result": {
     "path": "l10_3rscan_discriminative_view_confirmation_action_scorer_result_v1.json",

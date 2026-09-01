@@ -82,7 +82,7 @@
   },
   "literature_motivation": [
     {"source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification", "url": "https://doi.org/10.48550/arxiv.2605.30639", "use": "Run only the score-authorized deterministic local action."},
-    {"source": "Active Perception for Ambiguous Objects Classification", "url": "https://arxiv.org/abs/2108.00737", "use": "Judge whether the authorized view separates the competing ranking."
+    {"source": "Active Perception for Ambiguous Objects Classification", "url": "https://arxiv.org/abs/2108.00737", "use": "Judge whether the authorized view separates the competing ranking."}
   ],
   "forbidden_after_freeze": [
     "change references, action image, models, proposals, masks, features, fusion or IoU gate",
