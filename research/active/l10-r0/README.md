@@ -4267,6 +4267,26 @@ candidate must improve local foreground representation or learn a reusable,
 target-independent channel weighting. These four results are posthoc
 Development attribution, not fresh-family confirmation or any higher L10 claim.
 
+Exa review of the primary NIDS-Net and SAM-6D papers exposed a directly
+applicable training-free mechanism that the earlier FFA summary had omitted.
+For each proposal, the published local appearance score selects the best FFA
+template, finds every query foreground patch's maximum cosine to all foreground
+patches in that template, averages those maxima, and averages the result with
+the instance score. The official NIDS implementation also fixes binary patch
+membership at mask support `> 0.5`; both details were frozen before execution.
+
+On the same consumed full-plus-`40%` D15 roster, this local score retained
+proposal opportunity `3/3` but refined only `1/3`, minimum IoU `0`, mean
+`0.382016`. Its positive effect is nevertheless structural: D15M3's previously
+unranked thin target moved to rank `1`, raw IoU `0.507007`, and refined IoU
+`0.723311`. It did not reject all contextual near-duplicates: D15M1's best raw-
+IoU target ranked `3`, while D15M2's ranked `25`. Freeze query-directed local
+patch coverage as a complementary partial-view mechanism, not a complete
+ranking repair. Do not tune fusion weights or add another D15-specific blend.
+The next mechanism must learn reusable channel discrimination from other
+consumed families or introduce a genuinely independent instance-bearing cue.
+This remains consumed-cohort Development only.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4468,6 +4488,10 @@ Evidence:
   `fc4db693f98c5f2930eb7d5d75d230b143a64bf32718539e8f6dab31df4fe88a`,
   `672f190e450998681358434a3460961cadf919a1fe79a7f3006f62b92ebdcc55`,
   and `e0348038e0f2b8df7cfd6984c30968316f1e75cf4f8c88288b72b53a788a44d3`;
+- NIDS local-appearance small-tile implementation/protocol/result SHA-256:
+  `b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d`,
+  `f9b579d872868c7a8fded24be815bacc88ac2cf2df83138bede988ebc7e1e871`,
+  and `5f20b7adf7980d052b113032ea971f24ebd6c8fd966b8171c3b49472237ec143`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

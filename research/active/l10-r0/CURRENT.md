@@ -347,6 +347,17 @@ contract.
   representation or learn target-independent channel discrimination, not add a
   vertical-position prior or another D15-specific geometry term. All four runs
   are consumed-cohort Development attribution only.
+  Exa then exposed the exact training-free NIDS-Net/SAM-6D local appearance
+  score: choose the maximum-FFA template, average each query foreground patch's
+  maximum cosine to that template's foreground patches, and average this with
+  the instance score. Applied unchanged to the `40%` roster, it retained
+  opportunity `3/3` but localized only `1/3` (minimum `0`, mean `0.382016`).
+  Crucially it recovered the previously missing D15M3 thin target—raw IoU
+  `0.507007`, refined IoU `0.723311`—while D15M1's best target ranked `3` and
+  D15M2's ranked `25`. Freeze local patch coverage as a complementary partial-
+  view mechanism, not a standalone repair. The remaining gap is reusable
+  channel discrimination or another instance-bearing cue, not more score
+  blending on D15.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or
