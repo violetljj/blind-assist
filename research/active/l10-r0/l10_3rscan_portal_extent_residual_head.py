@@ -184,9 +184,12 @@ def _corners(bounds: dict[str, float], frame: dict[str, np.ndarray]) -> np.ndarr
 
 
 def _bbox(points: np.ndarray, pose: np.ndarray, intrinsic: np.ndarray, width: int, height: int) -> list[float]:
-    _, pixels, inside = pixel.project_points(points, pose, intrinsic, width, height)
-    selected = pixels[inside]
+    camera, pixels, _ = pixel.project_points(points, pose, intrinsic, width, height)
+    positive = (camera[:, 2] > 0.05) & np.isfinite(pixels).all(axis=1)
+    selected = pixels[positive].copy()
     pixel.require(len(selected) >= 2, "PROJECTED_EXTENT_TOO_FEW")
+    selected[:, 0] = np.clip(selected[:, 0], 0.0, float(width - 1))
+    selected[:, 1] = np.clip(selected[:, 1], 0.0, float(height - 1))
     return [float(np.min(selected[:, 0])), float(np.min(selected[:, 1])), float(np.max(selected[:, 0])), float(np.max(selected[:, 1]))]
 
 

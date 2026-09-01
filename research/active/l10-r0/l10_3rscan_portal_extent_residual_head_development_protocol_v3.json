@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist-l10-3rscan-portal-extent-residual-head-protocol-v1",
+  "authority": "PRE_MASK_PRE_TRAIN_TARGET_DISJOINT_PORTAL_EXTENT_COMPLETION_DEVELOPMENT_V3",
+  "implementation": {
+    "path": "l10_3rscan_portal_extent_residual_head.py",
+    "sha256": "2f8fee6b4a3cec20e53a16bb60d832cc547cb04123c2cc5ef9374fd66682d604"
+  },
+  "correction_from_v2": {
+    "result_path": "l10_3rscan_portal_extent_residual_head_development_result_v2.json",
+    "result_sha256": "e12b984240c37a1a313585924fd84cc4365b41db1b73e486c79aea7ec0f215b2",
+    "scope": "V2 validation metrics remain valid, but its row3 rectangle projection discarded corners outside the image instead of clipping them to the image boundary. V3 changes only that projection operation and otherwise preserves all frozen inputs, training settings, and gate thresholds."
+  },
+  "manifest": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_v1.json",
+    "sha256": "76d8207a0560be66c5cf1aec31ec7130fc840bc256de0532460f736f7566539b",
+    "required_authority": "PRE_RGB_PRE_FEATURE_EXACT_MEMBER_AND_CROP_MANIFEST"
+  },
+  "row3_cohort": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_development_cohort_v1.json",
+    "sha256": "37f5ae80d6d293ea3f7615bc4b55b670fc8b71363a809e65d41c5beb9d57b5b1",
+    "use": "Consumed Development mechanism test only after validation-family model selection."
+  },
+  "source": {
+    "data_root": "F:/ba-data/blindassist-artifacts-20260805/datasets/3rscan",
+    "contract": "Use only already materialized 3RScan sequence, pose, depth, and provider instance geometry assets."
+  },
+  "masker": {
+    "model_root": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "F:/ba-data/blindassist-artifacts-20260805/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "Frozen exact target boxes prompt one local SAM2 mask per positive view; depth and pose lift the mask into a partial 3D observation."
+  },
+  "observation": {
+    "minimum_lifted_points": 64,
+    "maximum_union_views": 3,
+    "plane_inlier_fraction": 0.7,
+    "extent_quantiles": [0.01, 0.99],
+    "contract": "Create single-, two-, and three-view partial observations only within one scan coordinate system."
+  },
+  "training": {
+    "seed": 104729,
+    "hidden_width": 32,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "maximum_epochs": 400,
+    "patience": 60,
+    "initial_behavior": "Zero final layer means the first prediction is exactly the observed partial extent.",
+    "selection": "Select one checkpoint only by mean planar rectangle IoU over the four identity-disjoint validation identities. Row3 is unavailable during selection."
+  },
+  "gate": {
+    "minimum_validation_mean_iou_gain": 0.0,
+    "minimum_row3_action_iou": 0.8,
+    "require_row3_improvement_over_partial": true
+  },
+  "decision": "If the target-disjoint validation mean improves and the frozen head reaches action-view IoU at least 0.8 on consumed row3, freeze the same head and action selector for a new source-family confirmation. Otherwise close this learned extent parameterization and inspect the measured error mode before changing it.",
+  "claim_boundary": "This is Development evidence for completing a portal plane extent from SAM-RGBD observations. Full instance geometry is training/evaluation supervision only. Row3 is already consumed and cannot provide fresh confirmation. A positive result is not portal ownership, access, waypoint, arrival, handoff, user benefit, reliability, or safety evidence."
+}
