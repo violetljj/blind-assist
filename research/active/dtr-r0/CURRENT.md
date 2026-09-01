@@ -212,6 +212,18 @@ future obstacle occupancy intersects the wearer's route, while preserving
   failed the authority gate. C41 is mechanism-not-exercised, supplies no fresh
   incremental promotion or rejection evidence for X82, and is now consumed
   successor-design material. X73 still retains full fresh authority.
+  X83 then corrects the exact C41 ownership defect without changing event
+  classification: when confirmed references mix eligible `RIGID_DYNAMIC` and
+  non-rigid carriers, it returns only the non-rigid references to candidates
+  and rebuilds confirmed parent identity from the rigid owners. Across
+  C26/C27/C28/C32/C34/C35/C36/C37/C39/C40/C41, X83 changes one C41 frame,
+  demotes one static reference, and removes both the non-rigid-reference and
+  parent-mismatch defects. Every TP/FP/FN is identical to X82 and all required
+  authority invariants are zero in all eleven cohorts. Pooled X83 remains
+  `1,472 TP / 142 FP / 423 FN` at `91.20/77.68/83.90%`. This is
+  post-hoc Development-only because X83 was designed after C41 opened; X73
+  retains fresh authority until a later source-disjoint gate exercises frozen
+  X83 without a classification regression.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -252,7 +264,9 @@ future obstacle occupancy intersects the wearer's route, while preserving
    C41 subsequently produced strong inherited full-arm metrics but exercised
    X82 zero times and exposed one non-rigid reference plus one parent mismatch.
    Use C41 only for successor diagnosis; it supplies no incremental X82
-   confirmation and cannot be retried.
+   confirmation and cannot be retried. X83 has now corrected C41's mixed
+   authority reference with classification identity across eleven consumed
+   cohorts; any promotion requires a new preregistered source.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -333,3 +347,5 @@ their result.
   [DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md)
 - C41 X82 fresh outcome:
   [DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md)
+- X83 consumed eleven-cohort Development:
+  [DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
