@@ -276,7 +276,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   `1,472 TP / 126 FP / 423 FN` at `92.12/77.68/84.28%`, or
   `0 TP / -2 FP / +0.05 pp F1` over X88. The other ten cohorts are
   classification-identical and every required check passes. X89 is consumed
-  Development-only and X73 retains fresh authority.
+  Development-only and X73 retains fresh authority. X90 then extends X79's
+  collision-credential distinction from exactly pure-lateral to
+  lateral-dominant surface motion without adding a fitted ratio. It clears
+  four C28 future-entry false-positive frames whose zero-contradiction parents
+  never obtained the inherited cross-representation collision credential,
+  with zero TP loss. Pooled X90 is `1,472 TP / 122 FP / 423 FN` at
+  `92.35/77.68/84.38%`, or `0 TP / -4 FP / +0.10 pp F1` over X89. The
+  other ten cohorts are classification-identical and every required check
+  passes. X90 is consumed Development-only and X73 retains fresh authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -331,7 +339,10 @@ future obstacle occupancy intersects the wearer's route, while preserving
    removing two more false positives across C27/C40 with zero TP loss. X89 then
    rejects zero-contradiction receding branch consensus whose hypotheses all
    outnumber direct anchors, removing two C26 false positives with zero TP
-   loss. Any promotion requires a new preregistered source testing frozen X89.
+   loss. X90 then requires an inherited collision credential before a
+   lateral-dominant surface branch can independently authorize positive-time
+   future entry, removing four C28 false positives with zero TP loss. Any
+   promotion requires a new preregistered source testing frozen X90.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
@@ -370,6 +381,8 @@ their result.
   [DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X89 consumed Development result:
   [DTR_CARLA_X89_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X89_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+- X90 consumed Development result:
+  [DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
 - X64 consumed transfer Development:
   [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
 - X64 C29-C32 fresh confirmation:
