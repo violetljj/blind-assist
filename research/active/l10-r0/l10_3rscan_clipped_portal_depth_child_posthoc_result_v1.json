@@ -1,0 +1,227 @@
+{
+  "schema": "blindassist-l10-3rscan-clipped-portal-depth-child-posthoc-result-v1",
+  "authority": "posthoc Development on a consumed source; not fresh confirmation",
+  "protocol_path": "l10_3rscan_clipped_portal_depth_child_posthoc_protocol_v1.json",
+  "protocol_sha256": "ecec9d5ae8ee5458378d6a1375bd13c0e149010965983439eef03b3cb5f021be",
+  "implementation": {
+    "path": "l10_3rscan_clipped_portal_depth_child_posthoc.py",
+    "sha256": "35252f5e6a3a155e0f5906d3f62c1691b48ead276aeedd6e151254d98c80a836"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_dual_prompt_initial_track_posthoc_result_v1.json",
+    "sha256": "a9b2b0feb0c063c2501b08819c23ed3672699f4bfa36f01482572ea4fcf5f0d5",
+    "required_conclusion": "L10_3RSCAN_DUAL_PROMPT_INITIAL_TRACK_POSTHOC_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "cohort": {
+    "path": "l10_3rscan_hypothesis_disagreement_action_confirmation_cohort_v1.json",
+    "sha256": "e4da705e2913d9b92a2f606645cfa0cf2a67163aab5b1bc030360b811034b907",
+    "required_schema": "blindassist-l10-3rscan-discriminative-view-confirmation-cohort-v1"
+  },
+  "source_receipts": {
+    "sequence_zip_sha256": "ac960836959cc8ef757f398e37a8548ecb5139c17f6162946950668d456d6d8c",
+    "info_sha256": "93203dd2498f9507ec33a2fd0f8a30badaf35e214cb0802a2c35feeb4f3f75c2",
+    "depth_sha256_by_query": {
+      "FDV_initial_1_query": "e2193e1a264884f3a0da680462c7735e1a59ef77bb1d191781cb880462a34955",
+      "FDV_initial_2_query": "afdea69ba0dfe9994f55370cc8a94cbd5bb2adc1671b30513c257bc778565c5d"
+    }
+  },
+  "mechanism": {
+    "description": "Two ordinary 3D-track slots plus one independently born clipped-portal depth child; no score fusion and no candidate-set expansion.",
+    "truth_used_for_selection": false,
+    "rules": {
+      "required_prompt": "door",
+      "border_margin_pixels": 3.0,
+      "horizontal_inset_fraction": 0.1,
+      "vertical_bin_count": 24,
+      "minimum_depth_points": 48,
+      "minimum_points_per_bin": 3,
+      "minimum_valid_bins": 12,
+      "dominant_depth_quantile": 0.75,
+      "absolute_depth_tolerance_metres": 0.2,
+      "relative_depth_tolerance": 0.08,
+      "consecutive_low_bins": 2,
+      "search_start_divisor": 4,
+      "minimum_retained_fraction": 0.35,
+      "maximum_retained_fraction": 0.9,
+      "full_occlusion_fraction": 0.25
+    },
+    "eligible_pair_count": 1,
+    "selected_pair": {
+      "left_rank": 4,
+      "left_candidate_index": 52,
+      "right_candidate_index": 49,
+      "shared_border": "left",
+      "track_score": 0.9552583357677902,
+      "pair_depth_score": 0.12756896870949813,
+      "children": {
+        "FDV_initial_1_query": {
+          "box_xyxy": [
+            1.2912940979003906,
+            106.73300170898438,
+            290.6604309082031,
+            390.1828918457031
+          ],
+          "depth": {
+            "dominant_depth_metres": 3.5015,
+            "depth_tolerance_metres": 0.28012000000000004,
+            "post_plane_drop_metres": 0.5190000000000001,
+            "retained_height_fraction": 0.6666666666666666,
+            "cut_y": 390.1828918457031,
+            "valid_depth_bins": 24
+          },
+          "target_metrics_evaluation_only": {
+            "iou": 0.823396521663696,
+            "target_recall": 0.9238324363315111,
+            "proposal_precision": 0.8833654510483951
+          }
+        },
+        "FDV_initial_2_query": {
+          "box_xyxy": [
+            1.3917875289916992,
+            1.070120930671692,
+            396.697021484375,
+            292.65431439876556
+          ],
+          "depth": {
+            "dominant_depth_metres": 3.375625,
+            "depth_tolerance_metres": 0.27005,
+            "post_plane_drop_metres": 0.4306249999999996,
+            "retained_height_fraction": 0.6666666666666666,
+            "cut_y": 292.65431439876556,
+            "valid_depth_bins": 24
+          },
+          "target_metrics_evaluation_only": {
+            "iou": 0.9359933679785523,
+            "target_recall": 0.9944477386119384,
+            "proposal_precision": 0.940910467638365
+          }
+        }
+      }
+    }
+  },
+  "episodes": [
+    {
+      "query_key": "FDV_initial_1_query",
+      "frame": 1,
+      "bounded_hypotheses": [
+        {
+          "source": "ordinary_3d_track",
+          "candidate_index": 1,
+          "box_xyxy": [
+            13.423948287963867,
+            428.216064453125,
+            667.948486328125,
+            538.270751953125
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "source": "ordinary_3d_track",
+          "candidate_index": 62,
+          "box_xyxy": [
+            202.179443359375,
+            0.9643399715423584,
+            721.7841796875,
+            470.6034851074219
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.06132896008249594,
+            "target_recall": 0.2375799218642683,
+            "proposal_precision": 0.07635685814607476
+          }
+        },
+        {
+          "source": "clipped_portal_depth_child",
+          "candidate_index": 52,
+          "box_xyxy": [
+            1.2912940979003906,
+            106.73300170898438,
+            290.6604309082031,
+            390.1828918457031
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.823396521663696,
+            "target_recall": 0.9238324363315111,
+            "proposal_precision": 0.8833654510483951
+          }
+        }
+      ],
+      "original_track_top3_best_iou": 0.06132896008249594,
+      "new_track_top3_best_iou": 0.823396521663696
+    },
+    {
+      "query_key": "FDV_initial_2_query",
+      "frame": 2,
+      "bounded_hypotheses": [
+        {
+          "source": "ordinary_3d_track",
+          "candidate_index": 2,
+          "box_xyxy": [
+            1.577138900756836,
+            376.1710205078125,
+            805.4839477539062,
+            537.9561767578125
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          }
+        },
+        {
+          "source": "ordinary_3d_track",
+          "candidate_index": 46,
+          "box_xyxy": [
+            320.5784912109375,
+            0.9614109992980957,
+            958.3720092773438,
+            459.5943603515625
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.0507411740813744,
+            "target_recall": 0.1778139421773329,
+            "proposal_precision": 0.06629539074370765
+          }
+        },
+        {
+          "source": "clipped_portal_depth_child",
+          "candidate_index": 49,
+          "box_xyxy": [
+            1.3917875289916992,
+            1.070120930671692,
+            396.697021484375,
+            292.65431439876556
+          ],
+          "target_metrics_evaluation_only": {
+            "iou": 0.9359933679785523,
+            "target_recall": 0.9944477386119384,
+            "proposal_precision": 0.940910467638365
+          }
+        }
+      ],
+      "original_track_top3_best_iou": 0.0507411740813744,
+      "new_track_top3_best_iou": 0.9359933679785523
+    }
+  ],
+  "metrics": {
+    "query_count": 2,
+    "bounded_candidate_count_per_query": 3,
+    "original_track_top3_coverage_frames": 0,
+    "new_track_top3_coverage_frames": 2,
+    "original_minimum_track_top3_best_iou": 0.0507411740813744,
+    "new_minimum_track_top3_best_iou": 0.823396521663696,
+    "new_mean_track_top3_best_iou": 0.8796949448211242,
+    "minimum_iou_gain": 0.7726553475823217
+  },
+  "gate": {
+    "minimum_iou": 0.8,
+    "met": true
+  },
+  "conclusion": "L10_3RSCAN_CLIPPED_PORTAL_DEPTH_CHILD_POSTHOC_DEVELOPMENT_GATE_MET",
+  "next_action": "Require source-disjoint preregistered confirmation before treating the reserved geometry slot as general evidence.",
+  "claim_boundary": "Recovers a bounded referent-region hypothesis only; it does not establish portal ownership, affordance, waypoint, arrival, safety, or handoff."
+}
