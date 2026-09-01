@@ -113,7 +113,15 @@ future obstacle occupancy intersects the wearer's route, while preserving
   evidence, while the full X75 generalization gate did not pass. Across all
   eight consumed cohorts, X75 is `1,071 TP / 122 FP / 308 FN` at
   `89.77/77.67/83.28%`, a cumulative `0 TP / -20 FP / +0.64 pp F1` over X74.
-  C37 is now consumed diagnosis material; X73 retains confirmation authority.
+  C37 then exposed a parent-hull transport contradiction: ten false-positive
+  frames declared zero-shift support while retaining nonzero reconstructed
+  velocity. X76 rejects only that all-carrier inconsistency. It changes no
+  earlier cohort and moves C37 to `133 TP / 24 FP / 39 FN` at
+  `84.71/77.33/80.85%`, or `0 TP / -10 FP / +2.38 pp F1` over X75. Across all
+  eight cohorts X76 is `1,071 TP / 112 FP / 308 FN` at
+  `90.53/77.67/83.61%`. All required constraints pass, but C37 remains 0.29 pp
+  below the 85% precision reference. X76 is Development-only; X73 retains
+  confirmation authority.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -132,11 +140,11 @@ future obstacle occupancy intersects the wearer's route, while preserving
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
 4. Do not rerun C35, C36, or C37 as confirmation. X73 remains positively
-   confirmed on C35; C36 and C37 are consumed successor-design evidence. A new
-   arm should reduce C37's remaining 34 false-positive frames without losing
-   true positives, then replay every consumed cohort before any later new
-   source. Until a full fresh gate passes, X73 retains source-disjoint
-   confirmation authority.
+   confirmed on C35; C36 and C37 are consumed successor-design evidence. Any
+   successor to X76 must reduce C37's remaining 24 false-positive frames with
+   zero TP loss across all eight consumed cohorts. Freeze an unchanged arm
+   before any later new source. Until a full fresh gate passes, X73 retains
+   source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
