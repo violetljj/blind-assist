@@ -1,0 +1,252 @@
+{
+  "schema": "blindassist-l10-3rscan-hypothesis-3d-prompt-transport-result-v1",
+  "authority": "CONSUMED_QUEUE_ROW_3_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_hypothesis_3d_prompt_transport_development_protocol_v1.json",
+  "protocol_sha256": "1c23d084a8325b2aa9c39399f602cf8d45ba06f23f0df014506e25c392cc2f42",
+  "implementation": {
+    "path": "l10_3rscan_hypothesis_3d_prompt_transport.py",
+    "sha256": "d44593da8a77a49c827c3f29450a1e060c048e5cae8a6d694e2565e51e56a6d6"
+  },
+  "cohort": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_development_cohort_v1.json",
+    "sha256": "37f5ae80d6d293ea3f7615bc4b55b670fc8b71363a809e65d41c5beb9d57b5b1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_track_development_result_v1.json",
+    "sha256": "857de925066022b4c5b71d926a4142043264a8a4fa734dab6adb05a36ab27bdd",
+    "required_conclusion": "L10_3RSCAN_POSE_DEPTH_COVISIBILITY_ACTION_TRACK_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "current_frame": 107,
+  "action_frame": 200,
+  "candidate_budget": 3,
+  "candidates": [
+    {
+      "hypothesis_rank": 1,
+      "source_candidate_index": 0,
+      "source_box_xyxy": [
+        3.0774307250976562,
+        1.5181249380111694,
+        954.517578125,
+        536.7937622070312
+      ],
+      "source_mask_sha256": "a6a3c62e40b813fce6170b3843b6234feac5b4261bd0e537cf2dc4bcf0953998",
+      "lifted_points": 28585,
+      "transported_prompt_xyxy": [
+        292.6430430044384,
+        245.5432763693364,
+        828.6469740729743,
+        504.69486910588824
+      ],
+      "projected_inside_points": 28585,
+      "depth_visible_points": 26003,
+      "action_mask_bbox_xyxy": [
+        5.0,
+        275.0,
+        823.0,
+        506.0
+      ],
+      "action_mask_sha256": "94934ff9950ac31f6675bdeae1755e221d7e3262dbd584a509f5184afab76f7d",
+      "action_mask_pixels": 104431,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.40114062475771134,
+        "target_recall": 0.49084357285575764,
+        "proposal_precision": 0.687010218992987
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.46418465705803835,
+        "target_recall": 0.6251448851360999,
+        "proposal_precision": 0.6432167482582521
+      }
+    },
+    {
+      "hypothesis_rank": 2,
+      "source_candidate_index": 3,
+      "source_box_xyxy": [
+        2.1882247924804688,
+        0.7828402519226074,
+        853.0794677734375,
+        368.9986572265625
+      ],
+      "source_mask_sha256": "5fac9f05f8c9a11d65c698d7ebdd85cc83b80a2624e91b98166ec77b9d54cb25",
+      "lifted_points": 16453,
+      "transported_prompt_xyxy": [
+        292.6430430044384,
+        268.63869243622963,
+        822.660037586957,
+        401.91954824175843
+      ],
+      "projected_inside_points": 16453,
+      "depth_visible_points": 15064,
+      "action_mask_bbox_xyxy": [
+        237.0,
+        277.0,
+        824.0,
+        397.0
+      ],
+      "action_mask_sha256": "21eba39b14776e855a302e38594c4d1a088fe7504d41ca22d51b0c782c519c7d",
+      "action_mask_pixels": 51749,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.36334201663030946,
+        "target_recall": 0.3633420166303094,
+        "proposal_precision": 1.0
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.36230756460268476,
+        "target_recall": 0.3623075646026848,
+        "proposal_precision": 1.0
+      }
+    },
+    {
+      "hypothesis_rank": 3,
+      "source_candidate_index": 4,
+      "source_box_xyxy": [
+        736.0228271484375,
+        1.4273911714553833,
+        958.1959228515625,
+        535.9226684570312
+      ],
+      "source_mask_sha256": "0827d69d97adca1fa9cec86c86a51cc17a3f9bd61a1364d4e99bb3f9c3dc99c1",
+      "lifted_points": 2117,
+      "transported_prompt_xyxy": [
+        747.2133433441651,
+        230.6090560770677,
+        891.215118874904,
+        505.9113865061393
+      ],
+      "projected_inside_points": 2117,
+      "depth_visible_points": 1726,
+      "action_mask_bbox_xyxy": [
+        747.0,
+        227.0,
+        910.0,
+        500.0
+      ],
+      "action_mask_sha256": "0dcbe7913c87df96c0a229c5579909f5d7fc8df8a79badb9abf20ffc599163d2",
+      "action_mask_pixels": 16116,
+      "prompt_target_metrics_evaluation_only": {
+        "iou": 0.13471570789514814,
+        "target_recall": 0.14293043952435486,
+        "proposal_precision": 0.7009530666515953
+      },
+      "action_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.1390065978453894,
+        "target_recall": 0.14997495366808575,
+        "proposal_precision": 0.6552551312389627
+      }
+    }
+  ],
+  "metrics": {
+    "detector_track_top3_best_iou": 0.39844736970060735,
+    "transport_sam_top3_best_iou": 0.46418465705803835,
+    "absolute_iou_gain": 0.065737287357431,
+    "transported_candidates_at_or_above_gate": 0
+  },
+  "receipts": {
+    "current_image_sha256": "17be0ddcae6e71c03abcddc56b78bf427cee7f90c475ee0c6e1627619d9a01da",
+    "action_image_sha256": "b1cd5003edabc375ca6350fa15b4ba75c0b6bcd3553231a17a4311114f915c40",
+    "info_sha256": "0747e5352762cd10944b32f2d00ea59a424ad8f94eea79ae933126ed2b77c041",
+    "current_sam": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.8049627000000328
+    },
+    "action_sam": {
+      "input_box_count": 3,
+      "input_boxes_shape": [
+        1,
+        3,
+        4
+      ],
+      "raw_pred_masks_shape": [
+        1,
+        3,
+        1,
+        256,
+        256
+      ],
+      "raw_iou_scores_shape": [
+        1,
+        3,
+        1
+      ],
+      "native_masks_shape": [
+        3,
+        1,
+        540,
+        960
+      ],
+      "native_masks_dtype": "torch.bool",
+      "multimask_output": false,
+      "iou_scores_ignored": true,
+      "postprocess": {
+        "mask_threshold": 0.0,
+        "binarize": true,
+        "max_hole_area": 0.0,
+        "max_sprinkle_area": 0.0,
+        "apply_non_overlapping_constraints": false
+      },
+      "inference_and_postprocess_seconds": 0.1572734999936074
+    }
+  },
+  "gate": {
+    "minimum_iou": 0.8,
+    "required_action_frames": 1,
+    "requirements": "At least one of the three transported action-view SAM candidates must reach IoU 0.8 with the target region, exceeding the detector-based action proposal ceiling without increasing candidate budget.",
+    "met": false
+  },
+  "runtime": {
+    "rgb_members_opened": 2,
+    "sam_mask_calls": 2,
+    "sam_masks_generated": 6,
+    "grounding_dino_calls": 0,
+    "appearance_model_calls": 0,
+    "model_training_steps": 0
+  },
+  "literature_motivation": [
+    {
+      "name": "SAMPro3D",
+      "url": "https://arxiv.org/abs/2311.17707",
+      "use": "Uses posed RGB-D geometry to carry segmentation evidence across views and prompt SAM without task-specific training."
+    },
+    {
+      "name": "MV3DIS",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Zhao_MV3DIS_Multi-View_Mask_Matching_via_3D_Guides_for_Zero-Shot_3D_CVPR_2026_paper.pdf",
+      "use": "Supports 3D-guided mask correspondence as an information source distinct from correlated appearance scores."
+    }
+  ],
+  "conclusion": "L10_3RSCAN_HYPOTHESIS_3D_PROMPT_TRANSPORT_DEVELOPMENT_GATE_NOT_MET",
+  "next_action": "Seal the consumed Development negative; do not add prompt expansion or tune transport thresholds on queue row 3.",
+  "claim_boundary": "This consumed-family Development test evaluates only whether bounded current hypotheses can create action-view target-region candidates without an action-view detector. It does not confirm generalization, select the correct target identity, or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
