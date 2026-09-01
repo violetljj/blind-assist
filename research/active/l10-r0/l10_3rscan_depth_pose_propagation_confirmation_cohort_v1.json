@@ -1,0 +1,141 @@
+{
+  "schema": "blindassist-l10-3rscan-depth-pose-propagation-confirmation-cohort-v1",
+  "authority": "FROZEN_FRESH_FAMILY_PRE_RGB_PRE_MODEL_DEPTH_POSE_PROPAGATION_CONFIRMATION_COHORT",
+  "protocol_path": "l10_3rscan_depth_pose_propagation_confirmation_freeze_protocol_v1.json",
+  "protocol_sha256": "80b9d6be2cb52492ea01c155c510e43676d885d4c7682e836a4997809d93871e",
+  "implementation": {
+    "path": "l10_3rscan_depth_pose_propagation_confirmation_freeze.py",
+    "sha256": "4fd6fba70ed804a3657f303b1ded527cf8c775b0ebe6fe9504904d796026eac4"
+  },
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "source_manifest": {
+    "54b263a3-0199-2df4-87db-40539528902d/sequence.zip": {
+      "path": "datasets/3rscan/54b263a3-0199-2df4-87db-40539528902d/sequence.zip",
+      "bytes": 43630148,
+      "sha256": "333fb12bc0e043779725f29c97d9c9045f79caafe55492a2514f8f87021df2a6"
+    },
+    "82def5da-25ba-20f9-8810-71be905b83db/sequence.zip": {
+      "path": "datasets/3rscan/82def5da-25ba-20f9-8810-71be905b83db/sequence.zip",
+      "bytes": 39252447,
+      "sha256": "e907b62d0b587e9ca45ff428acb68cf6ebf3adfea9dbf1d1f3237b8d317195f0"
+    }
+  },
+  "selection": {
+    "query_episode_ids": [
+      "DPC1",
+      "DPC2"
+    ],
+    "extra_reference_image_key": "DPC1_extra_reference",
+    "positive_authority": "First wholly unmaterialized family selected after the consumed depth-pose propagation Development gate, admitted by frozen geometry/depth rules with three references and an adjacent query pair.",
+    "reference_frames": [
+      71,
+      188,
+      74
+    ],
+    "query_frames": [
+      82,
+      83
+    ],
+    "query_frame_gap": 1,
+    "opened_rgb_members_before_freeze": 0,
+    "model_calls_before_freeze": 0
+  },
+  "images": {
+    "DPC1_reference": {
+      "episode_id": "DPC1",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 71,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        228.53858947753906,
+        136.0872039794922,
+        958.2261352539062,
+        482.7131042480469
+      ],
+      "zip_member": "frame-000071.color.jpg"
+    },
+    "DPC1_query": {
+      "episode_id": "DPC1",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 82,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.635998547077179,
+        104.0611343383789,
+        521.5469360351562,
+        366.0451354980469
+      ],
+      "zip_member": "frame-000082.color.jpg"
+    },
+    "DPC2_reference": {
+      "episode_id": "DPC2",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 188,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        18.93763542175293,
+        377.0268859863281,
+        955.7377319335938,
+        531.5775756835938
+      ],
+      "zip_member": "frame-000188.color.jpg"
+    },
+    "DPC2_query": {
+      "episode_id": "DPC2",
+      "role": "query",
+      "scan_id": "82def5da-25ba-20f9-8810-71be905b83db",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 83,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        0.32858800888061523,
+        115.92095184326172,
+        478.09075927734375,
+        366.7012939453125
+      ],
+      "zip_member": "frame-000083.color.jpg"
+    },
+    "DPC1_extra_reference": {
+      "episode_id": "DPC1",
+      "role": "reference",
+      "scan_id": "54b263a3-0199-2df4-87db-40539528902d",
+      "target_instance_id": 4,
+      "target_label": "door",
+      "frame": 74,
+      "color_size": [
+        960,
+        540
+      ],
+      "bbox_xyxy": [
+        396.87646484375,
+        1.1143616437911987,
+        957.3521118164062,
+        175.14602661132812
+      ],
+      "zip_member": "frame-000074.color.jpg"
+    }
+  },
+  "claim_boundary": "This freezes one wholly new physical target family before RGB/model access for calibrated depth-pose proposal-recall confirmation. A pass is narrow same-provider bounded proposal coverage, not top-one localization, calibrated uncertainty, open-set rejection, provider independence, raw-phone operation, exact referent binding, named entrance, ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
