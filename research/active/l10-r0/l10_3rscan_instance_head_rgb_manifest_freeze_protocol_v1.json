@@ -1,0 +1,37 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-rgb-manifest-freeze-protocol-v1",
+  "authority": "PRE_RGB_PRE_FEATURE_EXACT_MEMBER_AND_CROP_MANIFEST_FREEZE",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_freeze.py",
+    "sha256": "ef39cb99c34cf35299658e6a8242e7fc33d7198cbf0fdb2614e39a5f6295e53d"
+  },
+  "geometry_source": {
+    "path": "l10_3rscan_instance_head_negative_geometry_v1.json",
+    "sha256": "e7b51353ae1c55f4b01ba20c5adba0b14d8fb2ea2fc997e39d008d2fed4b0b50",
+    "required_schema": "blindassist-l10-3rscan-instance-head-negative-geometry-v1"
+  },
+  "source": {
+    "artifact_root": "artifacts.local",
+    "default_color_size": [
+      960,
+      540
+    ]
+  },
+  "split": {
+    "seed": "blindassist-l10-instance-head-family-split-v1",
+    "validation_family_count": 3,
+    "rule": "Order reference-family IDs by SHA-256 of seed plus family; reserve the first three complete families for model selection and use no heldout family."
+  },
+  "crop": {
+    "source_box": "Frozen provider truth box for positives; frozen geometry-projected box for negatives.",
+    "expansion": 1.15,
+    "boundary": "Expand about box center, clip to image bounds, then resize directly to 518 by 518.",
+    "augmentation": "None during descriptor materialization."
+  },
+  "gate": {
+    "minimum_train_identities": 12,
+    "minimum_validation_identities": 3
+  },
+  "next_action": "Read only these frozen RGB members, materialize one frozen DINOv2 ViT-L/14 CLS descriptor per 1.15x crop, and train the fixed small projection head using training identities while selecting epochs only on validation families.",
+  "claim_boundary": "This exact-member freeze is Development dataset construction only. It does not establish instance retrieval, portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}

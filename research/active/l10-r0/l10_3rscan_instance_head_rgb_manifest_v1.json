@@ -1,0 +1,3015 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-head-rgb-manifest-v1",
+  "authority": "PRE_RGB_PRE_FEATURE_EXACT_MEMBER_AND_CROP_MANIFEST",
+  "protocol_path": "l10_3rscan_instance_head_rgb_manifest_freeze_protocol_v1.json",
+  "protocol_sha256": "9b73c66cd212c0290d17a40eaf4f4d2c52c4328eeabd97cbf8c31a3cac4129c1",
+  "implementation": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_freeze.py",
+    "sha256": "ef39cb99c34cf35299658e6a8242e7fc33d7198cbf0fdb2614e39a5f6295e53d"
+  },
+  "geometry_source": {
+    "path": "l10_3rscan_instance_head_negative_geometry_v1.json",
+    "sha256": "e7b51353ae1c55f4b01ba20c5adba0b14d8fb2ea2fc997e39d008d2fed4b0b50",
+    "required_schema": "blindassist-l10-3rscan-instance-head-negative-geometry-v1"
+  },
+  "split": {
+    "seed": "blindassist-l10-instance-head-family-split-v1",
+    "train_reference_families": [
+      "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+      "422885ce-192d-25fc-851a-df2d675a6559",
+      "422885e9-192d-25fc-87a9-7013fe4114f2",
+      "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+      "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "4acaebc0-6c10-2a2a-852e-0226d6539299",
+      "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+      "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+      "50e7c0ad-0730-2a5f-8635-252404ee82e0"
+    ],
+    "validation_reference_families": [
+      "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+      "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "8eabc42c-5af7-2f32-87c4-bf646779aa62"
+    ],
+    "heldout_reference_families": [
+      "185d7423-3698-223c-8879-80ad9339afce",
+      "54b263a3-0199-2df4-87db-40539528902d",
+      "634d11d3-6833-255d-8cb0-12c4fb3ea031"
+    ],
+    "train_identity_count": 14,
+    "validation_identity_count": 4
+  },
+  "crop": {
+    "source_box": "Frozen provider truth box for positives; frozen geometry-projected box for negatives.",
+    "expansion": 1.15,
+    "boundary": "Expand about box center, clip to image bounds, then resize directly to 518 by 518.",
+    "augmentation": "None during descriptor materialization."
+  },
+  "identities": [
+    {
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "reference_family": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "split": "train",
+      "sample_ids": [
+        "dac6e086a8c1078f94dd3fa2",
+        "fa3d7e83d7faa20425998202",
+        "d72cb0ab04ec8c8a87e9bdea",
+        "4a26c41707042b14f91bcf23",
+        "e492be9dc54656dea67ca449",
+        "68cb73c2fe05fa959da27e4b",
+        "fa92528e3421b3db5ece42d3",
+        "055b236094b8c501496dc35e"
+      ]
+    },
+    {
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "reference_family": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+      "split": "train",
+      "sample_ids": [
+        "bcf3cf49d54b5bcbe193cdb4",
+        "dd4fe8c65f0a9145db8fbebf",
+        "67f1c2faf05e74d088df390a",
+        "f05bd945f86881bc8e31ac1d",
+        "e7d35310958143d6d424483f",
+        "829374439eea9fd5aa878ad7",
+        "f05aca6e6b45732e8eafe2e1",
+        "af4e29cc23c5632d7701dff5"
+      ]
+    },
+    {
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "reference_family": "422885ce-192d-25fc-851a-df2d675a6559",
+      "split": "train",
+      "sample_ids": [
+        "446dda5feb6fd3dabe1648a0",
+        "b23720b24d0ce8dcf00de916",
+        "b558c556fbe155ded4f1df50",
+        "c1d695b97e6beee8c504806c",
+        "0af766d0a07cbd489354ad39",
+        "d5c5d42404b809f0c5221f74",
+        "54deb161fe46f581dcfe505d",
+        "a370257d8c3ccacb377a121c"
+      ]
+    },
+    {
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "reference_family": "422885e9-192d-25fc-87a9-7013fe4114f2",
+      "split": "train",
+      "sample_ids": [
+        "fde9e5caf70b649f9ccba638",
+        "290f441576f6bdfeac1f6984",
+        "ea2a2b2ab90c9b4dc5fed0d2",
+        "c189cca8dc1b3e283a50a42b",
+        "e966458253ff03fbeec49d33",
+        "85ff43cf01c37c5e9bbc0455",
+        "58be46f6d35412c884846159",
+        "d9c2dfb28841d89171d546fa"
+      ]
+    },
+    {
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "reference_family": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+      "split": "validation",
+      "sample_ids": [
+        "eabd282a3a91f2cec0f6fc3b",
+        "ce226f92b83106376e8dd206",
+        "3058f8c767f936dac06af83e",
+        "2336aed2401a1fb094aa4223",
+        "b92e72d938463b09773134d0",
+        "7c3217bbdf248fc9bbee4faf",
+        "86849d8df84188c9da2ffacb",
+        "07dac346ac92dc02149b1b2f"
+      ]
+    },
+    {
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "reference_family": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "split": "train",
+      "sample_ids": [
+        "03267657fc654fe9836dcfb4",
+        "07278b905b05d1d611ee0bdd",
+        "31611654d2d5b39fb4f382d8",
+        "49e168902226745524d159d0",
+        "df75bc44f0442e9c7aa7eb02",
+        "b7f980c56a2ff35021360199",
+        "5c02695b642722cb95981ac0",
+        "5f16bb655250db54081745f3"
+      ]
+    },
+    {
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "reference_family": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+      "split": "train",
+      "sample_ids": [
+        "0e2c671e9d75ffd15dc5aa08",
+        "47138ec64d006e82c52f2a6a",
+        "10dc6af27d7c8ed8caf4b5e2",
+        "9431b55870b0d309eacf03ac",
+        "e59d3fbc9656491228f786fe",
+        "802bc46b63464028b88520b5",
+        "4f0cd3e5a8c48143ee00d316",
+        "a2f8785a3f608d9ddcb0a5ca"
+      ]
+    },
+    {
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "split": "train",
+      "sample_ids": [
+        "2568fb5ab4d4169092bf89e5",
+        "ce357eb1f47e6bec8e5ada26",
+        "df201b21dd30a802d116d569",
+        "862ac701288ebe65d0cac131",
+        "8a9e296c8066c02637c98036",
+        "e009bacb938b2176f8dd5d8b"
+      ]
+    },
+    {
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "split": "train",
+      "sample_ids": [
+        "1403373ec71fc42350bfd9a3",
+        "47ada6d9eb97635f71c0f947",
+        "e38dc7f1c586b79edd3d0bfd",
+        "787d0adf60b85aa78dc857ef",
+        "0c921bd6535395289e4652f3"
+      ]
+    },
+    {
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "reference_family": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "split": "train",
+      "sample_ids": [
+        "7e5fe248edc479e7fe0d1183",
+        "40180c3ad1a159c0dcc3bb07",
+        "6ffd83e54c7e0aa54fcfb9dd",
+        "0f954cbd39589f58a7a6385b",
+        "08df40c5c46e1d083ffe4d8c",
+        "43e6b89d7761b318355d39b8"
+      ]
+    },
+    {
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "reference_family": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "split": "train",
+      "sample_ids": [
+        "62ccd6e3b801523dc1bd33df",
+        "72c1a66d54020b8b6fbf1f47",
+        "55e0981d2bf6d4ef2381ea7a",
+        "d44c5c69e08e8cf7c25e6f19",
+        "ff8019b41a040b6fa8d44586",
+        "a33c318b1fb31d74d0d7e4aa",
+        "028da5560905eb28dbdc198e",
+        "5fecbee2e38b5ab71450bf25"
+      ]
+    },
+    {
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "reference_family": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+      "split": "train",
+      "sample_ids": [
+        "c9049ca2901f11c801f4b771",
+        "d6a70341e2484b2fdaef77a0",
+        "c674f1bdbd7b6e5384b5d2cc",
+        "bd0903c6b69f365e33feb46f",
+        "f84e9b40e50f538ac62d5dc9",
+        "5be87bff8fddc359d09d5074",
+        "eb45791932fc8f16e017f52e",
+        "6db3e9a668b258527a7a063a"
+      ]
+    },
+    {
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "reference_family": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+      "split": "train",
+      "sample_ids": [
+        "800cff85eb894f7793bee63e",
+        "8ed0e294c30d13f65746520d",
+        "6ebce3ff3313bb4a7d55ce5f",
+        "c9d842de65f72998bbb1a52b",
+        "2c3481c7e95de894ac6062c2",
+        "d5b9daaafd1b5ec87c46b173",
+        "e2d2e95a0e0c6c86f2b3a6be",
+        "04e090b06097322cdf6c5d95"
+      ]
+    },
+    {
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "reference_family": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+      "split": "train",
+      "sample_ids": [
+        "bfd0d1bb452a5ea760b27fae",
+        "8305de4eba741abbcaec6603",
+        "7651083f35c35ac55a6c8fb5",
+        "a21a81aeb89cf78e155f2b99",
+        "cd3c3c27522a1e785d897956",
+        "e9c345e71ec8eb37bee25b72",
+        "038178adb30b04e99a064087",
+        "e2702ee86a4ee2ff783c85ab"
+      ]
+    },
+    {
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "reference_family": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "split": "train",
+      "sample_ids": [
+        "6afd5705149d1c0afa06adf1",
+        "104e20d1fb8c11c8c86a39f6",
+        "9eea9982378750513455c7ef",
+        "4c64594c16836a33d4ae0a92",
+        "7aa8ca83528b0f05f591427d",
+        "2eb7044ec58f8d96ce41a3fa",
+        "d241c246c8f854e2a54f3893"
+      ]
+    },
+    {
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "reference_family": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "split": "validation",
+      "sample_ids": [
+        "7a338d3a4b6f994a7cfbf16e",
+        "69e1ff722789933864017865",
+        "bafc092e3184c309807ffcb6",
+        "2c4c46ff2a1df8169b4789e8",
+        "0cced80b5851e589d9053726",
+        "a4b623f47cf27bc4607a2f8e",
+        "06f24175f6a38a77cb7713fd"
+      ]
+    },
+    {
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "reference_family": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "split": "validation",
+      "sample_ids": [
+        "e4727dc291c72712bbc4633a",
+        "c2e201a552c6ddc73f18f158",
+        "4f6a2793100a11446242bcde",
+        "2ded3957a1fc164a5839ffd6",
+        "740cd878b0c8d5e98c557751",
+        "a2c658d0c891ee0a20e1bd02"
+      ]
+    },
+    {
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "reference_family": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "split": "validation",
+      "sample_ids": [
+        "e055586caeae697f189d7979",
+        "7a9a174213593e7dd2daee62",
+        "16921e599dadda4f1ef11928",
+        "f62af2f28a0b3964b0beaeb3",
+        "09dde365a35c205003e24894",
+        "92f0f8c001152197a56264dc"
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "dac6e086a8c1078f94dd3fa2",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "zip_member": "frame-000009.color.jpg",
+      "bbox_xyxy": [
+        95.28555297851562,
+        0.639045000076294,
+        657.4240112304688,
+        197.96685791015625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "fa3d7e83d7faa20425998202",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "zip_member": "frame-000012.color.jpg",
+      "bbox_xyxy": [
+        43.87220764160156,
+        0.823922872543335,
+        810.588623046875,
+        117.03401947021484
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "d72cb0ab04ec8c8a87e9bdea",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d23401e-e280-2b1a-8cef-f28df9df2618",
+      "zip_member": "frame-000092.color.jpg",
+      "bbox_xyxy": [
+        675.2054443359375,
+        21.620155334472656,
+        949.7403564453125,
+        483.33978271484375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "4a26c41707042b14f91bcf23",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "zip_member": "frame-000064.color.jpg",
+      "bbox_xyxy": [
+        817.426513671875,
+        191.42828369140625,
+        956.25537109375,
+        533.6212158203125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "e492be9dc54656dea67ca449",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "zip_member": "frame-000111.color.jpg",
+      "bbox_xyxy": [
+        46.785675048828125,
+        416.4000549316406,
+        914.1476440429688,
+        538.8767700195312
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "68cb73c2fe05fa959da27e4b",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "positive",
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "zip_member": "frame-000113.color.jpg",
+      "bbox_xyxy": [
+        341.3602294921875,
+        390.8580627441406,
+        957.9130249023438,
+        538.5728149414062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 28,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "fa92528e3421b3db5ece42d3",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "same_scene_hard_negative",
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "zip_member": "frame-000117.color.jpg",
+      "bbox_xyxy": [
+        38.406494140625,
+        1.2359650135040283,
+        935.5510864257812,
+        535.9048461914062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 6,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "055b236094b8c501496dc35e",
+      "identity_key": "1d23401e-e280-2b1a-8cef-f28df9df2618::28",
+      "role": "ordinary_negative",
+      "scan_id": "1d234014-e280-2b1a-8eab-fe44989693aa",
+      "zip_member": "frame-000105.color.jpg",
+      "bbox_xyxy": [
+        251.94711303710938,
+        83.40248107910156,
+        376.948486328125,
+        411.808837890625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 19,
+      "label": "shelf"
+    },
+    {
+      "sample_id": "bcf3cf49d54b5bcbe193cdb4",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+      "zip_member": "frame-000004.color.jpg",
+      "bbox_xyxy": [
+        2.978768825531006,
+        141.57899475097656,
+        307.1446228027344,
+        513.1138305664062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "dd4fe8c65f0a9145db8fbebf",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+      "zip_member": "frame-000069.color.jpg",
+      "bbox_xyxy": [
+        336.6882629394531,
+        74.18411254882812,
+        958.4984741210938,
+        533.61181640625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "67f1c2faf05e74d088df390a",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "3b7b33af-1b11-283e-9abd-170c6329c0e6",
+      "zip_member": "frame-000384.color.jpg",
+      "bbox_xyxy": [
+        128.89031982421875,
+        137.49488830566406,
+        669.8526611328125,
+        374.7518005371094
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "f05bd945f86881bc8e31ac1d",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+      "zip_member": "frame-000080.color.jpg",
+      "bbox_xyxy": [
+        2.6513774394989014,
+        3.5303094387054443,
+        607.9608764648438,
+        472.642578125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "e7d35310958143d6d424483f",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+      "zip_member": "frame-000180.color.jpg",
+      "bbox_xyxy": [
+        2.3939318656921387,
+        1.3296087980270386,
+        957.0737915039062,
+        533.8334350585938
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "829374439eea9fd5aa878ad7",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "positive",
+      "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+      "zip_member": "frame-000369.color.jpg",
+      "bbox_xyxy": [
+        159.25735473632812,
+        142.36619567871094,
+        660.5289306640625,
+        405.3429870605469
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "f05aca6e6b45732e8eafe2e1",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "same_scene_hard_negative",
+      "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+      "zip_member": "frame-000322.color.jpg",
+      "bbox_xyxy": [
+        0.24341019988059998,
+        181.18313598632812,
+        958.3589477539062,
+        537.2970581054688
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 32,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "af4e29cc23c5632d7701dff5",
+      "identity_key": "3b7b33af-1b11-283e-9abd-170c6329c0e6::16",
+      "role": "ordinary_negative",
+      "scan_id": "80b8588d-4a8d-222f-84c5-8c51b9af1c2f",
+      "zip_member": "frame-000234.color.jpg",
+      "bbox_xyxy": [
+        294.848388671875,
+        152.30068969726562,
+        691.7003784179688,
+        478.91265869140625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 9,
+      "label": "chair"
+    },
+    {
+      "sample_id": "446dda5feb6fd3dabe1648a0",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+      "zip_member": "frame-000065.color.jpg",
+      "bbox_xyxy": [
+        0.9079028367996216,
+        0.13059349358081818,
+        621.5205078125,
+        190.17784118652344
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "b23720b24d0ce8dcf00de916",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+      "zip_member": "frame-000067.color.jpg",
+      "bbox_xyxy": [
+        0.21261107921600342,
+        0.3142935037612915,
+        695.677734375,
+        181.8959503173828
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "b558c556fbe155ded4f1df50",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "422885ce-192d-25fc-851a-df2d675a6559",
+      "zip_member": "frame-000068.color.jpg",
+      "bbox_xyxy": [
+        1.1029064655303955,
+        23.396913528442383,
+        873.6084594726562,
+        210.2009735107422
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "c1d695b97e6beee8c504806c",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+      "zip_member": "frame-000084.color.jpg",
+      "bbox_xyxy": [
+        22.256772994995117,
+        3.594653844833374,
+        725.0684814453125,
+        527.5355224609375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "0af766d0a07cbd489354ad39",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+      "zip_member": "frame-000087.color.jpg",
+      "bbox_xyxy": [
+        0.1373918354511261,
+        2.637660503387451,
+        958.7086181640625,
+        538.2750244140625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "d5c5d42404b809f0c5221f74",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "positive",
+      "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+      "zip_member": "frame-000088.color.jpg",
+      "bbox_xyxy": [
+        315.3691711425781,
+        3.1655585765838623,
+        956.790283203125,
+        494.6732482910156
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "door"
+    },
+    {
+      "sample_id": "54deb161fe46f581dcfe505d",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "same_scene_hard_negative",
+      "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+      "zip_member": "frame-000107.color.jpg",
+      "bbox_xyxy": [
+        167.13551330566406,
+        0.1402898132801056,
+        697.8685913085938,
+        268.0844421386719
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 57,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "a370257d8c3ccacb377a121c",
+      "identity_key": "422885ce-192d-25fc-851a-df2d675a6559::13",
+      "role": "ordinary_negative",
+      "scan_id": "1c211554-f201-2d25-8680-513a91547c2f",
+      "zip_member": "frame-000157.color.jpg",
+      "bbox_xyxy": [
+        173.38523864746094,
+        1.2131773233413696,
+        868.2359619140625,
+        507.2635192871094
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "chair"
+    },
+    {
+      "sample_id": "fde9e5caf70b649f9ccba638",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+      "zip_member": "frame-000061.color.jpg",
+      "bbox_xyxy": [
+        333.60089111328125,
+        227.7938232421875,
+        958.7142333984375,
+        501.2525939941406
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "290f441576f6bdfeac1f6984",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+      "zip_member": "frame-000195.color.jpg",
+      "bbox_xyxy": [
+        1.4817639589309692,
+        119.5426025390625,
+        642.1171875,
+        484.03125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "ea2a2b2ab90c9b4dc5fed0d2",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885e9-192d-25fc-87a9-7013fe4114f2",
+      "zip_member": "frame-000857.color.jpg",
+      "bbox_xyxy": [
+        159.09786987304688,
+        358.3951110839844,
+        808.4295654296875,
+        532.5924072265625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "c189cca8dc1b3e283a50a42b",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+      "zip_member": "frame-000450.color.jpg",
+      "bbox_xyxy": [
+        1.0066009759902954,
+        0.22291043400764465,
+        537.2246704101562,
+        256.80853271484375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "e966458253ff03fbeec49d33",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+      "zip_member": "frame-000467.color.jpg",
+      "bbox_xyxy": [
+        295.98974609375,
+        103.21986389160156,
+        958.8717041015625,
+        321.7259826660156
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "85ff43cf01c37c5e9bbc0455",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "positive",
+      "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+      "zip_member": "frame-000469.color.jpg",
+      "bbox_xyxy": [
+        11.400550842285156,
+        240.34365844726562,
+        943.0512084960938,
+        517.0269775390625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "58be46f6d35412c884846159",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "same_scene_hard_negative",
+      "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+      "zip_member": "frame-000635.color.jpg",
+      "bbox_xyxy": [
+        320.8715515136719,
+        75.06756591796875,
+        793.6093139648438,
+        245.6118927001953
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "d9c2dfb28841d89171d546fa",
+      "identity_key": "422885e9-192d-25fc-87a9-7013fe4114f2::3",
+      "role": "ordinary_negative",
+      "scan_id": "422885d4-192d-25fc-862e-b0cc5a8c13e1",
+      "zip_member": "frame-000410.color.jpg",
+      "bbox_xyxy": [
+        268.01025390625,
+        112.44669342041016,
+        593.0977172851562,
+        355.4127502441406
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 11,
+      "label": "chair"
+    },
+    {
+      "sample_id": "eabd282a3a91f2cec0f6fc3b",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+      "zip_member": "frame-000054.color.jpg",
+      "bbox_xyxy": [
+        0.05115661770105362,
+        0.4772131145000458,
+        532.8961181640625,
+        277.7972717285156
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "ce226f92b83106376e8dd206",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+      "zip_member": "frame-000164.color.jpg",
+      "bbox_xyxy": [
+        188.12826538085938,
+        0.11443822830915451,
+        706.2281494140625,
+        125.57904052734375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "3058f8c767f936dac06af83e",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae9-6678-2e38-9bc2-8c31ab832242",
+      "zip_member": "frame-000165.color.jpg",
+      "bbox_xyxy": [
+        86.93978118896484,
+        23.688444137573242,
+        628.2582397460938,
+        157.2183074951172
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "2336aed2401a1fb094aa4223",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+      "zip_member": "frame-000061.color.jpg",
+      "bbox_xyxy": [
+        0.02780778519809246,
+        0.3403971493244171,
+        308.6156005859375,
+        136.10130310058594
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "b92e72d938463b09773134d0",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+      "zip_member": "frame-000063.color.jpg",
+      "bbox_xyxy": [
+        448.4269104003906,
+        11.779566764831543,
+        898.6480102539062,
+        122.86848449707031
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "7c3217bbdf248fc9bbee4faf",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "positive",
+      "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+      "zip_member": "frame-000064.color.jpg",
+      "bbox_xyxy": [
+        532.3220825195312,
+        0.05371888354420662,
+        958.4244384765625,
+        104.12055969238281
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "86849d8df84188c9da2ffacb",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "same_scene_hard_negative",
+      "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+      "zip_member": "frame-000059.color.jpg",
+      "bbox_xyxy": [
+        21.078737258911133,
+        46.53980255126953,
+        349.79364013671875,
+        200.56304931640625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "07dac346ac92dc02149b1b2f",
+      "identity_key": "43b8cae9-6678-2e38-9bc2-8c31ab832242::15",
+      "role": "ordinary_negative",
+      "scan_id": "43b8cae5-6678-2e38-98db-a2d49b1ecdfb",
+      "zip_member": "frame-000049.color.jpg",
+      "bbox_xyxy": [
+        156.3875274658203,
+        0.6439890265464783,
+        794.3049926757812,
+        538.2522583007812
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 9,
+      "label": "table"
+    },
+    {
+      "sample_id": "03267657fc654fe9836dcfb4",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "zip_member": "frame-000310.color.jpg",
+      "bbox_xyxy": [
+        0.5051798224449158,
+        1.1117279529571533,
+        686.1397094726562,
+        456.4576721191406
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "07278b905b05d1d611ee0bdd",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "zip_member": "frame-000382.color.jpg",
+      "bbox_xyxy": [
+        685.6554565429688,
+        2.541718006134033,
+        953.9064331054688,
+        361.08734130859375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "31611654d2d5b39fb4f382d8",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3",
+      "zip_member": "frame-000425.color.jpg",
+      "bbox_xyxy": [
+        9.353950500488281,
+        106.43822479248047,
+        786.3428344726562,
+        475.8136901855469
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "49e168902226745524d159d0",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "zip_member": "frame-000276.color.jpg",
+      "bbox_xyxy": [
+        250.319091796875,
+        0.6016889810562134,
+        957.564208984375,
+        311.79718017578125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "df75bc44f0442e9c7aa7eb02",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "zip_member": "frame-000326.color.jpg",
+      "bbox_xyxy": [
+        0.13275527954101562,
+        141.3572998046875,
+        864.1173095703125,
+        537.27685546875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "b7f980c56a2ff35021360199",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "positive",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "zip_member": "frame-000363.color.jpg",
+      "bbox_xyxy": [
+        4.596353530883789,
+        1.0979973077774048,
+        945.8507080078125,
+        246.2261962890625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "5c02695b642722cb95981ac0",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "same_scene_hard_negative",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "zip_member": "frame-000092.color.jpg",
+      "bbox_xyxy": [
+        2.499019145965576,
+        1.8067729473114014,
+        605.2682495117188,
+        188.76007080078125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 9,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "5f16bb655250db54081745f3",
+      "identity_key": "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8",
+      "role": "ordinary_negative",
+      "scan_id": "47319776-f9f7-2a1a-9461-d2e201735263",
+      "zip_member": "frame-000106.color.jpg",
+      "bbox_xyxy": [
+        342.805419921875,
+        236.44317626953125,
+        518.8229370117188,
+        382.2797546386719
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 13,
+      "label": "toilet"
+    },
+    {
+      "sample_id": "0e2c671e9d75ffd15dc5aa08",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+      "zip_member": "frame-000015.color.jpg",
+      "bbox_xyxy": [
+        72.27085876464844,
+        1.4625730514526367,
+        958.3660278320312,
+        471.4491882324219
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "47138ec64d006e82c52f2a6a",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+      "zip_member": "frame-000057.color.jpg",
+      "bbox_xyxy": [
+        7.73235559463501,
+        0.08373647928237915,
+        749.9072875976562,
+        484.6262512207031
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "10dc6af27d7c8ed8caf4b5e2",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "48699c02-d4a2-2f10-81c3-552d06ffcbb8",
+      "zip_member": "frame-000218.color.jpg",
+      "bbox_xyxy": [
+        150.5587615966797,
+        1.9100241661071777,
+        708.0491333007812,
+        398.2288513183594
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "9431b55870b0d309eacf03ac",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+      "zip_member": "frame-000019.color.jpg",
+      "bbox_xyxy": [
+        410.3819580078125,
+        0.22181129455566406,
+        957.847412109375,
+        327.16436767578125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "e59d3fbc9656491228f786fe",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+      "zip_member": "frame-000222.color.jpg",
+      "bbox_xyxy": [
+        0.22916088998317719,
+        1.1923211812973022,
+        953.2696533203125,
+        485.38409423828125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "802bc46b63464028b88520b5",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "positive",
+      "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+      "zip_member": "frame-000252.color.jpg",
+      "bbox_xyxy": [
+        0.5423299074172974,
+        1.568202018737793,
+        943.2359619140625,
+        538.4072875976562
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "4f0cd3e5a8c48143ee00d316",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "same_scene_hard_negative",
+      "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+      "zip_member": "frame-000218.color.jpg",
+      "bbox_xyxy": [
+        1.9708877801895142,
+        1.4610730409622192,
+        629.1203002929688,
+        488.4175109863281
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 17,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "a2f8785a3f608d9ddcb0a5ca",
+      "identity_key": "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12",
+      "role": "ordinary_negative",
+      "scan_id": "a7616234-a0aa-2dea-80e1-69c253cfa9b2",
+      "zip_member": "frame-000167.color.jpg",
+      "bbox_xyxy": [
+        299.2969665527344,
+        1.0383316278457642,
+        782.4096069335938,
+        538.9006958007812
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 19,
+      "label": "bed"
+    },
+    {
+      "sample_id": "2568fb5ab4d4169092bf89e5",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "positive",
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "zip_member": "frame-000362.color.jpg",
+      "bbox_xyxy": [
+        192.26991271972656,
+        347.3018798828125,
+        503.06524658203125,
+        492.163330078125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "ce357eb1f47e6bec8e5ada26",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "positive",
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "zip_member": "frame-000390.color.jpg",
+      "bbox_xyxy": [
+        455.9413146972656,
+        292.9032287597656,
+        734.1780395507812,
+        427.01397705078125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "df201b21dd30a802d116d569",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "positive",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000032.color.jpg",
+      "bbox_xyxy": [
+        153.7132110595703,
+        128.42848205566406,
+        496.1466369628906,
+        290.8106384277344
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "862ac701288ebe65d0cac131",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "positive",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000302.color.jpg",
+      "bbox_xyxy": [
+        162.57208251953125,
+        216.7133026123047,
+        796.314208984375,
+        497.5544128417969
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "door"
+    },
+    {
+      "sample_id": "8a9e296c8066c02637c98036",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "same_scene_hard_negative",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000098.color.jpg",
+      "bbox_xyxy": [
+        10.888800621032715,
+        2.7489840984344482,
+        792.8014526367188,
+        487.0022888183594
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 5,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "e009bacb938b2176f8dd5d8b",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15",
+      "role": "ordinary_negative",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000317.color.jpg",
+      "bbox_xyxy": [
+        300.9951171875,
+        173.71165466308594,
+        797.748046875,
+        438.2762756347656
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 7,
+      "label": "picture"
+    },
+    {
+      "sample_id": "1403373ec71fc42350bfd9a3",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "role": "positive",
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "zip_member": "frame-000401.color.jpg",
+      "bbox_xyxy": [
+        121.91268157958984,
+        346.1199951171875,
+        547.9120483398438,
+        480.12603759765625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "47ada6d9eb97635f71c0f947",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "role": "positive",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000284.color.jpg",
+      "bbox_xyxy": [
+        142.18556213378906,
+        227.30661010742188,
+        608.4486083984375,
+        413.82012939453125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "e38dc7f1c586b79edd3d0bfd",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "role": "positive",
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "zip_member": "frame-000171.color.jpg",
+      "bbox_xyxy": [
+        191.3870391845703,
+        314.5057678222656,
+        763.6679077148438,
+        502.73297119140625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "door"
+    },
+    {
+      "sample_id": "787d0adf60b85aa78dc857ef",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "role": "same_scene_hard_negative",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000098.color.jpg",
+      "bbox_xyxy": [
+        10.888800621032715,
+        2.7489840984344482,
+        792.8014526367188,
+        487.0022888183594
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 5,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "0c921bd6535395289e4652f3",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16",
+      "role": "ordinary_negative",
+      "scan_id": "198aaa74-0ba3-26f6-8792-66b6388b17ca",
+      "zip_member": "frame-000317.color.jpg",
+      "bbox_xyxy": [
+        300.9951171875,
+        173.71165466308594,
+        797.748046875,
+        438.2762756347656
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 7,
+      "label": "picture"
+    },
+    {
+      "sample_id": "7e5fe248edc479e7fe0d1183",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "positive",
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "zip_member": "frame-000393.color.jpg",
+      "bbox_xyxy": [
+        466.8647155761719,
+        55.06581115722656,
+        770.4168701171875,
+        203.20689392089844
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 35,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "40180c3ad1a159c0dcc3bb07",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "positive",
+      "scan_id": "4a9a43d6-7736-2874-84c3-86ec156a3b2d",
+      "zip_member": "frame-000402.color.jpg",
+      "bbox_xyxy": [
+        203.8447723388672,
+        136.9771728515625,
+        533.2496948242188,
+        292.824462890625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 35,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "6ffd83e54c7e0aa54fcfb9dd",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "positive",
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "zip_member": "frame-000183.color.jpg",
+      "bbox_xyxy": [
+        131.1158447265625,
+        144.1390380859375,
+        876.3280029296875,
+        506.748291015625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 35,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "0f954cbd39589f58a7a6385b",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "positive",
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "zip_member": "frame-000532.color.jpg",
+      "bbox_xyxy": [
+        491.2474060058594,
+        298.582275390625,
+        730.3102416992188,
+        418.73358154296875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 35,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "08df40c5c46e1d083ffe4d8c",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "same_scene_hard_negative",
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "zip_member": "frame-000225.color.jpg",
+      "bbox_xyxy": [
+        1.723254680633545,
+        3.8037662506103516,
+        835.9293212890625,
+        383.75335693359375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 5,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "43e6b89d7761b318355d39b8",
+      "identity_key": "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35",
+      "role": "ordinary_negative",
+      "scan_id": "198aaa76-0ba3-26f6-84de-6c13263a60bc",
+      "zip_member": "frame-000265.color.jpg",
+      "bbox_xyxy": [
+        119.23369598388672,
+        257.87225341796875,
+        542.4784545898438,
+        515.7202758789062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 7,
+      "label": "picture"
+    },
+    {
+      "sample_id": "62ccd6e3b801523dc1bd33df",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "zip_member": "frame-000051.color.jpg",
+      "bbox_xyxy": [
+        5.75893497467041,
+        0.07043357938528061,
+        847.5960693359375,
+        536.5110473632812
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "72c1a66d54020b8b6fbf1f47",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "zip_member": "frame-000264.color.jpg",
+      "bbox_xyxy": [
+        66.16796875,
+        215.18142700195312,
+        613.98095703125,
+        474.4951171875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "55e0981d2bf6d4ef2381ea7a",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e4-7736-2874-8479-0e81135ccdb0",
+      "zip_member": "frame-000276.color.jpg",
+      "bbox_xyxy": [
+        0.8117238283157349,
+        0.14128334820270538,
+        725.5732421875,
+        193.40731811523438
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "d44c5c69e08e8cf7c25e6f19",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "zip_member": "frame-000007.color.jpg",
+      "bbox_xyxy": [
+        11.065608024597168,
+        3.0959391593933105,
+        719.9000854492188,
+        537.1932983398438
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "ff8019b41a040b6fa8d44586",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "zip_member": "frame-000012.color.jpg",
+      "bbox_xyxy": [
+        374.7415771484375,
+        3.337017297744751,
+        957.96630859375,
+        527.5816040039062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "a33c318b1fb31d74d0d7e4aa",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "positive",
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "zip_member": "frame-000016.color.jpg",
+      "bbox_xyxy": [
+        4.63847541809082,
+        4.227130889892578,
+        958.9934692382812,
+        533.2039184570312
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door"
+    },
+    {
+      "sample_id": "028da5560905eb28dbdc198e",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "same_scene_hard_negative",
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "zip_member": "frame-000010.color.jpg",
+      "bbox_xyxy": [
+        6.156635284423828,
+        0.015940407291054726,
+        958.5943603515625,
+        231.9143829345703
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 27,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "5fecbee2e38b5ab71450bf25",
+      "identity_key": "4a9a43e4-7736-2874-8479-0e81135ccdb0::8",
+      "role": "ordinary_negative",
+      "scan_id": "4a9a43e6-7736-2874-8723-08ae98eccd16",
+      "zip_member": "frame-000087.color.jpg",
+      "bbox_xyxy": [
+        261.39874267578125,
+        18.55944061279297,
+        649.8662109375,
+        534.8326416015625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 18,
+      "label": "chair"
+    },
+    {
+      "sample_id": "c9049ca2901f11c801f4b771",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+      "zip_member": "frame-000269.color.jpg",
+      "bbox_xyxy": [
+        17.344118118286133,
+        110.95022583007812,
+        957.7505493164062,
+        537.6402587890625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "d6a70341e2484b2fdaef77a0",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+      "zip_member": "frame-000484.color.jpg",
+      "bbox_xyxy": [
+        0.5767261385917664,
+        140.3302001953125,
+        514.4483642578125,
+        410.1671142578125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "c674f1bdbd7b6e5384b5d2cc",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "4acaebc0-6c10-2a2a-852e-0226d6539299",
+      "zip_member": "frame-000630.color.jpg",
+      "bbox_xyxy": [
+        449.168212890625,
+        0.2402159422636032,
+        949.4588012695312,
+        519.47265625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "bd0903c6b69f365e33feb46f",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+      "zip_member": "frame-000058.color.jpg",
+      "bbox_xyxy": [
+        0.4191589653491974,
+        51.47195053100586,
+        435.1676940917969,
+        521.7101440429688
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "f84e9b40e50f538ac62d5dc9",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+      "zip_member": "frame-000071.color.jpg",
+      "bbox_xyxy": [
+        16.670475006103516,
+        130.06146240234375,
+        942.9393310546875,
+        538.6966552734375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "5be87bff8fddc359d09d5074",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "positive",
+      "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+      "zip_member": "frame-000075.color.jpg",
+      "bbox_xyxy": [
+        38.21128463745117,
+        4.108514308929443,
+        957.825927734375,
+        525.3400268554688
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "eb45791932fc8f16e017f52e",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "same_scene_hard_negative",
+      "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+      "zip_member": "frame-000057.color.jpg",
+      "bbox_xyxy": [
+        0.043905600905418396,
+        177.8952178955078,
+        385.2538146972656,
+        467.34210205078125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 35,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "6db3e9a668b258527a7a063a",
+      "identity_key": "4acaebc0-6c10-2a2a-852e-0226d6539299::4",
+      "role": "ordinary_negative",
+      "scan_id": "185d741b-3698-223c-8ba0-48db6ecbe220",
+      "zip_member": "frame-000157.color.jpg",
+      "bbox_xyxy": [
+        369.916259765625,
+        0.18797346949577332,
+        687.5590209960938,
+        286.2801208496094
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 17,
+      "label": "window"
+    },
+    {
+      "sample_id": "800cff85eb894f7793bee63e",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+      "zip_member": "frame-000050.color.jpg",
+      "bbox_xyxy": [
+        2.2395009994506836,
+        109.96721649169922,
+        801.2281494140625,
+        354.9819641113281
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "8ed0e294c30d13f65746520d",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+      "zip_member": "frame-000052.color.jpg",
+      "bbox_xyxy": [
+        47.2601432800293,
+        104.28742980957031,
+        933.9754638671875,
+        341.5970458984375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "6ebce3ff3313bb4a7d55ce5f",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d829e-8cf4-2e04-8318-b76f02d91c93",
+      "zip_member": "frame-000058.color.jpg",
+      "bbox_xyxy": [
+        503.3102111816406,
+        309.4745788574219,
+        958.1973876953125,
+        530.8242797851562
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "c9d842de65f72998bbb1a52b",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+      "zip_member": "frame-000154.color.jpg",
+      "bbox_xyxy": [
+        0.6941390037536621,
+        234.7556610107422,
+        480.4631042480469,
+        441.4654846191406
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "2c3481c7e95de894ac6062c2",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+      "zip_member": "frame-000228.color.jpg",
+      "bbox_xyxy": [
+        5.570342540740967,
+        99.53953552246094,
+        938.8550415039062,
+        234.51734924316406
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "d5b9daaafd1b5ec87c46b173",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "positive",
+      "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+      "zip_member": "frame-000231.color.jpg",
+      "bbox_xyxy": [
+        479.96124267578125,
+        0.03005124442279339,
+        958.486328125,
+        142.86782836914062
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 10,
+      "label": "door"
+    },
+    {
+      "sample_id": "e2d2e95a0e0c6c86f2b3a6be",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "same_scene_hard_negative",
+      "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+      "zip_member": "frame-000305.color.jpg",
+      "bbox_xyxy": [
+        73.34638977050781,
+        197.1324462890625,
+        955.69873046875,
+        353.68634033203125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 24,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "04e090b06097322cdf6c5d95",
+      "identity_key": "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10",
+      "role": "ordinary_negative",
+      "scan_id": "4d3d82a0-8cf4-2e04-800f-97deb20e860b",
+      "zip_member": "frame-000149.color.jpg",
+      "bbox_xyxy": [
+        218.38186645507812,
+        171.02122497558594,
+        416.4315490722656,
+        302.9013671875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 15,
+      "label": "chair"
+    },
+    {
+      "sample_id": "bfd0d1bb452a5ea760b27fae",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+      "zip_member": "frame-000107.color.jpg",
+      "bbox_xyxy": [
+        1.2137209177017212,
+        277.8559875488281,
+        520.4884033203125,
+        538.4471435546875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "8305de4eba741abbcaec6603",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+      "zip_member": "frame-000121.color.jpg",
+      "bbox_xyxy": [
+        229.78814697265625,
+        5.6310319900512695,
+        958.6253662109375,
+        257.3501281738281
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "7651083f35c35ac55a6c8fb5",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7",
+      "zip_member": "frame-000123.color.jpg",
+      "bbox_xyxy": [
+        157.51437377929688,
+        0.581976592540741,
+        876.3521118164062,
+        255.8346405029297
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "a21a81aeb89cf78e155f2b99",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+      "zip_member": "frame-000064.color.jpg",
+      "bbox_xyxy": [
+        7.863204002380371,
+        0.44790223240852356,
+        837.8847045898438,
+        348.8631591796875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "cd3c3c27522a1e785d897956",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+      "zip_member": "frame-000065.color.jpg",
+      "bbox_xyxy": [
+        0.7245742678642273,
+        0.05754704400897026,
+        897.0432739257812,
+        300.7224426269531
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "e9c345e71ec8eb37bee25b72",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "positive",
+      "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+      "zip_member": "frame-000082.color.jpg",
+      "bbox_xyxy": [
+        664.208251953125,
+        266.11871337890625,
+        958.4423217773438,
+        471.2113037109375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 3,
+      "label": "door"
+    },
+    {
+      "sample_id": "038178adb30b04e99a064087",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "same_scene_hard_negative",
+      "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+      "zip_member": "frame-000126.color.jpg",
+      "bbox_xyxy": [
+        99.7870864868164,
+        2.3020823001861572,
+        857.1967163085938,
+        345.8345642089844
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 7,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "e2702ee86a4ee2ff783c85ab",
+      "identity_key": "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3",
+      "role": "ordinary_negative",
+      "scan_id": "4d3d82b8-8cf4-2e04-803d-3091a545e57a",
+      "zip_member": "frame-000027.color.jpg",
+      "bbox_xyxy": [
+        186.1086883544922,
+        0.46322160959243774,
+        664.3588256835938,
+        398.75311279296875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 16,
+      "label": "chair"
+    },
+    {
+      "sample_id": "6afd5705149d1c0afa06adf1",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "positive",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "zip_member": "frame-000167.color.jpg",
+      "bbox_xyxy": [
+        20.599973678588867,
+        427.87091064453125,
+        949.9238891601562,
+        537.1534423828125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "104e20d1fb8c11c8c86a39f6",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "positive",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "zip_member": "frame-000172.color.jpg",
+      "bbox_xyxy": [
+        16.104787826538086,
+        376.18389892578125,
+        914.2055053710938,
+        536.1361083984375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "9eea9982378750513455c7ef",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "positive",
+      "scan_id": "50e7c0ad-0730-2a5f-8635-252404ee82e0",
+      "zip_member": "frame-000410.color.jpg",
+      "bbox_xyxy": [
+        12.856319427490234,
+        455.297607421875,
+        949.2835083007812,
+        538.040771484375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "4c64594c16836a33d4ae0a92",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "positive",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "zip_member": "frame-000541.color.jpg",
+      "bbox_xyxy": [
+        678.15283203125,
+        194.7046661376953,
+        948.821533203125,
+        536.0839233398438
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "7aa8ca83528b0f05f591427d",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "positive",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "zip_member": "frame-000542.color.jpg",
+      "bbox_xyxy": [
+        657.1713256835938,
+        246.68850708007812,
+        954.5021362304688,
+        529.6486206054688
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "doorframe"
+    },
+    {
+      "sample_id": "2eb7044ec58f8d96ce41a3fa",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "same_scene_hard_negative",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "zip_member": "frame-000553.color.jpg",
+      "bbox_xyxy": [
+        1.0131586790084839,
+        4.753616809844971,
+        744.7457885742188,
+        445.0596923828125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 5,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "d241c246c8f854e2a54f3893",
+      "identity_key": "50e7c0ad-0730-2a5f-8635-252404ee82e0::4",
+      "role": "ordinary_negative",
+      "scan_id": "531cff04-0021-28f6-8d49-e51826f43468",
+      "zip_member": "frame-000711.color.jpg",
+      "bbox_xyxy": [
+        1.2320458889007568,
+        0.4573885500431061,
+        829.9750366210938,
+        536.9391479492188
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 21,
+      "label": "window"
+    },
+    {
+      "sample_id": "7a338d3a4b6f994a7cfbf16e",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "positive",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "zip_member": "frame-001151.color.jpg",
+      "bbox_xyxy": [
+        391.94952392578125,
+        6.664907455444336,
+        958.9893798828125,
+        390.58636474609375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door"
+    },
+    {
+      "sample_id": "69e1ff722789933864017865",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "positive",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "zip_member": "frame-001159.color.jpg",
+      "bbox_xyxy": [
+        183.74368286132812,
+        12.225456237792969,
+        820.1882934570312,
+        369.778564453125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door"
+    },
+    {
+      "sample_id": "bafc092e3184c309807ffcb6",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "positive",
+      "scan_id": "531cff08-0021-28f6-8e08-ba2eeb945e09",
+      "zip_member": "frame-001164.color.jpg",
+      "bbox_xyxy": [
+        0.17524921894073486,
+        4.971428394317627,
+        552.9642333984375,
+        392.0657043457031
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door"
+    },
+    {
+      "sample_id": "2c4c46ff2a1df8169b4789e8",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "positive",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "zip_member": "frame-000534.color.jpg",
+      "bbox_xyxy": [
+        30.11794090270996,
+        189.69097900390625,
+        430.323486328125,
+        399.0255126953125
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door"
+    },
+    {
+      "sample_id": "0cced80b5851e589d9053726",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "positive",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "zip_member": "frame-000535.color.jpg",
+      "bbox_xyxy": [
+        16.881412506103516,
+        2.247812032699585,
+        436.7922668457031,
+        223.31820678710938
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 23,
+      "label": "door"
+    },
+    {
+      "sample_id": "a4b623f47cf27bc4607a2f8e",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "same_scene_hard_negative",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "zip_member": "frame-000546.color.jpg",
+      "bbox_xyxy": [
+        192.48843383789062,
+        56.63505554199219,
+        735.0184936523438,
+        143.12945556640625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "06f24175f6a38a77cb7713fd",
+      "identity_key": "531cff08-0021-28f6-8e08-ba2eeb945e09::23",
+      "role": "ordinary_negative",
+      "scan_id": "19eda6f4-55aa-29a0-8893-8eac3a4d8193",
+      "zip_member": "frame-000422.color.jpg",
+      "bbox_xyxy": [
+        159.6994171142578,
+        92.69042205810547,
+        562.585693359375,
+        346.36578369140625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 34,
+      "label": "chair"
+    },
+    {
+      "sample_id": "e4727dc291c72712bbc4633a",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "positive",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "zip_member": "frame-000218.color.jpg",
+      "bbox_xyxy": [
+        195.35250854492188,
+        209.58993530273438,
+        663.320556640625,
+        414.8711853027344
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "c2e201a552c6ddc73f18f158",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "positive",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "zip_member": "frame-000222.color.jpg",
+      "bbox_xyxy": [
+        141.95025634765625,
+        130.28622436523438,
+        680.2155151367188,
+        363.3340759277344
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "4f6a2793100a11446242bcde",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "positive",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000028.color.jpg",
+      "bbox_xyxy": [
+        84.55748748779297,
+        57.1717414855957,
+        827.7830200195312,
+        421.6373291015625
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "2ded3957a1fc164a5839ffd6",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "positive",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000183.color.jpg",
+      "bbox_xyxy": [
+        389.057373046875,
+        161.35853576660156,
+        884.2979125976562,
+        383.182373046875
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 12,
+      "label": "door"
+    },
+    {
+      "sample_id": "740cd878b0c8d5e98c557751",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "same_scene_hard_negative",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000115.color.jpg",
+      "bbox_xyxy": [
+        313.4827880859375,
+        115.23738861083984,
+        770.2280883789062,
+        375.0293273925781
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "a2c658d0c891ee0a20e1bd02",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::12",
+      "role": "ordinary_negative",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000104.color.jpg",
+      "bbox_xyxy": [
+        113.1868667602539,
+        57.31486129760742,
+        571.26025390625,
+        406.7806701660156
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 18,
+      "label": "chair"
+    },
+    {
+      "sample_id": "e055586caeae697f189d7979",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "positive",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "zip_member": "frame-000029.color.jpg",
+      "bbox_xyxy": [
+        180.39889526367188,
+        207.76773071289062,
+        721.3607788085938,
+        439.4028015136719
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "7a9a174213593e7dd2daee62",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "positive",
+      "scan_id": "8eabc42c-5af7-2f32-87c4-bf646779aa62",
+      "zip_member": "frame-000290.color.jpg",
+      "bbox_xyxy": [
+        242.74415588378906,
+        307.2855529785156,
+        695.6669311523438,
+        495.1255798339844
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "16921e599dadda4f1ef11928",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "positive",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000113.color.jpg",
+      "bbox_xyxy": [
+        224.49954223632812,
+        184.67149353027344,
+        692.6047973632812,
+        431.52728271484375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "f62af2f28a0b3964b0beaeb3",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "positive",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000115.color.jpg",
+      "bbox_xyxy": [
+        313.4827880859375,
+        115.23738861083984,
+        770.2280883789062,
+        375.0293273925781
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 4,
+      "label": "door"
+    },
+    {
+      "sample_id": "09dde365a35c205003e24894",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "same_scene_hard_negative",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000165.color.jpg",
+      "bbox_xyxy": [
+        78.78130340576172,
+        140.9736785888672,
+        956.559814453125,
+        332.42767333984375
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 8,
+      "label": "door_or_doorframe"
+    },
+    {
+      "sample_id": "92f0f8c001152197a56264dc",
+      "identity_key": "8eabc42c-5af7-2f32-87c4-bf646779aa62::4",
+      "role": "ordinary_negative",
+      "scan_id": "8eabc428-5af7-2f32-8659-97a21d90a06b",
+      "zip_member": "frame-000104.color.jpg",
+      "bbox_xyxy": [
+        113.1868667602539,
+        57.31486129760742,
+        571.26025390625,
+        406.7806701660156
+      ],
+      "color_size": [
+        960,
+        540
+      ],
+      "instance_id": 18,
+      "label": "chair"
+    }
+  ],
+  "sample_count": 131,
+  "zip_receipts": {
+    "185d741b-3698-223c-8ba0-48db6ecbe220": {
+      "path": "datasets/3rscan/185d741b-3698-223c-8ba0-48db6ecbe220/sequence.zip",
+      "bytes": 25370768,
+      "sha256": "e84092ebb5c6669dc30747a60bac9c4dbc09f4a45a5ce5e940649c50affe8a85",
+      "selected_member_count": 5
+    },
+    "198aaa74-0ba3-26f6-8792-66b6388b17ca": {
+      "path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip",
+      "bytes": 77742167,
+      "sha256": "7520e06c26cf44c8cfb778dd70baf2b7604b69b040a9c7d4bb398123d2d6b9f9",
+      "selected_member_count": 5
+    },
+    "198aaa76-0ba3-26f6-84de-6c13263a60bc": {
+      "path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip",
+      "bytes": 98742525,
+      "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16",
+      "selected_member_count": 5
+    },
+    "19eda6f4-55aa-29a0-8893-8eac3a4d8193": {
+      "path": "datasets/3rscan/19eda6f4-55aa-29a0-8893-8eac3a4d8193/sequence.zip",
+      "bytes": 139028984,
+      "sha256": "f639ecf41d167c577b5adea33ac704ef9faab9e0c811e2190dfeeac3fca01fd7",
+      "selected_member_count": 4
+    },
+    "1c211554-f201-2d25-8680-513a91547c2f": {
+      "path": "datasets/3rscan/1c211554-f201-2d25-8680-513a91547c2f/sequence.zip",
+      "bytes": 35548562,
+      "sha256": "2495bac5fe07fe3ea7af7e958c17120e716453944c8cf0546308c257a04fe129",
+      "selected_member_count": 5
+    },
+    "1d234014-e280-2b1a-8eab-fe44989693aa": {
+      "path": "datasets/3rscan/1d234014-e280-2b1a-8eab-fe44989693aa/sequence.zip",
+      "bytes": 22804430,
+      "sha256": "e3e0f3de3a366417b4b622534580b1763e489153c60e7c0a215ae846da5f7dd6",
+      "selected_member_count": 5
+    },
+    "1d23401e-e280-2b1a-8cef-f28df9df2618": {
+      "path": "datasets/3rscan/1d23401e-e280-2b1a-8cef-f28df9df2618/sequence.zip",
+      "bytes": 27142949,
+      "sha256": "41299d7a7597d15e2b7aa6e66c340b3711c89e59727478a0c1c8209b1c2b59ae",
+      "selected_member_count": 3
+    },
+    "3b7b33af-1b11-283e-9abd-170c6329c0e6": {
+      "path": "datasets/3rscan/3b7b33af-1b11-283e-9abd-170c6329c0e6/sequence.zip",
+      "bytes": 68497000,
+      "sha256": "3d7808b0a2fc36554baf51d99a0852d5fd70a007ddfa8ced8620796559a9d907",
+      "selected_member_count": 3
+    },
+    "422885ce-192d-25fc-851a-df2d675a6559": {
+      "path": "datasets/3rscan/422885ce-192d-25fc-851a-df2d675a6559/sequence.zip",
+      "bytes": 40709038,
+      "sha256": "538840784e513a9a16630e5826d4f1400ba8d8ea6a6f2a14b55ae16754a65c7f",
+      "selected_member_count": 3
+    },
+    "422885d4-192d-25fc-862e-b0cc5a8c13e1": {
+      "path": "datasets/3rscan/422885d4-192d-25fc-862e-b0cc5a8c13e1/sequence.zip",
+      "bytes": 117123930,
+      "sha256": "d340e28cbb27c902c63256c8cda974166292f2dcc52920f33976f5e8dad984c6",
+      "selected_member_count": 5
+    },
+    "422885e9-192d-25fc-87a9-7013fe4114f2": {
+      "path": "datasets/3rscan/422885e9-192d-25fc-87a9-7013fe4114f2/sequence.zip",
+      "bytes": 178095048,
+      "sha256": "3cd69de9b01d79902fb04676e84bc314aba4e80cf206074416cf421300efa5f7",
+      "selected_member_count": 3
+    },
+    "43b8cae5-6678-2e38-98db-a2d49b1ecdfb": {
+      "path": "datasets/3rscan/43b8cae5-6678-2e38-98db-a2d49b1ecdfb/sequence.zip",
+      "bytes": 20865154,
+      "sha256": "4b0f852ed0839f86170ee330ac121d5a77aa5630baf61ff0d9ed1acb1dcefe8c",
+      "selected_member_count": 5
+    },
+    "43b8cae9-6678-2e38-9bc2-8c31ab832242": {
+      "path": "datasets/3rscan/43b8cae9-6678-2e38-9bc2-8c31ab832242/sequence.zip",
+      "bytes": 34219324,
+      "sha256": "60d0d8d16c28bbf7de8657c4e93041dcace8813057c6208e5247fe365cd6ceba",
+      "selected_member_count": 3
+    },
+    "47319774-f9f7-2a1a-9412-d4a1c89c8aa3": {
+      "path": "datasets/3rscan/47319774-f9f7-2a1a-9412-d4a1c89c8aa3/sequence.zip",
+      "bytes": 68769519,
+      "sha256": "cec9710e5038b5fecec262c2cac4c60de64cd28bbc4a20620688697cecb08e4e",
+      "selected_member_count": 3
+    },
+    "47319776-f9f7-2a1a-9461-d2e201735263": {
+      "path": "datasets/3rscan/47319776-f9f7-2a1a-9461-d2e201735263/sequence.zip",
+      "bytes": 59767251,
+      "sha256": "e0beaf50f4556dc64e401a973bc8ad9dad776bbb150d10cb78cb297f5b9eb596",
+      "selected_member_count": 5
+    },
+    "48699c02-d4a2-2f10-81c3-552d06ffcbb8": {
+      "path": "datasets/3rscan/48699c02-d4a2-2f10-81c3-552d06ffcbb8/sequence.zip",
+      "bytes": 37559524,
+      "sha256": "27e2e4a6b1795bd19c3b19888454c7e6b29269b00eaedababa12eda537c9eebe",
+      "selected_member_count": 3
+    },
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d": {
+      "path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip",
+      "bytes": 75831367,
+      "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0",
+      "selected_member_count": 5
+    },
+    "4a9a43e4-7736-2874-8479-0e81135ccdb0": {
+      "path": "datasets/3rscan/4a9a43e4-7736-2874-8479-0e81135ccdb0/sequence.zip",
+      "bytes": 54048280,
+      "sha256": "3b2455650c3267df55ce33725b67d14f0ea388b37e54a1e1609b3091a3e7bd69",
+      "selected_member_count": 3
+    },
+    "4a9a43e6-7736-2874-8723-08ae98eccd16": {
+      "path": "datasets/3rscan/4a9a43e6-7736-2874-8723-08ae98eccd16/sequence.zip",
+      "bytes": 46363849,
+      "sha256": "0e6a9a6d8035ba50453da2f6400956cd6e4693205a201e5950dd62d3239ef9e5",
+      "selected_member_count": 5
+    },
+    "4acaebc0-6c10-2a2a-852e-0226d6539299": {
+      "path": "datasets/3rscan/4acaebc0-6c10-2a2a-852e-0226d6539299/sequence.zip",
+      "bytes": 112192395,
+      "sha256": "e65d570f66856b1c25ae887588213b328e2b7600065f2bd1a4bb00ffe426f1dd",
+      "selected_member_count": 3
+    },
+    "4d3d829e-8cf4-2e04-8318-b76f02d91c93": {
+      "path": "datasets/3rscan/4d3d829e-8cf4-2e04-8318-b76f02d91c93/sequence.zip",
+      "bytes": 42000796,
+      "sha256": "c9468e183c42cb15e506ff58f40f16e420aad48b731974c4a70a6711c5d29378",
+      "selected_member_count": 3
+    },
+    "4d3d82a0-8cf4-2e04-800f-97deb20e860b": {
+      "path": "datasets/3rscan/4d3d82a0-8cf4-2e04-800f-97deb20e860b/sequence.zip",
+      "bytes": 54276594,
+      "sha256": "8ac569511233824fed6e16d28f829fd3bdd31b37c4a686971961d2d4092ff1b3",
+      "selected_member_count": 5
+    },
+    "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7": {
+      "path": "datasets/3rscan/4d3d82b6-8cf4-2e04-830a-4303fa0e79c7/sequence.zip",
+      "bytes": 64479801,
+      "sha256": "079a3f64e8352fe393fe5559383cfd88d4d6fa0eb0db0bf812aa8d2197a18a57",
+      "selected_member_count": 3
+    },
+    "4d3d82b8-8cf4-2e04-803d-3091a545e57a": {
+      "path": "datasets/3rscan/4d3d82b8-8cf4-2e04-803d-3091a545e57a/sequence.zip",
+      "bytes": 80814084,
+      "sha256": "f6c5a5ab30e0afe8232b5587ba34fb0aced0951cb91cc60a92f6ea3627e822aa",
+      "selected_member_count": 5
+    },
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0": {
+      "path": "datasets/3rscan/50e7c0ad-0730-2a5f-8635-252404ee82e0/sequence.zip",
+      "bytes": 73697244,
+      "sha256": "cdb98813a9ef4e6633a721ea50c0d644456a4ccd740bb0772682bcb3ecb374fc",
+      "selected_member_count": 3
+    },
+    "531cff04-0021-28f6-8d49-e51826f43468": {
+      "path": "datasets/3rscan/531cff04-0021-28f6-8d49-e51826f43468/sequence.zip",
+      "bytes": 141840987,
+      "sha256": "bfa52ae91537a5602878b5ee847c397a5a200aabfa8c9b0e7c46346a82ca6221",
+      "selected_member_count": 4
+    },
+    "531cff08-0021-28f6-8e08-ba2eeb945e09": {
+      "path": "datasets/3rscan/531cff08-0021-28f6-8e08-ba2eeb945e09/sequence.zip",
+      "bytes": 215634586,
+      "sha256": "99bb57e82600796a45679866d1bce114263dd13e79b91f7b220a9bbef406d33e",
+      "selected_member_count": 3
+    },
+    "80b8588d-4a8d-222f-84c5-8c51b9af1c2f": {
+      "path": "datasets/3rscan/80b8588d-4a8d-222f-84c5-8c51b9af1c2f/sequence.zip",
+      "bytes": 84422341,
+      "sha256": "5f1f71a1408e5d1ae4903e899919bae12b796f7fb13c323058d865674c8913f0",
+      "selected_member_count": 5
+    },
+    "8eabc428-5af7-2f32-8659-97a21d90a06b": {
+      "path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip",
+      "bytes": 31139000,
+      "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89",
+      "selected_member_count": 6
+    },
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62": {
+      "path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip",
+      "bytes": 46320073,
+      "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da",
+      "selected_member_count": 4
+    },
+    "a7616234-a0aa-2dea-80e1-69c253cfa9b2": {
+      "path": "datasets/3rscan/a7616234-a0aa-2dea-80e1-69c253cfa9b2/sequence.zip",
+      "bytes": 42680688,
+      "sha256": "6db8fdac3fefa8e5869974f2728fa3df9897c4cce42d82a73d51409aaa2c8fae",
+      "selected_member_count": 5
+    }
+  },
+  "opened_rgb_members": 0,
+  "feature_calls": 0,
+  "model_calls": 0,
+  "split_by_identity": {
+    "1d23401e-e280-2b1a-8cef-f28df9df2618::28": "train",
+    "3b7b33af-1b11-283e-9abd-170c6329c0e6::16": "train",
+    "422885ce-192d-25fc-851a-df2d675a6559::13": "train",
+    "422885e9-192d-25fc-87a9-7013fe4114f2::3": "train",
+    "43b8cae9-6678-2e38-9bc2-8c31ab832242::15": "validation",
+    "47319774-f9f7-2a1a-9412-d4a1c89c8aa3::8": "train",
+    "48699c02-d4a2-2f10-81c3-552d06ffcbb8::12": "train",
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d::15": "train",
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d::16": "train",
+    "4a9a43d6-7736-2874-84c3-86ec156a3b2d::35": "train",
+    "4a9a43e4-7736-2874-8479-0e81135ccdb0::8": "train",
+    "4acaebc0-6c10-2a2a-852e-0226d6539299::4": "train",
+    "4d3d829e-8cf4-2e04-8318-b76f02d91c93::10": "train",
+    "4d3d82b6-8cf4-2e04-830a-4303fa0e79c7::3": "train",
+    "50e7c0ad-0730-2a5f-8635-252404ee82e0::4": "train",
+    "531cff08-0021-28f6-8e08-ba2eeb945e09::23": "validation",
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62::12": "validation",
+    "8eabc42c-5af7-2f32-87c4-bf646779aa62::4": "validation"
+  },
+  "next_action": "Read only these frozen RGB members, materialize one frozen DINOv2 ViT-L/14 CLS descriptor per 1.15x crop, and train the fixed small projection head using training identities while selecting epochs only on validation families.",
+  "conclusion": "L10_3RSCAN_INSTANCE_HEAD_RGB_MANIFEST_EVALUABLE",
+  "claim_boundary": "This exact-member freeze is Development dataset construction only. It does not establish instance retrieval, portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
