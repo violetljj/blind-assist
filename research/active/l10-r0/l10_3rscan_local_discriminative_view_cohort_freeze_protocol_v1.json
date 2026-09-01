@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist-l10-3rscan-local-discriminative-view-cohort-freeze-protocol-v1",
+  "protocol_id": "l10-3rscan-local-discriminative-view-cohort-freeze-protocol-v1",
+  "frozen_at": "2026-09-01T17:25:00+08:00",
+  "question": "Which exact source-admitted images are the two initial observations and the one fixed next-frame action for local active-view Development?",
+  "implementation": {
+    "path": "l10_3rscan_local_discriminative_view_cohort_freeze.py",
+    "sha256": "2f139907fbb5d27e59eadf7ce1ee0a93ef4c9429afe3776202fd09b5c26c7c61"
+  },
+  "source_result": {
+    "path": "l10_3rscan_local_discriminative_view_source_result_v1.json",
+    "sha256": "9ad1149c92a3a3cb9026b6e081461d2bee02cae59bfa020fab8451996f53b5aa",
+    "required_conclusion": "L10_3RSCAN_LOCAL_DISCRIMINATIVE_VIEW_DEVELOPMENT_SOURCE_EVALUABLE"
+  },
+  "truth_free_trigger_threshold": 0.02,
+  "roles": {
+    "reference": "Use all three source-frozen target references as unchanged scorer memory.",
+    "initial": "Frames 145 and 146 are the only observations available when computing the ambiguity trigger.",
+    "action": "Frame 147 is opened only if the minimum initial Top-1-minus-Top-2 fused-score margin is at most 0.02."
+  },
+  "forbidden_after_freeze": [
+    "change reference frames, initial frames, action frame, query order, trigger threshold or same-scene hard negative",
+    "use target IoU or identity in the trigger",
+    "add, drop or replace an image after seeing model output",
+    "claim this locally pre-existing family as fresh confirmation"
+  ],
+  "claim_boundary": "This freezes six image identities and roles before current RGB/model access. It is not fresh confirmation, scorer output, active-view success, a deployable selector, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}
