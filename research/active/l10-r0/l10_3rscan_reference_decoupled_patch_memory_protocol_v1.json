@@ -1,0 +1,60 @@
+{
+  "schema": "blindassist-l10-3rscan-reference-decoupled-patch-memory-protocol-v1",
+  "authority": "POST_ADAPTER_NEGATIVE_PRE_SCORE_REFERENCE_DECOUPLED_PATCH_MEMORY_PROTOCOL",
+  "implementation": {
+    "path": "l10_3rscan_reference_decoupled_patch_memory.py",
+    "sha256": "d17c172028f16d5e03db4610a028abd72c06eadb6bdbbd8d9877c7fbda12eb9b"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_foundpose_layer18_nids_posthoc.py",
+      "sha256": "7f78c0f39cc97a11c7872f82694534b756bf7e13f3d433c0c7ffe4dfd95c93c2"
+    },
+    {
+      "path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py",
+      "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"
+    }
+  ],
+  "source_protocol": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_protocol_v2.json",
+    "sha256": "06477a5d65e4350a4f45ba2ca023872751eb35f1bbdaa8a4ca781a117a4aca83",
+    "required_schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-protocol-v1"
+  },
+  "cohort": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_cohort_v1.json",
+    "sha256": "f3ceec1bd5e9671c1bd964d6a23735968d25d0c6e594e7459129ee5731775d4a",
+    "required_schema": "blindassist-l10-3rscan-asymmetric-reference-vacancy-cohort-v1"
+  },
+  "intermediate": {
+    "path": "l10_3rscan_asymmetric_reference_vacancy_intermediate_result_v1.json",
+    "sha256": "4fbfb30a3696948018f4a560ffb2acca5ff6f01053114495a2b58ec2a97743c7",
+    "required_schema": "blindassist-l10-3rscan-foundpose-layer18-nids-posthoc-result-v1",
+    "candidate_rule": "Replay exactly the 25 and 35 surviving proposals and require every regenerated SAM mask hash to match the frozen intermediate."
+  },
+  "evaluation": {
+    "reference_keys": [
+      "ARV1_reference",
+      "ARV2_reference",
+      "ARV1_extra_reference"
+    ],
+    "query_keys": [
+      "ARV1_query",
+      "ARV2_query"
+    ],
+    "truth_timing": "Rank only by the reference-decoupled local patch score; read IoU afterward."
+  },
+  "mechanism": {
+    "closed_dependency": "The predecessor chose one reference using final-layer global memory and then computed local patch evidence only against that reference.",
+    "new_decision": "Compute query-to-template layer-19 foreground patch coverage independently for every reference and let the patch channel choose its own winning reference.",
+    "score": "For each query patch, take its maximum cosine over one reference patch set and average; then take the maximum score across references.",
+    "candidate_output": "The three highest-scoring original proposals, without score fusion, axis completion, scale penalty, or truth use.",
+    "independence_boundary": "This removes a decision dependency but is not an independent sensor or confirmation source because both channels still use DINOv2 and SAM2."
+  },
+  "gate": {
+    "minimum_improved_queries": 1,
+    "requirements": "Both reachable correct proposals must enter the top three, at least one query must improve over the conditional-reference patch rank, and neither may regress."
+  },
+  "next_action": "Freeze and run this exact patch-reference decision on the next unopened source-queue family before any RGB/model access; do not retune on ARV.",
+  "fallback_action": "Close reference decoupling as insufficient and move to a new information source with active query geometry; do not add patch-score weights or ARV-specific rules.",
+  "claim_boundary": "ARV is a consumed Development family. This experiment isolates candidate referent ranking only; it is not independent confirmation and says nothing about portal ownership, access, waypoint, arrival, handoff, user benefit, or safety."
+}
