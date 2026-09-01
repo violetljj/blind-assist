@@ -4672,6 +4672,32 @@ positives and same-scene adjacent/same-looking door hard negatives. Neither
 branch upgrades referent evidence to portal ownership, affordance, access,
 waypoint, arrival, handoff, benefit, reliability, or safety.
 
+The all-view oracle is now materialized. Before opening their RGB/model
+outputs, it retained every `14` remaining source-admitted query view and kept
+frames `84/85` separate as the local one/two-frame-forward group. Initial
+frames `82/83` had target Top-1 `0/2` while retaining Recall@3 `2/2`. Re-running
+the unchanged proposal, SAM2 and DINOv2 scorer independently at each extra view
+made the target Top-1 in only `5/14` views (`35.7%`), confirming that arbitrary
+multi-view acquisition is not enough. Both local views succeeded: frame `84`
+reached Top-1 IoU `0.876683` and frame `85` reached `0.922963`, for `2/2` local
+wrong-Top-1 exclusions. The maximum target-minus-wrong fused-score margin over
+all views was frame `60` at `+0.036549`; the local margin oracle selected frame
+`84` at `+0.009589`. Record
+`L10_3RSCAN_QUERY_SIDE_DISCRIMINATIVE_VIEW_ORACLE_DEVELOPMENT_GATE_MET`.
+
+This is the first direct evidence that changing the query observation, without
+changing references or adding a score, can reverse the stable correlated
+ranking error. It is still a consumed-family oracle: truth selects the best
+view after all rankings are materialized, and the experiment reruns detection
+per view rather than associating the same three hypothesis identities across
+views. Following [PInVerify](https://doi.org/10.48550/arxiv.2605.30639), which
+found no reliable separation among its tested random, angular-farthest and
+MLLM NBV strategies, do not train an RL/VLM selector yet. The next falsifier is
+a new physical family with a truth-free ambiguity trigger and exactly one fixed
+local re-observation. If that fails despite a positive oracle ceiling, then
+train a physical-door instance head with same-door cross-view positives and
+same-scene sibling-door hard negatives. This remains referent evidence only.
+
 Evidence:
 
 - depth-pose propagation implementation/protocol/result SHA-256:
@@ -4685,6 +4711,16 @@ Evidence:
   `59425a5a247b1d5b652b0faae696db0640365455774bdeee96a6d5f71b67d7f8`,
   `426a864b3a36255ea855dcae22bcf4de591faecc8557cca3333514cf0254cc62`,
   and `f2e0af92b3b9c600ca03c35c66e299eb9d3a1ce309369faabac06747f1e8b5f6`.
+
+- discriminative-view oracle freeze implementation/protocol/cohort,
+  extra-view roster, evaluator implementation/protocol/result SHA-256:
+  `f919735c6c471d126d9285f2e9dc9b4c01bfdbb7f56ce904f3a044df2f125d37`,
+  `f565d37dd2adf2e93b3446eef74d391683634552c214d38e873f19c8575f06b9`,
+  `457cfb97ca450013dc8c39133536e0abfb9c2c2faabbeb1b9f0f854727e6e130`,
+  `7c5c2652b288a63eccf6f54dc8d85722d8bc11990ca76ac48038c21a9a689ec2`,
+  `1e7f3a5f3d99c04d659a69b5d6ed2af7baa5c3635bbbc2d79544edfb7123d50b`,
+  `25b8702743b70161ce15d3a3a4cd2b1f28e4d941ebb2b7939bd375042482c86b`,
+  and `591956e07e4fd905858d48d4711b4e737c5a11da97c83f603dda1ad8a56669ce`.
 
 - tenth-family temporal-scale vacancy download/source/freeze/cohort,
   intermediate, confirmation implementation/protocol/result SHA-256:

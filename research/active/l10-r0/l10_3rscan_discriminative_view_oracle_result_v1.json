@@ -1,0 +1,462 @@
+{
+  "schema": "blindassist-l10-3rscan-discriminative-view-oracle-result-v1",
+  "authority": "CONSUMED_ELEVENTH_FAMILY_QUERY_SIDE_VIEW_ORACLE_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_discriminative_view_oracle_protocol_v1.json",
+  "protocol_sha256": "25b8702743b70161ce15d3a3a4cd2b1f28e4d941ebb2b7939bd375042482c86b",
+  "implementation": {
+    "path": "l10_3rscan_discriminative_view_oracle.py",
+    "sha256": "1e7f3a5f3d99c04d659a69b5d6ed2af7baa5c3635bbbc2d79544edfb7123d50b"
+  },
+  "conclusion": "L10_3RSCAN_QUERY_SIDE_DISCRIMINATIVE_VIEW_ORACLE_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "initial_query_count": 2,
+    "initial_target_top1_queries": 0,
+    "initial_target_recall_at_3_queries": 2,
+    "extra_view_count": 14,
+    "extra_view_proposal_opportunities": 13,
+    "all_extra_view_target_top1_views": 5,
+    "all_extra_view_wrong_top1_exclusion_fraction": 0.35714285714285715,
+    "local_one_step_view_count": 2,
+    "local_one_step_target_top1_views": 2,
+    "local_one_step_wrong_top1_exclusion_fraction": 1.0,
+    "wide_baseline_view_count": 12,
+    "wide_baseline_target_top1_views": 3,
+    "oracle_one_extra_view_target_top1": true
+  },
+  "oracle_view": {
+    "query_key": "DVO_frame_000060_query",
+    "frame": 60,
+    "minimum_frame_distance_from_initial": 22,
+    "proposal_opportunity": true,
+    "target_top1": true,
+    "top1_iou_evaluation_only": 0.5518883049327425,
+    "target_recall_at_3": true,
+    "best_reachable_iou_evaluation_only": 0.8476457018916581,
+    "first_target_rank_evaluation_only": 1,
+    "best_target_score_evaluation_only": 0.8337999880313873,
+    "best_wrong_score_evaluation_only": 0.7972513735294342,
+    "target_minus_wrong_score_margin_evaluation_only": 0.036548614501953125,
+    "target_visibility_receipt": {
+      "visible_target_vertices": 994,
+      "depth_visible_ratio": 0.719768283852281,
+      "bbox_short_side_fraction": 0.4938752350983796,
+      "bbox_aspect_ratio": 2.979260689801011,
+      "bbox_xyxy": [
+        141.78834533691406,
+        146.00799560546875,
+        936.335205078125,
+        412.70062255859375
+      ]
+    }
+  },
+  "local_one_step_oracle_view": {
+    "query_key": "DVO_frame_000084_query",
+    "frame": 84,
+    "minimum_frame_distance_from_initial": 1,
+    "proposal_opportunity": true,
+    "target_top1": true,
+    "top1_iou_evaluation_only": 0.8766828297062834,
+    "target_recall_at_3": true,
+    "best_reachable_iou_evaluation_only": 0.8766828297062834,
+    "first_target_rank_evaluation_only": 1,
+    "best_target_score_evaluation_only": 0.8087009489536285,
+    "best_wrong_score_evaluation_only": 0.7991117835044861,
+    "target_minus_wrong_score_margin_evaluation_only": 0.009589165449142456,
+    "target_visibility_receipt": {
+      "visible_target_vertices": 1174,
+      "depth_visible_ratio": 0.9710504549214226,
+      "bbox_short_side_fraction": 0.47031710589373554,
+      "bbox_aspect_ratio": 1.7464063547376907,
+      "bbox_xyxy": [
+        4.055760383605957,
+        150.78025817871094,
+        447.5927429199219,
+        404.7514953613281
+      ]
+    }
+  },
+  "initial_query_receipts": {
+    "DPC1_query": {
+      "frame": 82,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.07916617306422265,
+      "target_recall_at_3": true,
+      "best_top3_iou_evaluation_only": 0.8832697662986355,
+      "first_target_rank_evaluation_only": 2
+    },
+    "DPC2_query": {
+      "frame": 83,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.009435065175596672,
+      "target_recall_at_3": true,
+      "best_top3_iou_evaluation_only": 0.8595016433387833,
+      "first_target_rank_evaluation_only": 3
+    }
+  },
+  "extra_view_receipts": {
+    "DVO_frame_000043_query": {
+      "frame": 43,
+      "minimum_frame_distance_from_initial": 39,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.05333199653969167,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.655937562841316,
+      "first_target_rank_evaluation_only": 8,
+      "best_target_score_evaluation_only": 0.6964043080806732,
+      "best_wrong_score_evaluation_only": 0.7718427181243896,
+      "target_minus_wrong_score_margin_evaluation_only": -0.07543841004371643,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 118,
+        "depth_visible_ratio": 0.41843971631205673,
+        "bbox_short_side_fraction": 0.20325317139978763,
+        "bbox_aspect_ratio": 5.8447583742735905,
+        "bbox_xyxy": [
+          313.26788330078125,
+          0.2317594289779663,
+          954.7693481445312,
+          109.98847198486328
+        ]
+      }
+    },
+    "DVO_frame_000046_query": {
+      "frame": 46,
+      "minimum_frame_distance_from_initial": 36,
+      "proposal_opportunity": false,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.35881216086918666,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.35881216086918666,
+      "first_target_rank_evaluation_only": null,
+      "best_target_score_evaluation_only": null,
+      "best_wrong_score_evaluation_only": 0.7441489100456238,
+      "target_minus_wrong_score_margin_evaluation_only": null,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 221,
+        "depth_visible_ratio": 0.3189033189033189,
+        "bbox_short_side_fraction": 0.35085014899571737,
+        "bbox_aspect_ratio": 5.04815159925789,
+        "bbox_xyxy": [
+          0.24101968109607697,
+          1.011348009109497,
+          956.6591796875,
+          190.47042846679688
+        ]
+      }
+    },
+    "DVO_frame_000051_query": {
+      "frame": 51,
+      "minimum_frame_distance_from_initial": 31,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.08460785583484381,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8850587858639342,
+      "first_target_rank_evaluation_only": 5,
+      "best_target_score_evaluation_only": 0.7184012234210968,
+      "best_wrong_score_evaluation_only": 0.7398768365383148,
+      "target_minus_wrong_score_margin_evaluation_only": -0.021475613117218018,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 238,
+        "depth_visible_ratio": 0.4296028880866426,
+        "bbox_short_side_fraction": 0.5739167248761212,
+        "bbox_aspect_ratio": 2.66992736277523,
+        "bbox_xyxy": [
+          130.94647216796875,
+          118.7078628540039,
+          958.3970947265625,
+          428.6228942871094
+        ]
+      }
+    },
+    "DVO_frame_000054_query": {
+      "frame": 54,
+      "minimum_frame_distance_from_initial": 28,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.0,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8684316787731388,
+      "first_target_rank_evaluation_only": 7,
+      "best_target_score_evaluation_only": 0.7435290217399597,
+      "best_wrong_score_evaluation_only": 0.8194073736667633,
+      "target_minus_wrong_score_margin_evaluation_only": -0.07587835192680359,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 258,
+        "depth_visible_ratio": 0.46236559139784944,
+        "bbox_short_side_fraction": 0.5609093842683015,
+        "bbox_aspect_ratio": 2.844532786936036,
+        "bbox_xyxy": [
+          95.10386657714844,
+          235.6985321044922,
+          956.6874389648438,
+          538.589599609375
+        ]
+      }
+    },
+    "DVO_frame_000055_query": {
+      "frame": 55,
+      "minimum_frame_distance_from_initial": 27,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.0,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8748450812783963,
+      "first_target_rank_evaluation_only": 4,
+      "best_target_score_evaluation_only": 0.7364430725574493,
+      "best_wrong_score_evaluation_only": 0.8282213807106018,
+      "target_minus_wrong_score_margin_evaluation_only": -0.09177830815315247,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 280,
+        "depth_visible_ratio": 0.4666666666666667,
+        "bbox_short_side_fraction": 0.5632237752278646,
+        "bbox_aspect_ratio": 2.9048627610816564,
+        "bbox_xyxy": [
+          74.93075561523438,
+          213.26736450195312,
+          958.4181518554688,
+          517.408203125
+        ]
+      }
+    },
+    "DVO_frame_000056_query": {
+      "frame": 56,
+      "minimum_frame_distance_from_initial": 26,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.029526988343278278,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8292053417240173,
+      "first_target_rank_evaluation_only": 9,
+      "best_target_score_evaluation_only": 0.7239130735397339,
+      "best_wrong_score_evaluation_only": 0.8197559118270874,
+      "target_minus_wrong_score_margin_evaluation_only": -0.09584283828735352,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 326,
+        "depth_visible_ratio": 0.5141955835962145,
+        "bbox_short_side_fraction": 0.5661532649287471,
+        "bbox_aspect_ratio": 3.005205532364067,
+        "bbox_xyxy": [
+          35.17507553100586,
+          184.12513732910156,
+          953.934814453125,
+          489.847900390625
+        ]
+      }
+    },
+    "DVO_frame_000057_query": {
+      "frame": 57,
+      "minimum_frame_distance_from_initial": 25,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.07719615565335398,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8759417510076358,
+      "first_target_rank_evaluation_only": 14,
+      "best_target_score_evaluation_only": 0.7204725742340088,
+      "best_wrong_score_evaluation_only": 0.7992488741874695,
+      "target_minus_wrong_score_margin_evaluation_only": -0.0787762999534607,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 351,
+        "depth_visible_ratio": 0.5518867924528302,
+        "bbox_short_side_fraction": 0.5514008416069879,
+        "bbox_aspect_ratio": 3.1296968217219616,
+        "bbox_xyxy": [
+          0.006918949540704489,
+          143.3561553955078,
+          931.8943481445312,
+          441.11260986328125
+        ]
+      }
+    },
+    "DVO_frame_000058_query": {
+      "frame": 58,
+      "minimum_frame_distance_from_initial": 24,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.03346504078062805,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8427708633028322,
+      "first_target_rank_evaluation_only": 11,
+      "best_target_score_evaluation_only": 0.7124203145503998,
+      "best_wrong_score_evaluation_only": 0.7623421847820282,
+      "target_minus_wrong_score_margin_evaluation_only": -0.04992187023162842,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 339,
+        "depth_visible_ratio": 0.5584843492586491,
+        "bbox_short_side_fraction": 0.5298410062436705,
+        "bbox_aspect_ratio": 3.1723131189393676,
+        "bbox_xyxy": [
+          1.3784441947937012,
+          81.91008758544922,
+          909.0220947265625,
+          368.02423095703125
+        ]
+      }
+    },
+    "DVO_frame_000059_query": {
+      "frame": 59,
+      "minimum_frame_distance_from_initial": 23,
+      "proposal_opportunity": true,
+      "target_top1": true,
+      "top1_iou_evaluation_only": 0.5448413848604614,
+      "target_recall_at_3": true,
+      "best_reachable_iou_evaluation_only": 0.8371510793857704,
+      "first_target_rank_evaluation_only": 1,
+      "best_target_score_evaluation_only": 0.8199978768825531,
+      "best_wrong_score_evaluation_only": 0.7888308465480804,
+      "target_minus_wrong_score_margin_evaluation_only": 0.031167030334472656,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 924,
+        "depth_visible_ratio": 0.6963074604370761,
+        "bbox_short_side_fraction": 0.5060100696705006,
+        "bbox_aspect_ratio": 2.9551076417347386,
+        "bbox_xyxy": [
+          114.71147155761719,
+          113.85957336425781,
+          922.18115234375,
+          387.1050109863281
+        ]
+      }
+    },
+    "DVO_frame_000060_query": {
+      "frame": 60,
+      "minimum_frame_distance_from_initial": 22,
+      "proposal_opportunity": true,
+      "target_top1": true,
+      "top1_iou_evaluation_only": 0.5518883049327425,
+      "target_recall_at_3": true,
+      "best_reachable_iou_evaluation_only": 0.8476457018916581,
+      "first_target_rank_evaluation_only": 1,
+      "best_target_score_evaluation_only": 0.8337999880313873,
+      "best_wrong_score_evaluation_only": 0.7972513735294342,
+      "target_minus_wrong_score_margin_evaluation_only": 0.036548614501953125,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 994,
+        "depth_visible_ratio": 0.719768283852281,
+        "bbox_short_side_fraction": 0.4938752350983796,
+        "bbox_aspect_ratio": 2.979260689801011,
+        "bbox_xyxy": [
+          141.78834533691406,
+          146.00799560546875,
+          936.335205078125,
+          412.70062255859375
+        ]
+      }
+    },
+    "DVO_frame_000061_query": {
+      "frame": 61,
+      "minimum_frame_distance_from_initial": 21,
+      "proposal_opportunity": true,
+      "target_top1": false,
+      "top1_iou_evaluation_only": 0.0,
+      "target_recall_at_3": false,
+      "best_reachable_iou_evaluation_only": 0.8528674437953322,
+      "first_target_rank_evaluation_only": 9,
+      "best_target_score_evaluation_only": 0.7119686305522919,
+      "best_wrong_score_evaluation_only": 0.797563910484314,
+      "target_minus_wrong_score_margin_evaluation_only": -0.0855952799320221,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 936,
+        "depth_visible_ratio": 0.6969471332836932,
+        "bbox_short_side_fraction": 0.483485186541522,
+        "bbox_aspect_ratio": 3.011315718571361,
+        "bbox_xyxy": [
+          143.29978942871094,
+          176.78067016601562,
+          929.5001220703125,
+          437.8626708984375
+        ]
+      }
+    },
+    "DVO_frame_000062_query": {
+      "frame": 62,
+      "minimum_frame_distance_from_initial": 20,
+      "proposal_opportunity": true,
+      "target_top1": true,
+      "top1_iou_evaluation_only": 0.5140892011917478,
+      "target_recall_at_3": true,
+      "best_reachable_iou_evaluation_only": 0.8722445748098293,
+      "first_target_rank_evaluation_only": 1,
+      "best_target_score_evaluation_only": 0.7814199030399323,
+      "best_wrong_score_evaluation_only": 0.7735810875892639,
+      "target_minus_wrong_score_margin_evaluation_only": 0.007838815450668335,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 1046,
+        "depth_visible_ratio": 0.6945551128818062,
+        "bbox_short_side_fraction": 0.48700824313693575,
+        "bbox_aspect_ratio": 2.945963228553795,
+        "bbox_xyxy": [
+          183.74154663085938,
+          216.5732879638672,
+          958.4840698242188,
+          479.5577392578125
+        ]
+      }
+    },
+    "DVO_frame_000084_query": {
+      "frame": 84,
+      "minimum_frame_distance_from_initial": 1,
+      "proposal_opportunity": true,
+      "target_top1": true,
+      "top1_iou_evaluation_only": 0.8766828297062834,
+      "target_recall_at_3": true,
+      "best_reachable_iou_evaluation_only": 0.8766828297062834,
+      "first_target_rank_evaluation_only": 1,
+      "best_target_score_evaluation_only": 0.8087009489536285,
+      "best_wrong_score_evaluation_only": 0.7991117835044861,
+      "target_minus_wrong_score_margin_evaluation_only": 0.009589165449142456,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 1174,
+        "depth_visible_ratio": 0.9710504549214226,
+        "bbox_short_side_fraction": 0.47031710589373554,
+        "bbox_aspect_ratio": 1.7464063547376907,
+        "bbox_xyxy": [
+          4.055760383605957,
+          150.78025817871094,
+          447.5927429199219,
+          404.7514953613281
+        ]
+      }
+    },
+    "DVO_frame_000085_query": {
+      "frame": 85,
+      "minimum_frame_distance_from_initial": 2,
+      "proposal_opportunity": true,
+      "target_top1": true,
+      "top1_iou_evaluation_only": 0.9229631573626225,
+      "target_recall_at_3": true,
+      "best_reachable_iou_evaluation_only": 0.9229631573626225,
+      "first_target_rank_evaluation_only": 1,
+      "best_target_score_evaluation_only": 0.7980262339115143,
+      "best_wrong_score_evaluation_only": 0.792556881904602,
+      "target_minus_wrong_score_margin_evaluation_only": 0.0054693520069122314,
+      "target_visibility_receipt": {
+        "visible_target_vertices": 1130,
+        "depth_visible_ratio": 0.9800520381613183,
+        "bbox_short_side_fraction": 0.4782712865758825,
+        "bbox_aspect_ratio": 1.6594190544469425,
+        "bbox_xyxy": [
+          1.0416406393051147,
+          215.82789611816406,
+          429.6139831542969,
+          474.0943908691406
+        ]
+      }
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "PInVerify: An Offline Embodied Benchmark for Active Instance Verification",
+      "url": "https://doi.org/10.48550/arxiv.2605.30639",
+      "use": "Evaluate the oracle ceiling before policy learning because reported random, angular-farthest and MLLM NBV strategies did not show reliable gains."
+    },
+    {
+      "source": "Active Perception for Ambiguous Objects Classification",
+      "url": "https://arxiv.org/abs/2108.00737",
+      "use": "Choose a view by reduction in ambiguity between the target and current wrong candidates, not by visibility or distance alone."
+    }
+  ],
+  "claim_boundary": "This consumed-family Development result can establish only that query-side observation choice has a nonzero local oracle ceiling for target Top-1 under the unchanged scorer. It does not establish a deployable view selector, cross-view identity association, fresh transfer, calibrated uncertainty, exact-instance binding, portal ownership, affordance, access, traversability, waypoint, arrival, handoff, benefit, reliability or safety."
+}

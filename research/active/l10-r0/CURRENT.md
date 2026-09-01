@@ -560,6 +560,19 @@ contract.
   hypotheses fixed, enumerate nearby query views, and measure the oracle view
   that most increases the true-versus-current-distractor margin. Do not add
   another correlated appearance score or tune this consumed family.
+- **Query-side discriminative-view oracle:** all `14` remaining source-admitted
+  views were enumerated before their RGB/model outputs, with frames `84/85`
+  isolated as one/two-frame-forward local observations. Initial frames `82/83`
+  had target Top-1 `0/2` but Recall@3 `2/2`. The unchanged detector/scorer made
+  the target Top-1 in `5/14` extra views, so arbitrary multi-view remained weak
+  (`35.7%`); critically, both local views succeeded (`2/2`, IoU
+  `0.876683/0.922963`). The maximum target-minus-wrong fused-score margin was
+  frame `60` at `+0.036549`; the local oracle chose frame `84` at `+0.009589`.
+  Record `L10_3RSCAN_QUERY_SIDE_DISCRIMINATIVE_VIEW_ORACLE_DEVELOPMENT_GATE_MET`.
+  This proves a nonzero local observation ceiling, not a runnable selector or
+  cross-view persistence of the same hypotheses. Next freeze a new physical
+  family and test one truth-free ambiguity trigger plus one fixed local
+  re-observation; do not train RL while that simple policy remains untested.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -819,6 +832,12 @@ contract.
    ceiling is absent should the line train a physical-door instance head with
    same-door positives and same-scene sibling-door hard negatives. All of this
    remains referent evidence, not affordance, waypoint, arrival, or handoff.
+   The consumed-family oracle is now positive: unchanged initial Top-1 was
+   `0/2` with Recall@3 `2/2`; all-view Top-1 was only `5/14`, but both fixed
+   local forward views recovered the target (`2/2`, IoU
+   `0.876683/0.922963`). The next authority-changing step is therefore a fresh
+   family confirmation of a truth-free ambiguity trigger followed by exactly
+   one fixed local re-observation, not an instance-head training branch yet.
 5. Keep active actions tied to the actual deficit: `APPROACH`, `SIDESTEP/PAN`,
    `SWEEP`, or `HOLD`. An action proposal is not an arrival or handoff.
 
@@ -895,6 +914,8 @@ contract.
   [l10_3rscan_depth_pose_propagation_posthoc_result_v1.json](l10_3rscan_depth_pose_propagation_posthoc_result_v1.json)
 - Fresh eleventh-family bounded-set/propagation-attribution result:
   [l10_3rscan_depth_pose_propagation_confirmation_result_v1.json](l10_3rscan_depth_pose_propagation_confirmation_result_v1.json)
+- Consumed eleventh-family query-side discriminative-view oracle result:
+  [l10_3rscan_discriminative_view_oracle_result_v1.json](l10_3rscan_discriminative_view_oracle_result_v1.json)
 - 3RScan reference-conditioned cycle-prompt result:
   [l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json)
 - 3RScan native-reference-mask ablation result:
