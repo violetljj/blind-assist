@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist-l10-3rscan-instance-residual-adapter-train-protocol-v1",
+  "authority": "POST_V1_NEGATIVE_PRE_V2_SCORE_IDENTITY_PRESERVING_ADAPTER_PROTOCOL",
+  "implementation": {
+    "path": "l10_3rscan_instance_residual_adapter_train.py",
+    "sha256": "d466dfd02d3aadec529ded9fe0d4746f2b4ee3d2af2fec2dfdc226d57e9b664a"
+  },
+  "dependency": {
+    "path": "l10_3rscan_instance_head_train.py",
+    "sha256": "b1b2c4156ac09eacc3c276901215c5149a778c10aaf886dfb788ae572466eb3d"
+  },
+  "manifest": {
+    "path": "l10_3rscan_instance_head_rgb_manifest_v1.json",
+    "sha256": "76d8207a0560be66c5cf1aec31ec7130fc840bc256de0532460f736f7566539b",
+    "required_schema": "blindassist-l10-3rscan-instance-head-rgb-manifest-v1"
+  },
+  "descriptor_result": {
+    "path": "l10_3rscan_instance_head_descriptor_materialize_result_v1.json",
+    "sha256": "56c7e83e8f1daf760d24d0756fb023deae39ffb8248bd9cb17dc6d472f0a602a",
+    "required_schema": "blindassist-l10-3rscan-instance-head-descriptor-materialize-result-v1"
+  },
+  "predecessor": {
+    "path": "l10_3rscan_instance_head_train_result_v1.json",
+    "sha256": "2ae198a64c97bdae014fc303f35f2a009b2fedbf293a49c44a4a90e88898d95a",
+    "required_schema": "blindassist-l10-3rscan-instance-head-train-result-v1",
+    "required_conclusion": "L10_3RSCAN_INSTANCE_HEAD_TRAIN_VALIDATION_DEVELOPMENT_GATE_NOT_MET",
+    "closed_direction": "A standalone 1024-256-128 projection may not replace the already-strong frozen embedding."
+  },
+  "source": {
+    "artifact_root": "artifacts.local"
+  },
+  "adapter": {
+    "dimension": 1024,
+    "rank": 64,
+    "residual_scale": 0.2,
+    "architecture": "L2-normalize(x + 0.2 * zero-initialized Linear(64,1024)(GELU(Linear(1024,64)(LayerNorm(x)))))",
+    "initial_function": "Exact frozen DINOv2 identity mapping at epoch 0.",
+    "backbone_updates": 0
+  },
+  "loss": {
+    "positive_hard_margin": 0.1,
+    "hard_ordinary_margin": 0.05,
+    "hard_ordinary_weight": 0.5,
+    "preservation_weight": 0.25,
+    "positive_rule": "For each positive anchor, use its least-similar other physical-instance view.",
+    "hierarchy": "same physical door > same-scene different door > ordinary different-class instance",
+    "self_limiting": "Hinge terms stop producing gradients once their local margin is satisfied."
+  },
+  "training": {
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.001,
+    "epochs": 300,
+    "validation_interval_epochs": 5,
+    "seed": 104729,
+    "device": "cpu deterministic full cohort"
+  },
+  "selection": {
+    "candidate_epoch_zero": "The exact frozen DINOv2 identity mapping is a valid candidate and prevents validation regression.",
+    "split": "Only the three manifest-frozen validation families may select an epoch.",
+    "order": "Lexicographically maximize validation ranking accuracy, positive-hard accuracy, hierarchy accuracy, mean positive-hard gap, mean hard-ordinary gap, then prefer the earliest epoch.",
+    "final_heldout_access": "Forbidden during training and epoch selection."
+  },
+  "literature_motivation": [
+    {
+      "name": "EGA",
+      "url": "https://arxiv.org/html/2605.05674",
+      "use": "Zero-initialized residual mapping, local self-limiting triplet loss, and hypersphere projection preserve unseen-class geometry."
+    },
+    {
+      "name": "AdapterTune",
+      "url": "https://doi.org/10.48550/arxiv.2603.14706",
+      "use": "A zero-initialized low-rank up-projection makes adaptation start exactly at the pretrained function."
+    }
+  ],
+  "gate": {
+    "maximum_validation_one_minus_cosine": 0.02,
+    "requirements": "Validation ranking and positive-hard gap may not decrease, hard-ordinary gap must improve, and maximum validation cosine drift may not exceed 0.02."
+  },
+  "next_action": "Freeze one final heldout evaluation on the untouched eleventh-family proposal failure, fresh active-view family, and local Development family.",
+  "fallback_action": "Retain raw DINOv2 and test a non-parametric foreground patch-memory mechanism; do not inspect final heldout families.",
+  "claim_boundary": "This is post-V1 Development model selection on the same frozen train/validation split. Final heldout families remain untouched; portal ownership, access, waypoint, arrival, handoff, user benefit, and safety remain unevaluated."
+}
