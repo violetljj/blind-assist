@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist-l10-3rscan-pose-depth-covisibility-action-select-protocol-v1",
+  "authority": "CONSUMED_QUEUE_ROW_3_POST_FAILURE_PRE_ACTION_RGB_PRE_PROPOSAL_DEVELOPMENT",
+  "implementation": {
+    "path": "l10_3rscan_pose_depth_covisibility_action_select.py",
+    "sha256": "252646063ce7840d9478fd69f69c6036a2ddaa3b4ab3627fad85eaa8effc7d70"
+  },
+  "dependencies": [
+    {
+      "path": "l10_3rscan_query_mask_3d_track.py",
+      "sha256": "08e452411c75f95843c0aa5e4bfeab197d36fc99d7e424fdf15111369b881684"
+    },
+    {
+      "path": "l10_3rscan_reference_pixel_field.py",
+      "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"
+    },
+    {
+      "path": "l10_3rscan_temporal_scale_vacancy_confirmation_source.py",
+      "sha256": "9296992ba2f82704531c1a337327772aeab47f36a39fe84b7490913455d568c6"
+    }
+  ],
+  "queue_index": 3,
+  "source_result": {
+    "path": "l10_3rscan_discriminative_view_source_queue_continue_result_v2.json",
+    "sha256": "faeb7c501c48aacd425fe9d32db3a2197c50fd85b61849eb54e8450bd0b216a3"
+  },
+  "base_source_protocol": {
+    "path": "l10_3rscan_discriminative_view_source_queue_protocol_v1.json",
+    "sha256": "8e4f9c59173d2debff91d05f019c3ca84e422536116e70c71c59ce9bb46d2a9e"
+  },
+  "cohort": {
+    "path": "l10_3rscan_query_mask_3d_track_confirmation_cohort_v2.json",
+    "sha256": "70a31d3c644e6fd87d8198f2b4b476c36866faa59f68f68a38adfe8316cd98cc"
+  },
+  "failed_confirmation": {
+    "path": "l10_3rscan_query_mask_3d_track_region_coverage_confirmation_result_v1.json",
+    "sha256": "21cd121cbdee7c743b642cf73e0c808bc1357e6a288c080847d9402b525011ec",
+    "required_conclusion": "L10_3RSCAN_QUERY_MASK_3D_TRACK_REGION_COVERAGE_FRESH_CONFIRMATION_GATE_NOT_MET"
+  },
+  "selection": {
+    "initial_query_key": "FDV_initial_1_query",
+    "current_query_key": "FDV_initial_2_query",
+    "action_query_key": "FDV_action_query",
+    "excluded_frames": [106, 107],
+    "minimum_translation_metres": 0.1,
+    "maximum_translation_metres": 1.5,
+    "maximum_rotation_degrees": 60.0,
+    "depth_consistency_metres": 0.15,
+    "candidate_pool": "Every finite-pose frame in the same rescan satisfying the frozen motion bounds; no target visibility, target geometry, RGB, proposal, mask, identity, or score access.",
+    "score": "Translation baseline multiplied by the geometric mean of bidirectional depth-consistent whole-frame visible fractions.",
+    "tie_break": "Higher mutual covisibility, then larger translation, then smaller frame index.",
+    "truth_role": "After selection only, attach target geometry to determine whether the selected frame can evaluate target-region recovery."
+  },
+  "literature_motivation": [
+    {
+      "name": "Boundary Exploration of Next Best View Policy in 3D Robotic Scanning",
+      "url": "https://arxiv.org/abs/2412.10444",
+      "use": "Motivates treating view overlap as an explicit stability constraint rather than maximizing viewpoint change alone."
+    },
+    {
+      "name": "VIN-NBV",
+      "url": "https://arxiv.org/abs/2505.06219",
+      "use": "Motivates greedy query-view scoring from existing RGB-D geometry before acquiring the candidate image."
+    }
+  ],
+  "next_action": "Run the unchanged GroundingDINO-SAM2-3D-track candidate ranking on the selected action cohort and compare fixed Top-3 region coverage with the zero-covisibility action.",
+  "fallback_action": "Seal source-not-evaluable without opening selected RGB; a later protocol may add target-conditioned occupancy, but may not tune motion bounds on row 3.",
+  "claim_boundary": "This consumed-family Development experiment evaluates only whether a truth-free pose/depth selector can replace a zero-covisibility action with a target-evaluable view. It does not confirm generalization, identify target ownership, or establish portal access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}
