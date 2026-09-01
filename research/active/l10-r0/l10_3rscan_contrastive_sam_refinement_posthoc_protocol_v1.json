@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-3rscan-contrastive-sam-refinement-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-contrastive-sam-refinement-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T08:12:00+08:00",
+  "question": "Does frozen native SAM2 mask refinement turn the unchanged contrastive top-one selections into IoU-at-least-0.5 target localizations in all three C16 query frames?",
+  "implementation": {
+    "path": "l10_3rscan_contrastive_sam_refinement_posthoc.py",
+    "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_contrastive_set_memory_posthoc_result_v1.json",
+    "sha256": "fd757a5e963400e61b1d4ac34138ed4c5741f281d71592874f894b29f2510a85",
+    "required_conclusion": "L10_3RSCAN_CONTRASTIVE_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "Contrastive memory removed the wrong-side distractor, but its fixed C16M1 top-one loose box had IoU 0.495605, target recall 0.969786 and proposal precision 0.503378; aggregate remained 2/3 under the strict 0.5 IoU gate.",
+    "single_change": "Apply unchanged native SAM2.1-Hiera-Small box prompting to each already selected top-one box and evaluate the tight bbox of the resulting binary mask; proposal generation and ranking stay sealed."
+  },
+  "source": {
+    "authority": "CONSUMED_C16_SUCCESSOR_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+    "cohort_sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082"
+  },
+  "masker": {
+    "model_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "model_path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors",
+    "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+    "contract": "One full-image call per frozen selected box, multimask_output=false, mask_threshold=0.0, binarize=true, no holes/sprinkles morphology, no non-overlap constraints, then take the tight axis-aligned bbox of the sole native mask."
+  },
+  "evaluation": {
+    "query_images": ["C16M1_query", "C16M2_query", "C16M3_query"],
+    "truth_role": "Provider target bboxes are used only after SAM output to compute refined-mask-bbox IoU."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_queries": 3,
+    "interpretation": "The tight bbox of every unchanged top-one SAM2 mask must overlap target 16 at IoU at least 0.5."
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Complete the paper's GroundingDINO proposal plus SAM mask refinement decomposition after target-template ranking isolated a geometrically loose box."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change any proposal, contrastive ranking, selected box, SAM model, mask settings, bbox extraction or IoU gate",
+    "select among multiple masks, use target truth as a SAM prompt or morph the mask",
+    "retry a failed frame with points, another box, model or threshold"
+  ],
+  "claim_boundary": "This consumed Development test can establish only whether native SAM2 refinement improves geometric localization of three already selected C16 target candidates. SAM geometry does not prove referent ownership, entrance identity, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

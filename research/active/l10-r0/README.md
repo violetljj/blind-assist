@@ -4149,6 +4149,28 @@ not calibrate a deployment threshold or establish broad sibling rejection,
 provider independence, raw-camera referent acquisition, portal ownership or
 access, waypoint, arrival, handoff, user benefit, reliability, or safety.
 
+The next Development chain removed provider boxes from the query side. Guided
+by NIDS-Net, GroundingDINO used the class-agnostic prompt `objects`, fixed box
+threshold `0.10`, text threshold `0.25`, and a deterministic top-`16` cap on
+the three full C16 query frames. It supplied an IoU-`0.5` target opportunity in
+`3/3` frames. The unchanged three-view target memory selected an IoU-`0.5`
+target proposal in `2/3`; on C16M1 a wrong right-side proposal scored
+`0.577516` while the highest-ranked qualifying target scored `0.567368`.
+
+A frozen REMIND-motivated target-minus-sibling score reused exactly those
+proposal rosters and subtracted cosine to preselected sibling door `32`. It
+removed the wrong-side selection, but its C16M1 target-body box had IoU
+`0.495605` (`0.969786` target recall, `0.503378` precision), so the unchanged
+strict gate still recorded `2/3`, not success. One final structural addition
+applied the existing native SAM2.1-Hiera-Small mask contract to the already
+selected boxes without reranking. Tight mask boxes then passed `3/3`, with
+minimum IoU `0.500517` and mean `0.773318`. This is the first local chain here
+to move from full-frame class-agnostic proposals through instance-memory
+disambiguation to target localization without query truth selection. It is
+consumed same-scene Development with a thin minimum margin, not fresh-family,
+provider-independent, raw-phone, named-entrance, access, waypoint, arrival,
+handoff, benefit, reliability, or safety evidence.
+
 Following that attribution, the official downloader added the
 `422885e5/422885e7` sequence archives (about `137 MB`) to `artifacts.local`.
 The unchanged strict pre-RGB selector admitted `0/7` available door/doorframe
@@ -4277,6 +4299,18 @@ Evidence:
   `ecb8b2b1a31672a35ede93ba822f8b04b00a7d16a9c508d2befd62c2ca844d46`,
   `96b9b2969f892d873938138f48160b61918b17bb36ef9b4658cd8200c21e5a3d`,
   and `ec7145400f7f684bb413d52d37e60020f0c255b7ff3899cfa1f09a58e385c6a1`;
+- class-agnostic objectness-memory implementation/protocol/result,
+  target-minus-sibling implementation/protocol/result, and native SAM2
+  refinement implementation/protocol/result SHA-256:
+  `82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e`,
+  `f494a8ce0138ac54dc1cbdbce0ab7ccb4e532c1066f382d2c04b815c9346619e`,
+  `f42f1318a2d70b9b38fb0e72940e9e0c89f147221c6b7a5f120b197744ffb8ca`,
+  `8a31ba68bc03c335b58ba7b385a85e4f8acbb26c9a7499f499de0da0e17713f9`,
+  `006261c4a45e385e69345ed5bf6c2a6ad906624507ebfae095dcbb9d1f2ad928`,
+  `fd757a5e963400e61b1d4ac34138ed4c5741f281d71592874f894b29f2510a85`,
+  `4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e`,
+  `2546da6236880ba56f4eb61ba08047f7025fc26db9ff1e53ec04719758690ffc`,
+  and `f63a4b86f07da7ff657fabc7c14543004d295b4ff459b2ed56f52c15e930b66f`;
 - added official 3RScan `422885e5/422885e7` sequence SHA-256:
   `b11adb2295d7a8c97c87810dfce68a052058fcc3a7567e07629bd629ad50b6f1`
   and `55817b707056b6cd36d722432aab93ab5c9769bda8ce5fab7dbf8661ef73b2ee`;

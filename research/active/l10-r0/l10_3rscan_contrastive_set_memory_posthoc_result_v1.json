@@ -1,0 +1,835 @@
+{
+  "schema": "blindassist-l10-3rscan-contrastive-set-memory-posthoc-result-v1",
+  "authority": "CONSUMED_C16_TARGET_MINUS_SIBLING_MEMORY_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_contrastive_set_memory_posthoc_protocol_v1.json",
+  "protocol_sha256": "006261c4a45e385e69345ed5bf6c2a6ad906624507ebfae095dcbb9d1f2ad928",
+  "implementation": {
+    "path": "l10_3rscan_contrastive_set_memory_posthoc.py",
+    "sha256": "8a31ba68bc03c335b58ba7b385a85e4f8acbb26c9a7499f499de0da0e17713f9"
+  },
+  "conclusion": "L10_3RSCAN_CONTRASTIVE_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+  "gate_met": false,
+  "metrics": {
+    "query_count": 3,
+    "top1_target_queries": 2,
+    "minimum_selected_iou": 0.49560544851525057,
+    "mean_selected_iou": 0.7827878570918951,
+    "minimum_top1_contrastive_margin": 0.0011261850595474243
+  },
+  "query_receipts": {
+    "C16M1_query": {
+      "selection_authority": "MAX_TARGET_MINUS_SIBLING_COSINE_WITHOUT_QUERY_TRUTH",
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "postprocess_index": 4,
+        "objectness_score": 0.12368004769086838,
+        "box_xyxy": [
+          21.004085540771484,
+          128.83731079101562,
+          645.3834228515625,
+          535.5835571289062
+        ],
+        "target_memory_score": 0.5583047270774841,
+        "sibling_memory_score": 0.20315226912498474,
+        "contrastive_score": 0.3551524579524994,
+        "winning_target_reference": "C16M2_reference",
+        "winning_sibling_reference": "SIB32_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.49560544851525057,
+          "target_recall": 0.9697858236137382,
+          "proposal_precision": 0.5033780295316533
+        },
+        "descriptor_sha256": "602dc6cf12b52c4fd262eb87019f8f419015edfd405d20a254122217ead0de1e"
+      },
+      "top1_contrastive_margin": 0.0011261850595474243,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.12368004769086838,
+          "box_xyxy": [
+            21.004085540771484,
+            128.83731079101562,
+            645.3834228515625,
+            535.5835571289062
+          ],
+          "target_memory_score": 0.5583047270774841,
+          "sibling_memory_score": 0.20315226912498474,
+          "contrastive_score": 0.3551524579524994,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.49560544851525057,
+            "target_recall": 0.9697858236137382,
+            "proposal_precision": 0.5033780295316533
+          },
+          "descriptor_sha256": "602dc6cf12b52c4fd262eb87019f8f419015edfd405d20a254122217ead0de1e"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.1960151493549347,
+          "box_xyxy": [
+            4.926824569702148,
+            3.7827515602111816,
+            954.7728271484375,
+            536.4380493164062
+          ],
+          "target_memory_score": 0.5646135210990906,
+          "sibling_memory_score": 0.2105872482061386,
+          "contrastive_score": 0.35402627289295197,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.2605499841595496,
+            "target_recall": 1.0,
+            "proposal_precision": 0.2605499841595496
+          },
+          "descriptor_sha256": "f9cd91a0481b107847ce0584947175d72c2885effa72dd4c76143525fe5e4f3e"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.32223087549209595,
+          "box_xyxy": [
+            561.8298950195312,
+            136.45314025878906,
+            958.085205078125,
+            537.6951293945312
+          ],
+          "target_memory_score": 0.5775164365768433,
+          "sibling_memory_score": 0.22872473299503326,
+          "contrastive_score": 0.34879170358181,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0979967089903277,
+            "target_recall": 0.19689733147518454,
+            "proposal_precision": 0.16324837303868106
+          },
+          "descriptor_sha256": "0e0aaceddc33c06e6802baceb5920e19df3d4045453f6ed7bc2e407f291d609c"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.23842483758926392,
+          "box_xyxy": [
+            163.07998657226562,
+            144.03457641601562,
+            642.4711303710938,
+            415.6995544433594
+          ],
+          "target_memory_score": 0.5658937692642212,
+          "sibling_memory_score": 0.22290973365306854,
+          "contrastive_score": 0.34298403561115265,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.9157913705257867,
+            "target_recall": 0.9502828550888657,
+            "proposal_precision": 0.9618774291113443
+          },
+          "descriptor_sha256": "a0e7a9914f46aec5f58b64534feddf0157f43be7ce2a10832cec32a5b8e3a8fc"
+        },
+        {
+          "postprocess_index": 14,
+          "objectness_score": 0.12651032209396362,
+          "box_xyxy": [
+            8.703861236572266,
+            3.336517810821533,
+            647.2320556640625,
+            536.42626953125
+          ],
+          "target_memory_score": 0.5458858609199524,
+          "sibling_memory_score": 0.2037399411201477,
+          "contrastive_score": 0.3421459197998047,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.37316051089660973,
+            "target_recall": 0.9734737103826591,
+            "proposal_precision": 0.37699389445003234
+          },
+          "descriptor_sha256": "75c14537986b0104c7e6202fe6316f3240d235dd17e83589a5bcc6f3320d9923"
+        },
+        {
+          "postprocess_index": 17,
+          "objectness_score": 0.18022796511650085,
+          "box_xyxy": [
+            164.71078491210938,
+            193.0545196533203,
+            643.4412231445312,
+            408.74383544921875
+          ],
+          "target_memory_score": 0.56736820936203,
+          "sibling_memory_score": 0.23084476590156555,
+          "contrastive_score": 0.3365234434604645,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.761545752372184,
+            "target_recall": 0.7709512940339995,
+            "proposal_precision": 0.9842326525255891
+          },
+          "descriptor_sha256": "a39f7997cef650329aa78f27c1c8e7e9145ddaa3e3357f99f3104a9f88a0cacd"
+        },
+        {
+          "postprocess_index": 11,
+          "objectness_score": 0.1250464767217636,
+          "box_xyxy": [
+            166.53965759277344,
+            195.467041015625,
+            448.58575439453125,
+            412.58636474609375
+          ],
+          "target_memory_score": 0.4883385896682739,
+          "sibling_memory_score": 0.1804940104484558,
+          "contrastive_score": 0.3078445792198181,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.4421944244593996,
+            "target_recall": 0.4490474758073909,
+            "proposal_precision": 0.9666387239924403
+          },
+          "descriptor_sha256": "7678b65f328a7360f8af3a2416ae2cf50de591921840953da4960168d6110b2f"
+        },
+        {
+          "postprocess_index": 15,
+          "objectness_score": 0.11301451176404953,
+          "box_xyxy": [
+            217.9872589111328,
+            229.403564453125,
+            321.665283203125,
+            358.7981872558594
+          ],
+          "target_memory_score": 0.3462294936180115,
+          "sibling_memory_score": 0.1061512678861618,
+          "contrastive_score": 0.24007822573184967,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.10176828134353193,
+            "target_recall": 0.10176828134353193,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "fe22a81ff20dcbd212fc500eb7ed8fb9571e729f0919827ecc3054c6fab5ee03"
+        },
+        {
+          "postprocess_index": 10,
+          "objectness_score": 0.1175754964351654,
+          "box_xyxy": [
+            232.4008331298828,
+            197.23828125,
+            447.50079345703125,
+            342.278564453125
+          ],
+          "target_memory_score": 0.37263187766075134,
+          "sibling_memory_score": 0.14633771777153015,
+          "contrastive_score": 0.2262941598892212,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.2366674154702485,
+            "target_recall": 0.2366674154702485,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "9c6d3bc93e3dcacb6cdc6ac6bac62fe1df03c67f4c365139b0b2fd0c57a57c5f"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.12564073503017426,
+          "box_xyxy": [
+            230.200439453125,
+            243.2988739013672,
+            302.1520080566406,
+            414.2485656738281
+          ],
+          "target_memory_score": 0.33456283807754517,
+          "sibling_memory_score": 0.11752694845199585,
+          "contrastive_score": 0.21703588962554932,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.08801913550294722,
+            "target_recall": 0.08844698300969245,
+            "proposal_precision": 0.9479052666258396
+          },
+          "descriptor_sha256": "edb0a4134b5e7829ce646d764b697db625eacb75c49606605fe90161b0038a1f"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.4517057240009308,
+          "box_xyxy": [
+            235.1474151611328,
+            244.31527709960938,
+            301.7820739746094,
+            340.288330078125
+          ],
+          "target_memory_score": 0.25894391536712646,
+          "sibling_memory_score": 0.11877140402793884,
+          "contrastive_score": 0.14017251133918762,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.04851309556606714,
+            "target_recall": 0.04851309556606714,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "5c8c19909533cdca0d532259394a2d6f34c7ef50a72cc9da61f0a2b89ef58ed7"
+        },
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.11864927411079407,
+          "box_xyxy": [
+            368.40631103515625,
+            165.41343688964844,
+            446.5755310058594,
+            247.34454345703125
+          ],
+          "target_memory_score": 0.191077321767807,
+          "sibling_memory_score": 0.1115141212940216,
+          "contrastive_score": 0.0795632004737854,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.048584092782494835,
+            "target_recall": 0.048584092782494835,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "a4f6b4ce1a3fc50d39ba2d357f12262937001e382dbd308db697a8b861561797"
+        },
+        {
+          "postprocess_index": 12,
+          "objectness_score": 0.10527745634317398,
+          "box_xyxy": [
+            422.26983642578125,
+            202.85748291015625,
+            444.8410949707031,
+            237.14138793945312
+          ],
+          "target_memory_score": 0.2180086374282837,
+          "sibling_memory_score": 0.14568129181861877,
+          "contrastive_score": 0.07232734560966492,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.005870235947362315,
+            "target_recall": 0.005870235947362315,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "dafcc224a52fb09e4e8579c4fdde92b2ae8f55005f530d1f04d182c8412b9da1"
+        },
+        {
+          "postprocess_index": 16,
+          "objectness_score": 0.10247280448675156,
+          "box_xyxy": [
+            370.6040954589844,
+            201.44210815429688,
+            417.69378662109375,
+            244.68455505371094
+          ],
+          "target_memory_score": 0.2309877872467041,
+          "sibling_memory_score": 0.1660676747560501,
+          "contrastive_score": 0.06492011249065399,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.015447051754644083,
+            "target_recall": 0.015447051754644083,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "17748f6ffe8156f76eeda13d961441db8dacfac63b15665012024316374568f3"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.310619592666626,
+          "box_xyxy": [
+            369.8099060058594,
+            198.4423828125,
+            445.9195251464844,
+            246.1627655029297
+          ],
+          "target_memory_score": 0.19814561307430267,
+          "sibling_memory_score": 0.13569366931915283,
+          "contrastive_score": 0.06245194375514984,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.02755198956075038,
+            "target_recall": 0.02755198956075038,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "d9397f3281660771263b480f791e5d800dedef535268a0482e8491f9540750f8"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.19019398093223572,
+          "box_xyxy": [
+            235.96823120117188,
+            103.36211395263672,
+            313.1221923828125,
+            146.91519165039062
+          ],
+          "target_memory_score": 0.1858934909105301,
+          "sibling_memory_score": 0.12479979544878006,
+          "contrastive_score": 0.06109369546175003,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.00260303764785062,
+            "target_recall": 0.002662461148698915,
+            "proposal_precision": 0.10444717600093473
+          },
+          "descriptor_sha256": "6c3f79e6f0248fc82675fa788a081631d6ccc9fe58551a5ff2605dac7c0f34b9"
+        }
+      ],
+      "predecessor_proposal_count": 16
+    },
+    "C16M2_query": {
+      "selection_authority": "MAX_TARGET_MINUS_SIBLING_COSINE_WITHOUT_QUERY_TRUTH",
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "postprocess_index": 4,
+        "objectness_score": 0.17758964002132416,
+        "box_xyxy": [
+          3.1746482849121094,
+          2.092879295349121,
+          591.1876831054688,
+          535.774169921875
+        ],
+        "target_memory_score": 0.6359388828277588,
+        "sibling_memory_score": 0.22054126858711243,
+        "contrastive_score": 0.41539761424064636,
+        "winning_target_reference": "C16M2_reference",
+        "winning_sibling_reference": "SIB32_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.8568569294983933,
+          "target_recall": 0.9714254208258113,
+          "proposal_precision": 0.879012018831634
+        },
+        "descriptor_sha256": "a6574ffed01da007fca697421c7ad0c4f2b36c00a9062218e4cf1ae5f9651588"
+      },
+      "top1_contrastive_margin": 0.03522869944572449,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.17758964002132416,
+          "box_xyxy": [
+            3.1746482849121094,
+            2.092879295349121,
+            591.1876831054688,
+            535.774169921875
+          ],
+          "target_memory_score": 0.6359388828277588,
+          "sibling_memory_score": 0.22054126858711243,
+          "contrastive_score": 0.41539761424064636,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.8568569294983933,
+            "target_recall": 0.9714254208258113,
+            "proposal_precision": 0.879012018831634
+          },
+          "descriptor_sha256": "a6574ffed01da007fca697421c7ad0c4f2b36c00a9062218e4cf1ae5f9651588"
+        },
+        {
+          "postprocess_index": 7,
+          "objectness_score": 0.15655961632728577,
+          "box_xyxy": [
+            5.650491714477539,
+            2.140660285949707,
+            954.3160400390625,
+            536.5553588867188
+          ],
+          "target_memory_score": 0.6474247574806213,
+          "sibling_memory_score": 0.26725584268569946,
+          "contrastive_score": 0.3801689147949219,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.5557789300066567,
+            "target_recall": 0.9950453209807416,
+            "proposal_precision": 0.5573212708515629
+          },
+          "descriptor_sha256": "7f1ed9703189e72d3a20418ab5c71027f3acf025ef1e9eb7f81145cc134eca21"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.2401319146156311,
+          "box_xyxy": [
+            572.8406372070312,
+            1.679685115814209,
+            957.8670654296875,
+            537.001708984375
+          ],
+          "target_memory_score": 0.5807799100875854,
+          "sibling_memory_score": 0.2200755476951599,
+          "contrastive_score": 0.36070436239242554,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.034787748320610726,
+            "target_recall": 0.058020300878083506,
+            "proposal_precision": 0.07993345873162981
+          },
+          "descriptor_sha256": "8452bd437e9469c0c32b4080856e98de5344ca89c3f98b53775ce5b6b899e04b"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.5822260975837708,
+          "box_xyxy": [
+            78.49443054199219,
+            6.126267433166504,
+            250.92852783203125,
+            121.07950592041016
+          ],
+          "target_memory_score": 0.42006635665893555,
+          "sibling_memory_score": 0.16608035564422607,
+          "contrastive_score": 0.2539860010147095,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.06980557007303058,
+            "target_recall": 0.06980557007303058,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "30d0d06a4b760599c23c5ad1c7a3fc58b8e103f1a8a389450952789cab5a5449"
+        },
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.15817436575889587,
+          "box_xyxy": [
+            434.284912109375,
+            484.60955810546875,
+            636.097900390625,
+            538.5099487304688
+          ],
+          "target_memory_score": 0.35978347063064575,
+          "sibling_memory_score": 0.13043729960918427,
+          "contrastive_score": 0.2293461710214615,
+          "winning_target_reference": "C16M1_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0,
+            "target_recall": 0.0,
+            "proposal_precision": 0.0
+          },
+          "descriptor_sha256": "609e509de6df419e0516ad7c7121e36566190b3a4083231ac6a1345271ef848f"
+        },
+        {
+          "postprocess_index": 6,
+          "objectness_score": 0.17204393446445465,
+          "box_xyxy": [
+            433.5559387207031,
+            454.8030090332031,
+            635.96826171875,
+            538.4306640625
+          ],
+          "target_memory_score": 0.3638213276863098,
+          "sibling_memory_score": 0.15338023006916046,
+          "contrastive_score": 0.21044109761714935,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.010448555587610564,
+            "target_recall": 0.010956929214458969,
+            "proposal_precision": 0.18380455436114393
+          },
+          "descriptor_sha256": "5c325f771ca3142871b274209bd2b3d4df7b1b5f13cee3c32e4ab550517f1cc7"
+        },
+        {
+          "postprocess_index": 9,
+          "objectness_score": 0.11883429437875748,
+          "box_xyxy": [
+            161.2472381591797,
+            48.73344039916992,
+            249.06268310546875,
+            119.6613998413086
+          ],
+          "target_memory_score": 0.2744203805923462,
+          "sibling_memory_score": 0.17949968576431274,
+          "contrastive_score": 0.09492069482803345,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.021934820830098636,
+            "target_recall": 0.021934820830098636,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "f132424c4467e71d8ed3c2298ffd3de88b208ec941b685bae8b3783f04243e91"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.1674128770828247,
+          "box_xyxy": [
+            453.2742614746094,
+            453.9114685058594,
+            499.56561279296875,
+            484.1707763671875
+          ],
+          "target_memory_score": 0.2749497592449188,
+          "sibling_memory_score": 0.19620594382286072,
+          "contrastive_score": 0.0787438154220581,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.003047850492783637,
+            "target_recall": 0.003053578461982503,
+            "proposal_precision": 0.6190197642649745
+          },
+          "descriptor_sha256": "df7afd6765f828f6833a59b137ea25d87ca9b6c14e11d7ccf18d24e1604b0b56"
+        },
+        {
+          "postprocess_index": 8,
+          "objectness_score": 0.10466605424880981,
+          "box_xyxy": [
+            451.4085693359375,
+            452.6346740722656,
+            504.4662170410156,
+            500.08209228515625
+          ],
+          "target_memory_score": 0.23427768051624298,
+          "sibling_memory_score": 0.1568058580160141,
+          "contrastive_score": 0.07747182250022888,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0037194123890746627,
+            "target_recall": 0.0037384821154771973,
+            "proposal_precision": 0.4216858325770522
+          },
+          "descriptor_sha256": "45a46191ee876808935c69cdfdf3b002840d06c056fe57f926f0a817d3ffb40c"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.1744975596666336,
+          "box_xyxy": [
+            161.2943572998047,
+            50.42422103881836,
+            185.3883514404297,
+            118.97804260253906
+          ],
+          "target_memory_score": 0.1843615621328354,
+          "sibling_memory_score": 0.15725666284561157,
+          "contrastive_score": 0.027104899287223816,
+          "winning_target_reference": "C16M2_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.005816827564574368,
+            "target_recall": 0.005816827564574368,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "78592f6f9b8c8d812e25bc19480c880f69e9fe174319243ee7f143568d50cd3d"
+        }
+      ],
+      "predecessor_proposal_count": 10
+    },
+    "C16M3_query": {
+      "selection_authority": "MAX_TARGET_MINUS_SIBLING_COSINE_WITHOUT_QUERY_TRUTH",
+      "query_truth_used_for_selection": false,
+      "selected": {
+        "postprocess_index": 3,
+        "objectness_score": 0.2451682686805725,
+        "box_xyxy": [
+          2.4544143676757812,
+          1.79377019405365,
+          957.0516357421875,
+          535.5128784179688
+        ],
+        "target_memory_score": 0.6147856712341309,
+        "sibling_memory_score": 0.17261461913585663,
+        "contrastive_score": 0.44217105209827423,
+        "winning_target_reference": "C16M3_reference",
+        "winning_sibling_reference": "SIB32_query",
+        "target_metrics_evaluation_only": {
+          "iou": 0.9959011932620412,
+          "target_recall": 0.9990418558907783,
+          "proposal_precision": 0.9968533197828278
+        },
+        "descriptor_sha256": "04cdb36390acfb7798285ac897bd1f0ad0edd9e849ddaa5077a9914d5518de74"
+      },
+      "top1_contrastive_margin": 0.11602748930454254,
+      "ranked_candidates": [
+        {
+          "postprocess_index": 3,
+          "objectness_score": 0.2451682686805725,
+          "box_xyxy": [
+            2.4544143676757812,
+            1.79377019405365,
+            957.0516357421875,
+            535.5128784179688
+          ],
+          "target_memory_score": 0.6147856712341309,
+          "sibling_memory_score": 0.17261461913585663,
+          "contrastive_score": 0.44217105209827423,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.9959011932620412,
+            "target_recall": 0.9990418558907783,
+            "proposal_precision": 0.9968533197828278
+          },
+          "descriptor_sha256": "04cdb36390acfb7798285ac897bd1f0ad0edd9e849ddaa5077a9914d5518de74"
+        },
+        {
+          "postprocess_index": 5,
+          "objectness_score": 0.104395791888237,
+          "box_xyxy": [
+            385.6408386230469,
+            0.6545528769493103,
+            957.0240478515625,
+            170.18226623535156
+          ],
+          "target_memory_score": 0.4740016758441925,
+          "sibling_memory_score": 0.14785811305046082,
+          "contrastive_score": 0.3261435627937317,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.1896380556241885,
+            "target_recall": 0.1897819395322963,
+            "proposal_precision": 0.9960180202534167
+          },
+          "descriptor_sha256": "2a003e152b351cc2463a7f0dc46a5292ac1cb92fbfc77ee3bcf873a97ce9b857"
+        },
+        {
+          "postprocess_index": 2,
+          "objectness_score": 0.3936452865600586,
+          "box_xyxy": [
+            1.3151836395263672,
+            0.23385107517242432,
+            959.010986328125,
+            190.6747283935547
+          ],
+          "target_memory_score": 0.4446861147880554,
+          "sibling_memory_score": 0.11868026107549667,
+          "contrastive_score": 0.32600585371255875,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.3544453224198651,
+            "target_recall": 0.35557513440828614,
+            "proposal_precision": 0.991115158900537
+          },
+          "descriptor_sha256": "f68aa0b5808d942cd998bcf55287ee88f918a9f7b70fd11eba59ee8c9824a686"
+        },
+        {
+          "postprocess_index": 1,
+          "objectness_score": 0.46225541830062866,
+          "box_xyxy": [
+            0.929875373840332,
+            241.43368530273438,
+            185.08770751953125,
+            531.5787353515625
+          ],
+          "target_memory_score": 0.4684284031391144,
+          "sibling_memory_score": 0.17983858287334442,
+          "contrastive_score": 0.28858982026576996,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.10418271807394523,
+            "target_recall": 0.104269771965669,
+            "proposal_precision": 0.9920499906260106
+          },
+          "descriptor_sha256": "cd62a0382ef16b3b86a50771524fe3b3698ec315c2cc0d1f8a507609851d10bb"
+        },
+        {
+          "postprocess_index": 0,
+          "objectness_score": 0.4978286027908325,
+          "box_xyxy": [
+            394.2231750488281,
+            112.15421295166016,
+            601.021728515625,
+            192.65379333496094
+          ],
+          "target_memory_score": 0.3598456382751465,
+          "sibling_memory_score": 0.1315336376428604,
+          "contrastive_score": 0.22831200063228607,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.0327461781230186,
+            "target_recall": 0.0327461781230186,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "f887473aaeca578e07342021034f08b5d46ae0e74ebfbfabecba9974baa49e16"
+        },
+        {
+          "postprocess_index": 4,
+          "objectness_score": 0.16358205676078796,
+          "box_xyxy": [
+            408.91729736328125,
+            7.41908073425293,
+            481.4112243652344,
+            65.7469253540039
+          ],
+          "target_memory_score": 0.2176370918750763,
+          "sibling_memory_score": 0.18226104974746704,
+          "contrastive_score": 0.03537604212760925,
+          "winning_target_reference": "C16M3_reference",
+          "winning_sibling_reference": "SIB32_query",
+          "target_metrics_evaluation_only": {
+            "iou": 0.008317581426519966,
+            "target_recall": 0.008317581426519966,
+            "proposal_precision": 1.0
+          },
+          "descriptor_sha256": "8f42442b1ad26235f2d68eb16e51c6c6e8db7d52a4f5c119f588289ce092ccba"
+        }
+      ],
+      "predecessor_proposal_count": 6
+    }
+  },
+  "memory_receipts": {
+    "target": {
+      "C16M1_reference": {
+        "descriptor_sha256": "77382115589664007dfcdf4abda44ad52bc9b9bad72ee51aba9a0b0065d19e19",
+        "bbox_xyxy": [
+          128.89031982421875,
+          137.49488830566406,
+          669.8526611328125,
+          374.7518005371094
+        ]
+      },
+      "C16M2_reference": {
+        "descriptor_sha256": "440aeec3c2fc612cb33346fe12c969477bd7ea84fd1468fb6687daf87e84ac06",
+        "bbox_xyxy": [
+          2.978768825531006,
+          141.57899475097656,
+          307.1446228027344,
+          513.1138305664062
+        ]
+      },
+      "C16M3_reference": {
+        "descriptor_sha256": "4fa893b5ebd72ae2102af09e56770b2a6c0ab508029b72b6ef15a94d1398dd1a",
+        "bbox_xyxy": [
+          336.6882629394531,
+          74.18411254882812,
+          958.4984741210938,
+          533.61181640625
+        ]
+      }
+    },
+    "sibling": {
+      "SIB32_query": {
+        "descriptor_sha256": "3a2df3649ba08919b4c5e844867eb484fa11be2f507f2bbeb37667887314bae7",
+        "bbox_xyxy": [
+          0.24341019988059998,
+          181.18313598632812,
+          958.3589477539062,
+          537.2970581054688
+        ]
+      }
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "REMIND",
+      "url": "https://arxiv.org/abs/2607.09267",
+      "use": "Use distinct appearance memories and explicit distractor-aware scoring for generic indoor re-identification rather than treating every high target cosine as sufficient."
+    },
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Retain proposal-to-template matching while adding a negative exemplar to separate visually similar non-target proposals."
+    }
+  ],
+  "claim_boundary": "This consumed same-scene Development test can establish only whether one preselected sibling negative memory repairs the observed C16 proposal-ranking failure. It cannot establish open-set rejection, unseen-scene or provider generalization, broad distractor coverage, named entrance ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

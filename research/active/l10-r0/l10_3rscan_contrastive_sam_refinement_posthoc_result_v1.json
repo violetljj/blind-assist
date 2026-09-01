@@ -1,0 +1,228 @@
+{
+  "schema": "blindassist-l10-3rscan-contrastive-sam-refinement-posthoc-result-v1",
+  "authority": "CONSUMED_C16_CONTRASTIVE_SELECTION_NATIVE_SAM2_POSTHOC_DEVELOPMENT",
+  "protocol_path": "l10_3rscan_contrastive_sam_refinement_posthoc_protocol_v1.json",
+  "protocol_sha256": "2546da6236880ba56f4eb61ba08047f7025fc26db9ff1e53ec04719758690ffc",
+  "implementation": {
+    "path": "l10_3rscan_contrastive_sam_refinement_posthoc.py",
+    "sha256": "4d1c78e96b30296a9e7bc12b42918123ba3422f401d19c068ac61d7a39c91c0e"
+  },
+  "conclusion": "L10_3RSCAN_CONTRASTIVE_SAM_REFINEMENT_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "query_count": 3,
+    "refined_iou_gate_queries": 3,
+    "minimum_refined_iou": 0.5005172425383524,
+    "mean_refined_iou": 0.7733177664234061
+  },
+  "runtime": {
+    "model_type": "Sam2Model",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "sam2_calls": 3
+  },
+  "query_receipts": {
+    "C16M1_query": {
+      "selection_changed": false,
+      "input_box_xyxy": [
+        21.004085540771484,
+        128.83731079101562,
+        645.3834228515625,
+        535.5835571289062
+      ],
+      "input_box_target_metrics_evaluation_only": {
+        "iou": 0.49560544851525057,
+        "target_recall": 0.9697858236137382,
+        "proposal_precision": 0.5033780295316533
+      },
+      "refined_mask_bbox_xyxy": [
+        23.0,
+        140.0,
+        639.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.5005172425383524,
+        "target_recall": 0.9570513635762858,
+        "proposal_precision": 0.5120177822259527
+      },
+      "mask_sha256": "517fc8ebe6408dda03e2ce7bc3a39b7d8814eca9cdca19f4f41a7d72c536bb77",
+      "mask_pixels": 203017,
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.8972883999813348
+      },
+      "image_sha256": "3e5df10478c2f28a48aa4651bee352fa1cc40505539a988b2781c1ec4b679d0f"
+    },
+    "C16M2_query": {
+      "selection_changed": false,
+      "input_box_xyxy": [
+        3.1746482849121094,
+        2.092879295349121,
+        591.1876831054688,
+        535.774169921875
+      ],
+      "input_box_target_metrics_evaluation_only": {
+        "iou": 0.8568569294983933,
+        "target_recall": 0.9714254208258113,
+        "proposal_precision": 0.879012018831634
+      },
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        0.0,
+        587.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.8387827424740538,
+        "target_recall": 0.9653716379825619,
+        "proposal_precision": 0.8648025365419518
+      },
+      "mask_sha256": "4df9fe0b7b1ee7b4bfe1c28aa28b700e29c7d2989fbefbd38b5d2e8066d9c2da",
+      "mask_pixels": 256786,
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.10992590000387281
+      },
+      "image_sha256": "6744cf0fe2362eaba8c0a164a6d35a5ad410eff76d54d6a574a63ffd7c9e2d00"
+    },
+    "C16M3_query": {
+      "selection_changed": false,
+      "input_box_xyxy": [
+        2.4544143676757812,
+        1.79377019405365,
+        957.0516357421875,
+        535.5128784179688
+      ],
+      "input_box_target_metrics_evaluation_only": {
+        "iou": 0.9959011932620412,
+        "target_recall": 0.9990418558907783,
+        "proposal_precision": 0.9968533197828278
+      },
+      "refined_mask_bbox_xyxy": [
+        0.0,
+        0.0,
+        960.0,
+        540.0
+      ],
+      "refined_mask_bbox_target_metrics_evaluation_only": {
+        "iou": 0.9806533142578119,
+        "target_recall": 1.0,
+        "proposal_precision": 0.980653314257812
+      },
+      "mask_sha256": "54ea402c33c889091071d8d7e43b113b8ab9ac65104308859016381d551bee83",
+      "mask_pixels": 441977,
+      "sam_receipt": {
+        "input_box_count": 1,
+        "input_boxes_shape": [
+          1,
+          1,
+          4
+        ],
+        "raw_pred_masks_shape": [
+          1,
+          1,
+          1,
+          256,
+          256
+        ],
+        "raw_iou_scores_shape": [
+          1,
+          1,
+          1
+        ],
+        "native_masks_shape": [
+          1,
+          1,
+          540,
+          960
+        ],
+        "native_masks_dtype": "torch.bool",
+        "multimask_output": false,
+        "iou_scores_ignored": true,
+        "postprocess": {
+          "mask_threshold": 0.0,
+          "binarize": true,
+          "max_hole_area": 0.0,
+          "max_sprinkle_area": 0.0,
+          "apply_non_overlapping_constraints": false
+        },
+        "inference_and_postprocess_seconds": 0.09370349999517202
+      },
+      "image_sha256": "7b8f32295c7db0dafb2691116ed1fe4b94ad70a2f0ca8e5f54db39f7cd51985a"
+    }
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Complete the paper's GroundingDINO proposal plus SAM mask refinement decomposition after target-template ranking isolated a geometrically loose box."
+    }
+  ],
+  "claim_boundary": "This consumed Development test can establish only whether native SAM2 refinement improves geometric localization of three already selected C16 target candidates. SAM geometry does not prove referent ownership, entrance identity, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

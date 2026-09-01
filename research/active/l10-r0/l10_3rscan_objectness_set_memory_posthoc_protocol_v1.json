@@ -1,0 +1,72 @@
+{
+  "schema": "blindassist-l10-3rscan-objectness-set-memory-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-objectness-set-memory-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T08:02:30+08:00",
+  "question": "Can the confirmed C16 viewpoint-preserving instance memory select the target directly from class-agnostic full-frame object proposals, without using the provider target box to form or rank query candidates?",
+  "implementation": {
+    "path": "l10_3rscan_objectness_set_memory_posthoc.py",
+    "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_object_context_memory_posthoc.py", "sha256": "9b5e683a008b5010af9ab639a35fdef4c97718a54613013819018b1ea5f2b505"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_set_memory_confirmation_adjudication_v1.json",
+    "sha256": "ec7145400f7f684bb413d52d37e60020f0c255b7ff3899cfa1f09a58e385c6a1",
+    "required_conclusion": "L10_3RSCAN_OBJECT_CONTEXT_SET_MEMORY_NEW_FAMILY_CONFIRMATION_GATE_MET",
+    "single_change": "Replace every privileged C16 query bbox with a frozen class-agnostic full-frame GroundingDINO proposal roster, then rank that roster using the unchanged three-member object-plus-context memory."
+  },
+  "source": {
+    "authority": "CONSUMED_C16_SUCCESSOR_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+    "cohort_sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082"
+  },
+  "proposal": {
+    "model_root": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+    "model_path": "artifacts.local/models/grounding-dino-tiny-a2bb814/model.safetensors",
+    "model_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "prompt": "objects",
+    "box_threshold": 0.1,
+    "text_threshold": 0.25,
+    "maximum_proposals_per_image": 16,
+    "selection": "Retain at most the 16 highest GroundingDINO objectness proposals in deterministic score and coordinate order. No provider label, target bbox, pose, depth, scan transform, correspondence, SAM mask or query identity enters proposal generation or retention."
+  },
+  "descriptor": {
+    "model_path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "crop_scales": [1.0, 1.5],
+    "feature": "Unchanged separately normalized exact-box and 1.5x-context DINOv2 CLS concatenation.",
+    "candidate_score": "Maximum cosine to any of the three frozen reference descriptors; GroundingDINO objectness breaks exact memory-score ties only."
+  },
+  "memory": {
+    "reference_images": ["C16M1_reference", "C16M2_reference", "C16M3_reference"],
+    "reference_box_authority": "The already confirmed target-bound memory templates retain their frozen provider boxes; only query acquisition changes."
+  },
+  "evaluation": {
+    "query_images": ["C16M1_query", "C16M2_query", "C16M3_query"],
+    "query_truth_role": "Provider target bboxes are evaluation-only after proposal generation, retention, descriptor extraction and ranking."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_opportunity_queries": 3,
+    "required_top1_queries": 3,
+    "interpretation": "All three query frames must contain a retained proposal with target IoU at least 0.5, and the unchanged memory must rank an IoU-at-least-0.5 target proposal first in every frame."
+  },
+  "literature_motivation": [
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Adopt its class-agnostic GroundingDINO 'objects' proposal stage and instance-template matching decomposition; use its reported 0.10 GroundingDINO box threshold without tuning on these frames."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change prompt, thresholds, proposal cap, descriptor, crop, memory, tie-break or IoU gate",
+    "use provider target boxes to generate, filter, resize, merge or rank query proposals",
+    "replace a frame, retry a failed query with another setting or add a post-outcome rescue"
+  ],
+  "claim_boundary": "This consumed Development test can establish only that a frozen class-agnostic proposal roster plus the already confirmed memory retrieves the bound physical door in three C16 query frames. It cannot establish calibrated open-set rejection, broad proposal recall, raw mobile-camera generalization, named entrance ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}

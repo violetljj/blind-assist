@@ -275,6 +275,18 @@ contract.
   margin `+0.132196`, and sibling score `0.279386`. Record narrow same-provider
   new-family confirmation under privileged boxes. This improves instance-
   memory generalization, but it is not raw-camera binding or end-to-end L10.
+  An Exa/NIDS-Net-motivated successor then removed query truth boxes. The fixed
+  `objects` prompt at the literature-reported `0.10` box threshold supplied an
+  IoU-`0.5` target opportunity in `3/3` full query frames; unchanged set-memory
+  ranking selected the target in `2/3`, with the failed frame placing a wrong
+  right-side proposal at `0.577516` just above a target proposal at `0.567368`.
+  A frozen target-minus-sibling memory changed that selection back to the target
+  body but reached only IoU `0.495605`, so its strict gate remained `2/3`.
+  Completing the unchanged proposal pipeline with native SAM2 mask refinement
+  crossed the frozen gate at `3/3`: minimum refined-box IoU `0.500517`, mean
+  `0.773318`. This is consumed same-scene Development evidence that the bound
+  memory can drive class-agnostic query acquisition; the minimum margin is thin
+  and no fresh-family or raw-phone confirmation exists yet.
   Two official `422885` sequence archives were then added to local assets, but
   the unchanged strict source selector admitted `0/7` candidate targets before
   RGB/model access. The next mechanism needs better observation reachability or

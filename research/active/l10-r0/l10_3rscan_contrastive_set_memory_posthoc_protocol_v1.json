@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist-l10-3rscan-contrastive-set-memory-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-contrastive-set-memory-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T08:08:30+08:00",
+  "question": "Does one frozen same-scene sibling exemplar resolve the sole class-agnostic proposal-ranking failure when candidate score is target-memory cosine minus sibling-memory cosine?",
+  "implementation": {
+    "path": "l10_3rscan_contrastive_set_memory_posthoc.py",
+    "sha256": "8a31ba68bc03c335b58ba7b385a85e4f8acbb26c9a7499f499de0da0e17713f9"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_objectness_set_memory_posthoc.py", "sha256": "82b808495f00aefd664c4012e97d9a2a3c8fbb35081ad7185853840cc735a16e"},
+    {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
+  ],
+  "predecessor": {
+    "path": "l10_3rscan_objectness_set_memory_posthoc_result_v1.json",
+    "sha256": "f42f1318a2d70b9b38fb0e72940e9e0c89f147221c6b7a5f120b197744ffb8ca",
+    "required_conclusion": "L10_3RSCAN_OBJECTNESS_SET_MEMORY_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+    "observed_failure": "The target was reachable at IoU 0.915791 in C16M1, but a right-side distractor scored 0.577516 versus 0.567368 for the highest-ranked IoU-at-least-0.5 target candidate; aggregate target retrieval was 2/3.",
+    "single_change": "Keep the exact frozen proposals, target memory and descriptor, and subtract cosine to the already frozen SIB32 same-scene sibling descriptor before ranking."
+  },
+  "source": {
+    "authority": "CONSUMED_C16_SUCCESSOR_DEVELOPMENT",
+    "artifact_root": "artifacts.local",
+    "cohort_path": "l10_3rscan_set_memory_confirmation_cohort_v1.json",
+    "cohort_sha256": "947bfc91c7e3b60720ab00804d5be3e1b59b1ac414864c07964f06f28a4b5082"
+  },
+  "descriptor": {
+    "model_path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth",
+    "model_sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428",
+    "input_size": 518,
+    "crop_scales": [1.0, 1.5],
+    "feature": "Unchanged separately normalized exact-box and 1.5x-context DINOv2 CLS concatenation."
+  },
+  "memory": {
+    "target_images": ["C16M1_reference", "C16M2_reference", "C16M3_reference"],
+    "sibling_images": ["SIB32_query"],
+    "score": "maximum target-memory cosine minus maximum sibling-memory cosine; coefficients are fixed at +1 and -1, with no fitted scale or threshold",
+    "sibling_authority": "Door instance 32 was selected by geometry before RGB or descriptor access in the new-family confirmation and is a different physical instance from target 16."
+  },
+  "evaluation": {
+    "query_images": ["C16M1_query", "C16M2_query", "C16M3_query"],
+    "proposal_authority": "Reuse the predecessor's exact retained class-agnostic proposal rosters; do not rerun GroundingDINO.",
+    "query_truth_role": "The stored IoU fields remain evaluation-only and do not enter contrastive ranking."
+  },
+  "decision_gate": {
+    "minimum_iou": 0.5,
+    "required_top1_queries": 3,
+    "interpretation": "The contrastive top-one proposal must overlap target 16 at IoU at least 0.5 in all three unchanged query frames."
+  },
+  "literature_motivation": [
+    {
+      "source": "REMIND",
+      "url": "https://arxiv.org/abs/2607.09267",
+      "use": "Use distinct appearance memories and explicit distractor-aware scoring for generic indoor re-identification rather than treating every high target cosine as sufficient."
+    },
+    {
+      "source": "NIDS-Net",
+      "url": "https://arxiv.org/abs/2405.17859",
+      "use": "Retain proposal-to-template matching while adding a negative exemplar to separate visually similar non-target proposals."
+    }
+  ],
+  "forbidden_after_freeze": [
+    "change proposals, target or sibling memory members, descriptor, crop, coefficients, tie-break or IoU gate",
+    "use target IoU to filter or rerank candidates",
+    "add another negative, adapter, threshold or post-outcome rescue on these frames"
+  ],
+  "claim_boundary": "This consumed same-scene Development test can establish only whether one preselected sibling negative memory repairs the observed C16 proposal-ranking failure. It cannot establish open-set rejection, unseen-scene or provider generalization, broad distractor coverage, named entrance ownership, access, traversability, waypoint, arrival, handoff, deployment, user benefit, reliability or safety."
+}
