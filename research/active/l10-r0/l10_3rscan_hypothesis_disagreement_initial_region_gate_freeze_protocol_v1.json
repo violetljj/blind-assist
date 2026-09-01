@@ -1,0 +1,32 @@
+{
+  "schema": "blindassist-l10-3rscan-query-mask-3d-track-region-coverage-gate-freeze-protocol-v1",
+  "authority": "PRE_RGB_QUEUE_ROW_4_TWO_INITIAL_FRAME_REGION_COVERAGE_GATE",
+  "queue": {
+    "path": "l10_3rscan_discriminative_view_source_queue_v1.json",
+    "sha256": "9c22d6aa6a48749e02d037a4a7cc5e079a4a859b44915160635023955bdba4ae",
+    "selected_queue_index": 4,
+    "reference_scan_id": "6bde60ba-9162-246f-8eaf-b462f3cf6234",
+    "rescan_id": "6bde60b7-9162-246f-8e93-2738e71ccafd",
+    "target_instance_id": 6
+  },
+  "mechanism": {
+    "proposal_pool": "Unchanged GroundingDINO objects prompt over full frame plus four fixed 40-percent corner tiles, capped at 48 proposals without truth filtering.",
+    "masker": "Unchanged SAM2.1 small mask per retained proposal.",
+    "association": "Lift masks through registered depth and pose; use symmetric depth-consistent coverage on the one initial edge and unchanged ranking.",
+    "appearance_use": "None",
+    "training_steps": 0,
+    "candidate_budget": 3
+  },
+  "gate": {
+    "target_region_iou_threshold": 0.8,
+    "required_opportunity_frames": 2,
+    "required_track_top3_coverage_frames": 2,
+    "success_unit": "An initial frame succeeds when any of the first three geometry-ranked proposals has IoU at least 0.8 with the target region."
+  },
+  "comparison": {
+    "baseline": "Objectness-only Top-3 target-region coverage under the identical proposal pool.",
+    "report": ["proposal opportunity frames", "objectness Top-3 coverage", "3D-track Top-3 coverage"]
+  },
+  "fallback_action": "Seal row 4 as initial-source-not-evaluable without changing frames, proposals, threshold, or candidate budget.",
+  "claim_boundary": "This gate only determines whether the two pre-action views support the frozen bounded-hypothesis mechanism. It is not the action confirmation and not portal ownership, access, waypoint, arrival, handoff, user benefit, reliability, or safety."
+}

@@ -10,6 +10,12 @@
     {"path": "l10_3rscan_nids_local_appearance_small_tile_posthoc.py", "sha256": "b7439ec48bd6309329ac06221fae5e926cd3ca7ff4902292acaa6b668f2d705d"},
     {"path": "l10_3rscan_reference_pixel_field.py", "sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e"}
   ],
+  "correction_from_failed_invocation": "The first invocation terminated before evaluation or result creation because the reused runner requires its legacy region-gate schema in addition to the already-frozen row4 confirmation gate. This adds only that schema-compatible receipt and changes no frame, threshold, candidate budget, proposal, mask, association or ranking rule.",
+  "gate_freeze": {
+    "path": "l10_3rscan_hypothesis_disagreement_initial_region_gate_freeze_protocol_v1.json",
+    "sha256": "2d9f1fcadcf815a24460da83aefb4d3aa1b1374d2740c7a6e8ece20e876a7a8a",
+    "required_schema": "blindassist-l10-3rscan-query-mask-3d-track-region-coverage-gate-freeze-protocol-v1"
+  },
   "cohort": {
     "path": "l10_3rscan_hypothesis_disagreement_action_confirmation_cohort_v1.json",
     "sha256": "e4da705e2913d9b92a2f606645cfa0cf2a67163aab5b1bc030360b811034b907",
