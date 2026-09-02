@@ -5363,8 +5363,8 @@ Inheritance disposition:
 
 `apps/demos/semantic-anchor-demo-app` is now the runnable L10-R0 surface. Its
 CameraX analyzer feeds ML Kit line/block text boxes into a pure Kotlin
-candidate-bound controller. The controller exposes the full demonstration
-loop:
+candidate-bound controller. The legacy controller exposes this synthetic
+demonstration loop:
 
 `SEARCH -> TARGET_FOUND -> LOCKED -> LEFT/RIGHT/FORWARD -> LOST -> SCAN -> REACQUIRED -> NEAR -> TASK_COMPLETE`
 
@@ -5376,6 +5376,30 @@ metric distance, navigation safety, or user-confirmed task completion. The
 current bundled recognizer is Latin-script, so the first canary targets are
 English/numeric room signs, exits, entrances, elevator labels, and service-desk
 signs.
+
+`NEAR` and `TASK_COMPLETE` are no longer L10 authority states. They remain in
+this legacy showcase only to reproduce the earlier controlled loop and cannot
+authorize commit or handoff. Current L10 mainline control uses the reversible
+authority reducer in
+[l10_evidence_authority_lattice.py](l10_evidence_authority_lattice.py):
+
+`UNKNOWN -> DIRECTIONAL -> BINDING -> TERMINAL`
+
+Directional authority can issue orient/approach only; binding authority can
+track only; terminal authority additionally requires an owned visible endpoint,
+terminal pose support, and handoff support. Conflicts explicitly permit
+`BINDING -> UNKNOWN`, `TERMINAL -> BINDING`, and
+`DIRECTIONAL -> UNKNOWN`. No distance or visual-scale threshold participates in
+those transitions. FAR/MID/NEAR remain result-analysis bins.
+
+The next decision-changing experiment is frozen at the design/source-admission
+boundary in
+[action_conditioned_progressive_evidence_commitment_protocol_v0.json](action_conditioned_progressive_evidence_commitment_protocol_v0.json).
+It compares passive accumulation, an unconditional fixed local action, and the
+same action behind a truth-free ambiguity trigger. No formal run is authorized
+until a new sequence supplies pose/action receipts, exact facade and entrance
+IDs, same-scene siblings, sign/facade and entrance/facade ownership, terminal
+truth, and measurable wrong-target controls.
 
 The focused JVM check is:
 

@@ -1,0 +1,110 @@
+{
+  "protocol_id": "L10-ACTION-CONDITIONED-PROGRESSIVE-EVIDENCE-COMMITMENT-V0",
+  "title": "Action-Conditioned Progressive Evidence Commitment",
+  "status": "DESIGN_READY_SOURCE_NOT_ADMITTED",
+  "claim_ceiling": "POSE_ACTION_ENDPOINT_SEQUENCE_DEVELOPMENT_ONLY",
+  "execution_authority": "NONE_UNTIL_A_NEW_SEQUENCE_PASSES_SOURCE_ADMISSION",
+  "hypothesis": "A truth-free ambiguity trigger followed by one fixed local observation action recovers the correct facade and entrance more efficiently than passive accumulation or the same action on every eligible step.",
+  "arms": {
+    "PASSIVE": "Accumulate currently available progressive evidence without requesting an extra observation action.",
+    "FIXED_ACTION": "Request the same frozen local sidestep, pan, or approach action at every eligible decision point.",
+    "TRIGGERED_ACTION": "Request that same frozen local action only when a truth-free ambiguity trigger fires."
+  },
+  "runtime_policy_boundary": {
+    "allowed_inputs": [
+      "target query or target semantics",
+      "current and prior image-derived evidence",
+      "camera pose available at runtime",
+      "candidate bearing and support region",
+      "action receipt and expected readability change",
+      "runtime association and ambiguity scores"
+    ],
+    "forbidden_inputs": [
+      "evaluator-private exact target facade ID",
+      "evaluator-private exact entrance ID",
+      "sibling correctness truth",
+      "target-absent truth",
+      "terminal or handoff truth",
+      "future frames"
+    ]
+  },
+  "required_sequence_schema": {
+    "episode": [
+      "episode_id",
+      "target_query",
+      "exact_target_facade_id",
+      "exact_target_entrance_id_or_null",
+      "same_scene_sibling_facade_ids",
+      "same_scene_sibling_entrance_ids",
+      "target_present",
+      "terminal_handoff_truth"
+    ],
+    "frame": [
+      "frame_id",
+      "timestamp",
+      "image_ref",
+      "camera_pose",
+      "available_action_labels",
+      "executed_action_label_or_hold",
+      "action_receipt",
+      "visible_facade_ids",
+      "visible_entrance_ids",
+      "sign_to_facade_ownership_truth",
+      "entrance_to_facade_ownership_truth",
+      "terminal_orientation_truth",
+      "terminal_standoff_truth"
+    ]
+  },
+  "authority_reducer": {
+    "implementation": "l10_evidence_authority_lattice.py",
+    "levels": ["UNKNOWN", "DIRECTIONAL", "BINDING", "TERMINAL"],
+    "authorized_actions": {
+      "UNKNOWN": ["SEARCH"],
+      "DIRECTIONAL": ["ORIENT_LEFT", "ORIENT_RIGHT", "APPROACH"],
+      "BINDING": ["TRACK"],
+      "TERMINAL": ["COMMIT", "HANDOFF"]
+    },
+    "required_regressions": [
+      "BINDING_TO_UNKNOWN_ON_REFERENT_OR_FACADE_CONFLICT",
+      "TERMINAL_TO_BINDING_WHEN_ENDPOINT_OR_HANDOFF_SUPPORT_DISAPPEARS",
+      "DIRECTIONAL_TO_UNKNOWN_WHEN_CURRENT_DIRECTIONAL_SUPPORT_DISAPPEARS"
+    ],
+    "distance_rule": "Distance and pose bins are analysis variables only and cannot grant, retain, or revoke authority."
+  },
+  "primary_metrics": [
+    "action_trigger_precision",
+    "post_action_correct_referent_recovery",
+    "wrong_referent_recovery",
+    "facade_association_accuracy",
+    "entrance_ownership_accuracy",
+    "reacquisition_rate",
+    "wrong_target_commit_rate",
+    "terminal_handoff_rate",
+    "observations_to_directional_authority",
+    "observations_to_binding_authority",
+    "observations_to_terminal_authority",
+    "action_cost"
+  ],
+  "analysis_only_axes": [
+    "distance",
+    "camera_pose",
+    "target_visual_scale",
+    "target_size",
+    "lens_or_focal_length_when_available"
+  ],
+  "required_controls": [
+    "target_absent_or_wrong_facade",
+    "same_scene sibling facade or sibling entrance",
+    "initially correct referent",
+    "initially wrong referent",
+    "lost then reacquired referent"
+  ],
+  "stop_conditions": [
+    "Source admission fails any required pose, action, facade, entrance, sibling, ownership, or handoff field.",
+    "Any runtime arm reads evaluator-private truth.",
+    "The fixed action differs between FIXED_ACTION and TRIGGERED_ACTION.",
+    "Distance or visual scale is used as an authority transition threshold.",
+    "Wrong-target commit is not measurable on the admitted sequence."
+  ],
+  "claim_boundary": "A positive result may establish Development evidence that one truth-free trigger plus one fixed local action causally improves correct facade or entrance recovery on the admitted sequence. It cannot establish a learned action selector, general navigation, public access, walkability, collision-free motion, arrival, user benefit, safety, deployment, or universal distance behavior. Existing consumed progressive replay, FSNS, CATALIST, PanoLab entrance rays, physical-door instance heads, and registered portal geometry do not substitute for this sequence."
+}

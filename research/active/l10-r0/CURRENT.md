@@ -814,6 +814,19 @@ contract.
    links the recovered sign to the exact target facade/entrance. Static HierText
    and pre-cropped FSNS do not supply portal ownership, action utility, arrival,
    or handoff.
+   The controller structure for that check is now frozen as an evidence
+   authority lattice, not a FAR/MID/NEAR distance state machine. The executable
+   reducer is
+   [l10_evidence_authority_lattice.py](l10_evidence_authority_lattice.py), and
+   the three-arm source/evaluation contract is
+   [action_conditioned_progressive_evidence_commitment_protocol_v0.json](action_conditioned_progressive_evidence_commitment_protocol_v0.json).
+   `UNKNOWN` authorizes search, directional evidence authorizes only orient or
+   approach, exact referent/facade continuity authorizes track, and owned visible
+   endpoint plus terminal-pose and handoff support authorizes handoff. Every
+   level is revocable on current conflict or evidence loss. Distance, pose, and
+   visual scale remain analysis axes only. The existing physical-door instance
+   head may continue as a local referent scorer, but cannot substitute for
+   facade/entrance ownership or terminal truth.
 4. The unchanged fresh tenth-family temporal-scale replay failed at `1/2`
    because proposal opportunity was only `1/2`; ranking-only temporal vacancy
    had zero incremental hits. A failure-driven calibrated depth-pose successor
