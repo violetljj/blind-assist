@@ -827,6 +827,21 @@ contract.
    visual scale remain analysis axes only. The existing physical-door instance
    head may continue as a local referent scorer, but cannot substitute for
    facade/entrance ownership or terminal truth.
+   A pinned audit of the newly released ABotN-POIBench then found a strong
+   capture substrate but not an admissible authority cohort. All `163/163`
+   episodes across 11 commercial scenes contain complete reference trajectories,
+   totalling `11,666` metric poses, with 6--37 POIs per scene. However, the
+   public annotations omit exact facade identity, independently justified
+   entrance-instance identity, same-facade sibling truth, sign/facade and
+   entrance/facade ownership, target-absent controls, and visual handoff truth.
+   The official agent interface also exposes `target_position` and
+   `distance_to_goal`, and its default success remains a 2 m distance gate.
+   Record
+   `L10_ABOTN_POIBENCH_CANDIDATE_SUBSTRATE_NOT_ADMITTED_MISSING_FACADE_OWNERSHIP_SIBLING_ABSENCE_AND_VISUAL_HANDOFF_TRUTH`.
+   The truth-stripping adapter is implemented in
+   [l10_abotn_truth_free_adapter.py](l10_abotn_truth_free_adapter.py), but no
+   9.67 GB scene download or three-arm run is admissible until a small
+   scene-disjoint ownership/handoff addendum is frozen.
 4. The unchanged fresh tenth-family temporal-scale replay failed at `1/2`
    because proposal opportunity was only `1/2`; ranking-only temporal vacancy
    had zero incremental hits. A failure-driven calibrated depth-pose successor

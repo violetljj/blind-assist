@@ -1,0 +1,62 @@
+{
+  "schema": "blindassist_l10_abotn_poibench_source_audit_v1",
+  "source": {
+    "huggingface_dataset": "acvlab/ABotN-POIBench",
+    "huggingface_revision": "fbb62cc3382d8ff84f7fe3b6a3e7d48e4c21e974",
+    "github_repository": "amap-cvlab/ABot-Navigation",
+    "github_revision": "2a0aefb56f1e2d315bba924239e9e8ad9dca9d92",
+    "annotation_manifest_sha256": "0731024cd2e4c63e40107a4610dc34f09f4531515b87e23372f24d65676ebe63"
+  },
+  "inventory": {
+    "scene_count": 11,
+    "episode_count": 163,
+    "structurally_complete_episode_count": 163,
+    "total_reference_pose_count": 11666,
+    "minimum_reference_pose_count": 25,
+    "median_reference_pose_count": 70,
+    "maximum_reference_pose_count": 176,
+    "minimum_pois_per_scene": 6,
+    "maximum_pois_per_scene": 37
+  },
+  "official_runtime_audit": {
+    "truth_fields_exposed_to_agent_by_default": {
+      "target_position": true,
+      "distance_to_goal": true
+    },
+    "distance_threshold_defines_default_success": true,
+    "required_l10_wrapper": [
+      "remove target_position",
+      "remove distance_to_goal",
+      "do not expose endpoint or future reference trajectory",
+      "log executed action and resulting pose/image receipt",
+      "score authority with evaluator-private annotations only"
+    ]
+  },
+  "required_contract_coverage": {
+    "continuous_reference_trajectory": "PASS",
+    "per_frame_metric_pose": "PASS",
+    "interactive_rgb_and_waypoint_actions": "CONDITIONAL_ON_9_67_GB_ASSETS_AND_RENDER_SERVER",
+    "exact_target_endpoint_coordinate": "PASS_EVALUATOR_PRIVATE",
+    "exact_target_facade_id": "MISSING",
+    "exact_entrance_instance_id": "NOT_PROVEN_EL_UNIQUE_ID_IS_POI_ENDPOINT_ONLY",
+    "same_facade_sibling_distractor_truth": "MISSING",
+    "sign_to_facade_ownership_truth": "MISSING",
+    "entrance_to_facade_ownership_truth": "MISSING",
+    "target_absent_or_wrong_facade_controls": "MISSING",
+    "visual_terminal_handoff_truth": "MISSING_METRIC_ARRIVAL_ONLY",
+    "truth_free_runtime_observation": "FAILS_BY_DEFAULT_REPAIRABLE_WITH_WRAPPER",
+    "distance_free_authority_transition": "FAILS_BY_DEFAULT_REPAIRABLE_BY_IGNORING_BENCHMARK_ARRIVAL_GATE"
+  },
+  "missing_authority_fields": [
+    "entrance_to_facade_ownership_truth",
+    "exact_entrance_instance_id",
+    "exact_target_facade_id",
+    "same_facade_sibling_distractor_truth",
+    "sign_to_facade_ownership_truth",
+    "target_absent_or_wrong_facade_controls",
+    "visual_terminal_handoff_truth"
+  ],
+  "verdict": "L10_ABOTN_POIBENCH_CANDIDATE_SUBSTRATE_NOT_ADMITTED_MISSING_FACADE_OWNERSHIP_SIBLING_ABSENCE_AND_VISUAL_HANDOFF_TRUTH",
+  "next_admissible_step": "Use the released simulator only as a capture substrate. Before any three-arm run, freeze a small scene-disjoint annotation addendum with exact facade IDs, exact entrance instance IDs, sign/facade and entrance/facade ownership, same-facade siblings, target-absent controls, and visual handoff truth; then install the truth-stripping runtime wrapper.",
+  "claim_boundary": "This audit establishes public source structure and missing authority fields only. It is not an L10 algorithm result, action-utility result, facade or entrance binding result, arrival or handoff confirmation, user-benefit evidence, deployment evidence, or safety evidence."
+}
