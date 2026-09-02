@@ -15,6 +15,8 @@ param(
     [int]$CaptureTimeoutSeconds = 3600,
     [ValidateRange(2.0, 16.0)]
     [double]$MinimumFreePhysicalGB = 4.0,
+    [ValidateRange(1073741824, 8589934592)]
+    [long]$StorageReservationBytes = 8589934592,
     [string]$StorageLeaseToken = '',
     [switch]$Resume
 )
@@ -629,7 +631,7 @@ try {
             -Action Acquire `
             -CarlaRoot $script:CarlaLibraryRootPath `
             -CarlaPython $script:CarlaPythonPath `
-            -ReservationBytes ([long](8GB)) `
+            -ReservationBytes $StorageReservationBytes `
             -OutputRoot $rawRoot `
             -LeaseLabel "DTR-CARLA-C2/$RunId" | ConvertFrom-Json -Depth 100
         $script:StorageLeaseToken = [string]$storageLease.lease_token
