@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist_l10_abotn_authority_addendum_v1",
+  "title": "L10 ABotN authority annotation addendum",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "cohort_canonical_json_sha256", "scenes", "claim_boundary"],
+  "properties": {
+    "schema": {"const": "blindassist_l10_abotn_authority_addendum_v1"},
+    "cohort_canonical_json_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scenes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/scene"}
+    },
+    "claim_boundary": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "truth": {"enum": ["TRUE", "FALSE", "UNKNOWN"]},
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "annotation_path", "facade_id", "entrance_instance_id", "sign_instance_id",
+        "sign_owned_by_facade", "entrance_owned_by_target", "same_facade_as_frozen_peer",
+        "terminal_frame_id", "terminal_endpoint_visible", "terminal_orientation_valid",
+        "terminal_standoff_valid", "visual_handoff_ready", "frame_sha256", "adjudication_source"
+      ],
+      "properties": {
+        "annotation_path": {"type": "string"},
+        "facade_id": {"type": ["string", "null"]},
+        "entrance_instance_id": {"type": ["string", "null"]},
+        "sign_instance_id": {"type": ["string", "null"]},
+        "sign_owned_by_facade": {"$ref": "#/$defs/truth"},
+        "entrance_owned_by_target": {"$ref": "#/$defs/truth"},
+        "same_facade_as_frozen_peer": {"$ref": "#/$defs/truth"},
+        "terminal_frame_id": {"type": ["string", "null"]},
+        "terminal_endpoint_visible": {"$ref": "#/$defs/truth"},
+        "terminal_orientation_valid": {"$ref": "#/$defs/truth"},
+        "terminal_standoff_valid": {"$ref": "#/$defs/truth"},
+        "visual_handoff_ready": {"$ref": "#/$defs/truth"},
+        "frame_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "adjudication_source": {"type": ["string", "null"], "minLength": 1}
+      }
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scene_id", "frozen_targets", "target_absent_control", "scene_disposition"],
+      "properties": {
+        "scene_id": {"type": "string"},
+        "frozen_targets": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/target"}
+        },
+        "target_absent_control": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["goal_label", "target_present_truth", "adjudication_source"],
+          "properties": {
+            "goal_label": {"type": "string"},
+            "target_present_truth": {"$ref": "#/$defs/truth"},
+            "adjudication_source": {"type": ["string", "null"], "minLength": 1}
+          }
+        },
+        "scene_disposition": {"enum": ["ADMITTED", "NOT_EVALUABLE"]}
+      }
+    }
+  }
+}

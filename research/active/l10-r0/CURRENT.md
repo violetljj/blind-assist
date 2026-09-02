@@ -842,6 +842,23 @@ contract.
    [l10_abotn_truth_free_adapter.py](l10_abotn_truth_free_adapter.py), but no
    9.67 GB scene download or three-arm run is admissible until a small
    scene-disjoint ownership/handoff addendum is frozen.
+   That metadata-only cohort is now preregistered in
+   [l10_abotn_cohort_freeze_v1.json](l10_abotn_cohort_freeze_v1.json): the
+   lowest-, median-, and highest-POI-density scenes are scene-disjoint, each
+   contributes its closest endpoint pair, and each receives a cross-scene
+   target-absent control. Endpoint separation generated candidates only; it is
+   analysis metadata and does not assert same-facade sibling status or drive an
+   authority transition. Pair substitution is forbidden after any selected
+   pixels are opened: a failed or unknown ownership adjudication makes the
+   scene `NOT_EVALUABLE`. The completed-addendum contract is frozen in
+   [l10_abotn_authority_addendum_schema_v1.json](l10_abotn_authority_addendum_schema_v1.json),
+   with a fail-closed evaluator in
+   [l10_abotn_authority_admission.py](l10_abotn_authority_admission.py). The
+   untouched template correctly yields `AUTHORITY_COHORT_NOT_ADMITTED` for all
+   `3/3` scenes because exact facade, entrance, ownership, sibling, endpoint,
+   target-absence, terminal-pose, and visual-handoff truth remain unknown. No
+   scene pixels or heavy assets have been downloaded, and no action result is
+   claimed.
 4. The unchanged fresh tenth-family temporal-scale replay failed at `1/2`
    because proposal opportunity was only `1/2`; ranking-only temporal vacancy
    had zero incremental hits. A failure-driven calibrated depth-pose successor

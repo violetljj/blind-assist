@@ -5401,6 +5401,18 @@ until a new sequence supplies pose/action receipts, exact facade and entrance
 IDs, same-scene siblings, sign/facade and entrance/facade ownership, terminal
 truth, and measurable wrong-target controls.
 
+The pinned ABotN-POIBench metadata now supplies a preregistered three-scene,
+six-target candidate cohort in
+[l10_abotn_cohort_freeze_v1.json](l10_abotn_cohort_freeze_v1.json), plus one
+cross-scene target-absent control per scene. Closest endpoint pairs are only
+pixel-blind sibling candidates; endpoint distance is never authority evidence.
+The ownership/handoff contract and fail-closed gate are
+[l10_abotn_authority_addendum_schema_v1.json](l10_abotn_authority_addendum_schema_v1.json)
+and [l10_abotn_authority_admission.py](l10_abotn_authority_admission.py).
+The empty frozen template remains `AUTHORITY_COHORT_NOT_ADMITTED` (`3/3`
+`NOT_EVALUABLE`), so heavy scene download and the three-arm run remain blocked
+until the selected pairs receive independent pixel-level adjudication.
+
 The focused JVM check is:
 
 ```powershell

@@ -1,0 +1,132 @@
+{
+  "schema": "blindassist_l10_abotn_cohort_freeze_v1",
+  "status": "FROZEN_METADATA_ONLY_PIXELS_UNOPENED_NOT_AUTHORITY_ADMITTED",
+  "source": {
+    "huggingface_dataset": "acvlab/ABotN-POIBench",
+    "huggingface_revision": "fbb62cc3382d8ff84f7fe3b6a3e7d48e4c21e974",
+    "annotation_manifest_sha256": "0731024cd2e4c63e40107a4610dc34f09f4531515b87e23372f24d65676ebe63"
+  },
+  "selection": {
+    "scene_rule": "lowest, median, and highest POI-count scenes; scene_id breaks ties",
+    "pair_rule": "minimum 2D endpoint separation; annotation path breaks ties",
+    "pair_semantics": "candidate generation only; separation is never authority or same-facade truth",
+    "substitution_rule": "none after any selected-scene pixels are opened",
+    "distance_role": "analysis_only_never_transition_or_admission"
+  },
+  "cohort": [
+    {
+      "selection_role": "LOW_POI_DENSITY",
+      "scene_id": "20260227170203",
+      "scene_episode_count": 6,
+      "scene_reference_pose_count_median": 74.0,
+      "frozen_pair": [
+        {
+          "annotation_path": "annotations/20260227170203/traj_1.json",
+          "annotation_sha256": "55e8d385ea7b7439903f5dcaa63ff3fc2ab5be7216fced4d9eb7320d704a747f",
+          "endpoint_id": "2",
+          "goal_label": "润滨烟酒",
+          "endpoint_xy_evaluator_private": [
+            -48.4439,
+            -6.5342
+          ]
+        },
+        {
+          "annotation_path": "annotations/20260227170203/traj_2.json",
+          "annotation_sha256": "3e670c5399511eb39eb9ad5e595ffd7e37380730199f7a9a5f74369bde7570e7",
+          "endpoint_id": "3",
+          "goal_label": "化轻公司",
+          "endpoint_xy_evaluator_private": [
+            -43.4962,
+            -6.3844
+          ]
+        }
+      ],
+      "endpoint_separation_analysis_only": 4.949967204941864,
+      "pair_status": "SIBLING_CANDIDATE_REQUIRES_PIXEL_BLIND_OWNERSHIP_ADJUDICATION",
+      "pair_failure_rule": "NOT_EVALUABLE_DO_NOT_SUBSTITUTE_AFTER_PIXELS_ARE_OPENED",
+      "target_absent_control": {
+        "source_scene_id": "20260227161417",
+        "goal_label": "十六局熟食",
+        "target_present_in_local_annotation_roster": false,
+        "control_status": "TARGET_ABSENT_CANDIDATE_REQUIRES_PIXEL_BLIND_ADJUDICATION"
+      }
+    },
+    {
+      "selection_role": "MEDIAN_POI_DENSITY",
+      "scene_id": "20260227161417",
+      "scene_episode_count": 10,
+      "scene_reference_pose_count_median": 82.5,
+      "frozen_pair": [
+        {
+          "annotation_path": "annotations/20260227161417/traj_0.json",
+          "annotation_sha256": "3cdf0e65d1c14a26abb8be50fdf3deb81285576e10a4cbec140e42fcaecbf618",
+          "endpoint_id": "1",
+          "goal_label": "十六局熟食",
+          "endpoint_xy_evaluator_private": [
+            -68.21,
+            -9.43
+          ]
+        },
+        {
+          "annotation_path": "annotations/20260227161417/traj_1.json",
+          "annotation_sha256": "51fbed6806e1f3719fc491dced37cb98f673e3ec46e1c36faa888ef60c5d18c3",
+          "endpoint_id": "2",
+          "goal_label": "早点 快餐  家常菜",
+          "endpoint_xy_evaluator_private": [
+            -64.425,
+            -9.4855
+          ]
+        }
+      ],
+      "endpoint_separation_analysis_only": 3.785406880376266,
+      "pair_status": "SIBLING_CANDIDATE_REQUIRES_PIXEL_BLIND_OWNERSHIP_ADJUDICATION",
+      "pair_failure_rule": "NOT_EVALUABLE_DO_NOT_SUBSTITUTE_AFTER_PIXELS_ARE_OPENED",
+      "target_absent_control": {
+        "source_scene_id": "20260212130612",
+        "goal_label": "火牛烤肉料理",
+        "target_present_in_local_annotation_roster": false,
+        "control_status": "TARGET_ABSENT_CANDIDATE_REQUIRES_PIXEL_BLIND_ADJUDICATION"
+      }
+    },
+    {
+      "selection_role": "HIGH_POI_DENSITY",
+      "scene_id": "20260212130612",
+      "scene_episode_count": 37,
+      "scene_reference_pose_count_median": 60,
+      "frozen_pair": [
+        {
+          "annotation_path": "annotations/20260212130612/traj_24.json",
+          "annotation_sha256": "6c5374eec172906f3576e9778c01f617327de6cc2d698161e1ca9acb725e9492",
+          "endpoint_id": "26",
+          "goal_label": "火牛烤肉料理",
+          "endpoint_xy_evaluator_private": [
+            -35.9452,
+            -36.4593
+          ]
+        },
+        {
+          "annotation_path": "annotations/20260212130612/traj_25.json",
+          "annotation_sha256": "f01e92fd4ce8747edbaa695e12028fda0a1a0cfdea6597e5d7467777752ed9fd",
+          "endpoint_id": "27",
+          "goal_label": "伊犁楼兰餐厅",
+          "endpoint_xy_evaluator_private": [
+            -35.9951,
+            -34.0098
+          ]
+        }
+      ],
+      "endpoint_separation_analysis_only": 2.450008216312754,
+      "pair_status": "SIBLING_CANDIDATE_REQUIRES_PIXEL_BLIND_OWNERSHIP_ADJUDICATION",
+      "pair_failure_rule": "NOT_EVALUABLE_DO_NOT_SUBSTITUTE_AFTER_PIXELS_ARE_OPENED",
+      "target_absent_control": {
+        "source_scene_id": "20260227170203",
+        "goal_label": "润滨烟酒",
+        "target_present_in_local_annotation_roster": false,
+        "control_status": "TARGET_ABSENT_CANDIDATE_REQUIRES_PIXEL_BLIND_ADJUDICATION"
+      }
+    }
+  ],
+  "admission_gate": "Each frozen pair must receive independently adjudicated exact facade, entrance, ownership, same-facade sibling, target-absence, endpoint visibility/orientation/stand-off, and visual handoff truth. A failed or unknown field makes that scene NOT_EVALUABLE and cannot trigger substitution.",
+  "runtime_boundary": "endpoint coordinates, endpoint IDs, source-scene control identity, ownership labels, and terminal truth remain evaluator-private",
+  "claim_boundary": "This freeze is a preregistered capture/adjudication cohort, not evidence of sibling status, facade or entrance binding, action utility, recovery, arrival, handoff, user benefit, or safety."
+}

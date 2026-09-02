@@ -1,0 +1,136 @@
+{
+  "schema": "blindassist_l10_abotn_authority_addendum_v1",
+  "cohort_canonical_json_sha256": "d9dce623f493d3a649d4b3e516094849ea670918a19b4f3ac0dfa28b137abfb6",
+  "scenes": [
+    {
+      "scene_id": "20260227170203",
+      "frozen_targets": [
+        {
+          "annotation_path": "annotations/20260227170203/traj_1.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        },
+        {
+          "annotation_path": "annotations/20260227170203/traj_2.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        }
+      ],
+      "target_absent_control": {
+        "goal_label": "十六局熟食",
+        "target_present_truth": "UNKNOWN",
+        "adjudication_source": null
+      },
+      "scene_disposition": "NOT_EVALUABLE"
+    },
+    {
+      "scene_id": "20260227161417",
+      "frozen_targets": [
+        {
+          "annotation_path": "annotations/20260227161417/traj_0.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        },
+        {
+          "annotation_path": "annotations/20260227161417/traj_1.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        }
+      ],
+      "target_absent_control": {
+        "goal_label": "火牛烤肉料理",
+        "target_present_truth": "UNKNOWN",
+        "adjudication_source": null
+      },
+      "scene_disposition": "NOT_EVALUABLE"
+    },
+    {
+      "scene_id": "20260212130612",
+      "frozen_targets": [
+        {
+          "annotation_path": "annotations/20260212130612/traj_24.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        },
+        {
+          "annotation_path": "annotations/20260212130612/traj_25.json",
+          "facade_id": null,
+          "entrance_instance_id": null,
+          "sign_instance_id": null,
+          "terminal_frame_id": null,
+          "frame_sha256": null,
+          "adjudication_source": null,
+          "sign_owned_by_facade": "UNKNOWN",
+          "entrance_owned_by_target": "UNKNOWN",
+          "same_facade_as_frozen_peer": "UNKNOWN",
+          "terminal_endpoint_visible": "UNKNOWN",
+          "terminal_orientation_valid": "UNKNOWN",
+          "terminal_standoff_valid": "UNKNOWN",
+          "visual_handoff_ready": "UNKNOWN"
+        }
+      ],
+      "target_absent_control": {
+        "goal_label": "润滨烟酒",
+        "target_present_truth": "UNKNOWN",
+        "adjudication_source": null
+      },
+      "scene_disposition": "NOT_EVALUABLE"
+    }
+  ],
+  "claim_boundary": "UNKNOWN remains NOT_EVALUABLE. VISUAL_HANDOFF_READY does not establish user completion, safe access, navigation success, deployment performance, or safety."
+}
