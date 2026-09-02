@@ -2,7 +2,7 @@
 
 Date: 2026-09-03
 
-Status: `SOURCE_PROTOCOL_FROZEN_NOT_RUN`
+Status: `IVCA_C1_SOURCE_NOT_EVALUABLE`
 
 ## Question
 
@@ -102,9 +102,12 @@ claim follows.
 
 ## Frozen first source
 
-IVCA-C1 freezes eight episodes covering sustained/future/current conflict,
+IVCA-C1 froze eight episodes covering sustained/future/current conflict,
 near-miss, early-exit crossing, receding, lateral-only, and positive/negative
 one-frame full-dropout roles. Protocol SHA-256 before any capture is
 `548A58F8493FD0C0900D62C40F39CD59B8993C7BF996E6DFDBBD797CE33B9CF9`.
-The source remains `NOT_RUN`; the hash must be updated if static materialization
-changes before launch.
+The source-only instance shard was captured once. Seven roles matched, but
+`ep_07` preregistered lateral-only SAFE became target CONTACT at `6.3 s`.
+IVCA-C1 is therefore terminal `SOURCE_NOT_EVALUABLE`; no wearable/depth/witness
+capture or four-arm prediction is authorized, and the cohort cannot be relabeled,
+retimed, retried, or repaired.
