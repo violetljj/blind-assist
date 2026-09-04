@@ -1,6 +1,6 @@
 # L10-R0 current
 
-Updated: 2026-09-01
+Updated: 2026-09-05
 
 Status: `L10_R0_ACTIVE`
 
@@ -14,6 +14,28 @@ when the required evidence is actually present?
 contract.
 
 ## Current decisions
+
+- **Latest commitment experiment (2026-09-05):** eight address/panorama-disjoint
+  SEVN PAN episodes supplied sixteen explicitly labeled, distinct-frame public
+  reference crops. Across 24 fresh frames, fixed sweep reached correct/wrong/
+  `UNKNOWN` `5/1/2` with 24 extra observations; unchanged triggered observation
+  reached `5/0/3` with 20. This retains all five recoveries, avoids one wrong
+  binding, and uses 16.7% fewer online observations on this small same-source
+  panel. It does not erase the earlier consumed 24-episode failure.
+  A separate SIFT/RANSAC reference-to-proposal geometric commit check then
+  rejected all five correct triggered bindings: `0/0/8`, correct retention
+  `0%`. Wrong-commit reduction is `NOT_EVALUABLE` because the triggered baseline
+  made zero errors here. Eight truth-proposed sibling boxes and 61 detector
+  candidates in target-region-excluded viewports were rejected, but oracle
+  target support was only `2/8`: rejection alone is not useful identification.
+  Record `L10_SEVN_REFERENCE_COMMITMENT_FRESH_DEVELOPMENT_GATE_NOT_MET` as
+  `NEGATIVE_CONTROL` for this geometric hard-commit role. Freeze the cohort,
+  two-reference extraction and thresholds; retain the episode harness and
+  earlier action policy. Future commitment work must address reference evidence
+  availability and partial-mask/whole-door compatibility before imposing an
+  unconditional veto. This is privileged-reference address-door Development,
+  not independently established physical-door identity or entrance ownership.
+  [Result and reproduction](L10_SEVN_REFERENCE_COMMITMENT_20260905.md).
 
 - **Controller:** seek, guide, reacquire, and the causal action-belief handoff
   guard remain implemented. Controlled controller results are mechanics

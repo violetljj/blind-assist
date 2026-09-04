@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "8 episode denominators and all arm counts recomputed",
+    "24 distinct source frames and previous-panel exclusions",
+    "verified candidate/action unchanged or rejected only",
+    "all frozen input hashes match repaired protocol",
+    "serialization repair preserves every scientific protocol field",
+    "terminal owner lock absent"
+  ],
+  "result_sha256": "ce07d2334ce296aecf37ddf9a4fd01b08af417ed849d0cd7d46d587a7a792e2a"
+}

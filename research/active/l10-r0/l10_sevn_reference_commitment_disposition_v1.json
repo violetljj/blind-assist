@@ -1,0 +1,15 @@
+{
+  "terminal_id": "terminal-l10-sevn-reference-commitment-fresh-negative",
+  "inheritance_role": "NEGATIVE_CONTROL",
+  "role_scope": "Two public reference crops plus SIFT/RANSAC full-extent agreement as an unconditional commit gate for frozen SEVN predicted door masks.",
+  "retained_surface": "Fresh PAN source, separated public reference/evaluator truth, frozen action comparison, and eight-episode failure result.",
+  "failure_signature": "Triggered 5 correct/0 wrong/3 UNKNOWN becomes 0/0/8; correct retention 0%; oracle reference support only 2/8 targets. Error reduction against a zero-error baseline is not evaluable.",
+  "revisit_trigger": "A new information representation that separates local identity support, observation unavailability and complete endpoint extent, tested on a new cohort.",
+  "assignment_basis": "The hard verifier loses all five valid recoveries despite rejecting 8 sibling boxes and 61 target-region-excluded detector masks. Retain the failure as a falsifier, not useful zero-error performance.",
+  "central_registration": {
+    "status": "BLOCKED_PREEXISTING_INPUT_FINGERPRINT_MISMATCH",
+    "error": "experiments/index.jsonl:252: input_fingerprint does not match input_refs",
+    "existing_run_id": "l10-3rscan-complementary-confirmation-freeze-2026-09-01",
+    "action": "Preserved all pre-existing registry bytes. Task-local structured disposition is durable; central inheritance assignment and experiment registration remain pending."
+  }
+}

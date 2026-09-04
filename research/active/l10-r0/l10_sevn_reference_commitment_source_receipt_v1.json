@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist-l10-sevn-reference-commitment-source-receipt-v1",
+  "generated_at_utc": "2026-09-04T19:07:03.244182Z",
+  "selection": {
+    "metadata_only": true,
+    "pixel_payloads_opened": 0,
+    "model_calls": 0,
+    "candidate_count_two_references_and_nonoverlapping_sibling": 27,
+    "episode_count": 8,
+    "reference_count": 16,
+    "distinct_frame_count_including_references": 24,
+    "scenario_counts": {
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY": 4,
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": 4
+    },
+    "rule": "Existing sorted candidate_goals; four PAN_LEFT then four PAN_RIGHT. Require original metadata PAN recovery, unique address-door per query/reference frame, two nearest-pose fresh references sorted by XY distance then frame then x_min, and a fresh-address nonoverlapping sibling. Greedy global exclusion of all selected target addresses and all query/reference frames. Cyclic next query with no requested address in any label is the label-absent control.",
+    "overlapping_address_aliases_are_not_negative_controls": true
+  },
+  "reference_exclusions": {
+    "prior_sources": [
+      {
+        "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+        "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+        "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v1.json",
+        "sha256": "de523cfe25d4c4896b6b7e14d806400f30e081bda9025d45d30b4edce9373765"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v2.json",
+        "sha256": "dc701be78e75978dc03f735e6141120a924b7a578355c8817bb4cb3db9b732e8"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v3.json",
+        "sha256": "a1ecdf9f7984f0cc91a7d273949c747971c01fe3e9254702996828ce415ae283"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v4.json",
+        "sha256": "2474b71d2cddd6cef05f62578d3fa5a0bae233fed85075af95f464118402fbfd"
+      },
+      {
+        "path": "research/active/l10-r0/l10_sevn_fresh_pan_source_v5.json",
+        "sha256": "a8869b489f7e0a350883db2c9407f0cecc7067b7f7a96b4beb9a7ff2bb0d5a37"
+      }
+    ],
+    "excluded_address_count": 245,
+    "excluded_frame_count": 260,
+    "selected_address_overlap": [],
+    "selected_frame_overlap_including_references": [],
+    "within_panel_reused_frames": []
+  },
+  "inputs": {
+    "metadata_directory": "artifacts.local/l10-sevn/metadata",
+    "metadata": {
+      "coord.hdf5": {
+        "bytes": 419832,
+        "md5": "9d2d6f17aa31c9cb8309195cf2da00f9",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/coord.hdf5/content"
+      },
+      "label.hdf5": {
+        "bytes": 351434,
+        "md5": "36e24d0ee0b2f351282f3b84aa5d5d56",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/label.hdf5/content"
+      },
+      "graph.pkl": {
+        "bytes": 2793330,
+        "md5": "f68be888e8f3b964544678070689b777",
+        "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/graph.pkl/content"
+      }
+    },
+    "materializer": {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_source.py",
+      "sha256": "c7117fdfb0ea1eb6ed32a82cc7387f19a6f0fac5dfa48c3fa718f74d8323009f"
+    }
+  },
+  "claim_boundary": "Fresh same-source PAN-only Development; privileged reference crops; same-address door surrogate. No exact physical instance, facade ownership, physical target absence, new-sensor action, arrival, handoff, safety or deployment authority.",
+  "outputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_source_v1.json",
+      "sha256": "dfa574aeff5bb4bc694392b557cd2e2f0d976b43ea71bca535801537e694ba70"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_truth_v1.json",
+      "sha256": "d23e30e168887cde1d4c1b928696ed9f382fe5f08050653ca2d58c31a505d31a"
+    }
+  }
+}

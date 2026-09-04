@@ -1,0 +1,134 @@
+{
+  "schema": "blindassist-l10-sevn-reference-commitment-protocol-v1",
+  "frozen_at_utc": "2026-09-04T19:12:40.8622102Z",
+  "question": "Can a separate two-reference geometric witness reduce wrong committed SEVN door proposals while retaining at least 80 percent of correct proposals without another online observation?",
+  "source": "research/active/l10-r0/l10_sevn_reference_commitment_source_v1.json",
+  "truth": "research/active/l10-r0/l10_sevn_reference_commitment_truth_v1.json",
+  "baseline_protocol": "research/active/l10-r0/l10_sevn_progressive_episode_protocol_v1.json",
+  "frozen_files": [
+    {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_source.py",
+      "sha256": "c7117fdfb0ea1eb6ed32a82cc7387f19a6f0fac5dfa48c3fa718f74d8323009f"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_source_v1.json",
+      "sha256": "dfa574aeff5bb4bc694392b557cd2e2f0d976b43ea71bca535801537e694ba70"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_truth_v1.json",
+      "sha256": "d23e30e168887cde1d4c1b928696ed9f382fe5f08050653ca2d58c31a505d31a"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_source_receipt_v1.json",
+      "sha256": "dcd37ba2258d187e690c7fe8d18e7d62c25e2a49b21a91562641250fb769fe61"
+    },
+    {
+      "path": "research/active/l10-r0/l10_reference_commitment.py",
+      "sha256": "13d0f3015b603f44b3770098fa6b644b86772ac3c18645929140db98300a5f41"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_reference_commitment_episode.py",
+      "sha256": "d2f6f731568849337f7d4911855cad03e8a1ffaff8936e4d47812add313345dd"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_progressive_episode.py",
+      "sha256": "d118b890b5f152c42c4954c813722c211d48ccbcf0cbdf2a3531919aa1a5f54c"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_progressive_episode_protocol_v1.json",
+      "sha256": "2706f086117962821e422f03d3573c8208b93af75a87c32250a785eeb92745e5"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_pixel_replay.py",
+      "sha256": "d20f714af0a5448b0917267211d9c51d42c7ee411d9ad5776a40438bea0c4bb2"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_ppocrv6_medium_portal_witness.py",
+      "sha256": "4e81aee068646c33512e2cd566018eb60713385b743e555c8f52945480b48f19"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_ppocrv6_medium_fallback.py",
+      "sha256": "37383981abad5e1f8773baede6a7d09530ce65a0570696e65d3889a5ddc80b6a"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr.py",
+      "sha256": "95a8e5cfb649be1b24afbe3616da76170e8c4f3312510b88f185ed7b9ca30995"
+    },
+    {
+      "path": "research/active/l10-r0/l10_sevn_portal_conditioned_ocr_result_v1.json",
+      "sha256": "2cf15ecde0430b16db3d73d8ac274ebfb943511a49be93859e8d62a728843e46"
+    }
+  ],
+  "verifier": {
+    "feature": "OpenCV SIFT defaults, native resolution",
+    "matching": "Exact BF L2 two-nearest-neighbour Lowe ratio",
+    "ratio": 0.7,
+    "minimum_matches": 11,
+    "minimum_inliers": 11,
+    "homography": "RANSAC",
+    "reprojection_pixels": 5.0,
+    "minimum_inlier_fraction": 0.5,
+    "minimum_projected_mask_iou": 0.5,
+    "reference_rule": "At least one of two pre-supplied reference crops supports the unchanged proposal",
+    "seed": 104729,
+    "provenance": "https://docs.opencv.org/4.13.0/d1/de0/tutorial_py_feature_homography.html",
+    "threshold_authority": "Preregistered Development defaults, not calibrated confidence or a probability"
+  },
+  "runtime_versions": {
+    "onnxruntime-gpu": "1.26.0",
+    "rapidocr": "3.9.2",
+    "numpy": "2.3.5",
+    "paddlex": "3.7.2",
+    "torch": "2.11.0+cu130",
+    "opencv-python": "5.0.0.93",
+    "paddleocr": "3.7.0",
+    "ultralytics": "8.4.102"
+  },
+  "execution": {
+    "difference_from_earlier_run": "Torch and OpenCV runtime versions differ; all four fresh arms share this frozen runtime. No numerical comparison against the old runtime is claimed.",
+    "observed_free_gpu_mib": 524,
+    "reason": "ACCELERATOR_UNAVAILABLE",
+    "concurrent_owner": "Existing CARLA process; not owned or modified by this task",
+    "device": "cpu"
+  },
+  "arms": [
+    "PASSIVE",
+    "FIXED_SWEEP",
+    "TRIGGERED_ACTIVE",
+    "TRIGGERED_VERIFIED"
+  ],
+  "change": "Verifier may reject only the unchanged final triggered candidate. No re-ranking, fallback, action change, confidence threshold reuse, or additional online view.",
+  "source_boundary": "Eight metadata-selected same-source PAN episodes. Two distinct-frame manually labeled reference crops are supplied as privileged public inputs. They identify an address-door surrogate, not independently proven physical-instance or entrance ownership.",
+  "gate": {
+    "correct_commit_retention": 0.8,
+    "no_absolute_precision_gain_requirement": true,
+    "wrong_commit_reduction": 0.5,
+    "sibling_diagnostics": "8 evaluable nonoverlapping different-address oracle boxes, zero false accept",
+    "no_extra_online_observation": true,
+    "zero_baseline_wrong": "Wrong reduction NOT_EVALUABLE, no positive gate",
+    "no_new_wrong": true
+  },
+  "diagnostics": "After runtime selection is sealed, test human target/sibling boxes using already opened policy views. Report oracle proposal controls separately. Also check all detector masks in target-region-excluded viewports. Cross-query label-absent metadata is reserved, not asserted physical absence and not used in this run.",
+  "cost": "Charge two public reference setup views per episode separately; report online observation counts and verification latency. No net end-to-end efficiency claim that ignores reference acquisition.",
+  "recovery": "Per-episode atomic checkpoints tied to exact protocol hash. Resume skips completed episodes. Interrupted episode can repeat only identical deterministic local inference as disclosed Development; maximum lost work one episode. No external model calls. Never overwrite a terminal result.",
+  "claim_boundary": "Fresh address-and-panorama-disjoint same-provider PAN-only Development with privileged labeled references. No metric-motion action, independent physical-door identity, entrance ownership, general target absence, arrival, handoff, phone deployment, user benefit or safety claim. Gate failure freezes this cohort and mechanism without tuning.",
+  "checkpoint_compatible_protocol_sha256": [
+    "dca9d047dc6794c86c3def809d5c74a7dfcd9ba791b981e7a451ffc20a5d504d"
+  ],
+  "implementation_repair": {
+    "completed_checkpoint": "SEVN001 retained unchanged",
+    "parent_protocol_sha256": "dca9d047dc6794c86c3def809d5c74a7dfcd9ba791b981e7a451ffc20a5d504d",
+    "incomplete_episode": "SEVN002 deterministic local inference repeats under original recovery contract",
+    "scientific_changes": "None: verifier, source, truth, models, thresholds, policy, cohort, metrics and gates unchanged",
+    "failed_log": "artifacts.local/work/l10-sevn-reference-commitment-v1/run.log",
+    "reason": "Second episode checkpoint serialization raised TypeError for numpy.bool; normalize only NumPy scalar JSON values with item()."
+  }
+}

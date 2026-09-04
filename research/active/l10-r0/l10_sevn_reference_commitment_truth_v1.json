@@ -1,0 +1,599 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-evaluator-truth-v1",
+  "generated_at_utc": "2026-09-04T19:07:03.244182Z",
+  "truth_authority": "SEVN_HUMAN_ADDRESS_DOOR_ANNOTATIONS_NOT_EXACT_PHYSICAL_IDENTITY",
+  "episodes": {
+    "SEVN001": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6754"
+      },
+      "target_door_annotation": {
+        "frame_id": 168119,
+        "house_number": "6754",
+        "street_name": "saint_laurent",
+        "x_min": 154,
+        "x_max": 170,
+        "y_min": 29,
+        "y_max": 49,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN001_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN001_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 168119,
+          "street_name": "saint_laurent",
+          "house_number": "6752",
+          "x_min": 140,
+          "y_min": 29,
+          "x_max": 153,
+          "y_max": 49,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": []
+    },
+    "SEVN002": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6818"
+      },
+      "target_door_annotation": {
+        "frame_id": 166737,
+        "house_number": "6818",
+        "street_name": "saint_laurent",
+        "x_min": 161,
+        "x_max": 195,
+        "y_min": 32,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN002_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 166737,
+          "street_name": "saint_laurent",
+          "house_number": "6816",
+          "x_min": 139,
+          "y_min": 29,
+          "x_max": 156,
+          "y_max": 53,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": [
+        {
+          "frame_id": 166737,
+          "street_name": "saint_laurent",
+          "house_number": "6820",
+          "x_min": 161,
+          "y_min": 32,
+          "x_max": 195,
+          "y_max": 56,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ]
+    },
+    "SEVN003": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6854"
+      },
+      "target_door_annotation": {
+        "frame_id": 165924,
+        "house_number": "6854",
+        "street_name": "saint_laurent",
+        "x_min": 161,
+        "x_max": 180,
+        "y_min": 31,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN003_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN003_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 165924,
+          "street_name": "saint_laurent",
+          "house_number": "6852",
+          "x_min": 143,
+          "y_min": 31,
+          "x_max": 159,
+          "y_max": 55,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": []
+    },
+    "SEVN004": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6870"
+      },
+      "target_door_annotation": {
+        "frame_id": 165530,
+        "house_number": "6870",
+        "street_name": "saint_laurent",
+        "x_min": 163,
+        "x_max": 176,
+        "y_min": 33,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN004_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN004_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 165530,
+          "street_name": "saint_laurent",
+          "house_number": "6868",
+          "x_min": 151,
+          "y_min": 33,
+          "x_max": 161,
+          "y_max": 49,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": []
+    },
+    "SEVN005": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6910"
+      },
+      "target_door_annotation": {
+        "frame_id": 164753,
+        "house_number": "6910",
+        "street_name": "saint_laurent",
+        "x_min": 140,
+        "x_max": 162,
+        "y_min": 24,
+        "y_max": 54,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN005_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN005_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 164753,
+          "street_name": "saint_laurent",
+          "house_number": "6914",
+          "x_min": 174,
+          "y_min": 25,
+          "x_max": 191,
+          "y_max": 54,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": []
+    },
+    "SEVN006": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "7016"
+      },
+      "target_door_annotation": {
+        "frame_id": 224223,
+        "house_number": "7016",
+        "street_name": "saint_laurent",
+        "x_min": 154,
+        "x_max": 170,
+        "y_min": 31,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN006_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        },
+        "SEVN006_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 224223,
+          "street_name": "saint_laurent",
+          "house_number": "7018",
+          "x_min": 170,
+          "y_min": 31,
+          "x_max": 187,
+          "y_max": 51,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": [
+        {
+          "frame_id": 224223,
+          "street_name": "saint_laurent",
+          "house_number": "7020",
+          "x_min": 154,
+          "y_min": 31,
+          "x_max": 170,
+          "y_max": 51,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ]
+    },
+    "SEVN007": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "7070"
+      },
+      "target_door_annotation": {
+        "frame_id": 222876,
+        "house_number": "7070",
+        "street_name": "saint_laurent",
+        "x_min": 154,
+        "x_max": 169,
+        "y_min": 32,
+        "y_max": 51,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN007_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN007_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 4,
+          "target_house_number_visible": true
+        },
+        "SEVN007_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 4,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 222876,
+          "street_name": "saint_laurent",
+          "house_number": "7076",
+          "x_min": 169,
+          "y_min": 33,
+          "x_max": 183,
+          "y_max": 51,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": [
+        {
+          "frame_id": 222876,
+          "street_name": "saint_laurent",
+          "house_number": "7074",
+          "x_min": 154,
+          "y_min": 32,
+          "x_max": 169,
+          "y_max": 51,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        },
+        {
+          "frame_id": 222876,
+          "street_name": "saint_laurent",
+          "house_number": "7072",
+          "x_min": 154,
+          "y_min": 32,
+          "x_max": 169,
+          "y_max": 51,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ]
+    },
+    "SEVN008": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "7108"
+      },
+      "target_door_annotation": {
+        "frame_id": 222045,
+        "house_number": "7108",
+        "street_name": "saint_laurent",
+        "x_min": 146,
+        "x_max": 169,
+        "y_min": 31,
+        "y_max": 57,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN008_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN008_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 3,
+          "target_house_number_visible": true
+        }
+      },
+      "different_address_nonoverlapping_sibling_annotations": [
+        {
+          "frame_id": 222045,
+          "street_name": "saint_laurent",
+          "house_number": "7112",
+          "x_min": 189,
+          "y_min": 33,
+          "x_max": 197,
+          "y_max": 54,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ],
+      "overlapping_different_address_annotations_not_negative_controls": [
+        {
+          "frame_id": 222045,
+          "street_name": "saint_laurent",
+          "house_number": "7110",
+          "x_min": 146,
+          "y_min": 31,
+          "x_max": 169,
+          "y_max": 57,
+          "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+        }
+      ]
+    }
+  },
+  "cross_query_label_absent_controls": [
+    {
+      "control_id": "SEVN001_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN001",
+      "query_episode_id": "SEVN002",
+      "query_frame_id": 166737,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN002_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN002",
+      "query_episode_id": "SEVN003",
+      "query_frame_id": 165924,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN003_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN003",
+      "query_episode_id": "SEVN004",
+      "query_frame_id": 165530,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN004_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN004",
+      "query_episode_id": "SEVN005",
+      "query_frame_id": 164753,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN005_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN005",
+      "query_episode_id": "SEVN006",
+      "query_frame_id": 224223,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN006_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN006",
+      "query_episode_id": "SEVN007",
+      "query_frame_id": 222876,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN007_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN007",
+      "query_episode_id": "SEVN008",
+      "query_frame_id": 222045,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    },
+    {
+      "control_id": "SEVN008_CROSS_QUERY_LABEL_ABSENT",
+      "reference_episode_id": "SEVN008",
+      "query_episode_id": "SEVN001",
+      "query_frame_id": 168119,
+      "truth_scope": "NO_REQUESTED_ADDRESS_LABEL_ANYWHERE_IN_QUERY_PANORAMA_METADATA_NOT_PHYSICAL_ABSENCE"
+    }
+  ]
+}

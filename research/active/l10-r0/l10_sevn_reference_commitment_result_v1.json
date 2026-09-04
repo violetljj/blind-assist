@@ -1,0 +1,3818 @@
+{
+  "schema": "blindassist-l10-sevn-reference-commitment-result-v1",
+  "generated_at": "2026-09-04T19:18:32.987740Z",
+  "decision": "L10_SEVN_REFERENCE_COMMITMENT_FRESH_DEVELOPMENT_GATE_NOT_MET",
+  "protocol_sha256": "1d93ae0a728ed6e64ddfb5487da47671c655b1ccc12f31fe5654493c7bf4913e",
+  "metrics": {
+    "PASSIVE": {
+      "episode_count": 8,
+      "correct_binding": 0,
+      "wrong_binding": 0,
+      "unknown": 8,
+      "coverage": 0.0,
+      "binding_precision": null,
+      "passive_miss_count": 8,
+      "recovery_after_passive_miss": 0,
+      "action_count": 0,
+      "extra_observation_count": 0,
+      "mean_extra_observations": 0.0,
+      "correct_recoveries_per_extra_observation": null,
+      "risk_coverage": {
+        "curve": [],
+        "empirical_aurc_over_episode_denominator": 0.0,
+        "maximum_coverage": 0.0,
+        "calibration_authority": "NONE_EMPIRICAL_RANKING_ONLY"
+      }
+    },
+    "FIXED_SWEEP": {
+      "episode_count": 8,
+      "correct_binding": 5,
+      "wrong_binding": 1,
+      "unknown": 2,
+      "coverage": 0.75,
+      "binding_precision": 0.833333,
+      "passive_miss_count": 8,
+      "recovery_after_passive_miss": 5,
+      "action_count": 8,
+      "extra_observation_count": 24,
+      "mean_extra_observations": 3.0,
+      "correct_recoveries_per_extra_observation": 0.208333,
+      "risk_coverage": {
+        "curve": [
+          {
+            "accepted": 1,
+            "minimum_confidence": 0.64367282,
+            "coverage": 0.125,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 2,
+            "minimum_confidence": 0.61464323,
+            "coverage": 0.25,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 3,
+            "minimum_confidence": 0.26647321,
+            "coverage": 0.375,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 4,
+            "minimum_confidence": 0.1949825,
+            "coverage": 0.5,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 5,
+            "minimum_confidence": 0.18348918,
+            "coverage": 0.625,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 6,
+            "minimum_confidence": 0.15532633,
+            "coverage": 0.75,
+            "risk": 0.166667,
+            "precision": 0.833333
+          }
+        ],
+        "empirical_aurc_over_episode_denominator": 0.02083338,
+        "maximum_coverage": 0.75,
+        "calibration_authority": "NONE_EMPIRICAL_RANKING_ONLY"
+      }
+    },
+    "TRIGGERED_ACTIVE": {
+      "episode_count": 8,
+      "correct_binding": 5,
+      "wrong_binding": 0,
+      "unknown": 3,
+      "coverage": 0.625,
+      "binding_precision": 1.0,
+      "passive_miss_count": 8,
+      "recovery_after_passive_miss": 5,
+      "action_count": 8,
+      "extra_observation_count": 20,
+      "mean_extra_observations": 2.5,
+      "correct_recoveries_per_extra_observation": 0.25,
+      "risk_coverage": {
+        "curve": [
+          {
+            "accepted": 1,
+            "minimum_confidence": 0.64367282,
+            "coverage": 0.125,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 2,
+            "minimum_confidence": 0.61464323,
+            "coverage": 0.25,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 3,
+            "minimum_confidence": 0.44794813,
+            "coverage": 0.375,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 4,
+            "minimum_confidence": 0.26647321,
+            "coverage": 0.5,
+            "risk": 0.0,
+            "precision": 1.0
+          },
+          {
+            "accepted": 5,
+            "minimum_confidence": 0.18348918,
+            "coverage": 0.625,
+            "risk": 0.0,
+            "precision": 1.0
+          }
+        ],
+        "empirical_aurc_over_episode_denominator": 0.0,
+        "maximum_coverage": 0.625,
+        "calibration_authority": "NONE_EMPIRICAL_RANKING_ONLY"
+      }
+    },
+    "TRIGGERED_VERIFIED": {
+      "episode_count": 8,
+      "correct_binding": 0,
+      "wrong_binding": 0,
+      "unknown": 8,
+      "coverage": 0.0,
+      "binding_precision": null,
+      "passive_miss_count": 8,
+      "recovery_after_passive_miss": 0,
+      "action_count": 8,
+      "extra_observation_count": 20,
+      "mean_extra_observations": 2.5,
+      "correct_recoveries_per_extra_observation": 0.0,
+      "risk_coverage": {
+        "curve": [],
+        "empirical_aurc_over_episode_denominator": 0.0,
+        "maximum_coverage": 0.0,
+        "calibration_authority": "NONE_EMPIRICAL_RANKING_ONLY"
+      }
+    }
+  },
+  "gates": {
+    "wrong_reduction_evaluable": false,
+    "at_least_half_wrong_removed": false,
+    "correct_retention_at_least_80_percent": false,
+    "no_new_wrong_binding": true,
+    "no_extra_online_observation": true,
+    "all_sibling_controls_evaluable": true,
+    "no_sibling_false_accept": true
+  },
+  "correct_retention": 0.0,
+  "wrong_removed": 0,
+  "sibling_controls": {
+    "evaluable": 8,
+    "false_accepts": 0
+  },
+  "target_region_absent_controls": {
+    "candidate_count": 61,
+    "accepted": 0
+  },
+  "reference_setup_views": 16,
+  "wall_seconds_this_invocation": 172.4737284000148,
+  "actual_model_device": "cpu",
+  "runtime_versions": {
+    "torch": "2.11.0+cu130",
+    "ultralytics": "8.4.102",
+    "rapidocr": "3.9.2",
+    "onnxruntime-gpu": "1.26.0",
+    "opencv-python": "5.0.0.93",
+    "numpy": "2.3.5",
+    "paddleocr": "3.7.0",
+    "paddlex": "3.7.2"
+  },
+  "episodes": [
+    {
+      "episode_id": "SEVN001",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6754"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN001",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN001",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN001",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN001",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": null,
+        "TRIGGERED_ACTIVE": null,
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "cbbe191d8702264896420a74bedf68c59f3dea29c8c471f0f8b26c6bece2a5af",
+      "verification": null,
+      "verification_seconds": 0.0,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 189.041556,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 189.041556,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 99.041556,
+          "portal_id": "P002",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 99.041556,
+          "portal_id": "P005",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.041556,
+          "portal_id": "P007",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.041556,
+          "portal_id": "P008",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.041556,
+          "portal_id": "P022",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.041556,
+          "portal_id": "P023",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.041556,
+          "portal_id": "P026",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 9.041556,
+          "portal_id": "P000",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_168138.png",
+          "bytes": 6570853,
+          "crc32": "75a7fdeb",
+          "sha256": "61518f2505f5c768b9466ce10aa6839dd017ce583ced861a85484ed77076122d"
+        },
+        {
+          "member": "panos/pano_168156.png",
+          "bytes": 6362943,
+          "crc32": "efc0ccb1",
+          "sha256": "7acb4b8c6ef3fb14e6bb5758f801758ea8e918b00d58acf126f2d2cd1402fc9d"
+        },
+        {
+          "member": "panos/pano_168119.png",
+          "bytes": 6240407,
+          "crc32": "842fe298",
+          "sha256": "63100b0f72b882d4fd25eb0bbacfce77d70c68817c84fa4d4a7ed663d1c88c30"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 23.669
+    },
+    {
+      "episode_id": "SEVN002",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6818"
+      },
+      "action_reason": "EXACT_TARGET_TOKEN_EDGE_RECENTER",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN002",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN002",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.1949825,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 87731,
+            "selected_mask_area_pixels": 144914,
+            "target_box_area_pixels": 213961,
+            "selected_mask_precision": 0.60540044,
+            "target_box_coverage": 0.41003267,
+            "selected_mask_centroid_xy": [
+              745.017114,
+              803.36345
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN002",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.44794813,
+          "action": "PAN_LEFT",
+          "action_executed": 1,
+          "extra_observation_count": 1,
+          "evaluation": {
+            "intersection_pixels": 56305,
+            "selected_mask_area_pixels": 116864,
+            "target_box_area_pixels": 213961,
+            "selected_mask_precision": 0.48179936,
+            "target_box_coverage": 0.26315543,
+            "selected_mask_centroid_xy": [
+              660.029778,
+              849.659596
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN002",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "PAN_LEFT",
+          "action_executed": 1,
+          "extra_observation_count": 1,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 166737,
+          "heading": 166.414021,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6818",
+                "score": 1.0,
+                "box_xyxy": [
+                  1043.0,
+                  686.0,
+                  1094.0,
+                  725.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 3,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.1949825,
+            "selected_binding": {
+              "portal_id": "P010",
+              "portal_confidence": 0.19498249888420105,
+              "portal_box_xyxy": [
+                470,
+                558,
+                1021,
+                1145
+              ],
+              "text": "6818",
+              "text_score": 1.0,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "frame": 166737,
+          "heading": 143.914021,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6818",
+                "score": 1.0,
+                "box_xyxy": [
+                  803.0,
+                  686.0,
+                  854.0,
+                  725.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 3,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.44794813,
+            "selected_binding": {
+              "portal_id": "P001",
+              "portal_confidence": 0.4479481279850006,
+              "portal_box_xyxy": [
+                521,
+                574,
+                783,
+                1127
+              ],
+              "text": "6818",
+              "text_score": 1.0,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "b735ff72f857b3810617edcb7571e4dc7a65538a18f69cf88939be656255ac07",
+      "verification": {
+        "accepted": false,
+        "state": "UNKNOWN",
+        "references": [
+          {
+            "supported": false,
+            "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+            "matches": 109,
+            "inliers": 82,
+            "projected_mask_iou": 0.23633684,
+            "inlier_fraction": 0.7522935779816514,
+            "projected_polygon": [
+              [
+                230.38340759277344,
+                477.0553894042969
+              ],
+              [
+                784.1375732421875,
+                593.2485961914062
+              ],
+              [
+                783.1365966796875,
+                847.8859252929688
+              ],
+              [
+                198.8105010986328,
+                991.4508056640625
+              ]
+            ]
+          },
+          {
+            "supported": false,
+            "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+            "matches": 49,
+            "inliers": 38,
+            "projected_mask_iou": 0.21756156,
+            "inlier_fraction": 0.7755102040816326,
+            "projected_polygon": [
+              [
+                265.0909118652344,
+                360.3384094238281
+              ],
+              [
+                766.0056762695312,
+                572.7554931640625
+              ],
+              [
+                755.623779296875,
+                869.2708740234375
+              ],
+              [
+                260.0010986328125,
+                1053.9041748046875
+              ]
+            ]
+          }
+        ],
+        "reference_acquisition_cost": 2,
+        "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+      },
+      "verification_seconds": 0.3823,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 143.914021,
+          "verifier": {
+            "accepted": true,
+            "state": "REFERENCE_SUPPORTED_PROPOSAL",
+            "references": [
+              {
+                "supported": true,
+                "reason": "REFERENCE_GEOMETRY_SUPPORTS_PROPOSAL",
+                "matches": 109,
+                "inliers": 82,
+                "projected_mask_iou": 0.69443413,
+                "inlier_fraction": 0.7522935779816514,
+                "projected_polygon": [
+                  [
+                    230.38340759277344,
+                    477.0553894042969
+                  ],
+                  [
+                    784.1375732421875,
+                    593.2485961914062
+                  ],
+                  [
+                    783.1365966796875,
+                    847.8859252929688
+                  ],
+                  [
+                    198.8105010986328,
+                    991.4508056640625
+                  ]
+                ]
+              },
+              {
+                "supported": true,
+                "reason": "REFERENCE_GEOMETRY_SUPPORTS_PROPOSAL",
+                "matches": 49,
+                "inliers": 38,
+                "projected_mask_iou": 0.60999843,
+                "inlier_fraction": 0.7755102040816326,
+                "projected_polygon": [
+                  [
+                    265.0909118652344,
+                    360.3384094238281
+                  ],
+                  [
+                    766.0056762695312,
+                    572.7554931640625
+                  ],
+                  [
+                    755.623779296875,
+                    869.2708740234375
+                  ],
+                  [
+                    260.0010986328125,
+                    1053.9041748046875
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 166.414021,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 114,
+                "inliers": 91,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.7982456140350878,
+                "projected_polygon": [
+                  [
+                    460.2596130371094,
+                    468.8583068847656
+                  ],
+                  [
+                    1022.1273193359375,
+                    593.1633911132812
+                  ],
+                  [
+                    1022.0064086914062,
+                    847.269287109375
+                  ],
+                  [
+                    439.190185546875,
+                    995.4902954101562
+                  ]
+                ]
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 48,
+                "inliers": 40,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.8333333333333334,
+                "projected_polygon": [
+                  [
+                    506.79949951171875,
+                    358.7132873535156
+                  ],
+                  [
+                    1004.8986206054688,
+                    573.643798828125
+                  ],
+                  [
+                    995.9926147460938,
+                    870.4052734375
+                  ],
+                  [
+                    491.1578063964844,
+                    1060.69677734375
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 346.414021,
+          "portal_id": "P001",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 346.414021,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 346.414021,
+          "portal_id": "P004",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 346.414021,
+          "portal_id": "P005",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 346.414021,
+          "portal_id": "P008",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_166712.png",
+          "bytes": 6153881,
+          "crc32": "1ae85444",
+          "sha256": "c4245deedb654a35062a38d13c9321cb869ea037a7288ad8135fcfc4d7855472"
+        },
+        {
+          "member": "panos/pano_166691.png",
+          "bytes": 6230320,
+          "crc32": "dee73826",
+          "sha256": "a75b4fe1ed60e7ec5f46fc0c33b18b6986edbf54f1936e8511d0f2df75e6874e"
+        },
+        {
+          "member": "panos/pano_166737.png",
+          "bytes": 6081942,
+          "crc32": "fca695d7",
+          "sha256": "b9435e73662e5e8c701c184c28db717b94f7481ced27256125c6795e6a0b7f82"
+        }
+      ],
+      "unique_inferred_views": 5,
+      "seconds": 23.0833
+    },
+    {
+      "episode_id": "SEVN003",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6854"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN003",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN003",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.64367282,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 74079,
+            "selected_mask_area_pixels": 74079,
+            "target_box_area_pixels": 119642,
+            "selected_mask_precision": 1.0,
+            "target_box_coverage": 0.6191722,
+            "selected_mask_centroid_xy": [
+              723.371698,
+              652.48972
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN003",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.64367282,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 74079,
+            "selected_mask_area_pixels": 74079,
+            "target_box_area_pixels": 119642,
+            "selected_mask_precision": 1.0,
+            "target_box_coverage": 0.6191722,
+            "selected_mask_centroid_xy": [
+              723.371698,
+              652.48972
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN003",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 165924,
+          "heading": 173.89926,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6854",
+                "score": 0.99998,
+                "box_xyxy": [
+                  695.0,
+                  583.0,
+                  771.0,
+                  626.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 6,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.64367282,
+            "selected_binding": {
+              "portal_id": "P005",
+              "portal_confidence": 0.6436856985092163,
+              "portal_box_xyxy": [
+                595,
+                506,
+                855,
+                799
+              ],
+              "text": "6854",
+              "text_score": 0.99998,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "frame": 165924,
+          "heading": 173.89926,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6854",
+                "score": 0.99998,
+                "box_xyxy": [
+                  695.0,
+                  583.0,
+                  771.0,
+                  626.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 6,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.64367282,
+            "selected_binding": {
+              "portal_id": "P005",
+              "portal_confidence": 0.6436856985092163,
+              "portal_box_xyxy": [
+                595,
+                506,
+                855,
+                799
+              ],
+              "text": "6854",
+              "text_score": 0.99998,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "b08e9d04420fd3d7f8ca0838331d50fbb55bc1f9413fff8219c5fc2b9746d332",
+      "verification": {
+        "accepted": false,
+        "state": "UNKNOWN",
+        "references": [
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+            "matches": 4,
+            "inliers": 0,
+            "projected_mask_iou": null
+          },
+          {
+            "supported": false,
+            "reason": "INVALID_PROJECTED_EXTENT",
+            "matches": 20,
+            "inliers": 11,
+            "projected_mask_iou": null,
+            "inlier_fraction": 0.55
+          }
+        ],
+        "reference_acquisition_cost": 2,
+        "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+      },
+      "verification_seconds": 0.4422,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 173.89926,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INVALID_PROJECTED_EXTENT",
+                "matches": 20,
+                "inliers": 11,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.55
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 173.89926,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INVALID_PROJECTED_EXTENT",
+                "matches": 20,
+                "inliers": 11,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.55
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 83.89926,
+          "portal_id": "P006",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P006",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.30888238,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P010",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P015",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P017",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.01912641,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P026",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P027",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 263.89926,
+          "portal_id": "P029",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 18,
+                "inliers": 14,
+                "projected_mask_iou": 0.05965924,
+                "inlier_fraction": 0.7777777777777778,
+                "projected_polygon": [
+                  [
+                    1054.02587890625,
+                    328.252197265625
+                  ],
+                  [
+                    1450.555419921875,
+                    465.53021240234375
+                  ],
+                  [
+                    1450.3414306640625,
+                    779.6309814453125
+                  ],
+                  [
+                    1160.7646484375,
+                    940.5402221679688
+                  ]
+                ]
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 353.89926,
+          "portal_id": "P004",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_165948.png",
+          "bytes": 6392063,
+          "crc32": "8a502e8a",
+          "sha256": "cbcf67b129af6c2f533ce2898c16c38cd64b985c2abfc85cf130b7cfbca8aa34"
+        },
+        {
+          "member": "panos/pano_165897.png",
+          "bytes": 6669526,
+          "crc32": "c7a7f425",
+          "sha256": "83019740dfa23f926c22c251392a75f83c020f28f4ebb458e586588497911277"
+        },
+        {
+          "member": "panos/pano_165924.png",
+          "bytes": 6375249,
+          "crc32": "c378daa5",
+          "sha256": "60439e4c65d055f72c9918f95881972694e468c194b7dd876264cda7ee5510cb"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 23.3659
+    },
+    {
+      "episode_id": "SEVN004",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6870"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN004",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN004",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.61464323,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 42514,
+            "selected_mask_area_pixels": 80510,
+            "target_box_area_pixels": 61824,
+            "selected_mask_precision": 0.52805863,
+            "target_box_coverage": 0.68766175,
+            "selected_mask_centroid_xy": [
+              728.237536,
+              764.882723
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN004",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.61464323,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 42514,
+            "selected_mask_area_pixels": 80510,
+            "target_box_area_pixels": 61824,
+            "selected_mask_precision": 0.52805863,
+            "target_box_coverage": 0.68766175,
+            "selected_mask_centroid_xy": [
+              728.237536,
+              764.882723
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN004",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 165530,
+          "heading": 189.271727,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6870",
+                "score": 0.74951,
+                "box_xyxy": [
+                  721.0,
+                  459.0,
+                  761.0,
+                  485.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 2,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.61464323,
+            "selected_binding": {
+              "portal_id": "P004",
+              "portal_confidence": 0.8200600743293762,
+              "portal_box_xyxy": [
+                620,
+                546,
+                829,
+                995
+              ],
+              "text": "6870",
+              "text_score": 0.74951,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "frame": 165530,
+          "heading": 189.271727,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "6870",
+                "score": 0.74951,
+                "box_xyxy": [
+                  721.0,
+                  459.0,
+                  761.0,
+                  485.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 2,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.61464323,
+            "selected_binding": {
+              "portal_id": "P004",
+              "portal_confidence": 0.8200600743293762,
+              "portal_box_xyxy": [
+                620,
+                546,
+                829,
+                995
+              ],
+              "text": "6870",
+              "text_score": 0.74951,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "76b3552917f1f4140e777ba0b5f443d4ca78fa24ff04bb470591a789d10653ff",
+      "verification": {
+        "accepted": false,
+        "state": "UNKNOWN",
+        "references": [
+          {
+            "supported": false,
+            "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+            "matches": 15,
+            "inliers": 12,
+            "projected_mask_iou": 0.3972584,
+            "inlier_fraction": 0.8,
+            "projected_polygon": [
+              [
+                653.0048217773438,
+                541.9998168945312
+              ],
+              [
+                869.7941284179688,
+                438.3775939941406
+              ],
+              [
+                854.4445190429688,
+                830.1254272460938
+              ],
+              [
+                651.0576171875,
+                737.9197998046875
+              ]
+            ]
+          },
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+            "matches": 1,
+            "inliers": 0,
+            "projected_mask_iou": null
+          }
+        ],
+        "reference_acquisition_cost": 2,
+        "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+      },
+      "verification_seconds": 0.8239,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 189.271727,
+          "verifier": {
+            "accepted": true,
+            "state": "REFERENCE_SUPPORTED_PROPOSAL",
+            "references": [
+              {
+                "supported": true,
+                "reason": "REFERENCE_GEOMETRY_SUPPORTS_PROPOSAL",
+                "matches": 15,
+                "inliers": 12,
+                "projected_mask_iou": 0.5956152,
+                "inlier_fraction": 0.8,
+                "projected_polygon": [
+                  [
+                    653.0048217773438,
+                    541.9998168945312
+                  ],
+                  [
+                    869.7941284179688,
+                    438.3775939941406
+                  ],
+                  [
+                    854.4445190429688,
+                    830.1254272460938
+                  ],
+                  [
+                    651.0576171875,
+                    737.9197998046875
+                  ]
+                ]
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 189.271727,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "REFERENCE_GEOMETRY_DISAGREES_WITH_PROPOSAL",
+                "matches": 15,
+                "inliers": 12,
+                "projected_mask_iou": 0.0,
+                "inlier_fraction": 0.8,
+                "projected_polygon": [
+                  [
+                    653.0048217773438,
+                    541.9998168945312
+                  ],
+                  [
+                    869.7941284179688,
+                    438.3775939941406
+                  ],
+                  [
+                    854.4445190429688,
+                    830.1254272460938
+                  ],
+                  [
+                    651.0576171875,
+                    737.9197998046875
+                  ]
+                ]
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 99.271727,
+          "portal_id": "P006",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 99.271727,
+          "portal_id": "P010",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 99.271727,
+          "portal_id": "P014",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 99.271727,
+          "portal_id": "P016",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.271727,
+          "portal_id": "P008",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.271727,
+          "portal_id": "P015",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.271727,
+          "portal_id": "P020",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 279.271727,
+          "portal_id": "P023",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 9.271727,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 9.271727,
+          "portal_id": "P005",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_165551.png",
+          "bytes": 6203997,
+          "crc32": "5f64cdbc",
+          "sha256": "bd115040881bf264fc151d547c5b49a99e142667d983bc467275c1d79ddd8e94"
+        },
+        {
+          "member": "panos/pano_165579.png",
+          "bytes": 6164872,
+          "crc32": "d7363f32",
+          "sha256": "c2e6de4c26d2bb024b5e71d57224d4fa469c587565aecb9bcc14a3c6ebe1f7ae"
+        },
+        {
+          "member": "panos/pano_165530.png",
+          "bytes": 6308125,
+          "crc32": "36dab96e",
+          "sha256": "82c6fbb68f57d2a3a30721023195403a2c6a16135c68452e946d96bce9e88171"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 23.9873
+    },
+    {
+      "episode_id": "SEVN005",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6910"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN005",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN005",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN005",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN005",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": null,
+        "TRIGGERED_ACTIVE": null,
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "cbbe191d8702264896420a74bedf68c59f3dea29c8c471f0f8b26c6bece2a5af",
+      "verification": null,
+      "verification_seconds": 0.0,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 205.000776,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 24,
+                "inliers": 8,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.3333333333333333
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 115.000776,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 15,
+                "inliers": 6,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.4
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 295.000776,
+          "portal_id": "P009",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 25.000776,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 5,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 25.000776,
+          "portal_id": "P011",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 5,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 115.000776,
+          "portal_id": "P001",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 15,
+                "inliers": 6,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.4
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 115.000776,
+          "portal_id": "P008",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 15,
+                "inliers": 6,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.4
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_164778.png",
+          "bytes": 6278365,
+          "crc32": "ff523eda",
+          "sha256": "d3143764aa28dd926c2fb80a846fb96f1440623cb640d2a70d2cbd259ff8acec"
+        },
+        {
+          "member": "panos/pano_164727.png",
+          "bytes": 6185274,
+          "crc32": "26dbc08e",
+          "sha256": "df9c576ab62a73f339b0946d8a9ab4cd1b4f62b1493533b3e11f1b4981fe46bf"
+        },
+        {
+          "member": "panos/pano_164753.png",
+          "bytes": 6050940,
+          "crc32": "9833e6c5",
+          "sha256": "56bddc745c70b2123dc46a0c47ee76104ea48d4d7970d063f2dee575a96c424e"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 30.8962
+    },
+    {
+      "episode_id": "SEVN006",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "7016"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN006",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN006",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.18348918,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 27546,
+            "selected_mask_area_pixels": 44868,
+            "target_box_area_pixels": 84150,
+            "selected_mask_precision": 0.61393421,
+            "target_box_coverage": 0.32734403,
+            "selected_mask_centroid_xy": [
+              728.136623,
+              699.744762
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN006",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.18348918,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 27546,
+            "selected_mask_area_pixels": 44868,
+            "target_box_area_pixels": 84150,
+            "selected_mask_precision": 0.61393421,
+            "target_box_coverage": 0.32734403,
+            "selected_mask_centroid_xy": [
+              728.136623,
+              699.744762
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN006",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 224223,
+          "heading": 201.555599,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "7016",
+                "score": 0.99994,
+                "box_xyxy": [
+                  795.6,
+                  432.0,
+                  840.6,
+                  466.8
+                ]
+              }
+            ],
+            "portal_candidate_count": 5,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.18348918,
+            "selected_binding": {
+              "portal_id": "P018",
+              "portal_confidence": 0.18350018560886383,
+              "portal_box_xyxy": [
+                600,
+                482,
+                873,
+                955
+              ],
+              "text": "7016",
+              "text_score": 0.99994,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "frame": 224223,
+          "heading": 201.555599,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "7016",
+                "score": 0.99994,
+                "box_xyxy": [
+                  795.6,
+                  432.0,
+                  840.6,
+                  466.8
+                ]
+              }
+            ],
+            "portal_candidate_count": 5,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.18348918,
+            "selected_binding": {
+              "portal_id": "P018",
+              "portal_confidence": 0.18350018560886383,
+              "portal_box_xyxy": [
+                600,
+                482,
+                873,
+                955
+              ],
+              "text": "7016",
+              "text_score": 0.99994,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "02bc69b3ebecf64871ba3d7ff66ee90e0eb455837a5345bfac4f3ef3ee7db626",
+      "verification": {
+        "accepted": false,
+        "state": "UNKNOWN",
+        "references": [
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+            "matches": 13,
+            "inliers": 8,
+            "projected_mask_iou": null,
+            "inlier_fraction": 0.6153846153846154
+          },
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+            "matches": 7,
+            "inliers": 0,
+            "projected_mask_iou": null
+          }
+        ],
+        "reference_acquisition_cost": 2,
+        "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+      },
+      "verification_seconds": 0.2506,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 201.555599,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 13,
+                "inliers": 8,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.6153846153846154
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 7,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 201.555599,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_GEOMETRIC_SUPPORT",
+                "matches": 13,
+                "inliers": 8,
+                "projected_mask_iou": null,
+                "inlier_fraction": 0.6153846153846154
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 7,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 291.555599,
+          "portal_id": "P005",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 291.555599,
+          "portal_id": "P010",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 291.555599,
+          "portal_id": "P012",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 291.555599,
+          "portal_id": "P014",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 21.555599,
+          "portal_id": "P002",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 21.555599,
+          "portal_id": "P010",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 111.555599,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 111.555599,
+          "portal_id": "P022",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_224201.png",
+          "bytes": 6067556,
+          "crc32": "efed5761",
+          "sha256": "db04b9fd381297a888e1968f514f7902e0d398ce438be6d94bee8ea6d0918a3f"
+        },
+        {
+          "member": "panos/pano_224246.png",
+          "bytes": 6075045,
+          "crc32": "bf2bee30",
+          "sha256": "139a892d857b2bfbc6ba60bb236efe4bc8cb10ebc42a961220d04d7dca8f3047"
+        },
+        {
+          "member": "panos/pano_224223.png",
+          "bytes": 6074280,
+          "crc32": "7b0f6fb9",
+          "sha256": "5c500bc246d5b490d08d8aeaf2afb675a17d480ecc079eb4bec64ab6e19ecd19"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 20.127
+    },
+    {
+      "episode_id": "SEVN007",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "7070"
+      },
+      "action_reason": "EXACT_TARGET_TOKEN_EDGE_RECENTER",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN007",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN007",
+          "outcome": "WRONG_BINDING",
+          "binding_confidence": 0.15532633,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 8032,
+            "selected_mask_area_pixels": 54795,
+            "target_box_area_pixels": 75078,
+            "selected_mask_precision": 0.14658272,
+            "target_box_coverage": 0.10698207,
+            "selected_mask_centroid_xy": [
+              918.027776,
+              464.697436
+            ],
+            "selected_mask_centroid_in_target_box": false,
+            "overlap_rule_authorized": false,
+            "correct": false
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN007",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "PAN_RIGHT",
+          "action_executed": 1,
+          "extra_observation_count": 1,
+          "evaluation": null
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN007",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "PAN_RIGHT",
+          "action_executed": 1,
+          "extra_observation_count": 1,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 222876,
+          "heading": 191.682514,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "7070",
+                "score": 0.99767,
+                "box_xyxy": [
+                  419.0,
+                  526.0,
+                  478.0,
+                  559.0
+                ]
+              }
+            ],
+            "portal_candidate_count": 6,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.15532633,
+            "selected_binding": {
+              "portal_id": "P008",
+              "portal_confidence": 0.1556890904903412,
+              "portal_box_xyxy": [
+                612,
+                237,
+                1120,
+                889
+              ],
+              "text": "7070",
+              "text_score": 0.99767,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": null,
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "e7e1432792034cf8e7ff6cc2640e85868e8c8e9e41a3102aa0f03fa0fada991e",
+      "verification": null,
+      "verification_seconds": 0.0,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 214.182514,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 214.182514,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 281.682514,
+          "portal_id": "P002",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 281.682514,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 281.682514,
+          "portal_id": "P005",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 281.682514,
+          "portal_id": "P009",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 281.682514,
+          "portal_id": "P010",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 281.682514,
+          "portal_id": "P017",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 4,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 11.682514,
+          "portal_id": "P000",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 11.682514,
+          "portal_id": "P001",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_222855.png",
+          "bytes": 6500605,
+          "crc32": "38060221",
+          "sha256": "04dd139e9fa2de81878b153868c2c7a704d3e30dcef3f4f3167ae573ab293542"
+        },
+        {
+          "member": "panos/pano_222900.png",
+          "bytes": 6478285,
+          "crc32": "e672774b",
+          "sha256": "1d8a330342425e81f433914a1e3369b61e15d95d9eeed70e9d40ab775e664227"
+        },
+        {
+          "member": "panos/pano_222876.png",
+          "bytes": 6430741,
+          "crc32": "fb942c18",
+          "sha256": "275c711bceaddbe2353cc18221e3a457bc4d1b11539e2fb3464c07dac8c85252"
+        }
+      ],
+      "unique_inferred_views": 5,
+      "seconds": 30.0622
+    },
+    {
+      "episode_id": "SEVN008",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "7108"
+      },
+      "action_reason": "NO_TARGET_TOKEN_AND_NO_GRAPH_APPROACH",
+      "arms": {
+        "PASSIVE": {
+          "episode_id": "SEVN008",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "HOLD",
+          "action_executed": 0,
+          "extra_observation_count": 0,
+          "evaluation": null
+        },
+        "FIXED_SWEEP": {
+          "episode_id": "SEVN008",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.26647321,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 39558,
+            "selected_mask_area_pixels": 99178,
+            "target_box_area_pixels": 157212,
+            "selected_mask_precision": 0.39885862,
+            "target_box_coverage": 0.25162201,
+            "selected_mask_centroid_xy": [
+              755.072627,
+              729.295721
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "episode_id": "SEVN008",
+          "outcome": "CORRECT_BINDING",
+          "binding_confidence": 0.26647321,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": {
+            "intersection_pixels": 39558,
+            "selected_mask_area_pixels": 99178,
+            "target_box_area_pixels": 157212,
+            "selected_mask_precision": 0.39885862,
+            "target_box_coverage": 0.25162201,
+            "selected_mask_centroid_xy": [
+              755.072627,
+              729.295721
+            ],
+            "selected_mask_centroid_in_target_box": true,
+            "overlap_rule_authorized": true,
+            "correct": true
+          }
+        },
+        "TRIGGERED_VERIFIED": {
+          "episode_id": "SEVN008",
+          "outcome": "UNKNOWN",
+          "binding_confidence": null,
+          "action": "SWEEP",
+          "action_executed": 1,
+          "extra_observation_count": 3,
+          "evaluation": null
+        }
+      },
+      "sealed_runtime": {
+        "PASSIVE": null,
+        "FIXED_SWEEP": {
+          "frame": 222045,
+          "heading": 193.517143,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "7108",
+                "score": 0.99998,
+                "box_xyxy": [
+                  583.2,
+                  415.8,
+                  671.4,
+                  465.6
+                ]
+              }
+            ],
+            "portal_candidate_count": 5,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.26647321,
+            "selected_binding": {
+              "portal_id": "P013",
+              "portal_confidence": 0.2664785385131836,
+              "portal_box_xyxy": [
+                542,
+                403,
+                931,
+                1144
+              ],
+              "text": "7108",
+              "text_score": 0.99998,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_ACTIVE": {
+          "frame": 222045,
+          "heading": 193.517143,
+          "output": {
+            "state": "PIXEL_BOUND_MASK_PORTAL_PROPOSAL",
+            "observation_branch": "V2_RESULT_RETAINED",
+            "exact_target_text_candidate_count": 1,
+            "exact_target_text_candidates": [
+              {
+                "canonical": "7108",
+                "score": 0.99998,
+                "box_xyxy": [
+                  583.2,
+                  415.8,
+                  671.4,
+                  465.6
+                ]
+              }
+            ],
+            "portal_candidate_count": 5,
+            "portal_witness_count": 0,
+            "binding_confidence": 0.26647321,
+            "selected_binding": {
+              "portal_id": "P013",
+              "portal_confidence": 0.2664785385131836,
+              "portal_box_xyxy": [
+                542,
+                403,
+                931,
+                1144
+              ],
+              "text": "7108",
+              "text_score": 0.99998,
+              "authority_edge": null
+            }
+          }
+        },
+        "TRIGGERED_VERIFIED": null
+      },
+      "sealed_runtime_sha256": "6c6ca660b308233c3b082dbbcaee0a7254a1af6013d60cc08647e4f367e61c05",
+      "verification": {
+        "accepted": false,
+        "state": "UNKNOWN",
+        "references": [
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+            "matches": 3,
+            "inliers": 0,
+            "projected_mask_iou": null
+          },
+          {
+            "supported": false,
+            "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+            "matches": 1,
+            "inliers": 0,
+            "projected_mask_iou": null
+          }
+        ],
+        "reference_acquisition_cost": 2,
+        "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+      },
+      "verification_seconds": 0.3527,
+      "reference_setup_views": 2,
+      "diagnostic_controls": [
+        {
+          "kind": "TARGET_ORACLE",
+          "heading": 193.517143,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "kind": "SIBLING_ORACLE",
+          "heading": 103.517143,
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "target_region_absent_controls": [
+        {
+          "heading": 13.517143,
+          "portal_id": "P000",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 13.517143,
+          "portal_id": "P002",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 0,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 2,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P000",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P003",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P012",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P023",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P031",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        },
+        {
+          "heading": 103.517143,
+          "portal_id": "P035",
+          "verifier": {
+            "accepted": false,
+            "state": "UNKNOWN",
+            "references": [
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 1,
+                "inliers": 0,
+                "projected_mask_iou": null
+              },
+              {
+                "supported": false,
+                "reason": "INSUFFICIENT_DISTINCTIVE_MATCHES",
+                "matches": 3,
+                "inliers": 0,
+                "projected_mask_iou": null
+              }
+            ],
+            "reference_acquisition_cost": 2,
+            "authority": "REFERENCE_CONDITIONED_ADDRESS_DOOR_SURROGATE_ONLY"
+          }
+        }
+      ],
+      "archive_members": [
+        {
+          "member": "panos/pano_222065.png",
+          "bytes": 6457353,
+          "crc32": "6ecfd87a",
+          "sha256": "c45060760799380712efbc73c3491ab3930b027f70a550ecaec8b06b0c5f411d"
+        },
+        {
+          "member": "panos/pano_222027.png",
+          "bytes": 6520478,
+          "crc32": "f87d4402",
+          "sha256": "e91bd8d3c4b70c44071300391358f1bb7a1d4c53d40dbcd7b366a25fcceda99a"
+        },
+        {
+          "member": "panos/pano_222045.png",
+          "bytes": 6685285,
+          "crc32": "19728c72",
+          "sha256": "96a462609bcdc18015a72b0253f43a5551c12ae304c53759def6da35fff426f7"
+        }
+      ],
+      "unique_inferred_views": 4,
+      "seconds": 18.9973
+    }
+  ],
+  "claim_boundary": "Fresh address-and-panorama-disjoint same-provider PAN-only Development with privileged labeled references. No metric-motion action, independent physical-door identity, entrance ownership, general target absence, arrival, handoff, phone deployment, user benefit or safety claim. Gate failure freezes this cohort and mechanism without tuning."
+}
