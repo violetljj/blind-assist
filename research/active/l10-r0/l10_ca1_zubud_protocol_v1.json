@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist-l10-ca1-zubud-protocol-v1",
+  "authority": "SOURCE_DISJOINT_REAL_IMAGE_COMMITMENT_CANARY",
+  "experiment": "L10-CA1-C1 — Frozen unary physical-instance commitment authority transfer",
+  "question": "Can the previously frozen 3D-Street-View center-scale physical-instance score reject wrong building candidates as UNKNOWN while retaining correct candidates on a source-disjoint real-image provider?",
+  "provider": {
+    "name": "Zurich Buildings Database (ZuBuD)",
+    "official_page": "https://vision.ee.ethz.ch/datsets.html",
+    "official_groundtruth_url": "https://ethz.ch/content/dam/ethz/special-interest/itet/cvl/vision-dam/datasets/Dataset-information/Zubud/zubud_groundtruth.txt",
+    "database_images": 1005,
+    "building_identities": 201,
+    "views_per_identity": 5,
+    "query_images": 115
+  },
+  "source_snapshot": {
+    "database_archive": {
+      "filename": "ZuBuD.tar.gz",
+      "bytes": 509079468,
+      "sha256": "0630b19a84e841c290b69703f1499e2fed1010a37be26d8f1cf235ccde095d3a"
+    },
+    "query_archive": {
+      "filename": "qimages.tar.gz",
+      "bytes": 3279022,
+      "sha256": "27b8cfb13c9fff75f9317b7dcc8d3eebb0ddc970e0d50e36d623ff1c7c2b460b"
+    },
+    "groundtruth": {
+      "filename": "zubud_groundtruth.txt",
+      "bytes": 931,
+      "sha256": "5cec63d2f062e01af8c642166775df309e21e33327c3b876591c24d8d8b8d0e0"
+    }
+  },
+  "frozen_cohort": {
+    "queries": "All 115 provider query images in ascending qimg ID order.",
+    "candidate_roster": "All 201 provider building identities.",
+    "truth": "Use only the provider TEST-to-TRAIN mapping in zubud_groundtruth.txt.",
+    "proposal": "For each query, choose the building whose maximum global DINO cosine over its five provider database views is highest. Ties break by the lower building ID.",
+    "commitment_reference": "Always compare the proposed identity's fixed canonical view01 with the query. The commitment score does not read candidate rank, runner-up score, truth, or the proposal-producing view.",
+    "pixel_selection": "No pixel, embedding, score, prediction, or outcome affects cohort membership or truth."
+  },
+  "frozen_commitment_witness": {
+    "origin": "Inherited without tuning from l10_3dstreetview_center_target_lock_protocol_v1.json and its frozen train-derived threshold.",
+    "backbone": "facebook/dinov2-small from the project-local immutable snapshot",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "embedding": "L2-normalized final CLS token",
+    "center_scales": [1.0, 0.5, 0.25],
+    "score": "0.25 * global/global cosine + 0.75 * maximum cosine among scale pairs where at least one side is cropped.",
+    "commit_threshold": 0.611806,
+    "decision": "COMMIT to the already proposed identity only when its unary score is at least 0.611806; otherwise return UNKNOWN.",
+    "runtime": "CUDA float32 is permitted as a score-preserving execution acceleration and is recorded in the result.",
+    "forbidden": [
+      "threshold tuning or sweep on ZuBuD",
+      "crop-scale or score-weight tuning",
+      "choosing a commitment reference view after seeing a query or outcome",
+      "candidate-margin or rank features in the commitment decision",
+      "using provider truth in proposal or commitment",
+      "replacing UNKNOWN with a fallback identity"
+    ]
+  },
+  "evaluation": {
+    "arms": {
+      "COMMIT_ALL": "Commit every global-DINO proposal.",
+      "CA1_UNARY_GATE": "Apply only the frozen unary threshold to the same proposal; failed authority becomes UNKNOWN."
+    },
+    "primary_metrics": [
+      "correct commits",
+      "wrong commits",
+      "UNKNOWN",
+      "commit precision",
+      "coverage",
+      "correct-commit retention",
+      "wrong-commit reduction"
+    ],
+    "decision_gate": "KEEP_FOR_NEW_EPISODE_INTEGRATION only if wrong commits fall by at least 50%, at least 80% of baseline correct commits remain, and commit precision rises by at least 10 percentage points. Otherwise reject this witness as cross-provider commitment authority.",
+    "single_replay": "Run once on the frozen 115-query cohort. Do not alter the mechanism or rerun a modified threshold after observing the result."
+  },
+  "claim_boundary": "This is a source-disjoint real-image transfer canary for a ranking-independent single-reference building-instance commitment witness. A pass does not establish address-token binding, facade or portal continuity, entrance identity, SEVN episode improvement, arrival, handoff, access, traversability, user benefit, or mobility safety. The consumed 24 SEVN episodes remain frozen Development failure analysis and are not used here."
+}

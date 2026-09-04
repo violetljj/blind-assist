@@ -1,0 +1,968 @@
+{
+  "schema": "blindassist-l10-ca1-zubud-result-v1",
+  "authority": "SOURCE_DISJOINT_REAL_IMAGE_COMMITMENT_CANARY_RESULT",
+  "protocol_path": "l10_ca1_zubud_protocol_v1.json",
+  "protocol_sha256": "a16fe84d52af462c391311aa20afade9f64cba48a081e97f3f0fa1d82897b7bb",
+  "source": {
+    "provider": "Zurich Buildings Database (ZuBuD)",
+    "queries": 115,
+    "candidate_identities": 201,
+    "database_views": 1005,
+    "groundtruth_sha256": "5cec63d2f062e01af8c642166775df309e21e33327c3b876591c24d8d8b8d0e0"
+  },
+  "model": {
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\p1_a2_dinov2_small_ed25f3a",
+    "model_safetensors_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "dtype": "float32"
+  },
+  "frozen_threshold": 0.611806,
+  "arms": {
+    "commit_all": {
+      "correct": 110,
+      "wrong": 5,
+      "unknown": 0,
+      "commit_precision": 0.956522,
+      "coverage": 1.0
+    },
+    "ca1_unary_gate": {
+      "correct": 104,
+      "wrong": 1,
+      "unknown": 10,
+      "commit_precision": 0.990476,
+      "coverage": 0.913043
+    }
+  },
+  "deltas": {
+    "correct_commit_retention": 0.945455,
+    "wrong_commit_reduction": 0.8,
+    "commit_precision": 0.033954,
+    "coverage": -0.086957
+  },
+  "gate_met": false,
+  "conclusion": "L10_CA1_C1_REJECT_CROSS_PROVIDER_COMMITMENT_WITNESS",
+  "decision_gate": "KEEP_FOR_NEW_EPISODE_INTEGRATION only if wrong commits fall by at least 50%, at least 80% of baseline correct commits remain, and commit precision rises by at least 10 percentage points. Otherwise reject this witness as cross-provider commitment authority.",
+  "rows": [
+    {
+      "query_id": 1,
+      "truth_building_id": 100,
+      "proposed_building_id": 100,
+      "proposal_correct": true,
+      "unary_score": 0.854185,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 2,
+      "truth_building_id": 102,
+      "proposed_building_id": 102,
+      "proposal_correct": true,
+      "unary_score": 0.773749,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 3,
+      "truth_building_id": 104,
+      "proposed_building_id": 104,
+      "proposal_correct": true,
+      "unary_score": 0.655663,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 4,
+      "truth_building_id": 105,
+      "proposed_building_id": 105,
+      "proposal_correct": true,
+      "unary_score": 0.708905,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 5,
+      "truth_building_id": 107,
+      "proposed_building_id": 107,
+      "proposal_correct": true,
+      "unary_score": 0.770024,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 6,
+      "truth_building_id": 109,
+      "proposed_building_id": 109,
+      "proposal_correct": true,
+      "unary_score": 0.722297,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 7,
+      "truth_building_id": 110,
+      "proposed_building_id": 110,
+      "proposal_correct": true,
+      "unary_score": 0.725481,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 8,
+      "truth_building_id": 111,
+      "proposed_building_id": 111,
+      "proposal_correct": true,
+      "unary_score": 0.888984,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 9,
+      "truth_building_id": 113,
+      "proposed_building_id": 113,
+      "proposal_correct": true,
+      "unary_score": 0.845387,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 10,
+      "truth_building_id": 114,
+      "proposed_building_id": 114,
+      "proposal_correct": true,
+      "unary_score": 0.809134,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 11,
+      "truth_building_id": 114,
+      "proposed_building_id": 114,
+      "proposal_correct": true,
+      "unary_score": 0.810442,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 12,
+      "truth_building_id": 115,
+      "proposed_building_id": 115,
+      "proposal_correct": true,
+      "unary_score": 0.839294,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 13,
+      "truth_building_id": 118,
+      "proposed_building_id": 118,
+      "proposal_correct": true,
+      "unary_score": 0.86983,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 14,
+      "truth_building_id": 120,
+      "proposed_building_id": 120,
+      "proposal_correct": true,
+      "unary_score": 0.705696,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 15,
+      "truth_building_id": 130,
+      "proposed_building_id": 130,
+      "proposal_correct": true,
+      "unary_score": 0.78958,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 16,
+      "truth_building_id": 145,
+      "proposed_building_id": 145,
+      "proposal_correct": true,
+      "unary_score": 0.664635,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 17,
+      "truth_building_id": 145,
+      "proposed_building_id": 145,
+      "proposal_correct": true,
+      "unary_score": 0.852494,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 18,
+      "truth_building_id": 152,
+      "proposed_building_id": 152,
+      "proposal_correct": true,
+      "unary_score": 0.891817,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 19,
+      "truth_building_id": 158,
+      "proposed_building_id": 158,
+      "proposal_correct": true,
+      "unary_score": 0.794256,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 20,
+      "truth_building_id": 159,
+      "proposed_building_id": 159,
+      "proposal_correct": true,
+      "unary_score": 0.873679,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 21,
+      "truth_building_id": 160,
+      "proposed_building_id": 160,
+      "proposal_correct": true,
+      "unary_score": 0.815526,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 22,
+      "truth_building_id": 163,
+      "proposed_building_id": 163,
+      "proposal_correct": true,
+      "unary_score": 0.80452,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 23,
+      "truth_building_id": 164,
+      "proposed_building_id": 164,
+      "proposal_correct": true,
+      "unary_score": 0.803627,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 24,
+      "truth_building_id": 165,
+      "proposed_building_id": 165,
+      "proposal_correct": true,
+      "unary_score": 0.896028,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 25,
+      "truth_building_id": 169,
+      "proposed_building_id": 169,
+      "proposal_correct": true,
+      "unary_score": 0.745707,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 26,
+      "truth_building_id": 170,
+      "proposed_building_id": 170,
+      "proposal_correct": true,
+      "unary_score": 0.870975,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 27,
+      "truth_building_id": 171,
+      "proposed_building_id": 171,
+      "proposal_correct": true,
+      "unary_score": 0.776483,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 28,
+      "truth_building_id": 176,
+      "proposed_building_id": 176,
+      "proposal_correct": true,
+      "unary_score": 0.797006,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 29,
+      "truth_building_id": 177,
+      "proposed_building_id": 177,
+      "proposal_correct": true,
+      "unary_score": 0.722515,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 30,
+      "truth_building_id": 181,
+      "proposed_building_id": 181,
+      "proposal_correct": true,
+      "unary_score": 0.880416,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 31,
+      "truth_building_id": 182,
+      "proposed_building_id": 182,
+      "proposal_correct": true,
+      "unary_score": 0.80908,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 32,
+      "truth_building_id": 185,
+      "proposed_building_id": 185,
+      "proposal_correct": true,
+      "unary_score": 0.429241,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 33,
+      "truth_building_id": 187,
+      "proposed_building_id": 187,
+      "proposal_correct": true,
+      "unary_score": 0.854155,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 34,
+      "truth_building_id": 188,
+      "proposed_building_id": 188,
+      "proposal_correct": true,
+      "unary_score": 0.776176,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 35,
+      "truth_building_id": 190,
+      "proposed_building_id": 190,
+      "proposal_correct": true,
+      "unary_score": 0.857667,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 36,
+      "truth_building_id": 190,
+      "proposed_building_id": 190,
+      "proposal_correct": true,
+      "unary_score": 0.760477,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 37,
+      "truth_building_id": 198,
+      "proposed_building_id": 198,
+      "proposal_correct": true,
+      "unary_score": 0.769064,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 38,
+      "truth_building_id": 199,
+      "proposed_building_id": 199,
+      "proposal_correct": true,
+      "unary_score": 0.743379,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 39,
+      "truth_building_id": 200,
+      "proposed_building_id": 200,
+      "proposal_correct": true,
+      "unary_score": 0.693905,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 40,
+      "truth_building_id": 1,
+      "proposed_building_id": 1,
+      "proposal_correct": true,
+      "unary_score": 0.730191,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 41,
+      "truth_building_id": 1,
+      "proposed_building_id": 1,
+      "proposal_correct": true,
+      "unary_score": 0.785657,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 42,
+      "truth_building_id": 1,
+      "proposed_building_id": 1,
+      "proposal_correct": true,
+      "unary_score": 0.720907,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 43,
+      "truth_building_id": 1,
+      "proposed_building_id": 1,
+      "proposal_correct": true,
+      "unary_score": 0.758221,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 44,
+      "truth_building_id": 2,
+      "proposed_building_id": 2,
+      "proposal_correct": true,
+      "unary_score": 0.852899,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 45,
+      "truth_building_id": 2,
+      "proposed_building_id": 2,
+      "proposal_correct": true,
+      "unary_score": 0.853855,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 46,
+      "truth_building_id": 2,
+      "proposed_building_id": 2,
+      "proposal_correct": true,
+      "unary_score": 0.778368,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 47,
+      "truth_building_id": 3,
+      "proposed_building_id": 3,
+      "proposal_correct": true,
+      "unary_score": 0.761624,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 48,
+      "truth_building_id": 3,
+      "proposed_building_id": 3,
+      "proposal_correct": true,
+      "unary_score": 0.733746,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 49,
+      "truth_building_id": 3,
+      "proposed_building_id": 3,
+      "proposal_correct": true,
+      "unary_score": 0.699115,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 50,
+      "truth_building_id": 4,
+      "proposed_building_id": 4,
+      "proposal_correct": true,
+      "unary_score": 0.883967,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 51,
+      "truth_building_id": 4,
+      "proposed_building_id": 4,
+      "proposal_correct": true,
+      "unary_score": 0.821027,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 52,
+      "truth_building_id": 6,
+      "proposed_building_id": 6,
+      "proposal_correct": true,
+      "unary_score": 0.811926,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 53,
+      "truth_building_id": 6,
+      "proposed_building_id": 6,
+      "proposal_correct": true,
+      "unary_score": 0.419922,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 54,
+      "truth_building_id": 190,
+      "proposed_building_id": 139,
+      "proposal_correct": false,
+      "unary_score": 0.593907,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 55,
+      "truth_building_id": 190,
+      "proposed_building_id": 197,
+      "proposal_correct": false,
+      "unary_score": 0.538905,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 56,
+      "truth_building_id": 190,
+      "proposed_building_id": 199,
+      "proposal_correct": false,
+      "unary_score": 0.589551,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 57,
+      "truth_building_id": 7,
+      "proposed_building_id": 7,
+      "proposal_correct": true,
+      "unary_score": 0.803623,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 58,
+      "truth_building_id": 10,
+      "proposed_building_id": 10,
+      "proposal_correct": true,
+      "unary_score": 0.866451,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 59,
+      "truth_building_id": 10,
+      "proposed_building_id": 10,
+      "proposal_correct": true,
+      "unary_score": 0.729548,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 60,
+      "truth_building_id": 11,
+      "proposed_building_id": 11,
+      "proposal_correct": true,
+      "unary_score": 0.875125,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 61,
+      "truth_building_id": 11,
+      "proposed_building_id": 11,
+      "proposal_correct": true,
+      "unary_score": 0.737414,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 62,
+      "truth_building_id": 12,
+      "proposed_building_id": 12,
+      "proposal_correct": true,
+      "unary_score": 0.809341,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 63,
+      "truth_building_id": 12,
+      "proposed_building_id": 12,
+      "proposal_correct": true,
+      "unary_score": 0.641253,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 64,
+      "truth_building_id": 13,
+      "proposed_building_id": 199,
+      "proposal_correct": false,
+      "unary_score": 0.619501,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 65,
+      "truth_building_id": 13,
+      "proposed_building_id": 13,
+      "proposal_correct": true,
+      "unary_score": 0.81824,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 66,
+      "truth_building_id": 15,
+      "proposed_building_id": 15,
+      "proposal_correct": true,
+      "unary_score": 0.848803,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 67,
+      "truth_building_id": 15,
+      "proposed_building_id": 15,
+      "proposal_correct": true,
+      "unary_score": 0.609954,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 68,
+      "truth_building_id": 17,
+      "proposed_building_id": 17,
+      "proposal_correct": true,
+      "unary_score": 0.43353,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 69,
+      "truth_building_id": 18,
+      "proposed_building_id": 18,
+      "proposal_correct": true,
+      "unary_score": 0.874777,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 70,
+      "truth_building_id": 18,
+      "proposed_building_id": 18,
+      "proposal_correct": true,
+      "unary_score": 0.741571,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 71,
+      "truth_building_id": 20,
+      "proposed_building_id": 20,
+      "proposal_correct": true,
+      "unary_score": 0.814221,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 72,
+      "truth_building_id": 23,
+      "proposed_building_id": 23,
+      "proposal_correct": true,
+      "unary_score": 0.79065,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 73,
+      "truth_building_id": 23,
+      "proposed_building_id": 23,
+      "proposal_correct": true,
+      "unary_score": 0.675954,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 74,
+      "truth_building_id": 25,
+      "proposed_building_id": 25,
+      "proposal_correct": true,
+      "unary_score": 0.798018,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 75,
+      "truth_building_id": 29,
+      "proposed_building_id": 29,
+      "proposal_correct": true,
+      "unary_score": 0.894707,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 76,
+      "truth_building_id": 29,
+      "proposed_building_id": 29,
+      "proposal_correct": true,
+      "unary_score": 0.375762,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 77,
+      "truth_building_id": 30,
+      "proposed_building_id": 30,
+      "proposal_correct": true,
+      "unary_score": 0.68404,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 78,
+      "truth_building_id": 35,
+      "proposed_building_id": 35,
+      "proposal_correct": true,
+      "unary_score": 0.746373,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 79,
+      "truth_building_id": 36,
+      "proposed_building_id": 36,
+      "proposal_correct": true,
+      "unary_score": 0.731952,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 80,
+      "truth_building_id": 38,
+      "proposed_building_id": 38,
+      "proposal_correct": true,
+      "unary_score": 0.701693,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 81,
+      "truth_building_id": 40,
+      "proposed_building_id": 40,
+      "proposal_correct": true,
+      "unary_score": 0.842607,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 82,
+      "truth_building_id": 44,
+      "proposed_building_id": 44,
+      "proposal_correct": true,
+      "unary_score": 0.812293,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 83,
+      "truth_building_id": 48,
+      "proposed_building_id": 48,
+      "proposal_correct": true,
+      "unary_score": 0.714776,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 84,
+      "truth_building_id": 51,
+      "proposed_building_id": 51,
+      "proposal_correct": true,
+      "unary_score": 0.782554,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 85,
+      "truth_building_id": 55,
+      "proposed_building_id": 55,
+      "proposal_correct": true,
+      "unary_score": 0.786815,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 86,
+      "truth_building_id": 59,
+      "proposed_building_id": 59,
+      "proposal_correct": true,
+      "unary_score": 0.825745,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 87,
+      "truth_building_id": 60,
+      "proposed_building_id": 60,
+      "proposal_correct": true,
+      "unary_score": 0.811405,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 88,
+      "truth_building_id": 60,
+      "proposed_building_id": 60,
+      "proposal_correct": true,
+      "unary_score": 0.793202,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 89,
+      "truth_building_id": 62,
+      "proposed_building_id": 62,
+      "proposal_correct": true,
+      "unary_score": 0.801606,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 90,
+      "truth_building_id": 67,
+      "proposed_building_id": 67,
+      "proposal_correct": true,
+      "unary_score": 0.828788,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 91,
+      "truth_building_id": 71,
+      "proposed_building_id": 71,
+      "proposal_correct": true,
+      "unary_score": 0.88069,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 92,
+      "truth_building_id": 72,
+      "proposed_building_id": 72,
+      "proposal_correct": true,
+      "unary_score": 0.835623,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 93,
+      "truth_building_id": 74,
+      "proposed_building_id": 74,
+      "proposal_correct": true,
+      "unary_score": 0.815276,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 94,
+      "truth_building_id": 76,
+      "proposed_building_id": 76,
+      "proposal_correct": true,
+      "unary_score": 0.699801,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 95,
+      "truth_building_id": 77,
+      "proposed_building_id": 77,
+      "proposal_correct": true,
+      "unary_score": 0.786208,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 96,
+      "truth_building_id": 79,
+      "proposed_building_id": 79,
+      "proposal_correct": true,
+      "unary_score": 0.788147,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 97,
+      "truth_building_id": 81,
+      "proposed_building_id": 81,
+      "proposal_correct": true,
+      "unary_score": 0.74845,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 98,
+      "truth_building_id": 82,
+      "proposed_building_id": 82,
+      "proposal_correct": true,
+      "unary_score": 0.760955,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 99,
+      "truth_building_id": 82,
+      "proposed_building_id": 82,
+      "proposal_correct": true,
+      "unary_score": 0.752042,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 100,
+      "truth_building_id": 83,
+      "proposed_building_id": 83,
+      "proposal_correct": true,
+      "unary_score": 0.836014,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 101,
+      "truth_building_id": 85,
+      "proposed_building_id": 85,
+      "proposal_correct": true,
+      "unary_score": 0.808431,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 102,
+      "truth_building_id": 86,
+      "proposed_building_id": 86,
+      "proposal_correct": true,
+      "unary_score": 0.833512,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 103,
+      "truth_building_id": 87,
+      "proposed_building_id": 87,
+      "proposal_correct": true,
+      "unary_score": 0.864109,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 104,
+      "truth_building_id": 87,
+      "proposed_building_id": 87,
+      "proposal_correct": true,
+      "unary_score": 0.77872,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 105,
+      "truth_building_id": 88,
+      "proposed_building_id": 88,
+      "proposal_correct": true,
+      "unary_score": 0.824638,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 106,
+      "truth_building_id": 88,
+      "proposed_building_id": 88,
+      "proposal_correct": true,
+      "unary_score": 0.737115,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 107,
+      "truth_building_id": 89,
+      "proposed_building_id": 89,
+      "proposal_correct": true,
+      "unary_score": 0.857354,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 108,
+      "truth_building_id": 89,
+      "proposed_building_id": 13,
+      "proposal_correct": false,
+      "unary_score": 0.226177,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 109,
+      "truth_building_id": 90,
+      "proposed_building_id": 90,
+      "proposal_correct": true,
+      "unary_score": 0.71054,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 110,
+      "truth_building_id": 90,
+      "proposed_building_id": 90,
+      "proposal_correct": true,
+      "unary_score": 0.646331,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 111,
+      "truth_building_id": 91,
+      "proposed_building_id": 91,
+      "proposal_correct": true,
+      "unary_score": 0.821258,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 112,
+      "truth_building_id": 92,
+      "proposed_building_id": 92,
+      "proposal_correct": true,
+      "unary_score": 0.681679,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 113,
+      "truth_building_id": 93,
+      "proposed_building_id": 93,
+      "proposal_correct": true,
+      "unary_score": 0.903455,
+      "ca1_decision": "COMMIT"
+    },
+    {
+      "query_id": 114,
+      "truth_building_id": 93,
+      "proposed_building_id": 93,
+      "proposal_correct": true,
+      "unary_score": 0.436677,
+      "ca1_decision": "UNKNOWN"
+    },
+    {
+      "query_id": 115,
+      "truth_building_id": 94,
+      "proposed_building_id": 94,
+      "proposal_correct": true,
+      "unary_score": 0.795262,
+      "ca1_decision": "COMMIT"
+    }
+  ],
+  "claim_boundary": "This is a source-disjoint real-image transfer canary for a ranking-independent single-reference building-instance commitment witness. A pass does not establish address-token binding, facade or portal continuity, entrance identity, SEVN episode improvement, arrival, handoff, access, traversability, user benefit, or mobility safety. The consumed 24 SEVN episodes remain frozen Development failure analysis and are not used here."
+}
