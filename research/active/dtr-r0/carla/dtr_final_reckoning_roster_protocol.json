@@ -1,0 +1,270 @@
+{
+  "schema": "blindassist-dtr-final-reckoning-roster-v1",
+  "status": "PREREGISTERED_DESIGN_AND_ARMS_FROZEN_PENDING_SOURCE_MATERIALIZER",
+  "roster_id": "DTR_FINAL_RECKONING_ROSTER_R1",
+  "date": "2026-09-05",
+  "objective": "Determine what X94 collision evidence contributes independently of temporal event smoothing under one retained raw-input and event-matching contract.",
+  "terminal_decision_contract": {
+    "accept_observed_result_without_successor_design": true,
+    "x97_forbidden": true,
+    "scenario_or_threshold_rescue_after_any_truth_open": false,
+    "outcomes": [
+      "X94_METHOD",
+      "FAILURE_AWARE_STRUCTURED_EVIDENCE_FRAMEWORK",
+      "CLASSICAL_CORE_WITH_RETAINED_DTR_COMPONENTS",
+      "TWO_LAYER_X94_EVIDENCE_PLUS_SIMPLE_EMITTER"
+    ]
+  },
+  "source_design": {
+    "map_family": "Carla/Maps/Town10HD_Opt",
+    "carla_version": "0.9.16",
+    "resolution": [1280, 720],
+    "sample_seconds": 0.1,
+    "route_horizon_seconds": 3.0,
+    "seed_groups": [
+      {
+        "group_id": "FIT_ONLY",
+        "capture_seed": 517031,
+        "role": "LEARNED_ARM_FIT_ONLY",
+        "final_metric_denominator": false
+      },
+      {
+        "group_id": "FINAL_A",
+        "capture_seed": 517131,
+        "role": "FINAL_ADJUDICATION",
+        "final_metric_denominator": true
+      },
+      {
+        "group_id": "FINAL_B",
+        "capture_seed": 517231,
+        "role": "FINAL_ADJUDICATION",
+        "final_metric_denominator": true
+      }
+    ],
+    "episodes_per_seed_group": 10,
+    "total_episode_count": 30,
+    "strata": [
+      {
+        "stratum_id": "S01_CLEAN_CONSTANT_MOTION",
+        "expected_outcome": "CONTACT",
+        "mechanism": "fully visible constant target and wearer motion",
+        "source_gate": "target trackable for at least 90 percent of evaluable frames and target acceleration below 0.20 mps2"
+      },
+      {
+        "stratum_id": "S02_SINGLE_FRAME_DROPOUT",
+        "expected_outcome": "CONTACT",
+        "mechanism": "one frozen detector-observation removal after a measured collision credential",
+        "source_gate": "positive route-contact truth spans the removed frame and adjacent raw observations are valid"
+      },
+      {
+        "stratum_id": "S03_MULTI_FRAME_DROPOUT",
+        "expected_outcome": "CONTACT",
+        "mechanism": "separate frozen two, three, and six-frame detector-observation removals",
+        "source_gate": "each removal lies inside positive route-contact truth with measured evidence before and after"
+      },
+      {
+        "stratum_id": "S04_LATERAL_CROSSING",
+        "expected_outcome": "CONTACT",
+        "mechanism": "predominantly lateral target crosses the issued route",
+        "source_gate": "absolute lateral speed exceeds absolute route-forward speed before contact"
+      },
+      {
+        "stratum_id": "S05_RECEDING_NEAR_MISS",
+        "expected_outcome": "SAFE",
+        "mechanism": "near-route object transitions to receding without contact",
+        "source_gate": "minimum route distance is inside 1.30 m while ground-truth contact remains false and closing speed becomes negative"
+      },
+      {
+        "stratum_id": "S06_FRAGMENTATION_ID_INSTABILITY",
+        "expected_outcome": "CONTACT",
+        "mechanism": "two same-class objects cross or overlap with temporary visual association ambiguity",
+        "source_gate": "both objects are independently visible before and after a shared overlap interval"
+      },
+      {
+        "stratum_id": "S07_CURVED_WEARER_ROUTE",
+        "expected_outcome": "CONTACT",
+        "mechanism": "issued wearer route curves into an obstacle outside the initial radial bearing",
+        "source_gate": "issued route heading changes by at least 25 degrees before contact and receipt remains valid"
+      },
+      {
+        "stratum_id": "S08_STATIC_PSEUDO_MOTION_EGO_ROTATION",
+        "expected_outcome": "SAFE",
+        "mechanism": "static obstacle observed during wearer yaw rotation",
+        "source_gate": "target world displacement below 0.05 m, wearer yaw change at least 30 degrees, and no route contact"
+      },
+      {
+        "stratum_id": "S09_PARTIAL_VISIBILITY_SURFACE_FRAGMENTATION",
+        "expected_outcome": "CONTACT",
+        "mechanism": "collision object remains only partially visible as disconnected surfaces",
+        "source_gate": "target visible fraction stays between 0.05 and 0.45 for at least six frames without full disappearance"
+      },
+      {
+        "stratum_id": "S10_DISAPPEAR_REAPPEAR_CLEAR_REONSET",
+        "expected_outcome": "TWO_CONTACT_WINDOWS",
+        "mechanism": "full disappearance contains a known-negative interval followed by a second collision-risk onset",
+        "source_gate": "two positive truth intervals are separated by at least 0.80 s of known-negative truth, with six or more zero-pixel frames and eight or more post-reappearance frames"
+      }
+    ],
+    "controlled_observation_interventions_are_not_prevalence_evidence": true
+  },
+  "shared_input_contract": {
+    "all_arms_receive_identical": [
+      "causal_rgb",
+      "causal_depth",
+      "camera_calibration",
+      "wearer_pose_and_velocity",
+      "issued_route_receipt",
+      "timestamps",
+      "frozen_detector_observation_ledger"
+    ],
+    "detector_observation_ledger": {
+      "materialize_once_before_fit_truth_opens": true,
+      "model_and_weight_hash_required": true,
+      "raw_and_intervened_ledgers_both_retained": true,
+      "same_ledger_for_every_arm": true
+    },
+    "forbidden_model_inputs": [
+      "evaluator_truth",
+      "source_native_object_id",
+      "future_pose",
+      "future_contact",
+      "privileged_target_yaw_rate"
+    ]
+  },
+  "arms": [
+    {"arm_id": "RADIAL_TTC", "family": "CLASSIC", "implementation": "LOCKED_IN_RAW_KALMAN_MODULE"},
+    {"arm_id": "FINITE_DIFFERENCE_CV_ROUTE_TUBE", "family": "CLASSIC", "implementation": "LOCKED_IN_CLASSIC_MOTION_MODULE"},
+    {"arm_id": "KALMAN_CV_ROUTE_TUBE", "family": "CLASSIC", "implementation": "LOCKED_IN_RAW_KALMAN_MODULE"},
+    {"arm_id": "KALMAN_CV_ROUTE_TUBE_HYSTERESIS_0P60S", "family": "CLASSIC", "implementation": "LOCKED_IN_RAW_KALMAN_MODULE"},
+    {"arm_id": "CAUSAL_CTRV_ROUTE_TUBE", "family": "CLASSIC", "implementation": "LOCKED_IN_CLASSIC_MOTION_MODULE", "yaw_rate_source": "estimated_from_causal_track_history_only"},
+    {"arm_id": "TINY_LEARNED_PREDICTOR", "family": "CLASSIC", "implementation": "LOCKED_IN_CLASSIC_MOTION_MODULE", "training": "FIT_ONLY"},
+    {"arm_id": "X24_CORE", "family": "OURS", "implementation": "LOCKED"},
+    {"arm_id": "X73_STRUCTURAL_GEOMETRY", "family": "OURS", "implementation": "LOCKED"},
+    {"arm_id": "X94_EVIDENCE_MODEL", "family": "OURS", "implementation": "LOCKED"},
+    {"arm_id": "X94_EVIDENCE_PLUS_SIMPLE_HYSTERESIS_0P60S", "family": "TWO_LAYER", "implementation": "LOCKED"},
+    {"arm_id": "X95_EVENT_CHALLENGER", "family": "EMISSION_CHALLENGER", "implementation": "LOCKED_SPEC_FIT_ONLY", "training": "FIT_ONLY"}
+  ],
+  "implementation_locks": [
+    {
+      "lock_id": "X24",
+      "path": "research/active/dtr-r0/carla/dtr_carla_x24_plan_adherent_predictor.py",
+      "sha256": "C37F2667EC119A855F69DE01132ABDD32D37C387B8CD7AFF5879046498631997"
+    },
+    {
+      "lock_id": "X73",
+      "path": "research/active/dtr-r0/carla/dtr_carla_x73_credentialed_parent_hull_reconstruction.py",
+      "sha256": "8722FAB54E441459EDE6E1EBE61CE1BE0FD7E8956BB2C9B139BF67E3BF51BBD2"
+    },
+    {
+      "lock_id": "X94",
+      "path": "research/active/dtr-r0/carla/dtr_carla_x94_one_frame_full_dropout_continuity.py",
+      "sha256": "8A58C1387513AD80B4E4AC474B8D4B02E4E1E5183EF13B78894D15BF46C8E5F3"
+    },
+    {
+      "lock_id": "X24_TO_X94_COMPONENT_CLOSURE",
+      "path": "research/active/dtr-r0/carla/dtr_carla_c44_x96_dropout_survival_protocol.json",
+      "sha256": "7C940C55362585D553BF86E198BEA42B641F29AA0AD730B99E4E7479EF881555"
+    },
+    {
+      "lock_id": "X95_SPEC",
+      "path": "research/active/dtr-r0/carla/dtr_carla_x95_credentialed_hazard_state_model.py",
+      "sha256": "A1C05578361435E3CC81948E67BA65734C16443FEA66D6BAA1C20DD14DCC9455"
+    },
+    {
+      "lock_id": "RAW_KALMAN_BASELINES",
+      "path": "research/active/dtr-r0/carla/dtr_carla_raw_kalman_baseline.py",
+      "sha256": "161ED4A4ACDCF2B3738D2E6144C1A7F2676DFD1A0258FF738BDEBD4E627AC70F"
+    },
+    {
+      "lock_id": "SIMPLE_EVENT_EMITTER",
+      "path": "research/active/dtr-r0/carla/dtr_carla_bounded_event_emitter.py",
+      "sha256": "617717869B3B0EF4EEBCFEACCD086384255EF0E6863BBA37D90257E9716CDE76"
+    },
+    {
+      "lock_id": "FINITE_DIFFERENCE_CV_CTRV_TINY_LEARNED",
+      "path": "research/active/dtr-r0/carla/dtr_carla_classic_motion_baselines.py",
+      "sha256": "4B8775760FB4592A42C87E58CABC3D373D38FC98EAB8810735DC7B2ECACD29EA"
+    }
+  ],
+  "execution_order": [
+    "MATERIALIZE_SOURCE_CELL_GEOMETRY_AND_SOURCE_ONLY_GATES",
+    "MATERIALIZE_AND_SOURCE_GATE_ALL_THREE_RAW_SEED_GROUPS",
+    "SEAL_SHARED_RAW_AND_INTERVENED_DETECTOR_LEDGERS",
+    "SEAL_ALL_NONLEARNED_PREDICTIONS_ON_FIT_AND_FINAL_GROUPS",
+    "OPEN_FIT_ONLY_TRUTH_ONCE",
+    "FIT_TINY_LEARNED_AND_X95_ONCE_AND_SEAL_MODEL_RECEIPTS",
+    "SEAL_LEARNED_PREDICTIONS_ON_FINAL_A_AND_FINAL_B",
+    "OPEN_FINAL_A_AND_FINAL_B_TRUTH_ONCE",
+    "RUN_SHARED_MATCHER_AND_PAIRED_EPISODE_CLUSTER_BOOTSTRAP",
+    "ACCEPT_TERMINAL_WITHOUT_X97"
+  ],
+  "evaluator_contract": {
+    "unknown_and_not_evaluable_excluded_from_positive_and_negative_denominators": true,
+    "truth_event": "maximal contiguous future-route-contact interval under frozen 3.0 s horizon",
+    "predicted_event": "maximal contiguous ACTIVE alert interval",
+    "matching": "maximum_one_to_one_alert_truth_matching_before_contact_with_eligible_window_overlap",
+    "primary_metrics": [
+      "event_precision",
+      "event_recall",
+      "event_f1",
+      "false_segments",
+      "false_segments_per_minute",
+      "median_first_alert_lead_s",
+      "p10_first_alert_lead_s",
+      "fragmentation_extra_onsets",
+      "fragmented_event_rate",
+      "median_clear_delay_s",
+      "clear_right_censored_count"
+    ],
+    "secondary_metrics": ["frame_precision", "frame_recall", "frame_f1"],
+    "report_per_stratum": true,
+    "uncertainty": {
+      "cluster_unit": "episode",
+      "paired_bootstrap_replicates": 10000,
+      "bootstrap_seed": 517999,
+      "x94_significant_win_requires_event_f1_delta_ci95_above_zero": true
+    }
+  },
+  "decomposition_tests": [
+    "X94_EVIDENCE_MODEL_vs_KALMAN_CV_ROUTE_TUBE_on_frame_f1_lead_clear",
+    "X94_EVIDENCE_PLUS_SIMPLE_HYSTERESIS_vs_X94_EVIDENCE_MODEL_on_event_fragmentation",
+    "X94_EVIDENCE_PLUS_SIMPLE_HYSTERESIS_vs_KALMAN_CV_ROUTE_TUBE_HYSTERESIS_on_event_metrics",
+    "X95_EVENT_CHALLENGER_vs_SIMPLE_HYSTERESIS_on_event_metrics"
+  ],
+  "retention_contract": {
+    "canonical_root": "artifacts.local/evidence/dtr-final-reckoning-roster-r1",
+    "asset_catalog_authority_token": "sealed_final",
+    "minimum_free_space_before_capture_gib": 80,
+    "capacity_reservation_gib": 48,
+    "estimated_full_capture_gib_from_c35_linear_scaling": 22.24,
+    "must_retain": [
+      "raw_sensor_shards_rgb_depth_instance_witness",
+      "joined_model_root",
+      "joined_evaluator_root",
+      "raw_detector_observation_ledger",
+      "intervention_ledger",
+      "source_native_object_ids_and_dynamics_in_evaluator_only",
+      "camera_calibration_and_timestamps",
+      "ego_pose_velocity_and_issued_route_receipts",
+      "protocol_source_and_algorithm_manifests",
+      "prediction_model_score_and_bootstrap_receipts"
+    ],
+    "cleanup_policy": "REFUSE_DELETE_OR_COMPACT_WITHOUT_EXPLICIT_NEW_USER_AUTHORITY_AND_HASH_VERIFIED_RECOVERY_PLAN",
+    "hardlink_deduplication_allowed_only_if_every_logical_path_and_hash_is_preserved": true
+  },
+  "materialization_authority": {
+    "authorized_now": false,
+    "blocking_locks": [
+      "SOURCE_CELL_MATERIALIZER_AND_SOURCE_ONLY_GEOMETRY_GATES"
+    ],
+    "source_gate_failure_disposition": "NOT_EVALUABLE_NO_SCENE_REPAIR_OR_RETRY_AFTER_DURABLE_FRAMES",
+    "single_joint_final_score": true
+  },
+  "claim_boundary": {
+    "synthetic_carla_final_reckoning": true,
+    "real_world_confirmation": false,
+    "deployment_or_safety_claim": false,
+    "controlled_dropout_is_not_natural_dropout_prevalence": true,
+    "fit_truth_cannot_enter_final_scene_or_algorithm_design": true
+  }
+}
