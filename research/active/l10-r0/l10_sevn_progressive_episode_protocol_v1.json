@@ -1,0 +1,101 @@
+{
+  "schema": "blindassist-l10-sevn-progressive-episode-protocol-v1",
+  "name": "L10 SEVN goal-conditioned progressive evidence episode",
+  "question": "On the consumed 24-episode SEVN action panel, can a truth-free deficit-triggered observation policy retain at least the correct bindings of a fixed sweep with no more wrong bindings while using fewer extra observations?",
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_progressive_episode.py",
+    "sha256": "d118b890b5f152c42c4954c813722c211d48ccbcf0cbdf2a3531919aa1a5f54c"
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_truth_v1.json",
+      "sha256": "bced8f620a55b04ebe2402cf8ee9d25e55f8839e9c5b2e8a9e785cbd65462387"
+    },
+    "v2_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "authority_lattice": {
+      "path": "research/active/l10-r0/l10_evidence_authority_lattice.py",
+      "sha256": "156799ebe93c74f4fa96daca4b49573874cf4176232e3d7a3298069241ec1493"
+    }
+  },
+  "cohort": {
+    "episode_count": 24,
+    "episodes_per_scenario": 8,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ],
+    "evidence_role": "CONSUMED_DEVELOPMENT_MECHANISM_AND_DEMO_ONLY"
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.13.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime-gpu": "1.26.0",
+      "opencv-python": "4.10.0.84",
+      "numpy": "2.3.5",
+      "paddleocr": "3.7.0",
+      "paddlex": "3.7.2"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "primary_ocr_backend": "Frozen PP-OCRv6 small through RapidOCR and ONNX Runtime",
+    "portal_private_ocr_backend": "Frozen PP-OCRv6 medium detector and recognizer through PaddleOCR ONNX Runtime CPU"
+  },
+  "models": {
+    "medium_detection": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_det_onnx",
+      "revision": "61323801669c338b7891481ec7bac61ce31b576a",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-det-6132380",
+      "sha256": {
+        "inference.json": "0f1a7ec35da36173529c7a60238b7f7919e3831929c3f700ad90ad4896adecd5",
+        "inference.onnx": "eb13b44b25bb36f89528b68720af8a61d9cf381176107f465db1757b65d086e1",
+        "inference.yml": "7298d5ead546584af2504d03355f881ac7a7bc0eb1e282d3e159277c1d0af871",
+        "README.md": "3046e3aab0194a2291bb3941c93b980c2b3a938a24a5be88354968f6d6187ac8"
+      }
+    },
+    "medium_recognition": {
+      "provider": "PaddlePaddle/PP-OCRv6_medium_rec_onnx",
+      "revision": "50c7eacafc52fa7bcf4194e8cd08e46f8558504b",
+      "path": "artifacts.local/models/paddleocr-ppocrv6-medium-rec-50c7eac",
+      "sha256": {
+        "inference.json": "0b2e25e990bd072f1bf77d59d67d508bce6c4bd44af6624e0fb27d6da2cd00e8",
+        "inference.onnx": "9c09abf0957f7968c7586464b7397b84ad2387a0497a351af40e9acc71b673ba",
+        "inference.yml": "991b700facf5b50a7de193468207d5f4255b538dde0d312ae3b7c7a9b6873129",
+        "README.md": "ebce8d28436623ecab4952e24935aed86b3f8ecaf8f8736b92d5544f60fae1e9"
+      }
+    }
+  },
+  "portal_medium_observation": {
+    "maximum_portals": 6,
+    "credential_region": "V2 adaptive upper-mask neighborhood independently for each portal",
+    "canonical_long_side_pixels": 1280,
+    "maximum_magnification": 4.0,
+    "minimum_crop_side_pixels": 16,
+    "identity_rule": "Exact alphanumeric target-token equality at score at least 0.5 inside a portal-private crop",
+    "unique_admission": "Exactly one witnessing portal emits a binding; zero or more than one remains UNKNOWN"
+  },
+  "policy": {
+    "PASSIVE": "Infer the current 135-degree observation and request no additional observation.",
+    "FIXED_SWEEP": "Always execute the four-view 360-degree sweep and choose the emitted binding with maximum frozen text-score times portal-confidence product.",
+    "TRIGGERED_ACTIVE": "If the current view already emits a binding, HOLD. Otherwise recenter a visible exact target token with PAN_LEFT or PAN_RIGHT; if no token is visible and a public graph APPROACH exists, APPROACH; otherwise SWEEP. Selection uses the same frozen confidence product.",
+    "truth_boundary": "Policy and selection read only the target query, current pixel outputs, public action availability, and action receipts. Evaluator door annotations are applied only after runtime outputs are sealed in memory.",
+    "binding_authority_scope": "The executable authority lattice labels a unique exact-token-to-portal proposal as BINDING only under a SEVN address-door surrogate. This is not independent facade or entrance ownership authority."
+  },
+  "gate": {
+    "triggered_correct_at_least_fixed": true,
+    "triggered_wrong_no_more_than_fixed": true,
+    "triggered_uses_fewer_extra_observations": true,
+    "triggered_improves_over_passive": true
+  },
+  "execution_rule": "Run once on the frozen consumed panel. Do not change the trigger, confidence product, source, models, cohort, or gates after observing outputs.",
+  "output": "research/active/l10-r0/l10_sevn_progressive_episode_result_v1.json",
+  "claim_boundary": "A positive result is consumed-SEVN Development evidence that a truth-free deficit trigger can reduce observation cost while retaining the fixed sweep's address-door binding result. It is not fresh confirmation, learned action selection, independent facade or entrance ownership, access, waypoint, arrival, HANDOFF_READY, user benefit, deployment, reliability, or safety evidence. Empirical risk-coverage values have no conformal or calibration guarantee."
+}
