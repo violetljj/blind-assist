@@ -40,6 +40,36 @@ SENSOR_TYPES = {
 SCRIPTED_POSE_PLANAR_POSITION_TOLERANCE_M = 1e-4
 
 
+def trajectory_yaw_offset_degrees(
+    trajectory: dict[str, Any], time_s: float
+) -> float:
+    """Integrate optional scripted yaw rates; legacy trajectories remain unchanged."""
+    values = sorted(
+        trajectory.get("yaw_segments", []), key=lambda item: float(item["start_s"])
+    )
+    if not values:
+        return 0.0
+    if abs(float(values[0]["start_s"])) > 1e-9:
+        raise ValueError("every yaw trajectory must begin at t=0")
+    offset = 0.0
+    for index, segment in enumerate(values):
+        start_s = float(segment["start_s"])
+        if time_s <= start_s:
+            break
+        end_s = (
+            min(time_s, float(values[index + 1]["start_s"]))
+            if index + 1 < len(values)
+            else time_s
+        )
+        if end_s > start_s:
+            offset += float(segment["yaw_rate_degrees_per_second"]) * (
+                end_s - start_s
+            )
+        if end_s >= time_s:
+            break
+    return offset
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--protocol", type=Path, required=True)
@@ -265,6 +295,10 @@ def road_surface_z(world_map: carla.Map, xy: np.ndarray, offset_m: float) -> flo
 def trajectory_for_asset(
     asset: dict[str, Any], scenario: dict[str, Any], protocol: dict[str, Any]
 ) -> dict[str, Any] | None:
+    asset_key = str(asset["asset_key"])
+    scenario_overrides = scenario.get("asset_trajectories", {})
+    if asset_key in scenario_overrides:
+        return protocol["trajectory_library"][str(scenario_overrides[asset_key])]
     if "trajectory_key" in asset:
         name = str(scenario["asset_trajectories"][str(asset["trajectory_key"])])
         return protocol["trajectory_library"][name]
@@ -333,6 +367,7 @@ def pose_for_wearer(
     velocity_local = trajectory_velocity(trajectory, time_s)
     velocity_world = local_velocity_to_world(velocity_local, forward, right)
     base_yaw = math.degrees(math.atan2(float(forward[1]), float(forward[0])))
+    yaw = base_yaw + trajectory_yaw_offset_degrees(trajectory, time_s)
     xy = local_to_world(local, center, forward, right)
     z = road_surface_z(
         world_map, xy, float(protocol["wearer"]["surface_offset_m"])
@@ -342,7 +377,7 @@ def pose_for_wearer(
         "velocity_world": velocity_world,
         "transform": carla.Transform(
             carla.Location(x=float(xy[0]), y=float(xy[1]), z=z),
-            carla.Rotation(yaw=base_yaw),
+            carla.Rotation(yaw=yaw),
         ),
     }
 
