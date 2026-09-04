@@ -1,71 +1,56 @@
-# Unreal 行人避障实验场
+# Willow Walk：行人避障街区
 
-可编辑的 Unreal Engine 5.8 场地，生成在
-`artifacts.local/unreal/BlindAssistObstacleLab/`。源代码入库，Epic 模板、生成的
-`.umap` / `.uasset`、缓存和截图仅保留在本地 artifact 树。
+默认场景现在是完整步行街：连续店面、石材铺装、咖啡座、树池、长椅、街灯、车辆和侧巷。使用 PBR 扫描材质、Lumen 全局光照与反射、虚拟阴影和日光与自动曝光。原六道灰盒场地保留为对照。
 
-## 打开和操作
+## 打开
 
 ```powershell
 python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --open
 ```
 
-首次执行创建场地，后续执行保留已有地图及手工修改。也可以直接打开生成的
-`BlindAssistObstacleLab.uproject`。地图为 `/Game/ObstacleLab/ObstacleLab`。
-点击编辑器 **Play**，用 **WASD + 鼠标**行走和观察，**Esc** 退出。
-第一人称角色复用 Epic 模板，步速设置为 1.2 m/s。
+项目：`artifacts.local/unreal/BlindAssistStreetLab/BlindAssistStreetLab.uproject`。
+地图：`/Game/StreetLab/StreetLab`。首次执行复制本机 Epic 模板并下载小型 CC0 材质/道具，随后生成地图；已有地图不覆盖。
 
-六条实验道：
+点击 **Play**，用 **WASD + 鼠标**步行观察，**Esc** 退出。步速 1.2 m/s。
+`StreetActivity` Sequencer 控制四名动态人物，30 秒循环。可在编辑器中调整店面、家具、车辆、人物轨迹、镜头和照明。
 
-| 区域 | 内容 |
+| 条件 | 场景实现 |
 | --- | --- |
-| 静态障碍 | 路桩、低障碍、低悬横梁 |
-| 窄通道 | 1.2 m 净宽通道、错位障碍 |
-| 遮挡横穿 | 不透明挡板与横向行人 |
-| 近失对照 | 路线侧方平行运动的行人 |
-| 迎面接近 | 沿路线接近的行人 |
-| 横向交通 | 遮挡与横穿箱形推车 |
+| 静态障碍 | 长椅、路桩、菜单牌、树池 |
+| 窄通道 | 咖啡座、店面与街道家具之间的通行空间 |
+| 遮挡横穿 | 侧巷、停靠车辆和横穿人物 |
+| 近失对照 | 路线侧方平行运动人物 |
+| 迎面接近 | 沿人行道接近的人物 |
 
-青色线表示设计路线，短刻度间隔 2 m。各道设有 1.6 m 高、90 度水平视场的
-`Sensor_<编号>_RGB_160cm` 相机。`Overview` 是鸟瞰相机。动态障碍由
-`DynamicObstacles` Level Sequence 驱动，Play 时自动播放并每 20 秒循环；
-可在 Sequencer 中调整关键帧。循环回跳和停留阶段用于场地演示，不能视为
-连续自然运动实验。场景名称描述设计意图，不是已经测出的 CONTACT / SAFE 标签。
+物理导向铺装是场景内容，不代表算法输出。上述名称描述设计意图，不是已经测出的 CONTACT / SAFE 标签；循环跳变不能当作连续自然运动。
 
-## 验证
+## 官方资产与补充内容
+
+直接复用本机 UE 5.8 模板包中的：
+
+- `ArchVis`：`HillTree_02` 树木及树皮、枝叶材质。
+- `Building`：街灯及金属、发光材质。
+- `Vehicles`：车辆车身和玻璃。
+- `TP_FirstPersonBP` 与 `Characters`：第一人称操作、Quinn 模型及步行动画。
+
+店面布局、檐口、窗框、阳台、咖啡座和导向铺装由脚本组装。人物仍为 Epic 模板角色，并非写实扫描行人。
+
+补充使用 [Poly Haven CC0](https://polyhaven.com/license) 的[铺装](https://polyhaven.com/a/cobblestone_pavement)、[砖墙](https://polyhaven.com/a/brick_wall_001)、[灰泥](https://polyhaven.com/a/plastered_wall_02)、[木板](https://polyhaven.com/a/wood_planks)、[长椅](https://polyhaven.com/a/painted_wooden_bench)和[花箱](https://polyhaven.com/a/planter_box_02)。下载器使用官方 API，保留来源及文件校验信息。Epic 和 CC0 二进制资产、生成地图、缓存、截图均留在本地 `artifacts.local/unreal/`；Git 只保存脚本与说明。
+
+## 检查画面与运行
 
 ```powershell
 python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --verify
 ```
 
-启动独立的离屏编辑器，渲染鸟瞰图和行人视角，运行 PIE，检查第一人称角色、
-步速及动态人物实际位移，然后自动退出。结果在项目 `Saved/lab-smoke.json`，
-截图为 `Saved/overview.png` 与 `Saved/pedestrian.png`。
-构建详情保存在 `Saved/lab-build.json` 与 `Saved/Logs/build-lab.log`。
+独立编辑器实际渲染 `Hero`、`Cafe`、`Crossing`、`Overview` 四个视角，随后在 PIE 中检查角色、步速和动态人物位移，并退出。结果在项目 `Saved/lab-smoke.json`；截图为 `Saved/hero.png`、`cafe.png`、`crossing.png`、`overview.png`。首次启用 SM6/Lumen 需要等待着色器编译。
 
-## 与避障线的衔接
+原灰盒场地可通过同一命令附加 `--scene graybox` 打开或验证，项目仍在 `artifacts.local/unreal/BlindAssistObstacleLab/`。
 
-这是 synthetic Development 场地，不是已完成的 DTR 评测。当前没有 RGB-D
-数据导出、在线算法回接或告警覆盖层。已有相机和路线方便下一步接入。
+## 避障线接口
 
-最小接入对象是
-[`SanitizedModelContract`](../carla/dtr_carla_rgbd_model_adapter.py)，新增 UE loader
-即可复用模型侧 RGB-D 处理，不能给新数据套用 CARLA 专属 schema。
-后续导出需要同一 tick 的 RGB、前向轴线性深度（米）、相机内参和外参、
-wearer pose、时间戳及预先下发的计划。UE 位移单位为厘米，需要除以 100；
-世界为 X 前、Y 右、Z 上，模型反投影相机坐标使用 Forward/Left/Up。
-不要把径向深度或设备 Z 值直接作为前向轴深度。
+当前是可编辑的 synthetic Development 场景，未完成 RGB-D 导出、在线 DTR 回接或告警覆盖层。预设相机包括 `Pedestrian` 和 `Crossing`，人行道相对世界零点高约 0.27 m，传感器视点相对人行道高 1.6 m。
 
-Actor ID、真实速度、碰撞体、instance mask、未来接触和 TTC 必须单独进入
-evaluator 数据，不能混入模型观测；不能用执行后的真实轨迹回填 issued plan。
-先用已知距离平面核对深度和左右方向，再接入现有 DTR adapter。
+下一步以新增 UE loader 连接现有 [`SanitizedModelContract`](../carla/dtr_carla_rgbd_model_adapter.py)。导出需要同一 tick 的 RGB、前向轴线性深度（米）、相机内外参、wearer pose、时间戳和预先下发计划。UE 位移厘米除以 100；世界坐标 X 前、Y 右、Z 上，而相机反投影使用 Forward/Left/Up。不能直接使用设备 Z 或径向深度。
 
-## 官方复用来源
-
-- 本机 Epic `TP_FirstPersonBP` 和其 `Characters` / `Input` /
-  `LevelPrototyping` 共享内容；包含 Quinn 模型与官方步行动画。
-- 本机 `/Engine/BasicShapes` 几何资产。
-- [Epic 编辑器 Python 文档](https://dev.epicgames.com/documentation/unreal-engine/scripting-the-unreal-editor-using-python)
-  与 [Sequencer Python 文档](https://dev.epicgames.com/documentation/unreal-engine/python-scripting-in-sequencer-in-unreal-engine)。
-
-构建器复用本机已安装内容，不下载、不上传 Epic 二进制资产。
+Actor ID、真实速度、碰撞体、instance mask、未来接触和 TTC 单独放入 evaluator 数据。不能把执行后的真实轨迹回填 issued plan。
