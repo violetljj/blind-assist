@@ -25,7 +25,7 @@ def main():
     p.add_argument('--scenario-manifest',type=Path)
     p.add_argument('--scenario-split',choices=('regression','development','held_out'),default='regression')
     p.add_argument('--allow-held-out',action='store_true')
-    p.add_argument('--map',choices=('StreetLabV2','StreetLabV3','StreetLabV4'),default='StreetLabV2',
+    p.add_argument('--map',choices=('StreetLabV2','StreetLabV3','StreetLabV4'),default='StreetLabV4',
                    help='Choose the actual scene; map identity is recorded for every new run')
     p.add_argument('--resume',action='store_true')
     p.add_argument('--reuse-open-loop',type=Path,help='Reuse verified full controls; execute eight assisted branches only')

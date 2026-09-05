@@ -4,6 +4,8 @@
 
 ## 算法研究入口
 
+从 2026-09-06 起，UE V4 是避障线的默认 Development 实验场，CARLA 保留历史证据和必要的补充验证。统一入口为 `python tools/run_obstacle_research.py`，提供 `status`、`replay`、`closed-loop`、`compare` 和 `calibrate`。默认使用 V4、增量感知及 `DEPTH_ONLY` 运动基线。迁移实测、使用方法和尚未补齐的能力见 [UE 主实验场记录](UE_PRIMARY_LAB_20260906.md)。
+
 实测记录见 [2026-09-05 算法实验场报告](ALGORITHM_LAB_20260905.md)。
 
 最新实现见 [增量状态与候选动作重构](INCREMENTAL_ACTION_REFACTOR_20260905.md)。固定回放及 live worker 默认使用增量 X73：同一检测账本的预测耗时 `370.28 -> 24.02 s`，733 帧历史输出一致；完整固定回放实测 `448.95 -> 51.34 s`，后者是历史同工作量比较。原批量实现保留作差分参照，固定回放可指定 `--engine batch-prefix`，闭环可指定 `--prediction-engine batch`。

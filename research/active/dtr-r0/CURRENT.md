@@ -1,8 +1,13 @@
 # DTR-R2 current
 
-Updated: 2026-09-05
+Updated: 2026-09-06
 
 Status: `DTR_R2_DYNAMIC_RETAINED`
+
+Primary Development environment: **self-built UE5 StreetLabV4**, per the user's
+2026-09-06 migration decision. Use `tools/run_obstacle_research.py`; CARLA is
+retained for historical evidence and explicitly needed supplementary checks.
+See [migration checks and remaining gaps](unreal/UE_PRIMARY_LAB_20260906.md).
 
 ## Capability question
 
@@ -79,25 +84,22 @@ recaptured pixels do not restore the original raw-input comparison.
 
 ## Next decision
 
-1. **Development:** use the complete source for a separately identified
-   pre-contact dropout design with observable recovery. The consumed FIT_ONLY
-   candidate windows are `[7,8]`, `[11,12,13]`, `[16..21]`; their selection is
-   post-hoc and changes no original verdict. Validate their source role before
-   comparing methods. Preserve the isolated hash-matching X24/X25 method snapshot
-   rather than reverting concurrent interface changes. No recapture is needed
-   merely to reuse the now complete source.
-2. **Confirmation:** a new admitted source authority is required before the
-   pending comparison can proceed. Preserve the frozen eleven-arm decomposition,
-   including raw Kalman + emitter and X94 + the same emitter, shared event
-   primaries and secondary frame diagnostics. If collision-state quality adds
-   useful effect under that common emitter, retain that contribution; if the
-   simple baseline ties or wins, simplify the proposed architecture. Missing
-   source support leaves the algorithm question unresolved.
-3. **Exploration:** this update starts no X97 or new learner. A separately named
-   Development hypothesis may reuse disclosed consumed inputs; it does not revise
-   frozen scores or restore confirmation authority. JRDB X21 promotion still
-   needs its own unchanged, genuinely source-disjoint confirmation; CARLA cannot
-   substitute for it. No experiment is started by this documentation update.
+1. **UE Development:** use fixed RGB-D replay for perception changes and V4
+   closed loop for motion changes. The measured motion reference is DEPTH_ONLY;
+   candidate DTR remains optional after its no-incremental-gain result. The new
+   entrypoint completed 733 identical replay outputs, a paired live smoke and
+   six native known-distance depth checks. A single smoke is not a full suite.
+2. **Next useful check:** validate RGB/depth alignment and contact-proxy versus
+   visible-mesh agreement, then match algorithm cadence to the source and run
+   one discriminating baseline/challenger contrast. Report goal arrival,
+   contact, timeout and delay as well as risk events. Broaden scenarios when
+   the comparison exposes a coverage gap; do not assume added complexity wins.
+3. **CARLA preservation:** park the pending dropout-window continuation and
+   eleven-arm execution during the UE migration. Do not restore missing CARLA
+   assets or recapture by default. Keep complete source, frozen method snapshots,
+   old failures and prior algorithm inheritance. UE results do not inherit CARLA
+   confirmation authority. This switch starts no X97, learner or held-out run;
+   JRDB source-disjoint confirmation remains a separate requirement.
 
 ## Boundaries
 
