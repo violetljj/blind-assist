@@ -25,7 +25,9 @@ def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
         # Lateral offsets are in the route frame; samples in camera-right coordinates.
         samples=x[obstacle & (np.abs(y-(target-ego_y))<.30)]
         corridors[str(target)]=float(np.quantile(samples,.04)) if len(samples)>=8 else 12.0
-    central=x[obstacle & (np.abs(y)<.34)]
+    # Use the same wearer corridor as side selection. A wider front query
+    # incorrectly treated the adjacent narrow-passage wall as a frontal block.
+    central=x[obstacle & (np.abs(y)<.30)]
     nearest=float(np.quantile(central,.04)) if len(central)>=8 else None
     return {'clearance_m':corridors,'front_obstacle_m':nearest,
             'valid_fraction':float(valid.mean()),'height_filter_m':[.065,1.85],
@@ -54,12 +56,21 @@ class MotionPolicy:
             if clear[str(side)]>min(3.3,front+1.0):
                 self.target_y=side
                 self.pass_until_x=x+front+1.0
+        if self.pass_until_x is not None and clear['0.0']<12.0:
+            # Keep the last observed obstacle position until we have passed it.
+            # Leaving the camera frustum is not evidence that the return is clear.
+            self.pass_until_x=max(self.pass_until_x,x+clear['0.0']+1.0)
         if self.pass_until_x is not None and x>self.pass_until_x and clear['0.0']>2.8:
             self.target_y=0.0
             self.pass_until_x=None
         error=self.target_y-y
         vy=max(-.65,min(.65,error*2))
-        if abs(error)>.09:
+        if near and front<.9:
+            # Do not sidestep into a crossing person already immediately ahead.
+            vx=0.0
+            vy=0.0
+            action='BRAKE_IMMINENT'
+        elif abs(error)>.09:
             vx=.35 if front is None or front>1.0 else 0.0
             action='SIDESTEP'
         elif near and front<1.4:

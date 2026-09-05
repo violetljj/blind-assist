@@ -196,6 +196,9 @@ def evaluate(root):
                   p["expected_open_loop_contact"] and p["open_loop_contrast_pass"] is True and
                   p["ASSISTED"]["success"] and p["causal_trajectory"]["trajectory_changed_after_sensor_alert"]
                   for p in pairs), "pairs": pairs}
+    reuse_path = root / 'baseline-reuse.json'
+    result['execution_reuse'] = (_read(reuse_path) if reuse_path.exists() else
+                                 {'reused_open_loop_episodes': 0, 'new_assisted_episodes_expected': len(specs)})
     (root / "evaluation.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     return result, specs, indexed
 
@@ -229,7 +232,8 @@ def render(root, result, specs, indexed):
                 x0 = 20 + 590 * side
                 summary = pair[arm]
                 color = "#64dab5" if summary["success"] else "#ffd37e" if summary.get("goal_reached") else "#ff9b91"
-                draw.text((x0, 84), f'{arm} | {summary["status"]} | success={summary["success"]}', font=font, fill=color)
+                label = arm + (' (reused)' if side == 0 and result['execution_reuse']['reused_open_loop_episodes'] else '')
+                draw.text((x0, 84), f'{label} | {summary["status"]} | success={summary["success"]}', font=font, fill=color)
                 if not ep or not ep.get("frames"):
                     draw.text((x0 + 12, 220), "INCOMPLETE / NO SENSOR FRAMES", font=font, fill="#ff9b91")
                     continue
@@ -249,8 +253,10 @@ def render(root, result, specs, indexed):
                 terminal = " [terminal frame held]" if t > frames[-1]["time_s"] + .001 else ""
                 draw.text((x0, 444), f'sensor t={frame["time_s"]:.1f}s{terminal}', font=small, fill="#c6d5e6")
                 draw.text((x0, 467), f'Alert: {sources} | X73 {prediction.get("event", "UNKNOWN")}', font=small, fill="#ffd37e")
-                draw.text((x0, 490), f'Next: {command.get("action", "UNKNOWN")} '
-                          f'vx={command.get("vx_mps", 0):.2f} vy={command.get("vy_mps", 0):.2f} m/s', font=small, fill="#edf3fb")
+                displayed = frame.get('applied_command', {}) if arm == 'OPEN_LOOP' else command
+                action_label = 'Applied' if arm == 'OPEN_LOOP' else 'Next'
+                draw.text((x0, 490), f'{action_label}: {displayed.get("action", "UNKNOWN")} '
+                          f'vx={displayed.get("vx_mps", 0):.2f} vy={displayed.get("vy_mps", 0):.2f} m/s', font=small, fill="#edf3fb")
                 draw.text((x0, 513), f'EPISODE END: goal={summary.get("goal_reached", False)} '
                           f'progress={summary.get("forward_progress_m", 0):.2f}m '
                           f'contact={summary.get("contact", "UNKNOWN")}', font=small, fill=color)
@@ -297,9 +303,11 @@ def render(root, result, specs, indexed):
     html = '''<!doctype html><meta charset="utf-8"><title>Willow Walk | paired closed-loop</title>
 <style>body{margin:24px auto;max-width:1220px;padding:0 16px;background:#101b27;color:#eef5ff;font:16px system-ui}h1{font-size:25px}img{width:100%;border-radius:8px}button,select{padding:10px;background:#233b50;color:#eef5ff;border:1px solid #607f99;border-radius:6px}input{width:65%;vertical-align:middle}pre{white-space:pre-wrap;overflow-wrap:anywhere}p{color:#b8d0e5}</style>
 <h1>Willow Walk · 在线闭环配对回放</h1><p>UE 实际 RGB-D → DTR X73 / 观测深度分支 → 控制指令 → 实际轨迹。左：OPEN_LOOP；右：ASSISTED。两侧按仿真时间对齐。</p>
+<p id="reuse"></p>
 <p><select id="cases"></select> <button id="play">播放 / 暂停</button> <span id="time"></span></p><img id="frame"><p><input id="seek" type="range" min="0" value="0"></p>
 <p>受控合成 Development。身体碰撞与脚部绊倒代理分开记录，不是人体伤害真值；未到达目标不能算成功。短片的结束帧会保留显示。</p><details><summary>实测结果、延迟与证据边界</summary><pre id="report"></pre></details>
 <script>const data=PAYLOAD;const report=REPORT;let c=0,i=0,playing=false;const frame=document.getElementById('frame'),seek=document.getElementById('seek'),cases=document.getElementById('cases');
+document.getElementById('reuse').textContent=report.execution_reuse.reused_open_loop_episodes?'本轮复用 8 个已完成的直行对照，重新执行 8 个辅助分支；不是 16 个全新分支。':'本轮直行与辅助分支均实际执行。';
 data.forEach((d,k)=>{const o=document.createElement('option');o.value=k;o.textContent=d.scenario_id;cases.appendChild(o)});
 function show(){if(!data.length)return;frame.src=data[c].images[i];seek.max=data[c].images.length-1;seek.value=i;document.getElementById('time').textContent=data[c].times[i].toFixed(1)+' s'}
 cases.onchange=()=>{c=+cases.value;i=0;show()};seek.oninput=()=>{i=+seek.value;show()};document.getElementById('play').onclick=()=>playing=!playing;

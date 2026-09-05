@@ -113,6 +113,16 @@ bEnableCookOnTheSide=False
                            check=True,timeout=300)
             if not (root/'Saved/lab-vehicle-repair.json').exists():
                 raise RuntimeError('Vehicle repair failed; inspect Saved/repair-vehicle.log')
+        playback_receipt=root/'Saved/lab-playback-repair.json'
+        if args.upgrade and (not playback_receipt.exists() or
+                             json.loads(playback_receipt.read_text())['status']!='PASS'):
+            subprocess.run([str(editor.with_name('UnrealEditor.exe')),str(project),*preferred_map,
+                            '-ExecCmds=py '+script.with_name('repair_street_playback.py').as_posix(),
+                            '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash',
+                            '-ddc=NoShared',cache,'-abslog='+str(root/'Saved/repair-playback.log')],
+                           check=True,timeout=300)
+            if not playback_receipt.exists() or json.loads(playback_receipt.read_text())['status']!='PASS':
+                raise RuntimeError('Playback repair failed; inspect Saved/repair-playback.log')
         config=root/'Config/DefaultEngine.ini'
         previous=config.read_text(encoding='utf-8')
         updated='\n'.join(line.split('=',1)[0]+'=/Game/StreetLab/StreetLabV2'
