@@ -1,6 +1,38 @@
 # Willow Walk：行人避障街区
 
-默认场景现在是完整步行街：连续店面、石材铺装、咖啡座、树池、长椅、街灯、车辆和侧巷。使用 PBR 扫描材质、Lumen 全局光照与反射、虚拟阴影和日光与自动曝光。原六道灰盒场地保留为对照。
+当前版本为 `StreetLabV2`：步行街、石材铺装、咖啡座、树池、街灯、车辆与侧巷，加入四名穿衣人物及步行动画、不同立面、柔和补光。它是可编辑的 synthetic Development 实验场，仍有程序组装感，不宣称照片级真实或真实人体安全。
+
+## 在线闭环 V2
+
+```powershell
+python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --upgrade --open
+python tools/run_street_closed_loop.py --engine <本机UE安装目录> --output artifacts.local/unreal/<新运行目录>
+```
+
+第二条命令使用装有 NumPy、Pillow、PyTorch、Ultralytics 的 Python。`--upgrade` 仅在 V2 地图缺失时下载固定版本的人物并建图；已有地图不覆盖。再次打开项目默认进入 V2，原 `StreetLab` 和灰盒地图保留。
+
+闭环是 **UE 实际 RGB-D → 独立传感器进程 → 原有 YOLO / DTR X73 与观测深度分支 → 下一步减速、停步或侧移 → UE 新观测**。每步模拟 0.2 秒，等待实际推理返回后再前进；这是在线锁步实验，不是已达到 5 Hz 墙钟实时性能。深度分支单独标为 `OBSERVED_DEPTH`，不能把它的绕行成绩归给 DTR。
+
+| 场景族 | 接触对照 | 近失对照 |
+| --- | --- | --- |
+| 遮挡横穿 | 人物与直行者轨迹相交 | 相同速度，错开横穿相位 |
+| 突然停步 | 前方人物停下 | 人物继续前进 |
+| 窄道会车 | 迎面人物进入身体代理范围 | 侧向错开 |
+| 低矮障碍 | 12 cm 障碍置于路线上 | 障碍侧移出路线 |
+
+共 8 个场景，每个包含 `OPEN_LOOP` / `ASSISTED` 两个分支。模型只接收中性 episode 编号、已观察 RGB-D、位姿与执行前下发的导航计划。场景名、演员轨迹、预期接触和评价真值留在 `evaluator/`，控制器不读它们。
+
+真值采用连续相对运动的圆盘/圆角矩形接触解析计算，区分 `BODY_COLLISION_PROXY` 与 `FOOT_TRIP_PROXY`。地面由引擎射线测量；4 mm 导向地面起伏作为可通行负对照，不再把任何胶囊阻挡都当成危险。该分层是明确的实验代理，不是步态、生物力学、伤害或普遍可通行性标准。
+
+输出包括 `run.json`、`model/`、`evaluator/episodes/`、`sensor-worker/backend.json`、逐步检查点与 `evaluation.json`。评价器核对接触、告警先于轨迹改变、返回命令确实用于下一步，以及无接触到达 8 m 终点；只停在半路不算成功。HTML/GIF 成对显示真实传感器帧和实际轨迹，失败也显示。
+
+中断后仅在源码、地图和场景选择不变时，使用同一命令附加 `--resume` 继续；已经完成的分支保留，未完成分支从逐步检查点恢复。渲染不保证位级一致，已写入的待处理帧会复用。若修改实现，应使用新的运行目录并保留旧失败。
+
+2026-09-05 的低障碍实机 canary 中，无辅助分支首次代理接触为 3.54 s；辅助分支在 1.0 s 深度告警、1.2 s 实际改变轨迹，9.6 s 到达终点且无代理接触。完整组的首次尝试发现人物动画未刷新，并记录了辅助横穿仍接触的失败，已终止并保留。单个 canary 成功不能当作八场景总体成功。
+
+上述结果分别在本地 `closed-loop-canary-20260905-c` 与 `closed-loop-suite-20260905-a`。后者是 `ABORTED_IMPLEMENTATION_DEFECT`，不是通过的实验。
+
+后续组固定使用 100° 水平视场。先前 80° 视场下，横穿者中心保持约 45° 方位，长时间位于画外，混合了几何遮挡和画外来人两种条件。这个传感器条件变更单独记录，不解释为算法改进；先前失败不覆盖。车辆亦改用官方四轮组件与导入骨架位置，保留原资产。
 
 ## 打开
 
@@ -9,10 +41,10 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --open
 ```
 
 项目：`artifacts.local/unreal/BlindAssistStreetLab/BlindAssistStreetLab.uproject`。
-地图：`/Game/StreetLab/StreetLab`。首次执行复制本机 Epic 模板并下载小型 CC0 材质/道具，随后生成地图；已有地图不覆盖。
+地图：已升级时为 `/Game/StreetLab/StreetLabV2`；基础地图为 `/Game/StreetLab/StreetLab`。首次执行复制本机 Epic 模板并下载小型 CC0 材质/道具，随后生成地图；已有地图不覆盖。
 
 点击 **Play**，用 **WASD + 鼠标**步行观察，**Esc** 退出。步速 1.2 m/s。
-`StreetActivity` Sequencer 控制四名动态人物，30 秒循环。可在编辑器中调整店面、家具、车辆、人物轨迹、镜头和照明。
+V2 的 `StreetActivityV2` Sequencer 控制四名动态人物，30 秒循环。可在编辑器中调整店面、家具、车辆、人物轨迹、镜头和照明。在线实验临时替换为明确的场景演员，按模拟时间驱动，不保存这些替换到地图。
 
 | 条件 | 场景实现 |
 | --- | --- |
@@ -33,7 +65,7 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --open
 - `Vehicles`：车辆车身和玻璃。
 - `TP_FirstPersonBP` 与 `Characters`：第一人称操作、Quinn 模型及步行动画。
 
-店面布局、檐口、窗框、阳台、咖啡座和导向铺装由脚本组装。人物仍为 Epic 模板角色，并非写实扫描行人。
+店面布局、檐口、窗框、阳台、咖啡座和导向铺装由脚本组装。V2 人物与兼容步行动画来自 [Microsoft Rocketbox 官方仓库](https://github.com/microsoft/Microsoft-Rocketbox)，MIT 许可，固定提交 `0943055db6ec570bcef9f2c8b41c9e5467c808f9`；不是 Epic MetaHuman。来源、许可和下载哈希保存在本地 `asset-downloads/rocketbox/sources.json`，进口资产记录为项目 `Saved/lab-visual-upgrade.json`。
 
 补充使用 [Poly Haven CC0](https://polyhaven.com/license) 的[铺装](https://polyhaven.com/a/cobblestone_pavement)、[砖墙](https://polyhaven.com/a/brick_wall_001)、[灰泥](https://polyhaven.com/a/plastered_wall_02)、[木板](https://polyhaven.com/a/wood_planks)、[长椅](https://polyhaven.com/a/painted_wooden_bench)和[花箱](https://polyhaven.com/a/planter_box_02)。下载器使用官方 API，保留来源及文件校验信息。Epic 和 CC0 二进制资产、生成地图、缓存、截图均留在本地 `artifacts.local/unreal/`；Git 只保存脚本与说明。
 
@@ -47,9 +79,9 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --verify
 
 原灰盒场地可通过同一命令附加 `--scene graybox` 打开或验证，项目仍在 `artifacts.local/unreal/BlindAssistObstacleLab/`。
 
-## 避障线接口
+## 原始离线接口 V1（保留）
 
-已打通 **UE RGB-D 采集 → 现有 YOLO 分割 → 保留的 DTR X73 → 独立引擎碰撞对照 → 可拖动回放**。这是固定轨迹的离线 synthetic Development 接口演示，尚非在线闭环控制，也未评价自动绕行成功率。
+V1 打通 **UE RGB-D 采集 → 现有 YOLO 分割 → 保留的 DTR X73 → 独立引擎碰撞对照 → 可拖动回放**。下述命令保留固定轨迹的离线 synthetic Development 接口，不包含 V2 在线运动控制。
 
 使用装有 NumPy、Pillow、PyTorch、Ultralytics 的 Python 环境执行：
 

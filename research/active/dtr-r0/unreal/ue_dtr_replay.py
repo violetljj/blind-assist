@@ -56,6 +56,10 @@ def load_contract(model_root: Path):
         frames = []
         last_time = -float("inf")
         for row in item["frames"]:
+            if "plan_path" in row:
+                plan_path = adapter.resolve_model_path(root, row["plan_path"], "ue_frame_plan")
+                plan = read_model_json(plan_path)
+                x24.route.validate_plan_receipt(plan)
             timestamp = float(row["time_s"])
             if not np.isfinite(timestamp) or timestamp <= last_time:
                 raise ValueError("UE frame timestamps must strictly increase")

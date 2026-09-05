@@ -14,7 +14,10 @@ def main():
     parser.add_argument('--verify', action='store_true', help='Render scene views and verify first-person PIE and motion')
     parser.add_argument('--scene', choices=('street', 'graybox'), default='street')
     parser.add_argument('--prepare-only', action='store_true', help='Copy template assets without starting the editor')
+    parser.add_argument('--upgrade', action='store_true', help='Build StreetLabV2 with clothed humans and varied facades once')
     args = parser.parse_args()
+    if args.upgrade and args.scene != 'street':
+        parser.error('--upgrade applies to the street scene')
     repo = Path(__file__).resolve().parents[1]
     name = 'BlindAssistStreetLab' if args.scene == 'street' else 'BlindAssistObstacleLab'
     root = repo / 'artifacts.local/unreal' / name
@@ -93,9 +96,34 @@ bEnableCookOnTheSide=False
         raise RuntimeError(f'Build did not produce a receipt; inspect {log}')
     print(receipt.read_text(encoding='utf-8'))
     print(f'PROJECT: {project}')
+    if args.upgrade and not (root/'Content/StreetLab/StreetLabV2.umap').exists():
+        subprocess.run([sys.executable,str(script.with_name('download_street_humans.py')),
+                        '--output',str(root.parent/'asset-downloads/rocketbox')],check=True)
+        subprocess.run([str(editor),str(project),'-run=pythonscript',
+                        '-script='+str(script.with_name('improve_street_visuals.py')),
+                        '-unattended','-nullrhi','-nosound','-nop4','-NoSplash',
+                        '-ddc=NoShared',cache,'-abslog='+str(root/'Saved/upgrade-lab.log')],check=True)
+    preferred_map = ['/Game/StreetLab/StreetLabV2'] if args.scene == 'street' and (root/'Content/StreetLab/StreetLabV2.umap').exists() else []
+    if preferred_map:
+        if args.upgrade and not (root/'Saved/lab-vehicle-repair.json').exists():
+            subprocess.run([str(editor.with_name('UnrealEditor.exe')),str(project),*preferred_map,
+                            '-ExecCmds=py '+script.with_name('repair_street_vehicle.py').as_posix(),
+                            '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash',
+                            '-ddc=NoShared',cache,'-abslog='+str(root/'Saved/repair-vehicle.log')],
+                           check=True,timeout=300)
+            if not (root/'Saved/lab-vehicle-repair.json').exists():
+                raise RuntimeError('Vehicle repair failed; inspect Saved/repair-vehicle.log')
+        config=root/'Config/DefaultEngine.ini'
+        previous=config.read_text(encoding='utf-8')
+        updated='\n'.join(line.split('=',1)[0]+'=/Game/StreetLab/StreetLabV2'
+                          if line in ('EditorStartupMap=/Game/StreetLab/StreetLab',
+                                      'GameDefaultMap=/Game/StreetLab/StreetLab') else line
+                          for line in previous.split('\n'))
+        if updated!=previous: config.write_text(updated,encoding='utf-8')
+        print('ACTIVE_MAP: '+preferred_map[0])
     if args.verify:
         verify = script.with_name('verify_street_lab.py' if args.scene == 'street' else 'verify_obstacle_lab.py')
-        subprocess.run([str(editor.with_name('UnrealEditor.exe')), str(project),
+        subprocess.run([str(editor.with_name('UnrealEditor.exe')), str(project), *preferred_map,
                         f'-ExecCmds=py {verify.as_posix()}', '-unattended', '-nosound', '-nop4',
                         '-NoSplash', '-RenderOffscreen', '-windowed', '-ResX=1600', '-ResY=1000',
                         '-ddc=NoShared', cache, f'-abslog={log.with_name("verify-lab.log")}'],
@@ -105,7 +133,7 @@ bEnableCookOnTheSide=False
         if result['status'] != 'PASS':
             raise RuntimeError('Editor smoke check failed')
     if args.open:
-        process = subprocess.Popen([str(editor.with_name('UnrealEditor.exe')), str(project),
+        process = subprocess.Popen([str(editor.with_name('UnrealEditor.exe')), str(project), *preferred_map,
                                    '-NoSplash', '-ddc=NoShared', cache],
                                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                                    stderr=subprocess.DEVNULL)
