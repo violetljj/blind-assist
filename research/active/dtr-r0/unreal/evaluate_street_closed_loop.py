@@ -16,6 +16,7 @@ from pathlib import Path
 import statistics
 
 from street_scenarios import actors_at, contacts_for_step, scenario_catalog
+import visual_geometry
 
 
 def _read(path):
@@ -81,6 +82,35 @@ def action_dwell(frames):
             "dwell_authority": "APPLIED_COMMAND_OVER_PRECEDING_OBSERVED_INTERVAL"}
 
 
+def evaluate_visual_geometry(spec, episode):
+    if spec.get("visual_geometry_policy") != visual_geometry.POLICY:
+        return {"status": "LEGACY_NOT_REQUIRED", "passed": True, "audited_frames": 0}
+    frames, audits = episode.get("frames", []), episode.get("visual_geometry", [])
+    try:
+        if not isinstance(audits, list) or len(audits) != len(frames):
+            raise ValueError("Visual geometry receipt must cover every actual frame")
+        for frame, audit in zip(frames, audits):
+            if (audit.get("time_s") != frame["time_s"] or audit.get("policy") != visual_geometry.POLICY
+                    or audit.get("passed") is not True):
+                raise ValueError("Visual geometry timestamp, policy or reported outcome mismatch")
+            poses = {actor["id"]: actor for actor in actors_at(spec, frame["time_s"])}
+            rows = audit["rows"]
+            if len(rows) != len(poses) or {r["actor_id"] for r in rows} != set(poses):
+                raise ValueError("Visual geometry actor coverage mismatch")
+            for row in rows:
+                actor = poses[row["actor_id"]]
+                center, extent = row["native_center_m"], row["native_extent_m"]
+                if len(center) != 3 or len(extent) != 3:
+                    raise ValueError("Visual geometry bounds must have three dimensions")
+                checked = visual_geometry.assess_bounds(actor, center, extent, [actor["x_m"], actor["y_m"]])
+                if row.get("passed") is not True or not checked["passed"]:
+                    raise ValueError("Native renderer bounds do not match declared proxy")
+    except (ValueError, KeyError, TypeError, IndexError) as error:
+        return {"status": "INVALID", "passed": False, "reason": str(error), "audited_frames": 0}
+    return {"status": "PASS", "passed": True, "audited_frames": len(audits),
+            "actor_checks": len(audits) * len(spec["actors"])}
+
+
 def evaluate_episode(spec, episode):
     if episode is None:
         return {"status": "INCOMPLETE", "reason": "Missing episode", "success": False}
@@ -120,7 +150,8 @@ def evaluate_episode(spec, episode):
     reached = bool(episode.get("goal_reached")) and forward >= target - 0.05
     declared_goal_consistent = bool(episode.get("goal_reached")) == (forward >= target - 0.05)
     complete = bool(episode.get("completed"))
-    valid = not mismatches and not motion_mismatches and declared_goal_consistent
+    geometry = evaluate_visual_geometry(spec, episode)
+    valid = not mismatches and not motion_mismatches and declared_goal_consistent and geometry["passed"]
     status = "COMPLETE" if complete and valid else "INVALID" if not valid else "INCOMPLETE"
     events = [{"time_s": f["time_s"], "sources": _sources(f), "action": _command(f).get("action")}
               for f in frames if _sources(f)]
@@ -129,6 +160,7 @@ def evaluate_episode(spec, episode):
                for a, b in zip(frames, frames[1:]))
     return {"episode_id": episode["episode_id"], "status": status, "frames": len(frames),
             **action_dwell(frames),
+            "visual_geometry": geometry,
             "raw_x73_events": [{"time_s": f["time_s"],
                 "event": f.get("response", {}).get("prediction", {}).get("event", "UNKNOWN"),
                 "route_risk": f.get("response", {}).get("prediction", {}).get("route_risk")} for f in frames],

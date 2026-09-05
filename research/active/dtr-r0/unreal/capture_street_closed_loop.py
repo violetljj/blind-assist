@@ -18,6 +18,7 @@ import unreal as u
 
 sys.path.insert(0,str(Path(__file__).parent))
 import street_scenarios as scenarios
+import visual_geometry
 
 OUT=Path(os.environ['BA_UE_LIVE_OUTPUT'])
 MODEL=OUT/'model'
@@ -106,7 +107,7 @@ def spawn_actor(spec):
         comp.override_animation_data(u.load_asset(person['animation']),True,False,0.0,0.0)
         comp.set_update_animation_in_editor(True)
         # Exact authored mesh dimensions are recorded alongside the explicit body proxy.
-        scale=175/person['native_height_cm']
+        scale=spec.get('height_m',1.75)*100/person['native_height_cm']
         a.set_actor_scale3d(u.Vector(scale,scale,scale))
         a.tags=[u.Name('laboratory_pedestrian')]
     else:
@@ -147,7 +148,9 @@ def move_visuals(t):
             origin,extent=a.get_actor_bounds(False)
             bottom_offset=(origin.z-extent.z-loc.z)/100
             z-=bottom_offset
-        else: z+=s['height_m']/2
+        else:
+            z+=s['height_m']/2
+            a.set_actor_rotation(u.Rotator(yaw=s.get('yaw_deg',0.)),False)
         a.set_actor_location(u.Vector((ANCHOR_X+s['x_m'])*100,(ANCHOR_Y+s['y_m'])*100,z*100),False,False)
 
 
@@ -242,6 +245,12 @@ def tick(delta):
         elif stage=='position':
             t=round(index*spec['dt_s'],5)
             move_visuals(t)
+            if spec.get('visual_geometry_policy')==visual_geometry.POLICY:
+                agreement=visual_geometry.audit_scene(scenarios.actors_at(spec,t),visuals,(ANCHOR_X,ANCHOR_Y),floor)
+                episode_result.setdefault('visual_geometry',[]).append(dict(agreement,time_s=t))
+                if not agreement['passed']:
+                    write(EVAL/'geometry-failure.json',dict(agreement,episode_id=eid,time_s=t))
+                    raise RuntimeError('Rendered geometry differs from declared conservative contact envelope')
             for a in captures: a.set_actor_location(u.Vector((ANCHOR_X+ego['x_m'])*100,ego['y_m']*100,(floor+1.6)*100),False,False)
             if index==0:
                 for name,a in visuals.items():

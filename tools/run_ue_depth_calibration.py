@@ -1,4 +1,4 @@
-"""Launch a disposable UE editor for the isolated metric-depth check."""
+"""Launch isolated metric depth and RGB-D edge checks; require offline validation."""
 import argparse
 import json
 import os
@@ -22,7 +22,8 @@ def main():
     env=dict(os.environ,BA_UE_DEPTH_CALIBRATION_OWNED_PROCESS='1',BA_UE_DEPTH_CALIBRATION_OUTPUT=str(output))
     env['UE-LocalDataCachePath']=str(project/'DerivedDataCache')
     process=subprocess.Popen([str(args.engine/'Engine/Binaries/Win64/UnrealEditor.exe'),
-        str(project/'BlindAssistStreetLab.uproject'),'-ExecCmds=py '+(scripts/'ue_depth_calibration.py').as_posix(),
+        str(project/'BlindAssistStreetLab.uproject'),'/Game/StreetLab/StreetLabV4',
+        '-ExecCmds=py '+(scripts/'ue_depth_calibration.py').as_posix(),
         '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash','-ddc=NoShared',
         '-abslog='+str(output.with_suffix('.log'))],env=env)
     tree=TaskProcessTree(process,owner=str(output))
@@ -30,9 +31,22 @@ def main():
         code=tree.wait(timeout=240)
         if code:raise RuntimeError('Calibration editor failed: '+str(code))
         result=json.loads((output/'result.json').read_text())
+        from ue_depth_calibration import verify
+        validation=verify(output)
         print(json.dumps({'status':result['status'],'cases':len(result['cases']),
+                          'independent_validation':validation['status'],
+                          'alignment_cases':validation['alignment_cases_verified'],
                           'max_error_m':max((c['max_absolute_error_m'] for c in result['cases']),default=None)}))
-        if result['status']!='PASS':raise RuntimeError('Depth calibration did not pass; retained result')
+        if validation['status']!='PASS':raise RuntimeError('Calibration did not pass; retained result')
+    except Exception as error:
+        output.mkdir(exist_ok=True)
+        failure=output/'alignment-validation.json'
+        if not failure.exists():
+            with failure.open('x',encoding='utf-8') as stream:
+                json.dump({'status':'FAIL','authority':'ENGINEERING_DEVELOPMENT_ONLY',
+                           'reason':str(error),'exception_type':type(error).__name__,
+                           'stage':'native_capture_or_verification'},stream,indent=2)
+        raise
     finally:
         receipt=tree.cleanup()
         output.mkdir(exist_ok=True)

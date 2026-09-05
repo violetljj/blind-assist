@@ -42,7 +42,7 @@ def summarize(root):
             'supported_footprint_frames':sum(c.get('candidate_evaluation',{}).get('admitted_tracks',0)>0 for c in commands),
             'nominal_predicted_intersection_frames':sum(bool(c.get('action_conditioned_risk')) for c in commands)}
     result={'status':'COMPLETE' if complete else 'INCOMPLETE','modes':list(MODES),'rows':rows,
-        'evidence':'Actual rerendered UE synthetic Development on eight previously consumed regression conditions',
+        'evidence':'Actual rerendered UE synthetic Development on the manifest-selected conditions; no exact-pixel pairing',
         'mechanism':'Both arms enumerate and score the same candidate motions; only CANDIDATE_DTR selects using footprint intersections',
         'claim_boundary':'Geometry proxy outcomes; no fresh confirmation, exact-pixel pairing, deployment or safety claim',
         'compute_boundary':'Both arms compute the same detector, X73 state and candidate scores',
@@ -62,6 +62,7 @@ def main():
     parser.add_argument('--engine',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--scenario-manifest',type=Path,required=True)
+    parser.add_argument('--scenario-split',choices=('regression','development'),default='regression')
     parser.add_argument('--action-footprint-state',choices=('cadence','frozen'),default='cadence')
     parser.add_argument('--resume',action='store_true')
     args=parser.parse_args()
@@ -69,16 +70,17 @@ def main():
     scripts=repo/'research/active/dtr-r0/unreal'
     sys.path.insert(0,str(scripts))
     from ue_incremental import source_paths
-    from scenario_bank import load_scenarios,validate_specs
-    selected=load_scenarios(args.scenario_manifest,'regression')
+    from street_bank_loader import load_scenarios
+    from scenario_bank import validate_specs
+    selected=load_scenarios(args.scenario_manifest,args.scenario_split)
     if not validate_specs(selected)['passed'] or len(selected)!=8:
-        parser.error('This bounded comparison requires the eight existing regression scenes')
+        parser.error('This bounded comparison requires eight valid scenes')
     output=args.output.resolve()
     if not output.is_relative_to((repo/'artifacts.local').resolve()): parser.error('Output must remain under artifacts.local')
     output.mkdir(parents=True,exist_ok=args.resume)
     names=('capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_action_risk.py',
            'street_scenarios.py','scenario_bank.py','evaluate_street_closed_loop.py','reuse_street_open_loop.py',
-           'street_process_lifecycle.py','ue_action_footprints.py')
+           'street_process_lifecycle.py','ue_action_footprints.py','visual_geometry.py','street_bank_loader.py','discriminating_bank.py')
     sources=sorted(set(source_paths()+[scripts/name for name in names]+[Path(__file__),repo/'tools/run_street_closed_loop.py']))
     project=repo/'artifacts.local/unreal/BlindAssistStreetLab'
     inputs=[args.scenario_manifest.resolve(),project/'Content/StreetLab/StreetLabV4.umap',
@@ -86,11 +88,12 @@ def main():
             args.engine/'Engine/Build/Build.version']
     plan={'schema':'street-action-conditioner-comparison-v2','modes':list(MODES),'map':'StreetLabV4',
         'action_footprint_state':args.action_footprint_state,
+        'scenario_split':args.scenario_split,
         'source_contract_correction':'Action-only fit window spans four nominal source observations while retained X73 and its batch oracle stay unchanged',
         'sources':{str(path.relative_to(repo)):sha(path) for path in sources},
         'inputs':{str(path.resolve()):sha(path) for path in inputs},
         'acceptance':'Exact engine parity is checked separately. Complete both arms, retain failures, report per-scene success and time without changing any parameters.',
-        'scope':'Eight consumed regression cases; two arms with fresh open-loop and assisted branches (32 branches total)',
+        'scope':'Eight disclosed Development cases; two controllers with new open-loop and assisted branches (32 branches total)',
         'stop':'One complete comparison; no tuning, retry of algorithm failures, or time-budget extension'}
     if args.resume:
         if read(output/'plan.json')!=plan: raise RuntimeError('Frozen comparison changed')
@@ -111,7 +114,7 @@ def main():
         command=[sys.executable,'-B',str(repo/'tools/run_street_closed_loop.py'),'--engine',str(args.engine),
             '--output',str(run),'--map','StreetLabV4','--controller-mode',mode,'--prediction-engine','incremental',
             '--action-footprint-state',args.action_footprint_state,
-            '--scenario-manifest',str(args.scenario_manifest),'--scenario-split','regression']
+            '--scenario-manifest',str(args.scenario_manifest),'--scenario-split',args.scenario_split]
         if run.exists(): command.append('--resume')
         write(output/'progress.json',{'status':'RUNNING','mode':mode,'owner_pid':os.getpid(),'started_utc':time.time()})
         try: subprocess.run(command,check=True)

@@ -10,7 +10,7 @@ REPO=Path(__file__).resolve().parents[1]
 UE=REPO/'research/active/dtr-r0/unreal'
 DATA=REPO/'artifacts.local/unreal'
 DATASET=DATA/'fixed-sensory-v4-20260905-a'
-BANK=DATA/'scenario-bank-v2-20260905.json'
+BANK=DATA/'ue-discriminating-bank-20260906.json'
 MODES=('DEPTH_ONLY','DTR_ONLY','JOINT','CANDIDATE_DEPTH','CANDIDATE_DTR')
 
 
@@ -38,15 +38,18 @@ def parser():
     calibration=sub.add_parser('calibrate',help='Known-distance depth check in an unsaved temporary world')
     calibration.add_argument('--engine',type=Path)
     calibration.add_argument('--output',type=Path,required=True)
+    geometry=sub.add_parser('geometry',help='Measure actual rendered actor bounds in an unsaved world')
+    geometry.add_argument('--engine',type=Path)
+    geometry.add_argument('--output',type=Path,required=True)
     for name in ('closed-loop','compare'):
         child=sub.add_parser(name)
         child.add_argument('--engine',type=Path)
         child.add_argument('--scenario-manifest',type=Path,default=BANK)
         child.add_argument('--output',type=Path,required=True)
         child.add_argument('--resume',action='store_true')
+        child.add_argument('--split',choices=('regression','development'),default='development')
         if name=='closed-loop':
             child.add_argument('--controller-mode',choices=MODES,default='DEPTH_ONLY')
-            child.add_argument('--split',choices=('regression','development'),default='regression')
             child.add_argument('--case',action='append',default=[])
     return p
 
@@ -64,6 +67,8 @@ def command(args):
             raise ValueError('Unreal Editor executable missing: '+str(engine))
         if args.command=='calibrate':
             return REPO/'tools/run_ue_depth_calibration.py',['--engine',str(engine),'--output',str(args.output)]
+        if args.command=='geometry':
+            return REPO/'tools/run_ue_geometry_probe.py',['--engine',str(engine),'--output',str(args.output)]
         target=REPO/'tools'/('run_street_closed_loop.py' if args.command=='closed-loop' else 'run_street_candidate_comparison.py')
         argv=['--engine',str(engine),'--output',str(args.output),'--scenario-manifest',str(args.scenario_manifest)]
         if args.resume:argv+=['--resume']
@@ -71,6 +76,8 @@ def command(args):
             argv+=['--map','StreetLabV4','--controller-mode',args.controller_mode,
                    '--prediction-engine','incremental','--scenario-split',args.split]
             for case in args.case:argv+=['--case',case]
+        else:
+            argv+=['--scenario-split',args.split]
     return target,argv
 
 
@@ -81,6 +88,7 @@ def main():
                'map':DATA/'BlindAssistStreetLab/Content/StreetLab/StreetLabV4.umap',
                'fixed_input_manifest':DATASET/'integrity.json','scenario_bank':BANK}
         print(json.dumps({'primary_backend':'UE','map':'StreetLabV4','motion_reference':'DEPTH_ONLY',
+                          'default_split':'development','nominal_sensor_hz':10,
                           'prediction_engine':'incremental','check_scope':'EXISTENCE_ONLY_NOT_SOURCE_VALIDATION',
                           'inputs':{k:{'path':str(v),'exists':v.is_file()} for k,v in paths.items()}},indent=2))
         return

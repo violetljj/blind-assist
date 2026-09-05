@@ -4,7 +4,7 @@
 
 ## 算法研究入口
 
-从 2026-09-06 起，UE V4 是避障线的默认 Development 实验场，CARLA 保留历史证据和必要的补充验证。统一入口为 `python tools/run_obstacle_research.py`，提供 `status`、`replay`、`closed-loop`、`compare` 和 `calibrate`。默认使用 V4、增量感知及 `DEPTH_ONLY` 运动基线。迁移实测、使用方法和尚未补齐的能力见 [UE 主实验场记录](UE_PRIMARY_LAB_20260906.md)。
+从 2026-09-06 起，UE V4 是避障线的默认 Development 实验场，CARLA 保留历史证据和必要的补充验证。统一入口为 `python tools/run_obstacle_research.py`，提供 `status`、`replay`、`closed-loop`、`compare`、`calibrate` 和 `geometry`。默认使用 V4、10 Hz Development 难例组、增量感知及 `DEPTH_ONLY` 运动基线。当前验收见 [实验场补齐记录](UE_LAB_ACCEPTANCE_20260906.md)，首次迁移历史见 [UE 主实验场记录](UE_PRIMARY_LAB_20260906.md)。
 
 实测记录见 [2026-09-05 算法实验场报告](ALGORITHM_LAB_20260905.md)。
 

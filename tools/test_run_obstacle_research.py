@@ -21,7 +21,15 @@ class RoutingTest(unittest.TestCase):
         self.assertEqual(target.name,'run_street_closed_loop.py')
         self.assertEqual(argv[argv.index('--map')+1],'StreetLabV4')
         self.assertEqual(argv[argv.index('--controller-mode')+1],'DEPTH_ONLY')
-        self.assertEqual(argv[argv.index('--scenario-split')+1],'regression')
+        self.assertEqual(argv[argv.index('--scenario-split')+1],'development')
+
+    def test_compare_routes_same_selected_development_bank(self):
+        with mock.patch.object(lab,'engine_root',return_value=Path('engine')),mock.patch.object(Path,'is_file',return_value=True):
+            args=lab.parser().parse_args(['compare','--output',str(lab.DATA/'test-output')])
+            target,argv=lab.command(args)
+        self.assertEqual(target.name,'run_street_candidate_comparison.py')
+        self.assertEqual(argv[argv.index('--scenario-split')+1],'development')
+        self.assertEqual(argv[argv.index('--scenario-manifest')+1],str(lab.BANK))
 
     def test_external_output_is_rejected_before_launch(self):
         args=lab.parser().parse_args(['replay','--output',str(lab.REPO/'forbidden-output')])

@@ -7,7 +7,9 @@ Status: `DTR_R2_DYNAMIC_RETAINED`
 Primary Development environment: **self-built UE5 StreetLabV4**, per the user's
 2026-09-06 migration decision. Use `tools/run_obstacle_research.py`; CARLA is
 retained for historical evidence and explicitly needed supplementary checks.
-See [migration checks and remaining gaps](unreal/UE_PRIMARY_LAB_20260906.md).
+The default live bank now uses 10 Hz observations and measured conservative
+visual envelopes. See [laboratory completion checks](unreal/UE_LAB_ACCEPTANCE_20260906.md)
+and the preserved [initial migration record](unreal/UE_PRIMARY_LAB_20260906.md).
 
 ## Capability question
 
@@ -86,14 +88,18 @@ recaptured pixels do not restore the original raw-input comparison.
 
 1. **UE Development:** use fixed RGB-D replay for perception changes and V4
    closed loop for motion changes. The measured motion reference is DEPTH_ONLY;
-   candidate DTR remains optional after its no-incremental-gain result. The new
-   entrypoint completed 733 identical replay outputs, a paired live smoke and
-   six native known-distance depth checks. A single smoke is not a full suite.
-2. **Next useful check:** validate RGB/depth alignment and contact-proxy versus
-   visible-mesh agreement, then match algorithm cadence to the source and run
-   one discriminating baseline/challenger contrast. Report goal arrival,
-   contact, timeout and delay as well as risk events. Broaden scenarios when
-   the comparison exposes a coverage gap; do not assume added complexity wins.
+   candidate DTR remains an optional challenger. The new 10 Hz Development
+   bank completed 32 actual branches: both sets of 8 straight controls passed,
+   candidate depth succeeded 5/8 and candidate DTR 6/8, with no success
+   regression. The extra success was late crossing, with nine changed-action
+   frames. This is rerendered Development, not exact-pixel pairing or promotion.
+2. **Next useful research:** investigate the retained late-stop and obstructed-
+   bypass failures, and whether the late-crossing gain repeats under the same
+   declared envelope. Do not restore the old undersized proxy to improve scores.
+   Preserve conservative contact, goal, time and action-support reporting.
+   All 81 actual 10 Hz batch-prefix checks matched the incremental full state;
+   laboratory completion receipts are linked above. This task does not start
+   another algorithm run or enlarge the frozen comparison.
 3. **CARLA preservation:** park the pending dropout-window continuation and
    eleven-arm execution during the UE migration. Do not restore missing CARLA
    assets or recapture by default. Keep complete source, frozen method snapshots,

@@ -51,7 +51,7 @@ def main():
     output.mkdir(parents=True,exist_ok=args.resume)
     sources=['capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_action_risk.py',
              'street_scenarios.py','ue_dtr_replay.py','ue_incremental.py','ue_replay_cache.py','reuse_street_open_loop.py',
-             'street_process_lifecycle.py','ue_action_footprints.py']
+             'street_process_lifecycle.py','ue_action_footprints.py','visual_geometry.py']
     from ue_incremental import source_paths
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
               'dtr_source_closure':{str(path.relative_to(repo)):sha(path) for path in source_paths()},
@@ -62,8 +62,8 @@ def main():
     identity['prediction_engine']=args.prediction_engine
     identity['action_footprint_state']=args.action_footprint_state
     if args.scenario_manifest:
-        from scenario_bank import load_scenarios, validate_specs, read_manifest
-        read_manifest(args.scenario_manifest)
+        from street_bank_loader import load_scenarios
+        from scenario_bank import validate_specs
         catalog_file=output/'evaluator/catalog-definition.json'
         if args.resume:
             selected=json.loads(catalog_file.read_text(encoding='utf-8'))
@@ -74,6 +74,8 @@ def main():
             catalog_file.write_text(json.dumps(selected,indent=2,allow_nan=False),encoding='utf-8')
             shutil.copy2(args.scenario_manifest,catalog_file.parent/'scenario-bank.json')
         identity['sources']['scenario_bank.py']=sha(scripts/'scenario_bank.py')
+        for name in ('street_bank_loader.py','discriminating_bank.py'):
+            identity['sources'][name]=sha(scripts/name)
         identity['scenario_selection']={'manifest_path':str(args.scenario_manifest.resolve()),
             'manifest_sha256':sha(args.scenario_manifest),'split':args.scenario_split,
             'catalog_sha256':sha(catalog_file)}
