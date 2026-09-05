@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
-  "engine_version": "decision-v1",
-  "generated_at": "2026-08-31",
-  "source_fingerprint": "870a6d25ae2c6e6b2b2427f7ef4025b1750df2804880ce67ffc3ec82cc1613d8",
+  "engine_version": "decision-v2-research-workflow",
+  "generated_at": "2026-09-05",
+  "source_fingerprint": "d0d21122cf0125c11ee19f54a803b3d09e429d586373a2592f9abacc65c19e8c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 217,
-    "current_terminals": 29,
-    "run_associations": 215
+    "experiments": 232,
+    "current_terminals": 44,
+    "run_associations": 230
   },
   "failure_layers": [
     {
@@ -52,13 +52,13 @@
       ],
       "experiment": {
         "hypothesis": "当前故障主要由权威冲突或不可接受的真值访问造成，而不是下游模型能力不足。",
-        "baseline": "冻结当前输入契约和结果，不运行新模型。",
-        "single_change": "只移除冲突字段或换成具有明确公开/私有权限的来源。",
-        "cohort": "一个能够复现冲突的最小输入 manifest，加一个无冲突对照。",
+        "baseline": "保留原始输入契约和结果，比较可复现的冲突输入与无冲突对照。",
+        "single_change": "移除冲突字段或修正输入权限，检验原故障是否仍存在。",
+        "cohort": "一个可复现冲突的 Development manifest 和一个无冲突对照。",
         "primary_metric": "authority_violations=0 且原故障是否仍可复现",
         "stop_conditions": [
-          "发现任何 outcome/annotation/private-truth 泄漏",
-          "无法确定 truth authority"
+          "发生未授权的 truth/outcome 访问",
+          "无法区分预测输入与评价真值"
         ],
         "not_evaluable_conditions": [
           "缺少输入字段清单",
@@ -114,14 +114,13 @@
       ],
       "experiment": {
         "hypothesis": "故障由必要信息源缺失或覆盖不足造成。",
-        "baseline": "保持当前下游 matcher、阈值和 evaluator 完全冻结。",
-        "single_change": "只引入一个具有新增信息的来源或表示。",
-        "cohort": "新鲜的最小 Development cohort，并在 outcome 前冻结。",
+        "baseline": "保存当前来源与下游输出，比较最简单可用来源和现有方法。",
+        "single_change": "检验新增信息或表示是否补足任务机会；必要接口适配需说明贡献。",
+        "cohort": "覆盖来源缺失与存在的最小 Development 集；可披露复用已消费材料。",
         "primary_metric": "required_field_coverage 与 downstream structural_reachability",
         "stop_conditions": [
-          "新增来源没有提供独立信息",
-          "候选覆盖仍为零",
-          "需要调下游阈值才能产生信号"
+          "新增信息没有改善任务可达性，转为来源或表示诊断",
+          "隐瞒覆盖或分母变化"
         ],
         "not_evaluable_conditions": [
           "来源没有帧级对齐",
@@ -175,13 +174,13 @@
       ],
       "experiment": {
         "hypothesis": "故障由观测质量而不是身份、时序或决策层造成。",
-        "baseline": "冻结候选、时序状态、几何和 evaluator。",
-        "single_change": "只替换一种观测或感知表示。",
-        "cohort": "包含命中、缺失和混淆对照的最小新鲜 Development 集。",
+        "baseline": "保存当前感知输出及下游任务表现，保留可复核的同输入比较。",
+        "single_change": "检验一种感知改进假设；允许必要的 tracker/接口适配并核对整体贡献。",
+        "cohort": "包含命中、缺失和混淆的最小 Development 集，记录来源与复用状态。",
         "primary_metric": "观测覆盖变化及冻结下游的目标指标变化",
         "stop_conditions": [
-          "观测改善但冻结下游结构上不可达",
-          "需要同时改 tracker 或阈值"
+          "观测改善没有带来任务收益，检查瓶颈或停止该候选",
+          "无法重建前后比较条件"
         ],
         "not_evaluable_conditions": [
           "缺少逐帧 truth",
@@ -239,14 +238,13 @@
       ],
       "experiment": {
         "hypothesis": "候选已覆盖真目标，但身份信息不足导致错误绑定。",
-        "baseline": "冻结候选、几何、时序控制器和 evaluator。",
-        "single_change": "只增加一个身份信息机制或验证信号。",
-        "cohort": "至少包含真目标、近似干扰项和 absent 对照的最小新鲜集。",
+        "baseline": "当前候选选择与最简单身份基线；分别记录错目标、正确和 UNKNOWN。",
+        "single_change": "检验身份信息或证据承诺表示；必要的候选与验证协同修改应显式说明。",
+        "cohort": "包含真目标、近似干扰与可证明 absent 的 Development 对照；缺失项明确列出。",
         "primary_metric": "wrong_target_count 与 evaluable referent accuracy",
         "stop_conditions": [
-          "候选集合不含真目标",
-          "身份信号可由位置或中心偏置泄漏",
-          "需要改变候选分母"
+          "身份来源泄漏评价目标",
+          "隐瞒候选、错误或 UNKNOWN 分母变化"
         ],
         "not_evaluable_conditions": [
           "没有 exact-instance truth",
@@ -300,14 +298,13 @@
       ],
       "experiment": {
         "hypothesis": "单帧观测足够，但缺少有界时序状态导致 dropout 后功能失效。",
-        "baseline": "冻结逐帧观测、候选、几何和 evaluator，使用无状态基线。",
-        "single_change": "只加入有界 temporal belief、gap mask 或重捕获状态。",
-        "cohort": "包含短遮挡、长遮挡、身份切换和 absent 对照的最小新鲜序列。",
+        "baseline": "可复现的当前时序方法与无状态或固定动作基线。",
+        "single_change": "检验有界状态、观测动作与重捕获的一个联合假设，按需要拆清贡献。",
+        "cohort": "含观察缺失、重现、身份切换及 absent 的有序 Development 序列。",
         "primary_metric": "continuity/reacquisition 改善，同时 wrong_lock 与 false_commit 不上升",
         "stop_conditions": [
-          "使用未来帧",
-          "把 imputed 当 observed",
-          "长时无观测仍强制存在"
+          "使用预测时不可见的未来帧",
+          "把 imputed 当 observed 或隐藏 UNKNOWN"
         ],
         "not_evaluable_conditions": [
           "没有可靠时间戳",
@@ -372,14 +369,13 @@
       ],
       "experiment": {
         "hypothesis": "静态位置或单帧尺度不足，故障需要因果时空运动信息。",
-        "baseline": "冻结目标观测、路线、matcher、阈值和生命周期。",
-        "single_change": "只增加一种因果 spatiotemporal occupancy/flow/closing 表示。",
-        "cohort": "包含接近、远离、横穿和静止对照的最小新鲜序列。",
+        "baseline": "当前风险方法和同输入预算的简单运动基线，保持可复核的事件比较。",
+        "single_change": "检验时空占据或运动表示如何改善风险事件；允许有依据的下游适配。",
+        "cohort": "覆盖接近、远离、横穿、静止与缺测的 Development 序列。",
         "primary_metric": "frozen downstream structural reachability 与 named event recall/false alerts",
         "stop_conditions": [
-          "新增信号仍无法越过冻结 matcher 的必要条件",
-          "需要降低 closing threshold 或扩 tube 才生效",
-          "使用未来帧"
+          "使用未来帧或不可见的评价真值",
+          "新增复杂度没有任务收益，返回归因或简化"
         ],
         "not_evaluable_conditions": [
           "只有静态 occupancy",
@@ -436,14 +432,13 @@
       ],
       "experiment": {
         "hypothesis": "上游信号可用，但事件状态机把它转成了碎片化、过早或过晚决策。",
-        "baseline": "冻结上游逐帧输出和 evaluator，重放当前生命周期。",
-        "single_change": "只改变一个预注册的生命周期机制，而不是结果后调阈值。",
-        "cohort": "新鲜或未消费的事件级 replay，包含正、负和 UNKNOWN 段。",
+        "baseline": "保存当前事件策略与逐帧输入，比较简单策略的收益、误报和碎片化。",
+        "single_change": "检验事件策略假设；协同预测修改需另报贡献，评价条件变更需另记版本。",
+        "cohort": "有事件级 truth、触发、解除和 UNKNOWN 的 Development replay，可披露复用。",
         "primary_metric": "event recall、false-alert duration、onset/release delay 与 fragmentation",
         "stop_conditions": [
-          "需要结果后选择阈值",
-          "把 UNKNOWN 当 CLEAR",
-          "同时改变上游预测"
+          "把 UNKNOWN 计为 CLEAR",
+          "隐瞒预测、评价条件或分母的改变"
         ],
         "not_evaluable_conditions": [
           "没有事件级 truth",
@@ -495,14 +490,13 @@
       ],
       "experiment": {
         "hypothesis": "实例绑定已成立，故障来自父对象表示没有提供任务所需的细粒度功能部件。",
-        "baseline": "冻结 exact-instance 候选、视图、几何、下游 handoff 和 evaluator，使用父对象框或现有部件表示。",
-        "single_change": "只加入一种 task-conditioned functional-element 表示。",
-        "cohort": "包含真功能部件、相邻非功能部件、同类实例和 absent 对照的最小新鲜集。",
+        "baseline": "当前功能部件方法与父对象框基线，检查真目标机会及最终任务表现。",
+        "single_change": "检验任务条件化功能表示，说明必要身份/几何适配带来的贡献。",
+        "cohort": "含真功能部件、相邻非功能部件、同类实例及 absent 的 Development 对照。",
         "primary_metric": "functional_part_hit_rate、wrong_part_count 与 parent_box_false_handoff",
         "stop_conditions": [
-          "真实例未进入候选",
-          "需要改变身份分母或 outcome 后调阈值",
-          "功能标注来自模型自身输出"
+          "以模型自身输出冒充独立功能真值",
+          "隐瞒身份或部件评价分母变化"
         ],
         "not_evaluable_conditions": [
           "没有独立功能部件 truth",
@@ -553,14 +547,13 @@
       ],
       "experiment": {
         "hypothesis": "功能部件正确，但 box center 或 mask centroid 不是执行目标动作的有效点。",
-        "baseline": "冻结实例、功能部件、深度、下游与 evaluator，使用当前动作点规则。",
-        "single_change": "只替换为一种 actionability/keypoint/contact-region 表示。",
-        "cohort": "包含有效动作点、不可动点、遮挡点和 absent 对照的最小新鲜集。",
+        "baseline": "当前动作点与简单中心/几何基线，分别记录上游机会和有效落点。",
+        "single_change": "检验 actionability、接触区或动作点假设，并说明必要深度/接口适配。",
+        "cohort": "含有效点、不可动作点、遮挡及 absent 的 Development 对照。",
         "primary_metric": "point_in_actionable_region、3d_valid_rate 与 false_ready_count",
         "stop_conditions": [
-          "功能部件本身错误",
-          "需要同步修改深度或完成阈值",
-          "把 proposal 分数当 outcome truth"
+          "以 proposal 分数替代 outcome truth",
+          "结果无法区分上游缺失与动作点误差"
         ],
         "not_evaluable_conditions": [
           "没有动作点或接触区 truth",
@@ -619,14 +612,13 @@
       ],
       "experiment": {
         "hypothesis": "目标定位成立，但缺少 interaction-ready verifier 导致在不可用站位过早交接。",
-        "baseline": "冻结目标、动作点、导航轨迹和 completion evaluator，使用距离或可见性基线。",
-        "single_change": "只加入一个预注册的 interaction-ready predicate 或站位表示。",
-        "cohort": "包含近但不可达、可达但遮挡、净空不足、状态未知和正确站位的最小新鲜集。",
+        "baseline": "当前交互就绪策略与距离/可见性基线，明确未就绪与未知对照。",
+        "single_change": "检验就绪条件与站位表示；必要导航接口改动按其实际贡献比较。",
+        "cohort": "含近但不可达、遮挡、净空不足、未知及正确站位的 Development 对照。",
         "primary_metric": "false_ready=0、valid_ready_coverage 与 NOT_EVALUABLE denominator",
         "stop_conditions": [
           "把接近或可见直接当完成",
-          "缺失 predicate 被 VLM 或默认值补成成功",
-          "同时修改导航或 completion 阈值"
+          "以缺省值或模型猜测补成成功"
         ],
         "not_evaluable_conditions": [
           "缺少用户/agent 几何",
@@ -679,13 +671,13 @@
       ],
       "experiment": {
         "hypothesis": "上游定位成立，但缺少显式 handoff/completion contract 导致过早完成。",
-        "baseline": "冻结 referent、几何和导航输出。",
-        "single_change": "只增加显式 handoff receipt 或完成判定器。",
-        "cohort": "包含可见未到达、到达未完成、正确完成和 absent 对照的最小集。",
+        "baseline": "保存当前 referent、几何与导航输出，对照显式完成证据。",
+        "single_change": "检验完成回执或 handoff 判断如何改变任务结果。",
+        "cohort": "含可见未到达、到达未完成、正确完成与 absent 的最小 Development 对照。",
         "primary_metric": "false_completion=0 且 valid_completion coverage",
         "stop_conditions": [
-          "用 bbox、距离或 nearest-free-point 代替 arrival truth",
-          "没有独立完成回执"
+          "以 bbox、距离或 nearest-free-point 代替独立完成真值",
+          "无法区分缺少完成证据与真实未完成"
         ],
         "not_evaluable_conditions": [
           "没有完成事件 truth",
@@ -743,14 +735,13 @@
       ],
       "experiment": {
         "hypothesis": "当前结果不能支持决策，因为分母、协议或证据权限不成立。",
-        "baseline": "停止新增模型调用，保留现有结果原样。",
-        "single_change": "只修复一个评估合同，并使用新版本或未打开的合法 cohort。",
-        "cohort": "最小 fresh/blind cohort，或纯审计而不重新执行 consumed cohort。",
+        "baseline": "保留原结果和评价版本，先审计分母、机会和比较条件。",
+        "single_change": "检验一项评价合同修正是否使问题可判断；新的标准另记版本，不能追认旧实验通过。",
+        "cohort": "探索可用已消费输出做披露的配对诊断；确认另选满足声明独立性的未开封材料。",
         "primary_metric": "denominator_valid=1、authority_conflict=0、decision_evaluable=1",
         "stop_conditions": [
-          "需要重开 consumed cohort",
-          "需要结果后改门槛",
-          "无法恢复冻结输入/输出 identity"
+          "改写旧结果或恢复 consumed fresh authority",
+          "无法恢复原始输入、输出与评价身份"
         ],
         "not_evaluable_conditions": [
           "分母未知",
@@ -811,13 +802,13 @@
       ],
       "experiment": {
         "hypothesis": "失败发生在运行机制或资源层，科学假设尚未被执行。",
-        "baseline": "不消耗正式 seed、test 或外部预算。",
-        "single_change": "只修复一个机械故障并运行 formal-shaped smoke。",
-        "cohort": "零科学样本的代理 payload 或最小 smoke input。",
+        "baseline": "当前运行路径的完成率、耗时和资源占用；保留输入输出一致性基线。",
+        "single_change": "修复观察到的工程故障或瓶颈，用 task-owned replay 检验正确性与恢复能力。",
+        "cohort": "不含受保护结果的代表性 smoke/replay 输入；在较长运行前检查恢复契约。",
         "primary_metric": "transport/decode/process 完整通过且 scientific_consumption=0",
         "stop_conditions": [
-          "会消耗正式 cohort 或预算",
-          "版本/凭证/输出 identity 不可固定"
+          "会访问受保护 outcome 或越过既有预算",
+          "无法验证输入、输出或运行身份"
         ],
         "not_evaluable_conditions": [
           "缺少原始错误",
@@ -887,11 +878,11 @@
     ]
   },
   "global_guardrails": [
-    "先定位故障层，再选择机制；不得用参数扫描代替故障归因。",
-    "已消费 cohort 不能通过调阈值、换 seed、重采样或融合重新获得 fresh authority。",
+    "从能力问题或已观察故障提出一个可解释假设；必要协同改动允许，按决策需要核对贡献。",
+    "已消费材料可作披露的 Development 诊断，不能重新获得 fresh authority 或改写旧结论。",
     "UNKNOWN/NOT_EVALUABLE 不是负结果，也不得折算为 CLEAR。",
-    "最小实验只改变一个信息源、表示或机制，冻结下游接口和 evaluator。",
-    "生成器不得跨越 evidence claim ceiling：跑通、存在信号、功能门槛、自然分布、产品和安全是不同层。"
+    "探索保持前后比较可复核；确认在 outcome 前固定方法与评价；工程恢复遵守原运行契约。",
+    "按任务效果、错误、覆盖和必要成本决定继续、修改、整合或停止；不同来源保持实际 claim ceiling。"
   ],
   "mechanisms": [
     {
@@ -17649,6 +17640,537 @@
       "search_text": "terminal-msls-router-development-gate-not-met goal-copilot-p0 MSLS_SOURCE_ADMITTED_ROUTER_DEVELOPMENT_GATE_NOT_MET_TEST_UNOPENED Frame-level MSLS GPS was admitted, but the frozen router underperformed static fusion and collapsed toward GPS; source admission did not establish routing benefit. A new representation or fresh cohort; do not rescue the consumed router cohort. GPS-weight tuning seed sweep fusion sweep opening test"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3dstreetview-center-target-lock-development",
+      "status": "positive",
+      "question": "On 426 endpoint-prefix-disjoint real 3D Street View pairs, the frozen center-scale DINOv2 score improved AUROC 0.949859 to 0.984860 and 32-anchor Top-1 0.843750 to 1.000000.",
+      "baseline": null,
+      "change": "An unchanged provider-disjoint exact-point transfer or independent portal-class and ownership truth around the verified point.",
+      "primary_metric": null,
+      "decision": "L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "An unchanged provider-disjoint exact-point transfer or independent portal-class and ownership truth around the verified point.",
+      "forbidden_repeats": [
+        "changing crop scales or score weights on the consumed split",
+        "repartitioning endpoint groups",
+        "calling point truth a door or named entrance",
+        "claiming access, arrival, handoff, user benefit, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json"
+      ],
+      "association_id": "l10-3dstreetview-center-target-lock-2026-08-31",
+      "search_text": "terminal-l10-3dstreetview-center-target-lock-development ten-meter-copilot L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET On 426 endpoint-prefix-disjoint real 3D Street View pairs, the frozen center-scale DINOv2 score improved AUROC 0.949859 to 0.984860 and 32-anchor Top-1 0.843750 to 1.000000. An unchanged provider-disjoint exact-point transfer or independent portal-class and ownership truth around the verified point. changing crop scales or score weights on the consumed split repartitioning endpoint groups calling point truth a door or named entrance claiming access, arrival, handoff, user benefit, or safety"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-center-target-door-transfer-gate-not-met",
+      "status": "negative",
+      "question": "Six consumed SceneNN truth proposals were severe edge slivers; the unchanged center-scale score reached only 2/6 Top-1, AUROC 0.444444, and minimum margin -0.221899.",
+      "baseline": null,
+      "change": "A new provider cohort whose target surface is fully visible under a frozen geometry or provider-mask admission rule before RGB.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new provider cohort whose target surface is fully visible under a frozen geometry or provider-mask admission rule before RGB.",
+      "forbidden_repeats": [
+        "tuning the six consumed crops",
+        "loosening visibility after RGB",
+        "substituting SceneNN scenes or frames",
+        "treating a truth crop as door detection",
+        "claiming a general cross-provider failure"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json"
+      ],
+      "association_id": "l10-scenenn-center-target-door-retrieval-2026-08-31",
+      "search_text": "terminal-l10-scenenn-center-target-door-transfer-gate-not-met ten-meter-copilot L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET Six consumed SceneNN truth proposals were severe edge slivers; the unchanged center-scale score reached only 2/6 Top-1, AUROC 0.444444, and minimum margin -0.221899. A new provider cohort whose target surface is fully visible under a frozen geometry or provider-mask admission rule before RGB. tuning the six consumed crops loosening visibility after RGB substituting SceneNN scenes or frames treating a truth crop as door detection claiming a general cross-provider failure"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-center-target-pairwise-gate-not-met",
+      "status": "negative",
+      "question": "On three fully visible truth-proposed stable 3RScan doors, global cosine reached 5/6 while the center-scale score reached 4/6 because two sibling doors collided.",
+      "baseline": null,
+      "change": "A frozen composition that supplies independent roster structure or new context, then proves incremental value on physically target-disjoint evidence.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A frozen composition that supplies independent roster structure or new context, then proves incremental value on physically target-disjoint evidence.",
+      "forbidden_repeats": [
+        "tuning center scales or 0.25/0.75 weights",
+        "resampling the three consumed doors",
+        "using scan identity to rerank",
+        "promoting independent pairwise scores to open-set identity"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json"
+      ],
+      "association_id": "l10-3rscan-center-target-door-retrieval-2026-08-31",
+      "search_text": "terminal-l10-3rscan-center-target-pairwise-gate-not-met ten-meter-copilot L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET On three fully visible truth-proposed stable 3RScan doors, global cosine reached 5/6 while the center-scale score reached 4/6 because two sibling doors collided. A frozen composition that supplies independent roster structure or new context, then proves incremental value on physically target-disjoint evidence. tuning center scales or 0.25/0.75 weights resampling the three consumed doors using scan identity to rerank promoting independent pairwise scores to open-set identity"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-roster-assignment-target-disjoint-development",
+      "status": "positive",
+      "question": "A parameter-free one-to-one assignment repaired the consumed center-scale matrix from 4/6 to an equivalent 6/6, then achieved 3/3 identity with 0.419960 assignment margin on three physically target-disjoint 3RScan doorframes.",
+      "baseline": null,
+      "change": "A provider-disjoint independently labelled named-entrance roster with extra or absent candidates, or another authority that justifies a complete one-to-one roster.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A provider-disjoint independently labelled named-entrance roster with extra or absent candidates, or another authority that justifies a complete one-to-one roster.",
+      "forbidden_repeats": [
+        "tuning assignment or pair scores on consumed targets",
+        "reusing prior physical reference targets",
+        "assuming one-to-one completeness without external authority",
+        "calling closed-roster identity open-set detection",
+        "claiming ownership, access, arrival, or handoff"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json"
+      ],
+      "association_id": "l10-3rscan-roster-assignment-confirmation-2026-08-31",
+      "search_text": "terminal-l10-3rscan-roster-assignment-target-disjoint-development ten-meter-copilot L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET A parameter-free one-to-one assignment repaired the consumed center-scale matrix from 4/6 to an equivalent 6/6, then achieved 3/3 identity with 0.419960 assignment margin on three physically target-disjoint 3RScan doorframes. A provider-disjoint independently labelled named-entrance roster with extra or absent candidates, or another authority that justifies a complete one-to-one roster. tuning assignment or pair scores on consumed targets reusing prior physical reference targets assuming one-to-one completeness without external authority calling closed-roster identity open-set detection claiming ownership, access, arrival, or handoff"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-open-roster-appearance-zero-assignment-gate-not-met",
+      "status": "negative",
+      "question": "On four new physical targets under closed, extra, missing, and balanced missing-plus-extra rosters, multiview appearance reciprocal zero assignment retained only 4/12 true matches, emitted 5 false matches, missed 8, and reached F1 0.380952.",
+      "baseline": null,
+      "change": "An independent structural or authority-bearing information source that can establish absolute correspondence support rather than another relative appearance rank rule.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "An independent structural or authority-bearing information source that can establish absolute correspondence support rather than another relative appearance rank rule.",
+      "forbidden_repeats": [
+        "tuning center scales or score weights",
+        "adding a dustbin threshold on the consumed matrix",
+        "changing the four consumed targets or scenarios",
+        "claiming appearance-only open-set identity",
+        "using evaluator target IDs in the matcher"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json"
+      ],
+      "association_id": "l10-3rscan-open-roster-zero-assignment-2026-08-31",
+      "search_text": "terminal-l10-3rscan-open-roster-appearance-zero-assignment-gate-not-met ten-meter-copilot L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET On four new physical targets under closed, extra, missing, and balanced missing-plus-extra rosters, multiview appearance reciprocal zero assignment retained only 4/12 true matches, emitted 5 false matches, missed 8, and reached F1 0.380952. An independent structural or authority-bearing information source that can establish absolute correspondence support rather than another relative appearance rank rule. tuning center scales or score weights adding a dustbin threshold on the consumed matrix changing the four consumed targets or scenarios claiming appearance-only open-set identity using evaluator target IDs in the matcher"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-registered-surface-zero-assignment-gate-not-met",
+      "status": "negative",
+      "question": "Registered surface distance recovered all 12 true correspondences on four fresh same-family targets, but relative reciprocal ranking still emitted one adjacent doorframe-to-door match in the balanced missing-plus-extra roster; F1 stayed 0.96 and exact zero assignment was 3/4 scenarios.",
+      "baseline": null,
+      "change": "A predeclared external registration witness or other absolute support authority, followed by a fresh cohort where it proves incremental rejection beyond rank-only surface matching.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A predeclared external registration witness or other absolute support authority, followed by a fresh cohort where it proves incremental rejection beyond rank-only surface matching.",
+      "forbidden_repeats": [
+        "tuning a distance threshold on the consumed surfaces",
+        "reselecting targets or the balanced-swap construction",
+        "calling nearest registered surface an existence proof",
+        "using semantic labels after outcome to veto the observed false pair",
+        "claiming raw-image or provider-independent authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json"
+      ],
+      "association_id": "l10-3rscan-registered-surface-zero-assignment-2026-08-31",
+      "search_text": "terminal-l10-3rscan-registered-surface-zero-assignment-gate-not-met ten-meter-copilot L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET Registered surface distance recovered all 12 true correspondences on four fresh same-family targets, but relative reciprocal ranking still emitted one adjacent doorframe-to-door match in the balanced missing-plus-extra roster; F1 stayed 0.96 and exact zero assignment was 3/4 scenarios. A predeclared external registration witness or other absolute support authority, followed by a fresh cohort where it proves incremental rejection beyond rank-only surface matching. tuning a distance threshold on the consumed surfaces reselecting targets or the balanced-swap construction calling nearest registered surface an existence proof using semantic labels after outcome to veto the observed false pair claiming raw-image or provider-independent authority"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-witness-calibrated-zero-assignment-development",
+      "status": "positive",
+      "question": "Two predeclared registration witnesses set a 0.038756 m surface-distance ceiling on four fresh physical targets. Witness-calibrated zero assignment reached 12/12 true, 0 false, 0 missed, exact unmatched sets in 4/4 scenarios, and F1 1.0 versus complete-assignment F1 0.96.",
+      "baseline": null,
+      "change": "A fresh scan-family- or provider-disjoint roster with same-class missing/extra candidates where the witness ceiling is decision-changing relative to rank-only surface matching.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh scan-family- or provider-disjoint roster with same-class missing/extra candidates where the witness ceiling is decision-changing relative to rank-only surface matching.",
+      "forbidden_repeats": [
+        "claiming witness incremental value from this cohort where rank-only also reached F1 1.0",
+        "adding slack or a multiplier to the two-witness ceiling",
+        "reusing the eight consumed witness/evaluated surfaces",
+        "claiming statistical coverage from two witnesses",
+        "promoting privileged registered geometry to raw-phone authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json"
+      ],
+      "association_id": "l10-3rscan-witness-calibrated-zero-assignment-2026-08-31",
+      "search_text": "terminal-l10-3rscan-witness-calibrated-zero-assignment-development ten-meter-copilot L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET Two predeclared registration witnesses set a 0.038756 m surface-distance ceiling on four fresh physical targets. Witness-calibrated zero assignment reached 12/12 true, 0 false, 0 missed, exact unmatched sets in 4/4 scenarios, and F1 1.0 versus complete-assignment F1 0.96. A fresh scan-family- or provider-disjoint roster with same-class missing/extra candidates where the witness ceiling is decision-changing relative to rank-only surface matching. claiming witness incremental value from this cohort where rank-only also reached F1 1.0 adding slack or a multiplier to the two-witness ceiling reusing the eight consumed witness/evaluated surfaces claiming statistical coverage from two witnesses promoting privileged registered geometry to raw-phone authority"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-scan-family-disjoint-witness-incremental-gate-not-met",
+      "status": "negative",
+      "question": "On a new scan family with six same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only surface matching reached TP=64, FP=2, FN=0 and F1 0.984615. The unchanged two-witness raw-distance ceiling removed both false matches but reduced TP to 48, added 16 misses, and lowered F1 to 0.857143.",
+      "baseline": null,
+      "change": "A genuinely new absolute support source, such as parameter-free registered extent overlap, evaluated on fresh physical targets without modifying the consumed raw-distance ceiling.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A genuinely new absolute support source, such as parameter-free registered extent overlap, evaluated on fresh physical targets without modifying the consumed raw-distance ceiling.",
+      "forbidden_repeats": [
+        "adding slack or a multiplier to the consumed 0.376774 m ceiling",
+        "changing the two witnesses or six doors",
+        "dropping failed balanced swaps",
+        "selecting a raw-distance statistic after outcome",
+        "claiming two witnesses generalize registration residuals across a scan family",
+        "promoting privileged registered geometry to raw-phone authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json"
+      ],
+      "association_id": "l10-3rscan-scan-family-disjoint-witness-incremental-2026-08-31",
+      "search_text": "terminal-l10-3rscan-scan-family-disjoint-witness-incremental-gate-not-met ten-meter-copilot L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET On a new scan family with six same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only surface matching reached TP=64, FP=2, FN=0 and F1 0.984615. The unchanged two-witness raw-distance ceiling removed both false matches but reduced TP to 48, added 16 misses, and lowered F1 to 0.857143. A genuinely new absolute support source, such as parameter-free registered extent overlap, evaluated on fresh physical targets without modifying the consumed raw-distance ceiling. adding slack or a multiplier to the consumed 0.376774 m ceiling changing the two witnesses or six doors dropping failed balanced swaps selecting a raw-distance statistic after outcome claiming two witnesses generalize registration residuals across a scan family promoting privileged registered geometry to raw-phone authority"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-registered-extent-support-zero-assignment-development",
+      "status": "positive",
+      "question": "On six fresh same-class doorframes and all thirty ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=136, FP=4, FN=0 and F1 0.985507. Parameter-free positive registered planar extent overlap retained all 136 true matches, removed all four false matches, reached F1 1.0, and recovered exact unmatched sets in 33/33 scenarios.",
+      "baseline": null,
+      "change": "An unchanged scan-family- or provider-disjoint same-class roster, then an independently justified phone-side geometric support source before any raw-device or portal-authority promotion.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "An unchanged scan-family- or provider-disjoint same-class roster, then an independently justified phone-side geometric support source before any raw-device or portal-authority promotion.",
+      "forbidden_repeats": [
+        "setting a positive IoU magnitude threshold on the consumed cohort",
+        "reselecting the six doorframes or thirty swaps",
+        "reusing consumed physical targets for confirmation",
+        "calling projected overlap portal ownership, access, arrival, or handoff",
+        "promoting provider surfaces or rigid transforms to phone-side evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json"
+      ],
+      "association_id": "l10-3rscan-registered-extent-support-zero-assignment-2026-08-31",
+      "search_text": "terminal-l10-3rscan-registered-extent-support-zero-assignment-development ten-meter-copilot L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET On six fresh same-class doorframes and all thirty ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=136, FP=4, FN=0 and F1 0.985507. Parameter-free positive registered planar extent overlap retained all 136 true matches, removed all four false matches, reached F1 1.0, and recovered exact unmatched sets in 33/33 scenarios. An unchanged scan-family- or provider-disjoint same-class roster, then an independently justified phone-side geometric support source before any raw-device or portal-authority promotion. setting a positive IoU magnitude threshold on the consumed cohort reselecting the six doorframes or thirty swaps reusing consumed physical targets for confirmation calling projected overlap portal ownership, access, arrival, or handoff promoting provider surfaces or rigid transforms to phone-side evidence"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-3rscan-extent-support-scan-family-disjoint-development",
+      "status": "positive",
+      "question": "On a newly materialized scan family with four same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=34, FP=2, FN=0 and F1 0.971429. The unchanged positive registered planar-extent support rule retained all 34 true matches, removed both false matches, reached F1 1.0, and recovered exact unmatched sets in 15/15 scenarios.",
+      "baseline": null,
+      "change": "A provider-disjoint confirmation or an independently justified phone-side source that can supply comparable target-conditioned planar support without privileged complete surfaces and registration.",
+      "primary_metric": null,
+      "decision": "L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A provider-disjoint confirmation or an independently justified phone-side source that can supply comparable target-conditioned planar support without privileged complete surfaces and registration.",
+      "forbidden_repeats": [
+        "adding an IoU magnitude threshold",
+        "changing the portal frame or support predicate",
+        "reselecting the four doors or twelve swaps",
+        "reusing consumed scan families for another confirmation claim",
+        "calling registered overlap ownership, access, arrival, or handoff",
+        "promoting provider geometry to raw-phone evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json"
+      ],
+      "association_id": "l10-3rscan-extent-support-scan-family-confirmation-2026-08-31",
+      "search_text": "terminal-l10-3rscan-extent-support-scan-family-disjoint-development ten-meter-copilot L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET On a newly materialized scan family with four same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=34, FP=2, FN=0 and F1 0.971429. The unchanged positive registered planar-extent support rule retained all 34 true matches, removed both false matches, reached F1 1.0, and recovered exact unmatched sets in 15/15 scenarios. A provider-disjoint confirmation or an independently justified phone-side source that can supply comparable target-conditioned planar support without privileged complete surfaces and registration. adding an IoU magnitude threshold changing the portal frame or support predicate reselecting the four doors or twelve swaps reusing consumed scan families for another confirmation claim calling registered overlap ownership, access, arrival, or handoff promoting provider geometry to raw-phone evidence"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-single-frame-observed-extent-support-not-evaluable",
+      "status": "not_evaluable",
+      "question": "SceneNN scene 096 supplied four provider-labeled doors and 8/8 frozen synchronized RGB-D frames, but the preregistered single-frame carrier stopped before scoring: two query observations retained only 159 and 120 depth-consistent target points, below the fixed 256-point minimum. Six other observations supplied 927 to 10,971 points before the 4,096 cap.",
+      "baseline": null,
+      "change": "A structurally different registered temporal-depth carrier that accumulates a preregistered local frame window, or a fresh provider/phone source with sufficient target-conditioned planar observations. The consumed single-frame minimum and tolerance may not be tuned.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A structurally different registered temporal-depth carrier that accumulates a preregistered local frame window, or a fresh provider/phone source with sufficient target-conditioned planar observations. The consumed single-frame minimum and tolerance may not be tuned.",
+      "forbidden_repeats": [
+        "lowering the consumed 256-point minimum",
+        "increasing the consumed 0.08 m depth-consistency tolerance",
+        "replacing either sparse query frame",
+        "dropping SO01 or SO04",
+        "evaluating only the six passing observations",
+        "calling missing carrier support an extent-support algorithm failure"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json"
+      ],
+      "association_id": "l10-scenenn-observed-extent-support-provider-disjoint-2026-08-31",
+      "search_text": "terminal-l10-scenenn-single-frame-observed-extent-support-not-evaluable ten-meter-copilot L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT SceneNN scene 096 supplied four provider-labeled doors and 8/8 frozen synchronized RGB-D frames, but the preregistered single-frame carrier stopped before scoring: two query observations retained only 159 and 120 depth-consistent target points, below the fixed 256-point minimum. Six other observations supplied 927 to 10,971 points before the 4,096 cap. A structurally different registered temporal-depth carrier that accumulates a preregistered local frame window, or a fresh provider/phone source with sufficient target-conditioned planar observations. The consumed single-frame minimum and tolerance may not be tuned. lowering the consumed 256-point minimum increasing the consumed 0.08 m depth-consistency tolerance replacing either sparse query frame dropping SO01 or SO04 evaluating only the six passing observations calling missing carrier support an extent-support algorithm failure"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-temporal-fused-extent-support-posthoc-negative",
+      "status": "negative",
+      "question": "The frozen three-frame registered-depth carrier made all eight SceneNN observations evaluable, including the previously sparse queries at 2,710 and 931 fused points. Rank-only matching reached TP=34, FP=3, FN=0 and F1 0.957746, but unchanged strictly positive convex-hull intersection lost nine true matches because one true pair had zero observed overlap; the support-gated result fell to TP=25, FP=2, FN=9, F1 0.819672 and 6/15 exact scenarios.",
+      "baseline": null,
+      "change": "A structurally different partial-observation support mechanism independently motivated by partial point-cloud evidence, followed by fresh scene/provider confirmation before any generalization claim.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A structurally different partial-observation support mechanism independently motivated by partial point-cloud evidence, followed by fresh scene/provider confirmation before any generalization claim.",
+      "forbidden_repeats": [
+        "adding a positive IoU magnitude threshold to the consumed scene",
+        "changing the frozen three-frame offsets, 0.08 m tolerance, 256-point minimum, or 4,096-point caps",
+        "dropping the zero-overlap true pair",
+        "reselecting targets, anchors, or scenarios",
+        "calling temporal fused provider geometry raw-phone evidence",
+        "calling observed-surface support ownership, access, traversability, arrival, or handoff"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_transport_repair_v1.json"
+      ],
+      "association_id": "l10-scenenn-temporal-fused-extent-support-posthoc-2026-08-31",
+      "search_text": "terminal-l10-scenenn-temporal-fused-extent-support-posthoc-negative ten-meter-copilot L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET The frozen three-frame registered-depth carrier made all eight SceneNN observations evaluable, including the previously sparse queries at 2,710 and 931 fused points. Rank-only matching reached TP=34, FP=3, FN=0 and F1 0.957746, but unchanged strictly positive convex-hull intersection lost nine true matches because one true pair had zero observed overlap; the support-gated result fell to TP=25, FP=2, FN=9, F1 0.819672 and 6/15 exact scenarios. A structurally different partial-observation support mechanism independently motivated by partial point-cloud evidence, followed by fresh scene/provider confirmation before any generalization claim. adding a positive IoU magnitude threshold to the consumed scene changing the frozen three-frame offsets, 0.08 m tolerance, 256-point minimum, or 4,096-point caps dropping the zero-overlap true pair reselecting targets, anchors, or scenarios calling temporal fused provider geometry raw-phone evidence calling observed-surface support ownership, access, traversability, arrival, or handoff"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
+      "status": "negative",
+      "question": "A threshold-free intersection of geometric reciprocal matches with saturation-weighted Hue reciprocal matches removed all three geometry false positives, but Hue was not instance-discriminative: pairwise similarities clustered from about 0.90 to 0.98, Hue-only reached TP=2 FP=23 FN=32, and consensus reached TP=2 FP=0 FN=32, F1 0.111111 and 0/15 exact scenarios versus geometry F1 0.957746.",
+      "baseline": null,
+      "change": "A local texture or learned cross-view appearance representation that can express more than global color mass, evaluated first as a separate challenger and then on fresh scenes before any generalization claim.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_protocol_v1.json",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A local texture or learned cross-view appearance representation that can express more than global color mass, evaluated first as a separate challenger and then on fresh scenes before any generalization claim.",
+      "forbidden_repeats": [
+        "changing the consumed Hue bin count",
+        "adding a Hue similarity threshold or fitted geometry-color weight",
+        "switching color spaces after inspecting failed pairs",
+        "dropping any of the four targets or fifteen scenarios",
+        "calling global color agreement instance identity",
+        "promoting privileged target masks to raw-phone perception"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"
+      ],
+      "association_id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-2026-08-31",
+      "search_text": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative ten-meter-copilot L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET A threshold-free intersection of geometric reciprocal matches with saturation-weighted Hue reciprocal matches removed all three geometry false positives, but Hue was not instance-discriminative: pairwise similarities clustered from about 0.90 to 0.98, Hue-only reached TP=2 FP=23 FN=32, and consensus reached TP=2 FP=0 FN=32, F1 0.111111 and 0/15 exact scenarios versus geometry F1 0.957746. A local texture or learned cross-view appearance representation that can express more than global color mass, evaluated first as a separate challenger and then on fresh scenes before any generalization claim. changing the consumed Hue bin count adding a Hue similarity threshold or fitted geometry-color weight switching color spaces after inspecting failed pairs dropping any of the four targets or fifteen scenarios calling global color agreement instance identity promoting privileged target masks to raw-phone perception"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-negative",
+      "status": "negative",
+      "question": "Frozen DINOv2-S foreground feature averaging over all exact three-frame target masks improved on global Hue but remained view-dominated: FFA-only reached TP=7 FP=21 FN=27, while intersection with geometry reached TP=7 FP=1 FN=27, F1 0.333333 and 0/15 exact scenarios versus geometry TP=34 FP=3 FN=0, F1 0.957746 and 12/15 exact.",
+      "baseline": null,
+      "change": "A representation explicitly trained or constructed for same physical instance across severe partial-view changes, evaluated as a non-authoritative challenger on fresh targets with an explicit NONE mechanism; generic frozen FFA must not veto the retained geometry core.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_protocol_v1.json",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A representation explicitly trained or constructed for same physical instance across severe partial-view changes, evaluated as a non-authoritative challenger on fresh targets with an explicit NONE mechanism; generic frozen FFA must not veto the retained geometry core.",
+      "forbidden_repeats": [
+        "changing DINO layers, crop geometry, mask pooling, or view aggregation on the consumed cohort",
+        "fine-tuning or fitting an adapter on the consumed four doors",
+        "adding an appearance threshold or geometry-appearance weight after outcome",
+        "dropping any failed true pair",
+        "calling truth-mask FFA raw-phone identity evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json"
+      ],
+      "association_id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-2026-08-31",
+      "search_text": "terminal-l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-negative ten-meter-copilot L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET Frozen DINOv2-S foreground feature averaging over all exact three-frame target masks improved on global Hue but remained view-dominated: FFA-only reached TP=7 FP=21 FN=27, while intersection with geometry reached TP=7 FP=1 FN=27, F1 0.333333 and 0/15 exact scenarios versus geometry TP=34 FP=3 FN=0, F1 0.957746 and 12/15 exact. A representation explicitly trained or constructed for same physical instance across severe partial-view changes, evaluated as a non-authoritative challenger on fresh targets with an explicit NONE mechanism; generic frozen FFA must not veto the retained geometry core. changing DINO layers, crop geometry, mask pooling, or view aggregation on the consumed cohort fine-tuning or fitting an adapter on the consumed four doors adding an appearance threshold or geometry-appearance weight after outcome dropping any failed true pair calling truth-mask FFA raw-phone identity evidence"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative",
+      "status": "negative",
+      "question": "On four fresh SceneNN door targets and fifteen frozen missing-plus-extra scenarios, truth-cropped EfficientLoFTR absolute support improved over the same-crop DINOv2 reciprocal baseline from TP=6 FP=24 FN=28 F1=0.1875 to TP=11 FP=18 FN=23 F1=0.349206. The hard gate failed: only LF01 and LF03 had supported true diagonals, LF02 and LF04 abstained, repeated indoor structures produced false supports, and exact assignment reached 0/15 scenarios.",
+      "baseline": null,
+      "change": "A calibrated dense correspondence certainty and spatial-coverage mechanism independently motivated by indoor low-texture evidence, evaluated on fresh physical targets with explicit NONE; the consumed EfficientLoFTR thresholds and crops may not be tuned.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_protocol_v1.json",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_UNCOMMITTED_2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A calibrated dense correspondence certainty and spatial-coverage mechanism independently motivated by indoor low-texture evidence, evaluated on fresh physical targets with explicit NONE; the consumed EfficientLoFTR thresholds and crops may not be tuned.",
+      "forbidden_repeats": [
+        "changing the consumed 0.2 matcher threshold, eight-match minimum, six-inlier minimum, or six-pixel RANSAC tolerance",
+        "changing the consumed 1.25 truth-visible crop expansion",
+        "dropping LF02, LF04, or any failed scenario",
+        "fitting a confidence, coverage, or geometry weight on the consumed four doors",
+        "calling a truth-visible crop raw-phone target perception",
+        "calling local correspondence portal ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json"
+      ],
+      "association_id": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31",
+      "search_text": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative ten-meter-copilot L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET On four fresh SceneNN door targets and fifteen frozen missing-plus-extra scenarios, truth-cropped EfficientLoFTR absolute support improved over the same-crop DINOv2 reciprocal baseline from TP=6 FP=24 FN=28 F1=0.1875 to TP=11 FP=18 FN=23 F1=0.349206. The hard gate failed: only LF01 and LF03 had supported true diagonals, LF02 and LF04 abstained, repeated indoor structures produced false supports, and exact assignment reached 0/15 scenarios. A calibrated dense correspondence certainty and spatial-coverage mechanism independently motivated by indoor low-texture evidence, evaluated on fresh physical targets with explicit NONE; the consumed EfficientLoFTR thresholds and crops may not be tuned. changing the consumed 0.2 matcher threshold, eight-match minimum, six-inlier minimum, or six-pixel RANSAC tolerance changing the consumed 1.25 truth-visible crop expansion dropping LF02, LF04, or any failed scenario fitting a confidence, coverage, or geometry weight on the consumed four doors calling a truth-visible crop raw-phone target perception calling local correspondence portal ownership, access, traversability, arrival, handoff, safety, or user benefit"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -22155,6 +22677,354 @@
         "evaluation_evidence": 12
       },
       "search_text": "l10-scenenn-real-posed-portal-transfer-2026-08-30 Does the frozen posed-reference transfer mechanism confirm on fresh real SceneNN RGB-D scenes? Hypersim posed-portal Development gate real reference RGB-D plane and reconstructed pose with evaluator-only query RGB/depth exact-door Top-1, visible transfer, IoU, centroid containment, and metric-world error L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3dstreetview-center-target-lock-2026-08-31",
+      "status": "archived",
+      "question": "Does a frozen optical-center scale-gated visual lock improve exact physical-point matching on prefix-disjoint real street-view pairs?",
+      "baseline": "Single global DINOv2 CLS cosine on the frozen split.",
+      "change": "Add fixed 1.0, 0.5 and 0.25 centered scales with the frozen 0.25/0.75 score.",
+      "primary_metric": "pair AUROC and 32-anchor exact-target Top-1",
+      "decision": "L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3dstreetview-center-target-lock-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-3dstreetview-center-target-lock-2026-08-31 Does a frozen optical-center scale-gated visual lock improve exact physical-point matching on prefix-disjoint real street-view pairs? Single global DINOv2 CLS cosine on the frozen split. Add fixed 1.0, 0.5 and 0.25 centered scales with the frozen 0.25/0.75 score. pair AUROC and 32-anchor exact-target Top-1 L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-center-target-door-retrieval-2026-08-31",
+      "status": "archived",
+      "question": "Does the frozen center-scale lock retain exact-instance retrieval on real SceneNN doors under evaluator-authoritative proposals?",
+      "baseline": "Global DINOv2 cosine on the six directed truth-proposed anchors.",
+      "change": "Apply the unchanged frozen center-scale score from 3D Street View.",
+      "primary_metric": "directed exact-instance Top-1 and pair AUROC",
+      "decision": "L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-center-target-door-retrieval-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-scenenn-center-target-door-retrieval-2026-08-31 Does the frozen center-scale lock retain exact-instance retrieval on real SceneNN doors under evaluator-authoritative proposals? Global DINOv2 cosine on the six directed truth-proposed anchors. Apply the unchanged frozen center-scale score from 3D Street View. directed exact-instance Top-1 and pair AUROC L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-center-target-door-retrieval-2026-08-31",
+      "status": "archived",
+      "question": "Does the frozen center-scale lock retrieve three fully visible stable 3RScan doors or doorframes across rescans?",
+      "baseline": "Global DINOv2 cosine on the frozen three-target directed roster.",
+      "change": "Apply the unchanged frozen center-scale pair score.",
+      "primary_metric": "directed exact-instance Top-1 and pair AUROC",
+      "decision": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-center-target-door-retrieval-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-3rscan-center-target-door-retrieval-2026-08-31 Does the frozen center-scale lock retrieve three fully visible stable 3RScan doors or doorframes across rescans? Global DINOv2 cosine on the frozen three-target directed roster. Apply the unchanged frozen center-scale pair score. directed exact-instance Top-1 and pair AUROC L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-roster-assignment-confirmation-2026-08-31",
+      "status": "archived",
+      "question": "Does parameter-free one-to-one assignment repair sibling-door collisions on physically target-disjoint 3RScan evidence?",
+      "baseline": "Independent per-anchor center-scale ranking.",
+      "change": "Compose the unchanged pair score with maximum-total one-to-one Hungarian assignment.",
+      "primary_metric": "closed-roster exact identity and assignment margin",
+      "decision": "L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-roster-assignment-confirmation-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "evaluation_evidence": 7
+      },
+      "search_text": "l10-3rscan-roster-assignment-confirmation-2026-08-31 Does parameter-free one-to-one assignment repair sibling-door collisions on physically target-disjoint 3RScan evidence? Independent per-anchor center-scale ranking. Compose the unchanged pair score with maximum-total one-to-one Hungarian assignment. closed-roster exact identity and assignment margin L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-open-roster-zero-assignment-2026-08-31",
+      "status": "archived",
+      "question": "Can multiview appearance mutual ranking produce exact zero assignment under extra, missing, and balanced-swap stable-door rosters?",
+      "baseline": "Complete one-view Hungarian assignment on the frozen center-scale score.",
+      "change": "Use two geometry-selected views per side, a symmetric bottleneck score, and strict reciprocal zero assignment.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-open-roster-zero-assignment-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 4,
+        "geometry_motion": 3,
+        "evaluation_evidence": 12
+      },
+      "search_text": "l10-3rscan-open-roster-zero-assignment-2026-08-31 Can multiview appearance mutual ranking produce exact zero assignment under extra, missing, and balanced-swap stable-door rosters? Complete one-view Hungarian assignment on the frozen center-scale score. Use two geometry-selected views per side, a symmetric bottleneck score, and strict reciprocal zero assignment. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-registered-surface-zero-assignment-2026-08-31",
+      "status": "archived",
+      "question": "Can registered target-surface distance provide exact zero assignment for a same-scene partial door roster?",
+      "baseline": "Complete Hungarian assignment on registered-surface score.",
+      "change": "Allow strict reciprocal surface matches and zero-assigned rows or columns.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-registered-surface-zero-assignment-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-3rscan-registered-surface-zero-assignment-2026-08-31 Can registered target-surface distance provide exact zero assignment for a same-scene partial door roster? Complete Hungarian assignment on registered-surface score. Allow strict reciprocal surface matches and zero-assigned rows or columns. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-witness-calibrated-zero-assignment-2026-08-31",
+      "status": "archived",
+      "question": "Can two predeclared registration witnesses convert surface ranking into exact zero assignment on a fresh physical-target roster?",
+      "baseline": "Complete Hungarian assignment on the unchanged registered-surface score.",
+      "change": "Gate strict reciprocal surface matches by the maximum residual of two predeclared registered identity witnesses.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-witness-calibrated-zero-assignment-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-3rscan-witness-calibrated-zero-assignment-2026-08-31 Can two predeclared registration witnesses convert surface ranking into exact zero assignment on a fresh physical-target roster? Complete Hungarian assignment on the unchanged registered-surface score. Gate strict reciprocal surface matches by the maximum residual of two predeclared registered identity witnesses. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-scan-family-disjoint-witness-incremental-2026-08-31",
+      "status": "archived",
+      "question": "Does the unchanged two-witness surface rejector add decision-changing zero-assignment value over rank-only matching on a new same-class scan family?",
+      "baseline": "Strict reciprocal rank-only registered-surface matching across fifteen frozen scenarios.",
+      "change": "Gate the unchanged rank-only matcher by the raw maximum residual of two predeclared registration witnesses.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-scan-family-disjoint-witness-incremental-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 4,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-3rscan-scan-family-disjoint-witness-incremental-2026-08-31 Does the unchanged two-witness surface rejector add decision-changing zero-assignment value over rank-only matching on a new same-class scan family? Strict reciprocal rank-only registered-surface matching across fifteen frozen scenarios. Gate the unchanged rank-only matcher by the raw maximum residual of two predeclared registration witnesses. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-registered-extent-support-zero-assignment-2026-08-31",
+      "status": "archived",
+      "question": "Can parameter-free positive registered portal-plane extent overlap provide absolute support for rank-only surface correspondence under same-class missing and extra candidates?",
+      "baseline": "Strict reciprocal rank-only registered-surface matching across thirty-three frozen scenarios.",
+      "change": "Keep a rank-only edge only when the registered reference and transformed query portal-plane convex hulls have strictly positive intersection area.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-registered-extent-support-zero-assignment-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 4,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-3rscan-registered-extent-support-zero-assignment-2026-08-31 Can parameter-free positive registered portal-plane extent overlap provide absolute support for rank-only surface correspondence under same-class missing and extra candidates? Strict reciprocal rank-only registered-surface matching across thirty-three frozen scenarios. Keep a rank-only edge only when the registered reference and transformed query portal-plane convex hulls have strictly positive intersection area. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-3rscan-extent-support-scan-family-confirmation-2026-08-31",
+      "status": "archived",
+      "question": "Does the unchanged positive registered planar-extent support rule preserve exact partial-roster correspondence on a newly materialized 3RScan family?",
+      "baseline": "Strict reciprocal rank-only registered-surface matching across fifteen frozen scenarios.",
+      "change": "Apply the unchanged strictly-positive registered portal-plane convex-hull support predicate.",
+      "primary_metric": "aggregate partial-correspondence F1 and exact unmatched sets",
+      "decision": "L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-3rscan-extent-support-scan-family-confirmation-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-3rscan-extent-support-scan-family-confirmation-2026-08-31 Does the unchanged positive registered planar-extent support rule preserve exact partial-roster correspondence on a newly materialized 3RScan family? Strict reciprocal rank-only registered-surface matching across fifteen frozen scenarios. Apply the unchanged strictly-positive registered portal-plane convex-hull support predicate. aggregate partial-correspondence F1 and exact unmatched sets L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-observed-extent-support-provider-disjoint-2026-08-31",
+      "status": "archived",
+      "question": "Can frozen single-frame consumer RGB-D observations carry unchanged registered extent support to four provider-disjoint SceneNN door instances?",
+      "baseline": "3RScan privileged complete registered surfaces: rank-only TP34 FP2 FN0 F1 0.971429; positive extent support TP34 FP0 FN0 F1 1.0 on 15 scenarios.",
+      "change": "Replace complete provider surfaces with eight target-conditioned synchronized SceneNN depth observations under fixed 0.08 m consistency, 256-point minimum, and 4096-point cap.",
+      "primary_metric": "Observation carrier evaluability before scoring: 6/8 observations met 256 points; two queries retained 159 and 120; algorithm_evaluated=false.",
+      "decision": "L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT",
+      "report": "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json",
+      "source": "SceneNN official scene 096 synchronized RGB-D, registered trajectory, mesh and instance annotations.",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-observed-extent-support-provider-disjoint-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-scenenn-observed-extent-support-provider-disjoint-2026-08-31 Can frozen single-frame consumer RGB-D observations carry unchanged registered extent support to four provider-disjoint SceneNN door instances? 3RScan privileged complete registered surfaces: rank-only TP34 FP2 FN0 F1 0.971429; positive extent support TP34 FP0 FN0 F1 1.0 on 15 scenarios. Replace complete provider surfaces with eight target-conditioned synchronized SceneNN depth observations under fixed 0.08 m consistency, 256-point minimum, and 4096-point cap. Observation carrier evaluability before scoring: 6/8 observations met 256 points; two queries retained 159 and 120; algorithm_evaluated=false. L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json SceneNN official scene 096 synchronized RGB-D, registered trajectory, mesh and instance annotations."
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-temporal-fused-extent-support-posthoc-2026-08-31",
+      "status": "archived",
+      "question": "Does a frozen registered three-frame SceneNN depth carrier make all observations evaluable and preserve the unchanged positive convex-hull support gain?",
+      "baseline": "Single-frame carrier stopped before scoring with 6/8 observations meeting 256 points; on the temporal replay, rank-only matching reached TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios.",
+      "change": "Fuse exact offsets -5, 0 and +5 in world coordinates per role while retaining 0.08 m depth consistency, 256 fused-point minimum, 4096 caps, surface score, reciprocity, and strictly positive support.",
+      "primary_metric": "All 8/8 fused observations were evaluable, but extent support reached TP25 FP2 FN9 F1 0.819672 and 6/15 exact scenarios versus rank-only F1 0.957746.",
+      "decision": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json",
+      "source": "Consumed SceneNN scene 096 exact three-frame registered RGB-D windows; posthoc mechanism Development only.",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-temporal-fused-extent-support-posthoc-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-scenenn-temporal-fused-extent-support-posthoc-2026-08-31 Does a frozen registered three-frame SceneNN depth carrier make all observations evaluable and preserve the unchanged positive convex-hull support gain? Single-frame carrier stopped before scoring with 6/8 observations meeting 256 points; on the temporal replay, rank-only matching reached TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios. Fuse exact offsets -5, 0 and +5 in world coordinates per role while retaining 0.08 m depth consistency, 256 fused-point minimum, 4096 caps, surface score, reciprocity, and strictly positive support. All 8/8 fused observations were evaluable, but extent support reached TP25 FP2 FN9 F1 0.819672 and 6/15 exact scenarios versus rank-only F1 0.957746. L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json Consumed SceneNN scene 096 exact three-frame registered RGB-D windows; posthoc mechanism Development only."
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-2026-08-31",
+      "status": "archived",
+      "question": "Can threshold-free reciprocal Hue agreement reject SceneNN geometry false matches without losing true matches?",
+      "baseline": "Temporal registered-surface reciprocal matching: TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios.",
+      "change": "Intersect geometry reciprocal matches with reciprocal matches from an 18-bin saturation-weighted Hue plus achromatic-mass histogram, with no score threshold or fitted weight.",
+      "primary_metric": "Consensus TP2 FP0 FN32 F1 0.111111 and 0/15 exact scenarios; Hue-only TP2 FP23 FN32.",
+      "decision": "L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json",
+      "source": "Consumed SceneNN scene 096 synchronized RGB-D; mechanism motivated by primary colored point-cloud registration papers.",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-2026-08-31 Can threshold-free reciprocal Hue agreement reject SceneNN geometry false matches without losing true matches? Temporal registered-surface reciprocal matching: TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios. Intersect geometry reciprocal matches with reciprocal matches from an 18-bin saturation-weighted Hue plus achromatic-mass histogram, with no score threshold or fitted weight. Consensus TP2 FP0 FN32 F1 0.111111 and 0/15 exact scenarios; Hue-only TP2 FP23 FN32. L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json Consumed SceneNN scene 096 synchronized RGB-D; mechanism motivated by primary colored point-cloud registration papers."
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-2026-08-31",
+      "status": "archived",
+      "question": "Can frozen DINOv2 foreground feature averaging over exact three-frame target masks reject SceneNN geometry false matches without losing true matches?",
+      "baseline": "Temporal registered-surface reciprocal matching: TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios.",
+      "change": "Use the immutable local DINOv2-S patch tokens, continuous visible-mask foreground averaging, max cosine across 3x3 temporal views, and threshold-free reciprocal consensus with geometry.",
+      "primary_metric": "Consensus TP7 FP1 FN27 F1 0.333333 and 0/15 exact; FFA-only TP7 FP21 FN27.",
+      "decision": "L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json",
+      "source": "Consumed SceneNN scene 096 synchronized RGB-D and privileged visible target masks; immutable local DINOv2-S model.",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 9
+      },
+      "search_text": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-2026-08-31 Can frozen DINOv2 foreground feature averaging over exact three-frame target masks reject SceneNN geometry false matches without losing true matches? Temporal registered-surface reciprocal matching: TP34 FP3 FN0 F1 0.957746 and 12/15 exact scenarios. Use the immutable local DINOv2-S patch tokens, continuous visible-mask foreground averaging, max cosine across 3x3 temporal views, and threshold-free reciprocal consensus with geometry. Consensus TP7 FP1 FN27 F1 0.333333 and 0/15 exact; FFA-only TP7 FP21 FN27. L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json Consumed SceneNN scene 096 synchronized RGB-D and privileged visible target masks; immutable local DINOv2-S model."
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31",
+      "status": "archived",
+      "question": "Can fixed EfficientLoFTR local correspondence plus homography-inlier absolute support provide a better explicit NONE assignment than same-crop DINOv2 on fresh SceneNN doors?",
+      "baseline": "Same truth-visible context crops with DINOv2-S mean patch-token cosine and reciprocal assignment reached TP=6 FP=24 FN=28 F1=0.1875 and 1/15 exact scenarios.",
+      "change": "Use the frozen local EfficientLoFTR asset at score 0.2, at least eight matches, six-pixel homography RANSAC and at least six inliers; unsupported pairs become NONE before reciprocal assignment.",
+      "primary_metric": "EfficientLoFTR reached TP=11 FP=18 FN=23 F1=0.349206 and 0/15 exact scenarios; only 2/4 true diagonals had absolute support.",
+      "decision": "L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json",
+      "source": "Four fresh SceneNN one-door scenes 021, 273, 011 and 279 selected before RGB by frozen XML labels and ONI size; truth-visible context crops make this Development mechanism evidence only.",
+      "commit": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "association_id": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "handoff_completion": 3,
+        "evaluation_evidence": 12
+      },
+      "search_text": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31 Can fixed EfficientLoFTR local correspondence plus homography-inlier absolute support provide a better explicit NONE assignment than same-crop DINOv2 on fresh SceneNN doors? Same truth-visible context crops with DINOv2-S mean patch-token cosine and reciprocal assignment reached TP=6 FP=24 FN=28 F1=0.1875 and 1/15 exact scenarios. Use the frozen local EfficientLoFTR asset at score 0.2, at least eight matches, six-pixel homography RANSAC and at least six inliers; unsupported pairs become NONE before reciprocal assignment. EfficientLoFTR reached TP=11 FP=18 FN=23 F1=0.349206 and 0/15 exact scenarios; only 2/4 true diagonals had absolute support. L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json Four fresh SceneNN one-door scenes 021, 273, 011 and 279 selected before RGB by frozen XML labels and ONI size; truth-visible context crops make this Development mechanism evidence only."
     }
   ],
   "associations": [
@@ -22285,6 +23155,118 @@
       "source_rows": 1
     },
     {
+      "run_id": "l10-3dstreetview-center-target-lock-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3dstreetview-center-target-lock-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "253f4868bc189977dcfb2ef3d35bf52ca8d92a32ef98b705ae9987af69e81326",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json",
+        "artifacts.local/results/l10-3dstreetview-center-target-lock-v1"
+      ],
+      "decision_id": "terminal-l10-3dstreetview-center-target-lock-development",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-center-target-door-retrieval-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-center-target-door-retrieval-protocol-v2",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "903ad0cd965111140d967bf6f0e1a4525284d8c85388b6fabff9bdc39c82d78b",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json",
+        "artifacts.local/results/l10-3rscan-center-target-door-retrieval-v2"
+      ],
+      "decision_id": "terminal-l10-3rscan-center-target-pairwise-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-extent-support-scan-family-confirmation-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-extent-support-scan-family-confirmation-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "918cb02a2359ffaa68eab9ae6c1d0000a41b551aa4d826a6cb7b7eb85a49d9d8",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-3rscan-extent-support-scan-family-disjoint-development",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-open-roster-zero-assignment-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-open-roster-zero-assignment-protocol-v2",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "ad7d99505e66876fc743a45092c5afa1e5f0639cb3a3d44ceb4f42e0f371314f",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json",
+        "artifacts.local/results/l10-3rscan-open-roster-zero-assignment-v2"
+      ],
+      "decision_id": "terminal-l10-3rscan-open-roster-appearance-zero-assignment-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-registered-extent-support-zero-assignment-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-registered-extent-support-zero-assignment-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "371991ac8ff0c2dc63d6aba49c336412390e7c0f6160215643427879331f530b",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-3rscan-registered-extent-support-zero-assignment-development",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-registered-surface-zero-assignment-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-registered-surface-zero-assignment-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "6411957b2c9ed93c8ca2bda586dbea51e6af062ff8a0dbc728aba2408c8bf853",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-3rscan-registered-surface-zero-assignment-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-roster-assignment-confirmation-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-roster-assignment-confirmation-protocol-v2",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "c9ebed4ad52f5695c142100f3b539a65bbb4b78f5be4a6f55ca9275e6c0f4f30",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json",
+        "artifacts.local/results/l10-3rscan-roster-assignment-confirmation-v2"
+      ],
+      "decision_id": "terminal-l10-3rscan-roster-assignment-target-disjoint-development",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-scan-family-disjoint-witness-incremental-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-scan-family-disjoint-witness-incremental-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "0e092f4d3ab519eb39fee5026a11e3a25ba876e611435e6287f85319443cfb2a",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-3rscan-scan-family-disjoint-witness-incremental-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-3rscan-witness-calibrated-zero-assignment-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-3rscan-witness-calibrated-zero-assignment-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "9ef1409d0fcc046aedaaf5d6a25c90c979522d353644ae0c57ea5c24f381289b",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-3rscan-witness-calibrated-zero-assignment-development",
+      "source_rows": 1
+    },
+    {
       "run_id": "l10-hypersim-posed-portal-transfer-2026-08-30",
       "use_ids": [],
       "protocol_id": null,
@@ -22321,6 +23303,43 @@
       "source_rows": 1
     },
     {
+      "run_id": "l10-scenenn-center-target-door-retrieval-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-center-target-door-retrieval-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "41ae937649de78984be450ca54f41dd689c755c5d7314d0a09212c90e112a66b",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json",
+        "artifacts.local/results/l10-scenenn-center-target-door-retrieval-v1"
+      ],
+      "decision_id": "terminal-l10-scenenn-center-target-door-transfer-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-efficientloftr-fresh-none-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "4619c90aaf4fdd8239811f090f032eb1993ae2fc7028d17f87e3d0ee61ede73e",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-scenenn-observed-extent-support-provider-disjoint-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-observed-extent-support-provider-disjoint-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "87c75b7930f3696fec07bed52f0030b2a91d789519d9a07919da3d91c82a3b25",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-scenenn-single-frame-observed-extent-support-not-evaluable",
+      "source_rows": 1
+    },
+    {
       "run_id": "l10-scenenn-real-posed-portal-transfer-2026-08-30",
       "use_ids": [],
       "protocol_id": null,
@@ -22330,6 +23349,42 @@
         "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json"
       ],
       "decision_id": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "17c1a4c9a4b3635935e49bd4d3eef591b1d25a31a5dbcbd5213f57922e0513ed",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-negative",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-scenenn-temporal-fused-extent-support-posthoc-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-temporal-fused-extent-support-posthoc-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "ee907bd1286753fc5b501f0834785f60c0649f34732ce76f9e7d134e14384921",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-scenenn-temporal-fused-extent-support-posthoc-negative",
+      "source_rows": 1
+    },
+    {
+      "run_id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-2026-08-31",
+      "use_ids": [],
+      "protocol_id": "l10-scenenn-temporal-hue-geometry-consensus-posthoc-protocol-v1",
+      "code_revision": "fe469a66e05afcc915c0ba3159116b45ef8f4fb8",
+      "input_fingerprint": "1f00feb91e72c2e714486074c687ff8c6a60ea3814d4cc3b08154cda8194417b",
+      "artifact_refs": [
+        "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"
+      ],
+      "decision_id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
       "source_rows": 1
     },
     {

@@ -56,6 +56,15 @@ python tools/knowledge.py show use-grail-r1c-p-orient-anything-v2
 
 ## 研究决策引擎
 
+实际推进规则见 [研究工作流](../WORKFLOW.md)。`diagnose --question` 也可从新能力
+问题出发，不要求先有故障；用 `--objective --hypothesis --baseline --change --metric`
+按需覆盖检索模板。`--phase explore|confirm|engineering` 区分研究阶段；默认 `auto`
+只对运行环境故障选择 engineering，其余选择 explore，确认必须显式选择。
+一项假设允许必要的协同改动；输出同时给出收益、无收益、不可评估后的决定、
+覆盖与成本取舍、恢复边界。探索可使用已标明的 consumed Development 材料，
+确认必须满足所声明结论的独立性；这些草案不改写任何既有冻结协议。
+
+
 日常故障入口是 `diagnose`，不是先搜索更多论文。它从一个预编译 JSON 索引读取
 全部机制、route use、`experiments/index.jsonl` 和当前高权威 terminal；查询过程不
 逐个打开 `items/uses`，也不调用模型或网络：

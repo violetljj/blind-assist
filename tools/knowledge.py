@@ -16,6 +16,11 @@ from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
+if __package__:
+    from .research_workflow import PHASES, prepare_research_proposal
+else:
+    from research_workflow import PHASES, prepare_research_proposal
+
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1] / "research" / "knowledge"
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
@@ -2466,6 +2471,9 @@ def _build_minimum_experiment(
     diagnosis: dict[str, Any],
     mechanisms: list[dict[str, Any]],
     attempts: list[dict[str, Any]],
+    *, phase: str = "auto", objective: str | None = None,
+    hypothesis: str | None = None, baseline: str | None = None,
+    change: str | None = None, metric: str | None = None,
 ) -> dict[str, Any]:
     layer_by_id = {layer["id"]: layer for layer in index["failure_layers"]}
     if diagnosis["layers"]:
@@ -2512,7 +2520,7 @@ def _build_minimum_experiment(
     else:
         single_change = template["single_change"]
         plan_status = "localization_needed"
-    return {
+    plan = {
         "id": plan_id,
         "status": plan_status,
         "route": route,
@@ -2542,6 +2550,10 @@ def _build_minimum_experiment(
             f"artifacts.local/knowledge/decision/{plan_id}.json"
         ),
     }
+    return prepare_research_proposal(
+        plan, question=symptom, phase=phase, objective=objective,
+        hypothesis=hypothesis, baseline=baseline, change=change, metric=metric,
+    )
 
 
 def _build_decision_card(
@@ -2554,6 +2566,9 @@ def _build_decision_card(
     missing: list[str],
     mechanism_limit: int,
     attempt_limit: int,
+    phase: str = "auto", objective: str | None = None,
+    hypothesis: str | None = None, baseline: str | None = None,
+    change: str | None = None, metric: str | None = None,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     route = _canonical_route(route)
@@ -2577,7 +2592,9 @@ def _build_decision_card(
         attempt_limit,
     )
     experiment = _build_minimum_experiment(
-        index, route, symptom, diagnosis, mechanisms, attempts
+        index, route, symptom, diagnosis, mechanisms, attempts,
+        phase=phase, objective=objective, hypothesis=hypothesis,
+        baseline=baseline, change=change, metric=metric,
     )
     elapsed_ms = round((time.perf_counter() - started) * 1000, 2)
     return {
@@ -2677,6 +2694,15 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
     experiment = card["minimum_experiment"]
     print("\n## Minimum falsifiable experiment")
     print(f"ID: {experiment['id']} ({experiment['status']})")
+    workflow = experiment["workflow"]
+    print(f"Phase: {workflow['phase']} ({workflow['phase_selection']})")
+    print(f"Practical objective: {workflow['practical_objective']}")
+    print(f"Evidence use: {workflow['evidence_policy']}")
+    print(f"Contribution check: {workflow['contribution_check']}")
+    print("Tradeoffs: " + "; ".join(workflow["tradeoffs"]))
+    for outcome, action in workflow["decision_branches"].items():
+        print(f"If {outcome}: {action}")
+    print(f"Recovery: {workflow['retry_policy']}")
     print("Draft only: historical scope must be established for this proposal; "
           "preserve original outcomes and protected evidence boundaries.")
     for note in experiment["history_scope_notes"]:
@@ -2684,7 +2710,7 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
         print(f"History applicability unassessed: {note['id']} — {scope}")
     print(f"Hypothesis: {_one_line(experiment['hypothesis'])}")
     print(f"Baseline: {_one_line(experiment['baseline'])}")
-    print(f"Only change: {_one_line(experiment['single_change'])}")
+    print(f"Hypothesis change: {_one_line(experiment['single_change'])}")
     print(f"Cohort: {_one_line(experiment['cohort'])}")
     print(f"Primary metric: {_one_line(experiment['primary_metric'])}")
     print("Stop: " + "; ".join(experiment["stop_conditions"]))
@@ -2724,6 +2750,8 @@ def _command_diagnose(args: argparse.Namespace) -> int:
         missing=args.missing or [],
         mechanism_limit=args.mechanism_limit,
         attempt_limit=args.attempt_limit,
+        phase=args.phase, objective=args.objective, hypothesis=args.hypothesis,
+        baseline=args.baseline, change=args.change, metric=args.metric,
     )
     _print_decision_card(card, args.json)
     if args.write_plan:
@@ -2750,11 +2778,15 @@ def _experiment_plan_is_valid(plan: dict[str, Any]) -> bool:
             not _is_nonempty_string(item) for item in value
         ):
             return False
-    guardrail_text = " ".join(plan["guardrails"])
+    workflow = plan.get("workflow")
+    if workflow is None:
+        return True  # Legacy cards are still readable.
     return (
-        "UNKNOWN" in guardrail_text
-        and "已消费" in guardrail_text
-        and "一个" in guardrail_text
+        workflow.get("phase") in {"explore", "confirm", "engineering"}
+        and all(_is_nonempty_string(workflow.get(field)) for field in
+                ("question", "practical_objective", "evidence_policy", "retry_policy"))
+        and all(_is_nonempty_string(workflow.get("decision_branches", {}).get(outcome))
+                for outcome in ("gain", "no_gain", "not_evaluable"))
     )
 
 
@@ -3407,7 +3439,14 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Locate a failure layer and generate a research decision card.",
     )
     diagnose_parser.add_argument("--route", required=True)
-    diagnose_parser.add_argument("--symptom", required=True)
+    diagnose_parser.add_argument("--symptom", "--question", dest="symptom", required=True,
+                                 help="Observed failure or a new research question.")
+    diagnose_parser.add_argument("--phase", choices=PHASES, default="auto")
+    diagnose_parser.add_argument("--objective", help="Practical capability or effect to improve.")
+    diagnose_parser.add_argument("--hypothesis", help="One explanatory hypothesis, including coupled changes.")
+    diagnose_parser.add_argument("--baseline", help="Concrete incumbent or simple comparison.")
+    diagnose_parser.add_argument("--change", help="Proposed implementation change for that hypothesis.")
+    diagnose_parser.add_argument("--metric", help="Task effect plus relevant cost/coverage tradeoffs.")
     diagnose_parser.add_argument(
         "--observed",
         action="append",

@@ -27,6 +27,12 @@ reason in the existing change/result note; do not add a routine meta-review,
 new checklist, or approval gate. Preserve evidence identity and protected
 blind/final boundaries.
 
+Current pages contain capability, baseline, bottleneck, next check, outcome
+decisions, and essential boundaries. Keep chronological increments in owning
+results/ledgers or exact Git history; replace superseded current prose rather
+than append another result chain. Project state routes work; cross-route
+decisions set priorities; each route owns its evidence details.
+
 ## Budgets
 
 - one active directory per explicitly parallel product line under

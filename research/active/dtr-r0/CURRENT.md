@@ -4,515 +4,121 @@ Updated: 2026-09-05
 
 Status: `DTR_R2_DYNAMIC_RETAINED`
 
-## Question
+## Capability question
 
-Can BlindAssist emit stable `ONSET / HOLD / ESCALATE / CLEAR` events when
-future obstacle occupancy intersects the wearer's route, while preserving
-`UNKNOWN` instead of turning missing evidence into safety?
+Can future obstacle occupancy intersecting the wearer's route produce stable
+`ONSET / HOLD / ESCALATE / CLEAR` events while missing evidence stays `UNKNOWN`?
+The unresolved contribution question is what collision-state information X94
+adds beyond a raw motion baseline and the same temporal event smoothing.
 
-## Current decisions
+## Retained evidence and baseline
 
-- **Latest execution status (2026-09-05):** avoidance-only Final Reckoning R1
-  reached **30/30 source-stratum passes**, and FIT_ONLY's complete RGB/depth join
-  passed. FINAL_A's depth server then exited before producing a depth frame,
-  with UE `Shader compilation failures are Fatal`; FINAL_B RGB/depth were not
-  started. The execution is `NOT_EVALUABLE_SOURCE_CAPTURE_INTERRUPTED`, with
-  nine complete sensor shards retained and no detector, fit, or final method
-  score accessed. Algorithm inheritance is unchanged; no X97 or source retry
-  is authorized. The eleven-arm adapters are implemented and narrowly tested,
-  but have no actual comparison result. Task resources are released. The next
-  engineering bottleneck is capture stability and repeated per-modality work.
-  This remains a working source record: registry admission is blocked by an
-  existing input-fingerprint mismatch, not bypassed by manual indexing. See
-  [source execution, native crash, and efficiency findings](DTR_FINAL_SOURCE_EXECUTION_20260905.md).
-- **Capture engineering (2026-09-05):** a two-scene 720p test passed 100
-  synchronized RGB/depth pairs. Synchronization alone did not speed up capture;
-  replacing native PNG writing with a lossless encoder reduced the matched
-  synchronized capture from 63.28 to 22.00 s (2.88x), with 400 independently
-  decoded images exactly matching raw sensor pixels and 8.96% more encoded bytes.
-  This is a short engineering component result, not long-run stability or an
-  avoidance score. Frozen R1 remains unchanged and not evaluable. See
-  [throughput measurements and limitations](CARLA_RGBD_THROUGHPUT_20260905.md).
-- **Public/JRDB line:** X21 transports only a component already authorized by
-  raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
-  CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
-  `8/18` dropout recovery. This is a same-source Development pass only.
-- **CARLA algorithm line:** X65 pooled `+15 TP / +0 FP / +1.44 pp F1` over X64
-  across consumed C26/C27/C28/C32 Development. C33 then terminated as frozen
-  source-not-evaluable before any prediction. The sole C34 scored invocation
-  completed on genuinely new pixels at `83.01/73.84/78.15` percent
-  precision/recall/F1 with all authority invariants zero and acceptable safe
-  segments. It improved X54 by `-9 FP / +2.11 pp F1`, but tied X64 exactly.
-  Although C34 contained 17 selected contact-loss ambiguity frames and 16
-  pre-conflict joint-credential frames, X65 recorded zero ancestry
-  synchronization and zero handback frames. C34 is therefore
-  mechanism-not-exercised, not incremental X65 confirmation; its 83.01%
-  precision also missed the frozen 85% floor. Consumed diagnosis then produced
-  X67, which separates existence from route-risk authority only after a dormant
-  track was reactivated and lost again beyond the inherited measurement hold
-  horizon with receding direction-only motion. X68 then preserves each surface
-  footprint but uses a same-direction, lateral-nonexpanding object-local metric
-  velocity to remove lattice-quantized near-miss motion. Across
-  C26/C27/C28/C32/C34, X68 improved four cohorts and was classification-neutral
-  on one: pooled `636 TP / 63 FP / 227 FN`, or `90.99/73.70/81.43%`, for
-  `0 TP / -15 FP / +0.77 pp F1` over X67. C34 reached
-  `88.19/73.84/80.38%`. X69 then allows a current X25 object-local rigid
-  footprint to falsify only mature, measured cross-route surface ambiguity
-  after the inherited 1.0 s history window. It improved every cohort, removing
-  another 12 false positives with no true-positive loss. Pooled X69 is
-  `636 TP / 51 FP / 227 FN` at `92.58/73.70/82.06%`; C34 is
-  `90.71/73.84/81.41%`. X70 then gives an X25 rigid identity a collision
-  credential only when current X69 surface, X25 rigid-footprint, and X24
-  metric-point risk spatially agree. That identity may hand risk back across a
-  current surface dropout, while X69 explicit contradiction release retains
-  precedence. X70 recovered four true positives with no false-positive cost:
-  pooled `640 TP / 51 FP / 223 FN` at `92.62/74.16/82.37%`; C34 is
-  `90.78/74.42/81.79%`. X71 then permits an object-local occupancy birth when a
-  current X24 metric point lies inside a same-class X25 rigid footprint, their
-  route-forward motion directions agree, and the representations remain
-  associated at their later predicted route-entry time. It recovered three
-  more true positives with no false-positive cost: pooled
-  `643 TP / 51 FP / 220 FN` at `92.65/74.51/82.59%`; C34 is
-  `90.97/76.16/82.91%`. X72 then lets a current X25 collision footprint
-  complete a still-live credentialed surface parent only when it intersects
-  measured fragments at their boundary while its rigid center lies inside none
-  of that parent's fragments. X72 recovered another eight true positives with
-  no false-positive cost: pooled `651 TP / 51 FP / 212 FN` at
-  `92.74/75.43/83.19%`; C34 is `91.22/78.49/84.38%`. This is cross-cohort
-  non-regressing Development, not fresh X72 confirmation. X73 then
-  reconstructs the convex hull of all current measured fragments belonging to
-  one still-live credentialed surface parent and transports it with their
-  area-weighted current velocity. Any current measured X25 center contained by
-  a parent fragment vetoes reconstruction. X73 recovered 12 more true
-  positives with no false-positive cost across four cohorts: pooled
-  `663 TP / 51 FP / 200 FN` at `92.86/76.83/84.08%`; C34 remained
-  classification-neutral at `91.22/78.49/84.38%`. This is consumed
-  cross-cohort Development. The sole C35 scored invocation then tested
-  unchanged X73 on genuinely new seed-, render-domain-, and pixel-disjoint
-  CARLA evidence. X73 improved X72 from `126/18/46` to `132/18/40`
-  TP/FP/FN, or from `87.50/73.26/79.75%` to
-  `88.00/76.74/81.99%` precision/recall/F1: `+6 TP / +0 FP / +2.24 pp F1`.
-  Parent-hull reconstruction was exercised on six frames, all primary transfer
-  checks passed, and all required authority invariants remained zero. Accept
-  `DTR_CARLA_C35_X73_GENERALIZATION_GATE_MET` as source-disjoint synthetic
-  Development confirmation within the frozen same-map/scripted boundary. C35
-  post-confirmation diagnosis then exposed six false-positive frames from one
-  X57 metric handback whose stale `truck` identity disagreed with the nearest
-  current, non-route X25 `person` footprint. X74 clears only when every
-  confirmed carrier is such a metric handback, the nearest current measured
-  rigid footprint is inside the inherited association radius, that footprint
-  is not itself a route candidate, and its detector class differs. Across
-  consumed C26/C27/C28/C32/C34/C35, X74 changed only those six C35 false
-  positives: pooled `795 TP / 63 FP / 240 FN` at
-  `92.66/76.81/83.99%`, or `0 TP / -6 FP / +0.27 pp F1` over X73. The other
-  five cohorts were classification-neutral and all required authority
-  invariants remained zero. X74 is the strongest current six-cohort CARLA
-  Development arm, but only C35 exercised it. The sole C36 scored invocation
-  then tested unchanged X74 under a new seed and four new render assignments.
-  X74 and X73 were classification-identical at
-  `143 TP / 44 FP / 29 FN`, or `76.47/83.14/79.67%`; X74 recorded zero class
-  contradiction releases, so the incremental mechanism was not exercised and
-  is not freshly confirmed. All required authority invariants and contact/safe
-  constraints passed, but precision missed the frozen 85% floor. C36 is now
-  consumed diagnosis material for the line's render-domain false-alert gap.
-  X75 then separates object-existence memory from collision-risk authority: an
-  occupancy-peak permanence belief may retain route risk only if its parent
-  previously earned spatially agreeing surface + X25 + X24 collision
-  credentials, or if its transport history contains a contradiction that
-  warrants conservative retention. Across consumed
-  C26/C27/C28/C32/C34/C35/C36, X75 removed 19 C36 false positives with no TP
-  loss and changed no earlier cohort: pooled `938 TP / 88 FP / 269 FN` at
-  `91.42/77.71/84.01%`, or `0 TP / -19 FP / +0.71 pp F1` over X74. C36 alone
-  rose to `85.12/83.14/84.12%`, restoring its precision floor. All required
-  authority invariants and contact/safe constraints passed. X75 is the
-  strongest current seven-cohort Development arm. The sole C37 invocation then
-  exercised X75 once on a new seed and four new render assignments. X75 changed
-  X74 from `133 TP / 35 FP / 39 FN` to `133 / 34 / 39`, a fresh
-  `0 TP / -1 FP / +0.23 pp F1` effect. All incremental, authority, contact, and
-  safe constraints passed, but full-arm precision was `79.64%`, below the
-  frozen 85% floor. The incremental direction therefore has fresh positive
-  evidence, while the full X75 generalization gate did not pass. Across all
-  eight consumed cohorts, X75 is `1,071 TP / 122 FP / 308 FN` at
-  `89.77/77.67/83.28%`, a cumulative `0 TP / -20 FP / +0.64 pp F1` over X74.
-  C37 then exposed a parent-hull transport contradiction: ten false-positive
-  frames declared zero-shift support while retaining nonzero reconstructed
-  velocity. X76 rejects only that all-carrier inconsistency. It changes no
-  earlier cohort and moves C37 to `133 TP / 24 FP / 39 FN` at
-  `84.71/77.33/80.85%`, or `0 TP / -10 FP / +2.38 pp F1` over X75. Across all
-  eight cohorts X76 is `1,071 TP / 112 FP / 308 FN` at
-  `90.53/77.67/83.61%`. All required constraints pass, but C37 remains 0.29 pp
-  below the 85% precision reference. X76 is Development-only; X73 retains
-  confirmation authority. X77 then rejects only a metric temporal handoff
-  whose forward velocity is positive, meaning its obstacle is already
-  receding. Across the eight consumed cohorts, all seven true-positive metric
-  handoffs were approaching while all six false-positive handoffs were
-  receding. X77 removes those six false positives with zero TP loss: pooled
-  `1,071 TP / 106 FP / 308 FN` at `90.99/77.66/83.80%`. C37 reaches
-  `133 TP / 23 FP / 39 FN` at `85.26/77.33/81.10%`, crossing the 85% precision
-  reference. All required constraints pass. X77 is Development-only; X73
-  retains confirmation authority until unchanged X77 passes a fresh gate. The
-  sole C38 invocation then tested unchanged X77 on seed `381077` and four new
-  render assignments. X77 and X76 were classification-identical at
-  `124 TP / 48 FP / 48 FN`, or `72.09/72.09/72.09%`; X77 recorded zero
-  receding temporal-handoff releases. C38 is therefore
-  mechanism-not-exercised, not negative incremental evidence. All required
-  authority invariants and safe-segment constraints passed, but full precision
-  and F1 failed and episode 05 contact recall was only `52.17%`. C38 is now
-  consumed diagnosis material for a measurement-backed existence/uncertainty
-  successor. X78 separates identity continuity from collision-risk authority:
-  an all-carrier, zero-contradiction object-permanence belief with zero-shift
-  support and non-closing velocity remains in memory but no longer authorizes
-  route risk. Across C26/C27/C28/C32/C34/C35/C36/C37, however, the mechanism
-  was never exercised; X78 remains identical to X77 at pooled
-  `1,071 TP / 106 FP / 308 FN` and `90.99/77.66/83.80%`. This is a compatible
-  structural refinement, not an incremental metric result. X79 then assigns
-  lateral-only collision timing to the existing X75 triple credential: an
-  uncredentialed, conflict-free surface branch may retain identity and lateral
-  motion but cannot independently authorize route risk. Across the eight
-  consumed cohorts, the credential protects all three lateral-only true
-  positives while X79 removes 15 false positives across five cohorts with zero
-  TP loss. Pooled X79 is `1,071 TP / 91 FP / 308 FN` at
-  `92.17/77.66/84.30%`, a further `+0.49 pp F1` over X78. Every required check
-  passes. X79 is the strongest current eight-cohort Development arm; X73
-  continues to retain confirmation authority until unchanged X79 passes a
-  fresh source-disjoint gate. The sole C39 invocation then tested unchanged
-  X79 at seed `391079` with four new weather/render assignments. X79 and X78
-  were classification-identical at `137 TP / 22 FP / 35 FN`, or
-  `86.16/79.65/82.78%`; X79 recorded zero lateral-only releases. Every full-arm,
-  contact-recall, safe-segment, and authority-invariant constraint passed, but
-  the frozen incremental mechanism and false-positive reduction requirements
-  did not. C39 is mechanism-not-exercised and now consumed diagnosis material;
-  it supplies no fresh promotion evidence. X73 therefore still retains the
-  latest positive source-disjoint confirmation authority. X80 then requires an
-  otherwise uncredentialed X71 entry-cotransport birth to carry a rigid
-  footprint whose lateral span strictly exceeds its route-forward span before
-  it can authorize cross-route occupancy. This ordinal shape credential adds no
-  fitted numeric threshold. Across C26/C27/C28/C32/C34/C35/C36/C37/C39, X80
-  changes only C39: it removes six false positives with zero TP loss, moving
-  C39 to `137 TP / 16 FP / 35 FN` at `89.54/79.65/84.31%`. Nine-cohort pooled
-  X80 is `1,208 TP / 107 FP / 343 FN` at `91.86/77.89/84.30%`, or
-  `0 TP / -6 FP / +0.18 pp F1` over X79. Every required check passes. Because
-  X80 was designed after C39 opened, this is Development-only and X73 retains
-  confirmation authority. X81 then applies the same ordinal cross-route shape
-  credential to an uncredentialed zero-shift surface-support carrier. Across
-  the same nine consumed cohorts it changes only C26, removing two false
-  positives with zero TP loss. Pooled X81 is
-  `1,208 TP / 105 FP / 343 FN` at `92.00/77.89/84.36%`, or
-  `0 TP / -2 FP / +0.06 pp F1` over X80. Every required check passes. X81 is
-  the strongest current nine-cohort Development arm, but its effect was
-  designed and measured on consumed C26; X73 retains fresh confirmation
-  authority until unchanged X81 passes a later source-disjoint gate. The sole
-  C40 invocation then tested unchanged X81 on seed `401081` with four changed
-  render assignments. X81 exercised three zero-shift shape releases and
-  improved X80 from `129 TP / 28 FP / 43 FN` to `129 / 25 / 43`, or from
-  `82.17/75.00/78.42%` to `83.77/75.00/79.14%` precision/recall/F1:
-  `0 TP / -3 FP / +0.72 pp F1`. Every incremental, recall, F1, contact, safe,
-  and authority constraint passed, but full-arm precision missed the frozen
-  85% floor. X81 therefore has fresh positive incremental evidence without a
-  complete generalization gate; X73 retains full fresh confirmation authority.
-  Consumed C40 diagnosis then exposed a narrower authority failure: multiple
-  X72 completion proxies were all carried (`HOLD`) with no current measured
-  risk carrier, yet their multiplicity still owned route risk. X82 clears only
-  this held-only proxy consensus while retaining single proxies, any current
-  measurement, mixed direct carriers, and all track state. Across
-  C26/C27/C28/C32/C34/C35/C36/C37/C39/C40 it changes only C40, removing three
-  false positives with zero TP loss. C40 moves to `129 TP / 22 FP / 43 FN` at
-  `85.43/75.00/79.88%`, crossing the formerly missed precision floor. Pooled
-  ten-cohort X82 is `1,337 TP / 127 FP / 386 FN` at
-  `91.33/77.60/83.90%`, or `0 TP / -3 FP / +0.08 pp F1` over X81. Every
-  required check passes. Because X82 was designed after C40 opened, this is
-  Development-only; C40 cannot retroactively confirm X82 and X73 retains full
-  fresh authority until a new source-disjoint gate tests frozen X82. C41 then
-  froze unchanged X82 at seed `411082` with four changed render assignments.
-  Its final four-sensor source passed after the protocol-authorized single
-  recovery of an empty, zero-frame witness shard. X81 and X82 were identical at
-  `135 TP / 15 FP / 37 FN`, or `90.00/78.49/83.85%`; X82 recorded zero
-  held-proxy consensus releases. Full-arm, contact, and safe-segment metrics
-  passed, but the mechanism and incremental-FP requirements did not. One
-  inherited non-rigid risk reference and one parent-identity mismatch also
-  failed the authority gate. C41 is mechanism-not-exercised, supplies no fresh
-  incremental promotion or rejection evidence for X82, and is now consumed
-  successor-design material. X73 still retains full fresh authority.
-  X83 then corrects the exact C41 ownership defect without changing event
-  classification: when confirmed references mix eligible `RIGID_DYNAMIC` and
-  non-rigid carriers, it returns only the non-rigid references to candidates
-  and rebuilds confirmed parent identity from the rigid owners. Across
-  C26/C27/C28/C32/C34/C35/C36/C37/C39/C40/C41, X83 changes one C41 frame,
-  demotes one static reference, and removes both the non-rigid-reference and
-  parent-mismatch defects. Every TP/FP/FN is identical to X82 and all required
-  authority invariants are zero in all eleven cohorts. Pooled X83 remains
-  `1,472 TP / 142 FP / 423 FN` at `91.20/77.68/83.90%`. This is
-  post-hoc Development-only because X83 was designed after C41 opened; X73
-  retains fresh authority until a later source-disjoint gate exercises frozen
-  X83 without a classification regression. Consumed C41 diagnosis then exposed
-  a narrower continuation-authority gap: its three remaining false-positive
-  frames were held, forward-closing, direction-consistent continuations whose
-  authorized branch hypotheses outnumbered their direct transport anchors.
-  X84 releases only that relational partition, while retaining occupancy-peak
-  carriers, non-closing motion, anchor-covered continuations, and all track
-  evidence. Across the same eleven consumed cohorts, X84 changes only C41:
-  `135 TP / 15 FP / 37 FN` becomes `135 / 12 / 37`, with zero TP loss.
-  Pooled X84 is `1,472 TP / 139 FP / 423 FN` at
-  `91.37/77.68/83.97%`, or `0 TP / -3 FP / +0.07 pp F1` over X83. All
-  contact, safe-segment, full-arm, and authority checks pass. This is post-hoc
-  Development-only; X73 still retains fresh authority until unchanged X84 is
-  exercised by a new preregistered source-disjoint gate. Cross-cohort diagnosis
-  then found two C36 frames where X68 current object-local geometry had already
-  released surface risk, but X72 reopened it in the same frame using only
-  historical boundary-completion proxies. X85 gives the current X68 geometric
-  falsifier precedence over that pure X72 reopening while preserving direct
-  carriers and later independent evidence. It changes only C36, from
-  `143 TP / 23 FP / 29 FN` to `143 / 21 / 29`; pooled X85 is
-  `1,472 TP / 137 FP / 423 FN` at `91.49/77.68/84.02%`, or
-  `0 TP / -2 FP / +0.05 pp F1` over X84. All required checks pass. X85 is
-  consumed Development-only and X73 retains fresh authority. X86 then binds a
-  forward-receding X57 metric handback's predicted entry to the inherited X24
-  evidence hold window: a route entry later than `0.60 s` cannot remain
-  authorized after its supporting measurement authority expires. It removes
-  one C32, two C39, and one C41 false-positive frames with zero TP loss. Pooled
-  X86 is `1,472 TP / 133 FP / 423 FN` at `91.71/77.68/84.11%`, or
-  `0 TP / -4 FP / +0.10 pp F1` over X85. All 30 receding-handback true
-  positives and all five closing-handback true positives remain protected; all
-  required checks pass. X86 is consumed Development-only and X73 retains fresh
-  authority. X87 then applies the same evidence-horizon principle to an
-  isolated X72 boundary-completion decision: completion proxies alone cannot
-  forecast route entry beyond the inherited `0.60 s` measurement hold window.
-  It removes two C35 and one C40 false-positive frames with zero TP loss. Pooled
-  X87 is `1,472 TP / 130 FP / 423 FN` at `91.89/77.68/84.19%`, or
-  `0 TP / -3 FP / +0.07 pp F1` over X86. The other nine cohorts are
-  classification-identical and every required check passes. X87 is consumed
-  Development-only and X73 retains fresh authority. X88 then treats a current
-  X68 object-local metric update as a new observation epoch: an older surface
-  transport contradiction remains diagnostic history but cannot independently
-  retain collision timing for a newly measured pure-lateral trajectory. It
-  removes one C27 and one C40 false-positive frame with zero TP loss. Pooled
-  X88 is `1,472 TP / 128 FP / 423 FN` at `92.00/77.68/84.23%`, or
-  `0 TP / -2 FP / +0.05 pp F1` over X87. The other nine cohorts are
-  classification-identical and every required check passes. X88 is consumed
-  Development-only and X73 retains fresh authority. X89 then rejects an
-  all-carrier receding consensus only when every surface branch has more
-  authorized hypotheses than direct anchor pairs and none has contradiction
-  history. It removes two C26 false-positive frames with zero TP loss while
-  preserving the similar contradicted C40 frames. Pooled X89 is
-  `1,472 TP / 126 FP / 423 FN` at `92.12/77.68/84.28%`, or
-  `0 TP / -2 FP / +0.05 pp F1` over X88. The other ten cohorts are
-  classification-identical and every required check passes. X89 is consumed
-  Development-only and X73 retains fresh authority. X90 then extends X79's
-  collision-credential distinction from exactly pure-lateral to
-  lateral-dominant surface motion without adding a fitted ratio. It clears
-  four C28 future-entry false-positive frames whose zero-contradiction parents
-  never obtained the inherited cross-representation collision credential,
-  with zero TP loss. Pooled X90 is `1,472 TP / 122 FP / 423 FN` at
-  `92.35/77.68/84.38%`, or `0 TP / -4 FP / +0.10 pp F1` over X89. The
-  other ten cohorts are classification-identical and every required check
-  passes. X90 is consumed Development-only and X73 retains fresh authority.
-  X91 then prevents a new alert from being born solely from held lineage
-  envelopes when their predicted entry is later than the inherited `0.60 s`
-  evidence hold window. It removes fourteen false-positive frames across eight
-  cohorts with zero TP loss. Pooled X91 is
-  `1,472 TP / 108 FP / 423 FN` at `93.16/77.68/84.72%`, or
-  `0 TP / -14 FP / +0.34 pp F1` over X90. C32/C37/C41 are
-  classification-identical and every required check passes. X91 is consumed
-  Development-only and X73 retains fresh authority. X92 then latches X91's
-  held-only suppression across the same parent lineage until new support,
-  parent change, or entry into the inherited evidence horizon. It removes
-  eleven more false-positive frames across five cohorts with zero TP loss.
-  Pooled X92 is `1,472 TP / 97 FP / 423 FN` at
-  `93.82/77.68/84.99%`, or `0 TP / -11 FP / +0.27 pp F1` over X91.
-  The other six cohorts are classification-identical and every required check
-  passes. X92 is consumed Development-only and X73 retains fresh authority.
-  X93 then prevents contradicted transport history from substituting for a
-  collision credential when every carrier is uncredentialed surface evidence
-  and the motion consensus is entirely receding or entirely lateral-dominant.
-  It preserves current overlap and removes thirteen positive-time future false
-  positives across C37/C40 with zero TP loss. Pooled X93 is
-  `1,472 TP / 84 FP / 423 FN` at `94.60/77.68/85.31%`, or
-  `0 TP / -13 FP / +0.32 pp F1` over X92. The other nine cohorts are
-  classification-identical and every required check passes. X93 is consumed
-  Development-only and X73 retains fresh authority.
-- **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
-  source. C11 improved full disappearance coverage to `1/8`, but failed the
-  frozen physical-occlusion source gate; no X31 prediction or metric was run.
-- **CARLA native-dynamics line:** N3 materialized three towns and all `12/12`
-  authored long-tail effects. The sole N4 replay attempt completed Town01, then
-  stopped before Town04 pixels because free memory was below the frozen floor;
-  Town05 never started. N4 v1 is a consumed incomplete Development attempt.
+- **Public/JRDB X21:** same-live-track transport of an already authorized X13
+  component; six consumed sequences reached `5/6` CONTACT, 11 false segments,
+  45.45% Event F1, `3.061 s` median lead, and `8/18` dropout recovery. This is
+  same-source Development; genuinely source-disjoint confirmation is pending.
+- **CARLA X73:** the latest complete source-disjoint synthetic Development
+  confirmation. On C35, parent-hull reconstruction improved X72 by
+  `+6 TP / +0 FP / +2.24 pp` frame F1, reaching `132/18/40` TP/FP/FN and
+  `88.00/76.74/81.99%` precision/recall/F1. The same-map, scripted-motion,
+  detector and evaluator boundaries remain; successors lack its confirmation.
+- **CARLA X94:** consumed post-hoc Development reference, `1478/84/417`
+  TP/FP/FN and `94.62/77.99/85.51%` frame precision/recall/F1 across eleven
+  cohorts. Its one-observation full-dropout bridge added six TP and no FP over
+  X93; same-parent evidence and an unchanged valid issued plan remain required.
+- **Credible simple comparator:** in the consumed C35 raw-input pilot, Kalman
+  CV + route tube + `0.60 s` hold tied X94 at 66.67% Event F1 and four false
+  segments, with two versus ten fragmentation runs. X94 retained better frame
+  F1 (`84.62%` versus `81.52%`), median lead (`2.80` versus `2.65 s`) and CLEAR
+  (`0.00` versus `0.20 s`). This tradeoff has no fresh eleven-arm adjudication.
+- **X95 remains a challenger:**
+  `DTR_CARLA_X95_CONSUMED_CROSS_VALIDATION_GATE_NOT_MET`. Its consumed replay
+  gained `3.74 pp` Event F1 and removed five false segments versus X94, but lost
+  `7.02 pp` frame F1 and added 30 fragment gaps. Simple `0.60 s` hysteresis
+  reached 89.07% frame F1 on that replay; complexity has not established a win.
 
-## Next admissible work
+## Current bottleneck
 
-1. Run one genuinely source-disjoint confirmation of unchanged X21 before any
-   promotion claim.
-2. For X31, admit a new source using raster-observable occlusion authority
-   before model inference; do not tune C8-C11 source thresholds or select
-   favorable episodes.
-3. A new N4 replay requires a new versioned authority. The consumed incomplete
-   invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun C35, C36, C37, C38, C39, C40, or C41 as confirmation. X73 remains
-   positively confirmed on C35; C36 and C37 are consumed successor-design
-   evidence. X77 reduced C37's remaining false positives from 24 to 23 and crossed its
-   precision floor with zero TP loss across all eight consumed cohorts. C38
-   froze X77 at seed `381077` with four changed render assignments. Its
-   single-use X76/X77 runner is bound to protocol SHA-256
-   `B11E8C0B138D075FEF9A74295AA8E4A3F730350C42F1237A453130A6838DD31D`;
-   C38 admitted and scored its sole invocation, but the X77 mechanism was not
-   exercised and the full gate failed. C39 then admitted and scored its sole
-   X78/X79 invocation under protocol SHA-256
-   `EC62FF07F2E1FBF2A43046083D4792D6A8A6ADF1CFAB65102505BCBE965637F3`.
-   Its full-arm constraints passed, but X79 exercised no lateral-only release
-   and produced no incremental effect. C40 then exercised X81 on three fresh
-   false-positive frames with zero TP loss, but its 83.77% full-arm precision
-   missed the 85% floor. Until a later full fresh gate passes, X73 retains
-   source-disjoint confirmation authority. Use C40 only for successor
-   diagnosis. X82 used that consumed diagnosis to reject held-only completion
-   proxy consensus and reaches 85.43% precision on C40 with zero TP loss across
-   ten consumed cohorts. Any later promotion still requires a new
-   preregistered source testing byte-frozen X82.
-   C41 subsequently produced strong inherited full-arm metrics but exercised
-   X82 zero times and exposed one non-rigid reference plus one parent mismatch.
-   Use C41 only for successor diagnosis; it supplies no incremental X82
-   confirmation and cannot be retried. X83 has now corrected C41's mixed
-   authority reference with classification identity across eleven consumed
-   cohorts. X84 then removes three branch-overloaded held-continuation false
-   positives with zero TP loss across those cohorts. X85 further removes two
-   C36 false positives caused by X72 reopening risk after same-frame X68
-   geometric release, again with zero TP loss. X86 then removes four
-   receding-handback forecasts that outlive their inherited evidence horizon,
-   again with zero TP loss across three cohorts. X87 applies that same evidence
-   horizon to isolated X72 completion proxies, removing three more false
-   positives across C35/C40 with zero TP loss. X88 then expires historical
-   transport-conflict authority after a current X68 metric-motion epoch change,
-   removing two more false positives across C27/C40 with zero TP loss. X89 then
-   rejects zero-contradiction receding branch consensus whose hypotheses all
-   outnumber direct anchors, removing two C26 false positives with zero TP
-   loss. X90 then requires an inherited collision credential before a
-   lateral-dominant surface branch can independently authorize positive-time
-   future entry, removing four C28 false positives with zero TP loss. X91 then
-   applies the inherited evidence horizon to held-only alert births, removing
-   fourteen false positives across eight cohorts with zero TP loss. X92 carries
-   that suppression across the unchanged held parent lineage, removing eleven
-   more false positives across five cohorts with zero TP loss. X93 then rejects
-   contradicted, uncredentialed receding or lateral-dominant positive-time
-   forecasts, removing thirteen C37/C40 false positives with zero TP loss. Any
-   promotion requires a new preregistered source testing frozen X93. X94 then
-   transports an immediately previous confirmed rigid surface carrier through
-   exactly one total detector-plus-metric dropout observation only when a
-   current held same-parent witness and unchanged valid issued-plan receipt
-   preserve identity and route authority. Across all eleven consumed cohorts it
-   recovers six true-positive frames with zero added false positives, improving
-   pooled TP/FP/FN from `1472/84/423` to `1478/84/417` and pooled
-   precision/recall/F1 from `94.60/77.68/85.31%` to
-   `94.62/77.99/85.51%`. X94 is consumed post-hoc Development; X73 retains
-   source-disjoint confirmation authority, and promotion requires a new
-   preregistered source testing byte-frozen X94.
+Frozen avoidance-only R1 reached `30/30` instance/witness source-stratum passes
+and a complete FIT_ONLY RGB/depth join. FINAL_A's depth server then exited
+before its first depth frame with `Shader compilation failures are Fatal`;
+FINAL_B RGB/depth never started. Status is
+`NOT_EVALUABLE_SOURCE_CAPTURE_INTERRUPTED`: nine complete sensor shards remain,
+no detector, fit, prediction or final method score was opened, and task-owned
+processes, ports and leases were released. The eleven-arm adapters have focused
+implementation checks only. This source failure changes no algorithm inheritance.
 
-Local uncommitted candidates and outputs are work in progress, not route
-authority. This page changes only in the scoped delivery that accepts or closes
-their result.
+The completed two-scene 720p probe passed 100 synchronized RGB/depth pairs.
+Synchronization alone did not improve capture time (`57.23 -> 59.13 s`). With
+both arms synchronized, fast lossless PNG reduced `63.28 -> 22.00 s` (2.88x);
+400 independently decoded images exactly matched their raw pixels, with 8.96%
+more encoded bytes. This was one ordered short comparison excluding warmup,
+not statistical throughput or long-run stability evidence. It preserves depth
+bytes but does not validate metric-depth decoding or establish a shader-crash fix.
 
-## Stop and claim boundary
+A subsequent Development composite reused nine intact shards, but FINAL_A depth
+again hit a shader fatal before any payload. A separate DX11 probe reached RPC
+but failed camera warmup. Both runs ended without detector, fit or scores; the
+client now detects server death promptly. Neither failed run is reopened here.
 
-- Do not tune the consumed JRDB sequences, CARLA cohorts, route tube,
-  lifecycle, association, or source gates against opened outcomes.
-- `UNKNOWN` and `NOT_EVALUABLE` are not `CLEAR`, negative evidence, or safety.
-- Component identity is diagnostic; wearer-global route conflict owns event
-  correctness.
-- Public replay and CARLA evidence are Development/mechanism evidence, not
-  Android, natural-distribution, user-benefit, deployment, or safety evidence.
+The immediate engineering gap is shader startup and usable camera frames, then
+sustained capture and downstream joins. Source and engineering registration remain blocked by an
+existing input-fingerprint mismatch; manual indexing cannot grant admission.
+The older eleven-cohort raw comparison cannot be reconstructed fairly: only
+C35 retains the required dense model/evaluator payloads. Derived tracks or
+recaptured pixels do not restore the original raw-input comparison.
 
-## Detail and evidence
+## Next decision
 
-- Detailed route ledger and reproduction commands: [README.md](README.md)
-- X21 result:
-  [X17_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_2026-08-29.md](X17_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_2026-08-29.md)
-- X24 result:
-  [DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md](carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md)
-- C11 source terminal:
-  [DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md](carla/DTR_CARLA_C11_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md)
-- N3/N4 result:
-  [DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md](carla/DTR_CARLA_N3_N4_MULTITOWN_NATIVE_FROZEN_REPLAY_RESULT_2026-08-31.md)
-- X84 consumed Development result:
-  [DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X84_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X85 consumed Development result:
-  [DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X85_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X86 consumed Development result:
-  [DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X86_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X87 consumed Development result:
-  [DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X87_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X88 consumed Development result:
-  [DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X88_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X89 consumed Development result:
-  [DTR_CARLA_X89_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X89_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X90 consumed Development result:
-  [DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X90_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X91 consumed Development result:
-  [DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X91_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X92 consumed Development result:
-  [DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X92_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X93 consumed Development result:
-  [DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X93_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X94 consumed Development result:
-  [DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
-- X64 consumed transfer Development:
-  [DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md](carla/DTR_CARLA_X64_CONSUMED_TRANSFER_DEVELOPMENT_20260831.md)
-- X64 C29-C32 fresh confirmation:
-  [DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C29_C32_X64_FRESH_CONFIRMATION_20260901.md)
-- X65 consumed cross-cohort Development:
-  [DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X65_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- C33 terminal source result:
-  [DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md](carla/DTR_CARLA_C33_SOURCE_NOT_EVALUABLE_20260901.md)
-- Frozen C34 X65 protocol:
-  [dtr_carla_c34_x65_fresh_source_protocol.json](carla/dtr_carla_c34_x65_fresh_source_protocol.json)
-- C34 X65 fresh confirmation:
-  [DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C34_X65_FRESH_CONFIRMATION_20260901.md)
-- X67 consumed cross-cohort Development:
-  [DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X67_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X68 consumed cross-cohort Development:
-  [DTR_CARLA_X68_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X68_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X69 consumed cross-cohort Development:
-  [DTR_CARLA_X69_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X69_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X70 consumed cross-cohort Development:
-  [DTR_CARLA_X70_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X70_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X71 consumed cross-cohort Development:
-  [DTR_CARLA_X71_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X71_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X72 consumed cross-cohort Development:
-  [DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X72_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X73 consumed cross-cohort Development:
-  [DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X73_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- C35 X73 fresh confirmation:
-  [DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md)
-- X77 consumed cross-cohort Development:
-  [DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X77_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- Frozen C38 X77 protocol:
-  [dtr_carla_c38_x77_fresh_confirmation_protocol.json](carla/dtr_carla_c38_x77_fresh_confirmation_protocol.json)
-- C38 single-use confirmation runner:
-  [run_dtr_carla_c38_x77_fresh_confirmation.py](carla/run_dtr_carla_c38_x77_fresh_confirmation.py)
-- C38 X77 fresh outcome:
-  [DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C38_X77_FRESH_CONFIRMATION_20260901.md)
-- X78 consumed cross-cohort Development:
-  [DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X78_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- X79 consumed cross-cohort Development:
-  [DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X79_CONSUMED_CROSS_COHORT_DEVELOPMENT_20260901.md)
-- Frozen C39 X79 protocol:
-  [dtr_carla_c39_x79_fresh_confirmation_protocol.json](carla/dtr_carla_c39_x79_fresh_confirmation_protocol.json)
-- C39 X79 fresh outcome:
-  [DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C39_X79_FRESH_CONFIRMATION_20260901.md)
-- X80 consumed nine-cohort Development:
-  [DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X80_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
-- X81 consumed nine-cohort Development:
-  [DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X81_CONSUMED_NINE_COHORT_DEVELOPMENT_20260901.md)
-- C40 X81 fresh outcome:
-  [DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C40_X81_FRESH_CONFIRMATION_20260901.md)
-- X82 consumed ten-cohort Development:
-  [DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X82_CONSUMED_TEN_COHORT_DEVELOPMENT_20260901.md)
-- C41 X82 fresh outcome:
-  [DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md)
-- X83 consumed eleven-cohort Development:
-  [DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+1. **Engineering:** isolate shader startup with a bounded camera-frame acceptance
+   check before another capture. RPC readiness alone did not suffice. If usable
+   frames pass, test a separately identified longer 720p capture with fast encoding.
+   Check independent pixel decode,
+   frame/time/pose alignment and downstream depth/join integrity; record elapsed
+   time and any native failure. If it passes, carry that component into a new
+   versioned source plan; if it fails, isolate that failure before another change.
+   This supplies bounded engineering evidence, never a retry grant for frozen R1.
+2. **Confirmation:** a new admitted source authority is required before the
+   pending comparison can proceed. Preserve the frozen eleven-arm decomposition,
+   including raw Kalman + emitter and X94 + the same emitter, shared event
+   primaries and secondary frame diagnostics. If collision-state quality adds
+   useful effect under that common emitter, retain that contribution; if the
+   simple baseline ties or wins, simplify the proposed architecture. Missing
+   source support leaves the algorithm question unresolved.
+3. **Exploration:** this update starts no X97 or new learner. A separately named
+   Development hypothesis may reuse disclosed consumed inputs; it does not revise
+   frozen scores or restore confirmation authority. JRDB X21 promotion still
+   needs its own unchanged, genuinely source-disjoint confirmation; CARLA cannot
+   substitute for it. No experiment is started by this documentation update.
 
-## Capture continuation, 2026-09-05
+## Boundaries
 
-A separately labeled Development composite reused nine complete shards, but
-FINAL_A depth again hit a native shader fatal before any payload. The separate
-DX11 probe reached RPC but failed camera warmup. No detector, fit or score ran.
-The capture client now exits promptly when its server dies; source admission
-remains required. See [continuation evidence](CARLA_FAST_COMPOSITE_SOURCE_20260905.md).
+- Frozen R1 is not retried or reclassified as fresh confirmation. Preserve its
+  seals, nine shards and crash evidence; no protected fit/final access follows
+  from capture-engineering success.
+- C35-C41 cannot be rerun as confirmation. C8-C11 admitted no evaluable X31
+  occlusion source; N4 v1 cannot resume or retry. It is consumed incomplete,
+  not a three-town result. Historical outcomes and source gates remain unchanged.
+- Consumed diagnosis is Development, not fresh authority. Keep frozen thresholds,
+  source gates, lifecycle, association, seeds and denominators with their original
+  results; changes belong to a separately identified Development version.
+- `UNKNOWN` and `NOT_EVALUABLE` are not `CLEAR`, negative evidence or safety.
+  Wearer-global route conflict owns event correctness; component identity is
+  diagnostic. Public replay and CARLA do not establish Android readiness,
+  natural-distribution performance, user benefit, deployment or safety.
+- Uncommitted candidates and outputs remain WIP. Existing structured inheritance
+  roles and historical verdicts remain authoritative; this compaction changes none.
+
+## Evidence links
+
+- [X21 result](X17_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_2026-08-29.md), [X73 confirmation](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md), [X94 result](carla/DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md).
+- [C35 raw-input pilot](DTR_BASELINE_RECKONING_C35_RAW_PILOT_20260905.md), [X95 result and simple controls](carla/DTR_CARLA_X95_CONSUMED_CROSS_VALIDATION_20260901.md).
+- [Frozen comparison design](DTR_FINAL_RECKONING_ROSTER_R1_20260905.md), [latest source execution and crash](DTR_FINAL_SOURCE_EXECUTION_20260905.md); the later execution record owns the design's current execution status.
+- [Completed RGB/depth and lossless-PNG probe](CARLA_RGBD_THROUGHPUT_20260905.md).
+- [Failed Development composite and DX11 probe](CARLA_FAST_COMPOSITE_SOURCE_20260905.md).
+- [Detailed ledger and reproduction](README.md), [formal research governance](../../../docs/formal/RESEARCH_GOVERNANCE.md).
+
+The full superseded current is preserved exactly in Git at
+`daf5720064d98a93b75336469d18e9a2fe0023e5:research/active/dtr-r0/CURRENT.md`.
+Use that history anchor and the existing result files for the X24-X94 trajectory;
+this page owns the present decision, not a second history ledger.

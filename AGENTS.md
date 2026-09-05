@@ -28,18 +28,18 @@ limits; read archives or full logs only when needed for that decision.
 
 ## Execution policy
 
-Default research mode is `EXPLORE`: one question, credible baseline, meaningful
-change, observable check, and stop condition. Implement first, then run the
-smallest falsifying check. The stop condition bounds this experiment; after
-assessing the result, continue any remaining authorized step toward the user's
-goal within its budget and evidence boundaries. Stop when that goal is complete
-or a concrete blocker requires user input or new authority.
+Default research mode is `EXPLORE`: one capability question and explanatory
+hypothesis, credible baseline, useful check, and decision for each outcome.
+Necessary coupled edits are allowed; use contrasts to resolve contribution.
+Follow [research workflow](research/WORKFLOW.md) for exploration, confirmation,
+and engineering. A stop bounds this experiment; assess it and continue the
+remaining authorized delivery within the budget and evidence boundaries.
 
 In `EXPLORE`, choose routine details and complete authorized reversible work
 without repeated approval. Ask only for a consequential unresolved choice;
 continue independent work while awaiting the answer.
 
-- transparently curated Development data and controlled scenarios are allowed;
+- disclosed consumed/curated Development data and controlled scenarios are allowed;
 - record a failure in the owning current/ledger when it changes a decision;
 - use one falsifying check; expand for an observed defect, explicit acceptance
   criterion, or decision-changing evidence gap;

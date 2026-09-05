@@ -23,6 +23,12 @@ the new proposal separately; it needs no prior success to justify exploration.
 Changing future criteria cannot retroactively pass the old experiment, erase
 its failure, or restore fresh-confirmation authority to consumed evidence.
 
+Exploration and engineering follow [the research workflow](../../research/WORKFLOW.md).
+Confirmation fixes a method to test a specified claim; its required independence
+depends on that claim. Enter the protected rules below for blind/final access or
+claim-critical numbers, not for every Development diagnostic. A mechanical
+interruption is not a method verdict; its existing retry contract still applies.
+
 ## Freeze before access
 
 Freeze the minimum surface needed to protect the claim:

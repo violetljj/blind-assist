@@ -1,28 +1,59 @@
 {
   "schema_version": 1,
-  "engine_version": "decision-v1",
+  "engine_version": "decision-v2-research-workflow",
   "failure_layers": [
     {
       "id": "authority_truth",
       "name": "真值与权限",
       "description": "输入、标签、oracle 或结果字段的权威性、泄漏与冲突。",
       "symptom_signals": [
-        "authority", "source conflict", "ground truth", "truth leak", "oracle", "annotation", "label leakage", "private truth", "权限", "权威", "真值", "泄漏", "标注冲突", "来源冲突"
+        "authority",
+        "source conflict",
+        "ground truth",
+        "truth leak",
+        "oracle",
+        "annotation",
+        "label leakage",
+        "private truth",
+        "权限",
+        "权威",
+        "真值",
+        "泄漏",
+        "标注冲突",
+        "来源冲突"
       ],
       "mechanism_signals": [
-        "authority", "ground truth", "oracle", "annotation", "label", "truth-blind", "public reference", "权限", "真值", "标注", "泄漏"
+        "authority",
+        "ground truth",
+        "oracle",
+        "annotation",
+        "label",
+        "truth-blind",
+        "public reference",
+        "权限",
+        "真值",
+        "标注",
+        "泄漏"
       ],
       "required_evidence": [
-        "输入 manifest 与可见字段", "独立 truth 的持有者与访问边界", "代码实际读取字段"
+        "输入 manifest 与可见字段",
+        "独立 truth 的持有者与访问边界",
+        "代码实际读取字段"
       ],
       "experiment": {
         "hypothesis": "当前故障主要由权威冲突或不可接受的真值访问造成，而不是下游模型能力不足。",
-        "baseline": "冻结当前输入契约和结果，不运行新模型。",
-        "single_change": "只移除冲突字段或换成具有明确公开/私有权限的来源。",
-        "cohort": "一个能够复现冲突的最小输入 manifest，加一个无冲突对照。",
+        "baseline": "保留原始输入契约和结果，比较可复现的冲突输入与无冲突对照。",
+        "single_change": "移除冲突字段或修正输入权限，检验原故障是否仍存在。",
+        "cohort": "一个可复现冲突的 Development manifest 和一个无冲突对照。",
         "primary_metric": "authority_violations=0 且原故障是否仍可复现",
-        "stop_conditions": ["发现任何 outcome/annotation/private-truth 泄漏", "无法确定 truth authority"],
-        "not_evaluable_conditions": ["缺少输入字段清单", "无法取得独立 truth"],
+        "stop_conditions": [
+          "发生未授权的 truth/outcome 访问",
+          "无法区分预测输入与评价真值"
+        ],
+        "not_evaluable_conditions": [
+          "缺少输入字段清单",
+          "无法取得独立 truth"
+        ],
         "claim_ceiling": "只能确认输入与证据权限是否成立，不能推出模型或产品能力。"
       }
     },
@@ -31,22 +62,60 @@
       "name": "信息源与覆盖",
       "description": "必要信息不存在、未帧对齐、候选覆盖不足或来源合同不满足。",
       "symptom_signals": [
-        "missing input", "no source", "coverage", "candidate coverage", "candidate set", "true target never enters", "frame aligned", "frame-aligned", "gps", "metadata only", "source unavailable", "no canary", "输入缺失", "来源不足", "覆盖不足", "候选缺失", "帧对齐", "没有数据", "无可用来源"
+        "missing input",
+        "no source",
+        "coverage",
+        "candidate coverage",
+        "candidate set",
+        "true target never enters",
+        "frame aligned",
+        "frame-aligned",
+        "gps",
+        "metadata only",
+        "source unavailable",
+        "no canary",
+        "输入缺失",
+        "来源不足",
+        "覆盖不足",
+        "候选缺失",
+        "帧对齐",
+        "没有数据",
+        "无可用来源"
       ],
       "mechanism_signals": [
-        "source", "coverage", "candidate", "frame-aligned", "gps", "retrieval", "data admission", "dataset", "来源", "覆盖", "候选", "帧对齐", "数据"
+        "source",
+        "coverage",
+        "candidate",
+        "frame-aligned",
+        "gps",
+        "retrieval",
+        "data admission",
+        "dataset",
+        "来源",
+        "覆盖",
+        "候选",
+        "帧对齐",
+        "数据"
       ],
       "required_evidence": [
-        "逐帧必需字段覆盖率", "候选集合是否包含真目标", "来源与 truth 的独立性"
+        "逐帧必需字段覆盖率",
+        "候选集合是否包含真目标",
+        "来源与 truth 的独立性"
       ],
       "experiment": {
         "hypothesis": "故障由必要信息源缺失或覆盖不足造成。",
-        "baseline": "保持当前下游 matcher、阈值和 evaluator 完全冻结。",
-        "single_change": "只引入一个具有新增信息的来源或表示。",
-        "cohort": "新鲜的最小 Development cohort，并在 outcome 前冻结。",
+        "baseline": "保存当前来源与下游输出，比较最简单可用来源和现有方法。",
+        "single_change": "检验新增信息或表示是否补足任务机会；必要接口适配需说明贡献。",
+        "cohort": "覆盖来源缺失与存在的最小 Development 集；可披露复用已消费材料。",
         "primary_metric": "required_field_coverage 与 downstream structural_reachability",
-        "stop_conditions": ["新增来源没有提供独立信息", "候选覆盖仍为零", "需要调下游阈值才能产生信号"],
-        "not_evaluable_conditions": ["来源没有帧级对齐", "truth 与输入来源不独立"],
+        "stop_conditions": [
+          "新增信息没有改善任务可达性，转为来源或表示诊断",
+          "隐瞒覆盖或分母变化"
+        ],
+        "not_evaluable_conditions": [
+          "来源没有帧级对齐",
+          "truth 与输入来源不独立"
+        ],
         "claim_ceiling": "只能说明该信息源在命名 cohort 上是否补足输入，不能推出通用系统效果。"
       }
     },
@@ -55,22 +124,58 @@
       "name": "观测与感知",
       "description": "检测、OCR、分割、深度或姿态观测本身错误或缺失。",
       "symptom_signals": [
-        "detector", "detection", "false negative", "ocr", "segmentation", "depth", "pose estimation", "recognition", "missed object", "检测", "漏检", "误检", "识别", "分割", "深度", "姿态", "文字识别"
+        "detector",
+        "detection",
+        "false negative",
+        "ocr",
+        "segmentation",
+        "depth",
+        "pose estimation",
+        "recognition",
+        "missed object",
+        "检测",
+        "漏检",
+        "误检",
+        "识别",
+        "分割",
+        "深度",
+        "姿态",
+        "文字识别"
       ],
       "mechanism_signals": [
-        "detector", "detection", "ocr", "segmentation", "depth", "pose", "recognition", "visual encoder", "检测", "识别", "分割", "深度", "姿态"
+        "detector",
+        "detection",
+        "ocr",
+        "segmentation",
+        "depth",
+        "pose",
+        "recognition",
+        "visual encoder",
+        "检测",
+        "识别",
+        "分割",
+        "深度",
+        "姿态"
       ],
       "required_evidence": [
-        "逐帧原始观测与时间戳", "感知输出覆盖/精度", "下游可达性对照"
+        "逐帧原始观测与时间戳",
+        "感知输出覆盖/精度",
+        "下游可达性对照"
       ],
       "experiment": {
         "hypothesis": "故障由观测质量而不是身份、时序或决策层造成。",
-        "baseline": "冻结候选、时序状态、几何和 evaluator。",
-        "single_change": "只替换一种观测或感知表示。",
-        "cohort": "包含命中、缺失和混淆对照的最小新鲜 Development 集。",
+        "baseline": "保存当前感知输出及下游任务表现，保留可复核的同输入比较。",
+        "single_change": "检验一种感知改进假设；允许必要的 tracker/接口适配并核对整体贡献。",
+        "cohort": "包含命中、缺失和混淆的最小 Development 集，记录来源与复用状态。",
         "primary_metric": "观测覆盖变化及冻结下游的目标指标变化",
-        "stop_conditions": ["观测改善但冻结下游结构上不可达", "需要同时改 tracker 或阈值"],
-        "not_evaluable_conditions": ["缺少逐帧 truth", "输入与标签时间未对齐"],
+        "stop_conditions": [
+          "观测改善没有带来任务收益，检查瓶颈或停止该候选",
+          "无法重建前后比较条件"
+        ],
+        "not_evaluable_conditions": [
+          "缺少逐帧 truth",
+          "输入与标签时间未对齐"
+        ],
         "claim_ceiling": "只证明命名感知源的单因素作用，不证明端到端、自然分布或安全能力。"
       }
     },
@@ -79,22 +184,62 @@
       "name": "身份绑定与候选选择",
       "description": "在近似实例、重复文本或多候选中绑定错目标、错 owner 或错 referent。",
       "symptom_signals": [
-        "identity drift", "wrong target", "referent", "binding", "owner", "near identical", "same class", "duplicate instance", "false lock", "multiview appearance", "view selector", "preserve", "flip", "身份漂移", "错目标", "实例混淆", "同类目标", "绑定错误", "重复实例", "错误锁定", "多视角外观"
+        "identity drift",
+        "wrong target",
+        "referent",
+        "binding",
+        "owner",
+        "near identical",
+        "same class",
+        "duplicate instance",
+        "false lock",
+        "multiview appearance",
+        "view selector",
+        "preserve",
+        "flip",
+        "身份漂移",
+        "错目标",
+        "实例混淆",
+        "同类目标",
+        "绑定错误",
+        "重复实例",
+        "错误锁定",
+        "多视角外观"
       ],
       "mechanism_signals": [
-        "identity", "instance", "referent", "binding", "owner", "reference image", "near-id", "verification", "身份", "实例", "指代", "绑定", "验证"
+        "identity",
+        "instance",
+        "referent",
+        "binding",
+        "owner",
+        "reference image",
+        "near-id",
+        "verification",
+        "身份",
+        "实例",
+        "指代",
+        "绑定",
+        "验证"
       ],
       "required_evidence": [
-        "目标定义与 public reference", "候选集合和错误目标分母", "身份信息是否独立于位置"
+        "目标定义与 public reference",
+        "候选集合和错误目标分母",
+        "身份信息是否独立于位置"
       ],
       "experiment": {
         "hypothesis": "候选已覆盖真目标，但身份信息不足导致错误绑定。",
-        "baseline": "冻结候选、几何、时序控制器和 evaluator。",
-        "single_change": "只增加一个身份信息机制或验证信号。",
-        "cohort": "至少包含真目标、近似干扰项和 absent 对照的最小新鲜集。",
+        "baseline": "当前候选选择与最简单身份基线；分别记录错目标、正确和 UNKNOWN。",
+        "single_change": "检验身份信息或证据承诺表示；必要的候选与验证协同修改应显式说明。",
+        "cohort": "包含真目标、近似干扰与可证明 absent 的 Development 对照；缺失项明确列出。",
         "primary_metric": "wrong_target_count 与 evaluable referent accuracy",
-        "stop_conditions": ["候选集合不含真目标", "身份信号可由位置或中心偏置泄漏", "需要改变候选分母"],
-        "not_evaluable_conditions": ["没有 exact-instance truth", "public reference 不能唯一指代目标"],
+        "stop_conditions": [
+          "身份来源泄漏评价目标",
+          "隐瞒候选、错误或 UNKNOWN 分母变化"
+        ],
+        "not_evaluable_conditions": [
+          "没有 exact-instance truth",
+          "public reference 不能唯一指代目标"
+        ],
         "claim_ceiling": "只证明命名条件下的身份绑定信号，不证明 waypoint、arrival 或通用实例识别。"
       }
     },
@@ -103,22 +248,58 @@
       "name": "时序状态与重捕获",
       "description": "遮挡、dropout、轨迹断裂、闪烁以及 LOST 后无法维持或重建状态。",
       "symptom_signals": [
-        "track dropout", "dropout", "occlusion", "lost", "reacquire", "fragment", "flicker", "missing track", "time since seen", "遮挡", "丢失", "重捕获", "轨迹断裂", "闪烁", "短时缺测", "时序状态"
+        "track dropout",
+        "dropout",
+        "occlusion",
+        "lost",
+        "reacquire",
+        "fragment",
+        "flicker",
+        "missing track",
+        "time since seen",
+        "遮挡",
+        "丢失",
+        "重捕获",
+        "轨迹断裂",
+        "闪烁",
+        "短时缺测",
+        "时序状态"
       ],
       "mechanism_signals": [
-        "temporal", "track", "belief", "reacquire", "occlusion", "missingness", "imputation", "memory", "时序", "轨迹", "信念", "重捕获", "遮挡", "缺失"
+        "temporal",
+        "track",
+        "belief",
+        "reacquire",
+        "occlusion",
+        "missingness",
+        "imputation",
+        "memory",
+        "时序",
+        "轨迹",
+        "信念",
+        "重捕获",
+        "遮挡",
+        "缺失"
       ],
       "required_evidence": [
-        "有序帧与单调时间戳", "逐帧 observed/imputed/unknown 标记", "身份连续性"
+        "有序帧与单调时间戳",
+        "逐帧 observed/imputed/unknown 标记",
+        "身份连续性"
       ],
       "experiment": {
         "hypothesis": "单帧观测足够，但缺少有界时序状态导致 dropout 后功能失效。",
-        "baseline": "冻结逐帧观测、候选、几何和 evaluator，使用无状态基线。",
-        "single_change": "只加入有界 temporal belief、gap mask 或重捕获状态。",
-        "cohort": "包含短遮挡、长遮挡、身份切换和 absent 对照的最小新鲜序列。",
+        "baseline": "可复现的当前时序方法与无状态或固定动作基线。",
+        "single_change": "检验有界状态、观测动作与重捕获的一个联合假设，按需要拆清贡献。",
+        "cohort": "含观察缺失、重现、身份切换及 absent 的有序 Development 序列。",
         "primary_metric": "continuity/reacquisition 改善，同时 wrong_lock 与 false_commit 不上升",
-        "stop_conditions": ["使用未来帧", "把 imputed 当 observed", "长时无观测仍强制存在"],
-        "not_evaluable_conditions": ["没有可靠时间戳", "无法区分漏检与目标离场"],
+        "stop_conditions": [
+          "使用预测时不可见的未来帧",
+          "把 imputed 当 observed 或隐藏 UNKNOWN"
+        ],
+        "not_evaluable_conditions": [
+          "没有可靠时间戳",
+          "无法区分漏检与目标离场"
+        ],
         "claim_ceiling": "只说明冻结观测上的时序机制效果，不证明检测覆盖、自然视频或安全。"
       }
     },
@@ -127,22 +308,69 @@
       "name": "几何、运动与可达性",
       "description": "深度尺度、方向、相对运动、closing signal、路线相交或可达性结构失败。",
       "symptom_signals": [
-        "static occupancy", "closing speed", "ttc", "route intersection", "orientation", "bearing", "depth scale", "motion", "flow", "reachable", "waypoint", "静态占据", "闭合速度", "碰撞时间", "路线相交", "方向", "方位", "深度尺度", "运动", "光流", "可达", "路径点"
+        "static occupancy",
+        "closing speed",
+        "ttc",
+        "route intersection",
+        "orientation",
+        "bearing",
+        "depth scale",
+        "motion",
+        "flow",
+        "reachable",
+        "waypoint",
+        "静态占据",
+        "闭合速度",
+        "碰撞时间",
+        "路线相交",
+        "方向",
+        "方位",
+        "深度尺度",
+        "运动",
+        "光流",
+        "可达",
+        "路径点"
       ],
       "mechanism_signals": [
-        "geometry", "motion", "occupancy", "flow", "trajectory", "route tube", "ttc", "orientation", "bearing", "depth", "waypoint", "reachability", "几何", "运动", "占据", "轨迹", "方向", "深度", "可达"
+        "geometry",
+        "motion",
+        "occupancy",
+        "flow",
+        "trajectory",
+        "route tube",
+        "ttc",
+        "orientation",
+        "bearing",
+        "depth",
+        "waypoint",
+        "reachability",
+        "几何",
+        "运动",
+        "占据",
+        "轨迹",
+        "方向",
+        "深度",
+        "可达"
       ],
       "required_evidence": [
-        "相机/佩戴者姿态与时间对齐", "目标相对运动或独立 closing signal", "冻结 matcher 的结构可达性"
+        "相机/佩戴者姿态与时间对齐",
+        "目标相对运动或独立 closing signal",
+        "冻结 matcher 的结构可达性"
       ],
       "experiment": {
         "hypothesis": "静态位置或单帧尺度不足，故障需要因果时空运动信息。",
-        "baseline": "冻结目标观测、路线、matcher、阈值和生命周期。",
-        "single_change": "只增加一种因果 spatiotemporal occupancy/flow/closing 表示。",
-        "cohort": "包含接近、远离、横穿和静止对照的最小新鲜序列。",
+        "baseline": "当前风险方法和同输入预算的简单运动基线，保持可复核的事件比较。",
+        "single_change": "检验时空占据或运动表示如何改善风险事件；允许有依据的下游适配。",
+        "cohort": "覆盖接近、远离、横穿、静止与缺测的 Development 序列。",
         "primary_metric": "frozen downstream structural reachability 与 named event recall/false alerts",
-        "stop_conditions": ["新增信号仍无法越过冻结 matcher 的必要条件", "需要降低 closing threshold 或扩 tube 才生效", "使用未来帧"],
-        "not_evaluable_conditions": ["只有静态 occupancy", "没有自运动或目标运动时间基准"],
+        "stop_conditions": [
+          "使用未来帧或不可见的评价真值",
+          "新增复杂度没有任务收益，返回归因或简化"
+        ],
+        "not_evaluable_conditions": [
+          "只有静态 occupancy",
+          "没有自运动或目标运动时间基准"
+        ],
         "claim_ceiling": "只证明命名运动表示对冻结下游的因果可达性，不证明通用深度、产品或安全。"
       }
     },
@@ -151,22 +379,61 @@
       "name": "决策与事件生命周期",
       "description": "阈值、迟滞、ONSET/HOLD/CLEAR、误报持续和事件碎片化。",
       "symptom_signals": [
-        "threshold", "onset", "hold", "clear", "hysteresis", "false alert", "false commit", "event lifecycle", "fragmented event", "release", "阈值", "报警", "迟滞", "误报", "事件碎片", "生命周期", "释放", "清除"
+        "threshold",
+        "onset",
+        "hold",
+        "clear",
+        "hysteresis",
+        "false alert",
+        "false commit",
+        "event lifecycle",
+        "fragmented event",
+        "release",
+        "阈值",
+        "报警",
+        "迟滞",
+        "误报",
+        "事件碎片",
+        "生命周期",
+        "释放",
+        "清除"
       ],
       "mechanism_signals": [
-        "decision", "threshold", "event", "lifecycle", "hysteresis", "onset", "hold", "clear", "risk tracker", "决策", "阈值", "事件", "生命周期", "迟滞", "报警"
+        "decision",
+        "threshold",
+        "event",
+        "lifecycle",
+        "hysteresis",
+        "onset",
+        "hold",
+        "clear",
+        "risk tracker",
+        "决策",
+        "阈值",
+        "事件",
+        "生命周期",
+        "迟滞",
+        "报警"
       ],
       "required_evidence": [
-        "冻结的逐帧上游分数", "事件级 truth 与分母", "ONSET/HOLD/CLEAR 转移日志"
+        "冻结的逐帧上游分数",
+        "事件级 truth 与分母",
+        "ONSET/HOLD/CLEAR 转移日志"
       ],
       "experiment": {
         "hypothesis": "上游信号可用，但事件状态机把它转成了碎片化、过早或过晚决策。",
-        "baseline": "冻结上游逐帧输出和 evaluator，重放当前生命周期。",
-        "single_change": "只改变一个预注册的生命周期机制，而不是结果后调阈值。",
-        "cohort": "新鲜或未消费的事件级 replay，包含正、负和 UNKNOWN 段。",
+        "baseline": "保存当前事件策略与逐帧输入，比较简单策略的收益、误报和碎片化。",
+        "single_change": "检验事件策略假设；协同预测修改需另报贡献，评价条件变更需另记版本。",
+        "cohort": "有事件级 truth、触发、解除和 UNKNOWN 的 Development replay，可披露复用。",
         "primary_metric": "event recall、false-alert duration、onset/release delay 与 fragmentation",
-        "stop_conditions": ["需要结果后选择阈值", "把 UNKNOWN 当 CLEAR", "同时改变上游预测"],
-        "not_evaluable_conditions": ["没有事件级 truth", "分数与 truth 未时间对齐"],
+        "stop_conditions": [
+          "把 UNKNOWN 计为 CLEAR",
+          "隐瞒预测、评价条件或分母的改变"
+        ],
+        "not_evaluable_conditions": [
+          "没有事件级 truth",
+          "分数与 truth 未时间对齐"
+        ],
         "claim_ceiling": "只证明冻结上游上的事件策略效果，不证明感知、自然分布或安全。"
       }
     },
@@ -175,22 +442,56 @@
       "name": "功能部件与任务落点",
       "description": "实例身份已正确，但请求的功能被落到父对象、错误部件或仅有语义相关而无实际功能的区域。",
       "symptom_signals": [
-        "wrong functional part", "functional element", "parent object box", "whole object box", "handle", "button", "switch", "seat surface", "wrong part", "功能部件", "功能落点", "父对象框", "整物体框", "把手", "按钮", "开关", "座位接触面", "部件错误"
+        "wrong functional part",
+        "functional element",
+        "parent object box",
+        "whole object box",
+        "handle",
+        "button",
+        "switch",
+        "seat surface",
+        "wrong part",
+        "功能部件",
+        "功能落点",
+        "父对象框",
+        "整物体框",
+        "把手",
+        "按钮",
+        "开关",
+        "座位接触面",
+        "部件错误"
       ],
       "mechanism_signals": [
-        "functionality", "functional element", "functional part", "affordance segmentation", "part grounding", "task-conditioned part", "功能部件", "功能分割", "任务落点", "部件定位"
+        "functionality",
+        "functional element",
+        "functional part",
+        "affordance segmentation",
+        "part grounding",
+        "task-conditioned part",
+        "功能部件",
+        "功能分割",
+        "任务落点",
+        "部件定位"
       ],
       "required_evidence": [
-        "已冻结的 exact-instance 候选与身份 truth", "任务所需功能部件的独立标注", "父对象与相邻非功能部件负例"
+        "已冻结的 exact-instance 候选与身份 truth",
+        "任务所需功能部件的独立标注",
+        "父对象与相邻非功能部件负例"
       ],
       "experiment": {
         "hypothesis": "实例绑定已成立，故障来自父对象表示没有提供任务所需的细粒度功能部件。",
-        "baseline": "冻结 exact-instance 候选、视图、几何、下游 handoff 和 evaluator，使用父对象框或现有部件表示。",
-        "single_change": "只加入一种 task-conditioned functional-element 表示。",
-        "cohort": "包含真功能部件、相邻非功能部件、同类实例和 absent 对照的最小新鲜集。",
+        "baseline": "当前功能部件方法与父对象框基线，检查真目标机会及最终任务表现。",
+        "single_change": "检验任务条件化功能表示，说明必要身份/几何适配带来的贡献。",
+        "cohort": "含真功能部件、相邻非功能部件、同类实例及 absent 的 Development 对照。",
         "primary_metric": "functional_part_hit_rate、wrong_part_count 与 parent_box_false_handoff",
-        "stop_conditions": ["真实例未进入候选", "需要改变身份分母或 outcome 后调阈值", "功能标注来自模型自身输出"],
-        "not_evaluable_conditions": ["没有独立功能部件 truth", "任务无法唯一规定所需功能"],
+        "stop_conditions": [
+          "以模型自身输出冒充独立功能真值",
+          "隐瞒身份或部件评价分母变化"
+        ],
+        "not_evaluable_conditions": [
+          "没有独立功能部件 truth",
+          "任务无法唯一规定所需功能"
+        ],
         "claim_ceiling": "只能证明命名 cohort 上的功能部件 grounding，不证明动作可达、完成、用户收益或安全。"
       }
     },
@@ -199,22 +500,55 @@
       "name": "可行动区域与关键点",
       "description": "功能部件已找到，但动作点、接触区、关键点或 actionability 表示落在不可操作位置。",
       "symptom_signals": [
-        "action point", "actionable point", "keypoint", "contact region", "affordance point", "mask centroid", "box center", "where to act", "wrong side", "动作点", "操作点", "可行动区域", "关键点", "接触区", "掩码质心", "框中心", "错误侧面"
+        "action point",
+        "actionable point",
+        "keypoint",
+        "contact region",
+        "affordance point",
+        "mask centroid",
+        "box center",
+        "where to act",
+        "wrong side",
+        "动作点",
+        "操作点",
+        "可行动区域",
+        "关键点",
+        "接触区",
+        "掩码质心",
+        "框中心",
+        "错误侧面"
       ],
       "mechanism_signals": [
-        "actionability", "action keypoint", "affordance point", "contact map", "relational keypoint", "action proposal", "可行动", "动作关键点", "接触点", "动作建议"
+        "actionability",
+        "action keypoint",
+        "affordance point",
+        "contact map",
+        "relational keypoint",
+        "action proposal",
+        "可行动",
+        "动作关键点",
+        "接触点",
+        "动作建议"
       ],
       "required_evidence": [
-        "冻结的功能部件 mask", "动作点或接触区独立 truth", "不可操作点与 absent 对照"
+        "冻结的功能部件 mask",
+        "动作点或接触区独立 truth",
+        "不可操作点与 absent 对照"
       ],
       "experiment": {
         "hypothesis": "功能部件正确，但 box center 或 mask centroid 不是执行目标动作的有效点。",
-        "baseline": "冻结实例、功能部件、深度、下游与 evaluator，使用当前动作点规则。",
-        "single_change": "只替换为一种 actionability/keypoint/contact-region 表示。",
-        "cohort": "包含有效动作点、不可动点、遮挡点和 absent 对照的最小新鲜集。",
+        "baseline": "当前动作点与简单中心/几何基线，分别记录上游机会和有效落点。",
+        "single_change": "检验 actionability、接触区或动作点假设，并说明必要深度/接口适配。",
+        "cohort": "含有效点、不可动作点、遮挡及 absent 的 Development 对照。",
         "primary_metric": "point_in_actionable_region、3d_valid_rate 与 false_ready_count",
-        "stop_conditions": ["功能部件本身错误", "需要同步修改深度或完成阈值", "把 proposal 分数当 outcome truth"],
-        "not_evaluable_conditions": ["没有动作点或接触区 truth", "深度与图像未对齐"],
+        "stop_conditions": [
+          "以 proposal 分数替代 outcome truth",
+          "结果无法区分上游缺失与动作点误差"
+        ],
+        "not_evaluable_conditions": [
+          "没有动作点或接触区 truth",
+          "深度与图像未对齐"
+        ],
         "claim_ceiling": "只能证明命名 action-point 表示的单因素作用，不证明物理可达、真实动作成功或安全。"
       }
     },
@@ -223,22 +557,64 @@
       "name": "交互就绪与站位",
       "description": "目标和动作区可见或已接近，但可达性、净空、朝向、通行状态或人体使用条件尚未满足。",
       "symptom_signals": [
-        "interaction ready", "manipulation ready", "docking point", "clearance", "reachable", "interactable", "passage", "door status", "visible but not reachable", "near but unusable", "wrong side", "交互就绪", "可达", "净空", "站位", "朝向", "可通过", "门状态", "看见但够不到", "靠近但不可用", "错误侧面"
+        "interaction ready",
+        "manipulation ready",
+        "docking point",
+        "clearance",
+        "reachable",
+        "interactable",
+        "passage",
+        "door status",
+        "visible but not reachable",
+        "near but unusable",
+        "wrong side",
+        "交互就绪",
+        "可达",
+        "净空",
+        "站位",
+        "朝向",
+        "可通过",
+        "门状态",
+        "看见但够不到",
+        "靠近但不可用",
+        "错误侧面"
       ],
       "mechanism_signals": [
-        "docking", "base pose", "clearance", "reachability", "interactability", "human affordance", "passage", "door status", "interaction-aware", "站位", "净空", "可达性", "人体可供性", "通行"
+        "docking",
+        "base pose",
+        "clearance",
+        "reachability",
+        "interactability",
+        "human affordance",
+        "passage",
+        "door status",
+        "interaction-aware",
+        "站位",
+        "净空",
+        "可达性",
+        "人体可供性",
+        "通行"
       ],
       "required_evidence": [
-        "目标/动作区与用户或 agent 几何", "可见、可达、净空、朝向或通行状态的独立标注", "near-but-not-ready 负例"
+        "目标/动作区与用户或 agent 几何",
+        "可见、可达、净空、朝向或通行状态的独立标注",
+        "near-but-not-ready 负例"
       ],
       "experiment": {
         "hypothesis": "目标定位成立，但缺少 interaction-ready verifier 导致在不可用站位过早交接。",
-        "baseline": "冻结目标、动作点、导航轨迹和 completion evaluator，使用距离或可见性基线。",
-        "single_change": "只加入一个预注册的 interaction-ready predicate 或站位表示。",
-        "cohort": "包含近但不可达、可达但遮挡、净空不足、状态未知和正确站位的最小新鲜集。",
+        "baseline": "当前交互就绪策略与距离/可见性基线，明确未就绪与未知对照。",
+        "single_change": "检验就绪条件与站位表示；必要导航接口改动按其实际贡献比较。",
+        "cohort": "含近但不可达、遮挡、净空不足、未知及正确站位的 Development 对照。",
         "primary_metric": "false_ready=0、valid_ready_coverage 与 NOT_EVALUABLE denominator",
-        "stop_conditions": ["把接近或可见直接当完成", "缺失 predicate 被 VLM 或默认值补成成功", "同时修改导航或 completion 阈值"],
-        "not_evaluable_conditions": ["缺少用户/agent 几何", "没有独立交互就绪 truth", "门或 passage 当前状态未知"],
+        "stop_conditions": [
+          "把接近或可见直接当完成",
+          "以缺省值或模型猜测补成成功"
+        ],
+        "not_evaluable_conditions": [
+          "缺少用户/agent 几何",
+          "没有独立交互就绪 truth",
+          "门或 passage 当前状态未知"
+        ],
         "claim_ceiling": "只能证明命名交互就绪条件，不证明动作结果、端到端导航、用户收益或安全。"
       }
     },
@@ -247,22 +623,56 @@
       "name": "交接与完成判定",
       "description": "把 referent、affordance、waypoint、可见或接近误当作 arrival/completion。",
       "symptom_signals": [
-        "handoff", "arrival", "completion", "reached", "affordance", "nearest free point", "goal complete", "visible but not reachable", "交接", "到达", "完成", "可供性", "最近空点", "看见但未到达", "目标完成"
+        "handoff",
+        "arrival",
+        "completion",
+        "reached",
+        "affordance",
+        "nearest free point",
+        "goal complete",
+        "visible but not reachable",
+        "交接",
+        "到达",
+        "完成",
+        "可供性",
+        "最近空点",
+        "看见但未到达",
+        "目标完成"
       ],
       "mechanism_signals": [
-        "handoff", "arrival", "completion", "affordance", "waypoint", "receipt", "goal contract", "交接", "到达", "完成", "可供性", "路径点", "回执"
+        "handoff",
+        "arrival",
+        "completion",
+        "affordance",
+        "waypoint",
+        "receipt",
+        "goal contract",
+        "交接",
+        "到达",
+        "完成",
+        "可供性",
+        "路径点",
+        "回执"
       ],
       "required_evidence": [
-        "referent/affordance/waypoint/arrival 分离标签", "handoff receipt", "完成事件 truth"
+        "referent/affordance/waypoint/arrival 分离标签",
+        "handoff receipt",
+        "完成事件 truth"
       ],
       "experiment": {
         "hypothesis": "上游定位成立，但缺少显式 handoff/completion contract 导致过早完成。",
-        "baseline": "冻结 referent、几何和导航输出。",
-        "single_change": "只增加显式 handoff receipt 或完成判定器。",
-        "cohort": "包含可见未到达、到达未完成、正确完成和 absent 对照的最小集。",
+        "baseline": "保存当前 referent、几何与导航输出，对照显式完成证据。",
+        "single_change": "检验完成回执或 handoff 判断如何改变任务结果。",
+        "cohort": "含可见未到达、到达未完成、正确完成与 absent 的最小 Development 对照。",
         "primary_metric": "false_completion=0 且 valid_completion coverage",
-        "stop_conditions": ["用 bbox、距离或 nearest-free-point 代替 arrival truth", "没有独立完成回执"],
-        "not_evaluable_conditions": ["没有完成事件 truth", "无法区分 waypoint 与 arrival"],
+        "stop_conditions": [
+          "以 bbox、距离或 nearest-free-point 代替独立完成真值",
+          "无法区分缺少完成证据与真实未完成"
+        ],
+        "not_evaluable_conditions": [
+          "没有完成事件 truth",
+          "无法区分 waypoint 与 arrival"
+        ],
         "claim_ceiling": "只证明显式交接合同的窄效果，不证明导航、用户收益或安全。"
       }
     },
@@ -271,22 +681,63 @@
       "name": "评估、分母与证据权限",
       "description": "分母、cohort、基线、冻结协议或 evidence authority 使结果不可解释。",
       "symptom_signals": [
-        "not evaluable", "denominator", "consumed cohort", "development gate", "final test", "baseline", "metric mismatch", "frozen protocol", "leakage", "view selector sweep", "gate not met", "不可评估", "分母", "已消费", "开发集", "最终测试", "基线", "指标不一致", "冻结协议", "证据权限"
+        "not evaluable",
+        "denominator",
+        "consumed cohort",
+        "development gate",
+        "final test",
+        "baseline",
+        "metric mismatch",
+        "frozen protocol",
+        "leakage",
+        "view selector sweep",
+        "gate not met",
+        "不可评估",
+        "分母",
+        "已消费",
+        "开发集",
+        "最终测试",
+        "基线",
+        "指标不一致",
+        "冻结协议",
+        "证据权限"
       ],
       "mechanism_signals": [
-        "evaluation", "benchmark", "metric", "baseline", "protocol", "calibration", "denominator", "evidence", "评估", "指标", "基线", "协议", "分母", "证据"
+        "evaluation",
+        "benchmark",
+        "metric",
+        "baseline",
+        "protocol",
+        "calibration",
+        "denominator",
+        "evidence",
+        "评估",
+        "指标",
+        "基线",
+        "协议",
+        "分母",
+        "证据"
       ],
       "required_evidence": [
-        "冻结协议与 cohort identity", "明确分母和 UNKNOWN 数量", "baseline 与 evaluator 哈希"
+        "冻结协议与 cohort identity",
+        "明确分母和 UNKNOWN 数量",
+        "baseline 与 evaluator 哈希"
       ],
       "experiment": {
         "hypothesis": "当前结果不能支持决策，因为分母、协议或证据权限不成立。",
-        "baseline": "停止新增模型调用，保留现有结果原样。",
-        "single_change": "只修复一个评估合同，并使用新版本或未打开的合法 cohort。",
-        "cohort": "最小 fresh/blind cohort，或纯审计而不重新执行 consumed cohort。",
+        "baseline": "保留原结果和评价版本，先审计分母、机会和比较条件。",
+        "single_change": "检验一项评价合同修正是否使问题可判断；新的标准另记版本，不能追认旧实验通过。",
+        "cohort": "探索可用已消费输出做披露的配对诊断；确认另选满足声明独立性的未开封材料。",
         "primary_metric": "denominator_valid=1、authority_conflict=0、decision_evaluable=1",
-        "stop_conditions": ["需要重开 consumed cohort", "需要结果后改门槛", "无法恢复冻结输入/输出 identity"],
-        "not_evaluable_conditions": ["分母未知", "baseline 或 evaluator 已漂移", "truth authority 冲突"],
+        "stop_conditions": [
+          "改写旧结果或恢复 consumed fresh authority",
+          "无法恢复原始输入、输出与评价身份"
+        ],
+        "not_evaluable_conditions": [
+          "分母未知",
+          "baseline 或 evaluator 已漂移",
+          "truth authority 冲突"
+        ],
         "claim_ceiling": "只能恢复结果的可解释性，不能把不可评估结果改写为正负效果。"
       }
     },
@@ -295,153 +746,432 @@
       "name": "运行时与基础设施",
       "description": "构建、设备、传输、解码、资源或进程失败，尚未触达科学问题。",
       "symptom_signals": [
-        "build failed", "gradle", "adb", "crash", "timeout", "oom", "out of memory", "cuda", "transport", "decode", "network", "process exited", "编译失败", "构建失败", "设备离线", "崩溃", "超时", "显存", "传输", "解码", "网络"
+        "build failed",
+        "gradle",
+        "adb",
+        "crash",
+        "timeout",
+        "oom",
+        "out of memory",
+        "cuda",
+        "transport",
+        "decode",
+        "network",
+        "process exited",
+        "编译失败",
+        "构建失败",
+        "设备离线",
+        "崩溃",
+        "超时",
+        "显存",
+        "传输",
+        "解码",
+        "网络"
       ],
       "mechanism_signals": [
-        "runtime", "build", "gradle", "android", "transport", "streaming", "decode", "resource", "deployment", "运行时", "构建", "设备", "传输", "解码", "部署"
+        "runtime",
+        "build",
+        "gradle",
+        "android",
+        "transport",
+        "streaming",
+        "decode",
+        "resource",
+        "deployment",
+        "运行时",
+        "构建",
+        "设备",
+        "传输",
+        "解码",
+        "部署"
       ],
       "required_evidence": [
-        "退出码与原始 stderr", "进程/设备/资源状态", "最后成功的 mechanics-only 检查"
+        "退出码与原始 stderr",
+        "进程/设备/资源状态",
+        "最后成功的 mechanics-only 检查"
       ],
       "experiment": {
         "hypothesis": "失败发生在运行机制或资源层，科学假设尚未被执行。",
-        "baseline": "不消耗正式 seed、test 或外部预算。",
-        "single_change": "只修复一个机械故障并运行 formal-shaped smoke。",
-        "cohort": "零科学样本的代理 payload 或最小 smoke input。",
+        "baseline": "当前运行路径的完成率、耗时和资源占用；保留输入输出一致性基线。",
+        "single_change": "修复观察到的工程故障或瓶颈，用 task-owned replay 检验正确性与恢复能力。",
+        "cohort": "不含受保护结果的代表性 smoke/replay 输入；在较长运行前检查恢复契约。",
         "primary_metric": "transport/decode/process 完整通过且 scientific_consumption=0",
-        "stop_conditions": ["会消耗正式 cohort 或预算", "版本/凭证/输出 identity 不可固定"],
-        "not_evaluable_conditions": ["缺少原始错误", "无法区分 wrapper 与实际 worker"],
+        "stop_conditions": [
+          "会访问受保护 outcome 或越过既有预算",
+          "无法验证输入、输出或运行身份"
+        ],
+        "not_evaluable_conditions": [
+          "缺少原始错误",
+          "无法区分 wrapper 与实际 worker"
+        ],
         "claim_ceiling": "只能证明机械可运行，不能证明存在信号或跨过功能门槛。"
       }
     }
   ],
   "route_profiles": {
-    "obstacle-avoidance": ["obstacle-avoidance", "obstacle avoidance", "避障", "dtr-r0", "dtr", "dynamic travel risk", "route tube", "route_tube", "riskseg", "metric depth", "occupancy flow"],
-    "goal-copilot-p0": ["goal-copilot", "goal copilot", "grail", "sage-r", "semantic anchor", "spatial layout", "nearid"],
-    "goal-copilot-p2": ["goal-copilot-p2", "abotn", "official waypoint"],
-    "ten-meter-copilot": ["ten-meter-copilot", "ten meter copilot", "十米副驾", "l10-r0", "l10", "ten meter", "reference-bound", "reacquisition"],
-    "grail-r1c-p": ["grail-r1c-p", "orient anything", "paired orientation"],
-    "sanpo": ["sanpo"],
-    "taro-r0": ["taro"],
-    "ustrf-sc": ["ustrf"],
-    "hftf": ["hftf"],
-    "rcle": ["rcle"]
+    "obstacle-avoidance": [
+      "obstacle-avoidance",
+      "obstacle avoidance",
+      "避障",
+      "dtr-r0",
+      "dtr",
+      "dynamic travel risk",
+      "route tube",
+      "route_tube",
+      "riskseg",
+      "metric depth",
+      "occupancy flow"
+    ],
+    "goal-copilot-p0": [
+      "goal-copilot",
+      "goal copilot",
+      "grail",
+      "sage-r",
+      "semantic anchor",
+      "spatial layout",
+      "nearid"
+    ],
+    "goal-copilot-p2": [
+      "goal-copilot-p2",
+      "abotn",
+      "official waypoint"
+    ],
+    "ten-meter-copilot": [
+      "ten-meter-copilot",
+      "ten meter copilot",
+      "十米副驾",
+      "l10-r0",
+      "l10",
+      "ten meter",
+      "reference-bound",
+      "reacquisition"
+    ],
+    "grail-r1c-p": [
+      "grail-r1c-p",
+      "orient anything",
+      "paired orientation"
+    ],
+    "sanpo": [
+      "sanpo"
+    ],
+    "taro-r0": [
+      "taro"
+    ],
+    "ustrf-sc": [
+      "ustrf"
+    ],
+    "hftf": [
+      "hftf"
+    ],
+    "rcle": [
+      "rcle"
+    ]
   },
   "mechanism_overrides": {
     "dataset-scenefun3d-2024#task-functional-element-annotations": {
-      "failure_layers": ["functional_grounding"],
-      "signatures": ["parent object box", "functional element", "功能部件", "父对象框"]
+      "failure_layers": [
+        "functional_grounding"
+      ],
+      "signatures": [
+        "parent object box",
+        "functional element",
+        "功能部件",
+        "父对象框"
+      ]
     },
     "paper-fun3du-2025#task-conditioned-multiview-functional-grounding": {
-      "failure_layers": ["functional_grounding"],
-      "signatures": ["multiview functional part", "wrong functional part", "多视角功能部件"]
+      "failure_layers": [
+        "functional_grounding"
+      ],
+      "signatures": [
+        "multiview functional part",
+        "wrong functional part",
+        "多视角功能部件"
+      ]
     },
     "paper-fungraph-2025#functional-part-scene-graph": {
-      "failure_layers": ["functional_grounding"],
-      "signatures": ["functional part scene graph", "object to functional part", "功能部件图"]
+      "failure_layers": [
+        "functional_grounding"
+      ],
+      "signatures": [
+        "functional part scene graph",
+        "object to functional part",
+        "功能部件图"
+      ]
     },
     "paper-tasa-2025#task-aware-2d-guided-3d-refinement": {
-      "failure_layers": ["functional_grounding"],
-      "signatures": ["task-aware affordance segmentation", "functional boundary", "功能区域边界"]
+      "failure_layers": [
+        "functional_grounding"
+      ],
+      "signatures": [
+        "task-aware affordance segmentation",
+        "functional boundary",
+        "功能区域边界"
+      ]
     },
     "paper-t-funs3d-2026#hierarchical-instance-to-functional-part": {
-      "failure_layers": ["identity_binding", "functional_grounding"],
-      "signatures": ["instance then functional part", "实例到功能部件"]
+      "failure_layers": [
+        "identity_binding",
+        "functional_grounding"
+      ],
+      "signatures": [
+        "instance then functional part",
+        "实例到功能部件"
+      ]
     },
     "paper-oval-prompt-2024#open-vocabulary-part-affordance-prompting": {
-      "failure_layers": ["functional_grounding"],
-      "signatures": ["open vocabulary affordance part", "开放词汇功能部件"]
+      "failure_layers": [
+        "functional_grounding"
+      ],
+      "signatures": [
+        "open vocabulary affordance part",
+        "开放词汇功能部件"
+      ]
     },
     "paper-robopoint-2025#instruction-to-action-keypoint": {
-      "failure_layers": ["actionable_region"],
-      "signatures": ["action keypoint", "box center is not actionable", "动作关键点", "框中心不可操作"]
+      "failure_layers": [
+        "actionable_region"
+      ],
+      "signatures": [
+        "action keypoint",
+        "box center is not actionable",
+        "动作关键点",
+        "框中心不可操作"
+      ]
     },
     "paper-where2act-2021#per-point-actionability-and-action-proposals": {
-      "failure_layers": ["actionable_region"],
-      "signatures": ["where to act", "per-point actionability", "逐点可行动"]
+      "failure_layers": [
+        "actionable_region"
+      ],
+      "signatures": [
+        "where to act",
+        "per-point actionability",
+        "逐点可行动"
+      ]
     },
     "paper-rekep-2024#relational-keypoint-constraints": {
-      "failure_layers": ["actionable_region", "interaction_readiness"],
-      "signatures": ["relational keypoint constraint", "staged readiness", "关系关键点约束"]
+      "failure_layers": [
+        "actionable_region",
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "relational keypoint constraint",
+        "staged readiness",
+        "关系关键点约束"
+      ]
     },
     "paper-passage-aware-structural-mapping-2026#passage-evidence-structural-map": {
-      "failure_layers": ["interaction_readiness"],
-      "signatures": ["passage not door rectangle", "traversable opening", "可通行开口"]
+      "failure_layers": [
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "passage not door rectangle",
+        "traversable opening",
+        "可通行开口"
+      ]
     },
     "paper-door-status-detection-2023#door-presence-status-qualification": {
-      "failure_layers": ["interaction_readiness"],
-      "signatures": ["door open closed status", "door is not passage", "门状态", "门不等于通道"]
+      "failure_layers": [
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "door open closed status",
+        "door is not passage",
+        "门状态",
+        "门不等于通道"
+      ]
     },
     "paper-doorbot-2025#haptic-closed-loop-door-function": {
-      "failure_layers": ["interaction_readiness", "handoff_completion"],
-      "signatures": ["independent door outcome receipt", "haptic outcome", "独立开门回执"]
+      "failure_layers": [
+        "interaction_readiness",
+        "handoff_completion"
+      ],
+      "signatures": [
+        "independent door outcome receipt",
+        "haptic outcome",
+        "独立开门回执"
+      ]
     },
     "paper-aros-2023#one-shot-human-scene-affordance": {
-      "failure_layers": ["interaction_readiness"],
-      "signatures": ["human contact clearance", "seat blocked", "人体接触净空", "座位被堵"]
+      "failure_layers": [
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "human contact clearance",
+        "seat blocked",
+        "人体接触净空",
+        "座位被堵"
+      ]
     },
     "paper-unilm-nav-2026#view-affordance-base-pose": {
-      "failure_layers": ["interaction_readiness"],
-      "signatures": ["manipulation-ready base pose", "near but not reachable", "交互就绪站位"]
+      "failure_layers": [
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "manipulation-ready base pose",
+        "near but not reachable",
+        "交互就绪站位"
+      ]
     },
     "paper-sceneteract-2026#agent-conditioned-functional-verification": {
-      "failure_layers": ["functional_grounding", "interaction_readiness"],
-      "signatures": ["visibility reachability interactability clearance", "语义正确物理不可用", "看见但够不到", "可达", "净空"]
+      "failure_layers": [
+        "functional_grounding",
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "visibility reachability interactability clearance",
+        "语义正确物理不可用",
+        "看见但够不到",
+        "可达",
+        "净空"
+      ]
     },
     "paper-contacthandover-2024#human-contact-aware-handover": {
-      "failure_layers": ["interaction_readiness", "handoff_completion"],
-      "signatures": ["human contact visibility reachability", "人类接触区可达"]
+      "failure_layers": [
+        "interaction_readiness",
+        "handoff_completion"
+      ],
+      "signatures": [
+        "human contact visibility reachability",
+        "人类接触区可达"
+      ]
     },
     "paper-intent-handover-2026#intent-and-human-usage-region-handover": {
-      "failure_layers": ["functional_grounding", "handoff_completion"],
-      "signatures": ["intent-conditioned usage region", "意图使用区域"]
+      "failure_layers": [
+        "functional_grounding",
+        "handoff_completion"
+      ],
+      "signatures": [
+        "intent-conditioned usage region",
+        "意图使用区域"
+      ]
     },
     "paper-moto-2025#interaction-keypoint-docking-optimization": {
-      "failure_layers": ["actionable_region", "interaction_readiness"],
-      "signatures": ["interaction keypoint docking point", "wrong side docking", "交互关键点站位"]
+      "failure_layers": [
+        "actionable_region",
+        "interaction_readiness"
+      ],
+      "signatures": [
+        "interaction keypoint docking point",
+        "wrong side docking",
+        "交互关键点站位"
+      ]
     },
     "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46": {
-      "failure_layers": ["geometry_motion", "temporal_belief"],
-      "signatures": ["spatiotemporal occupancy flow", "static occupancy unreachable", "closing signal", "静态占据不可达", "因果占据流"]
+      "failure_layers": [
+        "geometry_motion",
+        "temporal_belief"
+      ],
+      "signatures": [
+        "spatiotemporal occupancy flow",
+        "static occupancy unreachable",
+        "closing signal",
+        "静态占据不可达",
+        "因果占据流"
+      ]
     },
     "paper-uncovering-missing-pattern-2023#missingness-aware-imputation-and-forecast": {
-      "failure_layers": ["temporal_belief"],
-      "signatures": ["track dropout", "missing observation", "time since seen", "短时缺测", "轨迹断裂"]
+      "failure_layers": [
+        "temporal_belief"
+      ],
+      "signatures": [
+        "track dropout",
+        "missing observation",
+        "time since seen",
+        "短时缺测",
+        "轨迹断裂"
+      ]
     },
     "paper-nearid-identity-representation-learning-via-near-identity-distractors#goal-audit-31": {
-      "failure_layers": ["identity_binding"],
-      "signatures": ["near identical", "same class distractor", "wrong target", "近似实例", "同类干扰"]
+      "failure_layers": [
+        "identity_binding"
+      ],
+      "signatures": [
+        "near identical",
+        "same class distractor",
+        "wrong target",
+        "近似实例",
+        "同类干扰"
+      ]
     },
     "paper-deepsolo-2023#ordered-point-text-geometry": {
-      "failure_layers": ["observation_perception", "identity_binding"],
-      "signatures": ["ocr word geometry", "text instance", "文字实例", "文字几何"]
+      "failure_layers": [
+        "observation_perception",
+        "identity_binding"
+      ],
+      "signatures": [
+        "ocr word geometry",
+        "text instance",
+        "文字实例",
+        "文字几何"
+      ]
     },
     "paper-orient-anything-v2-2025#symmetry-aware-relative-orientation": {
-      "failure_layers": ["geometry_motion", "identity_binding"],
-      "signatures": ["paired owner orientation", "cross-view orientation", "wrong slot", "跨视角方向", "错误槽位"]
+      "failure_layers": [
+        "geometry_motion",
+        "identity_binding"
+      ],
+      "signatures": [
+        "paired owner orientation",
+        "cross-view orientation",
+        "wrong slot",
+        "跨视角方向",
+        "错误槽位"
+      ]
     },
     "tool-project-guideline#project-guideline-pose-time-alignment": {
-      "failure_layers": ["source_coverage", "geometry_motion"],
-      "signatures": ["pose time alignment", "frame aligned pose", "姿态时间对齐", "帧对齐"]
+      "failure_layers": [
+        "source_coverage",
+        "geometry_motion"
+      ],
+      "signatures": [
+        "pose time alignment",
+        "frame aligned pose",
+        "姿态时间对齐",
+        "帧对齐"
+      ]
     },
     "tool-project-guideline#project-guideline-stop-failure-semantics": {
-      "failure_layers": ["decision_lifecycle", "evaluation_evidence"],
-      "signatures": ["unknown is not clear", "stop semantics", "UNKNOWN 不是 CLEAR", "失败语义"]
+      "failure_layers": [
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "signatures": [
+        "unknown is not clear",
+        "stop semantics",
+        "UNKNOWN 不是 CLEAR",
+        "失败语义"
+      ]
     },
     "tool-project-guideline#project-guideline-logging-fields": {
-      "failure_layers": ["evaluation_evidence", "runtime_infrastructure"],
-      "signatures": ["diagnostic logging", "denominator fields", "诊断日志", "分母字段"]
+      "failure_layers": [
+        "evaluation_evidence",
+        "runtime_infrastructure"
+      ],
+      "signatures": [
+        "diagnostic logging",
+        "denominator fields",
+        "诊断日志",
+        "分母字段"
+      ]
     },
     "paper-abot-n1-abotn-poibench#goal-prior-p0-r08": {
-      "failure_layers": ["handoff_completion", "geometry_motion"],
-      "signatures": ["official waypoint", "waypoint is not arrival", "路径点不是到达"]
+      "failure_layers": [
+        "handoff_completion",
+        "geometry_motion"
+      ],
+      "signatures": [
+        "official waypoint",
+        "waypoint is not arrival",
+        "路径点不是到达"
+      ]
     }
   },
   "global_guardrails": [
-    "先定位故障层，再选择机制；不得用参数扫描代替故障归因。",
-    "已消费 cohort 不能通过调阈值、换 seed、重采样或融合重新获得 fresh authority。",
+    "从能力问题或已观察故障提出一个可解释假设；必要协同改动允许，按决策需要核对贡献。",
+    "已消费材料可作披露的 Development 诊断，不能重新获得 fresh authority 或改写旧结论。",
     "UNKNOWN/NOT_EVALUABLE 不是负结果，也不得折算为 CLEAR。",
-    "最小实验只改变一个信息源、表示或机制，冻结下游接口和 evaluator。",
-    "生成器不得跨越 evidence claim ceiling：跑通、存在信号、功能门槛、自然分布、产品和安全是不同层。"
+    "探索保持前后比较可复核；确认在 outcome 前固定方法与评价；工程恢复遵守原运行契约。",
+    "按任务效果、错误、覆盖和必要成本决定继续、修改、整合或停止；不同来源保持实际 claim ceiling。"
   ]
 }

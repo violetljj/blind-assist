@@ -91,7 +91,7 @@ class HistoricalScopeTest(unittest.TestCase):
 
     def test_no_retrieval_hit_does_not_force_the_historical_successor(self):
         plan = self.plan([], [self.terminal()])
-        self.assertEqual("localization_needed", plan["status"])
+        self.assertEqual("hypothesis_needed", plan["status"])
         self.assertIsNone(plan["selected_mechanism"])
         self.assertNotIn("new sensor", plan["single_change"])
         self.assertEqual([self.terminal()["successor_requires"]], plan["successor_requirements"])
