@@ -11,7 +11,8 @@ Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 ## Load order
 
 1. Read [project state](docs/PROJECT_STATE.md).
-2. Open only the affected route `CURRENT.md`.
+2. For research work, read `docs/CURRENT_DECISION.md` and the affected route
+   `CURRENT.md`; skip route loading for unrelated code or documentation changes.
 3. For known-route algorithm/model/data work, run `python tools/knowledge.py
    context --route <obstacle-avoidance|ten-meter-copilot> --limit 4`; add
    `--query` for a named mechanism/failure and use `--json` only for automation.
@@ -27,7 +28,10 @@ status; route ledgers/result files own detailed metrics and terminals.
 
 Default research mode is `EXPLORE`: one question, credible baseline, meaningful
 change, observable check, and stop condition. Implement first, then run the
-smallest falsifying check.
+smallest falsifying check. The stop condition bounds this experiment; after
+assessing the result, continue any remaining authorized step toward the user's
+goal within its budget and evidence boundaries. Stop when that goal is complete
+or a concrete blocker requires user input or new authority.
 
 In `EXPLORE`:
 
