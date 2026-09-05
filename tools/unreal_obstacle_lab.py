@@ -15,7 +15,9 @@ def main():
     parser.add_argument('--scene', choices=('street', 'graybox'), default='street')
     parser.add_argument('--prepare-only', action='store_true', help='Copy template assets without starting the editor')
     parser.add_argument('--upgrade', action='store_true', help='Build StreetLabV2 with clothed humans and varied facades once')
+    parser.add_argument('--polish', action='store_true', help='Create and verify the StreetLabV3 visual successor')
     args = parser.parse_args()
+    args.upgrade = args.upgrade or args.polish
     if args.upgrade and args.scene != 'street':
         parser.error('--upgrade applies to the street scene')
     repo = Path(__file__).resolve().parents[1]
@@ -123,11 +125,27 @@ bEnableCookOnTheSide=False
                            check=True,timeout=300)
             if not playback_receipt.exists() or json.loads(playback_receipt.read_text())['status']!='PASS':
                 raise RuntimeError('Playback repair failed; inspect Saved/repair-playback.log')
+        visual_receipt=root/'Saved/lab-visual-v3.json'
+        if args.polish and (not visual_receipt.exists() or
+                            json.loads(visual_receipt.read_text())['status']!='PASS'):
+            if not (root/'Content/ConceptCar').exists():
+                shutil.copytree(engine/'Templates/TemplateResources/Standard/ConceptCar/Content',
+                                root/'Content/ConceptCar')
+            subprocess.run([sys.executable,str(script.with_name('download_street_environment.py'))],check=True)
+            subprocess.run([str(editor.with_name('UnrealEditor.exe')),str(project),*preferred_map,
+                            '-ExecCmds=py '+script.with_name('polish_street_v3.py').as_posix(),
+                            '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash',
+                            '-ddc=NoShared',cache,'-abslog='+str(root/'Saved/polish-v3.log')],
+                           check=True,timeout=600)
+            if not visual_receipt.exists() or json.loads(visual_receipt.read_text())['status']!='PASS':
+                raise RuntimeError('V3 verification failed; inspect Saved/polish-v3.log')
+        if (root/'Content/StreetLab/StreetLabV3.umap').exists() and visual_receipt.exists() and json.loads(visual_receipt.read_text())['status']=='PASS':
+            preferred_map=['/Game/StreetLab/StreetLabV3']
         config=root/'Config/DefaultEngine.ini'
         previous=config.read_text(encoding='utf-8')
-        updated='\n'.join(line.split('=',1)[0]+'=/Game/StreetLab/StreetLabV2'
-                          if line in ('EditorStartupMap=/Game/StreetLab/StreetLab',
-                                      'GameDefaultMap=/Game/StreetLab/StreetLab') else line
+        updated='\n'.join(line.split('=',1)[0]+'='+preferred_map[0]
+                          if line.startswith(('EditorStartupMap=/Game/StreetLab/',
+                                              'GameDefaultMap=/Game/StreetLab/')) else line
                           for line in previous.split('\n'))
         if updated!=previous: config.write_text(updated,encoding='utf-8')
         print('ACTIVE_MAP: '+preferred_map[0])

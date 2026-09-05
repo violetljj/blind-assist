@@ -17,6 +17,8 @@ def main():
     p.add_argument('--engine',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--case',action='append',default=[])
+    p.add_argument('--map',choices=('StreetLabV2','StreetLabV3'),default='StreetLabV2',
+                   help='Choose the actual scene; map identity is recorded for every new run')
     p.add_argument('--resume',action='store_true')
     p.add_argument('--reuse-open-loop',type=Path,help='Reuse verified full controls; execute eight assisted branches only')
     args=p.parse_args()
@@ -25,12 +27,16 @@ def main():
     if args.reuse_open_loop and args.case:
         p.error('--reuse-open-loop requires the complete catalog, without --case')
     project=repo/'artifacts.local/unreal/BlindAssistStreetLab'
+    map_asset='/Game/StreetLab/'+args.map
+    map_file=project/'Content/StreetLab'/f'{args.map}.umap'
+    if not map_file.is_file(): p.error(f'Build the selected scene first: {map_file}')
     output=args.output.resolve()
     if not output.is_relative_to((repo/'artifacts.local').resolve()): p.error('Output must remain under artifacts.local')
     output.mkdir(parents=True,exist_ok=args.resume)
     sources=['capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_scenarios.py','ue_dtr_replay.py','ue_replay_cache.py','reuse_street_open_loop.py']
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
-              'map_sha256':sha(project/'Content/StreetLab/StreetLabV2.umap')}
+              'map_sha256':sha(map_file)}
+    if args.map!='StreetLabV2': identity['map_asset']=map_asset
     if args.reuse_open_loop:
         identity['reused_open_loop_run']=str(args.reuse_open_loop.resolve())
     identity_file=output/'identity.json'
@@ -67,7 +73,7 @@ def main():
                     raise RuntimeError('Reused controls require unchanged model weights')
             env=dict(os.environ,BA_UE_LIVE_OUTPUT=str(output),BA_UE_LIVE_PORT=str(port),BA_UE_LIVE_CASES=json.dumps(args.case))
             editor=subprocess.Popen([str(args.engine/'Engine/Binaries/Win64/UnrealEditor.exe'),
-                str(project/'BlindAssistStreetLab.uproject'),'/Game/StreetLab/StreetLabV2',
+                str(project/'BlindAssistStreetLab.uproject'),map_asset,
                 '-ExecCmds=py '+(scripts/'capture_street_closed_loop.py').as_posix(),
                 '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash','-ddc=NoShared',
                 '-LocalDataCachePath='+str(project/'DerivedDataCache'),'-abslog='+str(output/'capture.log')],env=env)

@@ -1,6 +1,21 @@
 # Willow Walk：行人避障街区
 
-当前版本为 `StreetLabV2`：步行街、石材铺装、咖啡座、树池、街灯、车辆与侧巷，加入四名穿衣人物及步行动画、不同立面、柔和补光。它是可编辑的 synthetic Development 实验场，仍有程序组装感，不宣称照片级真实或真实人体安全。
+展示后继版本为 `StreetLabV3`，保留 `StreetLabV2` 及其完整实验记录。它是可编辑的 synthetic Development 实验场，不宣称真实人体安全。
+
+## V3 场景与实机画面
+
+```powershell
+python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --polish --open
+python tools/run_street_closed_loop.py --engine <本机UE安装目录> --map StreetLabV3 --case low_obstacle_collision --output artifacts.local/unreal/<新运行目录>
+```
+
+`--polish` 使用本机 Epic `Building/Geometry/SM_Building` 曲面咖啡亭替换三个重复南侧楼组，完整 `ConceptCar/Car/SM_AutomotiveTP_Car` 替换旧运动汽车，并导入 [Poly Haven 的实拍阴天 HDR](https://polyhaven.com/a/overcast_industrial_courtyard)。该 HDR 为 CC0，下载器验证提供方 MD5 并记录 SHA-256；文件与许可信息保存在 `asset-downloads/environment/`。近景家具使用其 [Outdoor Table Chair Set 01](https://polyhaven.com/a/outdoor_table_chair_set_01) CC0 模型与 2K PBR 贴图，提供方校验及许可保存在同名下载目录。这些是实际三维资产和环境照明，不是背景效果图。City Sample Buildings 尚未下载或迁入，不能把当前场景称为 City Sample。
+
+导向铺装使用原生厘米尺寸、圆顶凸条的 1 m 网格，避免把单个立方体拉伸到 71 m；3–4 mm 的凸起无阻挡碰撞。新地图独立绑定四名人物，保存后重载并在 PIE 检查实际位移及脚部骨骼变化。`Saved/lab-visual-v3.json` 保存地图哈希、源地图未改校验及运行结果；只有该回执通过，打开入口才默认选择 V3。
+
+同镜头的 1920×1080 Hero / Cafe / Walking 对比由 `render_street_v3.py` 在实际 UE 中生成，输出到 `artifacts.local/unreal/street-v3-visual/`：`before/` 为 V2，`release/` 为最终 V3。V3 的新实验必须显式使用 `--map StreetLabV3`；下文 7/8 成功结果来自旧 V2 受控迭代，不能移用为 V3 成绩。
+
+2026-09-05 的 V3 低障碍双分支验证位于 `closed-loop-v3-canary-20260905-a`，90 个实际新 RGB-D 帧、约 110 秒完成。直行分支在 3.54 s 接触低障碍代理；辅助分支在 1.0 s 由观测深度触发，1.2 s 实际偏离直线，9.6 s 无接触到达终点，命令与运动核对无不一致。此次仅验证一个条件的接通，评价器总体仍标 `INCOMPLETE`，不冒充 V3 全场景通过或 DTR 单独收益。保存地图哈希在实验前后均为 `17d7f5d35dff048e929be92895da6269a61be9cc51abbafcf6157729fc5e905b`；V2 源地图字节保持不变。
 
 ## 在线闭环 V2
 
@@ -9,7 +24,7 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --upgrade --
 python tools/run_street_closed_loop.py --engine <本机UE安装目录> --output artifacts.local/unreal/<新运行目录>
 ```
 
-第二条命令使用装有 NumPy、Pillow、PyTorch、Ultralytics 的 Python。`--upgrade` 仅在 V2 地图缺失时下载固定版本的人物并建图；已有地图不覆盖。再次打开项目默认进入 V2，原 `StreetLab` 和灰盒地图保留。
+第二条命令使用装有 NumPy、Pillow、PyTorch、Ultralytics 的 Python。`--upgrade` 仅在 V2 地图缺失时下载固定版本的人物并建图；已有地图不覆盖。没有已通过检查的 V3 时，打开项目默认进入 V2；原 `StreetLab` 和灰盒地图保留。
 
 闭环是 **UE 实际 RGB-D → 独立传感器进程 → 原有 YOLO / DTR X73 与观测深度分支 → 下一步减速、停步或侧移 → UE 新观测**。每步模拟 0.2 秒，等待实际推理返回后再前进；这是在线锁步实验，不是已达到 5 Hz 墙钟实时性能。深度分支单独标为 `OBSERVED_DEPTH`，不能把它的绕行成绩归给 DTR。
 
@@ -60,7 +75,7 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --open
 ```
 
 项目：`artifacts.local/unreal/BlindAssistStreetLab/BlindAssistStreetLab.uproject`。
-地图：已升级时为 `/Game/StreetLab/StreetLabV2`；基础地图为 `/Game/StreetLab/StreetLab`。首次执行复制本机 Epic 模板并下载小型 CC0 材质/道具，随后生成地图；已有地图不覆盖。
+地图：V3 构建验证通过后为 `/Game/StreetLab/StreetLabV3`，否则使用已升级的 `/Game/StreetLab/StreetLabV2`；基础地图为 `/Game/StreetLab/StreetLab`。首次执行复制本机 Epic 模板并下载小型 CC0 材质/道具，随后生成地图；已有基础地图不覆盖。
 
 点击 **Play**，用 **WASD + 鼠标**步行观察，**Esc** 退出。步速 1.2 m/s。
 V2 的 `StreetActivityV3` Sequencer 控制四名动态人物，30 秒循环。`--upgrade` 会修复旧序列失效的四个人物绑定并保存服装材质和步态。重新加载后，四人在 PIE 的 2.3 秒观察期间分别移动约 281、281、281、179 cm，骨骼姿态均发生变化，步速设置为 1.2 m/s。回执为 `Saved/lab-playback-repair.json`，实际画面为 `Saved/playback-repair/clothed-reloaded.png`。
