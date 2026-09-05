@@ -19,6 +19,9 @@ param(
     [long]$StorageReservationBytes = 8589934592,
     [string]$StorageLeaseToken = '',
     [switch]$VisualShellSourceProbeOnly,
+    [switch]$RosterSourceOnly,
+    [string]$SourceAnnex = '',
+    [string]$SourceAuditPython = '',
     [switch]$Resume
 )
 
@@ -610,6 +613,20 @@ try {
         }
         $sensorOrder = @('instance', 'witness')
     }
+    if ($RosterSourceOnly) {
+        if ($Resume -or $VisualShellSourceProbeOnly) { throw 'R1 source capture must be fresh and cannot combine probe modes.' }
+        $script:SourceAnnexPath = Resolve-LocalPath -Value $SourceAnnex -BasePath $script:RepoRoot
+        $script:SourceAuditPythonPath = if ([string]::IsNullOrWhiteSpace($SourceAuditPython)) { $script:CarlaPythonPath } else { Resolve-LocalPath -Value $SourceAuditPython -BasePath $script:RepoRoot }
+        & $script:SourceAuditPythonPath -c 'import numpy; import PIL'
+        if ($LASTEXITCODE -ne 0) { throw 'Source audit decoder dependencies unavailable before capture.' }
+        $sourceAnnexValue = Read-JsonFile -Path $script:SourceAnnexPath
+        if ($sourceAnnexValue.status -ne 'PREPIXEL_SOURCE_CAPTURE_SEALED' -or
+            $sourceAnnexValue.capture_authorized -ne $true -or
+            $sourceAnnexValue.protocol_sha256 -ne (Get-FileHash -LiteralPath $script:ProtocolPath -Algorithm SHA256).Hash) {
+            throw 'R1 requires a source capture seal bound to the exact protocol bytes.'
+        }
+        $sensorOrder = @('instance', 'witness')
+    }
     if ($null -ne $protocolValue.capture.render_quality_level) {
         $script:RenderQualityLevel = [string]$protocolValue.capture.render_quality_level
     }
@@ -696,6 +713,15 @@ try {
     }
     Assert-CarlaIdle
     Assert-StorageLease
+    if ($RosterSourceOnly) {
+        & $script:SourceAuditPythonPath (Join-Path $script:RepoRoot 'research/active/dtr-r0/carla/audit_dtr_final_roster_source.py') `
+            --protocol $script:ProtocolPath --root $script:RawRunPath --annex $script:SourceAnnexPath `
+            --output (Join-Path $script:RawRunPath 'roster-source-gate.json')
+        if ($LASTEXITCODE -ne 0) { throw 'R1 source semantics failed; preserve all pixels, no scene rescue or model execution.' }
+        Release-StorageLease
+        Write-Output "PASS R1 instance and witness source semantics; no model inputs or predictions produced: $($script:RawRunPath)"
+        exit 0
+    }
     if ($VisualShellSourceProbeOnly) {
         Release-StorageLease
         Write-Output "PASS bounded visual-shell source probe; remaining full-roster gates still required: $($script:RawRunPath)"

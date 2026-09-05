@@ -12,21 +12,19 @@ future obstacle occupancy intersects the wearer's route, while preserving
 
 ## Current decisions
 
-- **Latest execution status (2026-09-05):** the frozen Final Reckoning R1
-  remains the next comparison; no X97 is authorized. A paired-raster,
-  non-collision visual-shell source probe now **passes instance and independent
-  witness gates** (12 episodes each): partial visibility has 12 qualifying
-  frames at 7.39–30.13%, and full disappearance has 7 qualifying zero-pixel
-  frames. No extra responsible hazard was introduced. The probe is consumed.
-  Full-roster admission remains blocked: S10's known-negative samples at
-  1.2–2.7 s do not overlap its proven disappearance at 5.0–5.7 s, so the
-  required temporal mechanism is not established. The complete ten-stratum
-  source evaluator and three-group formal materializer also remain pending.
-  No predictions or fit/final inputs were opened; task resources are released.
-  Its source evaluator and a separate shared event-metric implementation
-  candidate have focused synthetic checks, but the eleven-arm execution
-  integration and final evaluator freeze remain pending. See
-  [source probe result and remaining source gap](DTR_FINAL_VISUAL_SHELL_PROBE_20260905.md).
+- **Latest execution status (2026-09-05):** avoidance-only Final Reckoning R1
+  reached **30/30 source-stratum passes**, and FIT_ONLY's complete RGB/depth join
+  passed. FINAL_A's depth server then exited before producing a depth frame,
+  with UE `Shader compilation failures are Fatal`; FINAL_B RGB/depth were not
+  started. The execution is `NOT_EVALUABLE_SOURCE_CAPTURE_INTERRUPTED`, with
+  nine complete sensor shards retained and no detector, fit, or final method
+  score accessed. Algorithm inheritance is unchanged; no X97 or source retry
+  is authorized. The eleven-arm adapters are implemented and narrowly tested,
+  but have no actual comparison result. Task resources are released. The next
+  engineering bottleneck is capture stability and repeated per-modality work.
+  This remains a working source record: registry admission is blocked by an
+  existing input-fingerprint mismatch, not bypassed by manual indexing. See
+  [source execution, native crash, and efficiency findings](DTR_FINAL_SOURCE_EXECUTION_20260905.md).
 - **Public/JRDB line:** X21 transports only a component already authorized by
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
