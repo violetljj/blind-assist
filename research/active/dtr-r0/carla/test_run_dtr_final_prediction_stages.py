@@ -8,6 +8,25 @@ import run_dtr_final_prediction_stages as runner
 
 
 class StageOrderTests(unittest.TestCase):
+    def test_composite_admission_cannot_authorize_another_source_root(self):
+        parent=Path(__file__).resolve().parents[4]/'artifacts.local/tmp'
+        parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as temporary:
+            root=Path(temporary)
+            claim='DEVELOPMENT_COMPOSITE_REUSED_SOURCE_NOT_FRESH_CONFIRMATION'
+            authority=runner.seal(root/'execution-authority.json',{
+                'status':'NEW_DEVELOPMENT_COMPOSITE_SOURCE_SEALED','claim':claim})
+            admission=runner.seal(root/'source-admission.json',{
+                'status':'DEVELOPMENT_COMPOSITE_SOURCE_ADMITTED','claim':claim,
+                'execution_authority_sha256':authority['sha256']})
+            (root/'raw/FIT_ONLY').mkdir(parents=True)
+            unrelated=root/'unrelated';unrelated.mkdir()
+            manifest={'schema':'dtr-final-inference-manifest-v1','source_claim':claim,
+                      'source_authority':authority,'source_admission':admission,
+                      'groups':{g:{'source_root':str(unrelated)} for g in runner.GROUPS}}
+            with self.assertRaisesRegex(ValueError,'composite_source_root_binding'):
+                runner.prepare(root,manifest)
+
     def test_all_prediction_seals_precede_access_and_final_scoring(self):
         parent=Path(__file__).resolve().parents[4]/'artifacts.local/tmp'
         parent.mkdir(parents=True,exist_ok=True)

@@ -508,3 +508,11 @@ their result.
   [DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md](carla/DTR_CARLA_C41_X82_FRESH_CONFIRMATION_20260901.md)
 - X83 consumed eleven-cohort Development:
   [DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md](carla/DTR_CARLA_X83_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md)
+
+## Capture continuation, 2026-09-05
+
+A separately labeled Development composite reused nine complete shards, but
+FINAL_A depth again hit a native shader fatal before any payload. The separate
+DX11 probe reached RPC but failed camera warmup. No detector, fit or score ran.
+The capture client now exits promptly when its server dies; source admission
+remains required. See [continuation evidence](CARLA_FAST_COMPOSITE_SOURCE_20260905.md).

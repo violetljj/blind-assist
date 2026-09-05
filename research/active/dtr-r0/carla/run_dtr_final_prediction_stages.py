@@ -65,6 +65,18 @@ def prepare(root,manifest):
     """
     require(manifest['schema']=='dtr-final-inference-manifest-v1','inference_manifest_schema')
     require(set(manifest['groups'])==set(GROUPS),'exact_three_groups_required')
+    if manifest.get('source_authority'):
+        authority=verified_json(root,manifest['source_authority'])
+        admission=verified_json(root,manifest['source_admission'])
+        require(authority['claim']==manifest['source_claim'] and admission['claim']==authority['claim'],'composite_claim_binding')
+        require(authority['status']=='NEW_DEVELOPMENT_COMPOSITE_SOURCE_SEALED' and authority['claim']=='DEVELOPMENT_COMPOSITE_REUSED_SOURCE_NOT_FRESH_CONFIRMATION','composite_development_only')
+        require(admission['status']=='DEVELOPMENT_COMPOSITE_SOURCE_ADMITTED' and admission['execution_authority_sha256']==manifest['source_authority']['sha256'],'composite_source_admission')
+        composite_root=path_for(root,manifest['source_authority']).parent
+        require(path_for(root,manifest['source_admission'])==composite_root/'source-admission.json','composite_admission_path')
+        for group in GROUPS:
+            source_root=_resolve_directory(root,manifest['groups'][group]['source_root'])
+            require(source_root==(composite_root/'raw'/group).resolve(strict=True),'composite_source_root_binding')
+            require(sha(source_root/'r1-joined-result.json')==admission['joined_results'][group],'composite_join_admission_binding')
     roster=verified_json(root,manifest['roster'])
     require(roster['roster_id']=='DTR_FINAL_RECKONING_ROSTER_R1','R1_roster_required')
     for lock in roster['implementation_locks']:
@@ -199,6 +211,10 @@ def execute_phases(root,destination,manifest,roster,dependency_lock,prepared):
          'truth_references':{g:manifest['groups'][g]['truth_episodes'] for g in ('FINAL_A','FINAL_B')}})
     truth={g:open_truth(root,prepared[g]['entry']) for g in ('FINAL_A','FINAL_B')}
     scored=score.score_final(roster,truth,final_predictions,{g:prepared[g]['annex'] for g in truth})
+    if 'source_claim' in manifest:scored['claim']=manifest['source_claim']
+    if manifest.get('source_authority'):
+        scored['source_authority']=manifest['source_authority']
+        scored['fresh_confirmation']=False
     score_ref=seal(destination/'final-score.json',scored)
     checkpoint('final-score-sealed',{'score':score_ref,'terminal':'NO_X97_NO_RESCUE_ACCEPT_OBSERVED_RESULT'})
     return score_ref

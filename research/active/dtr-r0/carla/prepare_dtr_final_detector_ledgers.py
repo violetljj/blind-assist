@@ -28,12 +28,28 @@ def ref(path):return {'path':str(path.resolve(strict=True)),'sha256':x24.sha256_
 
 def prepare(source_seal, output, model):
     source_seal=source_seal.resolve(strict=True);model=model.resolve(strict=True)
+    authority=None
+    if (source_seal/'execution-authority.json').exists():
+        authority=read(source_seal/'execution-authority.json')
+        admission=read(source_seal/'source-admission.json')
+        if authority['status']!='NEW_DEVELOPMENT_COMPOSITE_SOURCE_SEALED' or admission['status']!='DEVELOPMENT_COMPOSITE_SOURCE_ADMITTED':
+            raise ValueError('composite_source_not_admitted')
+        if authority['claim']!='DEVELOPMENT_COMPOSITE_REUSED_SOURCE_NOT_FRESH_CONFIRMATION' or admission['claim']!=authority['claim']:
+            raise ValueError('composite_claim_binding')
+        if admission['execution_authority_sha256']!=x24.sha256_file(source_seal/'execution-authority.json'):
+            raise ValueError('composite_authority_binding')
+        if admission['fast_png_validation_sha256']!=x24.sha256_file(source_seal/'fast-png-validation.json'):
+            raise ValueError('composite_pixel_validation_binding')
+        if read(source_seal/'fast-png-validation.json')['status']!='PASS':
+            raise ValueError('composite_pixel_validation_failed')
     inputs={}
     for group in GROUPS:
         root=source_seal/'raw'/group
         gate=root/'roster-source-gate.json'
         if read(gate)['status']!='SOURCE_GATE_MET':raise ValueError('three_source_groups_required')
         result=read(root/'r1-joined-result.json')
+        if authority is not None and admission['joined_results'][group]!=x24.sha256_file(root/'r1-joined-result.json'):
+            raise ValueError('composite_join_admission_binding')
         if result['status']!='DTR_R1_FOUR_SENSOR_SOURCE_COMPLETE':raise ValueError('four_sensor_join_required')
         if result['legacy_result_sha256']!=x24.sha256_file(root/'result.json') or result['source_gate_sha256']!=x24.sha256_file(gate):
             raise ValueError('R1_join_lineage_binding')
@@ -62,6 +78,7 @@ def prepare(source_seal, output, model):
     for name in names:files[str((HERE/name).resolve())]=ref(HERE/name)
     code=list(files.values())
     freeze={'schema':'dtr-final-detector-preparation-v1','status':'PRE_DETECTOR_FROZEN',
+            'source_claim':authority['claim'] if authority else 'SYNTHETIC_R1_ONLY',
             'model':ref(model),'code_files':code,'device':'cuda:0','torch':torch.__version__,
             'gpu':torch.cuda.get_device_name(0),'python':ref(Path(sys.executable)),
             'removal_eligibility':'FIXED_X24_CURRENT_MEASURED_CONFIRMED_RISK_ON_ADJACENT_RAW_FRAMES_NO_INDEX_RESCUE',
@@ -116,6 +133,9 @@ def prepare(source_seal, output, model):
                            'detector_intervention_gate':ref(directory/'detector-intervention-gate.json'),
                            'source_root':str(inputs[group]['source_root'].resolve()),'truth_episodes':inputs[group]['truth_episodes']}
         manifest={'schema':'dtr-final-inference-manifest-v1','roster':ref(HERE/'dtr_final_reckoning_roster_protocol.json'),
+                  'source_claim':freeze['source_claim'],
+                  'source_authority':ref(source_seal/'execution-authority.json') if authority else None,
+                  'source_admission':ref(source_seal/'source-admission.json') if authority else None,
                   'structural_dependency_lock':ref(output/'structural-dependency-lock.json'),
                   'code_files':code,'groups':groups}
         write(output/'inference-manifest.json',manifest)
