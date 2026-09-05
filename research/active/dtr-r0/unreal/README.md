@@ -1,6 +1,36 @@
 # Willow Walk：行人避障街区
 
-展示后继版本为 `StreetLabV3`，保留 `StreetLabV2` 及其完整实验记录。它是可编辑的 synthetic Development 实验场，不宣称真实人体安全。
+展示版本为 `StreetLabV4`，使用 Epic City Sample Buildings；V2、V3 的实验记录保留。它是可编辑的 synthetic Development 实验场，不宣称真实人体安全。
+
+## V4 官方建筑街区
+
+```powershell
+python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --city --open
+python tools/run_street_closed_loop.py --engine <本机UE安装目录> --map StreetLabV4 --output artifacts.local/unreal/<新运行目录>
+```
+
+先通过 Fab/Epic 启动器将 [Epic City Sample Buildings](https://www.fab.com/listings/008fe959-5511-428e-93bd-f99b1179f6d5) 添加到 `BlindAssistStreetLab` 项目。`--city` 使用已下载资产，启用虚拟纹理，构建 V4、重载检查人物运动并生成三张实际截图；已有通过回执时直接使用现有地图。重建前应关闭该项目的编辑器。旧 V4 文件会按哈希归档到 `Saved/street-v4/previous-builds/`，源 V3 在编辑前另存字节备份。UE 下载内容、派生缓存和证据留在本地，Git 只包含脚本和说明。
+
+新街区移除 1035 个程序立面部件，用四栋原尺度官方楼体组成沿街立面与远端广场背景：三栋 `BPP_Bldg_Hero_CHA_A01_N1` 遗产建筑和一栋 `BPP_Bldg_Hero_Low_SFD_Long_N1` 现代建筑。上部楼层与各自独立的 `Level01` 首层同时装配，共 1886 个网格实例；沿用原生门窗、檐口、材质和窗内景。原咖啡亭、家具、人物、5.5 m 横穿巷口与传感路线保留。包中的窗内景是原资产视觉效果，不表示已搭建可进入、可用于避障测试的室内空间。
+
+最终地图 SHA-256 为 `3bb1ea3b8ed16d300e7fa3178542313f48548b5efdc276fc7ca188188c226e28`。重载后在仿真时间 7.126–9.454 秒检查四人分别移动 279.4、279.7、279.7、178.7 cm，足骨均更新。`Saved/lab-visual-v4.json` 包含构建、源地图检查、PIE 与逐图目检记录。实际 1920×1080 `Hero`、`Cafe`、`Walking` 截图在 `artifacts.local/unreal/street-v4-visual/release/`；首轮缺首层的失败画面保存在 `failed-first/`，未用于实验或当作交付。资产获取回执为 `Saved/city-sample-acquisition.json`。
+
+V4 运行入口额外记录 `DefaultEngine.ini` 哈希，并将原始地图保存到运行目录的 `scene_snapshot/` 后核对 SHA-256，禁止将 V3 的成功率迁用到新地图。它延续相同四类、八条件设计，具体联合控制结果以 V4 的独立 `evaluation.json` 和配对回放为准。实验索引登记仍被 `experiments/index.jsonl:252` 既有记录的 `input_fingerprint` 不匹配阻断；未修改该记录，本地完整身份与结果保留。
+
+### V4 全套实际运行结果
+
+`closed-loop-v4-suite-20260905-a` 完成 **16 个全新分支、733 帧**，没有复用 V3 输入或重跑分支。8/8 直行对照成立，8/8 辅助分支无代理接触到达目标；四个碰撞条件均通过传感器、下一步命令和实际运动的时序核对。
+
+| 条件 | 直行耗时 | 辅助耗时 | 辅助代理接触 |
+| --- | --- | --- | --- |
+| 遮挡横穿：碰撞 / 近失 | 8.0 / 8.0 s | 10.8 / 8.0 s | 无 / 无 |
+| 突然停步：碰撞 / 近失 | 8.0 / 8.0 s | 9.6 / 8.8 s | 无 / 无 |
+| 窄道会车：碰撞 / 近失 | 8.0 / 8.0 s | 11.6 / 13.0 s | 无 / 无 |
+| 低矮障碍：碰撞 / 近失 | 8.0 / 8.0 s | 9.6 / 8.0 s | 无 / 无 |
+
+窄道近失增加 **5.0 秒**，是明确的效率代价。三类碰撞条件首次避让来自 `OBSERVED_DEPTH`，窄道碰撞来自 `DTR_X73`；8/8 属于两分支联合闭环，不是 X73 单独成绩。worker 在 CUDA RTX 5060 Laptop 上的 733 次推理中位耗时 0.627 秒、P95 1.919 秒；锁步 UE 运行共 850.469 秒，不能称为墙钟 5 Hz 实时系统。
+
+运行前后七个冻结源文件、V4 地图、原始地图快照与渲染配置哈希全部一致；配置 SHA-256 为 `ec779caaa624e0339a7a36e9727a9725f8a4598e2d08ade0b16167df55f429da`。运行所属 UE、worker 及其子进程、Zen、端口和锁均已释放。结果、同步双分支回放和预览保存在该目录的 `evaluation.json`、`replay.html`、`replay.gif`、`closed-loop-preview.png`。这是该组受控 Development 条件的实际成功，不扩展到人体安全或自然场景泛化。
 
 ## V3 场景与实机画面
 
@@ -16,6 +46,16 @@ python tools/run_street_closed_loop.py --engine <本机UE安装目录> --map Str
 同镜头的 1920×1080 Hero / Cafe / Walking 对比由 `render_street_v3.py` 在实际 UE 中生成，输出到 `artifacts.local/unreal/street-v3-visual/`：`before/` 为 V2，`release/` 为最终 V3。V3 的新实验必须显式使用 `--map StreetLabV3`；下文 7/8 成功结果来自旧 V2 受控迭代，不能移用为 V3 成绩。
 
 2026-09-05 的 V3 低障碍双分支验证位于 `closed-loop-v3-canary-20260905-a`，90 个实际新 RGB-D 帧、约 110 秒完成。直行分支在 3.54 s 接触低障碍代理；辅助分支在 1.0 s 由观测深度触发，1.2 s 实际偏离直线，9.6 s 无接触到达终点，命令与运动核对无不一致。此次仅验证一个条件的接通，评价器总体仍标 `INCOMPLETE`，不冒充 V3 全场景通过或 DTR 单独收益。保存地图哈希在实验前后均为 `17d7f5d35dff048e929be92895da6269a61be9cc51abbafcf6157729fc5e905b`；V2 源地图字节保持不变。
+
+### V3 完整场景验证
+
+后续 V4 建图的首次尝试出现保存目标错误：UE `save_map` 写出副本后没有切换当前世界，随后保存触及 V3。构建哈希断言捕获后停止，未运行新实验。已从编辑前副本恢复 V3 的 1575 个演员，逐项核对标签、类型、位置相同；恢复后地图 SHA-256 为 `15a9908f68f6a2779dc6b33346921b1ee55c080f6776439eb1a2ba5f4729d041`。这不是旧 `17d7...` 文件的字节恢复，旧实验的原始地图字节副本已缺失；旧 RGB-D、轨迹、回执、截图仍保留，不回填哈希。恢复记录和原始副本保存在 `Saved/street-v4/recovery.json` 及 `recovery/`。V4 构建器已改为编辑前按哈希备份源文件，并明确载入、断言目标世界后才修改。
+
+`closed-loop-v3-suite-20260905-a` 已完成四类、八条件的 **16 个全新分支**，738 个实际 RGB-D 帧，墙钟 1233.313 秒；没有复用 V2 对照或重跑分支。8/8 直行对照符合预设接触/近失条件，8/8 辅助分支无代理接触并到达目标；四个碰撞条件均通过传感器触发、下一步命令和实际轨迹改变的时序核对，接触回执及命令应用不一致计数均为零。七个运行源文件和上述 V3 地图哈希在运行前后保持一致。
+
+这是保留 DTR X73 与观测深度近障碍分支的联合控制结果。横穿、停步和低障碍条件的首次实际避让来自 `OBSERVED_DEPTH`，窄道会车来自 `DTR_X73`，不能写成 X73 单独达到 8/8。近失条件仍暴露效率代价：停步近失增加 0.8 秒，窄道近失从 8.0 秒增加到 14.0 秒；全部八个辅助分支平均增加 2.05 秒。738 次 worker 推理的中位耗时 0.872 秒、P95 2.763 秒，仍是锁步运行，不是墙钟实时性能证明。
+
+该目录的 `evaluation.json` 保存完整结果，`replay.html`、`replay.gif` 和 `closed-loop-preview.png` 可查看实际双分支画面与轨迹。运行完成后，所属 UE/worker/owner 进程、端口和锁均已释放。8/8 表示这组受控 Development 条件成功，不据此宣称人体安全、自然场景泛化或后续建筑版本自动通过。
 
 ## 在线闭环 V2
 

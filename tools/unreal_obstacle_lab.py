@@ -1,10 +1,14 @@
 """Create an editable UE lab from locally installed Epic template assets."""
 import argparse
+import hashlib
 import json
+import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
+import time
 
 
 def main():
@@ -16,7 +20,9 @@ def main():
     parser.add_argument('--prepare-only', action='store_true', help='Copy template assets without starting the editor')
     parser.add_argument('--upgrade', action='store_true', help='Build StreetLabV2 with clothed humans and varied facades once')
     parser.add_argument('--polish', action='store_true', help='Create and verify the StreetLabV3 visual successor')
+    parser.add_argument('--city', action='store_true', help='Build StreetLabV4 using the downloaded Epic City Sample Buildings pack')
     args = parser.parse_args()
+    args.polish = args.polish or args.city
     args.upgrade = args.upgrade or args.polish
     if args.upgrade and args.scene != 'street':
         parser.error('--upgrade applies to the street scene')
@@ -28,6 +34,7 @@ def main():
     if not editor.is_file():
         parser.error(f'Unreal Editor is missing: {editor}')
     root.mkdir(parents=True, exist_ok=True)
+    os.environ['UE-LocalDataCachePath']=str(root/'DerivedDataCache')
     project = root / f'{name}.uproject'
     if not project.exists():
         template = engine / 'Templates/TP_FirstPersonBP'
@@ -96,7 +103,7 @@ bEnableCookOnTheSide=False
     receipt = root / 'Saved/lab-build.json'
     if not receipt.is_file():
         raise RuntimeError(f'Build did not produce a receipt; inspect {log}')
-    print(receipt.read_text(encoding='utf-8'))
+    print(f'BASE_MAP_RECEIPT: {receipt}')
     print(f'PROJECT: {project}')
     if args.upgrade and not (root/'Content/StreetLab/StreetLabV2.umap').exists():
         subprocess.run([sys.executable,str(script.with_name('download_street_humans.py')),
@@ -141,6 +148,39 @@ bEnableCookOnTheSide=False
                 raise RuntimeError('V3 verification failed; inspect Saved/polish-v3.log')
         if (root/'Content/StreetLab/StreetLabV3.umap').exists() and visual_receipt.exists() and json.loads(visual_receipt.read_text())['status']=='PASS':
             preferred_map=['/Game/StreetLab/StreetLabV3']
+        city_receipt=root/'Saved/lab-visual-v4.json'
+        if args.city and (not city_receipt.exists() or json.loads(city_receipt.read_text())['status']!='PASS'):
+            if not (root/'Content/CitySampleBuildings').is_dir():
+                raise RuntimeError('Add Epic City Sample Buildings from Fab to this project before using --city')
+            city_config=root/'Config/DefaultEngine.ini'
+            settings=city_config.read_text(encoding='utf-8')
+            if re.search(r'^r.VirtualTextures=',settings,re.M):
+                settings=re.sub(r'^r.VirtualTextures=.*$', 'r.VirtualTextures=True',settings,flags=re.M)
+            else:
+                settings=settings.replace('[/Script/Engine.RendererSettings]',
+                                          '[/Script/Engine.RendererSettings]\nr.VirtualTextures=True')
+            city_config.write_text(settings,encoding='utf-8')
+            # SaveMap creates a new package; preserve an earlier V4 before
+            # rebuilding, instead of asking UE to overwrite its loaded package.
+            old_city_map=root/'Content/StreetLab/StreetLabV4.umap'
+            if old_city_map.exists():
+                history=root/'Saved/street-v4/previous-builds'
+                history.mkdir(parents=True,exist_ok=True)
+                digest=hashlib.sha256(old_city_map.read_bytes()).hexdigest()
+                archived=history/f'{digest}-{time.time_ns()}.umap'
+                assert old_city_map.resolve().is_relative_to(root.resolve())
+                assert archived.resolve().is_relative_to(root.resolve())
+                old_city_map.rename(archived)
+                print(f'PREVIOUS_V4_PRESERVED: {archived}')
+            subprocess.run([str(editor.with_name('UnrealEditor.exe')),str(project),*preferred_map,
+                            '-ExecCmds=py '+script.with_name('build_street_v4.py').as_posix(),
+                            '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash',
+                            '-ddc=NoShared',cache,'-abslog='+str(root/'Saved/build-v4.log')],
+                           check=True,timeout=1200)
+            if not city_receipt.exists() or json.loads(city_receipt.read_text())['status']!='PASS':
+                raise RuntimeError('V4 verification failed; inspect Saved/build-v4.log')
+        if (root/'Content/StreetLab/StreetLabV4.umap').exists() and city_receipt.exists() and json.loads(city_receipt.read_text())['status']=='PASS':
+            preferred_map=['/Game/StreetLab/StreetLabV4']
         config=root/'Config/DefaultEngine.ini'
         previous=config.read_text(encoding='utf-8')
         updated='\n'.join(line.split('=',1)[0]+'='+preferred_map[0]

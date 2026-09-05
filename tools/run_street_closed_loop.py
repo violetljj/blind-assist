@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -17,7 +18,7 @@ def main():
     p.add_argument('--engine',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--case',action='append',default=[])
-    p.add_argument('--map',choices=('StreetLabV2','StreetLabV3'),default='StreetLabV2',
+    p.add_argument('--map',choices=('StreetLabV2','StreetLabV3','StreetLabV4'),default='StreetLabV2',
                    help='Choose the actual scene; map identity is recorded for every new run')
     p.add_argument('--resume',action='store_true')
     p.add_argument('--reuse-open-loop',type=Path,help='Reuse verified full controls; execute eight assisted branches only')
@@ -37,12 +38,20 @@ def main():
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
               'map_sha256':sha(map_file)}
     if args.map!='StreetLabV2': identity['map_asset']=map_asset
+    if args.map=='StreetLabV4':
+        identity['render_config_sha256']=sha(project/'Config/DefaultEngine.ini')
     if args.reuse_open_loop:
         identity['reused_open_loop_run']=str(args.reuse_open_loop.resolve())
     identity_file=output/'identity.json'
     if args.resume:
         if json.loads(identity_file.read_text())!=identity: raise RuntimeError('Resume identity changed; preserve this run and choose a new output')
     else: identity_file.write_text(json.dumps(identity,indent=2))
+    if args.map=='StreetLabV4':
+        frozen_map=output/'scene_snapshot'/map_file.name
+        frozen_map.parent.mkdir(exist_ok=True)
+        if not frozen_map.exists(): shutil.copy2(map_file,frozen_map)
+        if sha(frozen_map)!=identity['map_sha256']:
+            raise RuntimeError('Frozen scene copy differs from the run identity')
     lock=output/'owner.lock'
     with lock.open('x') as f: f.write(str(os.getpid()))
     model=output/'model'
@@ -72,6 +81,7 @@ def main():
                 if old_backend['model_sha256']!=json.loads(ready.read_text())['model_sha256']:
                     raise RuntimeError('Reused controls require unchanged model weights')
             env=dict(os.environ,BA_UE_LIVE_OUTPUT=str(output),BA_UE_LIVE_PORT=str(port),BA_UE_LIVE_CASES=json.dumps(args.case))
+            env['UE-LocalDataCachePath']=str(project/'DerivedDataCache')
             editor=subprocess.Popen([str(args.engine/'Engine/Binaries/Win64/UnrealEditor.exe'),
                 str(project/'BlindAssistStreetLab.uproject'),map_asset,
                 '-ExecCmds=py '+(scripts/'capture_street_closed_loop.py').as_posix(),
