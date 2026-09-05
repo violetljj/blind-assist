@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist-local-terminal-disposition-v1",
+  "terminal_id": "terminal-dtr-final-visual-shell-source-gate-met-20260905",
+  "status": "SOURCE_SHELL_GATE_MET_PENDING_FULL_ROSTER_GATES",
+  "report": "research/active/dtr-r0/DTR_FINAL_VISUAL_SHELL_PROBE_20260905.md",
+  "inheritance_role": "COMPONENT_OR_CHALLENGER",
+  "inheritance_mode": "COMPONENT",
+  "role_scope": "Non-collision visual-shell source construction with paired native-raster references; not formal roster admission or algorithm performance.",
+  "retained_surface": "Frozen visual-only shell materializer, paired source evaluator, twelve-episode instance and independent witness captures, hashes and logs.",
+  "failure_signature": "The shell gate passed. The stronger R1 S10 temporal binding is not established: known-negative samples 1.2-2.7 s and reference-visible disappearance 5.0-5.7 s have no overlap. Complete ten-stratum source admission remains absent.",
+  "revisit_trigger": "A versioned formal-source execution annex with complete per-stratum gates, joint S10 temporal binding and frozen reference/intervention identities before new formal pixels; no reuse of probe pixels as FIT or FINAL.",
+  "assignment_basis": "Both frozen instance and independent witness gates passed with correct responsible sets; the separate post-probe semantic diagnostic prevents overclaiming full admission.",
+  "central_registration_status": "BLOCKED_BY_PREEXISTING_REGISTRY_VALIDATION",
+  "central_registration_error": "experiments/index.jsonl:252: input_fingerprint does not match input_refs",
+  "full_roster_authorized": false,
+  "method_predictions_opened": false,
+  "source_protocol_consumed": true
+}

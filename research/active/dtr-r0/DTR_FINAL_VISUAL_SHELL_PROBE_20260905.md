@@ -2,7 +2,7 @@
 
 Date: 2026-09-05
 
-Status: `CAPACITY_BLOCKED_BEFORE_SOURCE_CAPTURE_PROTOCOL_UNCONSUMED`
+Status: `SOURCE_SHELL_GATE_MET_PENDING_FULL_ROSTER_GATES`
 
 The user authorized one bounded non-collision visual-shell probe followed, only
 if admissible, by the already frozen fair comparison. No X97 is authorized.
@@ -82,7 +82,7 @@ but its prerequisite validation rejected the pre-existing input-fingerprint
 mismatch at `experiments/index.jsonl:252`. No registry bytes were changed by this
 task. This is a local registration gap, not a source or algorithm verdict.
 
-## Observed execution outcome
+## Initial capacity-blocked launch (historical)
 
 The governed launch waited the existing 300-second capacity window and exited
 with `CARLA capacity did not recover: processes=0; free_physical_gb=2.44`.
@@ -97,10 +97,73 @@ protocol is unconsumed. This is a resource blocker, not a failed occlusion
 source and not an algorithm result. Resume the same unconsumed design when the
 concurrent job releases sufficient memory; do not recast this as a scored probe.
 
-## Resume after capacity is available
+## Resumed execution (2026-09-05)
 
-The protocol remains unconsumed until the first durable source pixel. Verify
-the pre-pixel v2 freeze before launching the already prepared command:
+The same v2 freeze was verified unchanged when free physical memory recovered
+to 7.85 GiB and no CARLA or Unreal editor was running. The original run ID was
+then launched successfully. The protocol is now consumed by source pixels;
+the earlier capacity-blocked receipt remains historical evidence only.
+
+The instance shard captured all twelve episodes (1,092 frames). Every expected
+outcome and responsible set matched. The frozen paired-raster gate passed:
+
+| Pair | Frozen window | Observed result |
+| --- | --- | --- |
+| S09 / ep_09 vs ep_11 | 1.3–2.4 s | 12 contiguous qualifying frames; native/reference ratio 0.0738955823–0.3012805588; no zero-pixel frame |
+| S10 / ep_10 vs ep_12 | 5.0–5.6 s | 7 contiguous zero-pixel frames; required visible context before and after disappearance passed |
+
+Independent witness capture also completed all twelve episodes (1,092 frames),
+and the frozen witness replay check passed. The runner exited zero after both
+gates. This completes the bounded shell probe, not formal roster admission.
+
+Raw evidence is retained under
+`artifacts.local/runtime/carla-asset-library/experiments/dtr-final-reckoning-roster-r1/visual-shell-probe-20260905-01`.
+SHA-256 receipts:
+
+- `source-gate-instance.json`: `BFCB6D2E2131687BA2F0C434246D63AB68018C3A7C2D623A91C4598D70457D02`
+- `source-gate-witness.json`: `839E99DCA0F38D6BB47AA1F410F510C7E7FCEC968FB4B64FBEE2597BC2C0DF88`
+- `shards/instance/result.json`: `8035AADC30F0A0BCA652C14ADD65CC671C17D0662C65D5D0B6415504191C4D6B`
+- `shards/witness/result.json`: `2C417CEA5A8CF891E4AF75DEA08DFAE359BC38046D9299BF063D9A10F0616D30`
+- `postprobe-s10-temporal-audit.json`: `9CCD89BF3177ACEE602293438BD815E2D79FE0CABD9150225B13FF7BE32CDDB0`
+
+Final cleanup inspection found zero matching task-owned processes, zero RPC
+listeners on 2000/2001/2002, and zero matching storage leases. Durable source
+payloads, manifests, logs and receipts remain retained. No model capture,
+prediction, fit or final truth was opened.
+
+### Remaining formal-source gap
+
+A separately labelled post-probe diagnostic of native S10 truth finds positive
+future-contact samples at 0.0–1.1 s and 2.8–9.0 s, separated by 16 known-negative
+samples at 1.2–2.7 s (1.6 s under the 0.1 s sample-cell convention). Proven
+reference-visible disappearance instead occupies 5.0–5.7 s. **There are zero
+known-negative samples inside that disappearance.** This establishes the shell
+mechanism, but does not establish R1's stronger requirement that disappearance
+contain a known-negative interval before renewed risk. Two contact windows and
+an unrelated occlusion window cannot substitute for their temporal binding.
+
+The diagnostic is not a changed frozen probe gate or a method score. Its inputs
+and hashes are retained in `postprobe-s10-temporal-audit.json` under the raw run.
+The successful shell result remains intact. No additional source run, changed
+scene, detector inference, FIT_ONLY or FINAL access was started to repair this.
+
+A read-only source audit also found that the complete ten-stratum evaluator and
+three-group formal materializer are absent. Existing analytic center-contact
+checks do not establish all captured-source semantics. The next formal-source
+implementation needs a versioned execution annex with joint S10 temporal
+binding, the remaining per-stratum source checks, frozen observation-removal
+indices, and explicit auxiliary-reference identities outside the final metric
+denominator. Existing eleven-arm mechanisms and the final roster stay frozen.
+
+Central registration was retried after capture resumed and still rejected the
+pre-existing fingerprint mismatch at `experiments/index.jsonl:252`; the registry
+was not rewritten to bypass it. A local structured component disposition is
+retained in `DTR_FINAL_VISUAL_SHELL_PROBE_20260905.inheritance.json`; central
+registration remains explicitly pending, rather than claiming it succeeded.
+
+## Launch command (historical; do not repeat this consumed run)
+
+The following command produced this source run after the memory blocker cleared:
 
 ```powershell
 pwsh -NoProfile -File tools/run_dtr_carla_c2_rich_scene.ps1 `

@@ -14,14 +14,19 @@ future obstacle occupancy intersects the wearer's route, while preserving
 
 - **Latest execution status (2026-09-05):** the frozen Final Reckoning R1
   remains the next comparison; no X97 is authorized. A paired-raster,
-  non-collision visual-shell source probe is implemented, but the existing
-  300-second capacity wait ended below the 4 GiB startup floor while a
-  concurrent user-owned Unreal job remained active. No source pixels,
-  predictions, or fit/final inputs were opened; the probe is unconsumed.
+  non-collision visual-shell source probe now **passes instance and independent
+  witness gates** (12 episodes each): partial visibility has 12 qualifying
+  frames at 7.39–30.13%, and full disappearance has 7 qualifying zero-pixel
+  frames. No extra responsible hazard was introduced. The probe is consumed.
+  Full-roster admission remains blocked: S10's known-negative samples at
+  1.2–2.7 s do not overlap its proven disappearance at 5.0–5.7 s, so the
+  required temporal mechanism is not established. The complete ten-stratum
+  source evaluator and three-group formal materializer also remain pending.
+  No predictions or fit/final inputs were opened; task resources are released.
   Its source evaluator and a separate shared event-metric implementation
   candidate have focused synthetic checks, but the eleven-arm execution
   integration and final evaluator freeze remain pending. See
-  [source probe status and resume](DTR_FINAL_VISUAL_SHELL_PROBE_20260905.md).
+  [source probe result and remaining source gap](DTR_FINAL_VISUAL_SHELL_PROBE_20260905.md).
 - **Public/JRDB line:** X21 transports only a component already authorized by
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
