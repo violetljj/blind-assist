@@ -25,6 +25,14 @@ future obstacle occupancy intersects the wearer's route, while preserving
   This remains a working source record: registry admission is blocked by an
   existing input-fingerprint mismatch, not bypassed by manual indexing. See
   [source execution, native crash, and efficiency findings](DTR_FINAL_SOURCE_EXECUTION_20260905.md).
+- **Capture engineering (2026-09-05):** a two-scene 720p test passed 100
+  synchronized RGB/depth pairs. Synchronization alone did not speed up capture;
+  replacing native PNG writing with a lossless encoder reduced the matched
+  synchronized capture from 63.28 to 22.00 s (2.88x), with 400 independently
+  decoded images exactly matching raw sensor pixels and 8.96% more encoded bytes.
+  This is a short engineering component result, not long-run stability or an
+  avoidance score. Frozen R1 remains unchanged and not evaluable. See
+  [throughput measurements and limitations](CARLA_RGBD_THROUGHPUT_20260905.md).
 - **Public/JRDB line:** X21 transports only a component already authorized by
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and
