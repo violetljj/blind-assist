@@ -61,23 +61,31 @@ again hit a shader fatal before any payload. A separate DX11 probe reached RPC
 but failed camera warmup. Both runs ended without detector, fit or scores; the
 client now detects server death promptly. Neither failed run is reopened here.
 
-The immediate engineering gap is shader startup and usable camera frames, then
-sustained capture and downstream joins. Source and engineering registration remain blocked by an
-existing input-fingerprint mismatch; manual indexing cannot grant admission.
+A separately identified launch profile requesting synchronous PSO compilation
+passed three cold starts (600 independently checked images), then all three
+missing shards (3,276 images) and all native joins. The composite source is now
+admitted as reused Development. This is bounded completion, not a permanent
+shader-fix claim. See [startup and method diagnosis](CARLA_CAMERA_STARTUP_20260905.md).
+
+Method preparation generated 910 FIT_ONLY detector frames but failed S03's
+six-frame dropout recovery condition: frame 29 is nearly black, has zero
+candidates and no measured collision credential. No fitting or final scoring
+ran. A consumed FIT_ONLY proposal with earlier 2/3/6-frame windows passed on
+that episode only; it neither rescues the failed run nor confirms method gain.
+Registration remains blocked by the existing input-fingerprint mismatch.
 The older eleven-cohort raw comparison cannot be reconstructed fairly: only
 C35 retains the required dense model/evaluator payloads. Derived tracks or
 recaptured pixels do not restore the original raw-input comparison.
 
 ## Next decision
 
-1. **Engineering:** isolate shader startup with a bounded camera-frame acceptance
-   check before another capture. RPC readiness alone did not suffice. If usable
-   frames pass, test a separately identified longer 720p capture with fast encoding.
-   Check independent pixel decode,
-   frame/time/pose alignment and downstream depth/join integrity; record elapsed
-   time and any native failure. If it passes, carry that component into a new
-   versioned source plan; if it fails, isolate that failure before another change.
-   This supplies bounded engineering evidence, never a retry grant for frozen R1.
+1. **Development:** use the complete source for a separately identified
+   pre-contact dropout design with observable recovery. The consumed FIT_ONLY
+   candidate windows are `[7,8]`, `[11,12,13]`, `[16..21]`; their selection is
+   post-hoc and changes no original verdict. Validate their source role before
+   comparing methods. Preserve the isolated hash-matching X24/X25 method snapshot
+   rather than reverting concurrent interface changes. No recapture is needed
+   merely to reuse the now complete source.
 2. **Confirmation:** a new admitted source authority is required before the
    pending comparison can proceed. Preserve the frozen eleven-arm decomposition,
    including raw Kalman + emitter and X94 + the same emitter, shared event

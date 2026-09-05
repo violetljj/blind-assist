@@ -46,7 +46,9 @@ def capture(args,root,group,sensor):
     try:
         if any(listening(p) for p in (2000,2001,2002)):raise RuntimeError('CARLA ports occupied')
         with (root/f'{group}-{sensor}-server.log').open('xb') as output:
-            server=subprocess.Popen([str(args.server),'-dx12','-RenderOffScreen','-nosound','-quality-level=Low','-carla-rpc-port=2000'],
+            flags=['-dx12','-RenderOffScreen','-nosound','-quality-level=Low','-carla-rpc-port=2000']
+            if args.startup_probe:flags.append('-ExecCmds=r.AsyncPipelineCompile 0')
+            server=subprocess.Popen([str(args.server),*flags],
                 cwd=args.server.parent,stdout=output,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
             deadline=time.monotonic()+90;ready=False
             while time.monotonic()<deadline:
@@ -71,6 +73,20 @@ def capture(args,root,group,sensor):
 def run(args):
     root=args.output.resolve();old=args.previous.resolve(strict=True)
     if not root.is_relative_to((HERE.parents[3]/'artifacts.local').resolve()):raise ValueError('Output routing')
+    startup=None
+    if args.startup_probe:
+        probe=args.startup_probe.resolve(strict=True)
+        outcome=read(probe/'result.json');pixels=read(probe/'pixel-validation.json')
+        if outcome['status']!='CAPTURE_PASS_PENDING_INDEPENDENT_PIXELS' or pixels['status']!='PASS':
+            raise ValueError('Camera startup probe not admitted')
+        if pixels.get('verified_images')!=600:raise ValueError('Startup pixels incomplete')
+        if any(pixels[name+'_sha256'].upper()!=sha(probe/(name+'.json')) for name in ('protocol','result')):
+            raise ValueError('Startup pixel receipt binding')
+        if len(outcome['starts'])!=3 or any(s['status']!='PASS' or s['images']!=200 or not s['ports_released'] for s in outcome['starts']):
+            raise ValueError('Three complete cold starts required')
+        from probe_carla_camera_startup import FLAGS
+        if read(probe/'protocol.json')['flags']!=FLAGS:raise ValueError('Startup launch profile drift')
+        startup={name:{'path':str(probe/name),'sha256':sha(probe/name)} for name in ('protocol.json','result.json','pixel-validation.json')}
     root.mkdir(parents=True,exist_ok=False)
     reused=[]
     for group in GROUPS:
@@ -92,10 +108,12 @@ def run(args):
           'capture_dtr_carla_c2_rich_scene.py','fast_sensor_png.py','join_dtr_final_roster_source.py',
           'join_dtr_carla_c2_rich_scene.py','finalize_dtr_final_roster_join.py','audit_dtr_final_roster_source.py',
           'validate_dtr_fast_png_receipts.py')]
+    if startup:code.extend(HERE/name for name in ('probe_carla_camera_startup.py','validate_carla_camera_startup.py'))
     plan={'status':'NEW_DEVELOPMENT_COMPOSITE_SOURCE_SEALED','claim':'DEVELOPMENT_COMPOSITE_REUSED_SOURCE_NOT_FRESH_CONFIRMATION',
           'previous_failed_execution':str(old),'previous_terminal_sha256':sha(old/'execution-terminal.json'),
           'reused_complete_shards':reused,'missing_shards':MISSING,'scenario_algorithm_threshold_changes':False,
           'retry_per_missing_shard':False,'old_R1_status_unchanged':True,
+          'startup_probe':startup,'async_pipeline_compile_requested':0 if startup else None,
           'method_access':'ONLY_AFTER_ALL_SOURCE_GATES_JOINS_AND_SHARED_DETECTOR_ADMISSION',
           'code_files':[{'path':str(p),'sha256':sha(p)} for p in code]}
     write(root/'execution-authority.json',plan)
@@ -133,4 +151,5 @@ def run(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('output','previous','server','research-python'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--startup-probe',type=Path,help='Admitted three-start synchronous-PSO engineering probe')
     run(parser.parse_args())
