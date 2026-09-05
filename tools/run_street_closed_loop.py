@@ -18,7 +18,10 @@ def main():
     p.add_argument('--engine',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--case',action='append',default=[])
-    p.add_argument('--controller-mode',choices=('JOINT','DTR_ONLY','DEPTH_ONLY'),default='JOINT')
+    p.add_argument('--controller-mode',choices=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR'),default='DEPTH_ONLY',
+                   help='Default: DEPTH_ONLY, the current measured UE reference')
+    p.add_argument('--prediction-engine',choices=('incremental','batch'),default='incremental')
+    p.add_argument('--action-footprint-state',choices=('cadence','frozen'),default='cadence')
     p.add_argument('--scenario-manifest',type=Path)
     p.add_argument('--scenario-split',choices=('regression','development','held_out'),default='regression')
     p.add_argument('--allow-held-out',action='store_true')
@@ -27,9 +30,12 @@ def main():
     p.add_argument('--resume',action='store_true')
     p.add_argument('--reuse-open-loop',type=Path,help='Reuse verified full controls; execute eight assisted branches only')
     args=p.parse_args()
+    if args.controller_mode.startswith('CANDIDATE_') and args.prediction_engine!='incremental':
+        p.error('Candidate motion modes require the incremental prediction engine')
     repo=Path(__file__).resolve().parents[1]
     scripts=repo/'research/active/dtr-r0/unreal'
     sys.path.insert(0,str(scripts))
+    from street_process_lifecycle import TaskProcessTree
     if not args.scenario_manifest and (args.scenario_split!='regression' or args.allow_held_out):
         p.error('Scenario split selection requires --scenario-manifest')
     if args.reuse_open_loop and args.scenario_manifest:
@@ -43,11 +49,18 @@ def main():
     output=args.output.resolve()
     if not output.is_relative_to((repo/'artifacts.local').resolve()): p.error('Output must remain under artifacts.local')
     output.mkdir(parents=True,exist_ok=args.resume)
-    sources=['capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_scenarios.py','ue_dtr_replay.py','ue_replay_cache.py','reuse_street_open_loop.py']
+    sources=['capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_action_risk.py',
+             'street_scenarios.py','ue_dtr_replay.py','ue_incremental.py','ue_replay_cache.py','reuse_street_open_loop.py',
+             'street_process_lifecycle.py','ue_action_footprints.py']
+    from ue_incremental import source_paths
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
+              'dtr_source_closure':{str(path.relative_to(repo)):sha(path) for path in source_paths()},
+              'launcher_sha256':sha(Path(__file__)),
               'map_sha256':sha(map_file)}
     if args.map!='StreetLabV2': identity['map_asset']=map_asset
     identity['controller_mode']=args.controller_mode
+    identity['prediction_engine']=args.prediction_engine
+    identity['action_footprint_state']=args.action_footprint_state
     if args.scenario_manifest:
         from scenario_bank import load_scenarios, validate_specs, read_manifest
         read_manifest(args.scenario_manifest)
@@ -89,6 +102,9 @@ def main():
     model.mkdir(exist_ok=True)
     worker=None
     editor=None
+    worker_tree=None
+    editor_tree=None
+    port=None
     try:
         if args.reuse_open_loop and not args.resume:
             sys.path.insert(0,str(scripts))
@@ -99,10 +115,13 @@ def main():
         ready=sensor/'ready.json'
         if ready.exists(): ready.unlink()
         with (sensor/'worker.log').open('a') as log:
-            worker=subprocess.Popen([sys.executable,str(scripts/'street_live_server.py'),
-                '--model-root',str(model),'--output',str(sensor),'--controller-mode',args.controller_mode],stdout=log,stderr=subprocess.STDOUT)
+            worker=subprocess.Popen([sys.executable,'-B',str(scripts/'street_live_server.py'),
+                '--model-root',str(model),'--output',str(sensor),'--controller-mode',args.controller_mode,
+                '--prediction-engine',args.prediction_engine,'--action-footprint-state',args.action_footprint_state],stdout=log,stderr=subprocess.STDOUT)
+            worker_tree=TaskProcessTree(worker,owner=str(output)+'/sensor-worker')
             begin=time.monotonic()
             while not ready.exists():
+                worker_tree.capture()
                 if worker.poll() is not None: raise RuntimeError('DTR worker failed; inspect worker.log')
                 if time.monotonic()-begin>180: raise RuntimeError('DTR worker startup timeout')
                 time.sleep(.5)
@@ -118,10 +137,11 @@ def main():
                 '-ExecCmds=py '+(scripts/'capture_street_closed_loop.py').as_posix(),
                 '-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash','-ddc=NoShared',
                 '-LocalDataCachePath='+str(project/'DerivedDataCache'),'-abslog='+str(output/'capture.log')],env=env)
+            editor_tree=TaskProcessTree(editor,owner=str(output)+'/unreal-editor')
             (output/'processes.json').write_text(json.dumps({'owner_pid':os.getpid(),'worker_pid':worker.pid,
                     'editor_pid':editor.pid,'port':port},indent=2))
             print('LIVE_LOOP_STARTED',json.loads((output/'processes.json').read_text()),flush=True)
-            code=editor.wait(timeout=3600)
+            code=editor_tree.wait(timeout=3600,on_poll=worker_tree.capture)
             if code: raise RuntimeError(f'UE exited {code}')
         report=json.loads((output/'run.json').read_text())
         print(json.dumps(report,indent=2),flush=True)
@@ -134,12 +154,16 @@ def main():
         report_path.write_text(json.dumps(report,indent=2))
         raise
     finally:
-        for process in (editor,worker):
-            if process and process.poll() is None:
-                process.terminate()
-                process.wait(timeout=30)
+        release=[]
+        for tree in (editor_tree,worker_tree):
+            if tree:
+                endpoints=[('127.0.0.1',port)] if tree is worker_tree and port is not None else []
+                release.append(tree.cleanup(ports=endpoints))
         lock.unlink(missing_ok=True)
-    subprocess.run([sys.executable,str(scripts/'evaluate_street_closed_loop.py'),'--run',str(output)],check=True)
+        (output/'process-release.json').write_text(json.dumps({
+            'process_trees':release,'lock_removed':not lock.exists(),'port':port,
+            'released':all(row['released'] for row in release) and not lock.exists()},indent=2))
+    subprocess.run([sys.executable,'-B',str(scripts/'evaluate_street_closed_loop.py'),'--run',str(output)],check=True)
 
 
 if __name__=='__main__': main()

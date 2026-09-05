@@ -134,9 +134,12 @@ def causal_prefixes(episode, max_frames=None):
         yield replace(episode, observations=episode.observations[:count])
 
 
-def replay_dataset(dataset, output, *, max_frames=None, episode_ids=None, weights=None, mode='perception'):
+def replay_dataset(dataset, output, *, max_frames=None, episode_ids=None, weights=None, mode='perception',
+                   engine='incremental'):
     if mode != 'perception':
         raise ValueError('Fixed input replay cannot create/evaluate a new motion trajectory; run UE closed-loop')
+    if engine not in ('incremental', 'batch-prefix'):
+        raise ValueError('Unknown prediction engine')
     started = time.perf_counter()
     receipt = verify_dataset(dataset)
     import ue_dtr_replay as replay
@@ -156,11 +159,12 @@ def replay_dataset(dataset, output, *, max_frames=None, episode_ids=None, weight
     model_hash = sha(weights)
     model = YOLO(str(weights), task='segment').to('cuda:0')
     names = replay.detector.model_names(model)
-    rows, inference_s, predictor_s = [], 0., 0.
+    rows, inference_s, predictor_s, engine_stats = [], 0., 0., {}
     for episode in episodes:
         candidates = []
-        for prefix in causal_prefixes(episode, max_frames):
-            observation = prefix.observations[-1]
+        incremental = replay.IncrementalX73(episode.episode_id, episode.route_frame, contract.calibration) if engine == 'incremental' else None
+        limit = min(len(episode.observations), max_frames or len(episode.observations))
+        for observation in episode.observations[:limit]:
             source = {'episode_id': episode.episode_id, 'sample_index': observation.sample_index,
                       'time_s': observation.time_s, 'world_frame': observation.world_frame,
                       'frame_id': f'{episode.episode_id}/{observation.sample_index:06d}'}
@@ -171,17 +175,21 @@ def replay_dataset(dataset, output, *, max_frames=None, episode_ids=None, weight
             torch.cuda.synchronize()
             inference_s += time.perf_counter() - tick
             tick = time.perf_counter()
-            if len(candidates) == 1:
+            if incremental is not None:
+                row = incremental.update(observation, candidates[-1])
+            elif len(candidates) == 1:
                 row = {'episode_id': episode.episode_id, 'sample_index': observation.sample_index,
                        'time_s': observation.time_s, 'event': 'WARMUP', 'route_risk': False,
                        'risk_state': 'UNKNOWN_INSUFFICIENT_HISTORY'}
             else:
                 with cached_replay_inputs():
-                    prediction = replay.predict_episode(prefix, candidates, contract.calibration)
+                    prediction = replay.predict_episode(replace(episode, observations=episode.observations[:len(candidates)]), candidates, contract.calibration)
                 row = replay.compact_rows(episode.episode_id, prediction)[-1]
             predictor_s += time.perf_counter() - tick
             rows.append(dict(row, input_prefix_frames=len(candidates)))
-        print(f'replayed {episode.episode_id}: {len(candidates)} causal prefixes', flush=True)
+        if incremental is not None:
+            engine_stats[episode.episode_id] = incremental.stats
+        print(f'replayed {episode.episode_id}: {len(candidates)} frames with {engine}', flush=True)
     report = {'schema': 'ue-fixed-perception-replay-v1', 'status': 'COMPLETE', 'frames': len(rows),
               'dataset_integrity_sha256': sha(Path(dataset) / 'integrity.json'),
               'dataset_frames': receipt['frames'], 'selected_episodes': [e.episode_id for e in episodes],
@@ -189,6 +197,7 @@ def replay_dataset(dataset, output, *, max_frames=None, episode_ids=None, weight
               'device': str(next(model.model.parameters()).device), 'gpu': torch.cuda.get_device_name(0),
               'torch': torch.__version__, 'elapsed_s': time.perf_counter() - started,
               'inference_s': inference_s, 'predictor_s': predictor_s,
+              'prediction_engine': engine, 'incremental_stats': engine_stats,
               'ue_launched': False, 'evaluator_truth_opened': False,
               'authority': 'CONSUMED_SYNTHETIC_DEVELOPMENT_FIXED_INPUT',
               'trajectory': 'RECORDED_ONLY_NO_COUNTERFACTUAL_MOTION_AUTHORITY'}
@@ -213,6 +222,7 @@ def main():
     run.add_argument('--max-frames', type=int)
     run.add_argument('--weights', type=Path)
     run.add_argument('--mode', choices=['perception'], default='perception')
+    run.add_argument('--engine', choices=['incremental', 'batch-prefix'], default='incremental')
     args = parser.parse_args()
     if hasattr(args, 'output') and not args.output.resolve().is_relative_to((REPO / 'artifacts.local').resolve()):
         parser.error('Output must remain under canonical artifacts.local')
@@ -224,7 +234,7 @@ def main():
         result = verify_dataset(args.dataset)
     else:
         result = replay_dataset(args.dataset, args.output, max_frames=args.max_frames,
-                                episode_ids=args.episode, weights=args.weights, mode=args.mode)
+                                episode_ids=args.episode, weights=args.weights, mode=args.mode, engine=args.engine)
     print(json.dumps({k: v for k, v in result.items() if k != 'files'}, indent=2))
 
 

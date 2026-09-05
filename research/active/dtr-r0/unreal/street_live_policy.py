@@ -6,6 +6,7 @@ No actor IDs, future trajectories, scenario role, or collision labels are inputs
 """
 import math
 import numpy as np
+from street_action_risk import candidates_for, evaluate_candidates, choose_candidate
 
 
 def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
@@ -35,7 +36,7 @@ def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
 
 
 class MotionPolicy:
-    MODES=('JOINT','DTR_ONLY','DEPTH_ONLY')
+    MODES=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR')
 
     def __init__(self, mode='JOINT'):
         if mode not in self.MODES: raise ValueError(f'Unknown controller mode: {mode}')
@@ -44,7 +45,10 @@ class MotionPolicy:
         self.pass_until_x=None
         self.last_risk_t=-100.0
 
-    def command(self, *, t, x, y, goal_x, dtr_risk, corridors):
+    def command(self, *, t, x, y, goal_x, dtr_risk, corridors, motion_frame=None):
+        if self.mode in ('CANDIDATE_DEPTH', 'CANDIDATE_DTR'):
+            return self._candidate_command(t=t,x=x,y=y,goal_x=goal_x,
+                raw_dtr_risk=dtr_risk,corridors=corridors,motion_frame=motion_frame)
         # Remove the entire depth control channel, including its validity stop,
         # side selection and return-path geometry, in the DTR-only ablation.
         if self.mode=='DTR_ONLY':
@@ -54,6 +58,31 @@ class MotionPolicy:
         result=self._command_active(t=t,x=x,y=y,goal_x=goal_x,dtr_risk=dtr_risk,corridors=corridors)
         result.update(controller_mode=self.mode,dtr_route_risk=bool(dtr_risk),
                       depth_near_risk=corridors['front_obstacle_m'] is not None and corridors['front_obstacle_m']<2.8)
+        return result
+
+    def _candidate_command(self, *, t, x, y, goal_x, raw_dtr_risk, corridors, motion_frame):
+        nominal=self._command_active(t=t,x=x,y=y,goal_x=goal_x,dtr_risk=False,corridors=corridors)
+        candidates=candidates_for(nominal,x=x,y=y,corridors=corridors)
+        evaluation=evaluate_candidates(candidates,motion_frame,t=t,x=x,y=y)
+        enabled=self.mode=='CANDIDATE_DTR'
+        selected,reason=choose_candidate(evaluation,enabled=enabled)
+        result=dict(nominal)
+        changed=selected['candidate']!='DEPTH_NOMINAL'
+        if changed:
+            result.update(vx_mps=selected['vx_mps'],vy_mps=selected['vy_mps'],
+                          target_y_m=selected['target_y_m'],
+                          action='WAIT_PREDICTED_CROSSING' if selected['candidate']=='WAIT' else 'SIDESTEP_PREDICTED_CROSSING')
+            if selected['candidate']!='WAIT':
+                self.target_y=selected['target_y_m']
+                front=corridors['front_obstacle_m']
+                self.pass_until_x=max(self.pass_until_x or x,x+(front if front is not None else 0.0)+1.0)
+        active=enabled and bool(evaluation['candidates'][0]['conflicts'])
+        result.update(controller_mode=self.mode,dtr_route_risk=False,
+                      raw_dtr_route_risk=bool(raw_dtr_risk),action_conditioned_risk=active,
+                      depth_near_risk=corridors['front_obstacle_m'] is not None and corridors['front_obstacle_m']<2.8,
+                      risk=bool(nominal['risk'] or active),candidate_intervention=changed,
+                      selected_candidate=selected['candidate'],selection_reason=reason,
+                      nominal_action=nominal['action'],candidate_evaluation=evaluation)
         return result
 
     def _command_active(self, *, t, x, y, goal_x, dtr_risk, corridors):

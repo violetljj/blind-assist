@@ -6,10 +6,12 @@
 
 实测记录见 [2026-09-05 算法实验场报告](ALGORITHM_LAB_20260905.md)。
 
+最新实现见 [增量状态与候选动作重构](INCREMENTAL_ACTION_REFACTOR_20260905.md)。固定回放及 live worker 默认使用增量 X73：同一检测账本的预测耗时 `370.28 -> 24.02 s`，733 帧历史输出一致；完整固定回放实测 `448.95 -> 51.34 s`，后者是历史同工作量比较。原批量实现保留作差分参照，固定回放可指定 `--engine batch-prefix`，闭环可指定 `--prediction-engine batch`。
+
 感知修改先用固定 RGB-D 输入，运动决策修改再运行 UE 闭环。固定回放保留原始相机、位姿和已下发计划，因此不能为新的运动策略提供反事实轨迹或接触成绩。
 
 ```powershell
-# 在具备 CUDA PyTorch、Ultralytics、NumPy、Pillow 的项目 Python 环境执行。
+# 在具备 CUDA PyTorch、Ultralytics、NumPy、Pillow、psutil 的项目 Python 环境执行。
 python research/active/dtr-r0/unreal/ue_fixed_replay.py export --source-run artifacts.local/unreal/closed-loop-v4-suite-20260905-a --output artifacts.local/unreal/<固定输入目录>
 python research/active/dtr-r0/unreal/ue_fixed_replay.py replay --dataset artifacts.local/unreal/<固定输入目录> --output artifacts.local/unreal/<新感知结果目录>
 python research/active/dtr-r0/unreal/scenario_bank.py freeze --manifest artifacts.local/unreal/<新难例库.json>
@@ -17,7 +19,11 @@ python tools/run_street_ablation.py --engine <本机UE安装目录> --scenario-m
 python tools/run_street_closed_loop.py --engine <本机UE安装目录> --map StreetLabV4 --scenario-manifest artifacts.local/unreal/<新难例库.json> --scenario-split development --controller-mode JOINT --output artifacts.local/unreal/<新难例运行目录>
 ```
 
-三个控制模式为 `DTR_ONLY`、`DEPTH_ONLY`、`JOINT`。DTR 单独模式关闭整个深度控制通道，包括有效性停步、侧向路径选择和回归路线判定，保留原有 DTR 风险到等待/恢复的接口；没有另外创造 DTR 路径规划器。深度单独模式忽略 DTR 对动作的影响。各模式仍计算并记录两个原始感知分支，便于诊断，不能拿其 worker 耗时当作单分支计算成本。回放画面区分 raw X73 输出和实际启用的动作来源。
+原有三个控制模式为 `DTR_ONLY`、`DEPTH_ONLY`、`JOINT`。DTR 单独模式关闭整个深度控制通道，包括有效性停步、侧向路径选择和回归路线判定，保留原有 DTR 风险到等待/恢复的接口；没有另外创造 DTR 路径规划器。深度单独模式忽略 DTR 对动作的影响。各模式仍计算并记录两个原始感知分支，便于诊断，不能拿其 worker 耗时当作单分支计算成本。回放画面区分 raw X73 输出和实际启用的动作来源。
+
+新增研究模式 `CANDIDATE_DEPTH` 和 `CANDIDATE_DTR` 使用同一组候选动作和当前足迹，后者允许预测交会改变动作选择。两者要求增量引擎，保留即时深度刹车和无效深度停步；未下发的候选不继承旧计划凭据。八场景固定比较入口为 `tools/run_street_candidate_comparison.py`，参数为 `--engine`、`--scenario-manifest`、`--output`，详细结果与使用范围见重构报告。
+
+UE 启动器和 worker 的运动模式现在默认 `DEPTH_ONLY`：已有三组对照中深度单独为 8/8、联合为 7/8；修正采样窗口后的候选动作对照中两组均为 8/8，到达时间相同，新控制器改变三次动作但没有增量收益，因此保留为显式研究选项。X24/X25 共享拟合接口允许调用方指定采样窗口，候选模式按源时间戳冻结为 0.60 s，修复 5 Hz 数据在旧 0.50 s 窗口内无法满足四帧要求的问题；原默认值和 X73 输出保持兼容。`--action-footprint-state frozen` 可复现旧足迹配置。此处默认值只作用于 UE 实验入口。
 
 三组入口冻结脚本、地图、渲染配置、模型及案例库，为每组重新运行八对直行/辅助分支，输出 `comparison.json`。`--resume` 只续接同一冻结运行的检查点，算法失败不会触发调参重跑。改动输入或源码须使用新的运行目录。
 

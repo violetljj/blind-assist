@@ -254,7 +254,8 @@ class RigidFootprintTracker:
             return track.position_xy + track.velocity_xy * max(0.0, now_s - track.state_time_s)
         return None if track.last_position_xy is None else track.last_position_xy
 
-    def update(self, measurements: Sequence[FootprintMeasurement], now_s: float) -> set[str]:
+    def update(self, measurements: Sequence[FootprintMeasurement], now_s: float, *,
+               fit_window_s: float | None = None) -> set[str]:
         self.tracks = {
             key: value
             for key, value in self.tracks.items()
@@ -322,7 +323,7 @@ class RigidFootprintTracker:
             track.footprint_offsets_xy = measurement.footprint_xy - rigid_center[None, :]
             track.depth_support = measurement.depth_support
             track.registration_residual_m = registration_residual
-            motion = x24.robust_motion(track.history, now_s)
+            motion = x24.robust_motion(track.history, now_s, window_s=fit_window_s)
             if motion is not None:
                 track.position_xy, track.velocity_xy = motion
                 track.state_time_s = now_s

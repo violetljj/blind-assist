@@ -1,0 +1,17 @@
+{
+  "terminal_id": "terminal-l10-candidate-carrier-association-development",
+  "inheritance_role": "COMPONENT_OR_CHALLENGER",
+  "inheritance_mode": "COMPONENT",
+  "role_scope": "Typed local/identity/unknown carrier association and bounded same-source same-track continuity; optional integration into the existing Named-POI working candidate.",
+  "retained_surface": "Standalone association module, consumed SEVN adapter, focused tests and the scoped two-file WIP integration patch.",
+  "failure_signature": "The first adapter confused private-crop OCR boxes with full-frame coordinates and wrongly replaced the existing local topology with containment, collapsing triggered correct retention. That failed diagnostic is preserved. Legacy exports cannot establish independent exact-name identity.",
+  "revisit_trigger": "A real observation producer with evaluated carrier, identity-role and track evidence, using matched-carrier and sibling/advertisement controls at a stated observation cost.",
+  "assignment_basis": "Synthetic cross-carrier misuse is corrected; the V2 adapter retains all existing correct and wrong SEVN surrogate bindings and observation counts. This is scoped correctness and compatibility, not an empirical accuracy gain or a revived hard-veto role.",
+  "report": "research/active/l10-r0/L10_CANDIDATE_CARRIER_ASSOCIATION_20260905.md",
+  "central_registration": {
+    "status": "BLOCKED_BY_EXISTING_UNRELATED_REGISTRY_FINGERPRINT",
+    "error": "experiments/index.jsonl:252: input_fingerprint does not match input_refs",
+    "receipt": "artifacts.local/analysis/refactor-20260905/registration-result.json",
+    "action": "The shared delivery registration attempt failed during existing-registry validation before mutation. No separate L10 append was attempted through the same blocker. This complete local disposition does not claim central assignment; concurrent registry changes are preserved."
+  }
+}

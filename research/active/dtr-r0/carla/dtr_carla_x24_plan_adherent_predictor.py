@@ -409,8 +409,16 @@ class Track:
     depth_support: int | None = None
 
 
-def robust_motion(history: Sequence[tuple[float, np.ndarray]], now_s: float) -> tuple[np.ndarray, np.ndarray] | None:
-    window = [row for row in history if now_s - row[0] <= VELOCITY_WINDOW_S + EPSILON]
+def robust_motion(history: Sequence[tuple[float, np.ndarray]], now_s: float, *,
+                  window_s: float | None = None) -> tuple[np.ndarray, np.ndarray] | None:
+    """Fit real measurements within the caller's declared sampling contract.
+
+    Omission retains the original window. A source adapter may explicitly supply
+    a satisfiable window without changing the sample, span or slope requirements.
+    """
+    window_s = VELOCITY_WINDOW_S if window_s is None else float(window_s)
+    require(math.isfinite(window_s) and window_s > 0.0, "x24_motion_fit_window")
+    window = [row for row in history if now_s - row[0] <= window_s + EPSILON]
     if len(window) < MINIMUM_FIT_SAMPLES or window[-1][0] - window[0][0] < MINIMUM_FIT_SPAN_S - EPSILON:
         return None
     times = np.asarray([row[0] for row in window], dtype=np.float64)

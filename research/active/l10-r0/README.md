@@ -2,6 +2,14 @@
 
 Status: `ACTIVE`
 
+- **Candidate-carrier association (2026-09-05):** a typed source/frame/ROI join
+  now separates local text support from identity-bearing support and bounds
+  same-track continuity. The optional Named-POI WIP integration fixes the
+  cross-carrier text/guidance counterexample. Corrected consumed-SEVN adaptation
+  preserves `11/4/9` fixed-sweep and `12/5/7` triggered outcomes and all observation
+  costs; this is compatibility, not a new accuracy result. The missing exact-name
+  producer evidence remains explicit. [Implementation, failed adapter diagnostic,
+  corrected replay and scoped integration](L10_CANDIDATE_CARRIER_ASSOCIATION_20260905.md).
 - **Core controller:** SC1W--SC2 seek/guide/reacquire and the SC14 causal
   action-belief handoff guard remain implemented; the later SceneFun3D ordinal
   source line terminates at `SC40_NOT_EVALUABLE_NO_FRESH_DEPTH_VISIBLE_ACTIVE_VIEW`.

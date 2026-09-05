@@ -120,27 +120,35 @@ def predict_episode(episode, candidates, calibration):
         return x73.apply_credentialed_parent_hull_reconstruction_episode(core, rigid, episode)
 
 
+def compact_frame(episode_id, frame, previous_risk=False):
+    arm = frame["arms"][x73.ARM_X73]
+    risk = bool(arm["route_risk"])
+    dispositions = [str(track.get("disposition", "UNSPECIFIED")) for track in frame.get("tracks", [])]
+    support = ("CURRENT_MEASURED_TRACK_SUPPORT" if "MEASURED" in dispositions else
+               "HELD_TRACK_SUPPORT_ONLY" if dispositions and all(value == "HOLD" for value in dispositions) else
+               "OTHER_TRACK_SUPPORT" if dispositions else "NO_TRACK_SUPPORT")
+    # This is a display transition of model risk, not a new event policy.
+    event = "ONSET" if risk and not previous_risk else "HOLD" if risk else "CLEAR" if previous_risk else "NONE"
+    return {"episode_id": episode_id, "sample_index": frame["sample_index"], "time_s": frame["time_s"],
+            "route_risk": risk, "event": event, "minimum_entry_s": arm.get("minimum_entry_s"),
+            "risk_state": "POSITIVE_PREDICTED_RISK" if risk else "NO_POSITIVE_PREDICTED_RISK_NOT_SAFETY",
+            "support_state": support, "track_dispositions": dispositions,
+            "global_observability": "UNKNOWN_NOT_ESTIMATED_BY_X73",
+            "route_mode": arm.get("route_mode"), "confirmed_risk_track_ids": arm.get("confirmed_risk_track_ids", []),
+            "clear_means": "PREDICTED_RISK_ENDED_NOT_SAFETY"}
+
+
 def compact_rows(episode_id, prediction):
     previous = False
     rows = []
     for frame in prediction["frames"]:
-        arm = frame["arms"][x73.ARM_X73]
-        risk = bool(arm["route_risk"])
-        dispositions = [str(track.get("disposition", "UNSPECIFIED")) for track in frame.get("tracks", [])]
-        support = ("CURRENT_MEASURED_TRACK_SUPPORT" if "MEASURED" in dispositions else
-                   "HELD_TRACK_SUPPORT_ONLY" if dispositions and all(value == "HOLD" for value in dispositions) else
-                   "OTHER_TRACK_SUPPORT" if dispositions else "NO_TRACK_SUPPORT")
-        # This is a display transition of model risk, not a new event policy.
-        event = "ONSET" if risk and not previous else "HOLD" if risk else "CLEAR" if previous else "NONE"
-        rows.append({"episode_id": episode_id, "sample_index": frame["sample_index"], "time_s": frame["time_s"],
-                     "route_risk": risk, "event": event, "minimum_entry_s": arm.get("minimum_entry_s"),
-                     "risk_state": "POSITIVE_PREDICTED_RISK" if risk else "NO_POSITIVE_PREDICTED_RISK_NOT_SAFETY",
-                     "support_state": support, "track_dispositions": dispositions,
-                     "global_observability": "UNKNOWN_NOT_ESTIMATED_BY_X73",
-                     "route_mode": arm.get("route_mode"), "confirmed_risk_track_ids": arm.get("confirmed_risk_track_ids", []),
-                     "clear_means": "PREDICTED_RISK_ENDED_NOT_SAFETY"})
-        previous = risk
+        row = compact_frame(episode_id, frame, previous)
+        rows.append(row)
+        previous = row["route_risk"]
     return rows
+
+
+from ue_incremental import IncrementalX73  # noqa: E402; retains the batch API above
 
 
 def main():

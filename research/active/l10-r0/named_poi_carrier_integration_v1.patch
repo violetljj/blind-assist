@@ -1,0 +1,217 @@
+--- a/research/active/named-poi-v1/named_poi_v1.py
++++ b/research/active/named-poi-v1/named_poi_v1.py
+@@ -10,12 +10,23 @@
+ import json
+ import math
+ import statistics
++import sys
+ import unicodedata
+-from dataclasses import dataclass
++from dataclasses import dataclass, replace
+ from enum import Enum
+ from pathlib import Path
+ from typing import Any, Iterable, Mapping, Sequence
+ 
++
++_L10_MODULES = str(Path(__file__).resolve().parents[1] / "l10-r0")
++if _L10_MODULES not in sys.path:
++    sys.path.insert(0, _L10_MODULES)
++from l10_candidate_carrier_association import (
++    AssociatedCandidate,
++    AssociationState,
++    BoundedCarrierContinuity,
++    associate_frame,
++)
+ 
+ SCHEMA = "blindassist.named_poi_v1"
+ 
+@@ -72,6 +83,7 @@
+     appearance_score: float | None
+     bbox_x_center: float | None
+     reason: str
++    carrier: AssociatedCandidate | None = None
+ 
+ 
+ @dataclass(frozen=True)
+@@ -80,6 +92,7 @@
+     appearance_confirm_threshold: float = 0.72
+     appearance_track_threshold: float = 0.58
+     partial_text_min_chars: int = 3
++    max_track_only_frames: int = 4
+ 
+ 
+ def _text_strength(texts: Sequence[str], names: Sequence[str], minimum: int) -> tuple[bool, bool]:
+@@ -110,7 +123,10 @@
+     def __init__(self, config: FusionConfig = FusionConfig()):
+         self.config = config
+ 
+-    def decide(self, target: PoiTarget, frame: Mapping[str, Any]) -> FrameDecision:
++    def decide(
++        self, target: PoiTarget, frame: Mapping[str, Any],
++        preferred_track: tuple[str, str] | None = None,
++    ) -> FrameDecision:
+         location = frame.get("location")
+         if not isinstance(location, Mapping) or location.get("latitude") is None or location.get("longitude") is None:
+             return FrameDecision(
+@@ -120,37 +136,58 @@
+         distance = haversine_meters(
+             float(location["latitude"]), float(location["longitude"]), target.latitude, target.longitude
+         )
+-        texts = [str(item.get("text", "")) for item in frame.get("text_evidence", ()) if isinstance(item, Mapping)]
+-        full_text, partial_text = _text_strength(texts, target.names, self.config.partial_text_min_chars)
+-        visual_items = [
+-            item for item in frame.get("appearance_evidence", ())
+-            if isinstance(item, Mapping) and str(item.get("poi_id")) == target.poi_id
+-        ]
+-        best_visual = max(visual_items, key=lambda item: float(item.get("score", float("-inf"))), default=None)
+-        appearance_score = float(best_visual["score"]) if best_visual and best_visual.get("score") is not None else None
+-        bbox = best_visual.get("bbox_xyxy_norm") if best_visual else None
+-        bbox_x = None
+-        if isinstance(bbox, Sequence) and len(bbox) == 4:
+-            bbox_x = (float(bbox[0]) + float(bbox[2])) / 2.0
++        candidates = [item for item in associate_frame(frame).candidates if str(item.evidence.get("poi_id")) == target.poi_id]
++        aliases = {normalize_text(name) for name in target.names}
++        candidates = [replace(
++            item, state=AssociationState.CONTRADICTED, identity_texts=(),
++            reasons=(*item.reasons, "COMPLETE_IDENTITY_NAME_CONTRADICTS_TARGET"),
++        ) if any(normalize_text(name) not in aliases for name in item.complete_identity_names) else item for item in candidates]
++
++        def score(item: AssociatedCandidate) -> float | None:
++            try:
++                value = float(item.evidence["score"])
++            except (KeyError, ValueError, TypeError):
++                return None
++            return value if math.isfinite(value) else None
++
++        eligible = []
++        for item in candidates:
++            full, partial = _text_strength(item.identity_texts, target.names, self.config.partial_text_min_chars)
++            value = score(item)
++            if full or (partial and value is not None and value >= self.config.appearance_confirm_threshold):
++                eligible.append((item, full, partial))
++        # Multiple physical carriers bearing the same name stay set-valued.
++        chosen = eligible[0][0] if len(eligible) == 1 else None
++        if chosen is None and preferred_track is not None and not eligible:
++            same_track = [item for item in candidates if item.track_key == preferred_track]
++            chosen = same_track[0] if len(same_track) == 1 else None
++        if chosen is None and len(candidates) == 1 and candidates[0].state == AssociationState.CONTRADICTED:
++            chosen = candidates[0]
++        appearance_score = score(chosen) if chosen else None
++        bbox_x = (chosen.region.box[0] + chosen.region.box[2]) / 2 if chosen and chosen.region else None
++        full_text = len(eligible) == 1 and eligible[0][1]
++        partial_text = len(eligible) == 1 and eligible[0][2]
+ 
+         if distance > self.config.map_radius_m:
+             return FrameDecision(
+                 Decision.REJECT_MAP_MISMATCH, None, distance, full_text, partial_text,
+-                appearance_score, bbox_x, "named target is outside the map candidate radius",
++                appearance_score, bbox_x, "named target is outside the map candidate radius", chosen,
+             )
+         if full_text:
+             return FrameDecision(
+                 Decision.CONFIRM_FULL_TEXT, target.poi_id, distance, True, True,
+-                appearance_score, bbox_x, "nearby map candidate and complete target name",
++                appearance_score, bbox_x, "complete target name associated with this identity-bearing carrier", chosen,
+             )
+         if partial_text and appearance_score is not None and appearance_score >= self.config.appearance_confirm_threshold:
+             return FrameDecision(
+                 Decision.CONFIRM_PARTIAL_TEXT_AND_APPEARANCE, target.poi_id, distance, False, True,
+-                appearance_score, bbox_x, "nearby map candidate plus partial text and strong appearance",
++                appearance_score, bbox_x, "partial identity text and strong appearance on the same carrier", chosen,
+             )
+         return FrameDecision(
+             Decision.SCAN, None, distance, False, partial_text, appearance_score, bbox_x,
+-            "insufficient independent evidence; continue scanning",
++            "current carrier identity is contradicted; continue scanning" if chosen and chosen.state == AssociationState.CONTRADICTED else
++            "ambiguous named carriers; continue scanning" if len(eligible) > 1 else
++            "carrier identity relation unresolved; continue scanning", chosen,
+         )
+ 
+ 
+@@ -181,10 +218,20 @@
+         self.confirmed = False
+         self.missing_frames = 0
+         self.last_x: float | None = None
++        self.continuity = BoundedCarrierContinuity(config.max_track_only_frames)
+ 
+     def observe(self, frame: Mapping[str, Any]) -> SequenceOutput:
+-        identity = self.fusion.decide(self.target, frame)
++        identity = self.fusion.decide(self.target, frame, self.continuity.track_key)
+         strong = identity.confirmed_poi_id == self.target.poi_id
++        contradicted = identity.carrier is not None and (
++            identity.carrier.state == AssociationState.CONTRADICTED
++            or identity.carrier.evidence.get("track_status") == "CONTRADICTED"
++        )
++        if self.confirmed and (contradicted or identity.decision == Decision.REJECT_MAP_MISMATCH):
++            self.confirmed = False
++            self.missing_frames = 0
++            self.continuity.reset()
++            return SequenceOutput(SequencePhase.LOST_SCAN, "当前目标关联已冲突，请重新扫描", identity, None)
+         trackable = (
+             identity.map_distance_m is not None
+             and identity.map_distance_m <= self.config.map_radius_m
+@@ -195,11 +242,13 @@
+             first = not self.confirmed
+             self.confirmed = True
+             self.missing_frames = 0
++            self.continuity.confirm(identity.carrier)
+             if identity.bbox_x_center is not None:
+                 self.last_x = identity.bbox_x_center
+             phase = SequencePhase.CONFIRMED if first else SequencePhase.TRACKING
+             return SequenceOutput(phase, self._command(identity.bbox_x_center), identity, self.target.poi_id)
+-        if self.confirmed and trackable:
++        continued = self.continuity.advance(identity.carrier) if self.confirmed else False
++        if self.confirmed and trackable and continued:
+             self.missing_frames = 0
+             if identity.bbox_x_center is not None:
+                 self.last_x = identity.bbox_x_center
+@@ -213,6 +262,7 @@
+                     SequencePhase.OCCLUDED_HOLD, "目标暂时被遮挡，请保持方向", identity, self.target.poi_id
+                 )
+             self.confirmed = False
++            self.continuity.reset()
+             return SequenceOutput(SequencePhase.LOST_SCAN, "目标已丢失，请重新扫描", identity, None)
+         return SequenceOutput(SequencePhase.SEARCHING, "正在寻找目标", identity, None)
+ 
+--- a/research/active/named-poi-v1/test_named_poi_v1.py
++++ b/research/active/named-poi-v1/test_named_poi_v1.py
+@@ -3,6 +3,7 @@
+ import json
+ import tempfile
+ import unittest
++from itertools import count
+ from pathlib import Path
+ 
+ from named_poi_v1 import (
+@@ -22,17 +23,30 @@
+     latitude=22.2800,
+     longitude=114.1800,
+ )
++FRAME_IDS = count()
+ 
+ 
+ def frame(*, text=(), score=None, poi_id="hospital", lat=22.2801, lon=114.1801, x=0.7, visible=True):
++    frame_id = str(next(FRAME_IDS))
+     visual = [] if score is None else [{
++        "candidate_id": "carrier",
++        "track_id": "synthetic-track",
++        "track_evidence_id": f"synthetic-track:{frame_id}",
+         "poi_id": poi_id,
+         "score": score,
+         "bbox_xyxy_norm": [x - 0.1, 0.2, x + 0.1, 0.8],
+     }]
+     return {
++        "source_id": "synthetic-mechanics",
++        "frame_id": frame_id,
++        "roi_id": "full-frame",
++        "candidate_roster_complete": True,
+         "location": {"latitude": lat, "longitude": lon},
+-        "text_evidence": [{"text": value} for value in text],
++        "text_evidence": [{
++            "text_id": str(index), "text": value,
++            "bbox_xyxy_norm": [x - 0.05, 0.3, x + 0.05, 0.4],
++            "role": "IDENTITY_SIGN", "role_evidence_id": "synthetic-fixture-role",
++        } for index, value in enumerate(text)],
+         "appearance_evidence": visual,
+         "target_visible": visible,
+     }

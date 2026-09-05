@@ -1,0 +1,53 @@
+{
+  "schema": "ue-incremental-action-local-disposition-v1",
+  "authority": "CONSUMED_SYNTHETIC_DEVELOPMENT",
+  "report": "research/active/dtr-r0/unreal/INCREMENTAL_ACTION_REFACTOR_20260905.md",
+  "terminals": [
+    {
+      "terminal_id": "terminal-ue-incremental-x73-development",
+      "inheritance_role": "RETAINED_CORE",
+      "role_scope": "Default UE fixed replay and live X73 execution, with unchanged retained algorithm outputs.",
+      "retained_surface": "Persistent 25-stage executor, whole-function admission contract, bounded frame slots and batch oracle.",
+      "failure_signature": "Inherited temporary module bindings require serial use within one interpreter; changed frame programs need adapter review.",
+      "revisit_trigger": "A source-program change, concurrency requirement, or differential mismatch.",
+      "assignment_basis": "733 compact outputs and 717 complete-state hashes match; isolated predictor time 370.2786 to 24.0193 seconds, full replay 51.3426 seconds versus historical 448.9468 seconds."
+    },
+    {
+      "terminal_id": "terminal-ue-source-cadence-footprints-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Sensor-derived action footprints with a causally frozen, satisfiable fitting window.",
+      "retained_surface": "Shared optional X24/X25 window API and UE ActionFootprints source adapter.",
+      "failure_signature": "Missing measurements do not enlarge the frozen window; cadence beyond one-second history remains unsupported.",
+      "revisit_trigger": "A new source cadence or evaluated measurement-support defect.",
+      "assignment_basis": "Four real samples become reachable at 5 Hz without reducing the required sample count; full-input final API parity and 20 Hz original-tracker checks pass."
+    },
+    {
+      "terminal_id": "terminal-ue-action-risk-comparison-b-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Explicit candidate-motion selection in the UE lab; no default promotion.",
+      "retained_surface": "Continuous footprint sweeps, equal candidate sets, motion intervention logs and paired comparison runner.",
+      "failure_signature": "Three motion interventions gave no incremental success or arrival-time benefit on eight consumed regression conditions.",
+      "revisit_trigger": "A distinct source condition where supported predicted motion changes an outcome beyond depth control at a stated cost.",
+      "assignment_basis": "Comparison B completed both arms at 8/8 with identical per-case arrival times; DEPTH_ONLY remains the measured UE reference and is now the CLI default."
+    },
+    {
+      "terminal_id": "terminal-ue-action-risk-comparison-a-development",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "role_scope": "Demonstrate the original 0.50-second/four-sample contract mismatch at 5 Hz.",
+      "retained_surface": "Untouched comparison A, source snapshots and measurement-window diagnosis; frozen action-footprint option.",
+      "failure_signature": "No action footprint support in either arm; zero interventions despite detector and geometric measurements.",
+      "revisit_trigger": "Any claim that comparison A established action-conditioned benefit or that missing support was a negative obstacle finding.",
+      "assignment_basis": "32 branches completed but the added mechanism had no usable input; preserve this as a degenerate comparison, not successful method evidence."
+    }
+  ],
+  "central_registration": {
+    "status": "BLOCKED_BY_EXISTING_UNRELATED_REGISTRY_FINGERPRINT",
+    "attempt": "python -B tools/knowledge.py register-experiment --id ue-incremental-action-development-20260905 ...",
+    "error": "experiments/index.jsonl:252: input_fingerprint does not match input_refs",
+    "receipt": "artifacts.local/analysis/refactor-20260905/registration-result.json",
+    "shared_files_unchanged": true,
+    "action": "Normal registration was attempted and failed before mutation. Retain these complete local dispositions without claiming central assignment; preserve concurrent registry changes."
+  }
+}

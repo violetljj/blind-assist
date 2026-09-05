@@ -31,6 +31,7 @@ def _sources(frame):
     prediction = frame.get("response", {}).get("prediction", {})
     return [name for name, positive in (
         ("DTR_X73", command.get("dtr_route_risk", prediction.get("route_risk", False))),
+        ("DTR_ACTION_FOOTPRINT", command.get("action_conditioned_risk", False)),
         ("OBSERVED_DEPTH", command.get("depth_near_risk", False))) if positive]
 
 
@@ -48,6 +49,8 @@ CONTROLLER_DESCRIPTIONS = {
     "JOINT": "Retained DTR X73 OR observed-depth near-obstacle branch; active sources reported separately",
     "DTR_ONLY": "DTR X73 control only; observed-depth control channel disabled",
     "DEPTH_ONLY": "Observed-depth control only; raw X73 predictions logged but excluded from control",
+    "CANDIDATE_DEPTH": "Depth nominal selection from the shared motion candidate set; footprint predictions logged but excluded from control",
+    "CANDIDATE_DTR": "The same depth motion candidates ranked by current footprint intersection; hypothetical actions never inherit issued-plan credentials",
 }
 
 
