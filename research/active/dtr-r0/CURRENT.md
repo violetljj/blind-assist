@@ -1,6 +1,6 @@
 # DTR-R2 current
 
-Updated: 2026-09-01
+Updated: 2026-09-05
 
 Status: `DTR_R2_DYNAMIC_RETAINED`
 
@@ -12,6 +12,16 @@ future obstacle occupancy intersects the wearer's route, while preserving
 
 ## Current decisions
 
+- **Latest execution status (2026-09-05):** the frozen Final Reckoning R1
+  remains the next comparison; no X97 is authorized. A paired-raster,
+  non-collision visual-shell source probe is implemented, but the existing
+  300-second capacity wait ended below the 4 GiB startup floor while a
+  concurrent user-owned Unreal job remained active. No source pixels,
+  predictions, or fit/final inputs were opened; the probe is unconsumed.
+  Its source evaluator and a separate shared event-metric implementation
+  candidate have focused synthetic checks, but the eleven-arm execution
+  integration and final evaluator freeze remain pending. See
+  [source probe status and resume](DTR_FINAL_VISUAL_SHELL_PROBE_20260905.md).
 - **Public/JRDB line:** X21 transports only a component already authorized by
   raw X13 birth and the same live track. Its six-sequence replay reached `5/6`
   CONTACT, 11 false segments, 45.45% Event F1, `3.061 s` median lead, and

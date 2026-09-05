@@ -18,6 +18,7 @@ param(
     [ValidateRange(1073741824, 8589934592)]
     [long]$StorageReservationBytes = 8589934592,
     [string]$StorageLeaseToken = '',
+    [switch]$VisualShellSourceProbeOnly,
     [switch]$Resume
 )
 
@@ -600,6 +601,15 @@ try {
     if (($sensorOrder -join ',') -ne 'instance,wearable,depth,witness') {
         throw "Unexpected C2 sensor order: $($sensorOrder -join ',')"
     }
+    if ($VisualShellSourceProbeOnly) {
+        if ($Resume) { throw 'The bounded visual-shell probe cannot resume a consumed capture.' }
+        if ($protocolValue.final_visual_shell_probe.schema -ne 'blindassist-dtr-final-visual-shell-probe-v1' -or
+            $protocolValue.final_visual_shell_probe.method_predictions_or_scores_allowed -ne $false -or
+            $protocolValue.final_visual_shell_probe.probe_pixels_reusable_as_fit_or_final -ne $false) {
+            throw 'The visual-shell switch requires the isolated source-only protocol.'
+        }
+        $sensorOrder = @('instance', 'witness')
+    }
     if ($null -ne $protocolValue.capture.render_quality_level) {
         $script:RenderQualityLevel = [string]$protocolValue.capture.render_quality_level
     }
@@ -671,9 +681,26 @@ try {
         }
         Invoke-SensorCapture -SensorName $sensorName
         Assert-StorageLease
+        if ($VisualShellSourceProbeOnly) {
+            $gateArgs = @(
+                (Join-Path $script:RepoRoot 'research/active/dtr-r0/carla/evaluate_dtr_final_visual_shell_probe.py'),
+                '--protocol', $script:ProtocolPath, '--root', $script:RawRunPath,
+                '--output', (Join-Path $script:RawRunPath "source-gate-$sensorName.json")
+            )
+            if ($sensorName -eq 'witness') { $gateArgs += '--require-witness' }
+            & $script:CarlaPythonPath @gateArgs
+            if ($LASTEXITCODE -ne 0) {
+                throw "Visual-shell source gate failed after $sensorName; no next shard or final capture is authorized."
+            }
+        }
     }
     Assert-CarlaIdle
     Assert-StorageLease
+    if ($VisualShellSourceProbeOnly) {
+        Release-StorageLease
+        Write-Output "PASS bounded visual-shell source probe; remaining full-roster gates still required: $($script:RawRunPath)"
+        exit 0
+    }
     Invoke-Join
     Assert-StorageLease
     Release-StorageLease
