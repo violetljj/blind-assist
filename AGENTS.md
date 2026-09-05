@@ -10,14 +10,16 @@ Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 
 ## Load order
 
-1. Read [project state](docs/PROJECT_STATE.md).
+1. Read [project state](docs/PROJECT_STATE.md) once; refresh only when relevant
+   state changes. Reuse context already read.
 2. For research work, read `docs/CURRENT_DECISION.md` and the affected route
    `CURRENT.md`; skip route loading for unrelated code or documentation changes.
-3. For known-route algorithm/model/data work, run `python tools/knowledge.py
-   context --route <obstacle-avoidance|ten-meter-copilot> --limit 4`; add
-   `--query` for a named mechanism/failure and use `--json` only for automation.
+3. If baseline, inheritance, or failure context is missing, use
+   `python tools/knowledge.py context --route <route> --limit 4 --query <question>`.
+   Do not repeat unchanged lookups.
 4. Open the detailed route `README.md`, code, test, or contract only as needed.
-5. Check `git status --short`; for several lines, run `pwsh -NoProfile -File scripts/show_worktree_scope.ps1`.
+5. Check `git status --short` before editing/staging; use
+   `scripts/show_worktree_scope.ps1` only when ownership is unclear.
 
 Knowledge context does not replace route authority or reopen retired, rejected,
 consumed, or closed work. Avoid archives, full logs, generated outputs, and
@@ -33,11 +35,14 @@ assessing the result, continue any remaining authorized step toward the user's
 goal within its budget and evidence boundaries. Stop when that goal is complete
 or a concrete blocker requires user input or new authority.
 
-In `EXPLORE`:
+In `EXPLORE`, choose routine details and complete authorized reversible work
+without repeated approval. Ask only for a consequential unresolved choice;
+continue independent work while awaiting the answer.
 
 - transparently curated Development data and controlled scenarios are allowed;
-- a failed experiment needs one concise current/ledger update, not new governance;
-- add process only for a named material risk or decision-changing evidence gap;
+- record a failure in the owning current/ledger when it changes a decision;
+- use one falsifying check; expand for an observed defect, explicit acceptance
+  criterion, or decision-changing evidence gap;
 - missing deployment/safety evidence limits claims, not reversible experiments;
 - reused evidence may support disclosed Development, never fresh confirmation.
 
@@ -85,14 +90,14 @@ These modes constrain the affected claim/action, not nearby reversible work.
 ## Tools and compute
 
 - Prefer Exa for external search, literature discovery, and multi-source research when available.
-- SkyDiscover is isolated and optional. BlindAssist owns its question, evaluator, evidence, decision, and claim; never mutate/clean SkyDiscover or use it to replace missing or fresh evidence.
+- SkyDiscover is optional and isolated. BlindAssist owns evaluation and claims; never mutate/clean SkyDiscover or use it to replace missing evidence.
 - Run Android/Gradle through `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`.
 - Register new runs with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
-- Install the local changed-only knowledge hook once with `pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; run the same script directly for a full refresh.
-- Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for `base`, both research routes, `android`, `device`, or `export`.
+- Install the knowledge hook once with `pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; full refresh is for stale-index repair or a requested rebuild.
+- Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for an affected prerequisite or failure, not as a per-task gate.
 - Keep machine paths, credentials, and endpoints in CLI arguments, ignored local config, environment variables, or the credential store.
 - Validate only the changed surface with `git diff --check`, structure for layout, and docs index for hot links; broaden only for the named risk.
-- GPU-helpful work is GPU-first. Record actual backend/device/providers and timings; benchmark equivalent CPU/GPU batch or point-cloud work. CPU requires `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`, `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`. Small scalar/metadata work stays on CPU. Reuse `tools/research_backend.py`; never claim CUDA from CPU execution.
+- GPU-helpful work is GPU-first. Record actual backend/device/providers and timings; compare equivalent CPU/GPU work when choosing placement; reuse measurements while workload and environment remain equivalent. CPU requires `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`, `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`. Small scalar/metadata work stays on CPU. Reuse `tools/research_backend.py`; never claim CUDA from CPU execution.
 
 ## Ownership and delivery
 

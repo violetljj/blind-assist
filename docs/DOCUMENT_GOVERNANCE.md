@@ -10,7 +10,9 @@ without scanning history.
 3. `docs/CURRENT_DECISION.md` owns the active research decisions.
 4. `research/active/<route>/CURRENT.md` owns the compact route decision.
 5. `research/active/<route>/README.md` owns detailed results and reproduction.
-6. Formal rules apply only to protected final claims or external actions.
+6. Formal freeze/access gates apply only to protected final claims or external
+   actions. Evidence identity and applicable inheritance rules also govern research
+   reuse; they do not turn ordinary Development into a final evaluation.
 
 Dynamic results, route names, and successor decisions do not belong in
 `AGENTS.md`. Closed work is indexed in `experiments/index.jsonl` and preserved
@@ -30,7 +32,9 @@ by the archive tag documented in [history-index.md](history-index.md).
 - no machine-specific absolute path in hot documentation or active route files.
 
 Run `scripts/check_project_structure.ps1` after layout changes and
-`scripts/check_docs_index.ps1` after editing hot navigation.
+`scripts/check_docs_index.ps1` after editing hot navigation. For wording-only
+changes, inspect the scoped diff and document budgets; do not trigger a full
+knowledge refresh, archive audit, or unrelated route checks.
 
 ## Work in progress
 

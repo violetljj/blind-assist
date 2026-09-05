@@ -30,6 +30,10 @@ source. A narrow result cannot establish a universal, product, or safety claim.
 
 ## After access
 
+These restrictions govern the protected final/blind run and its claim. Separate,
+explicitly labeled Development diagnostics may use consumed evidence under
+`AGENTS.md`; they cannot overwrite sealed outputs or regain confirmation authority.
+
 - Do not tune, resample, fuse, or rerun a consumed arm after seeing outcomes.
 - Preserve failures and partial coverage; never silently change the denominator.
 - An interrupted external call is `in_doubt` unless the provider proves it was
