@@ -8,6 +8,11 @@ This file owns only decisions that affect what may run or be claimed now. Full
 result chains remain in the two route ledgers and result files; Git preserves
 the superseded long-form decision history.
 
+Recorded gates, closures, and next actions apply to their named experiments and
+claims. They do not exhaust future research choices. A justified new hypothesis
+or evaluation criterion may change the next action while preserving the earlier
+result; explain the changed premise and the smallest useful check.
+
 ## L10-R0
 
 ### Controller and active observation

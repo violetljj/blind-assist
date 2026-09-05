@@ -18,6 +18,15 @@ Dynamic results, route names, and successor decisions do not belong in
 `AGENTS.md`. Closed work is indexed in `experiments/index.jsonl` and preserved
 by the archive tag documented in [history-index.md](history-index.md).
 
+## Process value
+
+Keep a research procedure when its concrete decision benefit or named material
+risk justifies the effort. When it delays useful work without changing a decision,
+simplify, replace, or retire the local procedure in the owning policy. State the
+reason in the existing change/result note; do not add a routine meta-review,
+new checklist, or approval gate. Preserve evidence identity and protected
+blind/final boundaries.
+
 ## Budgets
 
 - one active directory per explicitly parallel product line under

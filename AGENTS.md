@@ -21,10 +21,10 @@ Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 5. Check `git status --short` before editing/staging; use
    `scripts/show_worktree_scope.ps1` only when ownership is unclear.
 
-Knowledge context does not replace route authority or reopen retired, rejected,
-consumed, or closed work. Avoid archives, full logs, generated outputs, and
-unrelated routes unless audit/reproduction requires them. Currents own active
-status; route ledgers/result files own detailed metrics and terminals.
+Historical gates and failures apply to their tested scope, not the whole project.
+For a new hypothesis, state what the prior test ruled out, what changes, and what
+check could change the decision. Preserve route authority and consumed evidence
+limits; read archives or full logs only when needed for that decision.
 
 ## Execution policy
 
@@ -46,11 +46,11 @@ continue independent work while awaiting the answer.
 - missing deployment/safety evidence limits claims, not reversible experiments;
 - reused evidence may support disclosed Development, never fresh confirmation.
 
-Prefer code and observed results over process documents. Update the owning
-current only when status, claim, successor, forbidden action, or next decision
-changes; undecided ideas stay in `idea.md`. Ordinary public data may enter
-isolated internal research with provenance, but public access grants no
-redistribution, promotion, consent, or license rights.
+Keep process only when its decision benefit or named risk justifies its cost;
+simplify ineffective local rules without adding another routine approval gate.
+Update the owning current only for changed decisions; undecided ideas stay in
+`idea.md`. Public data may enter internal research with provenance; public access
+grants no redistribution, promotion, consent, or license rights.
 
 Use `FINAL` only before protected blind/final access or a claim-critical paper
 number; follow [research governance](docs/formal/RESEARCH_GOVERNANCE.md). Use

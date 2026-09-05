@@ -74,6 +74,15 @@ python tools/knowledge.py diagnose --route goal-copilot-p0 --symptom "near-ident
 4. 一个只改变单一信息因子的最小实验，含 baseline、cohort、primary metric、
    stop、`NOT_EVALUABLE` 和 claim ceiling。
 
+`diagnose` 输出研究草案：有候选时状态为 `proposal`，没有候选时为
+`localization_needed`，均不代表执行授权或新确认结果。历史失败、不可评估和关键词
+重合不会自动删除候选；`history_scope_notes` 保留来源、原职责、失败签名、历史建议
+和证据引用，`applicability=unassessed` 表示检索没有证明旧限制适用于当前提案。
+旧 `do_not_repeat` 字段为 `null`，`blocked_candidates` 保留为空的兼容字段。
+历史 successor、baseline、control 等列表也是待判断的检索结果；按当前问题选择，
+不能仅凭标签变成强制路线。解释旧实验否定了什么、当前改变了什么、怎样检验即可，
+不增加独立审批流程，也不改写旧结果或恢复 consumed confirmation authority。
+
 `decision/config.json` 持有故障层、双语签名、机制 override 和实验模板；
 `decision/terminals.json` 只保存当前决策所需的窄 terminal 摘要及仓库证据锚点，
 不替代 owning route README；`decision/golden_cases.json` 冻结真实故障回归集。

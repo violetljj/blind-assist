@@ -1145,9 +1145,9 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
         )
         print(f"- Decision: {_one_line(terminal['decision'])}")
         print(f"- Summary: {_one_line(terminal['summary'])}")
-        print(f"- Successor requires: {_one_line(terminal['successor_requires'])}")
+        print(f"- Historical successor suggestion: {_one_line(terminal['successor_requires'])}")
         print(
-            "- Forbidden repeats: "
+            "- Historical restrictions (check scope): "
             + ("; ".join(terminal["forbidden_repeats"]) or "-")
         )
         association = terminal.get("association")
@@ -2369,13 +2369,10 @@ def _rank_prior_attempts(
                     "verdict": use["verdict"],
                     "summary": summary,
                     "metrics": use["metrics"],
+                    "claim_boundary": use.get("claim_boundary"),
                     "evidence": use["evidence"],
                     "terminal_markers": markers,
-                    "do_not_repeat": (
-                        use["use_state"] in {"rejected", "retired"}
-                        or use["verdict"]
-                        in {"negative", "falsified", "not_evaluable"}
-                    ),
+                    "do_not_repeat": None,
                 },
             )
         )
@@ -2415,7 +2412,7 @@ def _rank_prior_attempts(
                     "report": experiment.get("report"),
                     "commit": experiment.get("commit"),
                     "terminal_markers": markers,
-                    "do_not_repeat": bool(markers),
+                    "do_not_repeat": None,
                     "successor_requires": experiment.get("successor_requires"),
                     "forbidden_repeats": experiment.get("forbidden_repeats", []),
                     "evidence": experiment.get("evidence", []),
@@ -2431,55 +2428,35 @@ def _slugify(value: str, fallback: str = "fault") -> str:
     return (slug[:64] or fallback).strip("-")
 
 
-def _mechanism_execution_block(
-    mechanism: dict[str, Any], attempts: list[dict[str, Any]]
-) -> str | None:
-    history = mechanism.get("route_history")
-    if history and history["use_state"] in {"rejected", "retired"}:
-        return f"route use {history['id']} is {history['use_state']}"
-    if history and history["verdict"] in {
-        "negative",
-        "falsified",
-        "not_evaluable",
-    }:
-        return f"route use {history['id']} has verdict={history['verdict']}"
-    mechanism_terms = {
-        token
-        for token in re.findall(
-            r"[a-z0-9][a-z0-9_-]+",
-            f"{mechanism['name']} {mechanism['description']}".casefold(),
-        )
-        if len(token) >= 5
-    }
-    ignored = {
-        "route",
-        "target",
-        "mechanism",
-        "development",
-        "result",
-        "current",
-        "prediction",
-    }
-    mechanism_terms.difference_update(ignored)
-    for attempt in attempts:
-        if attempt.get("kind") != "current_terminal" or not attempt.get(
-            "do_not_repeat"
-        ):
-            continue
-        attempt_text = " ".join(
-            [
-                str(attempt.get("decision") or ""),
-                str(attempt.get("question") or ""),
-                " ".join(attempt.get("forbidden_repeats", [])),
-            ]
-        ).casefold()
-        overlapping = {term for term in mechanism_terms if term in attempt_text}
-        if len(overlapping) >= 2:
-            return (
-                f"current terminal {attempt['id']} already consumed the same "
-                f"mechanism family ({', '.join(sorted(overlapping)[:4])})"
-            )
-    return None
+def _history_scope_notes(
+    mechanisms: list[dict[str, Any]], attempts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Preserve retrieved constraints without inferring proposal applicability."""
+    records = list(attempts)
+    seen = {record["id"] for record in records}
+    for mechanism in mechanisms:
+        history = mechanism.get("route_history")
+        if history and history["id"] not in seen:
+            records.append({**history, "kind": "route_use"})
+            seen.add(history["id"])
+    return [
+        {
+            "id": record["id"],
+            "kind": record.get("kind"),
+            "applicability": "unassessed",
+            "role_scope": record.get("role_scope") or record.get("claim_boundary"),
+            "inheritance_role": record.get("inheritance_role"),
+            "historical_outcome": (
+                record.get("decision") or record.get("verdict") or record.get("status")
+            ),
+            "failure_signature": record.get("failure_signature"),
+            "forbidden_repeats": record.get("forbidden_repeats", []),
+            "historical_successor": record.get("successor_requires"),
+            "revisit_trigger": record.get("revisit_trigger"),
+            "evidence": record.get("evidence", []),
+        }
+        for record in records
+    ]
 
 
 def _build_minimum_experiment(
@@ -2509,21 +2486,9 @@ def _build_minimum_experiment(
             "not_evaluable_conditions": ["故障不可复现", "没有成功对照"],
             "claim_ceiling": "只能定位故障层，不能判断机制效果。",
         }
-    blocked_candidates: list[dict[str, str]] = []
-    selected_mechanism = None
-    blocking_terminal_id: str | None = None
-    for mechanism in mechanisms:
-        blocked_reason = _mechanism_execution_block(mechanism, attempts)
-        if blocked_reason:
-            blocked_candidates.append(
-                {"id": mechanism["id"], "reason": blocked_reason}
-            )
-            if blocked_reason.startswith("current terminal "):
-                blocking_terminal_id = blocked_reason.split()[2]
-                break
-            continue
-        selected_mechanism = mechanism
-        break
+    # Retrieval ranks proposals; it cannot prove same-version/role/domain reuse.
+    selected_mechanism = mechanisms[0] if mechanisms else None
+    history_scope_notes = _history_scope_notes(mechanisms, attempts)
     factor = (
         selected_mechanism["name"]
         if selected_mechanism is not None
@@ -2536,9 +2501,6 @@ def _build_minimum_experiment(
     successor_attempts = [
         attempt for attempt in attempts if attempt.get("successor_requires")
     ]
-    successor_attempts.sort(
-        key=lambda attempt: 0 if attempt["id"] == blocking_terminal_id else 1
-    )
     successor_requirements = list(
         dict.fromkeys(
             attempt["successor_requires"] for attempt in successor_attempts
@@ -2546,18 +2508,10 @@ def _build_minimum_experiment(
     )
     if selected_mechanism is not None:
         single_change = f"{template['single_change']} 候选机制：{factor}。"
-        plan_status = "ready"
+        plan_status = "proposal"
     else:
-        successor_text = (
-            successor_requirements[0]
-            if successor_requirements
-            else "需要新的信息源、表示或新鲜协议后才能执行。"
-        )
-        single_change = (
-            "不重开已消费机制；先把 successor requirement 变成一个 source-admission "
-            f"canary：{successor_text}"
-        )
-        plan_status = "successor_required"
+        single_change = template["single_change"]
+        plan_status = "localization_needed"
     return {
         "id": plan_id,
         "status": plan_status,
@@ -2580,7 +2534,8 @@ def _build_minimum_experiment(
         "not_evaluable_conditions": template["not_evaluable_conditions"],
         "claim_ceiling": template["claim_ceiling"],
         "guardrails": index["global_guardrails"],
-        "blocked_candidates": blocked_candidates,
+        "blocked_candidates": [],
+        "history_scope_notes": history_scope_notes,
         "successor_requirements": successor_requirements,
         "prior_terminals_to_preserve": list(dict.fromkeys(terminal_markers)),
         "default_output": (
@@ -2708,12 +2663,12 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
             )
             if attempt.get("successor_requires"):
                 print(
-                    "  Successor requires: "
+                    "  Historical successor suggestion: "
                     + _short_text(attempt["successor_requires"])
                 )
             if attempt.get("forbidden_repeats"):
                 print(
-                    "  Do not repeat: "
+                    "  Historical restrictions (check scope): "
                     + "; ".join(attempt["forbidden_repeats"])
                 )
         if attempt["terminal_markers"]:
@@ -2722,8 +2677,11 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
     experiment = card["minimum_experiment"]
     print("\n## Minimum falsifiable experiment")
     print(f"ID: {experiment['id']} ({experiment['status']})")
-    for blocked in experiment["blocked_candidates"]:
-        print(f"Blocked candidate: {blocked['id']} — {blocked['reason']}")
+    print("Draft only: historical scope must be established for this proposal; "
+          "preserve original outcomes and protected evidence boundaries.")
+    for note in experiment["history_scope_notes"]:
+        scope = note["role_scope"] or "scope not recorded"
+        print(f"History applicability unassessed: {note['id']} — {scope}")
     print(f"Hypothesis: {_one_line(experiment['hypothesis'])}")
     print(f"Baseline: {_one_line(experiment['baseline'])}")
     print(f"Only change: {_one_line(experiment['single_change'])}")
