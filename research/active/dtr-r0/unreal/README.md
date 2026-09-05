@@ -49,8 +49,33 @@ python tools/unreal_obstacle_lab.py --engine <本机UE安装目录> --verify
 
 ## 避障线接口
 
-当前是可编辑的 synthetic Development 场景，未完成 RGB-D 导出、在线 DTR 回接或告警覆盖层。预设相机包括 `Pedestrian` 和 `Crossing`，人行道相对世界零点高约 0.27 m，传感器视点相对人行道高 1.6 m。
+已打通 **UE RGB-D 采集 → 现有 YOLO 分割 → 保留的 DTR X73 → 独立引擎碰撞对照 → 可拖动回放**。这是固定轨迹的离线 synthetic Development 接口演示，尚非在线闭环控制，也未评价自动绕行成功率。
 
-下一步以新增 UE loader 连接现有 [`SanitizedModelContract`](../carla/dtr_carla_rgbd_model_adapter.py)。导出需要同一 tick 的 RGB、前向轴线性深度（米）、相机内外参、wearer pose、时间戳和预先下发计划。UE 位移厘米除以 100；世界坐标 X 前、Y 右、Z 上，而相机反投影使用 Forward/Left/Up。不能直接使用设备 Z 或径向深度。
+使用装有 NumPy、Pillow、PyTorch、Ultralytics 的 Python 环境执行：
+
+```powershell
+python tools/run_street_experiment.py --engine <本机UE安装目录> --output artifacts.local/unreal/<新运行目录>
+```
+
+默认使用本地 `artifacts.local/models/yolo11n-seg.pt`，可通过 `--weights` 指定已有权重。渲染使用 UE GPU；检测器测量 CPU/GPU 后选择后端并保存 `predictions/backend.json`。`--capture-only` 仅采集；`--reuse-capture` 复用成功采集执行后续阶段（须尚无 `predictions` 目录）。不修改或保存原地图。
+
+- 两条预先下发的直线路线，各 8 秒、5 Hz、41 帧，步速 1.2 m/s；Sequencer 按固定时间求值，RGB 与深度读取期间保持同一场景状态。固定相机与人物轨迹可复放，不保证 Lumen/植被等渲染位级一致。
+- `model/`：640×360 RGB PNG、前向线性深度 float32 NPY（米）、位姿、内参和执行前写入的计划。模型 runner 只接受这棵目录，不读取 actor 真值。
+- `evaluator/frames.json`：引擎胶囊碰撞查询、接触对象、人物实际位置。胶囊半径 0.30 m、半高 0.90 m，底部距地面 0.02 m，以 Visibility 通道查询阻挡。这是 5 Hz 采样接触，不是连续碰撞证明。
+- `capture.json`：采集状态及 10 米正对平面的中央/离轴深度校验。
+- `predictions/`：原有 X73 完整输出、检测候选、ONSET/HOLD/CLEAR 显示转换及支持状态。CLEAR 只表示正向模型风险结束，不代表安全；全局可观测性仍标记 UNKNOWN。
+- `evaluation.json`、`replay.html`、`replay.gif`、`walk_a-preview.png`、`walk_b-preview.png`：真值核对及可见结果。只评价具备完整 3 秒未来窗口的帧，尾部不算负例。HTML 可直接打开并拖动时间轴。
+
+预设相机包括 `Pedestrian` 和 `Crossing`，人行道相对世界零点高约 0.27 m，传感器视点相对人行道高 1.6 m。现有算法的检测覆盖不包括所有几何障碍；没有报险不等于无障碍。两条演示路线不能支持“优秀避障性能”或泛化结论。
+
+新增 UE loader 连接现有 [`SanitizedModelContract`](../carla/dtr_carla_rgbd_model_adapter.py)，仅替换深度解码，沿用原有投影和 X73 算法链。UE 位移厘米除以 100；世界坐标 X 前、Y 右、Z 上，而相机反投影使用 Forward/Left/Up。不能直接使用设备 Z 或径向深度。
 
 Actor ID、真实速度、碰撞体、instance mask、未来接触和 TTC 单独放入 evaluator 数据。不能把执行后的真实轨迹回填 issued plan。
+
+### 2026-09-05 实际接通结果
+
+本地结果：`artifacts.local/unreal/rgbd-chain-20260905-c/`。两条路线全部 82 帧完成采集、YOLO 和 X73 推理、真值核对与回放生成。10 m 平面中央及两个离轴采样均为 9.99922 m；两次成功采集的人物位置、穿戴者位置及采样碰撞序列一致，渲染像素和检测起报时刻不保证完全一致。
+
+最终运行中，`walk_a` 在 2.6 s 发出 ONSET，共 18 帧正向风险。引擎首个胶囊接触发生在 4.6 s（路桩反光环），5.8 s 首次接触迎面人物。时间上相差 2.0 s 不证明算法识别了首个接触对象。`walk_b` 无采样接触，也无正向风险。完整 3 s 未来窗口内共有 52 帧，正向风险检测计数为 TP=13、FP=0、FN=5、TN=34；另外 30 帧尾部不评分。这些计数不将“未报险”提升为安全结论。
+
+碰撞日志也记录了地面导向凸点，说明当前资产碰撞体仍需针对步行/跨越语义进一步校准；不能把任意胶囊阻挡等同于真实人体危险。接通时修复了 X30 的一个实际崩溃：XY 去重后只剩 17 个支持点，却直接调用要求至少 32 点的 OBB。现在按原有 32 点要求跳过不足支持组，没有调低阈值。

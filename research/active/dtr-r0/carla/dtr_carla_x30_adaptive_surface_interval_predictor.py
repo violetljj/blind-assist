@@ -263,6 +263,10 @@ def candidate_components(
         values = [branches[index] for index in indices]
         points = np.vstack([value.surface_points_xy for value in values])
         points = np.unique(np.round(points, decimals=6), axis=0)
+        # Vertical samples may collapse to fewer distinct ground-plane points.
+        # Recheck the inherited OBB support requirement after deduplication.
+        if len(points) < adapter.MINIMUM_MASK_DEPTH_POINTS:
+            continue
         center, footprint = x25.robust_obb(points)
         labels = tuple(sorted({value.class_name for value in values}))
         bbox = (
