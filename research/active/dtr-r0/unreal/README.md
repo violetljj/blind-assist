@@ -2,6 +2,29 @@
 
 展示版本为 `StreetLabV4`，使用 Epic City Sample Buildings；V2、V3 的实验记录保留。它是可编辑的 synthetic Development 实验场，不宣称真实人体安全。
 
+## 算法研究入口
+
+实测记录见 [2026-09-05 算法实验场报告](ALGORITHM_LAB_20260905.md)。
+
+感知修改先用固定 RGB-D 输入，运动决策修改再运行 UE 闭环。固定回放保留原始相机、位姿和已下发计划，因此不能为新的运动策略提供反事实轨迹或接触成绩。
+
+```powershell
+# 在具备 CUDA PyTorch、Ultralytics、NumPy、Pillow 的项目 Python 环境执行。
+python research/active/dtr-r0/unreal/ue_fixed_replay.py export --source-run artifacts.local/unreal/closed-loop-v4-suite-20260905-a --output artifacts.local/unreal/<固定输入目录>
+python research/active/dtr-r0/unreal/ue_fixed_replay.py replay --dataset artifacts.local/unreal/<固定输入目录> --output artifacts.local/unreal/<新感知结果目录>
+python research/active/dtr-r0/unreal/scenario_bank.py freeze --manifest artifacts.local/unreal/<新难例库.json>
+python tools/run_street_ablation.py --engine <本机UE安装目录> --scenario-manifest artifacts.local/unreal/<新难例库.json> --output artifacts.local/unreal/<新三组对照目录>
+python tools/run_street_closed_loop.py --engine <本机UE安装目录> --map StreetLabV4 --scenario-manifest artifacts.local/unreal/<新难例库.json> --scenario-split development --controller-mode JOINT --output artifacts.local/unreal/<新难例运行目录>
+```
+
+三个控制模式为 `DTR_ONLY`、`DEPTH_ONLY`、`JOINT`。DTR 单独模式关闭整个深度控制通道，包括有效性停步、侧向路径选择和回归路线判定，保留原有 DTR 风险到等待/恢复的接口；没有另外创造 DTR 路径规划器。深度单独模式忽略 DTR 对动作的影响。各模式仍计算并记录两个原始感知分支，便于诊断，不能拿其 worker 耗时当作单分支计算成本。回放画面区分 raw X73 输出和实际启用的动作来源。
+
+三组入口冻结脚本、地图、渲染配置、模型及案例库，为每组重新运行八对直行/辅助分支，输出 `comparison.json`。`--resume` 只续接同一冻结运行的检查点，算法失败不会触发调参重跑。改动输入或源码须使用新的运行目录。
+
+难例库包含八个原始回归条件、十六个 Development 变体及八个保留配方。速度、出现时机、遮挡位置/尺寸与低障碍位置会改变实际演员脚本；直行接触标签依据连续代理几何重新计算。`--case` 可做小范围接通检查，但评价器仍保留完整分组的分母，子集不会冒充整组完成。案例定义和真值只进入 evaluator，传感器 worker 不接收它们。
+
+保留配方当前不参与调参或运行。将来明确启用时，先用 `scenario_bank.py release-held-out --manifest ... --reason ...` 记录用途，再以 `--scenario-split held_out --allow-held-out` 运行；首次访问即记录使用，保留原 manifest 及 admission/consumed 侧文件。中断后只用同一输出的 `--resume`，不将已访问条件恢复成未见条件。
+
 ## V4 官方建筑街区
 
 ```powershell

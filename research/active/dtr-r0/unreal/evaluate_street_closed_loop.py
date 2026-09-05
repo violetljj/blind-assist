@@ -9,6 +9,7 @@ import argparse
 import base64
 import bisect
 import io
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -41,6 +42,40 @@ def _pose_at(frames, t):
             u = (t - a["time_s"]) / (b["time_s"] - a["time_s"])
             return {k: a["ego"][k] + u * (b["ego"][k] - a["ego"][k]) for k in ("x_m", "y_m")}
     return frames[-1]["ego"]
+
+
+CONTROLLER_DESCRIPTIONS = {
+    "JOINT": "Retained DTR X73 OR observed-depth near-obstacle branch; active sources reported separately",
+    "DTR_ONLY": "DTR X73 control only; observed-depth control channel disabled",
+    "DEPTH_ONLY": "Observed-depth control only; raw X73 predictions logged but excluded from control",
+}
+
+
+def action_dwell(frames):
+    """Integrate applied commands over their preceding measured interval.
+
+    A next command at the terminal frame has zero observed dwell. Missing action
+    labels stay UNKNOWN; response/proposed commands never substitute for applied.
+    """
+    durations, intervals = {}, []
+    stationary = 0.0
+    for previous, frame in zip(frames, frames[1:]):
+        start, end = previous["time_s"], frame["time_s"]
+        applied = frame.get("applied_command", {})
+        action = applied.get("action", "UNKNOWN")
+        duration = end - start
+        durations[action] = durations.get(action, 0.0) + duration
+        if intervals and intervals[-1]["action"] == action:
+            intervals[-1]["end_s"] = end
+            intervals[-1]["duration_s"] += duration
+        else:
+            intervals.append({"action": action, "start_s": start, "end_s": end, "duration_s": duration})
+        vx, vy = applied.get("vx_mps"), applied.get("vy_mps")
+        if isinstance(vx, (int,float)) and isinstance(vy, (int,float)) and math.hypot(vx,vy) < 1e-9:
+            stationary += duration
+    return {"action_dwell_s": {k:round(v, 6) for k,v in durations.items()},
+            "applied_action_intervals": intervals, "applied_stationary_s": round(stationary, 6),
+            "dwell_authority": "APPLIED_COMMAND_OVER_PRECEDING_OBSERVED_INTERVAL"}
 
 
 def evaluate_episode(spec, episode):
@@ -90,6 +125,10 @@ def evaluate_episode(spec, episode):
                           b["ego"]["y_m"] - a["ego"]["y_m"])
                for a, b in zip(frames, frames[1:]))
     return {"episode_id": episode["episode_id"], "status": status, "frames": len(frames),
+            **action_dwell(frames),
+            "raw_x73_events": [{"time_s": f["time_s"],
+                "event": f.get("response", {}).get("prediction", {}).get("event", "UNKNOWN"),
+                "route_risk": f.get("response", {}).get("prediction", {}).get("route_risk")} for f in frames],
             "success": status == "COMPLETE" and reached and not contacts,
             "goal_reached": reached, "declared_goal_consistent": declared_goal_consistent,
             "forward_progress_m": round(forward, 5), "goal_forward_m": target,
@@ -142,6 +181,27 @@ def causal_trajectory_check(spec, baseline, assisted):
 
 
 def evaluate(root):
+    identity_path = root / "identity.json"
+    identity = _read(identity_path) if identity_path.exists() else {}
+    controller_mode = identity.get("controller_mode", "JOINT")
+    if controller_mode not in CONTROLLER_DESCRIPTIONS:
+        raise ValueError(f"Unknown controller_mode in identity: {controller_mode}")
+    catalog_path = root / "evaluator/catalog-definition.json"
+    catalog_sha256 = None
+    if catalog_path.exists():
+        catalog_sha256 = hashlib.sha256(catalog_path.read_bytes()).hexdigest()
+        expected_hash = identity.get("scenario_selection", {}).get("catalog_sha256")
+        if not expected_hash or catalog_sha256 != expected_hash:
+            raise ValueError("Frozen catalog-definition.json SHA-256 does not match identity")
+        required_catalog = _read(catalog_path)
+        if not isinstance(required_catalog, list) or not required_catalog:
+            raise ValueError("Frozen catalog must be a nonempty list of full scenario specs")
+        if len({s["id"] for s in required_catalog}) != len(required_catalog):
+            raise ValueError("Frozen catalog contains duplicate scenario IDs")
+    else:
+        if identity.get("scenario_selection", {}).get("catalog_sha256"):
+            raise ValueError("Identity requires a missing frozen catalog-definition.json")
+        required_catalog = scenario_catalog()
     specs = _read(root / "evaluator/scenarios.json")
     if isinstance(specs, dict):
         specs = specs["scenarios"]
@@ -168,24 +228,24 @@ def evaluate(root):
                       "assisted_delay_s": b.get("duration_s", 0) - a.get("duration_s", 0)
                          if a.get("goal_reached") and b.get("goal_reached") else None,
                       "causal_trajectory": causal_trajectory_check(spec, original, assisted)})
-    required_ids = {s["id"] for s in scenario_catalog()}
-    supplied_ids = [s["id"] for s in specs]
-    catalog_complete = (len(supplied_ids) == len(required_ids) and set(supplied_ids) == required_ids and
-                        sum(s["expected_open_loop_contact"] is True for s in specs) == 4 and
-                        sum(s["expected_open_loop_contact"] is False for s in specs) == 4)
+    # Full geometry, scripts and controls must match, not just identifiers or
+    # the original four-positive/four-negative counts. Subsets stay incomplete.
+    catalog_complete = specs == required_catalog
     run_complete = receipt.get("status") in ("PASS", "COMPLETE", "COMPLETED")
     all_complete = all(p[arm]["status"] == "COMPLETE" for p in pairs for arm in ("OPEN_LOOP", "ASSISTED"))
     complete = catalog_complete and run_complete and all_complete and not duplicates
     result = {"status": "COMPLETE" if complete else "INCOMPLETE", "run_status": receipt.get("status"),
               "evidence": "UE online closed-loop scripted synthetic Development",
-              "controller": "Retained DTR X73 OR observed-depth near-obstacle branch; sources reported separately",
+              "controller_mode": controller_mode,
+              "controller": CONTROLLER_DESCRIPTIONS[controller_mode],
+              "catalog_sha256": catalog_sha256,
               "truth_definition": "Continuous relative swept declared disc/box proxies with vertical zones; scene floor supplied by capture",
               "body_zone_m": [0.35, 1.75], "foot_trip_proxy_zone_m": [0.006, 0.35],
               "traversable_relief_max_m": 0.006, "injury_truth": False,
               "claim_boundaries": ["No human injury, deployment safety, or generalization claim",
                   "Stopped short of goal is not success", "Latency is measured worker time, not real-time end-to-end guarantee",
                   "No positive risk is not a declaration of safety", "Paired scripts are curated Development controls"],
-              "expected_pairs": 8, "loaded_scenarios": len(specs), "catalog_complete": catalog_complete,
+              "expected_pairs": len(required_catalog), "loaded_scenarios": len(specs), "catalog_complete": catalog_complete,
               "loaded_episodes": len(episodes), "duplicate_episodes": duplicates,
               "open_loop_contrasts_passed": sum(p["open_loop_contrast_pass"] is True for p in pairs),
               "all_open_loop_contrasts_pass": complete and all(p["open_loop_contrast_pass"] is True for p in pairs),
@@ -227,7 +287,7 @@ def render(root, result, specs, indexed):
             canvas = Image.new("RGB", (1200, 840), "#101b27")
             draw = ImageDraw.Draw(canvas)
             draw.text((22, 15), "WILLOW WALK  |  ONLINE SENSOR -> CONTROL -> MOTION", font=title, fill="#f1f5fa")
-            draw.text((22, 50), f'{spec["id"]}   |   shared simulation time {t:.1f}s', font=font, fill="#a5c4e2")
+            draw.text((22, 50), f'{spec["id"]} | {result.get("controller_mode", "JOINT")} | shared simulation time {t:.1f}s', font=font, fill="#a5c4e2")
             for side, (arm, ep) in enumerate(zip(("OPEN_LOOP", "ASSISTED"), eps)):
                 x0 = 20 + 590 * side
                 summary = pair[arm]
@@ -252,7 +312,7 @@ def render(root, result, specs, indexed):
                 sources = "+".join(_sources(frame)) or "NO POSITIVE ALERT"
                 terminal = " [terminal frame held]" if t > frames[-1]["time_s"] + .001 else ""
                 draw.text((x0, 444), f'sensor t={frame["time_s"]:.1f}s{terminal}', font=small, fill="#c6d5e6")
-                draw.text((x0, 467), f'Alert: {sources} | X73 {prediction.get("event", "UNKNOWN")}', font=small, fill="#ffd37e")
+                draw.text((x0, 467), f'Raw X73: {prediction.get("event", "UNKNOWN")} risk={prediction.get("route_risk", "UNKNOWN")}', font=small, fill="#ffd37e")
                 displayed = frame.get('applied_command', {}) if arm == 'OPEN_LOOP' else command
                 action_label = 'Applied' if arm == 'OPEN_LOOP' else 'Next'
                 draw.text((x0, 490), f'{action_label}: {displayed.get("action", "UNKNOWN")} '
@@ -260,6 +320,7 @@ def render(root, result, specs, indexed):
                 draw.text((x0, 513), f'EPISODE END: goal={summary.get("goal_reached", False)} '
                           f'progress={summary.get("forward_progress_m", 0):.2f}m '
                           f'contact={summary.get("contact", "UNKNOWN")}', font=small, fill=color)
+                draw.text((x0, 535), f'Active control alerts: {sources}', font=small, fill="#ffd37e")
                 # Evaluator-only top-down panel. Exact declared bounds, not a sensor view.
                 top, bottom, left, right = 550, 739, x0 + 10, x0 + 560
                 draw.rectangle((left, top, right, bottom), fill="#182a3b", outline="#38536d")
@@ -303,11 +364,12 @@ def render(root, result, specs, indexed):
     html = '''<!doctype html><meta charset="utf-8"><title>Willow Walk | paired closed-loop</title>
 <style>body{margin:24px auto;max-width:1220px;padding:0 16px;background:#101b27;color:#eef5ff;font:16px system-ui}h1{font-size:25px}img{width:100%;border-radius:8px}button,select{padding:10px;background:#233b50;color:#eef5ff;border:1px solid #607f99;border-radius:6px}input{width:65%;vertical-align:middle}pre{white-space:pre-wrap;overflow-wrap:anywhere}p{color:#b8d0e5}</style>
 <h1>Willow Walk · 在线闭环配对回放</h1><p>UE 实际 RGB-D → DTR X73 / 观测深度分支 → 控制指令 → 实际轨迹。左：OPEN_LOOP；右：ASSISTED。两侧按仿真时间对齐。</p>
-<p id="reuse"></p>
+<p id="controller"></p><p id="reuse"></p>
 <p><select id="cases"></select> <button id="play">播放 / 暂停</button> <span id="time"></span></p><img id="frame"><p><input id="seek" type="range" min="0" value="0"></p>
 <p>受控合成 Development。身体碰撞与脚部绊倒代理分开记录，不是人体伤害真值；未到达目标不能算成功。短片的结束帧会保留显示。</p><details><summary>实测结果、延迟与证据边界</summary><pre id="report"></pre></details>
 <script>const data=PAYLOAD;const report=REPORT;let c=0,i=0,playing=false;const frame=document.getElementById('frame'),seek=document.getElementById('seek'),cases=document.getElementById('cases');
-document.getElementById('reuse').textContent=report.execution_reuse.reused_open_loop_episodes?'本轮复用 8 个已完成的直行对照，重新执行 8 个辅助分支；不是 16 个全新分支。':'本轮直行与辅助分支均实际执行。';
+document.getElementById('controller').textContent='Controller: '+report.controller_mode+' | '+report.controller+' | X73 labels are raw predictions.';
+document.getElementById('reuse').textContent=report.execution_reuse.reused_open_loop_episodes?'复用直行分支数：'+report.execution_reuse.reused_open_loop_episodes+'；辅助分支数：'+report.loaded_scenarios+'。复用数据不是全新证据。':'本轮直行与辅助分支均实际执行。';
 data.forEach((d,k)=>{const o=document.createElement('option');o.value=k;o.textContent=d.scenario_id;cases.appendChild(o)});
 function show(){if(!data.length)return;frame.src=data[c].images[i];seek.max=data[c].images.length-1;seek.value=i;document.getElementById('time').textContent=data[c].times[i].toFixed(1)+' s'}
 cases.onchange=()=>{c=+cases.value;i=0;show()};seek.oninput=()=>{i=+seek.value;show()};document.getElementById('play').onclick=()=>playing=!playing;

@@ -18,6 +18,10 @@ def main():
     p.add_argument('--engine',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--case',action='append',default=[])
+    p.add_argument('--controller-mode',choices=('JOINT','DTR_ONLY','DEPTH_ONLY'),default='JOINT')
+    p.add_argument('--scenario-manifest',type=Path)
+    p.add_argument('--scenario-split',choices=('regression','development','held_out'),default='regression')
+    p.add_argument('--allow-held-out',action='store_true')
     p.add_argument('--map',choices=('StreetLabV2','StreetLabV3','StreetLabV4'),default='StreetLabV2',
                    help='Choose the actual scene; map identity is recorded for every new run')
     p.add_argument('--resume',action='store_true')
@@ -25,6 +29,11 @@ def main():
     args=p.parse_args()
     repo=Path(__file__).resolve().parents[1]
     scripts=repo/'research/active/dtr-r0/unreal'
+    sys.path.insert(0,str(scripts))
+    if not args.scenario_manifest and (args.scenario_split!='regression' or args.allow_held_out):
+        p.error('Scenario split selection requires --scenario-manifest')
+    if args.reuse_open_loop and args.scenario_manifest:
+        p.error('Bank runs require fresh controls')
     if args.reuse_open_loop and args.case:
         p.error('--reuse-open-loop requires the complete catalog, without --case')
     project=repo/'artifacts.local/unreal/BlindAssistStreetLab'
@@ -38,6 +47,28 @@ def main():
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
               'map_sha256':sha(map_file)}
     if args.map!='StreetLabV2': identity['map_asset']=map_asset
+    identity['controller_mode']=args.controller_mode
+    if args.scenario_manifest:
+        from scenario_bank import load_scenarios, validate_specs, read_manifest
+        read_manifest(args.scenario_manifest)
+        catalog_file=output/'evaluator/catalog-definition.json'
+        if args.resume:
+            selected=json.loads(catalog_file.read_text(encoding='utf-8'))
+        else:
+            selected=load_scenarios(args.scenario_manifest,args.scenario_split,allow_held_out=args.allow_held_out)
+            if not validate_specs(selected)['passed']: raise RuntimeError('Invalid bank geometry')
+            catalog_file.parent.mkdir(exist_ok=True)
+            catalog_file.write_text(json.dumps(selected,indent=2,allow_nan=False),encoding='utf-8')
+            shutil.copy2(args.scenario_manifest,catalog_file.parent/'scenario-bank.json')
+        identity['sources']['scenario_bank.py']=sha(scripts/'scenario_bank.py')
+        identity['scenario_selection']={'manifest_path':str(args.scenario_manifest.resolve()),
+            'manifest_sha256':sha(args.scenario_manifest),'split':args.scenario_split,
+            'catalog_sha256':sha(catalog_file)}
+    else:
+        from street_scenarios import scenario_catalog
+        selected=scenario_catalog()
+    unknown=set(args.case)-{s['id'] for s in selected}
+    if unknown: p.error(f'Unknown cases: {sorted(unknown)}')
     if args.map=='StreetLabV4':
         identity['render_config_sha256']=sha(project/'Config/DefaultEngine.ini')
     if args.reuse_open_loop:
@@ -69,7 +100,7 @@ def main():
         if ready.exists(): ready.unlink()
         with (sensor/'worker.log').open('a') as log:
             worker=subprocess.Popen([sys.executable,str(scripts/'street_live_server.py'),
-                '--model-root',str(model),'--output',str(sensor)],stdout=log,stderr=subprocess.STDOUT)
+                '--model-root',str(model),'--output',str(sensor),'--controller-mode',args.controller_mode],stdout=log,stderr=subprocess.STDOUT)
             begin=time.monotonic()
             while not ready.exists():
                 if worker.poll() is not None: raise RuntimeError('DTR worker failed; inspect worker.log')

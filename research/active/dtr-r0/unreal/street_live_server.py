@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--model-root',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--port',type=int,default=0)
+    parser.add_argument('--controller-mode',choices=MotionPolicy.MODES,default='JOINT')
     args=parser.parse_args()
     args.output.mkdir(parents=True,exist_ok=True)
     os.environ['YOLO_CONFIG_DIR']=str(args.output/'yolo-config')
@@ -30,7 +31,7 @@ def main():
     histories={}
     policies={}
     response_cache={}
-    backend={'torch':torch.__version__,'device':str(next(model.model.parameters()).device),
+    backend={'controller_mode':args.controller_mode,'torch':torch.__version__,'device':str(next(model.model.parameters()).device),
              'gpu':torch.cuda.get_device_name(0) if device=='0' else None,'model_sha256':weight_hash}
     (args.output/'backend.json').write_text(json.dumps(backend,indent=2))
     prior=args.output/'responses.jsonl'
@@ -43,7 +44,9 @@ def main():
         for checkpoint in args.output.glob('*-checkpoint.json'):
             value=json.loads(checkpoint.read_text())
             if value['model_sha256']!=weight_hash: raise RuntimeError('Cannot resume with changed weights')
-            policy=MotionPolicy()
+            policy=MotionPolicy(args.controller_mode)
+            if value.get('controller_mode','JOINT')!=args.controller_mode:
+                raise RuntimeError('Cannot resume a different controller mode')
             policy.__dict__.update(value['policy'])
             policies[checkpoint.name.removesuffix('-checkpoint.json')]=policy
             if 'last_response' in value:
@@ -92,7 +95,7 @@ def main():
                     x,y=transform['x']-anchor[0],transform['y']-anchor[1]
                     corridors=depth_corridors(depth,contract.calibration.horizontal_fov_degrees,
                         observation.camera_transform['z']-transform['z'],y,observation.camera_transform['pitch'])
-                    policy=policies.setdefault(episode.episode_id,MotionPolicy())
+                    policy=policies.setdefault(episode.episode_id,MotionPolicy(args.controller_mode))
                     command=policy.command(t=observation.time_s,x=x,y=y,goal_x=request['goal_forward_m'],
                          dtr_risk=row['route_risk'],corridors=corridors)
                     result={'prediction':row,'corridors':corridors,'command':command,
@@ -103,6 +106,7 @@ def main():
                     checkpoint=args.output/(episode.episode_id+'-checkpoint.json')
                     temporary=checkpoint.with_suffix('.tmp')
                     temporary.write_text(json.dumps({
+                        'controller_mode':args.controller_mode,
                         'last_sample_index':observation.sample_index,'policy':policy.__dict__,
                         'model_sha256':weight_hash,'manifest_sha256':contract.manifest_sha256,'last_response':result}))
                     temporary.replace(checkpoint)

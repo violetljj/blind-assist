@@ -35,12 +35,28 @@ def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
 
 
 class MotionPolicy:
-    def __init__(self):
+    MODES=('JOINT','DTR_ONLY','DEPTH_ONLY')
+
+    def __init__(self, mode='JOINT'):
+        if mode not in self.MODES: raise ValueError(f'Unknown controller mode: {mode}')
+        self.mode=mode
         self.target_y=0.0
         self.pass_until_x=None
         self.last_risk_t=-100.0
 
     def command(self, *, t, x, y, goal_x, dtr_risk, corridors):
+        # Remove the entire depth control channel, including its validity stop,
+        # side selection and return-path geometry, in the DTR-only ablation.
+        if self.mode=='DTR_ONLY':
+            corridors={'clearance_m':{str(k):12.0 for k in (0.0,-.72,.72,-.52,.52)},
+                       'front_obstacle_m':None,'valid_fraction':1.0}
+        if self.mode=='DEPTH_ONLY': dtr_risk=False
+        result=self._command_active(t=t,x=x,y=y,goal_x=goal_x,dtr_risk=dtr_risk,corridors=corridors)
+        result.update(controller_mode=self.mode,dtr_route_risk=bool(dtr_risk),
+                      depth_near_risk=corridors['front_obstacle_m'] is not None and corridors['front_obstacle_m']<2.8)
+        return result
+
+    def _command_active(self, *, t, x, y, goal_x, dtr_risk, corridors):
         clear=corridors['clearance_m']
         front=corridors['front_obstacle_m']
         near=front is not None and front<2.8

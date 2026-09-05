@@ -37,7 +37,12 @@ next_action=started+10
 stage='setup'
 captures=[]
 spawned=[]
-catalog=[s for s in scenarios.scenario_catalog() if not CASES or s['id'] in CASES]
+catalog_file=EVAL/'catalog-definition.json'
+all_specs=json.loads(catalog_file.read_text(encoding='utf-8')) if catalog_file.exists() else scenarios.scenario_catalog()
+if catalog_file.exists():
+    identity=json.loads((OUT/'identity.json').read_text())
+    assert hashlib.sha256(catalog_file.read_bytes()).hexdigest()==identity['scenario_selection']['catalog_sha256']
+catalog=[s for s in all_specs if not CASES or s['id'] in CASES]
 jobs=[(s,arm) for s in catalog for arm in s['arms']]
 job_index=0
 report={'status':'RUNNING','mode':'LIVE_SENSOR_ACTION_LOCKSTEP','completed_episodes':0,
@@ -194,7 +199,11 @@ def tick(delta):
             floor=hit.to_tuple()[5].z/100
             assert -.1<floor<.5,'Unexpected walking surface'
             report['surface_height_m']=floor
-            report['proxy_checks']=scenarios.validate_catalog()
+            if catalog_file.exists():
+                from scenario_bank import validate_specs
+                report['proxy_checks']=validate_specs(all_specs)
+            else:
+                report['proxy_checks']=scenarios.validate_catalog()
             assert report['proxy_checks']['passed']
             write(EVAL/'scenarios.json',catalog)
             rgb=make_capture(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
