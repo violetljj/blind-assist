@@ -95,7 +95,7 @@ These modes constrain the affected claim/action, not nearby reversible work.
 - Register new runs with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
 - Install the knowledge hook once with `pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; full refresh is for stale-index repair or a requested rebuild.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for an affected prerequisite or failure, not as a per-task gate.
-- Keep machine paths, credentials, and endpoints in CLI arguments, ignored local config, environment variables, or the credential store.
+- Use the worker for scoped work without renewed approval; see [host compute](docs/HOST_RESEARCH_COMPUTE.md). Keep host details in ignored config.
 - Validate only the changed surface with `git diff --check`, structure for layout, and docs index for hot links; broaden only for the named risk.
 - GPU-helpful work is GPU-first. Record actual backend/device/providers and timings; compare equivalent CPU/GPU work when choosing placement; reuse measurements while workload and environment remain equivalent. CPU requires `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`, `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`. Small scalar/metadata work stays on CPU. Reuse `tools/research_backend.py`; never claim CUDA from CPU execution.
 

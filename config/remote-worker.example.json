@@ -1,0 +1,10 @@
+{
+  "host": "worker-hostname",
+  "user": "worker-user",
+  "identityFile": "",
+  "remotePowerShell": "",
+  "enterScript": "",
+  "hostKeyFingerprint": "verify out of band before adding to known_hosts",
+  "inventory": {},
+  "verification": {}
+}
