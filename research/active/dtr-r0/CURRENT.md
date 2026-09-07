@@ -13,7 +13,12 @@ checks. See [UE acceptance](unreal/UE_LAB_ACCEPTANCE_20260906.md).
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
 its engineering checks are not dynamic algorithm scores.
-Visual work is paused at the user's request. The saved sample is frozen at
+The earlier pause applied to that saved sample. G14 procedural-world visual
+development is now authorized, with primary-machine creation and visual/truth
+acceptance before secondary-machine bulk capture or long training. See
+[G14 realism acceptance](nearfield/WORLD_REALISM_ACCEPTANCE.md) for the intended
+criteria and pending capabilities; this is not a passed visual or model result.
+The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
 `willow-eye170-first-person` passes replay and ground-depth optical-height checks.
