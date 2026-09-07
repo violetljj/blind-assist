@@ -3,9 +3,12 @@
 Updated: 2026-09-07
 
 BlindAssist is a runnable Android showcase research prototype and thesis project.
-The goal is a genuine technical effect, a clear algorithmic contribution and a
-credible controlled demonstration. Natural-distribution and safety claims require
-their own evidence; a build or a narrow replay does not establish them.
+The primary goal is useful, measurable technical effect and a credible, stable
+controlled demonstration. Innovation depth depends on the problem; major novelty
+is not a requirement. Established methods, integration, and incremental improvements
+are valid choices when their effect and cost justify them. Describe the actual
+contribution honestly, and pursue new mechanisms when they address a concrete gap.
+Natural-distribution and safety claims require their own evidence; a build or a narrow replay does not establish them.
 
 ## Current research lines
 

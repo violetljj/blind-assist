@@ -2,8 +2,8 @@
 
 ## Project
 
-BlindAssist is an Android showcase research prototype and thesis project. Optimize for genuine
-technical effect, controlled metrics, demo stability, and a clear algorithmic contribution; it is not a certified mobility or safety product.
+BlindAssist is an Android research demo and thesis project, not a certified safety product. Effect comes first; major novelty is optional.
+Choose mature, combined, incremental or new methods by measured benefit, stability and cost. State contributions honestly.
 
 Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 `:core:assist` risk, `:core:vision` detection, `:core:device` adapters, and `:core:ui` UI.

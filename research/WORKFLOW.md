@@ -1,10 +1,24 @@
 # Research workflow
 
-Updated: 2026-09-05
+Updated: 2026-09-07
 
 Improve a concrete BlindAssist capability and explain why the improvement works.
 Use this page for implementation choices; route currents own active evidence and
 priorities. The workflow is a default, not an extra approval or registration gate.
+
+## Effect before novelty
+
+Choose work by expected capability gain, reliability, and observation/runtime cost.
+Established methods, better data or integration, incremental changes, and novel
+algorithms are all eligible; innovation depth is a means, not an acceptance gate.
+Start with the simplest credible approach that can meet the goal. Invest in a new
+mechanism when an observed gap or a testable opportunity justifies the complexity.
+
+Compare actual task effects under comparable inputs and budgets. When effects are
+comparable, prefer the simpler, more stable, lower-cost option. Keep a useful gain
+even if its novelty is modest; revise or stop a novel method that adds no useful
+benefit. Explain algorithmic, engineering, or integration contributions accurately
+without inflating novelty. Evidence and claim boundaries still apply.
 
 ## Start from the decision
 

@@ -9,6 +9,12 @@ owns its latest baseline, exact metrics, source boundaries and experiment status
 Historical gates and successor suggestions apply to named scopes; new hypotheses
 or evaluation criteria need a rationale and a useful check, not prior success.
 
+Across routes, prioritize useful effect over degree of novelty. Mature methods,
+integration and incremental improvements remain eligible alongside new mechanisms.
+Retain changes for demonstrated task benefit with acceptable errors, coverage and
+cost; prefer simplicity and stability when effects are comparable. Major innovation
+is not a prerequisite, and novelty alone does not justify retaining a method.
+
 ## L10: useful commitment under partial evidence
 
 The present question is how to retain correct target recovery while reducing wrong
