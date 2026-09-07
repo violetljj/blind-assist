@@ -67,6 +67,10 @@ candidate, not an installed or completed capability.
 
 ## Remaining limits
 
+The next iteration now prioritizes [mature scene and PCG rule reuse](SAMPLE_PCG_REUSE_20260908.md):
+City Sample 5.8's simpler pedestrian slice first, then Electric Dreams path and
+planting examples. Acquisition and native integration remain pending.
+
 These are two procedurally furnished views inside a frozen map container, not
 independent-map generalization or a completed natural-world dataset. Room signs
 and notices remain simplified; existing architecture/tree variety remains
