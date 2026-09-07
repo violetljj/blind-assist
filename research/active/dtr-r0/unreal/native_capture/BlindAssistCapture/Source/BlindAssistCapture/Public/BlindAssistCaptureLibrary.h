@@ -29,6 +29,11 @@ struct BLINDASSISTCAPTURE_API FBlindAssistRgbWriteProfile
     double EncodeSeconds = 0.0;
     UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
     double WriteSeconds = 0.0;
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    double SubmitSeconds = 0.0;
+    /** Submission to observed GPU readiness, including polling delay. */
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    double GpuReadySeconds = 0.0;
 };
 
 UCLASS()
@@ -54,4 +59,16 @@ public:
     /** Wait for all queued writes; callers must check Failed as well as Pending. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FBlindAssistRgbWriteProfile DrainRgbWrites();
+
+    /** Queue GPU copies after the caller's CaptureScene commands. No synchronous readback. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool SubmitCapturePair(UTextureRenderTarget2D* RgbTarget, UTextureRenderTarget2D* DepthTarget, const FString& RgbFilename, const FString& DepthFilename, int32 MaxPending = 4);
+
+    /** Schedule GPU fence checks and reap completed pairs. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static FBlindAssistRgbWriteProfile PollCapturePairs();
+
+    /** Final drain may block on GPU fences and CPU writers. Check Failed before accepting output. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static FBlindAssistRgbWriteProfile DrainCapturePairs();
 };

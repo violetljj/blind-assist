@@ -7,6 +7,7 @@ public:
     virtual void ShutdownModule() override
     {
         UBlindAssistCaptureLibrary::DrainRgbWrites();
+        UBlindAssistCaptureLibrary::DrainCapturePairs();
     }
 };
 

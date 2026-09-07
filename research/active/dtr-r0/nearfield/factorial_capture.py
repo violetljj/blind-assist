@@ -11,13 +11,17 @@ import traceback
 import unreal as u
 
 # UE removes __file__ after executing the script; resolve imports before callbacks.
-if os.environ.get('BA_UE_DEPTH_EXPORT') or os.environ.get('BA_UE_RGB_EXPORT'):
+if os.environ.get('BA_UE_DEPTH_EXPORT') or os.environ.get('BA_UE_RGB_EXPORT') or os.environ.get('BA_UE_SETTLING') or os.environ.get('BA_UE_PAIR_EXPORT'):
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
     from ue_depth_export import export_depth
     from ue_rgb_export import RgbExporter
+    from ue_settling import settling_count
+    from ue_pair_export import create_pair_exporter
 
-rgb_exporter = RgbExporter(u, os.environ.get('BA_UE_RGB_EXPORT', 'legacy')) if os.environ.get('BA_UE_RGB_EXPORT') else None
+pair_exporter = create_pair_exporter(u, os.environ['BA_UE_PAIR_EXPORT']) if os.environ.get('BA_UE_PAIR_EXPORT') else None
+
+rgb_exporter = RgbExporter(u, os.environ.get('BA_UE_RGB_EXPORT', 'legacy')) if os.environ.get('BA_UE_RGB_EXPORT') and not pair_exporter else None
 
 OUT = Path(os.environ['BA_NEARFIELD_OUTPUT'])
 SPEC = Path(os.environ['BA_NEARFIELD_SPEC'])
@@ -36,7 +40,7 @@ started = time.monotonic()
 capture_times = []
 profiles = []
 frame_started = None
-report = {'status': 'RUNNING', 'cadence': os.environ.get('BA_UE_CADENCE', 'tick'), 'expected_map_sha256': EXPECTED,
+report = {'status': 'RUNNING', 'capture_time_semantics': 'GPU_PAIR_SUBMISSION' if pair_exporter else 'SYNCHRONOUS_READBACK_COMPLETE', 'settling_policy': os.environ.get('BA_UE_SETTLING', 'full'), 'cadence': os.environ.get('BA_UE_CADENCE', 'tick'), 'expected_map_sha256': EXPECTED,
           'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
 
 
@@ -97,6 +101,13 @@ def finish(error=None):
     report['status'] = 'FAIL' if error else 'PASS'
     if error:
         report['error'] = error
+    if pair_exporter:
+        try:
+            report['pair_exports'] = pair_exporter.finish()
+            report['exports_drained_monotonic_s'] = time.monotonic() - started
+        except Exception:
+            report['status'] = 'FAIL'
+            report['pair_error'] = traceback.format_exc()
     if rgb_exporter:
         try:
             report['rgb_exports'] = rgb_exporter.finish()
@@ -158,6 +169,9 @@ def tick(delta):
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
             stage = 2
         if stage == 2:
+            if pair_exporter and not pair_exporter.ready():
+                after = 0
+                return
             if rgb_exporter and not rgb_exporter.ready():
                 after = 0
                 return
@@ -167,12 +181,14 @@ def tick(delta):
                     after = 0
                     return
             if warm == 0:
+                if index == 0:
+                    report['acquisition_started_monotonic_s'] = time.monotonic() - started
                 frame_started = time.perf_counter()
                 prepare(cases[index])
                 prepare_done = time.perf_counter()
-            settling = (50 if index == 0 else cases[index].get('settling_frames',26))
+            settling = settling_count(cases[index], cases[index-1] if index else None, index, 50, 26, os.environ.get('BA_UE_SETTLING', 'full')) if os.environ.get('BA_UE_SETTLING') else (50 if index == 0 else cases[index].get('settling_frames',26))
             if os.environ.get('BA_UE_CADENCE') == 'burst':
-                # Same number of view renders, without waiting for unused editor ticks.
+                # Full settling on changed states; optional reuse retains converged view history.
                 for _ in range(settling + 1):
                     rgb.capture_component2d.capture_scene()
                 warm = settling + 1
@@ -187,47 +203,52 @@ def tick(delta):
             depth_submit_done = time.perf_counter()
             folder = OUT / 'model/sample'
             folder.mkdir(parents=True, exist_ok=True)
-            if rgb_exporter:
-                rgb_exporter.export(world, rgb.capture_component2d.texture_target, folder / f'{index:04d}.png', index)
+            if pair_exporter:
+                result = pair_exporter.export(world, rgb.capture_component2d.texture_target, depth.capture_component2d.texture_target, folder / f'{index:04d}.png', OUT / f'evaluator/native/{index:04d}.npy', index)
+                report.setdefault('depth_exports', []).append(result)
+                png_done = readback_done = time.perf_counter()
             else:
-                u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
-            png_done = time.perf_counter()
-            if os.environ.get('BA_UE_DEPTH_EXPORT'):
-                native_folder = OUT / 'evaluator/native'
-                result = export_depth(u, world, depth.capture_component2d.texture_target,
-                                      native_folder / f'{index:04d}.npy',
-                                      os.environ['BA_UE_DEPTH_EXPORT'], index)
-                report.setdefault('depth_exports', []).append(dict(sample_index=index, **result))
-                readback_done = time.perf_counter()
-            else:
-                values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
-                readback_done = time.perf_counter()
-                assert len(values) == 640 * 360
-                header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
-                header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
-                native_folder = OUT / 'evaluator/native'
-                native_folder.mkdir(parents=True, exist_ok=True)
-                with (native_folder / f'{index:04d}.npy').open('wb') as f:
-                    f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
-                    if spec.get('preflight'):
-                        timings = {}
-                        order = ('legacy','single_access') if index%2==0 else ('single_access','legacy')
-                        outputs = {}
-                        for mode in order:
-                            tick_conversion = time.perf_counter()
-                            if mode == 'legacy':
-                                outputs[mode] = array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values))
-                            else:
-                                outputs[mode] = array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values)))
-                            timings[mode] = time.perf_counter()-tick_conversion
-                        assert outputs['legacy'].tobytes() == outputs['single_access'].tobytes(), 'Native conversion byte mismatch'
-                        report.setdefault('conversion_probe', []).append(dict(index=index,seconds=timings,bytes_equal=True))
-                        outputs['single_access'].tofile(f)
-                    elif spec.get('conversion_mode') == 'single_access':
-                        array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values))).tofile(f)
-                    else:
-                        array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
-            profiles.append(dict(sample_index=index,settling_frames=cases[index].get('settling_frames',8),prepare_and_settle_s=settle_done-frame_started,depth_submit_s=depth_submit_done-settle_done,png_export_s=png_done-depth_submit_done,native_readback_s=readback_done-png_done,native_marshal_write_s=time.perf_counter()-readback_done,total_s=time.perf_counter()-frame_started))
+                if rgb_exporter:
+                    rgb_exporter.export(world, rgb.capture_component2d.texture_target, folder / f'{index:04d}.png', index)
+                else:
+                    u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
+                png_done = time.perf_counter()
+                if os.environ.get('BA_UE_DEPTH_EXPORT'):
+                    native_folder = OUT / 'evaluator/native'
+                    result = export_depth(u, world, depth.capture_component2d.texture_target,
+                                          native_folder / f'{index:04d}.npy',
+                                          os.environ['BA_UE_DEPTH_EXPORT'], index)
+                    report.setdefault('depth_exports', []).append(dict(sample_index=index, **result))
+                    readback_done = time.perf_counter()
+                else:
+                    values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
+                    readback_done = time.perf_counter()
+                    assert len(values) == 640 * 360
+                    header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
+                    header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
+                    native_folder = OUT / 'evaluator/native'
+                    native_folder.mkdir(parents=True, exist_ok=True)
+                    with (native_folder / f'{index:04d}.npy').open('wb') as f:
+                        f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
+                        if spec.get('preflight'):
+                            timings = {}
+                            order = ('legacy','single_access') if index%2==0 else ('single_access','legacy')
+                            outputs = {}
+                            for mode in order:
+                                tick_conversion = time.perf_counter()
+                                if mode == 'legacy':
+                                    outputs[mode] = array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values))
+                                else:
+                                    outputs[mode] = array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values)))
+                                timings[mode] = time.perf_counter()-tick_conversion
+                            assert outputs['legacy'].tobytes() == outputs['single_access'].tobytes(), 'Native conversion byte mismatch'
+                            report.setdefault('conversion_probe', []).append(dict(index=index,seconds=timings,bytes_equal=True))
+                            outputs['single_access'].tofile(f)
+                        elif spec.get('conversion_mode') == 'single_access':
+                            array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values))).tofile(f)
+                        else:
+                            array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
+            profiles.append(dict(sample_index=index,actual_settling_frames=settling,settling_frames=cases[index].get('settling_frames',8),prepare_and_settle_s=settle_done-frame_started,depth_submit_s=depth_submit_done-settle_done,png_export_s=png_done-depth_submit_done,native_readback_s=readback_done-png_done,native_marshal_write_s=time.perf_counter()-readback_done,total_s=time.perf_counter()-frame_started))
             capture_times.append(time.monotonic() - started)
             pose = dict(cases[index]['camera'])
             pose.setdefault('roll', 0.)

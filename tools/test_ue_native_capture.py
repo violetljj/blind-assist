@@ -86,5 +86,21 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'differs'):
             runner.verify_rgb(self.root,1,probe=True)
 
+    def test_settling_auto_is_scoped_to_declared_static_source(self):
+        self.spec.write_text(json.dumps({'cases':[{}], 'sampling':'THREE_STATIC_SETTLED_POSES_SIMULATED_5HZ_NOT_MOTION_TEST'}))
+        for i,(cadence,policy,expected) in enumerate([('burst','auto','reuse'),('tick','auto','full'),('burst','full','full')]):
+            args=self.args();args.output=self.root/f'policy{i}';args.cadence=cadence;args.settling_policy=policy
+            with patch.object(runner,'run_owned',side_effect=self.fake_process):runner.capture(args)
+            self.assertEqual(json.loads((args.output/'launch.json').read_text())['settling_policy'],expected)
+
+    def test_pair_rejects_exr_and_motion_before_launch(self):
+        args=self.args();args.pair_export='native_async'
+        with self.assertRaisesRegex(ValueError,'depth'):
+            runner.capture(args)
+        args.depth_export='native';args.capture='whisker'
+        with self.assertRaisesRegex(ValueError,'settled'):
+            runner.capture(args)
+        self.assertFalse(args.output.exists())
+
 
 if __name__=='__main__':unittest.main()

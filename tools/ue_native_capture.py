@@ -85,13 +85,23 @@ def capture(args):
     cadence = getattr(args, 'cadence', 'auto')
     if cadence == 'auto':
         cadence = 'burst' if args.capture in ('grounding', 'factorial') else 'tick'
-    rgb_export = getattr(args, 'rgb_export', 'auto')
+    settling_policy = getattr(args, 'settling_policy', 'auto')
+    if settling_policy == 'reuse' and (args.capture == 'whisker' or cadence != 'burst'):
+        raise ValueError('Settling reuse requires grounding/factorial burst poses')
     plugin = getattr(args, 'plugin', None)
+    pair_export = getattr(args, 'pair_export', 'auto')
+    if pair_export == 'auto' and (not plugin or args.capture == 'whisker' or args.depth_export not in ('auto', 'native') or getattr(args, 'rgb_export', 'auto') != 'auto'):
+        pair_export = 'off'
+    if pair_export != 'off' and args.capture == 'whisker':
+        raise ValueError('GPU pair export currently supports settled grounding/factorial captures')
+    if pair_export != 'off' and args.depth_export not in ('auto', 'native'):
+        raise ValueError('GPU pair export requires auto/native depth; EXR and depth probes use the separate path')
+    rgb_export = getattr(args, 'rgb_export', 'auto')
     if rgb_export == 'auto' and not plugin:
         rgb_export = 'legacy'
     if args.depth_export == 'auto':
         args.depth_export = 'native' if plugin else 'exr'
-    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy':
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off':
         if not plugin or not plugin.is_file():
             raise ValueError('Native export requires --plugin from build_ue_capture_plugin.py')
         if not (plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll').is_file():
@@ -100,6 +110,9 @@ def capture(args):
     spec = args.spec.resolve()
     if not spec.is_relative_to(root) or not spec.is_file():
         raise ValueError('Spec must exist under artifacts.local')
+    if settling_policy == 'auto':
+        sampling = json.loads(spec.read_text(encoding='utf-8-sig')).get('sampling')
+        settling_policy = 'reuse' if args.capture in ('grounding', 'factorial') and cadence == 'burst' and sampling == 'THREE_STATIC_SETTLED_POSES_SIMULATED_5HZ_NOT_MOTION_TEST' else 'full'
     script = REPO / 'research/active/dtr-r0/nearfield' / CAPTURES[args.capture]
     engine = engine_root(args.engine)
     project = root / 'unreal/BlindAssistStreetLab'
@@ -107,25 +120,27 @@ def capture(args):
     # Freeze the actual scripts used by this process against concurrent edits.
     snapshot = out/'source'
     snapshot.mkdir()
-    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py')):
+    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py'), script.with_name('ue_settling.py'), script.with_name('ue_pair_export.py')):
         shutil.copy2(source, snapshot/source.name)
     script = snapshot/script.name
     shutil.copy2(spec, snapshot/'spec.json')
     spec = snapshot/'spec.json'
     env = dict(os.environ, BA_NEARFIELD_SPEC=str(spec), BA_NEARFIELD_OUTPUT=str(out),
                BA_UE_DEPTH_EXPORT=args.depth_export,
-               BA_UE_CADENCE=cadence, BA_UE_RGB_EXPORT=rgb_export)
+               BA_UE_CADENCE=cadence, BA_UE_RGB_EXPORT=rgb_export, BA_UE_SETTLING=settling_policy, BA_UE_PAIR_EXPORT=pair_export)
     env['UE-LocalDataCachePath'] = str(project / 'DerivedDataCache')
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'),
                str(project / 'BlindAssistStreetLab.uproject'),
                '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
                '-nosound', '-nop4', '-NoSplash', '-ddc=NoShared', '-abslog=' + str(out/'editor.log')]
-    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy':
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off':
         command += ['-PLUGIN=' + str(plugin.resolve()), '-EnablePlugins=BlindAssistCapture']
-    write(out / 'launch.json', dict(depth_export=args.depth_export, rgb_export=rgb_export, cadence=env['BA_UE_CADENCE'], script=str(script),
+    write(out / 'launch.json', dict(depth_export=args.depth_export, rgb_export=rgb_export, pair_export=pair_export, settling_policy=settling_policy, cadence=env['BA_UE_CADENCE'], script=str(script),
           script_sha256=file_hash(script), exporter_sha256=file_hash(script.with_name('ue_depth_export.py')),
           rgb_exporter_sha256=file_hash(script.with_name('ue_rgb_export.py')),
+          pair_exporter_sha256=file_hash(script.with_name('ue_pair_export.py')),
+          settling_sha256=file_hash(script.with_name('ue_settling.py')),
           transport_sha256=file_hash(script.with_name('ue_exr_transport.py')),
           spec_sha256=file_hash(spec), command=command,
           plugin_binary_sha256=file_hash(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll') if plugin else None))
@@ -142,7 +157,18 @@ def capture(args):
         if receipt['status'] != 'PASS' or not receipt['source_unchanged']:
             raise RuntimeError('Capture failed; inspect receipt.json')
         effective_rgb = receipt.get('rgb_exports', {}).get('mode', 'legacy')
-        if effective_rgb != 'legacy':
+        effective_pair = receipt.get('pair_exports', {}).get('mode', 'off')
+        if effective_pair != 'off':
+            import numpy as np
+            verify_rgb(out, receipt['frame_count'], probe=effective_pair == 'native_probe')
+            for i in range(receipt['frame_count']):
+                path = out / f'evaluator/native/{i:04d}.npy'
+                depth = np.load(path, allow_pickle=False)
+                if depth.shape != (360, 640) or depth.dtype != np.dtype('<f4') or not np.isfinite(depth).all() or not ((depth >= 0) & (depth < 100)).all():
+                    raise ValueError('Invalid GPU depth output: ' + str(path))
+                if effective_pair == 'native_probe' and path.read_bytes() != path.with_name(path.stem + '.reference.npy').read_bytes():
+                    raise ValueError('GPU depth differs from same-target reference: ' + str(path))
+        elif effective_rgb != 'legacy':
             verify_rgb(out, receipt['frame_count'], probe=effective_rgb == 'native_probe')
         if transport:
             conversion = transport.finish()
@@ -160,6 +186,7 @@ def capture(args):
         if transport:
             transport.close()
     write(out/'completion.json', dict(status='PASS', depth_export=args.depth_export,
+          rgb_export=effective_rgb, pair_export=effective_pair, settling_policy=settling_policy,
           frames=receipt['frame_count'], transport_complete=True))
     print(json.dumps(dict(status='PASS', frames=receipt['frame_count'],
                          script_wall_s=receipt['wall_elapsed_s'], output=str(out))))
@@ -176,6 +203,8 @@ def main():
     p.add_argument('--capture', choices=CAPTURES, required=True)
     p.add_argument('--depth-export', choices=('auto','legacy','single_access','exr','exr_probe','native','native_probe'), default='auto',
                    help='Auto selects native when --plugin is supplied, otherwise EXR')
+    p.add_argument('--pair-export', choices=('auto','off','native_async','native_probe'), default='auto')
+    p.add_argument('--settling-policy', choices=('auto','full','reuse'), default='auto')
     p.add_argument('--rgb-export', choices=('auto','legacy','native_async','native_probe'), default='auto',
                    help='Auto uses background PNG encoding when the loaded plugin supports it')
     p.add_argument('--cadence', choices=('auto','tick','burst'), default='auto',

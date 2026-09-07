@@ -1,6 +1,9 @@
 # Background PNG encoding for UE capture
 
 Follow-up to [native depth and burst capture](UE_CAPTURE_NATIVE_BURST_20260907.md).
+The subsequent [GPU readback pipeline](UE_CAPTURE_GPU_PIPELINE_20260907.md) reaches
+30.97 fps on the 480-frame repeated static workload; this report retains the
+background-encoding-only intermediate result.
 This is a data acquisition engineering check using reused G9 Development poses;
 no model was trained or scored and no new independent evaluation samples are claimed.
 
