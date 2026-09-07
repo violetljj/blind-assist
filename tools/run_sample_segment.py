@@ -9,7 +9,7 @@ import sys
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action',choices=('build','polish','materials','inspect'))
+    p.add_argument('action',choices=('build','polish','materials','inspect','audit','finish','sensors'))
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     repo=Path(__file__).resolve().parents[1]

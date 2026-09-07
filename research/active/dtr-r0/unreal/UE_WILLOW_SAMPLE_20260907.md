@@ -91,7 +91,7 @@ the final preparation assembles the single bench instead of combining kit parts.
 Failed and intermediate outputs remain labeled by their runner receipts; an
 exporter's PASS means capture completed, not that visual acceptance passed.
 
-## Verified saved version
+## Initial verified material version
 
 Material build and final views: `artifacts.local/unreal/willow-sample-v3-assembled`.
 Its `verification.json` passes: zero sample material compile failures, eleven
@@ -114,3 +114,55 @@ repeated storefront interiors and unfinished distant boundaries; tree foliage
 also remains light in direct sun. The new material pass is a concrete improvement,
 not a claim that the entire laboratory is photorealistic or visually approved
 by the user.
+
+## Visual freeze and first-person acquisition
+
+On 2026-09-07 the user paused visual optimization and directed acquisition from
+approximately 1.7 m above the walking surface. The frozen visual version is
+`artifacts.local/unreal/willow-finish-4k`, map SHA-256
+`cf35e5c9df54cd0f781f09ea8105fe8ef6078ed0822d4e594d64216e79a254fb`.
+It has four native 3840x2160 views. Do not resume art changes without new user
+direction. Showcase cameras are presentation views and are not policy input.
+
+The finishing pass reduced the inherited skylight intensity from 350 to 140 and
+the directional light from 7,500 to 4,500 lux. A BaseColor capture retained green
+leaf albedo, isolating the excessive grey-white appearance to illumination.
+Lumen GI and reflections are explicitly enabled in the saved post-process
+settings and verified in the SceneCapture settings. Engine source
+`Renderer/Private/SceneCaptureRendering.cpp` documents that captures otherwise
+default these methods to None despite the project-level Lumen defaults.
+
+A native gallery and its ground floor close the western horizon; red backdrop
+benches are replaced by the assembled bench. The near southern ground-floor
+facade was unpacked into 87 native mesh actors with preserved world transforms,
+because packed construction restored its original material assignments on
+reload. Near panes now use an opaque coated-glazing approximation, replacing
+repeated bedroom impostors; they do not model transmissive interior spaces.
+`geometry-preservation.json` finds identical multisets of 2,789 mesh bounds
+before/after facade unpacking at 0.1 mm rounding. This is a bounds check, not
+triangle-level collision proof. The four-view and eleven-frame engineering
+verification passes, including native clear/contact controls. Conservative tree
+AABB discrepancies remain as previously documented.
+
+The old camera used world Z=1.72 m over a floor at Z=.12 m, hence its actual eye
+height was 1.60 m. The corrected acquisition uses **eye height=1.70 m**, world
+Z=1.82 m. Pitch remains -10 degrees (slightly downward walking gaze), horizontal
+FOV 100 degrees, RGB/depth 640x360. This is explicit camera pose, not an inferred
+user height. Model inputs retain the sanitized sensor/ego/issued-plan boundary.
+
+```powershell
+python tools/run_sample_segment.py sensors --output artifacts.local/unreal/willow-eye170-first-person
+python tools/verify_sample_segment.py --run artifacts.local/unreal/willow-eye170-first-person
+```
+
+`sensors` loads the frozen map without saving or changing its visual assets and
+skips showcase rendering. It captures eleven paired frames over a one-metre
+controlled trajectory at logical 10 Hz. The verifier checks optical height
+from both the recorded pose and a known clear floor depth patch (2 cm tolerance).
+This short sequence checks acquisition geometry and replay integration; it is
+not a dynamic pedestrian mechanism experiment or a new controller score.
+
+The corrected `willow-eye170-first-person/verification.json` passes all eleven
+frames. The floor-depth optical-height estimates range from 1.699971 to 1.699998 m;
+map SHA-256 is unchanged from the visual freeze. Task-owned capture processes
+were released with no surviving descendants.

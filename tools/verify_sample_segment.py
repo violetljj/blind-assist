@@ -47,7 +47,8 @@ def verify(run):
         receipt = read(run / "receipt.json")
         require(receipt["status"] == "PASS", "Builder receipt is not PASS")
         shader_failures = [line for line in (run / "editor.log").read_text(encoding="utf-8", errors="replace").splitlines()
-                           if "SampleMaterialsV2" in line and "Failed to compile Material" in line]
+                           if any(namespace in line for namespace in ("SampleMaterialsV2", "SampleFinish"))
+                           and "Failed to compile Material" in line]
         require(not shader_failures, "Sample material compilation failed; default fallback is not acceptable")
         report["sample_material_compile_errors"] = 0
         require(receipt["source_unchanged"] is True, "Builder reports source mutation")
@@ -84,12 +85,15 @@ def verify(run):
         native_ok = all(not comparisons[name]["native_contact"] for name in ("center", "left_bypass", "right_bypass")) and comparisons["contact_control"]["native_contact"]
         report["native_status"] = "PASS" if native_ok else "FAIL"
         require(native_ok, "Native clear witnesses or seeded contact control failed")
-        require(len(receipt["views"]) == 4, "Expected four showcase views")
+        expected_views=0 if receipt.get('capture_mode')=='sensors_only' else 4
+        require(len(receipt["views"]) == expected_views, "View count differs from capture mode")
         for view in receipt["views"]:
             path = bounded(run, view["path"])
             with Image.open(path) as image:
                 image.load()
-                require(image.format == "PNG" and image.size == (1920, 1080), "Showcase PNG must be 1920x1080")
+                expected=tuple(receipt.get('view_resolution',[1920,1080]))
+                require(expected in ((1920,1080),(3840,2160)) and image.format == "PNG" and image.size == expected,
+                        "Showcase PNG must match its declared native resolution")
                 report["view_dimensions"].append({"path": view["path"], "width": image.width, "height": image.height})
         model = run / "model"
         sensors = read(model / "sensor_manifest.json")
@@ -117,6 +121,19 @@ def verify(run):
             depth = np.load(bounded(model, frame["depth_path"]), allow_pickle=False)
             require(depth.dtype == np.float32 and depth.shape == (360, 640), "Depth dimensions/dtype mismatch")
             require(np.isfinite(depth).all() and (depth >= 0).all() and (depth <= 100).all(), "Invalid depth values")
+            if 'sensor_eye_height_m' in receipt:
+                eye=frame['camera_transform']['z']-frame['wearer_transform']['z']
+                require(abs(eye-1.70)<1e-6 and abs(eye-receipt['sensor_eye_height_m'])<1e-6,
+                        'First-person optical center must be 1.70 m above the floor')
+                # Known clear center-floor patch is an independent depth check
+                # of optical height; this result remains evaluator-only.
+                focal=640/(2*np.tan(np.deg2rad(calibration['horizontal_fov_degrees']/2)))
+                pitch=np.deg2rad(frame['camera_transform']['pitch'])
+                rows=np.arange(280,331)+.5-180
+                dz=np.sin(pitch)-rows[:,None]/focal*np.cos(pitch)
+                measured=float(np.median(-depth[280:331,300:341]*dz))
+                require(abs(measured-eye)<.02, 'Ground-depth optical-height check exceeds 2 cm')
+                report.setdefault('eye_height_checks',[]).append({'frame':index,'pose_height_m':eye,'depth_height_m':measured})
             fraction = float(np.mean((depth > 0) & (depth < 100)))
             require(fraction > .2, "Insufficient valid depth fraction")
             depths.append({"sample_index": index, "valid_fraction": fraction})

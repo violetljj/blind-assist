@@ -18,13 +18,19 @@ ROOT=Path(u.Paths.project_dir())
 OUT=Path(os.environ['BA_SAMPLE_OUTPUT'])
 MAP='/Game/StreetLab/WillowSampleV1'
 SOURCE=ROOT/'Content/StreetLab/StreetLabV4.umap'
+EYE_HEIGHT_M=1.70
+FLOOR_M=.12
+CAMERA_Z_M=FLOOR_M+EYE_HEIGHT_M
 api=u.get_editor_subsystem(u.EditorActorSubsystem)
 levels=u.get_editor_subsystem(u.LevelEditorSubsystem)
 editor=u.get_editor_subsystem(u.UnrealEditorSubsystem)
 assets=u.AssetToolsHelpers.get_asset_tools()
 report={'status':'RUNNING','source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
         'map':MAP,'region_m':[22,46,-6,6],'floor_m':.12,'views':[],
-        'builder_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+        'builder_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'view_resolution':[3840,2160]}
+report.update(capture_mode='sensors_only' if os.environ['BA_SAMPLE_ACTION']=='sensors' else 'showcase_and_sensors',
+              sensor_eye_height_m=EYE_HEIGHT_M,sensor_world_z_m=CAMERA_Z_M)
 captures=[]
 world=None
 
@@ -194,6 +200,11 @@ def capture_component(width,height,source,fmt):
         c.texture_target.target_gamma=2.2
         pp=max((a for a in api.get_all_level_actors() if isinstance(a,u.PostProcessVolume)),key=lambda a:a.priority)
         c.post_process_settings=pp.settings;c.post_process_blend_weight=1.
+        report['color_capture_settings']={
+            'gi_override':bool(c.post_process_settings.override_dynamic_global_illumination_method),
+            'gi_method':str(c.post_process_settings.dynamic_global_illumination_method),
+            'reflection_override':bool(c.post_process_settings.override_reflection_method),
+            'reflection_method':str(c.post_process_settings.reflection_method)}
     captures.append(a)
     return a
 
@@ -225,6 +236,11 @@ def tick(delta):
         # Level loading/saving pumps Slate callbacks; prevent reentrant stages.
         after=float('inf')
         if stage==0:
+            if os.environ['BA_SAMPLE_ACTION']=='audit':
+                assert levels.load_level(MAP)
+                from sample_scene_finish import audit
+                write(OUT/'scene_audit.json',audit(api))
+                finish();return
             if os.environ['BA_SAMPLE_ACTION']=='build':build()
             elif os.environ['BA_SAMPLE_ACTION']=='polish':polish()
             elif os.environ['BA_SAMPLE_ACTION']=='materials':
@@ -232,13 +248,20 @@ def tick(delta):
                 from sample_material_upgrade import apply
                 report['material_upgrade']=apply(api,model,box)
                 assert levels.save_current_level()
+            elif os.environ['BA_SAMPLE_ACTION']=='finish':
+                assert levels.load_level(MAP)
+                from sample_scene_finish import apply
+                report['scene_finish']=apply(api,model,box)
+                assert levels.save_current_level()
             else:assert levels.load_level(MAP)
             world=editor.get_editor_world();stage=1;after=time.monotonic()+30;return
         if stage==1:
             assert levels.load_level(MAP);world=editor.get_editor_world()
             report['map_sha256']=hashlib.sha256((ROOT/'Content/StreetLab/WillowSampleV1.umap').read_bytes()).hexdigest()
             inventory()
-            hero=capture_component(1920,1080,u.SceneCaptureSource.SCS_FINAL_COLOR_LDR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
+            if os.environ['BA_SAMPLE_ACTION']=='sensors':
+                stage=3;after=time.monotonic()+1;return
+            hero=capture_component(3840,2160,u.SceneCaptureSource.SCS_FINAL_COLOR_LDR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
             stage=2;after=time.monotonic()+5;return
         if stage==2:
             name,xyz,rot,fov=views[index]
@@ -248,6 +271,13 @@ def tick(delta):
             if warm<48:
                 hero.capture_component2d.capture_scene();warm+=1;after=time.monotonic()+.08;return
             u.RenderingLibrary.export_render_target(world,hero.capture_component2d.texture_target,str(OUT),name+'.png')
+            if name=='Arrival' and os.environ['BA_SAMPLE_ACTION']=='finish':
+                debug=capture_component(1920,1080,u.SceneCaptureSource.SCS_BASE_COLOR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
+                debug.set_actor_location(u.Vector(*xyz),False,False)
+                debug.set_actor_rotation(u.Rotator(pitch=rot[0],yaw=rot[1],roll=rot[2]),False)
+                debug.capture_component2d.fov_angle=fov
+                debug.capture_component2d.capture_scene()
+                u.RenderingLibrary.export_render_target(world,debug.capture_component2d.texture_target,str(OUT),'BaseColor.png')
             report['views'].append({'name':name,'location_cm':xyz,'rotation':rot,'fov':fov,'path':name+'.png'})
             index+=1;warm=0
             if index==len(views):stage=3;index=0
@@ -259,7 +289,7 @@ def tick(delta):
         if stage==4:
             x=26+index*.1
             for a in (rgb,depth):
-                a.set_actor_location(u.Vector(x*100,0,172),False,False)
+                a.set_actor_location(u.Vector(x*100,0,CAMERA_Z_M*100),False,False)
                 a.set_actor_rotation(u.Rotator(pitch=-10),False)
                 a.capture_component2d.fov_angle=100
             if warm<(32 if index==0 else 2):
@@ -276,7 +306,7 @@ def tick(delta):
             pose={'x':x,'y':0.,'z':.12,'pitch':0.,'yaw':0.,'roll':0.}
             report['sensor_frames'].append({'sample_index':index,'time_s':round(index*.1,5),
                 'rgb_path':f'sample/{index:04d}.png','depth_path':f'sample/{index:04d}.npy',
-                'camera_transform':dict(pose,z=1.72,pitch=-10.),'wearer_transform':pose,
+                'camera_transform':dict(pose,z=CAMERA_Z_M,pitch=-10.),'wearer_transform':pose,
                 'command_velocity':{'x':1.,'y':0.,'z':0.}})
             index+=1;warm=0;after=time.monotonic()+.1
             if index==11:

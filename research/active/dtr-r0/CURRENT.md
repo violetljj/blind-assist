@@ -17,6 +17,12 @@ asset with native geometry and sanitized RGB-D exports. Its static engineering
 checks pass; conservative tree AABBs still disagree with native side-corridor
 sweeps. This is a scene/material improvement, not a new dynamic algorithm score
 or replacement of the retained StreetLabV4 bank.
+Visual work is paused at the user's request. The saved sample is frozen at
+`willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
+above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
+`willow-eye170-first-person` check passes sanitized replay and an independent
+ground-depth optical-height check. It is an acquisition smoke test, not a new
+dynamic algorithm result.
 
 ## Capability question
 
