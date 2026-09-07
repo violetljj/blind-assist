@@ -1,6 +1,6 @@
 # Cane-complementary forward perception and DTR history
 
-Updated: 2026-09-07
+Updated: 2026-09-08
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
@@ -20,6 +20,15 @@ above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
 This is an acquisition smoke test.
 
 ## Latest grouped object diagnostic
+
+[NF-G11](nearfield/DETACHED_20260907.md) completed three fixed detached-gate fits
+and 32 fresh paired TEST groups. Localization recovers (BODY/HEAD IoU
+0.160/0.113 -> 0.252/0.230), but primary joint correctness falls 26/32 -> 17/32:
+retain G10 as baseline. Common-VAL calibration gives ensemble 24/32 -> 28/32,
+with bar recall 31/32 -> 28/32 and no paired-seed joint improvement; retain
+detached only as a disclosed operating-point challenger. Consumed spatial
+interventions reduce joint 21/32 -> 0/32, showing spatial dependence, not faithful
+localization. No further sweep or video/App promotion; closing remains unscored.
 
 [NF-G10](nearfield/DIVERSITY_20260907.md) completed the fixed data-expansion x
 predicted-region-head comparison: primary ensemble joint correctness is

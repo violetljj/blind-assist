@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-07",
-  "source_fingerprint": "8289e4c2d3dc9765b6b8d8ebc228f0a3f03e9a7a9c4ecfb710cc92e27fe07adb",
+  "generated_at": "2026-09-08",
+  "source_fingerprint": "d024e98aa6f361462c76aaff831e4cee61175128997f3cb83fe2d710683962e9",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 244,
+    "experiments": 245,
     "current_terminals": 44,
-    "run_associations": 242
+    "run_associations": 243
   },
   "failure_layers": [
     {
@@ -23314,6 +23314,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "nf-g10-diversity-2026-09-07 Do expanded data, predicted-region feature gating, or their combination improve ordinary near-head separation? Existing160-image plain ordinary model with originalG8warmstart; commonnewVAL, frozenprimarythresholds 2x2 existing160 versus expanded800images and plain versus predicted-region gating;12equal600stepfits G8-threshold jointallfour correctness, selective removal, recall and false alerts on32fresh narrow/diverse TESTgroups; paired2x2 descriptive contrasts Retain expanded-data plus predicted-region gating as near-field Development candidate: primary21/32 versus14/32 baseline, improvement across three paired seeds; residual diverse errors and degraded support fidelity prevent general grounding or App claims research/active/dtr-r0/nearfield/DIVERSITY_20260907.md ue-willow-nf-g10-diversity-region"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g11-detached-2026-09-07",
+      "status": "active",
+      "question": "Does detaching the support gate recover localization while preserving near decisions?",
+      "baseline": "Reuse G10 expanded-region three seeds and frozen G8 primary thresholds",
+      "change": "Only detach predicted gate gradient; same800TRAIN96VAL and three600step fits; fresh32pairedTESTgroups",
+      "primary_metric": "Joint correctness, head false alerts, diverse joint, bar recall and support IoU under predeclared practical retention tolerances",
+      "decision": "Retain G10 baseline: localization improves but primary joint26to17 fails retention; calibrated ensemble24to28 loses bar recall31to28 and no paired-seed joint gain; retain detached only as disclosed challenger",
+      "report": "research/active/dtr-r0/nearfield/DETACHED_20260907.md",
+      "source": "ue-willow-nf-g11-detached-gate",
+      "commit": "0105b4dd3f3a0d4be864fa0e94080cfc985a3333",
+      "association_id": "nf-g11-detached-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 13,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g11-detached-2026-09-07 Does detaching the support gate recover localization while preserving near decisions? Reuse G10 expanded-region three seeds and frozen G8 primary thresholds Only detach predicted gate gradient; same800TRAIN96VAL and three600step fits; fresh32pairedTESTgroups Joint correctness, head false alerts, diverse joint, bar recall and support IoU under predeclared practical retention tolerances Retain G10 baseline: localization improves but primary joint26to17 fails retention; calibrated ensemble24to28 loses bar recall31to28 and no paired-seed joint gain; retain detached only as disclosed challenger research/active/dtr-r0/nearfield/DETACHED_20260907.md ue-willow-nf-g11-detached-gate"
     }
   ],
   "associations": [
@@ -24947,6 +24969,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/DIVERSITY_20260907.md",
         "artifacts.local/nearfield/diversity-20260907"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g11-detached-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g11-detached-v1",
+      "code_revision": "0105b4dd3f3a0d4be864fa0e94080cfc985a3333",
+      "input_fingerprint": "098a3d33f472d06e27ec354aacad9e8877cfd833bab4ba7559c959957e2f5b66",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/DETACHED_20260907.md",
+        "artifacts.local/nearfield/detached-20260907"
       ],
       "decision_id": null,
       "source_rows": 1

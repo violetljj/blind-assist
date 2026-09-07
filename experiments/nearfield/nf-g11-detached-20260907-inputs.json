@@ -1,0 +1,134 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_FIXED_DETACHED_GATE",
+  "git_base_revision": "0105b4dd3f3a0d4be864fa0e94080cfc985a3333",
+  "registration_scope": "Three fixed fits1800steps, one fresh32group TEST scoring; G10TEST consumed diagnostic and regression",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/diagnostic-reproduction-failure.json",
+      "sha256": "27913832ee62b196262700025f852648ae9e558df99396461b98d8f0e4a627f4"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/completion.json",
+      "sha256": "27b31df9129d74386d79849667ba694f805895e4ae208ee10e60cf5056cdf431"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/engine-receipt.json",
+      "sha256": "cfd26bfd461481a7a5b2ae187311b9bb0fe8f859236181ef209eeaedf6565ea3"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/evaluator/labels.json",
+      "sha256": "39447c64fa756ff4cf40bded31313c9e6438e7b5bff8f214010b40a42732f55d"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/evaluator/object_support.npz",
+      "sha256": "ad96e5ced5792a585958e73967610fb3b3c5531fb5a3ddc7d6e4e70dd6f928ad"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/evaluator/spec.json",
+      "sha256": "7b61712bba56f70b38abec4d666ad04f8937bc4e14968f976f46c7bb2ab51c25"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/evaluator/support.npz",
+      "sha256": "18d3fbd60da91c092e0e57f70c49841d0af8551c3f7aa50aafb5ac2b923cf17e"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/launch.json",
+      "sha256": "bd7916d7b6a3b2ef1dc7dad1f88656723fa1040b7abe2210a9d518f3efbe5ca1"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/model/dataset.json",
+      "sha256": "156e42cd0202754cc533735efb278e71666a12c6ee8c69d6ee02e5a0c7ff789b"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/process-release.json",
+      "sha256": "6f6673daa0ad8d6b91033dd1b26744e3780b0c1920c60e40c568d6e41a0c8bc4"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/receipt.json",
+      "sha256": "cfd26bfd461481a7a5b2ae187311b9bb0fe8f859236181ef209eeaedf6565ea3"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/rgb-validation.json",
+      "sha256": "427e2940b98742bab55b5e783afb0bd6d1bc86d1e4cd915aaf9fc92e6922cbcd"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/source/spec.json",
+      "sha256": "7b61712bba56f70b38abec4d666ad04f8937bc4e14968f976f46c7bb2ab51c25"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/capture/verification.json",
+      "sha256": "15c656f01bd9580c0abbe83c8d47fa08c158d1357adfedf0591ac8a36cbf1452"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/evaluation/regression-result.json",
+      "sha256": "4a507f80502824c3b03e84c29877577f542f4d674fd13fa81733f37e00db0635"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/evaluation/result.json",
+      "sha256": "054c677321d8a01193b962bcc43a76494bffb27ff75fbd4ff2d731b06158c6ff"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/config.json",
+      "sha256": "5b105d7eec723ac1bf67e2169b691fc456df03163757da94b093f30e58462c84"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/fit_records.json",
+      "sha256": "549684fe5b7633ce8f5b82d196842fc4ff0139a5aced1ec11e88aa3449527b00"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/predictions.json",
+      "sha256": "c84fa71e805ddbda95fa0c2243fbcb8f5f5bee1fd1c5ca35e45447ec56f1d0dc"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/receipt.json",
+      "sha256": "148f8f114ef8d27c81c5c718bfd4be95043e290613f27d930fd9bda29e1e89e8"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/reference/predictions.json",
+      "sha256": "b8fa362cf1e17cb8765ddb242bcc9a72e5defb45e7abcb38e8b3556856c9bd03"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/reference/support_predictions.npz",
+      "sha256": "06fdf9d6d82144ebd62b7c0a978c28ff62b33703efdccef8bbe9503f0cc60cf9"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/learned/support_predictions.npz",
+      "sha256": "00d74f63ed526ecced748bcfea187855b013612967ca666261f70cb3ce533de5"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/main/spec.json",
+      "sha256": "7b61712bba56f70b38abec4d666ad04f8937bc4e14968f976f46c7bb2ab51c25"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/process-audit.json",
+      "sha256": "1ddd39e9c5867d422002c3825b944d7b37e910499beb77046cdf23f1c59a87f9"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/protocol.md",
+      "sha256": "cd16a803b8e35dd04248a377ec338326b6b673d09dfb3a59af73b9ff46fd2c8f"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/source-format-receipt.json",
+      "sha256": "1b18524366a31191ceb768681abb811bf714f5f2a4fac358fccac8dbc98f8db0"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/spatial-diagnostic/result.json",
+      "sha256": "5cdb85c6bd632f259ec123d15f9e29b3563cc2967e27bf6f769a011e7f778a1b"
+    },
+    {
+      "path": "artifacts.local/nearfield/detached-20260907/summary.json",
+      "sha256": "497a6573e0597e365dc8471f824b736e96330b54e683f497663a65e0eb664fdb"
+    }
+  ],
+  "executed_source_sha256": {
+    "research/active/dtr-r0/nearfield/detached_evaluate.py": "eb430307f0e3ead811cb2f846eb9ae87e9cc881f894336743c7a5e6d543dfa20",
+    "research/active/dtr-r0/nearfield/detached_model.py": "787aa7a7ea5151e5c7a68c6476d1c501777d8a5d454a98f3ff7751643e8af9b1",
+    "research/active/dtr-r0/nearfield/detached_spec.py": "a85fb950dd13571dedf7730ddb11a0a1bd574e339994f843726f6f4028452483",
+    "research/active/dtr-r0/nearfield/detached_train.py": "fda13cec6fc9c65e9dd0b833e8a6347357065141a89aff4e498d0e6c9be8b5d5",
+    "research/active/dtr-r0/nearfield/gate_spatial_diagnostic.py": "bff44d3bb14b44da68aa5e1dd4bb90e2ed788c1e46a73450604a03e6c457920b",
+    "research/active/dtr-r0/nearfield/test_detached_metrics.py": "a8f0e4a75c86d48168d48de029db4330b359f4a2aa3c4561c4c126d950cb971b",
+    "research/active/dtr-r0/nearfield/test_detached_train.py": "0b4edf98ccaec34c3a44048f7134f787c3020a0f1ac2f2359cdc14c5028fca25",
+    "research/active/dtr-r0/nearfield/test_gate_spatial.py": "87b9e7e2edc3caedc374e64a1169e71ccc3307e019bfb41428ea42a3085742ed"
+  }
+}
