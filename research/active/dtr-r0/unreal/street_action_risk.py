@@ -153,7 +153,7 @@ def candidates_for(nominal, *, x, y, corridors):
     candidates.append(Candidate("WAIT", 0.0, 0.0, y, wait=True))
     front = corridors["front_obstacle_m"]
     required = min(3.3, front + 1.0) if front is not None else 3.3
-    for target in SIDE_TARGETS_M:
+    for target in corridors.get("side_targets_m", SIDE_TARGETS_M):
         if corridors["clearance_m"].get(str(target), 0.0) <= required:
             continue
         error = target - y

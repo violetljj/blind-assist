@@ -9,7 +9,7 @@ import numpy as np
 from street_action_risk import candidates_for, evaluate_candidates, choose_candidate
 
 
-def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
+def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0, *, buffered=False):
     h,w=depth.shape
     fy=w/(2*math.tan(math.radians(fov)/2))
     v,u=np.mgrid[2:h:4,2:w:4]
@@ -21,22 +21,32 @@ def depth_corridors(depth, fov, camera_height, ego_y=0.0, pitch_degrees=0.0):
     x=math.cos(pitch)*x-math.sin(pitch)*camera_up
     valid=(x>.08)&(x<12)&np.isfinite(x)
     obstacle=valid&(z>.065)&(z<1.85)
+    # Disclosed Development hypothesis: visible surfaces omit body extent.
+    # The extra .40 m is a fixed experimental margin, not calibrated truth.
+    # Both the query width and reachable bypass offsets must represent it.
+    half_width = .70 if buffered else .30
+    sides = (-1.2,1.2,-.72,.72,-.52,.52) if buffered else (-.72,.72,-.52,.52)
     corridors={}
-    for target in (0.0,-.72,.72,-.52,.52):
+    for target in (0.0,*sides):
         # Lateral offsets are in the route frame; samples in camera-right coordinates.
-        samples=x[obstacle & (np.abs(y-(target-ego_y))<.30)]
+        samples=x[obstacle & (np.abs(y-(target-ego_y))<half_width)]
         corridors[str(target)]=float(np.quantile(samples,.04)) if len(samples)>=8 else 12.0
     # Use the same wearer corridor as side selection. A wider front query
     # incorrectly treated the adjacent narrow-passage wall as a frontal block.
-    central=x[obstacle & (np.abs(y)<.30)]
+    central=x[obstacle & (np.abs(y)<half_width)]
     nearest=float(np.quantile(central,.04)) if len(central)>=8 else None
-    return {'clearance_m':corridors,'front_obstacle_m':nearest,
+    result = {'clearance_m':corridors,'front_obstacle_m':nearest,
             'valid_fraction':float(valid.mean()),'height_filter_m':[.065,1.85],
             'source':'OBSERVED_FORWARD_DEPTH_ONLY'}
+    if buffered:
+        result.update(side_targets_m=list(sides), corridor_half_width_m=half_width,
+                      clearance_profile='VISIBLE_SURFACE_MARGIN_V1',
+                      extra_surface_margin_m=.40)
+    return result
 
 
 class MotionPolicy:
-    MODES=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR')
+    MODES=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR','CANDIDATE_CLEARANCE')
 
     def __init__(self, mode='JOINT'):
         if mode not in self.MODES: raise ValueError(f'Unknown controller mode: {mode}')
@@ -46,7 +56,7 @@ class MotionPolicy:
         self.last_risk_t=-100.0
 
     def command(self, *, t, x, y, goal_x, dtr_risk, corridors, motion_frame=None):
-        if self.mode in ('CANDIDATE_DEPTH', 'CANDIDATE_DTR'):
+        if self.mode.startswith('CANDIDATE_'):
             return self._candidate_command(t=t,x=x,y=y,goal_x=goal_x,
                 raw_dtr_risk=dtr_risk,corridors=corridors,motion_frame=motion_frame)
         # Remove the entire depth control channel, including its validity stop,
@@ -96,7 +106,7 @@ class MotionPolicy:
         if corridors['valid_fraction']<.2:
             return {'vx_mps':0.0,'vy_mps':0.0,'action':'WAIT_UNKNOWN_DEPTH','risk':risk,'target_y_m':y}
         if near and self.pass_until_x is None:
-            sides=sorted((-.72,.72,-.52,.52),key=lambda side:clear[str(side)],reverse=True)
+            sides=sorted(corridors.get('side_targets_m',(-.72,.72,-.52,.52)),key=lambda side:clear[str(side)],reverse=True)
             side=sides[0]
             if clear[str(side)]>min(3.3,front+1.0):
                 self.target_y=side

@@ -47,6 +47,7 @@ def _pose_at(frames, t):
 
 
 CONTROLLER_DESCRIPTIONS = {
+    "CANDIDATE_CLEARANCE": "Depth candidate with fixed .40 m visible-surface margin and +/-1.20 m bypass options; DTR predictions logged but excluded from selection",
     "JOINT": "Retained DTR X73 OR observed-depth near-obstacle branch; active sources reported separately",
     "DTR_ONLY": "DTR X73 control only; observed-depth control channel disabled",
     "DEPTH_ONLY": "Observed-depth control only; raw X73 predictions logged but excluded from control",

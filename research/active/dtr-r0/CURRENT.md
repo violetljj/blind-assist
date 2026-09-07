@@ -1,6 +1,6 @@
 # DTR-R2 current
 
-Updated: 2026-09-06
+Updated: 2026-09-07
 
 Status: `DTR_R2_DYNAMIC_RETAINED`
 
@@ -93,13 +93,21 @@ recaptured pixels do not restore the original raw-input comparison.
    candidate depth succeeded 5/8 and candidate DTR 6/8, with no success
    regression. The extra success was late crossing, with nine changed-action
    frames. This is rerendered Development, not exact-pixel pairing or promotion.
-2. **Next useful research:** investigate the retained late-stop and obstructed-
-   bypass failures, and whether the late-crossing gain repeats under the same
-   declared envelope. Do not restore the old undersized proxy to improve scores.
-   Preserve conservative contact, goal, time and action-support reporting.
-   All 81 actual 10 Hz batch-prefix checks matched the incremental full state;
-   laboratory completion receipts are linked above. This task does not start
-   another algorithm run or enlarge the frozen comparison.
+2. **Latest Development finding:** the separately identified
+   [visible-surface clearance experiment](unreal/UE_VISIBLE_SURFACE_CLEARANCE_20260907.md)
+   finished 16 actual branches. A fixed .40 m extra surface margin and +/-1.20 m
+   bypass regressed depth success from 5/8 to 2/8, with no gains. Late-stop and
+   continued-walking both halted before a static planter entered by the new
+   bypass. Reject this fixed variant; keep the defaults and earlier evidence.
+   Its structured disposition is pending normal registry publication because
+   the pre-existing experiment-index fingerprint mismatch remains unresolved.
+   The next useful comparison must cover static street geometry in contact
+   evaluation, establish a traversable witness for its action space and test
+   replanning when a bypass becomes blocked. Existing scenario-only contact
+   scores do not cover the newly diagnosed planter. Preserve conservative
+   contact, goal, time and missing-support reporting; do not shrink proxies or
+   tune this consumed margin to rescue the result. The unchanged late-crossing
+   DTR gain still awaits a scoped replication.
 3. **CARLA preservation:** park the pending dropout-window continuation and
    eleven-arm execution during the UE migration. Do not restore missing CARLA
    assets or recapture by default. Keep complete source, frozen method snapshots,

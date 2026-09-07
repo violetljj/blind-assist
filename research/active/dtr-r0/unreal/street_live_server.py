@@ -163,7 +163,8 @@ def main():
                     transform=observation.wearer['transform']
                     (x,y),_=replay.x24.wearer_anchor_state(observation,episode.route_frame)
                     corridors=depth_corridors(depth,contract.calibration.horizontal_fov_degrees,
-                        observation.camera_transform['z']-transform['z'],y,observation.camera_transform['pitch'])
+                        observation.camera_transform['z']-transform['z'],y,observation.camera_transform['pitch'],
+                        buffered=args.controller_mode=='CANDIDATE_CLEARANCE')
                     policy=policies.setdefault(episode.episode_id,MotionPolicy(args.controller_mode))
                     motion_frame=action_frames.get(episode.episode_id,engine.last_rigid_frame if engine is not None else None)
                     command=policy.command(t=observation.time_s,x=x,y=y,goal_x=request['goal_forward_m'],

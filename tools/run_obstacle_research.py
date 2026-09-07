@@ -11,7 +11,7 @@ UE=REPO/'research/active/dtr-r0/unreal'
 DATA=REPO/'artifacts.local/unreal'
 DATASET=DATA/'fixed-sensory-v4-20260905-a'
 BANK=DATA/'ue-discriminating-bank-20260906.json'
-MODES=('DEPTH_ONLY','DTR_ONLY','JOINT','CANDIDATE_DEPTH','CANDIDATE_DTR')
+MODES=('DEPTH_ONLY','DTR_ONLY','JOINT','CANDIDATE_DEPTH','CANDIDATE_DTR','CANDIDATE_CLEARANCE')
 
 
 def engine_root(explicit=None):

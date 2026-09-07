@@ -18,7 +18,7 @@ def main():
     p.add_argument('--engine',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--case',action='append',default=[])
-    p.add_argument('--controller-mode',choices=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR'),default='DEPTH_ONLY',
+    p.add_argument('--controller-mode',choices=('JOINT','DTR_ONLY','DEPTH_ONLY','CANDIDATE_DEPTH','CANDIDATE_DTR','CANDIDATE_CLEARANCE'),default='DEPTH_ONLY',
                    help='Default: DEPTH_ONLY, the current measured UE reference')
     p.add_argument('--prediction-engine',choices=('incremental','batch'),default='incremental')
     p.add_argument('--action-footprint-state',choices=('cadence','frozen'),default='cadence')

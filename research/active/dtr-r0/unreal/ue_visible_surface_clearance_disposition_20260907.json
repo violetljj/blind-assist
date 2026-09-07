@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "registration_status": "PENDING_PREEXISTING_INDEX_FINGERPRINT_MISMATCH",
+  "decision": "UE_VISIBLE_SURFACE_CLEARANCE_FIXED_VARIANT_REJECTED",
+  "inheritance_role": "NEGATIVE_CONTROL",
+  "inheritance_mode": null,
+  "role_scope": "Fixed .40 m visible-surface buffer with +/-1.20 m bypass in StreetLabV4; consumed synthetic Development only.",
+  "retained_surface": "Explicit CANDIDATE_CLEARANCE mode, eight-case receipts, exact baseline replay and static-planter attribution.",
+  "failure_signature": "Depth successes 5/8 to 2/8, zero gains and three regressions; late stop and continuation stall before a real planter outside declared scenario contact coverage.",
+  "revisit_trigger": "A versioned action-space comparison with static-scene contact coverage, a traversable witness and blocked-bypass replanning; no consumed threshold rescue.",
+  "assignment_basis": "The fixed controller regressed. The result does not falsify full-body geometry generally or isolate late-stop perception; default remains unchanged.",
+  "report": "research/active/dtr-r0/unreal/UE_VISIBLE_SURFACE_CLEARANCE_20260907.md",
+  "registry_publication": "Not published to research/knowledge/decision/inheritance.json because the normal knowledge CLI rejects the existing experiment index."
+}
