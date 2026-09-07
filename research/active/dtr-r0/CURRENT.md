@@ -21,6 +21,16 @@ This is an acquisition smoke test.
 
 ## Latest grouped object diagnostic
 
+[NF-G13](nearfield/DECOUPLED_20260908.md) completed three fixed600-step deep-content
+gate fits; consumed screening reused G12 B/C outputs without refitting/inference.
+Fixed checkpoints were then inferred on new G13
+same-Willow groups D primary joint is31/32 and diversejoint15/16;
+BODY/HEAD fixed IoU 0.396/0.202, peaks
+63/64 and54/64. The consumed screen passed before this cohort;
+the prospective joint criterion passed. Retain D as a stronger Development challenger,
+C as localization comparator, and G10 as full-contract baseline. No further
+training/capture or App promotion; same-Willow Development only.
+
 [NF-G12](nearfield/REPRESENTATION_20260908.md) completed six paired600-step fits
 of RepViT and RepViT plus shallow detail, reusing G10 with zero refits. On32 new
 groups, common-VAL recall-first primary ensemble joint is25/32 G10,30/32 RepViT,

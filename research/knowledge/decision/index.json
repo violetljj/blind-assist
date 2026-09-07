@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-08",
-  "source_fingerprint": "a816885a0cf0a1eade15e8d426c10923e847a0f16165ff1a3a75a9480c3c011d",
+  "source_fingerprint": "5521ada86bb3a73107a1d02bc46a5d557b32bbfa11578944c260c53bc7576fe8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 246,
+    "experiments": 247,
     "current_terminals": 44,
-    "run_associations": 244
+    "run_associations": 245
   },
   "failure_layers": [
     {
@@ -23360,6 +23360,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "nf-g12-representation-2026-09-08 Can pretrained context plus shallow detail improve joint near decisions and query localization without losing bar recall? Reuse three G10 expanded-region checkpoints, zero fits RepViT m0_9 pretrained features versus same plus shallow detail; same800TRAIN96VAL; pairedseeds17/29/43 six600stepfits CommonVAL recall-first primary joint, recall, FP, diverse joint, queryIoU and peak; G8compatibility secondary Retain G10 full-contract baseline; B RepViT decision challenger improves primaryjoint25to30 and barrecall28to32 but HEADpeak32to29/diverse14flat; C localization improves but primaryjoint27/diverse12; no temporal or App promotion research/active/dtr-r0/nearfield/REPRESENTATION_20260908.md ue-willow-nf-g12-representation"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g13-decoupled-2026-09-08",
+      "status": "active",
+      "question": "Can deep-only gated contents preserve B decisions and C localization?",
+      "baseline": "G12 B RepViT and C detail models reused with zero refits; G10 full-contract anchor",
+      "change": "D support from deep+detail, gate deep-only contents without detach; three matched600stepfits, same800TRAIN96VAL",
+      "primary_metric": "CommonVAL recall-first joint/recall/FP, diverse joint, fixed queryIoU and peak; G8compatibility secondary",
+      "decision": "Consumed diagnostic passed; prospective joint rule PASS: retain D stronger Development challenger; D joint31/32 diverse15/16 BODY/HEADIoU0.3957/0.2017; G10 full-contract baseline unchanged; no morefits/capture or App promotion",
+      "report": "research/active/dtr-r0/nearfield/DECOUPLED_20260908.md",
+      "source": "ue-willow-nf-g13-decoupled",
+      "commit": "9b5e009b9a8eea40eccfbd4aeae164c4b89a3910",
+      "association_id": "nf-g13-decoupled-2026-09-08",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g13-decoupled-2026-09-08 Can deep-only gated contents preserve B decisions and C localization? G12 B RepViT and C detail models reused with zero refits; G10 full-contract anchor D support from deep+detail, gate deep-only contents without detach; three matched600stepfits, same800TRAIN96VAL CommonVAL recall-first joint/recall/FP, diverse joint, fixed queryIoU and peak; G8compatibility secondary Consumed diagnostic passed; prospective joint rule PASS: retain D stronger Development challenger; D joint31/32 diverse15/16 BODY/HEADIoU0.3957/0.2017; G10 full-contract baseline unchanged; no morefits/capture or App promotion research/active/dtr-r0/nearfield/DECOUPLED_20260908.md ue-willow-nf-g13-decoupled"
     }
   ],
   "associations": [
@@ -25019,6 +25043,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/REPRESENTATION_20260908.md",
         "artifacts.local/nearfield/representation-20260908"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g13-decoupled-2026-09-08",
+      "use_ids": [],
+      "protocol_id": "nf-g13-decoupled-v1",
+      "code_revision": "9b5e009b9a8eea40eccfbd4aeae164c4b89a3910",
+      "input_fingerprint": "e9d464354e837df5337256946cafa34277af84134c53d53c110c26c9511227a1",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/DECOUPLED_20260908.md",
+        "artifacts.local/nearfield/decoupled-20260908"
       ],
       "decision_id": null,
       "source_rows": 1

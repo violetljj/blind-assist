@@ -1,0 +1,218 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_GATED_DEEP_CONTENT_COMPARISON",
+  "git_base_revision": "9b5e009b9a8eea40eccfbd4aeae164c4b89a3910",
+  "registration_scope": "Three fixed fits1800steps; consumedG12 mechanism diagnostic; one conditional prospective same-Willow32group cohort; fixedB/C/D inference; worker rawdepth retained",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/capture-result.json",
+      "sha256": "b958e1d64d577808c96e7c9ef6bd2b03020ed6d74ca5bfc039d24764ecd38ea5"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/decoupled_spec.py",
+      "sha256": "0a024b7097bdb385dcfc86257b9accc8e43ca05ce43e5d859a341bfcafc45b8b"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/evaluation-receipt.json",
+      "sha256": "bb3f84a495f9c802e795cc1cc98c9cbcaa67ed0fc1a162a2b46f5d4b749be3c0"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/completion.json",
+      "sha256": "27b31df9129d74386d79849667ba694f805895e4ae208ee10e60cf5056cdf431"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/evaluator/labels.json",
+      "sha256": "808bc2726d983bfe7db2ad4e87ea64cf87142667fecd29360aae2ac80d52d002"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/evaluator/object_support.npz",
+      "sha256": "15bbad636e22a4b07b49e271ad9ab22392d11e162af66ede4387f66bd746464a"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/evaluator/spec.json",
+      "sha256": "89ac1501bfc38a3340841d23dfe17c1d132e5548855ca2582c3fe203f5cad913"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/evaluator/support.npz",
+      "sha256": "84ef1ffa03185f811d49d116d733529912a1429e162b09f3acf643100ed303c8"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/launch.json",
+      "sha256": "12342af27114e71e944b707bed60d4f00ec266ccbbd6d67ae4e38f3a6e529326"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/model/dataset.json",
+      "sha256": "30849af200d7acfa2b84553b1dfc7460015c2651a2fbc62481aa95c8c1c70d90"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/process-release.json",
+      "sha256": "c788180205a7b00abe3c2ae4d15572cc111f3cf0fa9b3037c572bb685d76e6cd"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/receipt.json",
+      "sha256": "8d76600db1fff909d501b33256ce67521dc53c63f8da39b93eca94bd6bf59b90"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/rgb-validation.json",
+      "sha256": "f8a75264053d386178b7fcd51eef1aedfb6e56d649ba4240dd4693bc26aefefd"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/source/spec.json",
+      "sha256": "89ac1501bfc38a3340841d23dfe17c1d132e5548855ca2582c3fe203f5cad913"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/capture/verification.json",
+      "sha256": "70e8e5f29b60e34e38c409c135c365d0acc1a94e2d00cd1a5c3fae8eaa0cde20"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/environment.json",
+      "sha256": "cc6bac72e9904b326e081c78f83b25f5ccb7fe0a220999de1fa203bc16e088c0"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/evaluation/regression-result.json",
+      "sha256": "ff3c926892ee169ab125ff67c0024105a5676a68d768a7ab3be0306e41f724d1"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/evaluation/result.json",
+      "sha256": "2f595e45d6e5148499cbe295e763bf1aeadd4766dbb1f9e4e01cce7358c85882"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/inference-pipeline-receipt.json",
+      "sha256": "2ecc777363e5801ad73a88f547220634c039947aa332baa33c2a0858cd14b28d"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/learned/predictions.json",
+      "sha256": "aae65c55deb4b9e861cae1ff9caaf3c5863aefa53f8c97e9a6240158e25562c9"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/learned/receipt.json",
+      "sha256": "9a6c74b0a397abb81866c3b5937edcfa7947156309a24817e5b0729746ddda43"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/learned/reference/predictions.json",
+      "sha256": "eba340dde730cbc3cae67b4b48b47c0439705ddcef4677926388eacdf58587d5"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/learned/reference/support_predictions.npz",
+      "sha256": "4d7a1aa134c7b6a6436e55d3a1ac208e9bbdc1464df6848c6b61d32c4af43344"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/learned/support_predictions.npz",
+      "sha256": "066047c248efb88df0ecf1094865673ea5aa1413f0a59fb389dac1ca83d05151"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh/transfer-manifest.json",
+      "sha256": "785c67414236463bd44c696638c738ebc06c319ee953fd2f96a1e6f5c0f0af6a"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh-evaluation-receipt.json",
+      "sha256": "a9eaf521115a1f78cb519265fcd4cd12d6407e19fdf118754b1a7bbf9dd2df7b"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/fresh-summary.json",
+      "sha256": "eaecedcc9cdd2c611717a519e5f391200d9f60ae57ade85fb40d6b2c076c6cd1"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/helper-reproduction.json",
+      "sha256": "f522526ed0a8e354217c1e41f016107a93ac16791bdf6f8f213fbc30f3b714a5"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/infer_fresh.py",
+      "sha256": "d57cf8ac38ea0d50e3c2987065ed170fd532e92b567764106f4bfc9d2f867103"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/inputs.json",
+      "sha256": "c6b99f90d5fe9a662d176123a52b8c5db27cb71fb2b97321639e62b9d52bf59a"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/evaluation/regression-result.json",
+      "sha256": "38fc72fa269f59c2bc496781b714494adbcea9f10c89ace62d5052737da6cc3c"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/evaluation/result.json",
+      "sha256": "c1cfb1bf3cd754dec9ebb82527eb3cdd36e4a20b9fbef4e96520ee8931d62fa2"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/config.json",
+      "sha256": "f136b7a4b8d47f73a67f30570be11946277aba47a20a07abd28b47022448338e"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/fit_records.json",
+      "sha256": "91fe2df9611414fcccf16b3f2f7ae48b7a2ca17fed5b980a9b5372c1175e88b2"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/predictions.json",
+      "sha256": "a4afcaa80117d6631bebc1ba20fd828d0cd7259fa783caafd36edbcbe8312f4e"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/receipt.json",
+      "sha256": "bf3a8b95f99cbee9c52d03d3efd763b469f55174ac3b67891cc93681f9b94eeb"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/reference/predictions.json",
+      "sha256": "eba340dde730cbc3cae67b4b48b47c0439705ddcef4677926388eacdf58587d5"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/reference/support_predictions.npz",
+      "sha256": "4d7a1aa134c7b6a6436e55d3a1ac208e9bbdc1464df6848c6b61d32c4af43344"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/main/learned/support_predictions.npz",
+      "sha256": "95a55af91f63a92691aa7ae1b950cdd3b6fbf324c56f1dbacb63c1529a31081c"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/paired-head-scores.json",
+      "sha256": "56e0fa1745a498d5424023e323a4fe8f574c971c50809e9a0692e8d204ab5f6a"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/pipeline-receipt.json",
+      "sha256": "ccc6e0d65179220ccd38af705c37d2d700c3b25cadb0f665b0323153d9be7f47"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/process-audit.json",
+      "sha256": "85324a1fe52054963110cca658ef1c2f8f7f87fe7dc2fc39f1f3c3f1838099a8"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/protocol.md",
+      "sha256": "ad83c124b29809979a9982efbe1a8884e4e0267a1a9a65385ef858e89af7c7ee"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/source-comparison.json",
+      "sha256": "58bd3b45f72b77a6dbc7037c05a890d55d62d5ea01a67abea70992f6c3245f1f"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/source-format-receipt.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/source-hashes.json",
+      "sha256": "58f6ff7e799c4e885ba3525bc84b751a4a1d04c2c241e5ac1b41bb01d74c2bba"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/source-text-hashes.json",
+      "sha256": "6cf627425ab7a53ecda3413ab59678bf0277057a2099adf6aa97e9c47819bbe7"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/spec.json",
+      "sha256": "89ac1501bfc38a3340841d23dfe17c1d132e5548855ca2582c3fe203f5cad913"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/summary.json",
+      "sha256": "26af0b5fba192c1dd46bb885e138abc0429160123a76fdc5e00cf666aa99fad4"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/transfer-receipt.json",
+      "sha256": "cf27f0fac5dee703b7e321461585e517e0d8898681e2527a207d5f56af1da053"
+    },
+    {
+      "path": "artifacts.local/nearfield/decoupled-20260908/worker_capture_v2.py",
+      "sha256": "7f1a45c3ebc8035d476a1a7bc7acacca1f6df92e672e0066c0388f5226f6b9de"
+    }
+  ],
+  "executed_source_sha256": {
+    "research/active/dtr-r0/nearfield/decoupled_evaluate.py": "862cb2c2071c22001b33c591a73417ee470de46564efafcaea98dc57875d4c06",
+    "research/active/dtr-r0/nearfield/decoupled_model.py": "ed5022f59c21a18e04cba2c0016e250489a956c574b4fc915de808d916877ccc",
+    "research/active/dtr-r0/nearfield/decoupled_train.py": "356f34f38812cd5c9d2a33438f6215866a61bedb2e4de6c454c1edabe0c81995",
+    "research/active/dtr-r0/nearfield/test_decoupled_train.py": "4f54c37c307902849ff5b4f9b2f4d8852587de38d24888419db5387c174529d5"
+  }
+}
