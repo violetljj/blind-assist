@@ -44,13 +44,14 @@ excluding capture, transport, image decode and feedback. No phone claim follows.
 
 Saved-prediction diagnosis found all 119,721 native near-surface reference pixels
 lost before aggregation: two invalid, 67,956 over-range and 51,763 still near but
-below the height filter. Median depth ratio was 1.217; this sample is low-height
-dominated. Next test observable local-ground geometry and depth reliability
-before further compression. Keep coherent-artifact false alerts as a control.
-The tile mechanism remains a Development component candidate with no default
-promotion. Central registration was attempted but failed before mutation on the
-pre-existing `experiments/index.jsonl:252` fingerprint mismatch; the local report
-retains the disposition and no new structured terminal is claimed.
+below the height filter. The [cached ground probe](nearfield/GROUND_ANCHOR_20260907.md)
+then recovered 1/26 with scale only and 21/26 with ground-relative height, with
+or without scale; all four arms had 0 FP. Fits used predictions/calibration only.
+Low-boundary matches remained 123/807; shape/overhead coverage is not established.
+All 11 frames/44 arm evaluations took 1.96 s internally without UE or inference.
+Retain ground-relative geometry as a Development component; next target boundary
+loss. Registration still fails on `experiments/index.jsonl:252`; no promotion or
+new structured terminal is claimed. Keep coherent-artifact false alerts as a control.
 
 ## Retained evidence and baseline
 

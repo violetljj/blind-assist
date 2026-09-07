@@ -43,7 +43,13 @@ depth. Geometry-reference agreement is not independently labeled obstacle
 accuracy. The first probe preserved more procedural thin-surface evidence but
 exposed a correlated-artifact false alert and complete loss of the native near
 alert opportunities with the fixed existing RGB depth model. This supports a
-frontend/geometry diagnosis before training or further compression.
+frontend/geometry diagnosis before training or further compression. The subsequent
+[cached four-arm probe](../research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md)
+recovered 21/26 native-positive observations with ground-relative height, versus
+1/26 with scale alone and 0/26 raw, all with 0 FP. Low-boundary retention remained
+123/807; retain the geometry component and investigate detail loss. All 11 cached
+frames were processed without inference or real-time replay; these are consumed
+synthetic reference diagnostics, not independent obstacle accuracy.
 
 Historical DTR/CARLA terminals remain unchanged. Their capture and protected-run
 continuations are parked; this perception question does not reopen frozen runs.

@@ -109,7 +109,7 @@ class NearFieldEncoder:
         ).long()
 
     @torch.inference_mode()
-    def encode(self, depth: np.ndarray) -> Evidence:
+    def encode(self, depth: np.ndarray, *, ground_plane=None) -> Evidence:
         c = self.camera
         if depth.shape != (c.height, c.width):
             raise ValueError("depth/calibration dimensions disagree")
@@ -117,7 +117,15 @@ class NearFieldEncoder:
                             device=self.device)
         valid = torch.isfinite(z) & (z > .08) & (z < 12) & (self.ray_x > 0)
         x = z * self.ray_x
-        height = c.camera_height_m + z * self.ray_z
+        if ground_plane is None:
+            height = c.camera_height_m + z * self.ray_z
+        else:
+            # Camera-relative gravity frame: Z=aX+bY+c. Use vertical height,
+            # not normal distance; callers scale the intercept with the depth.
+            if len(ground_plane) != 3 or not all(math.isfinite(v) for v in ground_plane):
+                raise ValueError("ground plane requires three finite coefficients")
+            a, b, intercept = ground_plane
+            height = z*self.ray_z - a*x - b*z*self.ray_y - intercept
         band = torch.bucketize(height, torch.tensor(
             HEIGHT_EDGES, dtype=z.dtype, device=self.device
         ), right=True) - 1
