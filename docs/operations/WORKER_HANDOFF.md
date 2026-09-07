@@ -92,3 +92,14 @@ Cross-network access and reboot recovery remain outside the recorded validation.
 For a UE engineering check, use a fresh output and the scoped capture/calibration
 entrypoint chosen by the owning task. Record actual engine/plugin versions and
 input hashes; keep its result separate from research cohort scores.
+
+The 2026-09-08 tuning retained AC maximum processor state 100% (previously 99%)
+and the existing pair queue of 4. The identical 100-view spec, full settling and
+native async export improved from 9.204 s (10.86 pairs/s) to 7.875 s (12.70 pairs/s).
+An 8-slot trial at the original power setting took 10.969 s; a 2-slot trial at
+AC 100% took 9.859 s. Both queue changes were rejected. All runs validated 100
+RGB/depth pairs and released owned processes; each configuration was tested once.
+See `artifacts/evidence/ue-tune-power100-20260908/tuning-decision.json` and
+`power-change.json` for provenance and restoration. Inspect the current plan
+before changing power settings; the receipt is not permission to overwrite later
+user preferences. Long-duration thermals and throughput remain unmeasured.

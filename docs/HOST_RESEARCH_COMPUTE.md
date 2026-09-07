@@ -58,6 +58,14 @@ CARLA, task-specific models/datasets, attached-device tests, cross-network
 and reboot recovery still need task-specific setup/verification. The laptop's
 screen timeout is one minute; plugged-in sleep/hibernate remain disabled.
 
+Worker tuning (2026-09-08): raising the active plan's AC maximum processor state
+from 99% to 100% improved a fixed 100-view, 640x360 RGB/depth short run from
+10.86 to 12.70 output pairs/s. Keep the original pair queue of 4; tested queues
+of 2 and 8 were slower. Full settling and output quality settings were unchanged.
+The worker-local `artifacts/evidence/ue-tune-power100-20260908` receipts retain the exact
+inputs, power-plan change and restore command. This is a single short run per
+configuration, not sustained throughput; do not override a later user power plan.
+
 Provisioning inputs are tracked in
 [`worker-research.requirements.txt`](../config/worker-research.requirements.txt),
 the route's SEVN requirements and
