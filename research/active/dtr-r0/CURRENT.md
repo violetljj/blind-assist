@@ -11,6 +11,13 @@ The default live bank now uses 10 Hz observations and measured conservative
 visual envelopes. See [laboratory completion checks](unreal/UE_LAB_ACCEPTANCE_20260906.md)
 and the preserved [initial migration record](unreal/UE_PRIMARY_LAB_20260906.md).
 
+The separate [Willow sample segment](unreal/UE_WILLOW_SAMPLE_20260907.md)
+now provides scanned paving/concrete, prepared modular seating and a new tree
+asset with native geometry and sanitized RGB-D exports. Its static engineering
+checks pass; conservative tree AABBs still disagree with native side-corridor
+sweeps. This is a scene/material improvement, not a new dynamic algorithm score
+or replacement of the retained StreetLabV4 bank.
+
 ## Capability question
 
 Can future obstacle occupancy intersecting the wearer's route produce stable
