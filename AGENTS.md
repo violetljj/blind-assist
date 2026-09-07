@@ -8,10 +8,10 @@ technical effect, controlled metrics, demo stability, and a clear algorithmic co
 Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 `:core:assist` risk, `:core:vision` detection, `:core:device` adapters, and `:core:ui` UI.
 
-## Load order
+## Context routing
 
-1. Read [project state](docs/PROJECT_STATE.md) once; refresh only when relevant
-   state changes. Reuse context already read.
+1. Read [project state](docs/PROJECT_STATE.md) for priorities or ownership;
+   start a self-contained fix at its known file. Reuse context already read.
 2. For research work, read `docs/CURRENT_DECISION.md` and the affected route
    `CURRENT.md`; skip route loading for unrelated code or documentation changes.
 3. If baseline, inheritance, or failure context is missing, use
@@ -31,9 +31,9 @@ limits; read archives or full logs only when needed for that decision.
 Default research mode is `EXPLORE`: one capability question and explanatory
 hypothesis, credible baseline, useful check, and decision for each outcome.
 Necessary coupled edits are allowed; use contrasts to resolve contribution.
-Follow [research workflow](research/WORKFLOW.md) for exploration, confirmation,
-and engineering. A stop bounds this experiment; assess it and continue the
-remaining authorized delivery within the budget and evidence boundaries.
+Use [research workflow](research/WORKFLOW.md) for experiments. Engineering fixes
+need no hypothesis or run registration. An experiment stop leaves other authorized
+delivery in scope, within its budget and evidence boundaries.
 
 In `EXPLORE`, choose routine details and complete authorized reversible work
 without repeated approval. Ask only for a consequential unresolved choice;
