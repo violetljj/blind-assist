@@ -1,0 +1,171 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_FIXED_2X2_DATA_HEAD_COMPARISON",
+  "git_base_revision": "e93962881da30eebced588663e70aad56177cf21",
+  "registration_scope": "Completed G10 twelve fixed fits7200steps and one fresh TEST scoring; oldG9BTEST consumed regression",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/protocol.md",
+      "sha256": "a824359f1f514740113b0e907609054e6d094ca9e250997f5969d0b44479a5ef"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/spec.json",
+      "sha256": "6249492b8f286e56c8a24020b20beadcac8eb20f379d57e9dccf53cb1e554430"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/selection.json",
+      "sha256": "8b1b28979e14777e3edd9d23bdb24ccebdd109e2799092c33c078516625a3e98"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/spec.json",
+      "sha256": "c33eb80c58645e9e447009f01dc204cc2816b63b34db82f526fb7df8090f03ac"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/pipeline.json",
+      "sha256": "441e6c3ce6a2044a589cc4700428ec5a118520064e72c9927ee947fb2da34d47"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/process-audit.json",
+      "sha256": "a973da96e85d2478c2d789759a52235a2bee5066307244f0e26f765e05d06c0a"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/summary.json",
+      "sha256": "407ebd7732092538cee16652451f792562fd06ab40cd35e2340ce6dd870f250b"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/receipt.json",
+      "sha256": "1db1152478146ad00f50b6a662945b1df092c87da14a875d98d6b3e4475c8c38"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/completion.json",
+      "sha256": "de56a1d97ea537f10c35137c01fbf1dc7a41c8bf9c5e5781f73c9ee47c264993"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/launch.json",
+      "sha256": "ca3d96601712f1439d80759be5aa50330d5660d1008c24eaa096e8e35643a012"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/process-release.json",
+      "sha256": "9534faf4b04611d723d499ecadc2fb6a6ccb8600ce5f2f27e560c70988422e83"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/verification.json",
+      "sha256": "ee08b4a1084ed11bedea962ab7577a4fc8dcb16868b0959b2fcae77df9b74d8d"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/preflight/capture/model/dataset.json",
+      "sha256": "7bd1ef0352e3d1f9a33cb9bde7c185ab1f8db8341f21ffe8b72f52c547854860"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/receipt.json",
+      "sha256": "dafdac8cea0d821a6534d4a616ebc40809ba96c144df78e7893da1d75aa66c33"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/completion.json",
+      "sha256": "5d410cfd658e72d9899f43fc564f838253bfd90bf0183d0834ff05ce8f2b60eb"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/launch.json",
+      "sha256": "2a22e05fc116ec9164793e301bfa750af06c4a32f9be41d5ad748c088cf9fff6"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/process-release.json",
+      "sha256": "fe62fa8d70e720221850d17d543468eb272010df6063a5a6ae0233d3a491d915"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/verification.json",
+      "sha256": "a1abe8bb8b420e544f7999474a7619138866dc85385a3db5dd86339825d02875"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/model/dataset.json",
+      "sha256": "e8e554421b0ca9ca5eef7310548b546f301b2516beabf18378f096e98fdc5d14"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/evaluator/labels.json",
+      "sha256": "fd4cf57496eb2e704ac5578e9df3dad2513bf7cf0469089b135ba0e7ab25dbe2"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/evaluator/support.npz",
+      "sha256": "05e75357d973d789e8f0653c024c221c05745f0972727c75389ac12c4f5d1e61"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/evaluator/object_support.npz",
+      "sha256": "165bc7841a9c65c45246cc7db219037ea73170fb6b5af4f8b27f9166535249c3"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/training/labels.json",
+      "sha256": "6fc73d83c8e7373e1b8483e1d9a87dfe600ecfb891bc84679fc81aa8bdf604ff"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/training/support.npz",
+      "sha256": "a7a35493f227209d41e27da8800ed4ebc55b342a40fa97b60a6101bf71189e09"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/training/partition.json",
+      "sha256": "24e356576f41b63a6a6d73f0c0a67383079260c8bb705e80a61901481348c7c2"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/capture/training/receipt.json",
+      "sha256": "41a966806fb5921ad31eac0f158e276e8647b07f15c9eb24a24ee94fd4d7dc81"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/config.json",
+      "sha256": "4376b9d91b5ae677a7488e77359b8827eea9b9533b63b8d4faa3342bf2aa997b"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/receipt.json",
+      "sha256": "72b1ee667883ae2d17b5062fd597022728c7841c4510393adcf13244182fc647"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/fit_records.json",
+      "sha256": "f9215f3d2c2cfe5496385add06c2dcd308ea6fdb6c18219e6cccd13dab8beb68"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/predictions.json",
+      "sha256": "4da47c31d88e3a447d75151387d376a20d0534f3f0847306d43d158d09e0db59"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/support_predictions.npz",
+      "sha256": "3d75a5105cfcacfc56417dcd4b71881a8d120a9197bc35f92469cf9c32da6bb2"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/regression/receipt.json",
+      "sha256": "53a2ad32286f2f96837a8d88c19c14f899c2aa688c7d8a57d42b78187d290ff5"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/regression/predictions.json",
+      "sha256": "209a21e60241adfd0e5fb2c9e128cc4e12e4d90db30b93f8a558dee317557815"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/learned/regression/support_predictions.npz",
+      "sha256": "190587e3a5ed5e11378f76a302dcb0d43edfabbe1264657e5cba3b4de861647b"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/evaluation/result.json",
+      "sha256": "699152d7310044bb54a7a370d3cc1773c8c743d1ca3f228ef6ae1cc123ebb2d1"
+    },
+    {
+      "path": "artifacts.local/nearfield/diversity-20260907/main/evaluation/regression-result.json",
+      "sha256": "704c0c50349c50fd02c7c71b1005b45205b447ebae8e5ba9f1f3f5fda448f15f"
+    }
+  ],
+  "executed_source_sha256": {
+    "research/active/dtr-r0/nearfield/diversity_evaluate.py": "d8afc7ae5e83fe0fb1492883317c9aaa1a22907f541108f1f22c6a3330b62e92",
+    "research/active/dtr-r0/nearfield/diversity_model.py": "d650a74f2262777f7f8d05ec9db1f760b447dcc6f010ed051cae6fc7adc96780",
+    "research/active/dtr-r0/nearfield/diversity_spec.py": "6b2e85f56c922de24a08e2507bbd7dd758e288cb9c7636f81c5649d42ca3089d",
+    "research/active/dtr-r0/nearfield/diversity_train.py": "18256968279ac001c0bca7933797875266b5ad502ba780dc1408373aebcbe8a2",
+    "research/active/dtr-r0/nearfield/diversity_verify.py": "7eb5f2ec5559de401caa362827ddb56c75e8515572908be84f96839abcc48011",
+    "research/active/dtr-r0/nearfield/test_diversity_metrics.py": "d0e8c2998a901da09722712004c7811f61d74f0651fa7a55f17394476c965836",
+    "research/active/dtr-r0/nearfield/test_diversity_source.py": "320de3b64d0b1685d83f72621e2648ac4aaa6e7f28bc0e0c700451f61c203f1c",
+    "research/active/dtr-r0/nearfield/test_diversity_train.py": "97438447e33447b8bbb0f2359547a2da9457643d40ccc8985d9b08571fc11052"
+  },
+  "helpers_sha256": {
+    "whisker_model.py": "f8b53871cf0b0b3d740494b9b409084547834bf604a2b61d5b3e1df93f487836",
+    "grounding_verify.py": "e794d51d9c7c3606a50cd984d874e13408c48a24a366fe88aebf33bb82878a8b",
+    "grounding_predict.py": "aa7f430bc57c8c47118a9156360ec2c01bdeba12b17472d02d1ad14225da9b69",
+    "grounding_evaluate.py": "3c07d9e10bd1d24454943c733b4e2248968b46059b7ad6b7381c718c1d8a0060",
+    "evaluate_whisker.py": "ee532e0280e3b0cd3abc3f838e29eadd131910b4333ee6f9e4df1ccdd4d0d66d",
+    "factorial_train.py": "321113f683746c4eeb0d8267a4b9f6c8f9e56b4e474bc32cb8a465c5efab5501",
+    "factorial_evaluate.py": "58f37b38b317060f28a2d363dffdc086ca16b045d2dc0481ec9124af023abb28"
+  }
+}

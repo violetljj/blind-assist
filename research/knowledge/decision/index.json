@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-07",
-  "source_fingerprint": "45c373fa4c2f39a6dae20c60538fe287e41cf9f0086e8b3023fe504f713af38a",
+  "source_fingerprint": "8289e4c2d3dc9765b6b8d8ebc228f0a3f03e9a7a9c4ecfb710cc92e27fe07adb",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 243,
+    "experiments": 244,
     "current_terminals": 44,
-    "run_associations": 241
+    "run_associations": 242
   },
   "failure_layers": [
     {
@@ -23291,6 +23291,29 @@
         "decision_lifecycle": 6
       },
       "search_text": "nf-g9b-factorial-2026-09-07 Does full bar-box joint-state coverage improve ordinary near-head separation at equal fit budget? Frozen G8 ordinary and single-object-data fine-tuning with identical seed warm starts, steps and per-head priors Full four-state TRAIN coverage:160 versus80 unique images, same40 geometry groups and300x32 presentations per seed; unchanged architecture and loss G8-threshold selective removal and all-four BODY/HEAD correctness on12 fresh TEST groups; consumed G9 regression separate Partial BODY/joint improvement, persistent HEAD box confusion and seed variation; retain full-state data and ordinary challenger, no general grounding or App promotion research/active/dtr-r0/nearfield/FACTORIAL_20260907.md ue-willow-nf-g9b-factorial-finetune"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g10-diversity-2026-09-07",
+      "status": "active",
+      "question": "Do expanded data, predicted-region feature gating, or their combination improve ordinary near-head separation?",
+      "baseline": "Existing160-image plain ordinary model with originalG8warmstart; commonnewVAL, frozenprimarythresholds",
+      "change": "2x2 existing160 versus expanded800images and plain versus predicted-region gating;12equal600stepfits",
+      "primary_metric": "G8-threshold jointallfour correctness, selective removal, recall and false alerts on32fresh narrow/diverse TESTgroups; paired2x2 descriptive contrasts",
+      "decision": "Retain expanded-data plus predicted-region gating as near-field Development candidate: primary21/32 versus14/32 baseline, improvement across three paired seeds; residual diverse errors and degraded support fidelity prevent general grounding or App claims",
+      "report": "research/active/dtr-r0/nearfield/DIVERSITY_20260907.md",
+      "source": "ue-willow-nf-g10-diversity-region",
+      "commit": "e93962881da30eebced588663e70aad56177cf21",
+      "association_id": "nf-g10-diversity-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "decision_lifecycle": 13,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g10-diversity-2026-09-07 Do expanded data, predicted-region feature gating, or their combination improve ordinary near-head separation? Existing160-image plain ordinary model with originalG8warmstart; commonnewVAL, frozenprimarythresholds 2x2 existing160 versus expanded800images and plain versus predicted-region gating;12equal600stepfits G8-threshold jointallfour correctness, selective removal, recall and false alerts on32fresh narrow/diverse TESTgroups; paired2x2 descriptive contrasts Retain expanded-data plus predicted-region gating as near-field Development candidate: primary21/32 versus14/32 baseline, improvement across three paired seeds; residual diverse errors and degraded support fidelity prevent general grounding or App claims research/active/dtr-r0/nearfield/DIVERSITY_20260907.md ue-willow-nf-g10-diversity-region"
     }
   ],
   "associations": [
@@ -24911,6 +24934,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md",
         "artifacts.local/nearfield/ground-anchor-20260907-v1/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g10-diversity-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g10-diversity-v1",
+      "code_revision": "e93962881da30eebced588663e70aad56177cf21",
+      "input_fingerprint": "17ba7edc8127f359bba7e0e683ecfa2f3c65113d482689aac564bc909d0a8a9e",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/DIVERSITY_20260907.md",
+        "artifacts.local/nearfield/diversity-20260907"
       ],
       "decision_id": null,
       "source_rows": 1

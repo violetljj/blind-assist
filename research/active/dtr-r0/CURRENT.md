@@ -21,6 +21,18 @@ This is an acquisition smoke test.
 
 ## Latest grouped object diagnostic
 
+[NF-G10](nearfield/DIVERSITY_20260907.md) completed the fixed data-expansion x
+predicted-region-head comparison: primary ensemble joint correctness is
+14/32 existing/plain, 14/32 existing/region, 13/32 expanded/plain, and 21/32
+expanded/region. The combination improves all three paired seeds; HEAD box-only
+FP falls 14/32 to 4/32 with bar-only recall 32/32 to 31/32. Diverse-stratum joint
+correctness remains only 6/16. Retain the combined near-field Development
+candidate, with plain comparators: support IoU actually declines, so decision
+gain is not faithful-mask localization or natural/closing/App certification.
+Native GPU capture completed 864 independent-state images in 154.94 s of
+acquisition (223.14 s engine); twelve fixed fits totaled 47.90 s. Old G9-B TEST
+is separately disclosed regression; new TEST is consumed and not retuned.
+
 [NF-G9-B](nearfield/FACTORIAL_20260907.md) completed a data-only ordinary-model
 comparison on 40/12/12 fresh TRAIN/VAL/TEST geometry groups. Full four-state
 coverage gives primary frozen-threshold ensemble joint all-four correctness
