@@ -1,0 +1,146 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_FIXED_BUDGET_DATA_COMPARISON",
+  "git_base_revision": "1b53cf6a85ddf3b6b6f8195361d36e2000065a06",
+  "registration_scope": "Completed fixed G9-B Development comparison, six fits and one new TEST scoring; G9-A consumed regression",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/protocol.md",
+      "sha256": "ed76e046ae48495a0912831593486a8fd9ee63dacc73bc722cb53d7ac7817bd0"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/spec.json",
+      "sha256": "bea7551c62bb49ac0e14ba6d117c25a39c0eb7968017a6a36c149502e2f84256"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/selection.json",
+      "sha256": "d81e7978c641e28b4eb1ba03187b965a61c1daf99d5b4688e14cf7cd49de33b8"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/spec.json",
+      "sha256": "783591992bff5bde8104c6c040bcf90913f2942643d07682382d1d765ac61157"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/pipeline.json",
+      "sha256": "ef3b62cde540ba85a7ac1388bc775805e47f40d25b98cabdbd1777d34dbe5cf6"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/process-audit.json",
+      "sha256": "6be3a255c69aae5e6326aaa30a4971a8ac6ef983cd24b5e079d0cce3f72d10be"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/capture/receipt.json",
+      "sha256": "1749535857dd8af6c9ddf9811e457401748a664a0bdc1ec2deb830905fd85ef8"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/capture/process-release.json",
+      "sha256": "5b75591fae297fd813d60188c2ee901422870b73f605187cbd2f01ab0a2676de"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/capture/verification.json",
+      "sha256": "66adc1a4573ce3e0004ed642b2b9cedefda2a8a96ebcc408ad6b859333942cee"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/preflight/capture/model/dataset.json",
+      "sha256": "4a0fe40807bc1c1af285d201b6dc9700535e9a3dd05c73bd662048327d329781"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/receipt.json",
+      "sha256": "b9b433edcf456b3ce1cf408e669141eadb863048cc9865ed48854b6459d53926"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/process-release.json",
+      "sha256": "43998c773d14801140bc46fe250280ad52a1b8e310c2150b910f27858f85f457"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/verification.json",
+      "sha256": "1ed1c939a302949e96653838097ae244cbd48e3170825db6e49ec109041885cc"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/model/dataset.json",
+      "sha256": "efdc72b4bc802d05dc4f33d19a0f7bf91ef90550682200b38a21cea8845f5458"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/evaluator/labels.json",
+      "sha256": "a005c2d9ed30a6b5767bd9815882c451053457d30d152a9b3aa65fc864c6cf30"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/evaluator/support.npz",
+      "sha256": "529db7f3421dc7e78e3a6e521ff95bc2545295d8e2d256fdd73c25e33815515e"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/evaluator/object_support.npz",
+      "sha256": "0aa5be4e449dbee80f44e91b51714132733620e7f43ae4531a072a6cbe6a1913"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/training/labels.json",
+      "sha256": "e0e5f410ed78696cdffed883136dc3251a8bb9df8ba16030fb341f5e176fc630"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/training/support.npz",
+      "sha256": "b863a30d620cc0f64e13c0cc41de3307bbb491d661d0cadd2e3e4de1ae073509"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/training/partition.json",
+      "sha256": "4fc24bac07cbc1a90693737e39cf644e1351524bd26d4e7cf2e4e444841980c9"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/capture/training/receipt.json",
+      "sha256": "95538f12914e6b36c269d0b736f6bd691c4527446e10123309c789b4d6eff016"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/config.json",
+      "sha256": "349ef3a14c7e36bd1773118445c0c781823982ce059f1a55a6d5e3b11133e109"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/receipt.json",
+      "sha256": "40a42a0820bc0c224d3692fd99d052b584ad5466f2d4f1741002ed525c327b99"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/predictions.json",
+      "sha256": "f2a8079b5c76eaa4d7edfdc10ae413e97c2e265601550f6e1f7c561caf9385cf"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/support_predictions.npz",
+      "sha256": "fca2267aad6b3877170525d160346322efb8285843680125a037753644a456f3"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/regression/receipt.json",
+      "sha256": "7f422f5260248951b5c1ec566f5dc95aecf42c5d133222f6b299e8cf6b6f9831"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/regression/predictions.json",
+      "sha256": "03a1832b658a9943780a7495f30617b0489c27fb809f644080e918518bcae7c1"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/learned/regression/support_predictions.npz",
+      "sha256": "f817139c737f4fa85d6411f0940fe7ce4e1f7aae0daf11305bbc4de6e102f964"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/evaluation/result.json",
+      "sha256": "3381496253e05a47d0e277e1559f96d6b5215564c6efd0a61d4095ab5e6c7f62"
+    },
+    {
+      "path": "artifacts.local/nearfield/factorial-20260907/main/evaluation/regression-result.json",
+      "sha256": "f03cdbaed20119d2836b56666437fa9f0d4cac9fe2ad5825d8cc49c7e340c43b"
+    }
+  ],
+  "source_code_sha256": {
+    "research/active/dtr-r0/nearfield/factorial_capture.py": "1ed9bf7db7d33d1af771487cb5870f21f3c87931cc01fe2dfc86c1df440b0223",
+    "research/active/dtr-r0/nearfield/factorial_evaluate.py": "58f37b38b317060f28a2d363dffdc086ca16b045d2dc0481ec9124af023abb28",
+    "research/active/dtr-r0/nearfield/factorial_launch.py": "c9ad59ba247a5f7716f14fd9b0d62ae3cc07ef9110fb37a07f382d1518428261",
+    "research/active/dtr-r0/nearfield/factorial_spec.py": "a754966db9f379df59b870d37fa747e620c74cef7adf0eea90faad1a6e9797df",
+    "research/active/dtr-r0/nearfield/factorial_train.py": "321113f683746c4eeb0d8267a4b9f6c8f9e56b4e474bc32cb8a465c5efab5501",
+    "research/active/dtr-r0/nearfield/factorial_verify.py": "e4f871fb9fa768c289f753b459d12e3c02022833771ef8ffc3839edcd193842b",
+    "research/active/dtr-r0/nearfield/test_factorial_metrics.py": "4099ff46b4a0722522f1701d4ee316cd51c3b7fd936557d378f766b2938b0eb6",
+    "research/active/dtr-r0/nearfield/test_factorial_source.py": "eae35684683753ee914ab1f9a07fbe3a049193d53f7c072867e3cee1ab989cd3",
+    "research/active/dtr-r0/nearfield/test_factorial_train.py": "25a33563f4920c405012237e3e449411efbc6ffea3d9c16dce643c0de247f2c8"
+  },
+  "inherited_helpers_sha256": {
+    "whisker_model.py": "f8b53871cf0b0b3d740494b9b409084547834bf604a2b61d5b3e1df93f487836",
+    "grounding_verify.py": "e794d51d9c7c3606a50cd984d874e13408c48a24a366fe88aebf33bb82878a8b",
+    "grounding_predict.py": "aa7f430bc57c8c47118a9156360ec2c01bdeba12b17472d02d1ad14225da9b69",
+    "grounding_evaluate.py": "3c07d9e10bd1d24454943c733b4e2248968b46059b7ad6b7381c718c1d8a0060",
+    "evaluate_whisker.py": "ee532e0280e3b0cd3abc3f838e29eadd131910b4333ee6f9e4df1ccdd4d0d66d"
+  }
+}

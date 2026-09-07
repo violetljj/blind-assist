@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-07",
-  "source_fingerprint": "ba5d01e2d4d45cc46ef295d218feeac052937e13b883b4eb2eb320887a8b177f",
+  "source_fingerprint": "45c373fa4c2f39a6dae20c60538fe287e41cf9f0086e8b3023fe504f713af38a",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 242,
+    "experiments": 243,
     "current_terminals": 44,
-    "run_associations": 240
+    "run_associations": 241
   },
   "failure_layers": [
     {
@@ -23268,6 +23268,29 @@
         "decision_lifecycle": 10
       },
       "search_text": "nf-g9a-grounding-2026-09-07 Do frozen G8 BODY and HEAD alerts change selectively when the corresponding bar or box is removed? Nine frozen G8 checkpoints and exact G8 validation-selected thresholds Fresh12 bar-box factorial quartets with separately verified native-visible support; no model training Selective-removal joint correctness and all-four-variant BODY/HEAD correctness, with false alerts and descriptive support accounting Selective object response inadequate in new compound-box Development source; retain intervention regression and target body-part separation; no App promotion or causal-shortcut identification research/active/dtr-r0/nearfield/GROUNDING_20260907.md ue-willow-nf-g9a-bar-box-factorial"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g9b-factorial-2026-09-07",
+      "status": "active",
+      "question": "Does full bar-box joint-state coverage improve ordinary near-head separation at equal fit budget?",
+      "baseline": "Frozen G8 ordinary and single-object-data fine-tuning with identical seed warm starts, steps and per-head priors",
+      "change": "Full four-state TRAIN coverage:160 versus80 unique images, same40 geometry groups and300x32 presentations per seed; unchanged architecture and loss",
+      "primary_metric": "G8-threshold selective removal and all-four BODY/HEAD correctness on12 fresh TEST groups; consumed G9 regression separate",
+      "decision": "Partial BODY/joint improvement, persistent HEAD box confusion and seed variation; retain full-state data and ordinary challenger, no general grounding or App promotion",
+      "report": "research/active/dtr-r0/nearfield/FACTORIAL_20260907.md",
+      "source": "ue-willow-nf-g9b-factorial-finetune",
+      "commit": "1b53cf6a85ddf3b6b6f8195361d36e2000065a06",
+      "association_id": "nf-g9b-factorial-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 6
+      },
+      "search_text": "nf-g9b-factorial-2026-09-07 Does full bar-box joint-state coverage improve ordinary near-head separation at equal fit budget? Frozen G8 ordinary and single-object-data fine-tuning with identical seed warm starts, steps and per-head priors Full four-state TRAIN coverage:160 versus80 unique images, same40 geometry groups and300x32 presentations per seed; unchanged architecture and loss G8-threshold selective removal and all-four BODY/HEAD correctness on12 fresh TEST groups; consumed G9 regression separate Partial BODY/joint improvement, persistent HEAD box confusion and seed variation; retain full-state data and ordinary challenger, no general grounding or App promotion research/active/dtr-r0/nearfield/FACTORIAL_20260907.md ue-willow-nf-g9b-factorial-finetune"
     }
   ],
   "associations": [
@@ -24992,6 +25015,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/GROUNDING_20260907.md",
         "artifacts.local/nearfield/grounding-20260907"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g9b-factorial-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g9b-factorial-v1",
+      "code_revision": "1b53cf6a85ddf3b6b6f8195361d36e2000065a06",
+      "input_fingerprint": "5d30502ba9c42c239e5e345c9338b0c57d049770d95fa280810bd94ead62742d",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/FACTORIAL_20260907.md",
+        "artifacts.local/nearfield/factorial-20260907"
       ],
       "decision_id": null,
       "source_rows": 1

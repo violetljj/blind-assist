@@ -21,6 +21,17 @@ This is an acquisition smoke test.
 
 ## Latest grouped object diagnostic
 
+[NF-G9-B](nearfield/FACTORIAL_20260907.md) completed a data-only ordinary-model
+comparison on 40/12/12 fresh TRAIN/VAL/TEST geometry groups. Full four-state
+coverage gives primary frozen-threshold ensemble joint all-four correctness
+4/12, versus single-object training 2/12 and frozen G8 1/12; consumed G9-A
+regression is 6/12 versus 1/12 and 1/12. BODY improves, but HEAD box-only false
+alerts remain 5/12 (single-object training 1/12), with substantial seed variation.
+Retain full-state data and the model as Development ingredients, not a complete
+grounding fix or App promotion. Six equal-budget fits totaled 12.60 s; 256-image
+capture 199.05 s. Preflight byte-identical native conversion reduced paired
+conversion time by 24.1%; no large new map or bulk acquisition was needed.
+
 [NF-G9-A](nearfield/GROUNDING_20260907.md) froze the nine G8 checkpoints and
 thresholds on12 fresh bar/box quartets (144frames,48windows). Ordinary HEAD
 alerts12/12 withboth objects but still8/12 withboxalone, versus0/12 withneither;
