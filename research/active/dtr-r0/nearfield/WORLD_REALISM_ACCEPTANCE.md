@@ -14,7 +14,7 @@ throughput permit. Avoid competing UE rendering and training on the same GPU.
 Record engine/plugin versions, asset dependencies and hashes; do not maintain
 two independently edited scene sources. Failed previews remain evidence.
 
-## Current inspected preview
+## Initial inspected preview
 
 Primary-machine `artifacts.local/nearfield/worlds-20260908/local-preview4-capture`
 contains two native 640x360 previews. Capture and CUDA geometry verification pass;
@@ -29,6 +29,12 @@ variation; the corridor is dark with conspicuous grain. Controlled rectangular
 targets remain visibly artificial. Continue primary-machine look development;
 do not start bulk generation from this preview. No B/D inference or training was
 run for this acceptance update. The preview UE process was released after export.
+
+The subsequent [asset and scene iteration](WORLD_REALISM_20260908.md) delivers
+repaired target-free previews at `local-realism7-capture`, including four newly
+downloaded CC0 assets and native 1280x720 appearance exports. Capture/truth checks
+pass, but the wider 30-image realism acceptance and sample-PCG integration
+remain pending. Initial failures above remain historical engineering evidence.
 
 ## First deliverable
 

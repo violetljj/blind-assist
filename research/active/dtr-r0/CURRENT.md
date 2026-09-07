@@ -18,6 +18,10 @@ development is now authorized, with primary-machine creation and visual/truth
 acceptance before secondary-machine bulk capture or long training. See
 [G14 realism acceptance](nearfield/WORLD_REALISM_ACCEPTANCE.md) for the intended
 criteria and pending capabilities; this is not a passed visual or model result.
+The [G14 asset/scene iteration](nearfield/WORLD_REALISM_20260908.md) delivers two
+target-free native previews, four CC0 asset imports and passing capture/truth
+checks. Wider visual acceptance and sample-PCG integration remain pending;
+no new model training or promotion was performed.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame

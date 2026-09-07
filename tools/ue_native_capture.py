@@ -15,7 +15,7 @@ import time
 REPO = Path(__file__).resolve().parents[1]
 UE_SOURCE = REPO / 'research/active/dtr-r0/unreal'
 CAPTURES = {'whisker': 'capture_whisker.py', 'grounding': 'grounding_capture.py',
-            'factorial': 'factorial_capture.py'}
+            'factorial': 'factorial_capture.py', 'worlds': 'worlds_capture.py'}
 
 
 def write(path, value):
@@ -154,6 +154,9 @@ def capture(args):
     snapshot.mkdir()
     for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py'), script.with_name('ue_settling.py'), script.with_name('ue_pair_export.py'), script.with_name('ue_capture_readiness.py')):
         shutil.copy2(source, snapshot/source.name)
+    if args.capture == 'worlds':
+        for name in ('worlds_scene.py', 'worlds_materials.py'):
+            shutil.copy2(script.with_name(name), snapshot/name)
     script = snapshot/script.name
     shutil.copy2(spec, snapshot/'spec.json')
     spec = snapshot/'spec.json'
