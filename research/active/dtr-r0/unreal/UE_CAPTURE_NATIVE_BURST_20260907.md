@@ -3,6 +3,9 @@
 Engineering follow-up to the [EXR transport upgrade](UE_CAPTURE_THROUGHPUT_20260907.md).
 This upgrades controlled UE acquisition; it does not train or score a model.
 
+Subsequent [background PNG encoding](UE_CAPTURE_ASYNC_RGB_20260907.md) increases
+measured throughput to 12.13 fps; the numbers below retain this intermediate version.
+
 ## Result
 
 Same48-frame G9 specification, same640x360 RGB/depth, same number of settling

@@ -11,10 +11,13 @@ import traceback
 import unreal as u
 
 # UE removes __file__ after executing the script; resolve imports before callbacks.
-if os.environ.get('BA_UE_DEPTH_EXPORT'):
+if os.environ.get('BA_UE_DEPTH_EXPORT') or os.environ.get('BA_UE_RGB_EXPORT'):
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
     from ue_depth_export import export_depth
+    from ue_rgb_export import RgbExporter
+
+rgb_exporter = RgbExporter(u, os.environ.get('BA_UE_RGB_EXPORT', 'legacy')) if os.environ.get('BA_UE_RGB_EXPORT') else None
 
 OUT = Path(os.environ['BA_NEARFIELD_OUTPUT'])
 SPEC = Path(os.environ['BA_NEARFIELD_SPEC'])
@@ -92,6 +95,13 @@ def finish(error=None):
     report['status'] = 'FAIL' if error else 'PASS'
     if error:
         report['error'] = error
+    if rgb_exporter:
+        try:
+            report['rgb_exports'] = rgb_exporter.finish()
+            report['exports_drained_monotonic_s'] = time.monotonic() - started
+        except Exception:
+            report['status'] = 'FAIL'
+            report['rgb_error'] = traceback.format_exc()
     report['map_sha256_after'] = hashlib.sha256(MAP_FILE.read_bytes()).hexdigest()
     report['source_unchanged'] = report.get('map_sha256_before') == report['map_sha256_after'] == EXPECTED
     if not report['source_unchanged']:
@@ -145,6 +155,9 @@ def tick(delta):
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
             stage = 2
         if stage == 2:
+            if rgb_exporter and not rgb_exporter.ready():
+                after = 0
+                return
             # Bounded EXR transport: hold the same simulation state if host I/O lags.
             if os.environ.get('BA_UE_DEPTH_EXPORT') == 'exr' and index >= 8:
                 if not (OUT / f'evaluator/native/{index-8:04d}.npy').is_file():
@@ -167,7 +180,10 @@ def tick(delta):
             depth.capture_component2d.capture_scene()
             folder = OUT / 'model/sample'
             folder.mkdir(parents=True, exist_ok=True)
-            u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
+            if rgb_exporter:
+                rgb_exporter.export(world, rgb.capture_component2d.texture_target, folder / f'{index:04d}.png', index)
+            else:
+                u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
             if os.environ.get('BA_UE_DEPTH_EXPORT'):
                 native_folder = OUT / 'evaluator/native'
                 result = export_depth(u, world, depth.capture_component2d.texture_target,

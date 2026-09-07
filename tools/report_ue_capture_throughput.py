@@ -24,6 +24,11 @@ def summarize(root):
                   steady_fps=(len(times)-1)/(times[-1]-times[0]),
                   median_frame_s=statistics.median(intervals),
                   source_unchanged=receipt['source_unchanged'])
+    if 'rgb_exports' in receipt:
+        result['rgb_export'] = receipt['rgb_exports']['mode']
+        result['rgb_profile'] = receipt['rgb_exports']['profile']
+        result['steady_including_drain_s'] = receipt['exports_drained_monotonic_s'] - times[0]
+        result['steady_including_drain_fps'] = (len(times)-1) / result['steady_including_drain_s']
     if rows[0]['mode'].endswith('probe') or rows[0]['mode']=='probe':
         result['production_throughput']=False
         modes=list(rows[0]['measurements'])
@@ -33,6 +38,8 @@ def summarize(root):
     else:
         result['production_throughput']=True
         result['median_export_s']=statistics.median(r['total_s'] for r in rows[1:])
+    if receipt.get('rgb_exports', {}).get('mode', '').endswith('probe'):
+        result['production_throughput'] = False
     if (root/'transport.json').is_file():
         transport=read(root/'transport.json')
         result['median_host_conversion_s']=statistics.median(r['conversion_s'] for r in transport['rows'])

@@ -26,6 +26,26 @@ def file_hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def verify_rgb(out, count, probe=False):
+    from PIL import Image
+    rows = []
+    for index in range(count):
+        path = out / f'model/sample/{index:04d}.png'
+        with Image.open(path) as image:
+            image.load()
+            if image.size != (640, 360):
+                raise ValueError('Unexpected RGB dimensions: ' + str(path))
+            pixels = image.convert('RGBA').tobytes()
+        row = dict(sample_index=index, pixel_sha256=hashlib.sha256(pixels).hexdigest())
+        if probe:
+            with Image.open(path.with_name(path.stem + '.reference.png')) as reference:
+                if reference.size != (640, 360) or reference.convert('RGBA').tobytes() != pixels:
+                    raise ValueError('Native RGB differs from same-target reference: ' + str(path))
+            row['same_target_pixels_equal'] = True
+        rows.append(row)
+    write(out / 'rgb-validation.json', dict(status='PASS', frames=count, rows=rows))
+
+
 def owned_output(path):
     path = path.resolve()
     root = (REPO / 'artifacts.local').resolve()
@@ -65,10 +85,13 @@ def capture(args):
     cadence = getattr(args, 'cadence', 'auto')
     if cadence == 'auto':
         cadence = 'burst' if args.capture in ('grounding', 'factorial') else 'tick'
+    rgb_export = getattr(args, 'rgb_export', 'auto')
     plugin = getattr(args, 'plugin', None)
+    if rgb_export == 'auto' and not plugin:
+        rgb_export = 'legacy'
     if args.depth_export == 'auto':
         args.depth_export = 'native' if plugin else 'exr'
-    if args.depth_export in ('native', 'native_probe'):
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy':
         if not plugin or not plugin.is_file():
             raise ValueError('Native export requires --plugin from build_ue_capture_plugin.py')
         if not (plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll').is_file():
@@ -84,24 +107,25 @@ def capture(args):
     # Freeze the actual scripts used by this process against concurrent edits.
     snapshot = out/'source'
     snapshot.mkdir()
-    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py')):
+    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py')):
         shutil.copy2(source, snapshot/source.name)
     script = snapshot/script.name
     shutil.copy2(spec, snapshot/'spec.json')
     spec = snapshot/'spec.json'
     env = dict(os.environ, BA_NEARFIELD_SPEC=str(spec), BA_NEARFIELD_OUTPUT=str(out),
                BA_UE_DEPTH_EXPORT=args.depth_export,
-               BA_UE_CADENCE=cadence)
+               BA_UE_CADENCE=cadence, BA_UE_RGB_EXPORT=rgb_export)
     env['UE-LocalDataCachePath'] = str(project / 'DerivedDataCache')
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'),
                str(project / 'BlindAssistStreetLab.uproject'),
                '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
                '-nosound', '-nop4', '-NoSplash', '-ddc=NoShared', '-abslog=' + str(out/'editor.log')]
-    if args.depth_export in ('native', 'native_probe'):
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy':
         command += ['-PLUGIN=' + str(plugin.resolve()), '-EnablePlugins=BlindAssistCapture']
-    write(out / 'launch.json', dict(depth_export=args.depth_export, cadence=env['BA_UE_CADENCE'], script=str(script),
+    write(out / 'launch.json', dict(depth_export=args.depth_export, rgb_export=rgb_export, cadence=env['BA_UE_CADENCE'], script=str(script),
           script_sha256=file_hash(script), exporter_sha256=file_hash(script.with_name('ue_depth_export.py')),
+          rgb_exporter_sha256=file_hash(script.with_name('ue_rgb_export.py')),
           transport_sha256=file_hash(script.with_name('ue_exr_transport.py')),
           spec_sha256=file_hash(spec), command=command,
           plugin_binary_sha256=file_hash(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll') if plugin else None))
@@ -117,6 +141,9 @@ def capture(args):
         write(out/'engine-receipt.json', receipt)
         if receipt['status'] != 'PASS' or not receipt['source_unchanged']:
             raise RuntimeError('Capture failed; inspect receipt.json')
+        effective_rgb = receipt.get('rgb_exports', {}).get('mode', 'legacy')
+        if effective_rgb != 'legacy':
+            verify_rgb(out, receipt['frame_count'], probe=effective_rgb == 'native_probe')
         if transport:
             conversion = transport.finish()
             write(out/'transport.json', conversion)
@@ -149,6 +176,8 @@ def main():
     p.add_argument('--capture', choices=CAPTURES, required=True)
     p.add_argument('--depth-export', choices=('auto','legacy','single_access','exr','exr_probe','native','native_probe'), default='auto',
                    help='Auto selects native when --plugin is supplied, otherwise EXR')
+    p.add_argument('--rgb-export', choices=('auto','legacy','native_async','native_probe'), default='auto',
+                   help='Auto uses background PNG encoding when the loaded plugin supports it')
     p.add_argument('--cadence', choices=('auto','tick','burst'), default='auto',
                    help='Auto batches grounding/factorial poses; whisker motion retains tick cadence')
     p.add_argument('--plugin', type=Path, default=os.environ.get('BA_UE_CAPTURE_PLUGIN'),

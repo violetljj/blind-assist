@@ -71,5 +71,20 @@ class RunnerTests(unittest.TestCase):
         launch=json.loads((self.root/'capture/launch.json').read_text())
         self.assertEqual(launch['cadence'],'tick')
 
+    def test_native_rgb_requires_plugin_even_with_exr_depth(self):
+        args=self.args();args.rgb_export='native_async'
+        with self.assertRaises(ValueError):runner.capture(args)
+        self.assertFalse(args.output.exists())
+
+    def test_rgb_probe_checks_pixels_not_only_file_presence(self):
+        from PIL import Image
+        folder=self.root/'model/sample';folder.mkdir(parents=True)
+        Image.new('RGBA',(640,360),(1,2,3,255)).save(folder/'0000.png')
+        Image.new('RGBA',(640,360),(1,2,3,255)).save(folder/'0000.reference.png')
+        runner.verify_rgb(self.root,1,probe=True)
+        Image.new('RGBA',(640,360),(1,2,4,255)).save(folder/'0000.reference.png')
+        with self.assertRaisesRegex(ValueError,'differs'):
+            runner.verify_rgb(self.root,1,probe=True)
+
 
 if __name__=='__main__':unittest.main()

@@ -6,5 +6,6 @@ public class BlindAssistCapture : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine" });
+        PrivateDependencyModuleNames.AddRange(new[] { "ImageCore", "ImageWrapper" });
     }
 }

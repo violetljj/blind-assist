@@ -1,3 +1,13 @@
 #include "Modules/ModuleManager.h"
+#include "BlindAssistCaptureLibrary.h"
 
-IMPLEMENT_MODULE(FDefaultModuleImpl, BlindAssistCapture)
+class FBlindAssistCaptureModule : public IModuleInterface
+{
+public:
+    virtual void ShutdownModule() override
+    {
+        UBlindAssistCaptureLibrary::DrainRgbWrites();
+    }
+};
+
+IMPLEMENT_MODULE(FBlindAssistCaptureModule, BlindAssistCapture)
