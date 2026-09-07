@@ -41,7 +41,9 @@ function Require-Literal([string]$Relative, [string]$Needle, [string]$Descriptio
 
 Require-Literal 'README.md' 'research/active/l10-r0/CURRENT.md' 'L10 compact-current link'
 Require-Literal 'README.md' 'research/active/dtr-r0/CURRENT.md' 'DTR compact-current link'
-Require-Literal 'docs/README.md' 'Current Dynamic Travel Risk R2 route' 'DTR R2 route label'
+Require-Literal 'docs/README.md' 'Cane-complementary forward perception / retained DTR history' 'current perception and historical DTR route label'
+Require-Literal 'README.md' 'cane-complementary' 'cane-complementary research positioning'
+Require-Literal 'docs/PROJECT_STATE.md' 'cane-complementary' 'current forward perception objective'
 Require-Literal 'docs/PROJECT_STATE.md' 'L10_R0_ACTIVE' 'L10 active status'
 Require-Literal 'docs/PROJECT_STATE.md' 'DTR_R2_DYNAMIC_RETAINED' 'DTR R2 status'
 Require-Literal 'docs/CURRENT_DECISION.md' 'L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED' 'cross-route status'

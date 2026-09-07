@@ -5,12 +5,27 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
+The obstacle-perception research goal is **盲杖互补的类别无关前视障碍感知**
+(cane-complementary, class-agnostic forward obstacle awareness). Priorities are
+forward walls and large obstructions, body/head protrusions, suspended hazards,
+and multi-height poles, with useful direction and coarse range evidence under
+limited compute. The wearer chooses movement; this is not autonomous avoidance.
+Very low obstacles remain secondary compatibility evidence, not a headline
+optimization target. Knee-height hazards are not discarded. Earlier warning and
+dynamic-obstacle coverage are objectives requiring temporal validation.
+
+The current research design combines base near-obstacle evidence with optional
+ground-relative enhancement. Missing ground may remove height refinement but
+must not erase an already observed near obstacle. This design and the new task
+priorities are research direction, not a claim that all capabilities are already
+deployed or validated. See the [current perception route](research/active/dtr-r0/CURRENT.md).
+
 ## Start here
 
 - Current project state: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 current: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)
-- DTR-R2 current: [research/active/dtr-r0/CURRENT.md](research/active/dtr-r0/CURRENT.md)
+- Forward obstacle perception / retained DTR history: [research/active/dtr-r0/CURRENT.md](research/active/dtr-r0/CURRENT.md)
 - Code ownership: [docs/CODE_MAP.md](docs/CODE_MAP.md)
 - Documentation map: [docs/README.md](docs/README.md)
 - Historical lookup: [docs/history-index.md](docs/history-index.md)

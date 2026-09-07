@@ -1,6 +1,22 @@
-# DTR: route-conditioned obstacle-risk events
+# Cane-complementary forward obstacle awareness and DTR history
 
-Status: `ACTIVE / R2_DYNAMIC_RETAINED`
+Current goal: **盲杖互补的类别无关前视障碍感知**. Prioritize walls and large
+forward obstructions, body/head and suspended hazards, then multi-height poles.
+Ultra-low obstacles remain secondary; knee-height hazards are not discarded.
+The wearer chooses movement. Coarse range, direction, missed/false alerts and
+eventually first-alert timing drive evaluation; this is not autonomous routing.
+
+Base near-obstacle evidence is retained when optional ground geometry fails.
+Ground-relative height provides enhancement, not permission for all alerts.
+Current evidence, priority order and limitations are in [CURRENT.md](CURRENT.md)
+and the [fusion report](nearfield/EVIDENCE_FUSION_20260907.md). Static synthetic
+results do not establish dynamic warning, natural accuracy or measured cane
+coverage. Past scores keep their original protocols and denominators.
+
+## Historical DTR route-conditioned obstacle-risk record
+
+Historical status: `R2_DYNAMIC_RETAINED`. The record below describes the former
+route-risk experiments, not the current forward-perception optimization target.
 
 - **JRDB/public line:** X21 is the frozen Development reference:
   `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET`. Its six-sequence result

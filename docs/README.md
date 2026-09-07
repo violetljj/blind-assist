@@ -5,7 +5,7 @@ The hot path is intentionally short:
 1. [Project state](PROJECT_STATE.md)
 2. [Current research decision](CURRENT_DECISION.md)
 3. [Current L10-R0 Goal-Lock route](../research/active/l10-r0/CURRENT.md)
-4. [Current Dynamic Travel Risk R2 route](../research/active/dtr-r0/CURRENT.md)
+4. [Cane-complementary forward perception / retained DTR history](../research/active/dtr-r0/CURRENT.md)
 
 The route `README.md` files are detailed ledgers and reproduction surfaces;
 load them only after the matching compact current.

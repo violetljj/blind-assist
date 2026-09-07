@@ -1,9 +1,9 @@
-# DTR and near-field perception current
+# Cane-complementary forward perception and DTR history
 
 Updated: 2026-09-07
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
-Current work: category-independent near-field obstacle perception and alerts.
+Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
 Primary Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
 observations and measured conservative envelopes. The historical motion runner
@@ -21,37 +21,34 @@ This is an acquisition smoke test.
 
 ## Capability question and current probe
 
-Under limited compute, how can enough near-field spatial detail survive for
-unknown shapes, thin poles, low and overhead obstacles to enter timely, accurate
-alerts? The wearer chooses movement. Bypass and arrival remain historical
-controller measures; they do not define this perception task.
+Goal: **盲杖互补的类别无关前视障碍感知** under limited compute. Prioritize walls,
+large forward barriers, body/head protrusions and suspended hazards; then poles
+and multi-height supports. Knee-height hazards remain relevant; ultra-low
+obstacles are secondary compatibility evidence. Earlier warning and dynamic
+coverage need future temporal tests. The wearer chooses movement, not a planner.
+Past denominators stay frozen; no assumed cane-coverage labels or retroactive
+headline selection. Base near evidence survives missing optional ground/height.
 
-The [fixed representation probe](nearfield/REPRESENTATION_PROBE_20260907.md)
-completed 88 analytic depth-space cases and all eleven existing Willow RGB-D
-frames. Procedural positive direction/height observations were `162/240` for
-stride-4 quantiles, `210/240` for dense quantiles, and `240/240` for supported
-tiles. False-positive cells were `0/0/1`; the extra alert was a 3x3 correlated
-depth artifact. This is constructed component evidence, not natural accuracy
-or an equal-false-alert improvement. Missing observations remain UNKNOWN.
-
-On the eleven-frame consumed synthetic RGB replay, the fixed existing metric
-Hypersim Small model recovered `0/26` of the tile arm's native-depth positive
-region observations. Both simpler RGB arms also produced no alerts. Simulator
-height/pitch remain privileged in both branches; this is reference agreement,
-not independently labeled obstacle recall. Workstation GPU inference P50 was
-86.17 ms and tile processing P50 3.91 ms; paired P50/P95 were 89.73/100.94 ms,
-excluding capture, transport, image decode and feedback. No phone claim follows.
+The [representation probe](nearfield/REPRESENTATION_PROBE_20260907.md) retained
+162/210/240 of240 analytic positives with stride/dense/supported methods; FP0/0/1
+retains the coherent3x3 artifact. This is constructed component evidence.
+The fixed Hypersim Small RGB model initially recovered0/26 on11 consumed frames.
+Simulator height/pitch remain privileged; native agreement is not object truth.
+Original GPU inference/postprocess P50 was86.17/3.91 ms, not phone latency.
 
 Saved-prediction diagnosis found all 119,721 native near-surface reference pixels
 lost before aggregation: two invalid, 67,956 over-range and 51,763 still near but
 below the height filter. The [cached ground probe](nearfield/GROUND_ANCHOR_20260907.md)
 then recovered 1/26 with scale only and 21/26 with ground-relative height, with
 or without scale; all four arms had 0 FP. Fits used predictions/calibration only.
-Low-boundary matches remained 123/807; shape/overhead coverage is not established.
+Low-boundary matches123/807 remain secondary diagnosis, not the main objective.
 [Support comparison](nearfield/SURFACE_SUPPORT_20260907.md): all arms 21/26,0 FP.
 [18 distinct views](nearfield/DISTINCT_VIEWS_20260907.md): raw22/87 vs ground37/87,
-0 FP, but failed ground fits suppress15 raw wall positives. Keep component only;
-next decouple ground availability from near alerts. Registration remains blocked.
+0 FP, but failed ground fits suppress15 raw wall positives. [Fusion](nearfield/EVIDENCE_FUSION_20260907.md)
+restores them:52/87 legacy hypothesis cells,0 FP; direction-only near output can
+retain UNKNOWN height. Body/head subgroup16/47 is not verified-height recall.
+Suspended-bar evidence at1.96 m is estimated around14.29 m; prioritize this
+frontend failure next. No App promotion; central registration remains blocked.
 
 ## Retained evidence and baseline
 

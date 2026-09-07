@@ -27,14 +27,17 @@ change; seek appropriate unchanged-method confirmation before expanding its clai
 No new street source, threshold rescue or protected outcome access is authorized
 by this navigation update. The existing frozen result remains unchanged.
 
-## DTR: near-field perception and alerts
+## Forward obstacle awareness complementary to a cane
 
-The current question is how limited compute can preserve enough near-field
-spatial detail for unknown shapes, thin poles, low and overhead obstacles to
-enter timely, accurate alerts. The wearer chooses their movement. Perception and
-alert quality own the main comparison; autonomous bypass/arrival scores retain
-their historical controller scope. Use the [DTR current](../research/active/dtr-r0/CURRENT.md)
-for the bounded representation probe, input limitations and next decision.
+The current goal is cane-complementary, class-agnostic forward obstacle
+awareness (盲杖互补的类别无关前视障碍感知). Prioritize walls/large forward barriers,
+body/head protrusions and suspended hazards; then multi-height poles/supports.
+Knee-height hazards remain relevant. Ultra-low obstacles are secondary
+compatibility evidence, not a headline optimization target. The wearer chooses
+movement. Earlier warning and dynamic coverage still require temporal validation.
+Use the [current route](../research/active/dtr-r0/CURRENT.md) for active evidence.
+Historical results retain their original denominators. Do not infer actual cane
+coverage or retroactively relabel old cells as VISION_COMPLEMENTARY successes.
 
 Compare sampling, spatial aggregation and alert logic on identical inputs.
 Report missed/false alerts, direction/height, UNKNOWN and processing cost. Keep
@@ -47,7 +50,7 @@ frontend/geometry diagnosis before training or further compression. The subseque
 [cached four-arm probe](../research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md)
 recovered 21/26 native-positive observations with ground-relative height, versus
 1/26 with scale alone and 0/26 raw, all with 0 FP. Low-boundary retention remained
-123/807; retain the geometry component and investigate detail loss. All 11 cached
+123/807; retain this as secondary structural diagnosis. All 11 cached
 frames were processed without inference or real-time replay; these are consumed
 synthetic reference diagnostics, not independent obstacle accuracy. The subsequent
 [support comparison](../research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md)
@@ -56,7 +59,11 @@ eligible near candidate; the remaining weak candidates lack eligible triples.
 Keep depth support. On [18 distinct views](../research/active/dtr-r0/nearfield/DISTINCT_VIEWS_20260907.md),
 ground geometry improves22/87 to37/87 with0 FP, but failed ground fits suppress
 15 raw wall positives. Retain the component; ground availability must not be
-the sole gate for near alerts. Suspended-bar and pitch-related failures remain.
+the sole gate for near alerts. [Evidence fusion](../research/active/dtr-r0/nearfield/EVIDENCE_FUSION_20260907.md)
+preserves these positives: union and conditional switching both reach52/87
+legacy diagnostic cells with0 FP, while reporting unknown height separately.
+The suspended-bar reference at1.96 m is estimated around14.29 m; prioritize
+this forward-geometry failure over the downward-pitch low-block failure.
 
 Historical DTR/CARLA terminals remain unchanged. Their capture and protected-run
 continuations are parked; this perception question does not reopen frozen runs.

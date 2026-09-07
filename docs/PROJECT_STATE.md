@@ -12,7 +12,7 @@ their own evidence; a build or a narrow replay does not establish them.
 | Line | Capability and present emphasis | Owning current |
 | --- | --- | --- |
 | `L10_R0_ACTIVE` | Recover and retain the requested target with useful evidence and observation cost; distinguish missing support, identity contradiction and endpoint extent. | [L10 current](../research/active/l10-r0/CURRENT.md) |
-| `DTR_R2_DYNAMIC_RETAINED` | Current work: category-independent near-field obstacle perception and alerts under compute constraints. Preserve DTR motion findings within their historical scope. | [DTR current](../research/active/dtr-r0/CURRENT.md) |
+| `DTR_R2_DYNAMIC_RETAINED` | Current work: cane-complementary, class-agnostic forward obstacle awareness. Prioritize walls, body/head, suspended hazards and poles; ultra-low obstacles are secondary. DTR motion findings remain historical. | [Perception current / DTR history](../research/active/dtr-r0/CURRENT.md) |
 
 These lines have independent evidence, budgets and decisions. Existing experimental
 versions and detailed results belong in the owning current/ledger; this page does
