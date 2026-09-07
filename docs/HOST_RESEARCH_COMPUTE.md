@@ -2,7 +2,7 @@
 
 This route covers local or remote training, offline evaluation, and other long
 research jobs. It does not define Android/device execution and contains no
-machine-specific paths or hardware assumptions.
+credentials or SSH endpoints; machine configuration remains in ignored files.
 
 ## Registered secondary worker
 
@@ -49,7 +49,12 @@ These are generated-data runtime checks, not model/task-quality results. GPU
 research and CPU conversion intentionally use separate environments. ORT GPU
 1.26 matches the provisioned CUDA 12 stack; newer default packages may require
 a different CUDA major version (see the [official compatibility table](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html)).
-UE/CARLA engine/scenes, task models/datasets, attached-device tests, cross-network
+UE 5.8.2, Willow scene/DDC and the precompiled native capture plugin are now
+provisioned (2026-09-08). A two-frame 640x360 RGB/depth engineering capture passed
+same-target reference comparison and process release; first startup plus capture
+took about 190 seconds. Receipts are under `artifacts/evidence/ue-worker-setup`.
+The copied engine is a runtime subset, not a full UE C++ build installation.
+CARLA, task-specific models/datasets, attached-device tests, cross-network
 and reboot recovery still need task-specific setup/verification. The laptop's
 screen timeout is one minute; plugged-in sleep/hibernate remain disabled.
 
@@ -93,6 +98,31 @@ primary-host drive mappings do not apply there. Keep the same six categories:
 downloads, evidence, models, presentations, work and tmp. Primary checkout owns
 integration, research decisions and accepted evidence; worker output alone is
 not promotion or device validation.
+
+## UE capture placement and handoff
+
+Prefer the secondary worker for authorized UE execution, capture and raw-data
+processing. Its G: artifact volume owns the engine/project payloads, capture
+frames, intermediate arrays and full logs; select paths through
+`BLINDASSIST_ARTIFACTS`, not the primary machine's drive layout. The worker's
+`artifacts.local/unreal/BlindAssistStreetLab` is a compatibility junction into
+its `artifacts/work/ue` tree. Resolve and verify this mapping before capture.
+`UE_ENGINE_ROOT` and `BLINDASSIST_UE_CAPTURE_PLUGIN` expose the worker-local
+engine and capture-plugin paths; do not embed controller paths in a job.
+
+Return thin results to the primary checkout: source/input/output hashes,
+manifests, terminal and process-release receipts, compact metrics and selected
+diagnostic previews. Keep full RGB/depth streams and intermediate payloads on
+the worker unless a concrete debugging or delivery requirement needs them.
+Thin results must identify the retained worker payload and its owner; they are
+not permission to delete raw evidence or replace independent validation.
+
+Use [Worker handoff](operations/WORKER_HANDOFF.md) as the reusable job contract and link or
+copy it from the worker-local README. Record the committed source revision,
+frozen inputs, output location, stop condition and acceptance scope before
+dispatch. The recorded UE smoke establishes startup and two-frame capture for
+that source, scene and plugin combination. New combinations still need a scoped
+worker check before a large acquisition.
 
 For long jobs, invoke the installed runner from an `Exec` script:
 

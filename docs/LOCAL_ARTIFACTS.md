@@ -10,6 +10,8 @@ artifacts.local/
 
 ## 物理存储位置（2026-08-05 起）
 
+本节的 E:/F: 映射适用于主力机。已登记副机的 `artifacts.local` 指向副机自己的 G: 数据目录，详见 [副机交接](operations/WORKER_HANDOFF.md)。UE 采集、原始 RGB/深度、场景与缓存优先放副机；主力机默认只回收清单、哈希、指标、终态回执及必要预览，不自动镜像整批原始数据。
+
 `artifacts.local/` 是项目内的稳定逻辑路径，但其物理存储位于：
 
 ```text
