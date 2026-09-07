@@ -1,6 +1,6 @@
 # Current research decisions
 
-Updated: 2026-09-05
+Updated: 2026-09-07
 
 Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
 
@@ -27,23 +27,26 @@ change; seek appropriate unchanged-method confirmation before expanding its clai
 No new street source, threshold rescue or protected outcome access is authorized
 by this navigation update. The existing frozen result remains unchanged.
 
-## DTR: task-relevant event comparison and capture readiness
+## DTR: near-field perception and alerts
 
-The present question is whether the retained risk representation improves useful
-events over credible simple baselines under the same observable information.
-Use the [DTR current](../research/active/dtr-r0/CURRENT.md) for algorithm authority,
-the interrupted R1 source record and the latest committed engineering evidence.
+The current question is how limited compute can preserve enough near-field
+spatial detail for unknown shapes, thin poles, low and overhead obstacles to
+enter timely, accurate alerts. The wearer chooses their movement. Perception and
+alert quality own the main comparison; autonomous bypass/arrival scores retain
+their historical controller scope. Use the [DTR current](../research/active/dtr-r0/CURRENT.md)
+for the bounded representation probe, input limitations and next decision.
 
-Separate the next capture/readiness check from the algorithm comparison. A repaired
-writer or completed capture is an engineering result; it cannot establish risk
-performance. Use representative task-owned smoke/replay inputs and the existing
-recovery boundaries before spending a new protected run.
+Compare sampling, spatial aggregation and alert logic on identical inputs.
+Report missed/false alerts, direction/height, UNKNOWN and processing cost. Keep
+native UE depth and simulator calibration explicitly separate from predicted RGB
+depth. Geometry-reference agreement is not independently labeled obstacle
+accuracy. The first probe preserved more procedural thin-surface evidence but
+exposed a correlated-artifact false alert and complete loss of the native near
+alert opportunities with the fixed existing RGB depth model. This supports a
+frontend/geometry diagnosis before training or further compression.
 
-After adequate engineering evidence, the next algorithm comparison should report
-event utility, false events, coverage and missingness at a fair input/cost budget.
-If added complexity has no useful gain, simplify or change the central hypothesis.
-R1 is not retried or resumed by this policy update; any protected successor retains
-the versioned protocol and evidence requirements appropriate to its claim.
+Historical DTR/CARLA terminals remain unchanged. Their capture and protected-run
+continuations are parked; this perception question does not reopen frozen runs.
 
 ## Shared execution choices
 

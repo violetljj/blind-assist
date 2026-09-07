@@ -1,35 +1,56 @@
-# DTR-R2 current
+# DTR and near-field perception current
 
 Updated: 2026-09-07
 
-Status: `DTR_R2_DYNAMIC_RETAINED`
+Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
+Current work: category-independent near-field obstacle perception and alerts.
 
-Primary Development environment: **self-built UE5 StreetLabV4**, per the user's
-2026-09-06 migration decision. Use `tools/run_obstacle_research.py`; CARLA is
-retained for historical evidence and explicitly needed supplementary checks.
-The default live bank now uses 10 Hz observations and measured conservative
-visual envelopes. See [laboratory completion checks](unreal/UE_LAB_ACCEPTANCE_20260906.md)
-and the preserved [initial migration record](unreal/UE_PRIMARY_LAB_20260906.md).
+Primary Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
+observations and measured conservative envelopes. The historical motion runner
+is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary
+checks. See [UE acceptance](unreal/UE_LAB_ACCEPTANCE_20260906.md).
 
-The separate [Willow sample segment](unreal/UE_WILLOW_SAMPLE_20260907.md)
-now provides scanned paving/concrete, prepared modular seating and a new tree
-asset with native geometry and sanitized RGB-D exports. Its static engineering
-checks pass; conservative tree AABBs still disagree with native side-corridor
-sweeps. This is a scene/material improvement, not a new dynamic algorithm score
-or replacement of the retained StreetLabV4 bank.
+The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
+and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
+its engineering checks are not dynamic algorithm scores.
 Visual work is paused at the user's request. The saved sample is frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
-`willow-eye170-first-person` check passes sanitized replay and an independent
-ground-depth optical-height check. It is an acquisition smoke test, not a new
-dynamic algorithm result.
+`willow-eye170-first-person` passes replay and ground-depth optical-height checks.
+This is an acquisition smoke test.
 
-## Capability question
+## Capability question and current probe
 
-Can future obstacle occupancy intersecting the wearer's route produce stable
-`ONSET / HOLD / ESCALATE / CLEAR` events while missing evidence stays `UNKNOWN`?
-The unresolved contribution question is what collision-state information X94
-adds beyond a raw motion baseline and the same temporal event smoothing.
+Under limited compute, how can enough near-field spatial detail survive for
+unknown shapes, thin poles, low and overhead obstacles to enter timely, accurate
+alerts? The wearer chooses movement. Bypass and arrival remain historical
+controller measures; they do not define this perception task.
+
+The [fixed representation probe](nearfield/REPRESENTATION_PROBE_20260907.md)
+completed 88 analytic depth-space cases and all eleven existing Willow RGB-D
+frames. Procedural positive direction/height observations were `162/240` for
+stride-4 quantiles, `210/240` for dense quantiles, and `240/240` for supported
+tiles. False-positive cells were `0/0/1`; the extra alert was a 3x3 correlated
+depth artifact. This is constructed component evidence, not natural accuracy
+or an equal-false-alert improvement. Missing observations remain UNKNOWN.
+
+On the eleven-frame consumed synthetic RGB replay, the fixed existing metric
+Hypersim Small model recovered `0/26` of the tile arm's native-depth positive
+region observations. Both simpler RGB arms also produced no alerts. Simulator
+height/pitch remain privileged in both branches; this is reference agreement,
+not independently labeled obstacle recall. Workstation GPU inference P50 was
+86.17 ms and tile processing P50 3.91 ms; paired P50/P95 were 89.73/100.94 ms,
+excluding capture, transport, image decode and feedback. No phone claim follows.
+
+Saved-prediction diagnosis found all 119,721 native near-surface reference pixels
+lost before aggregation: two invalid, 67,956 over-range and 51,763 still near but
+below the height filter. Median depth ratio was 1.217; this sample is low-height
+dominated. Next test observable local-ground geometry and depth reliability
+before further compression. Keep coherent-artifact false alerts as a control.
+The tile mechanism remains a Development component candidate with no default
+promotion. Central registration was attempted but failed before mutation on the
+pre-existing `experiments/index.jsonl:252` fingerprint mismatch; the local report
+retains the disposition and no new structured terminal is claimed.
 
 ## Retained evidence and baseline
 
@@ -57,47 +78,16 @@ adds beyond a raw motion baseline and the same temporal event smoothing.
   `7.02 pp` frame F1 and added 30 fragment gaps. Simple `0.60 s` hysteresis
   reached 89.07% frame F1 on that replay; complexity has not established a win.
 
-## Current bottleneck
+## Preserved source bottleneck
 
-Frozen avoidance-only R1 reached `30/30` instance/witness source-stratum passes
-and a complete FIT_ONLY RGB/depth join. FINAL_A's depth server then exited
-before its first depth frame with `Shader compilation failures are Fatal`;
-FINAL_B RGB/depth never started. Status is
-`NOT_EVALUABLE_SOURCE_CAPTURE_INTERRUPTED`: nine complete sensor shards remain,
-no detector, fit, prediction or final method score was opened, and task-owned
-processes, ports and leases were released. The eleven-arm adapters have focused
-implementation checks only. This source failure changes no algorithm inheritance.
+Frozen avoidance R1 remains `NOT_EVALUABLE_SOURCE_CAPTURE_INTERRUPTED`.
+Subsequent startup engineering admitted a reused Development composite, but
+FIT_ONLY S03 failed dropout credential readiness; no final method score followed.
+See [startup and method diagnosis](CARLA_CAMERA_STARTUP_20260905.md). Source
+engineering changes no algorithm inheritance. Old raw-input comparisons lack
+sufficient retained payloads beyond C35 for fair reconstruction.
 
-The completed two-scene 720p probe passed 100 synchronized RGB/depth pairs.
-Synchronization alone did not improve capture time (`57.23 -> 59.13 s`). With
-both arms synchronized, fast lossless PNG reduced `63.28 -> 22.00 s` (2.88x);
-400 independently decoded images exactly matched their raw pixels, with 8.96%
-more encoded bytes. This was one ordered short comparison excluding warmup,
-not statistical throughput or long-run stability evidence. It preserves depth
-bytes but does not validate metric-depth decoding or establish a shader-crash fix.
-
-A subsequent Development composite reused nine intact shards, but FINAL_A depth
-again hit a shader fatal before any payload. A separate DX11 probe reached RPC
-but failed camera warmup. Both runs ended without detector, fit or scores; the
-client now detects server death promptly. Neither failed run is reopened here.
-
-A separately identified launch profile requesting synchronous PSO compilation
-passed three cold starts (600 independently checked images), then all three
-missing shards (3,276 images) and all native joins. The composite source is now
-admitted as reused Development. This is bounded completion, not a permanent
-shader-fix claim. See [startup and method diagnosis](CARLA_CAMERA_STARTUP_20260905.md).
-
-Method preparation generated 910 FIT_ONLY detector frames but failed S03's
-six-frame dropout recovery condition: frame 29 is nearly black, has zero
-candidates and no measured collision credential. No fitting or final scoring
-ran. A consumed FIT_ONLY proposal with earlier 2/3/6-frame windows passed on
-that episode only; it neither rescues the failed run nor confirms method gain.
-Registration remains blocked by the existing input-fingerprint mismatch.
-The older eleven-cohort raw comparison cannot be reconstructed fairly: only
-C35 retains the required dense model/evaluator payloads. Derived tracks or
-recaptured pixels do not restore the original raw-input comparison.
-
-## Next decision
+## Preserved controller decisions (parked during perception work)
 
 1. **UE Development:** use fixed RGB-D replay for perception changes and V4
    closed loop for motion changes. The measured motion reference is DEPTH_ONLY;
@@ -140,8 +130,8 @@ recaptured pixels do not restore the original raw-input comparison.
   source gates, lifecycle, association, seeds and denominators with their original
   results; changes belong to a separately identified Development version.
 - `UNKNOWN` and `NOT_EVALUABLE` are not `CLEAR`, negative evidence or safety.
-  Wearer-global route conflict owns event correctness; component identity is
-  diagnostic. Public replay and CARLA do not establish Android readiness,
+  Historical DTR route conflict owns its event correctness; near-field alerts
+  use their separate perception evaluator. Public replay and CARLA do not establish Android readiness,
   natural-distribution performance, user benefit, deployment or safety.
 - Uncommitted candidates and outputs remain WIP. Existing structured inheritance
   roles and historical verdicts remain authoritative; this compaction changes none.
@@ -155,7 +145,5 @@ recaptured pixels do not restore the original raw-input comparison.
 - [Failed Development composite and DX11 probe](CARLA_FAST_COMPOSITE_SOURCE_20260905.md).
 - [Detailed ledger and reproduction](README.md), [formal research governance](../../../docs/formal/RESEARCH_GOVERNANCE.md).
 
-The full superseded current is preserved exactly in Git at
-`daf5720064d98a93b75336469d18e9a2fe0023e5:research/active/dtr-r0/CURRENT.md`.
-Use that history anchor and the existing result files for the X24-X94 trajectory;
-this page owns the present decision, not a second history ledger.
+The pre-scope-change current is preserved at Git
+`fc70658e:research/active/dtr-r0/CURRENT.md`; linked reports retain the full history.
