@@ -10,6 +10,12 @@ import time
 import traceback
 import unreal as u
 
+# UE removes __file__ after executing the script; resolve imports before callbacks.
+if os.environ.get('BA_UE_DEPTH_EXPORT'):
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    from ue_depth_export import export_depth
+
 OUT = Path(os.environ['BA_NEARFIELD_OUTPUT'])
 SPEC = Path(os.environ['BA_NEARFIELD_SPEC'])
 EXPECTED = 'cf35e5c9df54cd0f781f09ea8105fe8ef6078ed0822d4e594d64216e79a254fb'
@@ -136,6 +142,11 @@ def tick(delta):
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
             stage = 2
         if stage == 2:
+            # Bounded EXR transport: hold the same simulation state if host I/O lags.
+            if os.environ.get('BA_UE_DEPTH_EXPORT') == 'exr' and index >= 8:
+                if not (OUT / f'evaluator/native/{index-8:04d}.npy').is_file():
+                    after = 0
+                    return
             if warm == 0:
                 prepare(cases[index])
             rgb.capture_component2d.capture_scene()
@@ -147,15 +158,23 @@ def tick(delta):
             folder = OUT / 'model/sample'
             folder.mkdir(parents=True, exist_ok=True)
             u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
-            values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
-            assert len(values) == 640 * 360
-            header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
-            header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
-            native_folder = OUT / 'evaluator/native'
-            native_folder.mkdir(parents=True, exist_ok=True)
-            with (native_folder / f'{index:04d}.npy').open('wb') as f:
-                f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
-                array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
+            if os.environ.get('BA_UE_DEPTH_EXPORT'):
+                native_folder = OUT / 'evaluator/native'
+                result = export_depth(u, world, depth.capture_component2d.texture_target,
+                                      native_folder / f'{index:04d}.npy',
+                                      os.environ['BA_UE_DEPTH_EXPORT'], index)
+                report.setdefault('depth_exports', []).append(dict(sample_index=index, **result))
+                readback_done = time.perf_counter()
+            else:
+                values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
+                assert len(values) == 640 * 360
+                header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
+                header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
+                native_folder = OUT / 'evaluator/native'
+                native_folder.mkdir(parents=True, exist_ok=True)
+                with (native_folder / f'{index:04d}.npy').open('wb') as f:
+                    f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
+                    array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
             capture_times.append(time.monotonic() - started)
             pose = dict(cases[index]['camera'])
             pose.setdefault('roll', 0.)

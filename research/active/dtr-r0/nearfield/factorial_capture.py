@@ -10,6 +10,12 @@ import time
 import traceback
 import unreal as u
 
+# UE removes __file__ after executing the script; resolve imports before callbacks.
+if os.environ.get('BA_UE_DEPTH_EXPORT'):
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    from ue_depth_export import export_depth
+
 OUT = Path(os.environ['BA_NEARFIELD_OUTPUT'])
 SPEC = Path(os.environ['BA_NEARFIELD_SPEC'])
 EXPECTED = 'cf35e5c9df54cd0f781f09ea8105fe8ef6078ed0822d4e594d64216e79a254fb'
@@ -139,6 +145,11 @@ def tick(delta):
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
             stage = 2
         if stage == 2:
+            # Bounded EXR transport: hold the same simulation state if host I/O lags.
+            if os.environ.get('BA_UE_DEPTH_EXPORT') == 'exr' and index >= 8:
+                if not (OUT / f'evaluator/native/{index-8:04d}.npy').is_file():
+                    after = 0
+                    return
             if warm == 0:
                 frame_started = time.perf_counter()
                 prepare(cases[index])
@@ -155,33 +166,41 @@ def tick(delta):
             folder.mkdir(parents=True, exist_ok=True)
             u.RenderingLibrary.export_render_target(world, rgb.capture_component2d.texture_target, str(folder), f'{index:04d}.png')
             png_done = time.perf_counter()
-            values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
-            readback_done = time.perf_counter()
-            assert len(values) == 640 * 360
-            header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
-            header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
-            native_folder = OUT / 'evaluator/native'
-            native_folder.mkdir(parents=True, exist_ok=True)
-            with (native_folder / f'{index:04d}.npy').open('wb') as f:
-                f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
-                if spec.get('preflight'):
-                    timings = {}
-                    order = ('legacy','single_access') if index%2==0 else ('single_access','legacy')
-                    outputs = {}
-                    for mode in order:
-                        tick_conversion = time.perf_counter()
-                        if mode == 'legacy':
-                            outputs[mode] = array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values))
-                        else:
-                            outputs[mode] = array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values)))
-                        timings[mode] = time.perf_counter()-tick_conversion
-                    assert outputs['legacy'].tobytes() == outputs['single_access'].tobytes(), 'Native conversion byte mismatch'
-                    report.setdefault('conversion_probe', []).append(dict(index=index,seconds=timings,bytes_equal=True))
-                    outputs['single_access'].tofile(f)
-                elif spec.get('conversion_mode') == 'single_access':
-                    array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values))).tofile(f)
-                else:
-                    array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
+            if os.environ.get('BA_UE_DEPTH_EXPORT'):
+                native_folder = OUT / 'evaluator/native'
+                result = export_depth(u, world, depth.capture_component2d.texture_target,
+                                      native_folder / f'{index:04d}.npy',
+                                      os.environ['BA_UE_DEPTH_EXPORT'], index)
+                report.setdefault('depth_exports', []).append(dict(sample_index=index, **result))
+                readback_done = time.perf_counter()
+            else:
+                values = u.RenderingLibrary.read_render_target_raw(world, depth.capture_component2d.texture_target, normalize=False)
+                readback_done = time.perf_counter()
+                assert len(values) == 640 * 360
+                header = str({'descr': '<f4', 'fortran_order': False, 'shape': (360, 640)})
+                header += ' ' * ((64 - (10 + len(header) + 1) % 64) % 64) + '\n'
+                native_folder = OUT / 'evaluator/native'
+                native_folder.mkdir(parents=True, exist_ok=True)
+                with (native_folder / f'{index:04d}.npy').open('wb') as f:
+                    f.write(b'\x93NUMPY\x01\x00' + struct.pack('<H', len(header)) + header.encode())
+                    if spec.get('preflight'):
+                        timings = {}
+                        order = ('legacy','single_access') if index%2==0 else ('single_access','legacy')
+                        outputs = {}
+                        for mode in order:
+                            tick_conversion = time.perf_counter()
+                            if mode == 'legacy':
+                                outputs[mode] = array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values))
+                            else:
+                                outputs[mode] = array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values)))
+                            timings[mode] = time.perf_counter()-tick_conversion
+                        assert outputs['legacy'].tobytes() == outputs['single_access'].tobytes(), 'Native conversion byte mismatch'
+                        report.setdefault('conversion_probe', []).append(dict(index=index,seconds=timings,bytes_equal=True))
+                        outputs['single_access'].tofile(f)
+                    elif spec.get('conversion_mode') == 'single_access':
+                        array.array('f', (r / 100 if math.isfinite(r) and 0 < r < 10000 else 0. for r in (v.r for v in values))).tofile(f)
+                    else:
+                        array.array('f', (v.r / 100 if math.isfinite(v.r) and 0 < v.r < 10000 else 0. for v in values)).tofile(f)
             profiles.append(dict(sample_index=index,settling_frames=cases[index].get('settling_frames',8),prepare_and_settle_s=settle_done-frame_started,depth_submit_s=depth_submit_done-settle_done,png_export_s=png_done-depth_submit_done,native_readback_s=readback_done-png_done,native_marshal_write_s=time.perf_counter()-readback_done,total_s=time.perf_counter()-frame_started))
             capture_times.append(time.monotonic() - started)
             pose = dict(cases[index]['camera'])
