@@ -53,6 +53,18 @@ recovers0/4 MDE-missed translational2–3 m bars; coverage and depth ambiguity r
 P50 13.87 ms,45 native range mismatches; baseline retained. No App promotion.
 Historical registry repair and NF-G0–G5 backfill: [record](nearfield/REGISTRY_REPAIR_20260907.md).
 
+[NF-G7 contact learning](nearfield/CONTACT_RETINA_20260907.md) completes 48 paired
+clips / 768 frames with group-separated training, validation and test. On 8 test
+contact episodes, temporal-structure seeds recover6/6/7; repeated RGB/pose history
+recovers0/0/0. The ensemble recovers7/8 with0/8 negative-clip false alerts, but
+nine BODY@2s false-positive cells span3 true-contact clips. Single-frame ensemble
+also recovers7/8 (one negative-clip false alert); ordinary video recovers0/8 at its
+validation-selected operating point. This is useful joint-history candidate
+evidence, not an overall replacement gain. Retain the existing baseline; next
+research should resolve urgency calibration, weak near-contact coverage and
+single-frame seed instability. Ideal metric poses and analytic task-box contact
+remain synthetic privileges; no App, human-mesh or real-sensor promotion.
+
 ## Retained evidence and baseline
 
 - **Public/JRDB X21:** same-live-track transport of an already authorized X13

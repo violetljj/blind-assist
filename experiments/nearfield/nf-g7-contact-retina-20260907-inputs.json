@@ -1,0 +1,69 @@
+{
+  "code_revision_role": "Git base only; executed uncommitted sources are bound by stage receipt hashes.",
+  "registration_scope": "Completed fixed group-split contact experiment; receipt registration does not rerun or refresh consumed evidence.",
+  "phase": "EXPLORE_CONTROLLED_SYNTHETIC_DEVELOPMENT",
+  "receipts": [
+    {
+      "sha256": "377f97b0fff4f1633b79c3e29ee339ecf77bad74d62de2cb83cccc711b075d5a",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/protocol-pre-capture.md"
+    },
+    {
+      "sha256": "b7d5e17aa6fa64107d58e2f6103ebc0e95ae29edaac0f2e677d1b90e6af7bca8",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/spec.json"
+    },
+    {
+      "sha256": "3e159b0810711ced5eac6c859ebe73a4bb268f8622eae472d4c746fe3acfa265",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/receipt.json"
+    },
+    {
+      "sha256": "2c7bba1793b82cb3ca62dd7cd2a10d50e51124522ac7b09c39d53e0b863d38cd",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/process-release.json"
+    },
+    {
+      "sha256": "e6d80e8af6a76467e7552b09e708f541b1c5e3ea20a789edc1918946a367ce4c",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/verification.json"
+    },
+    {
+      "sha256": "90ae661e5595eebaaecd116ef8e7450f90f241315bc6fd054190113ebbdd6f28",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/model/dataset.json"
+    },
+    {
+      "sha256": "ed4f86924794f697719921487426e5b7d36c0f8355bde923be66a47ba44a04c2",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/training/labels.json"
+    },
+    {
+      "sha256": "350ac8dd3990dfcef10b3a73e5f289cfeffd8a0cde5e4d298b9418d6dd6a3292",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/capture/evaluator/labels.json"
+    },
+    {
+      "sha256": "fa7419c4c4aec6f3a1f665f2e7b39df1b81a0c10db185a4f7f1493f56fa03900",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/baseline/receipt.json"
+    },
+    {
+      "sha256": "652c2ca0e322955f859fee6e0374784a095a49731ff11ac7fe1cf144aa952de9",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/baseline/predictions.json"
+    },
+    {
+      "sha256": "765a1f4193f9831e9e825644d2d334e87ebcfc15d1ef9a786c9be67f69c04ca4",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/learned/launch.json"
+    },
+    {
+      "sha256": "00cf9960b21fb992657ab57cc84425b3b929e4ff4c42e754f6e8573dff915ae1",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/learned/receipt.json"
+    },
+    {
+      "sha256": "bba5951c07c2ce5a42faf02dfd78959c343a6151503f8a670452fa0d577689db",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/learned/terminal.json"
+    },
+    {
+      "sha256": "099b68276dbd946a3031b4cc8932e0f7291979c677665723c20d5cce9a2eed71",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/learned/predictions.json"
+    },
+    {
+      "sha256": "dc60fce6492cfc2d4e5e940aad1467bb4262080adb199863ce93817b6aacbcac",
+      "path": "artifacts.local/nearfield/contact-retina-20260907-v1/evaluation/result.json"
+    }
+  ],
+  "git_base_revision": "04bf1497fd88cde05a2887c8e957a849b6858434",
+  "schema": "nearfield-consumed-registration-inputs-v1"
+}
