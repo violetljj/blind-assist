@@ -53,7 +53,12 @@ UE 5.8.2, Willow scene/DDC and the precompiled native capture plugin are now
 provisioned (2026-09-08). A two-frame 640x360 RGB/depth engineering capture passed
 same-target reference comparison and process release; first startup plus capture
 took about 190 seconds. Receipts are under `artifacts/evidence/ue-worker-setup`.
-The copied engine is a runtime subset, not a full UE C++ build installation.
+The initial runtime subset has been extended with installed-engine development
+inputs and a Windows C++ toolchain. A new C++ Editor project compiled and loaded
+its native function; a NullRHI editor check saved a map and material. Use the
+[UE development workflow](operations/WORKER_UE_DEVELOPMENT.md) for the independent
+editable laboratory, existing UU Remote desktop access, build commands and
+precise acceptance scope.
 CARLA, task-specific models/datasets, attached-device tests, cross-network
 and reboot recovery still need task-specific setup/verification. The laptop's
 screen timeout is one minute; plugged-in sleep/hibernate remain disabled.

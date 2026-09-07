@@ -76,10 +76,12 @@ validation overlapping acquisition, exact-state settling reuse, and hash-checked
 resume. Keep raw blocks and caches on the worker; return thin manifests and
 receipts to the controller.
 
-Prefer the controller for interactive scene design and arbitrary UE C++ builds;
-sync changed assets/scripts to the worker for deployment, scripted expansion,
-variant generation and capture. Script-only scene expansion can run directly on
-the worker. Keep generated scenes/raw data on G and return only needed previews.
+Interactive scene design and Windows UE C++ development can run on either
+machine. On the worker, use existing UU Remote and the independent editable
+laboratory; see [UE development](WORKER_UE_DEVELOPMENT.md). Keep generated
+scenes/raw data on the worker artifact volume and return code, hashes and needed
+previews to the controller for integration. Scripted expansion, variant generation
+and capture can run directly on the worker through SSH and the job runner.
 
 The 2026-09-07 provisioning record verified generated-data checks:
 
@@ -90,14 +92,17 @@ The 2026-09-07 provisioning record verified generated-data checks:
 | Export | TensorFlow/Keras conversion to TFLite and actual interpreter invocation, in a separate CPU environment |
 | Android build | Offline Debug APK with native compilation using SDK 35, NDK 27 and CMake 3.22.1 on the recorded source revision |
 | UE capture (2026-09-08) | UE 5.8.2 loaded Willow and its precompiled capture plugin; two 640x360 RGB/float32-depth engineering frames matched same-target reference outputs, saved map unchanged, owned processes released |
+| UE C++ development (2026-09-08) | UHT and Windows Editor C++ build passed; the editor called the new native function and saved map/material assets using NullRHI; independent editable scene copy and desktop launcher provisioned |
 
 These checks do not establish trained-model quality, current capacity, attached
 device behavior or scientific outcomes. Consult the retained provisioning receipt
 for exact source revision, package locks, hashes and commands. UE acceptance is
 retained in `artifacts/evidence/ue-worker-setup/acceptance.json`: first editor
 startup plus the two-frame check took about 190 seconds; this is not sustained
-capture throughput. The runtime distribution omits engine Source/Intermediate
-and static libraries, so arbitrary UE C++ rebuilding is not provisioned.
+capture throughput. Subsequent development provisioning added source, intermediate
+inputs and libraries plus MSVC/SDKs. This supports installed-engine Windows
+project development; it does not establish full engine-source rebuilding,
+other-platform packaging or arbitrary third-party dependency compatibility.
 Cross-network access and reboot recovery remain outside the recorded validation.
 
 For a UE engineering check, use a fresh output and the scoped capture/calibration

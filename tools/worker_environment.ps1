@@ -18,6 +18,9 @@ $env:BLINDASSIST_ARTIFACTS=$data
 $env:BLINDASSIST_WORKER_PROFILE=$Profile
 if ($settings.ueEngineRoot) { $env:UE_ENGINE_ROOT=$settings.ueEngineRoot }
 if ($settings.ueCapturePlugin) { $env:BLINDASSIST_UE_CAPTURE_PLUGIN=$settings.ueCapturePlugin }
+if ($settings.ueDevelopmentProject) { $env:BLINDASSIST_UE_DEVELOPMENT_PROJECT=$settings.ueDevelopmentProject }
+if ($settings.ueDdcPath) { [Environment]::SetEnvironmentVariable('UE-LocalDataCachePath', $settings.ueDdcPath, 'Process') }
+if ($settings.msvcRoot) { $env:BLINDASSIST_MSVC_ROOT=$settings.msvcRoot }
 $env:VIRTUAL_ENV=$venv
 $env:PYTHONUTF8='1'
 $env:CUDA_PATH=Join-Path $data 'work/toolchains/cuda128'
