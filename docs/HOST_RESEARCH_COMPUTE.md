@@ -22,23 +22,57 @@ another controller; never commit credentials or host-specific paths.
 ```powershell
 pwsh -NoProfile -File tools/remote_worker.ps1 -Action Inspect
 pwsh -NoProfile -File tools/remote_worker.ps1 -Action Exec -ScriptFile <local-worker-command.ps1>
+pwsh -NoProfile -File tools/remote_worker.ps1 -Action Exec -Profile export -ScriptFile <local-export-command.ps1>
 ```
 
 `Inspect` reads current revision, dirty files, free RAM/disk, GPU and worker jobs.
-`Exec` runs the supplied PowerShell file remotely after entering the configured
-environment. It uses strict SSH host-key checking and a specific local key;
+`Exec` uploads the supplied PowerShell file to a unique worker artifact temp path,
+runs it after entering the selected environment, and removes it in `finally`.
+This avoids Windows' command-line length limit. It uses strict SSH host-key
+checking and a specific local key;
 establish host trust out of band. It does not upload arbitrary dependencies or
 silently synchronize source. Native commands in the supplied script must check
 `$LASTEXITCODE` when failure should stop the job.
 
-Initial provisioned capability (2026-09-07): Ryzen 7 5800H, 16 GB RAM, RTX 3060
-Laptop 6 GB; PowerShell 7, Git, JDK 17, Python 3.13 research environment,
-PyTorch 2.9.1/CUDA 12.8, Android SDK 35 and Gradle 8.10.2. CUDA arithmetic,
-8 research-backend tests, package consistency, Android preflight and a scheduled
-job surviving SSH disconnection passed. This is a dated setup record, not a
-fresh capacity check or a full APK/native build. NDK/CMake, TensorFlow/export
-environment, UE engine/scenes, datasets, cross-network and reboot recovery still
-need task-specific verification. Consult the local acceptance receipt.
+Provisioned capability (2026-09-07): Ryzen 7 5800H, 16 GB RAM, RTX 3060 Laptop
+6 GB; PowerShell 7, Git, JDK 17, Node 24, ripgrep and FFmpeg. Android SDK 35,
+NDK 27.0.12077973, CMake 3.22.1 and Gradle 8.10.2 completed an offline Debug APK
+build with native compilation in 5m 7s on the recorded source revision.
+
+| `-Profile` | Environment | Validated capability |
+| --- | --- | --- |
+| `research` (default) | Python 3.13; Torch 2.9.1/cu128, torchvision 0.24.1, CuPy 14.1.1, Numba 0.66, ORT GPU 1.26, Transformers, RapidOCR, Ultralytics, scientific/image/video libraries | Torch/CuPy/Numba CUDA kernels, torchvision NMS, tiny random BERT CUDA forward, ONNX operator on actual CUDA provider, image roundtrip and FFmpeg encoding |
+| `l10` | Python 3.11; NumPy 1.26.4, Pandas 1.5.3, PyTables 3.11.1, NetworkX 3.6.1 | HDF5 read/write and graph operation; legacy SEVN compatibility |
+| `export` | Python 3.11; CPU Torch, TensorFlow/tf_keras 2.19, ONNX tools, onnx2tf and LiteRT | Keras-to-TFLite conversion followed by actual interpreter invocation |
+
+These are generated-data runtime checks, not model/task-quality results. GPU
+research and CPU conversion intentionally use separate environments. ORT GPU
+1.26 matches the provisioned CUDA 12 stack; newer default packages may require
+a different CUDA major version (see the [official compatibility table](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html)).
+UE/CARLA engine/scenes, task models/datasets, attached-device tests, cross-network
+and reboot recovery still need task-specific setup/verification. The laptop's
+screen timeout is one minute; plugged-in sleep/hibernate remain disabled.
+
+Provisioning inputs are tracked in
+[`worker-research.requirements.txt`](../config/worker-research.requirements.txt),
+the route's SEVN requirements and
+[`worker-export.constraints.txt`](../config/worker-export.constraints.txt) with
+`requirements-export.txt`. Create separate virtual environments from compatible
+base interpreters. Install Torch/torchvision from the cu128 index for research
+and CPU index for export before applying these requirements. Reuse verified
+portable SDK/runtime archives and immutable Gradle dependencies from the primary
+machine. Keep exact installed locks and transfer hashes in local evidence.
+
+Deploy [`worker_environment.ps1`](../tools/worker_environment.ps1) into the worker's
+scripts directory, with a thin `Enter-Workspace.ps1` accepting `-Profile` and
+dot-sourcing it with `-WorkerRoot`. Worker-local `config/environment.json` stores
+`revision` and `javaHome`. Deploy [`worker_run_job.py`](../tools/worker_run_job.py)
+as `scripts/run_job.py`; it preserves selected CUDA/cache variables and resolves
+commands to absolute executable paths before launch, avoiding Windows' base
+Python lookup bypassing the virtual environment. Native runtime validation is
+available in [`probe_worker_environment.py`](../tools/probe_worker_environment.py)
+with `--profile` and an explicit ignored `--output` directory. Do not run model
+downloads or scientific cohorts merely to validate a provisioned environment.
 
 Throughput is the priority: proactively dispatch useful independent work and run
 jobs concurrently when that shortens completion time, without renewed approval.
@@ -80,7 +114,8 @@ workers running or reset an uncertain job by redispatching it.
 
 The worker-local workspace `README.md`, `AGENTS.md`, environment script and runner
 are durable operational files; setup logs and dependency lock are retained under
-its `artifacts.local/evidence/workspace-setup`. Reprovisioning another machine
+its `artifacts.local/evidence/workspace-setup` and
+`artifacts.local/evidence/environment-expanded`. Reprovisioning another machine
 must validate these capabilities rather than assume this laptop's paths exist.
 
 ## Current DTR-R0 entrypoint

@@ -1,0 +1,11 @@
+# Python 3.11 CPU conversion environment; use with requirements-export.txt.
+torch==2.9.1
+torchvision==0.24.1
+tensorflow==2.19.0
+tf_keras==2.19.0
+numpy==2.1.3
+keras==3.15.1
+onnx==1.22.0
+onnxruntime==1.29.0
+onnx2tf==1.28.8
+ai-edge-litert==2.2.0

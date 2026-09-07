@@ -1,0 +1,23 @@
+# Windows Python 3.13. Install torch/torchvision from the cu128 index first.
+-r ../research/active/dtr-r0/nearfield/requirements-ue-capture.txt
+torch==2.9.1
+torchvision==0.24.1
+cupy-cuda12x==14.1.1
+numba==0.66.0
+onnxruntime-gpu==1.26.0
+onnx==1.22.0
+transformers==5.14.1
+accelerate==1.14.0
+rapidocr==3.9.2
+ultralytics==8.4.142
+opencv-python==5.0.0.93
+scipy==1.18.1
+scikit-learn==1.9.0
+scikit-image==0.26.0
+pandas==3.0.5
+matplotlib==3.11.1
+rosbags==0.11.5
+imageio==2.37.4
+imageio-ffmpeg==0.6.0
+pytest==9.1.1
+rich==15.0.0
