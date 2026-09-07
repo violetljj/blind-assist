@@ -19,6 +19,31 @@ DIRECTIONS = ("left", "center", "right")
 HEIGHTS = ("low", "body", "head")
 
 
+def surface_support(depth, height, eligible, mode="depth"):
+    """Fixed three-pixel support; elevation threshold is 0.08 m, not tuned."""
+    if mode not in ("depth", "elevation", "dual"):
+        raise ValueError("unknown support mode")
+    support = torch.zeros_like(eligible)
+    for axis in (0, 1):
+        slices = []
+        for start, stop in ((0, -2), (1, -1), (2, None)):
+            sl = [slice(None), slice(None)]
+            sl[axis] = slice(start, stop)
+            slices.append(tuple(sl))
+        a, b, c = (depth[sl] for sl in slices)
+        depth_ok = (torch.maximum(torch.maximum(a,b),c)-torch.minimum(torch.minimum(a,b),c)) <= (.08+.02*b)
+        if mode == "depth":
+            compatible = depth_ok
+        else:
+            a, b, c = (height[sl] for sl in slices)
+            height_ok = (torch.maximum(torch.maximum(a,b),c)-torch.minimum(torch.minimum(a,b),c)) <= .08
+            compatible = height_ok if mode == "elevation" else height_ok | depth_ok
+        run = compatible & eligible[slices[0]] & eligible[slices[1]] & eligible[slices[2]]
+        for sl in slices:
+            support[sl] |= run
+    return support
+
+
 @dataclass(frozen=True)
 class Camera:
     width: int
@@ -109,8 +134,12 @@ class NearFieldEncoder:
         ).long()
 
     @torch.inference_mode()
-    def encode(self, depth: np.ndarray, *, ground_plane=None) -> Evidence:
+    def encode(self, depth: np.ndarray, *, ground_plane=None, support_mode="depth") -> Evidence:
         c = self.camera
+        if support_mode not in ("depth", "elevation", "dual"):
+            raise ValueError("unknown support mode")
+        if support_mode != "depth" and ground_plane is None:
+            raise ValueError("elevation support requires an explicit ground plane")
         if depth.shape != (c.height, c.width):
             raise ValueError("depth/calibration dimensions disagree")
         z = torch.as_tensor(np.ascontiguousarray(depth), dtype=torch.float32,
@@ -131,21 +160,7 @@ class NearFieldEncoder:
         ), right=True) - 1
         obstacle = valid & (band >= 0) & (band < 3)
 
-        support = torch.zeros_like(valid)
-        # A triple must consist of eligible surfaces with compatible depth. Mark
-        # endpoints too; requiring two neighbors at every pixel would erode lines.
-        for axis in (0, 1):
-            slices = []
-            for start, stop in ((0, -2), (1, -1), (2, None)):
-                sl = [slice(None), slice(None)]
-                sl[axis] = slice(start, stop)
-                slices.append(tuple(sl))
-            a, b, d = (z[sl] for sl in slices)
-            compatible = (torch.maximum(torch.maximum(a, b), d) -
-                          torch.minimum(torch.minimum(a, b), d)) <= (.08 + .02*b)
-            run = compatible & obstacle[slices[0]] & obstacle[slices[1]] & obstacle[slices[2]]
-            for sl in slices:
-                support[sl] |= run
+        support = surface_support(z, height, obstacle, support_mode)
 
         masks = torch.stack([support & (band == k) for k in range(3)])
         distances, indices = F.max_pool2d(

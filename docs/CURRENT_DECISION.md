@@ -49,7 +49,11 @@ recovered 21/26 native-positive observations with ground-relative height, versus
 1/26 with scale alone and 0/26 raw, all with 0 FP. Low-boundary retention remained
 123/807; retain the geometry component and investigate detail loss. All 11 cached
 frames were processed without inference or real-time replay; these are consumed
-synthetic reference diagnostics, not independent obstacle accuracy.
+synthetic reference diagnostics, not independent obstacle accuracy. The subsequent
+[support comparison](../research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md)
+found no gain from elevation or dual support: all 21/26, 0 FP. Four misses have no
+eligible near candidate; the remaining weak candidates lack eligible triples.
+Keep depth support and test distance/local geometry on distinct views next.
 
 Historical DTR/CARLA terminals remain unchanged. Their capture and protected-run
 continuations are parked; this perception question does not reopen frozen runs.
