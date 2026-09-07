@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-07",
-  "source_fingerprint": "0d5873333cfc9b48aed6a976345c2af35978d64493a5ac667add2bbce5d6f704",
+  "source_fingerprint": "ba5d01e2d4d45cc46ef295d218feeac052937e13b883b4eb2eb320887a8b177f",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 241,
+    "experiments": 242,
     "current_terminals": 44,
-    "run_associations": 239
+    "run_associations": 240
   },
   "failure_layers": [
     {
@@ -23245,6 +23245,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "nf-g8-whisker-2026-09-07 Can RGB-only current-near learning retain stopped obstacles while separating observed closing from camera rotation? Single-frame learner and frozen Hypersim Small supported-depth observed-closing baseline 1024 controlled clips; current-near plus separate temporal closing; ordinary versus Reichardt-inspired video, three seeds Per-head near and closing TP/FP/FN/UNKNOWN at validation-only thresholds; stop/static retention and support localization Retain ordinary video as a Development comparator; bio is a recall/FPR challenger without unconditional replacement; no App or DTR promotion research/active/dtr-r0/nearfield/WHISKER_20260907.md ue-willow-nf-g8-controlled-whisker"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g9a-grounding-2026-09-07",
+      "status": "active",
+      "question": "Do frozen G8 BODY and HEAD alerts change selectively when the corresponding bar or box is removed?",
+      "baseline": "Nine frozen G8 checkpoints and exact G8 validation-selected thresholds",
+      "change": "Fresh12 bar-box factorial quartets with separately verified native-visible support; no model training",
+      "primary_metric": "Selective-removal joint correctness and all-four-variant BODY/HEAD correctness, with false alerts and descriptive support accounting",
+      "decision": "Selective object response inadequate in new compound-box Development source; retain intervention regression and target body-part separation; no App promotion or causal-shortcut identification",
+      "report": "research/active/dtr-r0/nearfield/GROUNDING_20260907.md",
+      "source": "ue-willow-nf-g9a-bar-box-factorial",
+      "commit": "5312b8b1d68d2d35d7260906c46c93a7247a42e9",
+      "association_id": "nf-g9a-grounding-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 10
+      },
+      "search_text": "nf-g9a-grounding-2026-09-07 Do frozen G8 BODY and HEAD alerts change selectively when the corresponding bar or box is removed? Nine frozen G8 checkpoints and exact G8 validation-selected thresholds Fresh12 bar-box factorial quartets with separately verified native-visible support; no model training Selective-removal joint correctness and all-four-variant BODY/HEAD correctness, with false alerts and descriptive support accounting Selective object response inadequate in new compound-box Development source; retain intervention regression and target body-part separation; no App promotion or causal-shortcut identification research/active/dtr-r0/nearfield/GROUNDING_20260907.md ue-willow-nf-g9a-bar-box-factorial"
     }
   ],
   "associations": [
@@ -24956,6 +24979,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/WHISKER_20260907.md",
         "artifacts.local/nearfield/whisker-20260907-v2"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g9a-grounding-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g9a-grounding-v1",
+      "code_revision": "5312b8b1d68d2d35d7260906c46c93a7247a42e9",
+      "input_fingerprint": "83498b0edbe546f173eb5473ea86b55447e2468f24a586db79d71c219a2e0a82",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/GROUNDING_20260907.md",
+        "artifacts.local/nearfield/grounding-20260907"
       ],
       "decision_id": null,
       "source_rows": 1

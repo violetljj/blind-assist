@@ -19,6 +19,20 @@ above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
 `willow-eye170-first-person` passes replay and ground-depth optical-height checks.
 This is an acquisition smoke test.
 
+## Latest grouped object diagnostic
+
+[NF-G9-A](nearfield/GROUNDING_20260907.md) froze the nine G8 checkpoints and
+thresholds on12 fresh bar/box quartets (144frames,48windows). Ordinary HEAD
+alerts12/12 withboth objects but still8/12 withboxalone, versus0/12 withneither;
+both BODY/HEAD outputs are correct acrossallfour variants in only1/12 groups.
+Selective object response is insufficient on this compound/box Development
+source; this does not identify a shortcut cause or overturn G8's scoped signal.
+Retain G9 as an intervention regression set; target source/body-part separation
+before assuming maskgating or a larger backbone will fix the problem. No new
+App/DTR promotion. UE now supports perobject native visibility, exact retained
+geometry checks and measured settling preflight. Main capture100s, frozen
+inference3.43s, no fitting; saved Willow unchanged.
+
 ## Latest RGB-only learning probe
 
 [NF-G8](nearfield/WHISKER_20260907.md) completed 1,024 controlled clips with

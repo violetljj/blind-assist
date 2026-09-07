@@ -1,0 +1,96 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_FROZEN_INTERVENTION_DEVELOPMENT",
+  "git_base_revision": "5312b8b1d68d2d35d7260906c46c93a7247a42e9",
+  "registration_scope": "Completed small G9-A diagnostic; no fitting or threshold selection",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/protocol.md",
+      "sha256": "f3c37621807245bb27d262065c050fc48f5e0163bb653b6083b6cf191c81fbd6"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/preflight/spec.json",
+      "sha256": "9feaad1d8c7901b34c60cde6ddf50a0323e2ad7a23066579a86e835cca22401c"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/preflight/capture/receipt.json",
+      "sha256": "8193008b23bad8a19300b129e88e324e095b75053962c77eb36150f794265e46"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/preflight/capture/process-release.json",
+      "sha256": "b23174df82728a03c920442cfa2d34f3bfb666768bef0e918e4ed2710c3f0eb0"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/preflight/capture/verification.json",
+      "sha256": "5f65ef7da8b95993808fd6eb6f11f5377a962581154860d00dd0fb79a64b2b7c"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/preflight/selection.json",
+      "sha256": "2f1209a019a281285fa55002fb5cd38496a589fbc6f41fd5c512671e732f032f"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/spec.json",
+      "sha256": "e49edaf391e81960dd7301e099d0585ff5398720ab831ba06fddda402d4c4e8d"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/receipt.json",
+      "sha256": "5209f7239c183e259b7e6701f5099224da0e4b520338d7966c9f2972fc2b885d"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/process-release.json",
+      "sha256": "fa3bb7b385169920f202b4edbf9bd230633ce5b53ddddb84ebe62262126c0479"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/verification.json",
+      "sha256": "1609a767eda02040da303262f74637c72448524c83ed26d8fd62a16f9b7f91e7"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/model/dataset.json",
+      "sha256": "15253205f7370595ade4ac2b81a71b3b8329a45bf8b1b38ceab2f7ccba4abfc7"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/evaluator/labels.json",
+      "sha256": "f76421c7edc6ae37e97bcc2a4cd8309bab989cff4928156032f36321e0234459"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/evaluator/support.npz",
+      "sha256": "373a55e5674095cfa041b237ffa509fb2a4aacbfde9dbf8e3f4348e955e89f14"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/capture/evaluator/object_support.npz",
+      "sha256": "c9ecbce5549ff51d159013c3c4a4a0ec8efe3481566b04a9bd6638bc471b2472"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/learned/receipt.json",
+      "sha256": "60d4f82c375488c4a2216f1701abfe0bdbd6e37ee27739d15976b984a8fdd21f"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/learned/predictions.json",
+      "sha256": "c853854b44e27a15e04f89846b72e07ad3b301c3b823a034611897a94d95333c"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/learned/support_predictions.npz",
+      "sha256": "c1ac62a7ad41cc3e16a361b5f5091eeacb5e9e1b9bc05dc2d2c77936fd6da172"
+    },
+    {
+      "path": "artifacts.local/nearfield/grounding-20260907/main/evaluation/result.json",
+      "sha256": "ab5edff81e73e1d8ac64e7c7fdf6a62b1942bb7d0c6ccb66fa4c707301f73854"
+    }
+  ],
+  "source_sha256": {
+    "grounding_capture.py": "351d6e344fad140fc77f32e141df0281e307afa11066ca637e61b32f803beed1",
+    "grounding_evaluate.py": "3c07d9e10bd1d24454943c733b4e2248968b46059b7ad6b7381c718c1d8a0060",
+    "grounding_launch.py": "e22118c84d5eba4dd8b38854bb159e1de587fbc63cddd862ff0f6a847c9927ef",
+    "grounding_predict.py": "aa7f430bc57c8c47118a9156360ec2c01bdeba12b17472d02d1ad14225da9b69",
+    "grounding_preflight.py": "f9b18e05761f7cc5b6139f0f919d61249e18604cfec2a8c5aa876671205b840c",
+    "grounding_spec.py": "c53a4c6578516eb1c73ec14c827ee5a6ada23e26637eae1aad65176c606ee6a4",
+    "grounding_verify.py": "e794d51d9c7c3606a50cd984d874e13408c48a24a366fe88aebf33bb82878a8b",
+    "test_grounding_metrics.py": "9b67e142ad063a012df1aae667f4c492c4e1caafb4cd7bdbe9bdb1d83a6e5937",
+    "test_grounding_predict.py": "87954bc931965bc236eadbd603d19261f010d37512c79bc99caf04c83573acf3",
+    "test_grounding_source.py": "590659fa2e547ffff4c4b556dd9eca86daae27d9f31ff1606048611b9f2bcad8"
+  },
+  "threshold_reference": {
+    "path": "artifacts.local/nearfield/whisker-20260907-v2/evaluation/result.json",
+    "sha256": "02254db46db2cf1111a82508f8ab9b1e8783558630e3328d589b6034c1b04d02"
+  }
+}
