@@ -1,4 +1,4 @@
-"""Run existing UE captures with native lossless EXR and bounded NPY conversion.
+"""Run UE capture with native NPY or bounded lossless EXR transport.
 
 All generated material stays under artifacts.local. The shared .uproject and saved map are never edited.
 """
@@ -62,6 +62,17 @@ def run_owned(command, env, out, timeout, on_poll=None):
 
 def capture(args):
     from run_obstacle_research import engine_root
+    cadence = getattr(args, 'cadence', 'auto')
+    if cadence == 'auto':
+        cadence = 'burst' if args.capture in ('grounding', 'factorial') else 'tick'
+    plugin = getattr(args, 'plugin', None)
+    if args.depth_export == 'auto':
+        args.depth_export = 'native' if plugin else 'exr'
+    if args.depth_export in ('native', 'native_probe'):
+        if not plugin or not plugin.is_file():
+            raise ValueError('Native export requires --plugin from build_ue_capture_plugin.py')
+        if not (plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll').is_file():
+            raise ValueError('Native plugin DLL is missing')
     root = (REPO / 'artifacts.local').resolve()
     spec = args.spec.resolve()
     if not spec.is_relative_to(root) or not spec.is_file():
@@ -79,17 +90,21 @@ def capture(args):
     shutil.copy2(spec, snapshot/'spec.json')
     spec = snapshot/'spec.json'
     env = dict(os.environ, BA_NEARFIELD_SPEC=str(spec), BA_NEARFIELD_OUTPUT=str(out),
-               BA_UE_DEPTH_EXPORT=args.depth_export)
+               BA_UE_DEPTH_EXPORT=args.depth_export,
+               BA_UE_CADENCE=cadence)
     env['UE-LocalDataCachePath'] = str(project / 'DerivedDataCache')
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'),
                str(project / 'BlindAssistStreetLab.uproject'),
                '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
                '-nosound', '-nop4', '-NoSplash', '-ddc=NoShared', '-abslog=' + str(out/'editor.log')]
-    write(out / 'launch.json', dict(depth_export=args.depth_export, script=str(script),
+    if args.depth_export in ('native', 'native_probe'):
+        command += ['-PLUGIN=' + str(plugin.resolve()), '-EnablePlugins=BlindAssistCapture']
+    write(out / 'launch.json', dict(depth_export=args.depth_export, cadence=env['BA_UE_CADENCE'], script=str(script),
           script_sha256=file_hash(script), exporter_sha256=file_hash(script.with_name('ue_depth_export.py')),
           transport_sha256=file_hash(script.with_name('ue_exr_transport.py')),
-          spec_sha256=file_hash(spec), command=command))
+          spec_sha256=file_hash(spec), command=command,
+          plugin_binary_sha256=file_hash(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll') if plugin else None))
     transport = None
     try:
         if args.depth_export in ('exr', 'exr_probe'):
@@ -132,7 +147,12 @@ def main():
     p.add_argument('--timeout', type=float, default=1800)
     p.add_argument('--spec', type=Path, required=True)
     p.add_argument('--capture', choices=CAPTURES, required=True)
-    p.add_argument('--depth-export', choices=('legacy','single_access','exr','exr_probe'), default='exr')
+    p.add_argument('--depth-export', choices=('auto','legacy','single_access','exr','exr_probe','native','native_probe'), default='auto',
+                   help='Auto selects native when --plugin is supplied, otherwise EXR')
+    p.add_argument('--cadence', choices=('auto','tick','burst'), default='auto',
+                   help='Auto batches grounding/factorial poses; whisker motion retains tick cadence')
+    p.add_argument('--plugin', type=Path, default=os.environ.get('BA_UE_CAPTURE_PLUGIN'),
+                   help='Built native plugin descriptor; also accepts BA_UE_CAPTURE_PLUGIN')
     capture(parser.parse_args())
 
 

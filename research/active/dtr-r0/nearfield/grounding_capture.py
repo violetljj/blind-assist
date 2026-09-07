@@ -33,7 +33,7 @@ started = time.monotonic()
 capture_times = []
 profiles = []
 frame_started = None
-report = {'status': 'RUNNING', 'expected_map_sha256': EXPECTED,
+report = {'status': 'RUNNING', 'cadence': os.environ.get('BA_UE_CADENCE', 'tick'), 'expected_map_sha256': EXPECTED,
           'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
 
 
@@ -141,6 +141,9 @@ def tick(delta):
             after = time.monotonic() + 30
             return
         if stage == 1:
+            if os.environ.get('BA_UE_CADENCE') == 'burst':
+                for key in levels.get_viewport_config_keys():
+                    levels.editor_set_viewport_realtime(False, key)
             rgb = component(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR, u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
             stage = 2
@@ -154,9 +157,16 @@ def tick(delta):
                 frame_started = time.perf_counter()
                 prepare(cases[index])
                 prepare_done = time.perf_counter()
-            rgb.capture_component2d.capture_scene()
-            warm += 1
-            if warm <= (32 if index == 0 else cases[index].get('settling_frames',8)):
+            settling = (32 if index == 0 else cases[index].get('settling_frames',8))
+            if os.environ.get('BA_UE_CADENCE') == 'burst':
+                # Same number of view renders, without waiting for unused editor ticks.
+                for _ in range(settling + 1):
+                    rgb.capture_component2d.capture_scene()
+                warm = settling + 1
+            else:
+                rgb.capture_component2d.capture_scene()
+                warm += 1
+            if warm <= settling:
                 after = 0
                 return
             settle_done = time.perf_counter()

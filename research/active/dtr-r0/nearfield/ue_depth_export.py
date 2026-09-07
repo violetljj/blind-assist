@@ -1,15 +1,16 @@
 """Compatible depth export for opt-in UE acquisition, including same-buffer probes.
 
-EXR mode never exposes the pixel array to Python. Probe mode deliberately
+Native and EXR modes never expose the pixel array to Python. Probe mode deliberately
 does extra work and must not be reported as production acquisition throughput.
 """
 import array
+import hashlib
 import math
 from pathlib import Path
 import struct
 import time
 
-MODES = ('legacy', 'single_access', 'exr', 'exr_probe')
+MODES = ('legacy', 'single_access', 'exr', 'exr_probe', 'native', 'native_probe')
 
 
 def npy_header(width, height):
@@ -26,6 +27,21 @@ def export_depth(u, world, target, filename, mode, index=0):
     if path.exists():
         raise FileExistsError(path)
     width, height = target.size_x, target.size_y
+    if mode == 'native':
+        started = time.perf_counter()
+        if not u.BlindAssistCaptureLibrary.export_depth_npy(world, target, str(path)):
+            raise RuntimeError('Native NPY export failed: ' + str(path))
+        return dict(mode=mode, total_s=time.perf_counter()-started)
+    if mode == 'native_probe':
+        rows, hashes = {}, {}
+        order = ['single_access','native'] if index % 2 == 0 else ['native','single_access']
+        for candidate in order:
+            output = path if candidate == 'native' else path.with_suffix('.single_access.npy')
+            rows[candidate] = export_depth(u, world, target, output, candidate, index)
+            hashes[candidate] = hashlib.sha256(output.read_bytes()).hexdigest()
+        if len(set(hashes.values())) != 1:
+            raise ValueError('Native NPY differs from same-target Python reference')
+        return dict(mode=mode, order=order, measurements=rows, sha256=hashes, bytes_equal=True)
     if mode == 'exr':
         started = time.perf_counter()
         # Export uses native RGBA32F/linear/RCM_MinMax and lossless FLOAT EXR.

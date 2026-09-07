@@ -1,0 +1,19 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "BlindAssist Capture",
+  "Description": "Native float32 depth NPY export for the synthetic UE laboratory.",
+  "Category": "Research",
+  "EnabledByDefault": false,
+  "CanContainContent": false,
+  "SupportedTargetPlatforms": ["Win64"],
+  "Modules": [
+    {
+      "Name": "BlindAssistCapture",
+      "Type": "Editor",
+      "LoadingPhase": "Default",
+      "PlatformAllowList": ["Win64"]
+    }
+  ]
+}

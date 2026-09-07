@@ -1,5 +1,9 @@
 # UE depth acquisition throughput upgrade
 
+Follow-up: [native NPY and batched rendering](UE_CAPTURE_NATIVE_BURST_20260907.md)
+installs the SDK successfully and measures9.34frames/s. The measurements below
+retain the first delivery's EXR/tick configuration and remain historical.
+
 Engineering only: existing consumed G9 Development scenes, no training, model
 scoring or new research terminal. Saved Willow map, RGB rendering, 640x360
 resolution, settling counts, simulation timestamps and final dataset schema
@@ -107,9 +111,10 @@ cross-job persistent engine, asynchronous GPU readback, or a demonstrated
 hundreds-of-thousands-frame service. The main remaining steady cost is settled
 rendering plus RGB export. Preserve image quality when optimizing these next.
 
-A direct C++ NPY prototype was attempted but could not build because the machine
+At this first delivery, a direct C++ NPY prototype was attempted but could not build because the machine
 lacks the .NET Framework SDK used by UE's build graph. The authorized installer
 attempt requested only `Microsoft.Net.Component.4.8.SDK` and exited5007 because
 the current process lacks administrative elevation. No SDK installation is
-claimed. That unbuilt prototype and failure logs remain under the evidence root,
-outside delivered source; the working EXR path requires no new SDK.
+claimed for that attempt. The failure logs remain under the evidence root.
+The subsequent linked follow-up installs the SDK with normal Windows elevation
+and delivers the compiled, validated native source. EXR still needs no new SDK.

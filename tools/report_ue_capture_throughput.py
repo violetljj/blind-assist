@@ -17,6 +17,7 @@ def summarize(root):
     times = receipt['actual_capture_monotonic_s']
     intervals = [b-a for a,b in zip(times,times[1:])]
     result = dict(frames=receipt['frame_count'], mode=rows[0]['mode'],
+                  cadence=receipt.get('cadence','tick'),
                   script_wall_s=receipt['wall_elapsed_s'],
                   process_wall_s=read(root/'process-release.json')['wall_elapsed_s'],
                   steady_elapsed_s=times[-1]-times[0],
@@ -27,6 +28,8 @@ def summarize(root):
         result['production_throughput']=False
         modes=list(rows[0]['measurements'])
         result['median_export_s']={m:statistics.median(r['measurements'][m]['total_s'] for r in rows[1:]) for m in modes}
+        if 'bytes_equal' in rows[0]:
+            result['same_target_byte_parity']=all(r['bytes_equal'] for r in rows)
     else:
         result['production_throughput']=True
         result['median_export_s']=statistics.median(r['total_s'] for r in rows[1:])

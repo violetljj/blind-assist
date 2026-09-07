@@ -26,7 +26,7 @@ class RunnerTests(unittest.TestCase):
                                   engine=Path('unused'),depth_export='exr',timeout=1)
 
     def fake_process(self,command,env,out,timeout,on_poll=None,corrupt=False):
-        self.assertIn(str(out/'source'/'grounding_capture.py').replace('\\','/'),command[2])
+        self.assertIn(str(out/'source').replace('\\','/'),command[2])
         self.assertEqual(Path(env['BA_NEARFIELD_SPEC']),out/'source/spec.json')
         self.assertTrue((out/'source/ue_exr_transport.py').is_file())
         folder=out/'evaluator/native';folder.mkdir(parents=True)
@@ -53,6 +53,23 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(json.loads((out/'receipt.json').read_text())['status'],'FAIL')
         self.assertEqual(json.loads((out/'engine-receipt.json').read_text())['status'],'PASS')
         self.assertEqual(json.loads((out/'completion.json').read_text())['status'],'FAIL')
+
+    def test_auto_without_plugin_uses_exr(self):
+        args=self.args();args.depth_export='auto'
+        with patch.object(runner,'run_owned',side_effect=self.fake_process):runner.capture(args)
+        launch=json.loads((self.root/'capture/launch.json').read_text())
+        self.assertEqual(launch['depth_export'],'exr')
+
+    def test_native_missing_plugin_fails_before_creating_output(self):
+        args=self.args();args.depth_export='native'
+        with self.assertRaises(ValueError):runner.capture(args)
+        self.assertFalse(args.output.exists())
+
+    def test_auto_preserves_motion_adapter_tick_cadence(self):
+        args=self.args();args.capture='whisker';args.cadence='auto'
+        with patch.object(runner,'run_owned',side_effect=self.fake_process):runner.capture(args)
+        launch=json.loads((self.root/'capture/launch.json').read_text())
+        self.assertEqual(launch['cadence'],'tick')
 
 
 if __name__=='__main__':unittest.main()
