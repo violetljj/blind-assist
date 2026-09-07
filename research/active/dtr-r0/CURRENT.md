@@ -48,10 +48,10 @@ below the height filter. The [cached ground probe](nearfield/GROUND_ANCHOR_20260
 then recovered 1/26 with scale only and 21/26 with ground-relative height, with
 or without scale; all four arms had 0 FP. Fits used predictions/calibration only.
 Low-boundary matches remained 123/807; shape/overhead coverage is not established.
-All 11 frames/44 arm evaluations took 1.96 s internally without UE or inference.
 [Support comparison](nearfield/SURFACE_SUPPORT_20260907.md): all arms 21/26,0 FP.
-Four misses lack near candidates, one lacks eligible triples. Keep depth support.
-Next test distinct views. Registration still fails at line252; no promotion.
+[18 distinct views](nearfield/DISTINCT_VIEWS_20260907.md): raw22/87 vs ground37/87,
+0 FP, but failed ground fits suppress15 raw wall positives. Keep component only;
+next decouple ground availability from near alerts. Registration remains blocked.
 
 ## Retained evidence and baseline
 

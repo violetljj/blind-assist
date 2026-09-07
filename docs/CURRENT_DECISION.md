@@ -53,7 +53,10 @@ synthetic reference diagnostics, not independent obstacle accuracy. The subseque
 [support comparison](../research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md)
 found no gain from elevation or dual support: all 21/26, 0 FP. Four misses have no
 eligible near candidate; the remaining weak candidates lack eligible triples.
-Keep depth support and test distance/local geometry on distinct views next.
+Keep depth support. On [18 distinct views](../research/active/dtr-r0/nearfield/DISTINCT_VIEWS_20260907.md),
+ground geometry improves22/87 to37/87 with0 FP, but failed ground fits suppress
+15 raw wall positives. Retain the component; ground availability must not be
+the sole gate for near alerts. Suspended-bar and pitch-related failures remain.
 
 Historical DTR/CARLA terminals remain unchanged. Their capture and protected-run
 continuations are parked; this perception question does not reopen frozen runs.
