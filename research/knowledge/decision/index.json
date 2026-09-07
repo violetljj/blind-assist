@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-07",
-  "source_fingerprint": "70b7a6ee056e4557b2dfeaac56cd8f7e07d310e71b27ab193b71cad7cc65b6fc",
+  "source_fingerprint": "0d5873333cfc9b48aed6a976345c2af35978d64493a5ac667add2bbce5d6f704",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 240,
+    "experiments": 241,
     "current_terminals": 44,
-    "run_associations": 238
+    "run_associations": 239
   },
   "failure_layers": [
     {
@@ -23220,6 +23220,31 @@
         "decision_lifecycle": 10
       },
       "search_text": "nf-g7-contact-retina-2026-09-07 Does geometry-guided visual history improve BODY/HEAD contact warning over single-frame and ordinary video? Fixed Hypersim Small with body-corridor support adapter; same-capacity single-frame and ordinary-video learners Group-separated paired UE trajectories; ideal-pose edge-normal plane sweep; contact labels and repeated-history intervention Contact episode recovery, all and pure-negative false-alert clips, per-horizon cells, UNKNOWN, simulated lead and measured compute Useful joint-history candidate signal; no retained replacement. Structure ensemble 7/8 with 3 urgency-false-alert clips; single-frame 7/8 with 1 negative false alert; no threshold retuning. research/active/dtr-r0/nearfield/CONTACT_RETINA_20260907.md ue-willow-nf-g7-controlled-contact"
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g8-whisker-2026-09-07",
+      "status": "active",
+      "question": "Can RGB-only current-near learning retain stopped obstacles while separating observed closing from camera rotation?",
+      "baseline": "Single-frame learner and frozen Hypersim Small supported-depth observed-closing baseline",
+      "change": "1024 controlled clips; current-near plus separate temporal closing; ordinary versus Reichardt-inspired video, three seeds",
+      "primary_metric": "Per-head near and closing TP/FP/FN/UNKNOWN at validation-only thresholds; stop/static retention and support localization",
+      "decision": "Retain ordinary video as a Development comparator; bio is a recall/FPR challenger without unconditional replacement; no App or DTR promotion",
+      "report": "research/active/dtr-r0/nearfield/WHISKER_20260907.md",
+      "source": "ue-willow-nf-g8-controlled-whisker",
+      "commit": "9f491ebab43678e7626b368b5c6912d6358a0d9f",
+      "association_id": "nf-g8-whisker-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g8-whisker-2026-09-07 Can RGB-only current-near learning retain stopped obstacles while separating observed closing from camera rotation? Single-frame learner and frozen Hypersim Small supported-depth observed-closing baseline 1024 controlled clips; current-near plus separate temporal closing; ordinary versus Reichardt-inspired video, three seeds Per-head near and closing TP/FP/FN/UNKNOWN at validation-only thresholds; stop/static retention and support localization Retain ordinary video as a Development comparator; bio is a recall/FPR challenger without unconditional replacement; no App or DTR promotion research/active/dtr-r0/nearfield/WHISKER_20260907.md ue-willow-nf-g8-controlled-whisker"
     }
   ],
   "associations": [
@@ -24918,6 +24943,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CONTACT_RETINA_20260907.md",
         "artifacts.local/nearfield/contact-retina-20260907-v1/evaluation/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g8-whisker-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g8-whisker-v2",
+      "code_revision": "9f491ebab43678e7626b368b5c6912d6358a0d9f",
+      "input_fingerprint": "cfa50987b6ca06900f7b196f25d0873898a7f68c9a80ec13fce3d972f1577dfb",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/WHISKER_20260907.md",
+        "artifacts.local/nearfield/whisker-20260907-v2"
       ],
       "decision_id": null,
       "source_rows": 1

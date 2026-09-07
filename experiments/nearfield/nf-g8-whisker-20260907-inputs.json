@@ -1,0 +1,132 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_CONTROLLED_SYNTHETIC_DEVELOPMENT",
+  "git_base_revision": "9f491ebab43678e7626b368b5c6912d6358a0d9f",
+  "code_revision_role": "Git base only. Capture/baseline receipts bind source hashes; training recovery source hashes are post-failure and explicitly disclosed.",
+  "registration_scope": "Completed fixed group-split RGB-only current-near/closing experiment; no rerun or refresh of consumed evidence.",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/protocol-pre-capture.md",
+      "sha256": "cd04991f726a76fb9be993083a0eb575d8dce77f82e6a28a44ea9cc46456045d"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/spec.json",
+      "sha256": "85a7fd013baace3982d7d0bd8a71161af040c881e29256f82d1d242c6b437b1d"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/corrected-source-smoke.json",
+      "sha256": "c1e0504cbbe97fc8a4482890d6c11b4176fda18643ad0695145f5dd7b1d95ca4"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/receipt.json",
+      "sha256": "ef606e23beac6c820f409361fe7f5acc22b613a4f6c4401bb65225f3cf9f1c57"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/process-release.json",
+      "sha256": "e80d0a7956708c2c76dc53ebd98135fa3e543065d8ca92488103da2178a08071"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/verification.json",
+      "sha256": "c2ba3b67fc2756a8158ef2058bce8bd8ab3357b7dfc281763f3649ff00d13b7d"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/model/dataset.json",
+      "sha256": "6a43c823bf8bba6229fa79643a7c94fb305461375f97be3e91497d411c142421"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/training/labels.json",
+      "sha256": "7cccee75020749e0efb332ae107e74274b93557eee30a23f78f023599cb668b7"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/capture/evaluator/labels.json",
+      "sha256": "8e4e4602778905cf4546c88f3b4f27efd451bec4072acc923422e7b6d4d6e150"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned/config.json",
+      "sha256": "614153485e58a516a9a2b0111f070f5b9c02e58de3ac1e779416e07a3c14d9a5"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned/receipt-failed.json",
+      "sha256": "b3a9d36acd9cf6125055fcb8f133cce307c9477a3a89c6883a8feed0a7a33064"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned/receipt.json",
+      "sha256": "018ce478af8dd704bbb063ddcb02e4524b5f1a54919409c26288174f3d5a142b"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned/predictions.json",
+      "sha256": "aaf021df9ccc3d82199213a1d623edacf8dd2a36d653a0cfa8624755a8aae4e9"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned/support_predictions.npz",
+      "sha256": "60e381c75c17c9f52c1360cad93b33edb3f5a8ea6b6aa8ad3d5955c49d1dc9d7"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned-process-release.json",
+      "sha256": "c9978066b83f548243f8088b6fd4b18c85f94f23ee3391b01c2e7b2a3b71dee7"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/recover_learned_receipt.py",
+      "sha256": "ee3745e70801438ae0f18f449f415325a34ca0b6ca4c29e650745b518ff9b424"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/baseline/batch-preflight.json",
+      "sha256": "29b1b85f5589f3e7fe511df83bdf04038d2584f9f3ea5568cb1a1c4f5d620817"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/baseline/receipt.json",
+      "sha256": "e24915c2860f2192225f88664e6937a8d6a8b134895e73928b86403829e17430"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/baseline/predictions.json",
+      "sha256": "69169cca5843cf58f3c73fa0a2a1205b47ea5e4ac3de30260a171374ea16558c"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/baseline-process-release.json",
+      "sha256": "9625eefee74c607ba0f6892407a759be6cc547c1da97ce02804f24157fa89d9a"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/evaluation/result.json",
+      "sha256": "02254db46db2cf1111a82508f8ab9b1e8783558630e3328d589b6034c1b04d02"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/evaluation-process-release.json",
+      "sha256": "2258bbf9d86d17f0986944238ea8304323e638df4b1d206367e7f1ad15ebcb21"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/learned-evaluation/result.json",
+      "sha256": "ea85b35b9ff4dfbb9faa9f37e736d6f3b03897be0c864e938f035c3be86efffe"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/matched-closing-diagnostic.json",
+      "sha256": "37f2145dfa41b1fa978d92d716ea3ff6f7130d3808a4a61004969dca151dd049"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/matched_closing_diagnostic.py",
+      "sha256": "c6710b66780d77d4796aa51f0ffe523e1cac7f5dc9d24a8c4fdfc5c86a9970f6"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/latency.json",
+      "sha256": "40dc2588e35e3274dac3b8f64481584604261d7d857cc3cf5751de5d045d8428"
+    },
+    {
+      "path": "artifacts.local/nearfield/whisker-20260907-v2/pipeline-progress.json",
+      "sha256": "c34b29e716072c1fb0f6d39a535360aeaafc19054405a9ffc1cf4995da025d7b"
+    }
+  ],
+  "current_source_sha256": {
+    "benchmark_whisker.py": "6fee1e4a9370597bba654ac24b58eed8bd6b97c10dcc0e9b0d3efedf54618897",
+    "capture_whisker.py": "34cae7b54e4d1fd5d102afff01e2f059c3ced2ea668fffcdabb832b28c212b15",
+    "evaluate_whisker.py": "ee532e0280e3b0cd3abc3f838e29eadd131910b4333ee6f9e4df1ccdd4d0d66d",
+    "launch_whisker.py": "9427c96a7d7ef4dc149b58a39c813efede41bc5ec709788054c1c64be8f419d7",
+    "predict_whisker_depth.py": "b47e0cfe5a9feeb79feff706fd5407422396ad6a1a51d13cbcbd14e1b7ed6c76",
+    "test_whisker_depth.py": "210e6ef532020f6522c33243d40fcc9fdf61d9ca06b40d3325d58efb47cbffa2",
+    "test_whisker_metrics.py": "963a901b67bfb1491fae7410e7d85f34fa5aa3ade1ce71014f012daec30e0315",
+    "test_whisker_model.py": "432aac6023a201e7601fc87153ed28bbea114034e18ab85fc70a31743e359918",
+    "test_whisker_source.py": "dc2ff38ba88ad64428d5f2494a25681c3cb760b1e69bcef4bb47bf52b4952252",
+    "train_whisker.py": "1e89e4ff41b2ffbffc2932778704ad852b0830091850cb5664168f61ffc73a7d",
+    "verify_whisker.py": "9e5376493db4d795cfefd2ab857c41c82ba123df0da1c6c736dd94e6d098c852",
+    "whisker_model.py": "f8b53871cf0b0b3d740494b9b409084547834bf604a2b61d5b3e1df93f487836",
+    "whisker_spec.py": "8568bbbb53190561411c36bcd68093a20fdc2013da37388bd647753969cc15ac"
+  }
+}

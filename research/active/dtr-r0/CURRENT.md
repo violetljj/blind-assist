@@ -19,6 +19,20 @@ above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
 `willow-eye170-first-person` passes replay and ground-depth optical-height checks.
 This is an acquisition smoke test.
 
+## Latest RGB-only learning probe
+
+[NF-G8](nearfield/WHISKER_20260907.md) completed 1,024 controlled clips with
+24 held-out parameter groups on the shared frozen Willow background. Ordinary
+video ensemble near TP is BODY192/192 and HEAD254/288, FP20/576 and6/480.
+Closing TP120/120 falls to0/120 on repeated history; near heads remain current-
+frame-only. Bio improves HEAD near recall to284/288 with FP29/480 (6.04%);
+it is a recall/FPR tradeoff, not an unconditional replacement. Keep ordinary
+as a compact Development comparator and bio as a challenger. A posthoc
+pose-matched diagnostic supports temporal closing use by both video arms.
+Auxiliary support does not establish causal object attribution. No new App or
+retained DTR promotion follows. Capture efficiency and receipt-path recovery
+without retraining are recorded in the report; failed source/logs remain.
+
 ## Capability question and current probe
 
 Goal: **盲杖互补的类别无关前视障碍感知** under limited compute. Prioritize walls,
