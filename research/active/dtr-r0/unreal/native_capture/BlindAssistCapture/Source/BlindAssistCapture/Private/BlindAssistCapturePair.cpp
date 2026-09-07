@@ -277,6 +277,13 @@ FBlindAssistRgbWriteProfile UBlindAssistCaptureLibrary::PollCapturePairs()
     return PumpPairs(false);
 }
 
+bool UBlindAssistCaptureLibrary::ResetCapturePairs()
+{
+    if (!IsInGameThread() || !Jobs.IsEmpty()) return false;
+    PairProfile = FBlindAssistRgbWriteProfile();
+    return true;
+}
+
 FBlindAssistRgbWriteProfile UBlindAssistCaptureLibrary::DrainCapturePairs()
 {
     check(IsInGameThread());

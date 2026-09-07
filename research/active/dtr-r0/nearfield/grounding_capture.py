@@ -23,6 +23,19 @@ pair_exporter = create_pair_exporter(u, os.environ['BA_UE_PAIR_EXPORT']) if os.e
 
 rgb_exporter = RgbExporter(u, os.environ.get('BA_UE_RGB_EXPORT', 'legacy')) if os.environ.get('BA_UE_RGB_EXPORT') and not pair_exporter else None
 
+STARTUP = os.environ.get('BA_UE_STARTUP', 'fixed')
+if STARTUP not in ('fixed', 'ready'):
+    raise ValueError('Unknown startup policy: ' + STARTUP)
+SESSION = globals().get('__ba_session__')
+readiness = None
+first_prepared = False
+readiness_progress_at = 0
+if STARTUP == 'ready':
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    from ue_capture_readiness import CaptureReadiness
+    readiness = CaptureReadiness(u)
+
 OUT = Path(os.environ['BA_NEARFIELD_OUTPUT'])
 SPEC = Path(os.environ['BA_NEARFIELD_SPEC'])
 EXPECTED = 'cf35e5c9df54cd0f781f09ea8105fe8ef6078ed0822d4e594d64216e79a254fb'
@@ -34,14 +47,16 @@ editor = u.get_editor_subsystem(u.UnrealEditorSubsystem)
 captures, objects, frames = [], [], []
 world = None
 stage = index = warm = 0
-after = time.monotonic() + 8
+after = time.monotonic() + (8 if STARTUP == 'fixed' else 0)
 finished = False
 started = time.monotonic()
+started_unix_s = time.time()
 capture_times = []
 profiles = []
 frame_started = None
-report = {'status': 'RUNNING', 'capture_time_semantics': 'GPU_PAIR_SUBMISSION' if pair_exporter else 'SYNCHRONOUS_READBACK_COMPLETE', 'settling_policy': os.environ.get('BA_UE_SETTLING', 'full'), 'cadence': os.environ.get('BA_UE_CADENCE', 'tick'), 'expected_map_sha256': EXPECTED,
+report = {'status': 'RUNNING', 'pid': os.getpid(), 'startup_policy': STARTUP, 'startup_settling_cadence': 'tick' if STARTUP == 'ready' else os.environ.get('BA_UE_CADENCE', 'tick'), 'map_reused': False, 'capture_time_semantics': 'GPU_PAIR_SUBMISSION' if pair_exporter else 'SYNCHRONOUS_READBACK_COMPLETE', 'settling_policy': os.environ.get('BA_UE_SETTLING', 'full'), 'cadence': os.environ.get('BA_UE_CADENCE', 'tick'), 'expected_map_sha256': EXPECTED,
           'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+report['started_unix_s'] = started_unix_s
 
 
 def write(path, value):
@@ -51,7 +66,10 @@ def write(path, value):
 
 def clear_objects():
     while objects:
-        api.destroy_actor(objects.pop())
+        actor = objects[-1]
+        if not api.destroy_actor(actor):
+            raise RuntimeError('Task object destruction failed')
+        objects.pop()
 
 
 def component(source, fmt):
@@ -129,18 +147,27 @@ def finish(error=None):
             actor = captures.pop()
             if actor.capture_component2d.texture_target:
                 u.RenderingLibrary.release_render_target2d(actor.capture_component2d.texture_target)
-            api.destroy_actor(actor)
+            if not api.destroy_actor(actor):
+                raise RuntimeError('Task capture destruction failed')
     except Exception:
         report['cleanup_error'] = traceback.format_exc()
         report['status'] = 'FAIL'
     finally:
+        report['readiness'] = readiness.receipt() if readiness else {'status': 'FIXED_WAIT_REFERENCE'}
+        try:
+            u.unregister_slate_post_tick_callback(handle)
+        except Exception:
+            report['status'] = 'FAIL'
+            report['callback_cleanup_error'] = traceback.format_exc()
         write(OUT / 'receipt.json', report)
-        u.unregister_slate_post_tick_callback(handle)
-        u.SystemLibrary.quit_editor()
+        if SESSION is not None:
+            SESSION['on_complete'](report)
+        else:
+            u.SystemLibrary.quit_editor()
 
 
 def tick(delta):
-    global after, stage, world, rgb, depth, cases, index, warm, spec, frame_started
+    global after, stage, world, rgb, depth, cases, index, warm, spec, frame_started, first_prepared, readiness_progress_at
     if finished or time.monotonic() < after:
         return
     if (OUT / 'stop.request').exists():
@@ -156,10 +183,19 @@ def tick(delta):
             assert cases and len({c['name'] for c in cases}) == len(cases)
             write(OUT / 'evaluator/spec.json', spec)
             report['spec_sha256'] = hashlib.sha256(SPEC.read_bytes()).hexdigest()
-            assert levels.load_level(MAP)
+            current_world = editor.get_editor_world()
+            reuse = (SESSION is not None and SESSION.get('map_loaded') == MAP
+                     and current_world is not None
+                     and current_world.get_path_name().split('.')[0] == MAP)
+            if not reuse:
+                assert levels.load_level(MAP)
             world = editor.get_editor_world()
+            assert world.get_path_name().split('.')[0] == MAP, 'Unexpected loaded world'
+            report['map_reused'] = reuse
+            if SESSION is not None:
+                SESSION['map_loaded'] = MAP
             stage = 1
-            after = time.monotonic() + 30
+            after = time.monotonic() + (30 if STARTUP == 'fixed' else 0)
             return
         if stage == 1:
             if os.environ.get('BA_UE_CADENCE') == 'burst':
@@ -167,6 +203,24 @@ def tick(delta):
                     levels.editor_set_viewport_realtime(False, key)
             rgb = component(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR, u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
+            if readiness:
+                prepare(cases[0])
+                first_prepared = True
+                rgb.capture_component2d.capture_scene()
+                depth.capture_component2d.capture_scene()
+                readiness.begin(world, rgb.capture_component2d)
+                stage = 3
+                after = 0
+                return
+            stage = 2
+        if stage == 3:
+            if not readiness.poll():
+                if time.monotonic() >= readiness_progress_at:
+                    write(OUT / 'progress.json', dict(phase='READINESS', frames=0, readiness=readiness.receipt()))
+                    readiness_progress_at = time.monotonic() + 1
+                after = 0
+                return
+            report['readiness'] = readiness.receipt()
             stage = 2
         if stage == 2:
             if pair_exporter and not pair_exporter.ready():
@@ -184,11 +238,15 @@ def tick(delta):
                 if index == 0:
                     report['acquisition_started_monotonic_s'] = time.monotonic() - started
                 frame_started = time.perf_counter()
-                prepare(cases[index])
+                if index == 0 and first_prepared:
+                    first_prepared = False
+                else:
+                    prepare(cases[index])
                 prepare_done = time.perf_counter()
             settling = settling_count(cases[index], cases[index-1] if index else None, index, 32, 8, os.environ.get('BA_UE_SETTLING', 'full')) if os.environ.get('BA_UE_SETTLING') else (32 if index == 0 else cases[index].get('settling_frames',8))
-            if os.environ.get('BA_UE_CADENCE') == 'burst':
-                # Full settling on changed states; optional reuse retains converged view history.
+            if os.environ.get('BA_UE_CADENCE') == 'burst' and not (STARTUP == 'ready' and index == 0):
+                # Initial ready-mode settling spans real engine ticks so GPU
+                # feedback (including Nanite) can progress before publication.
                 for _ in range(settling + 1):
                     rgb.capture_component2d.capture_scene()
                 warm = settling + 1

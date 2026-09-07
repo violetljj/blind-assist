@@ -70,6 +70,17 @@ only for an engineering comparison against same-target reference outputs.
 
 ## Verified capability and limits
 
+For consecutive independent UE blocks, use the
+[batch capture workflow](UE_CAPTURE_BATCH.md): one editor process, per-block
+validation overlapping acquisition, exact-state settling reuse, and hash-checked
+resume. Keep raw blocks and caches on the worker; return thin manifests and
+receipts to the controller.
+
+Prefer the controller for interactive scene design and arbitrary UE C++ builds;
+sync changed assets/scripts to the worker for deployment, scripted expansion,
+variant generation and capture. Script-only scene expansion can run directly on
+the worker. Keep generated scenes/raw data on G and return only needed previews.
+
 The 2026-09-07 provisioning record verified generated-data checks:
 
 | Profile/surface | Verified scope |

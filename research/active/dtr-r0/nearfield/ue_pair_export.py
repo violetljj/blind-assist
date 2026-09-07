@@ -9,6 +9,9 @@ class PairExporter:
         if mode not in ('native_async', 'native_probe'):
             raise ValueError('Unknown pair mode: ' + mode)
         self.rows = []
+        reset = getattr(u.BlindAssistCaptureLibrary, 'reset_capture_pairs', None)
+        if reset is not None and not reset():
+            raise RuntimeError('Previous capture pairs are still pending')
 
     def profile(self, drain=False):
         api = self.u.BlindAssistCaptureLibrary

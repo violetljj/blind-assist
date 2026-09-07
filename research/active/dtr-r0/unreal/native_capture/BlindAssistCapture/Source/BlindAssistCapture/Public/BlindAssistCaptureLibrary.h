@@ -5,6 +5,26 @@
 #include "BlindAssistCaptureLibrary.generated.h"
 
 class UTextureRenderTarget2D;
+class USceneCaptureComponent2D;
+
+/** Nonblocking editor readiness observation; not a visual-convergence guarantee. */
+USTRUCT(BlueprintType)
+struct BLINDASSISTCAPTURE_API FBlindAssistCaptureReadiness
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    bool ReadySupported = false;
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    int32 AssetCompilationRemaining = -1;
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    int32 ShaderJobsRemaining = -1;
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    int32 PendingRenderAssets = -1;
+    /** A synchronous demand calculation completed for the prepared capture view. */
+    UPROPERTY(BlueprintReadOnly, Category = "BlindAssist|Capture")
+    bool StreamingUpdateCompleted = false;
+};
 
 USTRUCT(BlueprintType)
 struct BLINDASSISTCAPTURE_API FBlindAssistRgbWriteProfile
@@ -42,6 +62,17 @@ class BLINDASSISTCAPTURE_API UBlindAssistCaptureLibrary : public UBlueprintFunct
     GENERATED_BODY()
 
 public:
+    /** Submit the actual perspective capture view and synchronously calculate streaming demand.
+     * Returns false while compilation remains or the capture is unsupported; retry across ticks.
+     * Does not wait for requested mip IO, and does not cover temporal/virtual-texture convergence. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool PrepareCaptureReadiness(USceneCaptureComponent2D* Capture);
+
+    /** Poll actual initialization/streaming requests after PrepareCaptureReadiness succeeds.
+     * Counts are process-wide. A changed camera requires a new preparation. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture", meta = (WorldContext = "WorldContextObject"))
+    static FBlindAssistCaptureReadiness PollCaptureReadiness(UObject* WorldContextObject);
+
     /** Export red-channel centimetres as the capture pipeline's row-major float32 metres. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture", meta = (WorldContext = "WorldContextObject"))
     static bool ExportDepthNpy(UObject* WorldContextObject, UTextureRenderTarget2D* TextureRenderTarget, const FString& Filename);
@@ -60,6 +91,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FBlindAssistRgbWriteProfile DrainRgbWrites();
 
+    /** Reset cumulative counters only after the caller has polled/drained all writes. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool ResetRgbWrites();
+
     /** Queue GPU copies after the caller's CaptureScene commands. No synchronous readback. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static bool SubmitCapturePair(UTextureRenderTarget2D* RgbTarget, UTextureRenderTarget2D* DepthTarget, const FString& RgbFilename, const FString& DepthFilename, int32 MaxPending = 4);
@@ -71,4 +106,8 @@ public:
     /** Final drain may block on GPU fences and CPU writers. Check Failed before accepting output. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FBlindAssistRgbWriteProfile DrainCapturePairs();
+
+    /** Reset cumulative counters only after the caller has polled/drained all pairs. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool ResetCapturePairs();
 };

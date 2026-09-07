@@ -158,3 +158,10 @@ FBlindAssistRgbWriteProfile UBlindAssistCaptureLibrary::DrainRgbWrites()
 {
     return Reap(true);
 }
+
+bool UBlindAssistCaptureLibrary::ResetRgbWrites()
+{
+    if (!IsInGameThread() || !PendingWrites.IsEmpty()) return false;
+    Profile = FBlindAssistRgbWriteProfile();
+    return true;
+}

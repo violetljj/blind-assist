@@ -18,6 +18,10 @@ class RgbExporter:
             raise RuntimeError('Rebuild the capture plugin to enable native RGB export')
         self.u, self.mode, self.limit = u, mode, limit
         self.rows = []
+        if mode != 'legacy':
+            reset = getattr(u.BlindAssistCaptureLibrary, 'reset_rgb_writes', None)
+            if reset is not None and not reset():
+                raise RuntimeError('Previous RGB writes are still pending')
 
     def profile(self, drain=False):
         if self.mode == 'legacy':

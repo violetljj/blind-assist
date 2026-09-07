@@ -55,6 +55,38 @@ def owned_output(path):
     return path
 
 
+def validate_capture(out):
+    """Validate a fully drained block; safe to run while UE captures another block."""
+    import numpy as np
+    receipt = json.loads((out/'receipt.json').read_text(encoding='utf-8'))
+    if receipt['status'] != 'PASS' or not receipt['source_unchanged']:
+        raise RuntimeError('Capture failed; inspect ' + str(out/'receipt.json'))
+    spec = json.loads((out/'source/spec.json').read_text(encoding='utf-8-sig'))
+    if receipt['frame_count'] != len(spec['cases']):
+        raise ValueError('Capture count differs from frozen spec')
+    if receipt['spec_sha256'] != file_hash(out/'source/spec.json'):
+        raise ValueError('Spec hash differs from engine receipt')
+    pair = receipt.get('pair_exports', {}).get('mode', 'off')
+    verify_rgb(out, receipt['frame_count'], probe=pair == 'native_probe')
+    hashes = {}
+    for i in range(receipt['frame_count']):
+        path = out / f'evaluator/native/{i:04d}.npy'
+        depth = np.load(path, allow_pickle=False)
+        if depth.shape != (360, 640) or depth.dtype != np.dtype('<f4') or not np.isfinite(depth).all() or not ((depth >= 0) & (depth < 100)).all():
+            raise ValueError('Invalid GPU depth output: ' + str(path))
+        if pair == 'native_probe' and path.read_bytes() != path.with_name(path.stem + '.reference.npy').read_bytes():
+            raise ValueError('GPU depth differs from same-target reference: ' + str(path))
+        for payload in (path, out / f'model/sample/{i:04d}.png'):
+            hashes[payload.relative_to(out).as_posix()] = file_hash(payload)
+    for folder in ('model', 'evaluator'):
+        for payload in (out/folder).rglob('*.json'):
+            hashes[payload.relative_to(out).as_posix()] = file_hash(payload)
+    write(out/'payload-hashes.json', hashes)
+    write(out/'completion.json', dict(status='PASS', frames=receipt['frame_count'],
+                                    completed_unix_s=time.time(), payload_hashes_sha256=file_hash(out/'payload-hashes.json')))
+    return receipt
+
+
 def run_owned(command, env, out, timeout, on_poll=None):
     sys.path.insert(0, str(UE_SOURCE))
     from street_process_lifecycle import TaskProcessTree
@@ -101,7 +133,7 @@ def capture(args):
         rgb_export = 'legacy'
     if args.depth_export == 'auto':
         args.depth_export = 'native' if plugin else 'exr'
-    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off':
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off' or getattr(args, 'startup_policy', 'fixed') == 'ready':
         if not plugin or not plugin.is_file():
             raise ValueError('Native export requires --plugin from build_ue_capture_plugin.py')
         if not (plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll').is_file():
@@ -120,7 +152,7 @@ def capture(args):
     # Freeze the actual scripts used by this process against concurrent edits.
     snapshot = out/'source'
     snapshot.mkdir()
-    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py'), script.with_name('ue_settling.py'), script.with_name('ue_pair_export.py')):
+    for source in (script, script.with_name('ue_depth_export.py'), script.with_name('ue_exr_transport.py'), script.with_name('ue_rgb_export.py'), script.with_name('ue_settling.py'), script.with_name('ue_pair_export.py'), script.with_name('ue_capture_readiness.py')):
         shutil.copy2(source, snapshot/source.name)
     script = snapshot/script.name
     shutil.copy2(spec, snapshot/'spec.json')
@@ -128,15 +160,23 @@ def capture(args):
     env = dict(os.environ, BA_NEARFIELD_SPEC=str(spec), BA_NEARFIELD_OUTPUT=str(out),
                BA_UE_DEPTH_EXPORT=args.depth_export,
                BA_UE_CADENCE=cadence, BA_UE_RGB_EXPORT=rgb_export, BA_UE_SETTLING=settling_policy, BA_UE_PAIR_EXPORT=pair_export)
+    startup = getattr(args, 'startup_policy', 'fixed')
+    if startup == 'ready' and (not plugin or args.capture == 'whisker'):
+        raise ValueError('Readiness startup requires native grounding/factorial capture')
+    env['BA_UE_STARTUP'] = startup
     env['UE-LocalDataCachePath'] = str(project / 'DerivedDataCache')
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'),
                str(project / 'BlindAssistStreetLab.uproject'),
                '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
                '-nosound', '-nop4', '-NoSplash', '-ddc=NoShared', '-abslog=' + str(out/'editor.log')]
-    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off':
+    if getattr(args, 'lean_init', False):
+        command += ['-DisablePlugins=CLionSourceCodeAccess,VisualStudioCodeSourceCodeAccess',
+                    '-ini:Engine:[/Script/EngineSettings.GameMapsSettings]:EditorStartupMap=',
+                    '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:LoadLevelAtStartup=None']
+    if args.depth_export in ('native', 'native_probe') or rgb_export != 'legacy' or pair_export != 'off' or startup == 'ready':
         command += ['-PLUGIN=' + str(plugin.resolve()), '-EnablePlugins=BlindAssistCapture']
-    write(out / 'launch.json', dict(depth_export=args.depth_export, rgb_export=rgb_export, pair_export=pair_export, settling_policy=settling_policy, cadence=env['BA_UE_CADENCE'], script=str(script),
+    write(out / 'launch.json', dict(startup_policy=startup, lean_init=getattr(args, 'lean_init', False), depth_export=args.depth_export, rgb_export=rgb_export, pair_export=pair_export, settling_policy=settling_policy, cadence=env['BA_UE_CADENCE'], script=str(script),
           script_sha256=file_hash(script), exporter_sha256=file_hash(script.with_name('ue_depth_export.py')),
           rgb_exporter_sha256=file_hash(script.with_name('ue_rgb_export.py')),
           pair_exporter_sha256=file_hash(script.with_name('ue_pair_export.py')),
@@ -144,6 +184,8 @@ def capture(args):
           transport_sha256=file_hash(script.with_name('ue_exr_transport.py')),
           spec_sha256=file_hash(spec), command=command,
           plugin_binary_sha256=file_hash(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll') if plugin else None))
+    if getattr(args, '_prepare_only', False):
+        return dict(command=command, env=env, out=out, script=script)
     transport = None
     try:
         if args.depth_export in ('exr', 'exr_probe'):
@@ -199,6 +241,10 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--engine', type=Path)
     p.add_argument('--timeout', type=float, default=1800)
+    p.add_argument('--startup-policy', choices=('fixed', 'ready'), default='fixed',
+                   help='Ready requires the readiness-enabled native plugin; preserves pose settling')
+    p.add_argument('--lean-init', action='store_true',
+                   help='Skip unused startup map and two source-code IDE integrations')
     p.add_argument('--spec', type=Path, required=True)
     p.add_argument('--capture', choices=CAPTURES, required=True)
     p.add_argument('--depth-export', choices=('auto','legacy','single_access','exr','exr_probe','native','native_probe'), default='auto',
