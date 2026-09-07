@@ -40,8 +40,14 @@ fresh capacity check or a full APK/native build. NDK/CMake, TensorFlow/export
 environment, UE engine/scenes, datasets, cross-network and reboot recovery still
 need task-specific verification. Consult the local acceptance receipt.
 
-Before dispatch, inspect once and allocate only free capacity; initially use one
-heavy job and four CPU-library threads. Match a specific committed source revision
+Throughput is the priority: proactively dispatch useful independent work and run
+jobs concurrently when that shortens completion time, without renewed approval.
+There is no fixed one-job or four-thread cap. Inspect current capacity when making
+placement decisions and size concurrency/thread counts to CPU, RAM, VRAM and I/O;
+avoid nested thread oversubscription and memory exhaustion. Overlap transfer,
+CPU preprocessing and GPU execution when useful; do not serialize merely by habit.
+The worker environment leaves CPU-library thread counts unset by default; set
+per-job limits when sharing capacity. Match a specific committed source revision
 and protocol. Preserve worker edits; transfer primary WIP only as an explicitly
 scoped, hashed task input. Prefer existing compatible tool packages and required
 models/data from the primary machine; verify hashes. Do not copy whole virtual
