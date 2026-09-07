@@ -21,6 +21,19 @@ This is an acquisition smoke test.
 
 ## Latest grouped object diagnostic
 
+[NF-G12](nearfield/REPRESENTATION_20260908.md) completed six paired600-step fits
+of RepViT and RepViT plus shallow detail, reusing G10 with zero refits. On32 new
+groups, common-VAL recall-first primary ensemble joint is25/32 G10,30/32 RepViT,
+27/32 plus detail; bar recall28/32 ->32/32 for both new arms. RepViT is retained
+as a strong decision challenger, not a failed representation route. The full
+joint replacement rule remains unmet: RepViT diversejoint stays14/16 and HEAD
+peak falls32/64 ->29/64; detail raises HEADpeak45/64 but diversejoint falls12/16.
+Detail's paired single-seed primary joints do not decline, and compatibility
+ensemble ties29/32, so its aggregate tradeoff is operating-point dependent.
+Retain G10 as the complete-contract baseline and the B/C checkpoints as disclosed
+challengers. Worker native capture verified128frames; six fits total730.06s;
+new models are about4.73M parameters versus45,646. No temporal/App promotion.
+
 [NF-G11](nearfield/DETACHED_20260907.md) completed three fixed detached-gate fits
 and 32 fresh paired TEST groups. Localization recovers (BODY/HEAD IoU
 0.160/0.113 -> 0.252/0.230), but primary joint correctness falls 26/32 -> 17/32:

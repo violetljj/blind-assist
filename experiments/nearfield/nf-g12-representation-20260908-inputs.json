@@ -1,0 +1,176 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_FIXED_REPRESENTATION_COMPARISON",
+  "git_base_revision": "827ce4d57119bc836880d6798878559c2b5ecd6c",
+  "registration_scope": "Six fixed fits3600steps; one fresh32group TEST comparison; G10TEST consumed regression; worker rawdepth retained",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/budget.json",
+      "sha256": "6c38e63701a41a4bc7d323990e937357f69d7b86edb2d50894dd5aade09afc57"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/capture-result.json",
+      "sha256": "686a9d3a50e02dc08df458f915ad1b6f0772bc3081beb10fa1d99430d28b8023"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/inputs.json",
+      "sha256": "25a369c5a4fb742fb0a1a6555c0a125939de3aed9663d88d9792e8df9f0b91f8"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/completion.json",
+      "sha256": "27b31df9129d74386d79849667ba694f805895e4ae208ee10e60cf5056cdf431"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/evaluator/labels.json",
+      "sha256": "cc8c5d4c4b5db257798d9d9c33a95efdc8954ff13b8010ee5febfd55be8a3223"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/evaluator/object_support.npz",
+      "sha256": "6d96eac8aed4ab747673e6f47b2b6a0ada4c40ebcbc8ab9169d9e3d1bb52b6e3"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/evaluator/spec.json",
+      "sha256": "be0b05c5a5de2592d041698c6e8bd0562f03629f62742103d129c6f9dfcc1f92"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/evaluator/support.npz",
+      "sha256": "4ebfaee91cad3dc12df01b9247d1315c20702414b93a0f23e9441fc0b3ae9da1"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/launch.json",
+      "sha256": "5021ce0b49fcc5e7527da4cc23b66b8eb941a775195c72def023fbc0c0a8b8d1"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/model/dataset.json",
+      "sha256": "60ec78e442d1d3504a8d26fab85f70fc39293613b0c73522efb60f02f601adca"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/process-release.json",
+      "sha256": "514f41c4fc2d3b152063059eb74cd411d3cf95338810982d09b4ae63435cdb4a"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/receipt.json",
+      "sha256": "786785cde07df1ea71e93d199f5a462e9e5e3aebadbefd1fe9a2cfee187677ba"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/rgb-validation.json",
+      "sha256": "cf72e57db396916b9a0e5ef2841e59b8ef5d0ad95ddbbe581b56435c35a6ab52"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/source/spec.json",
+      "sha256": "be0b05c5a5de2592d041698c6e8bd0562f03629f62742103d129c6f9dfcc1f92"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/capture/verification.json",
+      "sha256": "71ffc2bed19649f069b3fa7feae8b731d38a15a295fe3bdb8091f5fa1f568a33"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/environment.json",
+      "sha256": "56d672d331f1d1a0417f0c7a4d02bb26392f3f49e0d2ae054467ffd525d7b167"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/evaluation/regression-result.json",
+      "sha256": "d7d90fad9d5a82bf671b0f45869d2b4afa6457dc06f1e25bfbff51d3bcec50de"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/evaluation/result.json",
+      "sha256": "4360281a1034ebe3969de652c7278fd259cd79f6e80d13315944ba50919978e1"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/config.json",
+      "sha256": "a475a8145ca0cbe73a996eefc8c73861edb1b71eeb8796a5371a4787375dac44"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/fit_records.json",
+      "sha256": "acf355652c455755226671210e1c59b53f71850a00b08e5b5967e18590722ad3"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/predictions.json",
+      "sha256": "71c8280d7096d5167c13dd45440a4fe8d303efae03618b5b8af48320d10e9853"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/receipt.json",
+      "sha256": "302231aff6ccc27fd1ca906180111916e7ed05d145bc24a365d97fb2ae79d27d"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/reference/predictions.json",
+      "sha256": "e2c3107681d35b3cf8d8f1a10f0f1410b7b545d9f605f4ba60509cceacef5fee"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/reference/support_predictions.npz",
+      "sha256": "ef0001497b23331942e3f0a56b842dd7e3680752eabb42fa9e1dedb9c820d051"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/learned/support_predictions.npz",
+      "sha256": "3dd89b4c431321e67997a86145076771df64aa1b89ec7b083c72568d1d46bbcd"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/spec.json",
+      "sha256": "be0b05c5a5de2592d041698c6e8bd0562f03629f62742103d129c6f9dfcc1f92"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/main/transfer-manifest.json",
+      "sha256": "bd821f008d77e85952a199288f06bf425d2b9bb102f180a296740455b2a203ad"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/pipeline.json",
+      "sha256": "d5f1999ce1cdb5a574dbd693e8b905b7953997a726a3f8a07fe8c8f5a5a29710"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/pretrained/provenance.json",
+      "sha256": "6f80451d37efddf73b89b3f9babf036cd2c13c772d82cafa925f309680aef470"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/probe/receipt.json",
+      "sha256": "00eec5ce77eb72101cd39af3ea02e3679febb60a2ca75d54d08faa390dd8cb50"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/protocol.md",
+      "sha256": "b11a9b4f0fd54d032996bece01e6e1e05f92230e84abb1f3b95e5cfe46eb0469"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/runtime-packages.json",
+      "sha256": "0034303244dc1ee4d9f82de93955cfcc93ac0ed2e91a71e59192bd94376e266f"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/source-comparison.json",
+      "sha256": "58bd3b45f72b77a6dbc7037c05a890d55d62d5ea01a67abea70992f6c3245f1f"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/source-format-receipt.json",
+      "sha256": "8ceb0170abc24693ffefc2c171813791b459d946fae78b24b56a23ab82cfeed5"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/source-hashes.json",
+      "sha256": "58f6ff7e799c4e885ba3525bc84b751a4a1d04c2c241e5ac1b41bb01d74c2bba"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/source-text-hashes.json",
+      "sha256": "6cf627425ab7a53ecda3413ab59678bf0277057a2099adf6aa97e9c47819bbe7"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/summary.json",
+      "sha256": "fbfa7e261c94050921faafe58500786fb0c1cce53b1cf6a8f2a23ce66e2c0a7c"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/worker-completed-job-result.json",
+      "sha256": "4b603e4a693678ba7102f9ef4a76852086fa20dba420d62ea86b5bc57a397b83"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/worker-first-job-result.json",
+      "sha256": "cb1553e79f7971d8ab1cdee7b6e52a64083366e466447194f0b25c7753e80f52"
+    },
+    {
+      "path": "artifacts.local/nearfield/representation-20260908/worker-process-audit.json",
+      "sha256": "628cac57d382fbe9d6bf20663ecb43eafe83a550509bc389286a533193906540"
+    }
+  ],
+  "executed_source_sha256": {
+    "research/active/dtr-r0/nearfield/representation_evaluate.py": "295b9bba9896791e8927bd200ef9436ddb5ec500ed13033ae5fb8df1c11dd62f",
+    "research/active/dtr-r0/nearfield/representation_model.py": "f13c5f05e5e2d73330996569389e1607bbebdcc7703fb4007ab02f5e74fe4c98",
+    "research/active/dtr-r0/nearfield/representation_spec.py": "24eed651e442527a3a9d9c3750781625859ceb3515916af1737c10278b1da090",
+    "research/active/dtr-r0/nearfield/representation_train.py": "b7d8e24db9092f214c2af9e072a60b7ec7992572feaff71b6fb1d44afa6e2a4f",
+    "research/active/dtr-r0/nearfield/test_representation_metrics.py": "eb7d0078af4e2e966789dab07e2737a28fcfb8dfa2ab80d443457819af7689e2",
+    "research/active/dtr-r0/nearfield/test_representation_train.py": "9704fb1bd072dfc991ec42d6220c1f3c155b30de1b75c7ebf551b0aa49363699"
+  }
+}
