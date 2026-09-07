@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-07",
-  "source_fingerprint": "9e8eb50d9827cbd2da160fee09419b47b672a57e9bc598990fa2b53e4e7a6d5c",
+  "source_fingerprint": "3bd72ad9730f9e73be499c700f3c55329ae0ac8a0b3456cc04d740e97a543c3c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 238,
+    "experiments": 239,
     "current_terminals": 44,
-    "run_associations": 236
+    "run_associations": 237
   },
   "failure_layers": [
     {
@@ -23169,6 +23169,32 @@
         "evaluation_evidence": 6
       },
       "search_text": "nf-g5-frontend-domain-2026-09-07 Can same-size VKITTI or predefined higher-resolution Hypersim recover the suspended-bar evidence? Hypersim Small 518/max20 on eighteen consumed NF-G3 RGB views; unchanged geometry and fusion. VKITTI Small 518/max80 then predefined Hypersim Small 1036/max20; 36 new calls total. VKITTI union 0TP/0FP of87; highres 70TP/9FP of87; neither recovers center/head bar. Adopt neither candidate; suspended-bar frontend defect remains unresolved. Consumed static synthetic Development only. research/active/dtr-r0/nearfield/FRONTEND_DOMAIN_20260907.md Eighteen consumed synthetic views; Git revision is a base only, executed WIP code hashes and protocol attribution in input manifest."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g6-structure-information-2026-09-07",
+      "status": "active",
+      "question": "Does fixed sparse multiview matching recover suspended-bar near evidence missed by dense depth under ideal metric poses?",
+      "baseline": "Fixed Hypersim Small518 endpoint predictions on twelve controlled three-frame clips, including motion/range and mark/empty controls.",
+      "change": "One fixed CUDA sparse edge-patch matcher; 36 captures, twelve endpoint MDE calls and twelve matcher calls; cached attribution only afterward.",
+      "primary_metric": "0/4 MDE-missed translational 2-3m clips recovered; 41 target/8300 all candidates; 45 nontarget native-range false-near mismatches, 16 also predicted body/head.",
+      "decision": "No retained sparse alert branch; preserve dense/fusion baseline. Zero far translational target candidates limits rejection evidence; improve proposal coverage and observability in separately scoped work.",
+      "report": "research/active/dtr-r0/nearfield/STRUCTURE_INFORMATION_20260907.md",
+      "source": "Controlled synthetic Development with evaluator-only native attribution and ideal metric poses. Git base only; per-stage executed hashes in registration manifest.",
+      "commit": "9652603f928f634fdf3d0b2876be16de647c348e",
+      "association_id": "nf-g6-structure-information-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "observation_perception": 6,
+        "identity_binding": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 9,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "nf-g6-structure-information-2026-09-07 Does fixed sparse multiview matching recover suspended-bar near evidence missed by dense depth under ideal metric poses? Fixed Hypersim Small518 endpoint predictions on twelve controlled three-frame clips, including motion/range and mark/empty controls. One fixed CUDA sparse edge-patch matcher; 36 captures, twelve endpoint MDE calls and twelve matcher calls; cached attribution only afterward. 0/4 MDE-missed translational 2-3m clips recovered; 41 target/8300 all candidates; 45 nontarget native-range false-near mismatches, 16 also predicted body/head. No retained sparse alert branch; preserve dense/fusion baseline. Zero far translational target candidates limits rejection evidence; improve proposal coverage and observability in separately scoped work. research/active/dtr-r0/nearfield/STRUCTURE_INFORMATION_20260907.md Controlled synthetic Development with evaluator-only native attribution and ideal metric poses. Git base only; per-stage executed hashes in registration manifest."
     }
   ],
   "associations": [
@@ -24841,6 +24867,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/FRONTEND_DOMAIN_20260907.md",
         "artifacts.local/nearfield/frontend-domain-20260907-v1/comparison.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g6-structure-information-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g6-structure-information-protocol-v1",
+      "code_revision": "9652603f928f634fdf3d0b2876be16de647c348e",
+      "input_fingerprint": "e0d321430eea387f30faa214873b8d6fb905c1ae9f7af5cd5b7eba06b5fb0a99",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/STRUCTURE_INFORMATION_20260907.md",
+        "artifacts.local/nearfield/structure-information-20260907-v1/evaluation-attribution/result.json"
       ],
       "decision_id": null,
       "source_rows": 1

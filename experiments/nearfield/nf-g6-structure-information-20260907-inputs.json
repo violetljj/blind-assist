@@ -1,0 +1,64 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_CONTROLLED_SYNTHETIC_DEVELOPMENT",
+  "registration_scope": "Completed fixed twelve-clip information probe; registration does not rerun or refresh consumed evidence. Ideal metric poses are privileged upper-condition inputs, not a deployed pose-estimation result.",
+  "code_revision_role": "Git base only; executed uncommitted code is bound by receipt hashes. Prediction and cached attribution have different run_structure_information.py hashes; no byte-identity between stages is claimed.",
+  "git_base_revision": "9652603f928f634fdf3d0b2876be16de647c348e",
+  "receipts": [
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/protocol.md",
+      "sha256": "81a7649194e3ffcb942bff1cc5f1ff17ce5cbb7a2d2a9ca66a5e4c8c7f90a83b"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/spec.json",
+      "sha256": "a5f16bdb254409f0ba71afe6260493b34f5e0734e4be9f293834274bb14dfcc5"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/capture/receipt.json",
+      "sha256": "3245b4deba8d670366de495b7540fc82741058bf9da19b387da41bf7f250b831",
+      "script_sha256": "efba9834c8c2bae8772b99da690d0b9a2196c92d678675f758d547ca5506e822",
+      "spec_sha256": "a5f16bdb254409f0ba71afe6260493b34f5e0734e4be9f293834274bb14dfcc5"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/capture/verification.json",
+      "sha256": "d97effa596b8e728df1e7d6d9651143ac905c67bdfb4721132741ad646a78669",
+      "code_sha256": "2ddd2106ca93a4be0be9fb1ce2a3a90c40f092fa6ccedf63b64575c54d3870ef"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/capture/model/sensor_manifest.json",
+      "sha256": "5111c51cd21941e247ef9839961e7a4306b2709611af2a02abe7e7be66b928a1"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/predictions/result.json",
+      "sha256": "07b480268f415af8b24bae83896dbcbbe61e8da6491c23c61321083c1037e25c",
+      "code_sha256": {
+        "run_structure_information.py": "d5aac27e0d472249998d7a21b8b1def1b5f7ee9066a94d4d3b81ac740cff2ff1",
+        "sparse_structure.py": "cd7565e11ec0f05091f367bcc787f7ccafc5a343f8881a4db7bba068f9baa347"
+      },
+      "protocol_sha256": "81a7649194e3ffcb942bff1cc5f1ff17ce5cbb7a2d2a9ca66a5e4c8c7f90a83b",
+      "manifest_sha256": "5111c51cd21941e247ef9839961e7a4306b2709611af2a02abe7e7be66b928a1"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/evaluation/result.json",
+      "sha256": "40e29b70b9733a039b923dcca8ea36179970880b7ca1500d1977ab128c65d1cb",
+      "code_sha256": {
+        "run_structure_information.py": "d5aac27e0d472249998d7a21b8b1def1b5f7ee9066a94d4d3b81ac740cff2ff1",
+        "sparse_structure.py": "cd7565e11ec0f05091f367bcc787f7ccafc5a343f8881a4db7bba068f9baa347"
+      },
+      "protocol_sha256": "81a7649194e3ffcb942bff1cc5f1ff17ce5cbb7a2d2a9ca66a5e4c8c7f90a83b",
+      "spec_sha256": "a5f16bdb254409f0ba71afe6260493b34f5e0734e4be9f293834274bb14dfcc5",
+      "prediction_sha256": "07b480268f415af8b24bae83896dbcbbe61e8da6491c23c61321083c1037e25c"
+    },
+    {
+      "path": "artifacts.local/nearfield/structure-information-20260907-v1/evaluation-attribution/result.json",
+      "sha256": "8efbee40a1df9f4e6202ccae98a064be82af599ddf469c6c8c8430423cc143f0",
+      "code_sha256": {
+        "run_structure_information.py": "b73caa14db531985733ca9688431e76b77c8e00e1ec42fc5c57e162ab46b2bdb",
+        "sparse_structure.py": "cd7565e11ec0f05091f367bcc787f7ccafc5a343f8881a4db7bba068f9baa347"
+      },
+      "protocol_sha256": "81a7649194e3ffcb942bff1cc5f1ff17ce5cbb7a2d2a9ca66a5e4c8c7f90a83b",
+      "spec_sha256": "a5f16bdb254409f0ba71afe6260493b34f5e0734e4be9f293834274bb14dfcc5",
+      "prediction_sha256": "07b480268f415af8b24bae83896dbcbbe61e8da6491c23c61321083c1037e25c"
+    }
+  ]
+}
