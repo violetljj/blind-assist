@@ -1492,16 +1492,23 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
                     raise KnowledgeError(
                         f"{context}: unsafe input_refs path {reference}"
                     )
-                if not (repo_root / PurePosixPath(reference)).is_file():
-                    raise KnowledgeError(
-                        f"{context}: missing input_refs path {reference}"
-                    )
-            expected_fingerprint = _experiment_input_fingerprint(
-                repo_root, input_refs
+            current_available = all(
+                (repo_root / PurePosixPath(reference)).is_file()
+                for reference in input_refs
             )
-            if row.get("input_fingerprint") != expected_fingerprint:
+            expected_fingerprint = (
+                _experiment_input_fingerprint(repo_root, input_refs)
+                if current_available else None
+            )
+            if row.get("input_fingerprint") is None or (
+                row.get("input_fingerprint") != expected_fingerprint
+                and row.get("input_fingerprint") != _historical_input_fingerprint(
+                    repo_root, input_refs, row.get("code_revision")
+                )
+            ):
                 raise KnowledgeError(
-                    f"{context}: input_fingerprint does not match input_refs"
+                    f"{context}: input_fingerprint does not match input_refs "
+                    "in the checkout or at recorded code_revision"
                 )
         rows.append(row)
     return rows
@@ -3190,6 +3197,27 @@ def _experiment_input_fingerprint(repo_root: Path, references: list[str]) -> str
         digest.update(reference.encode("utf-8"))
         digest.update(b"\0")
         digest.update((repo_root / PurePosixPath(reference)).read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _historical_input_fingerprint(
+    repo_root: Path, references: list[str], revision: Any
+) -> str | None:
+    """Verify original bytes, without rebasing historical evidence onto current inputs."""
+    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-fA-F]{40}", revision):
+        return None
+    digest = hashlib.sha256()
+    for reference in sorted(references):
+        result = subprocess.run(
+            ["git", "cat-file", "blob", f"{revision}:{reference}"],
+            cwd=repo_root, check=False, capture_output=True,
+        )
+        if result.returncode != 0:
+            return None
+        digest.update(reference.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(result.stdout)
         digest.update(b"\0")
     return digest.hexdigest()
 

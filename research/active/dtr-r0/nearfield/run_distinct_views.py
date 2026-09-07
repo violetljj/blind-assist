@@ -19,7 +19,7 @@ from rgb_replay import _decode,_metric_class
 from research_backend import torch_observation
 
 
-def predict(capture,output,metric_source,weights):
+def predict(capture,output,metric_source,weights,*,dataset="hypersim",input_size=518):
     started=time.perf_counter()
     model_dir=capture/"model"
     manifest_path=model_dir/"sensor_manifest.json"
@@ -28,8 +28,13 @@ def predict(capture,output,metric_source,weights):
     if receipt["status"]!="PASS": raise ValueError("Capture must pass")
     if len(manifest["frames"])!=18: raise ValueError("Require all18 fixed views")
     if not torch.cuda.is_available(): raise RuntimeError("CUDA required by unchanged model")
+    if dataset not in ("hypersim","vkitti") or input_size not in (518,1036):
+        raise ValueError("Use an explicit supported metric checkpoint/input contract")
+    if weights.name!=f"depth_anything_v2_metric_{dataset}_vits.pth":
+        raise ValueError("Checkpoint name and declared model domain disagree")
+    max_depth=20. if dataset=="hypersim" else 80.
     cls,identity=_metric_class(metric_source)
-    model=cls(encoder="vits",features=64,out_channels=[48,96,192,384],max_depth=20.)
+    model=cls(encoder="vits",features=64,out_channels=[48,96,192,384],max_depth=max_depth)
     weight_hash=sha(weights)
     model.load_state_dict(torch.load(weights,map_location="cpu",weights_only=True))
     model.to("cuda:0").eval()
@@ -40,7 +45,7 @@ def predict(capture,output,metric_source,weights):
             sample=_decode(model_dir,frame,manifest["calibration"])
             torch.cuda.synchronize()
             tick=time.perf_counter()
-            predicted=np.asarray(model.infer_image(sample["bgr"],518),dtype=np.float32)
+            predicted=np.asarray(model.infer_image(sample["bgr"],input_size),dtype=np.float32)
             torch.cuda.synchronize()
             ms=(time.perf_counter()-tick)*1000
             path=output/f"{index:04d}.npy"
@@ -51,8 +56,8 @@ def predict(capture,output,metric_source,weights):
                              predicted_path=str(path),predicted_sha256=sha(path),inference_ms=ms))
     result=dict(schema="nearfield-distinct-predictions-v1",status="COMPLETED",rows=rows,
                 capture=str(capture),manifest_sha256=sha(manifest_path),capture_receipt_sha256=sha(capture/"receipt.json"),
-                model=dict(name="Depth Anything V2 metric Hypersim Small",source=identity,weights_sha256=weight_hash,
-                           input_size=518,max_depth_m=20,backend=asdict(torch_observation(model=model))),
+                model=dict(name=f"Depth Anything V2 metric {dataset} Small",source=identity,weights_sha256=weight_hash,
+                           input_size=input_size,max_depth_m=max_depth,backend=asdict(torch_observation(model=model))),
                 inference_calls=18,no_warmup_or_retry=True,timing=dict(inference_ms=distribution([r["inference_ms"] for r in rows]),
                 total_s=time.perf_counter()-started,includes_first_call_startup=True))
     del model
@@ -122,19 +127,22 @@ def main():
     p.add_argument("--predictions",type=Path)
     p.add_argument("--metric-source",type=Path)
     p.add_argument("--weights",type=Path)
+    p.add_argument("--dataset",choices=("hypersim","vkitti"),default="hypersim")
+    p.add_argument("--input-size",type=int,choices=(518,1036),default=518)
+    p.add_argument("--protocol",type=Path,help="Experiment brief; defaults to the original NF-G3 brief")
     p.add_argument("--output",type=Path,required=True)
     args=p.parse_args()
     output=args.output.resolve()
     if not output.is_relative_to((ROOT/"artifacts.local").resolve()): raise ValueError("Canonical artifacts required")
     output.mkdir(parents=True,exist_ok=False)
     torch.set_num_threads(1);torch.set_num_interop_threads(1)
-    protocol=Path(__file__).with_name("DISTINCT_VIEWS_20260907.md")
+    protocol=args.protocol or Path(__file__).with_name("DISTINCT_VIEWS_20260907.md")
     metadata=dict(code_sha256={p.name:sha(p) for p in Path(__file__).parent.glob("*.py")},
                   protocol_sha256=sha(protocol),python=sys.executable,torch=torch.__version__)
     (output/"protocol.md").write_bytes(protocol.read_bytes())
     (output/"started.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
     try:
-        result=predict(args.capture.resolve(),output,args.metric_source.resolve(),args.weights.resolve()) if args.action=="predict" else evaluate(args.predictions.resolve(),output)
+        result=predict(args.capture.resolve(),output,args.metric_source.resolve(),args.weights.resolve(),dataset=args.dataset,input_size=args.input_size) if args.action=="predict" else evaluate(args.predictions.resolve(),output)
         result={**metadata,**result}
         (output/"result.json").write_text(json.dumps(result,indent=2,allow_nan=False),encoding="utf-8")
         print(json.dumps({k:result[k] for k in ("status","totals","groups","fitting_failures","timing") if k in result}))

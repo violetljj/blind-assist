@@ -1,0 +1,20 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_CONSUMED_DEVELOPMENT",
+  "registration_scope": "Retrospective publication of completed evidence; this manifest binds receipt-recorded inputs and executed code, not a fresh run or confirmation.",
+  "result_receipt": {
+    "path": "artifacts.local/nearfield/representation-20260907-v1/result.json",
+    "sha256": "e23186a10e6f5021017c7336b8c9490617e6b86ebf7ce27b5225cec673f343c1"
+  },
+  "executed_code_revision": "868f7c8091f7099d13edc4d649f1a51e4095a8b9",
+  "code_revision_verification": "Every receipt code_sha256 matches the raw Git blob at this revision.",
+  "executed_code_sha256": {
+    "research\\active\\dtr-r0\\nearfield\\near_field.py": "2978f4e30533785261090944c96178be7f1fb6549c7eb27d298f5adcffc1685e",
+    "research\\active\\dtr-r0\\nearfield\\probe_source.py": "226e306c9ca00d45f8867f0c782fd7474d5e19312375d4e27b5e6bf965b91cf7",
+    "research\\active\\dtr-r0\\nearfield\\rgb_replay.py": "dbbf983f15928309690e105aec285c385e4d23d2f38d686eabbe08548cf4a8b8",
+    "research\\active\\dtr-r0\\nearfield\\run_probe.py": "ba42e1ac424a46718ed9e4313d470d4322e826eacbfef0379a40c7aeee358609",
+    "research\\active\\dtr-r0\\nearfield\\test_near_field.py": "57e1da8848a21fe12cca28e2acf24f4bf1361a4b257cf000730771ac7a24d5c7"
+  },
+  "receipt_input_identity_field": "source_manifest_sha256",
+  "receipt_input_identities": "708762b520949acca8cb12b3c6c9d5f28d450283d6492459d4bfd610bb7f817b"
+}

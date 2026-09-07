@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-05",
-  "source_fingerprint": "d0d21122cf0125c11ee19f54a803b3d09e429d586373a2592f9abacc65c19e8c",
+  "generated_at": "2026-09-07",
+  "source_fingerprint": "9e8eb50d9827cbd2da160fee09419b47b672a57e9bc598990fa2b53e4e7a6d5c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 232,
+    "experiments": 238,
     "current_terminals": 44,
-    "run_associations": 230
+    "run_associations": 236
   },
   "failure_layers": [
     {
@@ -23025,6 +23025,150 @@
         "evaluation_evidence": 12
       },
       "search_text": "l10-scenenn-efficientloftr-fresh-none-development-2026-08-31 Can fixed EfficientLoFTR local correspondence plus homography-inlier absolute support provide a better explicit NONE assignment than same-crop DINOv2 on fresh SceneNN doors? Same truth-visible context crops with DINOv2-S mean patch-token cosine and reciprocal assignment reached TP=6 FP=24 FN=28 F1=0.1875 and 1/15 exact scenarios. Use the frozen local EfficientLoFTR asset at score 0.2, at least eight matches, six-pixel homography RANSAC and at least six inliers; unsupported pairs become NONE before reciprocal assignment. EfficientLoFTR reached TP=11 FP=18 FN=23 F1=0.349206 and 0/15 exact scenarios; only 2/4 true diagonals had absolute support. L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json Four fresh SceneNN one-door scenes 021, 273, 011 and 279 selected before RGB by frozen XML labels and ONI size; truth-visible context crops make this Development mechanism evidence only."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g0-representation-2026-09-07",
+      "status": "active",
+      "question": "Can spatial support preserve near-field detail lost by stride and quantile aggregation?",
+      "baseline": "Stride4 and dense quantile adapters on fixed synthetic depth and eleven Willow RGB-D frames.",
+      "change": "Three-pixel compatible support before tile minima.",
+      "primary_metric": "Analytic TP/FP/FN 240/1/0 vs dense 210/0/30; RGB supported 0/0/26.",
+      "decision": "Retain as Development component; correlated 3x3 artifact remains false alert; RGB frontend loses evidence before support.",
+      "report": "research/active/dtr-r0/nearfield/REPRESENTATION_PROBE_20260907.md",
+      "source": "Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal.",
+      "commit": "868f7c8091f7099d13edc4d649f1a51e4095a8b9",
+      "association_id": "nf-g0-representation-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g0-representation-2026-09-07 Can spatial support preserve near-field detail lost by stride and quantile aggregation? Stride4 and dense quantile adapters on fixed synthetic depth and eleven Willow RGB-D frames. Three-pixel compatible support before tile minima. Analytic TP/FP/FN 240/1/0 vs dense 210/0/30; RGB supported 0/0/26. Retain as Development component; correlated 3x3 artifact remains false alert; RGB frontend loses evidence before support. research/active/dtr-r0/nearfield/REPRESENTATION_PROBE_20260907.md Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g1-ground-anchor-2026-09-07",
+      "status": "active",
+      "question": "Can predicted-only ground geometry recover cached near-field height evidence?",
+      "baseline": "Raw cached eleven-frame predicted depth with 26 native-positive cells.",
+      "change": "Fixed scale-only, ground-only, and combined factorial geometry.",
+      "primary_metric": "Ground TP/FP/FN 21/0/5; scale-only 1/0/25; raw 0/0/26.",
+      "decision": "Retain ground-relative geometry component; consumed synthetic Development only, not ground identity or natural accuracy.",
+      "report": "research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md",
+      "source": "Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal.",
+      "commit": "c70d17538bf2355a6c4c24cd5d1863a0831f09e7",
+      "association_id": "nf-g1-ground-anchor-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g1-ground-anchor-2026-09-07 Can predicted-only ground geometry recover cached near-field height evidence? Raw cached eleven-frame predicted depth with 26 native-positive cells. Fixed scale-only, ground-only, and combined factorial geometry. Ground TP/FP/FN 21/0/5; scale-only 1/0/25; raw 0/0/26. Retain ground-relative geometry component; consumed synthetic Development only, not ground identity or natural accuracy. research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g2-surface-support-2026-09-07",
+      "status": "active",
+      "question": "Does elevation support recover near-field misses beyond depth support?",
+      "baseline": "NF-G1 ground-relative depth-support baseline on eleven cached frames and 88 analytic controls.",
+      "change": "Elevation-only and depth-OR-elevation spatial support.",
+      "primary_metric": "All arms Willow 21/0/5 and analytic 240/1/0.",
+      "decision": "No observed gain; keep original depth support and preserve correlated-artifact negative control. Consumed Development.",
+      "report": "research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md",
+      "source": "Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal.",
+      "commit": "c95c0c5efebc436e58728a8cdcb1d97a33a323e4",
+      "association_id": "nf-g2-surface-support-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g2-surface-support-2026-09-07 Does elevation support recover near-field misses beyond depth support? NF-G1 ground-relative depth-support baseline on eleven cached frames and 88 analytic controls. Elevation-only and depth-OR-elevation spatial support. All arms Willow 21/0/5 and analytic 240/1/0. No observed gain; keep original depth support and preserve correlated-artifact negative control. Consumed Development. research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g3-distinct-views-2026-09-07",
+      "status": "active",
+      "question": "Does fixed ground-relative geometry retain useful evidence across distinct controlled conditions?",
+      "baseline": "Raw prediction on eighteen distinct synthetic views, 87 positive native-reference cells.",
+      "change": "Ground-relative and ground-plus-scale geometry with unchanged model and thresholds.",
+      "primary_metric": "Raw TP/FP/FN 22/0/65; ground 37/0/50; failed wall fits discard 15 raw positives.",
+      "decision": "Keep ground optional; diagnose suspended-bar frontend loss. Controlled synthetic Development, not natural or instance recall.",
+      "report": "research/active/dtr-r0/nearfield/DISTINCT_VIEWS_20260907.md",
+      "source": "Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal.",
+      "commit": "e5ea03a7209cbbecad00ca80959de95f8f08115b",
+      "association_id": "nf-g3-distinct-views-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g3-distinct-views-2026-09-07 Does fixed ground-relative geometry retain useful evidence across distinct controlled conditions? Raw prediction on eighteen distinct synthetic views, 87 positive native-reference cells. Ground-relative and ground-plus-scale geometry with unchanged model and thresholds. Raw TP/FP/FN 22/0/65; ground 37/0/50; failed wall fits discard 15 raw positives. Keep ground optional; diagnose suspended-bar frontend loss. Controlled synthetic Development, not natural or instance recall. research/active/dtr-r0/nearfield/DISTINCT_VIEWS_20260907.md Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g4-evidence-fusion-2026-09-07",
+      "status": "active",
+      "question": "Can optional-ground evidence union preserve raw near alerts without claiming trusted height?",
+      "baseline": "Cached raw and ground branches from eighteen NF-G3 views plus prior eleven frames and 88 controls.",
+      "change": "Union and conditional switch with explicit provenance and unknown height.",
+      "primary_metric": "Union legacy TP/FP/FN 52/0/35; direction 39/0/5; old frames 21/0/5; controls 240/1/0.",
+      "decision": "Retain minimal additive union as Development component; heights remain hypotheses, 3x3 FP persists, suspended-bar prediction remains invalid.",
+      "report": "research/active/dtr-r0/nearfield/EVIDENCE_FUSION_20260907.md",
+      "source": "Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal.",
+      "commit": "6127fcf50312baf6f11012aeeb02a40a440d8598",
+      "association_id": "nf-g4-evidence-fusion-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "functional_grounding": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "nf-g4-evidence-fusion-2026-09-07 Can optional-ground evidence union preserve raw near alerts without claiming trusted height? Cached raw and ground branches from eighteen NF-G3 views plus prior eleven frames and 88 controls. Union and conditional switch with explicit provenance and unknown height. Union legacy TP/FP/FN 52/0/35; direction 39/0/5; old frames 21/0/5; controls 240/1/0. Retain minimal additive union as Development component; heights remain hypotheses, 3x3 FP persists, suspended-bar prediction remains invalid. research/active/dtr-r0/nearfield/EVIDENCE_FUSION_20260907.md Controlled synthetic and/or consumed cached Development; retrospective registration, no new terminal."
+    },
+    {
+      "kind": "experiment",
+      "id": "nf-g5-frontend-domain-2026-09-07",
+      "status": "active",
+      "question": "Can same-size VKITTI or predefined higher-resolution Hypersim recover the suspended-bar evidence?",
+      "baseline": "Hypersim Small 518/max20 on eighteen consumed NF-G3 RGB views; unchanged geometry and fusion.",
+      "change": "VKITTI Small 518/max80 then predefined Hypersim Small 1036/max20; 36 new calls total.",
+      "primary_metric": "VKITTI union 0TP/0FP of87; highres 70TP/9FP of87; neither recovers center/head bar.",
+      "decision": "Adopt neither candidate; suspended-bar frontend defect remains unresolved. Consumed static synthetic Development only.",
+      "report": "research/active/dtr-r0/nearfield/FRONTEND_DOMAIN_20260907.md",
+      "source": "Eighteen consumed synthetic views; Git revision is a base only, executed WIP code hashes and protocol attribution in input manifest.",
+      "commit": "6127fcf50312baf6f11012aeeb02a40a440d8598",
+      "association_id": "nf-g5-frontend-domain-2026-09-07",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "nf-g5-frontend-domain-2026-09-07 Can same-size VKITTI or predefined higher-resolution Hypersim recover the suspended-bar evidence? Hypersim Small 518/max20 on eighteen consumed NF-G3 RGB views; unchanged geometry and fusion. VKITTI Small 518/max80 then predefined Hypersim Small 1036/max20; 36 new calls total. VKITTI union 0TP/0FP of87; highres 70TP/9FP of87; neither recovers center/head bar. Adopt neither candidate; suspended-bar frontend defect remains unresolved. Consumed static synthetic Development only. research/active/dtr-r0/nearfield/FRONTEND_DOMAIN_20260907.md Eighteen consumed synthetic views; Git revision is a base only, executed WIP code hashes and protocol attribution in input manifest."
     }
   ],
   "associations": [
@@ -24619,6 +24763,84 @@
       "input_fingerprint": null,
       "artifact_refs": [
         "scripts/research/vi_task_geometry_g0/README.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g0-representation-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g0-representation-protocol-v1",
+      "code_revision": "868f7c8091f7099d13edc4d649f1a51e4095a8b9",
+      "input_fingerprint": "425057ae14610992856859f642077c4d4cb469c4f989b44edc9fbecd09939c2c",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/REPRESENTATION_PROBE_20260907.md",
+        "artifacts.local/nearfield/representation-20260907-v1/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g1-ground-anchor-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g1-ground-anchor-protocol-v1",
+      "code_revision": "c70d17538bf2355a6c4c24cd5d1863a0831f09e7",
+      "input_fingerprint": "8e32ce915fad7300aa5eb9f765cc6a3d64ddbf8421ec8d0562ea30111f279dd4",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/GROUND_ANCHOR_20260907.md",
+        "artifacts.local/nearfield/ground-anchor-20260907-v1/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g2-surface-support-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g2-surface-support-protocol-v1",
+      "code_revision": "c95c0c5efebc436e58728a8cdcb1d97a33a323e4",
+      "input_fingerprint": "062f5b6e88901058b7c2c5ee8ba6d93102f14bf2af2c4b36faf2f2222dc44baa",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/SURFACE_SUPPORT_20260907.md",
+        "artifacts.local/nearfield/surface-support-20260907-v1/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g3-distinct-views-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g3-distinct-views-protocol-v1",
+      "code_revision": "e5ea03a7209cbbecad00ca80959de95f8f08115b",
+      "input_fingerprint": "507df816ef4e23f6b97ddbff4e5a5930f626f06558bdc1338c9e26a47a341ced",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/DISTINCT_VIEWS_20260907.md",
+        "artifacts.local/nearfield/distinct-views-20260907-v1/evaluation/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g4-evidence-fusion-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g4-evidence-fusion-protocol-v1",
+      "code_revision": "6127fcf50312baf6f11012aeeb02a40a440d8598",
+      "input_fingerprint": "a2da8b826f2f4b1a01a570eda7523f6fc818353f9dd2ff3d7d0bc667088bc18d",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/EVIDENCE_FUSION_20260907.md",
+        "artifacts.local/nearfield/fusion-20260907-v1/comparison/result.json"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "nf-g5-frontend-domain-2026-09-07",
+      "use_ids": [],
+      "protocol_id": "nf-g5-frontend-domain-protocol-v1",
+      "code_revision": "6127fcf50312baf6f11012aeeb02a40a440d8598",
+      "input_fingerprint": "7df18702b5599b89247bca107e6f237546a267f122f050741f706f548b01aae2",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/FRONTEND_DOMAIN_20260907.md",
+        "artifacts.local/nearfield/frontend-domain-20260907-v1/comparison.json"
       ],
       "decision_id": null,
       "source_rows": 1

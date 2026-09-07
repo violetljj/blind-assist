@@ -1,0 +1,46 @@
+{
+  "schema": "nearfield-consumed-registration-inputs-v1",
+  "phase": "EXPLORE_CONSUMED_DEVELOPMENT",
+  "registration_scope": "Retrospective publication of completed evidence; this manifest binds receipt-recorded inputs and executed code, not a fresh run or confirmation.",
+  "result_receipt": {
+    "path": "artifacts.local/nearfield/fusion-20260907-v1/comparison/result.json",
+    "sha256": "6e0fe898b6edf79686a194084c2bc7555d1b406099d5d4c29d82ba0b10a298ea"
+  },
+  "executed_code_revision": "6127fcf50312baf6f11012aeeb02a40a440d8598",
+  "code_revision_verification": "Every receipt code_sha256 matches the raw Git blob at this revision.",
+  "executed_code_sha256": {
+    "boundary_retention.py": "563fd442952696badbed3d99e656b02e6c48f0e6ac69a68f53a58f77444262f8",
+    "capture_distinct_views.py": "7fb5b134ac15fc21e99af767d4085f8d88b3fd12d1119742af8c303a1df88253",
+    "diagnose_depth_loss.py": "8b16f751e5317d388c6e1dd561e56d8c891c79708fa9ab004471ac84a798dd45",
+    "diagnose_suspended_bar.py": "5815b2a8ebb51704b7bb7e8a83a27306963049f3568532adb8d37cec3036e212",
+    "diagnose_weak_support.py": "55cbb7f45016b6b516026b8c73a696982708dfec186f17b4c91b85b4f3f35c39",
+    "distinct_view_cases.py": "8a58c3aaa1fc35d145ac51bf66bd7b57354c152c371edf3eea1d41e2314e1b7a",
+    "evidence_fusion.py": "4870b6e2bbce8de14ee2da9046a8d29d53d1cefb080160b393d2c1a6d2d803b1",
+    "ground_anchor.py": "4acd2b5eda0f0a200f5e495b41d32606b0123c13e7ca1b1f8e27c50b44ae6127",
+    "launch_distinct_views.py": "46f93faf050bcd5a35b54b951603f44db58ac2a6b1a4ba2f22fea25429df2891",
+    "near_field.py": "79080fca8af6afad5681968ef2a50edf916cd307bc080378a457cbe0b8eb0e8d",
+    "probe_source.py": "226e306c9ca00d45f8867f0c782fd7474d5e19312375d4e27b5e6bf965b91cf7",
+    "rgb_replay.py": "dbbf983f15928309690e105aec285c385e4d23d2f38d686eabbe08548cf4a8b8",
+    "run_distinct_views.py": "918e9dfdc1afde4cab22f5c126ae9c698a68f094a99a7d616cebcea914aaa6d3",
+    "run_evidence_fusion.py": "08dc73e0619bbb79dceaf0b66a6e6a57907a3fd0b60c3f3b81ad16a9929de993",
+    "run_ground_anchor.py": "7ec7604df003b38e9434ac91e622a6b8a3778f4af1649df1f1864e076dd442cc",
+    "run_probe.py": "ba42e1ac424a46718ed9e4313d470d4322e826eacbfef0379a40c7aeee358609",
+    "run_surface_support.py": "11e515e416f316a6b811e90883afdba71f2528ebe383f9c49c64548e7c5310c1",
+    "test_boundary_retention.py": "5cf0a259f07b932feef829d722518c7b6f01445b8476e699defc6718a76e8e31",
+    "test_evidence_fusion.py": "012c1a76980c8592b42343030a95ce783267e4277a8691e902b97f4806943771",
+    "test_ground_anchor.py": "607078eed3c17bb50207cd1afacdca0fb4ce1e1acc7b7ead4cda4fadc765cbda",
+    "test_near_field.py": "57e1da8848a21fe12cca28e2acf24f4bf1361a4b257cf000730771ac7a24d5c7",
+    "test_surface_support.py": "22008529d379d55bf024273af91c4e6564e3a62c906324fea399ab19e98b9afb",
+    "verify_distinct_views.py": "ff9776520feab6e692ab42fb1724453ecd4954d19d20613e2f2ad46e42abf46c"
+  },
+  "receipt_input_identity_field": "verified_inputs",
+  "receipt_input_identities": {
+    "artifacts.local\\nearfield\\distinct-views-20260907-v1\\evaluation\\result.json": "e332b251bdd0267897855ad41fbafdf5cb40f817037e9c08b00d4de8a8b8174a",
+    "artifacts.local\\nearfield\\ground-anchor-20260907-v1\\result.json": "deba17e8b67cf411ef8caebddd4b53a22e3cfc58f1783d907e5011d658c60214",
+    "artifacts.local\\nearfield\\representation-20260907-v1\\result.json": "e23186a10e6f5021017c7336b8c9490617e6b86ebf7ce27b5225cec673f343c1"
+  },
+  "frozen_protocol": {
+    "path": "artifacts.local/nearfield/fusion-20260907-v1/comparison/protocol.md",
+    "sha256": "b5b92557ecc7758e78999f1adee32559b283165ce6fa1b6f6668f6edf892d78b"
+  }
+}

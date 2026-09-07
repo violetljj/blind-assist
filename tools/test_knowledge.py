@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
@@ -11,6 +12,51 @@ from tools import knowledge
 
 
 class KnowledgeCliTest(unittest.TestCase):
+    def test_historical_input_integrity_survives_checkout_drift(self) -> None:
+        with TemporaryDirectory(prefix="blindassist-input-history-") as temporary:
+            repo = Path(temporary)
+            def git(*arguments: str) -> str:
+                return subprocess.check_output(
+                    ["git", *arguments], cwd=repo, text=True, stderr=subprocess.PIPE
+                ).strip()
+            git("init")
+            source = repo / "input.json"
+            source.write_bytes(b'{"version":1}\n')
+            git("add", "input.json")
+            git("-c", "user.name=Test", "-c", "user.email=test@example.org",
+                "commit", "-m", "Original inputs")
+            revision = git("rev-parse", "HEAD")
+            original = knowledge._experiment_input_fingerprint(repo, ["input.json"])
+            row = {"id": "historical-run", "input_refs": ["input.json"],
+                   "input_fingerprint": original, "code_revision": revision}
+            ledger = repo / "experiments" / "index.jsonl"
+            ledger.parent.mkdir()
+            def write_row() -> bytes:
+                ledger.write_text(json.dumps(row) + "\n", encoding="utf-8")
+                return ledger.read_bytes()
+            before = write_row()
+            source.write_bytes(b'{"version":2}\n')
+            self.assertNotEqual(original,
+                knowledge._experiment_input_fingerprint(repo, ["input.json"]))
+            self.assertEqual([row], knowledge._read_experiment_rows(repo))
+            self.assertEqual(before, ledger.read_bytes())
+            source.unlink()
+            self.assertEqual([row], knowledge._read_experiment_rows(repo))
+            for invalid_revision in ("f" * 40, "HEAD", None):
+                row["code_revision"] = invalid_revision
+                write_row()
+                with self.assertRaisesRegex(knowledge.KnowledgeError, "does not match"):
+                    knowledge._read_experiment_rows(repo)
+            row["code_revision"] = revision
+            row["input_fingerprint"] = "0" * 64
+            write_row()
+            with self.assertRaisesRegex(knowledge.KnowledgeError, "does not match"):
+                knowledge._read_experiment_rows(repo)
+            row["input_fingerprint"] = None
+            write_row()
+            with self.assertRaisesRegex(knowledge.KnowledgeError, "does not match"):
+                knowledge._read_experiment_rows(repo)
+
     def run_cli(self, root: Path, *arguments: str) -> tuple[int, str, str]:
         stdout = StringIO()
         stderr = StringIO()

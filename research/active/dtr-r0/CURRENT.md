@@ -47,8 +47,11 @@ Low-boundary matches123/807 remain secondary diagnosis, not the main objective.
 0 FP, but failed ground fits suppress15 raw wall positives. [Fusion](nearfield/EVIDENCE_FUSION_20260907.md)
 restores them:52/87 legacy hypothesis cells,0 FP; direction-only near output can
 retain UNKNOWN height. Body/head subgroup16/47 is not verified-height recall.
-Suspended-bar evidence at1.96 m is estimated around14.29 m; prioritize this
-frontend failure next. No App promotion; central registration remains blocked.
+[Frontend comparison](nearfield/FRONTEND_DOMAIN_20260907.md): VKITTI518 recovers0/87;
+Hypersim1036 reaches70/87 with9 FP and925 ms P50, but still misses the1.96 m bar
+(13.43 m predicted). Neither replaces the baseline; local structure/range evidence
+is the next unresolved frontend question. No App promotion. Historical registry
+fingerprint validation is repaired; see [registration record](nearfield/REGISTRY_REPAIR_20260907.md).
 
 ## Retained evidence and baseline
 
