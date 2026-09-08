@@ -933,6 +933,31 @@
         "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md"
       ],
       "commit": "d141298c52746c832ac56f215558145b4824c95c"
+    },
+    {
+      "id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "BODYLIFT_R0_NEGATIVE_CONTROL_RETAIN_B",
+      "summary": "Two matched frozen-appearance2000-step fits. LIFT EVAL HEAD11TP6FP versus original B and CONTROL8TP2FP; oracle TP at FP<=2 is6 versus8. Near-surface held-out depth CE exceeds uniform, so this recipe does not establish useful near-field depth. Retain B; no general rejection of depth supervision.",
+      "successor_requires": "Distinct scoped intervention, not a bin/loss sweep or attribution of failure solely to pooling",
+      "forbidden_repeats": [
+        "Reclassifying collapsed native zeros as known FREE_RAY",
+        "Claiming all depth-aware methods fail from this frozen-feature depth head",
+        "Promoting LIFT from11 hits while hiding6 false alerts",
+        "Extending the completed2000-step budgets",
+        "Claiming improved overall depth CE proves near-field depth learned"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md",
+        "artifacts.local/work/bodylift-r0-20260909/run-v2/result.json",
+        "artifacts.local/work/bodylift-r0-20260909/validation.json"
+      ],
+      "commit": "WORKTREE_FROZEN_MODEL_AND_TRAINED_HEAD_HASHES_IN_RECEIPTS"
     }
   ]
 }

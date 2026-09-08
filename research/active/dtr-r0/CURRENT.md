@@ -575,3 +575,11 @@ no HEAD gain: fixed gates reach7/16 at EVAL FP<=2 versus B8/16. UNKNOWN causes
 depth-aware ceiling. Retain B and diagnostic arrays; neither promote a depth
 model nor declare missing depth the cause or all depth methods disproven.
 Seven fixed gates complete; no training or automatic monocular prior integration.
+
+
+[BodyLift R0](nearfield/BODYLIFT_R0_RESULTS_20260909.md) completed matched2000-step
+CONTROL/LIFT head fits on frozen B appearance. LIFT EVAL HEAD11TP/6FP versus
+B and CONTROL8TP/2FP; at oracle FP<=2 LIFT retains6 versus8. Near-surface DEV/EVAL
+depth CE is worse than uniform. Retain B; record this recipe as a negative
+control, without broader depth-family rejection or automatic loss/bin sweeps.
+Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.

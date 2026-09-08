@@ -91,6 +91,16 @@
       "failure_signature": "Zero HEAD-only cases in72 fixed frames across3 layouts; no HEAD-only recall denominator",
       "revisit_trigger": "Separately authorized source selection with head-only structures and reviewed fixed-pinhole compatibility",
       "assignment_basis": "Source geometry is usable; this subset lacks the target opportunity and does not adjudicate a learned model"
+    },
+    {
+      "terminal_id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "BodyLift R0 frozen appearance16-bin lifting plus matched heads-only control",
+      "retained_surface": "Depth histograms, CONTROL LIFT predictions and near-surface depth diagnostics",
+      "failure_signature": "EVAL LIFT11TP6FP and FP<=2 TP6; held-out near depth CE worse than uniform",
+      "revisit_trigger": "Distinct question beyond this fixed frozen-feature recipe; no automatic bin/loss sweep",
+      "assignment_basis": "Matched budget and identity initialization, independent AUC and runtime RGB checks"
     }
   ]
 }
