@@ -18,6 +18,12 @@ development is now authorized, with primary-machine creation and visual/truth
 acceptance before secondary-machine bulk capture or long training. See
 [G14 realism acceptance](nearfield/WORLD_REALISM_ACCEPTANCE.md) for the intended
 criteria and pending capabilities; this is not a passed visual or model result.
+The [attached fixture suite](nearfield/CONTEXTUAL_HEADSPACE_20260908.md) replaces
+the user-rejected floating proxies with grounded maintenance frames, a
+wall-mounted hinged cabinet and a bracket-supported sign. Its 96 core plus
+32 hard conditions pass native geometry agreement (128/128); a separate mounted
+casement preview retains its window opening. This is one-site synthetic scene
+engineering, not a trained-model result or independent-world benchmark.
 The [G14 asset/scene iteration](nearfield/WORLD_REALISM_20260908.md) delivers two
 target-free native previews, four CC0 asset imports and passing capture/truth
 checks. The [first City Sample PCG plaza](nearfield/CITY_PCG_PLAZA_20260908.md)
