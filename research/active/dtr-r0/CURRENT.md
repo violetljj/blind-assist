@@ -551,3 +551,11 @@ R1 HEAD-near readability signal: EVAL ray AUC0.8079 to0.9314 and local0.8420 to
 local R1 AUC declines and DEV point cutoffs do not transfer reliably. Retain B
 and R1 negative-control status; keep probe/features as diagnostic components.
 No main-model fitting, R2 promotion or native-count reinterpretation.
+
+
+[Frozen direct readouts](nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md) complete
+24 zero-fit combinations using fixed FOV masks only. DEV-selected ray-R1 top3
+gives EVAL HEAD11TP/16FP; all tested direct HEAD oracle TP at FP<=2 are<=7 versus
+B8. XYZ matched deltas are zero; visual matched responses do not yield a better
+final tradeoff. Retain B; close these fixed pooling replacements as a negative
+control, without k/fusion sweeps or promotion.

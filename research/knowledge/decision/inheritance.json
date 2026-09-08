@@ -61,6 +61,16 @@
       "failure_signature": "R1 improves near readability but worsens all-point local AUC and threshold transfer; EVAL near positives one group",
       "revisit_trigger": "Distinct direct evidence test preserving native count units and range-specific negative controls",
       "assignment_basis": "Independent AUC checks and same-label frozen comparisons"
+    },
+    {
+      "terminal_id": "terminal-body-query-direct-20260909-no-replacement",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Four frozen point statistics followed by all-six-cell maximum final readout",
+      "retained_surface": "Full24 readouts and counterfactual frame/query deltas",
+      "failure_signature": "No direct HEAD oracle TP at FP<=2 exceeds7 versus B8; high false alerts persist",
+      "revisit_trigger": "Distinct scoped intervention beyond fixed aggregation; no automatic pooling sweep",
+      "assignment_basis": "Zero-fit full-frame comparison with independent explicit aggregation checks"
     }
   ]
 }

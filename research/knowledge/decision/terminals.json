@@ -861,6 +861,31 @@
         "artifacts.local/work/body-query-probe-20260909/validation.json"
       ],
       "commit": "WORKTREE_FROZEN_INPUT_AND_PROBE_HASHES_IN_RECEIPT"
+    },
+    {
+      "id": "terminal-body-query-direct-20260909-no-replacement",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "DIRECT_READOUT_NEGATIVE_CONTROL_RETAIN_B",
+      "summary": "24 fixed zero-fit readouts: DEV-selected ray-R1 top3 EVAL HEAD11TP16FP; local-R1 mean14TP14FP. All direct HEAD oracle TP at FP<=2 are<=7 versus B8. XYZ matched deltas zero; ray-R1 top3 positive deltas7/16 versus B12/16. Retain B and stop these fixed pooling replacements.",
+      "successor_requires": "Distinct hypothesis beyond this fixed aggregation and six-cell maximum; no automatic k or fusion sweep",
+      "forbidden_repeats": [
+        "Using geometry truth masks in prediction aggregation",
+        "Treating sample counts as native pixel counts",
+        "Selecting a deployment rule on consumed EVAL",
+        "Claiming near-only signal solves full HEAD",
+        "Continuing this fixed pooling sweep"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-direct-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-direct-20260909/validation.json"
+      ],
+      "commit": "WORKTREE_FROZEN_INPUT_AND_RESULT_HASHES_IN_RECEIPT"
     }
   ]
 }
