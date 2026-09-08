@@ -78,14 +78,46 @@ def component(source, fmt, width=640, height=360):
 
 
 def prepare(case):
+    import math
     clear_objects()
     for obj in case.get('objects', []):
-        actor = api.spawn_actor_from_class(u.StaticMeshActor, u.Vector(*(v * 100 for v in obj['center_m'])))
+        explicit_asset = 'mesh_asset' in obj or 'primitive_asset' in obj
+        if 'mesh_asset' in obj and 'primitive_asset' in obj:
+            raise ValueError('Choose mesh_asset or primitive_asset, not both')
+        if explicit_asset and 'size_m' in obj:
+            raise ValueError('Explicit mesh assets use dimensionless scale, not size_m')
+        asset_path = obj.get('mesh_asset', obj.get('primitive_asset', '/Engine/BasicShapes/Cube'))
+        if not isinstance(asset_path, str) or not asset_path.startswith('/'):
+            raise ValueError('Mesh asset must be an absolute Unreal asset path')
+        if 'primitive_asset' in obj and not asset_path.startswith('/Engine/BasicShapes/'):
+            raise ValueError('primitive_asset must name an Engine BasicShapes mesh')
+        mesh = u.load_asset(asset_path)
+        if not isinstance(mesh, u.StaticMesh):
+            raise ValueError('Asset is missing or is not a StaticMesh: ' + asset_path)
+        origin = obj['center_m']
+        scale = obj.get('scale', 1.) if explicit_asset else obj['size_m']
+        if isinstance(scale, (int, float)):
+            scale = [scale] * 3
+        rotation = obj.get('rotation_deg', {'pitch': 0., 'yaw': 0., 'roll': 0.})
+        if set(rotation) != {'pitch', 'yaw', 'roll'}:
+            raise ValueError('rotation_deg requires explicit pitch, yaw and roll')
+        if len(origin) != 3 or len(scale) != 3 or not all(math.isfinite(float(v)) for v in [*origin, *scale, *rotation.values()]):
+            raise ValueError('Object transform must contain finite three-dimensional values')
+        if not all(float(v) > 0 for v in scale):
+            raise ValueError('Object scale must be positive')
+        actor = api.spawn_actor_from_class(u.StaticMeshActor, u.Vector(*(v * 100 for v in origin)))
         objects.append(actor)
         actor.set_actor_label('BA controlled ' + obj['name'])
-        actor.static_mesh_component.set_static_mesh(u.load_asset('/Engine/BasicShapes/Cube'))
-        actor.set_actor_scale3d(u.Vector(*obj['size_m']))
+        actor.static_mesh_component.set_static_mesh(mesh)
+        actor.set_actor_scale3d(u.Vector(*scale))
+        actor.set_actor_rotation(u.Rotator(**rotation), False)
         actor.static_mesh_component.set_collision_profile_name('BlockAll')
+        bounds = mesh.get_bounding_box()
+        report.setdefault('controlled_objects', []).append(dict(case=case.get('name'), name=obj['name'],
+            mesh_asset=mesh.get_path_name(), actor_origin_m=list(origin), scale=list(scale), rotation_deg=rotation,
+            mesh_local_bounds_cm=dict(min=[bounds.min.x,bounds.min.y,bounds.min.z], max=[bounds.max.x,bounds.max.y,bounds.max.z]),
+            geometry_authority='Asset geometry; actor origin and dimensionless scale are not ground-truth object dimensions'
+                if explicit_asset else 'Engine one-metre cube with requested size_m'))
     pose = case['camera']
     loc = u.Vector(*(pose[k] * 100 for k in ('x', 'y', 'z')))
     rot = u.Rotator(pitch=pose['pitch'], yaw=pose['yaw'], roll=pose.get('roll', 0.))
@@ -117,6 +149,16 @@ def finish(error=None):
     if not report['source_unchanged']:
         report['status'] = 'FAIL'
     report['frame_count'] = len(frames)
+    if spec.get('export_dependencies') and not error:
+        try:
+            from city_pcg_dependencies import export_dependencies
+            roots = [spec['map_asset']] + [obj['mesh_asset'] for case in spec['cases'] for obj in case.get('objects',[]) if 'mesh_asset' in obj]
+            dependencies = export_dependencies(OUT, roots)
+            report['dependencies'] = dict(status=dependencies['status'], file_count=dependencies.get('file_count'), total_bytes=dependencies.get('total_bytes'))
+            if dependencies['status'] != 'PASS':
+                report['status'] = 'FAIL'
+        except Exception:
+            report.update(status='FAIL',dependency_error=traceback.format_exc())
     report['readiness'] = readiness.receipt()
     report['wall_elapsed_s'] = time.monotonic() - started
     write(OUT / 'evaluator/spec.json', spec)
@@ -196,7 +238,7 @@ def tick(dt):
         (OUT / 'appearance').mkdir(exist_ok=True)
         u.RenderingLibrary.export_render_target(world, beauty.capture_component2d.texture_target,
                                                 str(OUT/'appearance'), f'{index:04d}.png')
-        frames.append(dict(sample_index=index, name=spec['cases'][index]['name'], rgb_path=f'sample/{index:04d}.png'))
+        frames.append(dict(sample_index=index, rgb_path=f'sample/{index:04d}.png'))
         index += 1
         warm = 0
         stage = 1

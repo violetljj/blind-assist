@@ -45,6 +45,8 @@ def capture(args):
     engine = engine_root(getattr(args, 'engine', None))
     source = REPO / 'research/active/dtr-r0/nearfield'
     sources = [source / name for name in ('city_pcg_capture.py', 'ue_pair_export.py', 'ue_capture_readiness.py')]
+    if spec.get('export_dependencies'):
+        sources.append(source / 'city_pcg_dependencies.py')
     for path in sources:
         if not path.is_file():
             raise FileNotFoundError(path)

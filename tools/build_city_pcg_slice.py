@@ -32,6 +32,23 @@ def build(args):
     if not source.is_file():
         raise FileNotFoundError(source)
     before = file_hash(project)
+    graph_sources = {}
+    if getattr(args, 'layout', None):
+        layout_data = json.loads(artifact_file(args.layout, 'Layout').read_text(encoding='utf-8-sig'))
+        if layout_data.get('base_map'):
+            base_map=layout_data['base_map']
+            if not re.fullmatch(r'/Game/BAResearchSlice/[A-Za-z0-9_/]+',base_map):
+                raise ValueError('Base map must be a BA research map')
+            base_file=artifact_file(project.parent / 'Content' / (base_map[len('/Game/'):] + '.umap'), 'Base map')
+            graph_sources[str(base_file)]=file_hash(base_file)
+        for row in layout_data['graphs']:
+            path = row['asset']
+            if not path.startswith('/CitySamplePCG/'):
+                raise ValueError('Layout graphs must come from CitySamplePCG')
+            source_path = (project.parent / 'Plugins/Experimental/CitySamplePCG/Content' / (path[len('/CitySamplePCG/'):] + '.uasset')).resolve(strict=True)
+            if not source_path.is_relative_to(project.parent):
+                raise ValueError('Graph source escapes project')
+            graph_sources[str(source_path)] = file_hash(source_path)
     engine = engine_root(getattr(args, 'engine', None))
     out = owned_output(args.output)
     try:
@@ -43,6 +60,10 @@ def build(args):
         temp.mkdir()
         env = dict(os.environ, BA_CITY_OUT=str(out), BA_CITY_MAP='/Game/' + args.map_name,
                    TEMP=str(temp), TMP=str(temp), PYTHONDONTWRITEBYTECODE='1')
+        if getattr(args, 'layout', None):
+            layout = artifact_file(args.layout, 'Layout')
+            shutil.copy2(layout, snapshot / 'layout.json')
+            env['BA_CITY_LAYOUT'] = str(snapshot / 'layout.json')
         env['UE-LocalDataCachePath'] = str(project.parent / 'DerivedDataCache')
         command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'), str(project),
                    '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
@@ -70,9 +91,12 @@ def build(args):
         after = file_hash(project)
         if after != before:
             raise RuntimeError('Source project descriptor changed')
+        source_after = {path: file_hash(Path(path)) for path in graph_sources}
+        if source_after != graph_sources:
+            raise RuntimeError('Official source graph changed')
         result = dict(status='PASS', map_file=str(target), map_sha256=file_hash(target),
                       project_sha256_before=before, project_sha256_after=after,
-                      source_unchanged=True)
+                      source_unchanged=True, official_graph_hashes=graph_sources)
         write(out / 'completion.json', result)
     except BaseException as exc:
         after = file_hash(project) if project.is_file() else None
@@ -91,4 +115,5 @@ if __name__ == '__main__':
     parser.add_argument('--map-name', default='BAResearchSlice/PlazaV1')
     parser.add_argument('--timeout', type=float, default=900)
     parser.add_argument('--engine', type=Path)
+    parser.add_argument('--layout', type=Path)
     build(parser.parse_args())
