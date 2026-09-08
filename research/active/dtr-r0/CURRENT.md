@@ -41,6 +41,14 @@ route bollard joint alerts remain0/2. Willow BODY/HEAD support IoU recovers to
 The combined sampling recipe is diagnostic only; this does not isolate replay
 from oversampling. Inspect target-view coverage and train-versus-route score
 separation before expanding capture or changing the model.
+The [inference-only fit/transfer audit](nearfield/CITY_NATIVE_SCORE_AUDIT_20260908.md)
+finds replay/thin alerts4/4 on exposed TRAIN bollard positives but0/2 on the
+consumed route under locked DEV cutoffs; native-only remains0/4 and0/2.
+Route target size/distance lies inside the TRAIN range, while viewing direction
+and surroundings differ. Replay route scores0.773/0.680 sit below5/17 and6/17
+DEV negatives, so recovering them by a scalar cutoff would break the DEV10% FPR
+constraint. Prioritize a bounded view/context coverage comparison; scale-only,
+extra identical training and route-tuned cutoffs are not established repairs.
 
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
