@@ -35,6 +35,11 @@ The [complex real-asset suite](nearfield/CITY_COMPLEX_ASSETS_20260908.md)
 adds bicycle, scaffold frame, barricade, picnic table and park bench with
 center/lateral controls at two existing scene poses; all 26 capture/geometry
 checks pass. This is not an independent-world or trained-model result.
+The [50-group pilot](nearfield/CITY_TRIAL50_20260908.md) completes 150 frames
+with capture/geometry/group QA PASS in 185.219 s including editor lifecycle.
+A six-frame paired check supports the faster settling profile; asset/shader/
+streaming readiness remains enforced. The pilot is one map and is not balanced
+across HEAD risk states; no model training or new promotion follows from it.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame

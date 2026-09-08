@@ -1,6 +1,7 @@
 """Native City Sample slice capture. Never saves the source map or project."""
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -15,6 +16,12 @@ from ue_capture_readiness import CaptureReadiness
 OUT = Path(os.environ['BA_CITY_OUT'])
 SPEC = Path(os.environ['BA_CITY_SPEC'])
 spec = json.loads(SPEC.read_text(encoding='utf-8-sig'))
+settling_ticks = spec.get('settling_ticks', 120)
+settling_interval = float(spec.get('settling_interval_s', .05))
+if type(settling_ticks) is not int or settling_ticks < 1:
+    raise ValueError('settling_ticks must be a positive integer')
+if not math.isfinite(settling_interval) or settling_interval < 0:
+    raise ValueError('settling_interval_s must be finite and nonnegative')
 api = u.get_editor_subsystem(u.EditorActorSubsystem)
 levels = u.get_editor_subsystem(u.LevelEditorSubsystem)
 editor = u.get_editor_subsystem(u.UnrealEditorSubsystem)
@@ -28,7 +35,9 @@ map_file = Path(spec['map_file'])
 report = dict(status='RUNNING', map_asset=spec['map_asset'],
               spec_sha256=hashlib.sha256(SPEC.read_bytes()).hexdigest(),
               map_sha256_before=hashlib.sha256(map_file.read_bytes()).hexdigest(),
-              purpose='SAMPLE_PCG_INTEGRATION_NO_MODEL_SCORING')
+              purpose='SAMPLE_PCG_INTEGRATION_NO_MODEL_SCORING',
+              settling_policy=dict(ticks=settling_ticks, interval_s=settling_interval,
+                                   readiness_gate='UNCHANGED_NATIVE_ASSET_SHADER_STREAMING'))
 readiness = CaptureReadiness(u, timeout=900)
 
 
@@ -240,8 +249,8 @@ def tick(dt):
         beauty.capture_component2d.capture_scene()
         warm += 1
         write(OUT / 'progress.json', dict(phase='SETTLING', index=index, ticks=warm, elapsed_s=time.monotonic()-started))
-        if warm < spec.get('settling_ticks', 120):
-            after = time.monotonic() + .05
+        if warm < settling_ticks:
+            after = time.monotonic() + settling_interval
             return
         if stage == 1:
             readiness.begin(world, rgb.capture_component2d)

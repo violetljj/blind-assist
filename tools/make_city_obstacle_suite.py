@@ -145,7 +145,46 @@ def complex_suite(template):
     return result
 
 
-def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False):
+def trial_50_suite(template):
+    """Fifty deterministic groups, each with clear/center/right variants."""
+    by_name = {case['name']: case for case in template['cases']}
+    cases = []
+    settings = [(0.9,0.), (1.5,45.), (2.3,90.), (3.5,135.), (6.,180.)]
+    for scene in ('west_sidewalk', 'plaza'):
+        for asset_name, asset in COMPLEX_ASSETS.items():
+            for setting, (distance, yaw) in enumerate(settings):
+                base = copy.deepcopy(by_name[scene])
+                camera = base['camera']
+                if camera['yaw'] != 0 or camera['roll'] != 0:
+                    raise ValueError('Trial requires forward world X')
+                camera['x'] += setting-2
+                group = f'{scene}__{asset_name}__{setting:02d}'
+                baseline = len(cases)
+                for variant in ('clear', 'center', 'right_clearance'):
+                    case = copy.deepcopy(base)
+                    case.update(name=group+'__'+variant, group_id=group, variant_id=variant,
+                        group_type='CLEAR_CENTER_LATERAL_TRIPLET', baseline_index=baseline,
+                        floor_check=variant=='clear', objects=[])
+                    if variant != 'clear':
+                        lateral = variant=='right_clearance'
+                        case['objects'] = [dict(name=asset_name, mesh_asset=asset, scale=1.,
+                            center_m=[camera['x']+distance, camera['y']+(.8 if lateral else 0.), base['floor_z_m']],
+                            placement='bounds_front_right_floor' if lateral else 'bounds_front_center_floor',
+                            rotation_deg=dict(pitch=0.,yaw=yaw,roll=0.))]
+                    cases.append(case)
+    assert len(cases)==150 and len({c['group_id'] for c in cases})==50
+    result=copy.deepcopy(template)
+    result.update(schema='city-trial-50-groups-v1',seed=42,cases=cases,
+        export_dependencies=False,settling_ticks=32,settling_interval_s=0.,
+        suite_contract=dict(groups=50,frames=150,variants=['clear','center','right_clearance'],
+            scene_poses=10,worlds=1,assets=list(COMPLEX_ASSETS),
+            settings=[dict(front_surface_anchor_m=d,yaw_degrees=y) for d,y in settings],
+            sampling='DETERMINISTIC_ENGINEERING_PILOT_NOT_FACTORIAL_OR_HELD_OUT_MODEL_TEST',
+            model_contract='RGB/calibration only; grouping and geometry remain evaluator-side'))
+    return result
+
+
+def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, trial_50=False):
     build, output, template = map(under_artifacts, (build, output, template))
     if output.exists():
         raise FileExistsError('Refuse overwrite suite output')
@@ -161,10 +200,10 @@ def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False):
     if content_index is None:
         raise ValueError('Map must be in project Content')
     content = Path(*parts[:content_index+1])
-    for asset in (COMPLEX_ASSETS if complex_structures else ASSETS).values():
+    for asset in (COMPLEX_ASSETS if complex_structures or trial_50 else ASSETS).values():
         if not (content / (asset[len('/Game/'):] + '.uasset')).is_file():
             raise FileNotFoundError('Required existing prop missing: ' + asset)
-    result = (complex_suite if complex_structures else suite)(read(template))
+    result = (trial_50_suite if trial_50 else complex_suite if complex_structures else suite)(read(template))
     result.update(map_file=str(map_file), map_asset='/Game/'+map_file.relative_to(content).with_suffix('').as_posix(),
                   map_sha256=sha(map_file), provenance=dict(build_completion=str(completion_path),
                   build_completion_sha256=sha(completion_path), template=str(template), template_sha256=sha(template),
@@ -180,6 +219,8 @@ if __name__ == '__main__':
     parser.add_argument('--build', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--template', type=Path, default=DEFAULT_TEMPLATE)
-    parser.add_argument('--complex-structures', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--complex-structures', action='store_true')
+    mode.add_argument('--trial-50-groups', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures)))
+    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures, args.trial_50_groups)))
