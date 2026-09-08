@@ -184,7 +184,48 @@ def trial_50_suite(template):
     return result
 
 
-def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, trial_50=False):
+def collection_500_suite(template):
+    """500 distinct geometry/pose groups in one map, not 500 independent worlds."""
+    result = trial_50_suite(template)
+    by_name = {case['name']: case for case in template['cases']}
+    cases = []
+    distances = [.9, 1.5, 2.3, 3.5, 6.]
+    for scene in ('west_sidewalk', 'plaza'):
+        for pose_index in range(10):
+            base = copy.deepcopy(by_name[scene])
+            camera = base['camera']
+            camera['x'] += pose_index - 4.5
+            camera['z'] = base['floor_z_m'] + [1.6, 1.7, 1.8][pose_index % 3]
+            for asset_name, asset in COMPLEX_ASSETS.items():
+                for distance_index, distance in enumerate(distances):
+                    group = f'{scene}__pose{pose_index:02d}__{asset_name}__d{distance_index}'
+                    baseline = len(cases)
+                    for variant in ('clear', 'center', 'right_clearance'):
+                        case = copy.deepcopy(base)
+                        case.update(name=group+'__'+variant, group_id=group, variant_id=variant,
+                            group_type='CLEAR_CENTER_LATERAL_TRIPLET', baseline_index=baseline,
+                            floor_check=variant=='clear', objects=[])
+                        if variant != 'clear':
+                            lateral = variant == 'right_clearance'
+                            case['objects'] = [dict(name=asset_name, mesh_asset=asset, scale=1.,
+                                center_m=[camera['x']+distance, camera['y']+(.8 if lateral else 0.), base['floor_z_m']],
+                                placement='bounds_front_right_floor' if lateral else 'bounds_front_center_floor',
+                                rotation_deg=dict(pitch=0., yaw=float(pose_index*18), roll=0.))]
+                        cases.append(case)
+    result.update(schema='city-collection-500-groups-v1', cases=cases,
+        settling_ticks=8, first_use_settling_ticks=32,
+        pair_export_mode='native_async', export_appearance=False,
+        suite_contract=dict(groups=500, frames=1500, variants=['clear','center','right_clearance'],
+            scene_poses=20, worlds=1, assets=list(COMPLEX_ASSETS),
+            front_surface_anchor_distances_m=distances,
+            sampling='CONTROLLED_DEVELOPMENT_COLLECTION_NOT_HELD_OUT_OR_CLASS_BALANCED',
+            geometry_design='2 regions x 10 poses x 5 meshes x 5 distances; pose links camera height and object yaw',
+            model_contract='RGB/calibration only; grouping and geometry remain evaluator-side'))
+    assert len(cases) == 1500 and len({c['group_id'] for c in cases}) == 500
+    return result
+
+
+def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, trial_50=False, collection_500=False):
     build, output, template = map(under_artifacts, (build, output, template))
     if output.exists():
         raise FileExistsError('Refuse overwrite suite output')
@@ -200,10 +241,10 @@ def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, tri
     if content_index is None:
         raise ValueError('Map must be in project Content')
     content = Path(*parts[:content_index+1])
-    for asset in (COMPLEX_ASSETS if complex_structures or trial_50 else ASSETS).values():
+    for asset in (COMPLEX_ASSETS if complex_structures or trial_50 or collection_500 else ASSETS).values():
         if not (content / (asset[len('/Game/'):] + '.uasset')).is_file():
             raise FileNotFoundError('Required existing prop missing: ' + asset)
-    result = (trial_50_suite if trial_50 else complex_suite if complex_structures else suite)(read(template))
+    result = (collection_500_suite if collection_500 else trial_50_suite if trial_50 else complex_suite if complex_structures else suite)(read(template))
     result.update(map_file=str(map_file), map_asset='/Game/'+map_file.relative_to(content).with_suffix('').as_posix(),
                   map_sha256=sha(map_file), provenance=dict(build_completion=str(completion_path),
                   build_completion_sha256=sha(completion_path), template=str(template), template_sha256=sha(template),
@@ -222,5 +263,6 @@ if __name__ == '__main__':
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--complex-structures', action='store_true')
     mode.add_argument('--trial-50-groups', action='store_true')
+    mode.add_argument('--collection-500-groups', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures, args.trial_50_groups)))
+    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures, args.trial_50_groups, args.collection_500_groups)))

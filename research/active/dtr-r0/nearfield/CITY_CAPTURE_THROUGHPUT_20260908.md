@@ -4,6 +4,11 @@ Scope: paired engineering comparisons on the existing 50-group / 150-frame
 pilot, one Street200V7 map and five real assets. No training, held-out evaluation
 or newly independent worlds. One group contains three frames.
 
+Subsequent implementation and actual larger-batch timing are recorded in
+[500-group collection](CITY_COLLECTION500_20260908.md): 1,500 frames complete
+with QA in 346.527 s after reducing routine settling and retaining first-use
+protection. The capacity estimates below describe this earlier 32-tick stage.
+
 ## Full-chain findings and changes
 
 The accepted cached worker baseline (`full-v2`) takes 184.904 s editor lifecycle

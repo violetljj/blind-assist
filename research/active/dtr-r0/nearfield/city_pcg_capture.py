@@ -17,12 +17,15 @@ OUT = Path(os.environ['BA_CITY_OUT'])
 SPEC = Path(os.environ['BA_CITY_SPEC'])
 spec = json.loads(SPEC.read_text(encoding='utf-8-sig'))
 settling_ticks = spec.get('settling_ticks', 120)
+first_use_ticks = spec.get('first_use_settling_ticks', settling_ticks)
 settling_interval = float(spec.get('settling_interval_s', .05))
 appearance_enabled = spec.get('export_appearance', True)
 if type(appearance_enabled) is not bool:
     raise ValueError('export_appearance must be boolean')
 if type(settling_ticks) is not int or settling_ticks < 1:
     raise ValueError('settling_ticks must be a positive integer')
+if type(first_use_ticks) is not int or first_use_ticks < settling_ticks:
+    raise ValueError('first_use_settling_ticks must be an integer >= settling_ticks')
 if not math.isfinite(settling_interval) or settling_interval < 0:
     raise ValueError('settling_interval_s must be finite and nonnegative')
 api = u.get_editor_subsystem(u.EditorActorSubsystem)
@@ -30,6 +33,8 @@ levels = u.get_editor_subsystem(u.LevelEditorSubsystem)
 editor = u.get_editor_subsystem(u.UnrealEditorSubsystem)
 started = time.monotonic()
 stage, index, warm = 0, 0, 0
+warm_target = settling_ticks
+progress_written = 0.
 after = 0.
 finished = False
 captures, objects, frames = [], [], []
@@ -41,7 +46,7 @@ report = dict(status='RUNNING', map_asset=spec['map_asset'],
               spec_sha256=hashlib.sha256(SPEC.read_bytes()).hexdigest(),
               map_sha256_before=hashlib.sha256(map_file.read_bytes()).hexdigest(),
               purpose='SAMPLE_PCG_INTEGRATION_NO_MODEL_SCORING',
-              settling_policy=dict(ticks=settling_ticks, interval_s=settling_interval,
+              settling_policy=dict(ticks=settling_ticks, first_use_ticks=first_use_ticks, interval_s=settling_interval,
                                    readiness_gate='UNCHANGED_NATIVE_ASSET_SHADER_STREAMING'))
 readiness = CaptureReadiness(u, timeout=900)
 
@@ -201,7 +206,7 @@ def finish(error=None):
 
 
 def tick(dt):
-    global stage, index, warm, after, world, rgb, depth, beauty
+    global stage, index, warm, warm_target, progress_written, after, world, rgb, depth, beauty
     if finished or time.monotonic() < after:
         return
     if (OUT / 'stop.request').exists():
@@ -258,11 +263,15 @@ def tick(dt):
             case_assets = {obj.get('mesh_asset', obj.get('primitive_asset', '/Engine/BasicShapes/Cube'))
                            for obj in spec['cases'][index].get('objects', [])}
             new_assets = case_assets - settled_mesh_assets
+            camera = spec['cases'][index]['camera']
+            previous = spec['cases'][max(0,index-1)]['camera']
+            view_jump = math.hypot(camera['x']-previous['x'], camera['y']-previous['y']) > 10.
             report.setdefault('view_readiness', []).append(dict(index=index, **readiness.receipt()))
-            if index == 0 or ready_wait_s > .5 or new_assets:
+            if index == 0 or ready_wait_s > .5 or new_assets or view_jump:
                 warm = 0
+                warm_target = first_use_ticks
                 report.setdefault('post_ready_settling', []).append(dict(
-                    index=index, ticks=settling_ticks, ready_wait_s=ready_wait_s,
+                    index=index, ticks=warm_target, ready_wait_s=ready_wait_s, view_jump=view_jump,
                     first_use_assets=sorted(new_assets)))
             settled_mesh_assets.update(case_assets)
         if warm == 0 and stage == 1:
@@ -271,8 +280,10 @@ def tick(dt):
         if beauty is not None:
             beauty.capture_component2d.capture_scene()
         warm += 1
-        write(OUT / 'progress.json', dict(phase='SETTLING', index=index, ticks=warm, elapsed_s=time.monotonic()-started))
-        if warm < settling_ticks:
+        if warm == 1 or time.monotonic()-progress_written >= 1.:
+            write(OUT / 'progress.json', dict(phase='SETTLING', index=index, ticks=warm, elapsed_s=time.monotonic()-started))
+            progress_written = time.monotonic()
+        if warm < warm_target:
             after = time.monotonic() + settling_interval
             return
         if stage == 1:
@@ -290,6 +301,7 @@ def tick(dt):
         frames.append(dict(sample_index=index, rgb_path=f'sample/{index:04d}.png'))
         index += 1
         warm = 0
+        warm_target = settling_ticks
         stage = 1
         if index == len(spec['cases']):
             finish()

@@ -48,6 +48,11 @@ production export from reference/preview work and bounds verifier GPU memory.
 Its optional fast profile completes 150 frames in 127.286 s including job/QA,
 with all task risk states matching. It is not background-pixel/depth equivalent;
 the standard profile remains the default for strict matched comparisons.
+The subsequent [500-group collection](nearfield/CITY_COLLECTION500_20260908.md)
+uses 8 routine settling ticks and 32 first-use/large-view-change protection.
+The worker actually completes 1,500 frames / 500 groups with native, geometry
+and group QA PASS in 346.527 s complete job, producing 2.87 GB. This is one
+world, 20 camera poses and five meshes, not independent-world model evidence.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
