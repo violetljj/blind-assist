@@ -285,6 +285,11 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Zero-training City FP diagnosis](nearfield/CITY_FP_ATTRIBUTION_20260908.md):
+  step200 has only 2/2 BODY/HEAD FP on TRAIN but 561/348 on plaza; this is region
+  transfer failure, not uniform City-wide activation. Existing negative support
+  masks are zero, so GT mask subtraction adds no known positive target. No CF fit.
+
 - [City-only G13 fine-tuning pilot](nearfield/CITY_FINETUNE_PILOT_20260908.md):
   one 200-step Development fit increased plaza BODY/HEAD false positives from
   3/4 to 561/348 out of 615/735 negatives. Keep the original baseline; the new
