@@ -38,6 +38,7 @@ progress_written = 0.
 after = 0.
 finished = False
 captures, objects, frames = [], [], []
+scene_lights = []
 settled_mesh_assets = set()
 pairs = PairExporter(u, spec.get('pair_export_mode', 'native_probe'))
 map_file = Path(spec['map_file'])
@@ -98,6 +99,11 @@ def component(source, fmt, width=640, height=360):
 
 def prepare(case):
     import math
+    for light, original, kind in scene_lights:
+        scale = float(case.get(kind+'_intensity_scale', 1.))
+        if not math.isfinite(scale) or not 0 < scale <= 10:
+            raise ValueError('Invalid scene light scale')
+        light.set_editor_property('intensity', original*scale)
     clear_objects()
     for obj in case.get('objects', []):
         explicit_asset = 'mesh_asset' in obj or 'primitive_asset' in obj
@@ -128,6 +134,12 @@ def prepare(case):
         objects.append(actor)
         actor.set_actor_label('BA controlled ' + obj['name'])
         actor.static_mesh_component.set_static_mesh(mesh)
+        if obj.get('material_asset'):
+            material = u.load_asset(obj['material_asset'])
+            if material is None:
+                raise ValueError('Missing explicit material: ' + obj['material_asset'])
+            for slot in range(max(1, actor.static_mesh_component.get_num_materials())):
+                actor.static_mesh_component.set_material(slot, material)
         actor.set_actor_scale3d(u.Vector(*scale))
         actor.set_actor_rotation(u.Rotator(**rotation), False)
         actor.static_mesh_component.set_collision_profile_name('BlockAll')
@@ -157,6 +169,14 @@ def prepare(case):
     loc = u.Vector(*(pose[k] * 100 for k in ('x', 'y', 'z')))
     rot = u.Rotator(pitch=pose['pitch'], yaw=pose['yaw'], roll=pose.get('roll', 0.))
     for actor in captures:
+        if (actor.capture_component2d.capture_source == u.SceneCaptureSource.SCS_FINAL_COLOR_LDR
+                and ('exposure_ev100' in case or 'exposure_ev100' in spec)):
+            settings = actor.capture_component2d.post_process_settings
+            ev = float(case.get('exposure_ev100', spec.get('exposure_ev100', 13.2)))
+            for key in ('auto_exposure_min_brightness', 'auto_exposure_max_brightness'):
+                settings.set_editor_property('override_' + key, True)
+                settings.set_editor_property(key, ev)
+            actor.capture_component2d.post_process_settings = settings
         actor.set_actor_location(loc, False, False)
         actor.set_actor_rotation(rot, False)
     editor.set_level_viewport_camera_info(loc, rot)
@@ -188,6 +208,7 @@ def finish(error=None):
         try:
             from city_pcg_dependencies import export_dependencies
             roots = [spec['map_asset']] + [obj['mesh_asset'] for case in spec['cases'] for obj in case.get('objects',[]) if 'mesh_asset' in obj]
+            roots += [obj['material_asset'] for case in spec['cases'] for obj in case.get('objects',[]) if 'material_asset' in obj]
             dependencies = export_dependencies(OUT, roots)
             report['dependencies'] = dict(status=dependencies['status'], file_count=dependencies.get('file_count'), total_bytes=dependencies.get('total_bytes'))
             if dependencies['status'] != 'PASS':
@@ -218,6 +239,11 @@ def tick(dt):
             assert report['map_sha256_before'] == spec['map_sha256'], 'Map identity mismatch'
             assert levels.load_level(spec['map_asset']), 'Map load failed'
             world = editor.get_editor_world()
+            for actor in api.get_all_level_actors():
+                for cls, kind in ((u.DirectionalLightComponent,'sun'),(u.SkyLightComponent,'skylight')):
+                    for light in actor.get_components_by_class(cls):
+                        scene_lights.append((light,float(light.get_editor_property('intensity')),kind))
+            report['base_light_intensities']=[dict(kind=k,intensity=v) for _,v,k in scene_lights]
             if 'sun_source_angle_deg' in spec:
                 for actor in api.get_all_level_actors():
                     if isinstance(actor, u.DirectionalLight):

@@ -279,6 +279,12 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [City-only G13 fine-tuning pilot](nearfield/CITY_FINETUNE_PILOT_20260908.md):
+  one 200-step Development fit increased plaza BODY/HEAD false positives from
+  3/4 to 561/348 out of 615/735 negatives. Keep the original baseline; the new
+  weights are diagnostic only. The predeclared balanced-error/recall/Willow
+  criterion passed but failed to constrain City false alarms. No rescue fit.
+
 - [X21 result](X17_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_2026-08-29.md), [X73 confirmation](carla/DTR_CARLA_C35_X73_FRESH_CONFIRMATION_20260901.md), [X94 result](carla/DTR_CARLA_X94_CONSUMED_ELEVEN_COHORT_DEVELOPMENT_20260901.md).
 - [C35 raw-input pilot](DTR_BASELINE_RECKONING_C35_RAW_PILOT_20260905.md), [X95 result and simple controls](carla/DTR_CARLA_X95_CONSUMED_CROSS_VALIDATION_20260901.md).
 - [Frozen comparison design](DTR_FINAL_RECKONING_ROSTER_R1_20260905.md), [latest source execution and crash](DTR_FINAL_SOURCE_EXECUTION_20260905.md); the later execution record owns the design's current execution status.

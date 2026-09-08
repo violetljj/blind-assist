@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import sys
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_TEMPLATE = REPO / 'artifacts.local/nearfield/city-pcg-20260908/street200-spec-distance.json'
@@ -225,7 +226,7 @@ def collection_500_suite(template):
     return result
 
 
-def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, trial_50=False, collection_500=False):
+def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, trial_50=False, collection_500=False, headspace=False):
     build, output, template = map(under_artifacts, (build, output, template))
     if output.exists():
         raise FileExistsError('Refuse overwrite suite output')
@@ -241,14 +242,23 @@ def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False, tri
     if content_index is None:
         raise ValueError('Map must be in project Content')
     content = Path(*parts[:content_index+1])
-    for asset in (COMPLEX_ASSETS if complex_structures or trial_50 or collection_500 else ASSETS).values():
+    for asset in ({} if headspace else COMPLEX_ASSETS if complex_structures or trial_50 or collection_500 else ASSETS).values():
         if not (content / (asset[len('/Game/'):] + '.uasset')).is_file():
             raise FileNotFoundError('Required existing prop missing: ' + asset)
-    result = (collection_500_suite if collection_500 else trial_50_suite if trial_50 else complex_suite if complex_structures else suite)(read(template))
+    if headspace:
+        sys.path.insert(0, str(REPO / 'research/active/dtr-r0/nearfield'))
+        from headspace_spec import specification
+        result = specification(read(template))
+    else:
+        result = (collection_500_suite if collection_500 else trial_50_suite if trial_50 else complex_suite if complex_structures else suite)(read(template))
     result.update(map_file=str(map_file), map_asset='/Game/'+map_file.relative_to(content).with_suffix('').as_posix(),
                   map_sha256=sha(map_file), provenance=dict(build_completion=str(completion_path),
                   build_completion_sha256=sha(completion_path), template=str(template), template_sha256=sha(template),
                   generator_sha256=sha(Path(__file__))))
+    if headspace:
+        result['provenance']['geometry_sources_sha256'] = {
+            name: sha(REPO / 'research/active/dtr-r0/nearfield' / name)
+            for name in ('headspace_spec.py', 'contact_retina_spec.py')}
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('x', encoding='utf-8') as stream:
         json.dump(result, stream, indent=2, allow_nan=False)
@@ -264,5 +274,6 @@ if __name__ == '__main__':
     mode.add_argument('--complex-structures', action='store_true')
     mode.add_argument('--trial-50-groups', action='store_true')
     mode.add_argument('--collection-500-groups', action='store_true')
+    mode.add_argument('--headspace-controls', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures, args.trial_50_groups, args.collection_500_groups)))
+    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures, args.trial_50_groups, args.collection_500_groups, args.headspace_controls)))
