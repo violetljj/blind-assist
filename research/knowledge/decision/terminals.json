@@ -619,6 +619,37 @@
       "failure_signature": "DEV-selected HEAD recall 3/18 fails retention despite BODY 15/28; route bollard joint detection remains 0/2. Willow BODY/HEAD support IoU 0.2312068429/0.0897128790 versus initial 0.4428473216/0.2037178882 both miss 80 percent retention.",
       "revisit_trigger": "New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope.",
       "assignment_basis": "One completed 300-step combined replay/thin recipe fails head recall, thin-target joint and old-localization retention; retain reproducible sampling and diagnostics only."
+    },
+    {
+      "id": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "geometry_motion"
+      ],
+      "status": "diagnostic",
+      "decision": "VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL",
+      "summary": "Eight frozen views, no fitting: replay scores 0.973068/0.960922 fall to 0.757597/0.489242 in two independently reliable matched pairs. At fixed DEV threshold 0.929635, joint alerts fall 2/2 to 0/2 despite transverse target overlap and peak hits. DEV control agreement 4/4; historical 3/4. Two farther target pairs UNKNOWN; same-instance Development only.",
+      "successor_requires": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
+      "forbidden_repeats": [
+        "Scoring the two UNKNOWN target pairs as misses or claiming four reliable target pairs",
+        "Separately attributing the joint view/context change to yaw or background from this probe",
+        "Promoting a model or extending this completed probe budget as fresh confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/evaluation-v1/result.json",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/labels-v1/label-validation.json",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/source-quality.json"
+      ],
+      "commit": "b7ebab8c8f4d0ff26a1678b3b3694b6baa12600d",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Eight-view same-instance diagnostic and native label pipeline only; no model promotion.",
+      "retained_surface": "Frozen eight-view matched controls/transverse capture, corrected UNKNOWN-aware native labels and fixed-checkpoint score diagnostics.",
+      "failure_signature": "Replay DEV-selected joint alerts fall 2/2 to 0/2 in the two reliable pairs despite transverse target overlap and peak hits. Historical control agreement is only 3/4; far two target pairs remain UNKNOWN.",
+      "revisit_trigger": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
+      "assignment_basis": "Selected same-instance two-reliable-pair Development evidence supports view/context sensitivity but cannot isolate yaw, background or appearance causes."
     }
   ]
 }

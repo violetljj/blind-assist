@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-08",
-  "source_fingerprint": "05b9d6bbb70608b0777b5fcf50436cbfbee1f3bbd990def2601120181e3523d8",
+  "source_fingerprint": "1c967da37521d032d35a08edd148b256cebf8f1afb3a28102bf7f9fd60239f56",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 250,
-    "current_terminals": 47,
-    "run_associations": 248
+    "experiments": 251,
+    "current_terminals": 48,
+    "run_associations": 249
   },
   "failure_layers": [
     {
@@ -18270,6 +18270,40 @@
       "search_text": "terminal-city-native-replay-20260908-diagnostic-no-promotion obstacle-avoidance RETAIN_ORIGINAL Single 300-step 4 thin / 4 native / 8 replay recipe: DEV-selected BODY 15/28 with FP 0/17, HEAD 3/18 with FP 1/27. Route bollard joint remains 0/2; Willow localization falls below 80 percent retention in both heads. Retain original model; diagnostic component only, consumed single-seed Development. New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope. Repeating the identical combined recipe or expanding its budget as fresh confirmation Promoting this checkpoint despite failed HEAD recall, bollard joint and Willow localization retention Treating UNKNOWN or withdrawn original-route meter opportunities as verified model misses"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion",
+      "status": "diagnostic",
+      "question": "Eight frozen views, no fitting: replay scores 0.973068/0.960922 fall to 0.757597/0.489242 in two independently reliable matched pairs. At fixed DEV threshold 0.929635, joint alerts fall 2/2 to 0/2 despite transverse target overlap and peak hits. DEV control agreement 4/4; historical 3/4. Two farther target pairs UNKNOWN; same-instance Development only.",
+      "baseline": null,
+      "change": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
+      "primary_metric": null,
+      "decision": "VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "b7ebab8c8f4d0ff26a1678b3b3694b6baa12600d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "geometry_motion": 30
+      },
+      "successor_requires": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
+      "forbidden_repeats": [
+        "Scoring the two UNKNOWN target pairs as misses or claiming four reliable target pairs",
+        "Separately attributing the joint view/context change to yaw or background from this probe",
+        "Promoting a model or extending this completed probe budget as fresh confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/evaluation-v1/result.json",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/labels-v1/label-validation.json",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/source-quality.json"
+      ],
+      "association_id": "city-native-view-probe-20260908",
+      "search_text": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion obstacle-avoidance VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL Eight frozen views, no fitting: replay scores 0.973068/0.960922 fall to 0.757597/0.489242 in two independently reliable matched pairs. At fixed DEV threshold 0.929635, joint alerts fall 2/2 to 0/2 despite transverse target overlap and peak hits. DEV control agreement 4/4; historical 3/4. Two farther target pairs UNKNOWN; same-instance Development only. New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe. Scoring the two UNKNOWN target pairs as misses or claiming four reliable target pairs Separately attributing the joint view/context change to yaw or background from this probe Promoting a model or extending this completed probe budget as fresh confirmation"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -23549,6 +23583,27 @@
         "runtime_infrastructure": 3
       },
       "search_text": "city-native-replay-20260908 Can old TRAIN rehearsal and reliable native thin-positive sampling retain localization and reduce thin misses? Original G13 seed17 plus cached prior native-only300 fit One combined 4 thin plus4 uniform native plus8 old TRAIN batch recipe; same300 steps network loss and optimizer DEV recall FPR support; corrected route target joint hit; Willow retained support IoU and alerts RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md Consumed native City segments and original Willow TRAIN64 only"
+    },
+    {
+      "kind": "experiment",
+      "id": "city-native-view-probe-20260908",
+      "status": "archived",
+      "question": "Does same-instance transverse viewing reproduce the native bollard alert failure?",
+      "baseline": "Original and completed native-only and replay-thin seed17 with locked cutoffs",
+      "change": "Eight settled views: four exact TRAIN controls and four same-instance transverse approaches",
+      "primary_metric": "Paired BODY scores alerts reliable target joint hits and control render drift",
+      "decision": "VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md",
+      "source": "Original Small_City_LVL TRAIN bollard same-instance Development view probe",
+      "commit": "b7ebab8c8f4d0ff26a1678b3b3694b6baa12600d",
+      "association_id": "city-native-view-probe-20260908",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3
+      },
+      "search_text": "city-native-view-probe-20260908 Does same-instance transverse viewing reproduce the native bollard alert failure? Original and completed native-only and replay-thin seed17 with locked cutoffs Eight settled views: four exact TRAIN controls and four same-instance transverse approaches Paired BODY scores alerts reliable target joint hits and control render drift VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md Original Small_City_LVL TRAIN bollard same-instance Development view probe"
     }
   ],
   "associations": [
@@ -23591,6 +23646,20 @@
         "artifacts.local/nearfield/city-native-validation-20260908/"
       ],
       "decision_id": "terminal-city-native-validation-20260908-diagnostic-no-promotion",
+      "source_rows": 1
+    },
+    {
+      "run_id": "city-native-view-probe-20260908",
+      "use_ids": [],
+      "protocol_id": "city-native-view-probe-p1",
+      "code_revision": "b7ebab8c8f4d0ff26a1678b3b3694b6baa12600d",
+      "input_fingerprint": "85c5a4089aa8c60c93d61a0e556352605016b9074ce909692ca991eb53178a07",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_PROTOCOL_20260908.md",
+        "artifacts.local/nearfield/city-native-view-probe-20260908/",
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md"
+      ],
+      "decision_id": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion",
       "source_rows": 1
     },
     {

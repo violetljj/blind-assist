@@ -49,6 +49,14 @@ and surroundings differ. Replay route scores0.773/0.680 sit below5/17 and6/17
 DEV negatives, so recovering them by a scalar cutoff would break the DEV10% FPR
 constraint. Prioritize a bounded view/context coverage comparison; scale-only,
 extra identical training and route-tuned cutoffs are not established repairs.
+The [eight-view same-instance probe](nearfield/CITY_NATIVE_VIEW_20260908.md)
+reproduces replay's locked-DEV control alerts4/4. Both reliably checked1.5m
+transverse views lose alert/joint hits (2/2 to0/2), with scores0.973/0.961 falling
+to0.758/0.489 despite target support overlap and peak hits. The two2.4m
+transverse targets remain UNKNOWN, excluded. Same-instance view/context
+sensitivity is now observed; yaw/background causality remains entangled.
+Retain original weights; next bounded coverage test must preserve separate DEV
+and old-scene localization rather than extend this completed eight-view probe.
 
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
