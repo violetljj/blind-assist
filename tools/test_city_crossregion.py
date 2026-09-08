@@ -2,7 +2,7 @@ import copy
 import json
 from pathlib import Path
 import unittest
-from city_crossregion import compile_design,compile_route,causal_flip,interventions
+from city_crossregion import compile_design,compile_route,causal_flip,interventions,region_specs
 
 P=json.loads((Path(__file__).resolve().parents[1]/'experiments/city-field/crossregion-v1.json').read_text())
 
@@ -37,7 +37,17 @@ class CrossregionTests(unittest.TestCase):
             for j,scene in enumerate(P['scene_types']):
                 r=route();r.update(route_id=f'g{i}r{j}',region_id=f'g{i}',split=split,scene_type=scene);r['camera'].update(x=i*100+5,y=5);source['routes'].append(r)
         template=dict(map_asset='/Game/Test')
-        self.assertEqual(len(compile_design(P,source,template)['cases']),336)
+        compiled=compile_design(P,source,template)
+        self.assertEqual(len(compiled['cases']),336)
+        regions=region_specs(compiled,source)
+        self.assertEqual(len(regions),7)
+        self.assertEqual(sorted(i for s in regions.values() for i in s['cohort_indices']),list(range(336)))
+        for rid,s in regions.items():
+            self.assertEqual(len(s['cases']),48)
+            self.assertEqual({c['region_id'] for c in s['cases']},{rid})
+            self.assertEqual(s['inventory_indices'],[0,16,32])
+            self.assertEqual(len(s['native_targets']),6)
+            for c,i in zip(s['cases'],s['cohort_indices']):self.assertEqual(c,compiled['cases'][i])
         source['regions'][-1]['visible_background_instance_ids']=['building0']
         with self.assertRaisesRegex(ValueError,'leak'):compile_design(P,source,template)
 

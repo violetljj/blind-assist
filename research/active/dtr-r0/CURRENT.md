@@ -12,6 +12,12 @@ crossbar/clamp geometry repair; failed receipts remain preserved. Seven Big City
 descriptor candidates are not yet admitted routes or proven isolated backgrounds.
 Full collection and model training have not started; this adds no model result.
 
+[Source reconnaissance and worker handoff](../../../experiments/city-field/SOURCE_COLLECTION_20260908.md)
+now retain 39 successful primary source views, seven native floor grids, and a
+runtime-verified native HLOD export. Several candidates favor waterfront plazas;
+three dense TRAIN candidates are queued for worker scouting after verified asset
+transfer. Source-graph closure and seven useful isolated routes remain incomplete.
+
 Current engineering priority is the [City Sample collection field](../../../experiments/city-field/README.md):
 complete loaded routes, representative supported obstacle conditions and clear
 controls, synchronized geometry-labelled acquisition, and region/route/instance

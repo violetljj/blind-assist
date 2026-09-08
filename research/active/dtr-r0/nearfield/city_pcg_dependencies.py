@@ -5,6 +5,23 @@ import time
 import traceback
 
 
+def project_package_mounts(project):
+    """Discover project content mounts without assuming one plugin layout."""
+    project = Path(project)
+    mounts = {'Game': Path('Content')}
+    plugins = project / 'Plugins'
+    names = {name.casefold() for name in mounts}
+    for descriptor in sorted(plugins.rglob('*.uplugin')):
+        name = descriptor.stem
+        if name.casefold() in names:
+            raise ValueError('Duplicate project package mount: ' + name)
+        names.add(name.casefold())
+        content = descriptor.parent / 'Content'
+        if content.is_dir():
+            mounts[name] = content.relative_to(project)
+    return mounts
+
+
 def export_dependencies(out, roots):
     """Write a fresh manifest and return it without saving assets or quitting UE."""
     import unreal as u
@@ -32,7 +49,7 @@ def export_dependencies(out, roots):
             options.set_editor_property(key, False)
         engine = Path(u.Paths.engine_dir()).resolve()
         engine_mounts = {p.stem for p in (engine / 'Plugins').rglob('*.uplugin')} | {'Engine', 'Script'}
-        local = {'Game': Path('Content'), 'CitySamplePCG': Path('Plugins/Experimental/CitySamplePCG/Content')}
+        local = project_package_mounts(project)
         queue, seen, file_paths = list(roots), set(), set()
         while queue:
             package = queue.pop()

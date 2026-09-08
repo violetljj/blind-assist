@@ -103,6 +103,25 @@ def compile_design(protocol,source,template,canary=False):
     spec['native_targets']=list(declarations.values());return spec
 
 
+def region_specs(spec,source):
+    """Keep cohort identities while loading one region per engine session."""
+    result={}
+    for region in source['regions']:
+        rid=region['region_id'];indices=[i for i,c in enumerate(spec['cases']) if c['region_id']==rid]
+        if not indices:raise ValueError('Region has no compiled cases')
+        local=copy.deepcopy(spec);local['cases']=[copy.deepcopy(spec['cases'][i]) for i in indices]
+        local['cohort_indices']=indices
+        ids={t for c in local['cases'] for t in c['active_target_ids']+c['absent_target_ids']}
+        local['native_targets']=[copy.deepcopy(t) for t in spec['native_targets'] if t['target_id'] in ids]
+        local['inventory_indices']=[];seen=set()
+        for i,c in enumerate(local['cases']):
+            if c['route_id'] not in seen:local['inventory_indices'].append(i);seen.add(c['route_id'])
+        x0,y0,x1,y1=region['bounds_xy_m']
+        local['world_partition_region_m']=dict(min=[x0-30,y0-30,-5],max=[x1+30,y1+30,400])
+        result[rid]=local
+    return result
+
+
 def causal_flip(rows):
     if len({r['split'] for r in rows})>1:raise ValueError('Score one split at a time')
     groups=defaultdict(dict)
@@ -152,6 +171,7 @@ if __name__=='__main__':
     compile_parser.add_argument('--source',type=Path,required=True)
     compile_parser.add_argument('--template',type=Path,required=True)
     compile_parser.add_argument('--canary',action='store_true')
+    compile_parser.add_argument('--by-region',action='store_true',help='Write per-region capture specs and cohort index mappings')
     compile_parser.add_argument('--output',type=Path,required=True)
     score_parser=sub.add_parser('score')
     score_parser.add_argument('--rows',type=Path,required=True)
@@ -167,5 +187,10 @@ if __name__=='__main__':
         result['region_macro_accuracy']={h:(sum(values)/len(values) if values and all(v is not None for v in values) else None) for h in ('BODY','HEAD')
             for values in [[r['scores'][h]['accuracy'] for r in result['by_region'].values()]]}
     out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(json.dumps(result,indent=2,allow_nan=False),encoding='utf-8',newline='\n')
+    if args.command=='compile' and args.by_region:
+        out.mkdir()
+        for rid,local in region_specs(result,load(args.source)).items():
+            (out/(rid+'.json')).write_text(json.dumps(local,indent=2,allow_nan=False),encoding='utf-8',newline='\n')
+        (out/'cohort.json').write_text(json.dumps(result,indent=2,allow_nan=False),encoding='utf-8',newline='\n')
+    else:out.write_text(json.dumps(result,indent=2,allow_nan=False),encoding='utf-8',newline='\n')
     print(out)

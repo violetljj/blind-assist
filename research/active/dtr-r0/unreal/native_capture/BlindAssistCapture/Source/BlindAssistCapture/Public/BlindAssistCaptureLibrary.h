@@ -62,6 +62,11 @@ class BLINDASSISTCAPTURE_API UBlindAssistCaptureLibrary : public UBlueprintFunct
     GENERATED_BODY()
 
 public:
+    /** Read-only loaded HLOD source-actor mappings. Writes only a fresh path under BA_CITY_OUT.
+     * True means JSON export succeeded, never source/visibility admission. Does not load source actors. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture", meta = (WorldContext = "WorldContextObject"))
+    static bool ExportWorldHLODSourceMembership(UObject* WorldContextObject, const FString& Filename);
+
     /** Submit the actual perspective capture view and synchronously calculate streaming demand.
      * Returns false while compilation remains or the capture is unsupported; retry across ticks.
      * Does not wait for requested mip IO, and does not cover temporal/virtual-texture convergence. */

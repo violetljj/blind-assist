@@ -156,9 +156,19 @@ Commands:
 
 ```powershell
 python tools/city_crossregion.py compile --source <admitted-source.json> --template <capture-template.json> --output <fresh-artifact-spec.json>
+python tools/city_crossregion.py compile --source <admitted-source.json> --template <capture-template.json> --output <fresh-artifact-directory> --by-region
 python tools/verify_city_counterfactual.py --capture <capture> --labels <native-labels> --output <fresh-pair-checks>
 python tools/city_crossregion.py score --rows <verified-prediction-rows.json> --output <fresh-score.json>
 ```
+
+Use `--by-region` for acquisition: it writes seven 48-frame specifications and a
+cohort index manifest. Each session loads its own region; the capture launcher
+rejects a combined multi-region specification. This preserves the 336 sample
+identities without asking one UE process to keep seven distant districts loaded.
+
+Source scouting and secondary-worker provisioning are recorded in
+[the source collection report](SOURCE_COLLECTION_20260908.md). They are separate
+from the formal cohort and do not change region admission automatically.
 
 The scorer takes one split at a time. Each row joins `region_id`, `pair_id`,
 `condition`, `split`, `eligible`, verified `truth`, `context_hash`, `prediction`

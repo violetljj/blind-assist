@@ -35,6 +35,8 @@ def capture(args):
         raise ValueError('Map must be a .umap inside the selected project')
     if not isinstance(spec.get('cases'), list) or not spec['cases']:
         raise ValueError('Spec must contain nonempty cases')
+    if spec.get('schema')=='city-crossregion-capture-v1' and len({c['region_id'] for c in spec['cases']})>1:
+        raise ValueError('Cross-region capture requires per-region specs: compile --by-region')
     before = {'project_sha256': file_hash(project), 'map_sha256': file_hash(map_path)}
     if before['map_sha256'] != spec['map_sha256']:
         raise ValueError('Map SHA256 differs from spec')
@@ -47,6 +49,10 @@ def capture(args):
     sources = [source / name for name in ('city_pcg_capture.py', 'ue_pair_export.py', 'ue_capture_readiness.py')]
     if spec.get('export_dependencies'):
         sources.append(source / 'city_pcg_dependencies.py')
+    if spec.get('source_floor_grid'):
+        sources.append(source / 'city_source_floor.py')
+    if spec.get('export_hlod_membership'):
+        sources.append(source / 'city_hlod_membership.py')
     if spec.get('export_native_inventory'):
         sources.append(source / 'city_native_inspect.py')
     if spec.get('native_targets'):

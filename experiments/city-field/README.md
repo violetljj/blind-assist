@@ -106,6 +106,9 @@ consumed data remain Development evidence regardless of a later split name.
 
 ## Inspection and replay
 
+The [source collection and worker report](SOURCE_COLLECTION_20260908.md) records
+Big City reconnaissance and the isolated secondary-host capture workflow.
+
 The [target uncertainty audit](UNCERTAINTY_AUDIT_20260908.md) explains the 14
 approach frames still labelled UNKNOWN. Run `tools/audit_city_target_uncertainty.py`
 against a capture and its labels for hashed evidence and per-frame ray overlays.

@@ -216,6 +216,7 @@ def finish(error=None):
             from city_pcg_dependencies import export_dependencies
             roots = [spec['map_asset']] + [obj['mesh_asset'] for case in spec['cases'] for obj in case.get('objects',[]) if 'mesh_asset' in obj]
             roots += [obj['material_asset'] for case in spec['cases'] for obj in case.get('objects',[]) if 'material_asset' in obj]
+            roots += spec.get('dependency_roots', [])
             dependencies = export_dependencies(OUT, roots)
             report['dependencies'] = dict(status=dependencies['status'], file_count=dependencies.get('file_count'), total_bytes=dependencies.get('total_bytes'))
             if dependencies['status'] != 'PASS':
@@ -376,6 +377,12 @@ def tick(dt):
             after = 0.
             return
         depth.capture_component2d.capture_scene()
+        if index == 0 and spec.get('export_hlod_membership'):
+            from city_hlod_membership import export_membership
+            export_membership(u, OUT/'evaluator/hlod-membership.json')
+        if index == 0 and spec.get('source_floor_grid'):
+            from city_source_floor import probe
+            write(OUT/'evaluator/source-floor-grid.json', probe(u, world, spec['source_floor_grid']))
         if spec.get('export_native_inventory') and index in spec.get('inventory_indices', [0]):
             from city_native_inspect import inventory
             native_inventory = inventory(u, api, spec['cases'][index]['camera'], 35.)

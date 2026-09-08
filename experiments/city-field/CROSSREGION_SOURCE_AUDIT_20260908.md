@@ -25,7 +25,7 @@ Each box extends 120 m around the listed center. Centers come from actual SIDEWA
 | big_candidate_06 | unseen TEST | -2209.799, -2319.459 |
 | big_candidate_07 | unseen TEST | 1806.263, -1040.458 |
 
-Evidence is under `artifacts.local/nearfield/city-crossregion-v1/source-audit/`: `Small_City_LVL.json`, `Big_City_LVL.json`, `seven-candidates.json`, `candidate-overview.png`, `select_candidates.py`, `receipt.json`, `source-integrity.json`, and `process-release.json`. Candidate JSON retains exact descriptor GUID, actor/package path, label, bounds, and source inventory hash for both sidewalk and neighboring ground. The selection script is preserved beside it.
+Evidence is under `artifacts.local/nearfield/city-crossregion-v1/source-audit/`: `Small_City_LVL.json`, `Big_City_LVL.json`, `seven-candidates.json`, `candidate-overview.png`, `select_candidates.py`, `receipt.json`, `source-integrity.json`, and `process-release.json`. Candidate JSON retains exact actor/package paths, labels, bounds, and source inventory hash for both sidewalk and neighboring ground. Its GUID fields are invalid transient Python struct representations, not exact GUIDs: BigCity has only 20 distinct GUID strings for 101,981 unique actor packages. Use map plus actor-package identity for this descriptor snapshot; component/instance identity remains unverified. See the [background frustum audit](BACKGROUND_FRUSTUM_AUDIT_20260908.md). Original JSON evidence and the selection script are preserved unchanged.
 
 ## Why existing inventory does not prove isolation
 
