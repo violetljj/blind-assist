@@ -93,6 +93,13 @@ consumed data remain Development evidence regardless of a later split name.
 
 ## Inspection and replay
 
+The [completed approach diagnostic](APPROACH_V1_20260908.md) adds 105 settled views
+on the existing west intersection: seven distances, three approach angles, four
+supported obstacle conditions and clear controls. Exact-XY floor preflight passes;
+14 target-geometry frames remain UNKNOWN. Frozen G10/G13 miss 39/64 and 64/64
+eligible target-band opportunities; G10 also alerts on 18/21 clear poses. The
+distance curves are not monotonic and do not establish a warning distance.
+
 `python tools/report_city_field_collection.py <collection>` produces per-route
 contact sheets containing every frame, target uncertainty lists and a summary.
 For replay, collect the same plan with `--region west` into a fresh directory,

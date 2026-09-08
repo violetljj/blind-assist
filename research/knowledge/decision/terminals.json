@@ -682,6 +682,40 @@
       "failure_signature": "G10 misses30/45 target-band opportunities with11/45 joint hits and3/7 clear false-alert frames; G13 misses45/45 with0/45 joint hits and0/7 clear false alerts. All33 BODY and33 HEAD scene positives missed by G13; dropping five floor-REVIEW rows does not change positive counts or false negatives.",
       "revisit_trigger": "A bounded method or coverage change with consumed-diagnostic and source-partition boundaries explicit; no threshold reselection or budget extension of this completed run.",
       "assignment_basis": "Completed fixed-v1 receipt PASS108, optimizer_steps0; retain reproducible field diagnosis and failure cases. Direct RGB-to-risk failures cannot establish monocular-depth error as a cause."
+    },
+    {
+      "id": "terminal-city-field-approach-20260908-distance-view-diagnostic",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_APPROACH_NONMONOTONIC_RESPONSE_CLEAR_ALARM_CONFOUND_RETAIN_DIAGNOSTICS_NO_PROMOTION",
+      "summary": "Completed21 exact-pose floor preflight and105 final settled City views;14 strict geometry UNKNOWN retained. Per method64 eligible target-band opportunities,19 UNKNOWN and22 visible without eligible query support. G10 misses39/64, joint23/64, clear false-alert18/21; only3 joint hits have silent matched clear controls. G13 misses64/64, joint0/64, clear false-alert0/21. Eight of nine G10 hit sequences lose the hit at a nearer eligible pose; the remaining first hit is at nearest1m, so persistence NOT_TESTED. No reliable warning distance or target-only causality established; zero fitting, no promotion.",
+      "successor_requires": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
+      "forbidden_repeats": [
+        "Treating19 UNKNOWN or22 visible-but-ineligible target-band rows as missed positives",
+        "Claiming nearest-only1m hit proves persistence or a reliable warning distance",
+        "Calling paired assembly changes target-only causal recognition",
+        "Attributing direct RGB-to-risk failures to monocular-depth error without separate evidence",
+        "Expanding this completed105-frame diagnostic through result-driven camera additions, threshold search or fitting"
+      ],
+      "evidence": [
+        "experiments/city-field/APPROACH_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-approach-20260908/summary-v2/result.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/fixed-v1/receipt.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/geometry-admission.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/bundle-validation.json"
+      ],
+      "commit": "957df40284795e303c5fdba3f653698ed09d38ba",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Same-route consumed City Development acquisition and fixed-model distance/view diagnosis; no sealed-test, warning-time or model-promotion authority.",
+      "retained_surface": "Exact-source supported fixture identities,21 measured floor poses,105 paired settled captures, strict UNKNOWN-aware geometry labels, frozen G10/G13 predictions and corrected cached summary-v2.",
+      "failure_signature": "G10 misses39/64 eligible opportunities with23 joint hits but18/21 matched-clear false-alert frames; only3 joint hits have silent controls. G13 misses64/64. Eight hit sequences lose nearer; nearest-only ninth persistence NOT_TESTED.",
+      "revisit_trigger": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
+      "assignment_basis": "Completed fixed capture and inference with zero fitting; five focused tests and independent cached count review support the diagnostic artifact. Results do not establish target-only causality, continuous-motion lead time or monocular-depth error."
     }
   ]
 }

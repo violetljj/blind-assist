@@ -20,6 +20,14 @@ and0/7 respectively. Excluding five floor-review frames changes no positive
 or miss counts. Retain field/failure evidence; no model promotion, training,
 threshold adjustment, or monocular-depth causal claim follows from this run.
 
+The [City approach diagnostic](../../../experiments/city-field/APPROACH_V1_20260908.md)
+adds 105 settled views on the same west route, with exact-XY floor preflight.
+Fourteen hazard frames retain UNKNOWN target geometry. Frozen G10/G13 miss
+39/64 and 64/64 eligible target-band opportunities; G10 has 23 joint hits but
+18/21 clear-pose false alerts. Eight of nine sequences with a joint hit lose it
+at a nearer eligible pose; the last hits only at the nearest sample. Retain
+distance/view failure evidence; no reliable warning distance or model promotion.
+
 Existing controlled Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
 observations and measured conservative envelopes. The historical motion runner
 is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary

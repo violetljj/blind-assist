@@ -1,0 +1,35 @@
+{
+  "schema": "city-field-approach-v1",
+  "route_id": "west_intersection",
+  "region_id": "west",
+  "split": "train",
+  "source_spec": "artifacts.local/nearfield/city-collection-field-20260908/collection-v1/west/capture/source/spec.json",
+  "source_spec_sha256": "6d43248f037aed72040047900d372b857d7e7b113eb7613cceafa0fac8837f92",
+  "distance_m": [
+    6,
+    4,
+    3,
+    2.5,
+    2,
+    1.5,
+    1
+  ],
+  "approach_azimuth_deg": [
+    -15,
+    0,
+    15
+  ],
+  "variants": [
+    "clear",
+    "thin_pole",
+    "body_protrusion",
+    "head_bar",
+    "suspended_sign"
+  ],
+  "camera_height_m": 1.7,
+  "pitch_deg": -5,
+  "preflight_frames": 21,
+  "final_frames": 105,
+  "geometry_policy": "Copy exact original source case objects and target declarations; never reposition fixture for views.",
+  "scope": "Previously consumed same-route TRAIN Development; no inference/training during collection."
+}
