@@ -1,5 +1,12 @@
 # City Sample collection field
 
+**Start here: [one-command collection and usable data format](COLLECT.md).**
+**Delivered v2: [three usable west segments, 36/36 exported frames](FIELD_V2_20260908.md).**
+The delivery priority is complete useful routes, plausible supported obstacles
+and clear controls, and automatic export of checked usable frames. The batch
+runner now writes `ready/frames.jsonl`, portable per-frame payloads, exclusions,
+pair availability and scene previews without any model training or evaluation.
+
 **Delivered v1:** [108-frame field acceptance and 36-frame replay](FIELD_V1_20260908.md).
 Nine routes / three regions, all four fixture families validated; explicit floor
 review flags and UNKNOWN supervision retained.

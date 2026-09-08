@@ -39,6 +39,22 @@ class CollectionTests(unittest.TestCase):
         self.template = dict(cases=[{'name': 'stale'}], native_targets=[{'target_id': 'stale'}],
                              suite_contract={'stale': True}, map_asset='/Game/TestCity')
 
+    def test_route_specific_native_props_and_empty_clear(self):
+        route=self.plan['routes'][0]
+        route['fixture_camera']=dict(route['waypoints'][0]['camera'],x=12.)
+        route['fixture_floor_z_m']=2.7
+        route['fixture_variants']={k:[] for k in ('clear','thin_pole','body_protrusion','head_bar','suspended_sign')}
+        route['fixture_variants']['thin_pole']=[dict(instance_id='native_bollard',target_part=True,
+            mesh_asset='/Game/Bollard',center_m=[14.,0.,2.7],scale=[1,1,1],support_parent='ground')]
+        spec=compile_region(self.plan,self.template,'region_0')
+        clear=next(c for c in spec['cases'] if c['name']==route['route_id']+'_fixture_clear')
+        self.assertEqual(clear['objects'],[])
+        self.assertEqual(clear['camera']['x'],12.)
+        self.assertEqual(clear['floor_z_m'],2.7)
+        target=next(t for t in spec['native_targets'] if t['target_id']=='native_bollard')
+        self.assertEqual(target['position_m'],[14.,0.,2.7])
+        self.assertIsNone(target['size_m'])
+
     def test_three_regions_nine_routes_exact_case_coverage_and_no_mutation(self):
         original_plan, original_template = copy.deepcopy(self.plan), copy.deepcopy(self.template)
         names = []

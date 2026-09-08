@@ -12,6 +12,20 @@ split isolation. Model fitting is a separate workstream and is not a prerequisit
 for accepting this collection infrastructure. Historical model diagnostics below
 remain scoped evidence rather than the field's development objective.
 
+The user reconfirmed field delivery as the priority: visibly complete and usable
+sidewalk/intersection/narrow-passage segments, plausible street obstacles and
+controls, and [one-command filtered data export](../../../experiments/city-field/COLLECT.md).
+Abnormal frames are excluded with reasons; label-method expansion and detector
+diagnostics are not prerequisites for this delivery.
+
+[Field v2](../../../experiments/city-field/FIELD_V2_20260908.md) now completes
+one-command capture, filtering and portable export: 36/36 usable frames across
+three west segments, all four obstacle conditions and clear controls, with
+12/12 active targets evaluable. Shifted sidewalk samples avoid inspected native
+props; clear no longer includes a universal portal. The narrow aisle and overhead
+supports remain declared controlled geometry. All images reviewed, generator
+reproduction and exported payload checks pass, capture processes released.
+
 The [field-v1 fixed-method diagnostic](../../../experiments/city-field/DIAGNOSTIC_V1_20260908.md)
 now caches one frozen G10/G13 inference pass on all108 admitted frames. G10
 misses30/45 reliable target-band opportunities with11/45 joint alert/support

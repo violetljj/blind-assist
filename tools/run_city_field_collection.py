@@ -55,14 +55,16 @@ def compile_region(plan, template, region_id):
                 variant_id='route_baseline',variant='route_baseline',pair_id=None,
                 route_distance_m=waypoint.get('route_distance_m'),floor_z_m=waypoint['floor_z_m']))
         mid = waypoints[len(waypoints)//2]
-        camera = mid['camera']
+        camera = route.get('fixture_camera',mid['camera'])
+        fixture_floor = route.get('fixture_floor_z_m',mid['floor_z_m'])
         yaw = camera['yaw']
         angle = math.radians(yaw)
-        anchor = route.get('fixture_anchor_m', [camera['x']+2*math.cos(angle),camera['y']+2*math.sin(angle),mid['floor_z_m']])
+        anchor = route.get('fixture_anchor_m', [camera['x']+2*math.cos(angle),camera['y']+2*math.sin(angle),fixture_floor])
         for kind in KINDS:
-            objects = fixture_objects(kind, anchor, yaw, rid)
+            objects = (copy.deepcopy(route['fixture_variants'][kind]) if 'fixture_variants' in route
+                       else fixture_objects(kind, anchor, yaw, rid))
             case = dict(**common,name=f'{rid}_fixture_{kind}',camera=camera,
-                objects=base_objects+objects,probe_native_floor=True,floor_z_m=mid['floor_z_m'],
+                objects=base_objects+objects,probe_native_floor=True,floor_z_m=fixture_floor,
                 pair_id=f'{rid}_fixture',variant_id=kind,variant=kind,
                 fixture_scope='Controlled supported assembly; clear removes hazard parts, not native city geometry')
             result['cases'].append(case)
@@ -71,7 +73,7 @@ def compile_region(plan, template, region_id):
                     tid=obj['instance_id']; target_ids.add(tid)
                     result['native_targets'].append(dict(target_id=tid,instance_id=tid,
                         category=kind,source_kind='CONTROLLED_ASSEMBLY',route_id=rid,
-                        position_m=obj['center_m'],size_m=obj['size_m'],rotation_deg=obj.get('rotation_deg'),
+                        position_m=obj['center_m'],size_m=obj.get('size_m'),rotation_deg=obj.get('rotation_deg'),
                         support_parent=obj.get('support_parent')))
     for case in result['cases']:
         route_targets = {t['target_id'] for t in result['native_targets'] if t['route_id'] == case['route_id']}
@@ -128,10 +130,17 @@ def run(args):
                 bundle=ingest_native_bundle(plan,capture,route['route_id'],labels/'native-route-labels.json')
                 write(out/region/(route['route_id']+'-bundle.json'),bundle);bundles.append(bundle)
             write(out/'progress.json',dict(completed_regions=list(dict.fromkeys(b['region_id'] for b in bundles)),current=region))
-        validation=validate_bundles(plan,bundles,require_coverage=not bool(args.region))
+        validation=validate_bundles(plan,bundles,require_coverage=not bool(args.region) and plan.get('require_all_splits',True))
         write(out/'collection-validation.json',validation)
+        from export_city_field_ready import export_collection
+        from report_city_field_collection import build as report_collection
+        exported=export_collection(out,out/'ready')
+        report_collection(out)
+        if not exported['accepted']:
+            raise RuntimeError('No usable frames after filtering; inspect ready/excluded.json')
         write(out/'receipt.json',dict(status=validation['status'],bundles=len(bundles),model_training=False,
-            plan_sha256=hashlib.sha256(args.plan.read_bytes()).hexdigest(),completed=True))
+            plan_sha256=hashlib.sha256(args.plan.read_bytes()).hexdigest(),completed=True,
+            ready_export=exported['status'],accepted_frames=exported['accepted'],excluded_frames=exported['excluded']))
     except BaseException as error:
         write(out/'receipt.json',dict(status='INCOMPLETE',error=repr(error),bundles_completed=len(bundles),
             recovery='Completed immutable region outputs remain available; do not overwrite or silently recapture them.'))
