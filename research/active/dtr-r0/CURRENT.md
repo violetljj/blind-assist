@@ -24,9 +24,12 @@ checks. The [first City Sample PCG plaza](nearfield/CITY_PCG_PLAZA_20260908.md)
 now reuses an official graph with 545 generated instances and passes three
 clear/BODY/HEAD native capture and geometry checks. Wider visual acceptance,
 multi-world generation remains pending. The subsequent
-[200 m street](nearfield/CITY_PCG_STREET200_20260908.md) passes 15 native
-capture/geometry checks and adds visible-gap distance evidence, with visual,
-collision and task-definition limitations documented;
+[200 m street](nearfield/CITY_PCG_STREET200_20260908.md) now has a V7 follow-up
+with darker asphalt, distant buildings, volumetric clouds and a reusable
+24-frame obstacle suite passing native capture/geometry checks. Persistent
+[project caches](nearfield/CITY_PCG_CACHE.md) and one-session batch capture
+reduce repeated work. Visible-gap distance evidence retains documented visual,
+collision and task-definition limitations;
 no new model training or promotion was performed.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m

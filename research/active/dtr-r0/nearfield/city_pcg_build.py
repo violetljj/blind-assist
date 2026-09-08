@@ -94,7 +94,16 @@ def tick(dt):
                 sample=ml.create_material_expression(mat,u.MaterialExpressionTextureSample)
                 sample.texture=tex
                 sample.sampler_type=u.MaterialSamplerType.SAMPLERTYPE_VIRTUAL_COLOR if tex.virtual_texture_streaming else u.MaterialSamplerType.SAMPLERTYPE_COLOR
-                ml.connect_material_property(sample,'RGB',u.MaterialProperty.MP_BASE_COLOR)
+                color=sample
+                output='RGB'
+                if 'color_gain' in recipe:
+                    color=ml.create_material_expression(mat,u.MaterialExpressionMultiply)
+                    gain=ml.create_material_expression(mat,u.MaterialExpressionConstant)
+                    gain.set_editor_property('r',float(recipe['color_gain']))
+                    ml.connect_material_expressions(sample,'RGB',color,'A')
+                    ml.connect_material_expressions(gain,'',color,'B')
+                    output=''
+                ml.connect_material_property(color,output,u.MaterialProperty.MP_BASE_COLOR)
                 rough=ml.create_material_expression(mat,u.MaterialExpressionConstant)
                 rough.set_editor_property('r',.95)
                 ml.connect_material_property(rough,'',u.MaterialProperty.MP_ROUGHNESS)
@@ -121,6 +130,49 @@ def tick(dt):
                 api.spawn_actor_from_class(u.ExponentialHeightFog,u.Vector(0,0,0))
             pp=api.spawn_actor_from_class(u.PostProcessVolume,u.Vector(0,0,0)) if not base else next(a for a in api.get_all_level_actors() if isinstance(a,u.PostProcessVolume))
             pp.set_editor_property('unbound',True)
+            if (layout or {}).get('clouds'):
+                clouds=[a for a in api.get_all_level_actors() if isinstance(a,u.VolumetricCloud)]
+                cloud=clouds[0] if clouds else api.spawn_actor_from_class(u.VolumetricCloud,u.Vector(0,0,0))
+                c=cloud.get_component_by_class(u.VolumetricCloudComponent)
+                material=u.load_asset('/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst')
+                if isinstance(layout['clouds'],dict):
+                    dest=MAP+'_Materials/BA_Clouds'
+                    assert not u.EditorAssetLibrary.does_asset_exist(dest)
+                    material=u.EditorAssetLibrary.duplicate_asset(material.get_path_name().split('.')[0],dest)
+                    ml=u.MaterialEditingLibrary
+                    scalars={str(v) for v in ml.get_scalar_parameter_names(material)}
+                    vectors={str(v) for v in ml.get_vector_parameter_names(material)}
+                    record=dict(scalar_names=sorted(scalars),vector_names=sorted(vectors),changes=[])
+                    for name,value in layout['clouds'].get('parameters',{}).items():
+                        assert name in scalars or name in vectors, 'Unknown cloud parameter '+name
+                        if name in scalars:
+                            before=ml.get_material_instance_scalar_parameter_value(material,name)
+                            ml.set_material_instance_scalar_parameter_value(material,name,float(value))
+                        else:
+                            before=str(ml.get_material_instance_vector_parameter_value(material,name))
+                            ml.set_material_instance_vector_parameter_value(material,name,u.LinearColor(value,value,value,value))
+                        record['changes'].append(dict(name=name,before=before,after=value))
+                    for name,value in layout['clouds'].get('scalars',{}).items():
+                        assert name in scalars, 'Unknown cloud scalar '+name
+                        before=ml.get_material_instance_scalar_parameter_value(material,name)
+                        ml.set_material_instance_scalar_parameter_value(material,name,float(value))
+                        record['changes'].append(dict(name=name,before=before,after=value))
+                    for name,value in layout['clouds'].get('vectors',{}).items():
+                        assert name in vectors, 'Unknown cloud vector '+name
+                        ml.set_material_instance_vector_parameter_value(material,name,u.LinearColor(*value))
+                    ml.update_material_instance(material)
+                    assert u.EditorAssetLibrary.save_loaded_asset(material)
+                    overrides.append(dict(cloud_parameters=record))
+                c.set_editor_property('material',material)
+                c.set_editor_property('layer_bottom_altitude',1.5)
+                c.set_editor_property('layer_height',3.0)
+            for group in (layout or {}).get('duplicate_groups',[]):
+                source=next(a for a in api.get_all_level_actors() if a.get_actor_label()==group['source_label'])
+                actor=api.duplicate_actor(source,editor.get_editor_world(),u.Vector(0,0,0))
+                assert actor, 'Backdrop duplication failed'
+                actor.set_actor_label(group['label'])
+                actor.set_actor_location(u.Vector(*(v*100 for v in group['location_m'])),False,False)
+                actor.set_actor_rotation(u.Rotator(pitch=0,yaw=group.get('yaw',0),roll=0),False)
             for group in (layout or {}).get('mesh_groups',[]):
                 mesh=u.load_asset(group['asset'])
                 assert isinstance(mesh,u.StaticMesh), group['asset']
@@ -136,6 +188,10 @@ def tick(dt):
                     actor=api.spawn_actor_from_class(u.StaticMeshActor,u.Vector(*loc))
                     actor.set_actor_label(group['label'])
                     actor.static_mesh_component.set_static_mesh(mesh)
+                    if group.get('material'):
+                        material=u.load_asset(group['material'].replace('{MAP}',MAP))
+                        assert isinstance(material,u.MaterialInterface)
+                        actor.static_mesh_component.set_material(0,material)
                     actor.set_actor_scale3d(u.Vector(*group.get('scale',[1,1,1])))
                     actor.set_actor_rotation(u.Rotator(pitch=0,yaw=group.get('yaw',0),roll=0),False)
                     actor.static_mesh_component.set_collision_profile_name('BlockAll')

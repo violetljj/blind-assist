@@ -53,3 +53,37 @@ generator dependencies were not copied; worker UE has not been run.
 Preparation was slowed by repeated map/material iterations and label-scope
 expansion after cold compilation. The user requested no further expansion:
 deliver this engineering scene with its limits and review the data proposal.
+
+## Follow-up: V7 acquisition scene and persistent caches
+
+The subsequently authorized polish uses `/Game/BAResearchSlice/Street200V7`,
+SHA256 `36581860978625a86f1a4aec27a35b395d76d207afe43ccd3800312903b6d0f5`.
+`street200-build-6/` and `street200-build-7/` preserve successful builds and
+unchanged source-map hashes. Recipes are `street200-polish-layout.json` and
+`street200-sky-layout.json`. Asphalt texture gain is reduced; reused building
+rows close street ends and add distant context. A task-owned volumetric-cloud
+material adds cloud coverage. Inspected native previews show darker asphalt
+and buildings at the street end; sky remains plain, and some side horizons
+remain open. This is a usable engineering acquisition scene, not full visual
+acceptance or a complete traffic environment.
+
+`tools/make_city_obstacle_suite.py` binds the saved map hash into a reusable
+24-frame spec: six scene views and eighteen observations at one camera pose.
+The latter include a clear baseline, center/lateral pairs of box, bar,
+composite U frame, real railing, sign pole and trashcan, three distances to
+the same wall, and two lateral-wall controls. The railing's end pivot is
+offset using verified mesh bounds; labels still come from native depth,
+not those bounds. Group identities and geometry stay evaluator-side.
+`obstacle-suite-v7.json` retains source hashes and the exact arrangement.
+`street200-capture-5/` passes all 24 native captures and the CUDA geometry
+verifier (1.411 s), including four analytic cube controls, declared floor
+patches, distance-ladder expectations, source integrity and process release.
+The centered real railing has BODY support. Native appearance previews retain
+the real meshes; no mask is inferred from asset category.
+
+See [cache reuse](CITY_PCG_CACHE.md): build/capture share the persistent F:
+project DDC/Zen and cached asset registry. Launch receipts now explicitly
+record that cache policy. All 24 cases use one editor session; ending the
+session releases processes while preserving reusable cache files. The measured
+13.156 s V6 build operation excludes startup/shutdown and is not a cold/warm
+speedup comparison. New or changed shaders may still require compilation.

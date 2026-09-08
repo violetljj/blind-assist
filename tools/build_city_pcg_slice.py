@@ -74,6 +74,7 @@ def build(args):
                    '-ini:Engine:[/Script/EngineSettings.GameMapsSettings]:EditorStartupMap=',
                    '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:LoadLevelAtStartup=None']
         write(out / 'launch.json', dict(command=command, project=str(project),
+              persistent_cache=dict(path=env['UE-LocalDataCachePath'], policy='REUSE_ACROSS_RUNS_KEEP_WHEN_RELEASING_PROCESSES'),
               project_sha256_before=before, map_asset=env['BA_CITY_MAP'], map_file=str(target),
               builder_sha256=file_hash(script), launcher_sha256=file_hash(Path(__file__))))
         # Recheck immediately before starting the builder after snapshot preparation.

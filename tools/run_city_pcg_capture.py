@@ -72,6 +72,7 @@ def capture(args):
                    '-ini:Engine:[/Script/EngineSettings.GameMapsSettings]:EditorStartupMap=',
                    '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:LoadLevelAtStartup=None']
         write(out / 'launch.json', dict(command=command, project=str(project), map_file=str(map_path),
+              persistent_cache=dict(path=env['UE-LocalDataCachePath'], policy='REUSE_ACROSS_RUNS_KEEP_WHEN_RELEASING_PROCESSES'),
               input_hashes=before, spec_sha256=file_hash(snapshot / 'spec.json'),
               source_hashes={path.name: file_hash(snapshot / path.name) for path in sources},
               launcher_sha256=file_hash(Path(__file__)), plugin_sha256=file_hash(plugin),
