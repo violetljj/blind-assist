@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-08",
-  "source_fingerprint": "73e0a4816d61df1544a79f8130a767b8c5770445aef7f0c703ead8980fae8738",
+  "source_fingerprint": "2a2a4991c68291b89c696a75cb7b6d6d9c8faa3c4ca3d7066d5543badb001322",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 248,
-    "current_terminals": 45,
-    "run_associations": 246
+    "experiments": 249,
+    "current_terminals": 46,
+    "run_associations": 247
   },
   "failure_layers": [
     {
@@ -18204,6 +18204,39 @@
       "search_text": "terminal-city-native-validation-20260908-diagnostic-no-promotion obstacle-avoidance CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION Forty static native-city poses; three original targets have independently checked positive opportunities. G10 misses 7/8 target-height frame opportunities and G13 8/8; frame29 is UNKNOWN. Retain capture/label pipeline; no model promotion or more acquisition. Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation. Presenting post-hoc route or threshold changes as fresh confirmation Treating unknown or untested suspended hazards as model negatives Promoting fixed G10/G13 from this curated route"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
+      "status": "diagnostic",
+      "question": "One 300-step native City adaptation improves responses but DEV recall 0.4643/0.4444 fails 0.5 retention and Willow support localization forgets. Original-route meter opportunities withdrawn as NOT_EVALUABLE after same-instance collision disagreement correction. Same-map Development only; no promotion.",
+      "baseline": null,
+      "change": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
+      "primary_metric": null,
+      "decision": "RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "be46f08e595269f02278e60329279ff63bdb4b33",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "geometry_motion": 30
+      },
+      "successor_requires": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
+      "forbidden_repeats": [
+        "Promoting this fitted checkpoint despite failed retention",
+        "Treating corrected meter UNKNOWN opportunities as verified target misses or retaining the old eight-opportunity claim",
+        "Rescuing this completed run by extra fitting or post-outcome threshold changes as fresh confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md",
+        "artifacts.local/nearfield/city-native-adapt-20260908/fit-v1/result.json",
+        "artifacts.local/nearfield/city-native-adapt-20260908/route-labels-v2/label-validation.json"
+      ],
+      "association_id": "city-native-adapt-20260908",
+      "search_text": "terminal-city-native-adapt-20260908-diagnostic-no-promotion obstacle-avoidance RETAIN_ORIGINAL One 300-step native City adaptation improves responses but DEV recall 0.4643/0.4444 fails 0.5 retention and Willow support localization forgets. Original-route meter opportunities withdrawn as NOT_EVALUABLE after same-instance collision disagreement correction. Same-map Development only; no promotion. Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries. Promoting this fitted checkpoint despite failed retention Treating corrected meter UNKNOWN opportunities as verified target misses or retaining the old eight-opportunity claim Rescuing this completed run by extra fitting or post-outcome threshold changes as fresh confirmation"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -23440,9 +23473,45 @@
         "decision_lifecycle": 6
       },
       "search_text": "city-native-validation-20260908 Can fixed near-field models detect reliable natural obstacles on a complete native city sidewalk? Frozen G10 expanded_region and G13 decoupled ensembles with historical thresholds Original Small_City_LVL surroundings and native target label validation; no fitting Visible-support FN FP UNKNOWN and reliable target localization misses CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md Original City Sample Small_City_LVL static Development route"
+    },
+    {
+      "kind": "experiment",
+      "id": "city-native-adapt-20260908",
+      "status": "archived",
+      "question": "Does one small native-instance adaptation improve source-separated street segments and consumed route regression?",
+      "baseline": "Original G13 seed17 frozen checkpoint",
+      "change": "Different original native instances on TRAIN and DEV segments; one 300step fit with low backbone LR and frozen BN buffers",
+      "primary_metric": "DEV recall FPR support and consumed route target misses plus Willow regression",
+      "decision": "RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md",
+      "source": "Original Small_City_LVL different street segments and native instances",
+      "commit": "be46f08e595269f02278e60329279ff63bdb4b33",
+      "association_id": "city-native-adapt-20260908",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 3
+      },
+      "search_text": "city-native-adapt-20260908 Does one small native-instance adaptation improve source-separated street segments and consumed route regression? Original G13 seed17 frozen checkpoint Different original native instances on TRAIN and DEV segments; one 300step fit with low backbone LR and frozen BN buffers DEV recall FPR support and consumed route target misses plus Willow regression RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md Original Small_City_LVL different street segments and native instances"
     }
   ],
   "associations": [
+    {
+      "run_id": "city-native-adapt-20260908",
+      "use_ids": [],
+      "protocol_id": "city-native-adapt-p1",
+      "code_revision": "be46f08e595269f02278e60329279ff63bdb4b33",
+      "input_fingerprint": "322035c48de498b967bac518ba49ac68ca5223387f41ea9e937365a9e1cad493",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_PROTOCOL_20260908.md",
+        "artifacts.local/nearfield/city-native-adapt-20260908/",
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md"
+      ],
+      "decision_id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
+      "source_rows": 1
+    },
     {
       "run_id": "city-native-validation-20260908",
       "use_ids": [],

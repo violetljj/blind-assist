@@ -16,8 +16,8 @@ now captures 21 settled RGB-D observations along 10 m of native
 floor geometry remains REVIEW (19/21 within the 2 cm median criterion).
 The follow-up [native-route validation](nearfield/CITY_NATIVE_VALIDATION_20260908.md)
 restores surrounding blocks with bounded full-detail loading and distant HLOD,
-and captures 40 settled views along 16.95 m. Independently checked bollard and
-meter BODY opportunities are missed 2/2 by both frozen G10/G13; supported-sign
+and captures 40 settled views along 16.95 m. Independently checked bollard
+BODY opportunities are missed 2/2 by both frozen G10/G13; supported-sign
 HEAD is missed 2/2 by both. One unreliable floor frame stays UNKNOWN. Retain
 this consumed Development diagnostic and fix source transfer before expanding
 acquisition; independently suspended obstacles and temporal behavior are untested.
@@ -26,6 +26,13 @@ reproduces 16 original VAL scores exactly for all six weights. Aligning CPU/GPU
 pixel conversion changes no City alert decisions. G10 has diffuse support and
 a bollard score below every known negative; G13 shows weak rank separation and
 suppressed support. Threshold tuning alone is insufficient; no new fits/capture.
+The subsequent [native adaptation](nearfield/CITY_NATIVE_ADAPT_20260908.md)
+uses45 TRAIN/45 DEV views on disjoint original instances. One300step seed17 fit
+improves DEV BODY/HEAD recall to46.4%/44.4%, below the50% retention criterion;
+retain the original model. Willow alert decisions hold but support IoU drops.
+Its geometry audit corrects same-instance early collision from occlusion to
+UNKNOWN: the original route's meter is no longer independently verified and
+must be NOT_EVALUABLE in target metrics. Rendered all-scene labels are unchanged.
 
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;

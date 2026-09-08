@@ -376,9 +376,12 @@ def tick(dt):
             after = 0.
             return
         depth.capture_component2d.capture_scene()
-        if index == 0 and spec.get('export_native_inventory'):
+        if spec.get('export_native_inventory') and index in spec.get('inventory_indices', [0]):
             from city_native_inspect import inventory
-            write(OUT/'evaluator/native-inventory.json', inventory(u, api, spec['cases'][0]['camera'], 35.))
+            native_inventory = inventory(u, api, spec['cases'][index]['camera'], 35.)
+            write(OUT/f'evaluator/native-inventory-{index:04d}.json', native_inventory)
+            if index == 0:
+                write(OUT/'evaluator/native-inventory.json', native_inventory)
         case = spec['cases'][index]
         if case.get('probe_native_floor', False):
             pose = case['camera']

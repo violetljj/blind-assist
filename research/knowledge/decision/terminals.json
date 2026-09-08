@@ -559,6 +559,36 @@
       "failure_signature": "G10 target alert misses 7/8 BODY/HEAD frame opportunities; G13 8/8. Frame29 floor UNKNOWN; independently suspended-bar coverage NOT_EVALUABLE.",
       "revisit_trigger": "Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation.",
       "assignment_basis": "Completed 40-frame curated static-route comparison with zero training; retain acquisition/evaluation components, not models as proven city perception."
+    },
+    {
+      "id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "geometry_motion"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_ORIGINAL",
+      "summary": "One 300-step native City adaptation improves responses but DEV recall 0.4643/0.4444 fails 0.5 retention and Willow support localization forgets. Original-route meter opportunities withdrawn as NOT_EVALUABLE after same-instance collision disagreement correction. Same-map Development only; no promotion.",
+      "successor_requires": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
+      "forbidden_repeats": [
+        "Promoting this fitted checkpoint despite failed retention",
+        "Treating corrected meter UNKNOWN opportunities as verified target misses or retaining the old eight-opportunity claim",
+        "Rescuing this completed run by extra fitting or post-outcome threshold changes as fresh confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md",
+        "artifacts.local/nearfield/city-native-adapt-20260908/fit-v1/result.json",
+        "artifacts.local/nearfield/city-native-adapt-20260908/route-labels-v2/label-validation.json"
+      ],
+      "commit": "be46f08e595269f02278e60329279ff63bdb4b33",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Diagnostic-only native City adaptation pipeline and fitted checkpoint; retain original model, no promotion.",
+      "retained_surface": "Source-separated same-map capture, corrected native geometry labels, bounded fit/evaluation pipeline and checkpoint retained for diagnostics.",
+      "failure_signature": "DEV BODY recall 13/28 and HEAD 8/18 both below 0.5; Willow support IoU declines to 0.1345/0.0266. Corrected original-route meter is NOT_EVALUABLE, not a scored miss.",
+      "revisit_trigger": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
+      "assignment_basis": "One completed seed17 300-step fit failed predeclared retention; preserve diagnostic component without model promotion or further automatic fitting."
     }
   ]
 }

@@ -26,6 +26,14 @@ def depth_values(path):
         return values
 
 
+def ray_status(identity, collision_axial, rendered_axial):
+    if identity and abs(collision_axial-rendered_axial) <= .03:
+        return 'MATCH'
+    if not identity and collision_axial < rendered_axial-.03:
+        return 'OCCLUDED'
+    return 'UNKNOWN'
+
+
 def check_rays(u, world, source, instance_index, camera, depths):
     candidates=[i for i,d in enumerate(depths) if 0 < d < 15]
     chosen=sorted({candidates[round(j*(len(candidates)-1)/31)] for j in range(32)}) if candidates else []
@@ -50,10 +58,7 @@ def check_rays(u, world, source, instance_index, camera, depths):
             identity=(component == source and (instance_index is None or item == instance_index))
             row.update(collision_axial_m=axial, component_path=component.get_path_name() if component else None,
                        instance_index=item,absolute_error_m=abs(axial-depths[i]))
-            if identity and abs(axial-depths[i]) <= .03:
-                row['status']='MATCH'
-            elif axial < depths[i]-.03:
-                row['status']='OCCLUDED'
+            row['status']=ray_status(identity,axial,depths[i])
         rows.append(row)
     matches=sum(r['status']=='MATCH' for r in rows)
     unknown=sum(r['status']=='UNKNOWN' for r in rows)
