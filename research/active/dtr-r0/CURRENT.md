@@ -516,3 +516,12 @@ Retain the source, LOW/ABOVE/outside controls and count-query tooling as diagnos
 components; do not promote either matched fit or reopen this consumed budget.
 This does not replace the separate City cross-region collection work above.
 Offline all40-case viewer and RGB-only CLI are delivered with measured limits.
+
+
+[Zero-fit query diagnostic](nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md) clarifies
+that B improves EVAL low-FP ranking (HEAD TP8 versus A6 at FP<=2), while DEV still
+favors A15 versus B5. B query nonempty recall is97.05% TRAIN but26.88% DEV and
+29.90% EVAL; all8 EVAL HEAD misses lack an active correct HEAD cell. Preserve
+the partial gain, focus the question on evidence transfer, and do not attribute
+the failure to positive-query underfitting or prioritize balanced CE without a
+distinct test. No source, weights, cutoffs or training budgets changed.

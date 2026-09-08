@@ -741,6 +741,31 @@
         "artifacts.local/work/body-query-v1-20260908/independent-audit.json"
       ],
       "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_BODY_QUERY_LOCAL_V4_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-diagnostic-20260909-evidence-transfer",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "BODY_QUERY_DIAGNOSTIC_RETAIN_RANKING_SIGNAL_NO_BALANCE_ATTRIBUTION",
+      "summary": "Zero-fit cached diagnostic: at EVAL HEAD FP<=2, A oracle TP6 versus B8, while DEV A15 versus B5. Frozen-cutoff EVAL positives have6 common hits,5 A-only,2 B-only,3 common misses. B nonempty query TRAIN recall559/576=97.05%, DEV25/93=26.88%, EVAL29/97=29.90%. All8 EVAL HEAD misses lack correct HEAD query signal>=.5, with max correct-cell probability<=.17475. Retain partial ranking gains; evidence transfer fails. Class imbalance is not established as the priority cause; do not infer geometry reasoning or launch an attributed balanced-CE repair.",
+      "successor_requires": "Distinct scoped causal test of query-evidence transfer across scene/geometry configurations; balancing remains an untested candidate, not a diagnosed repair.",
+      "forbidden_repeats": [
+        "Replacing original DEV thresholds with consumed EVAL oracle thresholds",
+        "Claiming pure threshold conservatism despite ranking gains",
+        "Claiming low EVAL query accuracy means TRAIN query fitting failed",
+        "Treating output co-occurrence as causal transport",
+        "Promoting a model or extending the completed BODY_QUERY fit from this audit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-diagnostic-20260909/scores/score-audit.json",
+        "artifacts.local/work/body-query-diagnostic-20260909/cells-v2/result.json"
+      ],
+      "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_DIAGNOSTIC_RECEIPTS"
     }
   ]
 }
