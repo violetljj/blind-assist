@@ -302,6 +302,13 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Frozen-B fit adequacy at2000 steps](nearfield/CITY_FIT_ADEQUACY_20260908.md):
+  exact200-step weight parity passes; final-only DEV recall43.75%/31.25% at
+  FPR4.6875%/6.25%, but joint1/32 and negative support activation expands.
+  New TRAIN HEAD AUC stays0.616 to0.611 despite10x updates; joint0/96.
+  No promotion or further budget extension. Next use a small balanced TRAIN
+  fitting check with separate loss/gradient inspection before new mechanisms.
+
 - [Additional relational TRAIN with frozen B](nearfield/CITY_RELATIONAL_TRAIN_20260908.md):
   old750 plus384 new frames across three same-map sites leaves DEV joint2/32;
   BODY/HEAD recall is37.50%/28.125% at FPR7.8125%/9.375%, with HEAD IoU0.00260.
