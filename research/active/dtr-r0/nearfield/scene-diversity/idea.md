@@ -138,3 +138,8 @@ Implementation and source-only evidence are recorded in
 [source progress](SOURCE_PROGRESS_20260908.md). The shared allocation, exposure
 schedule and geometry library exist; this does not change the candidate's
 NOT_ADMITTED status or start either fit.
+
+On2026-09-09 the user authorized a separate small BODY-QUERY counterfactual
+source pilot. Its [120-frame result](../BODY_QUERY_SCENES_RESULTS_20260909.md)
+owns that completed collection. It is not execution of this256+256+96 candidate
+or a claim that this candidate's strict background-isolation condition passed.
