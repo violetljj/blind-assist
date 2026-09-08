@@ -333,6 +333,14 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [HEAD-X0 cross-region audit](nearfield/HEAD_X0_AUDIT_20260908.md):
+  zero training; F HEAD plaza AUC0.25751/AP0.01327, while all15 old/plaza
+  paired positive pooled masks match. FP peaks concentrate near distant
+  building context;35 peaks remain UNKNOWN. Blur and mean-fill controls
+  disagree, so background causality is unproven. Conditional local affinities
+  shift toward positive references for FP. Retain data-coverage diagnostic;
+  next one source-separated small-data pilot, not reused-plaza held-out claims.
+
 - [Full-parameter City fitting at matched2000 steps](nearfield/CITY_FULL_FIT_20260908.md):
   all2268 TRAIN near bits fit; DEV BODY/HEAD recall81.25%/71.875% at9.375%
   FPR each, IoU0.20745/0.20324 and joint6/32 improve over frozen B2000.
