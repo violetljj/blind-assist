@@ -292,6 +292,11 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Zero-training gate intervention and score separation](nearfield/CITY_GATE_INTERVENTION_20260908.md):
+  original-gate replacement reduces plaza BODY FPR to 1.14% but recall collapses
+  to 10.37%, HEAD to zero. No repair/promotion. Step200 BODY AUC nevertheless
+  improves 0.6821 to 0.8290; separate fixed-point failure from score ordering.
+
 - [Zero-training City FP diagnosis](nearfield/CITY_FP_ATTRIBUTION_20260908.md):
   step200 has only 2/2 BODY/HEAD FP on TRAIN but 561/348 on plaza; this is region
   transfer failure, not uniform City-wide activation. Existing negative support
