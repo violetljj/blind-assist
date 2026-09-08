@@ -362,6 +362,14 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [HEAD-S1 support-to-decision audit](nearfield/HEAD_S1_20260908.md):
+  zero training. Coverage1198 HEAD near AUC0.930/0.709 on DEV/coverage EVAL
+  beats max/top6/logit-LSE0.795-0.808/0.647-0.651. On consumed plaza all four
+  scores have zero attainable recall at FPR<=10%; support AUC remains below0.5.
+  Simple support-only pooling does not rescue HEAD. Prioritize cross-region
+  evidence stability, without proving position-specific readout innocent or
+  appearance causal. Preserve the baseline; no automatic MIL/consistency fit.
+
 - [Masked support Dice loss comparison](nearfield/CITY_SUPPORT_DICE_20260908.md):
   same1198 TRAIN/schedule/init and one2000-step fit improve added64 HEAD IoU
   0.2055 to0.4421 with99.63% positive-pixel recall. Consumed EVAL HEAD IoU
