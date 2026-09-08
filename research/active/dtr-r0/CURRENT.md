@@ -362,6 +362,15 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Masked support Dice loss comparison](nearfield/CITY_SUPPORT_DICE_20260908.md):
+  same1198 TRAIN/schedule/init and one2000-step fit improve added64 HEAD IoU
+  0.2055 to0.4421 with99.63% positive-pixel recall. Consumed EVAL HEAD IoU
+  only0.1852 to0.1930 while positive-pixel recall55.94% to36.71%, nearTP12
+  to11/32 and FP1 to3/32; DEV near recall also falls. Retain this fixed Dice
+  recipe as a scoped negative control, not the new default. Training overlap
+  responds to supervision, but cross-region positives are lost; no weight sweep,
+  architecture-failure claim or extra steps follow.
+
 - [Matched64-frame regional coverage pilot](nearfield/CITY_COVERAGE64_20260908.md):
   one same-budget full fit on1198 TRAIN improves new same-world EVAL HEAD
   TP8 to12/32, FP3 to1/32, AUC0.6553 to0.7090 and IoU0.1385 to0.1852;
