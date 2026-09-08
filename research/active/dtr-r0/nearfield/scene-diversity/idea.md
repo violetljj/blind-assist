@@ -133,3 +133,8 @@ ready; do not silently relabel nearby views as new regions or weaken the claim.
 Before execution, replace proposed region counts with admitted exact sources,
 freeze templates/splits/schedule/evaluator and register a new versioned run.
 This file records the candidate and its unresolved source dependencies only.
+
+Implementation and source-only evidence are recorded in
+[source progress](SOURCE_PROGRESS_20260908.md). The shared allocation, exposure
+schedule and geometry library exist; this does not change the candidate's
+NOT_ADMITTED status or start either fit.
