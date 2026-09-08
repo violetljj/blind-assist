@@ -325,6 +325,14 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Full-parameter City fitting at matched2000 steps](nearfield/CITY_FULL_FIT_20260908.md):
+  all2268 TRAIN near bits fit; DEV BODY/HEAD recall81.25%/71.875% at9.375%
+  FPR each, IoU0.20745/0.20324 and joint6/32 improve over frozen B2000.
+  Consumed plaza HEAD remains0/15 TP with171/735 FP at unchanged DEV thresholds;
+  full updates are a stronger fitting/DEV candidate, not a generalization fix.
+  Keep G13-D; next inspect cached regional/family error structure, no promotion
+  or automatic budget extension.
+
 - [Balanced tiny TRAIN fitting and gradient diagnosis](nearfield/CITY_TINY_FIT_20260908.md):
   B frozen/F full each fit all64 near bits and8/8 groups at2000 steps. Full
   updates improve BODY/HEAD IoU0.110/0.089 to0.555/0.488, though F HEAD misses
