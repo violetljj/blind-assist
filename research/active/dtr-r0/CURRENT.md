@@ -31,6 +31,10 @@ with darker asphalt, distant buildings, volumetric clouds and a reusable
 reduce repeated work. Visible-gap distance evidence retains documented visual,
 collision and task-definition limitations;
 no new model training or promotion was performed.
+The [complex real-asset suite](nearfield/CITY_COMPLEX_ASSETS_20260908.md)
+adds bicycle, scaffold frame, barricade, picnic table and park bench with
+center/lateral controls at two existing scene poses; all 26 capture/geometry
+checks pass. This is not an independent-world or trained-model result.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame

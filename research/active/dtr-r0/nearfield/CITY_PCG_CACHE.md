@@ -30,3 +30,9 @@ CitySample 工作工程。复用已校验的资源增量即可；缓存、机器
 当前采集器已支持同一个 spec 的多个 cases 在**一次 UE 进程**中顺序采集，
 包括本次 24 帧套件。优先一批多 cases，不为每一帧重开 UE；静态 settling
 和 native 导出检查仍按各 case 执行。
+
+副机 V7 首次单帧检查在 900 秒上限超时（实际进程时长 903.460 秒），
+仍在着色器及建筑资产缓存处理阶段，输出 0 帧。29 个增量文件、7,760,266
+字节已逐文件 SHA 校验；地图和项目未变化，任务进程已释放，缓存保留。
+这证明传输完成，不证明副机采集已跑通。回执：
+`artifacts.local/nearfield/city-pcg-20260908/worker-transfer-street-final-v7/delivery-summary.json`。

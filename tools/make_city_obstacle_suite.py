@@ -13,6 +13,13 @@ ASSETS = {
     'sign_pole': '/Game/Prop/Kit_PoleSign_A/Mesh/SM_PoleSign_A',
     'trashcan': '/Game/Prop/Kit_Trashcan_A/Mesh/SM_Trashcan_A_01',
 }
+COMPLEX_ASSETS = {
+    'bicycle': '/Game/Prop/Kit_Bicycle_A/Mesh/SM_Bicycle_A_01',
+    'scaffold_frame': '/Game/Prop/Kit_Scaffolding_RR/Mesh/SM_Scaffolding_metal_N1',
+    'barricade': '/Game/Prop/Kit_Barricade_A/Mesh/SM_Barricade_A',
+    'stone_table': '/Game/Prop/Kit_Umbella_StoneTable_A/Mesh/SM_StoneTable_Square_A',
+    'bench': '/Game/Prop/Kit_bench_RR/Mesh/SM_park_bench_N01',
+}
 
 
 def sha(path):
@@ -96,7 +103,49 @@ def suite(template):
     return result
 
 
-def make(build, output, template=DEFAULT_TEMPLATE):
+def complex_suite(template):
+    """Two existing scene poses, real-shape pairs and table/seating combinations."""
+    by_name = {case['name']: case for case in template['cases']}
+    cases = []
+    for scene in ('west_sidewalk', 'plaza'):
+        base = copy.deepcopy(by_name[scene])
+        camera, floor = base['camera'], base['floor_z_m']
+        if camera['yaw'] != 0 or camera['roll'] != 0:
+            raise ValueError('Bounds-aligned suite requires forward world X')
+        baseline = len(cases)
+        base.update(group_id=scene+'_clear', variant_id='clear', group_type='EMPTY_BASELINE')
+        cases.append(base)
+
+        def prop(name, lateral=False, forward=2., side=None):
+            return dict(name=name, mesh_asset=COMPLEX_ASSETS[name], scale=1.,
+                center_m=[camera['x']+forward, camera['y']+(.8 if lateral else 0.) if side is None else camera['y']+side, floor],
+                placement='bounds_front_right_floor' if lateral else 'bounds_front_center_floor',
+                rotation_deg=dict(pitch=0., yaw=90. if name=='bicycle' else 0., roll=0.))
+
+        def add(name, variant, objects):
+            case = copy.deepcopy(base)
+            case.update(name=scene+'__'+name+'__'+variant, objects=objects, floor_check=False,
+                group_id=scene+'__'+name, group_type='COMPLEX_REAL_PLACEMENT_PAIR',
+                variant_id=variant, baseline_index=baseline)
+            cases.append(case)
+
+        for name in COMPLEX_ASSETS:
+            for lateral, variant in ((False,'center'), (True,'right_clearance')):
+                add(name, variant, [prop(name,lateral)])
+        # Two separate real objects, with a controllable aisle between them.
+        add('table_and_seating', 'center_table', [prop('stone_table'), prop('bench',True,forward=3.)])
+        add('table_and_seating', 'right_clearance', [prop('stone_table',True), prop('bench',True,forward=5.)])
+    assert len(cases) == 26
+    result = copy.deepcopy(template)
+    result.update(schema='city-complex-obstacle-suite-v1', seed=42, cases=cases,
+        suite_contract=dict(scene_poses=2, frames=26, assets=list(COMPLEX_ASSETS),
+            placement='World bounds anchor placement only; native visible surfaces determine labels',
+            sampling='STATIC_SETTLED_POSES_NOT_MOTION_OR_TRAINING',
+            model_contract='RGB/calibration only; grouping and geometry remain evaluator-side'))
+    return result
+
+
+def make(build, output, template=DEFAULT_TEMPLATE, complex_structures=False):
     build, output, template = map(under_artifacts, (build, output, template))
     if output.exists():
         raise FileExistsError('Refuse overwrite suite output')
@@ -112,10 +161,10 @@ def make(build, output, template=DEFAULT_TEMPLATE):
     if content_index is None:
         raise ValueError('Map must be in project Content')
     content = Path(*parts[:content_index+1])
-    for asset in ASSETS.values():
+    for asset in (COMPLEX_ASSETS if complex_structures else ASSETS).values():
         if not (content / (asset[len('/Game/'):] + '.uasset')).is_file():
             raise FileNotFoundError('Required existing prop missing: ' + asset)
-    result = suite(read(template))
+    result = (complex_suite if complex_structures else suite)(read(template))
     result.update(map_file=str(map_file), map_asset='/Game/'+map_file.relative_to(content).with_suffix('').as_posix(),
                   map_sha256=sha(map_file), provenance=dict(build_completion=str(completion_path),
                   build_completion_sha256=sha(completion_path), template=str(template), template_sha256=sha(template),
@@ -131,5 +180,6 @@ if __name__ == '__main__':
     parser.add_argument('--build', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--template', type=Path, default=DEFAULT_TEMPLATE)
+    parser.add_argument('--complex-structures', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(make(args.build, args.output, args.template)))
+    print(json.dumps(make(args.build, args.output, args.template, args.complex_structures)))

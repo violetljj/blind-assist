@@ -112,8 +112,24 @@ def prepare(case):
         actor.set_actor_scale3d(u.Vector(*scale))
         actor.set_actor_rotation(u.Rotator(**rotation), False)
         actor.static_mesh_component.set_collision_profile_name('BlockAll')
+        placement = obj.get('placement', 'actor_origin')
+        if placement != 'actor_origin':
+            if placement not in ('bounds_front_center_floor', 'bounds_front_right_floor'):
+                raise ValueError('Unknown placement: ' + placement)
+            if not explicit_asset:
+                raise ValueError('Bounds placement requires an explicit mesh')
+            # Bounds align the prop only; depth remains the source of support labels.
+            center, extent = actor.get_actor_bounds(False)
+            anchor = [center.x-extent.x,
+                      center.y if placement == 'bounds_front_center_floor' else center.y-extent.y,
+                      center.z-extent.z]
+            location = actor.get_actor_location()
+            origin = [(v + target*100 - current)/100 for v,target,current in
+                      zip([location.x,location.y,location.z],obj['center_m'],anchor)]
+            actor.set_actor_location(u.Vector(*(v*100 for v in origin)), False, False)
         bounds = mesh.get_bounding_box()
         report.setdefault('controlled_objects', []).append(dict(case=case.get('name'), name=obj['name'],
+            placement=placement, requested_anchor_m=obj['center_m'],
             mesh_asset=mesh.get_path_name(), actor_origin_m=list(origin), scale=list(scale), rotation_deg=rotation,
             mesh_local_bounds_cm=dict(min=[bounds.min.x,bounds.min.y,bounds.min.z], max=[bounds.max.x,bounds.max.y,bounds.max.z]),
             geometry_authority='Asset geometry; actor origin and dimensionless scale are not ground-truth object dimensions'
