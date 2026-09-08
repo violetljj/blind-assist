@@ -1,7 +1,10 @@
 # Mature scene and PCG reuse: first integration slice
 
 User direction, 2026-09-08. Engineering / look development only.
-Status: ACQUISITION_PENDING; no sample-PCG integration or new preview passed.
+Status: FIRST_PLAZA_CAPTURE_PASS. The downloaded UE5.8 sample's official plaza
+graph generated 545 instances; clear/BODY/HEAD native captures and geometry
+checks passed. See [actual integration and limits](CITY_PCG_PLAZA_20260908.md).
+The acquisition inventory below records the earlier starting state.
 
 ## Order and concrete scope
 
@@ -38,7 +41,7 @@ Status: ACQUISITION_PENDING; no sample-PCG integration or new preview passed.
 Acquire the City Sample 5.8 package through Epic's supported Fab, UE Home Panel
 or Launcher flow. Record actual package version, source URL, applicable asset
 terms, project/plugin dependencies and hashes. Preserve the downloaded source
-and use a separate integration project; do not resave the frozen Willow map.
+and use a separate integration map; do not resave the frozen Willow map.
 Inspect the simpler map and its `CitySamplePCG_demo` dependencies before enabling
 only those systems it actually needs. MCP is optional for this capture adapter.
 
@@ -82,7 +85,7 @@ or prohibition is inferred solely from NoAI, and no new legal conclusion is made
 
 ## Current delivery limit
 
-This update establishes the integration scope and verifies local prerequisites.
-No complete Epic sample was downloaded, no sample graph was inspected locally,
-and no PCG scene was run during this update. The next actionable dependency is
-obtaining the actual City Sample 5.8 package through the supported Epic flow.
+The initial acquisition-only update is superseded by the linked plaza result.
+The first integration uses a new BAResearchSlice map in the downloaded project,
+with source maps and the descriptor unchanged. Complete street surroundings,
+100–300 m world families and Electric Dreams integration remain pending.

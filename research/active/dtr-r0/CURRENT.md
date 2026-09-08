@@ -20,7 +20,10 @@ acceptance before secondary-machine bulk capture or long training. See
 criteria and pending capabilities; this is not a passed visual or model result.
 The [G14 asset/scene iteration](nearfield/WORLD_REALISM_20260908.md) delivers two
 target-free native previews, four CC0 asset imports and passing capture/truth
-checks. Wider visual acceptance and sample-PCG integration remain pending;
+checks. The [first City Sample PCG plaza](nearfield/CITY_PCG_PLAZA_20260908.md)
+now reuses an official graph with 545 generated instances and passes three
+clear/BODY/HEAD native capture and geometry checks. Wider visual acceptance,
+complete street surroundings and multi-world generation remain pending;
 no new model training or promotion was performed.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
