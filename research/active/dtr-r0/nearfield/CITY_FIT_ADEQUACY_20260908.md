@@ -100,8 +100,8 @@ Worker RTX3060 Laptop, CUDA/Torch2.9.1+cu128: fit91.853s, complete model
 evaluation102.314s. One2000-step fit only. Source syntax/import preflight,
 frozen dataset/common-module hashes, step200 schedule/model equality, final
 backbone/BN checks and full bounded integration pass. The unchanged selector
-retains its prior eight focused passing tests. Delivered runner SHA equals
-the executed snapshot SHA:
+retains its prior eight focused passing tests. The executed runner snapshot SHA
+(raw runtime bytes, before any Git line-ending normalization) is:
 `d042b7feb0983799f9fb1cc6b2995afd91c1ced85afb061c120c084c71628bd3`.
 
 Main evidence: `artifacts.local/work/city-fit-adequacy-20260908/model-run-v1/`,
