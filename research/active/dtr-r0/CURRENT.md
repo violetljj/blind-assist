@@ -15,8 +15,16 @@ Full collection and model training have not started; this adds no model result.
 [Source reconnaissance and worker handoff](../../../experiments/city-field/SOURCE_COLLECTION_20260908.md)
 now retain 39 successful primary source views, seven native floor grids, and a
 runtime-verified native HLOD export. Several candidates favor waterfront plazas;
-three dense TRAIN candidates are queued for worker scouting after verified asset
-transfer. Source-graph closure and seven useful isolated routes remain incomplete.
+three dense TRAIN candidates are queued for worker scouting. Asset transfer
+passed; the first cold smoke timed out with zero frames. An isolated warm-cache
+transfer enabled one worker frame, but Nanite/VT missing-resource warnings keep
+it REVIEW. Logs trace this to another UE replacing its Zen service on port 8558.
+The launcher now selects a separate cache-service port and rejects missing-resource
+signatures for formal captures. Worker source scouts completed 15/15 frames with
+zero matching resource errors, and the separate port-fix probe passed 1/1 on
+actual port 25229. Owned worker processes/tasks/port were released. These remain
+source reconnaissance, with formal route and split admission pending.
+Source-graph closure and seven useful isolated routes remain incomplete.
 
 Current engineering priority is the [City Sample collection field](../../../experiments/city-field/README.md):
 complete loaded routes, representative supported obstacle conditions and clear

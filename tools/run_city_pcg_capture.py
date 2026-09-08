@@ -1,12 +1,15 @@
 """Capture an independent City Sample PCG map without saving project assets."""
 import argparse
+import hashlib
 import json
 import math
 import os
 from pathlib import Path
 import shutil
+import socket
 
 from run_obstacle_research import engine_root
+from city_render_health import inspect_capture
 from ue_native_capture import REPO, file_hash, owned_output, run_owned, validate_capture, write
 
 
@@ -15,6 +18,26 @@ def artifact_file(path, label):
     if not path.is_file() or not path.is_relative_to((REPO / 'artifacts.local').resolve()):
         raise ValueError(label + ' must be a file under artifacts.local')
     return path
+
+
+def cache_service_port(cache):
+    """Avoid UE's global 8558 service, which another project can replace.
+
+    Probe availability without terminating any listener. UE binds after this
+    probe, so launch failure still remains possible if another owner wins a race.
+    """
+    start = int.from_bytes(hashlib.sha256(str(cache).casefold().encode()).digest()[:4], 'big') % 10000
+    for offset in range(64):
+        port = 20000 + (start + offset) % 10000
+        with socket.socket() as probe:
+            if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+                probe.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+            try:
+                probe.bind(('127.0.0.1', port))
+            except OSError:
+                continue
+        return port
+    raise RuntimeError('No available isolated Zen port; existing listeners preserved')
 
 
 def capture(args):
@@ -45,6 +68,10 @@ def capture(args):
         raise ValueError('Expected BlindAssistCapture.uplugin')
     binary = artifact_file(plugin.parent / 'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll', 'Plugin DLL')
     engine = engine_root(getattr(args, 'engine', None))
+    cache = Path(getattr(args, 'ddc_path', None) or project.parent / 'DerivedDataCache').resolve()
+    if not cache.is_relative_to((REPO / 'artifacts.local').resolve()) or (cache.exists() and not cache.is_dir()):
+        raise ValueError('DDC path must be a directory under artifacts.local')
+    zen_port = cache_service_port(cache)
     source = REPO / 'research/active/dtr-r0/nearfield'
     sources = [source / name for name in ('city_pcg_capture.py', 'ue_pair_export.py', 'ue_capture_readiness.py')]
     if spec.get('export_dependencies'):
@@ -72,17 +99,19 @@ def capture(args):
         temp.mkdir()
         env = dict(os.environ, BA_CITY_SPEC=str(snapshot / 'spec.json'), BA_CITY_OUT=str(out),
                    PYTHONDONTWRITEBYTECODE='1', TEMP=str(temp), TMP=str(temp))
-        env['UE-LocalDataCachePath'] = str(project.parent / 'DerivedDataCache')
+        env['UE-LocalDataCachePath'] = str(cache)
         command = [str(engine / 'Engine/Binaries/Win64/UnrealEditor.exe'), str(project),
                    '-ExecCmds=py ' + script.as_posix(), '-RenderOffscreen', '-unattended',
                    '-nosound', '-nop4', '-NoSplash', '-ddc=NoShared',
+                   '-ini:Engine:[Zen.AutoLaunch]:DesiredPort=' + str(zen_port),
                    '-abslog=' + str(out / 'editor.log'), '-PLUGIN=' + str(plugin),
                    '-EnablePlugins=CitySamplePCG,BlindAssistCapture,PythonScriptPlugin',
                    '-DisablePlugins=CLionSourceCodeAccess,VisualStudioCodeSourceCodeAccess',
                    '-ini:Engine:[/Script/EngineSettings.GameMapsSettings]:EditorStartupMap=',
                    '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:LoadLevelAtStartup=None']
         write(out / 'launch.json', dict(command=command, project=str(project), map_file=str(map_path),
-              persistent_cache=dict(path=env['UE-LocalDataCachePath'], policy='REUSE_ACROSS_RUNS_KEEP_WHEN_RELEASING_PROCESSES'),
+              persistent_cache=dict(path=env['UE-LocalDataCachePath'], zen_port=zen_port,
+                                    policy='REUSE_ACROSS_RUNS_KEEP_WHEN_RELEASING_PROCESSES'),
               input_hashes=before, spec_sha256=file_hash(snapshot / 'spec.json'),
               source_hashes={path.name: file_hash(snapshot / path.name) for path in sources},
               launcher_sha256=file_hash(Path(__file__)), plugin_sha256=file_hash(plugin),
@@ -94,6 +123,10 @@ def capture(args):
         write(out / 'source-integrity.json', dict(before=before, after=after, unchanged=before == after))
         if before != after:
             raise RuntimeError('Source project or map changed during capture')
+        render_health = inspect_capture(out)
+        write(out / 'render-resource-health.json', render_health)
+        if not render_health['ready_data_eligible'] and spec.get('scope') != 'SOURCE_ONLY_RECONNAISSANCE_NOT_RESEARCH_COHORT':
+            raise RuntimeError('Missing Nanite/VT resources: capture excluded from ready data; see render-resource-health.json')
         validate_capture(out)
     except BaseException as exc:
         after = {key: file_hash(path) if path.is_file() else None for key, path in
@@ -111,6 +144,7 @@ def main():
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--timeout', type=float, default=1800)
     parser.add_argument('--engine', type=Path)
+    parser.add_argument('--ddc-path', type=Path, help='Explicit persistent cache directory under artifacts.local')
     capture(parser.parse_args())
 
 

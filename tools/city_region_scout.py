@@ -49,6 +49,9 @@ def summarize(capture,output):
         native_floor_probes=receipt.get('native_floor_probes',[]),source_unchanged=receipt['source_unchanged'],
         scope='Source scout; successful transport does not establish routes or isolated backgrounds',
         receipt_sha256=hashlib.sha256((capture/'receipt.json').read_bytes()).hexdigest())
+    health=capture/'render-resource-health.json'
+    if health.is_file():result['render_resource_health']=json.loads(health.read_bytes())
+    else:result['render_resource_health']=dict(status='NOT_CHECKED',ready_data_eligible=False)
     (output/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
 
 
@@ -75,9 +78,11 @@ def run_specs(args):
             spec['map_file']=str(map_file)
             spec_path=out/(row['region_id']+'-spec.json');spec_path.write_text(json.dumps(spec,indent=2),encoding='utf-8')
             capture=out/row['region_id']
-            subprocess.run([sys.executable,str(root/'tools/run_city_pcg_capture.py'),'--project',str(args.project),
+            command=[sys.executable,str(root/'tools/run_city_pcg_capture.py'),'--project',str(args.project),
                 '--plugin',str(args.plugin),'--engine',str(args.engine),'--spec',str(spec_path),'--output',str(capture),
-                '--timeout',str(args.timeout)],check=True,cwd=root)
+                '--timeout',str(args.timeout)]
+            if args.ddc_path:command+=['--ddc-path',str(args.ddc_path)]
+            subprocess.run(command,check=True,cwd=root)
             summarize(capture,out/(row['region_id']+'-review'))
             results.append(dict(region_id=row['region_id'],status='PASS',capture=str(capture)))
             (out/'progress.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
@@ -96,6 +101,7 @@ if __name__=='__main__':
     a=sub.add_parser('run');a.add_argument('--manifest',type=Path,required=True);a.add_argument('--region',action='append')
     for key in ('project','plugin','engine','output'):a.add_argument('--'+key,type=Path,required=True)
     a.add_argument('--timeout',type=float,default=1800)
+    a.add_argument('--ddc-path',type=Path)
     a=p.parse_args()
     canonical=(Path(__file__).resolve().parents[1]/'artifacts.local').resolve()
     if not a.output.resolve().is_relative_to(canonical):raise ValueError('Canonical artifact output required')
