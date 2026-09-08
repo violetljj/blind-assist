@@ -835,6 +835,32 @@
         "artifacts.local/work/body-query-q3-20260909/attribution-r1/result.json"
       ],
       "commit": "WORKTREE_SOURCE_INPUT_CHECKPOINT_HASHES_IN_RECEIPTS"
+    },
+    {
+      "id": "terminal-body-query-probe-20260909-partial-readability",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "PROBE_RETAIN_NARROW_HEAD_NEAR_SIGNAL_NO_PROMOTION",
+      "summary": "Six frozen probes: R1 EVAL HEAD-near ray AUC0.9314 versus B0.8079 and local0.9377 versus0.8420, but near positives belong to one EVAL group. All-point local AUC declines0.8326 to0.7564 and frozen DEV cutoffs shift. Preserve narrow linear readability, retain B and R1 negative-control status.",
+      "successor_requires": "Distinct count-unit-consistent direct evidence intervention with region/range controls; not automatic R1 resurrection",
+      "forbidden_repeats": [
+        "Declaring backbone information absent from a linear probe",
+        "Declaring pooling solely responsible from high point AUC",
+        "Summing correlated sample ownership as native pixel counts",
+        "Treating point FPR as final alert FPR",
+        "Promoting R1 or extending its auxiliary recipe"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-probe-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-probe-20260909/near-strata.json",
+        "artifacts.local/work/body-query-probe-20260909/validation.json"
+      ],
+      "commit": "WORKTREE_FROZEN_INPUT_AND_PROBE_HASHES_IN_RECEIPT"
     }
   ]
 }

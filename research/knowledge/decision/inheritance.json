@@ -51,6 +51,16 @@
       "failure_signature": "DEV improves but EVAL HEAD FP17/24 and FP<=2 recall6/16 versus B8/16",
       "revisit_trigger": "Distinct evidence representation or intervention; not automatic weight sweep or budget extension",
       "assignment_basis": "Verified native geometry and matched one-seed local evidence"
+    },
+    {
+      "terminal_id": "terminal-body-query-probe-20260909-partial-readability",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen probe and narrow HEAD-near feature readability; no final model promotion",
+      "retained_surface": "B R1 XYZ probes, ray and local labels, per-range and group diagnostics",
+      "failure_signature": "R1 improves near readability but worsens all-point local AUC and threshold transfer; EVAL near positives one group",
+      "revisit_trigger": "Distinct direct evidence test preserving native count units and range-specific negative controls",
+      "assignment_basis": "Independent AUC checks and same-label frozen comparisons"
     }
   ]
 }

@@ -543,3 +543,11 @@ one matched2000-step auxiliary-supervision fit without pooling changes. DEV HEAD
 improves, but EVAL HEAD FP rises2 to17 and oracle TP at FP<=2 falls8 to6. Query
 recall declines. Retain B; carry this R1 recipe as a negative control, with no
 promotion, automatic weight sweep or budget continuation. Both runs are complete.
+
+
+[Frozen B/R1 probes](nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md) retain a narrow
+R1 HEAD-near readability signal: EVAL ray AUC0.8079 to0.9314 and local0.8420 to
+0.9377, but positive near points come from one EVAL counterfactual group. Overall
+local R1 AUC declines and DEV point cutoffs do not transfer reliably. Retain B
+and R1 negative-control status; keep probe/features as diagnostic components.
+No main-model fitting, R2 promotion or native-count reinterpretation.
