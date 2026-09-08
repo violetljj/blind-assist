@@ -1,0 +1,11 @@
+{
+  "map_asset": "/Game/Map/Small_City_LVL",
+  "map_file": "Content/Map/Small_City_LVL.umap",
+  "map_sha256": "0b0bf55569e75241eb7ec16dfa243547e997e5bba4dfb62d64011c12ffbb9f7f",
+  "settling_ticks": 32,
+  "first_use_settling_ticks": 64,
+  "settling_interval_s": 0.0,
+  "native_full_detail_only": true,
+  "pair_export_mode": "native_probe",
+  "background_hlod_min_distance_m": 100
+}

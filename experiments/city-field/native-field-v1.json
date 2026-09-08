@@ -1,0 +1,2869 @@
+{
+  "schema": "city-collection-field-v1",
+  "status": "ADMITTED",
+  "map_asset": "/Game/Map/Small_City_LVL",
+  "regions": [
+    {
+      "region_id": "west",
+      "split": "train",
+      "bounds_xy_m": [
+        -420,
+        -125,
+        -330,
+        45
+      ],
+      "scout_center_xy_m": [
+        -375,
+        -9
+      ]
+    },
+    {
+      "region_id": "central",
+      "split": "dev",
+      "bounds_xy_m": [
+        -300,
+        -125,
+        -210,
+        45
+      ],
+      "scout_center_xy_m": [
+        -255,
+        -9
+      ]
+    },
+    {
+      "region_id": "east",
+      "split": "test",
+      "bounds_xy_m": [
+        -180,
+        -125,
+        -90,
+        45
+      ],
+      "scout_center_xy_m": [
+        -135,
+        -9
+      ]
+    }
+  ],
+  "required_scene_types_per_region": [
+    "sidewalk",
+    "intersection",
+    "narrow_passage"
+  ],
+  "routes": [
+    {
+      "route_id": "west_sidewalk",
+      "region_id": "west",
+      "split": "train",
+      "scene_type": "sidewalk",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -385.0,
+            "y": -1.0,
+            "z": 2.4441652488708496,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7441652488708496,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -383.0,
+            "y": -1.0,
+            "z": 2.4394434865315753,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7394434865315754,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -381.0,
+            "y": -1.0,
+            "z": 2.4347217241923014,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7347217241923014,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -379.0,
+            "y": -1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -377.0,
+            "y": -1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -375.0,
+            "y": -1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -373.0,
+            "y": -1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "west_sidewalk__thin_pole",
+        "west_sidewalk__body_arm",
+        "west_sidewalk__head_crossbar",
+        "west_sidewalk__sign_panel"
+      ],
+      "pair_groups": [
+        "west_sidewalk_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/ground-preview-v1",
+        "sampled_floor_z_m": [
+          0.7441652488708496,
+          0.7299999618530273,
+          0.7299999618530273
+        ]
+      }
+    },
+    {
+      "route_id": "west_intersection",
+      "region_id": "west",
+      "split": "train",
+      "scene_type": "intersection",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -378.0,
+            "y": -95.0,
+            "z": 2.321298599243164,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6212985992431641,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -376.0,
+            "y": -95.0,
+            "z": 2.3188085985183715,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6188085985183717,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -374.0,
+            "y": -95.0,
+            "z": 2.316318597793579,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6163185977935791,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -372.0,
+            "y": -95.0,
+            "z": 2.3138285970687864,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6138285970687867,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -370.0,
+            "y": -95.0,
+            "z": 2.3192080421690284,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6192080421690285,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -368.0,
+            "y": -95.0,
+            "z": 2.3245874872692704,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6245874872692704,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -366.0,
+            "y": -95.0,
+            "z": 2.329966932369512,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6299669323695122,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "west_intersection__thin_pole",
+        "west_intersection__body_arm",
+        "west_intersection__head_crossbar",
+        "west_intersection__sign_panel"
+      ],
+      "pair_groups": [
+        "west_intersection_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/ground-preview-v1",
+        "sampled_floor_z_m": [
+          0.6212985992431641,
+          0.6138285970687867,
+          0.6299669323695122
+        ]
+      }
+    },
+    {
+      "route_id": "west_narrow_passage",
+      "region_id": "west",
+      "split": "train",
+      "scene_type": "narrow_passage",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -365.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -363.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -361.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -359.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -357.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -355.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -353.0,
+            "y": 4.0,
+            "z": 2.4,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "west_narrow_passage__thin_pole",
+        "west_narrow_passage__body_arm",
+        "west_narrow_passage__head_crossbar",
+        "west_narrow_passage__sign_panel"
+      ],
+      "pair_groups": [
+        "west_narrow_passage_fixture"
+      ],
+      "geometry_origin": "CONTROLLED_CORRIDOR_ON_NATIVE_PAVEMENT",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [
+        {
+          "name": "west_narrow_passage__corridor_left_foot_0",
+          "instance_id": "west_narrow_passage__corridor_left_foot_0",
+          "center_m": [
+            -365.0,
+            3.4,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_post_0",
+          "instance_id": "west_narrow_passage__corridor_left_post_0",
+          "center_m": [
+            -365.0,
+            3.4,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_foot_1",
+          "instance_id": "west_narrow_passage__corridor_left_foot_1",
+          "center_m": [
+            -362.0,
+            3.4,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_post_1",
+          "instance_id": "west_narrow_passage__corridor_left_post_1",
+          "center_m": [
+            -362.0,
+            3.4,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_foot_2",
+          "instance_id": "west_narrow_passage__corridor_left_foot_2",
+          "center_m": [
+            -359.0,
+            3.4,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_post_2",
+          "instance_id": "west_narrow_passage__corridor_left_post_2",
+          "center_m": [
+            -359.0,
+            3.4,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_foot_3",
+          "instance_id": "west_narrow_passage__corridor_left_foot_3",
+          "center_m": [
+            -356.0,
+            3.4,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_post_3",
+          "instance_id": "west_narrow_passage__corridor_left_post_3",
+          "center_m": [
+            -356.0,
+            3.4,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_foot_4",
+          "instance_id": "west_narrow_passage__corridor_left_foot_4",
+          "center_m": [
+            -353.0,
+            3.4,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_post_4",
+          "instance_id": "west_narrow_passage__corridor_left_post_4",
+          "center_m": [
+            -353.0,
+            3.4,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_lower_rail",
+          "instance_id": "west_narrow_passage__corridor_left_lower_rail",
+          "center_m": [
+            -359.0,
+            3.4,
+            1.15
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_left_upper_rail",
+          "instance_id": "west_narrow_passage__corridor_left_upper_rail",
+          "center_m": [
+            -359.0,
+            3.4,
+            1.8
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_foot_0",
+          "instance_id": "west_narrow_passage__corridor_right_foot_0",
+          "center_m": [
+            -365.0,
+            4.6,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_post_0",
+          "instance_id": "west_narrow_passage__corridor_right_post_0",
+          "center_m": [
+            -365.0,
+            4.6,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_foot_1",
+          "instance_id": "west_narrow_passage__corridor_right_foot_1",
+          "center_m": [
+            -362.0,
+            4.6,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_post_1",
+          "instance_id": "west_narrow_passage__corridor_right_post_1",
+          "center_m": [
+            -362.0,
+            4.6,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_foot_2",
+          "instance_id": "west_narrow_passage__corridor_right_foot_2",
+          "center_m": [
+            -359.0,
+            4.6,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_post_2",
+          "instance_id": "west_narrow_passage__corridor_right_post_2",
+          "center_m": [
+            -359.0,
+            4.6,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_foot_3",
+          "instance_id": "west_narrow_passage__corridor_right_foot_3",
+          "center_m": [
+            -356.0,
+            4.6,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_post_3",
+          "instance_id": "west_narrow_passage__corridor_right_post_3",
+          "center_m": [
+            -356.0,
+            4.6,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_foot_4",
+          "instance_id": "west_narrow_passage__corridor_right_foot_4",
+          "center_m": [
+            -353.0,
+            4.6,
+            0.74
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_post_4",
+          "instance_id": "west_narrow_passage__corridor_right_post_4",
+          "center_m": [
+            -353.0,
+            4.6,
+            1.2999999999999998
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_lower_rail",
+          "instance_id": "west_narrow_passage__corridor_right_lower_rail",
+          "center_m": [
+            -359.0,
+            4.6,
+            1.15
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "west_narrow_passage__corridor_right_upper_rail",
+          "instance_id": "west_narrow_passage__corridor_right_upper_rail",
+          "center_m": [
+            -359.0,
+            4.6,
+            1.8
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "west_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        }
+      ],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/corrective-preview-v1",
+        "sampled_floor_z_m": [
+          0.7,
+          0.7,
+          0.7
+        ],
+        "visual": "Grounded controlled guardrails on visible native paving; original native street not claimed narrow."
+      }
+    },
+    {
+      "route_id": "central_sidewalk",
+      "region_id": "central",
+      "split": "dev",
+      "scene_type": "sidewalk",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -234,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -232,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -230,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -228,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -226,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -224,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -222,
+            "y": -16,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "central_sidewalk__thin_pole",
+        "central_sidewalk__body_arm",
+        "central_sidewalk__head_crossbar",
+        "central_sidewalk__sign_panel"
+      ],
+      "pair_groups": [
+        "central_sidewalk_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/sidewalk-fix-v1",
+        "sampled_floor_z_m": [
+          0.7299999618530273,
+          0.7299999618530273,
+          0.7299999618530273
+        ],
+        "visual": "Native paved sidewalk with existing pole, meters and stairs retained; not a certified traversable or obstacle-free path."
+      }
+    },
+    {
+      "route_id": "central_intersection",
+      "region_id": "central",
+      "split": "dev",
+      "scene_type": "intersection",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -264.0,
+            "y": -1.0,
+            "z": 2.280892629623413,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.580892629623413,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -262.0,
+            "y": -1.0,
+            "z": 2.2959813161123934,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.5959813161123934,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -260.0,
+            "y": -1.0,
+            "z": 2.3110700026013733,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6110700026013736,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -258.0,
+            "y": -1.0,
+            "z": 2.326158689090354,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6261586890903539,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -256.0,
+            "y": -1.0,
+            "z": 2.331071339442624,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6310713394426242,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -254.0,
+            "y": -1.0,
+            "z": 2.3359839897948946,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6359839897948945,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -252.0,
+            "y": -1.0,
+            "z": 2.3408966401471645,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6408966401471647,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "central_intersection__thin_pole",
+        "central_intersection__body_arm",
+        "central_intersection__head_crossbar",
+        "central_intersection__sign_panel"
+      ],
+      "pair_groups": [
+        "central_intersection_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/ground-preview-v1",
+        "sampled_floor_z_m": [
+          0.580892629623413,
+          0.6261586890903539,
+          0.6408966401471647
+        ]
+      }
+    },
+    {
+      "route_id": "central_narrow_passage",
+      "region_id": "central",
+      "split": "dev",
+      "scene_type": "narrow_passage",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -235.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -233.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -231.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -229.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -227.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -225.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -223.0,
+            "y": -1.2,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "central_narrow_passage__thin_pole",
+        "central_narrow_passage__body_arm",
+        "central_narrow_passage__head_crossbar",
+        "central_narrow_passage__sign_panel"
+      ],
+      "pair_groups": [
+        "central_narrow_passage_fixture"
+      ],
+      "geometry_origin": "CONTROLLED_CORRIDOR_ON_NATIVE_PAVEMENT",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [
+        {
+          "name": "central_narrow_passage__corridor_left_foot_0",
+          "instance_id": "central_narrow_passage__corridor_left_foot_0",
+          "center_m": [
+            -235.0,
+            -1.7999999999999998,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_post_0",
+          "instance_id": "central_narrow_passage__corridor_left_post_0",
+          "center_m": [
+            -235.0,
+            -1.7999999999999998,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_foot_1",
+          "instance_id": "central_narrow_passage__corridor_left_foot_1",
+          "center_m": [
+            -232.0,
+            -1.7999999999999998,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_post_1",
+          "instance_id": "central_narrow_passage__corridor_left_post_1",
+          "center_m": [
+            -232.0,
+            -1.7999999999999998,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_foot_2",
+          "instance_id": "central_narrow_passage__corridor_left_foot_2",
+          "center_m": [
+            -229.0,
+            -1.7999999999999998,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_post_2",
+          "instance_id": "central_narrow_passage__corridor_left_post_2",
+          "center_m": [
+            -229.0,
+            -1.7999999999999998,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_foot_3",
+          "instance_id": "central_narrow_passage__corridor_left_foot_3",
+          "center_m": [
+            -226.0,
+            -1.7999999999999998,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_post_3",
+          "instance_id": "central_narrow_passage__corridor_left_post_3",
+          "center_m": [
+            -226.0,
+            -1.7999999999999998,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_foot_4",
+          "instance_id": "central_narrow_passage__corridor_left_foot_4",
+          "center_m": [
+            -223.0,
+            -1.7999999999999998,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_post_4",
+          "instance_id": "central_narrow_passage__corridor_left_post_4",
+          "center_m": [
+            -223.0,
+            -1.7999999999999998,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_lower_rail",
+          "instance_id": "central_narrow_passage__corridor_left_lower_rail",
+          "center_m": [
+            -229.0,
+            -1.7999999999999998,
+            1.18
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_left_upper_rail",
+          "instance_id": "central_narrow_passage__corridor_left_upper_rail",
+          "center_m": [
+            -229.0,
+            -1.7999999999999998,
+            1.83
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_foot_0",
+          "instance_id": "central_narrow_passage__corridor_right_foot_0",
+          "center_m": [
+            -235.0,
+            -0.6,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_post_0",
+          "instance_id": "central_narrow_passage__corridor_right_post_0",
+          "center_m": [
+            -235.0,
+            -0.6,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_foot_1",
+          "instance_id": "central_narrow_passage__corridor_right_foot_1",
+          "center_m": [
+            -232.0,
+            -0.6,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_post_1",
+          "instance_id": "central_narrow_passage__corridor_right_post_1",
+          "center_m": [
+            -232.0,
+            -0.6,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_foot_2",
+          "instance_id": "central_narrow_passage__corridor_right_foot_2",
+          "center_m": [
+            -229.0,
+            -0.6,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_post_2",
+          "instance_id": "central_narrow_passage__corridor_right_post_2",
+          "center_m": [
+            -229.0,
+            -0.6,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_foot_3",
+          "instance_id": "central_narrow_passage__corridor_right_foot_3",
+          "center_m": [
+            -226.0,
+            -0.6,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_post_3",
+          "instance_id": "central_narrow_passage__corridor_right_post_3",
+          "center_m": [
+            -226.0,
+            -0.6,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_foot_4",
+          "instance_id": "central_narrow_passage__corridor_right_foot_4",
+          "center_m": [
+            -223.0,
+            -0.6,
+            0.77
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_post_4",
+          "instance_id": "central_narrow_passage__corridor_right_post_4",
+          "center_m": [
+            -223.0,
+            -0.6,
+            1.33
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_lower_rail",
+          "instance_id": "central_narrow_passage__corridor_right_lower_rail",
+          "center_m": [
+            -229.0,
+            -0.6,
+            1.18
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "central_narrow_passage__corridor_right_upper_rail",
+          "instance_id": "central_narrow_passage__corridor_right_upper_rail",
+          "center_m": [
+            -229.0,
+            -0.6,
+            1.83
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "central_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        }
+      ],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/corrective-preview-v1",
+        "sampled_floor_z_m": [
+          0.7299999618530273,
+          0.7299999618530273,
+          0.7299999618530273
+        ],
+        "visual": "Grounded controlled guardrails on visible native paving; original native street not claimed narrow."
+      }
+    },
+    {
+      "route_id": "east_sidewalk",
+      "region_id": "east",
+      "split": "test",
+      "scene_type": "sidewalk",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -154.0,
+            "y": -16.0,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -156.0,
+            "y": -16.0,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -158.0,
+            "y": -16.0,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -160.0,
+            "y": -16.0,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -162.0,
+            "y": -15.999999999999998,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -164.0,
+            "y": -15.999999999999998,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -166.0,
+            "y": -15.999999999999998,
+            "z": 2.429999961853027,
+            "yaw": 180,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "east_sidewalk__thin_pole",
+        "east_sidewalk__body_arm",
+        "east_sidewalk__head_crossbar",
+        "east_sidewalk__sign_panel"
+      ],
+      "pair_groups": [
+        "east_sidewalk_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/ground-preview-v1",
+        "sampled_floor_z_m": [
+          0.7299999618530273,
+          0.7299999618530273,
+          0.7299999618530273
+        ]
+      }
+    },
+    {
+      "route_id": "east_intersection",
+      "region_id": "east",
+      "split": "test",
+      "scene_type": "intersection",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -137.0,
+            "y": -1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -135.0,
+            "y": -1.0,
+            "z": 2.3813103040059405,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6813103040059407,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -133.0,
+            "y": -1.0,
+            "z": 2.332620646158854,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6326206461588542,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -131.0,
+            "y": -1.0,
+            "z": 2.2839309883117673,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.5839309883117676,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -129.0,
+            "y": -1.0,
+            "z": 2.294685860222725,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.5946858602227248,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -127.0,
+            "y": -1.0,
+            "z": 2.305440732133682,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.605440732133682,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -125.0,
+            "y": -1.0,
+            "z": 2.316195604044639,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.6161956040446392,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "east_intersection__thin_pole",
+        "east_intersection__body_arm",
+        "east_intersection__head_crossbar",
+        "east_intersection__sign_panel"
+      ],
+      "pair_groups": [
+        "east_intersection_fixture"
+      ],
+      "geometry_origin": "NATIVE_MAP",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/ground-preview-v1",
+        "sampled_floor_z_m": [
+          0.7299999618530273,
+          0.5839309883117676,
+          0.6161956040446392
+        ]
+      }
+    },
+    {
+      "route_id": "east_narrow_passage",
+      "region_id": "east",
+      "split": "test",
+      "scene_type": "narrow_passage",
+      "status": "ADMITTED",
+      "waypoints": [
+        {
+          "camera": {
+            "x": -110.0,
+            "y": 1.0,
+            "z": 2.41,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.71,
+          "route_distance_m": 0,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -108.0,
+            "y": 1.0,
+            "z": 2.421388371785482,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7213883717854818,
+          "route_distance_m": 2,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -106.0,
+            "y": 1.0,
+            "z": 2.4327767435709635,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7327767435709636,
+          "route_distance_m": 4,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -104.0,
+            "y": 1.0,
+            "z": 2.444165115356445,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7441651153564454,
+          "route_distance_m": 6,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        },
+        {
+          "camera": {
+            "x": -102.0,
+            "y": 1.0,
+            "z": 2.4394433975219725,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7394433975219726,
+          "route_distance_m": 8,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -100.0,
+            "y": 1.0,
+            "z": 2.4347216796874998,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7347216796875,
+          "route_distance_m": 10,
+          "floor_authority": "INTERPOLATED_BETWEEN_PREVIEW_HITS_PENDING_FULL_CAPTURE"
+        },
+        {
+          "camera": {
+            "x": -98.0,
+            "y": 1.0,
+            "z": 2.429999961853027,
+            "yaw": 0,
+            "pitch": -5.0,
+            "roll": 0.0
+          },
+          "floor_z_m": 0.7299999618530273,
+          "route_distance_m": 12,
+          "floor_authority": "MEASURED_NATIVE_PREVIEW"
+        }
+      ],
+      "instance_ids": [
+        "east_narrow_passage__thin_pole",
+        "east_narrow_passage__body_arm",
+        "east_narrow_passage__head_crossbar",
+        "east_narrow_passage__sign_panel"
+      ],
+      "pair_groups": [
+        "east_narrow_passage_fixture"
+      ],
+      "geometry_origin": "CONTROLLED_CORRIDOR_ON_NATIVE_PAVEMENT",
+      "floor_policy": "Preview floor-hit required then camera=floor+1.7m; initial z2.43 nominal only",
+      "preview_indices": [
+        0,
+        3,
+        6
+      ],
+      "objects": [
+        {
+          "name": "east_narrow_passage__corridor_left_foot_0",
+          "instance_id": "east_narrow_passage__corridor_left_foot_0",
+          "center_m": [
+            -110.0,
+            0.4,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_post_0",
+          "instance_id": "east_narrow_passage__corridor_left_post_0",
+          "center_m": [
+            -110.0,
+            0.4,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_foot_1",
+          "instance_id": "east_narrow_passage__corridor_left_foot_1",
+          "center_m": [
+            -107.0,
+            0.4,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_post_1",
+          "instance_id": "east_narrow_passage__corridor_left_post_1",
+          "center_m": [
+            -107.0,
+            0.4,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_foot_2",
+          "instance_id": "east_narrow_passage__corridor_left_foot_2",
+          "center_m": [
+            -104.0,
+            0.4,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_post_2",
+          "instance_id": "east_narrow_passage__corridor_left_post_2",
+          "center_m": [
+            -104.0,
+            0.4,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_foot_3",
+          "instance_id": "east_narrow_passage__corridor_left_foot_3",
+          "center_m": [
+            -101.0,
+            0.4,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_post_3",
+          "instance_id": "east_narrow_passage__corridor_left_post_3",
+          "center_m": [
+            -101.0,
+            0.4,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_foot_4",
+          "instance_id": "east_narrow_passage__corridor_left_foot_4",
+          "center_m": [
+            -98.0,
+            0.4,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_post_4",
+          "instance_id": "east_narrow_passage__corridor_left_post_4",
+          "center_m": [
+            -98.0,
+            0.4,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_lower_rail",
+          "instance_id": "east_narrow_passage__corridor_left_lower_rail",
+          "center_m": [
+            -104.0,
+            0.4,
+            1.1941651153564454
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_left_upper_rail",
+          "instance_id": "east_narrow_passage__corridor_left_upper_rail",
+          "center_m": [
+            -104.0,
+            0.4,
+            1.8441651153564456
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_left_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_foot_0",
+          "instance_id": "east_narrow_passage__corridor_right_foot_0",
+          "center_m": [
+            -110.0,
+            1.6,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_post_0",
+          "instance_id": "east_narrow_passage__corridor_right_post_0",
+          "center_m": [
+            -110.0,
+            1.6,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_foot_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_foot_1",
+          "instance_id": "east_narrow_passage__corridor_right_foot_1",
+          "center_m": [
+            -107.0,
+            1.6,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_post_1",
+          "instance_id": "east_narrow_passage__corridor_right_post_1",
+          "center_m": [
+            -107.0,
+            1.6,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_foot_1",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_foot_2",
+          "instance_id": "east_narrow_passage__corridor_right_foot_2",
+          "center_m": [
+            -104.0,
+            1.6,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_post_2",
+          "instance_id": "east_narrow_passage__corridor_right_post_2",
+          "center_m": [
+            -104.0,
+            1.6,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_foot_2",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_foot_3",
+          "instance_id": "east_narrow_passage__corridor_right_foot_3",
+          "center_m": [
+            -101.0,
+            1.6,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_post_3",
+          "instance_id": "east_narrow_passage__corridor_right_post_3",
+          "center_m": [
+            -101.0,
+            1.6,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_foot_3",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_foot_4",
+          "instance_id": "east_narrow_passage__corridor_right_foot_4",
+          "center_m": [
+            -98.0,
+            1.6,
+            0.7841651153564454
+          ],
+          "size_m": [
+            0.3,
+            0.2,
+            0.08
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Black",
+          "support_parent": "ground",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_post_4",
+          "instance_id": "east_narrow_passage__corridor_right_post_4",
+          "center_m": [
+            -98.0,
+            1.6,
+            1.3441651153564453
+          ],
+          "size_m": [
+            0.07,
+            0.07,
+            1.12
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_foot_4",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_lower_rail",
+          "instance_id": "east_narrow_passage__corridor_right_lower_rail",
+          "center_m": [
+            -104.0,
+            1.6,
+            1.1941651153564454
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        },
+        {
+          "name": "east_narrow_passage__corridor_right_upper_rail",
+          "instance_id": "east_narrow_passage__corridor_right_upper_rail",
+          "center_m": [
+            -104.0,
+            1.6,
+            1.8441651153564456
+          ],
+          "size_m": [
+            12.0,
+            0.07,
+            0.07
+          ],
+          "rotation_deg": {
+            "pitch": 0.0,
+            "yaw": 0.0,
+            "roll": 0.0
+          },
+          "material_asset": "/Game/Building/SF/B/Material/MI_Bldg_PaintedMetal_Grey",
+          "support_parent": "east_narrow_passage__corridor_right_post_0",
+          "target_part": false,
+          "geometry_provenance": "CONTROLLED_SYNTHETIC_SUPPORTED_ASSEMBLY_NOT_NATURAL_CITY_ASSET"
+        }
+      ],
+      "preview_evidence": {
+        "capture": "artifacts.local/nearfield/city-collection-field-20260908/corrective-preview-v1",
+        "sampled_floor_z_m": [
+          0.71,
+          0.7441651153564454,
+          0.7299999618530273
+        ],
+        "visual": "Grounded controlled guardrails on visible native paving; original native street not claimed narrow."
+      }
+    }
+  ],
+  "world_partition_region_m": {
+    "min": [
+      -450,
+      -150,
+      -10
+    ],
+    "max": [
+      -60,
+      110,
+      200
+    ]
+  },
+  "separation": {
+    "min_region_gap_m": 20,
+    "min_route_gap_cross_split_m": 20,
+    "adjacent_frame_gap_m": 10
+  },
+  "admission": {
+    "route_count_required": 9,
+    "native_map_policy": "Original map and actor transforms unchanged; fixture assemblies must be explicitly identified as controlled artificial geometry.",
+    "clear_control_policy": "Paired fixture-absent observation is not proof of free space; native geometric UNKNOWN remains UNKNOWN.",
+    "split_scope": "Spatial scene-source split only; all regions are same CitySample map and shared assets. Previously consumed west/central sources cannot be relabeled fresh model TEST.",
+    "completed": "All nine route starts/midpoints/endpoints visually reviewed with native floor hits; three controlled corridor assemblies previewed. Four fixture families strictly evaluable across original/corrective smoke captures.",
+    "remaining_full_capture_check": "All seven actual camera locations per route require native floor readback; interior planned floors are interpolated, not independently measured. Native poles/stairs remain legitimate scene obstacles; fixture-absent is not obstacle-free."
+  }
+}

@@ -5,7 +5,14 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-Primary Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
+Current engineering priority is the [City Sample collection field](../../../experiments/city-field/README.md):
+complete loaded routes, representative supported obstacle conditions and clear
+controls, synchronized geometry-labelled acquisition, and region/route/instance
+split isolation. Model fitting is a separate workstream and is not a prerequisite
+for accepting this collection infrastructure. Historical model diagnostics below
+remain scoped evidence rather than the field's development objective.
+
+Existing controlled Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
 observations and measured conservative envelopes. The historical motion runner
 is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary
 checks. See [UE acceptance](unreal/UE_LAB_ACCEPTANCE_20260906.md).

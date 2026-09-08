@@ -383,6 +383,15 @@ def tick(dt):
             if index == 0:
                 write(OUT/'evaluator/native-inventory.json', native_inventory)
         case = spec['cases'][index]
+        if spec.get('export_controlled_targets'):
+            measured = {}
+            for kind, actor in (('rgb', rgb), ('depth', depth)):
+                position = actor.get_actor_location()
+                rotation = actor.get_actor_rotation()
+                measured[kind] = dict(x=position.x/100, y=position.y/100, z=position.z/100,
+                    yaw=rotation.yaw, pitch=rotation.pitch, roll=rotation.roll)
+            report.setdefault('capture_poses', []).append(dict(sample_index=index,
+                **measured, authority='ENGINE_ACTOR_TRANSFORMS_AT_PAIRED_STATIC_CAPTURE'))
         if case.get('probe_native_floor', False):
             pose = case['camera']
             hit = u.SystemLibrary.line_trace_single(world,
@@ -410,7 +419,28 @@ def tick(dt):
             from city_native_targets import export
             if isolated_actor is None:
                 isolated_actor=component(u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
-            report.setdefault('native_target_checks',[]).extend(export(u,api,world,isolated_actor,spec,case,index,OUT))
+            target_spec = spec
+            if spec.get('export_controlled_targets'):
+                # Stable collection identities live in the spec; transient UE
+                # components are resolved after this view's assembly is spawned.
+                declared = {t['target_id']: t for t in spec['native_targets']}
+                active = []
+                for obj, actor in zip(case.get('objects', []), objects):
+                    if not obj.get('target_part'):
+                        continue
+                    tid = obj['instance_id']
+                    if tid not in declared:
+                        raise ValueError('Undeclared controlled target: ' + tid)
+                    mesh = actor.static_mesh_component
+                    pos = actor.get_actor_location()
+                    active.append(dict(declared[tid], component_path=mesh.get_path_name(),
+                        mesh_asset=mesh.static_mesh.get_path_name(), instance_index=None,
+                        position_m=[pos.x/100,pos.y/100,pos.z/100]))
+                target_spec = dict(spec, native_targets=active)
+                report.setdefault('controlled_target_bindings', []).append(dict(
+                    sample_index=index, targets=active,
+                    lifecycle='Stable configured assembly identities; actors recreated per settled view'))
+            report.setdefault('native_target_checks',[]).extend(export(u,api,world,isolated_actor,target_spec,case,index,OUT))
         frames.append(dict(sample_index=index, rgb_path=f'sample/{index:04d}.png'))
         index += 1
         warm = 0
