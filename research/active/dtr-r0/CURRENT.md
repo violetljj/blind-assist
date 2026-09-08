@@ -348,6 +348,15 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Matched64-frame regional coverage pilot](nearfield/CITY_COVERAGE64_20260908.md):
+  one same-budget full fit on1198 TRAIN improves new same-world EVAL HEAD
+  TP8 to12/32, FP3 to1/32, AUC0.6553 to0.7090 and IoU0.1385 to0.1852;
+  joint0 to3/16. Added64 fits128/128 near bits, but20/32 EVAL HEAD positives
+  remain missed. Negative support activation increases and DEV HEAD IoU falls
+  0.2032 to0.1852; BODY EVAL AUC also slightly falls. Retain a limited-coverage
+  Development challenger, not a relation/generalization repair or promotion.
+  The one2000-step fit is complete; no automatic budget extension.
+
 - [HEAD-X0 cross-region audit](nearfield/HEAD_X0_AUDIT_20260908.md):
   zero training; F HEAD plaza AUC0.25751/AP0.01327, while all15 old/plaza
   paired positive pooled masks match. FP peaks concentrate near distant
