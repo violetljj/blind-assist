@@ -53,6 +53,11 @@ uses 8 routine settling ticks and 32 first-use/large-view-change protection.
 The worker actually completes 1,500 frames / 500 groups with native, geometry
 and group QA PASS in 346.527 s complete job, producing 2.87 GB. This is one
 world, 20 camera poses and five meshes, not independent-world model evidence.
+The [data audit and split](nearfield/CITY_DATA_AUDIT_20260908.md) rehashes all
+4,500 payloads and assigns street TRAIN250 groups / plaza TEST250 groups.
+HEAD has only 30 binary positives, all scaffold, with zero HEAD-only or HEAD
+DANGER examples. Distance-grade training is not ready; City requires an
+independent adapter for all-scene support and pixel UNKNOWN. No new fit ran.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
