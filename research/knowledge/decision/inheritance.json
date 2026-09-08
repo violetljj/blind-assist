@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-09",
+  "roles": [
+    {
+      "terminal_id": "terminal-body-query-v1-20260909-mixed-no-replacement",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Visible-count query source and diagnostic tools; not this fixed B recipe as baseline replacement",
+      "retained_surface": "320-frame fixed-camera controls, native-visible count labels, matched harness, all-case viewer and RGB-only inference",
+      "failure_signature": "EVAL HEAD TP11 to8 despite FP8 to2; count accuracy and HEAD support peak hits regress; both fit TRAIN perfectly",
+      "revisit_trigger": "A distinct scoped mechanism or source targeting transfer without hiding recall or evidence loss",
+      "assignment_basis": "Some useful BODY and false-alarm gains, but no-recall-loss replacement criterion not met"
+    }
+  ]
+}

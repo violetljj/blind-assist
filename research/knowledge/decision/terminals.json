@@ -716,6 +716,31 @@
       "failure_signature": "G10 misses39/64 eligible opportunities with23 joint hits but18/21 matched-clear false-alert frames; only3 joint hits have silent controls. G13 misses64/64. Eight hit sequences lose nearer; nearest-only ninth persistence NOT_TESTED.",
       "revisit_trigger": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
       "assignment_basis": "Completed fixed capture and inference with zero fitting; five focused tests and independent cached count review support the diagnostic artifact. Results do not establish target-only causality, continuous-motion lead time or monocular-depth error."
+    },
+    {
+      "id": "terminal-body-query-v1-20260909-mixed-no-replacement",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "BODY_QUERY_V1_MIXED_NO_REPLACEMENT",
+      "summary": "Matched RGB-only spatial-count B versus support-gated G13 A: 320 fixed-camera same-world frames, two primary2000-step fits, identical initialization/sampling/supervision. EVAL40 BODY TP4 to7 FP0 both; HEAD TP11 to8 FP8 to2; all-state groups0/8 to2/8. Query count accuracy82.08% to81.04%, HEAD support peak hits5/16 to3/16. Both fit TRAIN perfectly. Mixed result fails predeclared no-HEAD-recall-loss replacement criterion; retain diagnostic components without model promotion. Worker partial A run interrupted at least100 steps for resource migration, before DEV/EVAL.",
+      "successor_requires": "A distinct scoped hypothesis and evidence source or mechanism; retain consumed same-world fixed-calibration limits, native-visible count semantics, baseline comparator, recall/FP/evidence tradeoffs.",
+      "forbidden_repeats": [
+        "Promoting this fixed B recipe as baseline replacement",
+        "Claiming geometry reasoning or complete occupancy from query structure",
+        "Claiming low false alarms with omitted misses or UNKNOWN coverage",
+        "Retuning thresholds or extending this consumed fixed-budget run",
+        "Claiming fresh-city, arbitrary-camera or physical safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-v1-20260908/model-run-local-v4/result.json",
+        "artifacts.local/work/body-query-v1-20260908/independent-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_BODY_QUERY_LOCAL_V4_PROTOCOL"
     }
   ]
 }

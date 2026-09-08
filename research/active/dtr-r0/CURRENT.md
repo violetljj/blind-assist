@@ -503,3 +503,16 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 The pre-scope-change current is preserved at Git
 `fc70658e:research/active/dtr-r0/CURRENT.md`; linked reports retain the full history.
+
+
+## BODY-QUERY-V1 matched comparison (2026-09-09)
+
+[Completed result and reproduction](nearfield/BODY_QUERY_V1_RESULTS_20260909.md):320
+fixed-calibration same-world frames; both primary A/B fits completed2000 steps.
+Spatial-count B versus support-gated G13 A gives EVAL40 BODY TP4 to7 (FP0 both),
+HEAD TP11 to8 with FP8 to2, and all-state groups0/8 to2/8. Both fit TRAIN perfectly.
+This mixed result fails the predeclared HEAD-recall/evidence replacement criterion.
+Retain the source, LOW/ABOVE/outside controls and count-query tooling as diagnostic
+components; do not promote either matched fit or reopen this consumed budget.
+This does not replace the separate City cross-region collection work above.
+Offline all40-case viewer and RGB-only CLI are delivered with measured limits.
