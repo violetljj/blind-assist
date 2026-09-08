@@ -886,6 +886,31 @@
         "artifacts.local/work/body-query-direct-20260909/validation.json"
       ],
       "commit": "WORKTREE_FROZEN_INPUT_AND_RESULT_HASHES_IN_RECEIPT"
+    },
+    {
+      "id": "terminal-body-query-depth-oracle-20260909-limited-routing",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "DEPTH_ROUTING_NO_HEAD_GAIN_NOT_GENERAL_CEILING",
+      "summary": "Seven native-depth cell veto gates give EVAL HEAD oracle TP7 at FP<=2 versus B8. UNKNOWN passthrough affects217/240 HEAD cells; exact ownership vetoes13. This conservative routing diagnostic is not a general depth-aware ceiling; no monocular prior integration or model promotion.",
+      "successor_requires": "A distinct depth-information test addressing UNKNOWN and actual predicted-depth reliability, not causal claims from native label truth",
+      "forbidden_repeats": [
+        "Treating native oracle improvement as proof of a missing-depth causal bottleneck",
+        "Treating conservative UNKNOWN passthrough failure as all depth methods failing",
+        "Mixing axial depth and Euclidean range",
+        "Converting UNKNOWN into known free space",
+        "Automatically integrating a frozen depth model from this diagnostic"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-depth-oracle-20260909/run-v2/result.json",
+        "artifacts.local/work/body-query-depth-oracle-20260909/validation.json"
+      ],
+      "commit": "WORKTREE_SOURCE_NATIVE_INPUT_AND_RESULT_HASHES_IN_RECEIPTS"
     }
   ]
 }

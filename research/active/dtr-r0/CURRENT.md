@@ -559,3 +559,11 @@ gives EVAL HEAD11TP/16FP; all tested direct HEAD oracle TP at FP<=2 are<=7 versu
 B8. XYZ matched deltas are zero; visual matched responses do not yield a better
 final tradeoff. Retain B; close these fixed pooling replacements as a negative
 control, without k/fusion sweeps or promotion.
+
+
+[Native-depth routing](nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md) gives
+no HEAD gain: fixed gates reach7/16 at EVAL FP<=2 versus B8/16. UNKNOWN causes
+217/240 HEAD cells to pass through, so this conservative veto is not a general
+depth-aware ceiling. Retain B and diagnostic arrays; neither promote a depth
+model nor declare missing depth the cause or all depth methods disproven.
+Seven fixed gates complete; no training or automatic monocular prior integration.

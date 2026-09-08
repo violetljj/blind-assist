@@ -71,6 +71,16 @@
       "failure_signature": "No direct HEAD oracle TP at FP<=2 exceeds7 versus B8; high false alerts persist",
       "revisit_trigger": "Distinct scoped intervention beyond fixed aggregation; no automatic pooling sweep",
       "assignment_basis": "Zero-fit full-frame comparison with independent explicit aggregation checks"
+    },
+    {
+      "terminal_id": "terminal-body-query-depth-oracle-20260909-limited-routing",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Limited privileged depth routing diagnostic, not general depth ceiling",
+      "retained_surface": "Axial residuals, UNKNOWN passthrough counts, fixed depth perturbations",
+      "failure_signature": "HEAD TP7 at FP<=2;217/240 HEAD cells passthrough due to UNKNOWN",
+      "revisit_trigger": "Distinct scoped depth-information test; no automatic prior download or native-truth causal claim",
+      "assignment_basis": "Hash-bound native arrays, exact Q3 membership and counterfactual gate checks"
     }
   ]
 }
