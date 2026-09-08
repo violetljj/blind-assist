@@ -525,3 +525,11 @@ favors A15 versus B5. B query nonempty recall is97.05% TRAIN but26.88% DEV and
 the partial gain, focus the question on evidence transfer, and do not attribute
 the failure to positive-query underfitting or prioritize balanced CE without a
 distinct test. No source, weights, cutoffs or training budgets changed.
+
+
+[Q2 frozen point decomposition](nearfield/BODY_QUERY_Q2_RESULTS_20260909.md) finds
+strong-point/mean-missed and all-weak cells together. EVAL top3 HEAD TP rises8 to15
+but FP rises2 to17; all48 TRAIN BODY_ONLY frames become false HEAD alerts.
+Retain the evidence-path diagnostic, not a pooling-failure attribution: strong
+responses lack sufficient body-region selectivity. Weak readouts do not isolate
+the backbone. One320-frame local GPU pass, zero training; no V2 or promotion.

@@ -21,6 +21,16 @@
       "failure_signature": "B query TRAIN97.05 percent versus DEV26.88 EVAL29.90; region-dependent ranking and missing target-query signal",
       "revisit_trigger": "A distinct scoped intervention identifying evidence transfer failure; not unsupported balance attribution or EVAL threshold tuning",
       "assignment_basis": "Zero-fit results preserve useful EVAL ranking gains while correcting the inferred training-underfit mechanism"
+    },
+    {
+      "terminal_id": "terminal-body-query-q2-20260909-point-selectivity-unresolved",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen point evidence selectivity diagnostic; no pooling or backbone attribution",
+      "retained_surface": "Point input features logits and negative-control decompositions across TRAIN DEV EVAL",
+      "failure_signature": "Sparse strong responses coexist with all-weak misses; top3 EVAL HEAD FP17 and TRAIN BODY_ONLY48 false alerts",
+      "revisit_trigger": "Distinct matched intervention improving correct-region evidence while retaining empty and wrong-height controls",
+      "assignment_basis": "Zero-fit matched reproduction and independent array checks reveal nonselective strong point readouts"
     }
   ]
 }

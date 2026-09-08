@@ -766,6 +766,31 @@
         "artifacts.local/work/body-query-diagnostic-20260909/cells-v2/result.json"
       ],
       "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_DIAGNOSTIC_RECEIPTS"
+    },
+    {
+      "id": "terminal-body-query-q2-20260909-point-selectivity-unresolved",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "Q2_RETAIN_EVIDENCE_DIAGNOSTIC_NO_POOLING_ATTRIBUTION",
+      "summary": "Frozen B zero-fit decomposition: EVAL68 missed nonempty cells include36 with a point>=.5 and32 all-weak. Top3 HEAD alerts TP8 to15 but FP2 to17; all48 TRAIN BODY_ONLY frames become false HEAD alerts. Sparse responses coexist with nonselective wrong-region responses. No pooling or backbone root cause isolated and no V2 fit.",
+      "successor_requires": "Distinct matched evidence-selectivity intervention retaining wrong-height and empty-cell controls; weak point logits do not isolate the backbone.",
+      "forbidden_repeats": [
+        "Treating decomposed point logits as calibrated obstacle detectors",
+        "Attributing every strong-point mean-miss to correct-evidence pooling failure",
+        "Attributing all-weak readouts exclusively to the backbone",
+        "Promoting zero-fit max/top3 at consumed EVAL thresholds"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/receipt.json",
+        "artifacts.local/work/body-query-q2-20260909/validation.json"
+      ],
+      "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_Q2_RECEIPT"
     }
   ]
 }
