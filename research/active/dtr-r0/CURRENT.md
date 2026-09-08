@@ -10,6 +10,13 @@ observations and measured conservative envelopes. The historical motion runner
 is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary
 checks. See [UE acceptance](unreal/UE_LAB_ACCEPTANCE_20260906.md).
 
+The first [original City Sample route](nearfield/CITY_NATIVE_ROUTE_20260908.md)
+now captures 21 settled RGB-D observations along 10 m of native
+`Small_City_LVL` sidewalk. Capture/transport and process release pass; strict
+floor geometry remains REVIEW (19/21 within the 2 cm median criterion).
+The region is bounded and distant surroundings are incomplete. This is a
+static native-map acquisition capability, not dynamic or model evidence.
+
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
 its engineering checks are not dynamic algorithm scores.

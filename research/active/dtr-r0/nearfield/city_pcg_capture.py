@@ -67,6 +67,10 @@ def component(source, fmt, width=640, height=360):
     actor = api.spawn_actor_from_class(u.SceneCapture2D, u.Vector(0, 0, 100000))
     captures.append(actor)
     c = actor.capture_component2d
+    if spec.get('native_full_detail_only', False):
+        for hidden in api.get_all_level_actors():
+            if isinstance(hidden, u.WorldPartitionHLOD):
+                c.hide_actor_components(hidden, True)
     c.capture_every_frame = False
     c.capture_on_movement = False
     c.always_persist_rendering_state = True
@@ -239,6 +243,37 @@ def tick(dt):
             assert report['map_sha256_before'] == spec['map_sha256'], 'Map identity mismatch'
             assert levels.load_level(spec['map_asset']), 'Map load failed'
             world = editor.get_editor_world()
+            if spec.get('native_full_detail_only', False):
+                u.SystemLibrary.execute_console_command(world, 'wp.Editor.HLOD.AllowShowingHLODsInEditor 0')
+            if 'world_partition_region_m' in spec:
+                region = spec['world_partition_region_m']
+                lo, hi = region['min'], region['max']
+                if len(lo) != 3 or len(hi) != 3 or not all(
+                        math.isfinite(float(a)) and math.isfinite(float(b)) and a < b
+                        for a, b in zip(lo, hi)):
+                    raise ValueError('World Partition region requires finite ordered bounds')
+                box = u.Box(min=u.Vector(*(v*100 for v in lo)),
+                            max=u.Vector(*(v*100 for v in hi)))
+                descs = u.WorldPartitionBlueprintLibrary.get_intersecting_actor_descs(box)
+                if not descs:
+                    raise RuntimeError('No native actors intersect the requested region')
+                write(OUT / 'progress.json', dict(phase='LOAD_NATIVE_REGION', actors=len(descs)))
+                if spec.get('native_full_detail_only', False):
+                    descs = [d for d in descs if 'HLOD' not in str(d.native_class)]
+                    if not descs:
+                        raise RuntimeError('Requested region contains no full-detail actors')
+                u.WorldPartitionBlueprintLibrary.load_actors([d.guid for d in descs])
+                if spec.get('native_full_detail_only', False):
+                    hidden = []
+                    for actor in api.get_all_level_actors():
+                        if 'HLOD' in actor.get_class().get_name():
+                            actor.set_is_temporarily_hidden_in_editor(True)
+                            actor.set_actor_hidden_in_game(True)
+                            actor.set_actor_enable_collision(False)
+                            hidden.append(actor.get_path_name())
+                    report['hidden_native_hlod_actors'] = hidden
+                report['native_region'] = dict(bounds_m=region, actor_descriptors=len(descs),
+                    policy='LOAD_EXISTING_ACTORS_NO_MAP_SAVE_DEPENDENCIES_MAY_EXTEND_REGION')
             for actor in api.get_all_level_actors():
                 for cls, kind in ((u.DirectionalLightComponent,'sun'),(u.SkyLightComponent,'skylight')):
                     for light in actor.get_components_by_class(cls):
@@ -263,7 +298,7 @@ def tick(dt):
                 components = actor.get_components_by_class(u.StaticMeshComponent)
                 if components:
                     center, extent = actor.get_actor_bounds(False)
-                    mesh_rows.append(dict(actor=actor.get_actor_label(), components=len(components),
+                    mesh_rows.append(dict(actor=actor.get_actor_label(), actor_class=actor.get_class().get_name(), components=len(components),
                         bounds_center_cm=[center.x,center.y,center.z], bounds_extent_cm=[extent.x,extent.y,extent.z],
                         instances=sum(c.get_instance_count() if isinstance(c,u.InstancedStaticMeshComponent) else 1 for c in components)))
             report['mesh_inventory'] = mesh_rows
@@ -318,8 +353,26 @@ def tick(dt):
             after = 0.
             return
         depth.capture_component2d.capture_scene()
+        case = spec['cases'][index]
+        if case.get('probe_native_floor', False):
+            pose = case['camera']
+            hit = u.SystemLibrary.line_trace_single(world,
+                u.Vector(pose['x']*100, pose['y']*100, pose['z']*100),
+                u.Vector(pose['x']*100, pose['y']*100, (pose['z']-5)*100),
+                u.TraceTypeQuery.TRACE_TYPE_QUERY1, True, [], u.DrawDebugTrace.NONE)
+            point = hit.to_tuple()[5] if hit else None
+            report.setdefault('native_floor_probes', []).append(dict(
+                case=case.get('name'), hit=bool(hit),
+                point_m=[point.x/100, point.y/100, point.z/100] if point else None,
+                policy='AFTER_READINESS_DIAGNOSTIC_ONLY_NO_AUTOMATIC_HEIGHT_CHANGE'))
         pairs.export(world, rgb.capture_component2d.texture_target, depth.capture_component2d.texture_target,
                      OUT / f'model/sample/{index:04d}.png', OUT / f'evaluator/native/{index:04d}.npy', index)
+        if 'route' in spec:
+            report.setdefault('route_samples', []).append(dict(sample_index=index,
+                camera=spec['cases'][index]['camera'],
+                route_distance_m=spec['cases'][index]['route_distance_m'],
+                capture_elapsed_s=time.monotonic()-started,
+                timing='WALL_CLOCK_SETTLED_CAPTURE_NOT_SIMULATION_TIME'))
         if beauty is not None:
             (OUT / 'appearance').mkdir(exist_ok=True)
             u.RenderingLibrary.export_render_target(world, beauty.capture_component2d.texture_target,
