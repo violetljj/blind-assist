@@ -383,6 +383,15 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [HEAD-P1 appearance and matched consistency](nearfield/HEAD_PAIRED_RESULTS_20260908.md):
+ 96-frame native-equal diagnostic observes L damage3/16, M0/16. Two matched
+ 2000-step fits give identical original EVAL64 HEAD TP17/32,FP8/32,AUC0.702;
+ .1 consistency reduces support recall58.39%→57.69%. Both new fits lose BODY
+ TP16→10 versus Coverage and increase HEAD FP1→8. Paired damage3→1 also hides
+ an oblique-rod support collapse5/6→3/6 becoming1/6→1/6. Retain exact paired
+ diagnostics and the scoped negative recipe; preserve Coverage1198. No further
+ fit, weight sweep, MIL/Dice/backbone change or App promotion from this result.
+
 - [HEAD-S1 support-to-decision audit](nearfield/HEAD_S1_20260908.md):
   zero training. Coverage1198 HEAD near AUC0.930/0.709 on DEV/coverage EVAL
   beats max/top6/logit-LSE0.795-0.808/0.647-0.651. On consumed plaza all four
