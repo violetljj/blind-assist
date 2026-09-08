@@ -302,6 +302,14 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Additional relational TRAIN with frozen B](nearfield/CITY_RELATIONAL_TRAIN_20260908.md):
+  old750 plus384 new frames across three same-map sites leaves DEV joint2/32;
+  BODY/HEAD recall is37.50%/28.125% at FPR7.8125%/9.375%, with HEAD IoU0.00260.
+  New TRAIN itself has weak separation (AUC0.644/0.616), HEAD IoU0 and joint0/96;
+  this is not established high TRAIN fit followed only by regional failure.
+  Retain data and diagnostics, no promotion or extra fit. Next establish bounded
+  optimization/fit adequacy before adding generalization mechanisms.
+
 - [Region-separated DEV and matched update-policy baseline](nearfield/CITY_DEV_BASELINE_20260908.md):
   128-frame same-map DEV is133.47m from TRAIN and has64positive/64negative per
   head. Fixed200-step A/B/C selection chooses frozen-backbone B, but DEV recall
