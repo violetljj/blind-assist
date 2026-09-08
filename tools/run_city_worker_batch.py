@@ -12,12 +12,16 @@ parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--timeout', type=float, default=1800)
 parser.add_argument('--production', action='store_true',
                     help='Use asynchronous canonical RGB/depth export without reference copies or 720p appearance')
+parser.add_argument('--native-only', action='store_true',
+                    help='At most 16 engineering smoke frames: validate native payloads without a suite-specific summary')
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[1]
 config_path = source.parent/'worker-config.json'
 config = json.loads(config_path.read_text())
 original = args.spec.resolve(strict=True)
 spec = json.loads(original.read_text(encoding='utf-8-sig'))
+if args.native_only and len(spec['cases']) > 16:
+    raise ValueError('Native-only mode is limited to 16 smoke frames')
 require = lambda condition: condition or (_ for _ in ()).throw(ValueError('Unsupported map or existing output'))
 require(spec['map_asset'] == config['map_asset'])
 require(not args.output.exists())
@@ -38,8 +42,10 @@ commands = [
      '--plugin',config['plugin'],'--engine',config['engine'],'--spec',str(adapted),
      '--output',str(args.output),'--timeout',str(args.timeout)],
     [sys.executable,'-B',str(source/'tools/verify_city_pcg_world.py'),'--capture',str(args.output)],
-    [sys.executable,'-B',str(source/'tools/summarize_city_groups.py'),'--capture',str(args.output)],
 ]
+if not args.native_only:
+    checker = 'check_contextual_headspace.py' if spec['schema'].startswith('city-contextual-headspace-') else 'summarize_city_groups.py'
+    commands.append([sys.executable,'-B',str(source/'tools'/checker),'--capture',str(args.output)])
 for command in commands:
     subprocess.run(command, cwd=source, check=True)
 print(json.dumps(dict(status='PASS',capture=str(args.output),config=str(config_path))))
