@@ -90,6 +90,11 @@ high-obstacle shapes; preserve geometry-based labels when adding those examples.
 No training is started by this audit, and no claim that these data improve D
 has been made.
 
+The subsequent [City data adapter](CITY_DATA_ADAPTER_20260908.md) implements
+the independent cache, tri-valued pooling and pixel-known loss, and converts
+all 1,500 frames on the worker. It preserves this split and does not add a
+distance prediction head or start training.
+
 ## Reproduction
 
 `tools/audit_city_collection.py --capture <capture> --output <fresh-output>`
