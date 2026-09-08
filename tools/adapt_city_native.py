@@ -21,6 +21,112 @@ CONFIG = dict(seed=17, steps=300, batch_size=16, optimizer='AdamW',
     scope='Single-seed native City Development; consumed route and Willow regression only')
 
 
+def recipe_config(recipe):
+    if recipe not in ('native_only', 'replay_thin'):
+        raise ValueError('Unknown recipe')
+    config = dict(CONFIG, recipe=recipe)
+    if recipe == 'replay_thin':
+        config.update(sampling='Sequential RNG17 per batch: 4 reliable native TRAIN bollard BODY positives; '
+            '4 uniform native TRAIN (including bollard pool); 8 first64 original Willow TRAIN; replacement',
+            batch_source_counts=dict(native_bollard=4, native_uniform=4, willow_train=8),
+            replay_support_retention=.8, bollard_joint_minimum=1,
+            loss='Masked near BCE + .25 globally class-balanced support BCE over the complete mixed batch')
+    return config
+
+
+def replay_samples(data):
+    """Select only saved-order TRAIN; all non-TRAIN identities/groups are excluded."""
+    samples = data['samples']
+    selected = [s for s in samples if s['split'] == 'train'][:64]
+    regression = [s for s in samples if s['split'] == 'val'][:16]
+    if len(selected) != 64 or len(regression) != 16:
+        raise ValueError('Require first64 TRAIN and first16 original VAL')
+    if len({s['sample_id'] for s in selected}) != 64:
+        raise ValueError('Duplicate replay sample identities')
+    excluded = [s for s in samples if s['split'] != 'train']
+    for key in ('sample_id', 'group_id'):
+        if {s[key] for s in selected} & {s[key] for s in excluded}:
+            raise ValueError('Replay crosses non-TRAIN ' + key)
+    indices = [s['frame_indices'][0] for s in selected if len(s['frame_indices']) == 1]
+    if len(indices) != 64 or len(set(indices)) != 64:
+        raise ValueError('Require one unique current RGB frame per replay sample')
+    if set(indices) & {i for s in excluded for i in s['frame_indices']}:
+        raise ValueError('Replay frame overlaps VAL/TEST')
+    return selected, regression
+
+
+def willow_replay(path, original_receipt):
+    receipt = original_receipt['caches']['training']
+    inputs = ('model/dataset.json', 'training/labels.json', 'training/support.npz')
+    hashes = {key: route.sha(path / key) for key in inputs}
+    if any(hashes[key] != receipt['input_sha256'][key] for key in inputs):
+        raise ValueError('Original Willow replay input hash mismatch')
+    data = route.read(path / 'model/dataset.json')
+    samples, regression = replay_samples(data)
+    if {s['group_id'] for s in samples} != {f'g{i}' for i in range(2000, 2016)}:
+        raise ValueError('Frozen replay groups must be g2000..g2015')
+    frames = {f['sample_index']: f for f in data['frames']}
+    paths = [route.within(path / 'model', frames[s['frame_indices'][0]]['rgb_path']) for s in samples]
+    rgb_hashes = [route.sha(p) for p in paths]
+    if any(digest != receipt['rgb_sha256'][str(s['frame_indices'][0])] for s, digest in zip(samples, rgb_hashes)):
+        raise ValueError('Original Willow replay RGB hash mismatch')
+    regression_paths = [route.within(path / 'model', frames[s['frame_indices'][0]]['rgb_path']) for s in regression]
+    regression_hashes = [route.sha(p) for p in regression_paths]
+    if any(digest != receipt['rgb_sha256'][str(s['frame_indices'][0])] for s, digest in zip(regression, regression_hashes)):
+        raise ValueError('Original Willow VAL RGB identity changed')
+    if set(rgb_hashes) & set(regression_hashes):
+        raise ValueError('Replay RGB overlaps Willow VAL16')
+    # Read supervised TRAIN keys only; never use evaluator or regression targets here.
+    labels = route.read(path / 'training/labels.json')['targets']
+    near = np.asarray([labels[s['sample_id']][:2] for s in samples], dtype=np.int8)
+    with np.load(path / 'training/support.npz', allow_pickle=False) as archive:
+        support = np.stack([archive[s['sample_id']] for s in samples]).astype(np.int8)
+    if near.shape != (64, 2) or support.shape != (64, 2, 18, 32):
+        raise ValueError('Invalid original Willow replay dimensions')
+    if not np.isin(near, [-1, 0, 1]).all() or not np.isin(support, [-1, 0, 1]).all():
+        raise ValueError('Invalid replay supervision')
+    return paths, near, support, dict(samples=samples, input_sha256=hashes, rgb_sha256=rgb_hashes,
+        excluded_regression_sample_ids=[s['sample_id'] for s in regression],
+        excluded_regression_rgb_sha256=regression_hashes,
+        split='TRAIN_ONLY', selection='First64 original TRAIN in saved order; never VAL/TEST')
+
+
+def thin_pool(near, mask):
+    if mask.shape != (len(near), 2, 360, 640) or not np.isin(mask, [-1, 0, 1]).all():
+        raise ValueError('Expected native target mask with UNKNOWN preserved')
+    positive = (route.pooled(mask)[:, 0] == 1).any(axis=(1, 2))
+    pool = np.flatnonzero(positive & (near[:, 0] == 1))
+    if not len(pool):
+        raise ValueError('No reliable native TRAIN bollard BODY positive')
+    return pool
+
+
+def load_thin_pool(path, ids, near):
+    manifest_path = label_file(path)
+    manifest = route.read(manifest_path)
+    target = next(t for t in manifest['targets'] if t['target_id'] == 'train_bollard')
+    if target.get('status') != 'EVALUABLE' or not target.get('authority') or target.get('frame_indices') != ids:
+        raise ValueError('Reliable TRAIN bollard target identity/order required')
+    mask_path = route.within(manifest_path.parent, target['masks'])
+    mask = np.load(mask_path, allow_pickle=False)
+    pool = thin_pool(near, mask)
+    if [ids[int(i)] for i in pool] != [6, 8, 11, 13]:
+        raise ValueError('Frozen TRAIN bollard pool must be sample indices 6,8,11,13')
+    return pool, dict(target_id='train_bollard', mask_sha256=route.sha(mask_path),
+        native_positions=pool.tolist(), sample_indices=[ids[int(i)] for i in pool],
+        rule='Pooled actual reliable BODY positive AND known native near positive; UNKNOWN excluded')
+
+
+def replay_schedule(native_count, thin, replay_count=64):
+    thin = np.asarray(thin, dtype=np.int64)
+    if native_count != 45 or replay_count != 64 or not len(thin) or np.any((thin < 0) | (thin >= native_count)):
+        raise ValueError('Expected native45, replay64 and nonempty valid thin pool')
+    rng = np.random.default_rng(17)
+    rows = [np.r_[rng.choice(thin, 4, replace=True), rng.integers(0, native_count, 4),
+        native_count + rng.integers(0, replay_count, 8)] for _ in range(300)]
+    return np.stack(rows)
+
+
 def masked_near_bce(logits, target):
     known = target >= 0
     loss = F.binary_cross_entropy_with_logits(logits, target.clamp_min(0).float(), reduction='none')
@@ -136,7 +242,7 @@ def bn_buffers(model):
             if name.endswith(('running_mean', 'running_var', 'num_batches_tracked'))}
 
 
-def retention(result, willow_losses):
+def retention(result, willow_losses, recipe='native_only'):
     checks = {}
     for policy in ('historical', 'dev_selected'):
         initial, adapted = result['initial'], result['adapted']
@@ -162,6 +268,21 @@ def retention(result, willow_losses):
             route_target_misses_not_increased=target_ok, willow_lost_correct_head_decisions=lost,
             willow_within2=lost is not None and lost <= 2,
             retain_development_challenger=dev_ok and fp_ok and target_ok is True and lost is not None and lost <= 2)
+        if recipe == 'replay_thin':
+            ratios, localization_ok = {}, True
+            for head in ('BODY', 'HEAD'):
+                original_iou = initial['willow_val16'][policy]['heads'][head]['support']['positive_frame_mean_iou']
+                adapted_iou = adapted['willow_val16'][policy]['heads'][head]['support']['positive_frame_mean_iou']
+                ok = original_iou is not None and adapted_iou is not None and adapted_iou >= .8 * original_iou
+                localization_ok = localization_ok and ok
+                ratios[head] = dict(initial=original_iou, adapted=adapted_iou, within_80_percent=ok)
+            targets = after.get('targets')
+            bollard = next((t for t in targets if t['target_id'] == 'bollard'), {}) if isinstance(targets, list) else {}
+            body = bollard.get('methods', {}).get('g13', {}).get('BODY', {})
+            joint_ok = body.get('reliable_positive_frames') == 2 and body.get('joint_alert_and_overlap_hits', 0) >= 1
+            checks[policy].update(willow_localization=ratios, willow_localization_retained=localization_ok,
+                bollard_joint_at_least1of2=joint_ok)
+            checks[policy]['retain_development_challenger'] &= localization_ok and joint_ok
     return dict(primary_policy='dev_selected', policies=checks,
         disposition='DEVELOPMENT_CHALLENGER' if checks['dev_selected']['retain_development_challenger'] else 'RETAIN_ORIGINAL')
 
@@ -191,6 +312,8 @@ def willow_data(path, original_receipt):
 
 def run(args):
     started = time.perf_counter()
+    config = recipe_config(getattr(args, 'recipe', 'native_only'))
+    protocol_name = 'CITY_NATIVE_REPLAY_PROTOCOL_20260908.md' if config['recipe'] == 'replay_thin' else 'CITY_NATIVE_ADAPT_PROTOCOL_20260908.md'
     if not torch.cuda.is_available():
         raise RuntimeError('CUDA required; no CPU fit fallback')
     out = args.output.resolve()
@@ -227,9 +350,9 @@ def run(args):
             raise ValueError('TRAIN/DEV duplicate RGB')
         y, support, label_info = native_labels(args.train_labels, ids, train_info)
         train_counts = counts(y)
-        contract = dict(config=CONFIG, initial_checkpoint_sha256=expected, train=train_info, dev_rgb=dev_info,
+        contract = dict(config=config, initial_checkpoint_sha256=expected, train=train_info, dev_rgb=dev_info,
             source_admission_sha256=route.sha(args.source_admission),
-            frozen_protocol_sha256=route.sha(route.SOURCE / 'CITY_NATIVE_ADAPT_PROTOCOL_20260908.md'),
+            frozen_protocol=protocol_name, frozen_protocol_sha256=route.sha(route.SOURCE / protocol_name),
             train_labels=label_info, train_counts=train_counts,
             historical_thresholds=historical, historical_threshold_source_sha256=route.sha(historical_path),
             source_sha256={p.name: route.sha(p) for p in [Path(__file__), Path(route.__file__),
@@ -239,14 +362,42 @@ def run(args):
         if any(min(c['positive'], c['negative']) < 8 for c in train_counts):
             route.write(out / 'receipt.json', dict(status='NOT_EVALUABLE', reason='TRAIN requires >=8 positive and >=8 negative per head', optimizer_steps=0, train_counts=train_counts))
             return
-        x, ty, ts = rgb(paths), torch.from_numpy(y).cuda(), torch.from_numpy(support).cuda()
+        if config['recipe'] == 'replay_thin':
+            for name in ('decoupled_model.py', 'representation_model.py'):
+                if route.sha(route.SOURCE / name) != original_receipt['source_sha256'][name]:
+                    raise ValueError('Original G13 model source changed: ' + name)
+            thin, thin_info = load_thin_pool(args.train_labels, ids, y)
+            replay_paths, replay_y, replay_s, replay_info = willow_replay(args.willow_capture, original_receipt)
+            # Regression RGB identity is unprivileged; reject overlaps before any fit.
+            route_ids, route_paths, route_rgb_info = capture(args.route_capture)
+            if len(route_ids) != 40:
+                raise ValueError('Expected fixed consumed route40')
+            if set(route_rgb_info['rgb_sha256']) & (set(train_info['rgb_sha256']) | set(dev_info['rgb_sha256'])):
+                raise ValueError('Native TRAIN/DEV RGB overlaps consumed route')
+            if set(replay_info['rgb_sha256']) & (set(train_info['rgb_sha256']) | set(dev_info['rgb_sha256']) | set(route_rgb_info['rgb_sha256'])):
+                raise ValueError('Willow replay RGB overlaps native TRAIN/DEV/route')
+            schedule = replay_schedule(len(ids), thin, len(replay_paths))
+            all_paths = paths + replay_paths
+            all_y, all_s = np.concatenate((y, replay_y)), np.concatenate((support, replay_s))
+            replay_info.update(concatenated_offset=len(ids), near_counts=counts(replay_y),
+                original_checkpoint_source_receipt_sha256=route.sha(learned / 'receipt.json'),
+                schedule_source_presentations=dict(native_bollard=1200, native_uniform=1200, willow_train=2400),
+                uniform_native_includes_bollard=True,
+                additional_uniform_bollard_presentations=int(np.isin(schedule[:, 4:8], thin).sum()))
+            contract.update(replay=replay_info, thin_pool=thin_info, consumed_route_rgb_admission=route_rgb_info,
+                training_index_identity=[dict(source='native_train', sample_index=i) for i in ids] +
+                    [dict(source='willow_train', sample_id=s['sample_id']) for s in replay_info['samples']])
+            route.write(out / 'protocol.json', contract)
+        else:
+            schedule = np.random.default_rng(17).integers(0, len(ids), size=(300, 16))
+            all_paths, all_y, all_s = paths, y, support
+        x, ty, ts = rgb(all_paths), torch.from_numpy(all_y).cuda(), torch.from_numpy(all_s).cuda()
         model = route.DecoupledModel(args.pretrained).cuda()
         model.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True), strict=True)
         before = bn_buffers(model)
         groups = [dict(params=[p for n, p in model.named_parameters() if n.startswith('backbone.')], lr=1e-6),
                   dict(params=[p for n, p in model.named_parameters() if not n.startswith('backbone.')], lr=1e-4)]
         optimizer = torch.optim.AdamW(groups, weight_decay=1e-4)
-        schedule = np.random.default_rng(17).integers(0, len(ids), size=(300, 16))
         np.save(out / 'training_indices.npy', schedule, allow_pickle=False)
         model.train()
         for layer in model.modules():
@@ -275,9 +426,9 @@ def run(args):
         unchanged = before.keys() == after.keys() and all(torch.equal(before[k], after[k]) for k in before)
         if not unchanged:
             raise RuntimeError('BN running buffers changed')
-        final = out / 'native_seed17_step300.pt'
+        final = out / ('replay_thin_seed17_step300.pt' if config['recipe'] == 'replay_thin' else 'native_seed17_step300.pt')
         torch.save(model.state_dict(), final)
-        fit = dict(steps=steps, seconds=time.perf_counter()-tick, history=history,
+        fit = dict(recipe=config['recipe'], steps=steps, seconds=time.perf_counter()-tick, history=history,
             bn_buffers_unchanged=unchanged, bn_buffer_count=len(before), checkpoint_sha256=route.sha(final),
             schedule_sha256=route.sha(out / 'training_indices.npy'))
         route.write(out / 'fit-complete.json', fit)
@@ -295,7 +446,7 @@ def run(args):
             result[arm] = dict(dev=dict(historical=metrics(prob, maps, dy, ds, historical),
                 dev_selected=metrics(prob, maps, dy, ds, choices[arm])))
         lock = out / 'locked-dev-choice.json'
-        route.write(lock, dict(rule=CONFIG['dev_rule'], choices=choices, dev=dev_info, labels=dlabels,
+        route.write(lock, dict(rule=config['dev_rule'], choices=choices, dev=dev_info, labels=dlabels,
             checkpoint_sha256=fit['checkpoint_sha256'], optimizer_steps=steps,
             regression_labels_opened=False))
         locked_hash = route.sha(lock)
@@ -348,8 +499,8 @@ def run(args):
         if route.sha(lock) != locked_hash or route.sha(final) != fit['checkpoint_sha256'] or route.sha(checkpoint) != expected:
             raise RuntimeError('Frozen artifact changed during evaluation')
         route.write(out / 'result.json', dict(results=result, route=route_info, route_labels=rlabels,
-            willow=winfo, scope=CONFIG['scope'], dev_choice_sha256=locked_hash,
-            retention=retention(result, willow_losses)))
+            willow=winfo, scope=config['scope'], recipe=config['recipe'], dev_choice_sha256=locked_hash,
+            retention=retention(result, willow_losses, config['recipe'])))
         route.write(out / 'receipt.json', dict(status='PASS', actual_backend=asdict(torch_observation(model=model)),
             device=torch.cuda.get_device_name(), fit=fit, evaluation_seconds=times,
             total_seconds=time.perf_counter()-started, result_sha256=route.sha(out / 'result.json')))
@@ -361,6 +512,7 @@ def run(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(__doc__)
+    parser.add_argument('--recipe', choices=('native_only', 'replay_thin'), default='native_only')
     for name in ('train-capture', 'train-labels', 'dev-capture', 'dev-labels', 'route-capture', 'route-labels', 'source-admission', 'output'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--pretrained', type=Path, default=route.NF / 'representation-20260908/pretrained')

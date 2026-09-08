@@ -33,6 +33,14 @@ retain the original model. Willow alert decisions hold but support IoU drops.
 Its geometry audit corrects same-instance early collision from occlusion to
 UNKNOWN: the original route's meter is no longer independently verified and
 must be NOT_EVALUABLE in target metrics. Rendered all-scene labels are unchanged.
+The [native thin sampling plus Willow replay](nearfield/CITY_NATIVE_REPLAY_20260908.md)
+tests one new300step fit from original seed17 with4 thin/4 uniform City/8 Willow
+TRAIN per batch. DEV BODY recall improves to53.6%, but HEAD falls to16.7%;
+route bollard joint alerts remain0/2. Willow BODY/HEAD support IoU recovers to
+0.2312/0.0897, still only52.2%/44.0% of original. Retain original; no rescue fit.
+The combined sampling recipe is diagnostic only; this does not isolate replay
+from oversampling. Inspect target-view coverage and train-versus-route score
+separation before expanding capture or changing the model.
 
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;

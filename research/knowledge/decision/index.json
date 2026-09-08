@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-08",
-  "source_fingerprint": "2a2a4991c68291b89c696a75cb7b6d6d9c8faa3c4ca3d7066d5543badb001322",
+  "source_fingerprint": "05b9d6bbb70608b0777b5fcf50436cbfbee1f3bbd990def2601120181e3523d8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 249,
-    "current_terminals": 46,
-    "run_associations": 247
+    "experiments": 250,
+    "current_terminals": 47,
+    "run_associations": 248
   },
   "failure_layers": [
     {
@@ -18237,6 +18237,39 @@
       "search_text": "terminal-city-native-adapt-20260908-diagnostic-no-promotion obstacle-avoidance RETAIN_ORIGINAL One 300-step native City adaptation improves responses but DEV recall 0.4643/0.4444 fails 0.5 retention and Willow support localization forgets. Original-route meter opportunities withdrawn as NOT_EVALUABLE after same-instance collision disagreement correction. Same-map Development only; no promotion. Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries. Promoting this fitted checkpoint despite failed retention Treating corrected meter UNKNOWN opportunities as verified target misses or retaining the old eight-opportunity claim Rescuing this completed run by extra fitting or post-outcome threshold changes as fresh confirmation"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-city-native-replay-20260908-diagnostic-no-promotion",
+      "status": "diagnostic",
+      "question": "Single 300-step 4 thin / 4 native / 8 replay recipe: DEV-selected BODY 15/28 with FP 0/17, HEAD 3/18 with FP 1/27. Route bollard joint remains 0/2; Willow localization falls below 80 percent retention in both heads. Retain original model; diagnostic component only, consumed single-seed Development.",
+      "baseline": null,
+      "change": "New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope.",
+      "primary_metric": null,
+      "decision": "RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "4120928d094a7918dea469bb355d7cf9f0a1471a",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "geometry_motion": 30
+      },
+      "successor_requires": "New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope.",
+      "forbidden_repeats": [
+        "Repeating the identical combined recipe or expanding its budget as fresh confirmation",
+        "Promoting this checkpoint despite failed HEAD recall, bollard joint and Willow localization retention",
+        "Treating UNKNOWN or withdrawn original-route meter opportunities as verified model misses"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md",
+        "artifacts.local/nearfield/city-native-replay-20260908/fit-v1/result.json",
+        "artifacts.local/nearfield/city-native-replay-20260908/fit-v1/receipt.json"
+      ],
+      "association_id": "city-native-replay-20260908",
+      "search_text": "terminal-city-native-replay-20260908-diagnostic-no-promotion obstacle-avoidance RETAIN_ORIGINAL Single 300-step 4 thin / 4 native / 8 replay recipe: DEV-selected BODY 15/28 with FP 0/17, HEAD 3/18 with FP 1/27. Route bollard joint remains 0/2; Willow localization falls below 80 percent retention in both heads. Retain original model; diagnostic component only, consumed single-seed Development. New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope. Repeating the identical combined recipe or expanding its budget as fresh confirmation Promoting this checkpoint despite failed HEAD recall, bollard joint and Willow localization retention Treating UNKNOWN or withdrawn original-route meter opportunities as verified model misses"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -23495,6 +23528,27 @@
         "identity_binding": 3
       },
       "search_text": "city-native-adapt-20260908 Does one small native-instance adaptation improve source-separated street segments and consumed route regression? Original G13 seed17 frozen checkpoint Different original native instances on TRAIN and DEV segments; one 300step fit with low backbone LR and frozen BN buffers DEV recall FPR support and consumed route target misses plus Willow regression RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md Original Small_City_LVL different street segments and native instances"
+    },
+    {
+      "kind": "experiment",
+      "id": "city-native-replay-20260908",
+      "status": "archived",
+      "question": "Can old TRAIN rehearsal and reliable native thin-positive sampling retain localization and reduce thin misses?",
+      "baseline": "Original G13 seed17 plus cached prior native-only300 fit",
+      "change": "One combined 4 thin plus4 uniform native plus8 old TRAIN batch recipe; same300 steps network loss and optimizer",
+      "primary_metric": "DEV recall FPR support; corrected route target joint hit; Willow retained support IoU and alerts",
+      "decision": "RETAIN_ORIGINAL",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md",
+      "source": "Consumed native City segments and original Willow TRAIN64 only",
+      "commit": "4120928d094a7918dea469bb355d7cf9f0a1471a",
+      "association_id": "city-native-replay-20260908",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "runtime_infrastructure": 3
+      },
+      "search_text": "city-native-replay-20260908 Can old TRAIN rehearsal and reliable native thin-positive sampling retain localization and reduce thin misses? Original G13 seed17 plus cached prior native-only300 fit One combined 4 thin plus4 uniform native plus8 old TRAIN batch recipe; same300 steps network loss and optimizer DEV recall FPR support; corrected route target joint hit; Willow retained support IoU and alerts RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md Consumed native City segments and original Willow TRAIN64 only"
     }
   ],
   "associations": [
@@ -23510,6 +23564,20 @@
         "research/active/dtr-r0/nearfield/CITY_NATIVE_ADAPT_20260908.md"
       ],
       "decision_id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
+      "source_rows": 1
+    },
+    {
+      "run_id": "city-native-replay-20260908",
+      "use_ids": [],
+      "protocol_id": "city-native-replay-p1",
+      "code_revision": "4120928d094a7918dea469bb355d7cf9f0a1471a",
+      "input_fingerprint": "6a89a07a39bb8539cc5398ef81904b8f20696af473c2a61f090c2cc55d0488ed",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_PROTOCOL_20260908.md",
+        "artifacts.local/nearfield/city-native-replay-20260908/",
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_REPLAY_20260908.md"
+      ],
+      "decision_id": "terminal-city-native-replay-20260908-diagnostic-no-promotion",
       "source_rows": 1
     },
     {
