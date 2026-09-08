@@ -791,6 +791,50 @@
         "artifacts.local/work/body-query-q2-20260909/validation.json"
       ],
       "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_Q2_RECEIPT"
+    },
+    {
+      "id": "terminal-body-query-q3-20260909-local-coverage",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "Q3_RETAIN_GEOMETRY_COMPONENT",
+      "summary": "Native count reproduction320/320. Local HEAD coverage DEV47/47 EVAL46/46; near ray coverage12/12 and6/6. Owned response transfer is weak; do not infer sampling absence or calibrated point detector ceiling.",
+      "successor_requires": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "forbidden_repeats": [
+        "Claiming fresh confirmation from these consumed regions",
+        "Promoting a model from DEV gains alone",
+        "Automatically extending the completed fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/run-v1/result.json"
+      ],
+      "commit": "WORKTREE_SOURCE_INPUT_CHECKPOINT_HASHES_IN_RECEIPTS"
+    },
+    {
+      "id": "terminal-body-query-attribution-r1-20260909-no-transfer",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "R1_NEGATIVE_CONTROL_RETAIN_B",
+      "summary": "One2000 step auxiliary attribution fit: DEV HEAD TP5 to13, EVAL TP8 to15 but FP2 to17. EVAL FP<=2 HEAD oracle TP8 to6; query recall declines. No promotion or recipe continuation.",
+      "successor_requires": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "forbidden_repeats": [
+        "Claiming fresh confirmation from these consumed regions",
+        "Promoting a model from DEV gains alone",
+        "Automatically extending the completed fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/attribution-r1/result.json"
+      ],
+      "commit": "WORKTREE_SOURCE_INPUT_CHECKPOINT_HASHES_IN_RECEIPTS"
     }
   ]
 }

@@ -31,6 +31,26 @@
       "failure_signature": "Sparse strong responses coexist with all-weak misses; top3 EVAL HEAD FP17 and TRAIN BODY_ONLY48 false alerts",
       "revisit_trigger": "Distinct matched intervention improving correct-region evidence while retaining empty and wrong-height controls",
       "assignment_basis": "Zero-fit matched reproduction and independent array checks reveal nonselective strong point readouts"
+    },
+    {
+      "terminal_id": "terminal-body-query-q3-20260909-local-coverage",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Native membership and local query coverage tooling",
+      "retained_surface": "Native labels, matched cached predictions and controls",
+      "failure_signature": "Almost complete local HEAD coverage with weak owned readout transfer",
+      "revisit_trigger": "Distinct evidence representation or intervention; not automatic weight sweep or budget extension",
+      "assignment_basis": "Verified native geometry and matched one-seed local evidence"
+    },
+    {
+      "terminal_id": "terminal-body-query-attribution-r1-20260909-no-transfer",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Auxiliary local attribution BCE with unchanged pooling at matched2000 steps",
+      "retained_surface": "Native labels, matched cached predictions and controls",
+      "failure_signature": "DEV improves but EVAL HEAD FP17/24 and FP<=2 recall6/16 versus B8/16",
+      "revisit_trigger": "Distinct evidence representation or intervention; not automatic weight sweep or budget extension",
+      "assignment_basis": "Verified native geometry and matched one-seed local evidence"
     }
   ]
 }

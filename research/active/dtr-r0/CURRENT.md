@@ -533,3 +533,13 @@ but FP rises2 to17; all48 TRAIN BODY_ONLY frames become false HEAD alerts.
 Retain the evidence-path diagnostic, not a pooling-failure attribution: strong
 responses lack sufficient body-region selectivity. Weak readouts do not isolate
 the backbone. One320-frame local GPU pass, zero training; no V2 or promotion.
+
+
+[Q3 native attribution](nearfield/BODY_QUERY_Q3_RESULTS_20260909.md) verifies320
+original count labels and full local HEAD coverage on DEV/EVAL, with weak owned
+point response transfer. Retain native attribution tooling as a component.
+[Attribution R1](nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md) completed
+one matched2000-step auxiliary-supervision fit without pooling changes. DEV HEAD
+improves, but EVAL HEAD FP rises2 to17 and oracle TP at FP<=2 falls8 to6. Query
+recall declines. Retain B; carry this R1 recipe as a negative control, with no
+promotion, automatic weight sweep or budget continuation. Both runs are complete.
