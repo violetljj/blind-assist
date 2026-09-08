@@ -183,7 +183,9 @@ def infer(paths, out, config):
             if image.size != (640, 360):
                 raise ValueError('Expected captured 640x360 RGB')
             arrays.append(np.array(image.convert('RGB').resize((256, 144), Image.Resampling.BOX)))
-    rgb = torch.from_numpy(np.stack(arrays)).permute(0, 3, 1, 2).float().div_(255.)
+    # Match diversity_train.cache_inputs: uint8 transfer precedes conversion.
+    # CPU versus CUDA division differs slightly and breaks strict replay parity.
+    rgb = torch.from_numpy(np.stack(arrays)).cuda().permute(0, 3, 1, 2).float().div_(255.)
     predictions = {}
     timing = {}
     for name in METHODS:
