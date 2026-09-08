@@ -36,3 +36,9 @@ CitySample 工作工程。复用已校验的资源增量即可；缓存、机器
 字节已逐文件 SHA 校验；地图和项目未变化，任务进程已释放，缓存保留。
 这证明传输完成，不证明副机采集已跑通。回执：
 `artifacts.local/nearfield/city-pcg-20260908/worker-transfer-street-final-v7/delivery-summary.json`。
+
+后续[副机接入验收](CITY_WORKER_20260908.md)已完成：复用这些缓存，修复首次
+资产显示问题后，50 组／150 帧通过采集、几何和分组检查，编辑器全生命周期
+184.904 秒。该结果取代“尚未跑通”的当前状态，但保留上述冷启动失败记录。
+进一步的[生产采集优化](CITY_CAPTURE_THROUGHPUT_20260908.md)保持缓存和真值
+检查，减少逐帧重复导出及预览开销。

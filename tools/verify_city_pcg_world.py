@@ -85,7 +85,6 @@ def verify(root):
         report.update(backend='CUDA', device=torch.cuda.get_device_name(), torch_version=torch.__version__,
                       source_spec_sha256=sha(spec_path), receipt_sha256=sha(root / 'receipt.json'))
         masks_dir.mkdir(parents=True, exist_ok=False)
-        depths = []
         for index, case in enumerate(cases):
             camera = case['camera']
             local_camera, wearer = local_query(camera, case.get('floor_z_m'))
@@ -98,7 +97,6 @@ def verify(root):
                 image.load()
                 require(image.format == 'PNG' and image.size == (640,360), 'Invalid RGB payload')
             native = torch.from_numpy(data).cuda()
-            depths.append(native)
             target, pooled, masks, valid = visible_support(native, local_camera, wearer)
             row = dict(sample_index=index, name=case['name'], camera=camera,
                        wearer_world=dict(x=camera['x'], y=camera['y'], z=float(camera['z'])+wearer['z'], yaw=camera['yaw']),
@@ -147,7 +145,12 @@ def verify(root):
             objects = case.get('objects', [])
             require(len(objects) == 1 and 'size_m' in objects[0] and not any(k in objects[0] for k in ('mesh_asset','primitive_asset')), 'Analytic control requires one legacy cube')
             require(all(abs(float(v)) < 1e-8 for v in objects[0].get('rotation_deg', {}).values()), 'Analytic cube must be axis aligned')
-            metric = score_cube(depths[baseline], depths[index], case['camera'], objects[0])
+            # The first pass validated every payload. Reload only this analytic
+            # pair so GPU memory does not grow with the number of captured views.
+            baseline_depth = torch.from_numpy(np.load(root / f'evaluator/native/{baseline:04d}.npy', allow_pickle=False)).cuda()
+            control_depth = torch.from_numpy(np.load(root / f'evaluator/native/{index:04d}.npy', allow_pickle=False)).cuda()
+            metric = score_cube(baseline_depth, control_depth, case['camera'], objects[0])
+            del baseline_depth, control_depth
             report['rows'][index]['analytic_control'] = metric
             require(metric['status'] == 'PASS', 'Analytic cube depth check failed')
         torch.cuda.synchronize()

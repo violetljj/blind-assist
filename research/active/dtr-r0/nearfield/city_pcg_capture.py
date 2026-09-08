@@ -18,6 +18,9 @@ SPEC = Path(os.environ['BA_CITY_SPEC'])
 spec = json.loads(SPEC.read_text(encoding='utf-8-sig'))
 settling_ticks = spec.get('settling_ticks', 120)
 settling_interval = float(spec.get('settling_interval_s', .05))
+appearance_enabled = spec.get('export_appearance', True)
+if type(appearance_enabled) is not bool:
+    raise ValueError('export_appearance must be boolean')
 if type(settling_ticks) is not int or settling_ticks < 1:
     raise ValueError('settling_ticks must be a positive integer')
 if not math.isfinite(settling_interval) or settling_interval < 0:
@@ -30,9 +33,11 @@ stage, index, warm = 0, 0, 0
 after = 0.
 finished = False
 captures, objects, frames = [], [], []
-pairs = PairExporter(u, 'native_probe')
+settled_mesh_assets = set()
+pairs = PairExporter(u, spec.get('pair_export_mode', 'native_probe'))
 map_file = Path(spec['map_file'])
 report = dict(status='RUNNING', map_asset=spec['map_asset'],
+              export_policy=dict(pair_mode=pairs.mode, appearance=appearance_enabled),
               spec_sha256=hashlib.sha256(SPEC.read_bytes()).hexdigest(),
               map_sha256_before=hashlib.sha256(map_file.read_bytes()).hexdigest(),
               purpose='SAMPLE_PCG_INTEGRATION_NO_MODEL_SCORING',
@@ -235,18 +240,36 @@ def tick(dt):
             report['map_load_s'] = time.monotonic() - started
             rgb = component(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR, u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
             depth = component(u.SceneCaptureSource.SCS_SCENE_DEPTH, u.TextureRenderTargetFormat.RTF_RGBA32F)
-            beauty = component(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR, u.TextureRenderTargetFormat.RTF_RGBA8_SRGB, 1280, 720)
+            beauty = component(u.SceneCaptureSource.SCS_FINAL_COLOR_LDR, u.TextureRenderTargetFormat.RTF_RGBA8_SRGB, 1280, 720) if appearance_enabled else None
             stage = 1
+        # Pump completed readbacks every tick and bound outstanding GPU exports.
+        if not pairs.ready():
+            after = 0.
+            return
         if stage == 2:
             if not readiness.poll():
                 write(OUT / 'progress.json', dict(phase='READINESS', index=index, readiness=readiness.receipt()))
                 after = time.monotonic() + .1
                 return
             stage = 3
-        if warm == 0:
+            # Pre-readiness renders may contain incomplete resources. Give the
+            # first view or a view that waited for assets a complete settled pass.
+            ready_wait_s = readiness.receipt()['elapsed_s']
+            case_assets = {obj.get('mesh_asset', obj.get('primitive_asset', '/Engine/BasicShapes/Cube'))
+                           for obj in spec['cases'][index].get('objects', [])}
+            new_assets = case_assets - settled_mesh_assets
+            report.setdefault('view_readiness', []).append(dict(index=index, **readiness.receipt()))
+            if index == 0 or ready_wait_s > .5 or new_assets:
+                warm = 0
+                report.setdefault('post_ready_settling', []).append(dict(
+                    index=index, ticks=settling_ticks, ready_wait_s=ready_wait_s,
+                    first_use_assets=sorted(new_assets)))
+            settled_mesh_assets.update(case_assets)
+        if warm == 0 and stage == 1:
             prepare(spec['cases'][index])
         rgb.capture_component2d.capture_scene()
-        beauty.capture_component2d.capture_scene()
+        if beauty is not None:
+            beauty.capture_component2d.capture_scene()
         warm += 1
         write(OUT / 'progress.json', dict(phase='SETTLING', index=index, ticks=warm, elapsed_s=time.monotonic()-started))
         if warm < settling_ticks:
@@ -260,9 +283,10 @@ def tick(dt):
         depth.capture_component2d.capture_scene()
         pairs.export(world, rgb.capture_component2d.texture_target, depth.capture_component2d.texture_target,
                      OUT / f'model/sample/{index:04d}.png', OUT / f'evaluator/native/{index:04d}.npy', index)
-        (OUT / 'appearance').mkdir(exist_ok=True)
-        u.RenderingLibrary.export_render_target(world, beauty.capture_component2d.texture_target,
-                                                str(OUT/'appearance'), f'{index:04d}.png')
+        if beauty is not None:
+            (OUT / 'appearance').mkdir(exist_ok=True)
+            u.RenderingLibrary.export_render_target(world, beauty.capture_component2d.texture_target,
+                                                    str(OUT/'appearance'), f'{index:04d}.png')
         frames.append(dict(sample_index=index, rgb_path=f'sample/{index:04d}.png'))
         index += 1
         warm = 0

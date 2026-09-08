@@ -40,6 +40,14 @@ with capture/geometry/group QA PASS in 185.219 s including editor lifecycle.
 A six-frame paired check supports the faster settling profile; asset/shader/
 streaming readiness remains enforced. The pilot is one map and is not balanced
 across HEAD risk states; no model training or new promotion follows from it.
+The [worker commissioning](nearfield/CITY_WORKER_20260908.md) now passes the
+same 150-frame acceptance after fixing first-use assets missing from RGB.
+The corrected cached baseline takes 184.904 s editor lifecycle. The subsequent
+[throughput work](nearfield/CITY_CAPTURE_THROUGHPUT_20260908.md) separates
+production export from reference/preview work and bounds verifier GPU memory.
+Its optional fast profile completes 150 frames in 127.286 s including job/QA,
+with all task risk states matching. It is not background-pixel/depth equivalent;
+the standard profile remains the default for strict matched comparisons.
 The saved sample remains frozen at
 `willow-finish-4k`; first-person acquisition uses an optical center **1.70 m
 above the floor**, with `tools/run_sample_segment.py sensors`. The eleven-frame
