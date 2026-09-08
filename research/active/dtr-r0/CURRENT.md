@@ -309,6 +309,13 @@ sufficient retained payloads beyond C35 for fair reconstruction.
 
 ## Evidence links
 
+- [Balanced tiny TRAIN fitting and gradient diagnosis](nearfield/CITY_TINY_FIT_20260908.md):
+  B frozen/F full each fit all64 near bits and8/8 groups at2000 steps. Full
+  updates improve BODY/HEAD IoU0.110/0.089 to0.555/0.488, though F HEAD misses
+  the fixed0.5 strong-fit criterion. Gradient connections behave as expected.
+  No held-out access or promotion. Next compare full updates on the same1134
+  TRAIN and2000-step budget with original initialization and final-only DEV.
+
 - [Frozen-B fit adequacy at2000 steps](nearfield/CITY_FIT_ADEQUACY_20260908.md):
   exact200-step weight parity passes; final-only DEV recall43.75%/31.25% at
   FPR4.6875%/6.25%, but joint1/32 and negative support activation expands.
