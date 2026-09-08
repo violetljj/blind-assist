@@ -650,6 +650,38 @@
       "failure_signature": "Replay DEV-selected joint alerts fall 2/2 to 0/2 in the two reliable pairs despite transverse target overlap and peak hits. Historical control agreement is only 3/4; far two target pairs remain UNKNOWN.",
       "revisit_trigger": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
       "assignment_basis": "Selected same-instance two-reliable-pair Development evidence supports view/context sensitivity but cannot isolate yaw, background or appearance causes."
+    },
+    {
+      "id": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_FIELD_FIXED_G10_G13_ALERT_LOCALIZATION_FAILURES_RETAIN_DIAGNOSTICS_NO_PROMOTION",
+      "summary": "Fixed frozen ensembles on108 City field Development frames, zero fitting: G10 BODY TP16/FN17/FP9/TN66 and HEAD6/27/20/55; G13 BODY and HEAD0/33/0/75. Across45 target-band opportunities on36 controlled instances, G10 alert misses30 and joint hits11; G13 misses45 and joint hits0. Fully clear false-alert frames G10 3/7 and G13 0/7. Excluding five floor-REVIEW frames leaves all positive counts and false negatives unchanged. Retain field failure evidence; no model promotion or depth-cause inference.",
+      "successor_requires": "A bounded method or data-coverage change evaluated without reselection on this consumed diagnostic; preserve frozen checkpoints, thresholds, geometry and UNKNOWN-aware labels.",
+      "forbidden_repeats": [
+        "Claiming the inspected City spatial test partition is sealed blind confirmation",
+        "Promoting either fixed model from this diagnostic",
+        "Treating all nine fixture-clear cases as native-scene-clear controls",
+        "Attributing direct RGB-to-risk failures to monocular-depth errors without separate evidence",
+        "Expanding this completed inference-only budget into fitting or recapture"
+      ],
+      "evidence": [
+        "experiments/city-field/DIAGNOSTIC_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/result.json",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/receipt.json"
+      ],
+      "commit": "a6570ef050b5127bd92da363b0ca5222cc7897bc",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen G10/G13 inference-only City field Development diagnosis; no model promotion or sealed-test authority.",
+      "retained_surface": "Immutable108-frame nine-route field, fixed-checkpoint predictions, BODY/HEAD target-band failures, seven native-clear controls and floor-REVIEW sensitivity evidence.",
+      "failure_signature": "G10 misses30/45 target-band opportunities with11/45 joint hits and3/7 clear false-alert frames; G13 misses45/45 with0/45 joint hits and0/7 clear false alerts. All33 BODY and33 HEAD scene positives missed by G13; dropping five floor-REVIEW rows does not change positive counts or false negatives.",
+      "revisit_trigger": "A bounded method or coverage change with consumed-diagnostic and source-partition boundaries explicit; no threshold reselection or budget extension of this completed run.",
+      "assignment_basis": "Completed fixed-v1 receipt PASS108, optimizer_steps0; retain reproducible field diagnosis and failure cases. Direct RGB-to-risk failures cannot establish monocular-depth error as a cause."
     }
   ]
 }

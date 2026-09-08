@@ -4,6 +4,11 @@
 Nine routes / three regions, all four fixture families validated; explicit floor
 review flags and UNKNOWN supervision retained.
 
+The [first fixed-method diagnostic](DIAGNOSTIC_V1_20260908.md) now supplies
+cached G10/G13 predictions and ten target failure sheets on the immutable108
+frames. No fits or threshold adjustments: G10 misses30/45 reliable target-band
+opportunities and G13 misses45/45. This diagnoses the methods, not field failure.
+
 This entry owns scene/route engineering and repeatable data acquisition. Model
 training and a particular detector's recall do not determine field acceptance.
 The original Small_City_LVL map is not saved or altered by the collector.

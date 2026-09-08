@@ -12,6 +12,14 @@ split isolation. Model fitting is a separate workstream and is not a prerequisit
 for accepting this collection infrastructure. Historical model diagnostics below
 remain scoped evidence rather than the field's development objective.
 
+The [field-v1 fixed-method diagnostic](../../../experiments/city-field/DIAGNOSTIC_V1_20260908.md)
+now caches one frozen G10/G13 inference pass on all108 admitted frames. G10
+misses30/45 reliable target-band opportunities with11/45 joint alert/support
+hits; G13 misses45/45 with0 joint hits. True clear-control false alerts are3/7
+and0/7 respectively. Excluding five floor-review frames changes no positive
+or miss counts. Retain field/failure evidence; no model promotion, training,
+threshold adjustment, or monocular-depth causal claim follows from this run.
+
 Existing controlled Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
 observations and measured conservative envelopes. The historical motion runner
 is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary
