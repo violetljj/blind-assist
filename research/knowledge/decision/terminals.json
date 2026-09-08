@@ -911,6 +911,28 @@
         "artifacts.local/work/body-query-depth-oracle-20260909/validation.json"
       ],
       "commit": "WORKTREE_SOURCE_NATIVE_INPUT_AND_RESULT_HASHES_IN_RECEIPTS"
+    },
+    {
+      "id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "geometry_motion"
+      ],
+      "status": "not_evaluable",
+      "decision": "ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST",
+      "summary": "Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training.",
+      "successor_requires": "A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits.",
+      "forbidden_repeats": [
+        "Automatic source or frame expansion to rescue this fixed subset",
+        "Treating native ASE counts as V1 pinhole-equivalent labels",
+        "Claiming no visible endpoints as certified free space"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md"
+      ],
+      "commit": "d141298c52746c832ac56f215558145b4824c95c"
     }
   ]
 }

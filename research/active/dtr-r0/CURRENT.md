@@ -561,6 +561,14 @@ final tradeoff. Retain B; close these fixed pooling replacements as a negative
 control, without k/fusion sweeps or promotion.
 
 
+[ASE external geometry pilot](nearfield/ASE_BODY_QUERY_RESULTS_20260909.md) completed
+72 fixed frames across3 synthetic layouts: BODY-only15, HEAD-only0, both47,
+neither-detected10. Retain the verified ray-distance/fisheye geometry adapter
+as a component, but this subset lacks the HEAD-only denominator needed for
+model comparison. No model evaluation, training or automatic source expansion.
+The1.70m camera-anchored proxy and native pixel counts are not actual-body or
+V1 pinhole-equivalent truth; B and R1 dispositions remain unchanged.
+
 [Native-depth routing](nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md) gives
 no HEAD gain: fixed gates reach7/16 at EVAL FP<=2 versus B8/16. UNKNOWN causes
 217/240 HEAD cells to pass through, so this conservative veto is not a general

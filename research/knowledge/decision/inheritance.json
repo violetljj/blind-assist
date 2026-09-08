@@ -81,6 +81,16 @@
       "failure_signature": "HEAD TP7 at FP<=2;217/240 HEAD cells passthrough due to UNKNOWN",
       "revisit_trigger": "Distinct scoped depth-information test; no automatic prior download or native-truth causal claim",
       "assignment_basis": "Hash-bound native arrays, exact Q3 membership and counterfactual gate checks"
+    },
+    {
+      "terminal_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "ASE camera-anchored native visible-surface geometry diagnostics only",
+      "retained_surface": "Verified source, fisheye ray-distance adapter, BODY/HEAD count labels, invalid masks and fixed previews",
+      "failure_signature": "Zero HEAD-only cases in72 fixed frames across3 layouts; no HEAD-only recall denominator",
+      "revisit_trigger": "Separately authorized source selection with head-only structures and reviewed fixed-pinhole compatibility",
+      "assignment_basis": "Source geometry is usable; this subset lacks the target opportunity and does not adjudicate a learned model"
     }
   ]
 }

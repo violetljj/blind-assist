@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-08",
-  "source_fingerprint": "1c967da37521d032d35a08edd148b256cebf8f1afb3a28102bf7f9fd60239f56",
+  "generated_at": "2026-09-09",
+  "source_fingerprint": "7a79d2426bbd386e0ae7ccf867ae6b91f0c8448f14ac10f2c0686e22ed1f5cd0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 251,
-    "current_terminals": 48,
-    "run_associations": 249
+    "experiments": 269,
+    "current_terminals": 59,
+    "run_associations": 267
   },
   "failure_layers": [
     {
@@ -18304,6 +18304,385 @@
       "search_text": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion obstacle-avoidance VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL Eight frozen views, no fitting: replay scores 0.973068/0.960922 fall to 0.757597/0.489242 in two independently reliable matched pairs. At fixed DEV threshold 0.929635, joint alerts fall 2/2 to 0/2 despite transverse target overlap and peak hits. DEV control agreement 4/4; historical 3/4. Two farther target pairs UNKNOWN; same-instance Development only. New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe. Scoring the two UNKNOWN target pairs as misses or claiming four reliable target pairs Separately attributing the joint view/context change to yaw or background from this probe Promoting a model or extending this completed probe budget as fresh confirmation"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion",
+      "status": "diagnostic",
+      "question": "Fixed frozen ensembles on108 City field Development frames, zero fitting: G10 BODY TP16/FN17/FP9/TN66 and HEAD6/27/20/55; G13 BODY and HEAD0/33/0/75. Across45 target-band opportunities on36 controlled instances, G10 alert misses30 and joint hits11; G13 misses45 and joint hits0. Fully clear false-alert frames G10 3/7 and G13 0/7. Excluding five floor-REVIEW frames leaves all positive counts and false negatives unchanged. Retain field failure evidence; no model promotion or depth-cause inference.",
+      "baseline": null,
+      "change": "A bounded method or data-coverage change evaluated without reselection on this consumed diagnostic; preserve frozen checkpoints, thresholds, geometry and UNKNOWN-aware labels.",
+      "primary_metric": null,
+      "decision": "CITY_FIELD_FIXED_G10_G13_ALERT_LOCALIZATION_FAILURES_RETAIN_DIAGNOSTICS_NO_PROMOTION",
+      "report": "experiments/city-field/DIAGNOSTIC_V1_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "a6570ef050b5127bd92da363b0ca5222cc7897bc",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "A bounded method or data-coverage change evaluated without reselection on this consumed diagnostic; preserve frozen checkpoints, thresholds, geometry and UNKNOWN-aware labels.",
+      "forbidden_repeats": [
+        "Claiming the inspected City spatial test partition is sealed blind confirmation",
+        "Promoting either fixed model from this diagnostic",
+        "Treating all nine fixture-clear cases as native-scene-clear controls",
+        "Attributing direct RGB-to-risk failures to monocular-depth errors without separate evidence",
+        "Expanding this completed inference-only budget into fitting or recapture"
+      ],
+      "evidence": [
+        "experiments/city-field/DIAGNOSTIC_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/result.json",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/receipt.json"
+      ],
+      "association_id": "city-field-diagnostic-20260908",
+      "search_text": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion obstacle-avoidance CITY_FIELD_FIXED_G10_G13_ALERT_LOCALIZATION_FAILURES_RETAIN_DIAGNOSTICS_NO_PROMOTION Fixed frozen ensembles on108 City field Development frames, zero fitting: G10 BODY TP16/FN17/FP9/TN66 and HEAD6/27/20/55; G13 BODY and HEAD0/33/0/75. Across45 target-band opportunities on36 controlled instances, G10 alert misses30 and joint hits11; G13 misses45 and joint hits0. Fully clear false-alert frames G10 3/7 and G13 0/7. Excluding five floor-REVIEW frames leaves all positive counts and false negatives unchanged. Retain field failure evidence; no model promotion or depth-cause inference. A bounded method or data-coverage change evaluated without reselection on this consumed diagnostic; preserve frozen checkpoints, thresholds, geometry and UNKNOWN-aware labels. Claiming the inspected City spatial test partition is sealed blind confirmation Promoting either fixed model from this diagnostic Treating all nine fixture-clear cases as native-scene-clear controls Attributing direct RGB-to-risk failures to monocular-depth errors without separate evidence Expanding this completed inference-only budget into fitting or recapture"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-city-field-approach-20260908-distance-view-diagnostic",
+      "status": "diagnostic",
+      "question": "Completed21 exact-pose floor preflight and105 final settled City views;14 strict geometry UNKNOWN retained. Per method64 eligible target-band opportunities,19 UNKNOWN and22 visible without eligible query support. G10 misses39/64, joint23/64, clear false-alert18/21; only3 joint hits have silent matched clear controls. G13 misses64/64, joint0/64, clear false-alert0/21. Eight of nine G10 hit sequences lose the hit at a nearer eligible pose; the remaining first hit is at nearest1m, so persistence NOT_TESTED. No reliable warning distance or target-only causality established; zero fitting, no promotion.",
+      "baseline": null,
+      "change": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
+      "primary_metric": null,
+      "decision": "CITY_APPROACH_NONMONOTONIC_RESPONSE_CLEAR_ALARM_CONFOUND_RETAIN_DIAGNOSTICS_NO_PROMOTION",
+      "report": "experiments/city-field/APPROACH_V1_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "957df40284795e303c5fdba3f653698ed09d38ba",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
+      "forbidden_repeats": [
+        "Treating19 UNKNOWN or22 visible-but-ineligible target-band rows as missed positives",
+        "Claiming nearest-only1m hit proves persistence or a reliable warning distance",
+        "Calling paired assembly changes target-only causal recognition",
+        "Attributing direct RGB-to-risk failures to monocular-depth error without separate evidence",
+        "Expanding this completed105-frame diagnostic through result-driven camera additions, threshold search or fitting"
+      ],
+      "evidence": [
+        "experiments/city-field/APPROACH_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-approach-20260908/summary-v2/result.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/fixed-v1/receipt.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/geometry-admission.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/bundle-validation.json"
+      ],
+      "association_id": "city-field-approach-20260908",
+      "search_text": "terminal-city-field-approach-20260908-distance-view-diagnostic obstacle-avoidance CITY_APPROACH_NONMONOTONIC_RESPONSE_CLEAR_ALARM_CONFOUND_RETAIN_DIAGNOSTICS_NO_PROMOTION Completed21 exact-pose floor preflight and105 final settled City views;14 strict geometry UNKNOWN retained. Per method64 eligible target-band opportunities,19 UNKNOWN and22 visible without eligible query support. G10 misses39/64, joint23/64, clear false-alert18/21; only3 joint hits have silent matched clear controls. G13 misses64/64, joint0/64, clear false-alert0/21. Eight of nine G10 hit sequences lose the hit at a nearer eligible pose; the remaining first hit is at nearest1m, so persistence NOT_TESTED. No reliable warning distance or target-only causality established; zero fitting, no promotion. A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses. Treating19 UNKNOWN or22 visible-but-ineligible target-band rows as missed positives Claiming nearest-only1m hit proves persistence or a reliable warning distance Calling paired assembly changes target-only causal recognition Attributing direct RGB-to-risk failures to monocular-depth error without separate evidence Expanding this completed105-frame diagnostic through result-driven camera additions, threshold search or fitting"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-v1-20260909-mixed-no-replacement",
+      "status": "diagnostic",
+      "question": "Matched RGB-only spatial-count B versus support-gated G13 A: 320 fixed-camera same-world frames, two primary2000-step fits, identical initialization/sampling/supervision. EVAL40 BODY TP4 to7 FP0 both; HEAD TP11 to8 FP8 to2; all-state groups0/8 to2/8. Query count accuracy82.08% to81.04%, HEAD support peak hits5/16 to3/16. Both fit TRAIN perfectly. Mixed result fails predeclared no-HEAD-recall-loss replacement criterion; retain diagnostic components without model promotion. Worker partial A run interrupted at least100 steps for resource migration, before DEV/EVAL.",
+      "baseline": null,
+      "change": "A distinct scoped hypothesis and evidence source or mechanism; retain consumed same-world fixed-calibration limits, native-visible count semantics, baseline comparator, recall/FP/evidence tradeoffs.",
+      "primary_metric": null,
+      "decision": "BODY_QUERY_V1_MIXED_NO_REPLACEMENT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_BODY_QUERY_LOCAL_V4_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "A distinct scoped hypothesis and evidence source or mechanism; retain consumed same-world fixed-calibration limits, native-visible count semantics, baseline comparator, recall/FP/evidence tradeoffs.",
+      "forbidden_repeats": [
+        "Promoting this fixed B recipe as baseline replacement",
+        "Claiming geometry reasoning or complete occupancy from query structure",
+        "Claiming low false alarms with omitted misses or UNKNOWN coverage",
+        "Retuning thresholds or extending this consumed fixed-budget run",
+        "Claiming fresh-city, arbitrary-camera or physical safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-v1-20260908/model-run-local-v4/result.json",
+        "artifacts.local/work/body-query-v1-20260908/independent-audit.json"
+      ],
+      "association_id": "body-query-v1-20260909-result",
+      "search_text": "terminal-body-query-v1-20260909-mixed-no-replacement obstacle-avoidance BODY_QUERY_V1_MIXED_NO_REPLACEMENT Matched RGB-only spatial-count B versus support-gated G13 A: 320 fixed-camera same-world frames, two primary2000-step fits, identical initialization/sampling/supervision. EVAL40 BODY TP4 to7 FP0 both; HEAD TP11 to8 FP8 to2; all-state groups0/8 to2/8. Query count accuracy82.08% to81.04%, HEAD support peak hits5/16 to3/16. Both fit TRAIN perfectly. Mixed result fails predeclared no-HEAD-recall-loss replacement criterion; retain diagnostic components without model promotion. Worker partial A run interrupted at least100 steps for resource migration, before DEV/EVAL. A distinct scoped hypothesis and evidence source or mechanism; retain consumed same-world fixed-calibration limits, native-visible count semantics, baseline comparator, recall/FP/evidence tradeoffs. Promoting this fixed B recipe as baseline replacement Claiming geometry reasoning or complete occupancy from query structure Claiming low false alarms with omitted misses or UNKNOWN coverage Retuning thresholds or extending this consumed fixed-budget run Claiming fresh-city, arbitrary-camera or physical safety performance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-diagnostic-20260909-evidence-transfer",
+      "status": "diagnostic",
+      "question": "Zero-fit cached diagnostic: at EVAL HEAD FP<=2, A oracle TP6 versus B8, while DEV A15 versus B5. Frozen-cutoff EVAL positives have6 common hits,5 A-only,2 B-only,3 common misses. B nonempty query TRAIN recall559/576=97.05%, DEV25/93=26.88%, EVAL29/97=29.90%. All8 EVAL HEAD misses lack correct HEAD query signal>=.5, with max correct-cell probability<=.17475. Retain partial ranking gains; evidence transfer fails. Class imbalance is not established as the priority cause; do not infer geometry reasoning or launch an attributed balanced-CE repair.",
+      "baseline": null,
+      "change": "Distinct scoped causal test of query-evidence transfer across scene/geometry configurations; balancing remains an untested candidate, not a diagnosed repair.",
+      "primary_metric": null,
+      "decision": "BODY_QUERY_DIAGNOSTIC_RETAIN_RANKING_SIGNAL_NO_BALANCE_ATTRIBUTION",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_DIAGNOSTIC_RECEIPTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped causal test of query-evidence transfer across scene/geometry configurations; balancing remains an untested candidate, not a diagnosed repair.",
+      "forbidden_repeats": [
+        "Replacing original DEV thresholds with consumed EVAL oracle thresholds",
+        "Claiming pure threshold conservatism despite ranking gains",
+        "Claiming low EVAL query accuracy means TRAIN query fitting failed",
+        "Treating output co-occurrence as causal transport",
+        "Promoting a model or extending the completed BODY_QUERY fit from this audit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-diagnostic-20260909/scores/score-audit.json",
+        "artifacts.local/work/body-query-diagnostic-20260909/cells-v2/result.json"
+      ],
+      "association_id": "body-query-diagnostic-20260909",
+      "search_text": "terminal-body-query-diagnostic-20260909-evidence-transfer obstacle-avoidance BODY_QUERY_DIAGNOSTIC_RETAIN_RANKING_SIGNAL_NO_BALANCE_ATTRIBUTION Zero-fit cached diagnostic: at EVAL HEAD FP<=2, A oracle TP6 versus B8, while DEV A15 versus B5. Frozen-cutoff EVAL positives have6 common hits,5 A-only,2 B-only,3 common misses. B nonempty query TRAIN recall559/576=97.05%, DEV25/93=26.88%, EVAL29/97=29.90%. All8 EVAL HEAD misses lack correct HEAD query signal>=.5, with max correct-cell probability<=.17475. Retain partial ranking gains; evidence transfer fails. Class imbalance is not established as the priority cause; do not infer geometry reasoning or launch an attributed balanced-CE repair. Distinct scoped causal test of query-evidence transfer across scene/geometry configurations; balancing remains an untested candidate, not a diagnosed repair. Replacing original DEV thresholds with consumed EVAL oracle thresholds Claiming pure threshold conservatism despite ranking gains Claiming low EVAL query accuracy means TRAIN query fitting failed Treating output co-occurrence as causal transport Promoting a model or extending the completed BODY_QUERY fit from this audit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-q2-20260909-point-selectivity-unresolved",
+      "status": "diagnostic",
+      "question": "Frozen B zero-fit decomposition: EVAL68 missed nonempty cells include36 with a point>=.5 and32 all-weak. Top3 HEAD alerts TP8 to15 but FP2 to17; all48 TRAIN BODY_ONLY frames become false HEAD alerts. Sparse responses coexist with nonselective wrong-region responses. No pooling or backbone root cause isolated and no V2 fit.",
+      "baseline": null,
+      "change": "Distinct matched evidence-selectivity intervention retaining wrong-height and empty-cell controls; weak point logits do not isolate the backbone.",
+      "primary_metric": null,
+      "decision": "Q2_RETAIN_EVIDENCE_DIAGNOSTIC_NO_POOLING_ATTRIBUTION",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_ZERO_FIT_SOURCE_AND_INPUT_HASHES_IN_Q2_RECEIPT",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct matched evidence-selectivity intervention retaining wrong-height and empty-cell controls; weak point logits do not isolate the backbone.",
+      "forbidden_repeats": [
+        "Treating decomposed point logits as calibrated obstacle detectors",
+        "Attributing every strong-point mean-miss to correct-evidence pooling failure",
+        "Attributing all-weak readouts exclusively to the backbone",
+        "Promoting zero-fit max/top3 at consumed EVAL thresholds"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/receipt.json",
+        "artifacts.local/work/body-query-q2-20260909/validation.json"
+      ],
+      "association_id": "body-query-q2-result-20260909",
+      "search_text": "terminal-body-query-q2-20260909-point-selectivity-unresolved obstacle-avoidance Q2_RETAIN_EVIDENCE_DIAGNOSTIC_NO_POOLING_ATTRIBUTION Frozen B zero-fit decomposition: EVAL68 missed nonempty cells include36 with a point>=.5 and32 all-weak. Top3 HEAD alerts TP8 to15 but FP2 to17; all48 TRAIN BODY_ONLY frames become false HEAD alerts. Sparse responses coexist with nonselective wrong-region responses. No pooling or backbone root cause isolated and no V2 fit. Distinct matched evidence-selectivity intervention retaining wrong-height and empty-cell controls; weak point logits do not isolate the backbone. Treating decomposed point logits as calibrated obstacle detectors Attributing every strong-point mean-miss to correct-evidence pooling failure Attributing all-weak readouts exclusively to the backbone Promoting zero-fit max/top3 at consumed EVAL thresholds"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-q3-20260909-local-coverage",
+      "status": "diagnostic",
+      "question": "Native count reproduction320/320. Local HEAD coverage DEV47/47 EVAL46/46; near ray coverage12/12 and6/6. Owned response transfer is weak; do not infer sampling absence or calibrated point detector ceiling.",
+      "baseline": null,
+      "change": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "primary_metric": null,
+      "decision": "Q3_RETAIN_GEOMETRY_COMPONENT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_SOURCE_INPUT_CHECKPOINT_HASHES_IN_RECEIPTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "forbidden_repeats": [
+        "Claiming fresh confirmation from these consumed regions",
+        "Promoting a model from DEV gains alone",
+        "Automatically extending the completed fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/run-v1/result.json"
+      ],
+      "association_id": "body-query-q3-result-20260909",
+      "search_text": "terminal-body-query-q3-20260909-local-coverage obstacle-avoidance Q3_RETAIN_GEOMETRY_COMPONENT Native count reproduction320/320. Local HEAD coverage DEV47/47 EVAL46/46; near ray coverage12/12 and6/6. Owned response transfer is weak; do not infer sampling absence or calibrated point detector ceiling. Distinct scoped intervention; retain source and negative-control boundaries Claiming fresh confirmation from these consumed regions Promoting a model from DEV gains alone Automatically extending the completed fit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-attribution-r1-20260909-no-transfer",
+      "status": "diagnostic",
+      "question": "One2000 step auxiliary attribution fit: DEV HEAD TP5 to13, EVAL TP8 to15 but FP2 to17. EVAL FP<=2 HEAD oracle TP8 to6; query recall declines. No promotion or recipe continuation.",
+      "baseline": null,
+      "change": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "primary_metric": null,
+      "decision": "R1_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_SOURCE_INPUT_CHECKPOINT_HASHES_IN_RECEIPTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped intervention; retain source and negative-control boundaries",
+      "forbidden_repeats": [
+        "Claiming fresh confirmation from these consumed regions",
+        "Promoting a model from DEV gains alone",
+        "Automatically extending the completed fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/attribution-r1/result.json"
+      ],
+      "association_id": "body-query-attribution-r1-result-20260909",
+      "search_text": "terminal-body-query-attribution-r1-20260909-no-transfer obstacle-avoidance R1_NEGATIVE_CONTROL_RETAIN_B One2000 step auxiliary attribution fit: DEV HEAD TP5 to13, EVAL TP8 to15 but FP2 to17. EVAL FP<=2 HEAD oracle TP8 to6; query recall declines. No promotion or recipe continuation. Distinct scoped intervention; retain source and negative-control boundaries Claiming fresh confirmation from these consumed regions Promoting a model from DEV gains alone Automatically extending the completed fit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-probe-20260909-partial-readability",
+      "status": "diagnostic",
+      "question": "Six frozen probes: R1 EVAL HEAD-near ray AUC0.9314 versus B0.8079 and local0.9377 versus0.8420, but near positives belong to one EVAL group. All-point local AUC declines0.8326 to0.7564 and frozen DEV cutoffs shift. Preserve narrow linear readability, retain B and R1 negative-control status.",
+      "baseline": null,
+      "change": "Distinct count-unit-consistent direct evidence intervention with region/range controls; not automatic R1 resurrection",
+      "primary_metric": null,
+      "decision": "PROBE_RETAIN_NARROW_HEAD_NEAR_SIGNAL_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_FROZEN_INPUT_AND_PROBE_HASHES_IN_RECEIPT",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct count-unit-consistent direct evidence intervention with region/range controls; not automatic R1 resurrection",
+      "forbidden_repeats": [
+        "Declaring backbone information absent from a linear probe",
+        "Declaring pooling solely responsible from high point AUC",
+        "Summing correlated sample ownership as native pixel counts",
+        "Treating point FPR as final alert FPR",
+        "Promoting R1 or extending its auxiliary recipe"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-probe-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-probe-20260909/near-strata.json",
+        "artifacts.local/work/body-query-probe-20260909/validation.json"
+      ],
+      "association_id": "body-query-probe-result-20260909",
+      "search_text": "terminal-body-query-probe-20260909-partial-readability obstacle-avoidance PROBE_RETAIN_NARROW_HEAD_NEAR_SIGNAL_NO_PROMOTION Six frozen probes: R1 EVAL HEAD-near ray AUC0.9314 versus B0.8079 and local0.9377 versus0.8420, but near positives belong to one EVAL group. All-point local AUC declines0.8326 to0.7564 and frozen DEV cutoffs shift. Preserve narrow linear readability, retain B and R1 negative-control status. Distinct count-unit-consistent direct evidence intervention with region/range controls; not automatic R1 resurrection Declaring backbone information absent from a linear probe Declaring pooling solely responsible from high point AUC Summing correlated sample ownership as native pixel counts Treating point FPR as final alert FPR Promoting R1 or extending its auxiliary recipe"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-direct-20260909-no-replacement",
+      "status": "diagnostic",
+      "question": "24 fixed zero-fit readouts: DEV-selected ray-R1 top3 EVAL HEAD11TP16FP; local-R1 mean14TP14FP. All direct HEAD oracle TP at FP<=2 are<=7 versus B8. XYZ matched deltas zero; ray-R1 top3 positive deltas7/16 versus B12/16. Retain B and stop these fixed pooling replacements.",
+      "baseline": null,
+      "change": "Distinct hypothesis beyond this fixed aggregation and six-cell maximum; no automatic k or fusion sweep",
+      "primary_metric": null,
+      "decision": "DIRECT_READOUT_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_FROZEN_INPUT_AND_RESULT_HASHES_IN_RECEIPT",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct hypothesis beyond this fixed aggregation and six-cell maximum; no automatic k or fusion sweep",
+      "forbidden_repeats": [
+        "Using geometry truth masks in prediction aggregation",
+        "Treating sample counts as native pixel counts",
+        "Selecting a deployment rule on consumed EVAL",
+        "Claiming near-only signal solves full HEAD",
+        "Continuing this fixed pooling sweep"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-direct-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-direct-20260909/validation.json"
+      ],
+      "association_id": "body-query-direct-result-20260909",
+      "search_text": "terminal-body-query-direct-20260909-no-replacement obstacle-avoidance DIRECT_READOUT_NEGATIVE_CONTROL_RETAIN_B 24 fixed zero-fit readouts: DEV-selected ray-R1 top3 EVAL HEAD11TP16FP; local-R1 mean14TP14FP. All direct HEAD oracle TP at FP<=2 are<=7 versus B8. XYZ matched deltas zero; ray-R1 top3 positive deltas7/16 versus B12/16. Retain B and stop these fixed pooling replacements. Distinct hypothesis beyond this fixed aggregation and six-cell maximum; no automatic k or fusion sweep Using geometry truth masks in prediction aggregation Treating sample counts as native pixel counts Selecting a deployment rule on consumed EVAL Claiming near-only signal solves full HEAD Continuing this fixed pooling sweep"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-depth-oracle-20260909-limited-routing",
+      "status": "diagnostic",
+      "question": "Seven native-depth cell veto gates give EVAL HEAD oracle TP7 at FP<=2 versus B8. UNKNOWN passthrough affects217/240 HEAD cells; exact ownership vetoes13. This conservative routing diagnostic is not a general depth-aware ceiling; no monocular prior integration or model promotion.",
+      "baseline": null,
+      "change": "A distinct depth-information test addressing UNKNOWN and actual predicted-depth reliability, not causal claims from native label truth",
+      "primary_metric": null,
+      "decision": "DEPTH_ROUTING_NO_HEAD_GAIN_NOT_GENERAL_CEILING",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_SOURCE_NATIVE_INPUT_AND_RESULT_HASHES_IN_RECEIPTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "A distinct depth-information test addressing UNKNOWN and actual predicted-depth reliability, not causal claims from native label truth",
+      "forbidden_repeats": [
+        "Treating native oracle improvement as proof of a missing-depth causal bottleneck",
+        "Treating conservative UNKNOWN passthrough failure as all depth methods failing",
+        "Mixing axial depth and Euclidean range",
+        "Converting UNKNOWN into known free space",
+        "Automatically integrating a frozen depth model from this diagnostic"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-depth-oracle-20260909/run-v2/result.json",
+        "artifacts.local/work/body-query-depth-oracle-20260909/validation.json"
+      ],
+      "association_id": "body-query-depth-oracle-result-20260909",
+      "search_text": "terminal-body-query-depth-oracle-20260909-limited-routing obstacle-avoidance DEPTH_ROUTING_NO_HEAD_GAIN_NOT_GENERAL_CEILING Seven native-depth cell veto gates give EVAL HEAD oracle TP7 at FP<=2 versus B8. UNKNOWN passthrough affects217/240 HEAD cells; exact ownership vetoes13. This conservative routing diagnostic is not a general depth-aware ceiling; no monocular prior integration or model promotion. A distinct depth-information test addressing UNKNOWN and actual predicted-depth reliability, not causal claims from native label truth Treating native oracle improvement as proof of a missing-depth causal bottleneck Treating conservative UNKNOWN passthrough failure as all depth methods failing Mixing axial depth and Euclidean range Converting UNKNOWN into known free space Automatically integrating a frozen depth model from this diagnostic"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "status": "not_evaluable",
+      "question": "Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training.",
+      "baseline": null,
+      "change": "A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits.",
+      "primary_metric": null,
+      "decision": "ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST",
+      "report": "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "d141298c52746c832ac56f215558145b4824c95c",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "geometry_motion": 30
+      },
+      "successor_requires": "A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits.",
+      "forbidden_repeats": [
+        "Automatic source or frame expansion to rescue this fixed subset",
+        "Treating native ASE counts as V1 pinhole-equivalent labels",
+        "Claiming no visible endpoints as certified free space"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md"
+      ],
+      "association_id": "ase-body-query-pilot-20260909",
+      "search_text": "terminal-dtr-ase-body-query-pilot-coverage-insufficient obstacle-avoidance ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training. A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits. Automatic source or frame expansion to rescue this fixed subset Treating native ASE counts as V1 pinhole-equivalent labels Claiming no visible endpoints as certified free space"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -23604,9 +23983,644 @@
         "identity_binding": 3
       },
       "search_text": "city-native-view-probe-20260908 Does same-instance transverse viewing reproduce the native bollard alert failure? Original and completed native-only and replay-thin seed17 with locked cutoffs Eight settled views: four exact TRAIN controls and four same-instance transverse approaches Paired BODY scores alerts reliable target joint hits and control render drift VIEW_CONTEXT_SENSITIVITY_RETAIN_ORIGINAL research/active/dtr-r0/nearfield/CITY_NATIVE_VIEW_20260908.md Original Small_City_LVL TRAIN bollard same-instance Development view probe"
+    },
+    {
+      "kind": "experiment",
+      "id": "city-field-diagnostic-20260908",
+      "status": "archived",
+      "question": "Do frozen G10 and G13 alert on and spatially cover four verified controlled obstacle families across nine City field routes?",
+      "baseline": "Frozen three-seed G10 expanded_region and G13 decoupled ensembles; historical common-VAL alert cutoffs and support 0.5.",
+      "change": "One inference-only pass per ensemble on immutable collection-v1 108 frames; no fitting, threshold search, route edits or recapture.",
+      "primary_metric": "BODY/HEAD target alert misses, support overlap and joint hits by family, route and spatial partition; seven measured fully-clear controls; all108 and five-floor-REVIEW-excluded sensitivity.",
+      "decision": "Fixed frozen ensembles on108 City field Development frames, zero fitting: G10 BODY TP16/FN17/FP9/TN66 and HEAD6/27/20/55; G13 BODY and HEAD0/33/0/75. Across45 target-band opportunities on36 controlled instances, G10 alert misses30 and joint hits11; G13 misses45 and joint hits0. Fully clear false-alert frames G10 3/7 and G13 0/7. Excluding five floor-REVIEW frames leaves all positive counts and false negatives unchanged. Retain field failure evidence; no model promotion or depth-cause inference.",
+      "report": "experiments/city-field/DIAGNOSTIC_V1_20260908.md",
+      "source": "City Sample collection-v1 controlled supported fixtures and native context; inspected curated Development spatial partitions, not sealed test.",
+      "commit": "a6570ef050b5127bd92da363b0ca5222cc7897bc",
+      "association_id": "city-field-diagnostic-20260908",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 7,
+        "identity_binding": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 13,
+        "evaluation_evidence": 3
+      },
+      "search_text": "city-field-diagnostic-20260908 Do frozen G10 and G13 alert on and spatially cover four verified controlled obstacle families across nine City field routes? Frozen three-seed G10 expanded_region and G13 decoupled ensembles; historical common-VAL alert cutoffs and support 0.5. One inference-only pass per ensemble on immutable collection-v1 108 frames; no fitting, threshold search, route edits or recapture. BODY/HEAD target alert misses, support overlap and joint hits by family, route and spatial partition; seven measured fully-clear controls; all108 and five-floor-REVIEW-excluded sensitivity. Fixed frozen ensembles on108 City field Development frames, zero fitting: G10 BODY TP16/FN17/FP9/TN66 and HEAD6/27/20/55; G13 BODY and HEAD0/33/0/75. Across45 target-band opportunities on36 controlled instances, G10 alert misses30 and joint hits11; G13 misses45 and joint hits0. Fully clear false-alert frames G10 3/7 and G13 0/7. Excluding five floor-REVIEW frames leaves all positive counts and false negatives unchanged. Retain field failure evidence; no model promotion or depth-cause inference. experiments/city-field/DIAGNOSTIC_V1_20260908.md City Sample collection-v1 controlled supported fixtures and native context; inspected curated Development spatial partitions, not sealed test."
+    },
+    {
+      "kind": "experiment",
+      "id": "city-field-approach-20260908",
+      "status": "archived",
+      "question": "How do visibility, near-query eligibility and frozen G10/G13 responses change along three approaches to the same fixed supported City fixtures?",
+      "baseline": "Frozen three-seed G10 expanded_region and G13 decoupled ensembles with historical cutoffs and support0.5; fixed west_intersection collection-v1 fixtures and matched clear portal.",
+      "change": "One105-frame sequence: five conditions times seven radial distances times three azimuths, after21 exact-pose clear floor probes; one inference pass per frozen ensemble, zero fitting.",
+      "primary_metric": "Reliable query-positive alert misses and alert-plus-support overlap by condition, azimuth and distance; same-pose clear controls; farthest sampled joint hit and persistence at nearer eligible samples.",
+      "decision": "Completed21 exact-pose floor preflight and105 final settled City views;14 strict geometry UNKNOWN retained. Per method64 eligible target-band opportunities,19 UNKNOWN and22 visible without eligible query support. G10 misses39/64, joint23/64, clear false-alert18/21; only3 joint hits have silent matched clear controls. G13 misses64/64, joint0/64, clear false-alert0/21. Eight of nine G10 hit sequences lose the hit at a nearer eligible pose; the remaining first hit is at nearest1m, so persistence NOT_TESTED. No reliable warning distance or target-only causality established; zero fitting, no promotion.",
+      "report": "experiments/city-field/APPROACH_V1_20260908.md",
+      "source": "Fixed City collection-v1 west_intersection supported fixtures; west/train consumed Development, ordered settled static samples, not continuous walking or sealed test.",
+      "commit": "957df40284795e303c5fdba3f653698ed09d38ba",
+      "association_id": "city-field-approach-20260908",
+      "routes": [],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 7
+      },
+      "search_text": "city-field-approach-20260908 How do visibility, near-query eligibility and frozen G10/G13 responses change along three approaches to the same fixed supported City fixtures? Frozen three-seed G10 expanded_region and G13 decoupled ensembles with historical cutoffs and support0.5; fixed west_intersection collection-v1 fixtures and matched clear portal. One105-frame sequence: five conditions times seven radial distances times three azimuths, after21 exact-pose clear floor probes; one inference pass per frozen ensemble, zero fitting. Reliable query-positive alert misses and alert-plus-support overlap by condition, azimuth and distance; same-pose clear controls; farthest sampled joint hit and persistence at nearer eligible samples. Completed21 exact-pose floor preflight and105 final settled City views;14 strict geometry UNKNOWN retained. Per method64 eligible target-band opportunities,19 UNKNOWN and22 visible without eligible query support. G10 misses39/64, joint23/64, clear false-alert18/21; only3 joint hits have silent matched clear controls. G13 misses64/64, joint0/64, clear false-alert0/21. Eight of nine G10 hit sequences lose the hit at a nearer eligible pose; the remaining first hit is at nearest1m, so persistence NOT_TESTED. No reliable warning distance or target-only causality established; zero fitting, no promotion. experiments/city-field/APPROACH_V1_20260908.md Fixed City collection-v1 west_intersection supported fixtures; west/train consumed Development, ordered settled static samples, not continuous walking or sealed test."
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-v1-20260909",
+      "status": "active",
+      "question": "Does a spatial visible-count bottleneck improve BODY/HEAD transfer over matched support-gated G13?",
+      "baseline": "G13 readout plus identical query auxiliary supervision",
+      "change": "Route near through twelve count-query predictions; matched data and budget",
+      "primary_metric": "Held-out HEAD TP FP, BODY retention, complete-group correctness and evidence quality",
+      "decision": "Two matched2000-step fits; retain only measured useful challenger",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_V1_20260909.md",
+      "source": "dtr-r0",
+      "commit": "9f364f26b42ae49c440205e1092ff649df0f7a5f",
+      "association_id": "body-query-v1-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-v1-20260909 Does a spatial visible-count bottleneck improve BODY/HEAD transfer over matched support-gated G13? G13 readout plus identical query auxiliary supervision Route near through twelve count-query predictions; matched data and budget Held-out HEAD TP FP, BODY retention, complete-group correctness and evidence quality Two matched2000-step fits; retain only measured useful challenger research/active/dtr-r0/nearfield/BODY_QUERY_V1_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-v1-20260909-result",
+      "status": "archived",
+      "question": "Does a spatial visible-count bottleneck improve matched RGB BODY/HEAD transfer?",
+      "baseline": "G13 support-gated readout plus matched query auxiliary supervision",
+      "change": "Near decisions routed through twelve visible-count queries",
+      "primary_metric": "EVAL BODY TP4 to7 FP0; HEAD TP11 to8 FP8 to2; groups0/8 to2/8",
+      "decision": "Mixed no replacement; retain diagnostic components; fixed budget complete",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "679c75eea0acead8933a2b4634a13e7ad0fff218",
+      "association_id": "body-query-v1-20260909-result",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 3
+      },
+      "search_text": "body-query-v1-20260909-result Does a spatial visible-count bottleneck improve matched RGB BODY/HEAD transfer? G13 support-gated readout plus matched query auxiliary supervision Near decisions routed through twelve visible-count queries EVAL BODY TP4 to7 FP0; HEAD TP11 to8 FP8 to2; groups0/8 to2/8 Mixed no replacement; retain diagnostic components; fixed budget complete research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-diagnostic-20260909",
+      "status": "archived",
+      "question": "Do low-FP ranking and query-cell strata support balanced CE as the next repair?",
+      "baseline": "Frozen BODY_QUERY A/B cached outputs and original DEV cutoffs",
+      "change": "Zero-fit oracle score envelopes, sample crossover and query-cell error decomposition",
+      "primary_metric": "EVAL HEAD at FP<=2 A6 B8; B query TRAIN559/576 DEV25/93 EVAL29/97",
+      "decision": "Retain EVAL ranking signal; query evidence transfer failure; balanced CE not established as priority repair",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md",
+      "source": "dtr-r0",
+      "commit": "199318596b0bbb14aed1faa6419149fb2a90f84e",
+      "association_id": "body-query-diagnostic-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-diagnostic-20260909 Do low-FP ranking and query-cell strata support balanced CE as the next repair? Frozen BODY_QUERY A/B cached outputs and original DEV cutoffs Zero-fit oracle score envelopes, sample crossover and query-cell error decomposition EVAL HEAD at FP<=2 A6 B8; B query TRAIN559/576 DEV25/93 EVAL29/97 Retain EVAL ranking signal; query evidence transfer failure; balanced CE not established as priority repair research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-q2-20260909",
+      "status": "active",
+      "question": "Do rare strong point readouts disappear under masked mean, with negative-control selectivity?",
+      "baseline": "Frozen B final2000 masked mean count readout",
+      "change": "One frozen inference pass saving point features/logits and fixed max/top3 descriptive probes",
+      "primary_metric": "Missed positive cells with strong points versus empty-cell and near false alarms; head/range strata",
+      "decision": "Diagnose combined evidence path; no automatic pooling or backbone attribution and no V2 fit",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "51570140e001b6431d802bb9b685da1361d62936",
+      "association_id": "body-query-q2-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 6
+      },
+      "search_text": "body-query-q2-20260909 Do rare strong point readouts disappear under masked mean, with negative-control selectivity? Frozen B final2000 masked mean count readout One frozen inference pass saving point features/logits and fixed max/top3 descriptive probes Missed positive cells with strong points versus empty-cell and near false alarms; head/range strata Diagnose combined evidence path; no automatic pooling or backbone attribution and no V2 fit research/active/dtr-r0/nearfield/BODY_QUERY_Q2_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-q2-result-20260909",
+      "status": "archived",
+      "question": "Do sparse strong point responses explain missed query evidence selectively?",
+      "baseline": "Frozen B step2000 masked mean",
+      "change": "Zero-fit point logit decomposition and max top3 negative controls",
+      "primary_metric": "Missed-cell point availability and wrong-region false positives",
+      "decision": "Mixed strong and weak misses; no pooling or backbone attribution; no V2 fit",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md",
+      "source": "consumed-same-world-development",
+      "commit": "51570140e001b6431d802bb9b685da1361d62936",
+      "association_id": "body-query-q2-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-q2-result-20260909 Do sparse strong point responses explain missed query evidence selectively? Frozen B step2000 masked mean Zero-fit point logit decomposition and max top3 negative controls Missed-cell point availability and wrong-region false positives Mixed strong and weak misses; no pooling or backbone attribution; no V2 fit research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md consumed-same-world-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-q3-20260909",
+      "status": "active",
+      "question": "Do projected rays and local footprints cover correctly attributed visible query surfaces?",
+      "baseline": "Frozen B and Q2 point logits",
+      "change": "Hash verified native membership and sampling coverage diagnostic",
+      "primary_metric": "Coverage and strong response selectivity by cell head range",
+      "decision": "Choose successor from combined evidence; no automatic architecture attribution",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "a396439b2a850d20b1f63379ff2055204386d992",
+      "association_id": "body-query-q3-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "body-query-q3-20260909 Do projected rays and local footprints cover correctly attributed visible query surfaces? Frozen B and Q2 point logits Hash verified native membership and sampling coverage diagnostic Coverage and strong response selectivity by cell head range Choose successor from combined evidence; no automatic architecture attribution research/active/dtr-r0/nearfield/BODY_QUERY_Q3_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-attribution-r1-20260909",
+      "status": "active",
+      "question": "Does local attribution supervision improve query evidence transfer with unchanged pooling?",
+      "baseline": "Cached B matched original initialization and2000 step schedule",
+      "change": "Add0.25 auxiliary local attribution BCE on point features only",
+      "primary_metric": "HEAD TP FP and BODY retention plus query recall across DEV EVAL",
+      "decision": "One2000 step challenger; no sweep or automatic promotion",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "a396439b2a850d20b1f63379ff2055204386d992",
+      "association_id": "body-query-attribution-r1-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "body-query-attribution-r1-20260909 Does local attribution supervision improve query evidence transfer with unchanged pooling? Cached B matched original initialization and2000 step schedule Add0.25 auxiliary local attribution BCE on point features only HEAD TP FP and BODY retention plus query recall across DEV EVAL One2000 step challenger; no sweep or automatic promotion research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-q3-result-20260909",
+      "status": "archived",
+      "question": "Native count reproduction320/320. Local HEAD coverage DEV47/47 EVAL46/46; near ray coverage12/12 and6/6. Owned response transfer is weak; do not infer sampling absence or calibrated point detector ceiling.",
+      "baseline": "Frozen B and hash-bound native source",
+      "change": "Native attribution diagnostic",
+      "primary_metric": "Coverage, query evidence and HEAD/BODY TP FP",
+      "decision": "Q3_RETAIN_GEOMETRY_COMPONENT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "a396439b2a850d20b1f63379ff2055204386d992",
+      "association_id": "body-query-q3-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-q3-result-20260909 Native count reproduction320/320. Local HEAD coverage DEV47/47 EVAL46/46; near ray coverage12/12 and6/6. Owned response transfer is weak; do not infer sampling absence or calibrated point detector ceiling. Frozen B and hash-bound native source Native attribution diagnostic Coverage, query evidence and HEAD/BODY TP FP Q3_RETAIN_GEOMETRY_COMPONENT research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-attribution-r1-result-20260909",
+      "status": "archived",
+      "question": "One2000 step auxiliary attribution fit: DEV HEAD TP5 to13, EVAL TP8 to15 but FP2 to17. EVAL FP<=2 HEAD oracle TP8 to6; query recall declines. No promotion or recipe continuation.",
+      "baseline": "Frozen B and hash-bound native source",
+      "change": "One matched auxiliary attribution fit",
+      "primary_metric": "Coverage, query evidence and HEAD/BODY TP FP",
+      "decision": "R1_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "a396439b2a850d20b1f63379ff2055204386d992",
+      "association_id": "body-query-attribution-r1-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 6,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-attribution-r1-result-20260909 One2000 step auxiliary attribution fit: DEV HEAD TP5 to13, EVAL TP8 to15 but FP2 to17. EVAL FP<=2 HEAD oracle TP8 to6; query recall declines. No promotion or recipe continuation. Frozen B and hash-bound native source One matched auxiliary attribution fit Coverage, query evidence and HEAD/BODY TP FP R1_NEGATIVE_CONTROL_RETAIN_B research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-probe-20260909",
+      "status": "active",
+      "question": "Are B and R1 point features linearly readable across regions beyond XYZ priors?",
+      "baseline": "Frozen B and XYZ-only control",
+      "change": "Frozen R1 matched linear probes for ray and local attribution",
+      "primary_metric": "Point AUC and frozen DEV FPR cutoffs by head range condition",
+      "decision": "One fixed six-probe comparison; no main training or R2 promotion",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "0e8322a6eb1da5de10885c7c537a64397251e029",
+      "association_id": "body-query-probe-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-probe-20260909 Are B and R1 point features linearly readable across regions beyond XYZ priors? Frozen B and XYZ-only control Frozen R1 matched linear probes for ray and local attribution Point AUC and frozen DEV FPR cutoffs by head range condition One fixed six-probe comparison; no main training or R2 promotion research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-probe-result-20260909",
+      "status": "archived",
+      "question": "Are frozen point features linearly readable across regions beyond XYZ priors?",
+      "baseline": "B and XYZ controls",
+      "change": "Six matched ray/local linear probes on frozen B/R1 features",
+      "primary_metric": "HEAD-near readability versus overall local transfer and fixed-cutoff errors",
+      "decision": "PROBE_RETAIN_NARROW_HEAD_NEAR_SIGNAL_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "0e8322a6eb1da5de10885c7c537a64397251e029",
+      "association_id": "body-query-probe-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3
+      },
+      "search_text": "body-query-probe-result-20260909 Are frozen point features linearly readable across regions beyond XYZ priors? B and XYZ controls Six matched ray/local linear probes on frozen B/R1 features HEAD-near readability versus overall local transfer and fixed-cutoff errors PROBE_RETAIN_NARROW_HEAD_NEAR_SIGNAL_NO_PROMOTION research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-direct-20260909",
+      "status": "active",
+      "question": "Can frozen attribution evidence improve counterfactual separation and final alerts?",
+      "baseline": "Frozen B near and R1 near; XYZ controls",
+      "change": "Four fixed point statistics and six-cell maximum; no fitting",
+      "primary_metric": "Matched deltas, query AUC and frame TP FP under DEV cutoffs",
+      "decision": "Fixed24 comparisons with DEV-only selection; stop without pooling sweep",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "6861240c4e9fc264ee6f59479649aaa90017b1ab",
+      "association_id": "body-query-direct-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 6
+      },
+      "search_text": "body-query-direct-20260909 Can frozen attribution evidence improve counterfactual separation and final alerts? Frozen B near and R1 near; XYZ controls Four fixed point statistics and six-cell maximum; no fitting Matched deltas, query AUC and frame TP FP under DEV cutoffs Fixed24 comparisons with DEV-only selection; stop without pooling sweep research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-direct-result-20260909",
+      "status": "archived",
+      "question": "Can frozen attribution readouts improve final alerts?",
+      "baseline": "Original B near and XYZ controls",
+      "change": "24 fixed zero-fit readouts with DEV-only method selection",
+      "primary_metric": "Counterfactual deltas and full-frame HEAD BODY TP FP",
+      "decision": "DIRECT_READOUT_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "e4e1c81bee83b0e5131a4c7a2eeff170fe0bc6ca",
+      "association_id": "body-query-direct-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {},
+      "search_text": "body-query-direct-result-20260909 Can frozen attribution readouts improve final alerts? Original B near and XYZ controls 24 fixed zero-fit readouts with DEV-only method selection Counterfactual deltas and full-frame HEAD BODY TP FP DIRECT_READOUT_NEGATIVE_CONTROL_RETAIN_B research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-depth-oracle-20260909",
+      "status": "active",
+      "question": "Does native sampled depth routing improve B while preserving UNKNOWN and count units?",
+      "baseline": "Frozen B count probabilities and original thresholds",
+      "change": "Seven fixed native gate and depth perturbation diagnostics",
+      "primary_metric": "HEAD BODY TP FP under DEV and original cutoffs; depth sensitivity",
+      "decision": "Privileged diagnostic only; no automatic monocular depth fit",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "d141298c52746c832ac56f215558145b4824c95c",
+      "association_id": "body-query-depth-oracle-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-depth-oracle-20260909 Does native sampled depth routing improve B while preserving UNKNOWN and count units? Frozen B count probabilities and original thresholds Seven fixed native gate and depth perturbation diagnostics HEAD BODY TP FP under DEV and original cutoffs; depth sensitivity Privileged diagnostic only; no automatic monocular depth fit research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-depth-oracle-result-20260909",
+      "status": "archived",
+      "question": "Can conservative sampled native-depth routing improve frozen B?",
+      "baseline": "Frozen B count distributions",
+      "change": "Seven fixed cell gates and perturbations; UNKNOWN passthrough",
+      "primary_metric": "HEAD BODY TP FP and effective gate coverage",
+      "decision": "DEPTH_ROUTING_NO_HEAD_GAIN_NOT_GENERAL_CEILING",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "d141298c52746c832ac56f215558145b4824c95c",
+      "association_id": "body-query-depth-oracle-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "body-query-depth-oracle-result-20260909 Can conservative sampled native-depth routing improve frozen B? Frozen B count distributions Seven fixed cell gates and perturbations; UNKNOWN passthrough HEAD BODY TP FP and effective gate coverage DEPTH_ROUTING_NO_HEAD_GAIN_NOT_GENERAL_CEILING research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "ase-body-query-pilot-20260909",
+      "status": "archived",
+      "question": "Does ASE provide independent-scene near-field HEAD-only and BODY-only visible surface coverage?",
+      "baseline": "Frozen BODY-QUERY B and its existing geometry volumes; no weights opened in coverage stage",
+      "change": "Official ASE train chunk0 scenes0,4,8; 24 uniformly spaced frames per scene; fixed camera-anchored proxy geometry",
+      "primary_metric": "Four-way visible occupancy and invalid-pixel coverage; HEAD-only frames and independent layouts",
+      "decision": "Retain geometry adapter as component; fixed72-frame subset has zero HEAD-only cases, no model test or training",
+      "report": "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+      "source": "Official Aria Synthetic Environments TRAIN chunk0",
+      "commit": "d141298c52746c832ac56f215558145b4824c95c",
+      "association_id": "ase-body-query-pilot-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 6
+      },
+      "search_text": "ase-body-query-pilot-20260909 Does ASE provide independent-scene near-field HEAD-only and BODY-only visible surface coverage? Frozen BODY-QUERY B and its existing geometry volumes; no weights opened in coverage stage Official ASE train chunk0 scenes0,4,8; 24 uniformly spaced frames per scene; fixed camera-anchored proxy geometry Four-way visible occupancy and invalid-pixel coverage; HEAD-only frames and independent layouts Retain geometry adapter as component; fixed72-frame subset has zero HEAD-only cases, no model test or training research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md Official Aria Synthetic Environments TRAIN chunk0"
     }
   ],
   "associations": [
+    {
+      "run_id": "ase-body-query-pilot-20260909",
+      "use_ids": [],
+      "protocol_id": "ase-body-query-pilot-v1",
+      "code_revision": "d141298c52746c832ac56f215558145b4824c95c",
+      "input_fingerprint": "7a4e60bdce0e4ddde276ff6218a6ff3656acc6e4dd5e59d77d68fad00c55f8a3",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md",
+        "artifacts.local/evidence/ase-body-query-pilot-20260909/run-01/completion.json",
+        "artifacts.local/evidence/ase-body-query-pilot-20260909"
+      ],
+      "decision_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-attribution-r1-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-attribution-r1",
+      "code_revision": "a396439b2a850d20b1f63379ff2055204386d992",
+      "input_fingerprint": "a737033f044d00c5a6a8bd32049d75aab266e7f56230a83ba5593dae7762bcde",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-attribution-r1-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-attribution-r1",
+      "code_revision": "a396439b2a850d20b1f63379ff2055204386d992",
+      "input_fingerprint": "a737033f044d00c5a6a8bd32049d75aab266e7f56230a83ba5593dae7762bcde",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_ATTRIBUTION_R1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/attribution-r1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-attribution-r1-20260909-no-transfer",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-depth-oracle-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-depth-oracle",
+      "code_revision": "d141298c52746c832ac56f215558145b4824c95c",
+      "input_fingerprint": "1200ca45c8cac9574e050a39ef83883c851da4887765ba52bb3b44c858b98667",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-depth-oracle-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-depth-oracle",
+      "code_revision": "d141298c52746c832ac56f215558145b4824c95c",
+      "input_fingerprint": "1200ca45c8cac9574e050a39ef83883c851da4887765ba52bb3b44c858b98667",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DEPTH_ORACLE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-depth-oracle-20260909/run-v2/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-depth-oracle-20260909-limited-routing",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-diagnostic-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-diagnostic-v1",
+      "code_revision": "199318596b0bbb14aed1faa6419149fb2a90f84e",
+      "input_fingerprint": "2a20994dcbc8511bc9966bf30df473c5079d5c9208473e07eb61679d58d74adf",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-diagnostic-20260909/scores/score-audit.json",
+        "artifacts.local/work/body-query-diagnostic-20260909/cells-v2/result.json"
+      ],
+      "decision_id": "terminal-body-query-diagnostic-20260909-evidence-transfer",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-direct-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-direct",
+      "code_revision": "6861240c4e9fc264ee6f59479649aaa90017b1ab",
+      "input_fingerprint": "39310388b0fc9048fd2a70644ccc28181a46b6f8766ff7781389426cca6abd82",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-direct-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-direct",
+      "code_revision": "e4e1c81bee83b0e5131a4c7a2eeff170fe0bc6ca",
+      "input_fingerprint": "39310388b0fc9048fd2a70644ccc28181a46b6f8766ff7781389426cca6abd82",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DIRECT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-direct-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-direct-20260909-no-replacement",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-probe-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-probe",
+      "code_revision": "0e8322a6eb1da5de10885c7c537a64397251e029",
+      "input_fingerprint": "d70ad267e89ffe8edad5ca82709a29089d2a9bef8e8a4dc3cc2c12cf4ccf603f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-probe-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-probe",
+      "code_revision": "0e8322a6eb1da5de10885c7c537a64397251e029",
+      "input_fingerprint": "d70ad267e89ffe8edad5ca82709a29089d2a9bef8e8a4dc3cc2c12cf4ccf603f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_PROBE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-probe-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-probe-20260909-partial-readability",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-q2-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-q2",
+      "code_revision": "51570140e001b6431d802bb9b685da1361d62936",
+      "input_fingerprint": "78fe13413fd7d5c5e5735362b9977185ed1b51392eb93801832e60c23c423088",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-q2-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-q2",
+      "code_revision": "51570140e001b6431d802bb9b685da1361d62936",
+      "input_fingerprint": "78fe13413fd7d5c5e5735362b9977185ed1b51392eb93801832e60c23c423088",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q2_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-q2-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-q2-20260909-point-selectivity-unresolved",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-q3-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-q3",
+      "code_revision": "a396439b2a850d20b1f63379ff2055204386d992",
+      "input_fingerprint": "da3178d35fc560209955c9b43ee57b67f4b553e3b11e83b6cf86944eb1d34aa6",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-q3-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-q3",
+      "code_revision": "a396439b2a850d20b1f63379ff2055204386d992",
+      "input_fingerprint": "da3178d35fc560209955c9b43ee57b67f4b553e3b11e83b6cf86944eb1d34aa6",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_Q3_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-q3-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-q3-20260909-local-coverage",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-v1-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-v1",
+      "code_revision": "9f364f26b42ae49c440205e1092ff649df0f7a5f",
+      "input_fingerprint": "2a20994dcbc8511bc9966bf30df473c5079d5c9208473e07eb61679d58d74adf",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_V1_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-v1-20260909-result",
+      "use_ids": [],
+      "protocol_id": "body-query-v1",
+      "code_revision": "679c75eea0acead8933a2b4634a13e7ad0fff218",
+      "input_fingerprint": "2a20994dcbc8511bc9966bf30df473c5079d5c9208473e07eb61679d58d74adf",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_V1_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-v1-20260908/model-run-local-v4/result.json"
+      ],
+      "decision_id": "terminal-body-query-v1-20260909-mixed-no-replacement",
+      "source_rows": 1
+    },
+    {
+      "run_id": "city-field-approach-20260908",
+      "use_ids": [],
+      "protocol_id": "city-field-approach-v1",
+      "code_revision": "957df40284795e303c5fdba3f653698ed09d38ba",
+      "input_fingerprint": "f9e9ae19c865d2c3af296a4c31b86e6d44cce14f5209f70c2a95a36f99cd730e",
+      "artifact_refs": [
+        "experiments/city-field/APPROACH_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-approach-20260908/",
+        "artifacts.local/nearfield/city-field-approach-20260908/summary-v2/result.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/fixed-v1/receipt.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/geometry-admission.json",
+        "artifacts.local/nearfield/city-field-approach-20260908/bundle-validation.json"
+      ],
+      "decision_id": "terminal-city-field-approach-20260908-distance-view-diagnostic",
+      "source_rows": 1
+    },
+    {
+      "run_id": "city-field-diagnostic-20260908",
+      "use_ids": [],
+      "protocol_id": "city-field-diagnostic-v1",
+      "code_revision": "a6570ef050b5127bd92da363b0ca5222cc7897bc",
+      "input_fingerprint": "7ce9d1c1c3b53e1656c3f06a221f90ea676f2cc65612ebce990ec8697f6a0269",
+      "artifact_refs": [
+        "experiments/city-field/DIAGNOSTIC_V1_20260908.md",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/result.json",
+        "artifacts.local/nearfield/city-field-diagnostic-20260908/fixed-v1/receipt.json"
+      ],
+      "decision_id": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion",
+      "source_rows": 1
+    },
     {
       "run_id": "city-native-adapt-20260908",
       "use_ids": [],
