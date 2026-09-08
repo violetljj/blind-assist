@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-08",
-  "source_fingerprint": "5521ada86bb3a73107a1d02bc46a5d557b32bbfa11578944c260c53bc7576fe8",
+  "source_fingerprint": "73e0a4816d61df1544a79f8130a767b8c5770445aef7f0c703ead8980fae8738",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 247,
-    "current_terminals": 44,
-    "run_associations": 245
+    "experiments": 248,
+    "current_terminals": 45,
+    "run_associations": 246
   },
   "failure_layers": [
     {
@@ -18171,6 +18171,39 @@
       "search_text": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative ten-meter-copilot L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET On four fresh SceneNN door targets and fifteen frozen missing-plus-extra scenarios, truth-cropped EfficientLoFTR absolute support improved over the same-crop DINOv2 reciprocal baseline from TP=6 FP=24 FN=28 F1=0.1875 to TP=11 FP=18 FN=23 F1=0.349206. The hard gate failed: only LF01 and LF03 had supported true diagonals, LF02 and LF04 abstained, repeated indoor structures produced false supports, and exact assignment reached 0/15 scenarios. A calibrated dense correspondence certainty and spatial-coverage mechanism independently motivated by indoor low-texture evidence, evaluated on fresh physical targets with explicit NONE; the consumed EfficientLoFTR thresholds and crops may not be tuned. changing the consumed 0.2 matcher threshold, eight-match minimum, six-inlier minimum, or six-pixel RANSAC tolerance changing the consumed 1.25 truth-visible crop expansion dropping LF02, LF04, or any failed scenario fitting a confidence, coverage, or geometry weight on the consumed four doors calling a truth-visible crop raw-phone target perception calling local correspondence portal ownership, access, traversability, arrival, handoff, safety, or user benefit"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-city-native-validation-20260908-diagnostic-no-promotion",
+      "status": "diagnostic",
+      "question": "Forty static native-city poses; three original targets have independently checked positive opportunities. G10 misses 7/8 target-height frame opportunities and G13 8/8; frame29 is UNKNOWN. Retain capture/label pipeline; no model promotion or more acquisition.",
+      "baseline": null,
+      "change": "Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation.",
+      "primary_metric": null,
+      "decision": "CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md",
+      "source": "decision/terminals.json",
+      "commit": "9db7ea26d1817efc1cbce816cff8a20dc2a83479",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "geometry_motion": 30
+      },
+      "successor_requires": "Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation.",
+      "forbidden_repeats": [
+        "Presenting post-hoc route or threshold changes as fresh confirmation",
+        "Treating unknown or untested suspended hazards as model negatives",
+        "Promoting fixed G10/G13 from this curated route"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md",
+        "artifacts.local/nearfield/city-native-validation-20260908/fixed-models-v1/result.json",
+        "artifacts.local/nearfield/city-native-validation-20260908/final-labels-v1/label-validation.json"
+      ],
+      "association_id": "city-native-validation-20260908",
+      "search_text": "terminal-city-native-validation-20260908-diagnostic-no-promotion obstacle-avoidance CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION Forty static native-city poses; three original targets have independently checked positive opportunities. G10 misses 7/8 target-height frame opportunities and G13 8/8; frame29 is UNKNOWN. Retain capture/label pipeline; no model promotion or more acquisition. Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation. Presenting post-hoc route or threshold changes as fresh confirmation Treating unknown or untested suspended hazards as model negatives Promoting fixed G10/G13 from this curated route"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -23384,9 +23417,45 @@
         "evaluation_evidence": 3
       },
       "search_text": "nf-g13-decoupled-2026-09-08 Can deep-only gated contents preserve B decisions and C localization? G12 B RepViT and C detail models reused with zero refits; G10 full-contract anchor D support from deep+detail, gate deep-only contents without detach; three matched600stepfits, same800TRAIN96VAL CommonVAL recall-first joint/recall/FP, diverse joint, fixed queryIoU and peak; G8compatibility secondary Consumed diagnostic passed; prospective joint rule PASS: retain D stronger Development challenger; D joint31/32 diverse15/16 BODY/HEADIoU0.3957/0.2017; G10 full-contract baseline unchanged; no morefits/capture or App promotion research/active/dtr-r0/nearfield/DECOUPLED_20260908.md ue-willow-nf-g13-decoupled"
+    },
+    {
+      "kind": "experiment",
+      "id": "city-native-validation-20260908",
+      "status": "archived",
+      "question": "Can fixed near-field models detect reliable natural obstacles on a complete native city sidewalk?",
+      "baseline": "Frozen G10 expanded_region and G13 decoupled ensembles with historical thresholds",
+      "change": "Original Small_City_LVL surroundings and native target label validation; no fitting",
+      "primary_metric": "Visible-support FN FP UNKNOWN and reliable target localization misses",
+      "decision": "CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md",
+      "source": "Original City Sample Small_City_LVL static Development route",
+      "commit": "9db7ea26d1817efc1cbce816cff8a20dc2a83479",
+      "association_id": "city-native-validation-20260908",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6
+      },
+      "search_text": "city-native-validation-20260908 Can fixed near-field models detect reliable natural obstacles on a complete native city sidewalk? Frozen G10 expanded_region and G13 decoupled ensembles with historical thresholds Original Small_City_LVL surroundings and native target label validation; no fitting Visible-support FN FP UNKNOWN and reliable target localization misses CITY_NATIVE_ROUTE_FIXED_MODEL_TRANSFER_INSUFFICIENT_DIAGNOSTIC_NO_PROMOTION research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md Original City Sample Small_City_LVL static Development route"
     }
   ],
   "associations": [
+    {
+      "run_id": "city-native-validation-20260908",
+      "use_ids": [],
+      "protocol_id": "city-native-validation-p1",
+      "code_revision": "9db7ea26d1817efc1cbce816cff8a20dc2a83479",
+      "input_fingerprint": "a64b9db99ad6f9e27b066924872ce91fdaf80d7ca6c0a7ec5326b8125212ffc9",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md",
+        "artifacts.local/nearfield/city-native-validation-20260908/"
+      ],
+      "decision_id": "terminal-city-native-validation-20260908-diagnostic-no-promotion",
+      "source_rows": 1
+    },
     {
       "run_id": "dtr-carla-c10-x31-source-not-evaluable-2026-08-30",
       "use_ids": [],

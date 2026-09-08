@@ -14,8 +14,13 @@ The first [original City Sample route](nearfield/CITY_NATIVE_ROUTE_20260908.md)
 now captures 21 settled RGB-D observations along 10 m of native
 `Small_City_LVL` sidewalk. Capture/transport and process release pass; strict
 floor geometry remains REVIEW (19/21 within the 2 cm median criterion).
-The region is bounded and distant surroundings are incomplete. This is a
-static native-map acquisition capability, not dynamic or model evidence.
+The follow-up [native-route validation](nearfield/CITY_NATIVE_VALIDATION_20260908.md)
+restores surrounding blocks with bounded full-detail loading and distant HLOD,
+and captures 40 settled views along 16.95 m. Independently checked bollard and
+meter BODY opportunities are missed 2/2 by both frozen G10/G13; supported-sign
+HEAD is missed 2/2 by both. One unreliable floor frame stays UNKNOWN. Retain
+this consumed Development diagnostic and fix source transfer before expanding
+acquisition; independently suspended obstacles and temporal behavior are untested.
 
 The [Willow sample](unreal/UE_WILLOW_SAMPLE_20260907.md) provides native geometry
 and sanitized RGB-D. Conservative tree AABBs still disagree with native sweeps;
@@ -291,6 +296,14 @@ sufficient retained payloads beyond C35 for fair reconstruction.
   roles and historical verdicts remain authoritative; this compaction changes none.
 
 ## Evidence links
+
+- [Region-separated DEV and matched update-policy baseline](nearfield/CITY_DEV_BASELINE_20260908.md):
+  128-frame same-map DEV is133.47m from TRAIN and has64positive/64negative per
+  head. Fixed200-step A/B/C selection chooses frozen-backbone B, but DEV recall
+  is only40.63%/25.00% at FPR9.38%/7.81%, joint2/32 and HEAD support IoU0.
+  Its unchanged DEV thresholds yield zero HEAD recall on consumed plaza.
+  Keep the selection workflow and G13-D; B is a weak diagnostic challenger,
+  not promoted. Fresh TEST and B/C Willow regression remain unavailable.
 
 - [Zero-training gate intervention and score separation](nearfield/CITY_GATE_INTERVENTION_20260908.md):
   original-gate replacement reduces plaza BODY FPR to 1.14% but recall collapses

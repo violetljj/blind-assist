@@ -39,6 +39,9 @@ after = 0.
 finished = False
 captures, objects, frames = [], [], []
 scene_lights = []
+background_settings = None
+background_settings_before = {}
+isolated_actor = None
 settled_mesh_assets = set()
 pairs = PairExporter(u, spec.get('pair_export_mode', 'native_probe'))
 map_file = Path(spec['map_file'])
@@ -67,7 +70,7 @@ def component(source, fmt, width=640, height=360):
     actor = api.spawn_actor_from_class(u.SceneCapture2D, u.Vector(0, 0, 100000))
     captures.append(actor)
     c = actor.capture_component2d
-    if spec.get('native_full_detail_only', False):
+    if spec.get('native_full_detail_only', False) and not spec.get('background_hlod_min_distance_m'):
         for hidden in api.get_all_level_actors():
             if isinstance(hidden, u.WorldPartitionHLOD):
                 c.hide_actor_components(hidden, True)
@@ -220,18 +223,24 @@ def finish(error=None):
         except Exception:
             report.update(status='FAIL',dependency_error=traceback.format_exc())
     report['readiness'] = readiness.receipt()
+    if background_settings is not None:
+        for key, value in background_settings_before.items():
+            background_settings.set_editor_property(key, value)
     report['wall_elapsed_s'] = time.monotonic() - started
     write(OUT / 'evaluator/spec.json', spec)
     write(OUT / 'model/dataset.json', dict(schema='city-pcg-preview-v1', frames=frames,
           calibration=dict(width=640, height=360, horizontal_fov_degrees=100., depth_max_m=100.),
           authority='RGB_ONLY_NO_NATIVE_DEPTH_POSE_OR_OBJECTS'))
     write(OUT / 'receipt.json', report)
+    if spec.get('native_targets'):
+        write(OUT/'evaluator/target-raycheck.json',dict(schema='city-native-target-raycheck-v1',
+            rows=report.get('native_target_checks',[])))
     u.unregister_slate_post_tick_callback(handle)
     u.SystemLibrary.quit_editor()
 
 
 def tick(dt):
-    global stage, index, warm, warm_target, progress_written, after, world, rgb, depth, beauty
+    global stage, index, warm, warm_target, progress_written, after, world, rgb, depth, beauty, background_settings, isolated_actor
     if finished or time.monotonic() < after:
         return
     if (OUT / 'stop.request').exists():
@@ -243,7 +252,21 @@ def tick(dt):
             assert report['map_sha256_before'] == spec['map_sha256'], 'Map identity mismatch'
             assert levels.load_level(spec['map_asset']), 'Map load failed'
             world = editor.get_editor_world()
-            if spec.get('native_full_detail_only', False):
+            if spec.get('background_hlod_min_distance_m'):
+                distance = float(spec['background_hlod_min_distance_m'])
+                if not math.isfinite(distance) or distance < 50:
+                    raise ValueError('Background HLOD distance must be finite and at least 50 metres')
+                settings_class = u.load_class(None, '/Script/WorldPartitionEditor.WorldPartitionEditorSettings')
+                background_settings = u.get_default_object(settings_class)
+                settings = dict(bShowHLODsInEditor=True, bShowHLODsOverLoadedRegions=False,
+                                HLODMinDrawDistance=distance*100, HLODMaxDrawDistance=0.)
+                for key, value in settings.items():
+                    background_settings_before[key] = background_settings.get_editor_property(key)
+                    background_settings.set_editor_property(key, value)
+                u.SystemLibrary.execute_console_command(world, 'wp.Editor.HLOD.AllowShowingHLODsInEditor 1')
+                report['background_hlod'] = dict(min_distance_m=distance, settings=settings,
+                    authority='DISTANT_APPEARANCE_ONLY_NOT_NEAR_TARGET_GEOMETRY')
+            elif spec.get('native_full_detail_only', False):
                 u.SystemLibrary.execute_console_command(world, 'wp.Editor.HLOD.AllowShowingHLODsInEditor 0')
             if 'world_partition_region_m' in spec:
                 region = spec['world_partition_region_m']
@@ -263,7 +286,7 @@ def tick(dt):
                     if not descs:
                         raise RuntimeError('Requested region contains no full-detail actors')
                 u.WorldPartitionBlueprintLibrary.load_actors([d.guid for d in descs])
-                if spec.get('native_full_detail_only', False):
+                if spec.get('native_full_detail_only', False) and not spec.get('background_hlod_min_distance_m'):
                     hidden = []
                     for actor in api.get_all_level_actors():
                         if 'HLOD' in actor.get_class().get_name():
@@ -353,6 +376,9 @@ def tick(dt):
             after = 0.
             return
         depth.capture_component2d.capture_scene()
+        if index == 0 and spec.get('export_native_inventory'):
+            from city_native_inspect import inventory
+            write(OUT/'evaluator/native-inventory.json', inventory(u, api, spec['cases'][0]['camera'], 35.))
         case = spec['cases'][index]
         if case.get('probe_native_floor', False):
             pose = case['camera']
@@ -377,6 +403,11 @@ def tick(dt):
             (OUT / 'appearance').mkdir(exist_ok=True)
             u.RenderingLibrary.export_render_target(world, beauty.capture_component2d.texture_target,
                                                     str(OUT/'appearance'), f'{index:04d}.png')
+        if spec.get('native_targets'):
+            from city_native_targets import export
+            if isolated_actor is None:
+                isolated_actor=component(u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
+            report.setdefault('native_target_checks',[]).extend(export(u,api,world,isolated_actor,spec,case,index,OUT))
         frames.append(dict(sample_index=index, rgb_path=f'sample/{index:04d}.png'))
         index += 1
         warm = 0

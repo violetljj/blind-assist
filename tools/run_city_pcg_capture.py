@@ -47,6 +47,10 @@ def capture(args):
     sources = [source / name for name in ('city_pcg_capture.py', 'ue_pair_export.py', 'ue_capture_readiness.py')]
     if spec.get('export_dependencies'):
         sources.append(source / 'city_pcg_dependencies.py')
+    if spec.get('export_native_inventory'):
+        sources.append(source / 'city_native_inspect.py')
+    if spec.get('native_targets'):
+        sources.append(source / 'city_native_targets.py')
     for path in sources:
         if not path.is_file():
             raise FileNotFoundError(path)

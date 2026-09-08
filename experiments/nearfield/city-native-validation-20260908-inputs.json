@@ -1,0 +1,24 @@
+{
+  "schema": "city-native-validation-closure-inputs-v1",
+  "created_at": "2026-09-08",
+  "provenance": "Closure manifest created AFTER outcomes; binds the actually frozen capture spec and completed report. Not a newly pre-outcome protocol.",
+  "original_registration": {
+    "input_refs": [
+      "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md"
+    ],
+    "input_fingerprint": "1937bafc24d8afabf48edeb57a2c1a0d4229df8dd734e0e31801bb5fbb43f031",
+    "code_revision": "9db7ea26d1817efc1cbce816cff8a20dc2a83479"
+  },
+  "frozen_capture_spec": {
+    "path": "artifacts.local/nearfield/city-native-validation-20260908/final-route-v1/source/spec.json",
+    "sha256": "594cca5edcde96dc755b605ac7a38476678cf3a6e77d7bd2b341d6b6d73ed78e"
+  },
+  "capture_receipt": {
+    "path": "artifacts.local/nearfield/city-native-validation-20260908/final-route-v1/receipt.json",
+    "sha256": "44cc8ed1c1bad7072fc2b1e70200a3e92dcd59d2cf269ecd59c7337bb0694236"
+  },
+  "closure_report": {
+    "path": "research/active/dtr-r0/nearfield/CITY_NATIVE_VALIDATION_20260908.md",
+    "sha256": "2a79120eeee3081fb12e9bcd9d0ad241b0f0ca60b3702dd7f86a44427224bc67"
+  }
+}
