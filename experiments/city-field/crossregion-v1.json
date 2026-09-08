@@ -1,0 +1,24 @@
+{
+  "protocol_id": "CITY-CROSSREGION-V1",
+  "status": "SOURCE_ADMISSION_PENDING",
+  "region_splits": ["train", "train", "train", "train", "dev", "test", "test"],
+  "scene_types": ["sidewalk", "intersection", "narrow_passage"],
+  "conditions": ["NONE", "BODY_ONLY", "HEAD_ONLY", "BOTH"],
+  "camera_perturbations": [
+    {"right_m": -0.08, "yaw_delta_deg": -2.0},
+    {"right_m": -0.08, "yaw_delta_deg": 2.0},
+    {"right_m": 0.08, "yaw_delta_deg": -2.0},
+    {"right_m": 0.08, "yaw_delta_deg": 2.0}
+  ],
+  "planned_frames": 336,
+  "expected_frames_by_split": {"train": 192, "dev": 48, "test": 96},
+  "expected_head_positive_negative_by_split": {"train": [96,96], "dev": [24,24], "test": [48,48]},
+  "head_pairs": [["NONE", "HEAD_ONLY"], ["BODY_ONLY", "BOTH"]],
+  "body_pairs": [["NONE", "BODY_ONLY"], ["HEAD_ONLY", "BOTH"]],
+  "pair_success": "Both verified ground-truth endpoints predicted correctly; no double counting reverse direction",
+  "background_isolation": "Disjoint physical visible background instances across train/dev/test, including distant buildings and HLOD provenance. Shared mesh/material asset library is disclosed, not called unseen assets.",
+  "invalid_pair_policy": "Exclude entire matched quartet from comparative metrics if any member has source/pose/label uncertainty; report counts and missing strata",
+  "selection_policy": "Source geometry and rendering only; no model-score-based viewpoint or hard-negative selection",
+  "phases": ["source inventory and admission", "paired acquisition and source validation", "frozen same-budget training comparison", "single held-out region evaluation"],
+  "deferred": ["Mass dynamic actors", "DTR events", "L10", "extra obstacle categories"]
+}

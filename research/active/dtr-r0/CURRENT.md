@@ -5,6 +5,13 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+Next collection phase: [CITY-CROSSREGION-V1](../../../experiments/city-field/CITY_CROSSREGION_V1.md),
+7 regions / 4 TRAIN + 1 DEV + 2 TEST, with 336 planned counterfactual frames.
+The TRAIN-only engineering canary passes 16/16 frames and 4/4 quartets after a
+crossbar/clamp geometry repair; failed receipts remain preserved. Seven Big City
+descriptor candidates are not yet admitted routes or proven isolated backgrounds.
+Full collection and model training have not started; this adds no model result.
+
 Current engineering priority is the [City Sample collection field](../../../experiments/city-field/README.md):
 complete loaded routes, representative supported obstacle conditions and clear
 controls, synchronized geometry-labelled acquisition, and region/route/instance

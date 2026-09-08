@@ -2,6 +2,12 @@
 
 **Start here: [one-command collection and usable data format](COLLECT.md).**
 **Delivered v2: [three usable west segments, 36/36 exported frames](FIELD_V2_20260908.md).**
+
+**Next: [CITY-CROSSREGION-V1](CITY_CROSSREGION_V1.md).** The paired intervention
+compiler and verifier pass a 16-frame TRAIN engineering canary (4/4 quartets).
+Seven Big City candidates await route and visible-background isolation admission;
+the planned 336-frame research cohort and model training have not started.
+
 The delivery priority is complete useful routes, plausible supported obstacles
 and clear controls, and automatic export of checked usable frames. The batch
 runner now writes `ready/frames.jsonl`, portable per-frame payloads, exclusions,
