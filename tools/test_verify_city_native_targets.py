@@ -34,6 +34,7 @@ class NativeTargetLabelTest(unittest.TestCase):
         self.assertEqual(row['unexplained_nearer_clone_pixels'], 1)
         self.assertEqual(row['status'], 'UNKNOWN')
         self.assertTrue(bool((mask == -1).all()))
+        self.assertEqual(row['uncertainty_reasons'], ['UNEXPLAINED_NEARER_CLONE'])
 
     def test_occluded_target_is_not_visible_positive(self):
         mask, row = labels.target_label(self.native, self.native + 1., self.camera, 0.)
@@ -45,6 +46,7 @@ class NativeTargetLabelTest(unittest.TestCase):
         mask, row = labels.target_label(self.native, self.native.clone(), self.camera, 0., 'FAIL')
         self.assertEqual(row['native_agree_pixels'], 64 * 64)
         self.assertEqual(row['raycheck'], 'FAIL')
+        self.assertEqual(row['uncertainty_reasons'], ['INDEPENDENT_RAYCHECK_UNRESOLVED'])
         self.assertEqual(row['status'], 'UNKNOWN')
         self.assertTrue(bool((mask == -1).all()))
 

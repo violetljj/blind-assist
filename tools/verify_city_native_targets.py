@@ -89,9 +89,17 @@ def target_label(native, isolated, camera, floor, ray_status=None):
     row = dict(projected_pixels=int(hit.sum()), native_agree_pixels=int(agree.sum()),
         occluded_pixels=int(occluded.sum()), unexplained_nearer_clone_pixels=int(closer.sum()),
         unknown_native_under_clone_pixels=int((hit & ~known).sum()), raycheck=ray_status or 'NOT_SUPPLIED')
-    reliable = (floor is not None and row['native_agree_pixels'] >= POLICY['minimum_visible_pixels']
-        and row['unexplained_nearer_clone_pixels'] <= POLICY['maximum_unexplained_nearer_clone_pixels']
-        and ray_status in (None, 'PASS'))
+    reasons = []
+    if floor is None:
+        reasons.append('MISSING_FLOOR')
+    if row['native_agree_pixels'] < POLICY['minimum_visible_pixels']:
+        reasons.append('INSUFFICIENT_RENDER_AGREEMENT')
+    if row['unexplained_nearer_clone_pixels'] > POLICY['maximum_unexplained_nearer_clone_pixels']:
+        reasons.append('UNEXPLAINED_NEARER_CLONE')
+    if ray_status not in (None, 'PASS'):
+        reasons.append('INDEPENDENT_RAYCHECK_UNRESOLVED')
+    row['uncertainty_reasons'] = reasons
+    reliable = not reasons
     mask = torch.full((2, *native.shape), -1, dtype=torch.int8, device=native.device)
     if reliable:
         query, _ = in_query(native, camera, floor)
@@ -199,6 +207,11 @@ def run(args):
                     tm, evidence = target_label(native, load_depth(isolated_path), case['camera'], floor, ray_status)
                     target_arrays[tid][i] = tm.cpu().numpy()
                     evidence.update(sample_index=i, isolated_sha256=sha(isolated_path))
+                    if args.raycheck:
+                        ray_evidence = ray_rows.get((tid, i), {})
+                        evidence['raycheck_source_component'] = ray_evidence.get('source_component')
+                        evidence['raycheck_unresolved_rays'] = [
+                            r for r in ray_evidence.get('rows', []) if r.get('status') == 'UNKNOWN']
                     if (tm == 1).any():
                         overlay(rgb, target_arrays[tid][i], out / f'overlays/{tid}-{i:04d}.png',
                                 f'{tid} frame {i} | {evidence["status"]} | native-render agreement')

@@ -28,6 +28,12 @@ Fourteen hazard frames retain UNKNOWN target geometry. Frozen G10/G13 miss
 at a nearer eligible pose; the last hits only at the nearest sample. Retain
 distance/view failure evidence; no reliable warning distance or model promotion.
 
+The [target uncertainty audit](../../../experiments/city-field/UNCERTAINTY_AUDIT_20260908.md)
+locates 15 unresolved collision rays across those 14 frames: 12 near other
+components, two no-hit rays and one farther other-component hit. Render gates
+pass, but instance identity remains unresolved; labels and diagnostic counts
+are unchanged. Explicit reasons and per-ray overlays now support label repair.
+
 Existing controlled Development environment: **self-built UE5 StreetLabV4**, with 10 Hz
 observations and measured conservative envelopes. The historical motion runner
 is `tools/run_obstacle_research.py`; CARLA is retained for history/supplementary

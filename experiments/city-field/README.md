@@ -93,6 +93,11 @@ consumed data remain Development evidence regardless of a later split name.
 
 ## Inspection and replay
 
+The [target uncertainty audit](UNCERTAINTY_AUDIT_20260908.md) explains the 14
+approach frames still labelled UNKNOWN. Run `tools/audit_city_target_uncertainty.py`
+against a capture and its labels for hashed evidence and per-frame ray overlays.
+Verifier outputs now include explicit failure reasons and unresolved ray records.
+
 The [completed approach diagnostic](APPROACH_V1_20260908.md) adds 105 settled views
 on the existing west intersection: seven distances, three approach angles, four
 supported obstacle conditions and clear controls. Exact-XY floor preflight passes;
