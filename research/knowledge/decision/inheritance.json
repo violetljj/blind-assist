@@ -151,6 +151,36 @@
       "failure_signature": "HEAD-near115 to105/1788 and HEAD TP1150 to1148 despite groups508 to509.",
       "revisit_trigger": "A distinct mechanism addressing spatial attribution, not automatic same-recipe continuation.",
       "assignment_basis": "One valid corrected run; incorrect G13 first run is invalid setup and retained separately."
+    },
+    {
+      "terminal_id": "terminal-body-query-range-untied-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed10k near/far native-count attribution with frozen RGB encoder",
+      "retained_surface": "Copied range-specific readouts and paired count-only comparison",
+      "failure_signature": "HEAD-near277 below294 gate; query FP increases and far recall declines",
+      "revisit_trigger": "Distinct direct visual/context decoder, no completed-run extension",
+      "assignment_basis": "Spatial and alert improvement exists, full replacement gate fails"
+    },
+    {
+      "terminal_id": "terminal-body-query-context-decoder-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen visual native-count range evidence on consumed controlled Development",
+      "retained_surface": "JOINT geometry decoder and original10k B alert as two outputs; LOCAL control; exact parity interface",
+      "failure_signature": "Count-derived full alert replacement regresses despite large spatial gains; region variation and shared-source dependence",
+      "revisit_trigger": "Unchanged-method independent-source/view check and matched decoder attribution",
+      "assignment_basis": "Strong relation and paired spatial recovery with independently verified preserved original alert interface"
+    },
+    {
+      "terminal_id": "terminal-body-query-context-distance-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen paired near/far controlled Development transfer",
+      "retained_surface": "Unchanged JOINT spatial decoder and preserved BASE alerts",
+      "failure_signature": "No HEAD-negative denominator; shared assets; count-derived alerts regress",
+      "revisit_trigger": "Independent-source fixed-method confirmation before broader claims",
+      "assignment_basis": "Three spatial transfer criteria pass with exact retained alert parity"
     }
   ]
 }

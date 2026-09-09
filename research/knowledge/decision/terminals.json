@@ -1070,6 +1070,78 @@
         "artifacts.local/work/body-query-10000-readout-20260909/run-v2/result.json"
       ],
       "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-range-untied-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_RANGE_UNTIED_COMPONENT_FULL_GATE_UNMET",
+      "summary": "One range-untied count-only fit: HEAD-near115 to277/1788, wrong-far564 to549/600, groups508 to517/600. Near FP332 to570; far query recall declines. Seven of eight gates pass, near minimum294 unmet.",
+      "successor_requires": "Distinct scoped context/representation test; preserve baseline and full gate.",
+      "forbidden_repeats": [
+        "Lowering near294 gate after seeing277",
+        "Hiding near false activation and far recall regressions",
+        "Calling consumed shared-asset evidence natural distance capability"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-range-untied-20260909/run-v1/validation.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-context-decoder-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_FROZEN_VISUAL_CONTEXT_RANGE_COMPONENT_WITH_ORIGINAL_ALERT",
+      "summary": "Frozen raw-feature JOINT decoder: relation EVAL near1680/1788 vs115, wrong-far24/600 vs564; separate consumed paired EVAL near2085/2250 vs1, wrong-far45/750 vs730, exact range1350/1500 vs638. Spatial gate passes; full count-derived alert replacement fails. Two-output interface preserves original3000 EVAL alerts exactly.",
+      "successor_requires": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "forbidden_repeats": [
+        "Calling count-derived alert replacement passed",
+        "Treating consumed pairs as fresh confirmation",
+        "Declaring UNKNOWN safe or free",
+        "Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-context-distance-20260909/run-v1/validation.json",
+        "artifacts.local/work/body-query-context-decoder-20260909/interface-check-v1/validation.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-context-distance-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "FROZEN_CONTEXT_DISTANCE_SPATIAL_GATE_MET_RETAIN_ORIGINAL_ALERT",
+      "summary": "Zero-fit fixed LOCAL/JOINT paired-distance diagnostic: JOINT primary EVAL near2085/2250, wrong-far45/750, exact range1350/1500 passes all3 spatial gates. Count-derived alert regresses; retained original alert has exact probability parity. Shared-site consumed Development, no HEAD-negative denominator.",
+      "successor_requires": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "forbidden_repeats": [
+        "Calling count-derived alert replacement passed",
+        "Treating consumed pairs as fresh confirmation",
+        "Declaring UNKNOWN safe or free",
+        "Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-context-distance-20260909/run-v1/validation.json",
+        "artifacts.local/work/body-query-context-decoder-20260909/interface-check-v1/validation.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
     }
   ]
 }

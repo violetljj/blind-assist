@@ -5,6 +5,28 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest algorithm result: direct visual range evidence (2026-09-09)
+
+The [frozen context decoder](nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md)
+recovers HEAD-near native query TP115 to1680/1788, with false activations332 to112
+and wrong-far564 to24/600 on consumed relation EVAL. The unchanged
+[paired-distance diagnostic](nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md)
+retains near2085/2250 versus1/2250 baseline, wrong-far45 versus730/750 and exact
+two-range1350 versus638/1500, passing all3 spatial-transfer criteria. LOCAL is a
+strong simpler comparator; gains are not uniquely attributable to joint context.
+
+Retain original10k B alerts plus JOINT as a separate spatial-evidence component.
+The new count-derived alert chain regresses and is not a full replacement.
+The two-output research interface preserves all3000 EVAL alert decisions and
+support exactly while exposing range disagreement/UNKNOWN. Warm CUDA batch1
+median16.86ms becomes19.29ms. These are shared-asset consumed Development results,
+not natural-source, continuous-approach, metric-depth, Android or safety claims.
+Next decision: unchanged-method independent-source/view confirmation and mechanism
+attribution; preserve all completed fits and thresholds without rescue sweeps.
+
+## Collection and historical context
+
+
 Next collection phase: [CITY-CROSSREGION-V1](../../../experiments/city-field/CITY_CROSSREGION_V1.md),
 7 regions / 4 TRAIN + 1 DEV + 2 TEST, with 336 planned counterfactual frames.
 The TRAIN-only engineering canary passes 16/16 frames and 4/4 quartets after a

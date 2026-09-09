@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-09",
-  "source_fingerprint": "de60c1732b8497a340cbecba8e3954f313648fc8bbae4a338f1762f326b6f9e2",
+  "source_fingerprint": "6dd9bbae6a994fc9e3f7e8ea93af652fbb732f8fb15146b6dc206ce404893154",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 279,
-    "current_terminals": 65,
-    "run_associations": 277
+    "experiments": 282,
+    "current_terminals": 68,
+    "run_associations": 280
   },
   "failure_layers": [
     {
@@ -18880,6 +18880,108 @@
       "search_text": "terminal-body-query-10000-readout-20260909 obstacle-avoidance RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL Corrected trained10k readout-only2000-step continuation: EVAL HEAD-near115 to105/1788, groups508 to509/600, HEAD1150 to1148TP at35FP. All21 sampled alert/count readout cosines negative. No replacement; invalid G13 first attempt separately preserved. Distinct scoped mechanism with near attribution and alert preservation; no automatic continuation. Treating invalid G13-start run as a negative readout result Promoting by group or AUC improvement without spatial recovery Inferring no upstream information from one fixed readout optimization"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-range-untied-20260909",
+      "status": "diagnostic",
+      "question": "One range-untied count-only fit: HEAD-near115 to277/1788, wrong-far564 to549/600, groups508 to517/600. Near FP332 to570; far query recall declines. Seven of eight gates pass, near minimum294 unmet.",
+      "baseline": null,
+      "change": "Distinct scoped context/representation test; preserve baseline and full gate.",
+      "primary_metric": null,
+      "decision": "RETAIN_RANGE_UNTIED_COMPONENT_FULL_GATE_UNMET",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped context/representation test; preserve baseline and full gate.",
+      "forbidden_repeats": [
+        "Lowering near294 gate after seeing277",
+        "Hiding near false activation and far recall regressions",
+        "Calling consumed shared-asset evidence natural distance capability"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-range-untied-20260909/run-v1/validation.json"
+      ],
+      "association_id": "body-query-range-untied-20260909",
+      "search_text": "terminal-body-query-range-untied-20260909 obstacle-avoidance RETAIN_RANGE_UNTIED_COMPONENT_FULL_GATE_UNMET One range-untied count-only fit: HEAD-near115 to277/1788, wrong-far564 to549/600, groups508 to517/600. Near FP332 to570; far query recall declines. Seven of eight gates pass, near minimum294 unmet. Distinct scoped context/representation test; preserve baseline and full gate. Lowering near294 gate after seeing277 Hiding near false activation and far recall regressions Calling consumed shared-asset evidence natural distance capability"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-context-decoder-20260909",
+      "status": "diagnostic",
+      "question": "Frozen raw-feature JOINT decoder: relation EVAL near1680/1788 vs115, wrong-far24/600 vs564; separate consumed paired EVAL near2085/2250 vs1, wrong-far45/750 vs730, exact range1350/1500 vs638. Spatial gate passes; full count-derived alert replacement fails. Two-output interface preserves original3000 EVAL alerts exactly.",
+      "baseline": null,
+      "change": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "primary_metric": null,
+      "decision": "RETAIN_FROZEN_VISUAL_CONTEXT_RANGE_COMPONENT_WITH_ORIGINAL_ALERT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "forbidden_repeats": [
+        "Calling count-derived alert replacement passed",
+        "Treating consumed pairs as fresh confirmation",
+        "Declaring UNKNOWN safe or free",
+        "Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-context-distance-20260909/run-v1/validation.json",
+        "artifacts.local/work/body-query-context-decoder-20260909/interface-check-v1/validation.json"
+      ],
+      "association_id": "body-query-context-decoder-20260909",
+      "search_text": "terminal-body-query-context-decoder-20260909 obstacle-avoidance RETAIN_FROZEN_VISUAL_CONTEXT_RANGE_COMPONENT_WITH_ORIGINAL_ALERT Frozen raw-feature JOINT decoder: relation EVAL near1680/1788 vs115, wrong-far24/600 vs564; separate consumed paired EVAL near2085/2250 vs1, wrong-far45/750 vs730, exact range1350/1500 vs638. Spatial gate passes; full count-derived alert replacement fails. Two-output interface preserves original3000 EVAL alerts exactly. Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims. Calling count-derived alert replacement passed Treating consumed pairs as fresh confirmation Declaring UNKNOWN safe or free Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-context-distance-20260909",
+      "status": "diagnostic",
+      "question": "Zero-fit fixed LOCAL/JOINT paired-distance diagnostic: JOINT primary EVAL near2085/2250, wrong-far45/750, exact range1350/1500 passes all3 spatial gates. Count-derived alert regresses; retained original alert has exact probability parity. Shared-site consumed Development, no HEAD-negative denominator.",
+      "baseline": null,
+      "change": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "primary_metric": null,
+      "decision": "FROZEN_CONTEXT_DISTANCE_SPATIAL_GATE_MET_RETAIN_ORIGINAL_ALERT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims.",
+      "forbidden_repeats": [
+        "Calling count-derived alert replacement passed",
+        "Treating consumed pairs as fresh confirmation",
+        "Declaring UNKNOWN safe or free",
+        "Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-context-distance-20260909/run-v1/validation.json",
+        "artifacts.local/work/body-query-context-decoder-20260909/interface-check-v1/validation.json"
+      ],
+      "association_id": "body-query-context-distance-20260909",
+      "search_text": "terminal-body-query-context-distance-20260909 obstacle-avoidance FROZEN_CONTEXT_DISTANCE_SPATIAL_GATE_MET_RETAIN_ORIGINAL_ALERT Zero-fit fixed LOCAL/JOINT paired-distance diagnostic: JOINT primary EVAL near2085/2250, wrong-far45/750, exact range1350/1500 passes all3 spatial gates. Count-derived alert regresses; retained original alert has exact probability parity. Shared-site consumed Development, no HEAD-negative denominator. Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims. Calling count-derived alert replacement passed Treating consumed pairs as fresh confirmation Declaring UNKNOWN safe or free Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -24801,6 +24903,68 @@
         "decision_lifecycle": 3
       },
       "search_text": "body-query-10000-readout-20260909 Can readout-only continuation of trained10k B recover HEAD-near while retaining alerts? Trained10k B db39ccfc, fixed all non-readout parameters. One valid2000-step readout-only adaptation, original losses and schedule; invalid G13 first run retained. HEAD-near recall, wrong far events, HEAD_ONLY BODY FP, groups and alert preservation. RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md Consumed10k TRAIN/DEV/EVAL controlled Development."
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-range-untied-20260909",
+      "status": "archived",
+      "question": "Does untying near/far linear count readouts recover spatial attribution?",
+      "baseline": "Original 10k B and historical shared count-only continuation",
+      "change": "Two copied range readouts; all other tensors, count loss and 2000-step schedule fixed",
+      "primary_metric": "HEAD-near query recall, wrong-far, alert errors and complete groups",
+      "decision": "RETAIN_RANGE_UNTIED_COMPONENT_FULL_GATE_UNMET",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_10000_range_readout_train.py",
+      "commit": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "association_id": "body-query-range-untied-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {},
+      "search_text": "body-query-range-untied-20260909 Does untying near/far linear count readouts recover spatial attribution? Original 10k B and historical shared count-only continuation Two copied range readouts; all other tensors, count loss and 2000-step schedule fixed HEAD-near query recall, wrong-far, alert errors and complete groups RETAIN_RANGE_UNTIED_COMPONENT_FULL_GATE_UNMET research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_10000_range_readout_train.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-context-decoder-20260909",
+      "status": "archived",
+      "question": "Can direct raw-feature joint context recover native spatial attribution?",
+      "baseline": "Original 10k B plus matched local decoder and image-free prior",
+      "change": "Freeze RGB encoder; compare local and joint context count MLP decoders",
+      "primary_metric": "HEAD-near recall wrong-far and alert/group preservation",
+      "decision": "RETAIN_SPATIAL_COMPONENT_FULL_ALERT_GATE_UNMET",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_context_decoder.py",
+      "commit": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "association_id": "body-query-context-decoder-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "runtime_infrastructure": 3
+      },
+      "search_text": "body-query-context-decoder-20260909 Can direct raw-feature joint context recover native spatial attribution? Original 10k B plus matched local decoder and image-free prior Freeze RGB encoder; compare local and joint context count MLP decoders HEAD-near recall wrong-far and alert/group preservation RETAIN_SPATIAL_COMPONENT_FULL_ALERT_GATE_UNMET research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_context_decoder.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-context-distance-20260909",
+      "status": "archived",
+      "question": "Do frozen raw-feature decoders retain spatial attribution on rigid near/far pairs?",
+      "baseline": "Original10k B frozen distance predictions",
+      "change": "Unchanged LOCAL and JOINT context decoders, no fitting",
+      "primary_metric": "Near recall wrong-far exact range and retained alert errors",
+      "decision": "SPATIAL_TRANSFER_GATE_MET_RETAIN_ORIGINAL_ALERT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_context_distance.py",
+      "commit": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "association_id": "body-query-context-distance-20260909",
+      "routes": [
+        "obstacle-avoidance",
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "runtime_infrastructure": 3
+      },
+      "search_text": "body-query-context-distance-20260909 Do frozen raw-feature decoders retain spatial attribution on rigid near/far pairs? Original10k B frozen distance predictions Unchanged LOCAL and JOINT context decoders, no fitting Near recall wrong-far exact range and retained alert errors SPATIAL_TRANSFER_GATE_MET_RETAIN_ORIGINAL_ALERT research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_context_distance.py"
     }
   ],
   "associations": [
@@ -24868,6 +25032,32 @@
         "artifacts.local/work/body-query-q3-20260909/attribution-r1/receipt.json"
       ],
       "decision_id": "terminal-body-query-attribution-r1-20260909-no-transfer",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-context-decoder-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-context-decoder-20260909",
+      "code_revision": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "input_fingerprint": "9ac03217d211a2ecfa3cc87600efbaa923adaba8d46444ce075ccf90c07a66ae",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_PROTOCOL_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-context-decoder-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-context-distance-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-context-distance-20260909",
+      "code_revision": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "input_fingerprint": "bca8be67efc667112948ffb50a877c00bbee30b6e40e3a3a866e5d3a06c00c61",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_PROTOCOL_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-context-distance-20260909",
       "source_rows": 1
     },
     {
@@ -25083,6 +25273,19 @@
         "artifacts.local/work/body-query-range-r0-20260909/run-v1/receipt.json"
       ],
       "decision_id": "terminal-body-query-range-r0-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-range-untied-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-range-untied-20260909",
+      "code_revision": "4dcfcc3b251b1df172902bdd6237fc5192c7ebaf",
+      "input_fingerprint": "bc2b7c0fa0f6f810702458bf1d24de2b058cd7d0139b001a7417b9f0cbfe6215",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_PROTOCOL_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_UNTIED_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-range-untied-20260909",
       "source_rows": 1
     },
     {
