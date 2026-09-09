@@ -1322,6 +1322,50 @@
         "artifacts.local/work/mz0-clean-20260910/run-v1/independent-audit.json"
       ],
       "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-mz1-tiny-fusion-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ1_EXACT_GAIN_ERROR_TRADEOFF_GATE_FAILED",
+      "summary": "Fusion exact1353/1500 beats matchedRGB1310 andToF1327 but wrongfar12/crossbody19 exceed MZ0 7/15; full replacement gate fails, retain challenger without continued fit.",
+      "successor_requires": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "forbidden_repeats": [
+        "Relabeling controlled evidence as hardware or natural validation",
+        "Continuing stopped fits to rescue error tradeoff",
+        "Claiming64zone necessity from one-frame difference"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md",
+        "artifacts.local/work/mz1-tiny-fusion-20260910/run-v1/metrics.json",
+        "artifacts.local/work/mz1-tiny-fusion-20260910/run-v1/independent-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-mz2-resolution-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ2_COARSE_INFORMATION_GAIN_ALIGNMENT_SENSITIVE",
+      "summary": "Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim.",
+      "successor_requires": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "forbidden_repeats": [
+        "Relabeling controlled evidence as hardware or natural validation",
+        "Continuing stopped fits to rescue error tradeoff",
+        "Claiming64zone necessity from one-frame difference"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md",
+        "artifacts.local/work/mz2-resolution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz2-resolution-20260910/run-v1/independent-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
     }
   ]
 }

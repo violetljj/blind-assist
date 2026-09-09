@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "15f7bcb4fca6c8671d75f3d7d2fb4a39f7e97e7c1f0bbbf2f2ac2722062eaa79",
+  "source_fingerprint": "e92bd709adf722b2bc0cd85538fe7b064238985b06bc8c9e21b0d7f22f8d7127",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 290,
-    "current_terminals": 76,
-    "run_associations": 288
+    "experiments": 292,
+    "current_terminals": 78,
+    "run_associations": 290
   },
   "failure_layers": [
     {
@@ -19242,6 +19242,70 @@
       "search_text": "terminal-mz0-clean-20260910 obstacle-avoidance MZ0_CLEAN_64ZONE_INFORMATION_GATE_MET Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim. Separate matched learned RGB-only,ToF-only,fusion controls before algorithm-specific claim Relabeling simulated evidence as hardware validation Using target identity as a measurement Claiming independent confirmation from related readouts"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz1-tiny-fusion-20260910",
+      "status": "diagnostic",
+      "question": "Fusion exact1353/1500 beats matchedRGB1310 andToF1327 but wrongfar12/crossbody19 exceed MZ0 7/15; full replacement gate fails, retain challenger without continued fit.",
+      "baseline": null,
+      "change": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "primary_metric": null,
+      "decision": "MZ1_EXACT_GAIN_ERROR_TRADEOFF_GATE_FAILED",
+      "report": "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "forbidden_repeats": [
+        "Relabeling controlled evidence as hardware or natural validation",
+        "Continuing stopped fits to rescue error tradeoff",
+        "Claiming64zone necessity from one-frame difference"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md",
+        "artifacts.local/work/mz1-tiny-fusion-20260910/run-v1/metrics.json",
+        "artifacts.local/work/mz1-tiny-fusion-20260910/run-v1/independent-audit.json"
+      ],
+      "association_id": "mz1-tiny-fusion-20260910",
+      "search_text": "terminal-mz1-tiny-fusion-20260910 obstacle-avoidance MZ1_EXACT_GAIN_ERROR_TRADEOFF_GATE_FAILED Fusion exact1353/1500 beats matchedRGB1310 andToF1327 but wrongfar12/crossbody19 exceed MZ0 7/15; full replacement gate fails, retain challenger without continued fit. Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits Relabeling controlled evidence as hardware or natural validation Continuing stopped fits to rescue error tradeoff Claiming64zone necessity from one-frame difference"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz2-resolution-20260910",
+      "status": "diagnostic",
+      "question": "Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim.",
+      "baseline": null,
+      "change": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "primary_metric": null,
+      "decision": "MZ2_COARSE_INFORMATION_GAIN_ALIGNMENT_SENSITIVE",
+      "report": "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits",
+      "forbidden_repeats": [
+        "Relabeling controlled evidence as hardware or natural validation",
+        "Continuing stopped fits to rescue error tradeoff",
+        "Claiming64zone necessity from one-frame difference"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md",
+        "artifacts.local/work/mz2-resolution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz2-resolution-20260910/run-v1/independent-audit.json"
+      ],
+      "association_id": "mz2-resolution-20260910",
+      "search_text": "terminal-mz2-resolution-20260910 obstacle-avoidance MZ2_COARSE_INFORMATION_GAIN_ALIGNMENT_SENSITIVE Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim. Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits Relabeling controlled evidence as hardware or natural validation Continuing stopped fits to rescue error tradeoff Claiming64zone necessity from one-frame difference"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25409,6 +25473,48 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz0-clean-20260910 Does clean64zone metric information materially improve frozen visual spatial attribution? JOINT RGB-only on1500 consumed EVAL frames Zero-fit onezone versus8x8 versus sameFoV/fullFoV native geometry, three fixed readouts Four-event Spatial Exact Accuracy, wrongfar, crossbody and unchanged B alerts Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim. research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md research/active/dtr-r0/nearfield/mz0_clean.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz1-tiny-fusion-20260910",
+      "status": "archived",
+      "question": "Does tiny learned fusion improve over matched RGB-only and ToF-only controls?",
+      "baseline": "MZ0 zero-fit C and matched single-input MLPs",
+      "change": "Frozen772visual plus256ToF features, identical1028to128to4 MLPs and300step schedule",
+      "primary_metric": "Spatial exact gain, wrongfar, crossbody, unchanged alerts",
+      "decision": "Fusion exact1353/1500 beats matchedRGB1310 andToF1327 but wrongfar12/crossbody19 exceed MZ0 7/15; full replacement gate fails, retain challenger without continued fit.",
+      "report": "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/mz1_tiny_fusion.py",
+      "commit": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "association_id": "mz1-tiny-fusion-20260910",
+      "routes": [
+        "obstacle-avoidance",
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {},
+      "search_text": "mz1-tiny-fusion-20260910 Does tiny learned fusion improve over matched RGB-only and ToF-only controls? MZ0 zero-fit C and matched single-input MLPs Frozen772visual plus256ToF features, identical1028to128to4 MLPs and300step schedule Spatial exact gain, wrongfar, crossbody, unchanged alerts Fusion exact1353/1500 beats matchedRGB1310 andToF1327 but wrongfar12/crossbody19 exceed MZ0 7/15; full replacement gate fails, retain challenger without continued fit. research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md research/active/dtr-r0/nearfield/mz1_tiny_fusion.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz2-resolution-20260910",
+      "status": "archived",
+      "question": "How much metric spatial resolution is needed and how does the fixed fusion react to corruption?",
+      "baseline": "Completed8x8 FUSION and matched RGB_ONLY",
+      "change": "Matched1x1/4x4 retraining plus three separate frozen8x8 corruption controls",
+      "primary_metric": "Spatial exact, wrongfar, crossbody, alert parity",
+      "decision": "Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim.",
+      "report": "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/mz2_resolution.py",
+      "commit": "dac1c55b38104539da5d51c9f26694c0782dea64",
+      "association_id": "mz2-resolution-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz2-resolution-20260910 How much metric spatial resolution is needed and how does the fixed fusion react to corruption? Completed8x8 FUSION and matched RGB_ONLY Matched1x1/4x4 retraining plus three separate frozen8x8 corruption controls Spatial exact, wrongfar, crossbody, alert parity Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim. research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md research/active/dtr-r0/nearfield/mz2_resolution.py"
     }
   ],
   "associations": [
@@ -27554,6 +27660,32 @@
         "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz0-clean-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz1-tiny-fusion-20260910",
+      "use_ids": [],
+      "protocol_id": "mz1-tiny-fusion-v1",
+      "code_revision": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "input_fingerprint": "d3349988a21a53958a526065e7c65616946fa701ac2c8728da853952bf2a82a5",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ1_PROTOCOL_20260910.md",
+        "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz1-tiny-fusion-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz2-resolution-20260910",
+      "use_ids": [],
+      "protocol_id": "mz2-resolution-v1",
+      "code_revision": "dac1c55b38104539da5d51c9f26694c0782dea64",
+      "input_fingerprint": "c1ecd0dc5370f2f5eea54bd96547c6053cc9f65bbb83a75b369348c7cdc643e9",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ2_PROTOCOL_20260910.md",
+        "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz2-resolution-20260910",
       "source_rows": 1
     },
     {

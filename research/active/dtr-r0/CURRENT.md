@@ -5,7 +5,19 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest clean multi-zone information result (2026-09-10)
+## Latest learned fusion and resolution result (2026-09-10)
+
+[MZ1](nearfield/MZ1_RESULTS_20260910.md) reaches90.20% exact versus matched
+RGB87.33% and ToF88.47%, but wrong-far12 and cross-body19 exceed retained MZ0
+7 and15. Full replacement gate fails: retain a challenger, no continued fit.
+[MZ2](nearfield/MZ2_RESULTS_20260910.md) matched1x1/4x4/8x8 fusion gives
+88.93/90.13/90.20%; fixed8x8 noise/dropout/column-shift gives90.27/89.33/87.40%.
+This supports coarse metric information and correct correspondence, not a need
+for64 zones or hardware performance. Both budgets completed;5000 original
+alerts unchanged and independent replay/scoring pass. All evidence remains
+consumed controlled Development. MZ0 remains the retained information component.
+
+## Previous clean multi-zone information result (2026-09-10)
 
 [MZ0](nearfield/MZ0_RESULTS_20260910.md) passes the illustrative information gate:
 spatial exact79.87% to87.33%,nearest wrongfar43/600 to7/600,crossbody72/600 to15/600,
