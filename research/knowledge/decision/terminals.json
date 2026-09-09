@@ -1213,6 +1213,29 @@
         "research/active/dtr-r0/nearfield/RGB_TOF_OBSERVATION_20260909.md"
       ],
       "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-body-query-tof-coverage-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MIXED_TOF_FOOTPRINTS_WITH_IDEAL_POSITIVE_CONE_SUPPORT",
+      "summary": "All600frames mixed and0dominated at27/15degree idealdiagonal footprints. No real ToF return or fusion score. Implemented positive-only radial-cone body support with4 geometry tests; user confirms simulation-only hardware.",
+      "successor_requires": "Explicit hypothetical sensor response and validity assumptions before fusion sensitivity; preserve unknown and no oracle target association. Real hardware not currently available or required for ideal studies.",
+      "forbidden_repeats": [
+        "Calling low angular coverage proven sensor failure",
+        "Using target-conditioned return as hardware measurement",
+        "Erasing visual FAR or declaring CLEAR from one ToF return",
+        "Claiming measured fusion gain from geometry unit tests"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-tof-coverage-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-tof-coverage-20260909/ideal-cone-engineering.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
     }
   ]
 }

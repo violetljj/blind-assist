@@ -5,7 +5,21 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest fixed comparator and observation route (2026-09-09)
+## Latest observation study: fixed ToF footprints and cone support (2026-09-09)
+
+The [600-frame ToF footprint study](nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md)
+finds all frames mixed at both27deg and15deg ideal diagonal footprints; no95percent
+target-dominance cases. This is source geometry, not sensor failure or fusion
+accuracy. User confirms simulation-only hardware. Preserve mixed return behavior
+as unmodeled until explicit hypothetical response assumptions are introduced.
+
+A tested positive-only cone-support primitive can add HEAD_NEAR when every
+possible return direction and bounded range lie inside that query volume. It
+never erases visual events or asserts clearance. Four engineering tests pass;
+no data-level fusion gain or actual VL53L1X calibration has been demonstrated.
+Next: explicit ideal response/validity sensitivity, without oracle association.
+
+## Previous fixed comparator and observation route (2026-09-09)
 
 The [frozen LOCAL transfer contrast](nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md)
 does not remedy transfer: strict original-fixture pairs3/53 versus JOINT29/53,

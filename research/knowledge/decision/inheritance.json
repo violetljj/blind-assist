@@ -211,6 +211,16 @@
       "failure_signature": "LOCAL strict3/53 versus29/53 and0/106 twice;600frame parity preserved",
       "revisit_trigger": "Constrained additional observation study or distinct intervention; not samefit continuation",
       "assignment_basis": "One frozen600frame RGB run; saved BASE probabilities exact; no training or fresh confirmation"
+    },
+    {
+      "terminal_id": "terminal-body-query-tof-coverage-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Ideal geometric footprint audit and positive-only aligned cone support; no hardware response or fusion gain",
+      "retained_surface": "600frame mixed-surface receipts; pure ToF body-support primitive; original B and JOINT retained",
+      "failure_signature": "No target-dominated footprint in tested cohort; mixed return response unmodeled; geometry tests not fusion evidence",
+      "revisit_trigger": "Explicit ideal measurement/validity sensitivity on same RGB without oracle association",
+      "assignment_basis": "Hash-bound native coverage and4 analytic geometry checks; simulation-only scope confirmed by user"
     }
   ]
 }

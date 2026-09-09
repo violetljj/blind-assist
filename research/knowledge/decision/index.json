@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-09",
-  "source_fingerprint": "97247ad34890359edca6685a6ebaeaf245214ac28a0a0f070bf12b5a347946ef",
+  "generated_at": "2026-09-10",
+  "source_fingerprint": "d0836b32b079743ec613cf5c7b81edcdb40c9e67801de848e19f13374d3e7881",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 285,
-    "current_terminals": 71,
-    "run_associations": 283
+    "experiments": 286,
+    "current_terminals": 72,
+    "run_associations": 284
   },
   "failure_layers": [
     {
@@ -19083,6 +19083,39 @@
       "search_text": "terminal-body-query-local-transfer-20260909 obstacle-avoidance LOCAL_READOUT_ALONE_NOT_SUFFICIENT_FOR_TRANSFER Frozen LOCAL600frame comparator:strict3/53 versusJOINT29/53 originalfixture newbackground; both simplified arms0/106. All600 B alerts and probabilities match. No training or source change. Investigate information or observation coverage; no automatic same-recipe continuation. User-linked RGB plus VL53L1X route starts with constrained coverage, not oracle depth fusion. Calling consumed diagnostics fresh confirmation Claiming local readout fixes background sensitivity Feeding UE full depth or oracle target association as VL53L1X measurement"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-tof-coverage-20260909",
+      "status": "diagnostic",
+      "question": "All600frames mixed and0dominated at27/15degree idealdiagonal footprints. No real ToF return or fusion score. Implemented positive-only radial-cone body support with4 geometry tests; user confirms simulation-only hardware.",
+      "baseline": null,
+      "change": "Explicit hypothetical sensor response and validity assumptions before fusion sensitivity; preserve unknown and no oracle target association. Real hardware not currently available or required for ideal studies.",
+      "primary_metric": null,
+      "decision": "MIXED_TOF_FOOTPRINTS_WITH_IDEAL_POSITIVE_CONE_SUPPORT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Explicit hypothetical sensor response and validity assumptions before fusion sensitivity; preserve unknown and no oracle target association. Real hardware not currently available or required for ideal studies.",
+      "forbidden_repeats": [
+        "Calling low angular coverage proven sensor failure",
+        "Using target-conditioned return as hardware measurement",
+        "Erasing visual FAR or declaring CLEAR from one ToF return",
+        "Claiming measured fusion gain from geometry unit tests"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-tof-coverage-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-tof-coverage-20260909/ideal-cone-engineering.json"
+      ],
+      "association_id": "bq-tof-coverage-20260909",
+      "search_text": "terminal-body-query-tof-coverage-20260909 obstacle-avoidance MIXED_TOF_FOOTPRINTS_WITH_IDEAL_POSITIVE_CONE_SUPPORT All600frames mixed and0dominated at27/15degree idealdiagonal footprints. No real ToF return or fusion score. Implemented positive-only radial-cone body support with4 geometry tests; user confirms simulation-only hardware. Explicit hypothetical sensor response and validity assumptions before fusion sensitivity; preserve unknown and no oracle target association. Real hardware not currently available or required for ideal studies. Calling low angular coverage proven sensor failure Using target-conditioned return as hardware measurement Erasing visual FAR or declaring CLEAR from one ToF return Claiming measured fusion gain from geometry unit tests"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25132,6 +25165,28 @@
         "runtime_infrastructure": 3
       },
       "search_text": "bq-local-transfer-20260909 Does frozen LOCAL avoid JOINT transfer collapse without fitting? Frozen JOINT and original B alerts Existing frozen LOCAL querywise decoder instead of global12query readout Strict pairs improve at least10pp in allthree admitted transfer arms; exact alert parity LOCAL does not remedy transfer:3/53 versusJOINT29/53; both simplified arms0/106;600frame original alert parity exact research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_local_transfer.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "bq-tof-coverage-20260909",
+      "status": "archived",
+      "question": "How much of a fixed VL53L1X-sized footprint is actually occupied by visible HEAD target?",
+      "baseline": "Existing600 RGB/native frames; no sensorreturn claim",
+      "change": "Centered ideal27degree and15degree diagonal square footprints, same sensor/camera origin",
+      "primary_metric": "Target fraction, mixed surfaces, unknown support and95percent geometric dominance; no fusion score",
+      "decision": "600/600frames mixed,0dominated atbothfootprints; no sensorfailure/fusionclaim. Positive-only idealcone support implemented and4tests pass.",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_tof_coverage.py",
+      "commit": "63b4bd75bf7cb5c21ea8f40e62b6908b9f8880a6",
+      "association_id": "bq-tof-coverage-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "bq-tof-coverage-20260909 How much of a fixed VL53L1X-sized footprint is actually occupied by visible HEAD target? Existing600 RGB/native frames; no sensorreturn claim Centered ideal27degree and15degree diagonal square footprints, same sensor/camera origin Target fraction, mixed surfaces, unknown support and95percent geometric dominance; no fusion score 600/600frames mixed,0dominated atbothfootprints; no sensorfailure/fusionclaim. Positive-only idealcone support implemented and4tests pass. research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_tof_coverage.py"
     }
   ],
   "associations": [
@@ -25543,6 +25598,19 @@
         "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md"
       ],
       "decision_id": "terminal-body-query-local-transfer-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bq-tof-coverage-20260909",
+      "use_ids": [],
+      "protocol_id": "bq-tof-coverage-v1",
+      "code_revision": "63b4bd75bf7cb5c21ea8f40e62b6908b9f8880a6",
+      "input_fingerprint": "88badf07e57745dee24bf5017b6971a3bcc7bb932f7a004864e625f8d4f39e3b",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-tof-coverage-20260909",
       "source_rows": 1
     },
     {
