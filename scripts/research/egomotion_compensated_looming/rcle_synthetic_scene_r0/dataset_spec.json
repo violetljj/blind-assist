@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "protocol_id": "RCLE_SYNTHETIC_SCENE_MECHANISM_VALIDATION_R0",
+  "status": "DESIGN_REVISION_R1_REVIEW_PENDING_IMPLEMENTATION_OPEN_SEALED_EXECUTION_CLOSED",
+  "task": "continuous_rgb_depth_pose_mechanism_validation",
+  "dataset_role": "synthetic_mechanism_development_and_sealed_holdout",
+  "split_seed": 2026072801,
+  "authority": {
+    "maximum_claim": "CONTROLLED_SYNTHETIC_CAUSAL_MECHANISM_EVIDENCE_ONLY",
+    "real_holdout_policy": "Real inputs remain outside this workspace and are never copied into synthetic splits.",
+    "forbidden_claims": [
+      "REAL_WORLD_GENERALIZATION",
+      "EXTERNAL_REAL_DATA_CONFIRMATION",
+      "ANDROID_OR_PRODUCT_PROMOTION",
+      "HUMAN_EFFECTIVENESS",
+      "SAFETY"
+    ],
+    "historical_terminals_mutated": false
+  },
+  "rendering": {
+    "backend": "DETERMINISTIC_ANALYTIC_CPU_RAYCASTER",
+    "authoritative_numeric_dtype": "float64",
+    "width": 320,
+    "height": 240,
+    "fps": 10,
+    "duration_seconds": 10,
+    "frame_count": 101,
+    "frame_indices": "INTEGER_0_THROUGH_100_INCLUSIVE",
+    "timestamps_seconds": "frame_index_divided_by_10",
+    "pair_count_per_sequence": 100,
+    "pair_timestamp": "CURRENT_FRAME_TIMESTAMP",
+    "intrinsics": {
+      "fx_pixels": 280.0,
+      "fy_pixels": 280.0,
+      "cx_pixels": 159.5,
+      "cy_pixels": 119.5
+    },
+    "depth_truth": "CAMERA_POSITIVE_Z_METERS",
+    "authoritative_depth_storage": "NPY_FLOAT32",
+    "exchange_depth_storage": "PNG_UINT16_MILLIMETERS",
+    "rgb_storage": "PNG_RGB8",
+    "valid_mask_storage": "PNG_UINT8_0_OR_255_DERIVED_DURING_GENERATION",
+    "pose_storage": "T_WORLD_CAMERA_AND_T_CAMERA_WORLD_FLOAT64",
+    "timestamp_storage": "INTEGER_FRAME_INDEX_AND_EXACT_FPS_RATIONAL",
+    "opencv_threads": 1,
+    "near_plane_m": 0.1,
+    "far_plane_m": 30.0,
+    "coordinate_convention": {
+      "handedness": "RIGHT_HANDED",
+      "world_axes": "+X_RIGHT,+Y_UP,+Z_FORWARD_AT_ZERO_YAW",
+      "camera_axes": "+X_RIGHT,+Y_UP,+Z_OPTICAL_FORWARD",
+      "pixel_axes": "+U_RIGHT,+V_DOWN",
+      "signed_projection_matrix": "[[fx,0,cx],[0,-fy,cy],[0,0,1]]_WHERE_FY_IN_CONFIG_IS_POSITIVE_MAGNITUDE",
+      "pose": "T_WORLD_CAMERA_MAPS_CAMERA_COORDINATES_TO_WORLD_COORDINATES",
+      "yaw": "POSITIVE_RIGHT_HANDED_ROTATION_ABOUT_WORLD_PLUS_Y",
+      "translation_integration": "CONSTANT_WORLD_FRAME_VELOCITY",
+      "pose_composition": "R_WORLD_CAMERA_EQUALS_WORLD_YAW_ROTATION;T_WORLD_CAMERA_TRANSLATION_EQUALS_INITIAL_PLUS_WORLD_VELOCITY_TIMES_T",
+      "rotation_plus_approach": "WORLD_PLUS_Z_TRANSLATION_IS_UNCHANGED_WHILE_CAMERA_YAWS"
+    }
+  },
+  "scene_geometry": {
+    "room_bounds_m": {
+      "x": [-2.5, 2.5],
+      "y": [0.0, 3.0],
+      "z": [0.0, 12.0]
+    },
+    "camera_initial_world_m": [0.0, 1.5, 1.0],
+    "camera_center_must_remain_inside_room": true,
+    "minimum_camera_surface_clearance_m": 0.1,
+    "surface_types": [
+      "floor",
+      "ceiling",
+      "left_wall",
+      "right_wall",
+      "back_wall",
+      "bounded_frontoparallel_panels"
+    ],
+    "texture_source": "SEEDED_PROGRAMMATIC_COORDINATE_TEXTURE",
+    "generator_masks_forbidden_to_algorithm": true
+  },
+  "splits": {
+    "development": {
+      "scene_families": [
+        {"scene_id": "corridor_grid_dev", "seed": 4101, "panel_variant": 0},
+        {"scene_id": "room_panels_dev", "seed": 4102, "panel_variant": 1}
+      ],
+      "execution": "OPEN"
+    },
+    "sealed": {
+      "scene_families": [
+        {"scene_id": "warehouse_bays_sealed", "seed": 5101, "panel_variant": 2},
+        {"scene_id": "offset_corridor_sealed", "seed": 5102, "panel_variant": 3}
+      ],
+      "execution": "REQUIRES_ONE_SHOT_HASH_BOUND_ACTIVATION_AFTER_CURRENT_GOVERNANCE_RECONCILIATION",
+      "holdout_kind": "OUTCOME_UNSEEN_FIXED_SYNTHETIC_SCENE_FAMILIES_NOT_CRYPTOGRAPHICALLY_HIDDEN"
+    }
+  },
+  "motions": [
+    {
+      "motion_id": "positive_approach",
+      "role": "POSITIVE_APPROACH_WINDOW",
+      "translation_world_m_per_s": [0.0, 0.0, 0.35],
+      "yaw_deg_per_s": 0.0
+    },
+    {
+      "motion_id": "positive_rotation_approach",
+      "role": "POSITIVE_APPROACH_WINDOW",
+      "translation_world_m_per_s": [0.0, 0.0, 0.35],
+      "yaw_deg_per_s": 6.0
+    },
+    {
+      "motion_id": "below_static",
+      "role": "BELOW_TRIGGER_REFERENCE_WINDOW",
+      "translation_world_m_per_s": [0.0, 0.0, 0.0],
+      "yaw_deg_per_s": 0.0
+    },
+    {
+      "motion_id": "below_pure_yaw",
+      "role": "BELOW_TRIGGER_REFERENCE_WINDOW",
+      "translation_world_m_per_s": [0.0, 0.0, 0.0],
+      "yaw_deg_per_s": 6.0
+    },
+    {
+      "motion_id": "stress_lateral",
+      "role": "NONAPPROACH_STRESS_WINDOW",
+      "translation_world_m_per_s": [0.12, 0.0, 0.0],
+      "yaw_deg_per_s": 0.0
+    },
+    {
+      "motion_id": "stress_receding",
+      "role": "NONAPPROACH_STRESS_WINDOW",
+      "translation_world_m_per_s": [0.0, 0.0, -0.08],
+      "yaw_deg_per_s": 0.0
+    }
+  ],
+  "allocation": {
+    "unit": "SCENE_FAMILY",
+    "derived_motion_variants_stay_in_scene_split": true,
+    "cross_split_scene_or_texture_reuse_forbidden": true,
+    "failed_sequence_replacement_forbidden": true,
+    "development_outcomes_may_not_change": [
+      "ESTIMATOR",
+      "THREE_PAIR_R1_RULE",
+      "SCIENTIFIC_THRESHOLDS",
+      "RENDERER_FAMILY",
+      "SEALED_SCENE_IDS",
+      "SEALED_SEEDS",
+      "SEALED_PANEL_VARIANTS",
+      "SEALED_MOTIONS"
+    ],
+    "identity_collision_keys": [
+      "scene_id",
+      "seed",
+      "panel_variant",
+      "canonical_scene_geometry_sha256",
+      "canonical_texture_identity_sha256"
+    ]
+  },
+  "algorithm_firewall": {
+    "algorithm_inputs": [
+      "RGB_GRAYSCALE_DERIVATIVE",
+      "TIMESTAMP",
+      "INTRINSICS",
+      "RELATIVE_ROTATION_FROM_POSE"
+    ],
+    "truth_only_inputs": [
+      "DEPTH",
+      "TRANSLATION",
+      "MOTION_ROLE",
+      "SURFACE_ID",
+      "GENERATOR_METADATA"
+    ],
+    "old_and_r1_share_identical_expansion_ledger": true,
+    "old_trigger": "evaluable and compensated_expansion_median_per_s > 0.01",
+    "r1_trigger": "three consecutive evaluable pairs in one sequence each strictly > 0.01/s",
+    "staged_algorithm_input_schema": [
+      "GRAYSCALE_UINT8",
+      "VALID_MASK_DERIVED_ONLY_FROM_RENDERER_RAY_HIT_SURFACE_ID_GREATER_THAN_ZERO",
+      "PREVIOUS_TIMESTAMP",
+      "CURRENT_TIMESTAMP",
+      "INTRINSICS",
+      "ROTATION_CURRENT_FROM_PREVIOUS"
+    ],
+    "full_pose_file_not_visible_to_algorithm_adapter": true,
+    "staging_root": "algorithm_staging",
+    "algorithm_manifest_allowlist_exact": [
+      "schema",
+      "protocol_id",
+      "split",
+      "sequence_id",
+      "frame_index",
+      "timestamp",
+      "rgb_path",
+      "rgb_sha256",
+      "valid_mask_path",
+      "valid_mask_sha256",
+      "intrinsics",
+      "rotation_current_from_previous",
+      "algorithm_seed"
+    ],
+    "algorithm_paths_must_be_contained_by_staging_root": true,
+    "adapter_must_fail_on_extra_manifest_field": true,
+    "poison_tests_required": [
+      "DEPTH_FILE_BYTES_MUTATED_AFTER_STAGING_WITH_RGB_AND_STAGED_MASK_FIXED_DO_NOT_CHANGE_ALGORITHM_LEDGER",
+      "TRANSLATION_AND_FULL_POSE_METADATA_MUTATED_AFTER_STAGING_WITH_RGB_AND_ROTATION_ONLY_INPUT_FIXED_DO_NOT_CHANGE_ALGORITHM_LEDGER",
+      "ROLE_METADATA_MUTATED_AFTER_STAGING_DO_NOT_CHANGE_ALGORITHM_LEDGER",
+      "SURFACE_ID_FILE_BYTES_MUTATED_AFTER_STAGING_WITH_STAGED_MASK_FIXED_DO_NOT_CHANGE_ALGORITHM_LEDGER"
+    ]
+  },
+  "truth_construction": {
+    "input": "PREVIOUS_FRAME_CAMERA_Z_DEPTH_PLUS_ADJACENT_T_WORLD_CAMERA_AND_K",
+    "backprojection": "P_PREVIOUS_EQUALS_DEPTH_TIMES_K_SIGNED_INV_TIMES_COLUMN_U_V_1_WHERE_K_SIGNED_HAS_NEGATIVE_FY",
+    "world_transform": "P_WORLD_EQUALS_R_WORLD_PREVIOUS_TIMES_P_PREVIOUS_PLUS_T_WORLD_PREVIOUS",
+    "current_transform": "P_CURRENT_EQUALS_R_WORLD_CURRENT_TRANSPOSE_TIMES_OPEN_P_WORLD_MINUS_T_WORLD_CURRENT_CLOSE",
+    "projection": "H_CURRENT_EQUALS_K_SIGNED_TIMES_P_CURRENT_AND_UV_CURRENT_EQUALS_H_CURRENT_XY_DIVIDED_BY_H_CURRENT_Z",
+    "rotation_compensation": "R_CURRENT_FROM_PREVIOUS_EQUALS_R_WORLD_CURRENT_TRANSPOSE_TIMES_R_WORLD_PREVIOUS;H_PREVIOUS_TO_CURRENT_EQUALS_K_SIGNED_TIMES_R_CURRENT_FROM_PREVIOUS_TIMES_K_SIGNED_INV;UV_COMPENSATED_EQUALS_NORMALIZE_OPEN_H_PREVIOUS_TO_CURRENT_INV_TIMES_UV_CURRENT_HOMOGENEOUS_CLOSE",
+    "sampling_step_pixels": 4,
+    "visibility": "PROJECTED_POINT_INSIDE_IMAGE_AND_POSITIVE_Z_AND_ABS_RENDERED_CURRENT_Z_MINUS_PROJECTED_Z_LE_MAX_0P04M_OR_0P025_TIMES_Z",
+    "surface_transition_policy": "OCCLUDED_OR_DEPTH_INCONSISTENT_SAMPLES_ARE_ABSTENT",
+    "grid": "FIXED_3_BY_3_IN_PREVIOUS_IMAGE",
+    "minimum_samples_per_cell": 24,
+    "minimum_evaluable_cells_per_pair": 5,
+    "cell_fit": "FLOAT64_ORDINARY_LEAST_SQUARES_V_EQUALS_A_TIMES_P_MINUS_CELL_CENTER_PLUS_B",
+    "cell_expansion": "0P5_TIMES_TRACE_A",
+    "pair_expansion": "MEDIAN_OVER_EVALUABLE_CELLS",
+    "truth_builder_must_not_import_rgb_estimator": true
+  },
+  "metric_semantics": {
+    "unit": "SEQUENCE_WITHIN_SCENE_FAMILY_AND_MOTION",
+    "fixed_pair_denominator_per_sequence": 100,
+    "abstentions_remain_in_trigger_and_coverage_denominators": true,
+    "evaluable_pair_fraction": "EVALUABLE_ALGORITHM_PAIR_COUNT_DIVIDED_BY_100",
+    "sequence_truth_expansion": "MEDIAN_OVER_EVALUABLE_TRUTH_PAIRS_OF_PAIR_MEDIAN_OVER_EVALUABLE_CELLS",
+    "sequence_algorithm_expansion": "MEDIAN_OVER_EVALUABLE_ALGORITHM_PAIRS_OF_COMPENSATED_PAIR_MEDIAN",
+    "algorithm_truth_sequence_median_absolute_error": "ABS_OPEN_SEQUENCE_ALGORITHM_EXPANSION_MINUS_SEQUENCE_TRUTH_EXPANSION_CLOSE;FAIL_IF_EITHER_SEQUENCE_MEDIAN_IS_UNDEFINED_OR_NONFINITE",
+    "old_trigger_coverage": "OLD_TRIGGER_TRUE_PAIR_COUNT_DIVIDED_BY_100",
+    "r1_trigger_coverage": "R1_TRIGGER_TRUE_PAIR_COUNT_DIVIDED_BY_100",
+    "positive_r1_trigger_retention": "R1_TRIGGER_COVERAGE_DIVIDED_BY_OLD_TRIGGER_COVERAGE",
+    "undefined_positive_retention": "FAIL_IF_OLD_TRIGGER_COVERAGE_IS_ZERO",
+    "first_trigger_delay_seconds": "FIRST_R1_CURRENT_FRAME_TIMESTAMP_MINUS_FIRST_OLD_CURRENT_FRAME_TIMESTAMP",
+    "missing_positive_trigger": "FAIL",
+    "finite_values_required": true,
+    "aggregation": "EVERY_APPLICABLE_SEQUENCE_MUST_PASS_BY_LOGICAL_AND",
+    "pooled_or_median_rescue_across_sequences": false
+  },
+  "development_gates": {
+    "all_manifest_and_hash_checks_pass": true,
+    "all_frame_geometry_checks_pass": true,
+    "same_spec_repeat_manifest_sha256_equal": true,
+    "minimum_sequence_evaluable_pair_fraction": 0.8,
+    "positive_truth_median_expansion_per_s_min": 0.05,
+    "below_truth_abs_median_expansion_per_s_max": 0.01,
+    "positive_r1_trigger_retention_min": 0.9,
+    "positive_algorithm_compensated_expansion_median_per_s_min": 0.03,
+    "positive_r1_trigger_coverage_min": 0.5,
+    "below_r1_trigger_coverage_max": 0.05,
+    "maximum_positive_first_trigger_delay_s": 0.25,
+    "algorithm_truth_sequence_median_absolute_error_per_s_max": 0.05,
+    "positive_rotation_approach_vs_positive_approach_algorithm_median_absolute_difference_per_s_max": 0.04,
+    "positive_rotation_comparator": "WITHIN_EACH_SCENE_FAMILY_ABS_OPEN_SEQUENCE_ALGORITHM_MEDIAN_FOR_POSITIVE_ROTATION_APPROACH_MINUS_SEQUENCE_ALGORITHM_MEDIAN_FOR_POSITIVE_APPROACH_CLOSE",
+    "below_pure_yaw_compensated_abs_expansion_median_per_s_max": 0.02,
+    "below_pure_yaw_raw_minus_compensated_abs_expansion_median_per_s_min": 0.02,
+    "below_pure_yaw_suppression_metric": "SEQUENCE_MEDIAN_OVER_EVALUABLE_PAIRS_OF_RAW_ABS_EXPANSION_MINUS_SEQUENCE_MEDIAN_OVER_THE_SAME_PAIR_IDENTITIES_OF_COMPENSATED_ABS_EXPANSION",
+    "stress_lateral_and_receding": "EXPLORATORY_NON_GATING_REPORT_ALL_PAIRS_AND_ABSTENTIONS",
+    "pooled_rescue_forbidden": true
+  },
+  "sealed_activation": {
+    "receipt_schema": "rcle.synthetic_scene.sealed_activation.v1",
+    "json_schema_path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/sealed_activation.schema.json",
+    "claim_ledger_root": "artifacts.local/evidence/rcle_synthetic_scene_r0/sealed_claims",
+    "claim_path_must_be_outside_canonical_output_root": true,
+    "claim_create_mode": "ATOMIC_OS_OPEN_O_CREAT_OR_O_EXCL_THEN_WRITE_CANONICAL_JSON_AND_FSYNC",
+    "duplicate_claim": "FAIL_CLOSED_WITHOUT_OUTPUT_MATERIALIZATION",
+    "authorizer": "INDEPENDENT_AGENT_REVIEW_RECEIPT_BOUND_BY_PATH_AND_SHA256",
+    "required_fields": [
+      "schema",
+      "protocol_id",
+      "split",
+      "claim_id",
+      "claim_path",
+      "current_governance_reconciled",
+      "execution_authorized",
+      "dataset_spec_sha256",
+      "renderer_sha256",
+      "dataset_builder_sha256",
+      "truth_builder_sha256",
+      "algorithm_adapter_sha256",
+      "validator_sha256",
+      "dependency_identity",
+      "canonical_output_root",
+      "output_root_preflight_empty"
+      ,"independent_review_receipt_path"
+      ,"independent_review_receipt_sha256"
+      ,"authorizer_id"
+    ],
+    "exclusive_claim_create_before_materialization": true,
+    "one_shot_consumption": true,
+    "retry_or_replacement_after_claim_forbidden": true,
+    "failure_terminal": "INVALID_SEALED_EXECUTION_FAIL_CLOSED",
+    "view_or_summary_before_activation_forbidden": true
+  },
+  "resource_preflight": {
+    "supported_python": "3.11.9",
+    "supported_numpy": "2.1.3",
+    "supported_opencv_prefix": "4.13.0",
+    "cpu_only_authoritative_generation": true,
+    "opencv_threads": 1,
+    "development_expected_sequences": 12,
+    "development_expected_frames": 1212,
+    "development_expected_pairs": 1200,
+    "development_disk_ceiling_bytes": 8589934592,
+    "development_runtime_ceiling_seconds": 3600,
+    "sealed_expected_sequences": 12,
+    "sealed_expected_frames": 1212,
+    "sealed_expected_pairs": 1200,
+    "sealed_disk_ceiling_bytes": 8589934592,
+    "sealed_runtime_ceiling_seconds": 3600,
+    "progress_state_path": "run_state.json",
+    "terminal_paths": [
+      "receipt.json",
+      "validation.json",
+      "scientific_summary.json"
+    ],
+    "determinism_check": "TWO_FRESH_DEVELOPMENT_GENERATIONS_REQUIRE_IDENTICAL_ORDERED_PAYLOAD_HASHES_SCENE_MANIFEST_FRAME_MANIFEST_AND_ALGORITHM_INPUT_MANIFEST",
+    "determinism_receipt_excluded_fields_exact": [
+      "generated_at",
+      "environment.pid"
+    ]
+  },
+  "outputs": [
+    "dataset_spec.json",
+    "scene_manifest.jsonl",
+    "frame_manifest.jsonl",
+    "algorithm_input_manifest.jsonl",
+    "truth_pair_ledger.jsonl",
+    "algorithm_pair_ledger.jsonl",
+    "old_r1_comparison.jsonl",
+    "scientific_summary.json",
+    "receipt.json",
+    "validation.json"
+  ]
+}

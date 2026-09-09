@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist.rcle.synthetic_scene.sealed_activation.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "protocol_id",
+    "split",
+    "claim_id",
+    "claim_path",
+    "authorizer_id",
+    "current_governance_reconciled",
+    "execution_authorized",
+    "dataset_spec_sha256",
+    "renderer_sha256",
+    "dataset_builder_sha256",
+    "truth_builder_sha256",
+    "algorithm_adapter_sha256",
+    "validator_sha256",
+    "dependency_identity",
+    "canonical_output_root",
+    "output_root_preflight_empty",
+    "independent_review_receipt_path",
+    "independent_review_receipt_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rcle.synthetic_scene.sealed_activation.v1"},
+    "protocol_id": {"const": "RCLE_SYNTHETIC_SCENE_MECHANISM_VALIDATION_R0"},
+    "split": {"const": "sealed"},
+    "claim_id": {"type": "string", "minLength": 16},
+    "claim_path": {"type": "string", "minLength": 1},
+    "authorizer_id": {"type": "string", "minLength": 1},
+    "current_governance_reconciled": {"const": true},
+    "execution_authorized": {"const": true},
+    "dataset_spec_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "renderer_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dataset_builder_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "truth_builder_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "algorithm_adapter_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "validator_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dependency_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "numpy", "opencv"],
+      "properties": {
+        "python": {"const": "3.11.9"},
+        "numpy": {"const": "2.1.3"},
+        "opencv": {"type": "string", "pattern": "^4\\.13\\.0"}
+      }
+    },
+    "canonical_output_root": {"type": "string", "minLength": 1},
+    "output_root_preflight_empty": {"const": true},
+    "independent_review_receipt_path": {"type": "string", "minLength": 1},
+    "independent_review_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

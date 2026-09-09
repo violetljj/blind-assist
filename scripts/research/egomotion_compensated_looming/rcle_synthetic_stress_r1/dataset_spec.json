@@ -1,0 +1,203 @@
+{
+  "schema": "rcle.synthetic_stress.dataset_spec.v1",
+  "protocol_id": "RCLE_SYNTHETIC_STRESS_DIAGNOSTIC_R1",
+  "status": "PREREGISTERED_BEFORE_STRESS_OUTCOME_ACCESS",
+  "decision_source": {
+    "parent_terminal": "SYNTHETIC_MECHANISM_SEALED_REVISE",
+    "parent_terminal_sha256": "8a9d0073f77edab401b146b4bd570d8f7fad30b2653637b47ddad0f6ebfb039f",
+    "parent_failed_sequence": "offset_corridor_sealed__positive_rotation_approach",
+    "parent_failed_gate": "positive_r1_trigger_retention",
+    "parent_observed_value": 0.8620689655172413,
+    "parent_frozen_minimum": 0.9,
+    "parent_retry_or_replacement_forbidden": true
+  },
+  "authority": {
+    "maximum_claim": "CONTROLLED_SYNTHETIC_STRESS_CHARACTERIZATION_ONLY",
+    "purpose": "Measure sensitivity without changing the frozen RCLE estimator, trigger threshold, confirmation rule, or R0 gates.",
+    "forbidden_claims": [
+      "R0 sealed rescue",
+      "real-world external confirmation",
+      "performance qualification",
+      "Android or product promotion",
+      "human effectiveness or safety"
+    ]
+  },
+  "parent_r0": {
+    "spec_path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/dataset_spec.json",
+    "spec_sha256": "a88f0d3e799575cf28bd537b574db55af7bfac40bb0d0eda1f8107f9f738d7c9",
+    "algorithm_threshold_per_s": 0.01,
+    "confirmation_consecutive_pairs": 3,
+    "all_development_gates_reused_without_change": true
+  },
+  "frozen_parent_chain": {
+    "activation": {
+      "path": "artifacts.local/evidence/rcle_synthetic_scene_r0/sealed_preflight/activation.v1.json",
+      "sha256": "29dba7f5d1c32dacb4fa0f95ca223b748a9249e69f14839993ac573f29d618b1"
+    },
+    "claim": {
+      "path": "artifacts.local/evidence/rcle_synthetic_scene_r0/sealed_claims/RCLE_SYNTHETIC_SCENE_R0_SEALED_20260728_ONCE.json",
+      "sha256": "7d20e0fb19754a6aba7e9186f729215a98cc8cea1c46da2c7e9f4a426af7339b"
+    },
+    "terminal": {
+      "path": "artifacts.local/evidence/rcle_synthetic_scene_r0/sealed_claims/RCLE_SYNTHETIC_SCENE_R0_SEALED_20260728_ONCE.terminal.json",
+      "sha256": "8a9d0073f77edab401b146b4bd570d8f7fad30b2653637b47ddad0f6ebfb039f"
+    },
+    "required_terminal_status": "SYNTHETIC_SEALED_EXECUTION_COMPLETE",
+    "required_scientific_outcome": "SYNTHETIC_MECHANISM_SEALED_REVISE",
+    "claim_consumed_required": true,
+    "retry_or_replacement_forbidden_required": true
+  },
+  "implementation_bindings": [
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/renderer.py",
+      "sha256": "947f521fa41808ded277063e1e887f491ff4fd6a0cede71a30a7e78ae3629aeb"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/dataset.py",
+      "sha256": "eb7fc854e891bee678dfec2aece7881283912547a98dcb93dee3d184b1878ef2"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/truth.py",
+      "sha256": "54b8bcdcb961eb8e016b232fff6738687cd21b9e0c3ea8ff85d2b3b373f419ca"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/evaluator.py",
+      "sha256": "f34d6a05e5eb5998d18e1cde463a547368d4fd449348356d2ab980ab1c2f883b"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_synthetic_scene_r0/validator.py",
+      "sha256": "b0c2ded5834a39c59f986cc40a3a8293e3b7380312ea0e50f2cf74b043de6a55"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_low_reference_false_trigger_r1/temporal_confirmation.py",
+      "sha256": "e5a9592d3c0e9cce4ff273a473072e72e78a75da7279f6999e8df2ffd0db7727"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal/rotation_compensation.py",
+      "sha256": "46491b5edae98495931e717a8eb6b60ce595674461b495068dd5bd7f01a0aef9"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal_r1/local_expansion.py",
+      "sha256": "e1804672b3b46a2d72e46394b3591565f12763e8977838708fbab36e1947f439"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal_r1/sparse_flow.py",
+      "sha256": "251a3114500ab75a9e7efff118903960454ec232c1bb10e61192166e2b06a3e3"
+    }
+  ],
+  "allocation": {
+    "split": "diagnostic_open",
+    "split_seed": 2026072802,
+    "scene_identity_reuse_from_r0_forbidden": true,
+    "scene_families": [
+      {
+        "scene_id": "stress_atrium_columns_r1",
+        "seed": 7101,
+        "panel_variant": 0
+      },
+      {
+        "scene_id": "stress_narrow_gallery_r1",
+        "seed": 7102,
+        "panel_variant": 2
+      }
+    ],
+    "motion_ids": [
+      "positive_approach",
+      "positive_rotation_approach",
+      "below_static",
+      "below_pure_yaw"
+    ],
+    "frame_count_per_sequence": 101,
+    "pair_count_per_sequence": 100,
+    "fps": 10,
+    "duration_seconds": 10,
+    "condition_count": 7,
+    "expected_base_sequences": 8,
+    "expected_stress_sequences": 56,
+    "expected_algorithm_frames": 5656,
+    "expected_algorithm_pairs": 5600
+  },
+  "conditions": [
+    {
+      "condition_id": "matched_clean_control",
+      "family": "control",
+      "algorithm_rgb": "unchanged",
+      "algorithm_rotation": "exact",
+      "truth_depth": "exact"
+    },
+    {
+      "condition_id": "lighting_low_exposure",
+      "family": "lighting",
+      "rgb_transform": "round(clip(rgb_float64 * 0.35, 0, 255))",
+      "gain": 0.35
+    },
+    {
+      "condition_id": "low_texture_contrast",
+      "family": "low_texture",
+      "rgb_transform": "per_frame_global_gray_mean + 0.15 * (gray - mean), repeated to RGB",
+      "contrast": 0.15
+    },
+    {
+      "condition_id": "motion_blur_horizontal_9",
+      "family": "motion_blur",
+      "rgb_transform": "deterministic normalized horizontal box kernel",
+      "kernel_pixels": 9
+    },
+    {
+      "condition_id": "partial_occlusion_35x45",
+      "family": "partial_occlusion",
+      "rgb_transform": "moving opaque rectangle retained as algorithm-valid image content",
+      "width_fraction": 0.35,
+      "height_fraction": 0.45,
+      "fill_rgb": [32, 32, 32]
+    },
+    {
+      "condition_id": "depth_noise_gaussian_2pct",
+      "family": "depth_noise",
+      "algorithm_rgb": "unchanged",
+      "algorithm_rotation": "exact",
+      "observed_depth_transform": "clip(depth * (1 + deterministic_normal(0, 0.02)), 0.05, 50.0)",
+      "relative_sigma": 0.02,
+      "latent_exact_truth_remains_primary": true,
+      "observed_depth_truth_is_diagnostic_only": true
+    },
+    {
+      "condition_id": "pose_yaw_error",
+      "family": "pose_perturbation",
+      "algorithm_rgb": "unchanged",
+      "relative_rotation_transform": "R_yaw(error_deg) @ R_exact",
+      "bias_degrees": 0.15,
+      "sinusoid_amplitude_degrees": 0.35,
+      "sinusoid_frequency_per_frame": 0.37,
+      "latent_exact_pose_remains_truth": true
+    }
+  ],
+  "evaluation": {
+    "statistical_unit": "scene_x_motion_x_condition_sequence",
+    "fixed_denominator_pairs": 100,
+    "abstentions_remain_in_denominator": true,
+    "r0_gates_applied_per_sequence": true,
+    "condition_pass_requires_all_scene_motion_sequences": true,
+    "pair_or_sequence_pooling": false,
+    "matched_control_is_not_a_rescue": true,
+    "depth_noise_requires_algorithm_ledger_identity_with_clean_control": true,
+    "overall_terminal": "STRESS_R1_CHARACTERIZATION_COMPLETE",
+    "no_algorithm_or_gate_revision_authorized": true
+  },
+  "provenance": {
+    "renderer": "R0 deterministic NumPy/OpenCV analytic ray-caster",
+    "base_rgb_depth_pose_timestamp_required": true,
+    "staged_rgb_and_mask_sha256_required": true,
+    "condition_transform_and_parameters_recorded_per_sequence": true,
+    "visual_review_minimum_fraction": 0.2
+  },
+  "resource_budget": {
+    "disk_ceiling_bytes": 8589934592,
+    "minimum_free_bytes_before_start": 10737418240,
+    "runtime_ceiling_seconds": 3600,
+    "opencv_threads": 1,
+    "supported_python": "3.11.9",
+    "supported_numpy": "2.1.3",
+    "supported_opencv_prefix": "4.13.0"
+  }
+}
