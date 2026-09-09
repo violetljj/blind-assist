@@ -1366,6 +1366,48 @@
         "artifacts.local/work/mz2-resolution-20260910/run-v1/independent-audit.json"
       ],
       "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-mz3-error-attribution-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ3_FUSION_CONFLICT_AND_CONDITION_TRADEOFF_RETAINED",
+      "summary": "Fusion vs MZ0 gains148/loses105 exact rows; all12 wrong-far errors new. Keeps106/118 RGB-only successes but60/135 ToF-only successes. Frozen1500-row descriptive audit; no fit or router.",
+      "successor_requires": "A separate observable correspondence/conflict mechanism that addresses these failures without truth-based routing",
+      "forbidden_repeats": [
+        "Continuing frozen MZ1/MZ2 fits or selecting a truth-based router",
+        "Promoting controlled finite-family evidence to real sensor or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/independent-audit.json"
+      ],
+      "commit": "d209e0900cf86d6032e78b734550685812464de0"
+    },
+    {
+      "id": "terminal-mz4-multizone-motion-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ4_MOTION_VIEW_GAIN_SMALL_JOINT_INCREMENT_POSE_BRITTLE",
+      "summary": "Known both-query224/500 stationary,481 moving-framewise,495 joint; zero errors within matched finite family. Half-degree yaw bias causes338 empty fits; background-only resolves0. No hardware/learning claim.",
+      "successor_requires": "Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family",
+      "forbidden_repeats": [
+        "Continuing frozen MZ1/MZ2 fits or selecting a truth-based router",
+        "Promoting controlled finite-family evidence to real sensor or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/result.json",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/independent-audit.json"
+      ],
+      "commit": "d209e0900cf86d6032e78b734550685812464de0"
     }
   ]
 }

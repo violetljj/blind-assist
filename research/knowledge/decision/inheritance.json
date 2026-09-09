@@ -281,6 +281,26 @@
       "failure_signature": "Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim.",
       "revisit_trigger": "Distinct predeclared observation or fusion hypothesis, no same-run tuning",
       "assignment_basis": "Completed frozen experiment and independent scoring/checkpoint replay"
+    },
+    {
+      "terminal_id": "terminal-mz3-error-attribution-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Descriptive frozen-output fusion error evidence, not a predictive router",
+      "retained_surface": "Row-bound error/support tables and independent scalar verification; MZ0 and MZ1 dispositions unchanged",
+      "failure_signature": "Aggregate exact gain masks105 losses versus MZ0; HEAD-near and negative controls regress versus ToF-only",
+      "revisit_trigger": "A separate observable correspondence/conflict mechanism that addresses these failures without truth-based routing",
+      "assignment_basis": "Fusion vs MZ0 gains148/loses105 exact rows; all12 wrong-far errors new. Keeps106/118 RGB-only successes but60/135 ToF-only successes. Frozen1500-row descriptive audit; no fit or router."
+    },
+    {
+      "terminal_id": "terminal-mz4-multizone-motion-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Conditional multi-zone angular information from known-pose finite-scene sequences",
+      "retained_surface": "Executable observation/feasibility comparison and strong moving-framewise control; small14-case joint increment",
+      "failure_signature": "Exact compatibility produces338 empty fits under0.5degree yaw bias; no foreground information under background-only law",
+      "revisit_trigger": "Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family",
+      "assignment_basis": "Known both-query224/500 stationary,481 moving-framewise,495 joint; zero errors within matched finite family. Half-degree yaw bias causes338 empty fits; background-only resolves0. No hardware/learning claim."
     }
   ]
 }

@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "e92bd709adf722b2bc0cd85538fe7b064238985b06bc8c9e21b0d7f22f8d7127",
+  "source_fingerprint": "1f3756e2e2ac985454b774e4e9d7591c90ba592ba6c1e71516e3581a650cdcf6",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 292,
-    "current_terminals": 78,
-    "run_associations": 290
+    "experiments": 294,
+    "current_terminals": 80,
+    "run_associations": 292
   },
   "failure_layers": [
     {
@@ -19306,6 +19306,68 @@
       "search_text": "terminal-mz2-resolution-20260910 obstacle-avoidance MZ2_COARSE_INFORMATION_GAIN_ALIGNMENT_SENSITIVE Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim. Preserve matched controls and consumed Development boundary; distinct hypothesis required, no continuation of stopped fits Relabeling controlled evidence as hardware or natural validation Continuing stopped fits to rescue error tradeoff Claiming64zone necessity from one-frame difference"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz3-error-attribution-20260910",
+      "status": "diagnostic",
+      "question": "Fusion vs MZ0 gains148/loses105 exact rows; all12 wrong-far errors new. Keeps106/118 RGB-only successes but60/135 ToF-only successes. Frozen1500-row descriptive audit; no fit or router.",
+      "baseline": null,
+      "change": "A separate observable correspondence/conflict mechanism that addresses these failures without truth-based routing",
+      "primary_metric": null,
+      "decision": "MZ3_FUSION_CONFLICT_AND_CONDITION_TRADEOFF_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d209e0900cf86d6032e78b734550685812464de0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A separate observable correspondence/conflict mechanism that addresses these failures without truth-based routing",
+      "forbidden_repeats": [
+        "Continuing frozen MZ1/MZ2 fits or selecting a truth-based router",
+        "Promoting controlled finite-family evidence to real sensor or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/independent-audit.json"
+      ],
+      "association_id": "mz3-error-attribution-20260910",
+      "search_text": "terminal-mz3-error-attribution-20260910 obstacle-avoidance MZ3_FUSION_CONFLICT_AND_CONDITION_TRADEOFF_RETAINED Fusion vs MZ0 gains148/loses105 exact rows; all12 wrong-far errors new. Keeps106/118 RGB-only successes but60/135 ToF-only successes. Frozen1500-row descriptive audit; no fit or router. A separate observable correspondence/conflict mechanism that addresses these failures without truth-based routing Continuing frozen MZ1/MZ2 fits or selecting a truth-based router Promoting controlled finite-family evidence to real sensor or safety performance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz4-multizone-motion-20260910",
+      "status": "diagnostic",
+      "question": "Known both-query224/500 stationary,481 moving-framewise,495 joint; zero errors within matched finite family. Half-degree yaw bias causes338 empty fits; background-only resolves0. No hardware/learning claim.",
+      "baseline": null,
+      "change": "Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family",
+      "primary_metric": null,
+      "decision": "MZ4_MOTION_VIEW_GAIN_SMALL_JOINT_INCREMENT_POSE_BRITTLE",
+      "report": "research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d209e0900cf86d6032e78b734550685812464de0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family",
+      "forbidden_repeats": [
+        "Continuing frozen MZ1/MZ2 fits or selecting a truth-based router",
+        "Promoting controlled finite-family evidence to real sensor or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/result.json",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/independent-audit.json"
+      ],
+      "association_id": "mz4-multizone-motion-20260910",
+      "search_text": "terminal-mz4-multizone-motion-20260910 obstacle-avoidance MZ4_MOTION_VIEW_GAIN_SMALL_JOINT_INCREMENT_POSE_BRITTLE Known both-query224/500 stationary,481 moving-framewise,495 joint; zero errors within matched finite family. Half-degree yaw bias causes338 empty fits; background-only resolves0. No hardware/learning claim. Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family Continuing frozen MZ1/MZ2 fits or selecting a truth-based router Promoting controlled finite-family evidence to real sensor or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25515,6 +25577,54 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz2-resolution-20260910 How much metric spatial resolution is needed and how does the fixed fusion react to corruption? Completed8x8 FUSION and matched RGB_ONLY Matched1x1/4x4 retraining plus three separate frozen8x8 corruption controls Spatial exact, wrongfar, crossbody, alert parity Matched1/16/64zone fusion exact1334/1352/1353 of1500; fixed8x8 noise/drop/shift1354/1340/1311. Four-by-four retains most measured gain; no64zone necessity, hardware or promotion claim. research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md research/active/dtr-r0/nearfield/mz2_resolution.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz3-error-attribution-20260910",
+      "status": "archived",
+      "question": "Which frozen fusion recoveries and regressions explain the MZ1 aggregate gain?",
+      "baseline": "Frozen MZ0, matched MZ1 unimodal outputs, and MZ2 resolution/stress outputs",
+      "change": "Paired row/event transitions, condition strata, geometric support and modality disagreement",
+      "primary_metric": "gained/lost exact rows; wrong-far/cross-body error identity; observation support",
+      "decision": "MZ3_FUSION_CONFLICT_AND_CONDITION_TRADEOFF_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md",
+      "source": "Consumed controlled body-query5000 EVAL1500 and frozen MZ0/MZ1/MZ2 outputs",
+      "commit": "d209e0900cf86d6032e78b734550685812464de0",
+      "association_id": "mz3-error-attribution-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz3-error-attribution-20260910 Which frozen fusion recoveries and regressions explain the MZ1 aggregate gain? Frozen MZ0, matched MZ1 unimodal outputs, and MZ2 resolution/stress outputs Paired row/event transitions, condition strata, geometric support and modality disagreement gained/lost exact rows; wrong-far/cross-body error identity; observation support MZ3_FUSION_CONFLICT_AND_CONDITION_TRADEOFF_RETAINED research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md Consumed controlled body-query5000 EVAL1500 and frozen MZ0/MZ1/MZ2 outputs"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz4-multizone-motion-20260910",
+      "status": "archived",
+      "question": "Does joint motion add angular information beyond repeated and individually decoded8x8 measurements?",
+      "baseline": "Same500 finite-family scenes,25 stationary and moving-framewise8x8 observations",
+      "change": "Exact-pose joint zero/one/two-patch feasibility with unaligned,biased-pose and background-only controls",
+      "primary_metric": "BODY/HEAD known coverage; false assertions; UNKNOWN and empty fits; joint incremental resolution",
+      "decision": "MZ4_MOTION_VIEW_GAIN_SMALL_JOINT_INCREMENT_POSE_BRITTLE",
+      "report": "research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md",
+      "source": "Previous500 finite-family scene selection; generic45degree8x8 quantized range simulation",
+      "commit": "d209e0900cf86d6032e78b734550685812464de0",
+      "association_id": "mz4-multizone-motion-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "mz4-multizone-motion-20260910 Does joint motion add angular information beyond repeated and individually decoded8x8 measurements? Same500 finite-family scenes,25 stationary and moving-framewise8x8 observations Exact-pose joint zero/one/two-patch feasibility with unaligned,biased-pose and background-only controls BODY/HEAD known coverage; false assertions; UNKNOWN and empty fits; joint incremental resolution MZ4_MOTION_VIEW_GAIN_SMALL_JOINT_INCREMENT_POSE_BRITTLE research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md Previous500 finite-family scene selection; generic45degree8x8 quantized range simulation"
     }
   ],
   "associations": [
@@ -27686,6 +27796,34 @@
         "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz2-resolution-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz3-error-attribution-20260910",
+      "use_ids": [],
+      "protocol_id": "mz3-error-attribution-20260910-protocol",
+      "code_revision": "d209e0900cf86d6032e78b734550685812464de0",
+      "input_fingerprint": "246f08f6ead0487ac39e963662396f32aca3c13d9764cf4ef2fa454c7b6ac899",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz3-error-attribution-20260910/run-v1/independent-audit.json"
+      ],
+      "decision_id": "terminal-mz3-error-attribution-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz4-multizone-motion-20260910",
+      "use_ids": [],
+      "protocol_id": "mz4-multizone-motion-20260910-protocol",
+      "code_revision": "d209e0900cf86d6032e78b734550685812464de0",
+      "input_fingerprint": "f8eb0e045428b28a3865d3715a75c642eaced66d257e40331b197a8a4490ffc0",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ4_MOTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/result.json",
+        "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/independent-audit.json"
+      ],
+      "decision_id": "terminal-mz4-multizone-motion-20260910",
       "source_rows": 1
     },
     {
