@@ -1142,6 +1142,31 @@
         "artifacts.local/work/body-query-context-decoder-20260909/interface-check-v1/validation.json"
       ],
       "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-fresh-size-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "FRESH_REGION_FIXTURE_SPATIAL_TRANSFER_FAILED_NO_PROMOTION",
+      "summary": "Frozen240pair fresh capture:212pairs admitted below90percent source coverage; primaryNOT_EVALUABLE retained. Explicit212pair diagnostic JOINT ordinary andmatched strictpair0/106 each; near113/318 and116/318; wrongfar26/106 each. Original480framealertparity exact; independent audit and aligned32oldsource regression pass.",
+      "successor_requires": "Isolate original fixture versus new assembly/material and background before any broader spatial claim; no ordinal or rescue continuation from this terminal.",
+      "forbidden_repeats": [
+        "Calling the failed90percent source gate passed",
+        "Calling diagnostic212pairs fresh confirmation later",
+        "Treating ordinary versus matched as geography-only or size-only causality",
+        "Replacing original alerts or declaring UNKNOWN clear"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-fresh-size-20260909/inference-v1/result.json",
+        "artifacts.local/work/body-query-fresh-size-20260909/independent-fresh-metric-validation.json",
+        "artifacts.local/work/body-query-fresh-size-20260909/worker-final-release.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
     }
   ]
 }

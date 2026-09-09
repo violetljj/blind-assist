@@ -5,7 +5,22 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest algorithm result: direct visual range evidence (2026-09-09)
+## Latest falsifier: fresh region and fixture transfer fails (2026-09-09)
+
+The [frozen fresh-size test](nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md)
+captured 240 pairs in two geographically new regions. Source admission retained
+212 pairs, below the frozen 90% coverage gate; the original primary remains
+NOT_EVALUABLE. A disclosed zero-fit diagnostic on those 212 pairs finds JOINT
+strict pair-correct 0/106 in BOTH ordinary and size-matched arms, near query hits
+113/318 and 116/318, wrong-far 26/106 each. Original alerts retain 480/480 parity.
+Independent scoring and old-source aligned-batch regression pass.
+
+Do not promote or extend to an ordinal head. Ordinary also changes assembly,
+width and material, so geography versus fixture versus size cannot be isolated.
+Retain the previous controlled result and original B alerts; broader spatial
+transfer is unestablished. Old 90% was frame-exact; strict paired accuracy 82.4%.
+
+## Previous algorithm result: direct visual range evidence (2026-09-09)
 
 The [frozen context decoder](nearfield/BODY_QUERY_CONTEXT_DECODER_RESULTS_20260909.md)
 recovers HEAD-near native query TP115 to1680/1788, with false activations332 to112

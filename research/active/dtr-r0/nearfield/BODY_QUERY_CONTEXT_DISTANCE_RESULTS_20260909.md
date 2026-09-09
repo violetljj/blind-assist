@@ -27,6 +27,12 @@ labels are evaluator-only. Primary denominator is750 rigid near/far pairs with
 | Count-derived HEAD alert hits /1500 |1402|1380|1325|
 | Count-derived BODY false alerts /1500 |113|92|120|
 
+Metric audit (2026-09-09): 1/2250 is 0.044444%, so the percentage above is
+correct. The 90% figure measures individual frames, not complete near/far pairs.
+Requiring both endpoints to have the exact two-range state gives JOINT 618/750
+(82.4%) and original B 0/750. The frozen predictions are unchanged; the audit
+receipt is `artifacts.local/work/body-query-fresh-size-20260909/historical-metric-audit.json`.
+
 JOINT exceeds the frozen near recall50%, wrong-far<=150 and exact range>=1200
 criteria. LOCAL passes only near recall, so it remains a useful simpler comparator.
 Unlike direction ranking alone, the joint result improves absolute correct range

@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-09",
-  "source_fingerprint": "6dd9bbae6a994fc9e3f7e8ea93af652fbb732f8fb15146b6dc206ce404893154",
+  "source_fingerprint": "70f50b4c4b5da8b38aa392e7c556d8e48e15230e6330ccf32c8d759e592ef7d4",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 282,
-    "current_terminals": 68,
-    "run_associations": 280
+    "experiments": 283,
+    "current_terminals": 69,
+    "run_associations": 281
   },
   "failure_layers": [
     {
@@ -18982,6 +18982,41 @@
       "search_text": "terminal-body-query-context-distance-20260909 obstacle-avoidance FROZEN_CONTEXT_DISTANCE_SPATIAL_GATE_MET_RETAIN_ORIGINAL_ALERT Zero-fit fixed LOCAL/JOINT paired-distance diagnostic: JOINT primary EVAL near2085/2250, wrong-far45/750, exact range1350/1500 passes all3 spatial gates. Count-derived alert regresses; retained original alert has exact probability parity. Shared-site consumed Development, no HEAD-negative denominator. Unchanged-method independent-source/view confirmation and decoder/optimization attribution before broader claims. Calling count-derived alert replacement passed Treating consumed pairs as fresh confirmation Declaring UNKNOWN safe or free Attributing all gain uniquely to context despite LOCAL gain and capacity differences"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-fresh-size-20260909",
+      "status": "diagnostic",
+      "question": "Frozen240pair fresh capture:212pairs admitted below90percent source coverage; primaryNOT_EVALUABLE retained. Explicit212pair diagnostic JOINT ordinary andmatched strictpair0/106 each; near113/318 and116/318; wrongfar26/106 each. Original480framealertparity exact; independent audit and aligned32oldsource regression pass.",
+      "baseline": null,
+      "change": "Isolate original fixture versus new assembly/material and background before any broader spatial claim; no ordinal or rescue continuation from this terminal.",
+      "primary_metric": null,
+      "decision": "FRESH_REGION_FIXTURE_SPATIAL_TRANSFER_FAILED_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Isolate original fixture versus new assembly/material and background before any broader spatial claim; no ordinal or rescue continuation from this terminal.",
+      "forbidden_repeats": [
+        "Calling the failed90percent source gate passed",
+        "Calling diagnostic212pairs fresh confirmation later",
+        "Treating ordinary versus matched as geography-only or size-only causality",
+        "Replacing original alerts or declaring UNKNOWN clear"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-fresh-size-20260909/inference-v1/result.json",
+        "artifacts.local/work/body-query-fresh-size-20260909/independent-fresh-metric-validation.json",
+        "artifacts.local/work/body-query-fresh-size-20260909/worker-final-release.json"
+      ],
+      "association_id": "bq-fresh-size-20260909",
+      "search_text": "terminal-body-query-fresh-size-20260909 obstacle-avoidance FRESH_REGION_FIXTURE_SPATIAL_TRANSFER_FAILED_NO_PROMOTION Frozen240pair fresh capture:212pairs admitted below90percent source coverage; primaryNOT_EVALUABLE retained. Explicit212pair diagnostic JOINT ordinary andmatched strictpair0/106 each; near113/318 and116/318; wrongfar26/106 each. Original480framealertparity exact; independent audit and aligned32oldsource regression pass. Isolate original fixture versus new assembly/material and background before any broader spatial claim; no ordinal or rescue continuation from this terminal. Calling the failed90percent source gate passed Calling diagnostic212pairs fresh confirmation later Treating ordinary versus matched as geography-only or size-only causality Replacing original alerts or declaring UNKNOWN clear"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -24965,6 +25000,28 @@
         "runtime_infrastructure": 3
       },
       "search_text": "body-query-context-distance-20260909 Do frozen raw-feature decoders retain spatial attribution on rigid near/far pairs? Original10k B frozen distance predictions Unchanged LOCAL and JOINT context decoders, no fitting Near recall wrong-far exact range and retained alert errors SPATIAL_TRANSFER_GATE_MET_RETAIN_ORIGINAL_ALERT research/active/dtr-r0/nearfield/BODY_QUERY_CONTEXT_DISTANCE_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_context_distance.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "bq-fresh-size-20260909",
+      "status": "archived",
+      "question": "Does frozen JOINT survive fresh regions and matched target projection size?",
+      "baseline": "Frozen B and JOINT; retained original alerts",
+      "change": "New geographic sources and camera-centered apparent-size counterfactual; no fitting",
+      "primary_metric": "Strict pair-correct at least 80 percent separately in ordinary and size-matched arms; exact alert parity",
+      "decision": "No promotion: source coverage failed; admitted212pair frozen diagnostic has0strictpairs in botharms with480frame retainedalertparity",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_fresh_size_eval.py",
+      "commit": "478e67dfa279f5a1fed06dae9fe1652d9cb65229",
+      "association_id": "bq-fresh-size-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "geometry_motion": 3
+      },
+      "search_text": "bq-fresh-size-20260909 Does frozen JOINT survive fresh regions and matched target projection size? Frozen B and JOINT; retained original alerts New geographic sources and camera-centered apparent-size counterfactual; no fitting Strict pair-correct at least 80 percent separately in ordinary and size-matched arms; exact alert parity No promotion: source coverage failed; admitted212pair frozen diagnostic has0strictpairs in botharms with480frame retainedalertparity research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_fresh_size_eval.py"
     }
   ],
   "associations": [
@@ -25336,6 +25393,20 @@
         "artifacts.local/work/bodylift-r0-20260909/run-v2/receipt.json"
       ],
       "decision_id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bq-fresh-size-20260909",
+      "use_ids": [],
+      "protocol_id": "bq-fresh-size-v1",
+      "code_revision": "478e67dfa279f5a1fed06dae9fe1652d9cb65229",
+      "input_fingerprint": "634cc6cae4f296fe81fe02356ccbe2da915b89d40d0664933bf2c14f7a7b9623",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_PROTOCOL_20260909.md",
+        "artifacts.local/work/body-query-fresh-size-20260909",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-fresh-size-20260909",
       "source_rows": 1
     },
     {
