@@ -589,3 +589,9 @@ Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
 
 
 [Range R0](nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md): One matched2000-step range supervision fit: EVAL HEAD BASE571TP/34FP, R0557TP/35FP; HEAD-near query TP79 to1/894. Attribution criterion=False, alert preservation=False. Repeated-geometry Development only. Decision: RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL.
+
+## 2026-09-09: frozen B strict distance pairs complete
+
+- [Protocol](nearfield/BODY_QUERY_DISTANCE_PAIRS_PROTOCOL_20260909.md) and [results](nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md): 32/32 native-valid pairs, all 64 frames visually checked; frozen expanded B, original DEV thresholds, zero training.
+- Far score increases in 25/32 pairs, both HEAD alerts in 29/32 (near 32/32, far 29/32). Seven reversals are large enough to make mean delta -0.057944 despite median +0.003414. big01 only 3/8 direction-correct; all three HEAD misses there. No HEAD-negative denominator.
+- Some controlled within-object distance response exists, but near-frame far scores remain >0.87 and regional stability fails. Retain expanded B; range R0 remains negative. Pair source is a diagnostic component, not a distance-capability promotion. Fixed batch ends here, no automatic follow-on training or capture.

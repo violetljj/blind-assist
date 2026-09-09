@@ -121,6 +121,16 @@
       "failure_signature": "Attribution criterion=False; final alert preservation=False",
       "revisit_trigger": "Distinct question or independent confirmation, no automatic weight sweep",
       "assignment_basis": "Matched schedule and initial tensors; independent metrics and baseline parity"
+    },
+    {
+      "terminal_id": "terminal-body-query-distance-pairs-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen controlled distance-pair diagnostic only",
+      "retained_surface": "Strict paired source, frozen predictions and regional reversal evidence; expanded B remains baseline",
+      "failure_signature": "Far score rises25/32 but mean delta negative, big01 direction3/8 and near-frame far scores above0.87",
+      "revisit_trigger": "Distinct geometry hypothesis preserving final alerts and testing paired reversals",
+      "assignment_basis": "Completed fixed64-frame zero-training comparison; partial response without stable attribution"
     }
   ]
 }

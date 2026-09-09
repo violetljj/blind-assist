@@ -1004,6 +1004,28 @@
         "artifacts.local/work/body-query-range-r0-20260909/run-v1/range-result.json"
       ],
       "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
+    },
+    {
+      "id": "terminal-body-query-distance-pairs-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "FROZEN_DISTANCE_PAIR_DIAGNOSTIC_COMPLETE",
+      "summary": "32 native-valid frozen B pairs: far score rises25/32, both HEAD29/32; mean delta -0.057944, big01 direction3/8. Partial distance response, unstable attribution. Retain expanded B; range R0 remains negative.",
+      "successor_requires": "Distinct scoped change addressing reversals and preserving alerts; no automatic follow-on",
+      "forbidden_repeats": [
+        "Promoting stable geometry from positive direction fraction alone",
+        "Claiming HEAD FPR on all-positive frames",
+        "Interpreting 1-S_far as near probability"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-distance-pairs-20260909/inference-v1/result.json"
+      ],
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
     }
   ]
 }
