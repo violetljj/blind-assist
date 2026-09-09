@@ -5,7 +5,22 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest learned fusion and resolution result (2026-09-10)
+## Latest fusion error attribution and multi-zone motion (2026-09-10)
+
+[MZ3](nearfield/MZ3_ERROR_ATTRIBUTION_RESULTS_20260910.md) finds fusion gains148
+exact rows over MZ0 but loses105; all12 wrong-far errors are new. It preserves
+106/118 RGB-only successes but60/135 ToF-only successes. Keep MZ0/component and
+MZ1/challenger; prioritize correspondence/conflict, not another generic fit.
+These descriptive truth strata do not define an inference-time router.
+
+[MZ4](nearfield/MZ4_MOTION_RESULTS_20260910.md) resolves both BODY/HEAD memberships
+in224/500 stationary,481/500 moving-framewise and495/500 exact-pose joint cases.
+Most gain is additional views; joint constraints add14 cases. A0.5degree yaw bias
+causes338 empty fits; background-only returns resolve none. Retain conditional
+motion information, with explicit pose/scene-family limits and no walking claim.
+Both bounded studies are complete; no previous fit, alert or hardware changed.
+
+## Previous learned fusion and resolution result (2026-09-10)
 
 [MZ1](nearfield/MZ1_RESULTS_20260910.md) reaches90.20% exact versus matched
 RGB87.33% and ToF88.47%, but wrong-far12 and cross-body19 exceed retained MZ0
