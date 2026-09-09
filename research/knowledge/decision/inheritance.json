@@ -141,6 +141,16 @@
       "failure_signature": "HEAD-near fitting remains weak despite readable range-associated features; query readout objectives oppose locally.",
       "revisit_trigger": "One concrete readout or optimization intervention with attribution and alert-preservation checks.",
       "assignment_basis": "Zero-fit diagnostic supports a narrower question, not unique causal attribution or deployment."
+    },
+    {
+      "terminal_id": "terminal-body-query-10000-readout-20260909",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Trained10k fixed-feature shared query_readout-only2000-step continuation under unchanged losses.",
+      "retained_surface": "Unchanged10k B baseline; readout continuation as a negative control and gradient trace.",
+      "failure_signature": "HEAD-near115 to105/1788 and HEAD TP1150 to1148 despite groups508 to509.",
+      "revisit_trigger": "A distinct mechanism addressing spatial attribution, not automatic same-recipe continuation.",
+      "assignment_basis": "One valid corrected run; incorrect G13 first run is invalid setup and retained separately."
     }
   ]
 }

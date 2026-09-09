@@ -606,3 +606,8 @@ Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
 
 - [Diagnostic](nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md): zero fits, unchanged checkpoint. Shared readout alert/count gradient cosine -0.9634 on 128 balanced HEAD_ONLY frames; most wrong far outputs already receive a correcting combined output gradient.
 - Frozen cross-region retrieval within consumed TRAIN: raw HEAD-near857/1000, pre-readout827/1000, shuffled498/527. Retain readable range-associated features and local objective tension as component evidence; no unique pooling/backbone attribution, model replacement or automatic training.
+
+## 2026-09-09: 10k B readout-only continuation closed
+
+- [Results](nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md): trained10k B with only readout updated for2000 steps yields HEAD-near115 to105/1788, complete groups508 to509/600, HEAD TP1150 to1148 at35FP. Retain original10k B and mark this exact continuation NEGATIVE_CONTROL.
+- Frozen parameter/buffer identity and initialization parity are verified. All21 sampled readout alert/count cosines remain negative. Invalid G13-start run-v1 is preserved separately; no further fit or unique pooling/backbone claim.

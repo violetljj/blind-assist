@@ -1048,6 +1048,28 @@
         "artifacts.local/work/body-query-10000-frozen-diagnostic-20260909/run-v2/result.json"
       ],
       "commit": "WORKTREE_HASH_BOUND_DIAGNOSTIC_SOURCE_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-10000-readout-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL",
+      "summary": "Corrected trained10k readout-only2000-step continuation: EVAL HEAD-near115 to105/1788, groups508 to509/600, HEAD1150 to1148TP at35FP. All21 sampled alert/count readout cosines negative. No replacement; invalid G13 first attempt separately preserved.",
+      "successor_requires": "Distinct scoped mechanism with near attribution and alert preservation; no automatic continuation.",
+      "forbidden_repeats": [
+        "Treating invalid G13-start run as a negative readout result",
+        "Promoting by group or AUC improvement without spatial recovery",
+        "Inferring no upstream information from one fixed readout optimization"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-10000-readout-20260909/run-v2/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
     }
   ]
 }

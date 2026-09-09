@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-09",
-  "source_fingerprint": "8ef32272439aa23f9e10810aee70125744aa26820eff67dad36d11c9648b3ff3",
+  "source_fingerprint": "de60c1732b8497a340cbecba8e3954f313648fc8bbae4a338f1762f326b6f9e2",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 278,
-    "current_terminals": 64,
-    "run_associations": 276
+    "experiments": 279,
+    "current_terminals": 65,
+    "run_associations": 277
   },
   "failure_layers": [
     {
@@ -18848,6 +18848,38 @@
       "search_text": "terminal-body-query-10000-frozen-diagnostic-20260909 obstacle-avoidance RETAIN_10K_B_ALERT_WITH_READOUT_GRADIENT_AND_FEATURE_DIAGNOSTIC Frozen 10k B TRAIN-only: query_readout alert/count cosine -0.9634 on 128 balanced HEAD_ONLY frames; weighted count corrects most wrong far output contrasts. Cross-region consumed TRAIN 1-NN raw HEAD-near857/1000 and embedding827/1000. Zero fits; no unique root cause or model promotion. One scoped readout/optimization mechanism with spatial attribution and retained-alert checks; no automatic fitting. Claiming encoder-unseen region generalization from TRAIN retrieval Declaring pooling or backbone the unique cause Treating endpoint gradient conflict as historical causal proof"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-10000-readout-20260909",
+      "status": "diagnostic",
+      "question": "Corrected trained10k readout-only2000-step continuation: EVAL HEAD-near115 to105/1788, groups508 to509/600, HEAD1150 to1148TP at35FP. All21 sampled alert/count readout cosines negative. No replacement; invalid G13 first attempt separately preserved.",
+      "baseline": null,
+      "change": "Distinct scoped mechanism with near attribution and alert preservation; no automatic continuation.",
+      "primary_metric": null,
+      "decision": "RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped mechanism with near attribution and alert preservation; no automatic continuation.",
+      "forbidden_repeats": [
+        "Treating invalid G13-start run as a negative readout result",
+        "Promoting by group or AUC improvement without spatial recovery",
+        "Inferring no upstream information from one fixed readout optimization"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-10000-readout-20260909/run-v2/result.json"
+      ],
+      "association_id": "body-query-10000-readout-20260909",
+      "search_text": "terminal-body-query-10000-readout-20260909 obstacle-avoidance RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL Corrected trained10k readout-only2000-step continuation: EVAL HEAD-near115 to105/1788, groups508 to509/600, HEAD1150 to1148TP at35FP. All21 sampled alert/count readout cosines negative. No replacement; invalid G13 first attempt separately preserved. Distinct scoped mechanism with near attribution and alert preservation; no automatic continuation. Treating invalid G13-start run as a negative readout result Promoting by group or AUC improvement without spatial recovery Inferring no upstream information from one fixed readout optimization"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -24748,6 +24780,27 @@
         "evaluation_evidence": 3
       },
       "search_text": "body-query-10000-frozen-diagnostic-20260909 Does frozen 10k B have conflicting alert/count gradients and readable TRAIN range features? Unchanged 10k B checkpoint db39ccfc, retained controlled alert scope. No fit: TRAIN-only output and shared-parameter gradients plus frozen cross-region 1-NN. Readout gradient cosine and HEAD-near frozen feature retrieval accuracy. Retain 10k B; component diagnostic evidence, no unique cause or automatic successor. research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md Consumed 10k TRAIN partition only."
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-10000-readout-20260909",
+      "status": "archived",
+      "question": "Can readout-only continuation of trained10k B recover HEAD-near while retaining alerts?",
+      "baseline": "Trained10k B db39ccfc, fixed all non-readout parameters.",
+      "change": "One valid2000-step readout-only adaptation, original losses and schedule; invalid G13 first run retained.",
+      "primary_metric": "HEAD-near recall, wrong far events, HEAD_ONLY BODY FP, groups and alert preservation.",
+      "decision": "RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md",
+      "source": "Consumed10k TRAIN/DEV/EVAL controlled Development.",
+      "commit": "a21b7e0545a194f0f6dcd61ab3a28e1fc26aad88",
+      "association_id": "body-query-10000-readout-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 3
+      },
+      "search_text": "body-query-10000-readout-20260909 Can readout-only continuation of trained10k B recover HEAD-near while retaining alerts? Trained10k B db39ccfc, fixed all non-readout parameters. One valid2000-step readout-only adaptation, original losses and schedule; invalid G13 first run retained. HEAD-near recall, wrong far events, HEAD_ONLY BODY FP, groups and alert preservation. RETAIN_10K_B_READOUT_ONLY_NEGATIVE_CONTROL research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md Consumed10k TRAIN/DEV/EVAL controlled Development."
     }
   ],
   "associations": [
@@ -24777,6 +24830,19 @@
         "artifacts.local/work/body-query-10000-frozen-diagnostic-20260909/run-v2"
       ],
       "decision_id": "terminal-body-query-10000-frozen-diagnostic-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-10000-readout-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-10000-readout-20260909",
+      "code_revision": "a21b7e0545a194f0f6dcd61ab3a28e1fc26aad88",
+      "input_fingerprint": "a642df7b33f3361c5b13ddb422981e02e4ce627198e90e1719ed407f255e29d4",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_READOUT_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-10000-readout-20260909"
+      ],
+      "decision_id": "terminal-body-query-10000-readout-20260909",
       "source_rows": 1
     },
     {
