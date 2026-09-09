@@ -241,6 +241,26 @@
       "failure_signature": "Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait.",
       "revisit_trigger": "Distinct predeclared observation-quality question; no same-run tuning",
       "assignment_basis": "Consumed-source simulation and engineering geometry checks; no training or hardware evidence"
+    },
+    {
+      "terminal_id": "terminal-tof-motion-scan-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Ideal motion-coded spatial feasibility",
+      "retained_surface": "Frozen original B alerts; hashed source, observations and independent audit",
+      "failure_signature": "Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation.",
+      "revisit_trigger": "Distinct predeclared multi-zone or learned-fusion experiment; no same-run tuning",
+      "assignment_basis": "Completed fixed experiment with independent geometry/scoring checks"
+    },
+    {
+      "terminal_id": "terminal-mz0-clean-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Clean64zone input and zero-fit geometric fusion",
+      "retained_surface": "Frozen original B alerts; hashed source, observations and independent audit",
+      "failure_signature": "Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim.",
+      "revisit_trigger": "Distinct predeclared multi-zone or learned-fusion experiment; no same-run tuning",
+      "assignment_basis": "Completed fixed experiment with independent geometry/scoring checks"
     }
   ]
 }

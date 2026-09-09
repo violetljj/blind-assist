@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "07b61249b97204013fb3462ab36efbcfe82e40bbf68c4b9a981c576734ce26cc",
+  "source_fingerprint": "15f7bcb4fca6c8671d75f3d7d2fb4a39f7e97e7c1f0bbbf2f2ac2722062eaa79",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 288,
-    "current_terminals": 74,
-    "run_associations": 286
+    "experiments": 290,
+    "current_terminals": 76,
+    "run_associations": 288
   },
   "failure_layers": [
     {
@@ -19178,6 +19178,70 @@
       "search_text": "terminal-body-query-tof-jitter-20260910 obstacle-avoidance ROTATIONAL_JITTER_STABILITY_COST_NO_COVERAGE_GAIN Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait. Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior. Claiming real sensor or walking validation Erasing visual evidence from an ambiguous ToF range Calling near recall complete spatial attribution"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-tof-motion-scan-20260910",
+      "status": "diagnostic",
+      "question": "Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation.",
+      "baseline": null,
+      "change": "Preserve multi-source alternatives and response-law limits; no actual sensor claim",
+      "primary_metric": null,
+      "decision": "MOTION_CODED_FEASIBILITY_IDEAL_GAIN",
+      "report": "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve multi-source alternatives and response-law limits; no actual sensor claim",
+      "forbidden_repeats": [
+        "Relabeling simulated evidence as hardware validation",
+        "Using target identity as a measurement",
+        "Claiming independent confirmation from related readouts"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md",
+        "artifacts.local/work/tof-motion-scan-20260910/run-v1/result.json",
+        "artifacts.local/work/tof-motion-scan-20260910/run-v1/independent-audit.json"
+      ],
+      "association_id": "tof-motion-scan-20260910",
+      "search_text": "terminal-tof-motion-scan-20260910 obstacle-avoidance MOTION_CODED_FEASIBILITY_IDEAL_GAIN Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation. Preserve multi-source alternatives and response-law limits; no actual sensor claim Relabeling simulated evidence as hardware validation Using target identity as a measurement Claiming independent confirmation from related readouts"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz0-clean-20260910",
+      "status": "diagnostic",
+      "question": "Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim.",
+      "baseline": null,
+      "change": "Separate matched learned RGB-only,ToF-only,fusion controls before algorithm-specific claim",
+      "primary_metric": null,
+      "decision": "MZ0_CLEAN_64ZONE_INFORMATION_GATE_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separate matched learned RGB-only,ToF-only,fusion controls before algorithm-specific claim",
+      "forbidden_repeats": [
+        "Relabeling simulated evidence as hardware validation",
+        "Using target identity as a measurement",
+        "Claiming independent confirmation from related readouts"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md",
+        "artifacts.local/work/mz0-clean-20260910/run-v1/result.json",
+        "artifacts.local/work/mz0-clean-20260910/run-v1/independent-audit.json"
+      ],
+      "association_id": "mz0-clean-20260910",
+      "search_text": "terminal-mz0-clean-20260910 obstacle-avoidance MZ0_CLEAN_64ZONE_INFORMATION_GATE_MET Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim. Separate matched learned RGB-only,ToF-only,fusion controls before algorithm-specific claim Relabeling simulated evidence as hardware validation Using target identity as a measurement Claiming independent confirmation from related readouts"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25297,6 +25361,54 @@
         "evaluation_evidence": 3
       },
       "search_text": "bq-tof-jitter-20260910 Does fixed-origin rotation improve correct support coverage or increase spatial instability? Stationary15degree hypothetical ToF with matched noise and dropout Fixed25step2second pitch/yaw perturbation; known pose and frozen RGB Common-denominator mean and anytime support, false events and adjacent output flips Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait. research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md research/active/dtr-r0/nearfield/tof_jitter_sim.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "tof-motion-scan-20260910",
+      "status": "archived",
+      "question": "Can natural rotational dither encode spatial evidence across scalar returns without assuming one obstacle?",
+      "baseline": "One observation and25 stationary repetitions",
+      "change": "Known-pose25step joint feasibility over zero one or two disjoint patches",
+      "primary_metric": "Guaranteed HEAD coverage, false positives and empty feasible sets",
+      "decision": "Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation.",
+      "report": "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/tof_motion_scan.py",
+      "commit": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "association_id": "tof-motion-scan-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "tof-motion-scan-20260910 Can natural rotational dither encode spatial evidence across scalar returns without assuming one obstacle? One observation and25 stationary repetitions Known-pose25step joint feasibility over zero one or two disjoint patches Guaranteed HEAD coverage, false positives and empty feasible sets Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation. research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md research/active/dtr-r0/nearfield/tof_motion_scan.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz0-clean-20260910",
+      "status": "archived",
+      "question": "Does clean64zone metric information materially improve frozen visual spatial attribution?",
+      "baseline": "JOINT RGB-only on1500 consumed EVAL frames",
+      "change": "Zero-fit onezone versus8x8 versus sameFoV/fullFoV native geometry, three fixed readouts",
+      "primary_metric": "Four-event Spatial Exact Accuracy, wrongfar, crossbody and unchanged B alerts",
+      "decision": "Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim.",
+      "report": "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/mz0_clean.py",
+      "commit": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "association_id": "mz0-clean-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz0-clean-20260910 Does clean64zone metric information materially improve frozen visual spatial attribution? JOINT RGB-only on1500 consumed EVAL frames Zero-fit onezone versus8x8 versus sameFoV/fullFoV native geometry, three fixed readouts Four-event Spatial Exact Accuracy, wrongfar, crossbody and unchanged B alerts Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim. research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md research/active/dtr-r0/nearfield/mz0_clean.py"
     }
   ],
   "associations": [
@@ -27432,6 +27544,19 @@
       "source_rows": 1
     },
     {
+      "run_id": "mz0-clean-20260910",
+      "use_ids": [],
+      "protocol_id": "mz0-clean-v1",
+      "code_revision": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "input_fingerprint": "45f8be8d976fead67ab8c7123c702082f5b9d23c3742d3c262fc58f6d1d48873",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ0_PROTOCOL_20260910.md",
+        "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz0-clean-20260910",
+      "source_rows": 1
+    },
+    {
       "run_id": "nf-g0-representation-2026-09-07",
       "use_ids": [],
       "protocol_id": "nf-g0-representation-protocol-v1",
@@ -28792,6 +28917,19 @@
         "docs/research/goal-copilot/TYPED_SEMANTIC_REFERENT_GRAPH_V3_A_RESULT_2026-08-25.md"
       ],
       "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "tof-motion-scan-20260910",
+      "use_ids": [],
+      "protocol_id": "tof-motion-scan-v1",
+      "code_revision": "c8a7b78838e894078762e190b3c9450aabe950aa",
+      "input_fingerprint": "03d35f7aed8fc69cafa5efea782cc9eeb187a600766feca40d5cbc24a83388d0",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_20260910.md",
+        "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-tof-motion-scan-20260910",
       "source_rows": 1
     },
     {

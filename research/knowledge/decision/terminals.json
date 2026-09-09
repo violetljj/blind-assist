@@ -1278,6 +1278,50 @@
         "artifacts.local/work/body-query-tof-fusion-sim-20260909/jitter-v1/evaluation.json"
       ],
       "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-tof-motion-scan-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MOTION_CODED_FEASIBILITY_IDEAL_GAIN",
+      "summary": "Known-pose ideal moving joint inference resolves271/300 HEAD cases versus0 for stationary; strongest/farthest background controls resolve0; matched64010scene family, not hardware validation.",
+      "successor_requires": "Preserve multi-source alternatives and response-law limits; no actual sensor claim",
+      "forbidden_repeats": [
+        "Relabeling simulated evidence as hardware validation",
+        "Using target identity as a measurement",
+        "Claiming independent confirmation from related readouts"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md",
+        "artifacts.local/work/tof-motion-scan-20260910/run-v1/result.json",
+        "artifacts.local/work/tof-motion-scan-20260910/run-v1/independent-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-mz0-clean-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ0_CLEAN_64ZONE_INFORMATION_GATE_MET",
+      "summary": "Clean8x8 gives1310/1500 exact versus RGB1198; nearest wrongfar43to7 and crossbody72to15,1500alerts unchanged. SameFoV full depth1387. All three fixed readouts pass aggregate gate; not a learned-fusion or hardware claim.",
+      "successor_requires": "Separate matched learned RGB-only,ToF-only,fusion controls before algorithm-specific claim",
+      "forbidden_repeats": [
+        "Relabeling simulated evidence as hardware validation",
+        "Using target identity as a measurement",
+        "Claiming independent confirmation from related readouts"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ0_RESULTS_20260910.md",
+        "artifacts.local/work/mz0-clean-20260910/run-v1/result.json",
+        "artifacts.local/work/mz0-clean-20260910/run-v1/independent-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
     }
   ]
 }

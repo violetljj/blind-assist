@@ -5,7 +5,22 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest simulated fusion and jitter contrast (2026-09-10)
+## Latest clean multi-zone information result (2026-09-10)
+
+[MZ0](nearfield/MZ0_RESULTS_20260910.md) passes the illustrative information gate:
+spatial exact79.87% to87.33%,nearest wrongfar43/600 to7/600,crossbody72/600 to15/600,
+and1500 original alerts unchanged. All three readouts have the same exact total,
+not identical predictions. SameFoV full depth reaches92.47%; single-zone center
+readout is worse than RGB. No claim that64zones equal full depth or optimal fusion.
+User prioritizes generic MultiZone-ToF-64 clean information, then MZ1 learned
+fusion and MZ2 resolution/corruption; physical hardware fidelity comes later.
+
+[Motion-coded feasibility](nearfield/TOF_MOTION_SCAN_RESULTS_20260910.md) separately
+shows known-pose scans can resolve271/300 ideal HEAD cases versus0 stationary,
+while background-return laws yield no gain. Multiple source objects remain valid
+explanations. It is not a real walking or VL53L8CX result.
+
+## Previous simulated fusion and jitter contrast (2026-09-10)
 
 The [static and rotational results](nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md)
 retain ideal15degree positive near support: near hits51/53,95/106,94/106 with no
