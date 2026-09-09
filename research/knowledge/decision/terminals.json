@@ -1236,6 +1236,48 @@
         "artifacts.local/work/body-query-tof-coverage-20260909/ideal-cone-engineering.json"
       ],
       "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-body-query-tof-fusion-sim-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "IDEAL_POSITIVE_NEAR_SUPPORT_WITH_UNRESOLVED_CONFLICTS",
+      "summary": "Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority.",
+      "successor_requires": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "forbidden_repeats": [
+        "Claiming real sensor or walking validation",
+        "Erasing visual evidence from an ambiguous ToF range",
+        "Calling near recall complete spatial attribution"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+        "artifacts.local/work/body-query-tof-fusion-sim-20260909/eval-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
+    },
+    {
+      "id": "terminal-body-query-tof-jitter-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "ROTATIONAL_JITTER_STABILITY_COST_NO_COVERAGE_GAIN",
+      "summary": "Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait.",
+      "successor_requires": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "forbidden_repeats": [
+        "Claiming real sensor or walking validation",
+        "Erasing visual evidence from an ambiguous ToF range",
+        "Calling near recall complete spatial attribution"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+        "artifacts.local/work/body-query-tof-fusion-sim-20260909/jitter-v1/evaluation.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
     }
   ]
 }

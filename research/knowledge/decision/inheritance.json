@@ -221,6 +221,26 @@
       "failure_signature": "No target-dominated footprint in tested cohort; mixed return response unmodeled; geometry tests not fusion evidence",
       "revisit_trigger": "Explicit ideal measurement/validity sensitivity on same RGB without oracle association",
       "assignment_basis": "Hash-bound native coverage and4 analytic geometry checks; simulation-only scope confirmed by user"
+    },
+    {
+      "terminal_id": "terminal-body-query-tof-fusion-sim-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Ideal positive near support with frozen RGB",
+      "retained_surface": "Frozen RGB and B alerts, hashed measurements and comparison receipts",
+      "failure_signature": "Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority.",
+      "revisit_trigger": "Distinct predeclared observation-quality question; no same-run tuning",
+      "assignment_basis": "Consumed-source simulation and engineering geometry checks; no training or hardware evidence"
+    },
+    {
+      "terminal_id": "terminal-body-query-tof-jitter-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Fixed-origin rotational sensitivity control",
+      "retained_surface": "Frozen RGB and B alerts, hashed measurements and comparison receipts",
+      "failure_signature": "Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait.",
+      "revisit_trigger": "Distinct predeclared observation-quality question; no same-run tuning",
+      "assignment_basis": "Consumed-source simulation and engineering geometry checks; no training or hardware evidence"
     }
   ]
 }

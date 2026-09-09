@@ -5,7 +5,19 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest observation study: fixed ToF footprints and cone support (2026-09-09)
+## Latest simulated fusion and jitter contrast (2026-09-10)
+
+The [static and rotational results](nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md)
+retain ideal15degree positive near support: near hits51/53,95/106,94/106 with no
+added false events. RGB conflicts remain; strict simplified pairs stay0, while
+the naive threshold is stronger there. No general fusion superiority or training.
+
+User-requested fixed-origin rotation adds no anytime coverage in this saturated
+source, lowers mean fusednear89.00% to82.07%, and raises spatialflips8.76% to10.24%.
+Conservative orientation-aware association contributes abstentions. This is a
+static-scene simulation, not measured walking. All600 B alerts remain unchanged.
+
+## Previous observation study: fixed ToF footprints and cone support (2026-09-09)
 
 The [600-frame ToF footprint study](nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md)
 finds all frames mixed at both27deg and15deg ideal diagonal footprints; no95percent

@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "d0836b32b079743ec613cf5c7b81edcdb40c9e67801de848e19f13374d3e7881",
+  "source_fingerprint": "07b61249b97204013fb3462ab36efbcfe82e40bbf68c4b9a981c576734ce26cc",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 286,
-    "current_terminals": 72,
-    "run_associations": 284
+    "experiments": 288,
+    "current_terminals": 74,
+    "run_associations": 286
   },
   "failure_layers": [
     {
@@ -19116,6 +19116,68 @@
       "search_text": "terminal-body-query-tof-coverage-20260909 obstacle-avoidance MIXED_TOF_FOOTPRINTS_WITH_IDEAL_POSITIVE_CONE_SUPPORT All600frames mixed and0dominated at27/15degree idealdiagonal footprints. No real ToF return or fusion score. Implemented positive-only radial-cone body support with4 geometry tests; user confirms simulation-only hardware. Explicit hypothetical sensor response and validity assumptions before fusion sensitivity; preserve unknown and no oracle target association. Real hardware not currently available or required for ideal studies. Calling low angular coverage proven sensor failure Using target-conditioned return as hardware measurement Erasing visual FAR or declaring CLEAR from one ToF return Claiming measured fusion gain from geometry unit tests"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-tof-fusion-sim-20260910",
+      "status": "diagnostic",
+      "question": "Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority.",
+      "baseline": null,
+      "change": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "primary_metric": null,
+      "decision": "IDEAL_POSITIVE_NEAR_SUPPORT_WITH_UNRESOLVED_CONFLICTS",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "forbidden_repeats": [
+        "Claiming real sensor or walking validation",
+        "Erasing visual evidence from an ambiguous ToF range",
+        "Calling near recall complete spatial attribution"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+        "artifacts.local/work/body-query-tof-fusion-sim-20260909/eval-v1/result.json"
+      ],
+      "association_id": "bq-tof-fusion-sim-20260910",
+      "search_text": "terminal-body-query-tof-fusion-sim-20260910 obstacle-avoidance IDEAL_POSITIVE_NEAR_SUPPORT_WITH_UNRESOLVED_CONFLICTS Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority. Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior. Claiming real sensor or walking validation Erasing visual evidence from an ambiguous ToF range Calling near recall complete spatial attribution"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-tof-jitter-20260910",
+      "status": "diagnostic",
+      "question": "Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait.",
+      "baseline": null,
+      "change": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "primary_metric": null,
+      "decision": "ROTATIONAL_JITTER_STABILITY_COST_NO_COVERAGE_GAIN",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior.",
+      "forbidden_repeats": [
+        "Claiming real sensor or walking validation",
+        "Erasing visual evidence from an ambiguous ToF range",
+        "Calling near recall complete spatial attribution"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+        "artifacts.local/work/body-query-tof-fusion-sim-20260909/jitter-v1/evaluation.json"
+      ],
+      "association_id": "bq-tof-jitter-20260910",
+      "search_text": "terminal-body-query-tof-jitter-20260910 obstacle-avoidance ROTATIONAL_JITTER_STABILITY_COST_NO_COVERAGE_GAIN Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait. Preserve consumed scope, original alerts and UNKNOWN; separate ideal geometry from actual sensor behavior. Claiming real sensor or walking validation Erasing visual evidence from an ambiguous ToF range Calling near recall complete spatial attribution"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25187,6 +25249,54 @@
         "evaluation_evidence": 3
       },
       "search_text": "bq-tof-coverage-20260909 How much of a fixed VL53L1X-sized footprint is actually occupied by visible HEAD target? Existing600 RGB/native frames; no sensorreturn claim Centered ideal27degree and15degree diagonal square footprints, same sensor/camera origin Target fraction, mixed surfaces, unknown support and95percent geometric dominance; no fusion score 600/600frames mixed,0dominated atbothfootprints; no sensorfailure/fusionclaim. Positive-only idealcone support implemented and4tests pass. research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_tof_coverage.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "bq-tof-fusion-sim-20260910",
+      "status": "archived",
+      "question": "Does sparse hypothetical range add correct spatial evidence across three return laws?",
+      "baseline": "Saved frozen JOINT on600 consumed frames",
+      "change": "Fixed15/27degree footprints with three scene-only return hypotheses and positive cone support",
+      "primary_metric": "HEADnear event recall gain and added false events; strictpairs and alertparity",
+      "decision": "Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority.",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/tof_simulated_packets.py",
+      "commit": "179b298fce398b3403f3d2dd29e0fd603dd39972",
+      "association_id": "bq-tof-fusion-sim-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 9,
+        "evaluation_evidence": 3
+      },
+      "search_text": "bq-tof-fusion-sim-20260910 Does sparse hypothetical range add correct spatial evidence across three return laws? Saved frozen JOINT on600 consumed frames Fixed15/27degree footprints with three scene-only return hypotheses and positive cone support HEADnear event recall gain and added false events; strictpairs and alertparity Ideal15degree support increases near hits40/53 to51/53,42/106 to95/106 and42/106 to94/106 with zero addedfalse events. Strict simplified pairs remain0; threshold is stronger there. No broad fusion superiority. research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md research/active/dtr-r0/nearfield/tof_simulated_packets.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "bq-tof-jitter-20260910",
+      "status": "archived",
+      "question": "Does fixed-origin rotation improve correct support coverage or increase spatial instability?",
+      "baseline": "Stationary15degree hypothetical ToF with matched noise and dropout",
+      "change": "Fixed25step2second pitch/yaw perturbation; known pose and frozen RGB",
+      "primary_metric": "Common-denominator mean and anytime support, false events and adjacent output flips",
+      "decision": "Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait.",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/tof_jitter_sim.py",
+      "commit": "179b298fce398b3403f3d2dd29e0fd603dd39972",
+      "association_id": "bq-tof-jitter-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "bq-tof-jitter-20260910 Does fixed-origin rotation improve correct support coverage or increase spatial instability? Stationary15degree hypothetical ToF with matched noise and dropout Fixed25step2second pitch/yaw perturbation; known pose and frozen RGB Common-denominator mean and anytime support, false events and adjacent output flips Fixed-origin25step rotation has no anytime coverage gain265/265 in both arms, reduces fusednear5896/6625 to5437/6625 and raises spatialflips1114/12720 to1302/12720. Conservative association limits causal attribution; not real gait. research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md research/active/dtr-r0/nearfield/tof_jitter_sim.py"
     }
   ],
   "associations": [
@@ -25611,6 +25721,32 @@
         "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_COVERAGE_RESULTS_20260909.md"
       ],
       "decision_id": "terminal-body-query-tof-coverage-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bq-tof-fusion-sim-20260910",
+      "use_ids": [],
+      "protocol_id": "bq-tof-fusion-sim-v1",
+      "code_revision": "179b298fce398b3403f3d2dd29e0fd603dd39972",
+      "input_fingerprint": "ee4e792c19e9c76fe23692c81677957795e290b9f7b5d58d266a049c4cc4ecf7",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_FUSION_SIM_20260910.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-body-query-tof-fusion-sim-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bq-tof-jitter-20260910",
+      "use_ids": [],
+      "protocol_id": "bq-tof-jitter-v1",
+      "code_revision": "179b298fce398b3403f3d2dd29e0fd603dd39972",
+      "input_fingerprint": "f2d826fdbaaeaf2c8dd8255a6eaec86793adb4741101a85b20c072e36cb32ed7",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_JITTER_20260910.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_TOF_SIM_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-body-query-tof-jitter-20260910",
       "source_rows": 1
     },
     {
