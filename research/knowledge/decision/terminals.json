@@ -1167,6 +1167,30 @@
         "artifacts.local/work/body-query-fresh-size-20260909/worker-final-release.json"
       ],
       "commit": "WORKTREE_EXECUTED_SOURCE_HASH_IN_PROTOCOL"
+    },
+    {
+      "id": "terminal-body-query-background-only-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "BACKGROUND_ATTRIBUTION_INCONCLUSIVE_WITH_MATCHED_DEGRADATION",
+      "summary": "Exact original fixture translation:53 admitted visible-HEAD pairs,JOINT41/53 old to29/53 new; near150 to119/159,wrongfar2 to3/53,alerts120/120 parity. Original full-extent source0/60NOT_EVALUABLE preserved; separate pre-inference nativewitness diagnostic26/30and27/30. Strong80percent oldcontrol criterion notmet.",
+      "successor_requires": "Separate visible-evidence diagnostic does not reopen primary. Improve background robustness only through an explicitly scoped next intervention; retain matched failures.",
+      "forbidden_repeats": [
+        "Calling failed full-extent primary passed",
+        "Promoting off-corridor UNKNOWN to native identity or CLEAR",
+        "Claiming strong causal confirmation despite old control below80percent",
+        "Automatically extending to ordinal training"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_BACKGROUND_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-background-only-20260909/matched-comparison.json",
+        "artifacts.local/work/body-query-background-only-20260909/independent-final-audit.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCES_HASH_BOUND"
     }
   ]
 }

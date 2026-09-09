@@ -5,7 +5,23 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest falsifier: fresh region and fixture transfer fails (2026-09-09)
+## Latest diagnostic: original fixture under background translation (2026-09-09)
+
+The [background-only comparison](nearfield/BODY_QUERY_BACKGROUND_RESULTS_20260909.md)
+retains exact original13-part crossbars and camera-relative geometry. On53 matched
+admitted pairs, strict JOINT accuracy changes41/53 (77.36%) to29/53 (54.72%);
+near query hit150 to119/159, wrong-far2 to3/53. Original120-frame alerts are unchanged.
+Both regions decline;16old-correct pairs become wrong,4old-wrong become correct.
+
+Original full-extent admission remains NOT_EVALUABLE (clamp self-occlusion). A
+separate visible-HEAD diagnostic, frozen before model access on the same120frames,
+admits26/30 and27/30 pairs with exact in-corridor native target witnesses; BODY
+contamination stays excluded. This is consumed Development, not a restored primary.
+The strong attribution criterion remains INCONCLUSIVE because the matched old
+control is below80%; observed degradation is retained, not promoted to a unique
+causal explanation. Keep original alerts and scoped JOINT; no ordinal continuation.
+
+## Previous falsifier: fresh region and fixture transfer fails (2026-09-09)
 
 The [frozen fresh-size test](nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md)
 captured 240 pairs in two geographically new regions. Source admission retained
