@@ -301,6 +301,26 @@
       "failure_signature": "Exact compatibility produces338 empty fits under0.5degree yaw bias; no foreground information under background-only law",
       "revisit_trigger": "Explicit uncertain pose/correspondence mechanism tested against framewise control and beyond the matched scene family",
       "assignment_basis": "Known both-query224/500 stationary,481 moving-framewise,495 joint; zero errors within matched finite family. Half-degree yaw bias causes338 empty fits; background-only resolves0. No hardware/learning claim."
+    },
+    {
+      "terminal_id": "terminal-mz5-fixed-ensemble-20260910",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Next baseline for controlled generic MultiZone64 learned-readout comparisons only; no App or safety promotion",
+      "retained_surface": "Fixed equal-logit rule and compact callable export with full5000 CPU/CUDA sign parity; MZ0 information role and original alerts unchanged",
+      "failure_signature": "BODY_FAR true positives272->257/300 and HEAD_FAR270->255/300 versus MZ1 fusion; HEAD_ONLY near137/150 below ToF142/150",
+      "revisit_trigger": "A distinct observable mechanism improves the documented tradeoff against this fixed baseline without truth routing or consumed-data confirmation claims",
+      "assignment_basis": "Fixed equal-logit mean reaches1378/1500 exact versus MZ1 fusion1353; wrong-far12->4, cross-body19->8; paired gain52/loss27. Far recall decreases. Compact132872 parameters preserves all5000 CPU/CUDA signs without fitting."
+    },
+    {
+      "terminal_id": "terminal-mz5-spatial-fusion-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Completed consumed-Development mechanism comparison and reusable matched local/pooled control; not the practical readout baseline",
+      "retained_surface": "Position-preserving recache and three-arm implementation; independently replayed outputs and paired analysis",
+      "failure_signature": "Local adds only1/1500 exact versus pooled and trails ensemble by23; two of three regions decline; per-point head MACs are17.58x MZ1 despite similar parameter count",
+      "revisit_trigger": "A distinct spatial mechanism or explicit new evidence opportunity that can explain a meaningful effect beyond pooled and fixed-ensemble controls",
+      "assignment_basis": "Local1355/1500 versus pooled1354 and local-RGB1298; gain16/loss15, HEAD_ONLY near134 versus131/150. Necessary criterion passes narrowly; fixed permutation loses2. Ensemble1378 remains stronger aggregate baseline; three fits complete."
     }
   ]
 }

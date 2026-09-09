@@ -1408,6 +1408,52 @@
         "artifacts.local/work/mz4-multizone-motion-20260910/run-v2/independent-audit.json"
       ],
       "commit": "d209e0900cf86d6032e78b734550685812464de0"
+    },
+    {
+      "id": "terminal-mz5-fixed-ensemble-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ5_COMPACT_FIXED_ENSEMBLE_RETAINED_CONTROLLED_READOUT_BASELINE_WITH_RECALL_TRADEOFF",
+      "summary": "Fixed equal-logit mean reaches1378/1500 exact versus MZ1 fusion1353; wrong-far12->4, cross-body19->8; paired gain52/loss27. Far recall decreases. Compact132872 parameters preserves all5000 CPU/CUDA signs without fitting.",
+      "successor_requires": "A distinct observable mechanism improves the documented tradeoff against this fixed baseline without truth routing or consumed-data confirmation claims",
+      "forbidden_repeats": [
+        "Continuing completed MZ1/MZ5 fits or tuning this ensemble on the consumed result",
+        "Turning controlled generic ToF results into natural sensor, clearance or safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ5_FIXED_ENSEMBLE_RESULTS_20260910.md",
+        "artifacts.local/work/mz5-fixed-ensemble-20260910/run-v1/result.json",
+        "artifacts.local/work/mz5-fixed-ensemble-20260910/run-v1/independent-audit.json",
+        "artifacts.local/work/mz5-fixed-ensemble-20260910/compact-v1/engineering-receipt.json",
+        "artifacts.local/work/mz5-fixed-ensemble-20260910/compact-v1/parity-receipt.json"
+      ],
+      "commit": "4fe3e62b274609ab4e781633ffd21d9dae866e10"
+    },
+    {
+      "id": "terminal-mz5-spatial-fusion-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ5_LOCAL_SPATIAL_INCREMENT_WEAK_MATCHED_CONTROL_RETAINED_NO_PRACTICAL_BASELINE_CHANGE",
+      "summary": "Local1355/1500 versus pooled1354 and local-RGB1298; gain16/loss15, HEAD_ONLY near134 versus131/150. Necessary criterion passes narrowly; fixed permutation loses2. Ensemble1378 remains stronger aggregate baseline; three fits complete.",
+      "successor_requires": "A distinct spatial mechanism or explicit new evidence opportunity that can explain a meaningful effect beyond pooled and fixed-ensemble controls",
+      "forbidden_repeats": [
+        "Continuing completed MZ1/MZ5 fits or tuning this ensemble on the consumed result",
+        "Turning controlled generic ToF results into natural sensor, clearance or safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ5_SPATIAL_FUSION_RESULTS_20260910.md",
+        "artifacts.local/work/mz5-spatial-fusion-20260910/run-v1/analysis.json",
+        "artifacts.local/work/mz5-spatial-fusion-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz5-spatial-fusion-20260910/audit-run-v1/audit.json",
+        "artifacts.local/work/mz5-spatial-fusion-20260910/audit-analysis-v1/audit.json"
+      ],
+      "commit": "4fe3e62b274609ab4e781633ffd21d9dae866e10"
     }
   ]
 }
