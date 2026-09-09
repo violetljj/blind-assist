@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-09",
-  "source_fingerprint": "b3460d295c1ca629547b17a2adbe0cc46e224c88a3c74ba934b81e254a778fbc",
+  "source_fingerprint": "97247ad34890359edca6685a6ebaeaf245214ac28a0a0f070bf12b5a347946ef",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 284,
-    "current_terminals": 70,
-    "run_associations": 282
+    "experiments": 285,
+    "current_terminals": 71,
+    "run_associations": 283
   },
   "failure_layers": [
     {
@@ -19051,6 +19051,38 @@
       "search_text": "terminal-body-query-background-only-20260909 obstacle-avoidance BACKGROUND_ATTRIBUTION_INCONCLUSIVE_WITH_MATCHED_DEGRADATION Exact original fixture translation:53 admitted visible-HEAD pairs,JOINT41/53 old to29/53 new; near150 to119/159,wrongfar2 to3/53,alerts120/120 parity. Original full-extent source0/60NOT_EVALUABLE preserved; separate pre-inference nativewitness diagnostic26/30and27/30. Strong80percent oldcontrol criterion notmet. Separate visible-evidence diagnostic does not reopen primary. Improve background robustness only through an explicitly scoped next intervention; retain matched failures. Calling failed full-extent primary passed Promoting off-corridor UNKNOWN to native identity or CLEAR Claiming strong causal confirmation despite old control below80percent Automatically extending to ordinal training"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-local-transfer-20260909",
+      "status": "diagnostic",
+      "question": "Frozen LOCAL600frame comparator:strict3/53 versusJOINT29/53 originalfixture newbackground; both simplified arms0/106. All600 B alerts and probabilities match. No training or source change.",
+      "baseline": null,
+      "change": "Investigate information or observation coverage; no automatic same-recipe continuation. User-linked RGB plus VL53L1X route starts with constrained coverage, not oracle depth fusion.",
+      "primary_metric": null,
+      "decision": "LOCAL_READOUT_ALONE_NOT_SUFFICIENT_FOR_TRANSFER",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Investigate information or observation coverage; no automatic same-recipe continuation. User-linked RGB plus VL53L1X route starts with constrained coverage, not oracle depth fusion.",
+      "forbidden_repeats": [
+        "Calling consumed diagnostics fresh confirmation",
+        "Claiming local readout fixes background sensitivity",
+        "Feeding UE full depth or oracle target association as VL53L1X measurement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-local-transfer-20260909/run-v1/result.json",
+        "research/active/dtr-r0/nearfield/RGB_TOF_OBSERVATION_20260909.md"
+      ],
+      "association_id": "bq-local-transfer-20260909",
+      "search_text": "terminal-body-query-local-transfer-20260909 obstacle-avoidance LOCAL_READOUT_ALONE_NOT_SUFFICIENT_FOR_TRANSFER Frozen LOCAL600frame comparator:strict3/53 versusJOINT29/53 originalfixture newbackground; both simplified arms0/106. All600 B alerts and probabilities match. No training or source change. Investigate information or observation coverage; no automatic same-recipe continuation. User-linked RGB plus VL53L1X route starts with constrained coverage, not oracle depth fusion. Calling consumed diagnostics fresh confirmation Claiming local readout fixes background sensitivity Feeding UE full depth or oracle target association as VL53L1X measurement"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25079,6 +25111,27 @@
         "evaluation_evidence": 7
       },
       "search_text": "bq-background-only-20260909 Does exact original crossbar retain spatial attribution after background-only translation? Frozen B alerts and JOINT spatial branch Translate intact original13part fixtures and cameras to60 consumed newregion sites Strict pairs at least80percent and exact alert parity; matched old/new four metrics Matched JOINT41/53 to29/53;120frame alert parity; strongattribution INCONCLUSIVE because oldcontrol below80percent. Primary sourceNOT_EVALUABLE preserved; separate53pair visibleHEAD diagnostic. research/active/dtr-r0/nearfield/BODY_QUERY_BACKGROUND_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_background_eval.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "bq-local-transfer-20260909",
+      "status": "archived",
+      "question": "Does frozen LOCAL avoid JOINT transfer collapse without fitting?",
+      "baseline": "Frozen JOINT and original B alerts",
+      "change": "Existing frozen LOCAL querywise decoder instead of global12query readout",
+      "primary_metric": "Strict pairs improve at least10pp in allthree admitted transfer arms; exact alert parity",
+      "decision": "LOCAL does not remedy transfer:3/53 versusJOINT29/53; both simplified arms0/106;600frame original alert parity exact",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md",
+      "source": "research/active/dtr-r0/nearfield/body_query_local_transfer.py",
+      "commit": "7088cbe09b1b1cb3d62b72a1c77ae9e5357dbcbb",
+      "association_id": "bq-local-transfer-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "runtime_infrastructure": 3
+      },
+      "search_text": "bq-local-transfer-20260909 Does frozen LOCAL avoid JOINT transfer collapse without fitting? Frozen JOINT and original B alerts Existing frozen LOCAL querywise decoder instead of global12query readout Strict pairs improve at least10pp in allthree admitted transfer arms; exact alert parity LOCAL does not remedy transfer:3/53 versusJOINT29/53; both simplified arms0/106;600frame original alert parity exact research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md research/active/dtr-r0/nearfield/body_query_local_transfer.py"
     }
   ],
   "associations": [
@@ -25477,6 +25530,19 @@
         "research/active/dtr-r0/nearfield/BODY_QUERY_FRESH_SIZE_RESULTS_20260909.md"
       ],
       "decision_id": "terminal-body-query-fresh-size-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bq-local-transfer-20260909",
+      "use_ids": [],
+      "protocol_id": "bq-local-transfer-v1",
+      "code_revision": "7088cbe09b1b1cb3d62b72a1c77ae9e5357dbcbb",
+      "input_fingerprint": "88badf07e57745dee24bf5017b6971a3bcc7bb932f7a004864e625f8d4f39e3b",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_20260909.md",
+        "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md"
+      ],
+      "decision_id": "terminal-body-query-local-transfer-20260909",
       "source_rows": 1
     },
     {

@@ -5,7 +5,21 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest diagnostic: original fixture under background translation (2026-09-09)
+## Latest fixed comparator and observation route (2026-09-09)
+
+The [frozen LOCAL transfer contrast](nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md)
+does not remedy transfer: strict original-fixture pairs3/53 versus JOINT29/53,
+and0/106 in each simplified-fixture arm. All600 original B alerts/probabilities
+remain identical. This rules out simply substituting the existing LOCAL readout;
+it does not prove RGB contains no distance information. No fitting was performed.
+
+The user-linked discussion now motivates [RGB plus constrained VL53L1X-like input](nearfield/RGB_TOF_OBSERVATION_20260909.md).
+First check surface coverage and ambiguity in a fixed sensor footprint; preserve
+invalid/mixed returns and require calibration. No full UE depth or oracle target
+association enters model inputs. A ToF fusion result has NOT yet been measured.
+Keep JOINT as the scoped comparator and original B alerts unchanged.
+
+## Previous diagnostic: original fixture under background translation (2026-09-09)
 
 The [background-only comparison](nearfield/BODY_QUERY_BACKGROUND_RESULTS_20260909.md)
 retains exact original13-part crossbars and camera-relative geometry. On53 matched

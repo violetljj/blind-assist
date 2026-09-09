@@ -201,6 +201,16 @@
       "failure_signature": "JOINT strict41/53 to29/53; oldcontrol below80percent; no robust background retention",
       "revisit_trigger": "Explicit bounded intervention for background robustness with matched geometry; no automatic ordinal or threshold rescue",
       "assignment_basis": "Exactgeometry audit, independent native witness and probability audit; observed22.64pp decrease is not strong causal confirmation"
+    },
+    {
+      "terminal_id": "terminal-body-query-local-transfer-20260909",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Frozen LOCAL versus saved JOINT on consumed transfer cohorts",
+      "retained_surface": "JOINT component and original B alerts; LOCAL negative comparator; fixed source exclusions",
+      "failure_signature": "LOCAL strict3/53 versus29/53 and0/106 twice;600frame parity preserved",
+      "revisit_trigger": "Constrained additional observation study or distinct intervention; not samefit continuation",
+      "assignment_basis": "One frozen600frame RGB run; saved BASE probabilities exact; no training or fresh confirmation"
     }
   ]
 }

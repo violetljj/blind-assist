@@ -1191,6 +1191,28 @@
         "artifacts.local/work/body-query-background-only-20260909/independent-final-audit.json"
       ],
       "commit": "WORKTREE_EXECUTED_SOURCES_HASH_BOUND"
+    },
+    {
+      "id": "terminal-body-query-local-transfer-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "LOCAL_READOUT_ALONE_NOT_SUFFICIENT_FOR_TRANSFER",
+      "summary": "Frozen LOCAL600frame comparator:strict3/53 versusJOINT29/53 originalfixture newbackground; both simplified arms0/106. All600 B alerts and probabilities match. No training or source change.",
+      "successor_requires": "Investigate information or observation coverage; no automatic same-recipe continuation. User-linked RGB plus VL53L1X route starts with constrained coverage, not oracle depth fusion.",
+      "forbidden_repeats": [
+        "Calling consumed diagnostics fresh confirmation",
+        "Claiming local readout fixes background sensitivity",
+        "Feeding UE full depth or oracle target association as VL53L1X measurement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_LOCAL_TRANSFER_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-local-transfer-20260909/run-v1/result.json",
+        "research/active/dtr-r0/nearfield/RGB_TOF_OBSERVATION_20260909.md"
+      ],
+      "commit": "WORKTREE_EXECUTED_OPERATOR_HASH_BOUND"
     }
   ]
 }
