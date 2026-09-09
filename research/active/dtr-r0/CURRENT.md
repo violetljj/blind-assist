@@ -595,3 +595,9 @@ Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
 - [Protocol](nearfield/BODY_QUERY_DISTANCE_PAIRS_PROTOCOL_20260909.md) and [results](nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md): 32/32 native-valid pairs, all 64 frames visually checked; frozen expanded B, original DEV thresholds, zero training.
 - Far score increases in 25/32 pairs, both HEAD alerts in 29/32 (near 32/32, far 29/32). Seven reversals are large enough to make mean delta -0.057944 despite median +0.003414. big01 only 3/8 direction-correct; all three HEAD misses there. No HEAD-negative denominator.
 - Some controlled within-object distance response exists, but near-frame far scores remain >0.87 and regional stability fails. Retain expanded B; range R0 remains negative. Pair source is a diagnostic component, not a distance-capability promotion. Fixed batch ends here, no automatic follow-on training or capture.
+
+## 2026-09-09: 10000-source B comparison complete
+
+- [Results](nearfield/BODY_QUERY_10000_RESULTS_20260909.md): the accepted source has 10000 frames, 2000 complete groups, 500 sites, unique RGB hashes, and TRAIN/DEV/EVAL roles 5000/2000/3000. Visual review covers 800 frames; background limitations remain explicitly retained.
+- One fixed 2000-step NEW fit improves EVAL BODY AUC 0.98458 to 0.99712 and HEAD AUC 0.97484 to 0.98695; complete-group correctness is 439/600 to 508/600. HEAD-near query-cell recall falls 7.83% to 6.43%, so this is alert-scope evidence rather than solved query geometry.
+- The separate 2500-pair distance diagnostic has far-higher direction 557/750 to 574/750 on EVAL, but HEAD-near nonempty-query recall falls 0.267% to 0.044% and BODY false alerts rise 54/1500 to 113/1500. Retain NEW only for measured controlled-Development alert scope; keep OLD as historical comparator. No distance, deployment, natural-scene or safety promotion and no automatic follow-up.
