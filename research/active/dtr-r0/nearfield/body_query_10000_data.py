@@ -158,4 +158,3 @@ if __name__ == '__main__':
     result = build(args.dataset, args.output)
     print('PASS:', result['integrity_checks'])
 
-\n
