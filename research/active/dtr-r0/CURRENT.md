@@ -586,3 +586,6 @@ Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
 
 
 [Expanded-source B](nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md): Expanded TRAIN2500 with unchanged B and original initialization/2000-step budget: EVAL HEAD OLD 177TP/139FP, NEW 571TP/34FP; groups 1 to 228/300. Shared-asset Development; retain historical controls. Decision: RETAIN_EXPANDED_B_WORKING_BASELINE. One completed fit; no automatic extension. HEAD-near query recall remains79/894 despite strong final detection; correct depth attribution is not established.
+
+
+[Range R0](nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md): One matched2000-step range supervision fit: EVAL HEAD BASE571TP/34FP, R0557TP/35FP; HEAD-near query TP79 to1/894. Attribution criterion=False, alert preservation=False. Repeated-geometry Development only. Decision: RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL.

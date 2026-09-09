@@ -981,6 +981,29 @@
         "artifacts.local/work/body-query-expanded-b-20260909/run-v1/validation.json"
       ],
       "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
+    },
+    {
+      "id": "terminal-body-query-range-r0-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL",
+      "summary": "One matched2000-step range supervision fit: EVAL HEAD BASE571TP/34FP, R0557TP/35FP; HEAD-near query TP79 to1/894. Attribution criterion=False, alert preservation=False. Repeated-geometry Development only.",
+      "successor_requires": "Distinct scoped question; no automatic weight sweep or budget extension",
+      "forbidden_repeats": [
+        "Claiming complete 3D attribution from range-event improvement",
+        "Silently extending completed2000-step fit",
+        "Replacing strong final alerts while hiding their regression"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-range-r0-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-range-r0-20260909/run-v1/range-result.json"
+      ],
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
     }
   ]
 }
