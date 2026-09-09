@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-09",
-  "source_fingerprint": "7a79d2426bbd386e0ae7ccf867ae6b91f0c8448f14ac10f2c0686e22ed1f5cd0",
+  "source_fingerprint": "8ef32272439aa23f9e10810aee70125744aa26820eff67dad36d11c9648b3ff3",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 269,
-    "current_terminals": 59,
-    "run_associations": 267
+    "experiments": 278,
+    "current_terminals": 64,
+    "run_associations": 276
   },
   "failure_layers": [
     {
@@ -18683,6 +18683,171 @@
       "search_text": "terminal-dtr-ase-body-query-pilot-coverage-insufficient obstacle-avoidance ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training. A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits. Automatic source or frame expansion to rescue this fixed subset Treating native ASE counts as V1 pinhole-equivalent labels Claiming no visible endpoints as certified free space"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
+      "status": "diagnostic",
+      "question": "Two matched frozen-appearance2000-step fits. LIFT EVAL HEAD11TP6FP versus original B and CONTROL8TP2FP; oracle TP at FP<=2 is6 versus8. Near-surface held-out depth CE exceeds uniform, so this recipe does not establish useful near-field depth. Retain B; no general rejection of depth supervision.",
+      "baseline": null,
+      "change": "Distinct scoped intervention, not a bin/loss sweep or attribution of failure solely to pooling",
+      "primary_metric": null,
+      "decision": "BODYLIFT_R0_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_FROZEN_MODEL_AND_TRAINED_HEAD_HASHES_IN_RECEIPTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped intervention, not a bin/loss sweep or attribution of failure solely to pooling",
+      "forbidden_repeats": [
+        "Reclassifying collapsed native zeros as known FREE_RAY",
+        "Claiming all depth-aware methods fail from this frozen-feature depth head",
+        "Promoting LIFT from11 hits while hiding6 false alerts",
+        "Extending the completed2000-step budgets",
+        "Claiming improved overall depth CE proves near-field depth learned"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md",
+        "artifacts.local/work/bodylift-r0-20260909/run-v2/result.json",
+        "artifacts.local/work/bodylift-r0-20260909/validation.json"
+      ],
+      "association_id": "bodylift-r0-result-20260909",
+      "search_text": "terminal-bodylift-r0-20260909-no-low-fp-gain obstacle-avoidance BODYLIFT_R0_NEGATIVE_CONTROL_RETAIN_B Two matched frozen-appearance2000-step fits. LIFT EVAL HEAD11TP6FP versus original B and CONTROL8TP2FP; oracle TP at FP<=2 is6 versus8. Near-surface held-out depth CE exceeds uniform, so this recipe does not establish useful near-field depth. Retain B; no general rejection of depth supervision. Distinct scoped intervention, not a bin/loss sweep or attribution of failure solely to pooling Reclassifying collapsed native zeros as known FREE_RAY Claiming all depth-aware methods fail from this frozen-feature depth head Promoting LIFT from11 hits while hiding6 false alerts Extending the completed2000-step budgets Claiming improved overall depth CE proves near-field depth learned"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-expanded-b-20260909",
+      "status": "diagnostic",
+      "question": "Expanded TRAIN2500 with unchanged B and original initialization/2000-step budget: EVAL HEAD OLD 177TP/139FP, NEW 571TP/34FP; groups 1 to 228/300. Shared-asset Development; retain historical controls. HEAD-near query recall remains79/894; final alert gain does not prove correct depth attribution.",
+      "baseline": null,
+      "change": "Distinct scoped experiment or independent confirmation, not automatic budget extension",
+      "primary_metric": null,
+      "decision": "RETAIN_EXPANDED_B_WORKING_BASELINE",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped experiment or independent confirmation, not automatic budget extension",
+      "forbidden_repeats": [
+        "Treating shared geometry/assets as independent natural scenes",
+        "Selecting deployment thresholds from EVAL",
+        "Silently extending this completed2000-step fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-expanded-b-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-expanded-b-20260909/run-v1/validation.json"
+      ],
+      "association_id": "body-query-expanded-b-result-20260909",
+      "search_text": "terminal-body-query-expanded-b-20260909 obstacle-avoidance RETAIN_EXPANDED_B_WORKING_BASELINE Expanded TRAIN2500 with unchanged B and original initialization/2000-step budget: EVAL HEAD OLD 177TP/139FP, NEW 571TP/34FP; groups 1 to 228/300. Shared-asset Development; retain historical controls. HEAD-near query recall remains79/894; final alert gain does not prove correct depth attribution. Distinct scoped experiment or independent confirmation, not automatic budget extension Treating shared geometry/assets as independent natural scenes Selecting deployment thresholds from EVAL Silently extending this completed2000-step fit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-range-r0-20260909",
+      "status": "diagnostic",
+      "question": "One matched2000-step range supervision fit: EVAL HEAD BASE571TP/34FP, R0557TP/35FP; HEAD-near query TP79 to1/894. Attribution criterion=False, alert preservation=False. Repeated-geometry Development only.",
+      "baseline": null,
+      "change": "Distinct scoped question; no automatic weight sweep or budget extension",
+      "primary_metric": null,
+      "decision": "RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped question; no automatic weight sweep or budget extension",
+      "forbidden_repeats": [
+        "Claiming complete 3D attribution from range-event improvement",
+        "Silently extending completed2000-step fit",
+        "Replacing strong final alerts while hiding their regression"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-range-r0-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-range-r0-20260909/run-v1/range-result.json"
+      ],
+      "association_id": "body-query-range-r0-result-20260909",
+      "search_text": "terminal-body-query-range-r0-20260909 obstacle-avoidance RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL One matched2000-step range supervision fit: EVAL HEAD BASE571TP/34FP, R0557TP/35FP; HEAD-near query TP79 to1/894. Attribution criterion=False, alert preservation=False. Repeated-geometry Development only. Distinct scoped question; no automatic weight sweep or budget extension Claiming complete 3D attribution from range-event improvement Silently extending completed2000-step fit Replacing strong final alerts while hiding their regression"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-distance-pairs-20260909",
+      "status": "diagnostic",
+      "question": "32 native-valid frozen B pairs: far score rises25/32, both HEAD29/32; mean delta -0.057944, big01 direction3/8. Partial distance response, unstable attribution. Retain expanded B; range R0 remains negative.",
+      "baseline": null,
+      "change": "Distinct scoped change addressing reversals and preserving alerts; no automatic follow-on",
+      "primary_metric": null,
+      "decision": "FROZEN_DISTANCE_PAIR_DIAGNOSTIC_COMPLETE",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Distinct scoped change addressing reversals and preserving alerts; no automatic follow-on",
+      "forbidden_repeats": [
+        "Promoting stable geometry from positive direction fraction alone",
+        "Claiming HEAD FPR on all-positive frames",
+        "Interpreting 1-S_far as near probability"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-distance-pairs-20260909/inference-v1/result.json"
+      ],
+      "association_id": "body-query-distance-pairs-result-20260909",
+      "search_text": "terminal-body-query-distance-pairs-20260909 obstacle-avoidance FROZEN_DISTANCE_PAIR_DIAGNOSTIC_COMPLETE 32 native-valid frozen B pairs: far score rises25/32, both HEAD29/32; mean delta -0.057944, big01 direction3/8. Partial distance response, unstable attribution. Retain expanded B; range R0 remains negative. Distinct scoped change addressing reversals and preserving alerts; no automatic follow-on Promoting stable geometry from positive direction fraction alone Claiming HEAD FPR on all-positive frames Interpreting 1-S_far as near probability"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-body-query-10000-frozen-diagnostic-20260909",
+      "status": "diagnostic",
+      "question": "Frozen 10k B TRAIN-only: query_readout alert/count cosine -0.9634 on 128 balanced HEAD_ONLY frames; weighted count corrects most wrong far output contrasts. Cross-region consumed TRAIN 1-NN raw HEAD-near857/1000 and embedding827/1000. Zero fits; no unique root cause or model promotion.",
+      "baseline": null,
+      "change": "One scoped readout/optimization mechanism with spatial attribution and retained-alert checks; no automatic fitting.",
+      "primary_metric": null,
+      "decision": "RETAIN_10K_B_ALERT_WITH_READOUT_GRADIENT_AND_FEATURE_DIAGNOSTIC",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md",
+      "source": "decision/terminals.json",
+      "commit": "WORKTREE_HASH_BOUND_DIAGNOSTIC_SOURCE_IN_PROTOCOL",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "One scoped readout/optimization mechanism with spatial attribution and retained-alert checks; no automatic fitting.",
+      "forbidden_repeats": [
+        "Claiming encoder-unseen region generalization from TRAIN retrieval",
+        "Declaring pooling or backbone the unique cause",
+        "Treating endpoint gradient conflict as historical causal proof"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-10000-frozen-diagnostic-20260909/run-v2/result.json"
+      ],
+      "association_id": "body-query-10000-frozen-diagnostic-20260909",
+      "search_text": "terminal-body-query-10000-frozen-diagnostic-20260909 obstacle-avoidance RETAIN_10K_B_ALERT_WITH_READOUT_GRADIENT_AND_FEATURE_DIAGNOSTIC Frozen 10k B TRAIN-only: query_readout alert/count cosine -0.9634 on 128 balanced HEAD_ONLY frames; weighted count corrects most wrong far output contrasts. Cross-region consumed TRAIN 1-NN raw HEAD-near857/1000 and embedding827/1000. Zero fits; no unique root cause or model promotion. One scoped readout/optimization mechanism with spatial attribution and retained-alert checks; no automatic fitting. Claiming encoder-unseen region generalization from TRAIN retrieval Declaring pooling or backbone the unique cause Treating endpoint gradient conflict as historical causal proof"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -24381,6 +24546,208 @@
         "geometry_motion": 6
       },
       "search_text": "ase-body-query-pilot-20260909 Does ASE provide independent-scene near-field HEAD-only and BODY-only visible surface coverage? Frozen BODY-QUERY B and its existing geometry volumes; no weights opened in coverage stage Official ASE train chunk0 scenes0,4,8; 24 uniformly spaced frames per scene; fixed camera-anchored proxy geometry Four-way visible occupancy and invalid-pixel coverage; HEAD-only frames and independent layouts Retain geometry adapter as component; fixed72-frame subset has zero HEAD-only cases, no model test or training research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md Official Aria Synthetic Environments TRAIN chunk0"
+    },
+    {
+      "kind": "experiment",
+      "id": "bodylift-r0-20260909",
+      "status": "active",
+      "question": "Does RGB-predicted depth-bin lifting improve frozen appearance query heads?",
+      "baseline": "Original B plus matched heads-only CONTROL",
+      "change": "Sixteen-bin depth-supervised lifting before projection; uniform identity scaling",
+      "primary_metric": "HEAD BODY TP FP versus both baselines and depth CE",
+      "decision": "Two fixed2000 step fits; no depth-family rejection or promotion by default",
+      "report": "research/active/dtr-r0/nearfield/BODYLIFT_R0_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "7a994c959062c7bbba56cb0eec8966b1e0aaab67",
+      "association_id": "bodylift-r0-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 6
+      },
+      "search_text": "bodylift-r0-20260909 Does RGB-predicted depth-bin lifting improve frozen appearance query heads? Original B plus matched heads-only CONTROL Sixteen-bin depth-supervised lifting before projection; uniform identity scaling HEAD BODY TP FP versus both baselines and depth CE Two fixed2000 step fits; no depth-family rejection or promotion by default research/active/dtr-r0/nearfield/BODYLIFT_R0_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "bodylift-r0-result-20260909",
+      "status": "archived",
+      "question": "Does supervised depth-bin lifting improve frozen visual query heads?",
+      "baseline": "Original B and matched heads-only CONTROL",
+      "change": "Sixteen-bin depth prediction and lifting before projection",
+      "primary_metric": "HEAD BODY low-FP tradeoff and near-surface depth CE",
+      "decision": "BODYLIFT_R0_NEGATIVE_CONTROL_RETAIN_B",
+      "report": "research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "816155b3c1584e40ba5facee265528dbc8749f5a",
+      "association_id": "bodylift-r0-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "bodylift-r0-result-20260909 Does supervised depth-bin lifting improve frozen visual query heads? Original B and matched heads-only CONTROL Sixteen-bin depth prediction and lifting before projection HEAD BODY low-FP tradeoff and near-surface depth CE BODYLIFT_R0_NEGATIVE_CONTROL_RETAIN_B research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-expanded-b-20260909",
+      "status": "active",
+      "question": "Does expanded structured source improve unchanged B query transfer?",
+      "baseline": "Original B final2000; same G13 initial weights for NEW",
+      "change": "Replace TRAIN240 with new fixed TRAIN2500, keep B architecture and2000-step budget",
+      "primary_metric": "DEV-selected HEAD BODY TP FP and complete groups",
+      "decision": "RUN_FIXED_COMPARISON",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "44ec68e384cb307b42b8d5fa70aed70630f2bc78",
+      "association_id": "body-query-expanded-b-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-expanded-b-20260909 Does expanded structured source improve unchanged B query transfer? Original B final2000; same G13 initial weights for NEW Replace TRAIN240 with new fixed TRAIN2500, keep B architecture and2000-step budget DEV-selected HEAD BODY TP FP and complete groups RUN_FIXED_COMPARISON research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-expanded-b-result-20260909",
+      "status": "archived",
+      "question": "Does expanded structured source improve unchanged B query transfer?",
+      "baseline": "Original B final2000 and same initial G13 tensors",
+      "change": "New TRAIN2500 replacing old TRAIN240 with same architecture and budget",
+      "primary_metric": "DEV-selected HEAD BODY TP FP and complete groups",
+      "decision": "RETAIN_EXPANDED_B_WORKING_BASELINE",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "44ec68e384cb307b42b8d5fa70aed70630f2bc78",
+      "association_id": "body-query-expanded-b-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-expanded-b-result-20260909 Does expanded structured source improve unchanged B query transfer? Original B final2000 and same initial G13 tensors New TRAIN2500 replacing old TRAIN240 with same architecture and budget DEV-selected HEAD BODY TP FP and complete groups RETAIN_EXPANDED_B_WORKING_BASELINE research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-range-r0-20260909",
+      "status": "active",
+      "question": "Can range event supervision correct near far attribution while preserving strong alerts?",
+      "baseline": "Expanded-source B final2000 checkpoint",
+      "change": "Add .25 four-range event BCE, otherwise exact same initialization data schedule and2000-step budget",
+      "primary_metric": "Range attribution and final HEAD BODY TP FP groups",
+      "decision": "RUN_ONE_RANGE_FIT",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "20dd829c0cfd57faf654e72ed157469451138051",
+      "association_id": "body-query-range-r0-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-range-r0-20260909 Can range event supervision correct near far attribution while preserving strong alerts? Expanded-source B final2000 checkpoint Add .25 four-range event BCE, otherwise exact same initialization data schedule and2000-step budget Range attribution and final HEAD BODY TP FP groups RUN_ONE_RANGE_FIT research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-range-r0-result-20260909",
+      "status": "archived",
+      "question": "Can range-event supervision improve attribution while preserving alerts?",
+      "baseline": "Expanded-source B final2000",
+      "change": "Add .25 mean range BCE with same initialization and schedule",
+      "primary_metric": "Range attribution and HEAD BODY TP FP groups",
+      "decision": "RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "20dd829c0cfd57faf654e72ed157469451138051",
+      "association_id": "body-query-range-r0-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "decision_lifecycle": 3
+      },
+      "search_text": "body-query-range-r0-result-20260909 Can range-event supervision improve attribution while preserving alerts? Expanded-source B final2000 Add .25 mean range BCE with same initialization and schedule Range attribution and HEAD BODY TP FP groups RETAIN_EXPANDED_B_RANGE_R0_NEGATIVE_CONTROL research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-distance-pairs-20260909",
+      "status": "active",
+      "question": "Does frozen expanded B far score track rigid forward translation of the same obstacle?",
+      "baseline": "Unchanged expanded B and original DEV thresholds",
+      "change": "32 strict same-camera same-assembly near far pairs; zero training",
+      "primary_metric": "Paired far score direction and both-end HEAD alerts by family site and size",
+      "decision": "CAPTURE_AND_COMPARE_FIXED_PAIRS",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_PROTOCOL_20260909.md",
+      "source": "dtr-r0",
+      "commit": "f1c4ff06a0b322f5c44d3aab66af5c47311b3eed",
+      "association_id": "body-query-distance-pairs-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-distance-pairs-20260909 Does frozen expanded B far score track rigid forward translation of the same obstacle? Unchanged expanded B and original DEV thresholds 32 strict same-camera same-assembly near far pairs; zero training Paired far score direction and both-end HEAD alerts by family site and size CAPTURE_AND_COMPARE_FIXED_PAIRS research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_PROTOCOL_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-distance-pairs-result-20260909",
+      "status": "archived",
+      "question": "Does frozen expanded B far evidence follow strict forward translation of the same obstacle?",
+      "baseline": "Expanded B NEW-step2000 original DEV thresholds",
+      "change": "32 matched near-far pairs; no training or model change",
+      "primary_metric": "Pairwise far-score direction, both-end HEAD alerts and region/size slices",
+      "decision": "FROZEN_DISTANCE_PAIR_DIAGNOSTIC_COMPLETE: partial response25/32, both alerts29/32; unstable big01 and negative mean delta. Retain expanded B.",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md",
+      "source": "dtr-r0",
+      "commit": "f1c4ff06a0b322f5c44d3aab66af5c47311b3eed",
+      "association_id": "body-query-distance-pairs-result-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-distance-pairs-result-20260909 Does frozen expanded B far evidence follow strict forward translation of the same obstacle? Expanded B NEW-step2000 original DEV thresholds 32 matched near-far pairs; no training or model change Pairwise far-score direction, both-end HEAD alerts and region/size slices FROZEN_DISTANCE_PAIR_DIAGNOSTIC_COMPLETE: partial response25/32, both alerts29/32; unstable big01 and negative mean delta. Retain expanded B. research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md dtr-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "body-query-10000-frozen-diagnostic-20260909",
+      "status": "archived",
+      "question": "Does frozen 10k B have conflicting alert/count gradients and readable TRAIN range features?",
+      "baseline": "Unchanged 10k B checkpoint db39ccfc, retained controlled alert scope.",
+      "change": "No fit: TRAIN-only output and shared-parameter gradients plus frozen cross-region 1-NN.",
+      "primary_metric": "Readout gradient cosine and HEAD-near frozen feature retrieval accuracy.",
+      "decision": "Retain 10k B; component diagnostic evidence, no unique cause or automatic successor.",
+      "report": "research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md",
+      "source": "Consumed 10k TRAIN partition only.",
+      "commit": "c454cc2f1ce2fb223e90f4c52e9c158d757a5d45",
+      "association_id": "body-query-10000-frozen-diagnostic-20260909",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "body-query-10000-frozen-diagnostic-20260909 Does frozen 10k B have conflicting alert/count gradients and readable TRAIN range features? Unchanged 10k B checkpoint db39ccfc, retained controlled alert scope. No fit: TRAIN-only output and shared-parameter gradients plus frozen cross-region 1-NN. Readout gradient cosine and HEAD-near frozen feature retrieval accuracy. Retain 10k B; component diagnostic evidence, no unique cause or automatic successor. research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md Consumed 10k TRAIN partition only."
     }
   ],
   "associations": [
@@ -24397,6 +24764,19 @@
         "artifacts.local/evidence/ase-body-query-pilot-20260909"
       ],
       "decision_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-10000-frozen-diagnostic-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-10000-frozen-diagnostic-20260909",
+      "code_revision": "c454cc2f1ce2fb223e90f4c52e9c158d757a5d45",
+      "input_fingerprint": "dc9395900759da17c4400534bc50926aa8309b945c8b2d12a11174e4195160e5",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-10000-frozen-diagnostic-20260909/run-v2"
+      ],
+      "decision_id": "terminal-body-query-10000-frozen-diagnostic-20260909",
       "source_rows": 1
     },
     {
@@ -24489,6 +24869,56 @@
       "source_rows": 1
     },
     {
+      "run_id": "body-query-distance-pairs-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-distance-pairs",
+      "code_revision": "f1c4ff06a0b322f5c44d3aab66af5c47311b3eed",
+      "input_fingerprint": "de4dc4d43c579a7e52e2ca21ced8acc5e2bb71ee769c7a7f7d7b6fec47570813",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-distance-pairs-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-distance-pairs",
+      "code_revision": "f1c4ff06a0b322f5c44d3aab66af5c47311b3eed",
+      "input_fingerprint": "de4dc4d43c579a7e52e2ca21ced8acc5e2bb71ee769c7a7f7d7b6fec47570813",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_DISTANCE_PAIRS_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-distance-pairs-20260909/inference-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-distance-pairs-20260909",
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-expanded-b-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-expanded-b",
+      "code_revision": "44ec68e384cb307b42b8d5fa70aed70630f2bc78",
+      "input_fingerprint": "22519949cb64cb459819653fe988f7c9f8585c9beeb4d69e8200f648195c6b12",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-expanded-b-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-expanded-b",
+      "code_revision": "44ec68e384cb307b42b8d5fa70aed70630f2bc78",
+      "input_fingerprint": "22519949cb64cb459819653fe988f7c9f8585c9beeb4d69e8200f648195c6b12",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-expanded-b-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-expanded-b-20260909",
+      "source_rows": 1
+    },
+    {
       "run_id": "body-query-probe-20260909",
       "use_ids": [],
       "protocol_id": "body-query-probe",
@@ -24565,6 +24995,31 @@
       "source_rows": 1
     },
     {
+      "run_id": "body-query-range-r0-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-range-r0",
+      "code_revision": "20dd829c0cfd57faf654e72ed157469451138051",
+      "input_fingerprint": "1163e9f46823cf4eb8e84de769219e32077961628f6755a25f3a4b27e6640962",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "body-query-range-r0-result-20260909",
+      "use_ids": [],
+      "protocol_id": "body-query-range-r0",
+      "code_revision": "20dd829c0cfd57faf654e72ed157469451138051",
+      "input_fingerprint": "1163e9f46823cf4eb8e84de769219e32077961628f6755a25f3a4b27e6640962",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_RANGE_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-range-r0-20260909/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-body-query-range-r0-20260909",
+      "source_rows": 1
+    },
+    {
       "run_id": "body-query-v1-20260909",
       "use_ids": [],
       "protocol_id": "body-query-v1",
@@ -24587,6 +25042,31 @@
         "artifacts.local/work/body-query-v1-20260908/model-run-local-v4/result.json"
       ],
       "decision_id": "terminal-body-query-v1-20260909-mixed-no-replacement",
+      "source_rows": 1
+    },
+    {
+      "run_id": "bodylift-r0-20260909",
+      "use_ids": [],
+      "protocol_id": "bodylift-r0",
+      "code_revision": "7a994c959062c7bbba56cb0eec8966b1e0aaab67",
+      "input_fingerprint": "2d9f337903049d222c0bab7601c1a221b4a49b3ed644c8a1d3e7ce228f26c2a8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODYLIFT_R0_PROTOCOL_20260909.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "bodylift-r0-result-20260909",
+      "use_ids": [],
+      "protocol_id": "bodylift-r0",
+      "code_revision": "816155b3c1584e40ba5facee265528dbc8749f5a",
+      "input_fingerprint": "2d9f337903049d222c0bab7601c1a221b4a49b3ed644c8a1d3e7ce228f26c2a8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BODYLIFT_R0_RESULTS_20260909.md",
+        "artifacts.local/work/bodylift-r0-20260909/run-v2/receipt.json"
+      ],
+      "decision_id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
       "source_rows": 1
     },
     {

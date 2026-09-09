@@ -601,3 +601,8 @@ Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
 - [Results](nearfield/BODY_QUERY_10000_RESULTS_20260909.md): the accepted source has 10000 frames, 2000 complete groups, 500 sites, unique RGB hashes, and TRAIN/DEV/EVAL roles 5000/2000/3000. Visual review covers 800 frames; background limitations remain explicitly retained.
 - One fixed 2000-step NEW fit improves EVAL BODY AUC 0.98458 to 0.99712 and HEAD AUC 0.97484 to 0.98695; complete-group correctness is 439/600 to 508/600. HEAD-near query-cell recall falls 7.83% to 6.43%, so this is alert-scope evidence rather than solved query geometry.
 - The separate 2500-pair distance diagnostic has far-higher direction 557/750 to 574/750 on EVAL, but HEAD-near nonempty-query recall falls 0.267% to 0.044% and BODY false alerts rise 54/1500 to 113/1500. Retain NEW only for measured controlled-Development alert scope; keep OLD as historical comparator. No distance, deployment, natural-scene or safety promotion and no automatic follow-up.
+
+## 2026-09-09: 10k B frozen TRAIN diagnostic
+
+- [Diagnostic](nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md): zero fits, unchanged checkpoint. Shared readout alert/count gradient cosine -0.9634 on 128 balanced HEAD_ONLY frames; most wrong far outputs already receive a correcting combined output gradient.
+- Frozen cross-region retrieval within consumed TRAIN: raw HEAD-near857/1000, pre-readout827/1000, shuffled498/527. Retain readable range-associated features and local objective tension as component evidence; no unique pooling/backbone attribution, model replacement or automatic training.

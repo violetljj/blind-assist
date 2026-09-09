@@ -1026,6 +1026,28 @@
         "artifacts.local/work/body-query-distance-pairs-20260909/inference-v1/result.json"
       ],
       "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
+    },
+    {
+      "id": "terminal-body-query-10000-frozen-diagnostic-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_10K_B_ALERT_WITH_READOUT_GRADIENT_AND_FEATURE_DIAGNOSTIC",
+      "summary": "Frozen 10k B TRAIN-only: query_readout alert/count cosine -0.9634 on 128 balanced HEAD_ONLY frames; weighted count corrects most wrong far output contrasts. Cross-region consumed TRAIN 1-NN raw HEAD-near857/1000 and embedding827/1000. Zero fits; no unique root cause or model promotion.",
+      "successor_requires": "One scoped readout/optimization mechanism with spatial attribution and retained-alert checks; no automatic fitting.",
+      "forbidden_repeats": [
+        "Claiming encoder-unseen region generalization from TRAIN retrieval",
+        "Declaring pooling or backbone the unique cause",
+        "Treating endpoint gradient conflict as historical causal proof"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_10000_FROZEN_DIAGNOSTIC_20260909.md",
+        "artifacts.local/work/body-query-10000-frozen-diagnostic-20260909/run-v2/result.json"
+      ],
+      "commit": "WORKTREE_HASH_BOUND_DIAGNOSTIC_SOURCE_IN_PROTOCOL"
     }
   ]
 }

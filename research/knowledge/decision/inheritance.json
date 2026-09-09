@@ -131,6 +131,16 @@
       "failure_signature": "Far score rises25/32 but mean delta negative, big01 direction3/8 and near-frame far scores above0.87",
       "revisit_trigger": "Distinct geometry hypothesis preserving final alerts and testing paired reversals",
       "assignment_basis": "Completed fixed64-frame zero-training comparison; partial response without stable attribution"
+    },
+    {
+      "terminal_id": "terminal-body-query-10000-frozen-diagnostic-20260909",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen 10k B TRAIN-only readout and range-feature diagnosis; no model replacement.",
+      "retained_surface": "Endpoint gradient comparison and cross-region frozen feature retrieval with hash-bound receipts.",
+      "failure_signature": "HEAD-near fitting remains weak despite readable range-associated features; query readout objectives oppose locally.",
+      "revisit_trigger": "One concrete readout or optimization intervention with attribution and alert-preservation checks.",
+      "assignment_basis": "Zero-fit diagnostic supports a narrower question, not unique causal attribution or deployment."
     }
   ]
 }
