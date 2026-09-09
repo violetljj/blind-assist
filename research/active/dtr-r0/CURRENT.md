@@ -583,3 +583,6 @@ B and CONTROL8TP/2FP; at oracle FP<=2 LIFT retains6 versus8. Near-surface DEV/EV
 depth CE is worse than uniform. Retain B; record this recipe as a negative
 control, without broader depth-family rejection or automatic loss/bin sweeps.
 Native export collapses nonfinite/out-of-range values to0; no FREE_RAY relabel.
+
+
+[Expanded-source B](nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md): Expanded TRAIN2500 with unchanged B and original initialization/2000-step budget: EVAL HEAD OLD 177TP/139FP, NEW 571TP/34FP; groups 1 to 228/300. Shared-asset Development; retain historical controls. Decision: RETAIN_EXPANDED_B_WORKING_BASELINE. One completed fit; no automatic extension. HEAD-near query recall remains79/894 despite strong final detection; correct depth attribution is not established.

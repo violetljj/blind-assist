@@ -101,6 +101,16 @@
       "failure_signature": "EVAL LIFT11TP6FP and FP<=2 TP6; held-out near depth CE worse than uniform",
       "revisit_trigger": "Distinct question beyond this fixed frozen-feature recipe; no automatic bin/loss sweep",
       "assignment_basis": "Matched budget and identity initialization, independent AUC and runtime RGB checks"
+    },
+    {
+      "terminal_id": "terminal-body-query-expanded-b-20260909",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Expanded-source B final alerts in controlled Development; not correct per-cell depth attribution",
+      "retained_surface": "NEW final alert checkpoint and paired OLD NEW predictions",
+      "failure_signature": "HEAD-near query recall79/894 despite HEAD571/600; depth attribution unresolved",
+      "revisit_trigger": "Distinct spatial attribution question or independent confirmation; no silent budget extension",
+      "assignment_basis": "Predeclared final alert and group criterion met; spatial limitation explicit"
     }
   ]
 }

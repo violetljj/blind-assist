@@ -958,6 +958,29 @@
         "artifacts.local/work/bodylift-r0-20260909/validation.json"
       ],
       "commit": "WORKTREE_FROZEN_MODEL_AND_TRAINED_HEAD_HASHES_IN_RECEIPTS"
+    },
+    {
+      "id": "terminal-body-query-expanded-b-20260909",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RETAIN_EXPANDED_B_WORKING_BASELINE",
+      "summary": "Expanded TRAIN2500 with unchanged B and original initialization/2000-step budget: EVAL HEAD OLD 177TP/139FP, NEW 571TP/34FP; groups 1 to 228/300. Shared-asset Development; retain historical controls. HEAD-near query recall remains79/894; final alert gain does not prove correct depth attribution.",
+      "successor_requires": "Distinct scoped experiment or independent confirmation, not automatic budget extension",
+      "forbidden_repeats": [
+        "Treating shared geometry/assets as independent natural scenes",
+        "Selecting deployment thresholds from EVAL",
+        "Silently extending this completed2000-step fit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BODY_QUERY_EXPANDED_B_RESULTS_20260909.md",
+        "artifacts.local/work/body-query-expanded-b-20260909/run-v1/result.json",
+        "artifacts.local/work/body-query-expanded-b-20260909/run-v1/validation.json"
+      ],
+      "commit": "WORKTREE_HASH_BOUND_CHECKPOINTS"
     }
   ]
 }
