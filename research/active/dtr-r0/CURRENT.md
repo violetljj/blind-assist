@@ -5,6 +5,17 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest local evidence trace (2026-09-10)
+
+[MZ14 evidence trace](nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md)
+replays4200 consumed frames with exact frozen SOURCE margin parity. All17 MZ13
+added false bits select cells without actual return contributors (16 sign bits,
+15 groups/12 sites). Source-location oracle removes them but also6 recovered far
+TPs; all130 SOURCE far misses have correct candidates below threshold. Paired
+pole features respond but fine localization is unstable. Prioritize shared local
+return-support prediction; no fit, capture or temporal restart in this diagnostic.
+MZ5 remains baseline and MZ9 a coverage-bounded component, no model promotion.
+
 ## Latest gate coverage intervention (2026-09-10)
 
 [MZ13 training coverage](nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md)
