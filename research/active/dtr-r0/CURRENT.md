@@ -5,6 +5,19 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest source supervision and equal-exposure controls (2026-09-10)
+
+[MZ9 contributor supervision](nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md)
+corrects all22 old false-positive winner labels. SOURCE_RGB gives198/200 targeted
+training-regression exact, thin48/49 and pole-absent25/25; wrong correspondence
+reduces thin to1/49. Equal-new-exposure MZ5 adaptation gives199 exact; NO_RGB166.
+Neither result is fresh confirmation. OldDEV BODY_NEAR MZ5_ADAPT180 andSOURCE169
+trail frozen187. All28 SOURCE lost baseline TPs lack geometric candidates; its
+ceiling is170/200. Keep source supervision/readout as a coverage-bounded component,
+not whole-baseline replacement. Keep MZ5, no confirmation capture or temporal
+reopening. Three1200-step fits complete; no pooling or threshold rescue. A future
+availability-aware combination is untested and must preserve existing judgments.
+
 ## Latest angular-return attribution probe (2026-09-10)
 
 [MZ8 single-frame attribution](nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md)
