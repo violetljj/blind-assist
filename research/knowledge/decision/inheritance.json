@@ -521,6 +521,16 @@
       "failure_signature": "AddedFP8to4,far70of75,pole49/48; still4FP and29.43percent negativeavailability bags active on TRAIN",
       "revisit_trigger": "A distinct bounded optimization/convergence comparison can test unresolved TRAIN score overlap before capacity or data changes; original fit remains frozen",
       "assignment_basis": "Matched onefit, exact losses and analytic gradients, full output audit, selected inference and full uniqueTRAIN extrema diagnosis; consumed Development"
+    },
+    {
+      "terminal_id": "terminal-mz25-availability-convergence-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Deterministic fixed bilinear sampling engineering component; failed prefix supplies no convergence or task-quality conclusion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ25_CONVERGENCE_RESULTS_20260910.md",
+      "failure_signature": "SeparateCUDAprefix differs0.314403 at1200 despite identical scientific inputs; no4800candidate; fixed backward nondeterministic, dense sampler validated",
+      "revisit_trigger": "Separately registered within-trajectory budget endpoints on tested deterministic path with explicit backend; retain failedprefixunchanged",
+      "assignment_basis": "Failed-prefix input audit, zerooptimizergradient repeat, fixed sampler forward/adjoint and58frame232bit compatibility checks"
     }
   ]
 }

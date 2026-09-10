@@ -1836,6 +1836,26 @@
         "research/active/dtr-r0/nearfield/MZ24_DECISIVE_AVAILABILITY_RESULTS_20260910.md"
       ],
       "commit": "b8f861716048f16f3bbc1489a7b39c4786771778"
+    },
+    {
+      "id": "terminal-mz25-availability-convergence-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ25_PREFIX_FAILED_FIXED_SAMPLER_VALIDATED",
+      "summary": "Planned4800step run stopped1200: prefixdiff0.314403 despite23sharedinputhashes and exactinitial/batches. Fixedbackward confirms CUDAgradientnondeterminism; equivalent densebilinear sampler passes strict repeatedgradient checks with10577params and9.8MBmatrix. No4800task result.",
+      "successor_requires": "Use a separately registered within-trajectory1200/4800 comparison with tested deterministic path and recorded backend; do not waive or reopen failed MZ25 prefix.",
+      "forbidden_repeats": [
+        "Do not waive the failed MZ25 prefix or claim a4800step/task result from the1200step stop",
+        "Do not infer trajectory determinism from seed alone or uniquely attribute all drift to tiny observed gradient differences",
+        "Do not treat zero-update operator checks as trained-model, independent-source, device or safety improvement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ25_CONVERGENCE_RESULTS_20260910.md"
+      ],
+      "commit": "e462c47b83d33fe3ec06c02ab64249dcdc23bc13"
     }
   ]
 }
