@@ -2533,6 +2533,31 @@
         "research/active/dtr-r0/nearfield/MZ58_EXECUTION_20260911.md"
       ],
       "commit": "b809297c4b60bcc2164a420c33d98b0795ea47ed"
+    },
+    {
+      "id": "terminal-mz59-training-diversity-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN",
+      "summary": "Two matched600-step continuations of MZ56 GLOBAL, same11020params/loss/old-negative replay; DIVERSE substitutes half native presentations with MZ55train. DROP new-familyheld480 nativeBODY_NEAR gains0 CONTROL vs1 DIVERSE, but finalOR allheld640FP79->81 and legacy noncal45->51, primaryFAIL. Held TP451->454; all2560 TP1836->1852/FP319->322 includesfit. MZ48nonfit CONTROL514TP23FP vsDIVERSE505TP21FP. Two original1256-row cuts,zeroMZ55cutrows. All1124+105priorarrays and3630metricrows exact;458112scalardecisions,122880native lookups;UNKNOWN retained. CUDA252.975s includesbothfits/shared evaluation; CPUscore3.829s. Both-host original2560native files losslessly compressed:863387648allocatedB saved36.4332%,allSHA/arrays/IDs preserved.",
+      "successor_requires": "Carry equal-budget coverage as NEGATIVE_CONTROL; preserve OLD_NEG union, MZ37 and earlier scoped MZ57 challenger. Use saved ranking/false-alert evidence to justify a separately declared mechanism contrast. This600-step half-source contrast does not rule out all data sizes or training schemes. Preserve consumed-site and uncalibrated ToF limits.",
+      "forbidden_repeats": [
+        "Claim one native gain passes the no-added-FP gate",
+        "Promote all2560 gains as heldout performance",
+        "Tune cutoffs or extend this frozen run after seeing its failure",
+        "Claim coverage alone was proved sufficient or that all dataset expansion was disproved",
+        "Filter positive native labels by surviving ToF returns or turn UNKNOWN into clearance",
+        "Treat allocated native storage reduction as RGB compression or hardware safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ59_EXECUTION_20260911.md"
+      ],
+      "commit": "995f670b39affd9bd4818e984224a3954022c269"
     }
   ]
 }

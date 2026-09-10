@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "c7e81bcb70df241447315e4cfde822ca309301dcc6d1339e44671a2f183cfc98",
+  "source_fingerprint": "d42c25afb6bd8e9cf2560e30b50ff7f314ab0959fa9ae468c41c1b175fe728f8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 349,
-    "current_terminals": 135,
-    "run_associations": 347
+    "experiments": 350,
+    "current_terminals": 136,
+    "run_associations": 348
   },
   "failure_layers": [
     {
@@ -21043,6 +21043,41 @@
       "search_text": "terminal-mz58-diverse-transfer-20260911 obstacle-avoidance MZ58_FIXED_SCALE_UNIONS_FAIL_NO_EXTRA_FP_TRANSFER_WITH_NO_NEW_FAMILY_RECOVERY Frozen10methods/3profiles on all2560 MZ55, nofit/cutoff change. DROP OLDunion1832TP317FP1032FN; LOCAL1836/319/1028,GLOBAL1835/319/1029,SUPP1834/318/1030. All3no-extra-FP gates fail. All additions retained rods; new1920three-family frames add0TP0FP. GLOBAL3newHEAD_FAR TP has1nativewinner insidefield and2known nonnative, plus2HEAD_NEAR FP; activeGLOBALvsSUPP+1TP+1FP. ShallowawningBODY_NEAR7/160TP. OldunionvsMZ37+122TP+51FP;338/1280contextpairs change. 307200scalar decisions,153600candidate/native checks,122880OR; allIDs/pairs/frozencuts/UNKNOWN pass. CUDA64.391s,CPUscore1.46s,0fit/oldreplay/newcut/cache. Source collection alone is not training improvement. Carry this fixed transfer as NEGATIVE_CONTROL. Preserve prior MZ57 scoped challenger and original comparator. Diagnose shallowawning near-body misses and false-alert tails; separate any later MZ55 training-coverage change from a mechanism change. Retain consumed-site and imperfect-ToF simulation limits. Claim old nonfit no-extra-FP benefit generalized to new1920shape frames Select a mode or recut from MZ58 outcomes and report frozen transfer success Call source expansion an observed training gain Hide317baselineFP or nonnative winners and UNKNOWN local cells Treat consumed sites as fresh confirmation or this packet model as calibrated hardware"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz59-training-diversity-20260911",
+      "status": "diagnostic",
+      "question": "Two matched600-step continuations of MZ56 GLOBAL, same11020params/loss/old-negative replay; DIVERSE substitutes half native presentations with MZ55train. DROP new-familyheld480 nativeBODY_NEAR gains0 CONTROL vs1 DIVERSE, but finalOR allheld640FP79->81 and legacy noncal45->51, primaryFAIL. Held TP451->454; all2560 TP1836->1852/FP319->322 includesfit. MZ48nonfit CONTROL514TP23FP vsDIVERSE505TP21FP. Two original1256-row cuts,zeroMZ55cutrows. All1124+105priorarrays and3630metricrows exact;458112scalardecisions,122880native lookups;UNKNOWN retained. CUDA252.975s includesbothfits/shared evaluation; CPUscore3.829s. Both-host original2560native files losslessly compressed:863387648allocatedB saved36.4332%,allSHA/arrays/IDs preserved.",
+      "baseline": null,
+      "change": "Carry equal-budget coverage as NEGATIVE_CONTROL; preserve OLD_NEG union, MZ37 and earlier scoped MZ57 challenger. Use saved ranking/false-alert evidence to justify a separately declared mechanism contrast. This600-step half-source contrast does not rule out all data sizes or training schemes. Preserve consumed-site and uncalibrated ToF limits.",
+      "primary_metric": null,
+      "decision": "MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "995f670b39affd9bd4818e984224a3954022c269",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Carry equal-budget coverage as NEGATIVE_CONTROL; preserve OLD_NEG union, MZ37 and earlier scoped MZ57 challenger. Use saved ranking/false-alert evidence to justify a separately declared mechanism contrast. This600-step half-source contrast does not rule out all data sizes or training schemes. Preserve consumed-site and uncalibrated ToF limits.",
+      "forbidden_repeats": [
+        "Claim one native gain passes the no-added-FP gate",
+        "Promote all2560 gains as heldout performance",
+        "Tune cutoffs or extend this frozen run after seeing its failure",
+        "Claim coverage alone was proved sufficient or that all dataset expansion was disproved",
+        "Filter positive native labels by surviving ToF returns or turn UNKNOWN into clearance",
+        "Treat allocated native storage reduction as RGB compression or hardware safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ59_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz59-training-diversity-20260911",
+      "search_text": "terminal-mz59-training-diversity-20260911 obstacle-avoidance MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN Two matched600-step continuations of MZ56 GLOBAL, same11020params/loss/old-negative replay; DIVERSE substitutes half native presentations with MZ55train. DROP new-familyheld480 nativeBODY_NEAR gains0 CONTROL vs1 DIVERSE, but finalOR allheld640FP79->81 and legacy noncal45->51, primaryFAIL. Held TP451->454; all2560 TP1836->1852/FP319->322 includesfit. MZ48nonfit CONTROL514TP23FP vsDIVERSE505TP21FP. Two original1256-row cuts,zeroMZ55cutrows. All1124+105priorarrays and3630metricrows exact;458112scalardecisions,122880native lookups;UNKNOWN retained. CUDA252.975s includesbothfits/shared evaluation; CPUscore3.829s. Both-host original2560native files losslessly compressed:863387648allocatedB saved36.4332%,allSHA/arrays/IDs preserved. Carry equal-budget coverage as NEGATIVE_CONTROL; preserve OLD_NEG union, MZ37 and earlier scoped MZ57 challenger. Use saved ranking/false-alert evidence to justify a separately declared mechanism contrast. This600-step half-source contrast does not rule out all data sizes or training schemes. Preserve consumed-site and uncalibrated ToF limits. Claim one native gain passes the no-added-FP gate Promote all2560 gains as heldout performance Tune cutoffs or extend this frozen run after seeing its failure Claim coverage alone was proved sufficient or that all dataset expansion was disproved Filter positive native labels by surviving ToF returns or turn UNKNOWN into clearance Treat allocated native storage reduction as RGB compression or hardware safety evidence"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28556,6 +28591,28 @@
         "decision_lifecycle": 4
       },
       "search_text": "mz58-diverse-transfer-20260911 Do fixed MZ57 scale unions retain complementary detections on all 2560 admitted MZ55 diverse frames without added false alerts? Frozen MZ37 and MZ51 OLD_NEG OPEN/GATED union with original cutoffs Stream RGB views once; replay 10 fixed methods under 3 fixed observed-packet profiles, no fitting or recutting All2560 DROP TP gains and added FP for each union; role/site/family/query splits and native winner audit MZ58_FIXED_SCALE_UNIONS_FAIL_NO_EXTRA_FP_TRANSFER_WITH_NO_NEW_FAMILY_RECOVERY research/active/dtr-r0/nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md Consumed controlled MZ55 diverse source; all partitions descriptive"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz59-training-diversity-20260911",
+      "status": "archived",
+      "question": "Does matched diverse training improve new-shape near-body recovery without added false alerts?",
+      "baseline": "Same MZ56 GLOBAL checkpoint continued on original MZ48 native and original OLD_NEG replay",
+      "change": "Replace half of 600x8 native-supervised slots with MZ55 TRAIN_CANDIDATE, identical model loss replay and optimizer",
+      "primary_metric": "DROP new-family heldout480 native BODY_NEAR recovery; allheld640 FP and oldnoncal FP versus CONTROL",
+      "decision": "MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md",
+      "source": "MZ55 and older consumed Development; no fresh confirmation",
+      "commit": "995f670b39affd9bd4818e984224a3954022c269",
+      "association_id": "mz59-training-diversity-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "decision_lifecycle": 4
+      },
+      "search_text": "mz59-training-diversity-20260911 Does matched diverse training improve new-shape near-body recovery without added false alerts? Same MZ56 GLOBAL checkpoint continued on original MZ48 native and original OLD_NEG replay Replace half of 600x8 native-supervised slots with MZ55 TRAIN_CANDIDATE, identical model loss replay and optimizer DROP new-family heldout480 native BODY_NEAR recovery; allheld640 FP and oldnoncal FP versus CONTROL MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md MZ55 and older consumed Development; no fresh confirmation"
     }
   ],
   "associations": [
@@ -31555,6 +31612,19 @@
         "research/active/dtr-r0/nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz58-diverse-transfer-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz59-training-diversity-20260911",
+      "use_ids": [],
+      "protocol_id": "mz59-training-diversity-r0",
+      "code_revision": "995f670b39affd9bd4818e984224a3954022c269",
+      "input_fingerprint": "3a1063743e46d46a93706299a0d5b470e92f38fa8babc912139158b2ec7255a8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz59-training-diversity-20260911",
       "source_rows": 1
     },
     {

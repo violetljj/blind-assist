@@ -5,6 +5,26 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Matched diverse training: MZ59 (2026-09-11)
+
+[MZ59](nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md) uses MZ55 train
+rows in one of two matched 600-step MZ56 GLOBAL continuations. New-family
+heldout480 DROP native BODY_NEAR gains are CONTROL0 / DIVERSE1, but final
+OR FP on heldout640 increases 79 to81 and on legacy noncalibration 45 to51.
+The declared no-added-FP gate fails. Heldout TP451 to454 is a measured
+tradeoff; all2560 TP1836 to1852 includes fitting rows. MZ48nonfit CONTROL
+514TP/23FP versus DIVERSE505/21 shows a further tradeoff. Retain MZ59 as
+NEGATIVE_CONTROL for this coverage recipe, without ruling out other data
+or training schemes. No threshold change or automatic budget extension.
+
+[Execution and diagnosis](nearfield/MZ59_EXECUTION_20260911.md) record
+252.975s GPU work, 3.829s independent CPU score, shared features, exact old
+array/metric preservation and UNKNOWN. Original2560 native files on both
+hosts now use863387648 fewer allocated bytes (36.4332%), all SHA/arrays/IDs
+unchanged. MZ55 train rows have now been consumed for fitting; its named
+heldout sites remain previously inspected Development. Real sensor
+performance remains uncalibrated and neither result is a safety claim.
+
 ## Fixed diverse-shape transfer: MZ58 (2026-09-11)
 
 [MZ58](nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md) evaluates all 2560
@@ -15,7 +35,7 @@ on retained rods; the three new families (1920 frames) gain zero events.
 GLOBAL adds three HEAD_FAR TP, only one with a native winner, and two
 HEAD_NEAR FP; no new native outside-field detection. Shallow awning BODY_NEAR
 remains 7/160 TP. Retain this transfer as NEGATIVE_CONTROL while preserving
-MZ57's earlier scoped challenger. New data have not yet been used for training.
+MZ57's earlier scoped challenger. At the MZ58 stage, new data had not yet been used for training.
 [Execution and interpretation](nearfield/MZ58_EXECUTION_20260911.md) records
 64.391s CUDA inference, 1.46s independent CPU score, shared RGB features,
 released processes and no dense cache. Full-frame UNKNOWN remains 7417741.
