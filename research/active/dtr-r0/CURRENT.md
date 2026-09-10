@@ -5,6 +5,17 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest controlled visual detail comparison (2026-09-10)
+
+[MZ16 visual detail](nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md) completes
+matched LOW/HIGH detail1200-step fits with identical ROI, readout and batch IDs.
+Consumed placementDEV3000 adds61/80 farTP and22/16 FP respectively over MZ5.
+HIGH pole clean/stress reaches49/48 of49, LOW47/46; HIGH actual contributor
+macro AP declines on both placement cohorts. All added false winners lack
+actual source at their selected cell. Both fail the fixed false-alert budget;
+stop this pair, retain MZ5/MZ9. No new capture, temporal restart or promotion.
+Independent audit covers62400 task bits and1324062 local candidate bits.
+
 ## Latest shared-support model comparison (2026-09-10)
 
 [MZ15 shared support](nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md) completes
