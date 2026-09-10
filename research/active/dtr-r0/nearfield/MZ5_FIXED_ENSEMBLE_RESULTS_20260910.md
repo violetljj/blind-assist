@@ -59,6 +59,14 @@ and HEAD_FAR270->255/300. HEAD_NEAR true positives285->284/300; BODY_NEAR stays
 justify claiming a uniformly safer detector or replacing the retained alert path.
 The HEAD_ONLY near subset also remains below ToF-only (137 versus142).
 
+The subsequent zero-fit [MZ6 regression diagnostic](MZ6_REGRESSION_RESULTS_20260910.md)
+clarifies the accounting: negative controls contribute+34 exact rows, while the
+remaining900 rows decline809->800 (-9). Wrong-far is a false far activation in
+a near-only condition; it does not imply a missed near event. This is chiefly
+an error-activation/body-confusion benefit with a far-recall cost. Since the RGB
+encoder was frozen, this experiment does not diagnose backbone suppression by
+multimodal joint training.
+
 ## Callable compact implementation
 
 [mz5_ensemble_readout.py](mz5_ensemble_readout.py) exports the same function as

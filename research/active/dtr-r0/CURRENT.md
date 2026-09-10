@@ -5,7 +5,25 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
-## Latest fixed ensemble and spatial fusion (2026-09-10)
+## Latest regression diagnosis and short-sequence pilot (2026-09-10)
+
+[MZ6 regression diagnosis](nearfield/MZ6_REGRESSION_RESULTS_20260910.md) reproduces
+52 gains/27 losses:26/32 wrong bits in lost-exact rows have one correct branch;
+all32 far TP losses across EVAL retain native cropped support. MZ5's net+25 exact
+is+34 negative controls minus9 elsewhere. Keep its error benefit/far-recall cost;
+do not interpret wrong-far as recovered near misses or infer absent information.
+
+[MZ6 short sequences](nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md) completes
+one admitted200-frame/8-clip Willow pilot, zero fits. CURRENT143 exact, MEAN3 142,
+compatible143. Mean3 loses2 far TPs and delays the exit clip's first hit by2 nominal
+samples. Compatible makes0 completions: required local support is absent. The
+thin-pole clean baseline already misses BODY_FAR25/25 and HEAD_FAR24/24, so packet
+restoration alone cannot repair it. Retain current MZ5 and this diagnostic control;
+no temporal upgrade.84 packets have no valid return, never CLEAR. Failed source
+attempts and receipts are preserved; accepted capture readiness passes and owned
+processes/ports/cache/temp are released. No more fits or threshold rescue here.
+
+## Previous fixed ensemble and spatial fusion (2026-09-10)
 
 [MZ5 fixed ensemble](nearfield/MZ5_FIXED_ENSEMBLE_RESULTS_20260910.md) reaches1378/1500
 exact (91.87%) versus MZ1 fusion1353; wrong-far12->4 and cross-body19->8. Retain
