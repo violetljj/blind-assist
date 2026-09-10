@@ -1796,6 +1796,26 @@
         "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md"
       ],
       "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19"
+    },
+    {
+      "id": "terminal-mz23-availability-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ23_AVAILABILITY_RETAINS_RECALL_BUT_FALSE_TAIL_REMAINS",
+      "summary": "One1200step availability fit retains74/75 far additions and pole49/48, but only removes1/8 addedFP; placement2861/3000. Clearing the learned false tail by a common cutoff would retain14/75far and pole40/38. Six of7 residuals are19..25native pixels from valid support.",
+      "successor_requires": "Change decisive-negative supervision or representation and retain true-witness coverage; do not assume a resolution increase or cutoff shift fixes broad unsupported activation.",
+      "forbidden_repeats": [
+        "Do not extend the completed fit or retune its consumed evaluation cutoff to rescue this recorded result",
+        "Do not use native availability as an inference gate or turn missing support into CLEAR",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "commit": "d4c28f4cd3049e15d8b1c06b7f24a9166de5b541"
     }
   ]
 }

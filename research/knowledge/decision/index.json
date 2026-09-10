@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "5129e52652c83ce3625c20dcc156a088d3c1b452967fd3c3c0380c7f2ac4e6db",
+  "source_fingerprint": "edbb32c626ef160485970d3c09e8be9a1dfc9ffab5a33cc354f12e02fc32e7e2",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 314,
-    "current_terminals": 100,
-    "run_associations": 312
+    "experiments": 315,
+    "current_terminals": 101,
+    "run_associations": 313
   },
   "failure_layers": [
     {
@@ -19956,6 +19956,36 @@
       "search_text": "terminal-mz22-evidence-arbitration-20260910 obstacle-avoidance MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives. A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone. Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz23-availability-20260910",
+      "status": "diagnostic",
+      "question": "One1200step availability fit retains74/75 far additions and pole49/48, but only removes1/8 addedFP; placement2861/3000. Clearing the learned false tail by a common cutoff would retain14/75far and pole40/38. Six of7 residuals are19..25native pixels from valid support.",
+      "baseline": null,
+      "change": "Change decisive-negative supervision or representation and retain true-witness coverage; do not assume a resolution increase or cutoff shift fixes broad unsupported activation.",
+      "primary_metric": null,
+      "decision": "MZ23_AVAILABILITY_RETAINS_RECALL_BUT_FALSE_TAIL_REMAINS",
+      "report": "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d4c28f4cd3049e15d8b1c06b7f24a9166de5b541",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Change decisive-negative supervision or representation and retain true-witness coverage; do not assume a resolution increase or cutoff shift fixes broad unsupported activation.",
+      "forbidden_repeats": [
+        "Do not extend the completed fit or retune its consumed evaluation cutoff to rescue this recorded result",
+        "Do not use native availability as an inference gate or turn missing support into CLEAR",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "association_id": "mz23-availability-20260910",
+      "search_text": "terminal-mz23-availability-20260910 obstacle-avoidance MZ23_AVAILABILITY_RETAINS_RECALL_BUT_FALSE_TAIL_REMAINS One1200step availability fit retains74/75 far additions and pole49/48, but only removes1/8 addedFP; placement2861/3000. Clearing the learned false tail by a common cutoff would retain14/75far and pole40/38. Six of7 residuals are19..25native pixels from valid support. Change decisive-negative supervision or representation and retain true-witness coverage; do not assume a resolution increase or cutoff shift fixes broad unsupported activation. Do not extend the completed fit or retune its consumed evaluation cutoff to rescue this recorded result Do not use native availability as an inference gate or turn missing support into CLEAR Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26667,6 +26697,30 @@
         "geometry_motion": 3
       },
       "search_text": "mz21-false-addition-diagnostic-20260910 Evaluator-only absent-local-support and exact false-addition diagnosis Saved MZ16/MZ18/MZ20 outputs with their original fixed cutoffs Read saved scores and evaluator geometry only; no model update All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit. MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md Previously consumed controlled Development; diagnostics do not restore independent confirmation"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz23-availability-20260910",
+      "status": "archived",
+      "question": "Can learned angular evidence availability remove unsupported MZ20 additions while preserving far and pole recovery?",
+      "baseline": "Frozen MZ20 BODY_RANK and retained MZ5",
+      "change": "One independent angular availability head; frozen candidate scores and cutoffs; add-only MZ5 fallback",
+      "primary_metric": "One1200step availability fit retains74/75 far additions and pole49/48, but only removes1/8 addedFP; placement2861/3000. Clearing the learned false tail by a common cutoff would retain14/75far and pole40/38. Six of7 residuals are19..25native pixels from valid support.",
+      "decision": "MZ23_AVAILABILITY_RETAINS_RECALL_BUT_FALSE_TAIL_REMAINS",
+      "report": "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md",
+      "source": "Existing hashed MZ16 feature cache and MZ9/MZ15 evaluator availability labels; consumed controlled Development",
+      "commit": "d4c28f4cd3049e15d8b1c06b7f24a9166de5b541",
+      "association_id": "mz23-availability-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz23-availability-20260910 Can learned angular evidence availability remove unsupported MZ20 additions while preserving far and pole recovery? Frozen MZ20 BODY_RANK and retained MZ5 One independent angular availability head; frozen candidate scores and cutoffs; add-only MZ5 fallback One1200step availability fit retains74/75 far additions and pole49/48, but only removes1/8 addedFP; placement2861/3000. Clearing the learned false tail by a common cutoff would retain14/75far and pole40/38. Six of7 residuals are19..25native pixels from valid support. MZ23_AVAILABILITY_RETAINS_RECALL_BUT_FALSE_TAIL_REMAINS research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md Existing hashed MZ16 feature cache and MZ9/MZ15 evaluator availability labels; consumed controlled Development"
     }
   ],
   "associations": [
@@ -29035,6 +29089,23 @@
         "artifacts.local/work/mz22-evidence-arbitration-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz22-evidence-arbitration-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz23-availability-20260910",
+      "use_ids": [],
+      "protocol_id": "mz23-availability-20260910-protocol",
+      "code_revision": "d4c28f4cd3049e15d8b1c06b7f24a9166de5b541",
+      "input_fingerprint": "e9a5787046ba0cd74854c6ec20c1b544677c47ac78648d02210acd83868a8789",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz23-availability-20260910/run-v1",
+        "artifacts.local/work/mz23-availability-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz23-availability-20260910/tail-v1/receipt.json",
+        "artifacts.local/work/mz23-availability-20260910/boundary-v1/receipt.json",
+        "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz23-availability-20260910",
       "source_rows": 1
     },
     {

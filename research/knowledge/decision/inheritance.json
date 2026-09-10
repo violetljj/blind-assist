@@ -501,6 +501,16 @@
       "failure_signature": "One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives.",
       "revisit_trigger": "A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone.",
       "assignment_basis": "Completed recorded run with artifact hashes and scalar evidence; consumed Development; no baseline or device promotion"
+    },
+    {
+      "terminal_id": "terminal-mz23-availability-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This frozen10577parameter balanced-availability BCE head at logit0 over MZ20; not all availability mechanisms",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md",
+      "failure_signature": "Retains74/75far and pole49/48 but leaves7addedFP; common-cutoff rescue loses most far gains and pole coverage",
+      "revisit_trigger": "Change decisive-negative supervision or representation while preserving true-witness coverage; simple adjacent-cell ambiguity does not explain six of seven residuals",
+      "assignment_basis": "Completed single fit, privileged oracle, scalar audit, frozen-model tail and native boundary diagnostics; consumed Development only"
     }
   ]
 }
