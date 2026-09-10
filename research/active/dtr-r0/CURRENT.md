@@ -5,6 +5,17 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest BODY witness-objective fit (2026-09-10)
+
+[MZ18 BODY objective](nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md) completes
+one matched1200step fit. Placement BODY addedFP falls11->3 versus MZ16 HIGH_DETAIL;
+relation BODY near/far actual-contributor AP improves0.708/0.703->0.838/0.828.
+Pole BODY maxima now have true query contributors25/25 in both conditions, but
+clean/stress BODY detections collapse25/25->4/1 as true scores fail alert cutoffs.
+Full placement far gains/addedFP are70/7 over MZ5 versus80/16 for MZ16. Retain
+attribution mechanism as COMPONENT only; the alert augmentation fails FP and pole
+retention. MZ5/MZ9 unchanged; no rescue fit.31200 task bits independently audited.
+
 ## Latest witness-objective gradient diagnostic (2026-09-10)
 
 [MZ17 gradient diagnostic](nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md)
