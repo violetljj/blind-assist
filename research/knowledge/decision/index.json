@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "27b528bb8d3a98efc76e4b00eb699e3c75fc328a87ec16eab800455bfed68c5f",
+  "source_fingerprint": "4e43473b22420550e78f7bcd554744d69b038fb89c051648c3809f37e8d526ad",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 301,
-    "current_terminals": 87,
-    "run_associations": 299
+    "experiments": 302,
+    "current_terminals": 88,
+    "run_associations": 300
   },
   "failure_layers": [
     {
@@ -19579,6 +19579,35 @@
       "search_text": "terminal-mz9-source-supervision-20260910 obstacle-avoidance MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170. Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion. Reopening completed MZ9 fits or treating targeted training regression as confirmation Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz10-availability-20260910",
+      "status": "diagnostic",
+      "question": "DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation.",
+      "baseline": null,
+      "change": "A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient.",
+      "primary_metric": null,
+      "decision": "MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE",
+      "report": "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "8abacb1391690af1c6ce97396bf347d8f9e7712a",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient.",
+      "forbidden_repeats": [
+        "Retuning this completed fixed routing rule or treating consumed replay as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "association_id": "mz10-availability-20260910",
+      "search_text": "terminal-mz10-availability-20260910 obstacle-avoidance MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation. A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient. Retuning this completed fixed routing rule or treating consumed replay as confirmation Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25996,6 +26025,29 @@
         "decision_lifecycle": 6
       },
       "search_text": "mz9-source-supervision-20260910 Does actual return-source supervision improve region readout beyond matched adaptation and noRGB controls? Frozen compact MZ5 on consumed MZ6 paired clips Three equal-new-exposure fits: retained MZ5 adaptation, query-specific exact-source RGB and noRGB; max aggregator unchanged SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170. MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz10-availability-20260910",
+      "status": "archived",
+      "question": "Can observable candidate availability combine SOURCE with MZ5 while preserving combined errors?",
+      "baseline": "Frozen compact MZ5 on consumed MZ6 paired clips",
+      "change": "Fixed per-query availability routing, frozen checkpoints and thresholds; zero fits",
+      "primary_metric": "DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation.",
+      "decision": "MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE",
+      "report": "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md",
+      "source": "Consumed oldDEV1000 and MZ6 training-regression200; frozen replay only",
+      "commit": "8abacb1391690af1c6ce97396bf347d8f9e7712a",
+      "association_id": "mz10-availability-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz10-availability-20260910 Can observable candidate availability combine SOURCE with MZ5 while preserving combined errors? Frozen compact MZ5 on consumed MZ6 paired clips Fixed per-query availability routing, frozen checkpoints and thresholds; zero fits DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation. MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md Consumed oldDEV1000 and MZ6 training-regression200; frozen replay only"
     }
   ],
   "associations": [
@@ -28154,6 +28206,21 @@
         "research/active/dtr-r0/nearfield/MZ1_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz1-tiny-fusion-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz10-availability-20260910",
+      "use_ids": [],
+      "protocol_id": "mz10-availability-20260910-protocol",
+      "code_revision": "8abacb1391690af1c6ce97396bf347d8f9e7712a",
+      "input_fingerprint": "b3725d112f31b7ab335896867668cf652f04261d8a1f997842d2b35fbebce0b1",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md",
+        "artifacts.local/work/mz10-availability-20260910/run-v2/result.json",
+        "artifacts.local/work/mz10-availability-20260910/run-v2/changed-bits.json",
+        "artifacts.local/work/mz10-availability-20260910/run-v2/audit.json"
+      ],
+      "decision_id": "terminal-mz10-availability-20260910",
       "source_rows": 1
     },
     {

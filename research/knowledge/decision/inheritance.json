@@ -371,6 +371,16 @@
       "failure_signature": "SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170.",
       "revisit_trigger": "Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion.",
       "assignment_basis": "Three1200-step equal-new-exposure fits;81 scalar groups and8000 DEV replay bits; source supervision repairs22 old labels but candidate absence limits near recall"
+    },
+    {
+      "terminal_id": "terminal-mz10-availability-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This source-if-available otherwise-frozen-MZ5 deterministic query routing rule",
+      "retained_surface": "Fixed composition replay, selected-branch masks and error decomposition; MZ5 and MZ9 component retained separately",
+      "failure_signature": "DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation.",
+      "revisit_trigger": "A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient.",
+      "assignment_basis": "Zero fits or thresholds;5600 scalar selections and44 metric/clip checks. Combined DEV false positives fail budget."
     }
   ]
 }

@@ -1549,6 +1549,25 @@
         "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md"
       ],
       "commit": "dc2ac4e9a8f6dafcb1840b0714fe5ff465128117"
+    },
+    {
+      "id": "terminal-mz10-availability-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE",
+      "summary": "DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation.",
+      "successor_requires": "A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient.",
+      "forbidden_repeats": [
+        "Retuning this completed fixed routing rule or treating consumed replay as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "commit": "8abacb1391690af1c6ce97396bf347d8f9e7712a"
     }
   ]
 }
