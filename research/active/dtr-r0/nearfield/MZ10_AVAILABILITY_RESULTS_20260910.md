@@ -84,3 +84,9 @@ preserved. CUDA only recomputes cached DEV readout; scalar work runs on CPU.
 No UE/worker/port was started; processes exit and temporary validation resources
 are released. Invalid/no-return remains UNKNOWN, never clearance. No App,
 hardware, deployment or safety claim.
+
+Post-hoc follow-up: [error and budget diagnosis](MZ10_ERROR_DIAGNOSTIC_20260910.md)
+audits these frozen outputs without changing this run or its terminal. A SOURCE
+threshold-only repair cannot preserve old far TPs at the complete composition's
+FP budget; candidate extent is informative on consumed subgroups, while a
+baseline-confidence veto would also suppress the intended thin-pole recovery.
