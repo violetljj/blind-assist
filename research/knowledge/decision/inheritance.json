@@ -871,6 +871,16 @@
       "failure_signature": "Gate2/7; nativeBN1 unchanged; held453TP83FP, legacy2722TP48FP, MZ48nonfit518TP25FP",
       "revisit_trigger": "Separately declared exposure/geometry/representation contrast, preserving old comparators and known sparse DROP exposure",
       "assignment_basis": "Frozen same-initialization/schedule contrast; independent saved scalar/native/cutoff audit; immutable priors and UNKNOWN"
+    },
+    {
+      "terminal_id": "terminal-mz62-profile-coverage-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Matched1200-step complete-profile assignment versus random assignment with exact per-frame totals and original MZ59 loss/calibration",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md",
+      "failure_signature": "Gate3/7; nativeBN17->6; held480TP88FP->461TP82FP; awning held27->10 despite native28->31",
+      "revisit_trigger": "Separately declared margin/calibration/geometry/representation contrast retaining complete-profile negative control and all old baselines",
+      "assignment_basis": "Frozen matched exposure schedule; independent scalar/native/cutoff and awning audits; exact prior arrays and UNKNOWN"
     }
   ]
 }

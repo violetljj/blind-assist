@@ -2582,6 +2582,31 @@
         "research/active/dtr-r0/nearfield/MZ60_EXECUTION_20260911.md"
       ],
       "commit": "060f22cf79f2b932ea2ba7bf1a9a3dcc997b1b9e"
+    },
+    {
+      "id": "terminal-mz62-profile-coverage-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ62_COMPLETE_PROFILE_COVERAGE_LOSES_NATIVE_MARGIN_TO_MATCHED_RANDOM_ASSIGNMENT",
+      "summary": "Two matched1200-step heads preserve per-frame totals and original loss/calibration. Complete profile assignment FAIL3/7 versus random CONTROL: held480 new nativeBN17->6; held640 finalOR TP480->461 FP88->82, legacy2732->2726 FP57->50, MZ48nonfit537->522 FP24->24. Awning held27->10/40 despite native winners28->31; 12/17 lost remain native in both. Median paired native raw score -0.149165 and BNcut2.531259->3.347590; training/calibration effects not causally separated. Prior1696 arrays/5286metrics and UNKNOWN exact. GPU282.924260s, CPU3.876217s; allocated cache5739728896B released.",
+      "successor_requires": "Carry the full-profile assignment/order recipe as NEGATIVE_CONTROL; preserve matched CONTROL and OLD_NEG plus MZ59/MZ60. Separately justify score-separation, calibration, geometry or representation contrasts without tuning frozen outputs. CONTROL has better sensitivity with additional FP and is not promoted.",
+      "forbidden_repeats": [
+        "Call3/7 a retaining success",
+        "Call native-winning inherited OR hits new branch contribution",
+        "Reinterpret one exposure per frame/profile as a trained ceiling",
+        "Retune thresholds or extend this frozen fit after its failure",
+        "Treat UNKNOWN or missing ToF as clearance",
+        "Infer real-hardware natural-scene or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ62_EXECUTION_20260911.md"
+      ],
+      "commit": "0ee5a1d6740f94cc75bde1ab3a3cd9405421fb62"
     }
   ]
 }

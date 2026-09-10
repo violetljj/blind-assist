@@ -5,6 +5,24 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Matched profile coverage: MZ62 (2026-09-11)
+
+[MZ62](nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md) compares two
+1200-step heads with identical per-frame totals and original loss/cuts.
+Complete IDEAL/MERGE/DROP coverage loses to random assignment: retaining
+gate FAIL3/7, native new-family held BODY_NEAR17->6; finalOR held640
+TP480/FP88->461/82, legacy2732/57->2726/50, MZ48nonfit537/24->522/24.
+Preserve this assignment/order recipe as NEGATIVE_CONTROL, its matched
+CONTROL, and all older comparators. Neither arm dominates OLD_NEG.
+
+[Execution and diagnosis](nearfield/MZ62_EXECUTION_20260911.md) show awning
+held27->10/40 TP despite native winners28->31. Most losses retain native
+locations, with reduced raw scores and a higher original-rule cutoff.
+Do not infer a trained ceiling or separate training/calibration causality.
+GPU work282.924s and CPU scoring3.876s preserve1696 prior arrays,5286 prior
+metrics and UNKNOWN. The temporary cache released5739728896 allocated
+bytes. No hardware, natural-scene, safety or default-app promotion.
+
 ## Native positive-query pooling: MZ60 (2026-09-11)
 
 [MZ60](nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md) changes only positive
@@ -21,8 +39,8 @@ all15 additions are unsupported HEAD_NEAR. Awning TRAIN16->17/100 and
 held1->2/40 do not add native-winning TP. Only34/100 training positives
 were presented underDROP, so this is not a fully trained ceiling.
 The task cache released5542506496 allocated bytes; no owning process
-remains. MZ61 is only a prepared4096-frame design, not registered or
-captured. No hardware, natural-scene or safety claim follows.
+remains. At MZ60 delivery, MZ61 was only a prepared4096-frame design;
+no MZ61 registration or capture was claimed by that terminal. No hardware, natural-scene or safety claim follows.
 
 ## Matched diverse training: MZ59 (2026-09-11)
 
