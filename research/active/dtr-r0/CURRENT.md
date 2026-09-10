@@ -5,6 +5,18 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Frozen new-XY transfer: MZ36 (2026-09-10)
+
+[MZ36 fixed new-source comparison](nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md)
+Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration.
+Shared prior regions/assets and ideal geometric readout limit this to controlled
+Development. All attempted/excluded groups and UNKNOWN remain explicit.
+Both remaining far-crossbar misses already have a correct positive modality,
+but lie outside the negative-only selector scope. A separately defined restoration
+test is the next mechanism question; no rule was added to MZ36.
+Retain finite transfer/tradeoff evidence; MZ5 remains unchanged. No extra fitting,
+source expansion, threshold rescue or device/safety promotion.
+
 ## Fixed responsibility optimization endpoints: MZ35 (2026-09-10)
 
 [MZ35 fixed trajectory](nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md)
