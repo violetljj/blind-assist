@@ -771,6 +771,36 @@
       "failure_signature": "GATED nonfit71TP1FP but old transfer falsealerts; OPEN high oldDEV negative maxima suppress gains;352 source positives outside45degree witness crop",
       "revisit_trigger": "Improve spatial true false separation and observable coverage while retaining same-weight OPEN falsifier and old-source costs",
       "assignment_basis": "One600step fit; exact1280 fit256cal640site384family split;586656scalar decisions2cutoffs; GATED52of71native winning evidence andOPEN2specific missing-candidate recoveries"
+    },
+    {
+      "terminal_id": "terminal-mz51-training-coverage-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Matched old-negative replay on fixed MZ50 local head; controlled consumed Development",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ51_TRAINING_COVERAGE_RESULTS_20260911.md",
+      "failure_signature": "Primary recall gate fails:442 vs453 nonfitTP; oldFP reduced19to5 with native attribution and crop gaps",
+      "revisit_trigger": "Separate fixed-readout composition or full-RGB spatial supervision with ToF observability unchanged; no cutoff rescue",
+      "assignment_basis": "Two matched fits, exact original arrays and schedule, scalar scoring, and80native coverage audit"
+    },
+    {
+      "terminal_id": "terminal-mz52-full-frame-supervision-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Full-RGB native supervision derived from existing MZ48 sources; training and evaluator only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ52_FULL_FRAME_SUPERVISION_RESULTS_20260911.md",
+      "failure_signature": "No source mismatch; algorithm benefit untested and 7562077 fullframe cells remain unknown",
+      "revisit_trigger": "Matched full-RGB local model using these labels with original45degree ToF only; preserve source identities and partitions",
+      "assignment_basis": "All2560 hashes/counts/labels,1280eventpairs and independent80blockloop checks; both owner processes released"
+    },
+    {
+      "terminal_id": "terminal-mz53-dual-readout-union-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Uniform fixed MZ51 OLD_NEG OPEN/GATED union on consumed controlled sources; posthoc Development",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md",
+      "failure_signature": "PracticalDROP gatePASS but16oldaddedFP,11overownGATED;IDEAL655TP36FP trailsfixed677/34;18of81addedTP lackacceptednativewinner",
+      "revisit_trigger": "Full-RGB learning or independently specified robustness comparison retaining matched unions and allprofiles; no evaluator profile oracle",
+      "assignment_basis": "FixedBoolean composition,251424scalar checks,1320oldcountrows and262originalarrays exact; no fit or cutoff"
     }
   ]
 }

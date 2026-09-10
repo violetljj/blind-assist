@@ -5,6 +5,47 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Complementary fixed readouts under missing echoes: MZ53 (2026-09-11)
+
+[MZ53](nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md) tests uniform
+OPEN|GATED composition with existing cutoffs. DROP nonfit fixedMZ50union
+455TP/21FP/537FN, NEW_NEG443/23/549, OLD_NEG463/20/529; oldnoncal addedFP
+21/12/16. Newpracticalgate passes; MZ51individualgate still fails. OLDOPEN
+adds21exclusiveTP0FP with savednativewinning evidence,9withoutgatedcandidate.
+Total81addedTP has63acceptednativewinners; union adds11oldFP overitsGATED.
+IDEAL OLDunion655TP36FP trailsfixed677/34, so retain CHALLENGER with these
+costs and matched unions. CPU1.05s,251424scalarOR checks,1320sealedcountrows;
+allpriorpositives and400MZ36/80UNKNOWN remain. No newfit/inference/threshold.
+Next compare full-RGB evidence using MZ52 labels; no default/hardware claim.
+
+## Compact full-RGB supervision: MZ52 (2026-09-11)
+
+[MZ52](nearfield/MZ52_FULL_FRAME_SUPERVISION_RESULTS_20260911.md) derives existing
+2560native files on both owners into538415B of fullframe8x8-cell counts.
+All2432positiveevents have fullframewitness, including352old45gaps;7562077
+unknowncells remain. All2560SHA,10240eventcounts/labels,1280eventpairs and80
+independent block-loop samples pass; fit/cal/site/family partitions stay.
+CPU15.92s primary/24.19s worker,10.83s verify; returnedpayload2.83MB,native0B.
+Bothhosts released; preserve the failed pre-work hiddenlaunch receipt.
+Retain COMPONENT training/evaluator labels with original45degree ToF unchanged.
+Next test full-RGB learning; source coverage is not model improvement or raw
+lossless compression, and no capture/inference/fit occurred in this derivation.
+
+## Negative coverage and crop observability: MZ51 (2026-09-11)
+
+[MZ51](nearfield/MZ51_TRAINING_COVERAGE_RESULTS_20260911.md) completes matched
+600step NEW_NEG/OLD_NEG continuations. DROP oldnoncal addedFP falls19to8/5,
+but nonfit TP falls453to442/442; FP21to23/20. The primary recall gate fails.
+OLD_NEG OPEN adds23 nonfitTP with nativewinning evidence,9without gatedcandidate,
+but11oldFP; preserve the matched comparator and fixed MZ50/MZ37. Separate
+MZ53 tests readout complementarity without rewriting this gate. All original
+positives and400MZ36/80UNKNOWN remain;921888scalar checks and4cutoffs pass.
+CUDA74.44s, no baselineinference/newdensecache. The CPUcoverage audit finds
+352of512BODY_NEAR positives outside45degree supervision; all10gaps in80native
+samples also lie below224crop. MZ52 derives full-RGB labels, keeping ToF's
+original field and missing status; visible bottom-edge surfaces are a learning
+opportunity, not proven RGB metric recovery or physical-sensor capability.
+
 ## Native spatial learning and same-weight readout: MZ50 (2026-09-11)
 
 [MZ50](nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md) fits one small

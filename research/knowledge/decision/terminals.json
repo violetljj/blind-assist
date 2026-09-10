@@ -2344,6 +2344,75 @@
         "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md"
       ],
       "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626"
+    },
+    {
+      "id": "terminal-mz51-training-coverage-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ51_OLD_NEGATIVE_COVERAGE_REDUCES_FALSE_ALERTS_WITH_RECALL_TRADEOFF",
+      "summary": "Two matched600step MZ50 continuations. DROP oldnoncal addedFP fixedMZ50GATED19, NEW_NEG8, OLD_NEG5; newnonfit1024 fixed453TP21FP539FN, NEW442/23/550, OLD442/20/550. Primarygate fails recall by11. OLDOPEN405TP20FP587FN with23native-winning additions and9withoutgatedcandidate; oldaddedFP11. All MZ37positives and400MZ36/80UNKNOWN retained. 921888scalar checks,262originalarrays,seed151schedule and4cutoffs exact. CUDAwhole74.437s, fits7.192/7.433s, CPUscore0.869s; no baselineinference or newdensecache. Separate80native audit:352of512BODY_NEARpositives lack45witness; all10samplegaps liebelow224crop. No full224population extrapolation.",
+      "successor_requires": "Retain fixed MZ50/MZ37 and matched NEW_NEG; carry OLD_NEG as a challenger with old false alerts and recall swaps. Test complementary readouts separately without changing MZ51 cutoffs, and full-RGB local evidence with ToF field unchanged. Preserve consumed-source and native-attribution limits.",
+      "forbidden_repeats": [
+        "Claim this primary gate passed",
+        "Attribute all continuation gains to old replay rather than its matched NEW_NEG comparison",
+        "Treat absence of ToF or crop witness as clear space",
+        "Claim the80native exact224crop audit covered all2560native files",
+        "Replace original MZ50/MZ37 or claim hardware calibration from these results"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ51_TRAINING_COVERAGE_RESULTS_20260911.md"
+      ],
+      "commit": "fb1ce3cd91063fbda1499597f3cb070ec3075f52"
+    },
+    {
+      "id": "terminal-mz52-full-frame-supervision-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ52_COMPACT_FULL_RGB_SUPERVISION_COVERS_EXISTING_NATIVE_EVENT_GAPS",
+      "summary": "Derived all2560existingnative files ontheiroriginalowners, primary936/worker1624. All2560SHA and10240fullquerycounts/labels exact;1280event-cell pairs identical whileall1280validbackgroundcounts change. Independent80blockloop checks1152000event+288000valid values exact. uint8 fullframe counts[N,45,80,4]+validcounts[N,45,80], merged538415B; all2432positiveevents havewitness including352old45gaps;7562077of9216000unknowncells retained. Partitions1280fit/256cal/640site/384family unchanged. NumPyCPU15.925s/24.192s, verify10.832s; returnedpayload2828759B,native0B. Hiddenworkerlaunch ended beforework; unchanged synchronousderivation completes once. Bothhostsreleased. No capture, fit, inference orToFfieldexpansion.",
+      "successor_requires": "Use as a training/evaluator-only component in a matched full-RGB spatial-learning experiment. Keep original RGB bytes and45degree ToF ranges/status as predictor inputs, preserve native source and UNKNOWN, and measure actual model benefit before claiming algorithm improvement.",
+      "forbidden_repeats": [
+        "Treat full-frame truth as predictor input or ToF measurement",
+        "Claim labels alone improve model performance",
+        "Claim538KB is a lossless copy of full raw depth or physicaldiskdeletion",
+        "Reclassify changed paired backgroundvalidcounts as targeteventmismatch",
+        "Treat consumed sites as freshblind or hardware validation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ52_FULL_FRAME_SUPERVISION_RESULTS_20260911.md"
+      ],
+      "commit": "fb1ce3cd91063fbda1499597f3cb070ec3075f52"
+    },
+    {
+      "id": "terminal-mz53-dual-readout-union-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ53_FIXED_DUAL_READOUT_UNION_RETAINS_DROP_RECOVERY_WITH_RESIDUAL_COSTS",
+      "summary": "OneposthocCPU Boolean union of fixedOPEN/GATED outputs forMZ50,NEW_NEG,OLD_NEG. DROP nonfit1024 fixedunion455TP21FP537FN, NEW443/23/549, OLD463/20/529; oldnoncaladdedFP21/12/16. NewcompositionpracticalgatePASS, MZ51individualgateFAIL remains. OLDOPENexclusive21TP0FP allsavednativewinning,9withoutgatedcandidate;totalunion81addedTP63acceptednativewinner. OwnGATEDunioncost is11additionaloldFP; IDEAL OLDunion655TP36FP vsfixed677/34. AllMZ37positives,1280pairs and400MZ36/80UNKNOWN retained.251424scalarOR checks,1320sealedcountrows,262originalarrays exact. CPU1.047s,no fits/inference/cutoffs/nativeaccess. ControlledconsumedDevelopment only.",
+      "successor_requires": "Retain as a challenger with DROP recovery and residual old/IDEAL costs, alongside individual readouts and both matched unions. Evaluate full-RGB local learning with unchanged ToF observability and all existing source controls. Do not reinterpret the earlier MZ51 gate or select profiles using evaluator truth.",
+      "forbidden_repeats": [
+        "Claim MZ51 individual primarygate passed",
+        "Claim allprofiles improve or no false-alert cost",
+        "Use observed sensorfailure profile as a privileged runtime oracle",
+        "Count correctframe decisions withoutnativewinningcell as correct local attribution",
+        "Promote default or hardware/safety performance from this posthoc composition"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md"
+      ],
+      "commit": "fb1ce3cd91063fbda1499597f3cb070ec3075f52"
     }
   ]
 }
