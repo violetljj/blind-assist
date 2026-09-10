@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "f8d4fc706ca1950aa40d94dfeaec686cbdd7fa69afdbfb47ffaea2919f7552f5",
+  "source_fingerprint": "0221cd5cab67f93c0a23148ef71da3488f520b93f039dfce6660bd05f22e6f63",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 303,
-    "current_terminals": 89,
-    "run_associations": 301
+    "experiments": 304,
+    "current_terminals": 90,
+    "run_associations": 302
   },
   "failure_layers": [
     {
@@ -19637,6 +19637,35 @@
       "search_text": "terminal-mz11-selective-addition-20260910 obstacle-avoidance MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation. A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation. Retuning this completed600-step gate or treating consumed training regression as confirmation Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz12-existing-data-20260910",
+      "status": "diagnostic",
+      "question": "Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails.",
+      "baseline": null,
+      "change": "Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison.",
+      "primary_metric": null,
+      "decision": "MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION",
+      "report": "research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "824b1bcd51fb6c3e6c65e4e62af889b112edd2f0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison.",
+      "forbidden_repeats": [
+        "Retuning the frozen MZ11 gate on this completed replay or relabeling consumed partitions as independent confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md"
+      ],
+      "association_id": "mz12-existing-data-20260910",
+      "search_text": "terminal-mz12-existing-data-20260910 obstacle-avoidance MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails. Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison. Retuning the frozen MZ11 gate on this completed replay or relabeling consumed partitions as independent confirmation Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26100,6 +26129,27 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz11-selective-addition-20260910 Can frozen SOURCE evidence and candidate extent selectively add true detections within the complete MZ5 FP budget? Frozen compact MZ5 on consumed MZ6 paired clips One20-parameter gate on SOURCE margin and extent;600 steps; DEV zero-added-FP cutoff; original MZ5 positive bits immutable DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation. MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md OldTRAIN2500 plus consumed MZ6 training200; oldDEV1000 post-selected cutoffs; all controlled Development"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz12-existing-data-20260910",
+      "status": "archived",
+      "question": "Do existing accepted sources suffice to test unchanged MZ11 recall and error transfer without more collection?",
+      "baseline": "Frozen compact MZ5 on existing relationDEV2000 and distanceDEV1000",
+      "change": "Inventory20000 then frozen3000 replay of MZ5, adapted MZ5, SOURCE and MZ11; no fitting or new acquisition",
+      "primary_metric": "Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails.",
+      "decision": "MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION",
+      "report": "research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md",
+      "source": "Consumed shared-asset relationDEV2000 plus distanceDEV1000;100 overlapping sites, no new EVAL pixels",
+      "commit": "824b1bcd51fb6c3e6c65e4e62af889b112edd2f0",
+      "association_id": "mz12-existing-data-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3
+      },
+      "search_text": "mz12-existing-data-20260910 Do existing accepted sources suffice to test unchanged MZ11 recall and error transfer without more collection? Frozen compact MZ5 on existing relationDEV2000 and distanceDEV1000 Inventory20000 then frozen3000 replay of MZ5, adapted MZ5, SOURCE and MZ11; no fitting or new acquisition Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails. MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md Consumed shared-asset relationDEV2000 plus distanceDEV1000;100 overlapping sites, no new EVAL pixels"
     }
   ],
   "associations": [
@@ -28288,6 +28338,21 @@
         "artifacts.local/work/mz11-selective-addition-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz11-selective-addition-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz12-existing-data-20260910",
+      "use_ids": [],
+      "protocol_id": "mz12-existing-data-20260910-protocol",
+      "code_revision": "824b1bcd51fb6c3e6c65e4e62af889b112edd2f0",
+      "input_fingerprint": "3751175d7e68e2a1feaf8cfe644dd169585ff0989f001bd8ceba9b7d753f42c0",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md",
+        "artifacts.local/work/mz12-existing-data-20260910/run-v1/result.json",
+        "artifacts.local/work/mz12-existing-data-20260910/inventory-v1/receipt.json",
+        "artifacts.local/work/mz12-existing-data-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz12-existing-data-20260910",
       "source_rows": 1
     },
     {

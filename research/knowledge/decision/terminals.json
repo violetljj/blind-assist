@@ -1587,6 +1587,25 @@
         "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md"
       ],
       "commit": "4e5df5d532bc45ca7fa6ad070f12636488393803"
+    },
+    {
+      "id": "terminal-mz12-existing-data-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION",
+      "summary": "Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails.",
+      "successor_requires": "Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison.",
+      "forbidden_repeats": [
+        "Retuning the frozen MZ11 gate on this completed replay or relabeling consumed partitions as independent confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md"
+      ],
+      "commit": "824b1bcd51fb6c3e6c65e4e62af889b112edd2f0"
     }
   ]
 }

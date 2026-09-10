@@ -391,6 +391,16 @@
       "failure_signature": "DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation.",
       "revisit_trigger": "A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation.",
       "assignment_basis": "One600-step fit; independent scalar composition, metric and cutoff replay. Useful Development recall gain but both frozen thin-retention gates fail."
+    },
+    {
+      "terminal_id": "terminal-mz12-existing-data-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Unchanged MZ11 correction transfer to existing relation and distance DEV placements",
+      "retained_surface": "Existing20000 usage inventory, fixed3000 comparison and hanging-sign attribution regression; MZ5 and MZ9 retained",
+      "failure_signature": "Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails.",
+      "revisit_trigger": "Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison.",
+      "assignment_basis": "Zero fits; source metadata and selected payload hashes;48000 scalar arm bits,12000 composition bits; both cohorts gain FP."
     }
   ]
 }
