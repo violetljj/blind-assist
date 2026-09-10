@@ -5,6 +5,20 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Positive restoration tradeoff: MZ37 (2026-09-10)
+
+[MZ37 fixed restoration](nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md)
+recovers17 noncalibration true bits with2 newFP; placement FN67->52,
+FP26->28, exact2910->2922/3000. MZ36's two motivating misses are recovered,
+withFP3 unchanged; these cases are now consumed Development. All previous
+positive score values and MZ28 additions survive. One oldDEV calibration and
+saved-scalar replay, zero fit or neural inference; independent audit passes.
+The zero-new-FP criterion fails; retain CHALLENGER, baselines unchanged.
+One new error strongly prefers the wrong branch; BODY_NEAR/FAR calibration
+has no eligible false-restoration negatives. Next examine action-conditional
+coverage or paired new object shapes, preserving original controls and UNKNOWN.
+No posthoc threshold rescue, hardware, temporal or safety promotion.
+
 ## Frozen new-XY transfer: MZ36 (2026-09-10)
 
 [MZ36 fixed new-source comparison](nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md)
