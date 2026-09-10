@@ -1663,6 +1663,25 @@
         "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md"
       ],
       "commit": "b057f0c3bb00e4c3f2d5ae8180ddb28abbb12f76"
+    },
+    {
+      "id": "terminal-mz16-visual-detail-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET",
+      "summary": "Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged.",
+      "successor_requires": "A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery.",
+      "forbidden_repeats": [
+        "Extending these completed fits or tuning cutoffs on consumed placementDEV to rescue this outcome",
+        "Calling trained pole regression independent confirmation or interpreting HIGH versus historical MZ15 as a pure resolution effect"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md"
+      ],
+      "commit": "9e9eb5c3f6d31c707ee8205b577e740c93be45c0"
     }
   ]
 }

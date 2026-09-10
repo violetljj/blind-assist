@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "b3b9464abf9c5ce931307fbfe7012f13bd701e52c5a4b1172116c3a81774e43b",
+  "source_fingerprint": "bb6e65cf7dc0d8966ac576b8ab51a30c17e552564c6779dc1505866159c23ce8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 307,
-    "current_terminals": 93,
-    "run_associations": 305
+    "experiments": 308,
+    "current_terminals": 94,
+    "run_associations": 306
   },
   "failure_layers": [
     {
@@ -19753,6 +19753,35 @@
       "search_text": "terminal-mz15-shared-support-20260910 obstacle-avoidance MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged. A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence. Extending these completed1200step fits or tuning cutoffs on the consumed placement replay to rescue this result Using native contributor labels as model inputs or calling trained pole frames independent confirmation"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz16-visual-detail-20260910",
+      "status": "diagnostic",
+      "question": "Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged.",
+      "baseline": null,
+      "change": "A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery.",
+      "primary_metric": null,
+      "decision": "MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET",
+      "report": "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "9e9eb5c3f6d31c707ee8205b577e740c93be45c0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery.",
+      "forbidden_repeats": [
+        "Extending these completed fits or tuning cutoffs on consumed placementDEV to rescue this outcome",
+        "Calling trained pole regression independent confirmation or interpreting HIGH versus historical MZ15 as a pure resolution effect"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md"
+      ],
+      "association_id": "mz16-visual-detail-20260910",
+      "search_text": "terminal-mz16-visual-detail-20260910 obstacle-avoidance MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged. A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery. Extending these completed fits or tuning cutoffs on consumed placementDEV to rescue this outcome Calling trained pole regression independent confirmation or interpreting HIGH versus historical MZ15 as a pure resolution effect"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26306,6 +26335,28 @@
         "decision_lifecycle": 4
       },
       "search_text": "mz15-shared-support-20260910 Can learned shared return support recover far detections without new false alerts? Frozen MZ5 and matched new QUERY readout with identical input features,batch IDs and1200step budget Train10641parameter shared support and10740parameter query readouts on existing TRAIN pool plus consumed sequence; freeze oldDEV zero-addition cutoffs Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged. MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md Existing10200-frame training pool,7562 unique sampled frames; oldDEV1000 and consumedDEV3000; no EVAL/capture"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz16-visual-detail-20260910",
+      "status": "archived",
+      "question": "Does retaining native local RGB detail improve actual echo attribution at a fixed false-alert budget?",
+      "baseline": "Frozen MZ5 with matched LOW_DETAIL query readout; identical crop, input shape, initial weights and1200 saved batches",
+      "change": "HIGH preserves native RGB detail; LOW downsamples and restores before identical224pixel ROI extraction; encoder and training formulation frozen",
+      "primary_metric": "Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged.",
+      "decision": "MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET",
+      "report": "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md",
+      "source": "Existing7562 unique sampled TRAIN frames including200 diagnostic sequence frames; oldDEV1000 and consumed placementDEV3000; no EVAL or capture",
+      "commit": "9e9eb5c3f6d31c707ee8205b577e740c93be45c0",
+      "association_id": "mz16-visual-detail-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "decision_lifecycle": 4
+      },
+      "search_text": "mz16-visual-detail-20260910 Does retaining native local RGB detail improve actual echo attribution at a fixed false-alert budget? Frozen MZ5 with matched LOW_DETAIL query readout; identical crop, input shape, initial weights and1200 saved batches HIGH preserves native RGB detail; LOW downsamples and restores before identical224pixel ROI extraction; encoder and training formulation frozen Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged. MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md Existing7562 unique sampled TRAIN frames including200 diagnostic sequence frames; oldDEV1000 and consumed placementDEV3000; no EVAL or capture"
     }
   ],
   "associations": [
@@ -28556,6 +28607,21 @@
         "artifacts.local/work/mz15-shared-support-20260910/run-v1/stress-repair-v1/receipt.json"
       ],
       "decision_id": "terminal-mz15-shared-support-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz16-visual-detail-20260910",
+      "use_ids": [],
+      "protocol_id": "mz16-visual-detail-20260910-protocol",
+      "code_revision": "9e9eb5c3f6d31c707ee8205b577e740c93be45c0",
+      "input_fingerprint": "5dc04cef25bfbbf08655af8cb51a16b2e39fae443d917cc3cbc64ba330009f76",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md",
+        "artifacts.local/work/mz16-visual-detail-20260910/run-v1/result.json",
+        "artifacts.local/work/mz16-visual-detail-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz16-visual-detail-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz16-visual-detail-20260910",
       "source_rows": 1
     },
     {

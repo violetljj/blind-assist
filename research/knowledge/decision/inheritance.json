@@ -431,6 +431,16 @@
       "failure_signature": "Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged.",
       "revisit_trigger": "A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence.",
       "assignment_basis": "Two completed fits,3 focused tests,62400 scalar output-bit audit; both add newDEV false positives, shared also loses trained pole retrieval."
+    },
+    {
+      "terminal_id": "terminal-mz16-visual-detail-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This paired native versus resampled224pixel ROI detail intervention with frozen encoder and10740parameter query readout",
+      "retained_surface": "Paired11562frame cache, matched initial weights and batches, local attribution metrics and both completed candidates",
+      "failure_signature": "Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged.",
+      "revisit_trigger": "A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery.",
+      "assignment_basis": "Two completed fits,2 focused tests,62400 output-bit and1324062 local-bit independent audit; neither arm passes fixed FP budget and HIGH AP declines on both placement cohorts."
     }
   ]
 }
