@@ -5,6 +5,38 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed geometry transfer: MZ63 (2026-09-11)
+
+[MZ63](nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md) completes zero-fit
+transfer on4096 MZ61 frames. Both preregistered DROP held1024 flags pass:
+CONTROL native BODY_NEAR+8 and COVERAGE+1, no added false-alert bits;
+OLD/MZ57 740TP/38FP ->756/38 and743/38. All4096 DROP is2985/154 ->3034/155
+and3005/154. Preserve the fixed heads as CHALLENGER evidence and all old
+comparators; the earlier MZ62 assignment negative control remains scoped intact.
+
+IDEAL and MERGE add false alerts; held awning has no native added contribution.
+ALL_INVALID leaves4025/4076 misses of4096 positives despite CONTROL/COVERAGE
+71/20 TP. No adaptive profile selection, threshold tuning, or hardware claim.
+[Execution](nearfield/MZ63_EXECUTION_20260911.md) uses4096 RGB decodes and three
+trained views shared across four profiles,79.087s CUDA and5.431s score receipt
+time, zero fit/recut and no persistent dense cache. UNKNOWN retained;524288
+scalar decisions and327680 candidate reconstruction checks pass.
+
+## Geometry source: MZ61 (2026-09-11)
+
+[MZ61](nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md) admits4096 controlled
+frames from both hosts with1024 geometry configurations and no role-ID overlap.
+All source/intent and2048 event-pair checks pass;80 native audits and80 actual
+visual reviews pass. All192 held positive geometries differ from TRAIN in exact
+count tensors, although some binary occupancy repeats. UNKNOWN12188903 cells
+remain. Retain as COMPONENT only; this is neither model nor hardware improvement.
+
+[Execution](nearfield/MZ61_EXECUTION_20260911.md) retains owner-local raw bytes,
+1710092176-byte training archives, and original failure/repair evidence. Transparent
+lossless compression saved3188998144 allocated bytes across8192 native/support
+files. Sites and mesh identities are consumed; generalization remains unestablished.
+MZ63 fixed-model transfer has a separate registration and result.
+
 ## Matched profile coverage: MZ62 (2026-09-11)
 
 [MZ62](nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md) compares two

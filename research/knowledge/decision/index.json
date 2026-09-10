@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "750d290a57d39ac037735421f019279bc0cb3e3b1b7197ba970c8f85c1b4cf23",
+  "source_fingerprint": "9a7f2a6acd9c2883aa51c9bad105fe670e2cd3f6f007df9a083f118817ed672e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 352,
-    "current_terminals": 138,
-    "run_associations": 350
+    "experiments": 354,
+    "current_terminals": 140,
+    "run_associations": 352
   },
   "failure_layers": [
     {
@@ -21147,6 +21147,75 @@
       "search_text": "terminal-mz62-profile-coverage-20260911 obstacle-avoidance MZ62_COMPLETE_PROFILE_COVERAGE_LOSES_NATIVE_MARGIN_TO_MATCHED_RANDOM_ASSIGNMENT Two matched1200-step heads preserve per-frame totals and original loss/calibration. Complete profile assignment FAIL3/7 versus random CONTROL: held480 new nativeBN17->6; held640 finalOR TP480->461 FP88->82, legacy2732->2726 FP57->50, MZ48nonfit537->522 FP24->24. Awning held27->10/40 despite native winners28->31; 12/17 lost remain native in both. Median paired native raw score -0.149165 and BNcut2.531259->3.347590; training/calibration effects not causally separated. Prior1696 arrays/5286metrics and UNKNOWN exact. GPU282.924260s, CPU3.876217s; allocated cache5739728896B released. Carry the full-profile assignment/order recipe as NEGATIVE_CONTROL; preserve matched CONTROL and OLD_NEG plus MZ59/MZ60. Separately justify score-separation, calibration, geometry or representation contrasts without tuning frozen outputs. CONTROL has better sensitivity with additional FP and is not promoted. Call3/7 a retaining success Call native-winning inherited OR hits new branch contribution Reinterpret one exposure per frame/profile as a trained ceiling Retune thresholds or extend this frozen fit after its failure Treat UNKNOWN or missing ToF as clearance Infer real-hardware natural-scene or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz61-geometry-source-20260911",
+      "status": "diagnostic",
+      "question": "Both hosts completed4096/4096 source-valid and intent-matching frames,1024 camera-relative geometry IDs with no role intersection,2048 invariant event pairs,80 independent native and80 actual visual reviews. Held192 positive geometries have zero exact nonempty count-tensor matches to TRAIN; boolean occupancy can still repeat. UNKNOWN12188903 full cells retained. Raw reported7552447032B and training archives1710092176B; transparent lossless owner-file compression saved3188998144 allocated B. Mechanical path/frame-check repairs preserved original inputs and failures. No model fit or prediction in this source experiment.",
+      "baseline": null,
+      "change": "Use as a controlled geometry Development COMPONENT with frozen roles and complete UNKNOWN/count-collision tables; separately register model role usage. Fixed MZ63 transfer is separately registered. Preserve MZ55 source and original models.",
+      "primary_metric": null,
+      "decision": "MZ61_COMPLETE_GEOMETRY_SOURCE_NATIVE_COUNTS_DISJOINT_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Use as a controlled geometry Development COMPONENT with frozen roles and complete UNKNOWN/count-collision tables; separately register model role usage. Fixed MZ63 transfer is separately registered. Preserve MZ55 source and original models.",
+      "forbidden_repeats": [
+        "Claim geometry ID disjointness proves label or natural-scene generalization",
+        "Treat boolean occupancy collisions as absent because exact counts differ",
+        "Call source admission a model improvement or calibrated VL53L8CX result",
+        "Treat UNKNOWN or absent ToF as clearance",
+        "Reclassify consumed sites or rigid meshes as new natural scenes or proven through-holes"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ61_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz61-geometry-source-20260911",
+      "search_text": "terminal-mz61-geometry-source-20260911 obstacle-avoidance MZ61_COMPLETE_GEOMETRY_SOURCE_NATIVE_COUNTS_DISJOINT_COMPONENT_ONLY Both hosts completed4096/4096 source-valid and intent-matching frames,1024 camera-relative geometry IDs with no role intersection,2048 invariant event pairs,80 independent native and80 actual visual reviews. Held192 positive geometries have zero exact nonempty count-tensor matches to TRAIN; boolean occupancy can still repeat. UNKNOWN12188903 full cells retained. Raw reported7552447032B and training archives1710092176B; transparent lossless owner-file compression saved3188998144 allocated B. Mechanical path/frame-check repairs preserved original inputs and failures. No model fit or prediction in this source experiment. Use as a controlled geometry Development COMPONENT with frozen roles and complete UNKNOWN/count-collision tables; separately register model role usage. Fixed MZ63 transfer is separately registered. Preserve MZ55 source and original models. Claim geometry ID disjointness proves label or natural-scene generalization Treat boolean occupancy collisions as absent because exact counts differ Call source admission a model improvement or calibrated VL53L8CX result Treat UNKNOWN or absent ToF as clearance Reclassify consumed sites or rigid meshes as new natural scenes or proven through-holes"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz63-geometry-transfer-20260911",
+      "status": "diagnostic",
+      "question": "Fixed eight-method/four-profile transfer on4096 MZ61 frames, zero fit/recut. Both preregistered DROP HELD1024 flags PASS: CONTROL nativeBN+8, COVERAGE+1, zero new FP; OLD/MZ57 740TP38FP ->756/38 and743/38. All4096 DROP2985/154->3034/155 and3005/154. Native gains concentrate in sign/grille; held awning has none. IDEAL CONTROL+21TP39FP, COVERAGE+15TP26FP; MERGE+8TP8FP/+0TP3FP. ALL_INVALID17TP16FP->71/16 and20/16, still4025/4076 misses of4096 positives. Source UNKNOWN12188903 cells retained;524288 scalar and327680 candidate reconstructions pass. GPU79.087s; score receipt5.431s; no dense cache.",
+      "baseline": null,
+      "change": "Retain fixed CONTROL and COVERAGE as bounded transfer CHALLENGER evidence, OLD_NEG and MZ57 as comparators, and MZ62 assignment negative control. Any new fit or fallback mechanism requires separately declared source-role use; report every profile and query rather than selecting on observed costs.",
+      "primary_metric": null,
+      "decision": "MZ63_FIXED_GEOMETRY_TRANSFER_DROP_NATIVE_GAIN_WITH_PROFILE_DEPENDENT_COSTS",
+      "report": "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain fixed CONTROL and COVERAGE as bounded transfer CHALLENGER evidence, OLD_NEG and MZ57 as comparators, and MZ62 assignment negative control. Any new fit or fallback mechanism requires separately declared source-role use; report every profile and query rather than selecting on observed costs.",
+      "forbidden_repeats": [
+        "Promote DROP held no-extra-FP flag to all conditions",
+        "Call zero-fit transfer proof that MZ61 training improved learning",
+        "Treat native winning-cell attribution as causal surface-use proof",
+        "Hide IDEAL/MERGE false-alert costs or ALL_INVALID misses",
+        "Treat missing ToF or UNKNOWN as clearance",
+        "Infer natural-scene hardware or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ63_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz63-geometry-transfer-20260911",
+      "search_text": "terminal-mz63-geometry-transfer-20260911 obstacle-avoidance MZ63_FIXED_GEOMETRY_TRANSFER_DROP_NATIVE_GAIN_WITH_PROFILE_DEPENDENT_COSTS Fixed eight-method/four-profile transfer on4096 MZ61 frames, zero fit/recut. Both preregistered DROP HELD1024 flags PASS: CONTROL nativeBN+8, COVERAGE+1, zero new FP; OLD/MZ57 740TP38FP ->756/38 and743/38. All4096 DROP2985/154->3034/155 and3005/154. Native gains concentrate in sign/grille; held awning has none. IDEAL CONTROL+21TP39FP, COVERAGE+15TP26FP; MERGE+8TP8FP/+0TP3FP. ALL_INVALID17TP16FP->71/16 and20/16, still4025/4076 misses of4096 positives. Source UNKNOWN12188903 cells retained;524288 scalar and327680 candidate reconstructions pass. GPU79.087s; score receipt5.431s; no dense cache. Retain fixed CONTROL and COVERAGE as bounded transfer CHALLENGER evidence, OLD_NEG and MZ57 as comparators, and MZ62 assignment negative control. Any new fit or fallback mechanism requires separately declared source-role use; report every profile and query rather than selecting on observed costs. Promote DROP held no-extra-FP flag to all conditions Call zero-fit transfer proof that MZ61 training improved learning Treat native winning-cell attribution as causal surface-use proof Hide IDEAL/MERGE false-alert costs or ALL_INVALID misses Treat missing ToF or UNKNOWN as clearance Infer natural-scene hardware or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28725,6 +28794,53 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz62-profile-coverage-20260911 Does complete frame by profile exposure improve native near-body recovery at matched total frame presentations and compute? Newmatched1200stepCONTROL sameMZ56GLOBALinitial and eachMZ55TRAINframe3presentations; retained OLD_NEG and saved59/60 COVERAGE each1600TRAINframe onceperprofile; randomCONTROL perprofileallocation; original loss replay model and calibration DROP newfamilyheld480 nativeBN COVERAGE>CONTROL;finalOR TP>=CONTROL FP<=CONTROL onheld640 legacy andMZ48nonfit MZ62_COMPLETE_PROFILE_COVERAGE_LOSES_NATIVE_MARGIN_TO_MATCHED_RANDOM_ASSIGNMENT research/active/dtr-r0/nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md Consumed MZ55 and old Development; no MZ61 inputs"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz61-geometry-source-20260911",
+      "status": "archived",
+      "question": "Can disjoint dimensions and poses add valid native HEAD BODY BOTH coverage beyond repeated MZ55 geometry?",
+      "baseline": "Immutable MZ55 native controlled source, with repeated held awning tensors",
+      "change": "Fixed4096 geometry recipe split; initial64 two-host canary; unchanged native truth and weak45degree observable packet",
+      "primary_metric": "64sourcevalid32pairs>=56intent,allfamilyrelation/rangevisual andnewpositivegeometry;then4032 full coverage with native collision audit",
+      "decision": "MZ61_COMPLETE_GEOMETRY_SOURCE_NATIVE_COUNTS_DISJOINT_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md",
+      "source": "Consumed scenes, predeclared new geometry, evaluator-native source only",
+      "commit": "0ee5a1d6740f94cc75bde1ab3a3cd9405421fb62",
+      "association_id": "mz61-geometry-source-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "observation_perception": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "mz61-geometry-source-20260911 Can disjoint dimensions and poses add valid native HEAD BODY BOTH coverage beyond repeated MZ55 geometry? Immutable MZ55 native controlled source, with repeated held awning tensors Fixed4096 geometry recipe split; initial64 two-host canary; unchanged native truth and weak45degree observable packet 64sourcevalid32pairs>=56intent,allfamilyrelation/rangevisual andnewpositivegeometry;then4032 full coverage with native collision audit MZ61_COMPLETE_GEOMETRY_SOURCE_NATIVE_COUNTS_DISJOINT_COMPONENT_ONLY research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md Consumed scenes, predeclared new geometry, evaluator-native source only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz63-geometry-transfer-20260911",
+      "status": "archived",
+      "question": "Do fixed MZ62 matched-profile heads retain native obstacle additions on disjoint MZ61 geometry, and at what false-alert cost?",
+      "baseline": "Retained OLD_NEG union and MZ57 GLOBAL union, original MZ37 and all constituent checkpoints/cuts",
+      "change": "Zero-fit transfer of fixed heads over4096 complete MZ61 cases; original3profiles plus ALL_INVALID boundary; shared3RGBviews",
+      "primary_metric": "Each MZ62 DROP HELD1024 native BODY_NEAR additions beyond OLD_NEG and all-query newly false bits; complete paired tradeoffs versus both baselines",
+      "decision": "MZ63_FIXED_GEOMETRY_TRANSFER_DROP_NATIVE_GAIN_WITH_PROFILE_DEPENDENT_COSTS",
+      "report": "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md",
+      "source": "Consumed controlled MZ61 geometry source; no training/calibration role used for fitting",
+      "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b",
+      "association_id": "mz63-geometry-transfer-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz63-geometry-transfer-20260911 Do fixed MZ62 matched-profile heads retain native obstacle additions on disjoint MZ61 geometry, and at what false-alert cost? Retained OLD_NEG union and MZ57 GLOBAL union, original MZ37 and all constituent checkpoints/cuts Zero-fit transfer of fixed heads over4096 complete MZ61 cases; original3profiles plus ALL_INVALID boundary; shared3RGBviews Each MZ62 DROP HELD1024 native BODY_NEAR additions beyond OLD_NEG and all-query newly false bits; complete paired tradeoffs versus both baselines MZ63_FIXED_GEOMETRY_TRANSFER_DROP_NATIVE_GAIN_WITH_PROFILE_DEPENDENT_COSTS research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md Consumed controlled MZ61 geometry source; no training/calibration role used for fitting"
     }
   ],
   "associations": [
@@ -31782,6 +31898,20 @@
       "source_rows": 1
     },
     {
+      "run_id": "mz61-geometry-source-20260911",
+      "use_ids": [],
+      "protocol_id": "mz61-geometry-source-r0",
+      "code_revision": "0ee5a1d6740f94cc75bde1ab3a3cd9405421fb62",
+      "input_fingerprint": "becc40a04897fb818cac48ba7c0c31d7cf4a9dc700b3ec1d20bdc2a26164fed8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_20260911.md",
+        "artifacts.local/work/mz61-geometry-source-20260911",
+        "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz61-geometry-source-20260911",
+      "source_rows": 1
+    },
+    {
       "run_id": "mz62-profile-coverage-20260911",
       "use_ids": [],
       "protocol_id": "mz62-profile-coverage-r0",
@@ -31793,6 +31923,20 @@
         "research/active/dtr-r0/nearfield/MZ62_PROFILE_COVERAGE_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz62-profile-coverage-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz63-geometry-transfer-20260911",
+      "use_ids": [],
+      "protocol_id": "mz63-geometry-transfer-r0",
+      "code_revision": "4352595d1fc95cd01408d5e211999bc7b271c69b",
+      "input_fingerprint": "dbfed14330447cc59d8626562ffbaa4c160cbe58445d552a8876ee94492bf48f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_20260911.md",
+        "artifacts.local/work/mz63-geometry-transfer-20260911",
+        "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz63-geometry-transfer-20260911",
       "source_rows": 1
     },
     {

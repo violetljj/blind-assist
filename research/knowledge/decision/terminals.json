@@ -2607,6 +2607,55 @@
         "research/active/dtr-r0/nearfield/MZ62_EXECUTION_20260911.md"
       ],
       "commit": "0ee5a1d6740f94cc75bde1ab3a3cd9405421fb62"
+    },
+    {
+      "id": "terminal-mz61-geometry-source-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ61_COMPLETE_GEOMETRY_SOURCE_NATIVE_COUNTS_DISJOINT_COMPONENT_ONLY",
+      "summary": "Both hosts completed4096/4096 source-valid and intent-matching frames,1024 camera-relative geometry IDs with no role intersection,2048 invariant event pairs,80 independent native and80 actual visual reviews. Held192 positive geometries have zero exact nonempty count-tensor matches to TRAIN; boolean occupancy can still repeat. UNKNOWN12188903 full cells retained. Raw reported7552447032B and training archives1710092176B; transparent lossless owner-file compression saved3188998144 allocated B. Mechanical path/frame-check repairs preserved original inputs and failures. No model fit or prediction in this source experiment.",
+      "successor_requires": "Use as a controlled geometry Development COMPONENT with frozen roles and complete UNKNOWN/count-collision tables; separately register model role usage. Fixed MZ63 transfer is separately registered. Preserve MZ55 source and original models.",
+      "forbidden_repeats": [
+        "Claim geometry ID disjointness proves label or natural-scene generalization",
+        "Treat boolean occupancy collisions as absent because exact counts differ",
+        "Call source admission a model improvement or calibrated VL53L8CX result",
+        "Treat UNKNOWN or absent ToF as clearance",
+        "Reclassify consumed sites or rigid meshes as new natural scenes or proven through-holes"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ61_EXECUTION_20260911.md"
+      ],
+      "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b"
+    },
+    {
+      "id": "terminal-mz63-geometry-transfer-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ63_FIXED_GEOMETRY_TRANSFER_DROP_NATIVE_GAIN_WITH_PROFILE_DEPENDENT_COSTS",
+      "summary": "Fixed eight-method/four-profile transfer on4096 MZ61 frames, zero fit/recut. Both preregistered DROP HELD1024 flags PASS: CONTROL nativeBN+8, COVERAGE+1, zero new FP; OLD/MZ57 740TP38FP ->756/38 and743/38. All4096 DROP2985/154->3034/155 and3005/154. Native gains concentrate in sign/grille; held awning has none. IDEAL CONTROL+21TP39FP, COVERAGE+15TP26FP; MERGE+8TP8FP/+0TP3FP. ALL_INVALID17TP16FP->71/16 and20/16, still4025/4076 misses of4096 positives. Source UNKNOWN12188903 cells retained;524288 scalar and327680 candidate reconstructions pass. GPU79.087s; score receipt5.431s; no dense cache.",
+      "successor_requires": "Retain fixed CONTROL and COVERAGE as bounded transfer CHALLENGER evidence, OLD_NEG and MZ57 as comparators, and MZ62 assignment negative control. Any new fit or fallback mechanism requires separately declared source-role use; report every profile and query rather than selecting on observed costs.",
+      "forbidden_repeats": [
+        "Promote DROP held no-extra-FP flag to all conditions",
+        "Call zero-fit transfer proof that MZ61 training improved learning",
+        "Treat native winning-cell attribution as causal surface-use proof",
+        "Hide IDEAL/MERGE false-alert costs or ALL_INVALID misses",
+        "Treat missing ToF or UNKNOWN as clearance",
+        "Infer natural-scene hardware or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ63_EXECUTION_20260911.md"
+      ],
+      "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b"
     }
   ]
 }

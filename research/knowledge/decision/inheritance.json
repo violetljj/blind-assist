@@ -881,6 +881,26 @@
       "failure_signature": "Gate3/7; nativeBN17->6; held480TP88FP->461TP82FP; awning held27->10 despite native28->31",
       "revisit_trigger": "Separately declared margin/calibration/geometry/representation contrast retaining complete-profile negative control and all old baselines",
       "assignment_basis": "Frozen matched exposure schedule; independent scalar/native/cutoff and awning audits; exact prior arrays and UNKNOWN"
+    },
+    {
+      "terminal_id": "terminal-mz61-geometry-source-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Controlled rigid geometry Development source with1024 geometry configurations, frozen role assignments and native evaluator-only labels",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ61_GEOMETRY_SOURCE_RESULTS_20260911.md",
+      "failure_signature": "All source gates pass; exact positive count tensors differ from TRAIN but some boolean occupancy repeats; consumed sites/reused meshes and UNKNOWN prevent broad generalization claims",
+      "revisit_trigger": "Separately registered fixed-model transfer or declared training use, preserving source roles, native boundaries and old baselines",
+      "assignment_basis": "4096 source/intent/RGB hashes;2048 invariant event pairs;80 native loops and actual viewed panels; full tensor-collision audit; both owners released"
+    },
+    {
+      "terminal_id": "terminal-mz63-geometry-transfer-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Fixed MZ62 CONTROL/COVERAGE zero-fit geometry transfer; preregistered DROP utility and complete per-profile sensitivity/false-alert tradeoffs",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md",
+      "failure_signature": "DROP held nativeBN+8/+1 at zero addedFP, but no held awning native gain, IDEAL/MERGE addedFP, and ALL_INVALID remains severely insensitive",
+      "revisit_trigger": "Separately declared mechanism or source-training contrast preserving OLD_NEG/MZ57 and MZ62 assignment negative control; no profile selection or threshold tuning from these results",
+      "assignment_basis": "Complete4096 frames/four profiles/eight decisions with frozen5cut vectors;524288 scalar and327680 candidate reconstructions; exact packet transformations and explicit UNKNOWN"
     }
   ]
 }
