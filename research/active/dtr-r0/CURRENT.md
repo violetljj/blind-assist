@@ -5,6 +5,23 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest full-task packet support comparator: MZ28 (2026-09-10)
+
+[MZ28 packet availability](nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md)
+uses7362 fixed TRAIN packet/known references, top5 per physical zone, majority
+per angular cell; no current labels/site IDs or learned visual features enter
+availability.375bank sites are disjoint DEV. Placement far72/75, addedFP2,
+exact2864/3000 versus MZ26's71/3/2860; trained pole49/48 and MZ5 positives survive.
+Compared with MZ26, placements gain6TP and lose4, remove2FP and add1. Residuals
+are relation1488HEAD_FAR cabinet and1677BODY_FAR sign; totalFP83 includes81baseFP.
+Retain packet support as COMPONENT; no-added-FP still fails, MZ5/MZ20 unchanged.
+Independent task/geometry/bank/vote audit passes. Explicit stress echo alignment
+has39moved zones but0changed witness/count elements; no task numbers changed.
+Runtime bank38.2MB, cached batched retrieval2.859s/4400frames, not phone timing.
+One fixed evaluation complete, no process remains. Next investigate complementary
+learned/packet support with actual witness losses; no appended sweep or fusion arm.
+Consumed Development only; broad goal active, no temporal/device promotion.
+
 ## Latest observable feature separation: MZ27 (2026-09-10)
 
 [MZ27 frozen descriptors](nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md)
