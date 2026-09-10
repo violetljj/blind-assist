@@ -5,6 +5,21 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest deterministic optimization comparison: MZ26 (2026-09-10)
+
+[MZ26 fixed endpoints](nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md)
+completes one4800-step deterministic trajectory. Fixed1200->4800 comparison
+improves placement far additions69->71of75 and addedFP7->3; exact2855->2860.
+Pole49/48 and all MZ5 positive judgments survive. Zero-added-FP still fails;
+total placementFP84 includes81 baseline false bits preserved by add-only design.
+TRAIN negative activation29.43->18.34%, but relationDEV negative p99 rises
+3.01->4.32 and positive witness retention87.00->85.90%; other DEV tails also worsen.
+Retain optimization-response evidence as COMPONENT, not full model promotion.
+MZ5 baseline and MZ20 challenger unchanged. Both endpoint audits pass; fits and
+diagnostics complete. Next inspect observable feature separation before choosing
+a new objective or spatial representation; no blind duration extension. Consumed
+Development only, no fresh-source/device/temporal claim. Broad goal remains active.
+
 ## Latest optimization-prefix diagnosis: MZ25 (2026-09-10)
 
 [MZ25 prefix and sampler](nearfield/MZ25_CONVERGENCE_RESULTS_20260910.md) stops
