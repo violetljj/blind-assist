@@ -5,6 +5,41 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed responsibility optimization endpoints: MZ35 (2026-09-10)
+
+[MZ35 fixed trajectory](nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md)
+reproduces every MZ32 model tensor and1200loss/exposure rows bit-for-bit before
+continuing the same shared selector to4800steps. TRAIN errors66->28, weighted
+BCE0.160144->0.063869; placementFP30->26, FN67 unchanged, exact2908->2910/3000.
+All normal MZ28 TP/additions and trained pole49/48 survive. Distance FP5->0,
+relation25->26 and oldDEV17->18 show nonuniform transfer; BODY_NEAR TRAIN errors
+7->8 despite lower loss. The prior crossbar case now correctly chooses RGB.
+Independent prefix/schedule/optimizer/calibration and31200task-bit audit passes.
+The joint<=20FP target still fails; retain4800 as CHALLENGER, MZ5/MZ20 unchanged.
+One fixed trajectory is complete. Next diagnose responsibility transfer or test a
+frozen candidate on new appropriate sources; no appended duration/threshold rescue.
+Consumed Development only; no device, temporal, fresh-source or safety promotion.
+
+## Query separation admission: MZ34 (2026-09-10)
+
+[MZ34 admission](nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md) exits
+NOT_ADMITTED_NO_FIT: final shared-gradient minimum+0.077761 fails the fixed
+<=-0.1 criterion despite66remaining TRAIN errors. No model initialization,
+architecture inference, optimizer, fit or task predictions were produced.
+The prepared four-query prototype is untested. Retain the recorded admission
+outcome as COMPONENT; this does not establish query separation is ineffective.
+
+## Shared query gradient diagnosis: MZ33 (2026-09-10)
+
+[MZ33 frozen gradients](nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md)
+checks initial/final MZ32 on1165TRAIN disagreements with zero optimizer updates.
+All six final combined-shared gradient cosines are positive, min0.077761;
+raw TRAIN responsibility errors are7/13/22/24. Count-weighted query gradients
+match the direct global gradient, and states/input hashes remain unchanged.
+An initial readout-only negative pair does not imply final combined conflict.
+Retain diagnostic COMPONENT; positive aggregate gradients do not prove harmless
+sharing or remove conditional/capacity questions. MZ35 tests optimization separately.
+
 ## Expanded responsibility supervision: MZ32 (2026-09-10)
 
 [MZ32 matched supervision](nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md)
