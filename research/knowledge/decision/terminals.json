@@ -2111,6 +2111,28 @@
         "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md"
       ],
       "commit": "bdfe49c8ecb8cd97b229f76806ff609ca59dfecf"
+    },
+    {
+      "id": "terminal-mz40-l8cx-constrained-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ40_FROZEN_SELECTOR_LOSES_ALERTS_UNDER_MISSING_CLOSE_RETURNS",
+      "summary": "On consumed 380-frame MZ36 cohort, MZ37 ideal FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and close-zone invalid FP2/FN18/exact363. Under invalid input MZ35 removes8 true MZ28 bits alongside7 false bits. Exact16frame adapter parity and independent packet/scoring audit pass; no fitting or physical sensor claim.",
+      "successor_requires": "Use a separately registered matched restricted-observation comparison and observable-quality-aware selector; preserve ideal and RGB baselines, known denominators, diverse paired asset direction, and no unsupported physical claim.",
+      "forbidden_repeats": [
+        "Treat lower FP under dropout as improvement while true alerts collapse",
+        "Call midpoint/drop-zone proxy a measured VL53L8CX response",
+        "Discard ToF-missing frames from the admitted denominator",
+        "Use evaluator labels to choose sensor returns or runtime action",
+        "Silently replace the ideal comparator or extend these two fixed arms"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md"
+      ],
+      "commit": "c576872f18e53d10f51744c6efd3f6fe5d270dd7"
     }
   ]
 }

@@ -661,6 +661,16 @@
       "failure_signature": "10cm true-depth bins with3pixel support emit unresolved close pairs; no calibrated strongest-target, reflectance, ambient or validity response",
       "revisit_trigger": "Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions.",
       "assignment_basis": "Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation."
+    },
+    {
+      "terminal_id": "terminal-mz40-l8cx-constrained-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Fixed unresolved-return sensitivity and selector action diagnostic with frozen ideal-trained weights/bank; not a calibrated VL53L8CX simulator or model promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md",
+      "failure_signature": "Invalid close-return input changes observation support and branch responsibilities; MZ35 removes8 otherwise detected true bits and MZ37 restores none. Training mismatch and information loss remain confounded.",
+      "revisit_trigger": "Use a separately registered matched restricted-observation comparison and observable-quality-aware selector; preserve ideal and RGB baselines, known denominators, diverse paired asset direction, and no unsupported physical claim.",
+      "assignment_basis": "On consumed 380-frame MZ36 cohort, MZ37 ideal FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and close-zone invalid FP2/FN18/exact363. Under invalid input MZ35 removes8 true MZ28 bits alongside7 false bits. Exact16frame adapter parity and independent packet/scoring audit pass; no fitting or physical sensor claim."
     }
   ]
 }
