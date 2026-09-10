@@ -5,6 +5,22 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest decisive availability objective: MZ24 (2026-09-10)
+
+[MZ24 decisive supervision](nearfield/MZ24_DECISIVE_AVAILABILITY_RESULTS_20260910.md)
+completes one matched1200-step fit with the same head, initialization, batches
+and cutoffs as MZ23. Added placementFP falls8->4 versus MZ20 (7->4 versus MZ23),
+retaining70/75 far additions and trained pole49/48. Exact2860/3000; no-added-FP
+still fails. Retain the changed objective as COMPONENT only; MZ5 baseline and
+MZ20 challenger unchanged. Clearing the learned tail by a common posthoc cutoff
+would retain32/75far, so no threshold rescue is adopted. Independent scalar,
+geometry, initialization,58frame inference and100352gradient-element audits pass.
+TRAIN-extrema diagnosis reduces negative-availability bag activation85.37->29.43%
+(1855/6303 remain); placement rates36..38%. The gap is already present on TRAIN,
+not only transfer. Pole has0 such negative bags. Next compare bounded optimization
+before attributing failure to capacity or acquiring more data; do not reopen this
+completed fit. Consumed Development only; no App/device/temporal promotion.
+
 ## Latest angular availability experiment: MZ23 (2026-09-10)
 
 [MZ23 availability](nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md) completes
