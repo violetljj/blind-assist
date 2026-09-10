@@ -2461,6 +2461,29 @@
         "research/active/dtr-r0/nearfield/MZ56_EXECUTION_20260911.md"
       ],
       "commit": "d5ffd5f1d7424e21ad703b483436459d313a1aab"
+    },
+    {
+      "id": "terminal-mz57-complementary-scale-union-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ57_FIXED_SCALE_UNION_RETAINS_COMPLEMENTARY_NEAR_BODY_RECOVERY_WITH_OLD_FALSE_ALERT_COST",
+      "summary": "Posthoc fixed OR of retained MZ53 OLD_NEG union and each frozen MZ56 readout. DROP nonfit retained463TP20FP529FN; LOCAL474/20/518,GLOBAL487/20/505,SUPPRESSED482/20/510. All24GLOBAL additions areBODY_NEAR:66->90TP,23native winners alloutside45/belowcrop,1known nonnative winner. Oldnoncal TP2722 retained,FP45->52/48/49;GLOBAL adds3oldFP. IDEAL655/36->678/36,MERGE668/21->692/21. FiveGLOBAL-vsSUPPRESSED additions,4native. 251424scalarOR bits,2400oldmetrics,790priorarrays,92160native checks,400MZ36/80UNKNOWN pass; no fit/inference/newcutoff. Known MZ56 paired results explicitly disclosed before registration. Deployment additional crop/full paths cost unmeasured.",
+      "successor_requires": "Keep a fixed consumed-Development challenger with original MZ53/MZ56 constituents. Evaluate on admitted new MZ55 geometries with no refit/cutoff adjustment before generalization claims; report oldFP cost, native-attribution gap and additional deployment paths.",
+      "forbidden_repeats": [
+        "Claim fresh confirmation or independently discovered success from already known paired counts",
+        "Hide3extra legacyFP or1incorrect nativewinner among24newTP",
+        "Call CPU saved-output composition deployment latency",
+        "Treat outside-field hypothesis as measured ToF clearance",
+        "Select modes or recut on MZ55 outcomes"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ57_COMPLEMENTARY_SCALE_UNION_RESULTS_20260911.md"
+      ],
+      "commit": "e67170b700407487db55dcd35acbf246eb92d828"
     }
   ]
 }

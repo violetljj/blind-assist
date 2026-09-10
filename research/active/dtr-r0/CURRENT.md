@@ -5,6 +5,19 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed complementary scale union: MZ57 (2026-09-11)
+
+[MZ57](nearfield/MZ57_COMPLEMENTARY_SCALE_UNION_RESULTS_20260911.md) combines
+the unchanged OLD_NEG union with each fixed MZ56 readout. DROP nonfit retained
+463 TP/20 FP becomes LOCAL 474/20, GLOBAL 487/20, SUPPRESSED 482/20. GLOBAL
+BODY_NEAR rises 66 to 90; 23 of 24 new events have native outside-field winners,
+one has a known but non-native winner. Old noncal FP rises 45 to 48. IDEAL
+and MERGE GLOBAL give 678/36 and 692/21 versus retained 655/36 and 668/21.
+This is disclosed posthoc consumed Development, with no fit or new threshold.
+Preserve a CHALLENGER, all constituents, 80 UNKNOWN and old-FP costs. The
+additional crop/full deployment paths have not been timed on Android. New
+MZ55 source transfer can check the candidate without refitting on those results.
+
 ## Measured global context outside local sensor coverage: MZ56 (2026-09-11)
 
 [MZ56](nearfield/MZ56_GLOBAL_ANCHOR_RESULTS_20260911.md) passes its fixed
