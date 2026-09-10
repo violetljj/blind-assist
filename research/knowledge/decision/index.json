@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "4908b8b3e1208e2c274435a67c69c4be90ad28f5d561d828b2cd0aaf29a22d27",
+  "source_fingerprint": "b49d9e2dba3d0b5a66b848692c445639fe04ee0a13bf0328ae65ec115eb19b0f",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 331,
-    "current_terminals": 117,
-    "run_associations": 329
+    "experiments": 333,
+    "current_terminals": 119,
+    "run_associations": 331
   },
   "failure_layers": [
     {
@@ -20463,6 +20463,67 @@
       "search_text": "terminal-mz40-l8cx-constrained-20260910 obstacle-avoidance MZ40_FROZEN_SELECTOR_LOSES_ALERTS_UNDER_MISSING_CLOSE_RETURNS On consumed 380-frame MZ36 cohort, MZ37 ideal FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and close-zone invalid FP2/FN18/exact363. Under invalid input MZ35 removes8 true MZ28 bits alongside7 false bits. Exact16frame adapter parity and independent packet/scoring audit pass; no fitting or physical sensor claim. Use a separately registered matched restricted-observation comparison and observable-quality-aware selector; preserve ideal and RGB baselines, known denominators, diverse paired asset direction, and no unsupported physical claim. Treat lower FP under dropout as improvement while true alerts collapse Call midpoint/drop-zone proxy a measured VL53L8CX response Discard ToF-missing frames from the admitted denominator Use evaluator labels to choose sensor returns or runtime action Silently replace the ideal comparator or extend these two fixed arms"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz41-missing-guard-20260910",
+      "status": "diagnostic",
+      "question": "Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt.",
+      "baseline": null,
+      "change": "Retain this rule as a negative comparator for richer observable-quality or matched-training methods; continue diverse native-labeled data and compact source work.",
+      "primary_metric": null,
+      "decision": "MZ41_ZERO_RETURN_GUARD_SELECTIVITY_INSUFFICIENT",
+      "report": "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain this rule as a negative comparator for richer observable-quality or matched-training methods; continue diverse native-labeled data and compact source work.",
+      "forbidden_repeats": [
+        "Call missing-data recovery free of false-alarm cost",
+        "Tune this fixed guard on MZ40 labels and call it independent confirmation",
+        "Treat observation availability as clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md"
+      ],
+      "association_id": "mz41-missing-guard-20260910",
+      "search_text": "terminal-mz41-missing-guard-20260910 obstacle-avoidance MZ41_ZERO_RETURN_GUARD_SELECTIVITY_INSUFFICIENT Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt. Retain this rule as a negative comparator for richer observable-quality or matched-training methods; continue diverse native-labeled data and compact source work. Call missing-data recovery free of false-alarm cost Tune this fixed guard on MZ40 labels and call it independent confirmation Treat observation availability as clearance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz42-rich-objects-20260910",
+      "status": "diagnostic",
+      "question": "Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt.",
+      "baseline": null,
+      "change": "Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims.",
+      "primary_metric": null,
+      "decision": "MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS",
+      "report": "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims.",
+      "forbidden_repeats": [
+        "Call near-only probes far-range evidence",
+        "Claim leaf-alpha or natural-scale coverage from woody scaled forms",
+        "Treat fixture CLEAR as sensor clearance",
+        "Use names or mesh bounds in place of native labels"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md"
+      ],
+      "association_id": "mz42-rich-objects-20260910",
+      "search_text": "terminal-mz42-rich-objects-20260910 obstacle-avoidance MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt. Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims. Call near-only probes far-range evidence Claim leaf-alpha or natural-scale coverage from woody scaled forms Treat fixture CLEAR as sensor clearance Use names or mesh bounds in place of native labels"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27560,6 +27621,53 @@
       ],
       "layer_scores": {},
       "search_text": "mz40-l8cx-constrained-20260910 How sensitive are frozen obstacle models to unresolved close ToF returns? MZ36 ideal packets and frozen RGB/MZ5/MZ28/MZ30/MZ35/MZ37 Fixed equal-midpoint merge and invalid-zone proxies on sub600mm dual returns On consumed 380-frame MZ36 cohort, MZ37 ideal FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and close-zone invalid FP2/FN18/exact363. Under invalid input MZ35 removes8 true MZ28 bits alongside7 false bits. Exact16frame adapter parity and independent packet/scoring audit pass; no fitting or physical sensor claim. MZ40_FROZEN_SELECTOR_LOSES_ALERTS_UNDER_MISSING_CLOSE_RETURNS research/active/dtr-r0/nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md mz36-consumed-raw-rgb-saved-packets"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz41-missing-guard-20260910",
+      "status": "archived",
+      "question": "Can query-level missing-observation gating preserve correct RGB alarms?",
+      "baseline": "Frozen MZ40 ideal/merge/drop MZ37, MZ28, RGB, ToF and MZ5",
+      "change": "Guard only RGB-positive ToF-negative removed MZ28 alerts when query zones have zero valid returns; broad guard comparator",
+      "primary_metric": "Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt.",
+      "decision": "MZ41_ZERO_RETURN_GUARD_SELECTIVITY_INSUFFICIENT",
+      "report": "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md",
+      "source": "mz40-consumed-development-saved-predictions",
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "association_id": "mz41-missing-guard-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 6,
+        "handoff_completion": 3
+      },
+      "search_text": "mz41-missing-guard-20260910 Can query-level missing-observation gating preserve correct RGB alarms? Frozen MZ40 ideal/merge/drop MZ37, MZ28, RGB, ToF and MZ5 Guard only RGB-positive ToF-negative removed MZ28 alerts when query zones have zero valid returns; broad guard comparator Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt. MZ41_ZERO_RETURN_GUARD_SELECTIVITY_INSUFFICIENT research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md mz40-consumed-development-saved-predictions"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz42-rich-objects-20260910",
+      "status": "archived",
+      "question": "Can four richer mesh families produce paired native-labeled obstacle examples with compact transferable sources?",
+      "baseline": "Retained same-camera oblique rod controls and existing source-admitted MZ36 site",
+      "change": "Pipe ladder pouch birch meshes with HEAD_ONLY BODY_ONLY BOTH and visible nonintruding conditions",
+      "primary_metric": "Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt.",
+      "decision": "MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS",
+      "report": "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md",
+      "source": "mz38-existing-worker-assets-and-consumed-mz36-source-site",
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "association_id": "mz42-rich-objects-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "identity_binding": 3,
+        "decision_lifecycle": 3,
+        "handoff_completion": 3
+      },
+      "search_text": "mz42-rich-objects-20260910 Can four richer mesh families produce paired native-labeled obstacle examples with compact transferable sources? Retained same-camera oblique rod controls and existing source-admitted MZ36 site Pipe ladder pouch birch meshes with HEAD_ONLY BODY_ONLY BOTH and visible nonintruding conditions Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt. MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md mz38-existing-worker-assets-and-consumed-mz36-source-site"
     }
   ],
   "associations": [
@@ -30253,6 +30361,38 @@
         "research/active/dtr-r0/nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz40-l8cx-constrained-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz41-missing-guard-20260910",
+      "use_ids": [],
+      "protocol_id": "mz41-missing-guard-20260910",
+      "code_revision": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "input_fingerprint": "3d3b7ce67a99e8a0fbf1f8d96675c702a94670494516792e423a97cb329fb200",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md",
+        "artifacts.local/work/mz41-missing-guard-20260910",
+        "artifacts.local/work/mz41-missing-guard-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz41-missing-guard-20260910/run-v1/result.json"
+      ],
+      "decision_id": "terminal-mz41-missing-guard-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz42-rich-objects-20260910",
+      "use_ids": [],
+      "protocol_id": "mz42-rich-objects-20260910",
+      "code_revision": "a3309832e389cd6bce274719206e2a9822c5081d",
+      "input_fingerprint": "05fa0fd1e8989b41ab6948a1f24a5edd481b68b6d1990b1ba45b6a1258b647fa",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md",
+        "artifacts.local/work/mz42-rich-objects-20260910",
+        "artifacts.local/work/mz42-rich-objects-20260910/receipt.json",
+        "artifacts.local/work/mz42-rich-objects-20260910/result.json",
+        "artifacts.local/work/mz42-rich-objects-20260910/return-verification.json",
+        "artifacts.local/work/mz42-rich-objects-20260910/resource-release.json"
+      ],
+      "decision_id": "terminal-mz42-rich-objects-20260910",
       "source_rows": 1
     },
     {

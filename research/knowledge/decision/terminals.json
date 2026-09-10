@@ -2133,6 +2133,47 @@
         "research/active/dtr-r0/nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md"
       ],
       "commit": "c576872f18e53d10f51744c6efd3f6fe5d270dd7"
+    },
+    {
+      "id": "terminal-mz41-missing-guard-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ41_ZERO_RETURN_GUARD_SELECTIVITY_INSUFFICIENT",
+      "summary": "Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt.",
+      "successor_requires": "Retain this rule as a negative comparator for richer observable-quality or matched-training methods; continue diverse native-labeled data and compact source work.",
+      "forbidden_repeats": [
+        "Call missing-data recovery free of false-alarm cost",
+        "Tune this fixed guard on MZ40 labels and call it independent confirmation",
+        "Treat observation availability as clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md"
+      ],
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d"
+    },
+    {
+      "id": "terminal-mz42-rich-objects-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS",
+      "summary": "Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt.",
+      "successor_requires": "Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims.",
+      "forbidden_repeats": [
+        "Call near-only probes far-range evidence",
+        "Claim leaf-alpha or natural-scale coverage from woody scaled forms",
+        "Treat fixture CLEAR as sensor clearance",
+        "Use names or mesh bounds in place of native labels"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md"
+      ],
+      "commit": "a3309832e389cd6bce274719206e2a9822c5081d"
     }
   ]
 }

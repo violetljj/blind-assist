@@ -5,6 +5,43 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Richer rendered objects and compact source delivery: MZ42 (2026-09-10)
+
+[MZ42](nearfield/MZ42_RICH_OBJECTS_20260910.md) completed one secondary-worker
+capture: pipe, open ladder, irregular pouch and woody birch, each with HEAD,
+BODY, BOTH and visible nonintruding variants, plus four retained rod controls.
+All20 attempted frames pass source/native/floor checks; all5 paired groups are
+admitted and independent geometry reproduces all80 event labels. This is a
+COMPONENT source pipeline result, not model accuracy. Positives are near-only;
+one shared site, scaled/floating fixtures and leafless opaque birch leave
+far-range, natural-placement, foliage and cross-site evidence unestablished.
+
+[Lossless compact sources](nearfield/DATA_LIGHTWEIGHT_20260910.md) preserve exact
+bytes and permit direct reads without full extraction. MZ36's1,247 files shrink
+from751,784,227 to307,320,958 bytes in the portable package; MZ42's92 files shrink
+from42,326,459 to20,489,306 bytes. Original MZ36 source allocation also fell from
+755,059,248 to424,073,776 bytes under transparent NTFS compression, saving
+315.65MiB without changing paths or bytes. These are measured batch results;
+packages remain additional recoverable copies, not claimed whole-drive savings.
+
+[Applied reading](nearfield/RESTRICTED_OBSERVATION_LEARNING_20260910.md) directs
+the next hypothesis toward matched restricted-input training and observation
+quality, with mesh/site held-out evaluation. This remains untested; MZ41's
+negative control and the fixed fusion comparators remain relevant. All owned
+worker execution resources were released; raw source and receipts are retained.
+
+## Query missing-observation guard: MZ41 (2026-09-10)
+
+[MZ41](nearfield/MZ41_MISSING_GUARD_20260910.md) tests a zero-valid-query-zone
+guard on saved outputs in 0.141s, zero inference/fitting. Under missing close
+returns it recovers four true bits and adds four false bits: FP2/FN18/exact363
+becomes FP6/FN14/exact361. Ideal/merged decisions are unchanged. Broad protection
+recovers eight true bits at six new false bits and also adds false bits on the
+other arms. Retain NEGATIVE_CONTROL: binary observation absence alone is not
+sufficiently selective. Prior positives, all400 attempts and80UNKNOWN bits stay.
+Continue richer observation-quality learning alongside diverse data and compact
+source storage; no default replacement or physical-sensor claim.
+
 ## Frozen constrained-observation sensitivity: MZ40 (2026-09-10)
 
 [MZ40](nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md) completes the two

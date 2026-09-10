@@ -671,6 +671,26 @@
       "failure_signature": "Invalid close-return input changes observation support and branch responsibilities; MZ35 removes8 otherwise detected true bits and MZ37 restores none. Training mismatch and information loss remain confounded.",
       "revisit_trigger": "Use a separately registered matched restricted-observation comparison and observable-quality-aware selector; preserve ideal and RGB baselines, known denominators, diverse paired asset direction, and no unsupported physical claim.",
       "assignment_basis": "On consumed 380-frame MZ36 cohort, MZ37 ideal FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and close-zone invalid FP2/FN18/exact363. Under invalid input MZ35 removes8 true MZ28 bits alongside7 false bits. Exact16frame adapter parity and independent packet/scoring audit pass; no fitting or physical sensor claim."
+    },
+    {
+      "terminal_id": "terminal-mz41-missing-guard-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Binary zero-valid-zone query guard under consumed MZ40 proxies; no general rejection of observation-aware fusion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ41_MISSING_GUARD_20260910.md",
+      "failure_signature": "Four true recoveries cost four new false bits; exact frames decrease by two",
+      "revisit_trigger": "Retain this rule as a negative comparator for richer observable-quality or matched-training methods; continue diverse native-labeled data and compact source work.",
+      "assignment_basis": "Saved0.141s replay: query guard restores4 true and4 false bits under missing close returns, FP2/FN18/exact363 to FP6/FN14/exact361; ideal/merge unchanged. Broad protection restores8 true with6 false bits, and adds2FP to each other arm. Zero-inference scalar verification passes; no-addedFP criterion fails. Revision field is the run base; exact new-rule code SHA is bound in the receipt."
+    },
+    {
+      "terminal_id": "terminal-mz42-rich-objects-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Four richer actual meshes, paired native near-field labels and extraction-free compact source; pipeline and consumed controlled Development only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md",
+      "failure_signature": "One shared site, near-only positives, scaled/floating opaque forms; no real hardware or natural-scene transfer evidence",
+      "revisit_trigger": "Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims.",
+      "assignment_basis": "Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt."
     }
   ]
 }
