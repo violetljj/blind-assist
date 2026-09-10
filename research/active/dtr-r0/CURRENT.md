@@ -5,6 +5,20 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## VL53L8CX observation mismatch: MZ39 (2026-09-10)
+
+[MZ39 saved-packet audit](nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md)
+finds4234/4893dual-return zones(86.53percent) separated by<600mm, across346
+of380MZ36frames. Independent24320zone recount and immutable-input checks pass;
+zero inference or fitting. The10cm-bin/3pixel ideal extractor is not equivalent
+to VL53L8CX sensing. Surviving separated pairs are not certified valid returns.
+The user sets VL53L8CX as the simulation target and requests limited capability;
+the current single-zone adapter does not override that target. Follow the
+[observation contract](nearfield/VL53L8CX_OBSERVATION_CONTRACT_20260910.md).
+Retain diagnostic COMPONENT and ideal comparators. Prioritize a declared
+constrained readout before new-object capability claims; broad asset replacement
+includes nonvegetation. No device result or degraded-model task score yet.
+
 ## Positive restoration tradeoff: MZ37 (2026-09-10)
 
 [MZ37 fixed restoration](nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md)
