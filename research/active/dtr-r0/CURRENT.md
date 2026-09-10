@@ -5,6 +5,21 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest observable feature separation: MZ27 (2026-09-10)
+
+[MZ27 frozen descriptors](nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md)
+compares110 fixed locations with same-site/group exclusions and label-blind
+packet-matched TRAIN references:92scored,18class-insufficient, all75far witnesses
+exist. Negative-tail known-label correctness is packet27/29, raw64=10/29,
+raw3x3=8/29, learned40=4/29. Positive witnesses are49/61,49/61,53/61,51/61.
+Thus raw visual expansion lacks the predefined conditional separation advantage;
+information absence is not proven. One residual has0/128negative references and
+remains unscored. Retain diagnostic/packet-coordinate comparator as COMPONENT;
+next test actual task effects with witness losses and missing support explicit.
+No model or cutoff changed; MZ5 baseline, MZ20 challenger unchanged. Receipt and
+independent identity/descriptor audit pass; no fit or process remains. Consumed
+Development only, broad goal active.
+
 ## Latest deterministic optimization comparison: MZ26 (2026-09-10)
 
 [MZ26 fixed endpoints](nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md)
