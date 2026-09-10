@@ -641,6 +641,16 @@
       "failure_signature": "Remaining errors and finite source validity; MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP",
       "revisit_trigger": "Separately test positive-branch restoration for baseline-negative disagreements, using existing TRAIN supervision and declared Development with false-alert controls; do not tune on two MZ36 residuals or erase old retention tradeoffs.",
       "assignment_basis": "Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope."
+    },
+    {
+      "terminal_id": "terminal-mz37-positive-restoration-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Additive positive-branch restoration with one oldDEV calibration; consumed Development including motivating MZ36, no baseline promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md",
+      "failure_signature": "Two new false restorations: HEAD_NEAR strong wrong-branch preference and BODY_FAR with no eligible calibration negatives; geometric support alone is insufficient",
+      "revisit_trigger": "Separately inspect positive-action conditional coverage or evaluate frozen methods on paired new object shapes, with unchanged originals and false-alert controls. Do not rescue MZ37 cutoffs on observed errors.",
+      "assignment_basis": "Frozen positive restoration recovers17 noncalibration true bits with2 addedFP; placements FN67->52, FP26->28, exact2910->2922/3000. MZ36 FN2->0 withFP3 unchanged. All previous positive scores and MZ28 additions survive. Fixed zero-new-FP criterion fails; no fitting or neural inference."
     }
   ]
 }

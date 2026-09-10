@@ -2070,6 +2070,26 @@
         "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md"
       ],
       "commit": "1108709b70677d21bf552de19dc5626980cb86f5"
+    },
+    {
+      "id": "terminal-mz37-positive-restoration-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ37_RESTORATION_GAIN_WITH_TWO_FALSE_ALERTS",
+      "summary": "Frozen positive restoration recovers17 noncalibration true bits with2 addedFP; placements FN67->52, FP26->28, exact2910->2922/3000. MZ36 FN2->0 withFP3 unchanged. All previous positive scores and MZ28 additions survive. Fixed zero-new-FP criterion fails; no fitting or neural inference.",
+      "successor_requires": "Separately inspect positive-action conditional coverage or evaluate frozen methods on paired new object shapes, with unchanged originals and false-alert controls. Do not rescue MZ37 cutoffs on observed errors.",
+      "forbidden_repeats": [
+        "Posthoc cutoff or query-mask rescue in MZ37",
+        "Treat motivating MZ36 cases as fresh confirmation",
+        "Promote consumed ideal-packet evidence to physical sensor or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md"
+      ],
+      "commit": "d65a0673dfae20b1d562f6e96db9d2a9c472612e"
     }
   ]
 }
