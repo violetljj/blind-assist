@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "de400f235f3462a9dc5e6d538ed114610afe98b5a8f05f21c1b94c2742ffaefc",
+  "source_fingerprint": "b3b9464abf9c5ce931307fbfe7012f13bd701e52c5a4b1172116c3a81774e43b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 306,
-    "current_terminals": 92,
-    "run_associations": 304
+    "experiments": 307,
+    "current_terminals": 93,
+    "run_associations": 305
   },
   "failure_layers": [
     {
@@ -19724,6 +19724,35 @@
       "search_text": "terminal-mz14-evidence-trace-20260910 obstacle-avoidance MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit. Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression. Using evaluator contributor masks as inference inputs or claiming oracle accuracy is achievable model performance Claiming independent confirmation from consumed placement replay or one trained pole configuration"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz15-shared-support-20260910",
+      "status": "diagnostic",
+      "question": "Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged.",
+      "baseline": null,
+      "change": "A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence.",
+      "primary_metric": null,
+      "decision": "MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET",
+      "report": "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "b057f0c3bb00e4c3f2d5ae8180ddb28abbb12f76",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence.",
+      "forbidden_repeats": [
+        "Extending these completed1200step fits or tuning cutoffs on the consumed placement replay to rescue this result",
+        "Using native contributor labels as model inputs or calling trained pole frames independent confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md"
+      ],
+      "association_id": "mz15-shared-support-20260910",
+      "search_text": "terminal-mz15-shared-support-20260910 obstacle-avoidance MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged. A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence. Extending these completed1200step fits or tuning cutoffs on the consumed placement replay to rescue this result Using native contributor labels as model inputs or calling trained pole frames independent confirmation"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26255,6 +26284,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz14-evidence-trace-20260910 Where does local evidence lose correct return attribution before final body-query decisions? Frozen MZ5 predictions, MZ9 SOURCE weights and cutoffs, MZ13 accepted additions Trace actual contributor support and frozen maxima on4200 consumed frames; evaluator-only source/query masks and paired local feature descriptors, no fit Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit. MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md OldDEV1000,MZ6clean200,relationDEV2000,distanceDEV1000; all consumed Development; native data evaluator-only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz15-shared-support-20260910",
+      "status": "archived",
+      "question": "Can learned shared return support recover far detections without new false alerts?",
+      "baseline": "Frozen MZ5 and matched new QUERY readout with identical input features,batch IDs and1200step budget",
+      "change": "Train10641parameter shared support and10740parameter query readouts on existing TRAIN pool plus consumed sequence; freeze oldDEV zero-addition cutoffs",
+      "primary_metric": "Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged.",
+      "decision": "MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET",
+      "report": "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md",
+      "source": "Existing10200-frame training pool,7562 unique sampled frames; oldDEV1000 and consumedDEV3000; no EVAL/capture",
+      "commit": "b057f0c3bb00e4c3f2d5ae8180ddb28abbb12f76",
+      "association_id": "mz15-shared-support-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "decision_lifecycle": 4
+      },
+      "search_text": "mz15-shared-support-20260910 Can learned shared return support recover far detections without new false alerts? Frozen MZ5 and matched new QUERY readout with identical input features,batch IDs and1200step budget Train10641parameter shared support and10740parameter query readouts on existing TRAIN pool plus consumed sequence; freeze oldDEV zero-addition cutoffs Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged. MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md Existing10200-frame training pool,7562 unique sampled frames; oldDEV1000 and consumedDEV3000; no EVAL/capture"
     }
   ],
   "associations": [
@@ -28489,6 +28540,22 @@
         "artifacts.local/work/mz14-evidence-trace-20260910/paired-v1/receipt.json"
       ],
       "decision_id": "terminal-mz14-evidence-trace-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz15-shared-support-20260910",
+      "use_ids": [],
+      "protocol_id": "mz15-shared-support-20260910-protocol",
+      "code_revision": "b057f0c3bb00e4c3f2d5ae8180ddb28abbb12f76",
+      "input_fingerprint": "8298690f0790490994361c8a494cbf8ab768a5526e054d7a5cd67c9cf623e558",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md",
+        "artifacts.local/work/mz15-shared-support-20260910/run-v1/stress-repair-v1/result.json",
+        "artifacts.local/work/mz15-shared-support-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz15-shared-support-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz15-shared-support-20260910/run-v1/stress-repair-v1/receipt.json"
+      ],
+      "decision_id": "terminal-mz15-shared-support-20260910",
       "source_rows": 1
     },
     {

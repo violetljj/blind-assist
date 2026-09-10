@@ -421,6 +421,16 @@
       "failure_signature": "Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit.",
       "revisit_trigger": "Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression.",
       "assignment_basis": "Exact4200-frame frozen margin parity,16800 scalar-bit audit,25 paired local-feature descriptors; diagnostic only."
+    },
+    {
+      "terminal_id": "terminal-mz15-shared-support-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This matched1200step compact shared-support versus direct-query formulation and zero-added-oldDEV-FP augmentation",
+      "retained_surface": "Frozen10500-frame feature/contributor cache, both failed model checkpoints and matched evaluation with corrected stress labels",
+      "failure_signature": "Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged.",
+      "revisit_trigger": "A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence.",
+      "assignment_basis": "Two completed fits,3 focused tests,62400 scalar output-bit audit; both add newDEV false positives, shared also loses trained pole retrieval."
     }
   ]
 }

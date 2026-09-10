@@ -1644,6 +1644,25 @@
         "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md"
       ],
       "commit": "c9e3e9ad152f7144757b81484609ab428bc22f78"
+    },
+    {
+      "id": "terminal-mz15-shared-support-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ15_SHARED_AND_MATCHED_QUERY_FAIL_FIXED_FP_BUDGET",
+      "summary": "Two1200step matched fits: SHARED adds64 farTP/17FP on consumedDEV3000, QUERY37/15; pole12/18 versus49/48 of49 clean/stress. Both fail fixed error budget; MZ5/MZ9 unchanged.",
+      "successor_requires": "A materially different intervention must improve observable source assignment at the frozen false-alert budget and retain pole evidence.",
+      "forbidden_repeats": [
+        "Extending these completed1200step fits or tuning cutoffs on the consumed placement replay to rescue this result",
+        "Using native contributor labels as model inputs or calling trained pole frames independent confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md"
+      ],
+      "commit": "b057f0c3bb00e4c3f2d5ae8180ddb28abbb12f76"
     }
   ]
 }
