@@ -5,6 +5,19 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest single-frame paired readout (2026-09-10)
+
+[MZ7 paired diagnosis and calibration](nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md)
+separates the approaching bar (ToF HEAD_FAR14/14 correct, all suppressed by RGB)
+from the thin pole (both branches negative on all49 far opportunities). Thin
+BODY_FAR RGB delta decreases24/25; positive HEAD response is not reliable regional
+readout. One old-DEV fitted calibration gives MZ6 exact141 versus143, thin0/49,
+and BODY_NEAR FP7 versus5. Do not retain it. Keep MZ5 and temporal closed.
+Next evidence question is position-preserving echo-to-query attribution, with
+wrong-zone correspondence control; its causal role is not yet established.
+The200 samples remain consumed Development. No fresh confirmation was warranted
+after this failed comparator; UNKNOWN and sensor/safety boundaries are unchanged.
+
 ## Latest regression diagnosis and short-sequence pilot (2026-09-10)
 
 [MZ6 regression diagnosis](nearfield/MZ6_REGRESSION_RESULTS_20260910.md) reproduces
