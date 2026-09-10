@@ -2299,6 +2299,51 @@
         "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md"
       ],
       "commit": "a3aa17486576fe503bce971d74fb82d611095fd9"
+    },
+    {
+      "id": "terminal-mz48-rich-kilotier-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ48_2560_PAIRED_COMPACT_SOURCE_DELIVERED",
+      "summary": "All2560 source-valid frames and1280 native-invariant target/context pairs delivered across8 sites,5 families,4relations,2ranges,4settings.2432 intentmatches, actualpositive counts512/640/640/640.1920 training-candidate and640 held-out-site.80 prescribed native/RGB samples independently audited/viewed. Raw4740414257B retained on ownerhosts; lossless training ZIP1095307842B plus260314B echo-independent native auxiliary.352positive bits lack45degree crop witness;7169167 angular cells UNKNOWN, although frame-contract UNKNOWN0. Primary936 andsecondary1624 with warmDDC and exclusive unstarted-shard handoff; mechanical map path adaptation byte-reversible. Allowned processes/ports released. No fit/inference; exact code and source SHA-bound.",
+      "successor_requires": "Test echo-independent local intrusion evidence on the richer source while preserving pair/site/family split and native visibility gaps. Retain prior source failures and MZ37/MZ43 comparators; old consumed sites are not fresh blind evidence.",
+      "forbidden_repeats": [
+        "Replace actual labels with intended relations",
+        "Call the lightweight training ZIP a lossless copy of every raw native file",
+        "Treat unknown angular cells or missing witnesses as clearance",
+        "Count the zero-frame mechanical retry or handoff as new scientific samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md"
+      ],
+      "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626"
+    },
+    {
+      "id": "terminal-mz50-echo-independent-local-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ50_LOCAL_LEARNING_RECALL_WITH_GATED_READOUT_AND_OLD_FALSE_ALERT_COST",
+      "summary": "One600step native-independent spatial fit on1280 newframes;256richcal plusold1000DEV DROP cutoffs;640site and384birch nonfit. Same-weight GATED versusOPEN isolates pooling. Nonfit DROP MZ37=382TP20FP610FN, GATED453/21/539, OPEN386/20/606; GATED52of71addedTP have nativewinningcell, OPEN4of4 with2no-gated-candidate recoveries. Allnoncal inclfit GATED+197TP20FP, OPEN+18TP2FP; oldfalsealert costs failzero-addedgate. All4OPEN cutoff maxima are oldDEV negatives with no GATED candidate. Retain original positives;400MZ36/80UNKNOWN preserved. 586656scalar checks, exactschedule and2cutoffs pass. CUDAfit5.578s, wholepipeline73.701s, CPUscore0.479s;10676parameters,109001Bcheckpoint;no newdense cache. Run-base revision; actual code and sources SHA-bound.",
+      "successor_requires": "Retain GATED as a local-learning challenger with old-source false alerts and attribution gaps, and OPEN as the same-weight readout falsifier with two specific witnessed missing-candidate recoveries. Improve spatial true/false separation and crop observability; preserve all previous source and context controls. Do not retune consumed cutoffs to rescue this run.",
+      "forbidden_repeats": [
+        "Attribute combined data objective and head gains to dataset size alone",
+        "Treat no-added calibration false alerts as no-cost transfer",
+        "Claim unrestricted pooling wins despite same-weight GATED superiority",
+        "Count19correct frame additions without nativewinningcell as correct local attribution",
+        "Promote default behavior or claim VL53L8CX calibration from these limited-sensitivity proxies"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md"
+      ],
+      "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626"
     }
   ]
 }

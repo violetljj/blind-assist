@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "1491561af7cb92b5a1e507fb2aa126977dafde47eddd957326b9ea21cebc5e42",
+  "source_fingerprint": "b06a8881f4081deb80d8dc26876882c6a596d94acc9ab9a220141ea14c579752",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 339,
-    "current_terminals": 125,
-    "run_associations": 337
+    "experiments": 341,
+    "current_terminals": 127,
+    "run_associations": 339
   },
   "failure_layers": [
     {
@@ -20709,6 +20709,71 @@
       "search_text": "terminal-mz49-bank-domain-calibration-20260911 obstacle-avoidance MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST Fixed MZ47 weights/scores, two single old1000DEV DROP calibrations over actual banked candidates. REPLAY andENRICH eachgain42nonfit noncalibration TP with37and27addedFP, losingnone; rich32 DROP improves18to24TP and14to22TP withoutnewFP. Otherprofiles havefalsealert costs; nozero-cost promotion. Original318528scalar values replayexact;212352known decisions checked;400MZ36/80UNKNOWN retained. CPU0.34s, nofit/inference. Explanatory diagnostic receipt finalization is transparently snapshotted in registration-amendment; scientific calculation inputs unchanged. Run-base revision; actual code SHA-bound. Retain the original cutoffs and matched replay comparator; improve true/false spatial separation with richer native supervision. Calibration-domain alignment alone does not recover absent witnesses or generalize zero-addedFP beyond calibration; avoid further threshold rescue on these outcomes. Claim zero-addedFP outside the calibration cohort Credit the recall gain to new model learning or richer-data superiority Retune arbitrary percentiles on consumed outcomes and call them the registered domain-only comparison"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz48-rich-kilotier-20260911",
+      "status": "diagnostic",
+      "question": "All2560 source-valid frames and1280 native-invariant target/context pairs delivered across8 sites,5 families,4relations,2ranges,4settings.2432 intentmatches, actualpositive counts512/640/640/640.1920 training-candidate and640 held-out-site.80 prescribed native/RGB samples independently audited/viewed. Raw4740414257B retained on ownerhosts; lossless training ZIP1095307842B plus260314B echo-independent native auxiliary.352positive bits lack45degree crop witness;7169167 angular cells UNKNOWN, although frame-contract UNKNOWN0. Primary936 andsecondary1624 with warmDDC and exclusive unstarted-shard handoff; mechanical map path adaptation byte-reversible. Allowned processes/ports released. No fit/inference; exact code and source SHA-bound.",
+      "baseline": null,
+      "change": "Test echo-independent local intrusion evidence on the richer source while preserving pair/site/family split and native visibility gaps. Retain prior source failures and MZ37/MZ43 comparators; old consumed sites are not fresh blind evidence.",
+      "primary_metric": null,
+      "decision": "MZ48_2560_PAIRED_COMPACT_SOURCE_DELIVERED",
+      "report": "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Test echo-independent local intrusion evidence on the richer source while preserving pair/site/family split and native visibility gaps. Retain prior source failures and MZ37/MZ43 comparators; old consumed sites are not fresh blind evidence.",
+      "forbidden_repeats": [
+        "Replace actual labels with intended relations",
+        "Call the lightweight training ZIP a lossless copy of every raw native file",
+        "Treat unknown angular cells or missing witnesses as clearance",
+        "Count the zero-frame mechanical retry or handoff as new scientific samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md"
+      ],
+      "association_id": "mz48-rich-kilotier-20260911",
+      "search_text": "terminal-mz48-rich-kilotier-20260911 obstacle-avoidance MZ48_2560_PAIRED_COMPACT_SOURCE_DELIVERED All2560 source-valid frames and1280 native-invariant target/context pairs delivered across8 sites,5 families,4relations,2ranges,4settings.2432 intentmatches, actualpositive counts512/640/640/640.1920 training-candidate and640 held-out-site.80 prescribed native/RGB samples independently audited/viewed. Raw4740414257B retained on ownerhosts; lossless training ZIP1095307842B plus260314B echo-independent native auxiliary.352positive bits lack45degree crop witness;7169167 angular cells UNKNOWN, although frame-contract UNKNOWN0. Primary936 andsecondary1624 with warmDDC and exclusive unstarted-shard handoff; mechanical map path adaptation byte-reversible. Allowned processes/ports released. No fit/inference; exact code and source SHA-bound. Test echo-independent local intrusion evidence on the richer source while preserving pair/site/family split and native visibility gaps. Retain prior source failures and MZ37/MZ43 comparators; old consumed sites are not fresh blind evidence. Replace actual labels with intended relations Call the lightweight training ZIP a lossless copy of every raw native file Treat unknown angular cells or missing witnesses as clearance Count the zero-frame mechanical retry or handoff as new scientific samples"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz50-echo-independent-local-20260911",
+      "status": "diagnostic",
+      "question": "One600step native-independent spatial fit on1280 newframes;256richcal plusold1000DEV DROP cutoffs;640site and384birch nonfit. Same-weight GATED versusOPEN isolates pooling. Nonfit DROP MZ37=382TP20FP610FN, GATED453/21/539, OPEN386/20/606; GATED52of71addedTP have nativewinningcell, OPEN4of4 with2no-gated-candidate recoveries. Allnoncal inclfit GATED+197TP20FP, OPEN+18TP2FP; oldfalsealert costs failzero-addedgate. All4OPEN cutoff maxima are oldDEV negatives with no GATED candidate. Retain original positives;400MZ36/80UNKNOWN preserved. 586656scalar checks, exactschedule and2cutoffs pass. CUDAfit5.578s, wholepipeline73.701s, CPUscore0.479s;10676parameters,109001Bcheckpoint;no newdense cache. Run-base revision; actual code and sources SHA-bound.",
+      "baseline": null,
+      "change": "Retain GATED as a local-learning challenger with old-source false alerts and attribution gaps, and OPEN as the same-weight readout falsifier with two specific witnessed missing-candidate recoveries. Improve spatial true/false separation and crop observability; preserve all previous source and context controls. Do not retune consumed cutoffs to rescue this run.",
+      "primary_metric": null,
+      "decision": "MZ50_LOCAL_LEARNING_RECALL_WITH_GATED_READOUT_AND_OLD_FALSE_ALERT_COST",
+      "report": "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain GATED as a local-learning challenger with old-source false alerts and attribution gaps, and OPEN as the same-weight readout falsifier with two specific witnessed missing-candidate recoveries. Improve spatial true/false separation and crop observability; preserve all previous source and context controls. Do not retune consumed cutoffs to rescue this run.",
+      "forbidden_repeats": [
+        "Attribute combined data objective and head gains to dataset size alone",
+        "Treat no-added calibration false alerts as no-cost transfer",
+        "Claim unrestricted pooling wins despite same-weight GATED superiority",
+        "Count19correct frame additions without nativewinningcell as correct local attribution",
+        "Promote default behavior or claim VL53L8CX calibration from these limited-sensitivity proxies"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md"
+      ],
+      "association_id": "mz50-echo-independent-local-20260911",
+      "search_text": "terminal-mz50-echo-independent-local-20260911 obstacle-avoidance MZ50_LOCAL_LEARNING_RECALL_WITH_GATED_READOUT_AND_OLD_FALSE_ALERT_COST One600step native-independent spatial fit on1280 newframes;256richcal plusold1000DEV DROP cutoffs;640site and384birch nonfit. Same-weight GATED versusOPEN isolates pooling. Nonfit DROP MZ37=382TP20FP610FN, GATED453/21/539, OPEN386/20/606; GATED52of71addedTP have nativewinningcell, OPEN4of4 with2no-gated-candidate recoveries. Allnoncal inclfit GATED+197TP20FP, OPEN+18TP2FP; oldfalsealert costs failzero-addedgate. All4OPEN cutoff maxima are oldDEV negatives with no GATED candidate. Retain original positives;400MZ36/80UNKNOWN preserved. 586656scalar checks, exactschedule and2cutoffs pass. CUDAfit5.578s, wholepipeline73.701s, CPUscore0.479s;10676parameters,109001Bcheckpoint;no newdense cache. Run-base revision; actual code and sources SHA-bound. Retain GATED as a local-learning challenger with old-source false alerts and attribution gaps, and OPEN as the same-weight readout falsifier with two specific witnessed missing-candidate recoveries. Improve spatial true/false separation and crop observability; preserve all previous source and context controls. Do not retune consumed cutoffs to rescue this run. Attribute combined data objective and head gains to dataset size alone Treat no-added calibration false alerts as no-cost transfer Claim unrestricted pooling wins despite same-weight GATED superiority Count19correct frame additions without nativewinningcell as correct local attribution Promote default behavior or claim VL53L8CX calibration from these limited-sensitivity proxies"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27997,6 +28062,52 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz49-bank-domain-calibration-20260911 Can matching cutoff calibration to the final banked candidate domain recover true events without added false alerts? Frozen MZ47 REPLAY and ENRICH with original prebank-domain cutoffs; original MZ37 comparator unchanged Apply the identical zero-added rule once per arm on original1000DEV DROP using restricted_raw and restricted_support, then fixed composition TP FP FN exact frames paired gained lost and UNKNOWN; original positive retention MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md controlled-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz48-rich-kilotier-20260911",
+      "status": "archived",
+      "question": "Can 2560 compact source frames provide paired context and site/range/size coverage for richer obstacle learning?",
+      "baseline": "MZ42 MZ44 one-site rich forms and MZ46 target-fixed support failure",
+      "change": "Eight admitted sites five forms four relations two support states two ranges four settings; 64frame counted canary before 2496frame expansion",
+      "primary_metric": "All attempted native/source health UNKNOWN intended-label coverage paired invariance and transferred bytes",
+      "decision": "MZ48_2560_PAIRED_COMPACT_SOURCE_DELIVERED",
+      "report": "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md",
+      "source": "mz36-admitted-sites-mz42-assets-and-mz46-context-pairs",
+      "commit": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "association_id": "mz48-rich-kilotier-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 6
+      },
+      "search_text": "mz48-rich-kilotier-20260911 Can 2560 compact source frames provide paired context and site/range/size coverage for richer obstacle learning? MZ42 MZ44 one-site rich forms and MZ46 target-fixed support failure Eight admitted sites five forms four relations two support states two ranges four settings; 64frame counted canary before 2496frame expansion All attempted native/source health UNKNOWN intended-label coverage paired invariance and transferred bytes MZ48_2560_PAIRED_COMPACT_SOURCE_DELIVERED research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md mz36-admitted-sites-mz42-assets-and-mz46-context-pairs"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz50-echo-independent-local-20260911",
+      "status": "archived",
+      "question": "Can native spatial RGB evidence recover missing-return events without additional false alerts?",
+      "baseline": "Frozen MZ37 and identical-weight GATED local readout; MZ5 and MZ43 ensemble comparators",
+      "change": "One600step spatial-query fit on1280 rich frames with echo-independent native labels; compare OPEN versus GATED pooling",
+      "primary_metric": "TP FP FN with native witness and UNKNOWN on640 site and384 family holdout plus old-source costs",
+      "decision": "MZ50_LOCAL_LEARNING_RECALL_WITH_GATED_READOUT_AND_OLD_FALSE_ALERT_COST",
+      "report": "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md",
+      "source": "mz48-controlled-development-source",
+      "commit": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626",
+      "association_id": "mz50-echo-independent-local-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "decision_lifecycle": 10,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz50-echo-independent-local-20260911 Can native spatial RGB evidence recover missing-return events without additional false alerts? Frozen MZ37 and identical-weight GATED local readout; MZ5 and MZ43 ensemble comparators One600step spatial-query fit on1280 rich frames with echo-independent native labels; compare OPEN versus GATED pooling TP FP FN with native witness and UNKNOWN on640 site and384 family holdout plus old-source costs MZ50_LOCAL_LEARNING_RECALL_WITH_GATED_READOUT_AND_OLD_FALSE_ALERT_COST research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md mz48-controlled-development-source"
     }
   ],
   "associations": [
@@ -30813,6 +30924,20 @@
       "source_rows": 1
     },
     {
+      "run_id": "mz48-rich-kilotier-20260911",
+      "use_ids": [],
+      "protocol_id": "mz48-rich-kilotier-20260911",
+      "code_revision": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "input_fingerprint": "476e4f8b4be3e3108b92f5c6bb399b0a3bcdc11917779fc7323c66ed96602f12",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_20260911.md",
+        "artifacts.local/work/mz48-rich-kilotier-20260911",
+        "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz48-rich-kilotier-20260911",
+      "source_rows": 1
+    },
+    {
       "run_id": "mz49-bank-domain-calibration-20260911",
       "use_ids": [],
       "protocol_id": "mz49-bank-domain-calibration-20260911",
@@ -30857,6 +30982,20 @@
         "artifacts.local/work/mz5-spatial-fusion-20260910/audit-analysis-v1/audit.json"
       ],
       "decision_id": "terminal-mz5-spatial-fusion-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz50-echo-independent-local-20260911",
+      "use_ids": [],
+      "protocol_id": "mz50-echo-independent-local-20260911",
+      "code_revision": "ee076732b656f4345832aa9c9a3b6ec5ba4f6626",
+      "input_fingerprint": "15b05b499c3c8c69edea261f6045a48f08e188339f0e2d0de245c579a64dd5dc",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_20260911.md",
+        "artifacts.local/work/mz50-echo-independent-local-20260911",
+        "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz50-echo-independent-local-20260911",
       "source_rows": 1
     },
     {

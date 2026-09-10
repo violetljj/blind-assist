@@ -5,6 +5,35 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Native spatial learning and same-weight readout: MZ50 (2026-09-11)
+
+[MZ50](nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md) fits one small
+spatial head on1280 richer frames;256cal plusold1000DEV,640site/384birch nonfit.
+DROP nonfit MZ37=382TP/20FP/610FN; GATED=453/21/539, OPEN=386/20/606.
+The same weights isolate mandatory echo gating: unrestricted pooling does
+not win. All4 OPEN cutoff maxima are oldDEV negatives without gated candidates.
+GATED52of71addedTP have nativewinningcell; OPEN4of4 includes2 witnessed events
+with no gated candidate. Across noncal inclfit, GATED adds197TP20FP, OPEN18TP2FP;
+retain CHALLENGER with oldfalsealert costs and original MZ37 positives, not
+default promotion.400MZ36/80UNKNOWN remain;586656scalar decisions and2cutoffs
+pass.5.58s fit,73.70s full CUDA pipeline,0.48s CPUscore,109KB checkpoint;
+existing detail mmap reused and no persistent dense duplicate. Improve spatial
+separation/observability next; no threshold rescue or hardware claim.
+
+## Rich paired source at kilotier scale: MZ48 (2026-09-11)
+
+[MZ48](nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md) delivers2560 source-valid
+frames across8 sites/5forms and1280 target/context pairs with identical native
+event masks/depth.2432 intent matches; actual labels and352positive bits lacking
+45degree local witness remain. All80 prescribed native/RGB samples independently
+audited and viewed. The fixed1920/640 split stays; these are consumed sites.
+Training ZIP1.095GB plus260KB native auxiliary replaces a4.740GB working raw
+representation while full raw evidence remains on ownerhosts. Primary936 and
+secondary1624 used warm cache and exclusive unstarted-shard handoff; owned
+processes/ports released. Retain COMPONENT source. Next fit native spatial
+intrusion evidence without mandatory echo candidates; no source-only accuracy,
+sensor validation or natural-scene claim.
+
 ## Candidate-domain calibration tradeoff: MZ49 (2026-09-11)
 
 [MZ49](nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md) changes only
@@ -16,8 +45,8 @@ no default or zero-cost promotion. Candidate-domain consistency is useful but
 does not resolve absent witnesses or true/false spatial separation. Exact old
 composition and212352scalar known decisions pass;80UNKNOWN stay. CPU0.34s,
 no training/inference. Explanatory metadata finalization is documented without
-changing scientific inputs. Richer source and native spatial supervision remain
-the next learning input; no physical-sensor or natural-scene claim.
+changing scientific inputs. MZ48 supplies the richer source and MZ50 tests native spatial supervision;
+these remain controlled Development without physical-sensor or natural-scene claims.
 
 ## Matched local enrichment versus replay: MZ47 (2026-09-11)
 
@@ -33,8 +62,8 @@ All400 MZ36 attempts/80UNKNOWN stay;1,008,672 scalar decisions and both cutoffs
 pass. CUDA preparation/fits/inference47.26s, CPU score0.42s; no new dense cache.
 [Applied reading](nearfield/LOCAL_EVIDENCE_LEARNING_20260911.md) motivates native
 slot-independent spatial supervision and candidates that survive absent echoes.
-That mechanism is untested; the separately collected MZ48 source is excluded
-from this fit. No hardware, natural-scene or default replacement claim.
+MZ48 is excluded from this fit; MZ50 subsequently tests that mechanism on
+the expanded source. No hardware, natural-scene or default replacement claim.
 
 ## Fixed-target context dependency: MZ46 (2026-09-11)
 

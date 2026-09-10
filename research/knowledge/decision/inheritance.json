@@ -751,6 +751,26 @@
       "failure_signature": "Each arm gains42nonfit noncalibration TP under DROP but adds37or27FP; zero-addedFP does not transfer",
       "revisit_trigger": "Improve native spatial true false separation and evidence coverage; retain original cutoffs and do not search rescue thresholds on these outcomes",
       "assignment_basis": "Two single cutoff vectors; fixed scores and weights;318528exact old composition values and212352scalar known decisions audited;80UNKNOWN retained"
+    },
+    {
+      "terminal_id": "terminal-mz48-rich-kilotier-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Paired compact synthetic source across consumed sites for subsequent local obstacle learning",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ48_RICH_KILOTIER_RESULTS_20260911.md",
+      "failure_signature": "128 intent mismatches and352 positive events without45degree native witness retained; not complete physical visibility",
+      "revisit_trigger": "Use fixed fit holdouts and native local supervision to measure missing-return gains and false alerts",
+      "assignment_basis": "2560 unique valid frames1280 invariant pairs80 independent native samples and original RGB hashes; two-host resources released"
+    },
+    {
+      "terminal_id": "terminal-mz50-echo-independent-local-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "New native spatial learning with gated pooling and measured old-source false-alert cost",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ50_ECHO_INDEPENDENT_LOCAL_RESULTS_20260911.md",
+      "failure_signature": "GATED nonfit71TP1FP but old transfer falsealerts; OPEN high oldDEV negative maxima suppress gains;352 source positives outside45degree witness crop",
+      "revisit_trigger": "Improve spatial true false separation and observable coverage while retaining same-weight OPEN falsifier and old-source costs",
+      "assignment_basis": "One600step fit; exact1280 fit256cal640site384family split;586656scalar decisions2cutoffs; GATED52of71native winning evidence andOPEN2specific missing-candidate recoveries"
     }
   ]
 }
