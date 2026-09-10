@@ -2437,6 +2437,30 @@
         "research/active/dtr-r0/nearfield/MZ54_EXECUTION_20260911.md"
       ],
       "commit": "7f39edf67b96e1024f1d0f8ed99ad38230a5c213"
+    },
+    {
+      "id": "terminal-mz56-global-anchor-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ56_MEASURED_GLOBAL_CONTEXT_RECOVERS_NATIVE_OUTSIDE_FIELD_EVENTS_WITH_REMAINING_RECALL_GAP",
+      "summary": "Matched 600-step continuations from MZ54 FULL; observed masked zone context versus zero-context control, 11020 equal initial parameters. DROP nonfit native-outside BODY_NEAR additions GLOBAL26 vs LOCAL11; total BN66 vs50; total410TP20FP582FN vs394/20/598. Legacy noncal FP32 vs36. Suppressed same GLOBAL weights/cut gives404/20/588; six TP depend on inference context. Retained OLD_NEG union463/20/529 remains stronger; GLOBAL adds24 TP and loses77 against it, with3 added old FP. 790 prior arrays,2040 count rows,251424 scalar bits,92160 native lookups,80UNKNOWN preserved. CUDA150.116s plusCPU2.700s; no training feature extraction. Earlier pre-fit numerical assertion failure preserved, original tolerance reused. Sole4.408GBcache removed after score and process release.",
+      "successor_requires": "Keep as component/challenger, retain MZ53 OLD_NEG union and matched LOCAL/suppression comparisons. Fixed saved-output composition may test complementarity with disclosed consumed outcomes and full FP costs. A later ranking objective must use declared TRAIN only, never calibration controllers.",
+      "forbidden_repeats": [
+        "Claim GLOBAL alone beats retained OLD_NEG union",
+        "Call predicted outside-field objects measured by ToF",
+        "Infer clearance from missing packets or unknown winning cells",
+        "Retune these two cutoffs, extend epochs or hide preflight failure",
+        "Claim new RGB-ToF combination or hardware/default performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ56_GLOBAL_ANCHOR_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ56_EXECUTION_20260911.md"
+      ],
+      "commit": "d5ffd5f1d7424e21ad703b483436459d313a1aab"
     }
   ]
 }

@@ -5,6 +5,20 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Measured global context outside local sensor coverage: MZ56 (2026-09-11)
+
+[MZ56](nearfield/MZ56_GLOBAL_ANCHOR_RESULTS_20260911.md) passes its fixed
+matched continuation check: DROP nonfit native-outside BODY_NEAR additions
+GLOBAL 26 versus LOCAL 11, total BODY_NEAR 66 versus 50, with equal 20 nonfit
+FP and old noncal FP 32 versus 36. GLOBAL totals 410 TP/20 FP/582 FN; same
+weights with global context suppressed give 404/20/588. Retained OLD_NEG union
+still gives 463/20/529. Keep a COMPONENT_OR_CHALLENGER, with all query costs,
+UNKNOWN and original measured coverage. A fixed union can inspect the 24
+complementary TP at its disclosed old-FP cost; no cutoff rescue or default claim.
+[Execution](nearfield/MZ56_EXECUTION_20260911.md): successful CUDA run 150.116s,
+CPU score 2.700s, zero training feature recomputation; numerical preflight
+failure preserved and sole 4.408GB cache link removed after completion.
+
 ## Wider RGB with local-only metric conditioning: MZ54 (2026-09-11)
 
 [MZ54](nearfield/MZ54_FULL_RGB_RESULTS_20260911.md) completes matched600step
