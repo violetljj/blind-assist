@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "e8271a2143d41d5ebfb341be1e4ad031b9c5d81b09d927e7104498c77ffc9eb0",
+  "source_fingerprint": "5b222df51d5bb7e27712d775f67c95eea6290ab593777d47f472fc29862021f6",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 309,
-    "current_terminals": 95,
-    "run_associations": 307
+    "experiments": 310,
+    "current_terminals": 96,
+    "run_associations": 308
   },
   "failure_layers": [
     {
@@ -19811,6 +19811,35 @@
       "search_text": "terminal-mz17-witness-objective-20260910 obstacle-avoidance MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested. A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy. Reclassifying67 unknown maxima as known errors or changing this completed diagnostic denominator to pass its admission Claiming the untrained witness objective failed, or treating field gradients as parameter-step or historical causality"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz18-body-objective-20260910",
+      "status": "diagnostic",
+      "question": "One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion.",
+      "baseline": null,
+      "change": "Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN.",
+      "primary_metric": null,
+      "decision": "MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS",
+      "report": "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "5ee78c8e13f4d20f0d4fa943f6737b9123f68a6d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN.",
+      "forbidden_repeats": [
+        "Calling better AP or true pole maxima an alert-performance upgrade despite4/1 BODY detections",
+        "Extending this completed1200step fit or tuning its cutoff on consumed placementDEV to rescue the reported result"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz18-body-objective-20260910",
+      "search_text": "terminal-mz18-body-objective-20260910 obstacle-avoidance MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion. Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN. Calling better AP or true pole maxima an alert-performance upgrade despite4/1 BODY detections Extending this completed1200step fit or tuning its cutoff on consumed placementDEV to rescue the reported result"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26407,6 +26436,31 @@
         "source_coverage": 3
       },
       "search_text": "mz17-witness-objective-20260910 Does positive max-pool reward overcome local suppression at known incorrect TRAIN spatial winners? Final frozen MZ16 HIGH_DETAIL checkpoint with original local plus0.25 query BCE No-fit field-gradient decomposition on first64 saved training batches; witness objective prepared but not trained because predefined admission failed Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested. MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md 1024 TRAIN draws,873 unique frames,779 supervised positives; includes previously trained sequence; no DEV inference or EVAL"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz18-body-objective-20260910",
+      "status": "archived",
+      "question": "Can BODY witness rewards reduce wrong spatial winners and false alerts while retaining pole detection?",
+      "baseline": "MZ16 HIGH_DETAIL with identical initialization, features,10740parameter network and1200 saved batches; MZ5 composed baseline",
+      "change": "Replace only BODY query terms with true-witness reward and max-known-negative penalty; HEAD terms/global denominator and inference unchanged",
+      "primary_metric": "One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion.",
+      "decision": "MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS",
+      "report": "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md",
+      "source": "7562 unique sampled TRAIN frames including200 trained diagnostic frames; oldDEV1000 calibration and consumed placementDEV3000; no capture or EVAL",
+      "commit": "5ee78c8e13f4d20f0d4fa943f6737b9123f68a6d",
+      "association_id": "mz18-body-objective-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 6,
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 9,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "mz18-body-objective-20260910 Can BODY witness rewards reduce wrong spatial winners and false alerts while retaining pole detection? MZ16 HIGH_DETAIL with identical initialization, features,10740parameter network and1200 saved batches; MZ5 composed baseline Replace only BODY query terms with true-witness reward and max-known-negative penalty; HEAD terms/global denominator and inference unchanged One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion. MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md 7562 unique sampled TRAIN frames including200 trained diagnostic frames; oldDEV1000 calibration and consumed placementDEV3000; no capture or EVAL"
     }
   ],
   "associations": [
@@ -28688,6 +28742,22 @@
         "artifacts.local/work/mz17-witness-objective-20260910/probe-v1/audit.json"
       ],
       "decision_id": "terminal-mz17-witness-objective-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz18-body-objective-20260910",
+      "use_ids": [],
+      "protocol_id": "mz18-body-objective-20260910-protocol",
+      "code_revision": "5ee78c8e13f4d20f0d4fa943f6737b9123f68a6d",
+      "input_fingerprint": "288c0d1dbfb200257ccc7a54783bfc1e700e14afd71e310c4cac9d30b29b9b9a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md",
+        "artifacts.local/work/mz18-body-objective-20260910/run-v1/result.json",
+        "artifacts.local/work/mz18-body-objective-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz18-body-objective-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz18-body-objective-20260910/pole_trace.json"
+      ],
+      "decision_id": "terminal-mz18-body-objective-20260910",
       "source_rows": 1
     },
     {

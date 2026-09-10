@@ -1701,6 +1701,25 @@
         "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md"
       ],
       "commit": "a8a2b8d042af7a4bfb81281079e6b78f6369ad54"
+    },
+    {
+      "id": "terminal-mz18-body-objective-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS",
+      "summary": "One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion.",
+      "successor_requires": "Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN.",
+      "forbidden_repeats": [
+        "Calling better AP or true pole maxima an alert-performance upgrade despite4/1 BODY detections",
+        "Extending this completed1200step fit or tuning its cutoff on consumed placementDEV to rescue the reported result"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "commit": "5ee78c8e13f4d20f0d4fa943f6737b9123f68a6d"
     }
   ]
 }

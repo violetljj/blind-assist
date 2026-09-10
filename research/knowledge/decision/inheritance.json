@@ -451,6 +451,16 @@
       "failure_signature": "Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested.",
       "revisit_trigger": "A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy.",
       "assignment_basis": "CUDA no-fit probe, independent4096row audit and3 focused loss tests; original checkpoint unchanged. Predefined aggregate heuristic not met, candidate fit not launched."
+    },
+    {
+      "terminal_id": "terminal-mz18-body-objective-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "BODY attribution-training component only; full fixed-budget alert augmentation fails pole recall and new-FP budget",
+      "retained_surface": "Completed BODY objective checkpoint, matched-input comparator and local/alert score traces showing improved true attribution with weak alert margins",
+      "failure_signature": "One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion.",
+      "revisit_trigger": "Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN.",
+      "assignment_basis": "One completed fit,3 gradient tests,31200 task-bit and662031 local-bit audit, saved-score pole trace; actual BODY contributor ranking improves but pole detections collapse."
     }
   ]
 }
