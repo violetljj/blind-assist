@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "39274fe25445db745b847b74a07cd14749866ec97c3677ed111909ecf81d1fde",
+  "source_fingerprint": "88cade46be8f05fb718ca2c0b542f3bcb4266515917390d0be8ed4f64553bb55",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 335,
-    "current_terminals": 121,
-    "run_associations": 333
+    "experiments": 336,
+    "current_terminals": 122,
+    "run_associations": 334
   },
   "failure_layers": [
     {
@@ -20584,6 +20584,37 @@
       "search_text": "terminal-mz44-rich-far-objects-20260911 obstacle-avoidance MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt. Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity. Treat mesh bounds or intended relation as native truth Claim natural-scene or leaf-alpha sensing from these scaled opaque forms Treat visible nonintruding as device clearance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz45-object-transfer-20260911",
+      "status": "diagnostic",
+      "question": "All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts.",
+      "baseline": null,
+      "change": "Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators.",
+      "primary_metric": null,
+      "decision": "MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND",
+      "report": "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "115acc6d4212c9fabd769d1faab60c95966e9360",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators.",
+      "forbidden_repeats": [
+        "Treat zero false positives with zero recovered new-form positives as a useful detector",
+        "Call the opened40frame block fresh confirmation after tuning",
+        "Attribute the whole failure to shape without controlling size and scaffold context"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md"
+      ],
+      "association_id": "mz45-object-transfer-20260911",
+      "search_text": "terminal-mz45-object-transfer-20260911 obstacle-avoidance MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts. Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators. Treat zero false positives with zero recovered new-form positives as a useful detector Call the opened40frame block fresh confirmation after tuning Attribute the whole failure to shape without controlling size and scaffold context"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27777,6 +27808,28 @@
         "runtime_infrastructure": 3
       },
       "search_text": "mz43-restricted-training-20260911 Does matched restricted-observation training improve missing-ToF obstacle decisions? Reproduced MZ1 ideal TOF and FUSION, frozen RGB and fixed MZ5 ensemble Same initialization and 300-step schedule; equal IDEAL MERGE_CLOSE DROP_CLOSE training exposures Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt. MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md mz1-frozen-features-and-consumed-mz36"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz45-object-transfer-20260911",
+      "status": "archived",
+      "question": "Does the fixed restricted-trained candidate transfer to richer near and far object forms?",
+      "baseline": "Frozen RGB MZ5 MZ28 MZ35 MZ37 and ideal FUSION; unchanged MZ43 checkpoints",
+      "change": "Evaluate all40 MZ42/MZ44 frames under the three fixed observation conditions, direct compact reads",
+      "primary_metric": "All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts.",
+      "decision": "MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND",
+      "report": "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md",
+      "source": "mz42-mz44-native-admitted-object-blocks",
+      "commit": "115acc6d4212c9fabd769d1faab60c95966e9360",
+      "association_id": "mz45-object-transfer-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "handoff_completion": 3
+      },
+      "search_text": "mz45-object-transfer-20260911 Does the fixed restricted-trained candidate transfer to richer near and far object forms? Frozen RGB MZ5 MZ28 MZ35 MZ37 and ideal FUSION; unchanged MZ43 checkpoints Evaluate all40 MZ42/MZ44 frames under the three fixed observation conditions, direct compact reads All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts. MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md mz42-mz44-native-admitted-object-blocks"
     }
   ],
   "associations": [
@@ -30535,6 +30588,26 @@
         "artifacts.local/work/mz44-rich-far-objects-20260911/resource-release.json"
       ],
       "decision_id": "terminal-mz44-rich-far-objects-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz45-object-transfer-20260911",
+      "use_ids": [],
+      "protocol_id": "mz45-object-transfer-20260911",
+      "code_revision": "115acc6d4212c9fabd769d1faab60c95966e9360",
+      "input_fingerprint": "2bfe3464143a77c309acc6a149335a156121de4d954ff694fde30ead6af6d226",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_20260911.md",
+        "artifacts.local/work/mz45-object-transfer-20260911",
+        "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md",
+        "artifacts.local/work/mz45-object-transfer-20260911/inference-v1/receipt.json",
+        "artifacts.local/work/mz45-object-transfer-20260911/inference-v1/parity.json",
+        "artifacts.local/work/mz45-object-transfer-20260911/score-v1/receipt.json",
+        "artifacts.local/work/mz45-object-transfer-20260911/score-v1/result.json",
+        "artifacts.local/work/mz45-object-transfer-20260911/diagnostics.json",
+        "artifacts.local/work/mz45-object-transfer-20260911/structure-audit.json"
+      ],
+      "decision_id": "terminal-mz45-object-transfer-20260911",
       "source_rows": 1
     },
     {

@@ -711,6 +711,16 @@
       "failure_signature": "Single shared site, small floating/scaled opaque fixtures; no model transfer, foliage or hardware evidence",
       "revisit_trigger": "Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity.",
       "assignment_basis": "One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt."
+    },
+    {
+      "terminal_id": "terminal-mz45-object-transfer-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed global RGB/MZ43 fusion transfer to four scaled unsupported mesh forms on one consumed site; not rejection of restricted training generally",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md",
+      "failure_signature": "All32 new-form positives missed; rod control works, scaffold/size/negative-placement confounds remain",
+      "revisit_trigger": "Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators.",
+      "assignment_basis": "All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts."
     }
   ]
 }

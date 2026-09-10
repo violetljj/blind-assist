@@ -2214,6 +2214,27 @@
         "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md"
       ],
       "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4"
+    },
+    {
+      "id": "terminal-mz45-object-transfer-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND",
+      "summary": "All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts.",
+      "successor_requires": "Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators.",
+      "forbidden_repeats": [
+        "Treat zero false positives with zero recovered new-form positives as a useful detector",
+        "Call the opened40frame block fresh confirmation after tuning",
+        "Attribute the whole failure to shape without controlling size and scaffold context"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md"
+      ],
+      "commit": "115acc6d4212c9fabd769d1faab60c95966e9360"
     }
   ]
 }

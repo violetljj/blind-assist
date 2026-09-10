@@ -5,6 +5,20 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed new-form transfer and scaffold confound: MZ45 (2026-09-11)
+
+[MZ45](nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md) finds no MZ43 transfer
+gain on the 32 new-form positive event bits: RGB and simple ensembles miss all
+32 under ideal, merge and drop. The small overall gain is entirely on retained
+rod controls. MZ28/MZ37 recover 13/17/6 true bits with zero false bits; retain
+these local comparators. Mixed ToF has partial useful evidence suppressed by
+the RGB mean, but unconditional union has substantial false alerts.
+All 40 attempts, exact old replay and independent native/scalar checks pass.
+New forms omit the rod's 12 supports and have different size/negative placement;
+shape alone is not isolated. Retain this fixed failure as NEGATIVE_CONTROL and
+MZ43's earlier measured scope. Next vary scaffold context at fixed target
+geometry; that intervention is unexecuted. No hardware or natural-scene claim.
+
 ## Rich-object far coverage: MZ44 (2026-09-11)
 
 [MZ44](nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md) adds 20 source-valid frames
