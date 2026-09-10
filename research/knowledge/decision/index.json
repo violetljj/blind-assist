@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "256ec25715e3561ee3fd974baa323a686dd188e565a248c35d7f0a21a9dab37c",
+  "source_fingerprint": "27b528bb8d3a98efc76e4b00eb699e3c75fc328a87ec16eab800455bfed68c5f",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 300,
-    "current_terminals": 86,
-    "run_associations": 298
+    "experiments": 301,
+    "current_terminals": 87,
+    "run_associations": 299
   },
   "failure_layers": [
     {
@@ -19550,6 +19550,35 @@
       "search_text": "terminal-mz8-attribution-20260910 obstacle-avoidance MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility. Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout. Reopening this completed MZ8 fit with post-hoc tolerance or threshold tuning Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz9-source-supervision-20260910",
+      "status": "diagnostic",
+      "question": "SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170.",
+      "baseline": null,
+      "change": "Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion.",
+      "primary_metric": null,
+      "decision": "MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS",
+      "report": "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "dc2ac4e9a8f6dafcb1840b0714fe5ff465128117",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion.",
+      "forbidden_repeats": [
+        "Reopening completed MZ9 fits or treating targeted training regression as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz9-source-supervision-20260910",
+      "search_text": "terminal-mz9-source-supervision-20260910 obstacle-avoidance MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170. Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion. Reopening completed MZ9 fits or treating targeted training regression as confirmation Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25944,6 +25973,29 @@
         "decision_lifecycle": 6
       },
       "search_text": "mz8-attribution-20260910 Can local visual scoring of angular echo hypotheses recover thin detections with correct attribution and preserved errors? Frozen compact MZ5 on consumed MZ6 paired clips One2149-parameter angular-return readout, targeted TRAIN plus MZ6 fit, oldDEV thresholds, wrong-zone control Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility. MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz9-source-supervision-20260910",
+      "status": "archived",
+      "question": "Does actual return-source supervision improve region readout beyond matched adaptation and noRGB controls?",
+      "baseline": "Frozen compact MZ5 on consumed MZ6 paired clips",
+      "change": "Three equal-new-exposure fits: retained MZ5 adaptation, query-specific exact-source RGB and noRGB; max aggregator unchanged",
+      "primary_metric": "SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170.",
+      "decision": "MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS",
+      "report": "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md",
+      "source": "Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only",
+      "commit": "dc2ac4e9a8f6dafcb1840b0714fe5ff465128117",
+      "association_id": "mz9-source-supervision-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 9,
+        "temporal_belief": 3,
+        "decision_lifecycle": 6
+      },
+      "search_text": "mz9-source-supervision-20260910 Does actual return-source supervision improve region readout beyond matched adaptation and noRGB controls? Frozen compact MZ5 on consumed MZ6 paired clips Three equal-new-exposure fits: retained MZ5 adaptation, query-specific exact-source RGB and noRGB; max aggregator unchanged SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170. MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only"
     }
   ],
   "associations": [
@@ -28234,6 +28286,21 @@
         "artifacts.local/work/mz8-attribution-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz8-attribution-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz9-source-supervision-20260910",
+      "use_ids": [],
+      "protocol_id": "mz9-source-supervision-20260910-protocol",
+      "code_revision": "dc2ac4e9a8f6dafcb1840b0714fe5ff465128117",
+      "input_fingerprint": "8c69085d4756bdb099f0cafaa6174e926d0f3d55f81e0ddf69b181882cdc66df",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md",
+        "artifacts.local/work/mz9-source-supervision-20260910/run-v1/result.json",
+        "artifacts.local/work/mz9-source-supervision-20260910/run-v1/supervision-diagnostic.json",
+        "artifacts.local/work/mz9-source-supervision-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz9-source-supervision-20260910",
       "source_rows": 1
     },
     {

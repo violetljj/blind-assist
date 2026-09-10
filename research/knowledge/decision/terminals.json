@@ -1530,6 +1530,25 @@
         "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md"
       ],
       "commit": "158e3e358cd783d9dfc38adaae117a56dd85621d"
+    },
+    {
+      "id": "terminal-mz9-source-supervision-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ9_SOURCE_SUPERVISION_COMPONENT_RETAINED_WHOLE_REPLACEMENT_COVERAGE_FAILS",
+      "summary": "SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170.",
+      "successor_requires": "Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion.",
+      "forbidden_repeats": [
+        "Reopening completed MZ9 fits or treating targeted training regression as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md"
+      ],
+      "commit": "dc2ac4e9a8f6dafcb1840b0714fe5ff465128117"
     }
   ]
 }

@@ -361,6 +361,16 @@
       "failure_signature": "Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility.",
       "revisit_trigger": "Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout.",
       "assignment_basis": "One1200-step fit,45 scalar metric groups and winning-candidate audit; query FP and thin-correspondence gates fail"
+    },
+    {
+      "terminal_id": "terminal-mz9-source-supervision-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Actual-source training labels and candidate-coverage-bounded readout; not a whole-baseline replacement",
+      "retained_surface": "Exact contributor reconstruction, regional supervision, matched MZ5/noRGB controls; MZ5 retained as whole baseline",
+      "failure_signature": "SOURCE_RGB targeted exact198/200, thin48/49 and absent25/25; wrong-zone thin1/49. MZ5_ADAPT199 exact. OldDEV SOURCE BODY_NEAR169 vs187; all28 lost TPs lack candidates, ceiling170.",
+      "revisit_trigger": "Preserve retained baseline judgments where source candidates are unavailable; separately verify combination and new configurations before promotion.",
+      "assignment_basis": "Three1200-step equal-new-exposure fits;81 scalar groups and8000 DEV replay bits; source supervision repairs22 old labels but candidate absence limits near recall"
     }
   ]
 }
