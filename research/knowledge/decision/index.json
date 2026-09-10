@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "cf5ebbc07644495d99027ee7a3670ec19c42c662216595903b411d6bb80857ec",
+  "source_fingerprint": "1491561af7cb92b5a1e507fb2aa126977dafde47eddd957326b9ea21cebc5e42",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 337,
-    "current_terminals": 123,
-    "run_associations": 335
+    "experiments": 339,
+    "current_terminals": 125,
+    "run_associations": 337
   },
   "failure_layers": [
     {
@@ -20646,6 +20646,69 @@
       "search_text": "terminal-mz46-scaffold-context-20260911 obstacle-avoidance MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts. Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain. Call the complete degradation RGB-only despite crossed-input evidence Attribute all MZ45 transfer failure to unseen shape after the unchanged rod also fails Claim sensor calibration or universal model superiority from four controlled states"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz47-local-enrichment-20260911",
+      "status": "diagnostic",
+      "question": "Two matched300step fits from exact MZ20 state.12near native examples versus equal-label oldTRAIN extras. DROP_CLOSE nonfit32positivebits: FROZEN13TP/0FP/19FN, REPLAY18/0/14, ENRICH14/0/18; IDEAL andMERGE also favor REPLAY. Bothfit groups4TP/0FP/8FN. Legacy relationDROP gains11TP with10FP; MZ36DROP no gain. All400MZ36 attempts/80UNKNOWN retained;1,008,672scalar known decisions and bothcutoffs checked.47.26s CUDA pipeline plus0.42s CPU scoring, no newdense cache. Run-base revision; exact executed code/inputs SHA-bound.",
+      "baseline": null,
+      "change": "Preserve REPLAY as the matched data-contribution comparator, fixed MZ35/MZ37 and MZ45/MZ46 failures. Test richer site/shape/distance coverage and native slot-independent spatial supervision; absent echo candidates cannot be restored by extending this fixed fit. No claim that all enrichment is ineffective.",
+      "primary_metric": null,
+      "decision": "MZ47_TWELVE_FRAME_ENRICHMENT_LOSES_TO_MATCHED_REPLAY",
+      "report": "research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve REPLAY as the matched data-contribution comparator, fixed MZ35/MZ37 and MZ45/MZ46 failures. Test richer site/shape/distance coverage and native slot-independent spatial supervision; absent echo candidates cannot be restored by extending this fixed fit. No claim that all enrichment is ineffective.",
+      "forbidden_repeats": [
+        "Attribute replay-induced gains to new-data enrichment",
+        "Silently extend the two300step schedules or search new cutoffs",
+        "Treat missing return slots or MZ36 UNKNOWN as CLEAR",
+        "Claim hardware validity or general dataset insufficiency from this controlled12frame single-fit contrast"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md"
+      ],
+      "association_id": "mz47-local-enrichment-20260911",
+      "search_text": "terminal-mz47-local-enrichment-20260911 obstacle-avoidance MZ47_TWELVE_FRAME_ENRICHMENT_LOSES_TO_MATCHED_REPLAY Two matched300step fits from exact MZ20 state.12near native examples versus equal-label oldTRAIN extras. DROP_CLOSE nonfit32positivebits: FROZEN13TP/0FP/19FN, REPLAY18/0/14, ENRICH14/0/18; IDEAL andMERGE also favor REPLAY. Bothfit groups4TP/0FP/8FN. Legacy relationDROP gains11TP with10FP; MZ36DROP no gain. All400MZ36 attempts/80UNKNOWN retained;1,008,672scalar known decisions and bothcutoffs checked.47.26s CUDA pipeline plus0.42s CPU scoring, no newdense cache. Run-base revision; exact executed code/inputs SHA-bound. Preserve REPLAY as the matched data-contribution comparator, fixed MZ35/MZ37 and MZ45/MZ46 failures. Test richer site/shape/distance coverage and native slot-independent spatial supervision; absent echo candidates cannot be restored by extending this fixed fit. No claim that all enrichment is ineffective. Attribute replay-induced gains to new-data enrichment Silently extend the two300step schedules or search new cutoffs Treat missing return slots or MZ36 UNKNOWN as CLEAR Claim hardware validity or general dataset insufficiency from this controlled12frame single-fit contrast"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz49-bank-domain-calibration-20260911",
+      "status": "diagnostic",
+      "question": "Fixed MZ47 weights/scores, two single old1000DEV DROP calibrations over actual banked candidates. REPLAY andENRICH eachgain42nonfit noncalibration TP with37and27addedFP, losingnone; rich32 DROP improves18to24TP and14to22TP withoutnewFP. Otherprofiles havefalsealert costs; nozero-cost promotion. Original318528scalar values replayexact;212352known decisions checked;400MZ36/80UNKNOWN retained. CPU0.34s, nofit/inference. Explanatory diagnostic receipt finalization is transparently snapshotted in registration-amendment; scientific calculation inputs unchanged. Run-base revision; actual code SHA-bound.",
+      "baseline": null,
+      "change": "Retain the original cutoffs and matched replay comparator; improve true/false spatial separation with richer native supervision. Calibration-domain alignment alone does not recover absent witnesses or generalize zero-addedFP beyond calibration; avoid further threshold rescue on these outcomes.",
+      "primary_metric": null,
+      "decision": "MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST",
+      "report": "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain the original cutoffs and matched replay comparator; improve true/false spatial separation with richer native supervision. Calibration-domain alignment alone does not recover absent witnesses or generalize zero-addedFP beyond calibration; avoid further threshold rescue on these outcomes.",
+      "forbidden_repeats": [
+        "Claim zero-addedFP outside the calibration cohort",
+        "Credit the recall gain to new model learning or richer-data superiority",
+        "Retune arbitrary percentiles on consumed outcomes and call them the registered domain-only comparison"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md"
+      ],
+      "association_id": "mz49-bank-domain-calibration-20260911",
+      "search_text": "terminal-mz49-bank-domain-calibration-20260911 obstacle-avoidance MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST Fixed MZ47 weights/scores, two single old1000DEV DROP calibrations over actual banked candidates. REPLAY andENRICH eachgain42nonfit noncalibration TP with37and27addedFP, losingnone; rich32 DROP improves18to24TP and14to22TP withoutnewFP. Otherprofiles havefalsealert costs; nozero-cost promotion. Original318528scalar values replayexact;212352known decisions checked;400MZ36/80UNKNOWN retained. CPU0.34s, nofit/inference. Explanatory diagnostic receipt finalization is transparently snapshotted in registration-amendment; scientific calculation inputs unchanged. Run-base revision; actual code SHA-bound. Retain the original cutoffs and matched replay comparator; improve true/false spatial separation with richer native supervision. Calibration-domain alignment alone does not recover absent witnesses or generalize zero-addedFP beyond calibration; avoid further threshold rescue on these outcomes. Claim zero-addedFP outside the calibration cohort Credit the recall gain to new model learning or richer-data superiority Retune arbitrary percentiles on consumed outcomes and call them the registered domain-only comparison"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27887,6 +27950,53 @@
         "handoff_completion": 3
       },
       "search_text": "mz46-scaffold-context-20260911 Does removing ancillary supports change fixed obstacle decisions at unchanged rod geometry? MZ44 four supported far rod states and frozen MZ45 model outputs; retain MZ45 new-form negative comparison Remove only twelve support actors; one four-frame paired capture and fixed RGB-ToF branch diagnostic One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts. MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md mz44-frozen-far-rod-and-mz45-fixed-models"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz47-local-enrichment-20260911",
+      "status": "archived",
+      "question": "Does native local enrichment improve missing-return transfer beyond equal-budget old-data replay?",
+      "baseline": "Frozen MZ20 local readout plus MZ28 MZ35 MZ37; matched DROP_CLOSE old-data replay",
+      "change": "Two 300step local fine-tunes with shared16 old TRAIN frames and four label-pattern-matched old or MZ42 enriched frames",
+      "primary_metric": "Non-fit form/distance/context TP FP FN and paired gains; old-cohort regression and witness coverage",
+      "decision": "MZ47_TWELVE_FRAME_ENRICHMENT_LOSES_TO_MATCHED_REPLAY",
+      "report": "research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md",
+      "source": "retained-mz20-training-and-mz42-native-enrichment",
+      "commit": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "association_id": "mz47-local-enrichment-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3
+      },
+      "search_text": "mz47-local-enrichment-20260911 Does native local enrichment improve missing-return transfer beyond equal-budget old-data replay? Frozen MZ20 local readout plus MZ28 MZ35 MZ37; matched DROP_CLOSE old-data replay Two 300step local fine-tunes with shared16 old TRAIN frames and four label-pattern-matched old or MZ42 enriched frames Non-fit form/distance/context TP FP FN and paired gains; old-cohort regression and witness coverage MZ47_TWELVE_FRAME_ENRICHMENT_LOSES_TO_MATCHED_REPLAY research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md retained-mz20-training-and-mz42-native-enrichment"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz49-bank-domain-calibration-20260911",
+      "status": "archived",
+      "question": "Can matching cutoff calibration to the final banked candidate domain recover true events without added false alerts?",
+      "baseline": "Frozen MZ47 REPLAY and ENRICH with original prebank-domain cutoffs; original MZ37 comparator unchanged",
+      "change": "Apply the identical zero-added rule once per arm on original1000DEV DROP using restricted_raw and restricted_support, then fixed composition",
+      "primary_metric": "TP FP FN exact frames paired gained lost and UNKNOWN; original positive retention",
+      "decision": "MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST",
+      "report": "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md",
+      "source": "controlled-development",
+      "commit": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "association_id": "mz49-bank-domain-calibration-20260911",
+      "routes": [
+        "obstacle-avoidance",
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 7,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz49-bank-domain-calibration-20260911 Can matching cutoff calibration to the final banked candidate domain recover true events without added false alerts? Frozen MZ47 REPLAY and ENRICH with original prebank-domain cutoffs; original MZ37 comparator unchanged Apply the identical zero-added rule once per arm on original1000DEV DROP using restricted_raw and restricted_support, then fixed composition TP FP FN exact frames paired gained lost and UNKNOWN; original positive retention MZ49_BANK_DOMAIN_CALIBRATION_RECALL_WITH_FALSE_ALERT_COST research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md controlled-development"
     }
   ],
   "associations": [
@@ -30686,6 +30796,35 @@
         "artifacts.local/work/mz46-scaffold-context-20260911/resource-release.json"
       ],
       "decision_id": "terminal-mz46-scaffold-context-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz47-local-enrichment-20260911",
+      "use_ids": [],
+      "protocol_id": "mz47-local-enrichment-20260911",
+      "code_revision": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "input_fingerprint": "f940db9e6dc6d8f7110d12e67af55e424848ba5028f3944fdc3f4c5d6c1871ca",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_20260911.md",
+        "artifacts.local/work/mz47-local-enrichment-20260911",
+        "research/active/dtr-r0/nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz47-local-enrichment-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz49-bank-domain-calibration-20260911",
+      "use_ids": [],
+      "protocol_id": "mz49-bank-domain-calibration-20260911",
+      "code_revision": "a3aa17486576fe503bce971d74fb82d611095fd9",
+      "input_fingerprint": "a66799c5f83e54d5892b6612ef33beb502a4916d4eaa43b23c439d10065af478",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_20260911.md",
+        "artifacts.local/work/mz49-bank-domain-calibration-20260911",
+        "artifacts.local/work/mz49-bank-domain-calibration-20260911/registration-amendment.json",
+        "research/active/dtr-r0/nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz49-bank-domain-calibration-20260911",
       "source_rows": 1
     },
     {

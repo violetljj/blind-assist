@@ -5,6 +5,37 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Candidate-domain calibration tradeoff: MZ49 (2026-09-11)
+
+[MZ49](nearfield/MZ49_BANK_DOMAIN_CALIBRATION_RESULTS_20260911.md) changes only
+MZ47 REPLAY/ENRICH calibration to the banked candidate domain, using the same
+old1000DEV DROP rule. Rich non-fit TP rises18to24 and14to22 without newFP;
+outside calibration/fit, each gains42TP but adds37/27FP. Prior positives remain.
+Retain CHALLENGER with these costs, original cutoffs and the matched comparator;
+no default or zero-cost promotion. Candidate-domain consistency is useful but
+does not resolve absent witnesses or true/false spatial separation. Exact old
+composition and212352scalar known decisions pass;80UNKNOWN stay. CPU0.34s,
+no training/inference. Explanatory metadata finalization is documented without
+changing scientific inputs. Richer source and native spatial supervision remain
+the next learning input; no physical-sensor or natural-scene claim.
+
+## Matched local enrichment versus replay: MZ47 (2026-09-11)
+
+[MZ47](nearfield/MZ47_LOCAL_ENRICHMENT_RESULTS_20260911.md) completes two300step
+fits from MZ20, with matching old batches and extra event-label patterns.
+Under missing close returns,32 non-fit positive events yield REPLAY18TP/0FP/14FN
+and ENRICH14/0/18; original MZ37 is13/0/19. Ideal/merged transfer also favors
+REPLAY. Both fit groups reach4TP/0FP/8FN. Old relation-DEV ENRICH adds11TP and10FP;
+MZ36 missing-return counts do not improve. Retain NEGATIVE_CONTROL for this
+12near-example enrichment with hard return eligibility, not all richer data.
+Keep the matched replay arm and frozen local/context failure comparators.
+All400 MZ36 attempts/80UNKNOWN stay;1,008,672 scalar decisions and both cutoffs
+pass. CUDA preparation/fits/inference47.26s, CPU score0.42s; no new dense cache.
+[Applied reading](nearfield/LOCAL_EVIDENCE_LEARNING_20260911.md) motivates native
+slot-independent spatial supervision and candidates that survive absent echoes.
+That mechanism is untested; the separately collected MZ48 source is excluded
+from this fit. No hardware, natural-scene or default replacement claim.
+
 ## Fixed-target context dependency: MZ46 (2026-09-11)
 
 [MZ46](nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md) removes12 ancillary
