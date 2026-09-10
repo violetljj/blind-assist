@@ -2413,6 +2413,30 @@
         "research/active/dtr-r0/nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md"
       ],
       "commit": "fb1ce3cd91063fbda1499597f3cb070ec3075f52"
+    },
+    {
+      "id": "terminal-mz54-full-rgb-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ54_WIDER_RGB_LOCAL_ONLY_METRIC_CONDITIONING_GATE_NOT_MET",
+      "summary": "Matched600step CROP756cells andFULL3600cells usingidentical10708parameterheads,MZ50initialization,MZ51oldnegative schedule,MZ52native labels;ToF45unchanged. DROPnonfit CROP401TP21FP591FN,FULL384/20/608, FULLsame-logitscroppool382/20/610;fixedMZ53OLDunion463/20/529. BODYNEAR41each,primarygateFAIL;FULLgains2nativebelowcrop/outside45TP butloses19otherTP. Oldnoncal FULL2710TP31FP238FN versusCROP2712/39/236. AllMZ37positives,400MZ36/80UNKNOWN and1280pairs retained.562priorarrays,1680counts,251424scalarbits,92160nativewinnerlookups and2cutoffs exact. CUDA258.778s,features97.088s,fits11.448/14.863s,eval123.953s,CPUscore2.478s.16oldTRAINcropfeature replay maxabs0;10synthetic tests. Ownedprocessesreleased;4.41GBcache handed toregisteredMZ56 via solehardlink thenMZ54scratchremoved.",
+      "successor_requires": "Retain as negative control for wider RGB and native local supervision with packet-local metric conditioning. MZ56 separately tests legitimate in-field global metric context with matched continuation and outside coverage false. Keep fixed MZ53 union and matched CROP, report all query and profile costs, and preserve original source identities.",
+      "forbidden_repeats": [
+        "Claim widerfield model succeeded from labelcoverage or2newTPalone",
+        "Treat756raster crop as bitwise3136legacy readout",
+        "Claim same-logits croppedpool is an identical-input crop ablation",
+        "Fabricate measured ranges outsideToF or useUEpose/truth asinput",
+        "Rescue this frozen gate with newcutoffs or claimdefault/hardwareperformance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ54_EXECUTION_20260911.md"
+      ],
+      "commit": "7f39edf67b96e1024f1d0f8ed99ad38230a5c213"
     }
   ]
 }

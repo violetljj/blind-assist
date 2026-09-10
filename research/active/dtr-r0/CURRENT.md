@@ -5,6 +5,20 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Wider RGB with local-only metric conditioning: MZ54 (2026-09-11)
+
+[MZ54](nearfield/MZ54_FULL_RGB_RESULTS_20260911.md) completes matched600step
+756cellCROP/3600cellFULL fits with original45degree ToF. DROPnonfit CROP
+401TP21FP591FN,FULL384/20/608; BODYNEAR41each, primarygate fails. FULL gains
+2native-grounded TP belowcrop/outside45 butloses19otherTP; fixedMZ53union
+remains463/20/529. SameFULLlogits croppedpool gives382/20/610. OldnoncalFP
+FULL31vsCROP39, with recallcost; preserve NEGATIVE_CONTROL and allcomparators.
+562priorarrays,251424scalarbits,92160nativewinninglookups,2cutoffs and80UNKNOWN
+pass. [Execution](nearfield/MZ54_EXECUTION_20260911.md):CUDA258.78s,CPUscore2.48s,
+exact16TRAINcropfeature replay,10synthetic checks. Originaltask scratch removed
+after4.41GBfeature ownership passed viahardlink toregisteredMZ56, no duplicate.
+Next test legitimate global measured context; outsideToF remainsunmeasured.
+
 ## Complementary fixed readouts under missing echoes: MZ53 (2026-09-11)
 
 [MZ53](nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md) tests uniform

@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "3d509c3d7e28b5ffef853327745cc661ccf7c7815a9ae6420a60e478733dd34d",
+  "source_fingerprint": "075aa2a869fadb6bba61be510e1f81881674643b070cbb696c53742729d3dd83",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 344,
-    "current_terminals": 130,
-    "run_associations": 342
+    "experiments": 345,
+    "current_terminals": 131,
+    "run_associations": 343
   },
   "failure_layers": [
     {
@@ -20873,6 +20873,40 @@
       "search_text": "terminal-mz53-dual-readout-union-20260911 obstacle-avoidance MZ53_FIXED_DUAL_READOUT_UNION_RETAINS_DROP_RECOVERY_WITH_RESIDUAL_COSTS OneposthocCPU Boolean union of fixedOPEN/GATED outputs forMZ50,NEW_NEG,OLD_NEG. DROP nonfit1024 fixedunion455TP21FP537FN, NEW443/23/549, OLD463/20/529; oldnoncaladdedFP21/12/16. NewcompositionpracticalgatePASS, MZ51individualgateFAIL remains. OLDOPENexclusive21TP0FP allsavednativewinning,9withoutgatedcandidate;totalunion81addedTP63acceptednativewinner. OwnGATEDunioncost is11additionaloldFP; IDEAL OLDunion655TP36FP vsfixed677/34. AllMZ37positives,1280pairs and400MZ36/80UNKNOWN retained.251424scalarOR checks,1320sealedcountrows,262originalarrays exact. CPU1.047s,no fits/inference/cutoffs/nativeaccess. ControlledconsumedDevelopment only. Retain as a challenger with DROP recovery and residual old/IDEAL costs, alongside individual readouts and both matched unions. Evaluate full-RGB local learning with unchanged ToF observability and all existing source controls. Do not reinterpret the earlier MZ51 gate or select profiles using evaluator truth. Claim MZ51 individual primarygate passed Claim allprofiles improve or no false-alert cost Use observed sensorfailure profile as a privileged runtime oracle Count correctframe decisions withoutnativewinningcell as correct local attribution Promote default or hardware/safety performance from this posthoc composition"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz54-full-rgb-20260911",
+      "status": "diagnostic",
+      "question": "Matched600step CROP756cells andFULL3600cells usingidentical10708parameterheads,MZ50initialization,MZ51oldnegative schedule,MZ52native labels;ToF45unchanged. DROPnonfit CROP401TP21FP591FN,FULL384/20/608, FULLsame-logitscroppool382/20/610;fixedMZ53OLDunion463/20/529. BODYNEAR41each,primarygateFAIL;FULLgains2nativebelowcrop/outside45TP butloses19otherTP. Oldnoncal FULL2710TP31FP238FN versusCROP2712/39/236. AllMZ37positives,400MZ36/80UNKNOWN and1280pairs retained.562priorarrays,1680counts,251424scalarbits,92160nativewinnerlookups and2cutoffs exact. CUDA258.778s,features97.088s,fits11.448/14.863s,eval123.953s,CPUscore2.478s.16oldTRAINcropfeature replay maxabs0;10synthetic tests. Ownedprocessesreleased;4.41GBcache handed toregisteredMZ56 via solehardlink thenMZ54scratchremoved.",
+      "baseline": null,
+      "change": "Retain as negative control for wider RGB and native local supervision with packet-local metric conditioning. MZ56 separately tests legitimate in-field global metric context with matched continuation and outside coverage false. Keep fixed MZ53 union and matched CROP, report all query and profile costs, and preserve original source identities.",
+      "primary_metric": null,
+      "decision": "MZ54_WIDER_RGB_LOCAL_ONLY_METRIC_CONDITIONING_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "7f39edf67b96e1024f1d0f8ed99ad38230a5c213",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain as negative control for wider RGB and native local supervision with packet-local metric conditioning. MZ56 separately tests legitimate in-field global metric context with matched continuation and outside coverage false. Keep fixed MZ53 union and matched CROP, report all query and profile costs, and preserve original source identities.",
+      "forbidden_repeats": [
+        "Claim widerfield model succeeded from labelcoverage or2newTPalone",
+        "Treat756raster crop as bitwise3136legacy readout",
+        "Claim same-logits croppedpool is an identical-input crop ablation",
+        "Fabricate measured ranges outsideToF or useUEpose/truth asinput",
+        "Rescue this frozen gate with newcutoffs or claimdefault/hardwareperformance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ54_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz54-full-rgb-20260911",
+      "search_text": "terminal-mz54-full-rgb-20260911 obstacle-avoidance MZ54_WIDER_RGB_LOCAL_ONLY_METRIC_CONDITIONING_GATE_NOT_MET Matched600step CROP756cells andFULL3600cells usingidentical10708parameterheads,MZ50initialization,MZ51oldnegative schedule,MZ52native labels;ToF45unchanged. DROPnonfit CROP401TP21FP591FN,FULL384/20/608, FULLsame-logitscroppool382/20/610;fixedMZ53OLDunion463/20/529. BODYNEAR41each,primarygateFAIL;FULLgains2nativebelowcrop/outside45TP butloses19otherTP. Oldnoncal FULL2710TP31FP238FN versusCROP2712/39/236. AllMZ37positives,400MZ36/80UNKNOWN and1280pairs retained.562priorarrays,1680counts,251424scalarbits,92160nativewinnerlookups and2cutoffs exact. CUDA258.778s,features97.088s,fits11.448/14.863s,eval123.953s,CPUscore2.478s.16oldTRAINcropfeature replay maxabs0;10synthetic tests. Ownedprocessesreleased;4.41GBcache handed toregisteredMZ56 via solehardlink thenMZ54scratchremoved. Retain as negative control for wider RGB and native local supervision with packet-local metric conditioning. MZ56 separately tests legitimate in-field global metric context with matched continuation and outside coverage false. Keep fixed MZ53 union and matched CROP, report all query and profile costs, and preserve original source identities. Claim widerfield model succeeded from labelcoverage or2newTPalone Treat756raster crop as bitwise3136legacy readout Claim same-logits croppedpool is an identical-input crop ablation Fabricate measured ranges outsideToF or useUEpose/truth asinput Rescue this frozen gate with newcutoffs or claimdefault/hardwareperformance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28276,6 +28310,28 @@
         "decision_lifecycle": 10
       },
       "search_text": "mz53-dual-readout-union-20260911 Can fixed OPEN/GATED union retain the complementary MZ51 OLD_NEG gains at useful total false-alert cost? Fixed MZ50 individual readouts and union; MZ51 NEW_NEG individual readouts and union; MZ37 unchanged Posthoc consumed Development Boolean union of already-thresholded same-weight readouts; no new thresholds or fit DROP newnonfit TP>=453 FP<=21 and oldnoncal addedFP<=19, with paired matched unions and UNKNOWN MZ53_FIXED_DUAL_READOUT_UNION_RETAINS_DROP_RECOVERY_WITH_RESIDUAL_COSTS research/active/dtr-r0/nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md MZ51_SEALED_SAVED_OUTPUTS"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz54-full-rgb-20260911",
+      "status": "archived",
+      "question": "Does native-scale full-RGB local supervision recover near-body events outside the existing crop without higher false-alert totals?",
+      "baseline": "Matched CROP_RASTER and frozen MZ50 MZ51 MZ53 MZ37 comparators",
+      "change": "Two matched600step raster head fits; full640x360 vs exact224crop; original45degree ToF only",
+      "primary_metric": "DROP nonfit BODY_NEAR TP gain overcrop; total nonfit andoldnoncal FP nohigher; allprofiles andUNKNOWN",
+      "decision": "MZ54_WIDER_RGB_LOCAL_ONLY_METRIC_CONDITIONING_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md",
+      "source": "MZ48_MZ52_AND_ORIGINAL_TRAIN",
+      "commit": "7f39edf67b96e1024f1d0f8ed99ad38230a5c213",
+      "association_id": "mz54-full-rgb-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 7,
+        "evaluation_evidence": 8
+      },
+      "search_text": "mz54-full-rgb-20260911 Does native-scale full-RGB local supervision recover near-body events outside the existing crop without higher false-alert totals? Matched CROP_RASTER and frozen MZ50 MZ51 MZ53 MZ37 comparators Two matched600step raster head fits; full640x360 vs exact224crop; original45degree ToF only DROP nonfit BODY_NEAR TP gain overcrop; total nonfit andoldnoncal FP nohigher; allprofiles andUNKNOWN MZ54_WIDER_RGB_LOCAL_ONLY_METRIC_CONDITIONING_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md MZ48_MZ52_AND_ORIGINAL_TRAIN"
     }
   ],
   "associations": [
@@ -31206,6 +31262,20 @@
         "research/active/dtr-r0/nearfield/MZ53_DUAL_READOUT_UNION_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz53-dual-readout-union-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz54-full-rgb-20260911",
+      "use_ids": [],
+      "protocol_id": "mz54-full-rgb-r0",
+      "code_revision": "7f39edf67b96e1024f1d0f8ed99ad38230a5c213",
+      "input_fingerprint": "5268da8587f9e94e6f33877e1e4eac9576857d9eebd62df09395f7768d841809",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_20260911.md",
+        "artifacts.local/work/mz54-full-rgb-20260911",
+        "research/active/dtr-r0/nearfield/MZ54_FULL_RGB_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz54-full-rgb-20260911",
       "source_rows": 1
     },
     {
