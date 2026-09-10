@@ -5,6 +5,25 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Native positive-query pooling: MZ60 (2026-09-11)
+
+[MZ60](nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md) changes only positive
+query training pooling to known native witnesses, with the exact MZ59
+DIVERSE schedule, initialization, model and calibration. The retaining
+gate fails (2/7): new-family held480 native BODY_NEAR gain1, final OR
+held640 TP453/FP83, legacy TP2722/FP48, MZ48nonfit TP518/FP25.
+Retain this objective recipe as NEGATIVE_CONTROL; old comparators remain.
+
+[Execution and diagnosis](nearfield/MZ60_EXECUTION_20260911.md) record
+192.819s GPU work and3.064s CPU scoring, unchanged prior arrays/metrics and
+UNKNOWN. Against59DIVERSE, MZ55 gains4TP/loses9 and adds15FP/removes1;
+all15 additions are unsupported HEAD_NEAR. Awning TRAIN16->17/100 and
+held1->2/40 do not add native-winning TP. Only34/100 training positives
+were presented underDROP, so this is not a fully trained ceiling.
+The task cache released5542506496 allocated bytes; no owning process
+remains. MZ61 is only a prepared4096-frame design, not registered or
+captured. No hardware, natural-scene or safety claim follows.
+
 ## Matched diverse training: MZ59 (2026-09-11)
 
 [MZ59](nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md) uses MZ55 train

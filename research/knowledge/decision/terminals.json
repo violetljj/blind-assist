@@ -2558,6 +2558,30 @@
         "research/active/dtr-r0/nearfield/MZ59_EXECUTION_20260911.md"
       ],
       "commit": "995f670b39affd9bd4818e984224a3954022c269"
+    },
+    {
+      "id": "terminal-mz60-native-query-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ60_NATIVE_POSITIVE_QUERY_POOL_FAILS_RETAINING_GATE_WITHOUT_NEW_NATIVE_BODY_GAIN",
+      "summary": "One matched600-step MZ56 GLOBAL continuation changes only positive query BCE maximum to known native witnesses. Gate FAIL2/7: held480 newfamily nativeBN1; finalOR held640 TP453FP83, legacy TP2722FP48, MZ48nonfit TP518FP25. Versus59DIVERSE MZ55 gains4TP loses9, adds15FP removes1; all15 addedFP HEAD_NEAR unsupported. Awning TRAIN16->17/100, held1->2/40, native-winningTP unchanged7/1. Only34/100 trainpositive rows seen underDROP. All1546 priorarrays and4830metrics exact; UNKNOWN retained. GPU192.818753s, CPUscore3.064275s; temporarycache5542506496allocatedB released and no owningprocess remains.",
+      "successor_requires": "Carry this isolated objective recipe as NEGATIVE_CONTROL with preserved MZ59 arms and OLD_NEG union. Separately justify exposure, geometry or representation changes; do not reinterpret sparse34/100 DROP exposure as fully trained ceiling. MZ61 is design-only4096, no registration or capture.",
+      "forbidden_repeats": [
+        "Claim gate success from2/7 clauses or raw all-source gains",
+        "Claim nonnative awning wins prove localization",
+        "Tune cutoffs or extend this frozen run after its failure",
+        "Treat UNKNOWN cells or missing ToF as clearance",
+        "Infer hardware, natural-scene or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ60_EXECUTION_20260911.md"
+      ],
+      "commit": "060f22cf79f2b932ea2ba7bf1a9a3dcc997b1b9e"
     }
   ]
 }

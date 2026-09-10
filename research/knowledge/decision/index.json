@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "d42c25afb6bd8e9cf2560e30b50ff7f314ab0959fa9ae468c41c1b175fe728f8",
+  "source_fingerprint": "67a52ed2d544058bfc9895a6ba8b53ea107accc6332aff24f4e562d62a42b18c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 350,
-    "current_terminals": 136,
-    "run_associations": 348
+    "experiments": 351,
+    "current_terminals": 137,
+    "run_associations": 349
   },
   "failure_layers": [
     {
@@ -21078,6 +21078,40 @@
       "search_text": "terminal-mz59-training-diversity-20260911 obstacle-avoidance MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN Two matched600-step continuations of MZ56 GLOBAL, same11020params/loss/old-negative replay; DIVERSE substitutes half native presentations with MZ55train. DROP new-familyheld480 nativeBODY_NEAR gains0 CONTROL vs1 DIVERSE, but finalOR allheld640FP79->81 and legacy noncal45->51, primaryFAIL. Held TP451->454; all2560 TP1836->1852/FP319->322 includesfit. MZ48nonfit CONTROL514TP23FP vsDIVERSE505TP21FP. Two original1256-row cuts,zeroMZ55cutrows. All1124+105priorarrays and3630metricrows exact;458112scalardecisions,122880native lookups;UNKNOWN retained. CUDA252.975s includesbothfits/shared evaluation; CPUscore3.829s. Both-host original2560native files losslessly compressed:863387648allocatedB saved36.4332%,allSHA/arrays/IDs preserved. Carry equal-budget coverage as NEGATIVE_CONTROL; preserve OLD_NEG union, MZ37 and earlier scoped MZ57 challenger. Use saved ranking/false-alert evidence to justify a separately declared mechanism contrast. This600-step half-source contrast does not rule out all data sizes or training schemes. Preserve consumed-site and uncalibrated ToF limits. Claim one native gain passes the no-added-FP gate Promote all2560 gains as heldout performance Tune cutoffs or extend this frozen run after seeing its failure Claim coverage alone was proved sufficient or that all dataset expansion was disproved Filter positive native labels by surviving ToF returns or turn UNKNOWN into clearance Treat allocated native storage reduction as RGB compression or hardware safety evidence"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz60-native-query-20260911",
+      "status": "diagnostic",
+      "question": "One matched600-step MZ56 GLOBAL continuation changes only positive query BCE maximum to known native witnesses. Gate FAIL2/7: held480 newfamily nativeBN1; finalOR held640 TP453FP83, legacy TP2722FP48, MZ48nonfit TP518FP25. Versus59DIVERSE MZ55 gains4TP loses9, adds15FP removes1; all15 addedFP HEAD_NEAR unsupported. Awning TRAIN16->17/100, held1->2/40, native-winningTP unchanged7/1. Only34/100 trainpositive rows seen underDROP. All1546 priorarrays and4830metrics exact; UNKNOWN retained. GPU192.818753s, CPUscore3.064275s; temporarycache5542506496allocatedB released and no owningprocess remains.",
+      "baseline": null,
+      "change": "Carry this isolated objective recipe as NEGATIVE_CONTROL with preserved MZ59 arms and OLD_NEG union. Separately justify exposure, geometry or representation changes; do not reinterpret sparse34/100 DROP exposure as fully trained ceiling. MZ61 is design-only4096, no registration or capture.",
+      "primary_metric": null,
+      "decision": "MZ60_NATIVE_POSITIVE_QUERY_POOL_FAILS_RETAINING_GATE_WITHOUT_NEW_NATIVE_BODY_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "060f22cf79f2b932ea2ba7bf1a9a3dcc997b1b9e",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Carry this isolated objective recipe as NEGATIVE_CONTROL with preserved MZ59 arms and OLD_NEG union. Separately justify exposure, geometry or representation changes; do not reinterpret sparse34/100 DROP exposure as fully trained ceiling. MZ61 is design-only4096, no registration or capture.",
+      "forbidden_repeats": [
+        "Claim gate success from2/7 clauses or raw all-source gains",
+        "Claim nonnative awning wins prove localization",
+        "Tune cutoffs or extend this frozen run after its failure",
+        "Treat UNKNOWN cells or missing ToF as clearance",
+        "Infer hardware, natural-scene or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ60_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz60-native-query-20260911",
+      "search_text": "terminal-mz60-native-query-20260911 obstacle-avoidance MZ60_NATIVE_POSITIVE_QUERY_POOL_FAILS_RETAINING_GATE_WITHOUT_NEW_NATIVE_BODY_GAIN One matched600-step MZ56 GLOBAL continuation changes only positive query BCE maximum to known native witnesses. Gate FAIL2/7: held480 newfamily nativeBN1; finalOR held640 TP453FP83, legacy TP2722FP48, MZ48nonfit TP518FP25. Versus59DIVERSE MZ55 gains4TP loses9, adds15FP removes1; all15 addedFP HEAD_NEAR unsupported. Awning TRAIN16->17/100, held1->2/40, native-winningTP unchanged7/1. Only34/100 trainpositive rows seen underDROP. All1546 priorarrays and4830metrics exact; UNKNOWN retained. GPU192.818753s, CPUscore3.064275s; temporarycache5542506496allocatedB released and no owningprocess remains. Carry this isolated objective recipe as NEGATIVE_CONTROL with preserved MZ59 arms and OLD_NEG union. Separately justify exposure, geometry or representation changes; do not reinterpret sparse34/100 DROP exposure as fully trained ceiling. MZ61 is design-only4096, no registration or capture. Claim gate success from2/7 clauses or raw all-source gains Claim nonnative awning wins prove localization Tune cutoffs or extend this frozen run after its failure Treat UNKNOWN cells or missing ToF as clearance Infer hardware, natural-scene or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28613,6 +28647,27 @@
         "decision_lifecycle": 4
       },
       "search_text": "mz59-training-diversity-20260911 Does matched diverse training improve new-shape near-body recovery without added false alerts? Same MZ56 GLOBAL checkpoint continued on original MZ48 native and original OLD_NEG replay Replace half of 600x8 native-supervised slots with MZ55 TRAIN_CANDIDATE, identical model loss replay and optimizer DROP new-family heldout480 native BODY_NEAR recovery; allheld640 FP and oldnoncal FP versus CONTROL MZ59_MATCHED_DIVERSITY_TRAINING_FAILS_NO_ADDED_FP_WITH_ONE_NEW_NATIVE_BODY_GAIN research/active/dtr-r0/nearfield/MZ59_TRAINING_DIVERSITY_RESULTS_20260911.md MZ55 and older consumed Development; no fresh confirmation"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz60-native-query-20260911",
+      "status": "archived",
+      "question": "Does native-witness positive query pooling improve localized near-body recovery while retaining stronger old and new operating points?",
+      "baseline": "Sealed MZ59 DIVERSE matched schedule and CONTROL/OLD_NEG operating points",
+      "change": "Only positive query BCE uses known native-witness max; inference local loss negatives replay sources initialization and600steps unchanged",
+      "primary_metric": "DROP nativeheld480 gains>1; finalOR held640TP>=454 FP<=79,legacyTP>=2722 FP<=45,MZ48nonfitTP>=514 FP<=23",
+      "decision": "MZ60_NATIVE_POSITIVE_QUERY_POOL_FAILS_RETAINING_GATE_WITHOUT_NEW_NATIVE_BODY_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md",
+      "source": "Previously consumed MZ55 and legacy Development with native evaluator-only supervision",
+      "commit": "060f22cf79f2b932ea2ba7bf1a9a3dcc997b1b9e",
+      "association_id": "mz60-native-query-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3
+      },
+      "search_text": "mz60-native-query-20260911 Does native-witness positive query pooling improve localized near-body recovery while retaining stronger old and new operating points? Sealed MZ59 DIVERSE matched schedule and CONTROL/OLD_NEG operating points Only positive query BCE uses known native-witness max; inference local loss negatives replay sources initialization and600steps unchanged DROP nativeheld480 gains>1; finalOR held640TP>=454 FP<=79,legacyTP>=2722 FP<=45,MZ48nonfitTP>=514 FP<=23 MZ60_NATIVE_POSITIVE_QUERY_POOL_FAILS_RETAINING_GATE_WITHOUT_NEW_NATIVE_BODY_GAIN research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md Previously consumed MZ55 and legacy Development with native evaluator-only supervision"
     }
   ],
   "associations": [
@@ -31654,6 +31709,19 @@
         "artifacts.local/work/mz6-short-sequence-20260910/cleanup-receipt.json"
       ],
       "decision_id": "terminal-mz6-short-sequence-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz60-native-query-20260911",
+      "use_ids": [],
+      "protocol_id": "mz60-native-query-r0",
+      "code_revision": "060f22cf79f2b932ea2ba7bf1a9a3dcc997b1b9e",
+      "input_fingerprint": "6f13dc49c9df0260185953af9cb9d6f2f6cc4480397091e3ca80502f2f3a8431",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz60-native-query-20260911",
       "source_rows": 1
     },
     {

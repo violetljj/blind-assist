@@ -861,6 +861,16 @@
       "failure_signature": "Native newfamily held BN0->1 but finalOR heldFP79->81 and legacyFP45->51; no-cost coverage gate fails",
       "revisit_trigger": "Separately declared mechanism or coverage contrast motivated by ranking and false-alert evidence; original baseline retained",
       "assignment_basis": "Matched initialization/schedules/budgets; independent cutoff/scalar/native/old-array audits; complete source partitions and UNKNOWN"
+    },
+    {
+      "terminal_id": "terminal-mz60-native-query-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Matched600-step positive-query known-native pooling with unchanged MZ59DIVERSE schedule/model/calibration",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ60_NATIVE_QUERY_RESULTS_20260911.md",
+      "failure_signature": "Gate2/7; nativeBN1 unchanged; held453TP83FP, legacy2722TP48FP, MZ48nonfit518TP25FP",
+      "revisit_trigger": "Separately declared exposure/geometry/representation contrast, preserving old comparators and known sparse DROP exposure",
+      "assignment_basis": "Frozen same-initialization/schedule contrast; independent saved scalar/native/cutoff audit; immutable priors and UNKNOWN"
     }
   ]
 }
