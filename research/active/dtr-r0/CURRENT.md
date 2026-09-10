@@ -5,6 +5,22 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Frozen constrained-observation sensitivity: MZ40 (2026-09-10)
+
+[MZ40](nearfield/MZ40_L8CX_CONSTRAINED_RESULTS_20260910.md) completes the two
+fixed close-return proxies on the same 380 admitted MZ36 frames. MZ37 ideal
+FP3/FN0/exact377 becomes midpoint FP4/FN2/exact374 and invalid-close-zone
+FP2/FN18/exact363. In the latter arm, MZ35 removes eight true MZ28 bits while
+removing seven false bits; MZ37 restores none. RGB bytes/scores, all weights,
+bank and cutoffs are frozen. Exact 16-frame adapter parity and independent
+packet/score/group audit pass. All 20 excluded frames / 80 UNKNOWN bits remain.
+Retain diagnostic COMPONENT and ideal/RGB comparators. Prioritize a separately
+registered matched restricted-observation comparison and observable-quality-aware
+selection. Model training mismatch and information loss are not separated.
+Midpoint and zone invalidation are named proxies, not calibrated VL53L8CX
+responses. This two-arm experiment ends here; diverse paired object replacement
+remains the data direction. No additional capture, fitting or hardware claim.
+
 ## VL53L8CX observation mismatch: MZ39 (2026-09-10)
 
 [MZ39 saved-packet audit](nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md)
