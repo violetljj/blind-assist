@@ -5,6 +5,15 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest gate coverage intervention (2026-09-10)
+
+[MZ13 training coverage](nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md)
+adds original relationTRAIN5000 and distanceTRAIN2500 to the unchanged20parameter
+600step gate. Sign-added FP only17->16; all15 BODY sign errors remain. OldDEV
+loses6 previously recovered nearTP (exact928->926), failing retention. Thin
+improves46->47 clean and44->46 stress, still below prior48 admission. Stop this
+fit; no extra capture or continuation. MZ5 and MZ9 remain unchanged.
+
 ## Latest existing-data inventory and transfer (2026-09-10)
 
 [MZ12 existing-data replay](nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md)
