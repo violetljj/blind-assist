@@ -561,6 +561,46 @@
       "failure_signature": "Residual2addedFP; nonuniform TP gains/losses; all81baseline placement false bits preserved",
       "revisit_trigger": "Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run.",
       "assignment_basis": "Fixed full-task packet support improves measured tradeoff; independent task/bank/vote audit, false-alert gate still fails"
+    },
+    {
+      "terminal_id": "terminal-mz29-baseline-support-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Diagnostic evidence locating baseline error responsibility; missing support is not clearance",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ29_BASELINE_SUPPORT_RESULTS_20260910.md",
+      "failure_signature": "Local supported-only arbitration and add-only composition cannot correct most baseline errors; geometry absence overlaps true alarms",
+      "revisit_trigger": "Use observable sensor disagreement to test responsibility; preserve geometry-gap positives and distinguish absence from negative evidence.",
+      "assignment_basis": "80of81 placement baselineFP lack geometry, but48 placement and28 oldDEV baselineTP also lack it. All81FP lack actual query contributors, as do54 placementTP. Independent partition/geometry audit passes; no fit or decision change."
+    },
+    {
+      "terminal_id": "terminal-mz30-branch-responsibility-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Consumed Development branch-responsibility candidate with explicit63FP versus1TP tradeoff; not a baseline replacement",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ30_BRANCH_RESPONSIBILITY_RESULTS_20260910.md",
+      "failure_signature": "Cross-cohort BODY_NEAR true-positive loss despite zero-loss oldDEV calibration; only168 eligible TRAIN query examples with in-sample branch predictions",
+      "revisit_trigger": "Explain the lost true alarm and residual false alarms using frozen branch evidence, then define a separately registered support or training-coverage change. Validate frozen behavior on new appropriate sources before generalization claims.",
+      "assignment_basis": "One8641parameter selector removes63of81 placement baselineFP; totalFP83to20, exact2864to2915of3000, FN67to68. One BODY_NEAR baselineTP lost; all MZ28 additions and pole49/48 retained. No newFP. Independent audit passes; zero-TP-loss effect gate fails."
+    },
+    {
+      "terminal_id": "terminal-mz31-responsibility-coverage-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "TRAIN coverage diagnostic for a separately tested broader responsibility objective; not a task-performance claim",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ31_RESPONSIBILITY_COVERAGE_RESULTS_20260910.md",
+      "failure_signature": "Original eligibility masks query-specific responsibility labels; expanded supervision includes supported and baseline-negative domains whose transfer remains unproven",
+      "revisit_trigger": "Test one matched expansion of TRAIN disagreement supervision while preserving runtime correction eligibility and frozen model inputs.",
+      "assignment_basis": "Exact7562TRAIN contains1165 branch disagreements versus168 original eligible examples. All8 query/branch-correct classes have>=20examples and>=5explicit sites. Labels478RGB-correct/687ToF-correct; original restriction omitted997 queries. No fit or task decision change."
+    },
+    {
+      "terminal_id": "terminal-mz32-expanded-responsibility-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Consumed Development selector with broader responsibility supervision and observed zero-TP-loss versus MZ28; not guaranteed transfer or baseline promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md",
+      "failure_signature": "Restored BODY_NEAR retention costs10net placementFP versus MZ30; specified joint improvement gate fails",
+      "revisit_trigger": "Retain both responsibility candidates and test frozen behavior on new appropriate sources or inspect supported/unsupported responsibility transfer before any separately defined successor.",
+      "assignment_basis": "Matched1200step selector on1165TRAIN disagreements retains all MZ28 normal-cohort TP, removes53of83 placementFP, exact2908of3000 and FN67. Versus MZ30 restores1BODY_NEAR TP but totalFP20to30; strict<=20FP improvement gate fails. MZ28 additions and pole49/48 survive."
     }
   ]
 }

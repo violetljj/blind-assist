@@ -1913,6 +1913,84 @@
         "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md"
       ],
       "commit": "778687aaa87e6c90374934df378289d4c4803ef6"
+    },
+    {
+      "id": "terminal-mz29-baseline-support-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ29_BASELINE_ERRORS_OUTSIDE_LOCAL_REPAIR",
+      "summary": "80of81 placement baselineFP lack geometry, but48 placement and28 oldDEV baselineTP also lack it. All81FP lack actual query contributors, as do54 placementTP. Independent partition/geometry audit passes; no fit or decision change.",
+      "successor_requires": "Use observable sensor disagreement to test responsibility; preserve geometry-gap positives and distinguish absence from negative evidence.",
+      "forbidden_repeats": [
+        "Treat absence of geometric or source support as CLEAR",
+        "Claim MZ22 tested correction of geometrically unsupported alarms"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ29_BASELINE_SUPPORT_RESULTS_20260910.md"
+      ],
+      "commit": "1903133f1259a2ad0dd4777d100f2bf7aa138dd9"
+    },
+    {
+      "id": "terminal-mz30-branch-responsibility-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ30_BRANCH_SELECTION_FP_GAIN_WITH_ONE_TP_LOSS",
+      "summary": "One8641parameter selector removes63of81 placement baselineFP; totalFP83to20, exact2864to2915of3000, FN67to68. One BODY_NEAR baselineTP lost; all MZ28 additions and pole49/48 retained. No newFP. Independent audit passes; zero-TP-loss effect gate fails.",
+      "successor_requires": "Explain the lost true alarm and residual false alarms using frozen branch evidence, then define a separately registered support or training-coverage change. Validate frozen behavior on new appropriate sources before generalization claims.",
+      "forbidden_repeats": [
+        "Append threshold or seed rescue to the completed MZ30 fit",
+        "Treat oldDEV zero-loss calibration as guaranteed transferred retention",
+        "Promote the candidate as a zero-loss baseline replacement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ30_BRANCH_RESPONSIBILITY_RESULTS_20260910.md"
+      ],
+      "commit": "1903133f1259a2ad0dd4777d100f2bf7aa138dd9"
+    },
+    {
+      "id": "terminal-mz31-responsibility-coverage-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ31_NARROW_RESPONSIBILITY_SUPERVISION_OMITS_EXISTING_COVERAGE",
+      "summary": "Exact7562TRAIN contains1165 branch disagreements versus168 original eligible examples. All8 query/branch-correct classes have>=20examples and>=5explicit sites. Labels478RGB-correct/687ToF-correct; original restriction omitted997 queries. No fit or task decision change.",
+      "successor_requires": "Test one matched expansion of TRAIN disagreement supervision while preserving runtime correction eligibility and frozen model inputs.",
+      "forbidden_repeats": [
+        "Treat class/site coverage as measured task effect or independent generalization",
+        "Count unknown sequence identities as explicit sites"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ31_RESPONSIBILITY_COVERAGE_RESULTS_20260910.md"
+      ],
+      "commit": "1903133f1259a2ad0dd4777d100f2bf7aa138dd9"
+    },
+    {
+      "id": "terminal-mz32-expanded-responsibility-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ32_EXPANDED_SUPERVISION_RETAINS_TP_WITH_FP_TRADEOFF",
+      "summary": "Matched1200step selector on1165TRAIN disagreements retains all MZ28 normal-cohort TP, removes53of83 placementFP, exact2908of3000 and FN67. Versus MZ30 restores1BODY_NEAR TP but totalFP20to30; strict<=20FP improvement gate fails. MZ28 additions and pole49/48 survive.",
+      "successor_requires": "Retain both responsibility candidates and test frozen behavior on new appropriate sources or inspect supported/unsupported responsibility transfer before any separately defined successor.",
+      "forbidden_repeats": [
+        "Posthoc threshold or seed rescue of completed MZ32",
+        "Declare strict joint improvement despite30FP exceeding20",
+        "Treat reused Development retention as a device or safety guarantee"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md"
+      ],
+      "commit": "1903133f1259a2ad0dd4777d100f2bf7aa138dd9"
     }
   ]
 }
