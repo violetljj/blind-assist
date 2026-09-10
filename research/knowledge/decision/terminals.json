@@ -1720,6 +1720,82 @@
         "research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md"
       ],
       "commit": "5ee78c8e13f4d20f0d4fa943f6737b9123f68a6d"
+    },
+    {
+      "id": "terminal-mz19-margin-diagnostic-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ19_CROSS_FRAME_SEPARATION_AND_UNKNOWN_LOCAL_TAIL_DIAGNOSED",
+      "summary": "MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits.",
+      "successor_requires": "Retain cross-frame witness ranking and original task-negative output supervision without relabeling unknown local cells.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md"
+      ],
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19"
+    },
+    {
+      "id": "terminal-mz20-rank-objective-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ20_POLE_RECALL_RESTORED_RESIDUAL_FALSE_ADDITIONS",
+      "summary": "One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged.",
+      "successor_requires": "Resolve unsupported angular additions while retaining pole and original near coverage at the fixed error budget.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19"
+    },
+    {
+      "id": "terminal-mz21-false-addition-diagnostic-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT",
+      "summary": "All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit.",
+      "successor_requires": "Learn observable evidence availability or source support; never use evaluator known masks as inference vetoes.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md"
+      ],
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19"
+    },
+    {
+      "id": "terminal-mz22-evidence-arbitration-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY",
+      "summary": "One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives.",
+      "successor_requires": "A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md"
+      ],
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19"
     }
   ]
 }

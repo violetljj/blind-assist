@@ -461,6 +461,46 @@
       "failure_signature": "One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion.",
       "revisit_trigger": "Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN.",
       "assignment_basis": "One completed fit,3 gradient tests,31200 task-bit and662031 local-bit audit, saved-score pole trace; actual BODY contributor ranking improves but pole detections collapse."
+    },
+    {
+      "terminal_id": "terminal-mz19-margin-diagnostic-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Saved-score ranking and mask-coverage diagnostic only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md",
+      "failure_signature": "MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits.",
+      "revisit_trigger": "Retain cross-frame witness ranking and original task-negative output supervision without relabeling unknown local cells.",
+      "assignment_basis": "Completed recorded run with artifact hashes and scalar evidence; consumed Development; no baseline or device promotion"
+    },
+    {
+      "terminal_id": "terminal-mz20-rank-objective-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Controlled BODY ranking objective and frozen candidate, not baseline replacement",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md",
+      "failure_signature": "One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged.",
+      "revisit_trigger": "Resolve unsupported angular additions while retaining pole and original near coverage at the fixed error budget.",
+      "assignment_basis": "Completed recorded run with artifact hashes and scalar evidence; consumed Development; no baseline or device promotion"
+    },
+    {
+      "terminal_id": "terminal-mz21-false-addition-diagnostic-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Evaluator-only absent-local-support and exact false-addition diagnosis",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md",
+      "failure_signature": "All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit.",
+      "revisit_trigger": "Learn observable evidence availability or source support; never use evaluator known masks as inference vetoes.",
+      "assignment_basis": "Completed recorded run with artifact hashes and scalar evidence; consumed Development; no baseline or device promotion"
+    },
+    {
+      "terminal_id": "terminal-mz22-evidence-arbitration-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This frozen18feature2564parameter residual arbitration and oldDEV-calibrated full override",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md",
+      "failure_signature": "One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives.",
+      "revisit_trigger": "A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone.",
+      "assignment_basis": "Completed recorded run with artifact hashes and scalar evidence; consumed Development; no baseline or device promotion"
     }
   ]
 }

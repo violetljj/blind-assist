@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "5b222df51d5bb7e27712d775f67c95eea6290ab593777d47f472fc29862021f6",
+  "source_fingerprint": "5129e52652c83ce3625c20dcc156a088d3c1b452967fd3c3c0380c7f2ac4e6db",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 310,
-    "current_terminals": 96,
-    "run_associations": 308
+    "experiments": 314,
+    "current_terminals": 100,
+    "run_associations": 312
   },
   "failure_layers": [
     {
@@ -19840,6 +19840,122 @@
       "search_text": "terminal-mz18-body-objective-20260910 obstacle-avoidance MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion. Preserve measured BODY attribution while recovering true-witness alert strength at the frozen error budget; separate location ranking from detection and retain UNKNOWN. Calling better AP or true pole maxima an alert-performance upgrade despite4/1 BODY detections Extending this completed1200step fit or tuning its cutoff on consumed placementDEV to rescue the reported result"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz19-margin-diagnostic-20260910",
+      "status": "diagnostic",
+      "question": "MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits.",
+      "baseline": null,
+      "change": "Retain cross-frame witness ranking and original task-negative output supervision without relabeling unknown local cells.",
+      "primary_metric": null,
+      "decision": "MZ19_CROSS_FRAME_SEPARATION_AND_UNKNOWN_LOCAL_TAIL_DIAGNOSED",
+      "report": "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Retain cross-frame witness ranking and original task-negative output supervision without relabeling unknown local cells.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md"
+      ],
+      "association_id": "mz19-margin-diagnostic-20260910",
+      "search_text": "terminal-mz19-margin-diagnostic-20260910 obstacle-avoidance MZ19_CROSS_FRAME_SEPARATION_AND_UNKNOWN_LOCAL_TAIL_DIAGNOSED MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits. Retain cross-frame witness ranking and original task-negative output supervision without relabeling unknown local cells. Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz20-rank-objective-20260910",
+      "status": "diagnostic",
+      "question": "One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged.",
+      "baseline": null,
+      "change": "Resolve unsupported angular additions while retaining pole and original near coverage at the fixed error budget.",
+      "primary_metric": null,
+      "decision": "MZ20_POLE_RECALL_RESTORED_RESIDUAL_FALSE_ADDITIONS",
+      "report": "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Resolve unsupported angular additions while retaining pole and original near coverage at the fixed error budget.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz20-rank-objective-20260910",
+      "search_text": "terminal-mz20-rank-objective-20260910 obstacle-avoidance MZ20_POLE_RECALL_RESTORED_RESIDUAL_FALSE_ADDITIONS One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged. Resolve unsupported angular additions while retaining pole and original near coverage at the fixed error budget. Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz21-false-addition-diagnostic-20260910",
+      "status": "diagnostic",
+      "question": "All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit.",
+      "baseline": null,
+      "change": "Learn observable evidence availability or source support; never use evaluator known masks as inference vetoes.",
+      "primary_metric": null,
+      "decision": "MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT",
+      "report": "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Learn observable evidence availability or source support; never use evaluator known masks as inference vetoes.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz21-false-addition-diagnostic-20260910",
+      "search_text": "terminal-mz21-false-addition-diagnostic-20260910 obstacle-avoidance MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit. Learn observable evidence availability or source support; never use evaluator known masks as inference vetoes. Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz22-evidence-arbitration-20260910",
+      "status": "diagnostic",
+      "question": "One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives.",
+      "baseline": null,
+      "change": "A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone.",
+      "primary_metric": null,
+      "decision": "MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY",
+      "report": "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone.",
+      "forbidden_repeats": [
+        "Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result",
+        "Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz22-evidence-arbitration-20260910",
+      "search_text": "terminal-mz22-evidence-arbitration-20260910 obstacle-avoidance MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives. A changed mechanism must retain correct baseline evidence under perturbation and represent source availability rather than geometry eligibility alone. Do not extend a completed fit or retune its consumed evaluation cutoffs to rescue its recorded result Do not promote consumed synthetic or trained-pole results to independent natural or device performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26461,6 +26577,96 @@
         "runtime_infrastructure": 3
       },
       "search_text": "mz18-body-objective-20260910 Can BODY witness rewards reduce wrong spatial winners and false alerts while retaining pole detection? MZ16 HIGH_DETAIL with identical initialization, features,10740parameter network and1200 saved batches; MZ5 composed baseline Replace only BODY query terms with true-witness reward and max-known-negative penalty; HEAD terms/global denominator and inference unchanged One1200step BODY objective fit: placement BODY addedFP11->3 versusMZ16; relation BODY AP0.708/0.703->0.838/0.828. Pole BODY true winners25/25 but clean/stress detections4/1 versus25/25. Full farTP/addedFP70/7 overMZ5; no alert promotion. MZ18_BODY_ATTRIBUTION_IMPROVES_POLE_ALERT_RETENTION_FAILS research/active/dtr-r0/nearfield/MZ18_BODY_OBJECTIVE_RESULTS_20260910.md 7562 unique sampled TRAIN frames including200 trained diagnostic frames; oldDEV1000 calibration and consumed placementDEV3000; no capture or EVAL"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz20-rank-objective-20260910",
+      "status": "archived",
+      "question": "Can cross-bag BODY witness ranking restore pole strength without new false alerts?",
+      "baseline": "MZ16 HIGH_DETAIL and MZ18 BODY_WITNESS; MZ5 composed baseline",
+      "change": "Train true witnesses against full task-negative maxima and known wrong positive-bag maxima; same initialization batches and inference",
+      "primary_metric": "One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged.",
+      "decision": "MZ20_POLE_RECALL_RESTORED_RESIDUAL_FALSE_ADDITIONS",
+      "report": "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md",
+      "source": "Existing MZ16 cache; consumed TRAIN and Development including trained pole; no new capture or EVAL",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "association_id": "mz20-rank-objective-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz20-rank-objective-20260910 Can cross-bag BODY witness ranking restore pole strength without new false alerts? MZ16 HIGH_DETAIL and MZ18 BODY_WITNESS; MZ5 composed baseline Train true witnesses against full task-negative maxima and known wrong positive-bag maxima; same initialization batches and inference One1200step BODY cross-bag fit: pole49/48 of49 clean/stress; placement75 added farTP and8FP, exact2862/3000. BODY AP .801/.785 exceeds MZ16 but below MZ18. MZ5 unchanged. MZ20_POLE_RECALL_RESTORED_RESIDUAL_FALSE_ADDITIONS research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md Existing MZ16 cache; consumed TRAIN and Development including trained pole; no new capture or EVAL"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz22-evidence-arbitration-20260910",
+      "status": "archived",
+      "question": "Can observable global-local arbitration correct false alerts and recover far evidence?",
+      "baseline": "Frozen MZ5 and MZ20 add-only comparison",
+      "change": "Residual per-query MLP using global and local score distribution plus metric geometry; unsupported queries retain MZ5",
+      "primary_metric": "One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives.",
+      "decision": "MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY",
+      "report": "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md",
+      "source": "Existing MZ16 cache and frozen MZ20; consumed Development; no EVAL or capture",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "association_id": "mz22-evidence-arbitration-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz22-evidence-arbitration-20260910 Can observable global-local arbitration correct false alerts and recover far evidence? Frozen MZ5 and MZ20 add-only comparison Residual per-query MLP using global and local score distribution plus metric geometry; unsupported queries retain MZ5 One1200step residual fit: placement2864/3000 exact,89 far gains18 original far losses,7 addedFP. Pole41/35 of49 clean/stress; sequence3 BODYfarFP removed. Wrong correspondence erases original positives. MZ22_ARBITRATION_LOSES_FAR_RETENTION_AND_POLE_STABILITY research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md Existing MZ16 cache and frozen MZ20; consumed Development; no EVAL or capture"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz19-margin-diagnostic-20260910",
+      "status": "archived",
+      "question": "Saved-score ranking and mask-coverage diagnostic only",
+      "baseline": "Saved MZ16/MZ18/MZ20 outputs with their original fixed cutoffs",
+      "change": "Read saved scores and evaluator geometry only; no model update",
+      "primary_metric": "MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits.",
+      "decision": "MZ19_CROSS_FRAME_SEPARATION_AND_UNKNOWN_LOCAL_TAIL_DIAGNOSED",
+      "report": "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md",
+      "source": "Previously consumed controlled Development; diagnostics do not restore independent confirmation",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "association_id": "mz19-margin-diagnostic-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "geometry_motion": 3
+      },
+      "search_text": "mz19-margin-diagnostic-20260910 Saved-score ranking and mask-coverage diagnostic only Saved MZ16/MZ18/MZ20 outputs with their original fixed cutoffs Read saved scores and evaluator geometry only; no model update MZ18 pole winners are25/25 correct locally but true-score median margins -0.174/-0.337; cutoff-driving task-negative maxima often lack known local candidates. Zero fits. MZ19_CROSS_FRAME_SEPARATION_AND_UNKNOWN_LOCAL_TAIL_DIAGNOSED research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md Previously consumed controlled Development; diagnostics do not restore independent confirmation"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz21-false-addition-diagnostic-20260910",
+      "status": "archived",
+      "question": "Evaluator-only absent-local-support and exact false-addition diagnosis",
+      "baseline": "Saved MZ16/MZ18/MZ20 outputs with their original fixed cutoffs",
+      "change": "Read saved scores and evaluator geometry only; no model update",
+      "primary_metric": "All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit.",
+      "decision": "MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT",
+      "report": "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md",
+      "source": "Previously consumed controlled Development; diagnostics do not restore independent confirmation",
+      "commit": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "association_id": "mz21-false-addition-diagnostic-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "mz21-false-addition-diagnostic-20260910 Evaluator-only absent-local-support and exact false-addition diagnosis Saved MZ16/MZ18/MZ20 outputs with their original fixed cutoffs Read saved scores and evaluator geometry only; no model update All16/7/8 MZ16/MZ18/MZ20 newFP have0 known eligible local candidates and0 actual packet query contributors. MZ20 native query counts all0;8 sites,6 signs. No fit. MZ21_FALSE_ADDITIONS_OUTSIDE_OBSERVED_QUERY_SUPPORT research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md Previously consumed controlled Development; diagnostics do not restore independent confirmation"
     }
   ],
   "associations": [
@@ -28761,6 +28967,20 @@
       "source_rows": 1
     },
     {
+      "run_id": "mz19-margin-diagnostic-20260910",
+      "use_ids": [],
+      "protocol_id": "mz19-margin-diagnostic-20260910-diagnostic",
+      "code_revision": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "input_fingerprint": "88b0060680612690704d9074577cc679de6170200fb620e39f21af99b1e915e8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md",
+        "artifacts.local/work/mz19-margin-diagnostic-20260910/result.json",
+        "artifacts.local/work/mz19-margin-diagnostic-20260910/receipt.json"
+      ],
+      "decision_id": "terminal-mz19-margin-diagnostic-20260910",
+      "source_rows": 1
+    },
+    {
       "run_id": "mz2-resolution-20260910",
       "use_ids": [],
       "protocol_id": "mz2-resolution-v1",
@@ -28771,6 +28991,50 @@
         "research/active/dtr-r0/nearfield/MZ2_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz2-resolution-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz20-rank-objective-20260910",
+      "use_ids": [],
+      "protocol_id": "mz20-rank-objective-20260910-protocol",
+      "code_revision": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "input_fingerprint": "e7a078db61e890823e161d38dbb67a9f7b518ef7f51e870fce27cf2929f205ff",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md",
+        "artifacts.local/work/mz20-rank-objective-20260910/run-v1/result.json",
+        "artifacts.local/work/mz20-rank-objective-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz20-rank-objective-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz20-rank-objective-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz21-false-addition-diagnostic-20260910",
+      "use_ids": [],
+      "protocol_id": "mz21-false-addition-diagnostic-20260910-diagnostic",
+      "code_revision": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "input_fingerprint": "d239020452ed49b45f7ec21b130a943f408f04cfe04b2f91e7dfe050b897a42b",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md",
+        "artifacts.local/work/mz21-false-addition-diagnostic-20260910/result.json",
+        "artifacts.local/work/mz21-false-addition-diagnostic-20260910/receipt.json"
+      ],
+      "decision_id": "terminal-mz21-false-addition-diagnostic-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz22-evidence-arbitration-20260910",
+      "use_ids": [],
+      "protocol_id": "mz22-evidence-arbitration-20260910-protocol",
+      "code_revision": "d2e2c2ae1c7b75b65253436ce955303436778e19",
+      "input_fingerprint": "0a472e7c431945529d09a3aa37554c6a82a77b392bbcf1fded4838970778ff5d",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md",
+        "artifacts.local/work/mz22-evidence-arbitration-20260910/run-v1/result.json",
+        "artifacts.local/work/mz22-evidence-arbitration-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz22-evidence-arbitration-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz22-evidence-arbitration-20260910",
       "source_rows": 1
     },
     {
