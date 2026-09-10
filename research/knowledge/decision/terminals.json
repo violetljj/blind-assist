@@ -2050,6 +2050,26 @@
         "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md"
       ],
       "commit": "704d80a98fc98baf8e60064b01271255d370ec3f"
+    },
+    {
+      "id": "terminal-mz36-new-source-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ36_FROZEN_NEW_XY_TRANSFER_EVIDENCE",
+      "summary": "Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope.",
+      "successor_requires": "Separately test positive-branch restoration for baseline-negative disagreements, using existing TRAIN supervision and declared Development with false-alert controls; do not tune on two MZ36 residuals or erase old retention tradeoffs.",
+      "forbidden_repeats": [
+        "Refit or calibrate on MZ36 and call it fresh confirmation",
+        "Treat new XY in old regions as independent assets or natural data",
+        "Hide excluded groups or turn UNKNOWN into CLEAR"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md"
+      ],
+      "commit": "1108709b70677d21bf552de19dc5626980cb86f5"
     }
   ]
 }

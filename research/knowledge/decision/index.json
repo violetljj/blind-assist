@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "29bfaff913385da09d244f3d8394346619082e3f6dcbdb264f3da8e229f0d32b",
+  "source_fingerprint": "842553065f4c75ef477d5b38c7ba60cd36c0e21f6a790e1561575bc6680e4ac7",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 327,
-    "current_terminals": 113,
-    "run_associations": 325
+    "experiments": 328,
+    "current_terminals": 114,
+    "run_associations": 326
   },
   "failure_layers": [
     {
@@ -20340,6 +20340,36 @@
       "search_text": "terminal-mz35-responsibility-convergence-20260910 obstacle-avoidance MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails. Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory. Append another endpoint or threshold rescue to completed MZ35 Treat lower TRAIN loss as uniform transfer or independent confirmation Claim all four query accuracies improved"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz36-new-source-20260910",
+      "status": "diagnostic",
+      "question": "Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope.",
+      "baseline": null,
+      "change": "Separately test positive-branch restoration for baseline-negative disagreements, using existing TRAIN supervision and declared Development with false-alert controls; do not tune on two MZ36 residuals or erase old retention tradeoffs.",
+      "primary_metric": null,
+      "decision": "MZ36_FROZEN_NEW_XY_TRANSFER_EVIDENCE",
+      "report": "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "1108709b70677d21bf552de19dc5626980cb86f5",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately test positive-branch restoration for baseline-negative disagreements, using existing TRAIN supervision and declared Development with false-alert controls; do not tune on two MZ36 residuals or erase old retention tradeoffs.",
+      "forbidden_repeats": [
+        "Refit or calibrate on MZ36 and call it fresh confirmation",
+        "Treat new XY in old regions as independent assets or natural data",
+        "Hide excluded groups or turn UNKNOWN into CLEAR"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz36-new-source-20260910",
+      "search_text": "terminal-mz36-new-source-20260910 obstacle-avoidance MZ36_FROZEN_NEW_XY_TRANSFER_EVIDENCE Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope. Separately test positive-branch restoration for baseline-negative disagreements, using existing TRAIN supervision and declared Development with false-alert controls; do not tune on two MZ36 residuals or erase old retention tradeoffs. Refit or calibrate on MZ36 and call it fresh confirmation Treat new XY in old regions as independent assets or natural data Hide excluded groups or turn UNKNOWN into CLEAR"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27354,6 +27384,29 @@
         "geometry_motion": 3
       },
       "search_text": "mz35-responsibility-convergence-20260910 Does further optimization of the unchanged expanded responsibility selector reduce TRAIN errors and improve transferred correction? Frozen MZ32 step1200 selector and same initial state, inputs, supervision and optimizer rule One4800step trajectory repeating original1200batches four times; exact MZ32 tensor/loss prefix required before continuation Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails. MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md Consumed TRAIN/Development; frozen in-sample branch predictions, no protected EVAL or new source"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz36-new-source-20260910",
+      "status": "archived",
+      "question": "Do frozen obstacle corrections transfer to newly captured XY without fitting?",
+      "baseline": "Frozen MZ5 and MZ28",
+      "change": "New XY controlled capture; independently apply frozen MZ30 and MZ35",
+      "primary_metric": "Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope.",
+      "decision": "MZ36_FROZEN_NEW_XY_TRANSFER_EVIDENCE",
+      "report": "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md",
+      "source": "mz36-new-xy-controlled",
+      "commit": "1108709b70677d21bf552de19dc5626980cb86f5",
+      "association_id": "mz36-new-source-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz36-new-source-20260910 Do frozen obstacle corrections transfer to newly captured XY without fitting? Frozen MZ5 and MZ28 New XY controlled capture; independently apply frozen MZ30 and MZ35 Frozen new-XY comparison: 380/400 frames in 76/80 groups admitted. MZ5/MZ28/MZ30/MZ35 FP=6/6/4/3, FN=10/2/2/2. MZ30: PASS, removed2FP, lost0TP; MZ35: PASS, removed3FP, lost0TP. No refit or calibration. Both remaining far-crossbar misses have a correct positive modality and a correct saved selector preference, but are outside its negative-only repair scope. MZ36_FROZEN_NEW_XY_TRANSFER_EVIDENCE research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md mz36-new-xy-controlled"
     }
   ],
   "associations": [
@@ -29951,6 +30004,28 @@
         "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz35-responsibility-convergence-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz36-new-source-20260910",
+      "use_ids": [],
+      "protocol_id": "mz36-new-source-20260910",
+      "code_revision": "1108709b70677d21bf552de19dc5626980cb86f5",
+      "input_fingerprint": "67570a90be9b01fa7c6c2f6cb60c603dd5d443baad4d8b3d43c2600eb98391ee",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz36-new-source-20260910",
+        "artifacts.local/work/mz36-new-source-20260910/admission-v1/receipt.json",
+        "artifacts.local/work/mz36-new-source-20260910/inference-v1/receipt.json",
+        "artifacts.local/work/mz36-new-source-20260910/score-v1/receipt.json",
+        "artifacts.local/work/mz36-new-source-20260910/audit.json",
+        "artifacts.local/work/mz36-new-source-20260910/empty-review-v1.json",
+        "artifacts.local/work/mz36-new-source-20260910/full-return-verification.json",
+        "artifacts.local/work/mz36-new-source-20260910/residuals.json",
+        "artifacts.local/work/mz36-new-source-20260910/worker-final-release.json",
+        "research/active/dtr-r0/nearfield/MZ36_NEW_SOURCE_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz36-new-source-20260910",
       "source_rows": 1
     },
     {
