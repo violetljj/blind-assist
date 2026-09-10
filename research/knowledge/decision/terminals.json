@@ -2174,6 +2174,46 @@
         "research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md"
       ],
       "commit": "a3309832e389cd6bce274719206e2a9822c5081d"
+    },
+    {
+      "id": "terminal-mz43-restricted-training-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF",
+      "summary": "Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt.",
+      "successor_requires": "Evaluate the fixed restricted-trained candidate on richer admitted objects/sites and investigate remaining quality/false-alert tradeoffs; preserve ideal and MZ28/MZ37 comparators.",
+      "forbidden_repeats": [
+        "Claim every observation condition improves every error count",
+        "Tune thresholds or add fit steps to the completed MZ43 comparison",
+        "Call geometric restriction proxies calibrated device behavior"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md"
+      ],
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4"
+    },
+    {
+      "id": "terminal-mz44-rich-far-objects-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS",
+      "summary": "One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt.",
+      "successor_requires": "Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity.",
+      "forbidden_repeats": [
+        "Treat mesh bounds or intended relation as native truth",
+        "Claim natural-scene or leaf-alpha sensing from these scaled opaque forms",
+        "Treat visible nonintruding as device clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md"
+      ],
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4"
     }
   ]
 }

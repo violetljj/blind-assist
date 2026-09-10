@@ -1,9 +1,34 @@
 # Cane-complementary forward perception and DTR history
 
-Updated: 2026-09-10
+Updated: 2026-09-11
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
+
+## Rich-object far coverage: MZ44 (2026-09-11)
+
+[MZ44](nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md) adds 20 source-valid frames
+and five complete far paired groups; BODY_FAR/HEAD_FAR each have 10 positives,
+with zero near leakage or UNKNOWN bits. This fills MZ42's distance gap on the
+same four new forms and rod control, bringing the near/far blocks to 40 frames.
+Independent native-label and full byte/hash checks pass; the compact source is
+20,622,239 bytes versus 42,308,036 raw. Worker execution resources are released.
+Retain COMPONENT: one shared site, small scaled/floating opaque forms remain;
+neither new block was used to fit or select MZ43. Fixed-model transfer on these
+forms is the next capability question, not established by source admission.
+
+## Matched restricted-input training: MZ43 (2026-09-11)
+
+[MZ43](nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md) isolates a training
+mismatch with exact old-fit reproduction and equal input-exposure budgets.
+Mixed ensemble MZ36 missing-return FP/FN improves 9/21 to 7/14, merged 7/14 to
+7/11, ideal 6/10 to 4/8. All old true positives survive with no added false bits
+on this cohort. Old ideal EVAL FP/FN changes 50/114 to 52/104; retain CHALLENGER
+with this cost, not universal no-regression. Original MZ5/MZ28/MZ37 remain.
+Four fits and cached scoring took 8.11s CUDA, no backbone inference; independent
+packet/count checks pass. A 534,669-byte compact ensemble reproduces all 16,140
+cached decisions. Rich-object data remains outside fitting/selection. Next test
+the fixed candidate on those sources; no physical-sensor or deployment claim.
 
 ## Richer rendered objects and compact source delivery: MZ42 (2026-09-10)
 

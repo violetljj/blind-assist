@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-10",
-  "source_fingerprint": "b49d9e2dba3d0b5a66b848692c445639fe04ee0a13bf0328ae65ec115eb19b0f",
+  "generated_at": "2026-09-11",
+  "source_fingerprint": "39274fe25445db745b847b74a07cd14749866ec97c3677ed111909ecf81d1fde",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 333,
-    "current_terminals": 119,
-    "run_associations": 331
+    "experiments": 335,
+    "current_terminals": 121,
+    "run_associations": 333
   },
   "failure_layers": [
     {
@@ -20524,6 +20524,66 @@
       "search_text": "terminal-mz42-rich-objects-20260910 obstacle-avoidance MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt. Use the compact source in separately scoped diversity expansion/matched-observation learning; add far-distance, asset/site-disjoint and natural-size support cases before broad transfer claims. Call near-only probes far-range evidence Claim leaf-alpha or natural-scale coverage from woody scaled forms Treat fixture CLEAR as sensor clearance Use names or mesh bounds in place of native labels"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz43-restricted-training-20260911",
+      "status": "diagnostic",
+      "question": "Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt.",
+      "baseline": null,
+      "change": "Evaluate the fixed restricted-trained candidate on richer admitted objects/sites and investigate remaining quality/false-alert tradeoffs; preserve ideal and MZ28/MZ37 comparators.",
+      "primary_metric": null,
+      "decision": "MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF",
+      "report": "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Evaluate the fixed restricted-trained candidate on richer admitted objects/sites and investigate remaining quality/false-alert tradeoffs; preserve ideal and MZ28/MZ37 comparators.",
+      "forbidden_repeats": [
+        "Claim every observation condition improves every error count",
+        "Tune thresholds or add fit steps to the completed MZ43 comparison",
+        "Call geometric restriction proxies calibrated device behavior"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md"
+      ],
+      "association_id": "mz43-restricted-training-20260911",
+      "search_text": "terminal-mz43-restricted-training-20260911 obstacle-avoidance MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt. Evaluate the fixed restricted-trained candidate on richer admitted objects/sites and investigate remaining quality/false-alert tradeoffs; preserve ideal and MZ28/MZ37 comparators. Claim every observation condition improves every error count Tune thresholds or add fit steps to the completed MZ43 comparison Call geometric restriction proxies calibrated device behavior"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz44-rich-far-objects-20260911",
+      "status": "diagnostic",
+      "question": "One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt.",
+      "baseline": null,
+      "change": "Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity.",
+      "primary_metric": null,
+      "decision": "MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS",
+      "report": "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity.",
+      "forbidden_repeats": [
+        "Treat mesh bounds or intended relation as native truth",
+        "Claim natural-scene or leaf-alpha sensing from these scaled opaque forms",
+        "Treat visible nonintruding as device clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md"
+      ],
+      "association_id": "mz44-rich-far-objects-20260911",
+      "search_text": "terminal-mz44-rich-far-objects-20260911 obstacle-avoidance MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt. Use fixed models on the admitted near/far richer-object blocks in a separate comparison; preserve family/site identities and nonintruding controls, then address realism and site diversity. Treat mesh bounds or intended relation as native truth Claim natural-scene or leaf-alpha sensing from these scaled opaque forms Treat visible nonintruding as device clearance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27668,6 +27728,55 @@
         "handoff_completion": 3
       },
       "search_text": "mz42-rich-objects-20260910 Can four richer mesh families produce paired native-labeled obstacle examples with compact transferable sources? Retained same-camera oblique rod controls and existing source-admitted MZ36 site Pipe ladder pouch birch meshes with HEAD_ONLY BODY_ONLY BOTH and visible nonintruding conditions Secondary-host single capture produced20/20 native-valid frames and5/5 paired groups: pipe, ladder, pouch, woody birch and retained rod controls. Positive query counts10/0/10/0 are near-only. Independent all80event checks,20frame visual review and92file lossless verification pass;42.33MB source transfers as20.49MB. Scaled/floating one-site Development, no model claim. Revision is run base; exact new code/spec hashes are in receipt. MZ42_RICH_MESH_COMPACT_SOURCE_PIPELINE_PASS research/active/dtr-r0/nearfield/MZ42_RICH_OBJECTS_20260910.md mz38-existing-worker-assets-and-consumed-mz36-source-site"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz44-rich-far-objects-20260911",
+      "status": "archived",
+      "question": "Can the same MZ42 mesh/site source supply far-positive paired native-surface coverage without near leakage?",
+      "baseline": "MZ42 same site and materials:20validframes,0BODY_FAR/HEAD_FAR positives",
+      "change": "Translate four real-mesh families and retained rod control to fixed far placements; one20frame block,no fit",
+      "primary_metric": "One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt.",
+      "decision": "MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS",
+      "report": "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md",
+      "source": "MZ42 actual meshes/native materials and MZ36 admitted site001",
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "association_id": "mz44-rich-far-objects-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "identity_binding": 3,
+        "decision_lifecycle": 6,
+        "handoff_completion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz44-rich-far-objects-20260911 Can the same MZ42 mesh/site source supply far-positive paired native-surface coverage without near leakage? MZ42 same site and materials:20validframes,0BODY_FAR/HEAD_FAR positives Translate four real-mesh families and retained rod control to fixed far placements; one20frame block,no fit One secondary-worker capture fills richer-object far coverage:20/20 source-valid frames,5/5 paired groups, positives0/10/0/10, zero near leakage and zero UNKNOWN. Independent80event recount, two20frame visual reviews and91file hash/byte verification pass.42,308,036 raw bytes become20,622,239 package bytes; owned worker execution released. Same-site small floating/scaled opaque forms, no model/hardware claim. Revision is run base; exact sources/spec bound in receipt. MZ44_RICH_OBJECT_FAR_COVERAGE_PIPELINE_PASS research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md MZ42 actual meshes/native materials and MZ36 admitted site001"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz43-restricted-training-20260911",
+      "status": "archived",
+      "question": "Does matched restricted-observation training improve missing-ToF obstacle decisions?",
+      "baseline": "Reproduced MZ1 ideal TOF and FUSION, frozen RGB and fixed MZ5 ensemble",
+      "change": "Same initialization and 300-step schedule; equal IDEAL MERGE_CLOSE DROP_CLOSE training exposures",
+      "primary_metric": "Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt.",
+      "decision": "MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF",
+      "report": "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md",
+      "source": "mz1-frozen-features-and-consumed-mz36",
+      "commit": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "association_id": "mz43-restricted-training-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "decision_lifecycle": 3,
+        "handoff_completion": 3,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "mz43-restricted-training-20260911 Does matched restricted-observation training improve missing-ToF obstacle decisions? Reproduced MZ1 ideal TOF and FUSION, frozen RGB and fixed MZ5 ensemble Same initialization and 300-step schedule; equal IDEAL MERGE_CLOSE DROP_CLOSE training exposures Exact tensor/loss reproduction of two300-step ideal fits; two matched restricted fits. Mixed ensemble on MZ36 ideal FP6/FN10 to4/8, merge7/14 to7/11, missing9/21 to7/14, with all priorTP retained and no addedFP on this cohort. Old ideal EVAL50/114 to52/104; strict no-regression fails. Retain useful CHALLENGER, not universal replacement. Independent463200bit/640000slot audit and16140compact decision parity pass;8.11s CUDA, zero backbone. Revision is run base; executed sources are SHA-bound in receipt. MZ43_MATCHED_RESTRICTED_TRAINING_GAIN_WITH_IDEAL_FP_TRADEOFF research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md mz1-frozen-features-and-consumed-mz36"
     }
   ],
   "associations": [
@@ -30393,6 +30502,39 @@
         "artifacts.local/work/mz42-rich-objects-20260910/resource-release.json"
       ],
       "decision_id": "terminal-mz42-rich-objects-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz43-restricted-training-20260911",
+      "use_ids": [],
+      "protocol_id": "mz43-restricted-training-20260911",
+      "code_revision": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "input_fingerprint": "c0d5737c6ca2029289b846c735c9bdd32cc991dfda307a5c7f313e26a98e4709",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_20260911.md",
+        "artifacts.local/work/mz43-restricted-training-20260911",
+        "research/active/dtr-r0/nearfield/MZ43_RESTRICTED_TRAINING_RESULTS_20260911.md",
+        "artifacts.local/work/mz43-restricted-training-20260911/run-v1/receipt.json",
+        "artifacts.local/work/mz43-restricted-training-20260911/compact-v1/receipt.json"
+      ],
+      "decision_id": "terminal-mz43-restricted-training-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz44-rich-far-objects-20260911",
+      "use_ids": [],
+      "protocol_id": "mz44-rich-far-objects-20260911",
+      "code_revision": "b8bc194ae6fbddc0d0017f23f80e1be88cbefab4",
+      "input_fingerprint": "571f67b80869b1206794bab9712e3e1e55914c535aebef41f8d76bad5017c694",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ44_RICH_FAR_OBJECTS_20260911.md",
+        "artifacts.local/work/mz44-rich-far-objects-20260911",
+        "artifacts.local/work/mz44-rich-far-objects-20260911/receipt.json",
+        "artifacts.local/work/mz44-rich-far-objects-20260911/result.json",
+        "artifacts.local/work/mz44-rich-far-objects-20260911/return-verification.json",
+        "artifacts.local/work/mz44-rich-far-objects-20260911/resource-release.json"
+      ],
+      "decision_id": "terminal-mz44-rich-far-objects-20260911",
       "source_rows": 1
     },
     {
