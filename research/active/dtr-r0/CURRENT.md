@@ -5,6 +5,17 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest availability composition (2026-09-10)
+
+[MZ10 fixed availability rule](nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md)
+uses SOURCE where geometric candidates exist and original MZ5 otherwise, with
+zero fits or threshold changes. It restores oldDEV BODY_NEAR169->197, but exact
+912->900 versus MZ5 and FP6/11/10/7->11/20/19/14. All34 original false positives
+survive and30 new ones enter. Sequence exact177 versus143, thin48/49, but fallback
+restores near errors. Candidate availability does not establish reliability;
+standalone FP budgets do not compose. Stop this rule; no new confirmation capture.
+Retain MZ5 baseline and MZ9 component separately; no temporal or App change.
+
 ## Latest source supervision and equal-exposure controls (2026-09-10)
 
 [MZ9 contributor supervision](nearfield/MZ9_SOURCE_SUPERVISION_RESULTS_20260910.md)
