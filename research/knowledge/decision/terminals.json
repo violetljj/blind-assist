@@ -1492,6 +1492,25 @@
         "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md"
       ],
       "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29"
+    },
+    {
+      "id": "terminal-mz7-single-frame-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED",
+      "summary": "Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7.",
+      "successor_requires": "Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening.",
+      "forbidden_repeats": [
+        "Reopening this completed calibration with MZ6 threshold tuning",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md"
+      ],
+      "commit": "fa462bdaa33d6040fa5e656beaed25e0fc811800"
     }
   ]
 }

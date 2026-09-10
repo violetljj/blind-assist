@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "a4370f261298095e67125353d142fb99cda01768e9645c03a45be819fc7e0c88",
+  "source_fingerprint": "9031313c7a4fb57897cb68170bb219488fe80b5ebeaf7c284a9f8eaa4749af1e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 298,
-    "current_terminals": 84,
-    "run_associations": 296
+    "experiments": 299,
+    "current_terminals": 85,
+    "run_associations": 297
   },
   "failure_layers": [
     {
@@ -19492,6 +19492,35 @@
       "search_text": "terminal-mz6-short-sequence-20260910 obstacle-avoidance MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT 200 admitted Willow frames: current143 exact, mean3 142 and compatible143. Mean3 loses2 farTPs; compatible0 completions. Clean thin-pole BODY_FAR25 andHEAD_FAR24 all missed; no upgrade. Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit. Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz7-single-frame-20260910",
+      "status": "diagnostic",
+      "question": "Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7.",
+      "baseline": null,
+      "change": "Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening.",
+      "primary_metric": null,
+      "decision": "MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "fa462bdaa33d6040fa5e656beaed25e0fc811800",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening.",
+      "forbidden_repeats": [
+        "Reopening this completed calibration with MZ6 threshold tuning",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md"
+      ],
+      "association_id": "mz7-single-frame-20260910",
+      "search_text": "terminal-mz7-single-frame-20260910 obstacle-avoidance MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7. Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening. Reopening this completed calibration with MZ6 threshold tuning Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25841,6 +25870,28 @@
         "handoff_completion": 3
       },
       "search_text": "mz6-short-sequence-20260910 Can two-frame locally compatible raw-return history recover far detections without restoring errors or delaying release? Frozen compact MZ5 current-frame and trailing3-logit mean One admitted200-frame Willow source; clean and fixed low-area first-return deletion; causal local compatibility and zero-motion control Exact143/142/143; mean3 loses2 farTPs; completion0; clean thin-pole far misses49/49; no upgrade MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md Consumed controlled Development; frozen predictions or admitted Willow posed sequence"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz7-single-frame-20260910",
+      "status": "archived",
+      "question": "Can current paired target evidence be read selectively and recovered by DEV calibration?",
+      "baseline": "Frozen compact MZ5 on consumed MZ6 paired clips",
+      "change": "Branch-logit diagnostic followed by one old-DEV scale and FP-budget threshold comparator",
+      "primary_metric": "Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7.",
+      "decision": "MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md",
+      "source": "Consumed controlled Willow MZ6 and old MZ1 DEV_ONLY",
+      "commit": "fa462bdaa33d6040fa5e656beaed25e0fc811800",
+      "association_id": "mz7-single-frame-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz7-single-frame-20260910 Can current paired target evidence be read selectively and recovered by DEV calibration? Frozen compact MZ5 on consumed MZ6 paired clips Branch-logit diagnostic followed by one old-DEV scale and FP-budget threshold comparator Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7. MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md Consumed controlled Willow MZ6 and old MZ1 DEV_ONLY"
     }
   ],
   "associations": [
@@ -28101,6 +28152,21 @@
         "artifacts.local/work/mz6-short-sequence-20260910/cleanup-receipt.json"
       ],
       "decision_id": "terminal-mz6-short-sequence-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz7-single-frame-20260910",
+      "use_ids": [],
+      "protocol_id": "mz7-single-frame-20260910-protocol",
+      "code_revision": "fa462bdaa33d6040fa5e656beaed25e0fc811800",
+      "input_fingerprint": "70e00736f1f0c2cfe1a9c75222e3c75442a3a4921802a51b5c818a6fc80bd7f8",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md",
+        "artifacts.local/work/mz7-single-frame-20260910/paired-v2/result.json",
+        "artifacts.local/work/mz7-single-frame-20260910/calibration-v1/result.json",
+        "artifacts.local/work/mz7-single-frame-20260910/audit.json"
+      ],
+      "decision_id": "terminal-mz7-single-frame-20260910",
       "source_rows": 1
     },
     {

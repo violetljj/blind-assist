@@ -341,6 +341,16 @@
       "failure_signature": "No local correspondence activation; clean fixed readout misses all thin-pole far positives; smoothing loses detections",
       "revisit_trigger": "Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit.",
       "assignment_basis": "Completed MZ6 scoped result; retained without fitting or threshold rescue"
+    },
+    {
+      "terminal_id": "terminal-mz7-single-frame-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This DEV-fitted eight-scale four-threshold comparator on consumed MZ6",
+      "retained_surface": "Paired raw branch logits and calibration comparator; MZ5 retained",
+      "failure_signature": "Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7.",
+      "revisit_trigger": "Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening.",
+      "assignment_basis": "One declared fit and scalar paired-output audit; no gain under query FP budget"
     }
   ]
 }
