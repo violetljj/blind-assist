@@ -5,6 +5,17 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest witness-objective gradient diagnostic (2026-09-10)
+
+[MZ17 gradient diagnostic](nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md)
+checks the final MZ16 HIGH_DETAIL snapshot on1024 TRAIN draws/873 unique frames.
+Known wrong maxima55/779 positive supervised outputs all receive net upward
+logit pressure. BODY near/far rates20.79/14.38%; HEAD2.07/2.46%;67 unknown maxima
+remain unknown. Aggregate7.06% misses the predefined10% fit-admission heuristic,
+so no fit was launched. This confirms a scoped conflict, not its dominance or
+failure of the untrained witness objective. Retain diagnostic as COMPONENT;
+MZ5/MZ9 unchanged.4096 output rows independently recounted, zero model updates.
+
 ## Latest controlled visual detail comparison (2026-09-10)
 
 [MZ16 visual detail](nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md) completes
