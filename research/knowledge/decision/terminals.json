@@ -2090,6 +2090,27 @@
         "research/active/dtr-r0/nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md"
       ],
       "commit": "d65a0673dfae20b1d562f6e96db9d2a9c472612e"
+    },
+    {
+      "id": "terminal-mz39-l8cx-readout-audit-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ39_EXERCISED_IDEAL_READOUT_MISMATCH",
+      "summary": "Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation.",
+      "successor_requires": "Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions.",
+      "forbidden_repeats": [
+        "Call existing ideal packets equivalent VL53L8CX observations",
+        "Treat surviving separated pairs as hardware-valid",
+        "Use evaluator labels to select sensor returns",
+        "Replace the user-selected VL53L8CX research target with the existing single-zone adapter"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md"
+      ],
+      "commit": "bdfe49c8ecb8cd97b229f76806ff609ca59dfecf"
     }
   ]
 }

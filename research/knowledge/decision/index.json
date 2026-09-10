@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "883094d48abf7f02f21dba7e5ca9adcfc992611022426672cd1ba4deac8231da",
+  "source_fingerprint": "6f6dc9804f421cffc4801fdf6f748711c9f1c837117b03d6faf382c16e3c4d2b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 329,
-    "current_terminals": 115,
-    "run_associations": 327
+    "experiments": 330,
+    "current_terminals": 116,
+    "run_associations": 328
   },
   "failure_layers": [
     {
@@ -20400,6 +20400,37 @@
       "search_text": "terminal-mz37-positive-restoration-20260910 obstacle-avoidance MZ37_RESTORATION_GAIN_WITH_TWO_FALSE_ALERTS Frozen positive restoration recovers17 noncalibration true bits with2 addedFP; placements FN67->52, FP26->28, exact2910->2922/3000. MZ36 FN2->0 withFP3 unchanged. All previous positive scores and MZ28 additions survive. Fixed zero-new-FP criterion fails; no fitting or neural inference. Separately inspect positive-action conditional coverage or evaluate frozen methods on paired new object shapes, with unchanged originals and false-alert controls. Do not rescue MZ37 cutoffs on observed errors. Posthoc cutoff or query-mask rescue in MZ37 Treat motivating MZ36 cases as fresh confirmation Promote consumed ideal-packet evidence to physical sensor or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz39-l8cx-readout-audit-20260910",
+      "status": "diagnostic",
+      "question": "Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation.",
+      "baseline": null,
+      "change": "Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions.",
+      "primary_metric": null,
+      "decision": "MZ39_EXERCISED_IDEAL_READOUT_MISMATCH",
+      "report": "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "bdfe49c8ecb8cd97b229f76806ff609ca59dfecf",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions.",
+      "forbidden_repeats": [
+        "Call existing ideal packets equivalent VL53L8CX observations",
+        "Treat surviving separated pairs as hardware-valid",
+        "Use evaluator labels to select sensor returns",
+        "Replace the user-selected VL53L8CX research target with the existing single-zone adapter"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md"
+      ],
+      "association_id": "mz39-l8cx-readout-audit-20260910",
+      "search_text": "terminal-mz39-l8cx-readout-audit-20260910 obstacle-avoidance MZ39_EXERCISED_IDEAL_READOUT_MISMATCH Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation. Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions. Call existing ideal packets equivalent VL53L8CX observations Treat surviving separated pairs as hardware-valid Use evaluator labels to select sensor returns Replace the user-selected VL53L8CX research target with the existing single-zone adapter"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27459,6 +27490,25 @@
         "evaluation_evidence": 6
       },
       "search_text": "mz37-positive-restoration-20260910 Can frozen branch responsibility restore missed alerts without new false alarms? Frozen MZ35 Add positive-branch restoration on supported baseline-negative disagreements; one oldDEV calibration Frozen positive restoration recovers17 noncalibration true bits with2 addedFP; placements FN67->52, FP26->28, exact2910->2922/3000. MZ36 FN2->0 withFP3 unchanged. All previous positive scores and MZ28 additions survive. Fixed zero-new-FP criterion fails; no fitting or neural inference. MZ37_RESTORATION_GAIN_WITH_TWO_FALSE_ALERTS research/active/dtr-r0/nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md mz37-saved-branch-restoration"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz39-l8cx-readout-audit-20260910",
+      "status": "archived",
+      "question": "Do ideal two-return packets violate the documented L8CX target separation constraint?",
+      "baseline": "Untouched MZ36 ideal packets",
+      "change": "One saved-array600mm separation audit with independent scalar recount",
+      "primary_metric": "Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation.",
+      "decision": "MZ39_EXERCISED_IDEAL_READOUT_MISMATCH",
+      "report": "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md",
+      "source": "mz36-saved-ideal-packets",
+      "commit": "bdfe49c8ecb8cd97b229f76806ff609ca59dfecf",
+      "association_id": "mz39-l8cx-readout-audit-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {},
+      "search_text": "mz39-l8cx-readout-audit-20260910 Do ideal two-return packets violate the documented L8CX target separation constraint? Untouched MZ36 ideal packets One saved-array600mm separation audit with independent scalar recount Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation. MZ39_EXERCISED_IDEAL_READOUT_MISMATCH research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md mz36-saved-ideal-packets"
     }
   ],
   "associations": [
@@ -30097,6 +30147,24 @@
         "research/active/dtr-r0/nearfield/MZ37_POSITIVE_RESTORATION_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz37-positive-restoration-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz39-l8cx-readout-audit-20260910",
+      "use_ids": [],
+      "protocol_id": "mz39-l8cx-readout-audit-20260910",
+      "code_revision": "bdfe49c8ecb8cd97b229f76806ff609ca59dfecf",
+      "input_fingerprint": "5b6791065b2c2d9c4f094620fdda0b8d18f4e7ec6ba572da3e31b46687f00477",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz39-l8cx-readout-audit-20260910",
+        "artifacts.local/work/mz39-l8cx-readout-audit-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz39-l8cx-readout-audit-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz39-l8cx-readout-audit-20260910/run-v1/result.json",
+        "artifacts.local/work/mz39-l8cx-readout-audit-20260910/run-v1/violations.json",
+        "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz39-l8cx-readout-audit-20260910",
       "source_rows": 1
     },
     {

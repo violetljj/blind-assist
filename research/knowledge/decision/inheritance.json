@@ -651,6 +651,16 @@
       "failure_signature": "Two new false restorations: HEAD_NEAR strong wrong-branch preference and BODY_FAR with no eligible calibration negatives; geometric support alone is insufficient",
       "revisit_trigger": "Separately inspect positive-action conditional coverage or evaluate frozen methods on paired new object shapes, with unchanged originals and false-alert controls. Do not rescue MZ37 cutoffs on observed errors.",
       "assignment_basis": "Frozen positive restoration recovers17 noncalibration true bits with2 addedFP; placements FN67->52, FP26->28, exact2910->2922/3000. MZ36 FN2->0 withFP3 unchanged. All previous positive scores and MZ28 additions survive. Fixed zero-new-FP criterion fails; no fitting or neural inference."
+    },
+    {
+      "terminal_id": "terminal-mz39-l8cx-readout-audit-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Diagnostic of ideal packet separation and explicit VL53L8CX-oriented successor contract; no task-performance or physical-device conclusion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ39_L8CX_READOUT_AUDIT_RESULTS_20260910.md",
+      "failure_signature": "10cm true-depth bins with3pixel support emit unresolved close pairs; no calibrated strongest-target, reflectance, ambient or validity response",
+      "revisit_trigger": "Implement a separately defined constrained readout, assess frozen-method sensitivity, then consider matched retraining and paired diverse-object evaluation. Preserve ideal baselines and report proxy assumptions.",
+      "assignment_basis": "Saved380-frame MZ36 packets contain4893 dual-return zones;4234(86.53percent) have separation below documented600mm, across346frames. Independent24320zone recount and hashes pass. Zero inference/training; current ideal packets are not VL53L8CX emulation."
     }
   ]
 }
