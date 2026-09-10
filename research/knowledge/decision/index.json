@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "076c22c10334952abbc9e1ab681ffd64905b2e89dd9efa386133072ac5b37e13",
+  "source_fingerprint": "94012a21793ee885c284e4a120ce344776d83f7cb8acbe877eed5782b520906e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 319,
-    "current_terminals": 105,
-    "run_associations": 317
+    "experiments": 320,
+    "current_terminals": 106,
+    "run_associations": 318
   },
   "failure_layers": [
     {
@@ -20104,6 +20104,35 @@
       "search_text": "terminal-mz27-feature-separation-20260910 obstacle-avoidance MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion. Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep. Reopen completed MZ27 with posthoc anchor/reference/metric selection Treat unscored identity or class support as correct predictions or CLEAR"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz28-packet-availability-20260910",
+      "status": "diagnostic",
+      "question": "Fixed7362TRAIN top5packet-coordinate availability:72of75far,2addedFP,2864of3000exact,pole49/48; all baseline positives preserved. Versus MZ26 placements6TP gained/4lost,2FP removed/1added. No fit. Bank375sites disjoint DEV; zero-addedFP fails. Stress alignment check changes0 diagnostic elements.",
+      "baseline": null,
+      "change": "Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run.",
+      "primary_metric": null,
+      "decision": "MZ28_PACKET_SUPPORT_GAIN_WITH_RESIDUAL_FALSE_ALERTS",
+      "report": "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "778687aaa87e6c90374934df378289d4c4803ef6",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run.",
+      "forbidden_repeats": [
+        "Append posthoc k/threshold/reference/fusion sweeps to completed MZ28",
+        "Treat bank unanimity or missing current support as CLEAR or calibrated confidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "association_id": "mz28-packet-availability-20260910",
+      "search_text": "terminal-mz28-packet-availability-20260910 obstacle-avoidance MZ28_PACKET_SUPPORT_GAIN_WITH_RESIDUAL_FALSE_ALERTS Fixed7362TRAIN top5packet-coordinate availability:72of75far,2addedFP,2864of3000exact,pole49/48; all baseline positives preserved. Versus MZ26 placements6TP gained/4lost,2FP removed/1added. No fit. Bank375sites disjoint DEV; zero-addedFP fails. Stress alignment check changes0 diagnostic elements. Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run. Append posthoc k/threshold/reference/fusion sweeps to completed MZ28 Treat bank unanimity or missing current support as CLEAR or calibrated confidence"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26930,6 +26959,31 @@
         "geometry_motion": 3
       },
       "search_text": "mz27-feature-separation-20260910 Do fixed raw visual descriptors separate unsupported angular locations better than learned compressed descriptors under site and packet controls? Frozen MZ26 step4800 learned40 and packet-only retrieval on identical references No-training raw64 and raw3x3 descriptor retrieval at fixed residual errors, TRAIN/DEV tails and75 recovered far witnesses No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion. MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md Consumed Development and exact TRAIN reference IDs with site/group exclusion"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz28-packet-availability-20260910",
+      "status": "archived",
+      "question": "Does fixed packet-coordinate support retrieval reduce full-task unsupported false additions without losing far/pole witnesses?",
+      "baseline": "Frozen MZ20 and MZ26 step4800 on MZ5 add-only baseline",
+      "change": "One no-fit top5 majority availability bank with7362 fixed TRAIN references; full9cohort task comparison",
+      "primary_metric": "Fixed7362TRAIN top5packet-coordinate availability:72of75far,2addedFP,2864of3000exact,pole49/48; all baseline positives preserved. Versus MZ26 placements6TP gained/4lost,2FP removed/1added. No fit. Bank375sites disjoint DEV; zero-addedFP fails. Stress alignment check changes0 diagnostic elements.",
+      "decision": "MZ28_PACKET_SUPPORT_GAIN_WITH_RESIDUAL_FALSE_ALERTS",
+      "report": "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md",
+      "source": "Consumed Development; fixed TRAIN bank sites disjoint DEV; current truth never inference input",
+      "commit": "778687aaa87e6c90374934df378289d4c4803ef6",
+      "association_id": "mz28-packet-availability-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz28-packet-availability-20260910 Does fixed packet-coordinate support retrieval reduce full-task unsupported false additions without losing far/pole witnesses? Frozen MZ20 and MZ26 step4800 on MZ5 add-only baseline One no-fit top5 majority availability bank with7362 fixed TRAIN references; full9cohort task comparison Fixed7362TRAIN top5packet-coordinate availability:72of75far,2addedFP,2864of3000exact,pole49/48; all baseline positives preserved. Versus MZ26 placements6TP gained/4lost,2FP removed/1added. No fit. Bank375sites disjoint DEV; zero-addedFP fails. Stress alignment check changes0 diagnostic elements. MZ28_PACKET_SUPPORT_GAIN_WITH_RESIDUAL_FALSE_ALERTS research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md Consumed Development; fixed TRAIN bank sites disjoint DEV; current truth never inference input"
     }
   ],
   "associations": [
@@ -29384,6 +29438,23 @@
         "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz27-feature-separation-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz28-packet-availability-20260910",
+      "use_ids": [],
+      "protocol_id": "mz28-packet-availability-20260910-protocol",
+      "code_revision": "778687aaa87e6c90374934df378289d4c4803ef6",
+      "input_fingerprint": "f1dedb6ad8820f25e9223375277b11ab968f0f6b5c74dbf3804e5e10f503c96f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz28-packet-availability-20260910/run-v1",
+        "artifacts.local/work/mz28-packet-availability-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz28-packet-availability-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz28-packet-availability-20260910/correction-v1/receipt.json",
+        "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz28-packet-availability-20260910",
       "source_rows": 1
     },
     {

@@ -1894,6 +1894,25 @@
         "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md"
       ],
       "commit": "8d9303932ba12031e688fa88d3fc238a5c84d6b3"
+    },
+    {
+      "id": "terminal-mz28-packet-availability-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ28_PACKET_SUPPORT_GAIN_WITH_RESIDUAL_FALSE_ALERTS",
+      "summary": "Fixed7362TRAIN top5packet-coordinate availability:72of75far,2addedFP,2864of3000exact,pole49/48; all baseline positives preserved. Versus MZ26 placements6TP gained/4lost,2FP removed/1added. No fit. Bank375sites disjoint DEV; zero-addedFP fails. Stress alignment check changes0 diagnostic elements.",
+      "successor_requires": "Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run.",
+      "forbidden_repeats": [
+        "Append posthoc k/threshold/reference/fusion sweeps to completed MZ28",
+        "Treat bank unanimity or missing current support as CLEAR or calibrated confidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "commit": "778687aaa87e6c90374934df378289d4c4803ef6"
     }
   ]
 }

@@ -551,6 +551,16 @@
       "failure_signature": "Raw descriptor advantage not met;18class-insufficient anchors and12of61packet false-negative witness labels",
       "revisit_trigger": "Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep.",
       "assignment_basis": "Fixed site/packet-controlled descriptor comparison and independent source/neighbor/sampling audit; no task prediction changed"
+    },
+    {
+      "terminal_id": "terminal-mz28-packet-availability-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Controlled fixed TRAIN-bank packet-coordinate availability component on MZ20 add-only; not baseline or device promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md",
+      "failure_signature": "Residual2addedFP; nonuniform TP gains/losses; all81baseline placement false bits preserved",
+      "revisit_trigger": "Use complementary learned/packet failure and actual witness evidence to choose a separately defined joint support comparison; preserve the completed fixed bank/k/threshold run.",
+      "assignment_basis": "Fixed full-task packet support improves measured tradeoff; independent task/bank/vote audit, false-alert gate still fails"
     }
   ]
 }
