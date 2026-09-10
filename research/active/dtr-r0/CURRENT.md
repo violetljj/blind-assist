@@ -5,6 +5,19 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest optimization-prefix diagnosis: MZ25 (2026-09-10)
+
+[MZ25 prefix and sampler](nearfield/MZ25_CONVERGENCE_RESULTS_20260910.md) stops
+at1200 of planned4800steps: a separately trained prefix differs0.314403 despite
+23shared input hashes, exact initialization and batches. No4800candidate or
+convergence result exists. Repeated fixed CUDA backward demonstrates small local
+gradient differences; strict mode rejects grid_sample backward. A fixed bilinear
+matrix sampler preserves10577parameters and passes equivalent forward/adjoint
+and bit-identical repeated gradient checks, with9.8MB extra matrix storage.
+Retain sampler as engineering COMPONENT only. Next use preregistered endpoints
+within one deterministic trajectory; do not reopen or waive MZ25. MZ5 baseline,
+MZ20 challenger and MZ24 objective component unchanged. Broad goal active.
+
 ## Latest decisive availability objective: MZ24 (2026-09-10)
 
 [MZ24 decisive supervision](nearfield/MZ24_DECISIVE_AVAILABILITY_RESULTS_20260910.md)
