@@ -5,6 +5,16 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest selective addition (2026-09-10)
+
+[MZ11 selective addition](nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md)
+adds32 oldDEV TP bits including17 far, exact912->928, with unchanged FP6/11/10/7.
+All original positive judgments survive. Sequence exact174 clean and172 stress;
+thin46/49 and44/49 fail the frozen48/49 requirement, wrong correspondence1/49.
+The20-parameter gate shows useful consumed-Development recall recovery, but
+preserves original premature near warnings. Stop after one600-step fit; no
+new capture, threshold rescue or temporal reopening. Keep MZ5 and MZ9 separately.
+
 ## Latest availability composition (2026-09-10)
 
 [MZ10 fixed availability rule](nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md)
