@@ -5,6 +5,61 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Expanded responsibility supervision: MZ32 (2026-09-10)
+
+[MZ32 matched supervision](nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md)
+changes TRAIN eligibility from168 to1165 branch disagreements, preserving model,
+initialization, normalization,1200batches, optimization and runtime repair scope.
+Inverse-frequency weights use expanded478/687 class counts with the same formula.
+It retains all MZ28 true positives across normal cohorts and removes53placementFP:
+totalFP83->30, FN67 unchanged, exact2864->2908of3000. All additions and pole49/48
+survive. Relative to MZ30,1BODY_NEAR TP is restored but netFP rises20->30.
+The predefined joint improvement gate requires<=20FP and fails. Retain as a
+CHALLENGER with an explicit retention/false-alert tradeoff; MZ5/MZ20 unchanged.
+Independent supervision, calibration and task audit passes; one fit complete.
+Next test frozen candidate behavior on new appropriate sources or diagnose
+responsibility transfer before a separately defined successor. No threshold rescue,
+fresh-source, device, temporal or safety claim follows from consumed Development.
+
+## Responsibility label coverage: MZ31 (2026-09-10)
+
+[MZ31 TRAIN coverage](nearfield/MZ31_RESPONSIBILITY_COVERAGE_RESULTS_20260910.md)
+finds1165 total frozen-branch disagreements among7562 original TRAIN frames.
+Every query/branch-correct class has>=20examples and>=5explicit sites; original
+168eligible supervision omits997available disagreements. Counts RGB/ToF are
+BODY_NEAR152/46, BODY_FAR69/81, HEAD_NEAR65/239, HEAD_FAR192/321. Expanded rows
+include supported and baseline-negative cases; coverage alone cannot prove their
+transfer to the runtime repair domain. Independent count audit passes, no fit or
+prediction change. Retain diagnostic COMPONENT supporting the matched MZ32 test.
+
+## Latest branch responsibility candidate: MZ30 (2026-09-10)
+
+[MZ30 branch selection](nearfield/MZ30_BRANCH_RESPONSIBILITY_RESULTS_20260910.md)
+uses one8641parameter selector on frozen RGB/ToF branch disagreements without
+geometric support. The pre-fit opportunity gate finds80of81 baselineFP; eligible
+TRAIN target counts are120RGB-correct and48ToF-correct. One1200batch fit removes
+63baselineFP: placement totalFP83->20 and exact2864->2915of3000, but FN67->68.
+One relation BODY_NEAR baselineTP is lost; all MZ28 additions, including72far,
+and trained pole49/48 survive. No newFP. OldDEV exact940->957, clean176->182,
+stress175->181; these reused views do not provide independent confirmation.
+Independent branch, calibration and31200task-bit audit passes. Zero-TP-loss gate
+fails; retain only as CHALLENGER with explicit tradeoff, MZ5/MZ20 unchanged.
+Frozen residual diagnosis identifies the lost alarm and remaining20FP separately.
+Next address responsibility/coverage transfer using a separately defined mechanism;
+no posthoc cutoff or seed rescue. TRAIN branch predictions are in-sample.
+Fit complete; consumed Development only, no device/temporal/safety promotion.
+
+## Baseline correction surface diagnosis: MZ29 (2026-09-10)
+
+[MZ29 support partitions](nearfield/MZ29_BASELINE_SUPPORT_RESULTS_20260910.md)
+finds80of81 placement baselineFP have no original geometric candidate, alongside
+48correct placement and28correct oldDEV BODY_NEAR alarms. All81FP have no actual
+selected-return query contributor, but54placementTP also lack such contributors.
+MZ22's supported-only branch did not test this responsibility; MZ28 preserves
+baseline alarms by construction. Missing support cannot justify cancellation.
+Independent110387200geometry-bit and full exported-partition audit passes; no
+fit or prediction change. Retain as diagnostic COMPONENT, not an inference veto.
+
 ## Latest full-task packet support comparator: MZ28 (2026-09-10)
 
 [MZ28 packet availability](nearfield/MZ28_PACKET_AVAILABILITY_RESULTS_20260910.md)
