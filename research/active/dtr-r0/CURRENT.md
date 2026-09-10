@@ -5,6 +5,22 @@ Updated: 2026-09-10
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest angular availability experiment: MZ23 (2026-09-10)
+
+[MZ23 availability](nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md) completes
+one1200-step fit on frozen MZ20/MZ5. It retains74/75 added placement farTP and
+trained pole49/48 of49 clean/stress, but only removes1 of8 newFP; exact2861/3000.
+Retain this exact recipe as NEGATIVE_CONTROL; MZ5 baseline and MZ20 challenger
+unchanged. Availability precision71.3/75.0% on placements leaves strong false
+tails. A posthoc common cutoff clearing all8 would retain only14/75 farTP and
+pole40/38, so no cutoff rescue is adopted. Privileged known-availability oracle
+retains71/75 farTP with0 addedFP and pole49/48, but is not an inference method.
+Independent audit checks31200task bits; selected58frame inference also agrees.
+Six of7 residual false tails lie about19..25native pixels from actual support,
+so adjacent-cell boundary ambiguity alone is insufficient. Next mechanism must
+improve decisive-negative separation without discarding true witnesses. All fits complete; consumed Development only,
+no fresh-source, temporal, hardware or default-App promotion. Broad goal active.
+
 ## Latest obstacle evolution: MZ19-MZ22 (2026-09-10)
 
 [MZ20 cross-frame ranking](nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md)
