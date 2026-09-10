@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "27c208844a7348c723497ce789ca5fe102cfe1bfb924c9ba6350378e196f0bfc",
+  "source_fingerprint": "a4370f261298095e67125353d142fb99cda01768e9645c03a45be819fc7e0c88",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 296,
-    "current_terminals": 82,
-    "run_associations": 294
+    "experiments": 298,
+    "current_terminals": 84,
+    "run_associations": 296
   },
   "failure_layers": [
     {
@@ -19434,6 +19434,64 @@
       "search_text": "terminal-mz5-spatial-fusion-20260910 obstacle-avoidance MZ5_LOCAL_SPATIAL_INCREMENT_WEAK_MATCHED_CONTROL_RETAINED_NO_PRACTICAL_BASELINE_CHANGE Local1355/1500 versus pooled1354 and local-RGB1298; gain16/loss15, HEAD_ONLY near134 versus131/150. Necessary criterion passes narrowly; fixed permutation loses2. Ensemble1378 remains stronger aggregate baseline; three fits complete. A distinct spatial mechanism or explicit new evidence opportunity that can explain a meaningful effect beyond pooled and fixed-ensemble controls Continuing completed MZ1/MZ5 fits or tuning this ensemble on the consumed result Turning controlled generic ToF results into natural sensor, clearance or safety evidence"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz6-regression-20260910",
+      "status": "diagnostic",
+      "question": "27 exact regressions contain26 one-correct-branch overrides and6 both-wrong bits. All32 farTP losses retain native cropped support. Preserve MZ5 error gains and far-recall tradeoff.",
+      "baseline": null,
+      "change": "A distinct observable decision or evidence mechanism evaluated without tuning the consumed cohort.",
+      "primary_metric": null,
+      "decision": "MZ6_REGRESSIONS_MAINLY_READOUT_CONFLICT_NOT_ABSENT_INFORMATION",
+      "report": "research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A distinct observable decision or evidence mechanism evaluated without tuning the consumed cohort.",
+      "forbidden_repeats": [
+        "Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR",
+        "Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz6-regression-20260910",
+      "search_text": "terminal-mz6-regression-20260910 obstacle-avoidance MZ6_REGRESSIONS_MAINLY_READOUT_CONFLICT_NOT_ABSENT_INFORMATION 27 exact regressions contain26 one-correct-branch overrides and6 both-wrong bits. All32 farTP losses retain native cropped support. Preserve MZ5 error gains and far-recall tradeoff. A distinct observable decision or evidence mechanism evaluated without tuning the consumed cohort. Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz6-short-sequence-20260910",
+      "status": "diagnostic",
+      "question": "200 admitted Willow frames: current143 exact, mean3 142 and compatible143. Mean3 loses2 farTPs; compatible0 completions. Clean thin-pole BODY_FAR25 andHEAD_FAR24 all missed; no upgrade.",
+      "baseline": null,
+      "change": "Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit.",
+      "primary_metric": null,
+      "decision": "MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT",
+      "report": "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit.",
+      "forbidden_repeats": [
+        "Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR",
+        "Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz6-short-sequence-20260910",
+      "search_text": "terminal-mz6-short-sequence-20260910 obstacle-avoidance MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT 200 admitted Willow frames: current143 exact, mean3 142 and compatible143. Mean3 loses2 farTPs; compatible0 completions. Clean thin-pole BODY_FAR25 andHEAD_FAR24 all missed; no upgrade. Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit. Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25735,6 +25793,54 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz5-spatial-fusion-20260910 Does retaining within-query RGB position before regional ToF interaction improve on a matched pooled readout? Matched POOLED_FUSION and LOCAL_RGB_ONLY; frozen MZ1, MZ0 and fixed MZ5 ensemble Recache12x27x64 frozen samples; matched131580-parameter local/pooled/RGB-only heads with one300-step fit each; one fixed valid-position permutation Paired exact; HEAD_ONLY near; wrong-far/cross-body; strata; assignment sensitivity and head compute MZ5_LOCAL_SPATIAL_INCREMENT_WEAK_MATCHED_CONTROL_RETAINED_NO_PRACTICAL_BASELINE_CHANGE research/active/dtr-r0/nearfield/MZ5_SPATIAL_FUSION_RESULTS_20260910.md Consumed controlled body-query5000; fixed2500/1000/1500 roles and clean generic8x8 two-return ToF"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz6-regression-20260910",
+      "status": "archived",
+      "question": "What explains the27 MZ5 exact regressions and far recall losses?",
+      "baseline": "Frozen MZ1 and MZ5 outputs on1500 consumed EVAL frames",
+      "change": "Zero-fit four-logit/packet/native-support inspection of every lost-exact row and all far TP transitions",
+      "primary_metric": "27 rows,32 wrong bits:26 one-branch overrides,6 both wrong;32 farTP losses all native crop supported",
+      "decision": "MZ6_REGRESSIONS_MAINLY_READOUT_CONFLICT_NOT_ABSENT_INFORMATION",
+      "report": "research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md",
+      "source": "Consumed controlled Development; frozen predictions or admitted Willow posed sequence",
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "association_id": "mz6-regression-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "temporal_belief": 3
+      },
+      "search_text": "mz6-regression-20260910 What explains the27 MZ5 exact regressions and far recall losses? Frozen MZ1 and MZ5 outputs on1500 consumed EVAL frames Zero-fit four-logit/packet/native-support inspection of every lost-exact row and all far TP transitions 27 rows,32 wrong bits:26 one-branch overrides,6 both wrong;32 farTP losses all native crop supported MZ6_REGRESSIONS_MAINLY_READOUT_CONFLICT_NOT_ABSENT_INFORMATION research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md Consumed controlled Development; frozen predictions or admitted Willow posed sequence"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz6-short-sequence-20260910",
+      "status": "archived",
+      "question": "Can two-frame locally compatible raw-return history recover far detections without restoring errors or delaying release?",
+      "baseline": "Frozen compact MZ5 current-frame and trailing3-logit mean",
+      "change": "One admitted200-frame Willow source; clean and fixed low-area first-return deletion; causal local compatibility and zero-motion control",
+      "primary_metric": "Exact143/142/143; mean3 loses2 farTPs; completion0; clean thin-pole far misses49/49; no upgrade",
+      "decision": "MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT",
+      "report": "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md",
+      "source": "Consumed controlled Development; frozen predictions or admitted Willow posed sequence",
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "association_id": "mz6-short-sequence-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 6,
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 3,
+        "handoff_completion": 3
+      },
+      "search_text": "mz6-short-sequence-20260910 Can two-frame locally compatible raw-return history recover far detections without restoring errors or delaying release? Frozen compact MZ5 current-frame and trailing3-logit mean One admitted200-frame Willow source; clean and fixed low-area first-return deletion; causal local compatibility and zero-motion control Exact143/142/143; mean3 loses2 farTPs; completion0; clean thin-pole far misses49/49; no upgrade MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md Consumed controlled Development; frozen predictions or admitted Willow posed sequence"
     }
   ],
   "associations": [
@@ -27966,6 +28072,35 @@
         "artifacts.local/work/mz5-spatial-fusion-20260910/audit-analysis-v1/audit.json"
       ],
       "decision_id": "terminal-mz5-spatial-fusion-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz6-regression-20260910",
+      "use_ids": [],
+      "protocol_id": "mz6-regression-20260910-protocol",
+      "code_revision": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "input_fingerprint": "e38c3e2ff5e738ba48b268a3a0ef95a347ff0812bb396fa61b3dab60e5b7fdb0",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md",
+        "artifacts.local/work/mz6-regression-20260910/run-v1/result.json",
+        "artifacts.local/work/mz6-regression-20260910/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-mz6-regression-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz6-short-sequence-20260910",
+      "use_ids": [],
+      "protocol_id": "mz6-short-sequence-20260910-protocol",
+      "code_revision": "e784f0471a64fe0168f3b1a3107268d8e0611d29",
+      "input_fingerprint": "de1af6a248d3cb000bcb58a13f7f9c873fd95c8a8c504c86ddab31f8051d8fdd",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md",
+        "artifacts.local/work/mz6-short-sequence-20260910/evaluation-v1/result.json",
+        "artifacts.local/work/mz6-short-sequence-20260910/evaluation-v1/analysis/audit-and-diagnosis.json",
+        "artifacts.local/work/mz6-short-sequence-20260910/cleanup-receipt.json"
+      ],
+      "decision_id": "terminal-mz6-short-sequence-20260910",
       "source_rows": 1
     },
     {

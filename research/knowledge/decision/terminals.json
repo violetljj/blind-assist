@@ -1454,6 +1454,44 @@
         "artifacts.local/work/mz5-spatial-fusion-20260910/audit-analysis-v1/audit.json"
       ],
       "commit": "4fe3e62b274609ab4e781633ffd21d9dae866e10"
+    },
+    {
+      "id": "terminal-mz6-regression-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ6_REGRESSIONS_MAINLY_READOUT_CONFLICT_NOT_ABSENT_INFORMATION",
+      "summary": "27 exact regressions contain26 one-correct-branch overrides and6 both-wrong bits. All32 farTP losses retain native cropped support. Preserve MZ5 error gains and far-recall tradeoff.",
+      "successor_requires": "A distinct observable decision or evidence mechanism evaluated without tuning the consumed cohort.",
+      "forbidden_repeats": [
+        "Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR",
+        "Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ6_REGRESSION_RESULTS_20260910.md"
+      ],
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29"
+    },
+    {
+      "id": "terminal-mz6-short-sequence-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ6_TEMPORAL_RECIPE_INACTIVE_AND_FIXED_READOUT_TRANSFER_INSUFFICIENT",
+      "summary": "200 admitted Willow frames: current143 exact, mean3 142 and compatible143. Mean3 loses2 farTPs; compatible0 completions. Clean thin-pole BODY_FAR25 andHEAD_FAR24 all missed; no upgrade.",
+      "successor_requires": "Usable local support on thin surfaces plus a readout responsive to restored evidence, before another temporal fit.",
+      "forbidden_repeats": [
+        "Tuning completed MZ5/MZ6 thresholds or silently promoting no-return observations to CLEAR",
+        "Claiming natural hardware, continuous walking or safety performance from controlled posed samples"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ6_SHORT_SEQUENCE_RESULTS_20260910.md"
+      ],
+      "commit": "e784f0471a64fe0168f3b1a3107268d8e0611d29"
     }
   ]
 }

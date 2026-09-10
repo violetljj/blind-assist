@@ -145,3 +145,11 @@ Then run `mz6_sequence_evaluate.py --phase prepare --capture <admitted-capture>
 --output <fresh-evaluation>`, followed by `--phase score` on that evaluation and
 `mz6_sequence_analysis.py --run <evaluation>`. Local assets/checkpoints and the
 native capture helper are required. Never overwrite completed or failed attempts.
+
+Registration delivery validation uses a HEAD-based staged view to preserve the
+unrelated worktree edits:10 knowledge unit tests and library validation pass,
+with zero invalid experiment associations. The34-case decision check has an
+existing history-retrieval recall0.70 below0.80; an unchanged-HEAD replay reproduces
+the same failed cases and outputs (runtime aside). This unrelated pre-existing
+gap is retained, not repaired or reported as passing. Logs are preserved in
+`artifacts.local/work/mz6-delivery-20260910/`.
