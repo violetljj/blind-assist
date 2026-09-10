@@ -1991,6 +1991,65 @@
         "research/active/dtr-r0/nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md"
       ],
       "commit": "1903133f1259a2ad0dd4777d100f2bf7aa138dd9"
+    },
+    {
+      "id": "terminal-mz33-query-gradient-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ33_NO_FINAL_SHARED_GRADIENT_CONFLICT_SIGNAL",
+      "summary": "Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless.",
+      "successor_requires": "Use a separately fixed optimization endpoint comparison before attributing remaining errors to query interference; preserve conditional and single-layer limitations.",
+      "forbidden_repeats": [
+        "Infer harmless sharing from positive full-TRAIN gradient cosines",
+        "Use initial single-layer conflict as proof of final split-model benefit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md"
+      ],
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f"
+    },
+    {
+      "id": "terminal-mz34-query-separation-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ34_NOT_ADMITTED_NO_QUERY_SEPARATED_FIT",
+      "summary": "Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested.",
+      "successor_requires": "Revisit query separation only through a separately justified protocol; continue the independently registered MZ35 optimization comparison without relaxing this gate.",
+      "forbidden_repeats": [
+        "Claim the unfitted prototype improves task behavior",
+        "Treat non-admission as evidence all query separation is ineffective",
+        "Lower this completed gate after inspecting MZ33"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md"
+      ],
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f"
+    },
+    {
+      "id": "terminal-mz35-responsibility-convergence-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER",
+      "summary": "Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails.",
+      "successor_requires": "Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory.",
+      "forbidden_repeats": [
+        "Append another endpoint or threshold rescue to completed MZ35",
+        "Treat lower TRAIN loss as uniform transfer or independent confirmation",
+        "Claim all four query accuracies improved"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md"
+      ],
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f"
     }
   ]
 }

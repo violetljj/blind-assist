@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "60841e30dd7b4663cce31c9ad5567249e113f7e9761f65ca18d27ffa58167053",
+  "source_fingerprint": "29bfaff913385da09d244f3d8394346619082e3f6dcbdb264f3da8e229f0d32b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 324,
-    "current_terminals": 110,
-    "run_associations": 322
+    "experiments": 327,
+    "current_terminals": 113,
+    "run_associations": 325
   },
   "failure_layers": [
     {
@@ -20251,6 +20251,95 @@
       "search_text": "terminal-mz32-expanded-responsibility-20260910 obstacle-avoidance MZ32_EXPANDED_SUPERVISION_RETAINS_TP_WITH_FP_TRADEOFF Matched1200step selector on1165TRAIN disagreements retains all MZ28 normal-cohort TP, removes53of83 placementFP, exact2908of3000 and FN67. Versus MZ30 restores1BODY_NEAR TP but totalFP20to30; strict<=20FP improvement gate fails. MZ28 additions and pole49/48 survive. Retain both responsibility candidates and test frozen behavior on new appropriate sources or inspect supported/unsupported responsibility transfer before any separately defined successor. Posthoc threshold or seed rescue of completed MZ32 Declare strict joint improvement despite30FP exceeding20 Treat reused Development retention as a device or safety guarantee"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz33-query-gradient-20260910",
+      "status": "diagnostic",
+      "question": "Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless.",
+      "baseline": null,
+      "change": "Use a separately fixed optimization endpoint comparison before attributing remaining errors to query interference; preserve conditional and single-layer limitations.",
+      "primary_metric": null,
+      "decision": "MZ33_NO_FINAL_SHARED_GRADIENT_CONFLICT_SIGNAL",
+      "report": "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Use a separately fixed optimization endpoint comparison before attributing remaining errors to query interference; preserve conditional and single-layer limitations.",
+      "forbidden_repeats": [
+        "Infer harmless sharing from positive full-TRAIN gradient cosines",
+        "Use initial single-layer conflict as proof of final split-model benefit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md"
+      ],
+      "association_id": "mz33-query-gradient-20260910",
+      "search_text": "terminal-mz33-query-gradient-20260910 obstacle-avoidance MZ33_NO_FINAL_SHARED_GRADIENT_CONFLICT_SIGNAL Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless. Use a separately fixed optimization endpoint comparison before attributing remaining errors to query interference; preserve conditional and single-layer limitations. Infer harmless sharing from positive full-TRAIN gradient cosines Use initial single-layer conflict as proof of final split-model benefit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz34-query-separation-20260910",
+      "status": "diagnostic",
+      "question": "Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested.",
+      "baseline": null,
+      "change": "Revisit query separation only through a separately justified protocol; continue the independently registered MZ35 optimization comparison without relaxing this gate.",
+      "primary_metric": null,
+      "decision": "MZ34_NOT_ADMITTED_NO_QUERY_SEPARATED_FIT",
+      "report": "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Revisit query separation only through a separately justified protocol; continue the independently registered MZ35 optimization comparison without relaxing this gate.",
+      "forbidden_repeats": [
+        "Claim the unfitted prototype improves task behavior",
+        "Treat non-admission as evidence all query separation is ineffective",
+        "Lower this completed gate after inspecting MZ33"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz34-query-separation-20260910",
+      "search_text": "terminal-mz34-query-separation-20260910 obstacle-avoidance MZ34_NOT_ADMITTED_NO_QUERY_SEPARATED_FIT Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested. Revisit query separation only through a separately justified protocol; continue the independently registered MZ35 optimization comparison without relaxing this gate. Claim the unfitted prototype improves task behavior Treat non-admission as evidence all query separation is ineffective Lower this completed gate after inspecting MZ33"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz35-responsibility-convergence-20260910",
+      "status": "diagnostic",
+      "question": "Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails.",
+      "baseline": null,
+      "change": "Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory.",
+      "primary_metric": null,
+      "decision": "MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER",
+      "report": "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory.",
+      "forbidden_repeats": [
+        "Append another endpoint or threshold rescue to completed MZ35",
+        "Treat lower TRAIN loss as uniform transfer or independent confirmation",
+        "Claim all four query accuracies improved"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz35-responsibility-convergence-20260910",
+      "search_text": "terminal-mz35-responsibility-convergence-20260910 obstacle-avoidance MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails. Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory. Append another endpoint or threshold rescue to completed MZ35 Treat lower TRAIN loss as uniform transfer or independent confirmation Claim all four query accuracies improved"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27200,6 +27289,71 @@
         "runtime_infrastructure": 3
       },
       "search_text": "mz32-expanded-responsibility-20260910 Does supervising all original TRAIN branch disagreements improve responsibility transfer while retaining the same runtime correction scope? Frozen MZ30 selector and MZ28 task decisions; unchanged264 features, architecture, initialization, normalization and1200batches Only expand supervised TRAIN disagreements from168to1165 and recompute the same inverse-frequency loss formula; runtime mask unchanged Matched1200step selector on1165TRAIN disagreements retains all MZ28 normal-cohort TP, removes53of83 placementFP, exact2908of3000 and FN67. Versus MZ30 restores1BODY_NEAR TP but totalFP20to30; strict<=20FP improvement gate fails. MZ28 additions and pole49/48 survive. MZ32_EXPANDED_SUPERVISION_RETAINS_TP_WITH_FP_TRADEOFF research/active/dtr-r0/nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md Consumed Development; same original TRAIN, in-sample frozen branch predictions, oldDEV-only cutoff calibration"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz33-query-gradient-20260910",
+      "status": "archived",
+      "question": "Do frozen MZ32 query objectives have opposing gradients in shared selector parameters?",
+      "baseline": "Frozen MZ32 initial and final checkpoints; exact 7562 TRAIN IDs and 1165 disagreements",
+      "change": "Zero-update per-query gradient diagnostic only; same global inverse-frequency BCE weights",
+      "primary_metric": "Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless.",
+      "decision": "MZ33_NO_FINAL_SHARED_GRADIENT_CONFLICT_SIGNAL",
+      "report": "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md",
+      "source": "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_PROTOCOL_20260910.md",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "association_id": "mz33-query-gradient-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz33-query-gradient-20260910 Do frozen MZ32 query objectives have opposing gradients in shared selector parameters? Frozen MZ32 initial and final checkpoints; exact 7562 TRAIN IDs and 1165 disagreements Zero-update per-query gradient diagnostic only; same global inverse-frequency BCE weights Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless. MZ33_NO_FINAL_SHARED_GRADIENT_CONFLICT_SIGNAL research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_PROTOCOL_20260910.md"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz34-query-separation-20260910",
+      "status": "archived",
+      "question": "Does removing parameter sharing improve responsibility after the fixed local-conflict gate?",
+      "baseline": "MZ32 shared selector and frozen same initial function",
+      "change": "Conditional four independent query copies only if final shared gradient cosine<=-0.1 and remaining TRAIN errors",
+      "primary_metric": "Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested.",
+      "decision": "MZ34_NOT_ADMITTED_NO_QUERY_SEPARATED_FIT",
+      "report": "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md",
+      "source": "Consumed TRAIN gradient diagnostic and Development; no new source",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "association_id": "mz34-query-separation-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3
+      },
+      "search_text": "mz34-query-separation-20260910 Does removing parameter sharing improve responsibility after the fixed local-conflict gate? MZ32 shared selector and frozen same initial function Conditional four independent query copies only if final shared gradient cosine<=-0.1 and remaining TRAIN errors Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested. MZ34_NOT_ADMITTED_NO_QUERY_SEPARATED_FIT research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md Consumed TRAIN gradient diagnostic and Development; no new source"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz35-responsibility-convergence-20260910",
+      "status": "archived",
+      "question": "Does further optimization of the unchanged expanded responsibility selector reduce TRAIN errors and improve transferred correction?",
+      "baseline": "Frozen MZ32 step1200 selector and same initial state, inputs, supervision and optimizer rule",
+      "change": "One4800step trajectory repeating original1200batches four times; exact MZ32 tensor/loss prefix required before continuation",
+      "primary_metric": "Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails.",
+      "decision": "MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER",
+      "report": "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md",
+      "source": "Consumed TRAIN/Development; frozen in-sample branch predictions, no protected EVAL or new source",
+      "commit": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "association_id": "mz35-responsibility-convergence-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "mz35-responsibility-convergence-20260910 Does further optimization of the unchanged expanded responsibility selector reduce TRAIN errors and improve transferred correction? Frozen MZ32 step1200 selector and same initial state, inputs, supervision and optimizer rule One4800step trajectory repeating original1200batches four times; exact MZ32 tensor/loss prefix required before continuation Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails. MZ35_OPTIMIZATION_GAIN_WITH_NONUNIFORM_TRANSFER research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md Consumed TRAIN/Development; frozen in-sample branch predictions, no protected EVAL or new source"
     }
   ],
   "associations": [
@@ -29750,6 +29904,53 @@
         "research/active/dtr-r0/nearfield/MZ32_EXPANDED_RESPONSIBILITY_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz32-expanded-responsibility-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz33-query-gradient-20260910",
+      "use_ids": [],
+      "protocol_id": "mz33-query-gradient-20260910",
+      "code_revision": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "input_fingerprint": "b148b3c550e5d6c4f4a72bef990911638194c43cf4b159a7258b69e0cb0c3295",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md",
+        "artifacts.local/work/mz33-query-gradient-20260910/run-v1",
+        "artifacts.local/work/mz33-query-gradient-20260910/run-v1/receipt.json"
+      ],
+      "decision_id": "terminal-mz33-query-gradient-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz34-query-separation-20260910",
+      "use_ids": [],
+      "protocol_id": "mz34-query-separation-20260910-protocol",
+      "code_revision": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "input_fingerprint": "c7ac3caead9c1ed7564df243c410512153e38ff07b15ede1cb221478ac3572a4",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz34-query-separation-20260910/run-v1",
+        "artifacts.local/work/mz34-query-separation-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz34-query-separation-20260910/run-v1/audit.json",
+        "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz34-query-separation-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz35-responsibility-convergence-20260910",
+      "use_ids": [],
+      "protocol_id": "mz35-responsibility-convergence-20260910-protocol",
+      "code_revision": "704d80a98fc98baf8e60064b01271255d370ec3f",
+      "input_fingerprint": "effb48ba66a76c0311ef0f401e8b757200b83d8969ef61cee01e3bd453603a7b",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz35-responsibility-convergence-20260910/run-v1",
+        "artifacts.local/work/mz35-responsibility-convergence-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz35-responsibility-convergence-20260910/run-v1/audit.json",
+        "artifacts.local/work/mz35-responsibility-convergence-20260910/run-v1/prefix-parity.json",
+        "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz35-responsibility-convergence-20260910",
       "source_rows": 1
     },
     {

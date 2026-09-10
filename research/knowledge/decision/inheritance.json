@@ -601,6 +601,36 @@
       "failure_signature": "Restored BODY_NEAR retention costs10net placementFP versus MZ30; specified joint improvement gate fails",
       "revisit_trigger": "Retain both responsibility candidates and test frozen behavior on new appropriate sources or inspect supported/unsupported responsibility transfer before any separately defined successor.",
       "assignment_basis": "Matched1200step selector on1165TRAIN disagreements retains all MZ28 normal-cohort TP, removes53of83 placementFP, exact2908of3000 and FN67. Versus MZ30 restores1BODY_NEAR TP but totalFP20to30; strict<=20FP improvement gate fails. MZ28 additions and pole49/48 survive."
+    },
+    {
+      "terminal_id": "terminal-mz33-query-gradient-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Local full-TRAIN gradient diagnostic, excluding onehot columns for the shared conflict signal",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ33_QUERY_GRADIENT_RESULTS_20260910.md",
+      "failure_signature": "Fixed final shared cosine<=-0.1 signal absent despite66remaining TRAIN errors; no evidence for this conflict-based splitting gate",
+      "revisit_trigger": "Use a separately fixed optimization endpoint comparison before attributing remaining errors to query interference; preserve conditional and single-layer limitations.",
+      "assignment_basis": "Two fixed MZ32 endpoints, zero optimizer updates. All final combined-shared query gradient cosines positive, min0.077761; TRAIN responsibility errors66of1165. Gradient mean identity and unchanged-state/input checks pass. This is not proof sharing is harmless."
+    },
+    {
+      "terminal_id": "terminal-mz34-query-separation-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Recorded admission decision and unfitted prototype; no measured model effect",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ34_QUERY_SEPARATION_RESULTS_20260910.md",
+      "failure_signature": "No predeclared final local-conflict signal; no architecture inference, initial-function check or fit executed",
+      "revisit_trigger": "Revisit query separation only through a separately justified protocol; continue the independently registered MZ35 optimization comparison without relaxing this gate.",
+      "assignment_basis": "Fixed gate requires final shared gradient cosine<=-0.1 and remaining responsibility errors. Actual0.077761and66 fails. Runner exits NOT_ADMITTED_NO_FIT; no model, optimizer or task prediction produced. Prepared independent-query prototype remains untested."
+    },
+    {
+      "terminal_id": "terminal-mz35-responsibility-convergence-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Fixed4800-step expanded-supervision selector with verified prefix and measured Development tradeoffs; not a baseline or fresh-source promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ35_RESPONSIBILITY_CONVERGENCE_RESULTS_20260910.md",
+      "failure_signature": "Total26FP exceeds20target; longer fitting improves aggregate results but adds relation/oldDEV errors and one TRAIN BODY_NEAR error",
+      "revisit_trigger": "Preserve frozen MZ30/MZ32/MZ35 comparators; diagnose remaining responsibility/calibration transfer or test an unchanged candidate on new appropriate sources, without extending this completed trajectory.",
+      "assignment_basis": "Exact MZ32 model/loss parity at1200 then4800: TRAINerrors66to28, BCE0.160144to0.063869; placementFP30to26, FN67unchanged, exact2908to2910of3000. All normal MZ28TP/additions andpole49/48 retained. Relation andoldDEV FP worsen; joint<=20FP gate fails."
     }
   ]
 }
