@@ -5,6 +5,19 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest angular-return attribution probe (2026-09-10)
+
+[MZ8 single-frame attribution](nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md)
+recovers thin49/49 on explicitly targeted training/regression, but pole-absent
+BODY_FAR activates22/25 and wrong-zone correspondence still recovers49/49.
+Exact143->177 hides BODY_FAR FP3->22; do not retain this2149-parameter recipe.
+All22 false-positive winning sampled native points are outside BODY_FAR despite
+passing0.10m echo compatibility: native forward3.200m versus query endpoint3.18m.
+The angular/range hypothesis moves them inside. Region-consistent attribution
+remains unresolved. Keep MZ5; no fresh confirmation capture or temporal reopening.
+One1200-step fit complete; no same-run tolerance/threshold rescue. Native data
+supervises/scorers only, invalid packets remain UNKNOWN, no hardware/safety claim.
+
 ## Latest single-frame paired readout (2026-09-10)
 
 [MZ7 paired diagnosis and calibration](nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md)
