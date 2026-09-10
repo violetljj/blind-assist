@@ -5,6 +5,16 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest shared-support model comparison (2026-09-10)
+
+[MZ15 shared support](nearfield/MZ15_SHARED_SUPPORT_RESULTS_20260910.md) completes
+two matched1200-step fits. SHARED adds64 farTP and17 FP on consumed DEV3000;
+QUERY adds37 farTP and15 FP. Pole clean/stress is12/18 of49 versus49/48 forQUERY.
+Both fail the fixed error budget; all added false winners still lack actual
+source at their chosen location. Stop this pair, retain MZ5/MZ9. No new capture,
+temporal restart or model promotion. Stress diagnostic slot alignment repaired
+without changing predictions;62400 output bits audited.
+
 ## Latest local evidence trace (2026-09-10)
 
 [MZ14 evidence trace](nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md)
