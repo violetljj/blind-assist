@@ -441,6 +441,16 @@
       "failure_signature": "Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged.",
       "revisit_trigger": "A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery.",
       "assignment_basis": "Two completed fits,2 focused tests,62400 output-bit and1324062 local-bit independent audit; neither arm passes fixed FP budget and HIGH AP declines on both placement cohorts."
+    },
+    {
+      "terminal_id": "terminal-mz17-witness-objective-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Reusable no-fit candidate-logit gradient diagnostic and observed BODY concentration; no measured status for the prepared witness objective",
+      "retained_surface": "Frozen checkpoint and1024draw batch identity,4096 gradient rows, known versus unknown separation, tested training-loss implementation guarded from execution",
+      "failure_signature": "Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested.",
+      "revisit_trigger": "A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy.",
+      "assignment_basis": "CUDA no-fit probe, independent4096row audit and3 focused loss tests; original checkpoint unchanged. Predefined aggregate heuristic not met, candidate fit not launched."
     }
   ]
 }

@@ -1682,6 +1682,25 @@
         "research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md"
       ],
       "commit": "9e9eb5c3f6d31c707ee8205b577e740c93be45c0"
+    },
+    {
+      "id": "terminal-mz17-witness-objective-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED",
+      "summary": "Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested.",
+      "successor_requires": "A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy.",
+      "forbidden_repeats": [
+        "Reclassifying67 unknown maxima as known errors or changing this completed diagnostic denominator to pass its admission",
+        "Claiming the untrained witness objective failed, or treating field gradients as parameter-step or historical causality"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "commit": "a8a2b8d042af7a4bfb81281079e6b78f6369ad54"
     }
   ]
 }

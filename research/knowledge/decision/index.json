@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "bb6e65cf7dc0d8966ac576b8ab51a30c17e552564c6779dc1505866159c23ce8",
+  "source_fingerprint": "e8271a2143d41d5ebfb341be1e4ad031b9c5d81b09d927e7104498c77ffc9eb0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 308,
-    "current_terminals": 94,
-    "run_associations": 306
+    "experiments": 309,
+    "current_terminals": 95,
+    "run_associations": 307
   },
   "failure_layers": [
     {
@@ -19782,6 +19782,35 @@
       "search_text": "terminal-mz16-visual-detail-20260910 obstacle-avoidance MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged. A materially different observable attribution intervention must improve actual return assignment at the frozen false-alert budget, separately from final-output recovery. Extending these completed fits or tuning cutoffs on consumed placementDEV to rescue this outcome Calling trained pole regression independent confirmation or interpreting HIGH versus historical MZ15 as a pure resolution effect"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz17-witness-objective-20260910",
+      "status": "diagnostic",
+      "question": "Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested.",
+      "baseline": null,
+      "change": "A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy.",
+      "primary_metric": null,
+      "decision": "MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED",
+      "report": "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "a8a2b8d042af7a4bfb81281079e6b78f6369ad54",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy.",
+      "forbidden_repeats": [
+        "Reclassifying67 unknown maxima as known errors or changing this completed diagnostic denominator to pass its admission",
+        "Claiming the untrained witness objective failed, or treating field gradients as parameter-step or historical causality"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz17-witness-objective-20260910",
+      "search_text": "terminal-mz17-witness-objective-20260910 obstacle-avoidance MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested. A separately scoped training proposal must acknowledge BODY concentration, unknown coverage and final-snapshot limits; the untrained objective has no measured efficacy. Reclassifying67 unknown maxima as known errors or changing this completed diagnostic denominator to pass its admission Claiming the untrained witness objective failed, or treating field gradients as parameter-step or historical causality"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26357,6 +26386,27 @@
         "decision_lifecycle": 4
       },
       "search_text": "mz16-visual-detail-20260910 Does retaining native local RGB detail improve actual echo attribution at a fixed false-alert budget? Frozen MZ5 with matched LOW_DETAIL query readout; identical crop, input shape, initial weights and1200 saved batches HIGH preserves native RGB detail; LOW downsamples and restores before identical224pixel ROI extraction; encoder and training formulation frozen Matched LOW/HIGH1200step fits add61/80 farTP and22/16 FP on consumed placementDEV3000; HIGH local macro AP declines on both cohorts. Pole clean/stress47/46 versus49/48 of49. MZ5/MZ9 unchanged. MZ16_DETAIL_INTERVENTION_FAILS_LOCALIZATION_AND_FIXED_FP_BUDGET research/active/dtr-r0/nearfield/MZ16_VISUAL_DETAIL_RESULTS_20260910.md Existing7562 unique sampled TRAIN frames including200 diagnostic sequence frames; oldDEV1000 and consumed placementDEV3000; no EVAL or capture"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz17-witness-objective-20260910",
+      "status": "archived",
+      "question": "Does positive max-pool reward overcome local suppression at known incorrect TRAIN spatial winners?",
+      "baseline": "Final frozen MZ16 HIGH_DETAIL checkpoint with original local plus0.25 query BCE",
+      "change": "No-fit field-gradient decomposition on first64 saved training batches; witness objective prepared but not trained because predefined admission failed",
+      "primary_metric": "Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested.",
+      "decision": "MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED",
+      "report": "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md",
+      "source": "1024 TRAIN draws,873 unique frames,779 supervised positives; includes previously trained sequence; no DEV inference or EVAL",
+      "commit": "a8a2b8d042af7a4bfb81281079e6b78f6369ad54",
+      "association_id": "mz17-witness-objective-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3
+      },
+      "search_text": "mz17-witness-objective-20260910 Does positive max-pool reward overcome local suppression at known incorrect TRAIN spatial winners? Final frozen MZ16 HIGH_DETAIL checkpoint with original local plus0.25 query BCE No-fit field-gradient decomposition on first64 saved training batches; witness objective prepared but not trained because predefined admission failed Final MZ16 snapshot:55/779 supervised TRAIN positives have known wrong maxima, all55 net upward logit gradients; BODY rates20.79/14.38percent,67 unknown maxima. Aggregate7.06percent misses predefined10percent fit admission. Zero updates; loss candidate untested. MZ17_BODY_CONCENTRATED_GRADIENT_CONFLICT_FIT_NOT_LAUNCHED research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md 1024 TRAIN draws,873 unique frames,779 supervised positives; includes previously trained sequence; no DEV inference or EVAL"
     }
   ],
   "associations": [
@@ -28622,6 +28672,22 @@
         "artifacts.local/work/mz16-visual-detail-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz16-visual-detail-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz17-witness-objective-20260910",
+      "use_ids": [],
+      "protocol_id": "mz17-witness-objective-20260910-protocol",
+      "code_revision": "a8a2b8d042af7a4bfb81281079e6b78f6369ad54",
+      "input_fingerprint": "9435420f70c8cc284ff448e1df46ad9a72e2e6cbbe7ac7c50e36fe73c7ccaa31",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ17_WITNESS_OBJECTIVE_RESULTS_20260910.md",
+        "artifacts.local/work/mz17-witness-objective-20260910/probe-v1/result.json",
+        "artifacts.local/work/mz17-witness-objective-20260910/probe-v1/receipt.json",
+        "artifacts.local/work/mz17-witness-objective-20260910/probe-v1/admission.json",
+        "artifacts.local/work/mz17-witness-objective-20260910/probe-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz17-witness-objective-20260910",
       "source_rows": 1
     },
     {
