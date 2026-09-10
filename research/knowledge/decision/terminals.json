@@ -2235,6 +2235,27 @@
         "research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md"
       ],
       "commit": "115acc6d4212c9fabd769d1faab60c95966e9360"
+    },
+    {
+      "id": "terminal-mz46-scaffold-context-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED",
+      "summary": "One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts.",
+      "successor_requires": "Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain.",
+      "forbidden_repeats": [
+        "Call the complete degradation RGB-only despite crossed-input evidence",
+        "Attribute all MZ45 transfer failure to unseen shape after the unchanged rod also fails",
+        "Claim sensor calibration or universal model superiority from four controlled states"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md"
+      ],
+      "commit": "7f9d8f4bca321032defd52536c13454c2e2ffba7"
     }
   ]
 }

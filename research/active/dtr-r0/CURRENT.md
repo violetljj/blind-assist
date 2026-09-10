@@ -5,6 +5,20 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed-target context dependency: MZ46 (2026-09-11)
+
+[MZ46](nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md) removes12 ancillary
+supports in four MZ44 rod states. Actual target receipts and all native event
+masks/depths remain identical. MZ43 ensemble TP falls3to0 IDEAL and4to0 under
+merge/drop, adding3/3/2 false bits. Crossed inputs identify both RGB and ToF
+contributions; this is a fixed additive-threshold effect, not RGB-only failure.
+MZ35/MZ37 retain3TP with FP1/1/0: keep the local comparators and prior MZ43 scope.
+Retain the paired failure as NEGATIVE_CONTROL. Next test local spatial
+attribution with paired support/appearance variation; shape/size/site transfer
+is still unresolved. One4frame capture, exact old replay and independent native/
+branch checks pass;12.41MB raw becomes4.44MB packaged. Owned worker execution
+released; zero fit or recapture. No physical-sensor or deployment claim.
+
 ## Fixed new-form transfer and scaffold confound: MZ45 (2026-09-11)
 
 [MZ45](nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md) finds no MZ43 transfer
@@ -16,8 +30,8 @@ the RGB mean, but unconditional union has substantial false alerts.
 All 40 attempts, exact old replay and independent native/scalar checks pass.
 New forms omit the rod's 12 supports and have different size/negative placement;
 shape alone is not isolated. Retain this fixed failure as NEGATIVE_CONTROL and
-MZ43's earlier measured scope. Next vary scaffold context at fixed target
-geometry; that intervention is unexecuted. No hardware or natural-scene claim.
+MZ43's earlier measured scope. MZ46 subsequently tests fixed-target support
+removal. No hardware or natural-scene claim.
 
 ## Rich-object far coverage: MZ44 (2026-09-11)
 

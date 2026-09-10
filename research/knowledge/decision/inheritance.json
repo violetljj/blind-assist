@@ -721,6 +721,16 @@
       "failure_signature": "All32 new-form positives missed; rod control works, scaffold/size/negative-placement confounds remain",
       "revisit_trigger": "Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators.",
       "assignment_basis": "All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts."
+    },
+    {
+      "terminal_id": "terminal-mz46-scaffold-context-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed global/context-dependent RGB-ToF decisions on one target/site under ancillary-support removal; not all sensing or training",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md",
+      "failure_signature": "Unchanged native target events but MZ43ensemble loses all true detections; both branches contribute; local MZ35/MZ37 retain three",
+      "revisit_trigger": "Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain.",
+      "assignment_basis": "One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts."
     }
   ]
 }

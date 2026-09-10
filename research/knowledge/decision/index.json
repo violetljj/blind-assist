@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "88cade46be8f05fb718ca2c0b542f3bcb4266515917390d0be8ed4f64553bb55",
+  "source_fingerprint": "cf5ebbc07644495d99027ee7a3670ec19c42c662216595903b411d6bb80857ec",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 336,
-    "current_terminals": 122,
-    "run_associations": 334
+    "experiments": 337,
+    "current_terminals": 123,
+    "run_associations": 335
   },
   "failure_layers": [
     {
@@ -20615,6 +20615,37 @@
       "search_text": "terminal-mz45-object-transfer-20260911 obstacle-avoidance MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts. Preserve target mesh/size/pose and test removal of ancillary rod supports against the existing paired states before assigning failure to shape or changing another model; retain earlier MZ43 scope and strong local support comparators. Treat zero false positives with zero recovered new-form positives as a useful detector Call the opened40frame block fresh confirmation after tuning Attribute the whole failure to shape without controlling size and scaffold context"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz46-scaffold-context-20260911",
+      "status": "diagnostic",
+      "question": "One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts.",
+      "baseline": null,
+      "change": "Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain.",
+      "primary_metric": null,
+      "decision": "MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED",
+      "report": "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "7f9d8f4bca321032defd52536c13454c2e2ffba7",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain.",
+      "forbidden_repeats": [
+        "Call the complete degradation RGB-only despite crossed-input evidence",
+        "Attribute all MZ45 transfer failure to unseen shape after the unchanged rod also fails",
+        "Claim sensor calibration or universal model superiority from four controlled states"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md"
+      ],
+      "association_id": "mz46-scaffold-context-20260911",
+      "search_text": "terminal-mz46-scaffold-context-20260911 obstacle-avoidance MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts. Use paired support/appearance variation with local spatial attribution; preserve these fixed context failures and MZ35/MZ37 comparators. Separate shape/size and site transfer from this one-target context intervention; retain the earlier bounded MZ43 restricted-training gain. Call the complete degradation RGB-only despite crossed-input evidence Attribute all MZ45 transfer failure to unseen shape after the unchanged rod also fails Claim sensor calibration or universal model superiority from four controlled states"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -27830,6 +27861,32 @@
         "handoff_completion": 3
       },
       "search_text": "mz45-object-transfer-20260911 Does the fixed restricted-trained candidate transfer to richer near and far object forms? Frozen RGB MZ5 MZ28 MZ35 MZ37 and ideal FUSION; unchanged MZ43 checkpoints Evaluate all40 MZ42/MZ44 frames under the three fixed observation conditions, direct compact reads All40frames retained,32new-form frames plus8rod controls. RGB/MZ5/MZ43ensemble miss all32new-form positive bits under each condition. MZ28/MZ37 recover13/17/6 with0FP under ideal/merge/drop; MZ43 gain is confined to old rod. MixedToF has13true ideal positives suppressed by RGB mean, but19FP preclude simple union. Exact16frame parity,160native recount and19200bit audit pass.12rod supports, larger footprint and differing negatives confound shape attribution. No fitting; run-base revision, exact executed code SHA in receipts. MZ45_FIXED_NEW_FORM_TRANSFER_NOT_SUPPORTED_CONTEXT_CONFOUND research/active/dtr-r0/nearfield/MZ45_OBJECT_TRANSFER_RESULTS_20260911.md mz42-mz44-native-admitted-object-blocks"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz46-scaffold-context-20260911",
+      "status": "archived",
+      "question": "Does removing ancillary supports change fixed obstacle decisions at unchanged rod geometry?",
+      "baseline": "MZ44 four supported far rod states and frozen MZ45 model outputs; retain MZ45 new-form negative comparison",
+      "change": "Remove only twelve support actors; one four-frame paired capture and fixed RGB-ToF branch diagnostic",
+      "primary_metric": "One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts.",
+      "decision": "MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED",
+      "report": "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md",
+      "source": "mz44-frozen-far-rod-and-mz45-fixed-models",
+      "commit": "7f9d8f4bca321032defd52536c13454c2e2ffba7",
+      "association_id": "mz46-scaffold-context-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 12,
+        "handoff_completion": 3
+      },
+      "search_text": "mz46-scaffold-context-20260911 Does removing ancillary supports change fixed obstacle decisions at unchanged rod geometry? MZ44 four supported far rod states and frozen MZ45 model outputs; retain MZ45 new-form negative comparison Remove only twelve support actors; one four-frame paired capture and fixed RGB-ToF branch diagnostic One4frame support-removal capture paired with4existing MZ44 frames. Target dictionaries/actual actor receipts, all32 native counts/labels and event masks/depths unchanged. MZ43ensemble TP3to0 IDEAL,4to0 merge/drop; addedFP3/3/2. Crossed RGB/ToF shows both modalities contribute; additive threshold effect, not proved nonlinear interaction. MZ35/MZ37 retain3TP with FP1/1/0. Exact54array old replay,960actual and1920hybrid-inclusive scalar decisions pass. One44file source12,408,301to4,437,733bytes, no fit/recapture. Run-base revision; exact executed sources SHA-bound in receipts. MZ46_FIXED_TARGET_CONTEXT_DEPENDENCY_VERIFIED research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md mz44-frozen-far-rod-and-mz45-fixed-models"
     }
   ],
   "associations": [
@@ -30608,6 +30665,27 @@
         "artifacts.local/work/mz45-object-transfer-20260911/structure-audit.json"
       ],
       "decision_id": "terminal-mz45-object-transfer-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz46-scaffold-context-20260911",
+      "use_ids": [],
+      "protocol_id": "mz46-scaffold-context-20260911",
+      "code_revision": "7f9d8f4bca321032defd52536c13454c2e2ffba7",
+      "input_fingerprint": "85231003cb01dc49a5d621f445765898703e33b6487a14a83e69c64e65ea9873",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_20260911.md",
+        "artifacts.local/work/mz46-scaffold-context-20260911",
+        "research/active/dtr-r0/nearfield/MZ46_SCAFFOLD_CONTEXT_RESULTS_20260911.md",
+        "artifacts.local/work/mz46-scaffold-context-20260911/source-receipt.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/target-invariance.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/prepared-v1/native-pairs.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/inference-v1/receipt.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/score-v1/result.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/branch-diagnostic.json",
+        "artifacts.local/work/mz46-scaffold-context-20260911/resource-release.json"
+      ],
+      "decision_id": "terminal-mz46-scaffold-context-20260911",
       "source_rows": 1
     },
     {
