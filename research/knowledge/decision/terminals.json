@@ -1625,6 +1625,25 @@
         "research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md"
       ],
       "commit": "017e7b9b0a1e8d136c36c6c3686b6542058df8ea"
+    },
+    {
+      "id": "terminal-mz14-evidence-trace-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE",
+      "summary": "Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit.",
+      "successor_requires": "Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression.",
+      "forbidden_repeats": [
+        "Using evaluator contributor masks as inference inputs or claiming oracle accuracy is achievable model performance",
+        "Claiming independent confirmation from consumed placement replay or one trained pole configuration"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md"
+      ],
+      "commit": "c9e3e9ad152f7144757b81484609ab428bc22f78"
     }
   ]
 }

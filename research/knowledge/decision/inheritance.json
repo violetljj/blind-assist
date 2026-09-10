@@ -411,6 +411,16 @@
       "failure_signature": "Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion.",
       "revisit_trigger": "A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives.",
       "assignment_basis": "One600step fit;59200 scalar output bits and cutoff/group checks. Only1 signFP removed while6 oldDEV nearTP lost."
+    },
+    {
+      "terminal_id": "terminal-mz14-evidence-trace-20260910",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Evaluator-only source-location diagnostic and frozen candidate traces; no deployable model",
+      "retained_surface": "Actual contributor trace, paired local feature statistics and source-location diagnostic masks; MZ5 and MZ9 unchanged",
+      "failure_signature": "Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit.",
+      "revisit_trigger": "Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression.",
+      "assignment_basis": "Exact4200-frame frozen margin parity,16800 scalar-bit audit,25 paired local-feature descriptors; diagnostic only."
     }
   ]
 }

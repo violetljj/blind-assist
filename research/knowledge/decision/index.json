@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "5152785dd2d1e6e0205fcb23e6726bb0100bf48d17dc9e7b3c6f4d6615ac6a9a",
+  "source_fingerprint": "de400f235f3462a9dc5e6d538ed114610afe98b5a8f05f21c1b94c2742ffaefc",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 305,
-    "current_terminals": 91,
-    "run_associations": 303
+    "experiments": 306,
+    "current_terminals": 92,
+    "run_associations": 304
   },
   "failure_layers": [
     {
@@ -19695,6 +19695,35 @@
       "search_text": "terminal-mz13-training-coverage-20260910 obstacle-avoidance MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion. A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives. Continuing this completed600step coverage fit or relabeling consumed regression as independent confirmation Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz14-evidence-trace-20260910",
+      "status": "diagnostic",
+      "question": "Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit.",
+      "baseline": null,
+      "change": "Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression.",
+      "primary_metric": null,
+      "decision": "MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE",
+      "report": "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "c9e3e9ad152f7144757b81484609ab428bc22f78",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression.",
+      "forbidden_repeats": [
+        "Using evaluator contributor masks as inference inputs or claiming oracle accuracy is achievable model performance",
+        "Claiming independent confirmation from consumed placement replay or one trained pole configuration"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz14-evidence-trace-20260910",
+      "search_text": "terminal-mz14-evidence-trace-20260910 obstacle-avoidance MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit. Learn observable local return support shared across queries; test correct positive evidence and coverage alongside wrong-location suppression. Using evaluator contributor masks as inference inputs or claiming oracle accuracy is achievable model performance Claiming independent confirmation from consumed placement replay or one trained pole configuration"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26202,6 +26231,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz13-training-coverage-20260910 Can expanded originalTRAIN coverage resolve sign attribution with the unchanged selective-addition gate? Frozen MZ11 gate, with original MZ5 positive judgments retained Add relationTRAIN5000 and distanceTRAIN2500 to oldTRAIN2500 plusMZ6clean200; same20parameter600step gate and oldDEV calibration Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion. MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md OriginalTRAIN7500 added; MZ12DEV3000 excluded from gradients; all outcomes consumed Development"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz14-evidence-trace-20260910",
+      "status": "archived",
+      "question": "Where does local evidence lose correct return attribution before final body-query decisions?",
+      "baseline": "Frozen MZ5 predictions, MZ9 SOURCE weights and cutoffs, MZ13 accepted additions",
+      "change": "Trace actual contributor support and frozen maxima on4200 consumed frames; evaluator-only source/query masks and paired local feature descriptors, no fit",
+      "primary_metric": "Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit.",
+      "decision": "MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE",
+      "report": "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md",
+      "source": "OldDEV1000,MZ6clean200,relationDEV2000,distanceDEV1000; all consumed Development; native data evaluator-only",
+      "commit": "c9e3e9ad152f7144757b81484609ab428bc22f78",
+      "association_id": "mz14-evidence-trace-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz14-evidence-trace-20260910 Where does local evidence lose correct return attribution before final body-query decisions? Frozen MZ5 predictions, MZ9 SOURCE weights and cutoffs, MZ13 accepted additions Trace actual contributor support and frozen maxima on4200 consumed frames; evaluator-only source/query masks and paired local feature descriptors, no fit Frozen4200-frame trace: all17 MZ13 addedFP have no actual source at winning location. Source oracle removes17FP but6 recovered farTP too; all130 SOURCE far misses have correct candidates below cutoff. No fit. MZ14_RETURN_LOCALIZATION_GAP_IDENTIFIED_NO_MODEL_UPGRADE research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md OldDEV1000,MZ6clean200,relationDEV2000,distanceDEV1000; all consumed Development; native data evaluator-only"
     }
   ],
   "associations": [
@@ -28420,6 +28473,22 @@
         "artifacts.local/work/mz13-training-coverage-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz13-training-coverage-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz14-evidence-trace-20260910",
+      "use_ids": [],
+      "protocol_id": "mz14-evidence-trace-20260910-protocol",
+      "code_revision": "c9e3e9ad152f7144757b81484609ab428bc22f78",
+      "input_fingerprint": "d06e2407b1b468af0e60379c7f9bd49f71ab696f42e2ea424fde5d55dcaa8123",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ14_EVIDENCE_TRACE_RESULTS_20260910.md",
+        "artifacts.local/work/mz14-evidence-trace-20260910/run-v2/result.json",
+        "artifacts.local/work/mz14-evidence-trace-20260910/run-v2/receipt.json",
+        "artifacts.local/work/mz14-evidence-trace-20260910/run-v2/audit.json",
+        "artifacts.local/work/mz14-evidence-trace-20260910/paired-v1/receipt.json"
+      ],
+      "decision_id": "terminal-mz14-evidence-trace-20260910",
       "source_rows": 1
     },
     {
