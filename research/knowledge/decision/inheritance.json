@@ -351,6 +351,16 @@
       "failure_signature": "Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7.",
       "revisit_trigger": "Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening.",
       "assignment_basis": "One declared fit and scalar paired-output audit; no gain under query FP budget"
+    },
+    {
+      "terminal_id": "terminal-mz8-attribution-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This finite-angular shared-MLP readout with0.10m auxiliary compatibility and targeted MZ6 training",
+      "retained_surface": "Angular hypothesis implementation, paired negatives and wrong-zone control; MZ5 retained",
+      "failure_signature": "Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility.",
+      "revisit_trigger": "Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout.",
+      "assignment_basis": "One1200-step fit,45 scalar metric groups and winning-candidate audit; query FP and thin-correspondence gates fail"
     }
   ]
 }

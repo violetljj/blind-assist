@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "9031313c7a4fb57897cb68170bb219488fe80b5ebeaf7c284a9f8eaa4749af1e",
+  "source_fingerprint": "256ec25715e3561ee3fd974baa323a686dd188e565a248c35d7f0a21a9dab37c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 299,
-    "current_terminals": 85,
-    "run_associations": 297
+    "experiments": 300,
+    "current_terminals": 86,
+    "run_associations": 298
   },
   "failure_layers": [
     {
@@ -19521,6 +19521,35 @@
       "search_text": "terminal-mz7-single-frame-20260910 obstacle-avoidance MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7. Single-frame position-preserving evidence and echo-to-query attribution with wrong-zone control; complete-evidence detection before temporal reopening. Reopening this completed calibration with MZ6 threshold tuning Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz8-attribution-20260910",
+      "status": "diagnostic",
+      "question": "Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility.",
+      "baseline": null,
+      "change": "Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout.",
+      "primary_metric": null,
+      "decision": "MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "158e3e358cd783d9dfc38adaae117a56dd85621d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout.",
+      "forbidden_repeats": [
+        "Reopening this completed MZ8 fit with post-hoc tolerance or threshold tuning",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz8-attribution-20260910",
+      "search_text": "terminal-mz8-attribution-20260910 obstacle-avoidance MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility. Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout. Reopening this completed MZ8 fit with post-hoc tolerance or threshold tuning Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -25892,6 +25921,29 @@
         "evaluation_evidence": 6
       },
       "search_text": "mz7-single-frame-20260910 Can current paired target evidence be read selectively and recovered by DEV calibration? Frozen compact MZ5 on consumed MZ6 paired clips Branch-logit diagnostic followed by one old-DEV scale and FP-budget threshold comparator Paired thin far49/49 both-negative; approaching HEAD_FAR14/14 ToF correct overridden. DEV calibration leaves thin0/49, exact143->141, BODY_NEAR FP5->7. MZ7_THIN_POLE_BOTH_BRANCHES_NEGATIVE_CALIBRATION_NOT_RETAINED research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md Consumed controlled Willow MZ6 and old MZ1 DEV_ONLY"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz8-attribution-20260910",
+      "status": "archived",
+      "question": "Can local visual scoring of angular echo hypotheses recover thin detections with correct attribution and preserved errors?",
+      "baseline": "Frozen compact MZ5 on consumed MZ6 paired clips",
+      "change": "One2149-parameter angular-return readout, targeted TRAIN plus MZ6 fit, oldDEV thresholds, wrong-zone control",
+      "primary_metric": "Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility.",
+      "decision": "MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md",
+      "source": "Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only",
+      "commit": "158e3e358cd783d9dfc38adaae117a56dd85621d",
+      "association_id": "mz8-attribution-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "decision_lifecycle": 6
+      },
+      "search_text": "mz8-attribution-20260910 Can local visual scoring of angular echo hypotheses recover thin detections with correct attribution and preserved errors? Frozen compact MZ5 on consumed MZ6 paired clips One2149-parameter angular-return readout, targeted TRAIN plus MZ6 fit, oldDEV thresholds, wrong-zone control Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility. MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md Old2500 TRAIN plus200 consumed MZ6 training; old1000 DEV thresholds; controlled Development only"
     }
   ],
   "associations": [
@@ -28167,6 +28219,21 @@
         "artifacts.local/work/mz7-single-frame-20260910/audit.json"
       ],
       "decision_id": "terminal-mz7-single-frame-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz8-attribution-20260910",
+      "use_ids": [],
+      "protocol_id": "mz8-attribution-20260910-protocol",
+      "code_revision": "158e3e358cd783d9dfc38adaae117a56dd85621d",
+      "input_fingerprint": "f8f684bc0d29e38be8ad9fe254c23db758030bc6c63e0e99f735a68968f97b0a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md",
+        "artifacts.local/work/mz8-attribution-20260910/run-v1/result.json",
+        "artifacts.local/work/mz8-attribution-20260910/run-v1/representation-diagnostic.json",
+        "artifacts.local/work/mz8-attribution-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz8-attribution-20260910",
       "source_rows": 1
     },
     {

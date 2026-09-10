@@ -1511,6 +1511,25 @@
         "research/active/dtr-r0/nearfield/MZ7_SINGLE_FRAME_RESULTS_20260910.md"
       ],
       "commit": "fa462bdaa33d6040fa5e656beaed25e0fc811800"
+    },
+    {
+      "id": "terminal-mz8-attribution-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ8_THIN_DETECTION_RECOVERED_BUT_ATTRIBUTION_AND_FP_GATES_FAIL",
+      "summary": "Targeted regression thin49/49 and exact177/200; absent pole BODY_FAR FP22/25, wrong-zone thin49/49. Native false-positive points outside query despite0.10m compatibility.",
+      "successor_requires": "Region-consistent single-frame echo attribution with query-boundary uncertainty and paired negatives; no temporal reopening without acceptable complete-evidence readout.",
+      "forbidden_repeats": [
+        "Reopening this completed MZ8 fit with post-hoc tolerance or threshold tuning",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ8_ATTRIBUTION_RESULTS_20260910.md"
+      ],
+      "commit": "158e3e358cd783d9dfc38adaae117a56dd85621d"
     }
   ]
 }
