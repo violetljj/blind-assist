@@ -401,6 +401,16 @@
       "failure_signature": "Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails.",
       "revisit_trigger": "Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison.",
       "assignment_basis": "Zero fits; source metadata and selected payload hashes;48000 scalar arm bits,12000 composition bits; both cohorts gain FP."
+    },
+    {
+      "terminal_id": "terminal-mz13-training-coverage-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This unchanged20parameter gate with expanded originalTRAIN coverage and fixed600step cohort-balanced fit",
+      "retained_surface": "Frozen7500 TRAIN feature cache, expanded-coverage gate and retention regression; MZ5 and MZ9 retained separately",
+      "failure_signature": "Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion.",
+      "revisit_trigger": "A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives.",
+      "assignment_basis": "One600step fit;59200 scalar output bits and cutoff/group checks. Only1 signFP removed while6 oldDEV nearTP lost."
     }
   ]
 }

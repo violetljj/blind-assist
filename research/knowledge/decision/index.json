@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "0221cd5cab67f93c0a23148ef71da3488f520b93f039dfce6660bd05f22e6f63",
+  "source_fingerprint": "5152785dd2d1e6e0205fcb23e6726bb0100bf48d17dc9e7b3c6f4d6615ac6a9a",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 304,
-    "current_terminals": 90,
-    "run_associations": 302
+    "experiments": 305,
+    "current_terminals": 91,
+    "run_associations": 303
   },
   "failure_layers": [
     {
@@ -19666,6 +19666,35 @@
       "search_text": "terminal-mz12-existing-data-20260910 obstacle-avoidance MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails. Exploit existing sign and negative controls to resolve false attribution before more collection; any changed method needs a separately scoped comparison. Retuning the frozen MZ11 gate on this completed replay or relabeling consumed partitions as independent confirmation Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz13-training-coverage-20260910",
+      "status": "diagnostic",
+      "question": "Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion.",
+      "baseline": null,
+      "change": "A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives.",
+      "primary_metric": null,
+      "decision": "MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "017e7b9b0a1e8d136c36c6c3686b6542058df8ea",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives.",
+      "forbidden_repeats": [
+        "Continuing this completed600step coverage fit or relabeling consumed regression as independent confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md"
+      ],
+      "association_id": "mz13-training-coverage-20260910",
+      "search_text": "terminal-mz13-training-coverage-20260910 obstacle-avoidance MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion. A distinct evidence/readout intervention must address sign BODY attribution while retaining prior recovered near and far positives. Continuing this completed600step coverage fit or relabeling consumed regression as independent confirmation Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26150,6 +26179,29 @@
         "source_coverage": 3
       },
       "search_text": "mz12-existing-data-20260910 Do existing accepted sources suffice to test unchanged MZ11 recall and error transfer without more collection? Frozen compact MZ5 on existing relationDEV2000 and distanceDEV1000 Inventory20000 then frozen3000 replay of MZ5, adapted MZ5, SOURCE and MZ11; no fitting or new acquisition Existing20000 accounted; relationDEV2000 and distanceDEV1000 frozen replay adds57 far TPs but18 FPs,17 hanging signs. No acquisition or fit; transfer FP criterion fails. MZ12_EXISTING_DATA_RECALL_TRANSFER_WITH_HANGING_SIGN_FALSE_ACTIVATION research/active/dtr-r0/nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md Consumed shared-asset relationDEV2000 plus distanceDEV1000;100 overlapping sites, no new EVAL pixels"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz13-training-coverage-20260910",
+      "status": "archived",
+      "question": "Can expanded originalTRAIN coverage resolve sign attribution with the unchanged selective-addition gate?",
+      "baseline": "Frozen MZ11 gate, with original MZ5 positive judgments retained",
+      "change": "Add relationTRAIN5000 and distanceTRAIN2500 to oldTRAIN2500 plusMZ6clean200; same20parameter600step gate and oldDEV calibration",
+      "primary_metric": "Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion.",
+      "decision": "MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md",
+      "source": "OriginalTRAIN7500 added; MZ12DEV3000 excluded from gradients; all outcomes consumed Development",
+      "commit": "017e7b9b0a1e8d136c36c6c3686b6542058df8ea",
+      "association_id": "mz13-training-coverage-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz13-training-coverage-20260910 Can expanded originalTRAIN coverage resolve sign attribution with the unchanged selective-addition gate? Frozen MZ11 gate, with original MZ5 positive judgments retained Add relationTRAIN5000 and distanceTRAIN2500 to oldTRAIN2500 plusMZ6clean200; same20parameter600step gate and oldDEV calibration Add existing7500 TRAIN to fixed20parameter gate600step fit: signFP17->16, BODYsign15 unchanged; oldDEV loses6 near TP; thin47/49 and46/49. Retention fails, no promotion. MZ13_EXPANDED_GATE_COVERAGE_WEAK_SIGN_CORRECTION_NEAR_RETENTION_FAIL research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md OriginalTRAIN7500 added; MZ12DEV3000 excluded from gradients; all outcomes consumed Development"
     }
   ],
   "associations": [
@@ -28353,6 +28405,21 @@
         "artifacts.local/work/mz12-existing-data-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz12-existing-data-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz13-training-coverage-20260910",
+      "use_ids": [],
+      "protocol_id": "mz13-training-coverage-20260910-protocol",
+      "code_revision": "017e7b9b0a1e8d136c36c6c3686b6542058df8ea",
+      "input_fingerprint": "a28e27e610a1247a016e8be7dd4e6d84d20dee9a1a141e1e19754c816d1b8764",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ13_TRAINING_COVERAGE_RESULTS_20260910.md",
+        "artifacts.local/work/mz13-training-coverage-20260910/run-v1/result.json",
+        "artifacts.local/work/mz13-training-coverage-20260910/features-v1/receipt.json",
+        "artifacts.local/work/mz13-training-coverage-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz13-training-coverage-20260910",
       "source_rows": 1
     },
     {
