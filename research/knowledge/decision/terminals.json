@@ -1856,6 +1856,25 @@
         "research/active/dtr-r0/nearfield/MZ25_CONVERGENCE_RESULTS_20260910.md"
       ],
       "commit": "e462c47b83d33fe3ec06c02ab64249dcdc23bc13"
+    },
+    {
+      "id": "terminal-mz26-deterministic-convergence-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ26_DURATION_GAIN_WITH_RESIDUAL_EXTREME_TAIL",
+      "summary": "Same deterministic trajectory1200->4800: far69->71of75, addedFP7->3, exact2855->2860of3000, pole49/48 preserved. TRAIN negative activation29.43->18.34%, but DEV extreme negative scores rise and positive witness retention falls. No baseline promotion.",
+      "successor_requires": "Inspect observable input separation at unsupported and supported locations before an objective or representation successor; completed fit stays closed.",
+      "forbidden_repeats": [
+        "Reopen the completed MZ26 fit or reinterpret its endpoints as independent confirmation",
+        "Treat add-only zero-new-FP as removal of original baseline errors"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md"
+      ],
+      "commit": "4564aa0df25539c09d9114c7db67a60228f7f81f"
     }
   ]
 }
