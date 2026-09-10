@@ -1816,6 +1816,26 @@
         "research/active/dtr-r0/nearfield/MZ23_AVAILABILITY_RESULTS_20260910.md"
       ],
       "commit": "d4c28f4cd3049e15d8b1c06b7f24a9166de5b541"
+    },
+    {
+      "id": "terminal-mz24-decisive-availability-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ24_DECISIVE_OBJECTIVE_REDUCES_FALSE_TAIL_WITH_RECALL_COST",
+      "summary": "Matched1200step decisive-availability objective retains70/75far and pole49/48, reduces addedFP8->4 versus MZ20 and7->4 versus MZ23; placement2860/3000. Threshold-only clearing retains32/75far. No baseline promotion. TRAIN negative-availability bags85.37->29.43%; pole has0 negative bags.",
+      "successor_requires": "Test a distinct bounded optimization/convergence hypothesis before attributing residual TRAIN overlap to capacity or collecting more data; keep this completed fit and cutoff frozen.",
+      "forbidden_repeats": [
+        "Do not extend the completed fit or retune its consumed evaluation cutoff to rescue the result",
+        "Do not interpret negative-availability bags as task false alarms or missing support as CLEAR",
+        "Do not promote consumed trained-pole evidence to independent device or natural-distribution performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ24_DECISIVE_AVAILABILITY_RESULTS_20260910.md"
+      ],
+      "commit": "b8f861716048f16f3bbc1489a7b39c4786771778"
     }
   ]
 }
