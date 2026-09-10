@@ -5,6 +5,15 @@ Updated: 2026-09-08
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Latest existing-data inventory and transfer (2026-09-10)
+
+[MZ12 existing-data replay](nearfield/MZ12_EXISTING_DATA_RESULTS_20260910.md)
+accounts for all20000 accepted frames. Fixed relationDEV2000 + distanceDEV1000
+replay adds57 far TPs with MZ11 but18 FPs,17 on hanging signs. Exact improves
+1883->1905 and920->929, while FP47->56 and34->43. Thus existing placements expose
+an attribution gap without new acquisition; unchanged error-budget transfer fails.
+All data remain consumed Development. Preserve MZ5/MZ9; no refit or collection.
+
 ## Latest selective addition (2026-09-10)
 
 [MZ11 selective addition](nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md)
