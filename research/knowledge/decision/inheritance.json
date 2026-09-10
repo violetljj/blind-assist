@@ -381,6 +381,16 @@
       "failure_signature": "DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation.",
       "revisit_trigger": "A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient.",
       "assignment_basis": "Zero fits or thresholds;5600 scalar selections and44 metric/clip checks. Combined DEV false positives fail budget."
+    },
+    {
+      "terminal_id": "terminal-mz11-selective-addition-20260910",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This20-parameter positive-preserving SOURCE extent gate and its failed48/49 thin-retention responsibility",
+      "retained_surface": "Selective addition code, zero-added-FP frontier and thin rejection evidence; MZ5 and MZ9 retained separately",
+      "failure_signature": "DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation.",
+      "revisit_trigger": "A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation.",
+      "assignment_basis": "One600-step fit; independent scalar composition, metric and cutoff replay. Useful Development recall gain but both frozen thin-retention gates fail."
     }
   ]
 }

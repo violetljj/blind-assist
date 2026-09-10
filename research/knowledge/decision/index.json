@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "4e43473b22420550e78f7bcd554744d69b038fb89c051648c3809f37e8d526ad",
+  "source_fingerprint": "f8d4fc706ca1950aa40d94dfeaec686cbdd7fa69afdbfb47ffaea2919f7552f5",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 302,
-    "current_terminals": 88,
-    "run_associations": 300
+    "experiments": 303,
+    "current_terminals": 89,
+    "run_associations": 301
   },
   "failure_layers": [
     {
@@ -19608,6 +19608,35 @@
       "search_text": "terminal-mz10-availability-20260910 obstacle-avoidance MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation. A distinct observable arbitration mechanism must control the combined error budget; availability alone is insufficient. Retuning this completed fixed routing rule or treating consumed replay as confirmation Claiming independent confirmation from the consumed200 frames"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz11-selective-addition-20260910",
+      "status": "diagnostic",
+      "question": "DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation.",
+      "baseline": null,
+      "change": "A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation.",
+      "primary_metric": null,
+      "decision": "MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "4e5df5d532bc45ca7fa6ad070f12636488393803",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation.",
+      "forbidden_repeats": [
+        "Retuning this completed600-step gate or treating consumed training regression as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz11-selective-addition-20260910",
+      "search_text": "terminal-mz11-selective-addition-20260910 obstacle-avoidance MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation. A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation. Retuning this completed600-step gate or treating consumed training regression as confirmation Claiming independent confirmation from the consumed200 frames"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26048,6 +26077,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz10-availability-20260910 Can observable candidate availability combine SOURCE with MZ5 while preserving combined errors? Frozen compact MZ5 on consumed MZ6 paired clips Fixed per-query availability routing, frozen checkpoints and thresholds; zero fits DEV BODY_NEAR197 vs187 but exact900 vs912; FP34->64, all34 baseline errors survive plus30 new. MZ6 exact177, thin48/49; no confirmation. MZ10_AVAILABILITY_COMPOSITION_RECALL_RECOVERY_BUT_FP_BUDGET_FAILURE research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md Consumed oldDEV1000 and MZ6 training-regression200; frozen replay only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz11-selective-addition-20260910",
+      "status": "archived",
+      "question": "Can frozen SOURCE evidence and candidate extent selectively add true detections within the complete MZ5 FP budget?",
+      "baseline": "Frozen compact MZ5 on consumed MZ6 paired clips",
+      "change": "One20-parameter gate on SOURCE margin and extent;600 steps; DEV zero-added-FP cutoff; original MZ5 positive bits immutable",
+      "primary_metric": "DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation.",
+      "decision": "MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL",
+      "report": "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md",
+      "source": "OldTRAIN2500 plus consumed MZ6 training200; oldDEV1000 post-selected cutoffs; all controlled Development",
+      "commit": "4e5df5d532bc45ca7fa6ad070f12636488393803",
+      "association_id": "mz11-selective-addition-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "observation_perception": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz11-selective-addition-20260910 Can frozen SOURCE evidence and candidate extent selectively add true detections within the complete MZ5 FP budget? Frozen compact MZ5 on consumed MZ6 paired clips One20-parameter gate on SOURCE margin and extent;600 steps; DEV zero-added-FP cutoff; original MZ5 positive bits immutable DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation. MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md OldTRAIN2500 plus consumed MZ6 training200; oldDEV1000 post-selected cutoffs; all controlled Development"
     }
   ],
   "associations": [
@@ -28221,6 +28273,21 @@
         "artifacts.local/work/mz10-availability-20260910/run-v2/audit.json"
       ],
       "decision_id": "terminal-mz10-availability-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz11-selective-addition-20260910",
+      "use_ids": [],
+      "protocol_id": "mz11-selective-addition-20260910-protocol",
+      "code_revision": "4e5df5d532bc45ca7fa6ad070f12636488393803",
+      "input_fingerprint": "c4202b3f6f60e248ba4a480dc88d23e8a861f5e2673c82b75b96eac7c7129535",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md",
+        "artifacts.local/work/mz11-selective-addition-20260910/run-v1/result.json",
+        "artifacts.local/work/mz11-selective-addition-20260910/run-v1/start-receipt.json",
+        "artifacts.local/work/mz11-selective-addition-20260910/run-v1/audit.json"
+      ],
+      "decision_id": "terminal-mz11-selective-addition-20260910",
       "source_rows": 1
     },
     {

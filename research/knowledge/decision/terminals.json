@@ -1568,6 +1568,25 @@
         "research/active/dtr-r0/nearfield/MZ10_AVAILABILITY_RESULTS_20260910.md"
       ],
       "commit": "8abacb1391690af1c6ce97396bf347d8f9e7712a"
+    },
+    {
+      "id": "terminal-mz11-selective-addition-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ11_ZERO_ADDED_FP_RECALL_GAIN_BUT_THIN_RETENTION_GATE_FAIL",
+      "summary": "DEV exact928 vs912, 32 added TP including17 far, no added FP. Sequence clean174 stress172; thin46/49 and44/49 fail48 gate, wrong1/49. No confirmation.",
+      "successor_requires": "A distinct correction candidate must retain complete-evidence thin detection and meet whole-output error budgets before new-placement confirmation.",
+      "forbidden_repeats": [
+        "Retuning this completed600-step gate or treating consumed training regression as confirmation",
+        "Claiming independent confirmation from the consumed200 frames"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ11_SELECTIVE_ADDITION_RESULTS_20260910.md"
+      ],
+      "commit": "4e5df5d532bc45ca7fa6ad070f12636488393803"
     }
   ]
 }
