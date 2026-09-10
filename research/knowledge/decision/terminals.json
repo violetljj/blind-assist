@@ -1875,6 +1875,25 @@
         "research/active/dtr-r0/nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md"
       ],
       "commit": "4564aa0df25539c09d9114c7db67a60228f7f81f"
+    },
+    {
+      "id": "terminal-mz27-feature-separation-20260910",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED",
+      "summary": "No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion.",
+      "successor_requires": "Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep.",
+      "forbidden_repeats": [
+        "Reopen completed MZ27 with posthoc anchor/reference/metric selection",
+        "Treat unscored identity or class support as correct predictions or CLEAR"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md"
+      ],
+      "commit": "8d9303932ba12031e688fa88d3fc238a5c84d6b3"
     }
   ]
 }

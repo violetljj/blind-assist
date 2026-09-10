@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-10",
-  "source_fingerprint": "c42d2add02fa8534cea68ebe43d066b96c5fe7af31dda03b59612a9d5ca50d39",
+  "source_fingerprint": "076c22c10334952abbc9e1ab681ffd64905b2e89dd9efa386133072ac5b37e13",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 318,
-    "current_terminals": 104,
-    "run_associations": 316
+    "experiments": 319,
+    "current_terminals": 105,
+    "run_associations": 317
   },
   "failure_layers": [
     {
@@ -20075,6 +20075,35 @@
       "search_text": "terminal-mz26-deterministic-convergence-20260910 obstacle-avoidance MZ26_DURATION_GAIN_WITH_RESIDUAL_EXTREME_TAIL Same deterministic trajectory1200->4800: far69->71of75, addedFP7->3, exact2855->2860of3000, pole49/48 preserved. TRAIN negative activation29.43->18.34%, but DEV extreme negative scores rise and positive witness retention falls. No baseline promotion. Inspect observable input separation at unsupported and supported locations before an objective or representation successor; completed fit stays closed. Reopen the completed MZ26 fit or reinterpret its endpoints as independent confirmation Treat add-only zero-new-FP as removal of original baseline errors"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz27-feature-separation-20260910",
+      "status": "diagnostic",
+      "question": "No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion.",
+      "baseline": null,
+      "change": "Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep.",
+      "primary_metric": null,
+      "decision": "MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED",
+      "report": "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md",
+      "source": "decision/terminals.json",
+      "commit": "8d9303932ba12031e688fa88d3fc238a5c84d6b3",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep.",
+      "forbidden_repeats": [
+        "Reopen completed MZ27 with posthoc anchor/reference/metric selection",
+        "Treat unscored identity or class support as correct predictions or CLEAR"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md"
+      ],
+      "association_id": "mz27-feature-separation-20260910",
+      "search_text": "terminal-mz27-feature-separation-20260910 obstacle-avoidance MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion. Evaluate a fixed packet-coordinate support comparator on full task opportunities with all coverage, positive witness loss and missing support reported; no same-diagnostic neighborhood or metric sweep. Reopen completed MZ27 with posthoc anchor/reference/metric selection Treat unscored identity or class support as correct predictions or CLEAR"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -26879,6 +26908,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz26-deterministic-convergence-20260910 Does fourfold optimization exposure improve decisive availability within one strictly deterministic shared trajectory? Step1200 within the same fresh deterministic trajectory; MZ5/MZ20 retained Single4800step StableAngularAvailability fit with predeclared1200and4800endpoints; original loss/batches/cutoffs Same deterministic trajectory1200->4800: far69->71of75, addedFP7->3, exact2855->2860of3000, pole49/48 preserved. TRAIN negative activation29.43->18.34%, but DEV extreme negative scores rise and positive witness retention falls. No baseline promotion. MZ26_DURATION_GAIN_WITH_RESIDUAL_EXTREME_TAIL research/active/dtr-r0/nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md Same7562uniqueTRAIN and consumed Development; deterministic sampler engineering checks already passed"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz27-feature-separation-20260910",
+      "status": "archived",
+      "question": "Do fixed raw visual descriptors separate unsupported angular locations better than learned compressed descriptors under site and packet controls?",
+      "baseline": "Frozen MZ26 step4800 learned40 and packet-only retrieval on identical references",
+      "change": "No-training raw64 and raw3x3 descriptor retrieval at fixed residual errors, TRAIN/DEV tails and75 recovered far witnesses",
+      "primary_metric": "No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion.",
+      "decision": "MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED",
+      "report": "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md",
+      "source": "Consumed Development and exact TRAIN reference IDs with site/group exclusion",
+      "commit": "8d9303932ba12031e688fa88d3fc238a5c84d6b3",
+      "association_id": "mz27-feature-separation-20260910",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "mz27-feature-separation-20260910 Do fixed raw visual descriptors separate unsupported angular locations better than learned compressed descriptors under site and packet controls? Frozen MZ26 step4800 learned40 and packet-only retrieval on identical references No-training raw64 and raw3x3 descriptor retrieval at fixed residual errors, TRAIN/DEV tails and75 recovered far witnesses No-fit110anchor diagnostic:92scored/18class-insufficient. Negative tails packet27/29 versus raw64=10, raw3x3=8, learned40=4; real witnesses49/61,49,53,51. Site/packet-controlled raw visual advantage fails; retain diagnostic and packet-coordinate comparator, not model promotion. MZ27_RAW_DESCRIPTOR_ADVANTAGE_NOT_SUPPORTED research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md Consumed Development and exact TRAIN reference IDs with site/group exclusion"
     }
   ],
   "associations": [
@@ -29317,6 +29368,22 @@
         "research/active/dtr-r0/nearfield/MZ26_DETERMINISTIC_CONVERGENCE_RESULTS_20260910.md"
       ],
       "decision_id": "terminal-mz26-deterministic-convergence-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz27-feature-separation-20260910",
+      "use_ids": [],
+      "protocol_id": "mz27-feature-separation-20260910-protocol",
+      "code_revision": "8d9303932ba12031e688fa88d3fc238a5c84d6b3",
+      "input_fingerprint": "94d2cb5454cfc7853c321190d111c824a6341aa5e7ee4d0d3f67df8c24cdc730",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_PROTOCOL_20260910.md",
+        "artifacts.local/work/mz27-feature-separation-20260910/run-v1",
+        "artifacts.local/work/mz27-feature-separation-20260910/run-v1/receipt.json",
+        "artifacts.local/work/mz27-feature-separation-20260910/run-v1/audit.json",
+        "research/active/dtr-r0/nearfield/MZ27_FEATURE_SEPARATION_RESULTS_20260910.md"
+      ],
+      "decision_id": "terminal-mz27-feature-separation-20260910",
       "source_rows": 1
     },
     {
