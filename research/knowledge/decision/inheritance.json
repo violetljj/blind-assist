@@ -831,6 +831,26 @@
       "failure_signature": "24newnonfitBN with0extraFP but3extraoldFP;1of24nativewinnerincorrect;posthoc selection and Androidcost unmeasured",
       "revisit_trigger": "Fixed-checkpoint transfer on admitted MZ55 new shapes with unchanged cutoffs and all perquery costs",
       "assignment_basis": "Three fixed ORs, prior array/count/scalar/native parity, original UNKNOWN and no fitting or recutting"
+    },
+    {
+      "terminal_id": "terminal-mz55-diverse-mesh-source-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Source-only rigid-mesh Development component with original45degree ToF and native training/evaluator labels",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ55_DIVERSE_MESH_SOURCE_RESULTS_20260911.md",
+      "failure_signature": "All source gates pass; opaque grille has no proven through-holes, consumed sites and7417741UNKNOWN cells limit claims; no model benefit measured",
+      "revisit_trigger": "Separately registered fixed-checkpoint transfer on sealed2560frame source, without cutoff adjustment or native predictor inputs",
+      "assignment_basis": "All2560source/intent/RGBhash checks,1280eventpairs,80independentnative blockloops and actualviewedpanels; bothhosts released with unique unstarted-shard handoff"
+    },
+    {
+      "terminal_id": "terminal-mz58-diverse-transfer-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed MZ57 no-extra-FP transfer to consumed MZ55 diverse controlled shapes without refit or recut",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md",
+      "failure_signature": "All3gates fail; new1920shape frames zero addedTP; GLOBAL3TP2FP only rods,1nativewinner; shallowawningBN7of160",
+      "revisit_trigger": "A separately scoped training-coverage or mechanism contrast with original comparator and unchanged declared evaluation use",
+      "assignment_basis": "Complete2560source/10methods/3profiles,307200scalar decisions and native attribution, original cutoffs and UNKNOWN retained"
     }
   ]
 }

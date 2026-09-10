@@ -2484,6 +2484,55 @@
         "research/active/dtr-r0/nearfield/MZ57_COMPLEMENTARY_SCALE_UNION_RESULTS_20260911.md"
       ],
       "commit": "e67170b700407487db55dcd35acbf246eb92d828"
+    },
+    {
+      "id": "terminal-mz55-diverse-mesh-source-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ55_DIVERSE_RIGID_MESH_SOURCE_ADMITTED_WITH_NATIVE_FULL_FRAME_SUPERVISION",
+      "summary": "Original 2560-frame budget: 1920 new awning/sign/opaque-patterned-grille frames plus 640 retained rods on eight consumed sites. All 2560 source/intent/unique IDs pass; 1600 TRAIN_CANDIDATE, 320 CALIBRATION, 640 HELDOUT_SITE. Actual query positives 640/784/640/800 retain extra far bits 144/160. All 1280 event-cell pairs invariant while background valid counts change; independent 80 native block-loop checks and 40 raw pairs, all 2560 RGB hashes and 80 actual viewed panels pass. Fullframe counts[N,45,80,4], valid counts[N,45,80], uint8; 7417741 UNKNOWN cells; merged 568029B. Primary 936 and worker 1560+64; unique unstarted final-shard handoff preserved. Primary controller FAIL is expected ownership guard, separate release PASS; both hosts released. Raw capture 4739021976B retained, ZIP 1099776277B. No fit/model inference; grille through-hole geometry unproven.",
+      "successor_requires": "Use sealed source and native-only labels as a component, preserving original RGB bytes, 45-degree ToF packet, consumed-site roles and UNKNOWN. Evaluate fixed checkpoints and cutoffs in a separately scoped transfer; source admission alone establishes no algorithm, hardware or safety benefit.",
+      "forbidden_repeats": [
+        "Treat native depth, fullframe labels or site/role metadata as observable predictor inputs",
+        "Claim the opaque patterned grille proves perforation or optical material behavior",
+        "Drop actual extra near/far event bits to match range-anchor intent",
+        "Treat changed paired background valid counts as target-event failure or force known equality",
+        "Claim consumed sites are fresh blind confirmation or source admission is model success",
+        "Hide the preserved expected primary controller FAIL or count the handed-off shard twice",
+        "Call compact supervision a lossless copy of all raw depth or delete retained raw sources"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ55_DIVERSE_MESH_SOURCE_RESULTS_20260911.md"
+      ],
+      "commit": "b809297c4b60bcc2164a420c33d98b0795ea47ed"
+    },
+    {
+      "id": "terminal-mz58-diverse-transfer-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ58_FIXED_SCALE_UNIONS_FAIL_NO_EXTRA_FP_TRANSFER_WITH_NO_NEW_FAMILY_RECOVERY",
+      "summary": "Frozen10methods/3profiles on all2560 MZ55, nofit/cutoff change. DROP OLDunion1832TP317FP1032FN; LOCAL1836/319/1028,GLOBAL1835/319/1029,SUPP1834/318/1030. All3no-extra-FP gates fail. All additions retained rods; new1920three-family frames add0TP0FP. GLOBAL3newHEAD_FAR TP has1nativewinner insidefield and2known nonnative, plus2HEAD_NEAR FP; activeGLOBALvsSUPP+1TP+1FP. ShallowawningBODY_NEAR7/160TP. OldunionvsMZ37+122TP+51FP;338/1280contextpairs change. 307200scalar decisions,153600candidate/native checks,122880OR; allIDs/pairs/frozencuts/UNKNOWN pass. CUDA64.391s,CPUscore1.46s,0fit/oldreplay/newcut/cache. Source collection alone is not training improvement.",
+      "successor_requires": "Carry this fixed transfer as NEGATIVE_CONTROL. Preserve prior MZ57 scoped challenger and original comparator. Diagnose shallowawning near-body misses and false-alert tails; separate any later MZ55 training-coverage change from a mechanism change. Retain consumed-site and imperfect-ToF simulation limits.",
+      "forbidden_repeats": [
+        "Claim old nonfit no-extra-FP benefit generalized to new1920shape frames",
+        "Select a mode or recut from MZ58 outcomes and report frozen transfer success",
+        "Call source expansion an observed training gain",
+        "Hide317baselineFP or nonnative winners and UNKNOWN local cells",
+        "Treat consumed sites as fresh confirmation or this packet model as calibrated hardware"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ58_EXECUTION_20260911.md"
+      ],
+      "commit": "b809297c4b60bcc2164a420c33d98b0795ea47ed"
     }
   ]
 }

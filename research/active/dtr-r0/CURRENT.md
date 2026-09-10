@@ -5,6 +5,37 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Fixed diverse-shape transfer: MZ58 (2026-09-11)
+
+[MZ58](nearfield/MZ58_DIVERSE_TRANSFER_RESULTS_20260911.md) evaluates all 2560
+MZ55 frames with ten frozen methods and three profiles, no fit or new cutoff.
+DROP old union gives 1832 TP/317 FP; LOCAL union 1836/319, GLOBAL 1835/319,
+SUPPRESSED 1834/318. All three no-extra-FP checks fail. All additions occur
+on retained rods; the three new families (1920 frames) gain zero events.
+GLOBAL adds three HEAD_FAR TP, only one with a native winner, and two
+HEAD_NEAR FP; no new native outside-field detection. Shallow awning BODY_NEAR
+remains 7/160 TP. Retain this transfer as NEGATIVE_CONTROL while preserving
+MZ57's earlier scoped challenger. New data have not yet been used for training.
+[Execution and interpretation](nearfield/MZ58_EXECUTION_20260911.md) records
+64.391s CUDA inference, 1.46s independent CPU score, shared RGB features,
+released processes and no dense cache. Full-frame UNKNOWN remains 7417741.
+
+## Diverse rigid-mesh source admitted: MZ55 (2026-09-11)
+
+[MZ55](nearfield/MZ55_DIVERSE_MESH_SOURCE_RESULTS_20260911.md) completes the
+original 2560 frames: 1920 new awning/sign/opaque-patterned-grille frames and
+640 retained rods on eight consumed sites. All source/intent checks, 1280
+paired event arrays, 80 independent native block-loop audits and 2560 RGB
+hashes pass. Roles are 1600 TRAIN_CANDIDATE/320 CALIBRATION/640 HELDOUT_SITE;
+actual query positives 640/784/640/800 retain extra far bits. Full-frame
+supervision is 568029 B, with 7417741 UNKNOWN cells; original 45-degree ToF
+inputs remain unchanged. Raw 4.739 GB stays on owner hosts, compact packages
+1.100 GB. Primary completed three main shards (936); worker five (1560) plus
+64 canary after explicit handoff of one unstarted shard. Primary's preserved
+controller FAIL is the expected ownership stop, with both release receipts
+PASS. Retain a source COMPONENT, not an algorithm or perforation claim.
+Fixed-checkpoint transfer must preserve cutoffs and consumed-site limits.
+
 ## Fixed complementary scale union: MZ57 (2026-09-11)
 
 [MZ57](nearfield/MZ57_COMPLEMENTARY_SCALE_UNION_RESULTS_20260911.md) combines
