@@ -1,9 +1,35 @@
 # Cane-complementary forward perception and DTR history
 
-Updated: 2026-09-08
+Updated: 2026-09-10
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
+
+## Latest obstacle evolution: MZ19-MZ22 (2026-09-10)
+
+[MZ20 cross-frame ranking](nearfield/MZ20_RANK_OBJECTIVE_RESULTS_20260910.md)
+restores trained pole BODY25/25 clean/stress (all queries49/48 of49), versus
+MZ18 BODY4/1. PlacementDEV3000 adds75 farTP and8FP over MZ5; exact2862.
+BODY local AP .801/.785 improves on MZ16 .708/.703, below MZ18 .838/.828.
+Retain ranking candidate as a controlled challenger; no baseline promotion.
+
+[MZ19 saved margins](nearfield/MZ19_MARGIN_DIAGNOSTIC_RESULTS_20260910.md)
+finds correct within-frame ordering but lost cross-frame separation in MZ18;
+the cutoff-driving task negatives frequently lack known-local samples.
+[MZ21 geometry trace](nearfield/MZ21_FALSE_ADDITION_RESULTS_20260910.md)
+finds all16/7/8 MZ16/MZ18/MZ20 newFP have no actual packet query contributor
+and no known eligible local candidate. Evaluator-only support is not an input.
+
+[MZ22 residual arbitration](nearfield/MZ22_EVIDENCE_ARBITRATION_RESULTS_20260910.md)
+adds89 farTP but loses18 original farTP on placements, with7 addedFP and2864
+exact. Pole falls to41/35 of49 clean/stress, although3 sequence BODYfarFP are
+removed. Retain this exact recipe as NEGATIVE_CONTROL. MZ5/MZ9 unchanged.
+
+Next active goal question: learn observable angular evidence availability or
+source support while preserving true-witness strength, original near coverage,
+and low false alerts. UNKNOWN stays unknown; geometry is not source availability.
+All current fits are complete; no job left running. Broad improvement goal
+remains active; no hardware/App promotion.
 
 ## Latest BODY witness-objective fit (2026-09-10)
 
