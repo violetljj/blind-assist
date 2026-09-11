@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Rendered surface recovery and support correction (2026-09-11)
+
+[Four-frame worker smoke](nearfield/SOURCE_SURFACE_SMOKE_20260911.md) actually rendered corrected1x landing/birch poses in both original context partners: HF231/1287 pixels and extra BF2014/2085, with matching isolated-target evidence and exact pair query depths. Capture/world exit0 in91.820s; resources released. Collision comparison UNKNOWN is not ToF invalidity:125/128 rays hit the correct component, but121 fail rendered-depth agreement. Ground grid mixes181 sidewalk and149 controlled-target hits; next terrain probes must ignore controlled actors. No dataset admission or new model fit.
+
+[Existing-cube support payload](nearfield/SOURCE_CONTACT_REPAIR_20260911.md) closes measured wood/duct gaps with unchanged target transforms, four bracket/rail and six post/leg adjustments. Duct contact areas641.324/523.526mm2; wood remains point/line contact with stability unknown. CPU0.313s, no new assets or rendered verification of these support changes. Preserve MZ72 failure; validate the exact fresh support/ground changes before any broader source capture.
+
 ## Explicit packet-to-model adapter (2026-09-11)
 
 [Adapter](nearfield/TOF_MODEL_ADAPTER_20260911.md) now canonicalizes usable observed returns while preserving raw order and aligned quality/status availability. The legacy bridge supports64 zones and1..2 configured slots without silently truncating4 targets or expanding16 zones. Thirteen input tests passed;49,152 transforms across8,192 existing frames preserve40,960 original/closest profile frames byte-exact and reproduce all2,048 saved MZ75 packed HELD inputs. No model fit, new score, synthesized quality or automatic frozen-run/application change; quality-aware neural consumption remains outstanding.
