@@ -5,6 +5,10 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Explicit packet-to-model adapter (2026-09-11)
+
+[Adapter](nearfield/TOF_MODEL_ADAPTER_20260911.md) now canonicalizes usable observed returns while preserving raw order and aligned quality/status availability. The legacy bridge supports64 zones and1..2 configured slots without silently truncating4 targets or expanding16 zones. Thirteen input tests passed;49,152 transforms across8,192 existing frames preserve40,960 original/closest profile frames byte-exact and reproduce all2,048 saved MZ75 packed HELD inputs. No model fit, new score, synthesized quality or automatic frozen-run/application change; quality-aware neural consumption remains outstanding.
+
 ## Identical-distance slot control: MZ75 (2026-09-11)
 
 [MZ75](nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md): At identical surviving FAR distance content, slot1-only to slot0 packing changes frozen DIVERSE new MZ67 HELD from760TP83FP to912TP56FP; old MZ61 from881/106 to987/31. New query TP deltas[-6,+45,-13,+126], FP deltas[0,+3,-21,-9] retain local regressions. Both CONTROL/DIVERSE weights and all cuts unchanged. 2048 CUDA inference frames plus32 TRAIN parity,42.433s; independent scalar score4.621s. No model promotion or measured sensor-physics claim.
