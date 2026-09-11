@@ -5,6 +5,22 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Capture actor reuse: MZ65 (2026-09-11)
+
+[MZ65](nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md) completes48 worker A/B/R
+frames. Map-excluded A34.719/B31.125/R33.203s meets speed conditions, but RGB
+repeat-envelope failures12/16 full,13/16 target,13/16 boundary prevent adoption.
+Native depth/labels/UNKNOWN are exact. Float64 packet baseline differences are
+only<=2.22e-15m and vanish in float32, but the frozen exact gate remains failed.
+All16 actual A/B/R visual panels show consistent macro placement/support; they
+do not override numerical failure. Keep the original collector and this strict
+appearance-preserving pooling recipe as NEGATIVE_CONTROL.
+
+[Execution](nearfield/MZ65_EXECUTION_20260911.md) retains the startup-only0-frame
+driver repair, original inputs, all48 captures and28.747MB return. Driver302.423s
+exits0; worker UE/Python/Zen, port and temporary uploads are released. No recapture,
+new threshold, trained model, new training-source admission or hardware claim.
+
 ## Geometry learning: MZ64 (2026-09-11)
 
 [MZ64](nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md) fits the new MZ61

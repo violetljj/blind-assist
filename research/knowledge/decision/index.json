@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "121d09f441cdb11a2f3e8b624eb3eb7be7c710c5e7b006dc3665b0ddf0b0a012",
+  "source_fingerprint": "8458d54b894dad676c780f99c730c17c718e64e68bce1c4c99f951cc612088a8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 355,
-    "current_terminals": 141,
-    "run_associations": 353
+    "experiments": 356,
+    "current_terminals": 142,
+    "run_associations": 354
   },
   "failure_layers": [
     {
@@ -21251,6 +21251,41 @@
       "search_text": "terminal-mz64-geometry-learning-20260911 obstacle-avoidance MZ64_GEOMETRY_LEARNING_NATIVE_GAIN_WITH_OLD_FALSE_ALERT_COSTS Two1536-step warm-start matched source-adaptation heads, same original loss/replay/cuts. Overall retaining gate FAIL14/19: all seven new-geometry conditions pass, five old FP clauses fail. DROP MZ61 held1024 frozenC756TP38FP/matchedC761/39/GEOMETRY795/38; nativeBN additions beyondOLD8/12/30, heldawning0/2/5. Geometry vs matched gains35/loses1TP, adds0/removes1FP on held. Old DROP legacy2733/55->2748/62, MZ48nonfit550/24->554/25, MZ55held478/83->487/86. Three old unsupported far-awning falseBN events have known non-native winners. All-invalid4096 geometry248TP16FP still3848misses. Both sourceCAL/HELD excluded from fit/cuts; sourceUNKNOWN retained. Run381.847s, CPUscore13.483s;2133 arrays and12150 historical metric rows exact; temporarycache releases7627165696 allocated bytes. Retain GEOMETRY as bounded CHALLENGER and matched CONTROL plus frozen OLD_NEG/MZ57/MZ62 comparators; preserve MZ60/MZ62 negative-control scopes. Any next source or learning change must address explicit old false-alert and missing-input costs without outcome-selected thresholds, source-role changes or claiming trained ceiling. Claim complete retaining success from the new-geometry subset Hide legacy or old far-awning near false alerts Treat native winner as causal surface-use proof or UNKNOWN as clearance Claim a useful sensorless backup from248/4096 positives Call source geometry factor isolated from source size/exposure or prior MZ55 warm start Infer hardware natural-scene Android or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz65-actor-pool-20260911",
+      "status": "diagnostic",
+      "question": "One fixed48-frame worker A/B/R completed, no capture retry. Pool creates16/reuses96 versus112 creations; map-excluded A34.719/B31.125/R33.203s, B2.078s below faster baseline beyond1.516s drift; preparation1.547/.531/1.608s. Speed conditions PASS, numeric admission FAIL. Native depth, masks/counts/UNKNOWN/support and packet validity/counts exact; exact float64 range_m baseline fails only<=2.22e-15m rounding, allfloat32equal; frozen gate stays NOT_EVALUABLE_BASELINE_INSTABILITY. Independently RGB envelope fails full12/16,target13/16,boundary13/16. All16 A/B/R panels actually root-viewed with macro geometry/context consistent; this does not override RGB. Keep original collector. Startup-only PowerShell variable collision repaired with unchanged inputs and0captured; full driver302.423s exit0; worker UE/Python/Zen/port/upload release verified.",
+      "baseline": null,
+      "change": "Keep original collector and carry MZ65 as the strict appearance-preserving actor-pool negative control. Any pooling/appearance or precision follow-up must declare new conditions and keep this result; no favorable case selection or retrospective tolerance change. Model/source learning results are independent.",
+      "primary_metric": null,
+      "decision": "MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE",
+      "report": "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "8da51e863e85c281c2c00c7cc1d07d3d68803ad4",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Keep original collector and carry MZ65 as the strict appearance-preserving actor-pool negative control. Any pooling/appearance or precision follow-up must declare new conditions and keep this result; no favorable case selection or retrospective tolerance change. Model/source learning results are independent.",
+      "forbidden_repeats": [
+        "Call observed6.26percent time reduction accepted quality-preserving throughput",
+        "Override RGB failure with macro visual inspection or native-depth identity",
+        "Treat tiny float64 arithmetic differences as physical sensor error",
+        "Widen tolerance or select cases to rescue this sealed result",
+        "Call48 engineering captures a new training source or model improvement",
+        "Infer natural-scene hardware or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ65_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz65-actor-pool-20260911",
+      "search_text": "terminal-mz65-actor-pool-20260911 obstacle-avoidance MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE One fixed48-frame worker A/B/R completed, no capture retry. Pool creates16/reuses96 versus112 creations; map-excluded A34.719/B31.125/R33.203s, B2.078s below faster baseline beyond1.516s drift; preparation1.547/.531/1.608s. Speed conditions PASS, numeric admission FAIL. Native depth, masks/counts/UNKNOWN/support and packet validity/counts exact; exact float64 range_m baseline fails only<=2.22e-15m rounding, allfloat32equal; frozen gate stays NOT_EVALUABLE_BASELINE_INSTABILITY. Independently RGB envelope fails full12/16,target13/16,boundary13/16. All16 A/B/R panels actually root-viewed with macro geometry/context consistent; this does not override RGB. Keep original collector. Startup-only PowerShell variable collision repaired with unchanged inputs and0captured; full driver302.423s exit0; worker UE/Python/Zen/port/upload release verified. Keep original collector and carry MZ65 as the strict appearance-preserving actor-pool negative control. Any pooling/appearance or precision follow-up must declare new conditions and keep this result; no favorable case selection or retrospective tolerance change. Model/source learning results are independent. Call observed6.26percent time reduction accepted quality-preserving throughput Override RGB failure with macro visual inspection or native-depth identity Treat tiny float64 arithmetic differences as physical sensor error Widen tolerance or select cases to rescue this sealed result Call48 engineering captures a new training source or model improvement Infer natural-scene hardware or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28901,6 +28936,31 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz64-geometry-learning-20260911 Does learning from MZ61 geometry improve native BODY_NEAR weak-ToF detection beyond matched continued adaptation to MZ55? Shared frozen MZ62 CONTROL warm start, matched MZ64 CONTROL, retained OLD_NEG and MZ57 unions Two1536-step heads; only target source MZ55 TRAIN1600 versus MZ61 TRAIN2048; same original loss, replay, profiles and1256calibration; unique RGB features shared GEOMETRY versus matched CONTROL and frozen MZ62 CONTROL: greater native BODY_NEAR additions beyond OLD_NEG on DROP MZ61 HELD1024, including at least one held awning native addition; combined four-query TP retained and no newly false held bit versus either comparator; total TP retained and total FP not increased on legacy_noncal, MZ48 nonfit and MZ55 held640 versus either comparator. Report all effects and costs without outcome-driven selection. MZ64_GEOMETRY_LEARNING_NATIVE_GAIN_WITH_OLD_FALSE_ALERT_COSTS research/active/dtr-r0/nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md Consumed controlled Development; MZ61 TRAIN only for fit; both source CAL and held roles excluded from fit and cutoff"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz65-actor-pool-20260911",
+      "status": "archived",
+      "question": "Can immutable actor-slot reuse speed up controlled capture while preserving settled RGB/native evidence and weak ToF packets?",
+      "baseline": "Frozen MZ48 collector create/destroy policy with identical common timers; A and repeated R",
+      "change": "B-only actor pooling; fixed16 MZ61 worker cases each in A/B/R; original32/64settling/readiness/async writer and native labels unchanged",
+      "primary_metric": "Exact native/support/packet identity plus RGB/depth per-case residual within A/R drift and16 actual visual panels; B map-excluded wall below both baselines beyond drift and preparation sum below both",
+      "decision": "MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE",
+      "report": "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md",
+      "source": "Consumed MZ61 cases, fixed native evaluator; engineering preservation/speed only, zero model work",
+      "commit": "e5067bf3319e02b4634e90cef8c6eeeccb328c68",
+      "association_id": "mz65-actor-pool-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "observation_perception": 3,
+        "identity_binding": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz65-actor-pool-20260911 Can immutable actor-slot reuse speed up controlled capture while preserving settled RGB/native evidence and weak ToF packets? Frozen MZ48 collector create/destroy policy with identical common timers; A and repeated R B-only actor pooling; fixed16 MZ61 worker cases each in A/B/R; original32/64settling/readiness/async writer and native labels unchanged Exact native/support/packet identity plus RGB/depth per-case residual within A/R drift and16 actual visual panels; B map-excluded wall below both baselines beyond drift and preparation sum below both MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md Consumed MZ61 cases, fixed native evaluator; engineering preservation/speed only, zero model work"
     }
   ],
   "associations": [
@@ -32011,6 +32071,20 @@
         "research/active/dtr-r0/nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz64-geometry-learning-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz65-actor-pool-20260911",
+      "use_ids": [],
+      "protocol_id": "mz65-actor-pool-r0",
+      "code_revision": "e5067bf3319e02b4634e90cef8c6eeeccb328c68",
+      "input_fingerprint": "e56644209c3c705828fad0a5879f823f073b6621b5d1af5212099d4782b40b1a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_20260911.md",
+        "artifacts.local/work/mz65-actor-pool-20260911",
+        "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz65-actor-pool-20260911",
       "source_rows": 1
     },
     {

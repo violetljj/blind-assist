@@ -2681,6 +2681,31 @@
         "research/active/dtr-r0/nearfield/MZ64_EXECUTION_20260911.md"
       ],
       "commit": "e5067bf3319e02b4634e90cef8c6eeeccb328c68"
+    },
+    {
+      "id": "terminal-mz65-actor-pool-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE",
+      "summary": "One fixed48-frame worker A/B/R completed, no capture retry. Pool creates16/reuses96 versus112 creations; map-excluded A34.719/B31.125/R33.203s, B2.078s below faster baseline beyond1.516s drift; preparation1.547/.531/1.608s. Speed conditions PASS, numeric admission FAIL. Native depth, masks/counts/UNKNOWN/support and packet validity/counts exact; exact float64 range_m baseline fails only<=2.22e-15m rounding, allfloat32equal; frozen gate stays NOT_EVALUABLE_BASELINE_INSTABILITY. Independently RGB envelope fails full12/16,target13/16,boundary13/16. All16 A/B/R panels actually root-viewed with macro geometry/context consistent; this does not override RGB. Keep original collector. Startup-only PowerShell variable collision repaired with unchanged inputs and0captured; full driver302.423s exit0; worker UE/Python/Zen/port/upload release verified.",
+      "successor_requires": "Keep original collector and carry MZ65 as the strict appearance-preserving actor-pool negative control. Any pooling/appearance or precision follow-up must declare new conditions and keep this result; no favorable case selection or retrospective tolerance change. Model/source learning results are independent.",
+      "forbidden_repeats": [
+        "Call observed6.26percent time reduction accepted quality-preserving throughput",
+        "Override RGB failure with macro visual inspection or native-depth identity",
+        "Treat tiny float64 arithmetic differences as physical sensor error",
+        "Widen tolerance or select cases to rescue this sealed result",
+        "Call48 engineering captures a new training source or model improvement",
+        "Infer natural-scene hardware or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ65_EXECUTION_20260911.md"
+      ],
+      "commit": "8da51e863e85c281c2c00c7cc1d07d3d68803ad4"
     }
   ]
 }
