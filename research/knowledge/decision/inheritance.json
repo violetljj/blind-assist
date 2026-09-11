@@ -991,6 +991,26 @@
       "failure_signature": "16/64 missing declared HEAD event; full64 physical support not admitted; whole-scene duct head evidence can come from cradle geometry",
       "revisit_trigger": "Preserve this failed64 and complete frozen4096 recipe; do not replay or silently relabel it. A revised source must anchor actual target surfaces and support contacts, distinguish target from mount contributions, and preserve all extra native bits/UNKNOWN. Prioritize normal and partially available ToF; ALL_INVALID remains a secondary artificial stress test. Any later fit must retain old/new per-query error costs.",
       "assignment_basis": "Frozen source64 canary, two independent owner-local native32 audits, actual visual64 and bounded saved-source depth/contact diagnosis"
+    },
+    {
+      "terminal_id": "terminal-mz74-return-survival-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen paired surviving-return sensitivity and complete old/new query tradeoffs; no model or sensor promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md",
+      "failure_signature": "FAR introduces slot1-only zones absent in actual MZ70 training; mixed endpoint and representation effects",
+      "revisit_trigger": "Preserve all MZ74 predictions and both endpoint scenarios; isolate slot representation using the same FAR distances packed into slot0 with fixed models/cuts before attributing this difference to sensor physics. Keep old/new per-query false/true costs and UNKNOWN; no strongest-return, real-hardware or model-promotion claim. Use exported real surfaces for corrected target/contact placement, then new bounded source capture; MZ72failed64 stays unadmitted.",
+      "assignment_basis": "32TRAIN three-profile parity,8192frame CUDA inference,independent scalar/native score and scheduled TRAIN slot census"
+    },
+    {
+      "terminal_id": "terminal-mz75-return-slot-control-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Identical-distance return-slot diagnostic; input-adapter design evidence only, no predictor promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md",
+      "failure_signature": "Frozen full pipeline depends on ordered slot positions; aggregate improvement retains BODY_NEAR/HEAD_NEAR regressions",
+      "revisit_trigger": "Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion.",
+      "assignment_basis": "32TRAIN exact decision parity;2048 fixed CUDA inference; scalar packing, cut, metric and exact event exchange checks"
     }
   ]
 }

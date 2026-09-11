@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "7b02e63d450d1547ff898aaab91aaf71583056b63fcaa5a4081622b9d506306b",
+  "source_fingerprint": "8795f2b03393484624965632c74b8f7dda523136570c47db494853fc258d808c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 363,
-    "current_terminals": 149,
-    "run_associations": 361
+    "experiments": 365,
+    "current_terminals": 151,
+    "run_associations": 363
   },
   "failure_layers": [
     {
@@ -21529,6 +21529,75 @@
       "search_text": "terminal-mz72-physical-source-20260911 obstacle-avoidance MZ72_PHYSICAL_SOURCE_CANARY_FOCUS_AND_SUPPORT_FAILURE Dual-host64 canary:64 source-valid,48 required-focus matches,32 exact native pairs; independent native64 and actual visual64 reviewed.16 landing/tree HEAD cases miss intent, physical contacts unresolved and some duct HN pixels match cradle geometry. Main4032 never started; no source admission/model work. Original MZ70 weights/cuts retained. Preserve this failed64 and complete frozen4096 recipe; do not replay or silently relabel it. A revised source must anchor actual target surfaces and support contacts, distinguish target from mount contributions, and preserve all extra native bits/UNKNOWN. Prioritize normal and partially available ToF; ALL_INVALID remains a secondary artificial stress test. Any later fit must retain old/new per-query error costs. Expand main4032 despite failed64 canary Treat whole-scene head events from mounts as target-specific coverage Infer real surface contact or collision from AABB overlap alone Erase actual extra native bits or UNKNOWN Treat an artificial ALL_INVALID mask as normal real-device operating frequency Claim model gain from source health or count-signature novelty"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz74-return-survival-20260911",
+      "status": "diagnostic",
+      "question": "Frozen MZ70 DIVERSE on new MZ67 HELD: DROP753TP71FP, closest-slot0 911/57, farthest-slot1 760/83; old MZ61 832/38,988/31,881/106. FAR new HEAD_FAR95/28 versus DROP158/19. Both original arms/cuts retained. MZ70 TRAIN slot1-only exposure is zero, so FAR mixes near-return absence with an unfamiliar ordered representation. Run8192frames plus32parity,153.116s; score14.719s. Worker source triangles exported with unchanged assets and no captures.",
+      "baseline": null,
+      "change": "Preserve all MZ74 predictions and both endpoint scenarios; isolate slot representation using the same FAR distances packed into slot0 with fixed models/cuts before attributing this difference to sensor physics. Keep old/new per-query false/true costs and UNKNOWN; no strongest-return, real-hardware or model-promotion claim. Use exported real surfaces for corrected target/contact placement, then new bounded source capture; MZ72failed64 stays unadmitted.",
+      "primary_metric": null,
+      "decision": "MZ74_RETURN_SURVIVAL_SENSITIVITY_WITH_UNSEEN_SLOT_CONFOUND",
+      "report": "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve all MZ74 predictions and both endpoint scenarios; isolate slot representation using the same FAR distances packed into slot0 with fixed models/cuts before attributing this difference to sensor physics. Keep old/new per-query false/true costs and UNKNOWN; no strongest-return, real-hardware or model-promotion claim. Use exported real surfaces for corrected target/contact placement, then new bounded source capture; MZ72failed64 stays unadmitted.",
+      "forbidden_repeats": [
+        "Treat FAR-slot1 outcome as solely loss of the near return",
+        "Select the better endpoint as a calibrated hardware simulator",
+        "Attribute every final OR gain to the new head",
+        "Turn missing/UNKNOWN into clearance",
+        "Promote models from consumed synthetic sensitivity alone"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_20260911.md"
+      ],
+      "association_id": "mz74-return-survival-20260911",
+      "search_text": "terminal-mz74-return-survival-20260911 obstacle-avoidance MZ74_RETURN_SURVIVAL_SENSITIVITY_WITH_UNSEEN_SLOT_CONFOUND Frozen MZ70 DIVERSE on new MZ67 HELD: DROP753TP71FP, closest-slot0 911/57, farthest-slot1 760/83; old MZ61 832/38,988/31,881/106. FAR new HEAD_FAR95/28 versus DROP158/19. Both original arms/cuts retained. MZ70 TRAIN slot1-only exposure is zero, so FAR mixes near-return absence with an unfamiliar ordered representation. Run8192frames plus32parity,153.116s; score14.719s. Worker source triangles exported with unchanged assets and no captures. Preserve all MZ74 predictions and both endpoint scenarios; isolate slot representation using the same FAR distances packed into slot0 with fixed models/cuts before attributing this difference to sensor physics. Keep old/new per-query false/true costs and UNKNOWN; no strongest-return, real-hardware or model-promotion claim. Use exported real surfaces for corrected target/contact placement, then new bounded source capture; MZ72failed64 stays unadmitted. Treat FAR-slot1 outcome as solely loss of the near return Select the better endpoint as a calibrated hardware simulator Attribute every final OR gain to the new head Turn missing/UNKNOWN into clearance Promote models from consumed synthetic sensitivity alone"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz75-return-slot-control-20260911",
+      "status": "diagnostic",
+      "question": "At identical surviving FAR distance content, slot1-only to slot0 packing changes frozen DIVERSE new MZ67 HELD from760TP83FP to912TP56FP; old MZ61 from881/106 to987/31. New query TP deltas[-6,+45,-13,+126], FP deltas[0,+3,-21,-9] retain local regressions. Both CONTROL/DIVERSE weights and all cuts unchanged. 2048 CUDA inference frames plus32 TRAIN parity,42.433s; independent scalar score4.621s. No model promotion or measured sensor-physics claim.",
+      "baseline": null,
+      "change": "Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion.",
+      "primary_metric": null,
+      "decision": "MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED",
+      "report": "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion.",
+      "forbidden_repeats": [
+        "Attribute FAR-slot1 decline solely to unavailable near distance",
+        "Call identical-distance repacking a newly trained model gain",
+        "Assume slot0 always physically means strongest target",
+        "Promote a model based on consumed synthetic representation control",
+        "Treat missing or UNKNOWN as clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_20260911.md",
+        "research/active/dtr-r0/nearfield/SOURCE_SURFACE_ANCHORS_20260911.md"
+      ],
+      "association_id": "mz75-return-slot-control-20260911",
+      "search_text": "terminal-mz75-return-slot-control-20260911 obstacle-avoidance MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED At identical surviving FAR distance content, slot1-only to slot0 packing changes frozen DIVERSE new MZ67 HELD from760TP83FP to912TP56FP; old MZ61 from881/106 to987/31. New query TP deltas[-6,+45,-13,+126], FP deltas[0,+3,-21,-9] retain local regressions. Both CONTROL/DIVERSE weights and all cuts unchanged. 2048 CUDA inference frames plus32 TRAIN parity,42.433s; independent scalar score4.621s. No model promotion or measured sensor-physics claim. Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion. Attribute FAR-slot1 decline solely to unavailable near distance Call identical-distance repacking a newly trained model gain Assume slot0 always physically means strongest target Promote a model based on consumed synthetic representation control Treat missing or UNKNOWN as clearance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29371,6 +29440,52 @@
         "decision_lifecycle": 3
       },
       "search_text": "mz72-physical-source-20260911 Can credible original-size slats, grounded frames, supported ducts and tree geometry add useful native head/body coverage while preserving physical support and actual cross-range labels? FrozenMZ48 collector/native kernels; retained MZ48/55/61/67 controlled sources and originalRGB+64zone observation contract Fixed4096 physical-source rows:3072 original-size+1024 separate angular controls, first64 canary; source intent is required-positive subset with extra native bits retained All64 source/render/floor/required-positive-focus and actual physical RGB/native reviews;32 exact native event pairs; failure stopsmain4032. Old TRAIN native tensor novelty descriptive only; preserve actual extra bits and UNKNOWN. MZ72_PHYSICAL_SOURCE_CANARY_FOCUS_AND_SUPPORT_FAILURE research/active/dtr-r0/nearfield/MZ72_PHYSICAL_SOURCE_RESULTS_20260911.md Controlled existing city scenes; native source coverage only; no model or real-sensor performance claim"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz74-return-survival-20260911",
+      "status": "archived",
+      "question": "How do both surviving close-return possibilities affect old/new per-query detection and false-positive costs with all models and cuts frozen?",
+      "baseline": "Original MZ70 CONTROL/DIVERSE plus unchanged MZ37 and OLD_NEG OR on IDEAL/MERGE/DROP",
+      "change": "Paired closest/farthest existing return survives below0.600m separation; only other slot masked",
+      "primary_metric": "Both surviving-return scenarios versus original IDEAL/MERGE/DROP at fixed MZ70 and OLD_NEG cutoffs; all four queries with TP/FP/FN/TN, UNKNOWN, added/lost event bits and native winner support. Primary original old/new HELD geometry, TRAIN/CAL/all descriptive. No selected winner or automatic promotion.",
+      "decision": "MZ74_RETURN_SURVIVAL_SENSITIVITY_WITH_UNSEEN_SLOT_CONFOUND",
+      "report": "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md",
+      "source": "Consumed controlled Development MZ61/MZ67; sensitivity proxies, not device physics",
+      "commit": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "association_id": "mz74-return-survival-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 3
+      },
+      "search_text": "mz74-return-survival-20260911 How do both surviving close-return possibilities affect old/new per-query detection and false-positive costs with all models and cuts frozen? Original MZ70 CONTROL/DIVERSE plus unchanged MZ37 and OLD_NEG OR on IDEAL/MERGE/DROP Paired closest/farthest existing return survives below0.600m separation; only other slot masked Both surviving-return scenarios versus original IDEAL/MERGE/DROP at fixed MZ70 and OLD_NEG cutoffs; all four queries with TP/FP/FN/TN, UNKNOWN, added/lost event bits and native winner support. Primary original old/new HELD geometry, TRAIN/CAL/all descriptive. No selected winner or automatic promotion. MZ74_RETURN_SURVIVAL_SENSITIVITY_WITH_UNSEEN_SLOT_CONFOUND research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md Consumed controlled Development MZ61/MZ67; sensitivity proxies, not device physics"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz75-return-slot-control-20260911",
+      "status": "archived",
+      "question": "Does packing identical surviving FAR distances into slot0 change frozen model decisions?",
+      "baseline": "MZ74 FAR slot1, both MZ70 arms and original OLD_NEG full OR pipeline",
+      "change": "Move only slot1-only valid returns to slot0; all distance content unchanged",
+      "primary_metric": "Same surviving far distances and valid-zone set: packed slot0 versus original FAR slot1; both original MZ70 arms and all8 decisions, old/new HELD per-query TP/FP/FN/TN, UNKNOWN and exact exchanged event bits. No fitting, cuts, or promotion.",
+      "decision": "MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED",
+      "report": "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md",
+      "source": "Consumed controlled Development MZ61/MZ67; posthoc representation diagnostic",
+      "commit": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "association_id": "mz75-return-slot-control-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "decision_lifecycle": 6
+      },
+      "search_text": "mz75-return-slot-control-20260911 Does packing identical surviving FAR distances into slot0 change frozen model decisions? MZ74 FAR slot1, both MZ70 arms and original OLD_NEG full OR pipeline Move only slot1-only valid returns to slot0; all distance content unchanged Same surviving far distances and valid-zone set: packed slot0 versus original FAR slot1; both original MZ70 arms and all8 decisions, old/new HELD per-query TP/FP/FN/TN, UNKNOWN and exact exchanged event bits. No fitting, cuts, or promotion. MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md Consumed controlled Development MZ61/MZ67; posthoc representation diagnostic"
     }
   ],
   "associations": [
@@ -32608,6 +32723,34 @@
         "research/active/dtr-r0/nearfield/MZ72_PHYSICAL_SOURCE_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz72-physical-source-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz74-return-survival-20260911",
+      "use_ids": [],
+      "protocol_id": "mz74-return-survival-r0",
+      "code_revision": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "input_fingerprint": "2a440363eecd47c912030fec6b5c78c105ecfd44c4e8a5a9bf79802aae4757a9",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_20260911.md",
+        "artifacts.local/work/mz74-return-survival-20260911",
+        "research/active/dtr-r0/nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz74-return-survival-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz75-return-slot-control-20260911",
+      "use_ids": [],
+      "protocol_id": "mz75-return-slot-control-r0",
+      "code_revision": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd",
+      "input_fingerprint": "6d9ddcc5657d3b9422d7dca67a6fe0c71253cef6397965b5b5690cfa68428a79",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_20260911.md",
+        "artifacts.local/work/mz75-return-slot-control-20260911",
+        "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz75-return-slot-control-20260911",
       "source_rows": 1
     },
     {

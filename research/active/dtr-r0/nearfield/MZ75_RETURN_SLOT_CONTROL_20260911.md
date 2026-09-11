@@ -1,0 +1,15 @@
+# MZ75: fixed far-return slot control
+
+Prepared before MZ75 inference; registration and run require root authorization. This is a consumed Development representation diagnostic, prompted by already inspected MZ74 results. It is not preregistered fresh confirmation of return-survival physics.
+
+MZ74 FAR retained its lone far distance in original slot 1. MZ70 scheduled inputs contained no slot-1-only zones. Preserve every surviving FAR distance and valid-zone set, moving only slot-1-only zones to slot 0 and setting slot 1 to zero/false. Other zones stay byte-identical. No source/label/threshold/weight changes, fitting, retrieval-bank rebuilding or extra conditions.
+
+Use exactly the existing 1,024 HELDOUT_GEOMETRY rows from each MZ61/MZ67 source, original order (2,048 total). CPU preparation freezes role-selected IDs and frame names in selection.json. Before this block, check 16 original sorted TRAIN IDs per source against MZ74 FAR outputs (32 total), using atol 2e-5/rtol 1e-6 and exact decision signs. Saved argmax equality is descriptive. No outcome-driven parity replacement or recapture.
+
+Reuse frozen MZ74 RGB encoding, MZ37, OLD_NEG OPEN/GATED and MZ70 CONTROL/DIVERSE heads, checkpoints and original cutoff files. Pass pretransformed observations to infer_batch with its unchanged IDEAL path so no return-survival transformation is reapplied. Original RGB is loaded once for each of 2,080 frame calls; three existing encoder views are shared across all heads. No permanent dense cache or native/source decoding; compact RGB handles are released at exit.
+
+Primary comparison: packed FAR versus original MZ74 slot-1 FAR. Report per query TP/FP/FN/TN, known/UNKNOWN, exact gained/lost positive and added/removed false-bit IDs for all eight decisions, retaining both arms and all tradeoffs. Original IDEAL, CLOSEST and DROP provide descriptive fixed references only. Independently reconstruct packing and candidate/cut arithmetic and verify original identities/hashes. The score reads original evaluator query arrays only after run sealing; it does not derive new native labels or reattribute saved winners. Distinguish gains already positive in OLD_NEG from head-only OR gains.
+
+A material change isolates sensitivity to slot representation at identical observed distance content. Little change reduces this confound, but neither outcome identifies physical target survival, strongest-target behavior, real sensor noise, thin-object detectability or hardware/safety performance. No aggregate promotion gate and no model/profile selection.
+
+Implementation: mz75_return_slot_control.py, stages prepare/self-test/run/score. Artifact root: artifacts.local/work/mz75-return-slot-control-20260911. Root freezes inputs and registers before run. Score requires sealed PASS run and score-go-v1.json with ROOT_SCORE_GO, actual exit 0 and exact run/scorer hashes. Stops after one 2,048-frame comparison, its 32-frame parity and independent CPU score; preserve failures and task-owned process-release evidence.

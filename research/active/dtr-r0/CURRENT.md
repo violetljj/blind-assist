@@ -5,6 +5,18 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Identical-distance slot control: MZ75 (2026-09-11)
+
+[MZ75](nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md): At identical surviving FAR distance content, slot1-only to slot0 packing changes frozen DIVERSE new MZ67 HELD from760TP83FP to912TP56FP; old MZ61 from881/106 to987/31. New query TP deltas[-6,+45,-13,+126], FP deltas[0,+3,-21,-9] retain local regressions. Both CONTROL/DIVERSE weights and all cuts unchanged. 2048 CUDA inference frames plus32 TRAIN parity,42.433s; independent scalar score4.621s. No model promotion or measured sensor-physics claim.
+
+Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion.
+
+## Return survival and slot representation: MZ74 (2026-09-11)
+
+[MZ74](nearfield/MZ74_RETURN_SURVIVAL_RESULTS_20260911.md): Frozen MZ70 DIVERSE on new MZ67 HELD: DROP753TP71FP, closest-slot0 911/57, farthest-slot1 760/83; old MZ61 832/38,988/31,881/106. FAR new HEAD_FAR95/28 versus DROP158/19. Both original arms/cuts retained. MZ70 TRAIN slot1-only exposure is zero, so FAR mixes near-return absence with an unfamiliar ordered representation. Run8192frames plus32parity,153.116s; score14.719s. Worker source triangles exported with unchanged assets and no captures.
+
+Preserve all MZ74 predictions and both endpoint scenarios; isolate slot representation using the same FAR distances packed into slot0 with fixed models/cuts before attributing this difference to sensor physics. Keep old/new per-query false/true costs and UNKNOWN; no strongest-return, real-hardware or model-promotion claim. Use exported real surfaces for corrected target/contact placement, then new bounded source capture; MZ72failed64 stays unadmitted.
+
 ## Partial-return inputs and compact RGB tools (2026-09-11)
 
 [Paired reported-return sensitivity](nearfield/TOF_RETURN_SENSITIVITY_20260911.md) now keeps either the existing near or far return in unresolved dual zones, without inventing a midpoint or assuming a thin near target survives. Both inputs passed byte/validity replay on8192 existing packets;14 focused input tests passed. No new model inference, fit, cutoff or sensor-physics claim. Existing MZ70 MZ67 HELD DIVERSE IDEAL861TP/46FP, MERGE911/57 and DROP753/71 are re-extracted with per-query denominators; ordinary/partial input remains primary and original challenger dispositions remain.
