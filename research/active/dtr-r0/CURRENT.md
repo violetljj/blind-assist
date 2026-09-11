@@ -5,6 +5,10 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Quality-aware measurement packet interface (2026-09-11)
+
+[Opt-in packet contract](nearfield/VL53L8CX_MEASUREMENT_PACKET_20260911.md) implements observed status/quality availability, declared target order/count and causal time alignment. Eight focused input/causality tests pass; legacy range/valid bytes are preserved. No quality is synthesized from truth and old static cases are not turned into temporal sequences. Official ULD documents8x8/15Hz; motion aggregation differs from a64-cell map. Normal/partial-ToF remains primary. This is an input interface, not new model training, device integration or sensor-physics validation.
+
 ## Physical-source canary stop and sensing priority: MZ72 (2026-09-11)
 
 [MZ72](nearfield/MZ72_PHYSICAL_SOURCE_RESULTS_20260911.md): Dual-host64 canary:64 source-valid,48 required-focus matches,32 exact native pairs; independent native64 and actual visual64 reviewed.16 landing/tree HEAD cases miss intent, physical contacts unresolved and some duct HN pixels match cradle geometry. Main4032 never started; no source admission/model work. Original MZ70 weights/cuts retained.
