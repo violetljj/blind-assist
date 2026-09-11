@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Frozen topology transfer: MZ69 (2026-09-11)
+
+[MZ69](nearfield/MZ69_TOPOLOGY_TRANSFER_RESULTS_20260911.md): Frozen MZ64 GEOMETRY and MZ68 NULL transfer to all 4096 MZ67 frames, with no fit or recut. HELD DROP G 628/71/396 -> NULL 636/71/388; ALL_INVALID G 0/0/1024 -> NULL 0/0/1024 (TP/FP/FN). Run 76.231s, score 3.466s; RGB4096 once, three shared views, no dense cache. New-shape missing HEAD_NEAR ranking remains weak: NULL HELD AUC0.582977/AP0.337211; prioritize new-source training over a calibration-only explanation.
+
+Retain the complete descriptive transfer as a COMPONENT. All native gains, near/head losses, newly false bits and UNKNOWN remain explicit; no fit, recut or model promotion. MZ64 CHALLENGER, MZ68 and MZ66 NEGATIVE_CONTROL remain scoped as recorded. [Execution](nearfield/MZ69_EXECUTION_20260911.md).
+
 ## Missing-input coverage: MZ68 (2026-09-11)
 
 [MZ68](nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md) is a scoped NEGATIVE_CONTROL.

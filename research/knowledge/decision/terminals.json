@@ -2782,6 +2782,30 @@
         "research/active/dtr-r0/nearfield/MZ68_EXECUTION_20260911.md"
       ],
       "commit": "1c3d414d792313e0b8bf0a61f99c7ce9522c5826"
+    },
+    {
+      "id": "terminal-mz69-topology-transfer-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ69_MISSING_STATE_TRANSFER_FAILS_ON_NEW_TOPOLOGY",
+      "summary": "Frozen MZ64 GEOMETRY and MZ68 NULL transfer to all 4096 MZ67 frames, with no fit or recut. HELD DROP G 628/71/396 -> NULL 636/71/388; ALL_INVALID G 0/0/1024 -> NULL 0/0/1024 (TP/FP/FN). Run 76.231s, score 3.466s; RGB4096 once, three shared views, no dense cache. New-shape missing HEAD_NEAR ranking remains weak: NULL HELD AUC0.582977/AP0.337211; prioritize new-source training over a calibration-only explanation.",
+      "successor_requires": "Prioritize a declared new-source learning comparison using MZ67 TRAIN, with old comparators and near/head/falsebit retention. Weak new-shape raw ranking prevents a calibration-only explanation. Any changed fit, cutoff or input route is separate consumed Development.",
+      "forbidden_repeats": [
+        "Treat a descriptive native-gain flag as a replacement gate",
+        "Hide near/head losses or new false bits behind total gains",
+        "Use MZ67 evaluation outcomes as fresh confirmation after selection",
+        "Treat locally UNKNOWN or absent ToF as clearance",
+        "Infer hardware, natural-scene or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ69_TOPOLOGY_TRANSFER_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ69_EXECUTION_20260911.md"
+      ],
+      "commit": "a8e4a0e5531b04a6470be53723651ed263296ead"
     }
   ]
 }
