@@ -2854,6 +2854,31 @@
         "research/active/dtr-r0/nearfield/MZ71_EXECUTION_20260911.md"
       ],
       "commit": "c86badf03265614a29441f71007722a9fd19bd88"
+    },
+    {
+      "id": "terminal-mz72-physical-source-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ72_PHYSICAL_SOURCE_CANARY_FOCUS_AND_SUPPORT_FAILURE",
+      "summary": "Dual-host64 canary:64 source-valid,48 required-focus matches,32 exact native pairs; independent native64 and actual visual64 reviewed.16 landing/tree HEAD cases miss intent, physical contacts unresolved and some duct HN pixels match cradle geometry. Main4032 never started; no source admission/model work. Original MZ70 weights/cuts retained.",
+      "successor_requires": "Preserve this failed64 and complete frozen4096 recipe; do not replay or silently relabel it. A revised source must anchor actual target surfaces and support contacts, distinguish target from mount contributions, and preserve all extra native bits/UNKNOWN. Prioritize normal and partially available ToF; ALL_INVALID remains a secondary artificial stress test. Any later fit must retain old/new per-query error costs.",
+      "forbidden_repeats": [
+        "Expand main4032 despite failed64 canary",
+        "Treat whole-scene head events from mounts as target-specific coverage",
+        "Infer real surface contact or collision from AABB overlap alone",
+        "Erase actual extra native bits or UNKNOWN",
+        "Treat an artificial ALL_INVALID mask as normal real-device operating frequency",
+        "Claim model gain from source health or count-signature novelty"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ72_PHYSICAL_SOURCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ72_EXECUTION_20260911.md"
+      ],
+      "commit": "8167284b0ef38f60b01d82ffd6d158ba5f021c3a"
     }
   ]
 }

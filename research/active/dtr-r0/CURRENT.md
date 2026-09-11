@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Physical-source canary stop and sensing priority: MZ72 (2026-09-11)
+
+[MZ72](nearfield/MZ72_PHYSICAL_SOURCE_RESULTS_20260911.md): Dual-host64 canary:64 source-valid,48 required-focus matches,32 exact native pairs; independent native64 and actual visual64 reviewed.16 landing/tree HEAD cases miss intent, physical contacts unresolved and some duct HN pixels match cradle geometry. Main4032 never started; no source admission/model work. Original MZ70 weights/cuts retained.
+
+Preserve this failed64 and complete frozen4096 recipe; do not replay or silently relabel it. A revised source must anchor actual target surfaces and support contacts, distinguish target from mount contributions, and preserve all extra native bits/UNKNOWN. Prioritize normal and partially available ToF; ALL_INVALID remains a secondary artificial stress test. Any later fit must retain old/new per-query error costs. Lossless WebP method0 saved31.99% on8 original TRAIN images with exact RGBA and0.195s encoding; sealed PNG sources unchanged. Missing-state all-negative supervision remains an unregistered idea, not the automatic next fit. [Execution](nearfield/MZ72_EXECUTION_20260911.md).
+
 ## Observed missing-state calibration: MZ71 (2026-09-11)
 
 [MZ71](nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md): Frozen DIVERSE on MZ67 HELD ALL_INVALID: original-cut58/0/966 to state-cut30/1/994 TP/FP/FN; BODY_NEAR57 to28, HEAD_NEAR remains0. CONTROL3/1 to0/1. Original MZ70 weights/cuts remain retained; MZ71 state calibration is a scoped negative control. Zero fits;9544 new inference frames plus32 parity;155.016s run and37.109s independent score.
