@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Resumed engineering replay and simulated baselines (2026-09-11)
+
+The user resumed diagnosis and chose simulation only. [Replay diagnosis](nearfield/MZ76_REPLAY_DIAGNOSIS_20260911.md) isolates implicit RGB encoder memory layout: padded historical batches use NCHW, unpadded MZ76 batches use channels-last. Explicit encoder NCHW restores all2,048 HELD frames under3 original profiles within unchanged tolerance (42 arrays, raw max3.815e-6, zero decision or winner changes). Original models/cuts and MZ76 invalid result remain unchanged; opt-in replay only, no new fit/source.
+
+Same-input simulated MZ67 DROP: RGB90TP/139FP, ToF355/155, fixed MZ5 average89/78, OLD_NEG562/71, original DIVERSE753/71. HEAD_NEAR OLD_NEG158/15 toDIVERSE223/15. Keep DIVERSE's scoped challenger role and OLD_NEG; averaging does not replace them. IDEAL increases FP (MZ67+2, MZ61+8). Measurement gaps remain UNKNOWN; no temporal/hardware claim or model promotion. This bounded diagnosis/comparison is complete; no automatic successor training or collection.
+
 ## MZ76 final attempt: paused after strict parity failure (2026-09-11)
 
 [MZ76](nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md): Two matched heads completed256steps each from originalD,4096TRAIN frames each,2048HELD frames under3canonical ordinary/partial profiles,118.366s CUDA run. Strict historical baseline parity failed; unchanged scorer failure is preserved. Posthoc RELIABILITY versus BASE: five conditions identical, MZ67IDEAL874/45 versus875/45 TP/FP, one BODY_FAR positive lost. No added benefit or promotion; posthoc diagnostics do not replace the registered comparison.
