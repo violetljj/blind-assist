@@ -5,6 +5,22 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ80 observability-conditioned visual rescue (2026-09-12)
+
+[MZ80](nearfield/MZ80_OBSERVABILITY_RESCUE_RESULTS_20260912.md) evaluates
+`ToF OR (U_ToF AND RGB)` with query-level `U_ToF` defined by whether the MZ79
+profile cap covers the entire fixed query interval. It preserves all640 CLEAN
+decisions exactly. Under5-klux white/light-gray/gray typical profiles, however,
+the posthoc best frozen-RGB threshold at added FP<=5 rescues0TP in every case;
+the required25%-FN targets are22/25/28TP. Even40 added FP rescues only0/0/2TP.
+
+Retain the observability gate as a component and current RGB score as a negative
+control for selective rescue. Threshold rescue is closed on consumed MZ79. A
+successor must train a residual expert on ToF-UNKNOWN positives plus UNKNOWN,
+pre-onset/out-of-corridor and wrong-band hard negatives with source-separated
+evaluation. The RGB/ToF degradation matrix remains outstanding: clean RGB already
+fails this score ceiling, so degrading it cannot rescue the frozen representation.
+
 ## MZ79 datasheet range-cap sensitivity (2026-09-12)
 
 [MZ79](nearfield/MZ79_TOF_RANGE_CAP_RESULTS_20260912.md) applies VL53L8CX
