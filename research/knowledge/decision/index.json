@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "709e618ace8c1138858ab63c17410455360a87620a3ee44269bae5e8f4a44163",
+  "source_fingerprint": "675d3adb96934c86372fcbe258ca6d65d14541cffdddf01b4b46b48075d2ec06",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 361,
-    "current_terminals": 147,
-    "run_associations": 359
+    "experiments": 362,
+    "current_terminals": 148,
+    "run_associations": 360
   },
   "failure_layers": [
     {
@@ -21460,6 +21460,40 @@
       "search_text": "terminal-mz70-diverse-learning-20260911 obstacle-avoidance MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released. Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff. Hide near/head losses or new false bits behind totals Treat ranking gains as useful native detection without checking actual decisions Treat missing ToF or UNKNOWN as clearance Compare different training budgets as a source-only effect Claim natural-scene, real-device or safety performance from this controlled source"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz71-missing-state-calibration-20260911",
+      "status": "diagnostic",
+      "question": "Frozen DIVERSE on MZ67 HELD ALL_INVALID: original-cut58/0/966 to state-cut30/1/994 TP/FP/FN; BODY_NEAR57 to28, HEAD_NEAR remains0. CONTROL3/1 to0/1. Original MZ70 weights/cuts remain retained; MZ71 state calibration is a scoped negative control. Zero fits;9544 new inference frames plus32 parity;155.016s run and37.109s independent score.",
+      "baseline": null,
+      "change": "Preserve MZ70 original weights and cuts plus this state-calibration negative control. Diagnose the original DEV high-score negative tail and head near/far representation using consumed evidence before another separately declared mechanism test; do not silently remove difficult calibration rows or outcome-tune thresholds. Continue diverse source preparation with fixed physical object sizes, credible supports and native extra HEAD/BODY and cross-range event bits; keep angular-size ambiguity controls separate. Any fit must disclose source exposure and retain old/new per-query false-bit and native/UNKNOWN costs.",
+      "primary_metric": null,
+      "decision": "MZ71_MISSING_STATE_CALIBRATION_NEAR_RECALL_REGRESSION",
+      "report": "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "c86badf03265614a29441f71007722a9fd19bd88",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve MZ70 original weights and cuts plus this state-calibration negative control. Diagnose the original DEV high-score negative tail and head near/far representation using consumed evidence before another separately declared mechanism test; do not silently remove difficult calibration rows or outcome-tune thresholds. Continue diverse source preparation with fixed physical object sizes, credible supports and native extra HEAD/BODY and cross-range event bits; keep angular-size ambiguity controls separate. Any fit must disclose source exposure and retain old/new per-query false-bit and native/UNKNOWN costs.",
+      "forbidden_repeats": [
+        "Hide a per-query false-positive increase behind total recall",
+        "Claim unchanged raw rankings improved because a cutoff changed",
+        "Route a predictor by evaluator profile or source name",
+        "Treat missing ToF or UNKNOWN as clearance",
+        "Claim natural-scene or real-device safety from controlled calibration"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ71_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz71-missing-state-calibration-20260911",
+      "search_text": "terminal-mz71-missing-state-calibration-20260911 obstacle-avoidance MZ71_MISSING_STATE_CALIBRATION_NEAR_RECALL_REGRESSION Frozen DIVERSE on MZ67 HELD ALL_INVALID: original-cut58/0/966 to state-cut30/1/994 TP/FP/FN; BODY_NEAR57 to28, HEAD_NEAR remains0. CONTROL3/1 to0/1. Original MZ70 weights/cuts remain retained; MZ71 state calibration is a scoped negative control. Zero fits;9544 new inference frames plus32 parity;155.016s run and37.109s independent score. Preserve MZ70 original weights and cuts plus this state-calibration negative control. Diagnose the original DEV high-score negative tail and head near/far representation using consumed evidence before another separately declared mechanism test; do not silently remove difficult calibration rows or outcome-tune thresholds. Continue diverse source preparation with fixed physical object sizes, credible supports and native extra HEAD/BODY and cross-range event bits; keep angular-size ambiguity controls separate. Any fit must disclose source exposure and retain old/new per-query false-bit and native/UNKNOWN costs. Hide a per-query false-positive increase behind total recall Claim unchanged raw rankings improved because a cutoff changed Route a predictor by evaluator profile or source name Treat missing ToF or UNKNOWN as clearance Claim natural-scene or real-device safety from controlled calibration"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29253,6 +29287,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz70-diverse-learning-20260911 Does matched exposure to diverse MZ67 TRAIN shapes improve native missing-input recognition compared with equal old-shape updates? Exact MZ64 GEOMETRY initialization; matched 4096-step old-only CONTROL; original saved G, NULL and OLD comparators DIVERSE allocates half geometry slots to MZ67 instead of a second MZ61 repeat, all geometry TRAIN frames see all four profiles, all else identical MZ67 HELD ALL_INVALID DIVERSE versus CONTROL per-query TP/FP/FN/TN, exchanges with native/known-wrong/UNKNOWN attribution and matched-support raw AUC/AP; retain MZ67 DROP, MZ61 all four profiles and three-profile old retention tradeoffs. No aggregate replacement gate. MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md Consumed controlled Development; TRAIN-only fit; original1256 DROP calibration; no unseen-natural or hardware claim"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz71-missing-state-calibration-20260911",
+      "status": "archived",
+      "question": "Can original calibration matched to measured missing state expose learned MZ70 detections without modifying either frozen model, and at what false-positive and old-source cost?",
+      "baseline": "Both exact MZ70 CONTROL/DIVERSE checkpoints with original DROP cuts; fixed MZ37 and OLD_NEG",
+      "change": "Two ALL_INVALID cut vectors on original1256 calibration frames, used only where no packet slot is valid",
+      "primary_metric": "MZ67 HELD ALL_INVALID state-cut versus same frozen MZ70 arm original-cut per-query TP/FP/FN/TN, native/known-wrong/UNKNOWN exchanges. Include MZ61 HELD, all old retention, all four profiles and naturally missing rows. No aggregate promotion gate.",
+      "decision": "MZ71_MISSING_STATE_CALIBRATION_NEAR_RECALL_REGRESSION",
+      "report": "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md",
+      "source": "Consumed controlled Development; original calibration IDs only; no real-sensor or natural-scene claim",
+      "commit": "c86badf03265614a29441f71007722a9fd19bd88",
+      "association_id": "mz71-missing-state-calibration-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 6,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz71-missing-state-calibration-20260911 Can original calibration matched to measured missing state expose learned MZ70 detections without modifying either frozen model, and at what false-positive and old-source cost? Both exact MZ70 CONTROL/DIVERSE checkpoints with original DROP cuts; fixed MZ37 and OLD_NEG Two ALL_INVALID cut vectors on original1256 calibration frames, used only where no packet slot is valid MZ67 HELD ALL_INVALID state-cut versus same frozen MZ70 arm original-cut per-query TP/FP/FN/TN, native/known-wrong/UNKNOWN exchanges. Include MZ61 HELD, all old retention, all four profiles and naturally missing rows. No aggregate promotion gate. MZ71_MISSING_STATE_CALIBRATION_NEAR_RECALL_REGRESSION research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md Consumed controlled Development; original calibration IDs only; no real-sensor or natural-scene claim"
     }
   ],
   "associations": [
@@ -32462,6 +32520,20 @@
         "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz70-diverse-learning-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz71-missing-state-calibration-20260911",
+      "use_ids": [],
+      "protocol_id": "mz71-missing-state-calibration-r0",
+      "code_revision": "c86badf03265614a29441f71007722a9fd19bd88",
+      "input_fingerprint": "b3bf06b59037ee3ae0cb112bcf64fe854da15ad58ef758c31d15caf21e7964fc",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_20260911.md",
+        "artifacts.local/work/mz71-missing-state-calibration-20260911",
+        "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz71-missing-state-calibration-20260911",
       "source_rows": 1
     },
     {

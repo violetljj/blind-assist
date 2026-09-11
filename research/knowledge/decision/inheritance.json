@@ -971,6 +971,16 @@
       "failure_signature": "MZ67 all-missing HEAD_NEAR0TP in both arms; MZ61 missing/drop true-positive losses under halved old exposure; raw ranking and accepted decisions diverge; no hardware or safety promotion",
       "revisit_trigger": "Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff.",
       "assignment_basis": "Matched two4096-step source allocation fits; complete geometry TRAIN/profile coverage; original1256 calibration and independent saved-output score"
+    },
+    {
+      "terminal_id": "terminal-mz71-missing-state-calibration-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ71 replacement by two original1256 ALL_INVALID zero-added cut vectors on frozen MZ70 arms, routed only by actual no-valid-return state; consumed controlled Development",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md",
+      "failure_signature": "New MZ67 missing DIVERSE58TP0FP to30TP1FP with26 native BODY_NEAR losses; HEAD_NEAR0 despite lower cutoff; old-source and natural-missing costs remain. Query-specific far gains do not establish replacement benefit.",
+      "revisit_trigger": "Preserve MZ70 original weights and cuts plus this state-calibration negative control. Diagnose the original DEV high-score negative tail and head near/far representation using consumed evidence before another separately declared mechanism test; do not silently remove difficult calibration rows or outcome-tune thresholds. Continue diverse source preparation with fixed physical object sizes, credible supports and native extra HEAD/BODY and cross-range event bits; keep angular-size ambiguity controls separate. Any fit must disclose source exposure and retain old/new per-query false-bit and native/UNKNOWN costs.",
+      "assignment_basis": "Both frozen MZ70 arms; two missing-state cuts on original1256 IDs; exact original-array/nonmissing preservation and independent saved-output audit"
     }
   ]
 }

@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Observed missing-state calibration: MZ71 (2026-09-11)
+
+[MZ71](nearfield/MZ71_MISSING_STATE_CALIBRATION_RESULTS_20260911.md): Frozen DIVERSE on MZ67 HELD ALL_INVALID: original-cut58/0/966 to state-cut30/1/994 TP/FP/FN; BODY_NEAR57 to28, HEAD_NEAR remains0. CONTROL3/1 to0/1. Original MZ70 weights/cuts remain retained; MZ71 state calibration is a scoped negative control. Zero fits;9544 new inference frames plus32 parity;155.016s run and37.109s independent score.
+
+Retain the original MZ70 cuts and both trained arms; record these two missing-state cutoff vectors as NEGATIVE_CONTROL for the proposed replacement role, without denying their query-specific tradeoffs. DIVERSE loses29 new-source BODY_NEAR true bits (26 native,2 known-wrong,1 UNKNOWN), gains one native HEAD_FAR bit and adds one HEAD_FAR false bit with an UNKNOWN winner. On old MZ61 HELD ALL_INVALID, DIVERSE103TP/5FP becomes72/7:53 near-body losses versus13 far-body,1 near-head and8 far-head gains; the near-head gain is known-wrong and7 far-head gains are locally UNKNOWN. CONTROL gains58 old-source BODY_FAR bits (54 native) but loses120 BODY_NEAR,9 HEAD_NEAR and6 HEAD_FAR. All original-profile changes occur only on naturally missing rows, including DIVERSE DROP legacy2747/51 to2746/55, MZ48 nonfit571/21 to570/21 and MZ55 held501/83 to493/83. The missing-state rule raises DIVERSE BODY_NEAR cutoff4.069206 to4.831364 while lowering its HEAD_NEAR cutoff4.233131 to3.043964 without recovering new-source HEAD_NEAR. Thus matching the calibration sensing state alone does not solve the tested problem. All eight cutoff maxima come from original DEV negative rows; excellent within-MZ67 BODY_NEAR AUC does not establish cross-source negative-tail separation. No raw score, weight or nonmissing decision changes, and no real-sensor or safety claim follows. [Execution](nearfield/MZ71_EXECUTION_20260911.md).
+
 ## Matched diverse-source learning: MZ70 (2026-09-11)
 
 [MZ70](nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md): Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released.
