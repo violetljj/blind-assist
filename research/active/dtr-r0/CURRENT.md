@@ -1,9 +1,26 @@
 # Cane-complementary forward perception and DTR history
 
-Updated: 2026-09-11
+Updated: 2026-09-12
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
+
+## MZ78 strong pure-ToF temporal baseline (2026-09-12)
+
+[MZ78](nearfield/MZ78_TOF_TEMPORAL_BASELINE_RESULTS_20260912.md) challenges the
+learned system on the consumed MZ77 approach replay. Fixed zone-center geometry
+scores124TP/2FP/6FN under CLEAN versus DIVERSE79/33/51. A causal five-frame
+ledger with at most three closing-range extrapolations preserves124/2/6 under
+the central gaps, where frame geometry falls to94/2/36 and DIVERSE to60/30/70.
+The fixed temporal-geometry OR DIVERSE rule reaches125TP but keeps30--33FP, so
+do not retain that fusion. Retain temporal geometry as a controlled-simulation
+challenger; current learned fusion has no demonstrated incremental value here.
+
+All40 control frames have entirely invalid model-visible packets, so zero alerts
+are `UNKNOWN`, not clearance. This consumed simulator-native packet replay is not
+measured sensor physics, natural-scene, latency, hardware or safety evidence and
+lacks an independent ordinary BODY-obstacle clip. Fourteen focused tests passed;
+no fit, threshold search, new capture or persistent resource was used.
 
 ## MZ77 simulated approach completed (2026-09-11)
 
