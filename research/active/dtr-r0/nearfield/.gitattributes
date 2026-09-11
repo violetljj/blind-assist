@@ -4,3 +4,5 @@ mz67_fullframe.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr
 mz67_geometry_spec.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 mz67_source_contract.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 mz67_transfer_source.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# MZ70 source was hashed with a final blank separator; retain its executed bytes.
+mz70_diverse_source.py whitespace=-blank-at-eof

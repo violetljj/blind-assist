@@ -961,6 +961,16 @@
       "failure_signature": "No replacement claim; retain all original TP/FP/native/UNKNOWN tradeoffs by query and input profile",
       "revisit_trigger": "Prioritize a declared new-source learning comparison using MZ67 TRAIN, with old comparators and near/head/falsebit retention. Weak new-shape raw ranking prevents a calibration-only explanation. Any changed fit, cutoff or input route is separate consumed Development.",
       "assignment_basis": "Fixed original checkpoints/cutoffs on all4096 source rows and4 profiles; independent saved-output scalar reconstruction"
+    },
+    {
+      "terminal_id": "terminal-mz70-diverse-learning-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Two4096-step controlled source-allocation candidates with complete geometry/profile exposure; retain CONTROL for old-source behavior and DIVERSE for new-shape gains, without selecting a new global model",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md",
+      "failure_signature": "MZ67 all-missing HEAD_NEAR0TP in both arms; MZ61 missing/drop true-positive losses under halved old exposure; raw ranking and accepted decisions diverge; no hardware or safety promotion",
+      "revisit_trigger": "Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff.",
+      "assignment_basis": "Matched two4096-step source allocation fits; complete geometry TRAIN/profile coverage; original1256 calibration and independent saved-output score"
     }
   ]
 }

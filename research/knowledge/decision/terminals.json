@@ -2806,6 +2806,30 @@
         "research/active/dtr-r0/nearfield/MZ69_EXECUTION_20260911.md"
       ],
       "commit": "a8e4a0e5531b04a6470be53723651ed263296ead"
+    },
+    {
+      "id": "terminal-mz70-diverse-learning-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF",
+      "summary": "Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released.",
+      "successor_requires": "Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff.",
+      "forbidden_repeats": [
+        "Hide near/head losses or new false bits behind totals",
+        "Treat ranking gains as useful native detection without checking actual decisions",
+        "Treat missing ToF or UNKNOWN as clearance",
+        "Compare different training budgets as a source-only effect",
+        "Claim natural-scene, real-device or safety performance from this controlled source"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ70_EXECUTION_20260911.md"
+      ],
+      "commit": "86b42735f8e2b4ea327104369540fb1d80c2f0d0"
     }
   ]
 }

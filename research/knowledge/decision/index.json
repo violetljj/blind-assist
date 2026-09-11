@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "44b73a98445f6e8703c4d3a6c19fb1cceceef975fdd4f6ff5f195ba9fd92dc6b",
+  "source_fingerprint": "709e618ace8c1138858ab63c17410455360a87620a3ee44269bae5e8f4a44163",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 360,
-    "current_terminals": 146,
-    "run_associations": 358
+    "experiments": 361,
+    "current_terminals": 147,
+    "run_associations": 359
   },
   "failure_layers": [
     {
@@ -21426,6 +21426,40 @@
       "search_text": "terminal-mz69-topology-transfer-20260911 obstacle-avoidance MZ69_MISSING_STATE_TRANSFER_FAILS_ON_NEW_TOPOLOGY Frozen MZ64 GEOMETRY and MZ68 NULL transfer to all 4096 MZ67 frames, with no fit or recut. HELD DROP G 628/71/396 -> NULL 636/71/388; ALL_INVALID G 0/0/1024 -> NULL 0/0/1024 (TP/FP/FN). Run 76.231s, score 3.466s; RGB4096 once, three shared views, no dense cache. New-shape missing HEAD_NEAR ranking remains weak: NULL HELD AUC0.582977/AP0.337211; prioritize new-source training over a calibration-only explanation. Prioritize a declared new-source learning comparison using MZ67 TRAIN, with old comparators and near/head/falsebit retention. Weak new-shape raw ranking prevents a calibration-only explanation. Any changed fit, cutoff or input route is separate consumed Development. Treat a descriptive native-gain flag as a replacement gate Hide near/head losses or new false bits behind total gains Use MZ67 evaluation outcomes as fresh confirmation after selection Treat locally UNKNOWN or absent ToF as clearance Infer hardware, natural-scene or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz70-diverse-learning-20260911",
+      "status": "diagnostic",
+      "question": "Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released.",
+      "baseline": null,
+      "change": "Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff.",
+      "primary_metric": null,
+      "decision": "MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF",
+      "report": "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "86b42735f8e2b4ea327104369540fb1d80c2f0d0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff.",
+      "forbidden_repeats": [
+        "Hide near/head losses or new false bits behind totals",
+        "Treat ranking gains as useful native detection without checking actual decisions",
+        "Treat missing ToF or UNKNOWN as clearance",
+        "Compare different training budgets as a source-only effect",
+        "Claim natural-scene, real-device or safety performance from this controlled source"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ70_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz70-diverse-learning-20260911",
+      "search_text": "terminal-mz70-diverse-learning-20260911 obstacle-avoidance MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released. Preserve both MZ70 weights and original cuts. Test whether calibration matched to the ALL_INVALID sensing state on the original calibration frames can expose useful learned evidence while keeping every nonmissing decision fixed; do not fit thresholds on MZ61/MZ67 or label absent observations as clearance. Preserve near/head/false-bit and native/UNKNOWN accounting, including old sources. Further source expansion should prioritize real head/body geometry, near/far visual ambiguity and partial occlusion; do not conflate extra categories with sufficient metric information or halve old exposure without disclosing the budget tradeoff. Hide near/head losses or new false bits behind totals Treat ranking gains as useful native detection without checking actual decisions Treat missing ToF or UNKNOWN as clearance Compare different training budgets as a source-only effect Claim natural-scene, real-device or safety performance from this controlled source"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29195,6 +29229,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz69-topology-transfer-20260911 Does frozen missing-input learning transfer useful native sensitivity to MZ67 controlled new shapes, and at what error cost? Sealed MZ64 GEOMETRY and retained OLD_NEG OPEN/GATED union with original MZ37 and cutoff vectors Zero-fit MZ64 GEOMETRY versus MZ68 NULL_COVERAGE over all4096 MZ67 frames/four profiles; shared RGB encoding and unchanged checkpoints/cuts MZ68 NULL vs MZ64 GEOMETRY on MZ67 HELD: paired native TP gains, TP losses and newly false bits, separately DROP and ALL_INVALID MZ69_MISSING_STATE_TRANSFER_FAILS_ON_NEW_TOPOLOGY research/active/dtr-r0/nearfield/MZ69_TOPOLOGY_TRANSFER_RESULTS_20260911.md Consumed curated controlled MZ67 Development; all source roles descriptive; no new training or calibration"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz70-diverse-learning-20260911",
+      "status": "archived",
+      "question": "Does matched exposure to diverse MZ67 TRAIN shapes improve native missing-input recognition compared with equal old-shape updates?",
+      "baseline": "Exact MZ64 GEOMETRY initialization; matched 4096-step old-only CONTROL; original saved G, NULL and OLD comparators",
+      "change": "DIVERSE allocates half geometry slots to MZ67 instead of a second MZ61 repeat, all geometry TRAIN frames see all four profiles, all else identical",
+      "primary_metric": "MZ67 HELD ALL_INVALID DIVERSE versus CONTROL per-query TP/FP/FN/TN, exchanges with native/known-wrong/UNKNOWN attribution and matched-support raw AUC/AP; retain MZ67 DROP, MZ61 all four profiles and three-profile old retention tradeoffs. No aggregate replacement gate.",
+      "decision": "MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF",
+      "report": "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md",
+      "source": "Consumed controlled Development; TRAIN-only fit; original1256 DROP calibration; no unseen-natural or hardware claim",
+      "commit": "86b42735f8e2b4ea327104369540fb1d80c2f0d0",
+      "association_id": "mz70-diverse-learning-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 7,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz70-diverse-learning-20260911 Does matched exposure to diverse MZ67 TRAIN shapes improve native missing-input recognition compared with equal old-shape updates? Exact MZ64 GEOMETRY initialization; matched 4096-step old-only CONTROL; original saved G, NULL and OLD comparators DIVERSE allocates half geometry slots to MZ67 instead of a second MZ61 repeat, all geometry TRAIN frames see all four profiles, all else identical MZ67 HELD ALL_INVALID DIVERSE versus CONTROL per-query TP/FP/FN/TN, exchanges with native/known-wrong/UNKNOWN attribution and matched-support raw AUC/AP; retain MZ67 DROP, MZ61 all four profiles and three-profile old retention tradeoffs. No aggregate replacement gate. MZ70_DIVERSE_LEARNING_GAINS_WITH_SOURCE_ALLOCATION_TRADEOFF research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md Consumed controlled Development; TRAIN-only fit; original1256 DROP calibration; no unseen-natural or hardware claim"
     }
   ],
   "associations": [
@@ -32390,6 +32448,20 @@
         "artifacts.local/work/mz7-single-frame-20260910/audit.json"
       ],
       "decision_id": "terminal-mz7-single-frame-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz70-diverse-learning-20260911",
+      "use_ids": [],
+      "protocol_id": "mz70-diverse-learning-r0",
+      "code_revision": "86b42735f8e2b4ea327104369540fb1d80c2f0d0",
+      "input_fingerprint": "1de103b1611ea82b0874ab19b7a9f85b5c4380cf1baa14d3108f0ec20feada1c",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_20260911.md",
+        "artifacts.local/work/mz70-diverse-learning-20260911",
+        "research/active/dtr-r0/nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz70-diverse-learning-20260911",
       "source_rows": 1
     },
     {

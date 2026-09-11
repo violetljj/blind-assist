@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Matched diverse-source learning: MZ70 (2026-09-11)
+
+[MZ70](nearfield/MZ70_DIVERSE_LEARNING_RESULTS_20260911.md): Matched4096-step CONTROL versus DIVERSE: MZ67 HELD DROP TP/FP/FN664/71/360 to753/71/271; ALL_INVALID3/1/1021 to58/0/966. Missing HEAD_NEAR remains0TP, although raw AUC/AP improves0.606455/0.383314 to0.782557/0.550310. MZ61 HELD DROP858/38 to832/38 and ALL_INVALID212/7 to103/5 expose the old-source cost. Run540.456s; shared21269 RGB encodes;8040042496 allocated scratch bytes released.
+
+Retain both trained arms as scoped CHALLENGERS, with MZ64, MZ68 and MZ66 original dispositions unchanged. Diverse exposure improves new-shape raw ranking in all four missing-input queries and actual DROP decisions, but does not produce all-missing HEAD_NEAR detections. The new-source ALL_INVALID gains include38 BODY_NEAR native winners,13 known-wrong and6 UNKNOWN, with3 native BODY_NEAR losses; the sole HEAD_FAR gain is native. DROP HEAD_NEAR gains4 native winners and loses3. Old-source exposure was halved at fixed total updates, so the old-source decline does not isolate catastrophic forgetting from reduced old training. Better global ranking is not a useful low-FP operating point or a model replacement claim. BODY_NEAR missing ranking is nearly perfect on new geometry (AUC0.999873), yet only57/256 positives pass the original DROP-calibrated cutoff; this makes sensing-state calibration a concrete remaining question alongside head representation and source balance. [Execution](nearfield/MZ70_EXECUTION_20260911.md).
+
 ## Frozen topology transfer: MZ69 (2026-09-11)
 
 [MZ69](nearfield/MZ69_TOPOLOGY_TRANSFER_RESULTS_20260911.md): Frozen MZ64 GEOMETRY and MZ68 NULL transfer to all 4096 MZ67 frames, with no fit or recut. HELD DROP G 628/71/396 -> NULL 636/71/388; ALL_INVALID G 0/0/1024 -> NULL 0/0/1024 (TP/FP/FN). Run 76.231s, score 3.466s; RGB4096 once, three shared views, no dense cache. New-shape missing HEAD_NEAR ranking remains weak: NULL HELD AUC0.582977/AP0.337211; prioritize new-source training over a calibration-only explanation.
