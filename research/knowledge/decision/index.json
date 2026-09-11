@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "8795f2b03393484624965632c74b8f7dda523136570c47db494853fc258d808c",
+  "source_fingerprint": "3d703f4a19b62974a627aca2739ad3838618908b91e31ac58b510e910506f334",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 365,
-    "current_terminals": 151,
-    "run_associations": 363
+    "experiments": 366,
+    "current_terminals": 152,
+    "run_associations": 364
   },
   "failure_layers": [
     {
@@ -21598,6 +21598,41 @@
       "search_text": "terminal-mz75-return-slot-control-20260911 obstacle-avoidance MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED At identical surviving FAR distance content, slot1-only to slot0 packing changes frozen DIVERSE new MZ67 HELD from760TP83FP to912TP56FP; old MZ61 from881/106 to987/31. New query TP deltas[-6,+45,-13,+126], FP deltas[0,+3,-21,-9] retain local regressions. Both CONTROL/DIVERSE weights and all cuts unchanged. 2048 CUDA inference frames plus32 TRAIN parity,42.433s; independent scalar score4.621s. No model promotion or measured sensor-physics claim. Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion. Attribute FAR-slot1 decline solely to unavailable near distance Call identical-distance repacking a newly trained model gain Assume slot0 always physically means strongest target Promote a model based on consumed synthetic representation control Treat missing or UNKNOWN as clearance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz76-observed-reliability-20260911",
+      "status": "diagnostic",
+      "question": "Two matched heads completed256steps each from originalD,4096TRAIN frames each,2048HELD frames under3canonical ordinary/partial profiles,118.366s CUDA run. Strict historical baseline parity failed; unchanged scorer failure is preserved. Posthoc RELIABILITY versus BASE: five conditions identical, MZ67IDEAL874/45 versus875/45 TP/FP, one BODY_FAR positive lost. No added benefit or promotion; posthoc diagnostics do not replace the registered comparison.",
+      "baseline": null,
+      "change": "User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.",
+      "primary_metric": null,
+      "decision": "MZ76_STRICT_BASELINE_PARITY_FAILED_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "299c3389590ee233b5cd64212e016fbe52cf5363",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.",
+      "forbidden_repeats": [
+        "Relax frozen parity tolerance to pass an observed failure",
+        "Report posthoc metrics as a passed registered comparison",
+        "Invent hardware signal or sigma from evaluator truth",
+        "Start a successor while user pause is active",
+        "Treat missing or UNKNOWN as clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_20260911.md",
+        "research/active/dtr-r0/nearfield/SOURCE_CONTACT_SMOKE_20260911.md"
+      ],
+      "association_id": "mz76-observed-reliability-20260911",
+      "search_text": "terminal-mz76-observed-reliability-20260911 obstacle-avoidance MZ76_STRICT_BASELINE_PARITY_FAILED_NO_PROMOTION Two matched heads completed256steps each from originalD,4096TRAIN frames each,2048HELD frames under3canonical ordinary/partial profiles,118.366s CUDA run. Strict historical baseline parity failed; unchanged scorer failure is preserved. Posthoc RELIABILITY versus BASE: five conditions identical, MZ67IDEAL874/45 versus875/45 TP/FP, one BODY_FAR positive lost. No added benefit or promotion; posthoc diagnostics do not replace the registered comparison. User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN. Relax frozen parity tolerance to pass an observed failure Report posthoc metrics as a passed registered comparison Invent hardware signal or sigma from evaluator truth Start a successor while user pause is active Treat missing or UNKNOWN as clearance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29486,6 +29521,31 @@
         "decision_lifecycle": 6
       },
       "search_text": "mz75-return-slot-control-20260911 Does packing identical surviving FAR distances into slot0 change frozen model decisions? MZ74 FAR slot1, both MZ70 arms and original OLD_NEG full OR pipeline Move only slot1-only valid returns to slot0; all distance content unchanged Same surviving far distances and valid-zone set: packed slot0 versus original FAR slot1; both original MZ70 arms and all8 decisions, old/new HELD per-query TP/FP/FN/TN, UNKNOWN and exact exchanged event bits. No fitting, cuts, or promotion. MZ75_IDENTICAL_DISTANCE_SLOT_SENSITIVITY_CONFIRMED research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md Consumed controlled Development MZ61/MZ67; posthoc representation diagnostic"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz76-observed-reliability-20260911",
+      "status": "archived",
+      "question": "Does observed four-neighbor ToF geometry improve a matched small RGB+ToF continuation under ordinary andpartial inputs?",
+      "baseline": "Matched BASE continuation and original frozen MZ70D; sameweightsinitialization,loss,sourceframes,steps,cuts",
+      "change": "Three observable neighborgeometry channels in otherwise matched52inputhead; BASE channels0;256steps perarm",
+      "primary_metric": "RELIABILITY versus matched BASE continuation and original frozen DIVERSE, all4 query TP/FP/FN/TN/UNKNOWN and exact gained/lost events on1024 HELD per MZ61/MZ67 across canonical IDEAL/CLOSEST/FAR. Fixed originalD cutoffs, no promotion or aggregate winner selection.",
+      "decision": "MZ76_STRICT_BASELINE_PARITY_FAILED_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md",
+      "source": "Consumed MZ61/MZ67 TRAIN and HELD geometry; no hardwarequality or newsource admission",
+      "commit": "299c3389590ee233b5cd64212e016fbe52cf5363",
+      "association_id": "mz76-observed-reliability-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz76-observed-reliability-20260911 Does observed four-neighbor ToF geometry improve a matched small RGB+ToF continuation under ordinary andpartial inputs? Matched BASE continuation and original frozen MZ70D; sameweightsinitialization,loss,sourceframes,steps,cuts Three observable neighborgeometry channels in otherwise matched52inputhead; BASE channels0;256steps perarm RELIABILITY versus matched BASE continuation and original frozen DIVERSE, all4 query TP/FP/FN/TN/UNKNOWN and exact gained/lost events on1024 HELD per MZ61/MZ67 across canonical IDEAL/CLOSEST/FAR. Fixed originalD cutoffs, no promotion or aggregate winner selection. MZ76_STRICT_BASELINE_PARITY_FAILED_NO_PROMOTION research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md Consumed MZ61/MZ67 TRAIN and HELD geometry; no hardwarequality or newsource admission"
     }
   ],
   "associations": [
@@ -32751,6 +32811,20 @@
         "research/active/dtr-r0/nearfield/MZ75_RETURN_SLOT_CONTROL_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz75-return-slot-control-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz76-observed-reliability-20260911",
+      "use_ids": [],
+      "protocol_id": "mz76-observed-neighbor-geometry-r0",
+      "code_revision": "299c3389590ee233b5cd64212e016fbe52cf5363",
+      "input_fingerprint": "e166d8e8f08d8adff28d985529663db59fd381e931f3d3b56daa78f7ff1b834a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_20260911.md",
+        "artifacts.local/work/mz76-observed-reliability-20260911",
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz76-observed-reliability-20260911",
       "source_rows": 1
     },
     {

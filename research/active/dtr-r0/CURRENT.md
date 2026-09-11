@@ -5,6 +5,14 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ76 final attempt: paused after strict parity failure (2026-09-11)
+
+[MZ76](nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md): Two matched heads completed256steps each from originalD,4096TRAIN frames each,2048HELD frames under3canonical ordinary/partial profiles,118.366s CUDA run. Strict historical baseline parity failed; unchanged scorer failure is preserved. Posthoc RELIABILITY versus BASE: five conditions identical, MZ67IDEAL874/45 versus875/45 TP/FP, one BODY_FAR positive lost. No added benefit or promotion; posthoc diagnostics do not replace the registered comparison.
+
+User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.
+
+[Source-contact smoke](nearfield/SOURCE_CONTACT_SMOKE_20260911.md) separately completed4worker frames in83.837s;12foot traces matched planned sidewalk height. No source admission or model input; worker resources released.
+
 ## Rendered surface recovery and support correction (2026-09-11)
 
 [Four-frame worker smoke](nearfield/SOURCE_SURFACE_SMOKE_20260911.md) actually rendered corrected1x landing/birch poses in both original context partners: HF231/1287 pixels and extra BF2014/2085, with matching isolated-target evidence and exact pair query depths. Capture/world exit0 in91.820s; resources released. Collision comparison UNKNOWN is not ToF invalidity:125/128 rays hit the correct component, but121 fail rendered-depth agreement. Ground grid mixes181 sidewalk and149 controlled-target hits; next terrain probes must ignore controlled actors. No dataset admission or new model fit.

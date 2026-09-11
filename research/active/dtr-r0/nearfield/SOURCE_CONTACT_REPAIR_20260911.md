@@ -21,8 +21,9 @@ not positive-area contact. Wood stability, friction and attachment remain unknow
 
 These are source-mesh/primitive calculations against the declared floor plane.
 They do not prove actual terrain contact, stable support or native visibility.
-The new transforms have not yet been rendered. Their next check should ignore
-controlled actors when probing terrain and preserve actual extra query bits;
+The subsequent [four-frame contact smoke](SOURCE_CONTACT_SMOKE_20260911.md)
+rendered these transforms, excluded controlled actors from terrain probes and
+preserved actual extra query bits;
 the [four-frame surface smoke](SOURCE_SURFACE_SMOKE_20260911.md) already showed
 why collision-depth agreement and rendered target contribution must be distinct.
 

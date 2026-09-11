@@ -1011,6 +1011,16 @@
       "failure_signature": "Frozen full pipeline depends on ordered slot positions; aggregate improvement retains BODY_NEAR/HEAD_NEAR regressions",
       "revisit_trigger": "Preserve MZ74 and MZ75. Normalize measurement packet representation explicitly at the model adapter while retaining raw device order/status separately; validate actual packet ordering and quality before any deployment. Train or test quality-aware handling only under separately specified conditions, keeping old/new per-query costs and UNKNOWN. Continue small actual-surface source repair before expanding collection; no automatic restart of failed MZ72 expansion.",
       "assignment_basis": "32TRAIN exact decision parity;2048 fixed CUDA inference; scalar packing, cut, metric and exact event exchange checks"
+    },
+    {
+      "terminal_id": "terminal-mz76-observed-reliability-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Strict baseline reproducibility failure in a matched continuation; no promoted predictor",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md",
+      "failure_signature": "Historical frozen candidate parity exceeds declared2e-5/1e-6 tolerance; strict scorer exits1",
+      "revisit_trigger": "User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.",
+      "assignment_basis": "Actual256-step paired fit and2048-frame evaluation sealed; original scorer failure retained and no tolerance change"
     }
   ]
 }

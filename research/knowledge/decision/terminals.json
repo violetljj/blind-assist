@@ -2928,6 +2928,31 @@
         "research/active/dtr-r0/nearfield/SOURCE_SURFACE_ANCHORS_20260911.md"
       ],
       "commit": "4eb1a8b8e79878af47c19c5bf8756da2c731fcfd"
+    },
+    {
+      "id": "terminal-mz76-observed-reliability-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ76_STRICT_BASELINE_PARITY_FAILED_NO_PROMOTION",
+      "summary": "Two matched heads completed256steps each from originalD,4096TRAIN frames each,2048HELD frames under3canonical ordinary/partial profiles,118.366s CUDA run. Strict historical baseline parity failed; unchanged scorer failure is preserved. Posthoc RELIABILITY versus BASE: five conditions identical, MZ67IDEAL874/45 versus875/45 TP/FP, one BODY_FAR positive lost. No added benefit or promotion; posthoc diagnostics do not replace the registered comparison.",
+      "successor_requires": "User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.",
+      "forbidden_repeats": [
+        "Relax frozen parity tolerance to pass an observed failure",
+        "Report posthoc metrics as a passed registered comparison",
+        "Invent hardware signal or sigma from evaluator truth",
+        "Start a successor while user pause is active",
+        "Treat missing or UNKNOWN as clearance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ76_OBSERVED_RELIABILITY_20260911.md",
+        "research/active/dtr-r0/nearfield/SOURCE_CONTACT_SMOKE_20260911.md"
+      ],
+      "commit": "299c3389590ee233b5cd64212e016fbe52cf5363"
     }
   ]
 }
