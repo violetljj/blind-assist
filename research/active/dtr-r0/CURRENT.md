@@ -5,6 +5,22 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ79 datasheet range-cap sensitivity (2026-09-12)
+
+[MZ79](nearfield/MZ79_TOF_RANGE_CAP_RESULTS_20260912.md) applies VL53L8CX
+DS14161 Rev12 Table20 inner/corner maximum-range endpoints to the consumed MZ77
+packets without fitting or threshold search. MZ78 geometry drops from124/130 TP
+ideal to87 dark-gray, then42/32/20 under5-klux white/light-gray/gray typical
+caps; gray minimum leaves10TP. The corresponding all-invalid frame counts are
+103,130,136,142 and150/160. Missing returns remain `UNKNOWN`.
+
+Frozen RGB OR recovers2 dark-gray and8/9/13 stressed 5-klux typical true bits,
+but adds64 false bits in every profile; current RGB/fixed OR is not a useful
+rescue. Retain MZ78 as ideal-packet comparator and the cap operator as a
+sensitivity component. This is hard-cap interpolation from15-Hz datasheet
+endpoints on nominal10-Hz simulated poses, not probabilistic sensor physics or
+hardware evidence. Do not auto-start dual-surface or ego-motion successors.
+
 ## MZ78 strong pure-ToF temporal baseline (2026-09-12)
 
 [MZ78](nearfield/MZ78_TOF_TEMPORAL_BASELINE_RESULTS_20260912.md) challenges the
