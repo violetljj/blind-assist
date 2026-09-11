@@ -2953,6 +2953,29 @@
         "research/active/dtr-r0/nearfield/SOURCE_CONTACT_SMOKE_20260911.md"
       ],
       "commit": "299c3389590ee233b5cd64212e016fbe52cf5363"
+    },
+    {
+      "id": "terminal-mz77-approach-sequence-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ77_APPROACH_NO_DYNAMIC_GAIN_PARTIAL_GAP_INTERRUPTION",
+      "summary": "160 settled simulated approach frames, four clips, original frozen models/cuts. DIVERSE and OLD_NEG have identical true detections: CLEAN 79TP, gap 60TP; DIVERSE adds five HEAD_FAR false bits (33 vs28 CLEAN FP). Central gaps interrupt warnings; wall BODY_ANY coverage is9/26 CLEAN and7/26 gap. No dynamic gain or model promotion.",
+      "successor_requires": "Preserve original models, cuts, paired sequences and UNKNOWN. Any later mechanism change needs a separately authorized bounded comparison of continuity and correct range bins; no automatic successor.",
+      "forbidden_repeats": [
+        "Treat sampled pose time as measured real-time latency",
+        "Treat union coverage as correct near/far classification",
+        "Treat missing returns or absent alerts as clearance",
+        "Promote DIVERSE from this diagnostic"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_20260911.md"
+      ],
+      "commit": "38efdc18ed05b3d727d277525da298e8333396ae"
     }
   ]
 }

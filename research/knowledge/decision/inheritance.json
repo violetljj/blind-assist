@@ -1021,6 +1021,16 @@
       "failure_signature": "Historical frozen candidate parity exceeds declared2e-5/1e-6 tolerance; strict scorer exits1",
       "revisit_trigger": "User requested pause after this final attempt. Do not start a successor fit, recut, inference or collection until resumed. Preserve originalD and all cuts, both new checkpoints and strict score failure. On resume diagnose baseline reproducibility before any new comparison; neighbor geometry is not measured hardware confidence and missing observations remain UNKNOWN.",
       "assignment_basis": "Actual256-step paired fit and2048-frame evaluation sealed; original scorer failure retained and no tolerance change"
+    },
+    {
+      "terminal_id": "terminal-mz77-approach-sequence-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Simulated approach diagnostic harness only; no predictor promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_RESULTS_20260911.md",
+      "failure_signature": "No added true sequence detections, five extra false bits, gap interruptions and weak wall coverage",
+      "revisit_trigger": "Separate authorization for a bounded mechanism comparison preserving original models, cuts, per-query costs and UNKNOWN; no automatic successor",
+      "assignment_basis": "160 admitted native frames; frozen parity; eight tests; independent 7680-query score"
     }
   ]
 }

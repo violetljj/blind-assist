@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ77 simulated approach completed (2026-09-11)
+
+[Fixed-model approach result](nearfield/MZ77_APPROACH_SEQUENCE_RESULTS_20260911.md): 160 posed frames in four clips, original models/cuts, CLEAN and central return gaps. DIVERSE and OLD_NEG have identical true detections (79 CLEAN, 60 gap); DIVERSE adds five HEAD_FAR false bits (33 versus 28 CLEAN FP). Bar/pole head alerts start at 3.1 m but gaps interrupt them. Wall BODY_ANY covers only 9/26 CLEAN and 7/26 gap positives, first true distance 2.4 to 2.2 m. Near/far union coverage hides pole HEAD_FAR misses. Control has no alerts, not clearance.
+
+Retain the sequence harness as a diagnostic component; preserve both models and thresholds with no promotion. Capture/native bounds, historical parity, eight metric tests and independent 7,680-query scoring passed; task processes released. This is settled-pose simulation, not measured walking, sensor physics, latency or hardware evidence. Bounded run complete; no automatic successor.
+
 ## Resumed engineering replay and simulated baselines (2026-09-11)
 
 The user resumed diagnosis and chose simulation only. [Replay diagnosis](nearfield/MZ76_REPLAY_DIAGNOSIS_20260911.md) isolates implicit RGB encoder memory layout: padded historical batches use NCHW, unpadded MZ76 batches use channels-last. Explicit encoder NCHW restores all2,048 HELD frames under3 original profiles within unchanged tolerance (42 arrays, raw max3.815e-6, zero decision or winner changes). Original models/cuts and MZ76 invalid result remain unchanged; opt-in replay only, no new fit/source.
