@@ -2706,6 +2706,31 @@
         "research/active/dtr-r0/nearfield/MZ65_EXECUTION_20260911.md"
       ],
       "commit": "8da51e863e85c281c2c00c7cc1d07d3d68803ad4"
+    },
+    {
+      "id": "terminal-mz66-replay-projection-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION",
+      "summary": "One1536-step actual-Adam OLD_NEG halfspace projection, same MZ64 GEOMETRY init/source/sequence/loss/calibration. Mechanical audit PASS but Pareto FAIL5/11. Old totals FP173->167 (+2/-8) at TP3789->3768; MZ61held795TP38FP->775/38 (+1/-21TP), nativeBN additions30->20 andawning5->3. Projection361/1536; actual nonlinear replay loss increases292steps. All1536 scalar bounds and16 independent vectors pass. Retain as NEGATIVE_CONTROL; MZ64 remains CHALLENGER. Complete saved comparisons preserve2486arrays/18954metrics/80UNKNOWN. Run292.266s, CPUscore9.977s;6152605696allocatedcache bytes released.",
+      "successor_requires": "Preserve MZ64 geometry-learning CHALLENGER and all older controls. This isolated sampled-average first-order step constraint is not sufficient for retained old/new utility at the fixed budget; any revisit requires a separately declared mechanism, with no recut or reuse of inspected held errors as fresh confirmation.",
+      "forbidden_repeats": [
+        "Claim Pareto success from lower aggregate old FP while hiding lost TP",
+        "Claim first-order projection guarantees nonlinear replay loss or held preservation",
+        "Treat native winner or UNKNOWN as sensor measurement or clearance",
+        "Extend or retune this frozen run after the failure",
+        "Discard MZ64 source-learning gains because this optimizer recipe fails",
+        "Infer natural-scene hardware Android or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ66_EXECUTION_20260911.md"
+      ],
+      "commit": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0"
     }
   ]
 }

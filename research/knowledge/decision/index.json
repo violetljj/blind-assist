@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "8458d54b894dad676c780f99c730c17c718e64e68bce1c4c99f951cc612088a8",
+  "source_fingerprint": "3a3c5b996d81b693b9e81c5b72c992fba7548762a216d4f48204e75e20397dd3",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 356,
-    "current_terminals": 142,
-    "run_associations": 354
+    "experiments": 357,
+    "current_terminals": 143,
+    "run_associations": 355
   },
   "failure_layers": [
     {
@@ -21286,6 +21286,41 @@
       "search_text": "terminal-mz65-actor-pool-20260911 obstacle-avoidance MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE One fixed48-frame worker A/B/R completed, no capture retry. Pool creates16/reuses96 versus112 creations; map-excluded A34.719/B31.125/R33.203s, B2.078s below faster baseline beyond1.516s drift; preparation1.547/.531/1.608s. Speed conditions PASS, numeric admission FAIL. Native depth, masks/counts/UNKNOWN/support and packet validity/counts exact; exact float64 range_m baseline fails only<=2.22e-15m rounding, allfloat32equal; frozen gate stays NOT_EVALUABLE_BASELINE_INSTABILITY. Independently RGB envelope fails full12/16,target13/16,boundary13/16. All16 A/B/R panels actually root-viewed with macro geometry/context consistent; this does not override RGB. Keep original collector. Startup-only PowerShell variable collision repaired with unchanged inputs and0captured; full driver302.423s exit0; worker UE/Python/Zen/port/upload release verified. Keep original collector and carry MZ65 as the strict appearance-preserving actor-pool negative control. Any pooling/appearance or precision follow-up must declare new conditions and keep this result; no favorable case selection or retrospective tolerance change. Model/source learning results are independent. Call observed6.26percent time reduction accepted quality-preserving throughput Override RGB failure with macro visual inspection or native-depth identity Treat tiny float64 arithmetic differences as physical sensor error Widen tolerance or select cases to rescue this sealed result Call48 engineering captures a new training source or model improvement Infer natural-scene hardware or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz66-replay-projection-20260911",
+      "status": "diagnostic",
+      "question": "One1536-step actual-Adam OLD_NEG halfspace projection, same MZ64 GEOMETRY init/source/sequence/loss/calibration. Mechanical audit PASS but Pareto FAIL5/11. Old totals FP173->167 (+2/-8) at TP3789->3768; MZ61held795TP38FP->775/38 (+1/-21TP), nativeBN additions30->20 andawning5->3. Projection361/1536; actual nonlinear replay loss increases292steps. All1536 scalar bounds and16 independent vectors pass. Retain as NEGATIVE_CONTROL; MZ64 remains CHALLENGER. Complete saved comparisons preserve2486arrays/18954metrics/80UNKNOWN. Run292.266s, CPUscore9.977s;6152605696allocatedcache bytes released.",
+      "baseline": null,
+      "change": "Preserve MZ64 geometry-learning CHALLENGER and all older controls. This isolated sampled-average first-order step constraint is not sufficient for retained old/new utility at the fixed budget; any revisit requires a separately declared mechanism, with no recut or reuse of inspected held errors as fresh confirmation.",
+      "primary_metric": null,
+      "decision": "MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION",
+      "report": "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve MZ64 geometry-learning CHALLENGER and all older controls. This isolated sampled-average first-order step constraint is not sufficient for retained old/new utility at the fixed budget; any revisit requires a separately declared mechanism, with no recut or reuse of inspected held errors as fresh confirmation.",
+      "forbidden_repeats": [
+        "Claim Pareto success from lower aggregate old FP while hiding lost TP",
+        "Claim first-order projection guarantees nonlinear replay loss or held preservation",
+        "Treat native winner or UNKNOWN as sensor measurement or clearance",
+        "Extend or retune this frozen run after the failure",
+        "Discard MZ64 source-learning gains because this optimizer recipe fails",
+        "Infer natural-scene hardware Android or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ66_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz66-replay-projection-20260911",
+      "search_text": "terminal-mz66-replay-projection-20260911 obstacle-avoidance MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION One1536-step actual-Adam OLD_NEG halfspace projection, same MZ64 GEOMETRY init/source/sequence/loss/calibration. Mechanical audit PASS but Pareto FAIL5/11. Old totals FP173->167 (+2/-8) at TP3789->3768; MZ61held795TP38FP->775/38 (+1/-21TP), nativeBN additions30->20 andawning5->3. Projection361/1536; actual nonlinear replay loss increases292steps. All1536 scalar bounds and16 independent vectors pass. Retain as NEGATIVE_CONTROL; MZ64 remains CHALLENGER. Complete saved comparisons preserve2486arrays/18954metrics/80UNKNOWN. Run292.266s, CPUscore9.977s;6152605696allocatedcache bytes released. Preserve MZ64 geometry-learning CHALLENGER and all older controls. This isolated sampled-average first-order step constraint is not sufficient for retained old/new utility at the fixed budget; any revisit requires a separately declared mechanism, with no recut or reuse of inspected held errors as fresh confirmation. Claim Pareto success from lower aggregate old FP while hiding lost TP Claim first-order projection guarantees nonlinear replay loss or held preservation Treat native winner or UNKNOWN as sensor measurement or clearance Extend or retune this frozen run after the failure Discard MZ64 source-learning gains because this optimizer recipe fails Infer natural-scene hardware Android or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -28961,6 +28996,30 @@
         "evaluation_evidence": 6
       },
       "search_text": "mz65-actor-pool-20260911 Can immutable actor-slot reuse speed up controlled capture while preserving settled RGB/native evidence and weak ToF packets? Frozen MZ48 collector create/destroy policy with identical common timers; A and repeated R B-only actor pooling; fixed16 MZ61 worker cases each in A/B/R; original32/64settling/readiness/async writer and native labels unchanged Exact native/support/packet identity plus RGB/depth per-case residual within A/R drift and16 actual visual panels; B map-excluded wall below both baselines beyond drift and preparation sum below both MZ65_ACTOR_POOL_SPEED_GAIN_WITH_RGB_REPEAT_ENVELOPE_FAILURE research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md Consumed MZ61 cases, fixed native evaluator; engineering preservation/speed only, zero model work"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz66-replay-projection-20260911",
+      "status": "archived",
+      "question": "Can constraining actual Adam steps against existing old-negative replay reduce old false alerts while retaining geometry learning gains?",
+      "baseline": "Sealed MZ64 GEOMETRY1536-step identical-source fit, MZ64 CONTROL, MZ62 CONTROL and retained OLD_NEG/MZ57",
+      "change": "One1536-step PROJECT candidate; same initialization/source/sequence/loss/cut rule, one OLD_NEG halfspace projection on actual Adam delta",
+      "primary_metric": "PROJECT versus sealed MZ64 GEOMETRY: total TP non-decreasing and total FP non-increasing in each of legacy_noncal, mz48_nonfit and mz55_held640, with aggregate old FP strictly reduced; on MZ61 DROP held1024 total TP non-decreasing, zero newly false bits, native BODY_NEAR additions beyond OLD_NEG non-decreasing, and held-awning native BODY_NEAR additions non-decreasing. Eleven clauses; report all effects and costs.",
+      "decision": "MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION",
+      "report": "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md",
+      "source": "Consumed controlled Development; original TRAIN-only fitting and original1256 calibration; no new sources or withheld fit",
+      "commit": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0",
+      "association_id": "mz66-replay-projection-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz66-replay-projection-20260911 Can constraining actual Adam steps against existing old-negative replay reduce old false alerts while retaining geometry learning gains? Sealed MZ64 GEOMETRY1536-step identical-source fit, MZ64 CONTROL, MZ62 CONTROL and retained OLD_NEG/MZ57 One1536-step PROJECT candidate; same initialization/source/sequence/loss/cut rule, one OLD_NEG halfspace projection on actual Adam delta PROJECT versus sealed MZ64 GEOMETRY: total TP non-decreasing and total FP non-increasing in each of legacy_noncal, mz48_nonfit and mz55_held640, with aggregate old FP strictly reduced; on MZ61 DROP held1024 total TP non-decreasing, zero newly false bits, native BODY_NEAR additions beyond OLD_NEG non-decreasing, and held-awning native BODY_NEAR additions non-decreasing. Eleven clauses; report all effects and costs. MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md Consumed controlled Development; original TRAIN-only fitting and original1256 calibration; no new sources or withheld fit"
     }
   ],
   "associations": [
@@ -32085,6 +32144,20 @@
         "research/active/dtr-r0/nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz65-actor-pool-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz66-replay-projection-20260911",
+      "use_ids": [],
+      "protocol_id": "mz66-replay-projection-r0",
+      "code_revision": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0",
+      "input_fingerprint": "b834b4839c27779c1473aa6bee9982eba36b96cf4319ff678730ac49c032e980",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_20260911.md",
+        "artifacts.local/work/mz66-replay-projection-20260911",
+        "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz66-replay-projection-20260911",
       "source_rows": 1
     },
     {

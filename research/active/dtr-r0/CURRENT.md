@@ -5,6 +5,23 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Replay step projection: MZ66 (2026-09-11)
+
+[MZ66](nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md) is a scoped
+NEGATIVE_CONTROL, not a replacement for the MZ64 geometry-learning CHALLENGER.
+One exact1536-step actual-Adam replay projection passes numeric audit but fails
+the retaining gate5/11. OldFP173->167 (+2/-8) costsTP3789->3768; MZ61held
+795TP38FP->775/38 (+1/-21TP), native BODY_NEAR additions30->20 andawning5->3.
+All1536 scalar bounds and16 fixed independent vectors pass;361 steps project,
+while actual replay loss rises292times. Average first-order protection does
+not guarantee nonlinear/per-query/held retention. Full profiles and prior
+comparators remain; no new cutoff, source or outcome-selected mode.
+
+[Execution](nearfield/MZ66_EXECUTION_20260911.md):292.266s model run and9.977s
+CPU score,2486 inherited arrays/18954 historical metric rows exact,UNKNOWN
+preserved. Task-owned processes exited;6152605696 allocated temporary bytes
+released. No hardware, natural-scene, clearance or safety promotion.
+
 ## Capture actor reuse: MZ65 (2026-09-11)
 
 [MZ65](nearfield/MZ65_ACTOR_POOL_RESULTS_20260911.md) completes48 worker A/B/R
