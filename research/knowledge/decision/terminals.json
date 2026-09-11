@@ -2656,6 +2656,31 @@
         "research/active/dtr-r0/nearfield/MZ63_EXECUTION_20260911.md"
       ],
       "commit": "4352595d1fc95cd01408d5e211999bc7b271c69b"
+    },
+    {
+      "id": "terminal-mz64-geometry-learning-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ64_GEOMETRY_LEARNING_NATIVE_GAIN_WITH_OLD_FALSE_ALERT_COSTS",
+      "summary": "Two1536-step warm-start matched source-adaptation heads, same original loss/replay/cuts. Overall retaining gate FAIL14/19: all seven new-geometry conditions pass, five old FP clauses fail. DROP MZ61 held1024 frozenC756TP38FP/matchedC761/39/GEOMETRY795/38; nativeBN additions beyondOLD8/12/30, heldawning0/2/5. Geometry vs matched gains35/loses1TP, adds0/removes1FP on held. Old DROP legacy2733/55->2748/62, MZ48nonfit550/24->554/25, MZ55held478/83->487/86. Three old unsupported far-awning falseBN events have known non-native winners. All-invalid4096 geometry248TP16FP still3848misses. Both sourceCAL/HELD excluded from fit/cuts; sourceUNKNOWN retained. Run381.847s, CPUscore13.483s;2133 arrays and12150 historical metric rows exact; temporarycache releases7627165696 allocated bytes.",
+      "successor_requires": "Retain GEOMETRY as bounded CHALLENGER and matched CONTROL plus frozen OLD_NEG/MZ57/MZ62 comparators; preserve MZ60/MZ62 negative-control scopes. Any next source or learning change must address explicit old false-alert and missing-input costs without outcome-selected thresholds, source-role changes or claiming trained ceiling.",
+      "forbidden_repeats": [
+        "Claim complete retaining success from the new-geometry subset",
+        "Hide legacy or old far-awning near false alerts",
+        "Treat native winner as causal surface-use proof or UNKNOWN as clearance",
+        "Claim a useful sensorless backup from248/4096 positives",
+        "Call source geometry factor isolated from source size/exposure or prior MZ55 warm start",
+        "Infer hardware natural-scene Android or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ64_EXECUTION_20260911.md"
+      ],
+      "commit": "e5067bf3319e02b4634e90cef8c6eeeccb328c68"
     }
   ]
 }

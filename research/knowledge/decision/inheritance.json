@@ -901,6 +901,16 @@
       "failure_signature": "DROP held nativeBN+8/+1 at zero addedFP, but no held awning native gain, IDEAL/MERGE addedFP, and ALL_INVALID remains severely insensitive",
       "revisit_trigger": "Separately declared mechanism or source-training contrast preserving OLD_NEG/MZ57 and MZ62 assignment negative control; no profile selection or threshold tuning from these results",
       "assignment_basis": "Complete4096 frames/four profiles/eight decisions with frozen5cut vectors;524288 scalar and327680 candidate reconstructions; exact packet transformations and explicit UNKNOWN"
+    },
+    {
+      "terminal_id": "terminal-mz64-geometry-learning-20260911",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "MZ64 matched MZ61 geometry source adaptation; useful native geometry learning with explicit old false-alert tradeoff",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md",
+      "failure_signature": "Overall14/19; heldnativeBN30 versus12/8 andawning5 versus2/0, but five legacy/MZ48/MZ55 false-alert clauses fail and ALL_INVALID remains weak",
+      "revisit_trigger": "Separately declared source/learning mechanism addressing measured old near/far or missing-input error while retaining all comparators; no recut/profile selection on inspected results",
+      "assignment_basis": "Two1536-step fits, shared8276feature cache, complete3profile legacy and4profile4096source evaluation, independently rebuilt1256-row cuts, exact2133 arrays/12150 prior metric rows and explicitUNKNOWN"
     }
   ]
 }

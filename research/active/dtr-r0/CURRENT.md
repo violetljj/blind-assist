@@ -5,6 +5,24 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Geometry learning: MZ64 (2026-09-11)
+
+[MZ64](nearfield/MZ64_GEOMETRY_LEARNING_RESULTS_20260911.md) fits the new MZ61
+TRAIN2048 source against matched continued MZ55 learning. Overall gate FAIL14/19:
+all seven new-geometry checks pass, five old false-alert clauses fail. DROP held1024
+frozen CONTROL756TP38FP/matched CONTROL761/39/GEOMETRY795/38; native BODY_NEAR
+additions beyondOLD8/12/30, heldawning0/2/5. Retain GEOMETRY as CHALLENGER with
+both controls and all old comparators, not a default baseline replacement.
+
+Old DROP legacy2733/55->2748/62, MZ48nonfit550/24->554/25, MZ55held478/83->487/86
+versus matched CONTROL. New false near alerts include old unsupported far awnings.
+ALL_INVALID geometry248/4096 true events still leaves3848 misses. Both source
+CAL/HELD roles remain excluded from fit/cuts; MZ61 TRAIN is now fit-consumed.
+[Execution](nearfield/MZ64_EXECUTION_20260911.md) takes381.847s CUDA/I/O plus
+13.483s CPU score, preserving2133 arrays,12150 old metrics and UNKNOWN. A single
+shared cache avoids repeated encoding and releases7627165696 allocated bytes.
+No threshold/profile selection, causal native-winner, natural/hardware or safety claim.
+
 ## Fixed geometry transfer: MZ63 (2026-09-11)
 
 [MZ63](nearfield/MZ63_GEOMETRY_TRANSFER_RESULTS_20260911.md) completes zero-fit
