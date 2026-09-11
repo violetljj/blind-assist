@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "68c2f089095ef28f63815c9b68b97ced4d55ccb54124b6e9f85cfdd650249ac5",
+  "source_fingerprint": "92364e65e62033725077f20a20aaca1bd59dca47c3630b1d65456972a4cd3b80",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 358,
-    "current_terminals": 144,
-    "run_associations": 356
+    "experiments": 359,
+    "current_terminals": 145,
+    "run_associations": 357
   },
   "failure_layers": [
     {
@@ -21356,6 +21356,42 @@
       "search_text": "terminal-mz67-topology-source-20260911 obstacle-avoidance MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY Complete source 4096 frames/1024 geometry IDs/2048 pairs; source-valid 4096, intent 4096. Actual visual/native 80/80. UNKNOWN 0 queries/12370308 cells retained. NOT_ESTABLISHED_BY_SOURCE_AUDIT; all positive count/presence collision tables retained. Original raw reported 7547614895B, compact 1703344513B; exact NTFS storage saved 3206631424 allocated B. Source-only, zero learned-model work. Preserve consumed Development identity, fixed roles, positive-only counts/presence collision tables and UNKNOWN. Separately register any model use; independent MZ68 uses old MZ61/MZ48, not this source. Claim source admission demonstrates model benefit Conflate geometry IDs, counts and boolean occupancy disjointness Drop UNKNOWN or intent mismatches or treat missing ToF as clearance Call consumed background mesh identities unseen natural categories Use source collision outcomes for silent quality selection or role changes Claim natural-scene hardware Android default-app or safety improvement"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz68-missing-input-coverage-20260911",
+      "status": "diagnostic",
+      "question": "One1536-step NULL_COVERAGE candidate, exactly384 ALL_INVALID training steps and384 each original profile; identical MZ64 GEOMETRY frame sequence/init/loss/Adam/calibration. Gate6/11 FAIL. MZ61held ALL_INVALID G{'tp': 43, 'fp': 4, 'fn': 981} -> NULL{'tp': 114, 'fp': 11, 'fn': 910}; DROP G{'tp': 795, 'fp': 38, 'fn': 229} -> NULL{'tp': 826, 'fp': 39, 'fn': 198}. DROP nativeBN additions beyondOLD 17, awning 4. Missing-input training reaches1192/2048 unique MZ61TRAIN IDs, not completeperIDcoverage. Retain MZ64 CHALLENGER and MZ66 NEGATIVE_CONTROL. Run322.964s, score12.176s; 6152605696allocated scratch bytes released.",
+      "baseline": null,
+      "change": "Retain old controls and full TP/FP exchanges. Any source, representation, distillation, missing-profile allocation or calibration change requires a separately declared comparison; no outcome-driven recut or claim of fresh confirmation.",
+      "primary_metric": null,
+      "decision": "MZ68_MISSING_INPUT_COVERAGE_FAILS_PREDECLARED_RETENTION",
+      "report": "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "1c3d414d792313e0b8bf0a61f99c7ce9522c5826",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Retain old controls and full TP/FP exchanges. Any source, representation, distillation, missing-profile allocation or calibration change requires a separately declared comparison; no outcome-driven recut or claim of fresh confirmation.",
+      "forbidden_repeats": [
+        "Claim sensor fidelity or real detection probabilities from ALL_INVALID or range-budget proxies",
+        "Hide newly false bits behind equal FP totals",
+        "Claim complete missing-input exposure of all TRAIN IDs",
+        "Mix numerical teacher-score preservation or projection into this isolated coverage comparison",
+        "Treat controlled native winners or UNKNOWN as hardware measurement or clearance",
+        "Discard MZ64 challenger or MZ66 negative control",
+        "Infer natural-scene Android or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ68_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz68-missing-input-coverage-20260911",
+      "search_text": "terminal-mz68-missing-input-coverage-20260911 obstacle-avoidance MZ68_MISSING_INPUT_COVERAGE_FAILS_PREDECLARED_RETENTION One1536-step NULL_COVERAGE candidate, exactly384 ALL_INVALID training steps and384 each original profile; identical MZ64 GEOMETRY frame sequence/init/loss/Adam/calibration. Gate6/11 FAIL. MZ61held ALL_INVALID G{'tp': 43, 'fp': 4, 'fn': 981} -> NULL{'tp': 114, 'fp': 11, 'fn': 910}; DROP G{'tp': 795, 'fp': 38, 'fn': 229} -> NULL{'tp': 826, 'fp': 39, 'fn': 198}. DROP nativeBN additions beyondOLD 17, awning 4. Missing-input training reaches1192/2048 unique MZ61TRAIN IDs, not completeperIDcoverage. Retain MZ64 CHALLENGER and MZ66 NEGATIVE_CONTROL. Run322.964s, score12.176s; 6152605696allocated scratch bytes released. Retain old controls and full TP/FP exchanges. Any source, representation, distillation, missing-profile allocation or calibration change requires a separately declared comparison; no outcome-driven recut or claim of fresh confirmation. Claim sensor fidelity or real detection probabilities from ALL_INVALID or range-budget proxies Hide newly false bits behind equal FP totals Claim complete missing-input exposure of all TRAIN IDs Mix numerical teacher-score preservation or projection into this isolated coverage comparison Treat controlled native winners or UNKNOWN as hardware measurement or clearance Discard MZ64 challenger or MZ66 negative control Infer natural-scene Android or safety performance"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29078,6 +29114,30 @@
         "geometry_motion": 3
       },
       "search_text": "mz67-topology-source-20260911 Can four new controlled target topologies add valid native HEAD BODY BOTH coverage beyond MZ55 and MZ61 TRAIN tensors? Immutable MZ55 and MZ61 controlled sources and native label/UNKNOWN/weak45degree packet rules Fixed4096 new-target topology cases with1024 geometry configurations and2048/1024/1024 recipe roles; first64 two-host canary All64 source checks,32 exact native pairs,>=56 relation intents,every family/relation/range,64 actual visual reviews and >=1 positive count tensor per family absent from combined old TRAIN; failure stops4032 MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md Consumed city scenes and existing background mesh identities, new controlled target topologies; evaluator-native source coverage only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz68-missing-input-coverage-20260911",
+      "status": "archived",
+      "question": "Can replacing every fourth original training packet with ALL_INVALID improve missing-input recognition while retaining original DROP behavior?",
+      "baseline": "Sealed MZ64 GEOMETRY1536-step identical-source fit, MZ64 CONTROL, MZ62 CONTROL and retained OLD_NEG/MZ57",
+      "change": "One1536-step NULL_COVERAGE candidate; same initialization/source/sequence/loss/Adam/cut rule, every fourth native8 and OLD8 packet ALL_INVALID",
+      "primary_metric": "NULL_COVERAGE versus sealed MZ64 GEOMETRY: on MZ61 ALL_INVALID held1024 total TP strictly greater and zero newly false bits; on DROP each of legacy_noncal, mz48_nonfit and mz55_held640 total TP non-decreasing and total FP non-increasing; on MZ61 DROP held1024 total TP non-decreasing, zero newly false bits, and native BODY_NEAR additions beyond OLD_NEG non-decreasing. Eleven clauses; report all effects and costs.",
+      "decision": "MZ68_MISSING_INPUT_COVERAGE_FAILS_PREDECLARED_RETENTION",
+      "report": "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md",
+      "source": "Consumed controlled Development; original TRAIN-only fitting and original1256 calibration; no new sources or withheld fit",
+      "commit": "39a8fa9995eec36e167a890a0fbefe369d4fb33c",
+      "association_id": "mz68-missing-input-coverage-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 13,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz68-missing-input-coverage-20260911 Can replacing every fourth original training packet with ALL_INVALID improve missing-input recognition while retaining original DROP behavior? Sealed MZ64 GEOMETRY1536-step identical-source fit, MZ64 CONTROL, MZ62 CONTROL and retained OLD_NEG/MZ57 One1536-step NULL_COVERAGE candidate; same initialization/source/sequence/loss/Adam/cut rule, every fourth native8 and OLD8 packet ALL_INVALID NULL_COVERAGE versus sealed MZ64 GEOMETRY: on MZ61 ALL_INVALID held1024 total TP strictly greater and zero newly false bits; on DROP each of legacy_noncal, mz48_nonfit and mz55_held640 total TP non-decreasing and total FP non-increasing; on MZ61 DROP held1024 total TP non-decreasing, zero newly false bits, and native BODY_NEAR additions beyond OLD_NEG non-decreasing. Eleven clauses; report all effects and costs. MZ68_MISSING_INPUT_COVERAGE_FAILS_PREDECLARED_RETENTION research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md Consumed controlled Development; original TRAIN-only fitting and original1256 calibration; no new sources or withheld fit"
     }
   ],
   "associations": [
@@ -32230,6 +32290,20 @@
         "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz67-topology-source-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz68-missing-input-coverage-20260911",
+      "use_ids": [],
+      "protocol_id": "mz68-missing-input-coverage-r0",
+      "code_revision": "39a8fa9995eec36e167a890a0fbefe369d4fb33c",
+      "input_fingerprint": "ae5f91d337c8e7e7f75bdf2b69529831aaf2ec20487fadf8a795b4a8d8b73746",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_20260911.md",
+        "artifacts.local/work/mz68-missing-input-coverage-20260911",
+        "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz68-missing-input-coverage-20260911",
       "source_rows": 1
     },
     {

@@ -941,6 +941,16 @@
       "failure_signature": "NOT_ESTABLISHED_BY_SOURCE_AUDIT; consumed scenes, UNKNOWN and native count/presence overlaps limit claims",
       "revisit_trigger": "Separately declared model transfer or training comparison preserving original observations, roles and historical baselines",
       "assignment_basis": "Complete 4096 bound source rows, 2048 pairs, 80 native audits and 80 actual visual reviews; all collision tables and owner releases retained"
+    },
+    {
+      "terminal_id": "terminal-mz68-missing-input-coverage-20260911",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ68 NULL_COVERAGE only:25percent full-missing steps at exact1536 MZ64 GEOMETRY budget, controlled Development",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md",
+      "failure_signature": "Gate6/11; complete raw counts and false-bit/native attribution in bound score",
+      "revisit_trigger": "Retain old controls and full TP/FP exchanges. Any source, representation, distillation, missing-profile allocation or calibration change requires a separately declared comparison; no outcome-driven recut or claim of fresh confirmation.",
+      "assignment_basis": "Same1536-step source/frame/loss/optimizer/calibration comparator; isolated missing-input allocation; all prior arrays retained; original1256 scalar cutoff rebuilt"
     }
   ]
 }

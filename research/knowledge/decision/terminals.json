@@ -2756,6 +2756,32 @@
         "research/active/dtr-r0/nearfield/MZ67_EXECUTION_20260911.md"
       ],
       "commit": "39a8fa9995eec36e167a890a0fbefe369d4fb33c"
+    },
+    {
+      "id": "terminal-mz68-missing-input-coverage-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ68_MISSING_INPUT_COVERAGE_FAILS_PREDECLARED_RETENTION",
+      "summary": "One1536-step NULL_COVERAGE candidate, exactly384 ALL_INVALID training steps and384 each original profile; identical MZ64 GEOMETRY frame sequence/init/loss/Adam/calibration. Gate6/11 FAIL. MZ61held ALL_INVALID G{'tp': 43, 'fp': 4, 'fn': 981} -> NULL{'tp': 114, 'fp': 11, 'fn': 910}; DROP G{'tp': 795, 'fp': 38, 'fn': 229} -> NULL{'tp': 826, 'fp': 39, 'fn': 198}. DROP nativeBN additions beyondOLD 17, awning 4. Missing-input training reaches1192/2048 unique MZ61TRAIN IDs, not completeperIDcoverage. Retain MZ64 CHALLENGER and MZ66 NEGATIVE_CONTROL. Run322.964s, score12.176s; 6152605696allocated scratch bytes released.",
+      "successor_requires": "Retain old controls and full TP/FP exchanges. Any source, representation, distillation, missing-profile allocation or calibration change requires a separately declared comparison; no outcome-driven recut or claim of fresh confirmation.",
+      "forbidden_repeats": [
+        "Claim sensor fidelity or real detection probabilities from ALL_INVALID or range-budget proxies",
+        "Hide newly false bits behind equal FP totals",
+        "Claim complete missing-input exposure of all TRAIN IDs",
+        "Mix numerical teacher-score preservation or projection into this isolated coverage comparison",
+        "Treat controlled native winners or UNKNOWN as hardware measurement or clearance",
+        "Discard MZ64 challenger or MZ66 negative control",
+        "Infer natural-scene Android or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ68_EXECUTION_20260911.md"
+      ],
+      "commit": "1c3d414d792313e0b8bf0a61f99c7ce9522c5826"
     }
   ]
 }

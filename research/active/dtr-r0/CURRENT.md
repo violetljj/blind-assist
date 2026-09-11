@@ -5,6 +5,21 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Missing-input coverage: MZ68 (2026-09-11)
+
+[MZ68](nearfield/MZ68_MISSING_INPUT_COVERAGE_RESULTS_20260911.md) is a scoped NEGATIVE_CONTROL.
+One1536-step NULL_COVERAGE candidate, exactly384 ALL_INVALID training steps and384 each original profile; identical MZ64 GEOMETRY frame sequence/init/loss/Adam/calibration. Gate6/11 FAIL. MZ61held ALL_INVALID G{'tp': 43, 'fp': 4, 'fn': 981} -> NULL{'tp': 114, 'fp': 11, 'fn': 910}; DROP G{'tp': 795, 'fp': 38, 'fn': 229} -> NULL{'tp': 826, 'fp': 39, 'fn': 198}. DROP nativeBN additions beyondOLD 17, awning 4. Missing-input training reaches1192/2048 unique MZ61TRAIN IDs, not completeperIDcoverage. Retain MZ64 CHALLENGER and MZ66 NEGATIVE_CONTROL. Run322.964s, score12.176s; 6152605696allocated scratch bytes released.
+
+The sole variable is25% ALL_INVALID steps applied to both native8 and
+OLD8 inputs; frame/loss/optimizer/cut rules remain fixed. All11 clauses,
+4profile newsource and3profile oldcohort counts, false-bit IDs, native
+winners and UNKNOWN remain in the evidence. Numerical teacher-score
+preservation is not part of this run. MZ64 CHALLENGER and MZ66 negative
+control remain available; no hardware or safety promotion.
+
+[Execution](nearfield/MZ68_EXECUTION_20260911.md) binds actual run, score,
+input hashes, process release and cache cleanup.
+
 ## Controlled topology source: MZ67 (2026-09-11)
 
 [MZ67](nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md) retains 4096
