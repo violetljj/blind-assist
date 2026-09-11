@@ -5,6 +5,12 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Partial-return inputs and compact RGB tools (2026-09-11)
+
+[Paired reported-return sensitivity](nearfield/TOF_RETURN_SENSITIVITY_20260911.md) now keeps either the existing near or far return in unresolved dual zones, without inventing a midpoint or assuming a thin near target survives. Both inputs passed byte/validity replay on8192 existing packets;14 focused input tests passed. No new model inference, fit, cutoff or sensor-physics claim. Existing MZ70 MZ67 HELD DIVERSE IDEAL861TP/46FP, MERGE911/57 and DROP753/71 are re-extracted with per-query denominators; ordinary/partial input remains primary and original challenger dispositions remain.
+
+[Lossless RGB view builder](nearfield/COMPACT_RGB_VIEW.md) implements explicit PNG-to-WebP mapping, input/output/pixel hashes and exact decoding. Five focused checks and compact archive reading passed. Eight TRAIN images:3546777 to2412046 encoded bytes (31.99% smaller),0.783s total. No whole-dataset conversion or deletion; consumers must explicitly adopt the new mapping.
+
 ## Quality-aware measurement packet interface (2026-09-11)
 
 [Opt-in packet contract](nearfield/VL53L8CX_MEASUREMENT_PACKET_20260911.md) implements observed status/quality availability, declared target order/count and causal time alignment. Eight focused input/causality tests pass; legacy range/valid bytes are preserved. No quality is synthesized from truth and old static cases are not turned into temporal sequences. Official ULD documents8x8/15Hz; motion aggregation differs from a64-cell map. Normal/partial-ToF remains primary. This is an input interface, not new model training, device integration or sensor-physics validation.
