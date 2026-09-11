@@ -2,14 +2,14 @@
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-11",
-  "source_fingerprint": "3a3c5b996d81b693b9e81c5b72c992fba7548762a216d4f48204e75e20397dd3",
+  "source_fingerprint": "68c2f089095ef28f63815c9b68b97ced4d55ccb54124b6e9f85cfdd650249ac5",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 357,
-    "current_terminals": 143,
-    "run_associations": 355
+    "experiments": 358,
+    "current_terminals": 144,
+    "run_associations": 356
   },
   "failure_layers": [
     {
@@ -21321,6 +21321,41 @@
       "search_text": "terminal-mz66-replay-projection-20260911 obstacle-avoidance MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION One1536-step actual-Adam OLD_NEG halfspace projection, same MZ64 GEOMETRY init/source/sequence/loss/calibration. Mechanical audit PASS but Pareto FAIL5/11. Old totals FP173->167 (+2/-8) at TP3789->3768; MZ61held795TP38FP->775/38 (+1/-21TP), nativeBN additions30->20 andawning5->3. Projection361/1536; actual nonlinear replay loss increases292steps. All1536 scalar bounds and16 independent vectors pass. Retain as NEGATIVE_CONTROL; MZ64 remains CHALLENGER. Complete saved comparisons preserve2486arrays/18954metrics/80UNKNOWN. Run292.266s, CPUscore9.977s;6152605696allocatedcache bytes released. Preserve MZ64 geometry-learning CHALLENGER and all older controls. This isolated sampled-average first-order step constraint is not sufficient for retained old/new utility at the fixed budget; any revisit requires a separately declared mechanism, with no recut or reuse of inspected held errors as fresh confirmation. Claim Pareto success from lower aggregate old FP while hiding lost TP Claim first-order projection guarantees nonlinear replay loss or held preservation Treat native winner or UNKNOWN as sensor measurement or clearance Extend or retune this frozen run after the failure Discard MZ64 source-learning gains because this optimizer recipe fails Infer natural-scene hardware Android or safety performance"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz67-topology-source-20260911",
+      "status": "diagnostic",
+      "question": "Complete source 4096 frames/1024 geometry IDs/2048 pairs; source-valid 4096, intent 4096. Actual visual/native 80/80. UNKNOWN 0 queries/12370308 cells retained. NOT_ESTABLISHED_BY_SOURCE_AUDIT; all positive count/presence collision tables retained. Original raw reported 7547614895B, compact 1703344513B; exact NTFS storage saved 3206631424 allocated B. Source-only, zero learned-model work.",
+      "baseline": null,
+      "change": "Preserve consumed Development identity, fixed roles, positive-only counts/presence collision tables and UNKNOWN. Separately register any model use; independent MZ68 uses old MZ61/MZ48, not this source.",
+      "primary_metric": null,
+      "decision": "MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md",
+      "source": "decision/terminals.json",
+      "commit": "39a8fa9995eec36e167a890a0fbefe369d4fb33c",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Preserve consumed Development identity, fixed roles, positive-only counts/presence collision tables and UNKNOWN. Separately register any model use; independent MZ68 uses old MZ61/MZ48, not this source.",
+      "forbidden_repeats": [
+        "Claim source admission demonstrates model benefit",
+        "Conflate geometry IDs, counts and boolean occupancy disjointness",
+        "Drop UNKNOWN or intent mismatches or treat missing ToF as clearance",
+        "Call consumed background mesh identities unseen natural categories",
+        "Use source collision outcomes for silent quality selection or role changes",
+        "Claim natural-scene hardware Android default-app or safety improvement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ67_EXECUTION_20260911.md"
+      ],
+      "association_id": "mz67-topology-source-20260911",
+      "search_text": "terminal-mz67-topology-source-20260911 obstacle-avoidance MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY Complete source 4096 frames/1024 geometry IDs/2048 pairs; source-valid 4096, intent 4096. Actual visual/native 80/80. UNKNOWN 0 queries/12370308 cells retained. NOT_ESTABLISHED_BY_SOURCE_AUDIT; all positive count/presence collision tables retained. Original raw reported 7547614895B, compact 1703344513B; exact NTFS storage saved 3206631424 allocated B. Source-only, zero learned-model work. Preserve consumed Development identity, fixed roles, positive-only counts/presence collision tables and UNKNOWN. Separately register any model use; independent MZ68 uses old MZ61/MZ48, not this source. Claim source admission demonstrates model benefit Conflate geometry IDs, counts and boolean occupancy disjointness Drop UNKNOWN or intent mismatches or treat missing ToF as clearance Call consumed background mesh identities unseen natural categories Use source collision outcomes for silent quality selection or role changes Claim natural-scene hardware Android default-app or safety improvement"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29020,6 +29055,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz66-replay-projection-20260911 Can constraining actual Adam steps against existing old-negative replay reduce old false alerts while retaining geometry learning gains? Sealed MZ64 GEOMETRY1536-step identical-source fit, MZ64 CONTROL, MZ62 CONTROL and retained OLD_NEG/MZ57 One1536-step PROJECT candidate; same initialization/source/sequence/loss/cut rule, one OLD_NEG halfspace projection on actual Adam delta PROJECT versus sealed MZ64 GEOMETRY: total TP non-decreasing and total FP non-increasing in each of legacy_noncal, mz48_nonfit and mz55_held640, with aggregate old FP strictly reduced; on MZ61 DROP held1024 total TP non-decreasing, zero newly false bits, native BODY_NEAR additions beyond OLD_NEG non-decreasing, and held-awning native BODY_NEAR additions non-decreasing. Eleven clauses; report all effects and costs. MZ66_ACTUAL_ADAM_REPLAY_PROJECTION_FAILS_PARETO_RETENTION research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md Consumed controlled Development; original TRAIN-only fitting and original1256 calibration; no new sources or withheld fit"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz67-topology-source-20260911",
+      "status": "archived",
+      "question": "Can four new controlled target topologies add valid native HEAD BODY BOTH coverage beyond MZ55 and MZ61 TRAIN tensors?",
+      "baseline": "Immutable MZ55 and MZ61 controlled sources and native label/UNKNOWN/weak45degree packet rules",
+      "change": "Fixed4096 new-target topology cases with1024 geometry configurations and2048/1024/1024 recipe roles; first64 two-host canary",
+      "primary_metric": "All64 source checks,32 exact native pairs,>=56 relation intents,every family/relation/range,64 actual visual reviews and >=1 positive count tensor per family absent from combined old TRAIN; failure stops4032",
+      "decision": "MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md",
+      "source": "Consumed city scenes and existing background mesh identities, new controlled target topologies; evaluator-native source coverage only",
+      "commit": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0",
+      "association_id": "mz67-topology-source-20260911",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 6,
+        "geometry_motion": 3
+      },
+      "search_text": "mz67-topology-source-20260911 Can four new controlled target topologies add valid native HEAD BODY BOTH coverage beyond MZ55 and MZ61 TRAIN tensors? Immutable MZ55 and MZ61 controlled sources and native label/UNKNOWN/weak45degree packet rules Fixed4096 new-target topology cases with1024 geometry configurations and2048/1024/1024 recipe roles; first64 two-host canary All64 source checks,32 exact native pairs,>=56 relation intents,every family/relation/range,64 actual visual reviews and >=1 positive count tensor per family absent from combined old TRAIN; failure stops4032 MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md Consumed city scenes and existing background mesh identities, new controlled target topologies; evaluator-native source coverage only"
     }
   ],
   "associations": [
@@ -32158,6 +32216,20 @@
         "research/active/dtr-r0/nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md"
       ],
       "decision_id": "terminal-mz66-replay-projection-20260911",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz67-topology-source-20260911",
+      "use_ids": [],
+      "protocol_id": "mz67-topology-source-r0",
+      "code_revision": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0",
+      "input_fingerprint": "d73f76c01b0fc197a2d387ecd078f8276997750f7af142b37c8cd66657fcd24e",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_20260911.md",
+        "artifacts.local/work/mz67-topology-source-20260911",
+        "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md"
+      ],
+      "decision_id": "terminal-mz67-topology-source-20260911",
       "source_rows": 1
     },
     {

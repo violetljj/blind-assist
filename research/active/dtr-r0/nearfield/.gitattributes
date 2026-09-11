@@ -1,0 +1,6 @@
+# Preserve the exact source bytes bound before MZ67 capture.
+mz67_dataset.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+mz67_fullframe.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+mz67_geometry_spec.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+mz67_source_contract.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+mz67_transfer_source.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

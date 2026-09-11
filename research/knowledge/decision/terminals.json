@@ -2731,6 +2731,31 @@
         "research/active/dtr-r0/nearfield/MZ66_EXECUTION_20260911.md"
       ],
       "commit": "3b77c6a66542bb7a0bc15e542b7c2e3c948e88b0"
+    },
+    {
+      "id": "terminal-mz67-topology-source-20260911",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "MZ67_COMPLETE_CONTROLLED_TOPOLOGY_SOURCE_COMPONENT_ONLY",
+      "summary": "Complete source 4096 frames/1024 geometry IDs/2048 pairs; source-valid 4096, intent 4096. Actual visual/native 80/80. UNKNOWN 0 queries/12370308 cells retained. NOT_ESTABLISHED_BY_SOURCE_AUDIT; all positive count/presence collision tables retained. Original raw reported 7547614895B, compact 1703344513B; exact NTFS storage saved 3206631424 allocated B. Source-only, zero learned-model work.",
+      "successor_requires": "Preserve consumed Development identity, fixed roles, positive-only counts/presence collision tables and UNKNOWN. Separately register any model use; independent MZ68 uses old MZ61/MZ48, not this source.",
+      "forbidden_repeats": [
+        "Claim source admission demonstrates model benefit",
+        "Conflate geometry IDs, counts and boolean occupancy disjointness",
+        "Drop UNKNOWN or intent mismatches or treat missing ToF as clearance",
+        "Call consumed background mesh identities unseen natural categories",
+        "Use source collision outcomes for silent quality selection or role changes",
+        "Claim natural-scene hardware Android default-app or safety improvement"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md",
+        "research/active/dtr-r0/nearfield/MZ67_EXECUTION_20260911.md"
+      ],
+      "commit": "39a8fa9995eec36e167a890a0fbefe369d4fb33c"
     }
   ]
 }

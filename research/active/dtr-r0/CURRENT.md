@@ -5,6 +5,23 @@ Updated: 2026-09-11
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Controlled topology source: MZ67 (2026-09-11)
+
+[MZ67](nearfield/MZ67_TOPOLOGY_SOURCE_RESULTS_20260911.md) retains 4096
+controlled frames, 1024 geometry IDs and 2048
+native event pairs as a source-only COMPONENT. Source-valid/intent matching:
+4096/4096; all 80
+fixed cases were actually viewed and 80 independently
+audited. UNKNOWN 0 query bits / 12370308
+full cells remains. Positive count/presence collisions with new and old TRAIN
+are reported separately; `NOT_ESTABLISHED_BY_SOURCE_AUDIT`.
+
+[Execution](nearfield/MZ67_EXECUTION_20260911.md) preserves original raw and
+1703344513-byte compact archives. Lossless transparent compression saved
+3206631424 actual allocated bytes; owners released. No model
+fit/prediction or hardware/generalization promotion. Separate MZ68 uses old
+MZ61/MZ48, not this source; later model use needs its own declared comparison.
+
 ## Replay step projection: MZ66 (2026-09-11)
 
 [MZ66](nearfield/MZ66_REPLAY_PROJECTION_RESULTS_20260911.md) is a scoped
