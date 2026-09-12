@@ -5,6 +5,22 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ102: stereo span rejection loses real small support (2026-09-12)
+
+[MZ102](nearfield/MZ102_STEREO_WITNESS_RESULTS_20260912.md) freezes query-local
+disparity-coherent image-plane span>=0.10m as primary; +/-1px interval is only
+a diagnostic. Consumed MZ101 improves FP25 to13 but loses7TP. New288-frame seed
+102013: old union200TP/15FP/22FN becomes185/12/37, with1 lost small_head_flat
+HEAD event and up to1.25s extra delay. IncrementalTP59/74 and thin33/37 fail90%
+retention; extraFP7 to4 misseshalving. S+I losesmore. Intended NEGATIVE_CONTROL;
+structured registration is pending an unrelated missing historical ASE receipt.
+The experiment is stopped, not still running. No tuning or promotion.
+Fresh ToF126/8/96 and union200/15/22 again
+show sensor complementarity: stereo recovers2 smallHEAD events, ToF recovers
+flatwall BODY/HEAD. Short visible support is not sufficient rejection evidence;
+dev audit includes59/59 real head-surface pixels rejected. Known-pose synthetic
+current-corridor scope only; historical core unchanged, no automatic successor.
+
 ## MZ101: spatial complementarity, direct union not promoted (2026-09-12)
 
 [MZ101](nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md) runs288 fresh rendered
