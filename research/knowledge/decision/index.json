@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "81788a0a8ab8fa4bd8cdd639ab6f47dc4ba181ffc333441ebf87a64fc56290f8",
+  "source_fingerprint": "c6918259114b5db09e744be85765f65c563c5bdb3e662414d82d8ebd3f7fc475",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 414,
+    "experiments": 415,
     "current_terminals": 196,
-    "run_associations": 412
+    "run_associations": 413
   },
   "failure_layers": [
     {
@@ -33583,6 +33583,30 @@
         "evaluation_evidence": 5
       },
       "search_text": "mz91-radar-localization-20260912 Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts? Sealed MZ90 matched_hold plus same-readout single-frame ablation Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto All three arms333TP151FP158FN F1.6831; zero changed alerts; no strict FP gain LOCALIZATION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md Consumed MZ90 paired ideal and sensor_proxy raw observations"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz92-cross-sensor-calibration-20260912",
+      "status": "active",
+      "question": "Can causal ToF Radar angular calibration give the spatial veto useful evidence?",
+      "baseline": "Frozen matched_hold and MZ91 uncalibrated localization",
+      "change": "Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold",
+      "primary_metric": "TP FP FN F1 UNKNOWN event delay fragmentation calibration coverage provenance",
+      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md",
+      "source": "Consumed sealed MZ90 paired raw observations; MZ91 negative control",
+      "commit": "a65aa396033447b3467a98e17ca70f8ddc37fdb4",
+      "association_id": "mz92-cross-sensor-calibration-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz92-cross-sensor-calibration-20260912 Can causal ToF Radar angular calibration give the spatial veto useful evidence? Frozen matched_hold and MZ91 uncalibrated localization Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold TP FP FN F1 UNKNOWN event delay fragmentation calibration coverage provenance PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md Consumed sealed MZ90 paired raw observations; MZ91 negative control"
     }
   ],
   "associations": [
@@ -37504,6 +37528,19 @@
         "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz91-radar-localization-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz92-cross-sensor-calibration-20260912",
+      "use_ids": [],
+      "protocol_id": "mz92-cross-sensor-calibration-20260912",
+      "code_revision": "a65aa396033447b3467a98e17ca70f8ddc37fdb4",
+      "input_fingerprint": "9cec52ad131fa08580af3c154807d98d6cf61de03444961e2c336a6eced1c6a3",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md",
+        "artifacts.local/work/mz92-cross-sensor-calibration-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
