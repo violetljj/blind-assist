@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "86ae468d9772d68ef70e0ee46ef724ee70f7c6e893bc1ab90e7eb4f4539a83b2",
+  "source_fingerprint": "8e1f6f09cecb48076ec24667fda4d35d37853429045b7fdf3e94ed10ccd2d757",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 418,
+    "experiments": 419,
     "current_terminals": 198,
-    "run_associations": 416
+    "run_associations": 417
   },
   "failure_layers": [
     {
@@ -33757,6 +33757,30 @@
         "decision_lifecycle": 9
       },
       "search_text": "mz95-coverage-authority-20260912 Can local ToF compatibility qualify negative authority without losing useful vetoes? Frozen matched_hold with original Radar gate Release negative ToF veto only when not all Radar support has compatible ToF range and bearing TP FP FN F1 fixedproxy20FN8TN ideal9FN82TN events PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md Consumed MZ90 paired observations independent of A"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz96-ue-decision-head-20260912",
+      "status": "active",
+      "question": "Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes?",
+      "baseline": "matched_hold range-only A horizon B coverage and A+B on same new scene split",
+      "change": "Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold",
+      "primary_metric": "Test F1 TP FP FN events delay fragments all-rule and ghost slices",
+      "decision": "PENDING_FRESH_UE_COMPARISON",
+      "report": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md",
+      "source": "Fresh UE source-v3 seed96013 128episode scene-disjoint split",
+      "commit": "87152040b91b960020134b3f669b7ebae60156e8",
+      "association_id": "mz96-ue-decision-head-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 6,
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 12
+      },
+      "search_text": "mz96-ue-decision-head-20260912 Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes? matched_hold range-only A horizon B coverage and A+B on same new scene split Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold Test F1 TP FP FN events delay fragments all-rule and ghost slices PENDING_FRESH_UE_COMPARISON research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md Fresh UE source-v3 seed96013 128episode scene-disjoint split"
     }
   ],
   "associations": [
@@ -37730,6 +37754,21 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md",
         "artifacts.local/work/mz95-coverage-authority-20260912/run-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz96-ue-decision-head-20260912",
+      "use_ids": [],
+      "protocol_id": "mz96-ue-decision-head-20260912",
+      "code_revision": "87152040b91b960020134b3f669b7ebae60156e8",
+      "input_fingerprint": "781a982ae738d764d28f03d1ae69e989552a82a03bb89512d28ecbc2404ff57b",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md",
+        "artifacts.local/work/mz96-ue-decision-20260912/source-v3/spec.json",
+        "artifacts.local/work/mz96-ue-decision-20260912/capture-v1",
+        "artifacts.local/work/mz96-ue-decision-20260912/comparison-v1"
       ],
       "decision_id": null,
       "source_rows": 1
