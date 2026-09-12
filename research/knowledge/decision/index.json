@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "7c0cc27113eb5b43d7ee24847cd6f4a9e7a11aa4ec31eb4fc15f054f676a9526",
+  "source_fingerprint": "6152d5ac075e0de308908942ca753dca297a21bd614d3ca4b9bbda174092b361",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 423,
-    "current_terminals": 204,
+    "current_terminals": 205,
     "run_associations": 421
   },
   "failure_layers": [
@@ -24893,6 +24893,47 @@
       "search_text": "terminal-mz99-angle-information-20260912 obstacle-avoidance ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE Paired angle-only UE diagnostic: R current-route987TP753FP to1016TP559FP; originalTP retention980/987 and no lost route interval. BODY_1S strict future124 to125 of171. All eight arms12/12 timely contacts are carried sessions;14 right-censored. Diagnostic component only, no deployable angle correction or core promotion. Authorized observable-only spatial localization or separately task-matched contact readout with discriminating timing evaluation; no oracle score promotion. COMPONENT_OR_CHALLENGER COMPONENT Paired synthetic angle-information and separate route-contact evaluation diagnostic only research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md Route angular gate passes but contact semantics remain mismatched and timing saturated with carried sessions Authorized observable-only localization or task-matched contact readout and discriminating evaluation Treat evaluator-only exact bearing as achieved sensor calibration or hardware performance Conflate current route awareness with imminent body contact or combine their scores Call12/12 carried-session contact coverage perfect contact prediction Uniquely attribute physical causes from latest-support provenance groups"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz100-causal-angle-anchor-20260912",
+      "status": "negative",
+      "question": "Consumed MZ99 causal unique ToF Radar angle anchors cover98/2875 fallback frames in19 episodes;80/98 within5deg fails90percent gate. Actual real-slot MAE7.3679 to3.9260 but zero-bias subset2.9587 to4.3378. Stage1 failed; no downstream candidate predictions or scoring.",
+      "baseline": null,
+      "change": "Changed observable reference or association premise and new evaluation; no tolerance/cache/gate relaxation using this outcome.",
+      "primary_metric": null,
+      "decision": "CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED",
+      "report": "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "5981475b8ff52ebb459dcf003cd9eef82a5a93b7",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Changed observable reference or association premise and new evaluation; no tolerance/cache/gate relaxation using this outcome.",
+      "forbidden_repeats": [
+        "Claim local angular MAE improvement establishes final alert benefit",
+        "Treat nominal narrow interval as calibrated certainty or matching identity",
+        "Hide zero-bias harm or low fallback coverage",
+        "Use simulator bias or provenance for per-frame calibration selection"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed causal nominal angle-anchor estimator on consumed MZ99; no downstream evaluation",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md",
+      "failure_signature": "3.41percent fallback coverage and81.63percent within5deg; zero-bias measurements harmed despite aggregate local MAE gain",
+      "revisit_trigger": "Changed observable reference or association premise with appropriate new evaluation",
+      "assignment_basis": "Frozen stage1 gates, observable-only estimator, sealed actual-application errors, independent review and six unit tests",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md"
+      ],
+      "association_id": "mz100-causal-angle-anchor-20260912",
+      "search_text": "terminal-mz100-causal-angle-anchor-20260912 obstacle-avoidance CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED Consumed MZ99 causal unique ToF Radar angle anchors cover98/2875 fallback frames in19 episodes;80/98 within5deg fails90percent gate. Actual real-slot MAE7.3679 to3.9260 but zero-bias subset2.9587 to4.3378. Stage1 failed; no downstream candidate predictions or scoring. Changed observable reference or association premise and new evaluation; no tolerance/cache/gate relaxation using this outcome. NEGATIVE_CONTROL  Fixed causal nominal angle-anchor estimator on consumed MZ99; no downstream evaluation research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md 3.41percent fallback coverage and81.63percent within5deg; zero-bias measurements harmed despite aggregate local MAE gain Changed observable reference or association premise with appropriate new evaluation Claim local angular MAE improvement establishes final alert benefit Treat nominal narrow interval as calibrated certainty or matching identity Hide zero-bias harm or low fallback coverage Use simulator bias or provenance for per-frame calibration selection"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -34100,15 +34141,15 @@
     {
       "kind": "experiment",
       "id": "mz100-causal-angle-anchor-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage?",
       "baseline": "Frozen R on consumed MZ99 measured packets",
       "change": "Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence",
-      "primary_metric": "Anchor coverage bias accuracy actual-application angular MAE; conditional final route retention and FP",
-      "decision": "PENDING_FROZEN_ANCHOR_FEASIBILITY",
-      "report": "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md",
+      "primary_metric": "Coverage98/2875; within5deg80/98; realMAE7.3679 to3.9260; zero-biasMAE2.9587 to4.3378; downstream not run",
+      "decision": "CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED",
+      "report": "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md",
       "source": "Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators",
-      "commit": "783d0cfb8ebea60ee309aff2e938b94bf04293d0",
+      "commit": "5981475b8ff52ebb459dcf003cd9eef82a5a93b7",
       "association_id": "mz100-causal-angle-anchor-20260912",
       "routes": [
         "obstacle-avoidance"
@@ -34116,9 +34157,9 @@
       "layer_scores": {
         "authority_truth": 7,
         "source_coverage": 3,
-        "evaluation_evidence": 6
+        "evaluation_evidence": 3
       },
-      "search_text": "mz100-causal-angle-anchor-20260912 Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage? Frozen R on consumed MZ99 measured packets Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence Anchor coverage bias accuracy actual-application angular MAE; conditional final route retention and FP PENDING_FROZEN_ANCHOR_FEASIBILITY research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators"
+      "search_text": "mz100-causal-angle-anchor-20260912 Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage? Frozen R on consumed MZ99 measured packets Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence Coverage98/2875; within5deg80/98; realMAE7.3679 to3.9260; zero-biasMAE2.9587 to4.3378; downstream not run CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators"
     }
   ],
   "associations": [
@@ -36763,13 +36804,14 @@
       "run_id": "mz100-causal-angle-anchor-20260912",
       "use_ids": [],
       "protocol_id": "mz100-causal-angle-anchor-20260912",
-      "code_revision": "783d0cfb8ebea60ee309aff2e938b94bf04293d0",
+      "code_revision": "5981475b8ff52ebb459dcf003cd9eef82a5a93b7",
       "input_fingerprint": "6f2f4442158453c26b234a8ab7b6b410ea3dd82ca68694133f771101f7c018ee",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md",
-        "artifacts.local/work/mz100-causal-angle-anchor-20260912/run-v1"
+        "artifacts.local/work/mz100-causal-angle-anchor-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz100-causal-angle-anchor-20260912",
       "source_rows": 1
     },
     {

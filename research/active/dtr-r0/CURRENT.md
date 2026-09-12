@@ -5,6 +5,18 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ100: observable angle anchors fail feasibility (2026-09-12)
+
+[MZ100](nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md) freezes one causal
+ToF/Radar unique-pair interval estimator on consumed MZ99. Only98/2875 Radar
+fallback frames receive earlier calibration;80/98 estimates are within5deg.
+Coverage and reliability fail the predeclared10%/90% gates. Actual real-return
+MAE improves7.3679 to3.9260deg, but zero-bias MAE worsens2.9587 to4.3378deg.
+Most uncovered fallback frames (2707) never established an anchor;70 had a prior
+one that was unavailable. Stage1 stops the run before downstream predictions or
+scoring. Retain this configuration as NEGATIVE_CONTROL; R/core unchanged. No
+threshold relaxation, cache extension, new source or automatic successor.
+
 ## MZ99: angle information helps route relevance, not contact semantics (2026-09-12)
 
 [MZ99](nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md) uses one new seed99013

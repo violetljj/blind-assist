@@ -4825,6 +4825,30 @@
         "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md"
       ],
       "commit": "ebbf142e2b88f6d85b384c5a7679ae3f24a7204a"
+    },
+    {
+      "id": "terminal-mz100-causal-angle-anchor-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED",
+      "summary": "Consumed MZ99 causal unique ToF Radar angle anchors cover98/2875 fallback frames in19 episodes;80/98 within5deg fails90percent gate. Actual real-slot MAE7.3679 to3.9260 but zero-bias subset2.9587 to4.3378. Stage1 failed; no downstream candidate predictions or scoring.",
+      "successor_requires": "Changed observable reference or association premise and new evaluation; no tolerance/cache/gate relaxation using this outcome.",
+      "forbidden_repeats": [
+        "Claim local angular MAE improvement establishes final alert benefit",
+        "Treat nominal narrow interval as calibrated certainty or matching identity",
+        "Hide zero-bias harm or low fallback coverage",
+        "Use simulator bias or provenance for per-frame calibration selection"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md"
+      ],
+      "commit": "5981475b8ff52ebb459dcf003cd9eef82a5a93b7"
     }
   ]
 }
