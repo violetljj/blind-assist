@@ -51,3 +51,25 @@ they pass retain a consumed-Development challenger only, not the default App or
 hardware/future-contact evidence. Finish scoped verification/delivery and release
 task-owned processes. The unrelated historical ASE registry failure is recorded
 if still present; never rewrite old evidence or manually append the ledger.
+
+## Engineering configuration amendment before candidate outcomes
+
+Original11-33-40 config and checkpoint downloads remained quota-blocked. Select
+the official NVIDIA TAO adapted small dynamic v2.0 FP32 ONNX graph, SHA256
+`a001a7bc0512a0bc3b3218194e924784e58b20656c6f1ea2c151024e555cfd64`.
+Refinement iterations are baked into this graph, not the original requested20.
+The 384x640 padded first-pair canary initialized CUDA but failed before producing
+depth: a Softmax requested2,658,140,160bytes when the6GiB arena had only
+1,749,155,072bytes available. Preserve that failure as engineering evidence.
+
+One bounded memory recovery uses the same graph and6GiB cap at **512x288**:
+uniform0.8 RGB scaling via OpenCV INTER_AREA before ImageNet normalization,
+no padding needed; INTER_LINEAR disparity upsampling back to640x360 followed
+by division by0.8 restores original pixel disparity for original-focal metric
+depth. Keep original input hashes. This trades spatial resolution for memory;
+critical-slice retention gates remain unchanged. A revised unlabeled canary
+must establish numerical validity and actual CUDA execution before the full
+replay. No subsequent resolution/precision/checkpoint sweep is included.
+Record kernel time and complete pair-processing time separately. Right-image
+left-boundary visibility is an explicit geometric validity mask, not matching
+confidence; within the common FOV and0.5--4m range it cannot remove query support.
