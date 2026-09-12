@@ -4635,6 +4635,30 @@
         "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md"
       ],
       "commit": "fb5928649e3cfbd4bbad051bb6cc6a0478b0447f"
+    },
+    {
+      "id": "terminal-mz92-cross-sensor-calibration-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "CALIBRATION_GATE_NOT_MET",
+      "summary": "Causal ToF Radar relative offset MAE falls7.123 to2.128deg on424 active proxy frames but all alerts equal333TP151FP158FN F1.6831. No real-only or persistent-phantom FP removed.",
+      "successor_requires": "Explicitly authorized decision-changing hypothesis; distinguish relative bias estimation from calibrated full spatial uncertainty and useful alert readout.",
+      "forbidden_repeats": [
+        "Claim lower relative offset MAE establishes alert improvement",
+        "Tune thresholds or calibration windows on consumed MZ92 outcomes",
+        "Use true ambiguity, source identity or missing returns as calibration evidence",
+        "Automatically launch another experiment or promote this full policy"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md"
+      ],
+      "commit": "460625fd1b65183af929e5e0db171f17b02fc01d"
     }
   ]
 }

@@ -1961,6 +1961,16 @@
       "failure_signature": "Internal scores change but zero alert gain;333TP151FP158FN equals matched_hold",
       "revisit_trigger": "Explicitly authorized different spatial evidence or justified uncertainty/readout model",
       "assignment_basis": "Fixed run failed strict FP improvement; preserve as negative comparator, not promotion"
+    },
+    {
+      "terminal_id": "terminal-mz92-cross-sensor-calibration-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ92 causal cross-sensor calibration plus frozen localization veto on consumed sensor proxy",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
+      "failure_signature": "Relative angle MAE improves but zero changed final alerts; no FP improvement",
+      "revisit_trigger": "Explicit new hypothesis connecting available spatial evidence to task effect",
+      "assignment_basis": "Full policy fails strict FP gain; preserve narrow calibration diagnostic without policy promotion"
     }
   ]
 }

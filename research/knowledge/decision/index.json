@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "c6918259114b5db09e744be85765f65c563c5bdb3e662414d82d8ebd3f7fc475",
+  "source_fingerprint": "2100a75a58f619eef804815c2a90a04518ed6801721f2978fe66e251c97b6ff8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 415,
-    "current_terminals": 196,
+    "current_terminals": 197,
     "run_associations": 413
   },
   "failure_layers": [
@@ -24567,6 +24567,47 @@
       "search_text": "terminal-mz91-radar-localization-20260912 obstacle-avoidance LOCALIZATION_GATE_NOT_MET Causal five-frame Radar localization changes402 qualified support scores but no final alert. Sensor_proxy333TP151FP158FN F1.6831 equals matched_hold and single-frame; no85 real-only FP or45 persistent-only FP removed. An explicitly authorized evidenced change to spatial information or justified uncertainty/readout; current consumed run cannot support tuning or promotion. NEGATIVE_CONTROL  Fixed five-frame uncertainty-aware Radar veto on consumed MZ90 contract research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md Internal scores change but zero alert gain;333TP151FP158FN equals matched_hold Explicitly authorized different spatial evidence or justified uncertainty/readout model Promote multiframe localization from changed internal scores without changed task effects Tune veto thresholds or shared bias floor on consumed MZ91 outcomes Claim calibrated probabilities, full correlated pose covariance or real sensor collision performance Use simulator identities, periodic clutter or sampling-probability artifacts as predictor features"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz92-cross-sensor-calibration-20260912",
+      "status": "negative",
+      "question": "Causal ToF Radar relative offset MAE falls7.123 to2.128deg on424 active proxy frames but all alerts equal333TP151FP158FN F1.6831. No real-only or persistent-phantom FP removed.",
+      "baseline": null,
+      "change": "Explicitly authorized decision-changing hypothesis; distinguish relative bias estimation from calibrated full spatial uncertainty and useful alert readout.",
+      "primary_metric": null,
+      "decision": "CALIBRATION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "460625fd1b65183af929e5e0db171f17b02fc01d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Explicitly authorized decision-changing hypothesis; distinguish relative bias estimation from calibrated full spatial uncertainty and useful alert readout.",
+      "forbidden_repeats": [
+        "Claim lower relative offset MAE establishes alert improvement",
+        "Tune thresholds or calibration windows on consumed MZ92 outcomes",
+        "Use true ambiguity, source identity or missing returns as calibration evidence",
+        "Automatically launch another experiment or promote this full policy"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ92 causal cross-sensor calibration plus frozen localization veto on consumed sensor proxy",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
+      "failure_signature": "Relative angle MAE improves but zero changed final alerts; no FP improvement",
+      "revisit_trigger": "Explicit new hypothesis connecting available spatial evidence to task effect",
+      "assignment_basis": "Full policy fails strict FP gain; preserve narrow calibration diagnostic without policy promotion",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md"
+      ],
+      "association_id": "mz92-cross-sensor-calibration-20260912",
+      "search_text": "terminal-mz92-cross-sensor-calibration-20260912 obstacle-avoidance CALIBRATION_GATE_NOT_MET Causal ToF Radar relative offset MAE falls7.123 to2.128deg on424 active proxy frames but all alerts equal333TP151FP158FN F1.6831. No real-only or persistent-phantom FP removed. Explicitly authorized decision-changing hypothesis; distinguish relative bias estimation from calibrated full spatial uncertainty and useful alert readout. NEGATIVE_CONTROL  MZ92 causal cross-sensor calibration plus frozen localization veto on consumed sensor proxy research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md Relative angle MAE improves but zero changed final alerts; no FP improvement Explicit new hypothesis connecting available spatial evidence to task effect Claim lower relative offset MAE establishes alert improvement Tune thresholds or calibration windows on consumed MZ92 outcomes Use true ambiguity, source identity or missing returns as calibration evidence Automatically launch another experiment or promote this full policy"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33587,26 +33628,24 @@
     {
       "kind": "experiment",
       "id": "mz92-cross-sensor-calibration-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can causal ToF Radar angular calibration give the spatial veto useful evidence?",
       "baseline": "Frozen matched_hold and MZ91 uncalibrated localization",
       "change": "Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold",
-      "primary_metric": "TP FP FN F1 UNKNOWN event delay fragmentation calibration coverage provenance",
-      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md",
+      "primary_metric": "333TP151FP158FN F1.6831 unchanged; active relative bias MAE7.123 to2.128deg",
+      "decision": "CALIBRATION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md",
       "source": "Consumed sealed MZ90 paired raw observations; MZ91 negative control",
-      "commit": "a65aa396033447b3467a98e17ca70f8ddc37fdb4",
+      "commit": "460625fd1b65183af929e5e0db171f17b02fc01d",
       "association_id": "mz92-cross-sensor-calibration-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
-        "source_coverage": 3,
-        "temporal_belief": 3,
-        "decision_lifecycle": 6,
-        "evaluation_evidence": 6
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 11
       },
-      "search_text": "mz92-cross-sensor-calibration-20260912 Can causal ToF Radar angular calibration give the spatial veto useful evidence? Frozen matched_hold and MZ91 uncalibrated localization Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold TP FP FN F1 UNKNOWN event delay fragmentation calibration coverage provenance PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md Consumed sealed MZ90 paired raw observations; MZ91 negative control"
+      "search_text": "mz92-cross-sensor-calibration-20260912 Can causal ToF Radar angular calibration give the spatial veto useful evidence? Frozen matched_hold and MZ91 uncalibrated localization Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold 333TP151FP158FN F1.6831 unchanged; active relative bias MAE7.123 to2.128deg CALIBRATION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md Consumed sealed MZ90 paired raw observations; MZ91 negative control"
     }
   ],
   "associations": [
@@ -37534,13 +37573,14 @@
       "run_id": "mz92-cross-sensor-calibration-20260912",
       "use_ids": [],
       "protocol_id": "mz92-cross-sensor-calibration-20260912",
-      "code_revision": "a65aa396033447b3467a98e17ca70f8ddc37fdb4",
+      "code_revision": "460625fd1b65183af929e5e0db171f17b02fc01d",
       "input_fingerprint": "9cec52ad131fa08580af3c154807d98d6cf61de03444961e2c336a6eced1c6a3",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md",
-        "artifacts.local/work/mz92-cross-sensor-calibration-20260912/run-v1"
+        "artifacts.local/work/mz92-cross-sensor-calibration-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz92-cross-sensor-calibration-20260912",
       "source_rows": 1
     },
     {

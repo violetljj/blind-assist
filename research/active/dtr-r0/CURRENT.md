@@ -5,6 +5,16 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ92 cross-sensor calibration (2026-09-12)
+
+[MZ92](nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md) closes as
+CALIBRATION_GATE_NOT_MET / NEGATIVE_CONTROL. Unique co-observed ToF/Radar range
+pairs reduce relative-angle MAE7.123 to2.128deg on424 active sensor-proxy frames,
+but alerts still equal matched_hold and MZ91:333TP/151FP/158FN, F1.6831.
+No85 real-only FP or45 persistent-only FP removed. This is a narrow consumed
+calibration diagnostic, not an alert gain or a full spatial uncertainty result.
+Keep the baseline; no tuning, promotion or automatic successor.
+
 ## MZ91 causal Radar localization (2026-09-12)
 
 [MZ91](nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md) is closed as
