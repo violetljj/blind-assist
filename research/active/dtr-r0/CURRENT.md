@@ -5,6 +5,21 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ104: pretrained stereo adds far-surface false support (2026-09-12)
+
+[MZ104](nearfield/MZ104_FOUNDATION_STEREO_RESULTS_20260912.md) completes576
+consumed RGB pairs with one official TAO FoundationStereo small dynamic v2
+FP32 graph,0.8scale after a preserved full-resolution engineering OOM. Raw
+SGBM+ToF435TP/62FP/11FN becomes437/273/9; final402/40/44 becomes399/242/47.
+False sessions2to39, max extra paired delay1.25s; smallHEAD raw TP retention
+13/15 fails95%. Both spatial and lifecycle gates fail.249/273 raw false queries
+are supported entirely by pixels whose native depth exceeds4m. No uniform
+metric-scale factor error identified; no new filter or model retry was run.
+Mean full pair1.112s exceeds4Hz budget. Independent source/hash/metric audit
+passes. Retain old baselines; intended NEGATIVE_CONTROL metadata pending the
+unrelated historical ASE fingerprint failure. Scoped model/configuration result,
+not a rejection of all learned stereo. Processes released, no automatic successor.
+
 ## MZ103: native depth separates spatial errors from alert-state costs (2026-09-12)
 
 [MZ103](nearfield/MZ103_DEPTH_FRONTEND_RESULTS_20260912.md) replays consumed
