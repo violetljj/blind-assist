@@ -4606,7 +4606,8 @@
       ],
       "evidence": [
         "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
-        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md"
+        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md",
+          "research/active/dtr-r0/nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md"
       ],
       "commit": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8"
     }

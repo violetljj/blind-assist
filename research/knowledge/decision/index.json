@@ -2,7 +2,7 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "d7002e2f9e7c71fb0458fdda9d33ed46900d45caed77f7eebf4fb3bb20e34582",
+  "source_fingerprint": "d3d4e4359ad75dfd9879b7f5eb2f8f0e4cb7c2e8e5f2456eb798c4e626e5eb9b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
@@ -24518,7 +24518,8 @@
       "assignment_basis": "One frozen paired common-world run, full and zero-added-FP transfer checks fail; raw sensor contract and isolated ideal gain retained as diagnostic evidence",
       "evidence": [
         "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
-        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md"
+        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md"
       ],
       "association_id": "mz90-observable-contract-20260912",
       "search_text": "terminal-mz90-observable-contract-20260912 obstacle-avoidance OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED On48 common2D scenes, joint covariance adds78TP0FP in ideal but14TP6FP under raw quantized missing sensor proxies. Full joint spatial276TP134FP215FN F1.6127 trails matched hold333/151/158 F1.6831;126of134FP arise from no-ToF Radar fallback. A separately authorized observation-aware hypothesis addressing local sensor availability and correlated measurement uncertainty on the common contract; changing only the valid-ToF spatial gate does not touch126 fallback FP. NEGATIVE_CONTROL  Transfer of frozen joint temporal angular covariance plus spatial Radar to common unprivileged horizontal sensor proxies research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue Claim MZ89 zero-added-FP covariance gain transfers to coarse noisy sensor observations Tune thresholds, source probabilities, ambiguity or lifetime on consumed MZ90 outcomes Treat any valid ToF zone as full hazard observability or no-return as clearance Claim measured8x8 ToF Radar body-tube thin-pole or safety performance from this horizontal proxy Automatically launch a soft Radar head, training or new source expansion"

@@ -5,6 +5,16 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ90 fallback diagnosis (2026-09-12)
+
+[Read-only provenance audit](nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md)
+attributes126 fallback FP to78 real-only nonhazard supports,44 persistent-only,
+1 transient-only and3 mixed.194of202 fallback TP have hazardous real support;
+8 are coincident frame alerts. Exact raw/evaluator replay and22 sealed hashes pass.
+Prioritize observable spatial localization diagnosis over extra persistence;
+phantom and static-real kinematics overlap, but their full observation laws differ.
+No new policy, tuning, source expansion or promotion; MZ90 remains negative.
+
 ## MZ90 common observable sensor contract (2026-09-12)
 
 [MZ90](nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md) follows a
