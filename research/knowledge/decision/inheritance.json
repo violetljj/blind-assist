@@ -1931,6 +1931,16 @@
       "failure_signature": "Scalar abstention loses early lateral-crossing and weak-Radar TP, while coarse Radar confirmation recreates outside-boundary FP; full arm338TP155FP77FN F1.744 versus hard398TP124FP17FN F1.850",
       "revisit_trigger": "New or measured source plus correlated temporal pose/track covariance or occupancy-collision tube and Radar likelihood tied to the same spatial object",
       "assignment_basis": "All predeclared full and attribution-arm performance checks failed; authority integrity passed but did not rescue task metrics"
+    },
+    {
+      "terminal_id": "terminal-mz89-joint-geometry-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Joint temporal yaw covariance with conservative fixed spatial Radar confirmation on the MZ89 analytic source",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
+      "failure_signature": "Full302TP23FP121FN trails hard382TP101FP41FN;2 additional event misses; isolated covariance restores46 crossing TP versus independent marginals",
+      "revisit_trigger": "New separately authorized evidence preserving boundary and weak-Radar recall without restoring false confirmation",
+      "assignment_basis": "One frozen controlled run; full performance gates fail, isolated covariance effect retained only as explanatory evidence"
     }
   ]
 }

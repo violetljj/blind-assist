@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "c41b90230f40e6bf87ce6280ab4b7324758fa2308353ea6a184d7f0efbda7456",
+  "source_fingerprint": "a153919cf361c9b76569bccd0578844b8f459918121a04a9a6c1be937380836d",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 412,
-    "current_terminals": 193,
+    "current_terminals": 194,
     "run_associations": 410
   },
   "failure_layers": [
@@ -24437,6 +24437,48 @@
       "search_text": "terminal-mz88-uncertainty-aware-association-20260912 obstacle-avoidance SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED On a fresh36-episode analytic source, hard MZ85 scores398TP124FP17FN F1.850; fixed scalar tri-state plus Radar confirmation and one-frame credentialed hold falls to338TP155FP77FN F1.744. Conservative uncertainty delays crossings, while coarse Radar recreates outside-boundary FP. Change representation to a correlated occupancy/collision tube or equivalent joint track distribution, propagate pose/calibration uncertainty across time, and require Radar compatibility with the same spatial object on new or measured evidence. NEGATIVE_CONTROL  Fixed scalar one-sigma tri-state ToF association with coarse-Radar confirmation and one-frame credentialed hold on the MZ88 fresh analytic source research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md Scalar abstention loses early lateral-crossing and weak-Radar TP, while coarse Radar confirmation recreates outside-boundary FP; full arm338TP155FP77FN F1.744 versus hard398TP124FP17FN F1.850 New or measured source plus correlated temporal pose/track covariance or occupancy-collision tube and Radar likelihood tied to the same spatial object Tune k, the scalar uncertainty envelope, Radar threshold or hold length on consumed MZ88 outcomes Treat UNCERTAIN as hazard likelihood or let coarse Radar confirm any uncertain ToF boundary return Let a held hazard seed or reseed another hold Conclude that all uncertainty-aware geometry or all IMU use fails from this scalar recipe Translate constructed analytic results into real covariance, hardware, alert, user-benefit or safety claims Resume MZ86 continuity as a substitute for the failed association representation"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz89-joint-geometry-20260912",
+      "status": "negative",
+      "question": "Fresh constructed36-episode1080-frame comparison: hard382TP101FP41FN F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075. Covariance alone adds46 crossing TP at fixed23FP versus independent marginals, but full method loses80 hard TP and misses2 baseline-detected events.",
+      "baseline": null,
+      "change": "A separately authorized hypothesis and fresh evidence that preserve current boundary/weak-Radar support without restoring false confirmation; retain the isolated joint covariance delta as narrow diagnostic evidence, not a promoted full recipe.",
+      "primary_metric": null,
+      "decision": "JOINT_GEOMETRY_FULL_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "1ca531008840f2372dbb2df880284bdef2dad0f5",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "A separately authorized hypothesis and fresh evidence that preserve current boundary/weak-Radar support without restoring false confirmation; retain the isolated joint covariance delta as narrow diagnostic evidence, not a promoted full recipe.",
+      "forbidden_repeats": [
+        "Tune covariance, matching gates, Radar margin or hold on consumed MZ89 outcomes",
+        "Claim overall superiority from FP reduction while hiding UNKNOWN or missed events",
+        "Claim 8x8 ToF, physical body tube, thin-pole recovery, measured uncertainty or safety from angular proxy evidence",
+        "Automatically launch a successor or resume MZ86"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Joint temporal yaw covariance with conservative fixed spatial Radar confirmation on the MZ89 analytic source",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
+      "failure_signature": "Full302TP23FP121FN trails hard382TP101FP41FN;2 additional event misses; isolated covariance restores46 crossing TP versus independent marginals",
+      "revisit_trigger": "New separately authorized evidence preserving boundary and weak-Radar recall without restoring false confirmation",
+      "assignment_basis": "One frozen controlled run; full performance gates fail, isolated covariance effect retained only as explanatory evidence",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md"
+      ],
+      "association_id": "mz89-joint-geometry-20260912",
+      "search_text": "terminal-mz89-joint-geometry-20260912 obstacle-avoidance JOINT_GEOMETRY_FULL_GATE_NOT_MET Fresh constructed36-episode1080-frame comparison: hard382TP101FP41FN F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075. Covariance alone adds46 crossing TP at fixed23FP versus independent marginals, but full method loses80 hard TP and misses2 baseline-detected events. A separately authorized hypothesis and fresh evidence that preserve current boundary/weak-Radar support without restoring false confirmation; retain the isolated joint covariance delta as narrow diagnostic evidence, not a promoted full recipe. NEGATIVE_CONTROL  Joint temporal yaw covariance with conservative fixed spatial Radar confirmation on the MZ89 analytic source research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md Full302TP23FP121FN trails hard382TP101FP41FN;2 additional event misses; isolated covariance restores46 crossing TP versus independent marginals New separately authorized evidence preserving boundary and weak-Radar recall without restoring false confirmation Tune covariance, matching gates, Radar margin or hold on consumed MZ89 outcomes Claim overall superiority from FP reduction while hiding UNKNOWN or missed events Claim 8x8 ToF, physical body tube, thin-pole recovery, measured uncertainty or safety from angular proxy evidence Automatically launch a successor or resume MZ86"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33387,26 +33429,27 @@
     {
       "kind": "experiment",
       "id": "mz89-joint-geometry-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets?",
       "baseline": "Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold",
       "change": "Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations",
-      "primary_metric": "TP FP FN F1 UNKNOWN false segments contiguous-event timing and fragmentation",
-      "decision": "PENDING_ONE_FROZEN_ANALYTIC_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md",
+      "primary_metric": "Hard382/101/41 F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075; covariance alone adds46 crossing TP without FP changes; full gates fail",
+      "decision": "JOINT_GEOMETRY_FULL_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
       "source": "New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar",
-      "commit": "0b2b1e19ee40d0b63a41101f577f0267140dcc1f",
+      "commit": "1ca531008840f2372dbb2df880284bdef2dad0f5",
       "association_id": "mz89-joint-geometry-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
         "source_coverage": 3,
-        "temporal_belief": 6,
+        "temporal_belief": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 10
+        "decision_lifecycle": 7,
+        "evaluation_evidence": 5
       },
-      "search_text": "mz89-joint-geometry-20260912 Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets? Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations TP FP FN F1 UNKNOWN false segments contiguous-event timing and fragmentation PENDING_ONE_FROZEN_ANALYTIC_RUN research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar"
+      "search_text": "mz89-joint-geometry-20260912 Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets? Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations Hard382/101/41 F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075; covariance alone adds46 crossing TP without FP changes; full gates fail JOINT_GEOMETRY_FULL_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar"
     }
   ],
   "associations": [
@@ -37277,13 +37320,14 @@
       "run_id": "mz89-joint-geometry-20260912",
       "use_ids": [],
       "protocol_id": "mz89-joint-geometry-r0",
-      "code_revision": "0b2b1e19ee40d0b63a41101f577f0267140dcc1f",
+      "code_revision": "1ca531008840f2372dbb2df880284bdef2dad0f5",
       "input_fingerprint": "f1163f6fb85225e9c2443c40085eb9355a1aaaa723571c455dfb69d588a65c4f",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md",
-        "artifacts.local/work/mz89-joint-geometry-20260912/run-v1"
+        "artifacts.local/work/mz89-joint-geometry-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz89-joint-geometry-20260912",
       "source_rows": 1
     },
     {

@@ -4556,6 +4556,31 @@
         "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_20260912.md"
       ],
       "commit": "f9e910c0dcb1673db4f6c8a1c19cc51c2f7990f7"
+    },
+    {
+      "id": "terminal-mz89-joint-geometry-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "JOINT_GEOMETRY_FULL_GATE_NOT_MET",
+      "summary": "Fresh constructed36-episode1080-frame comparison: hard382TP101FP41FN F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075. Covariance alone adds46 crossing TP at fixed23FP versus independent marginals, but full method loses80 hard TP and misses2 baseline-detected events.",
+      "successor_requires": "A separately authorized hypothesis and fresh evidence that preserve current boundary/weak-Radar support without restoring false confirmation; retain the isolated joint covariance delta as narrow diagnostic evidence, not a promoted full recipe.",
+      "forbidden_repeats": [
+        "Tune covariance, matching gates, Radar margin or hold on consumed MZ89 outcomes",
+        "Claim overall superiority from FP reduction while hiding UNKNOWN or missed events",
+        "Claim 8x8 ToF, physical body tube, thin-pole recovery, measured uncertainty or safety from angular proxy evidence",
+        "Automatically launch a successor or resume MZ86"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md"
+      ],
+      "commit": "1ca531008840f2372dbb2df880284bdef2dad0f5"
     }
   ]
 }

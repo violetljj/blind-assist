@@ -5,6 +5,24 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ89 joint temporal geometry (2026-09-12)
+
+[MZ89](nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md) tests joint temporal yaw
+covariance and spatially compatible Radar on36 new constructed episodes/1080frames.
+Hard MZ85 reaches382TP/101FP/41FN, F1.8433; simple one-frame missing-ToF hold
+reaches383/101/40, F1.8445. Joint+spatial reaches302/23/121, F1.8075: fewer false
+segments (11 to5), but80 lost TP and2 additional missed baseline-detected events.
+Nominal variants lose20TP and total within-event fragments rise24 to25. Record
+`JOINT_GEOMETRY_FULL_GATE_NOT_MET`; retain full recipe as NEGATIVE_CONTROL.
+
+The matched covariance ablation adds46 crossing TP (25 to71/98) with no changed
+false frames; hard still reaches85/98. This supports only the isolated covariance
+correction. Spatial Radar removes134FP but loses51TP versus joint+coarse Radar.
+Preserve hard baseline and simple-hold comparator; do not tune on consumed MZ89 or
+automatically launch another experiment. Exact analytic ToF, synthetic lateral
+hint, stabilized Radar and yaw-only uncertainty remain source-aware Development
+limits, not full body-tube, thin-pole, real-sensor or safety evidence.
+
 ## MZ88 uncertainty-aware geometric association (2026-09-12)
 
 [MZ88](nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md) replaces
