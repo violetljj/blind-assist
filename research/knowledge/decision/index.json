@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "6152d5ac075e0de308908942ca753dca297a21bd614d3ca4b9bbda174092b361",
+  "source_fingerprint": "2dd1e532d9733f3cdbd2fdaa217bad83515b1f97829f0143eacea903b50c1b39",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 423,
+    "experiments": 424,
     "current_terminals": 205,
-    "run_associations": 421
+    "run_associations": 422
   },
   "failure_layers": [
     {
@@ -34160,6 +34160,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "mz100-causal-angle-anchor-20260912 Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage? Frozen R on consumed MZ99 measured packets Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence Coverage98/2875; within5deg80/98; realMAE7.3679 to3.9260; zero-biasMAE2.9587 to4.3378; downstream not run CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz101-stereo-tof-spatial-20260912",
+      "status": "active",
+      "question": "Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF?",
+      "baseline": "Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state",
+      "change": "Rendered stereo SGBM points and ToF union; same common FOV and readout",
+      "primary_metric": "Event misses false sessions FP duration and first correct alert delay",
+      "decision": "PENDING_FROZEN_SPATIAL_COMPARISON",
+      "report": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md",
+      "source": "Fresh curated posed UE rendered stereo and native collision ToF surrogate",
+      "commit": "003bb1714d9148107b542f886b84c6d86da06f19",
+      "association_id": "mz101-stereo-tof-spatial-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz101-stereo-tof-spatial-20260912 Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF? Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state Rendered stereo SGBM points and ToF union; same common FOV and readout Event misses false sessions FP duration and first correct alert delay PENDING_FROZEN_SPATIAL_COMPARISON research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md Fresh curated posed UE rendered stereo and native collision ToF surrogate"
     }
   ],
   "associations": [
@@ -36812,6 +36836,19 @@
         "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz100-causal-angle-anchor-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz101-stereo-tof-spatial-20260912",
+      "use_ids": [],
+      "protocol_id": "mz101-stereo-tof-20260912",
+      "code_revision": "003bb1714d9148107b542f886b84c6d86da06f19",
+      "input_fingerprint": "1f96a04604c2d1506776df737fef741b94936db95b64a73abdefebb66352f304",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md",
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/spec.json"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
