@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-11",
-  "source_fingerprint": "599c9b23e25a505a1f53691af7517e1256a4c75e9bc330d0343267661f9e320a",
+  "generated_at": "2026-09-12",
+  "source_fingerprint": "0a0de06b2330d8b2f9c1ebd522379d93b36b3e7a320e8ec1d839044b78edcffc",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 367,
-    "current_terminals": 153,
-    "run_associations": 365
+    "experiments": 368,
+    "current_terminals": 154,
+    "run_associations": 366
   },
   "failure_layers": [
     {
@@ -21666,6 +21666,44 @@
       "search_text": "terminal-mz77-approach-sequence-20260911 obstacle-avoidance MZ77_APPROACH_NO_DYNAMIC_GAIN_PARTIAL_GAP_INTERRUPTION 160 settled simulated approach frames, four clips, original frozen models/cuts. DIVERSE and OLD_NEG have identical true detections: CLEAN 79TP, gap 60TP; DIVERSE adds five HEAD_FAR false bits (33 vs28 CLEAN FP). Central gaps interrupt warnings; wall BODY_ANY coverage is9/26 CLEAN and7/26 gap. No dynamic gain or model promotion. Preserve original models, cuts, paired sequences and UNKNOWN. Any later mechanism change needs a separately authorized bounded comparison of continuity and correct range bins; no automatic successor. Treat sampled pose time as measured real-time latency Treat union coverage as correct near/far classification Treat missing returns or absent alerts as clearance Promote DIVERSE from this diagnostic"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz88-uncertainty-aware-association-20260912",
+      "status": "negative",
+      "question": "On a fresh36-episode analytic source, hard MZ85 scores398TP124FP17FN F1.850; fixed scalar tri-state plus Radar confirmation and one-frame credentialed hold falls to338TP155FP77FN F1.744. Conservative uncertainty delays crossings, while coarse Radar recreates outside-boundary FP.",
+      "baseline": null,
+      "change": "Change representation to a correlated occupancy/collision tube or equivalent joint track distribution, propagate pose/calibration uncertainty across time, and require Radar compatibility with the same spatial object on new or measured evidence.",
+      "primary_metric": null,
+      "decision": "SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "f9e910c0dcb1673db4f6c8a1c19cc51c2f7990f7",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "temporal_belief": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Change representation to a correlated occupancy/collision tube or equivalent joint track distribution, propagate pose/calibration uncertainty across time, and require Radar compatibility with the same spatial object on new or measured evidence.",
+      "forbidden_repeats": [
+        "Tune k, the scalar uncertainty envelope, Radar threshold or hold length on consumed MZ88 outcomes",
+        "Treat UNCERTAIN as hazard likelihood or let coarse Radar confirm any uncertain ToF boundary return",
+        "Let a held hazard seed or reseed another hold",
+        "Conclude that all uncertainty-aware geometry or all IMU use fails from this scalar recipe",
+        "Translate constructed analytic results into real covariance, hardware, alert, user-benefit or safety claims",
+        "Resume MZ86 continuity as a substitute for the failed association representation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_20260912.md"
+      ],
+      "association_id": "mz88-uncertainty-aware-association-20260912",
+      "search_text": "terminal-mz88-uncertainty-aware-association-20260912 obstacle-avoidance SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED On a fresh36-episode analytic source, hard MZ85 scores398TP124FP17FN F1.850; fixed scalar tri-state plus Radar confirmation and one-frame credentialed hold falls to338TP155FP77FN F1.744. Conservative uncertainty delays crossings, while coarse Radar recreates outside-boundary FP. Change representation to a correlated occupancy/collision tube or equivalent joint track distribution, propagate pose/calibration uncertainty across time, and require Radar compatibility with the same spatial object on new or measured evidence. Tune k, the scalar uncertainty envelope, Radar threshold or hold length on consumed MZ88 outcomes Treat UNCERTAIN as hazard likelihood or let coarse Radar confirm any uncertain ToF boundary return Let a held hazard seed or reseed another hold Conclude that all uncertainty-aware geometry or all IMU use fails from this scalar recipe Translate constructed analytic results into real covariance, hardware, alert, user-benefit or safety claims Resume MZ86 continuity as a substitute for the failed association representation"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -29601,6 +29639,32 @@
         "temporal_belief": 3
       },
       "search_text": "mz77-approach-sequence-20260911 Does original DIVERSE retain useful early and persistent simulated approach warnings under partial ToF gaps? Frozen original MZ70 DIVERSE, OLD_NEG, RGB, ToF and MZ5; original cuts 160 posed approach frames in four fixed clips, clean and six-sample central-zone gaps; no fit First true BODY/HEAD warning distance and nominal delay, positive retention, flicker, gap recovery, per-query TP/FP/FN/UNKNOWN and control errors MZ77_APPROACH_NO_DYNAMIC_GAIN_PARTIAL_GAP_INTERRUPTION research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_RESULTS_20260911.md Fresh controlled Willow posed trajectories on consumed scene; no hardware or wallclock walking claim"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz88-uncertainty-aware-association-20260912",
+      "status": "archived",
+      "question": "Can fixed scalar pose/calibration uncertainty make MZ85 geometric association robust on fresh analytic motion without corridor widening?",
+      "baseline": "Fresh-source hard MZ85 association398TP124FP17FN F1.850",
+      "change": "Only fixed k1 tri-state uncertainty geometry, conditional coarse-Radar confirmation and one-frame credentialed hold; zero training and zero threshold search",
+      "primary_metric": "Full arm338TP155FP77FN F1.744; tri-UNKNOWN295/48/120; Radar confirmation326/151/89; all performance gates fail, authority integrity passes",
+      "decision": "SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+      "source": "Fresh controlled analytic36-episode1080-frame source with new motion, boundary, crossing, gap, distance and signed medium-error variants",
+      "commit": "f9e910c0dcb1673db4f6c8a1c19cc51c2f7990f7",
+      "association_id": "mz88-uncertainty-aware-association-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz88-uncertainty-aware-association-20260912 Can fixed scalar pose/calibration uncertainty make MZ85 geometric association robust on fresh analytic motion without corridor widening? Fresh-source hard MZ85 association398TP124FP17FN F1.850 Only fixed k1 tri-state uncertainty geometry, conditional coarse-Radar confirmation and one-frame credentialed hold; zero training and zero threshold search Full arm338TP155FP77FN F1.744; tri-UNKNOWN295/48/120; Radar confirmation326/151/89; all performance gates fail, authority integrity passes SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md Fresh controlled analytic36-episode1080-frame source with new motion, boundary, crossing, gap, distance and signed medium-error variants"
     }
   ],
   "associations": [
@@ -32909,6 +32973,19 @@
         "artifacts.local/work/mz8-attribution-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz8-attribution-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz88-uncertainty-aware-association-20260912",
+      "use_ids": [],
+      "protocol_id": "mz88-uncertainty-aware-association-r0",
+      "code_revision": "f9e910c0dcb1673db4f6c8a1c19cc51c2f7990f7",
+      "input_fingerprint": "80e896aa8c637167e6851b894c100a7a812d3c792d51675378f5d7ee7eba0fff",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+        "artifacts.local/work/mz88-uncertainty-aware-association-20260912/run-v2"
+      ],
+      "decision_id": "terminal-mz88-uncertainty-aware-association-20260912",
       "source_rows": 1
     },
     {

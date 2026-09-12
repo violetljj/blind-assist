@@ -5,6 +5,26 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ88 uncertainty-aware geometric association (2026-09-12)
+
+[MZ88](nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md) replaces
+MZ85's hard stabilized corridor with a fixed scalar one-sigma tri-state
+association on a new 36-episode/1,080-frame analytic source. The hard baseline
+scores398TP/124FP/17FN, F1.850. Conservative `UNCERTAIN -> UNKNOWN` reduces FP
+to48 but falls to295TP/120FN. Radar confirmation raises FP to151; the full
+one-frame credentialed-hold policy reaches338/155/77, F1.744. Every performance
+gate fails; the terminal is `SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED`.
+
+The failure separates two mechanisms. Scalar uncertainty plus conservative
+forecasting delays lateral crossings by0.5--0.7s and loses weak-Radar evidence;
+coarse Radar authority inside the uncertainty band changes outside-boundary FP
+from48 to148. The hold itself remains credentialed and height-safe, adding12TP
+and4FP, but cannot establish an initial hazard. Keep MZ88 as a negative control;
+do not tune its margin, envelope, Radar gate or hold on the consumed source.
+Any successor must change representation to a correlated occupancy/collision
+tube or equivalent joint track distribution with spatially compatible Radar.
+MZ86 remains paused and learned fusion remains lower priority.
+
 ## MZ87 IMU rotation realism falsifier (2026-09-12)
 
 [MZ87](nearfield/MZ87_IMU_REALISM_FALSIFIER_RESULTS_20260912.md) freezes MZ85 and

@@ -1031,6 +1031,16 @@
       "failure_signature": "No added true sequence detections, five extra false bits, gap interruptions and weak wall coverage",
       "revisit_trigger": "Separate authorization for a bounded mechanism comparison preserving original models, cuts, per-query costs and UNKNOWN; no automatic successor",
       "assignment_basis": "160 admitted native frames; frozen parity; eight tests; independent 7680-query score"
+    },
+    {
+      "terminal_id": "terminal-mz88-uncertainty-aware-association-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed scalar one-sigma tri-state ToF association with coarse-Radar confirmation and one-frame credentialed hold on the MZ88 fresh analytic source",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+      "failure_signature": "Scalar abstention loses early lateral-crossing and weak-Radar TP, while coarse Radar confirmation recreates outside-boundary FP; full arm338TP155FP77FN F1.744 versus hard398TP124FP17FN F1.850",
+      "revisit_trigger": "New or measured source plus correlated temporal pose/track covariance or occupancy-collision tube and Radar likelihood tied to the same spatial object",
+      "assignment_basis": "All predeclared full and attribution-arm performance checks failed; authority integrity passed but did not rescue task metrics"
     }
   ]
 }

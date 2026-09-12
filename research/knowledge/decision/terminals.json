@@ -2976,6 +2976,34 @@
         "research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_20260911.md"
       ],
       "commit": "38efdc18ed05b3d727d277525da298e8333396ae"
+    },
+    {
+      "id": "terminal-mz88-uncertainty-aware-association-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED",
+      "summary": "On a fresh36-episode analytic source, hard MZ85 scores398TP124FP17FN F1.850; fixed scalar tri-state plus Radar confirmation and one-frame credentialed hold falls to338TP155FP77FN F1.744. Conservative uncertainty delays crossings, while coarse Radar recreates outside-boundary FP.",
+      "successor_requires": "Change representation to a correlated occupancy/collision tube or equivalent joint track distribution, propagate pose/calibration uncertainty across time, and require Radar compatibility with the same spatial object on new or measured evidence.",
+      "forbidden_repeats": [
+        "Tune k, the scalar uncertainty envelope, Radar threshold or hold length on consumed MZ88 outcomes",
+        "Treat UNCERTAIN as hazard likelihood or let coarse Radar confirm any uncertain ToF boundary return",
+        "Let a held hazard seed or reseed another hold",
+        "Conclude that all uncertainty-aware geometry or all IMU use fails from this scalar recipe",
+        "Translate constructed analytic results into real covariance, hardware, alert, user-benefit or safety claims",
+        "Resume MZ86 continuity as a substitute for the failed association representation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_20260912.md"
+      ],
+      "commit": "f9e910c0dcb1673db4f6c8a1c19cc51c2f7990f7"
     }
   ]
 }
