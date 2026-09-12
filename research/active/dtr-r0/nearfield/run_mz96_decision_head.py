@@ -22,6 +22,9 @@ def score(ids,evaluator,values):
         row.update(false_segments=sum(len(previous.intervals(v[ids==ep]&~truth[ids==ep])) for ep in np.unique(ids)),
             fragments=sum(e['arms'][name]['fragments'] for e in events),missed_events=sum(e['arms'][name]['first'] is None for e in events),
             future_only_TP=int((v&evaluator['future_only_truth']).sum()))
+        row['future_only_positive']=int(evaluator['future_only_truth'].sum())
+        row['future_only_FN']=row['future_only_positive']-row['future_only_TP']
+        row['future_only_recall']=row['future_only_TP']/row['future_only_positive'] if row['future_only_positive'] else None
         result[name]=row
     return result,events
 
@@ -102,7 +105,10 @@ def run(capture,out):
         values['xgboost']=features.a.hysteresis(probabilities[split]>=threshold,obs['episode_id'])
         np.savez_compressed(out/split/'predictions.npz',**values,xgboost_score=probabilities[split])
     old.write(out/'test-prediction-seal.json',dict(status='SEALED_BEFORE_TEST_EVALUATION',
-        model_sha256=old.sha(out/'model.ubj'),selection_sha256=old.sha(out/'selection.json'),prediction_sha256=old.sha(out/'test/predictions.npz')))
+        model_sha256=old.sha(out/'model.ubj'),selection_sha256=old.sha(out/'selection.json'),prediction_sha256=old.sha(out/'test/predictions.npz'),
+        implementation_sha256={str(Path(m.__file__).resolve().relative_to(ROOT.resolve())):old.sha(Path(m.__file__))
+            for m in list(sys.modules.values()) if getattr(m,'__file__',None) and Path(m.__file__).is_file()
+            and Path(m.__file__).resolve().is_relative_to(ROOT.resolve()) and 'artifacts.local' not in Path(m.__file__).parts}))
     # Only now can held-out labels affect any reported performance or conclusion.
     test=dict(np.load(out/'test/labels.npz'));obs=observations['test'];values=rulevalues['test'];ids=obs['episode_id']
     metrics,events=score(ids,test,values)
