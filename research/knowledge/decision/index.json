@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "fe0201edf75eb72489a7742d61ddab53ee451a889365509bf4e37d386296e9f3",
+  "source_fingerprint": "170ea2703b677f8de55a28468a2df2a6e0f98442426758ee218ecaf7cf2c5759",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 420,
+    "experiments": 421,
     "current_terminals": 202,
-    "run_associations": 418
+    "run_associations": 419
   },
   "failure_layers": [
     {
@@ -33969,6 +33969,30 @@
         "decision_lifecycle": 13
       },
       "search_text": "mz97-residual-suppression-20260912 Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes? Frozen A reference plus matched_hold range-only B and A+B replication Train false-alert target only on A positives and select constrained validation threshold with disabled fallback Residual disabled: test A254TP169FP51FN F1.6978; A+B272TP211FP33FN .6904; no feasible validation threshold RESIDUAL_DISABLED_NO_VALIDATION_GAIN research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md Fresh UE seed97013 128 scene instances split80/16/32"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz98-a-mechanism-audit-20260912",
+      "status": "active",
+      "question": "Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97?",
+      "baseline": "Sealed matched_hold and A on both test panels",
+      "change": "Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls",
+      "primary_metric": "Paired TP FP changes future-only semantics branch and current/history source paths",
+      "decision": "PENDING_DIAGNOSTIC",
+      "report": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md",
+      "source": "Consumed sealed MZ96 and MZ97 test observations and evaluator labels",
+      "commit": "dc200d2b9a8d2db38f5585501ee01b8c65aa9257",
+      "association_id": "mz98-a-mechanism-audit-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 3
+      },
+      "search_text": "mz98-a-mechanism-audit-20260912 Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97? Sealed matched_hold and A on both test panels Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls Paired TP FP changes future-only semantics branch and current/history source paths PENDING_DIAGNOSTIC research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md Consumed sealed MZ96 and MZ97 test observations and evaluator labels"
     }
   ],
   "associations": [
@@ -37977,6 +38001,19 @@
         "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz97-residual-suppression-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz98-a-mechanism-audit-20260912",
+      "use_ids": [],
+      "protocol_id": "mz98-a-mechanism-audit-20260912",
+      "code_revision": "dc200d2b9a8d2db38f5585501ee01b8c65aa9257",
+      "input_fingerprint": "3278bf30d35c4da50c95e670a1e1216bda056a1f3b1959344f4ac1fd038a0188",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md",
+        "artifacts.local/work/mz98-a-mechanism-audit-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
