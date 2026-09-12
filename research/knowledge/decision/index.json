@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "8e1f6f09cecb48076ec24667fda4d35d37853429045b7fdf3e94ed10ccd2d757",
+  "source_fingerprint": "a14508abc83a207fc293f7852ea68fe1031a8167a89cb7a2b407c11d001e6086",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 419,
-    "current_terminals": 198,
+    "current_terminals": 201,
     "run_associations": 417
   },
   "failure_layers": [
@@ -24650,6 +24650,126 @@
       "search_text": "terminal-mz93-supported-prediction-20260912 obstacle-avoidance SUPPORTED_PREDICTION_GATE_NOT_MET Supported future occupancy veto removes8 extra raw returns but only2 raw-support and2 hysteresis frames differ; differences disappear at ToF branch selection before hold. Final333TP151FP158FN F1.6831 unchanged. Explicitly authorized decision-changing hypothesis with evidence of final intervention coverage, not another upstream filter inferred from score changes. NEGATIVE_CONTROL  MZ93 supported future occupancy readout on consumed MZ90 research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md Eight extra return vetoes but zero final decision changes after ToF branch selection Explicitly authorized mechanism with demonstrated final decision coverage Claim changed raw scores or vetoes prove alert gain Blame one-frame hold for erasing differences already absent before hold Tune the directional criterion on consumed MZ93 outcomes Automatically launch another source or policy experiment"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz94-radar-horizon-20260912",
+      "status": "negative",
+      "question": "Consumed proxy horizon A388TP164FP103FN F1.7440 loses to range-only.7547 and grows false segments. Fresh MZ96 A342TP176FP67FN improves matched_hold306TP200FP103FN, but fragments grow35 to39. Retain frozen challenger only.",
+      "baseline": null,
+      "change": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "primary_metric": null,
+      "decision": "HORIZON_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Frozen horizon A and its fixed A+B comparison; Development only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
+      "failure_signature": "MZ94 proxy FP and fragments grow; MZ96 A fragments grow despite frame gains",
+      "revisit_trigger": "Authorized new robustness or readout hypothesis on a declared evaluation boundary",
+      "assignment_basis": "MZ94 failed full gate; fresh MZ96 A improves TP and FP over matched_hold without full-policy promotion",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md"
+      ],
+      "association_id": "mz94-radar-horizon-20260912",
+      "search_text": "terminal-mz94-radar-horizon-20260912 obstacle-avoidance HORIZON_GATE_NOT_MET Consumed proxy horizon A388TP164FP103FN F1.7440 loses to range-only.7547 and grows false segments. Fresh MZ96 A342TP176FP67FN improves matched_hold306TP200FP103FN, but fragments grow35 to39. Retain frozen challenger only. A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning. COMPONENT_OR_CHALLENGER CHALLENGER Frozen horizon A and its fixed A+B comparison; Development only research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md MZ94 proxy FP and fragments grow; MZ96 A fragments grow despite frame gains Authorized new robustness or readout hypothesis on a declared evaluation boundary Promote full policy from F1 alone while losing events or recall Tune consumed test thresholds or regenerate sources for a better outcome Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz95-coverage-authority-20260912",
+      "status": "negative",
+      "question": "Standalone pointwise ToF authority rescues16 of20 proxy conflict FN but loses6 of8 TN, net8 extra FP; ideal loses16 of82 TN. No full replacement gain; fresh MZ96 standalone B also loses F1.",
+      "baseline": null,
+      "change": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "primary_metric": null,
+      "decision": "COVERAGE_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "8ecfb84db7acda8febba2ae4926738070827c625",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Standalone pointwise negative ToF authority replacement",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
+      "failure_signature": "Recovery releases correct vetoes and adds false alerts",
+      "revisit_trigger": "New evidence supports spatial authority beyond pointwise compatibility",
+      "assignment_basis": "Frozen proxy and ideal paired conflict outcomes; MZ96 standalone B also loses F1",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md"
+      ],
+      "association_id": "mz95-coverage-authority-20260912",
+      "search_text": "terminal-mz95-coverage-authority-20260912 obstacle-avoidance COVERAGE_GATE_NOT_MET Standalone pointwise ToF authority rescues16 of20 proxy conflict FN but loses6 of8 TN, net8 extra FP; ideal loses16 of82 TN. No full replacement gain; fresh MZ96 standalone B also loses F1. A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning. NEGATIVE_CONTROL  Standalone pointwise negative ToF authority replacement research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md Recovery releases correct vetoes and adds false alerts New evidence supports spatial authority beyond pointwise compatibility Promote full policy from F1 alone while losing events or recall Tune consumed test thresholds or regenerate sources for a better outcome Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-mz96-ue-decision-head-20260912",
+      "status": "negative",
+      "question": "Fresh UE5120frames scene split80/16/32. Test tree297TP84FP112FN F1.7519 versus validation-selected A+B368TP205FP41FN F1.7495;2 events lost and0.9s delay. One fixed fit configuration, no test tuning; retain rules as challengers, no learned-head promotion.",
+      "baseline": null,
+      "change": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "primary_metric": null,
+      "decision": "FRESH_UE_TREE_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "7d5e9f1cab5a9384169adf43a29ccb930a5257c7",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed XGBoost full risk-head replacement on fresh UE geometry proxies",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
+      "failure_signature": "F1 gain0.0024 trades121 fewer FP for71 fewer TP,2 lost events and0.9s delay",
+      "revisit_trigger": "Authorized changed recall-aware hypothesis with a new evaluation boundary",
+      "assignment_basis": "One configuration, validation-only selection, sealed test predictions; full acceptance gate failed",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md"
+      ],
+      "association_id": "mz96-ue-decision-head-20260912",
+      "search_text": "terminal-mz96-ue-decision-head-20260912 obstacle-avoidance FRESH_UE_TREE_GATE_NOT_MET Fresh UE5120frames scene split80/16/32. Test tree297TP84FP112FN F1.7519 versus validation-selected A+B368TP205FP41FN F1.7495;2 events lost and0.9s delay. One fixed fit configuration, no test tuning; retain rules as challengers, no learned-head promotion. A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning. NEGATIVE_CONTROL  Fixed XGBoost full risk-head replacement on fresh UE geometry proxies research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md F1 gain0.0024 trades121 fewer FP for71 fewer TP,2 lost events and0.9s delay Authorized changed recall-aware hypothesis with a new evaluation boundary Promote full policy from F1 alone while losing events or recall Tune consumed test thresholds or regenerate sources for a better outcome Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33715,37 +33835,39 @@
     {
       "kind": "experiment",
       "id": "mz94-radar-horizon-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can causal CV route-horizon admission recover range-blocked risks without growing false alerts?",
       "baseline": "Sealed matched_hold plus range-only3.6 diagnostic",
       "change": "Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state",
-      "primary_metric": "TP FP FN F1 fixed69FN108FP168TP cohorts events delay",
-      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md",
+      "primary_metric": "Proxy A388TP164FP103FN F1.7440; range-only.7547;44 of69 FN rescued; FP and fragments grow",
+      "decision": "HORIZON_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
       "source": "Consumed MZ90 paired sensor observations",
-      "commit": "7666babdeae15e77aa3bd411ec3db1c77f3f1662",
+      "commit": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
       "association_id": "mz94-radar-horizon-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
+        "temporal_belief": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 10
+        "decision_lifecycle": 7,
+        "evaluation_evidence": 5
       },
-      "search_text": "mz94-radar-horizon-20260912 Can causal CV route-horizon admission recover range-blocked risks without growing false alerts? Sealed matched_hold plus range-only3.6 diagnostic Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state TP FP FN F1 fixed69FN108FP168TP cohorts events delay PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md Consumed MZ90 paired sensor observations"
+      "search_text": "mz94-radar-horizon-20260912 Can causal CV route-horizon admission recover range-blocked risks without growing false alerts? Sealed matched_hold plus range-only3.6 diagnostic Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state Proxy A388TP164FP103FN F1.7440; range-only.7547;44 of69 FN rescued; FP and fragments grow HORIZON_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md Consumed MZ90 paired sensor observations"
     },
     {
       "kind": "experiment",
       "id": "mz95-coverage-authority-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can local ToF compatibility qualify negative authority without losing useful vetoes?",
       "baseline": "Frozen matched_hold with original Radar gate",
       "change": "Release negative ToF veto only when not all Radar support has compatible ToF range and bearing",
-      "primary_metric": "TP FP FN F1 fixedproxy20FN8TN ideal9FN82TN events",
-      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md",
+      "primary_metric": "Proxy B349TP159FP142FN F1.6987;16 of20 conflict FN rescued;6 of8 TN lost",
+      "decision": "COVERAGE_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
       "source": "Consumed MZ90 paired observations independent of A",
-      "commit": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
+      "commit": "8ecfb84db7acda8febba2ae4926738070827c625",
       "association_id": "mz95-coverage-authority-20260912",
       "routes": [
         "obstacle-avoidance"
@@ -33753,23 +33875,25 @@
       "layer_scores": {
         "authority_truth": 3,
         "source_coverage": 3,
+        "temporal_belief": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 9
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 5
       },
-      "search_text": "mz95-coverage-authority-20260912 Can local ToF compatibility qualify negative authority without losing useful vetoes? Frozen matched_hold with original Radar gate Release negative ToF veto only when not all Radar support has compatible ToF range and bearing TP FP FN F1 fixedproxy20FN8TN ideal9FN82TN events PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md Consumed MZ90 paired observations independent of A"
+      "search_text": "mz95-coverage-authority-20260912 Can local ToF compatibility qualify negative authority without losing useful vetoes? Frozen matched_hold with original Radar gate Release negative ToF veto only when not all Radar support has compatible ToF range and bearing Proxy B349TP159FP142FN F1.6987;16 of20 conflict FN rescued;6 of8 TN lost COVERAGE_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md Consumed MZ90 paired observations independent of A"
     },
     {
       "kind": "experiment",
       "id": "mz96-ue-decision-head-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes?",
       "baseline": "matched_hold range-only A horizon B coverage and A+B on same new scene split",
       "change": "Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold",
-      "primary_metric": "Test F1 TP FP FN events delay fragments all-rule and ghost slices",
-      "decision": "PENDING_FRESH_UE_COMPARISON",
-      "report": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md",
+      "primary_metric": "Test tree297TP84FP112FN F1.7519 vs A+B368TP205FP41FN .7495;2 lost events and0.9s delay",
+      "decision": "FRESH_UE_TREE_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
       "source": "Fresh UE source-v3 seed96013 128episode scene-disjoint split",
-      "commit": "87152040b91b960020134b3f669b7ebae60156e8",
+      "commit": "7d5e9f1cab5a9384169adf43a29ccb930a5257c7",
       "association_id": "mz96-ue-decision-head-20260912",
       "routes": [
         "obstacle-avoidance"
@@ -33778,9 +33902,10 @@
         "source_coverage": 6,
         "temporal_belief": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 12
+        "decision_lifecycle": 12,
+        "evaluation_evidence": 5
       },
-      "search_text": "mz96-ue-decision-head-20260912 Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes? matched_hold range-only A horizon B coverage and A+B on same new scene split Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold Test F1 TP FP FN events delay fragments all-rule and ghost slices PENDING_FRESH_UE_COMPARISON research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md Fresh UE source-v3 seed96013 128episode scene-disjoint split"
+      "search_text": "mz96-ue-decision-head-20260912 Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes? matched_hold range-only A horizon B coverage and A+B on same new scene split Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold Test tree297TP84FP112FN F1.7519 vs A+B368TP205FP41FN .7495;2 lost events and0.9s delay FRESH_UE_TREE_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md Fresh UE source-v3 seed96013 128episode scene-disjoint split"
     }
   ],
   "associations": [
@@ -37736,41 +37861,44 @@
       "run_id": "mz94-radar-horizon-20260912",
       "use_ids": [],
       "protocol_id": "mz94-radar-horizon-20260912",
-      "code_revision": "7666babdeae15e77aa3bd411ec3db1c77f3f1662",
+      "code_revision": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
       "input_fingerprint": "f2ff205bce6d63d6e450168b976ff3c3bab53ce00996e6cad2151e006f348ee3",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md",
-        "artifacts.local/work/mz94-radar-horizon-20260912/run-v1"
+        "artifacts.local/work/mz94-radar-horizon-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz94-radar-horizon-20260912",
       "source_rows": 1
     },
     {
       "run_id": "mz95-coverage-authority-20260912",
       "use_ids": [],
       "protocol_id": "mz95-coverage-authority-20260912",
-      "code_revision": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
+      "code_revision": "8ecfb84db7acda8febba2ae4926738070827c625",
       "input_fingerprint": "e629b5905799690ed7a3f058c041d5b00e1225c0a7afcbbbf0b3b76ffe60d334",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md",
-        "artifacts.local/work/mz95-coverage-authority-20260912/run-v1"
+        "artifacts.local/work/mz95-coverage-authority-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz95-coverage-authority-20260912",
       "source_rows": 1
     },
     {
       "run_id": "mz96-ue-decision-head-20260912",
       "use_ids": [],
       "protocol_id": "mz96-ue-decision-head-20260912",
-      "code_revision": "87152040b91b960020134b3f669b7ebae60156e8",
+      "code_revision": "7d5e9f1cab5a9384169adf43a29ccb930a5257c7",
       "input_fingerprint": "781a982ae738d764d28f03d1ae69e989552a82a03bb89512d28ecbc2404ff57b",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md",
         "artifacts.local/work/mz96-ue-decision-20260912/source-v3/spec.json",
         "artifacts.local/work/mz96-ue-decision-20260912/capture-v1",
-        "artifacts.local/work/mz96-ue-decision-20260912/comparison-v1"
+        "artifacts.local/work/mz96-ue-decision-20260912/comparison-v1",
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz96-ue-decision-head-20260912",
       "source_rows": 1
     },
     {

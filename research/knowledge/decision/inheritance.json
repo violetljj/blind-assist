@@ -1981,6 +1981,36 @@
       "failure_signature": "Eight extra return vetoes but zero final decision changes after ToF branch selection",
       "revisit_trigger": "Explicitly authorized mechanism with demonstrated final decision coverage",
       "assignment_basis": "No strict FP gain; stage diagnostics preserve why internal changes fail to affect outcomes"
+    },
+    {
+      "terminal_id": "terminal-mz94-radar-horizon-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Frozen horizon A and its fixed A+B comparison; Development only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
+      "failure_signature": "MZ94 proxy FP and fragments grow; MZ96 A fragments grow despite frame gains",
+      "revisit_trigger": "Authorized new robustness or readout hypothesis on a declared evaluation boundary",
+      "assignment_basis": "MZ94 failed full gate; fresh MZ96 A improves TP and FP over matched_hold without full-policy promotion"
+    },
+    {
+      "terminal_id": "terminal-mz95-coverage-authority-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Standalone pointwise negative ToF authority replacement",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
+      "failure_signature": "Recovery releases correct vetoes and adds false alerts",
+      "revisit_trigger": "New evidence supports spatial authority beyond pointwise compatibility",
+      "assignment_basis": "Frozen proxy and ideal paired conflict outcomes; MZ96 standalone B also loses F1"
+    },
+    {
+      "terminal_id": "terminal-mz96-ue-decision-head-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed XGBoost full risk-head replacement on fresh UE geometry proxies",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
+      "failure_signature": "F1 gain0.0024 trades121 fewer FP for71 fewer TP,2 lost events and0.9s delay",
+      "revisit_trigger": "Authorized changed recall-aware hypothesis with a new evaluation boundary",
+      "assignment_basis": "One configuration, validation-only selection, sealed test predictions; full acceptance gate failed"
     }
   ]
 }

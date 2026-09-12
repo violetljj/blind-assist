@@ -4684,6 +4684,75 @@
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md"
       ],
       "commit": "57d149fb8b426aa8abced6227ef0d8eaf8923e56"
+    },
+    {
+      "id": "terminal-mz94-radar-horizon-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "HORIZON_GATE_NOT_MET",
+      "summary": "Consumed proxy horizon A388TP164FP103FN F1.7440 loses to range-only.7547 and grows false segments. Fresh MZ96 A342TP176FP67FN improves matched_hold306TP200FP103FN, but fragments grow35 to39. Retain frozen challenger only.",
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md"
+      ],
+      "commit": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb"
+    },
+    {
+      "id": "terminal-mz95-coverage-authority-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "COVERAGE_GATE_NOT_MET",
+      "summary": "Standalone pointwise ToF authority rescues16 of20 proxy conflict FN but loses6 of8 TN, net8 extra FP; ideal loses16 of82 TN. No full replacement gain; fresh MZ96 standalone B also loses F1.",
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md"
+      ],
+      "commit": "8ecfb84db7acda8febba2ae4926738070827c625"
+    },
+    {
+      "id": "terminal-mz96-ue-decision-head-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "FRESH_UE_TREE_GATE_NOT_MET",
+      "summary": "Fresh UE5120frames scene split80/16/32. Test tree297TP84FP112FN F1.7519 versus validation-selected A+B368TP205FP41FN F1.7495;2 events lost and0.9s delay. One fixed fit configuration, no test tuning; retain rules as challengers, no learned-head promotion.",
+      "successor_requires": "A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning.",
+      "forbidden_repeats": [
+        "Promote full policy from F1 alone while losing events or recall",
+        "Tune consumed test thresholds or regenerate sources for a better outcome",
+        "Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md"
+      ],
+      "commit": "7d5e9f1cab5a9384169adf43a29ccb930a5257c7"
     }
   ]
 }

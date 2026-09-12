@@ -5,6 +5,21 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ94-MZ96: physical rules and a fresh UE decision head (2026-09-12)
+
+[MZ94](nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md) horizon A changes final
+decisions but fails consumed proxy FP/fragment gates (.7440 F1; range-only .7547).
+[MZ95](nearfield/MZ95_COVERAGE_AUTHORITY_RESULTS_20260912.md) standalone B releases
+useful vetoes; retain as NEGATIVE_CONTROL for standalone authority replacement.
+[MZ96](nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md) uses5,120 fresh UE
+geometry/proxy frames, scene split80/16/32. Held-out32 scenes: matched_hold
+306TP/200FP/103FN F1.6689; A342/176/67 .7379; A+B368/205/41 .7495;
+XGBoost297/84/112 .7519. Tree loses2 events and adds up to0.9s delay: no promotion,
+NEGATIVE_CONTROL for complete risk-head replacement. A and A+B remain frozen
+Development challengers, not retained-core or default-App changes. New test is
+now consumed; no automatic refit. Native collision geometry with hypothetical
+Radar is not RF, physical body collision, real hardware or unseen-family evidence.
+
 ## Frozen final-error diagnosis (2026-09-12)
 
 [Final decision audit](nearfield/MZ90_FINAL_DECISION_AUDIT_20260912.md) separates
