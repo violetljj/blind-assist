@@ -4607,7 +4607,7 @@
       "evidence": [
         "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
         "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md",
-          "research/active/dtr-r0/nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md"
+        "research/active/dtr-r0/nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md"
       ],
       "commit": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8"
     },
@@ -4680,7 +4680,7 @@
       ],
       "evidence": [
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
-      "research/active/dtr-r0/nearfield/MZ90_FINAL_DECISION_AUDIT_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ90_FINAL_DECISION_AUDIT_20260912.md",
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md"
       ],
       "commit": "57d149fb8b426aa8abced6227ef0d8eaf8923e56"
@@ -4801,6 +4801,30 @@
         "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md"
       ],
       "commit": "cf9a244391762c6c819500f0d684e1ca30a509ff"
+    },
+    {
+      "id": "terminal-mz99-angle-information-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE",
+      "summary": "Paired angle-only UE diagnostic: R current-route987TP753FP to1016TP559FP; originalTP retention980/987 and no lost route interval. BODY_1S strict future124 to125 of171. All eight arms12/12 timely contacts are carried sessions;14 right-censored. Diagnostic component only, no deployable angle correction or core promotion.",
+      "successor_requires": "Authorized observable-only spatial localization or separately task-matched contact readout with discriminating timing evaluation; no oracle score promotion.",
+      "forbidden_repeats": [
+        "Treat evaluator-only exact bearing as achieved sensor calibration or hardware performance",
+        "Conflate current route awareness with imminent body contact or combine their scores",
+        "Call12/12 carried-session contact coverage perfect contact prediction",
+        "Uniquely attribute physical causes from latest-support provenance groups"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md"
+      ],
+      "commit": "ebbf142e2b88f6d85b384c5a7679ae3f24a7204a"
     }
   ]
 }

@@ -5,6 +5,20 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ99: angle information helps route relevance, not contact semantics (2026-09-12)
+
+[MZ99](nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md) uses one new seed99013
+UE panel (128 episodes/5120 frames) with frozen baseline/R/R+F/A. Only Radar
+bearing is replaced by evaluator-only pre-noise angle; ghosts, range/Doppler,
+ToF and IMU errors remain. R/CURRENT_ROUTE meets predeclared gates:987TP/753FP
+becomes1016/559; original TP retention980/987, no lost route intervals. This is
+a diagnostic angular-information component, not achieved calibration or policy
+promotion. Separate BODY_1S strict future TP barely changes124 to125/171. All
+methods cover12/12 evaluable contacts through carried warnings;14 are right-censored,
+so this timing measure does not distinguish predictive ability. Preserve route
+awareness versus imminent-contact semantics and shared causal prompt evaluation.
+The historical core is unchanged; no model, rule tuning or successor was launched.
+
 ## MZ98: A mechanism attribution correction (2026-09-12)
 
 [MZ98](nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md) exactly reproduces

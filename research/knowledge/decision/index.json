@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "e5c818c651c9d2667b15b5a14726a0dc6d4dbb6b49e2c7e2c80a8c70ab82ca1e",
+  "source_fingerprint": "cc1e05244b63233c746f9f65e9294962a14489dd1cc96ea3ef30f7865ff0df52",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 422,
-    "current_terminals": 203,
+    "current_terminals": 204,
     "run_associations": 420
   },
   "failure_layers": [
@@ -24852,6 +24852,47 @@
       "search_text": "terminal-mz98-a-mechanism-audit-20260912 obstacle-avoidance A_MECHANISM_AUDIT_COMPLETE Consumed MZ96/MZ97 audit: fullA596TP345FP; current Radar R578TP284FP; R+fitted-current588TP299FP. Strictfuture adds8TP46FP and4 future-only TP.120 of173 future-only GT frames are current extended-wedge occupancy. Predictive-entry-primary benefit claim unsupported; diagnostic variants not promoted. Authorized fresh comparison of current route eligibility and fitted-current correction with full A; preserve recall/event constraints and do not select from consumed F1. COMPONENT_OR_CHALLENGER COMPONENT Consumed mechanism attribution and FP path diagnostic only; no exclusion policy promotion research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md Strict future-entry adds8TP46FP; most future-only gain is current extended-wedge GT Authorized new evaluation of a simpler task-aligned current admission primitive Attribute all future-only recall gain to strict future prediction Treat current/latest support labels as unique physical causes or ghost identities Claim target versus wearer translational motion separation from relative Doppler Promote an exclusion variant or tune thresholds on consumed diagnostic results"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz99-angle-information-20260912",
+      "status": "positive",
+      "question": "Paired angle-only UE diagnostic: R current-route987TP753FP to1016TP559FP; originalTP retention980/987 and no lost route interval. BODY_1S strict future124 to125 of171. All eight arms12/12 timely contacts are carried sessions;14 right-censored. Diagnostic component only, no deployable angle correction or core promotion.",
+      "baseline": null,
+      "change": "Authorized observable-only spatial localization or separately task-matched contact readout with discriminating timing evaluation; no oracle score promotion.",
+      "primary_metric": null,
+      "decision": "ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE",
+      "report": "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "ebbf142e2b88f6d85b384c5a7679ae3f24a7204a",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Authorized observable-only spatial localization or separately task-matched contact readout with discriminating timing evaluation; no oracle score promotion.",
+      "forbidden_repeats": [
+        "Treat evaluator-only exact bearing as achieved sensor calibration or hardware performance",
+        "Conflate current route awareness with imminent body contact or combine their scores",
+        "Call12/12 carried-session contact coverage perfect contact prediction",
+        "Uniquely attribute physical causes from latest-support provenance groups"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Paired synthetic angle-information and separate route-contact evaluation diagnostic only",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md",
+      "failure_signature": "Route angular gate passes but contact semantics remain mismatched and timing saturated with carried sessions",
+      "revisit_trigger": "Authorized observable-only localization or task-matched contact readout and discriminating evaluation",
+      "assignment_basis": "Frozen paired angle-only intervention with independent review source hashes prediction seal and separate targets",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md"
+      ],
+      "association_id": "mz99-angle-information-20260912",
+      "search_text": "terminal-mz99-angle-information-20260912 obstacle-avoidance ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE Paired angle-only UE diagnostic: R current-route987TP753FP to1016TP559FP; originalTP retention980/987 and no lost route interval. BODY_1S strict future124 to125 of171. All eight arms12/12 timely contacts are carried sessions;14 right-censored. Diagnostic component only, no deployable angle correction or core promotion. Authorized observable-only spatial localization or separately task-matched contact readout with discriminating timing evaluation; no oracle score promotion. COMPONENT_OR_CHALLENGER COMPONENT Paired synthetic angle-information and separate route-contact evaluation diagnostic only research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md Route angular gate passes but contact semantics remain mismatched and timing saturated with carried sessions Authorized observable-only localization or task-matched contact readout and discriminating evaluation Treat evaluator-only exact bearing as achieved sensor calibration or hardware performance Conflate current route awareness with imminent body contact or combine their scores Call12/12 carried-session contact coverage perfect contact prediction Uniquely attribute physical causes from latest-support provenance groups"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -34037,24 +34078,24 @@
     {
       "kind": "experiment",
       "id": "mz99-angle-information-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets?",
       "baseline": "Frozen baseline R R+F A on measured packets",
       "change": "Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation",
-      "primary_metric": "R current-route FP reduction TP retention missed intervals; separate contact timing and all arms",
-      "decision": "PENDING_FROZEN_DIAGNOSTIC",
-      "report": "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md",
+      "primary_metric": "R current-route987TP753FP to1016TP559FP; retained980/987TP; body future124 to125 of171;12/12 carried timely contacts all arms",
+      "decision": "ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE",
+      "report": "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md",
       "source": "Fresh UE seed99013 128scenes5120frames paired angle intervention",
-      "commit": "82a76b38975c971807c2d171d6d9a429e5a2428c",
+      "commit": "ebbf142e2b88f6d85b384c5a7679ae3f24a7204a",
       "association_id": "mz99-angle-information-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
         "geometry_motion": 3,
-        "evaluation_evidence": 9
+        "evaluation_evidence": 6
       },
-      "search_text": "mz99-angle-information-20260912 Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets? Frozen baseline R R+F A on measured packets Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation R current-route FP reduction TP retention missed intervals; separate contact timing and all arms PENDING_FROZEN_DIAGNOSTIC research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md Fresh UE seed99013 128scenes5120frames paired angle intervention"
+      "search_text": "mz99-angle-information-20260912 Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets? Frozen baseline R R+F A on measured packets Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation R current-route987TP753FP to1016TP559FP; retained980/987TP; body future124 to125 of171;12/12 carried timely contacts all arms ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md Fresh UE seed99013 128scenes5120frames paired angle intervention"
     }
   ],
   "associations": [
@@ -38083,14 +38124,15 @@
       "run_id": "mz99-angle-information-20260912",
       "use_ids": [],
       "protocol_id": "mz99-angle-information-20260912",
-      "code_revision": "82a76b38975c971807c2d171d6d9a429e5a2428c",
+      "code_revision": "ebbf142e2b88f6d85b384c5a7679ae3f24a7204a",
       "input_fingerprint": "4929e469015b1352bc5f86550be08fad6d9d6433c9eaf2a1fbfe5d25ed6f11ae",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md",
         "artifacts.local/work/mz99-angle-information-20260912/capture-v1",
-        "artifacts.local/work/mz99-angle-information-20260912/comparison-v1"
+        "artifacts.local/work/mz99-angle-information-20260912/comparison-v1",
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz99-angle-information-20260912",
       "source_rows": 1
     },
     {
