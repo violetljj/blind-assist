@@ -2011,6 +2011,16 @@
       "failure_signature": "F1 gain0.0024 trades121 fewer FP for71 fewer TP,2 lost events and0.9s delay",
       "revisit_trigger": "Authorized changed recall-aware hypothesis with a new evaluation boundary",
       "assignment_basis": "One configuration, validation-only selection, sealed test predictions; full acceptance gate failed"
+    },
+    {
+      "terminal_id": "terminal-mz97-residual-suppression-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed A-positive-only post-alert tree rejection under98percent retention and event constraints",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
+      "failure_signature": "No active validation threshold feasible; disabled output equals A with zero suppression gain",
+      "revisit_trigger": "Authorized changed residual or temporal hypothesis with an independent evaluation boundary",
+      "assignment_basis": "One fixed model and101 thresholds selected on validation only; sealed test parity and fresh A versus A+B replication"
     }
   ]
 }

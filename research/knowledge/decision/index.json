@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "ad68d33f587a7c166afaef72f92bd59046a11a992d2a455fd041161c7eec44b8",
+  "source_fingerprint": "fe0201edf75eb72489a7742d61ddab53ee451a889365509bf4e37d386296e9f3",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 420,
-    "current_terminals": 201,
+    "current_terminals": 202,
     "run_associations": 418
   },
   "failure_layers": [
@@ -24770,6 +24770,47 @@
       "search_text": "terminal-mz96-ue-decision-head-20260912 obstacle-avoidance FRESH_UE_TREE_GATE_NOT_MET Fresh UE5120frames scene split80/16/32. Test tree297TP84FP112FN F1.7519 versus validation-selected A+B368TP205FP41FN F1.7495;2 events lost and0.9s delay. One fixed fit configuration, no test tuning; retain rules as challengers, no learned-head promotion. A new authorized decision-changing hypothesis and declared evaluation boundary; consumed results cannot support fresh confirmation or test-driven tuning. NEGATIVE_CONTROL  Fixed XGBoost full risk-head replacement on fresh UE geometry proxies research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md F1 gain0.0024 trades121 fewer FP for71 fewer TP,2 lost events and0.9s delay Authorized changed recall-aware hypothesis with a new evaluation boundary Promote full policy from F1 alone while losing events or recall Tune consumed test thresholds or regenerate sources for a better outcome Claim real Radar RF, finite-body collision, calibrated clearance or edge latency from geometry proxies"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz97-residual-suppression-20260912",
+      "status": "negative",
+      "question": "A-conditioned tree has no active validation threshold satisfying98percent overall/future TP retention and event constraints. Disabled test equals A254TP169FP51FN F1.6978; matched_hold231TP167FP74FN .6572; A+B272TP211FP33FN .6904. A recall gain repeats but A+B F1 superiority does not.",
+      "baseline": null,
+      "change": "Explicitly authorized changed hypothesis and new evaluation boundary; current post-alert residual/grid is consumed and not eligible for test-driven tuning.",
+      "primary_metric": null,
+      "decision": "RESIDUAL_DISABLED_NO_VALIDATION_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "c65ca7c609d8ef95c579d1963784139dc89a5658",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 30,
+        "temporal_belief": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Explicitly authorized changed hypothesis and new evaluation boundary; current post-alert residual/grid is consumed and not eligible for test-driven tuning.",
+      "forbidden_repeats": [
+        "Claim disabled parity demonstrates learned false-positive suppression",
+        "Relax recall or event constraints after seeing this outcome",
+        "Claim A consistently reduces FP or A+B consistently beats A across panels",
+        "Infer ghost identity or physical Radar/body collision validation from synthetic scene slices"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed A-positive-only post-alert tree rejection under98percent retention and event constraints",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
+      "failure_signature": "No active validation threshold feasible; disabled output equals A with zero suppression gain",
+      "revisit_trigger": "Authorized changed residual or temporal hypothesis with an independent evaluation boundary",
+      "assignment_basis": "One fixed model and101 thresholds selected on validation only; sealed test parity and fresh A versus A+B replication",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md"
+      ],
+      "association_id": "mz97-residual-suppression-20260912",
+      "search_text": "terminal-mz97-residual-suppression-20260912 obstacle-avoidance RESIDUAL_DISABLED_NO_VALIDATION_GAIN A-conditioned tree has no active validation threshold satisfying98percent overall/future TP retention and event constraints. Disabled test equals A254TP169FP51FN F1.6978; matched_hold231TP167FP74FN .6572; A+B272TP211FP33FN .6904. A recall gain repeats but A+B F1 superiority does not. Explicitly authorized changed hypothesis and new evaluation boundary; current post-alert residual/grid is consumed and not eligible for test-driven tuning. NEGATIVE_CONTROL  Fixed A-positive-only post-alert tree rejection under98percent retention and event constraints research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md No active validation threshold feasible; disabled output equals A with zero suppression gain Authorized changed residual or temporal hypothesis with an independent evaluation boundary Claim disabled parity demonstrates learned false-positive suppression Relax recall or event constraints after seeing this outcome Claim A consistently reduces FP or A+B consistently beats A across panels Infer ghost identity or physical Radar/body collision validation from synthetic scene slices"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33910,25 +33951,24 @@
     {
       "kind": "experiment",
       "id": "mz97-residual-suppression-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes?",
       "baseline": "Frozen A reference plus matched_hold range-only B and A+B replication",
       "change": "Train false-alert target only on A positives and select constrained validation threshold with disabled fallback",
-      "primary_metric": "FP reduction TP retention future-only retention events delay fragments F1",
-      "decision": "PENDING_FROZEN_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md",
+      "primary_metric": "Residual disabled: test A254TP169FP51FN F1.6978; A+B272TP211FP33FN .6904; no feasible validation threshold",
+      "decision": "RESIDUAL_DISABLED_NO_VALIDATION_GAIN",
+      "report": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
       "source": "Fresh UE seed97013 128 scene instances split80/16/32",
-      "commit": "d2d0d3bdfca02d64554859487aa436521ab6dd8d",
+      "commit": "c65ca7c609d8ef95c579d1963784139dc89a5658",
       "association_id": "mz97-residual-suppression-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
         "identity_binding": 3,
-        "temporal_belief": 3,
         "decision_lifecycle": 13
       },
-      "search_text": "mz97-residual-suppression-20260912 Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes? Frozen A reference plus matched_hold range-only B and A+B replication Train false-alert target only on A positives and select constrained validation threshold with disabled fallback FP reduction TP retention future-only retention events delay fragments F1 PENDING_FROZEN_RUN research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md Fresh UE seed97013 128 scene instances split80/16/32"
+      "search_text": "mz97-residual-suppression-20260912 Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes? Frozen A reference plus matched_hold range-only B and A+B replication Train false-alert target only on A positives and select constrained validation threshold with disabled fallback Residual disabled: test A254TP169FP51FN F1.6978; A+B272TP211FP33FN .6904; no feasible validation threshold RESIDUAL_DISABLED_NO_VALIDATION_GAIN research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md Fresh UE seed97013 128 scene instances split80/16/32"
     }
   ],
   "associations": [
@@ -37928,14 +37968,15 @@
       "run_id": "mz97-residual-suppression-20260912",
       "use_ids": [],
       "protocol_id": "mz97-residual-suppression-20260912",
-      "code_revision": "d2d0d3bdfca02d64554859487aa436521ab6dd8d",
+      "code_revision": "c65ca7c609d8ef95c579d1963784139dc89a5658",
       "input_fingerprint": "02b40e065f10e2a74c47c3abbf16f2abe4bf237bd379640952ec72113c67196c",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md",
         "artifacts.local/work/mz97-residual-suppression-20260912/capture-v1",
-        "artifacts.local/work/mz97-residual-suppression-20260912/comparison-v1"
+        "artifacts.local/work/mz97-residual-suppression-20260912/comparison-v1",
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz97-residual-suppression-20260912",
       "source_rows": 1
     },
     {

@@ -4753,6 +4753,30 @@
         "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_20260912.md"
       ],
       "commit": "7d5e9f1cab5a9384169adf43a29ccb930a5257c7"
+    },
+    {
+      "id": "terminal-mz97-residual-suppression-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "decision_lifecycle",
+        "temporal_belief",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "RESIDUAL_DISABLED_NO_VALIDATION_GAIN",
+      "summary": "A-conditioned tree has no active validation threshold satisfying98percent overall/future TP retention and event constraints. Disabled test equals A254TP169FP51FN F1.6978; matched_hold231TP167FP74FN .6572; A+B272TP211FP33FN .6904. A recall gain repeats but A+B F1 superiority does not.",
+      "successor_requires": "Explicitly authorized changed hypothesis and new evaluation boundary; current post-alert residual/grid is consumed and not eligible for test-driven tuning.",
+      "forbidden_repeats": [
+        "Claim disabled parity demonstrates learned false-positive suppression",
+        "Relax recall or event constraints after seeing this outcome",
+        "Claim A consistently reduces FP or A+B consistently beats A across panels",
+        "Infer ghost identity or physical Radar/body collision validation from synthetic scene slices"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md"
+      ],
+      "commit": "c65ca7c609d8ef95c579d1963784139dc89a5658"
     }
   ]
 }

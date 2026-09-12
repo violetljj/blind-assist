@@ -5,6 +5,18 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ97: residual filter disabled; fresh rule replication (2026-09-12)
+
+[MZ97](nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md) closes as
+RESIDUAL_DISABLED_NO_VALIDATION_GAIN / NEGATIVE_CONTROL for the fixed A-positive
+post-alert tree. No active validation threshold meets98% overall/future retention
+and event constraints while reducing FP; fallback exactly preserves A.
+Fresh seed97013 test32 scenes: matched_hold231TP/167FP/74FN F1.6572;
+A254/169/51 .6978, future-only recall37.5% to64.3%; A+B272/211/33 .6904.
+A recall benefit repeats but FP reduction does not. A+B adds18TP and42FP over A,
+so consistent A+B superiority is unsupported. Keep A and A+B as Development
+challengers with existing core unchanged. No test tuning, relaxed gates or refit.
+
 ## MZ94-MZ96: physical rules and a fresh UE decision head (2026-09-12)
 
 [MZ94](nearfield/MZ94_RADAR_HORIZON_RESULTS_20260912.md) horizon A changes final
