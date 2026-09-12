@@ -22,6 +22,7 @@ def prepare():
     frames = []
     for panel, (folder, _, _, _) in PANELS.items():
         capture = ROOT / 'artifacts.local/work' / folder / 'capture-v1'
+        capture_receipt = json.loads((capture / 'receipt.json').read_text())
         observations = json.loads((REFERENCE / panel / 'observations.json').read_text())
         for obs in observations:
             entry = dict(panel=panel, id=obs['id'])
@@ -29,6 +30,8 @@ def prepare():
                 image = capture / 'frame' / obs['id'] / (view + '.png')
                 entry[view] = str(image.resolve())
                 entry[view + '_sha256'] = sha(image)
+                assert entry[view + '_sha256'] == capture_receipt['hashes'][
+                    str(image.relative_to(capture)).replace('\\', '/')]
             frames.append(entry)
     assert len(frames) == 576
     write(path, dict(rig=m.RIG, frames=frames, authority='RGB_AND_CALIBRATION_ONLY'))
@@ -42,6 +45,18 @@ def evaluate(frontend, output):
     assert receipt['status'] == 'PASS'
     assert receipt['frames'] == 576
     assert receipt['input_manifest_sha256'] == sha(TASK / 'rgb-inputs.json')
+    inputs = json.loads((TASK / 'rgb-inputs.json').read_text())
+    assert inputs['rig'] == m.RIG and len(inputs['frames']) == 576
+    for panel, (folder, _, _, _) in PANELS.items():
+        capture = ROOT / 'artifacts.local/work' / folder / 'capture-v1'
+        captured = json.loads((capture / 'receipt.json').read_text())
+        entries = [f for f in inputs['frames'] if f['panel'] == panel]
+        original_ids = [o['id'] for o in json.loads((REFERENCE/panel/'observations.json').read_text())]
+        assert [f['id'] for f in entries] == original_ids
+        for f in entries:
+            for view in ('left','right'):
+                expected = captured['hashes'][f"frame/{f['id']}/{view}.png"]
+                assert sha(Path(f[view])) == f[view+'_sha256'] == expected
     for name, digest in receipt['hashes'].items():
         assert sha(frontend / name) == digest, name
     reference_receipt = json.loads((REFERENCE / 'receipt.json').read_text())
@@ -80,7 +95,10 @@ def evaluate(frontend, output):
               frontend_receipt_sha256=sha(frontend/'receipt.json')))
         # Read consumed task annotations only after candidate prediction sealing.
         gt = np.load(REFERENCE / panel / 'truth.npy')
-        spec = json.loads((ROOT/'artifacts.local/work'/folder/'capture-v1/spec.json').read_text())
+        spec_path = ROOT/'artifacts.local/work'/folder/'capture-v1/spec.json'
+        reference_seal = json.loads((REFERENCE/panel/'prediction-seal.json').read_text())
+        assert sha(spec_path) == reference_seal['spec_sha256']
+        spec = json.loads(spec_path.read_text())
         assert observation_contract(spec) == obs
         scores = {stage: {k: metrics(v, gt, obs) for k,v in predictions.items()}
                   for stage, predictions in [('raw', raw), ('final', final)]}
