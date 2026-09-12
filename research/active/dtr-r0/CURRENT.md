@@ -5,6 +5,23 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ85 gyro rotation-compensated ToF state (2026-09-12)
+
+[MZ85](nearfield/MZ85_ROTATION_COMPENSATED_STATE_RESULTS_20260912.md) preserves
+the sealed MZ84 baseline exactly, then adds only causal yaw/pitch rotation of ToF
+rays into a stabilized frame before association. Fusion changes from
+160TP/8FP/11FN, F1.944 to160/0/11, F1.967: all8 constructed head-motion FP are
+removed, while every non-head-motion bit, all14 positive-event first-alert
+frames and all fragmentation counts remain unchanged. All four predeclared
+mechanism gates pass.
+
+Retain rotation compensation as a component, not a new-source confirmation.
+MZ85 deliberately leaves the two multi-target gap-onset fragments untouched.
+The consumed analytic source omits bias, clock/extrinsic error, translation,
+vibration and measured sensor noise, so the next IMU claim requires fresh or
+device-calibrated evidence; do not infer hardware, alert, user-benefit or safety
+performance and do not launch learned state estimation from this result.
+
 ## MZ84 bidirectional ToF/radar complementarity (2026-09-12)
 
 [MZ84](nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_RESULTS_20260912.md) runs a
