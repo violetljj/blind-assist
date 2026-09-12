@@ -6,6 +6,7 @@ from mz88_uncertainty_aware_association import (
     apply_authority,
     build_source,
     crossing_state,
+    event_audit,
     point_state,
     radar_materializer,
 )
@@ -42,6 +43,12 @@ class Mz88UncertaintyAssociationTest(unittest.TestCase):
         arrays = radar_materializer(source, np.random.default_rng(8801))
         self.assertEqual(len(source), 36)
         self.assertTrue(all(array.shape[0] == 1080 for array in arrays))
+
+    def test_event_miss_is_json_serializable_null_delay(self):
+        rows = event_audit(
+            np.asarray(['a', 'a']), np.asarray([False, True]),
+            np.asarray([False, True]), np.asarray([False, False]))
+        self.assertIsNone(rows[0]['added_first_alert_delay_s'])
 
 
 if __name__ == '__main__':

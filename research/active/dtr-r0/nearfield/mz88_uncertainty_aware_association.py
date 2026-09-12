@@ -475,15 +475,15 @@ def event_audit(episode_ids: np.ndarray, truth: np.ndarray, baseline: np.ndarray
             starts[name] = None if not hits.size else int(hits[0])
             fragments[name] = episodes(values[local_truth])
         if starts['baseline'] is None:
-            delay = 0.0 if starts['candidate'] is not None else math.inf
+            delay = 0.0
         elif starts['candidate'] is None:
-            delay = math.inf
+            delay = None
         else:
             delay = (starts['candidate'] - starts['baseline']) * DT_S
         rows_out.append({
             'episode_id': str(episode_id),
             'first_correct_frame': starts,
-            'added_first_alert_delay_s': float(delay),
+            'added_first_alert_delay_s': delay,
             'fragments': fragments,
             'added_fragments': fragments['candidate'] - fragments['baseline'],
         })
@@ -502,7 +502,10 @@ def performance_checks(baseline_metrics: dict, candidate_metrics: dict,
                        audit: list[dict]) -> dict:
     baseline_target_fp = int((~truth & baseline & boundary_head_stress).sum())
     removed_target_fp = int((~truth & baseline & ~candidate & boundary_head_stress).sum())
-    max_delay = max(row['added_first_alert_delay_s'] for row in audit)
+    finite_delays = [row['added_first_alert_delay_s'] for row in audit
+                     if row['added_first_alert_delay_s'] is not None]
+    missing_after_baseline = any(row['added_first_alert_delay_s'] is None for row in audit)
+    max_delay = max(finite_delays, default=0.0)
     max_added_fragments = max(row['added_fragments'] for row in audit)
     return {
         'overall_f1_higher_fp_halved_tp_loss_le2': (
@@ -515,10 +518,12 @@ def performance_checks(baseline_metrics: dict, candidate_metrics: dict,
         'half_stressed_boundary_head_fp_removed': (
             baseline_target_fp > 0 and removed_target_fp * 2 >= baseline_target_fp),
         'timing_le_0p2_and_added_fragments_le1': (
-            max_delay <= 0.2 + 1e-9 and max_added_fragments <= 1),
+            not missing_after_baseline and max_delay <= 0.2 + 1e-9 and
+            max_added_fragments <= 1),
         'baseline_target_fp': baseline_target_fp,
         'removed_target_fp': removed_target_fp,
         'max_added_first_alert_delay_s': float(max_delay),
+        'positive_events_missed_after_baseline_alert': int(missing_after_baseline),
         'max_added_fragments': int(max_added_fragments),
     }
 
