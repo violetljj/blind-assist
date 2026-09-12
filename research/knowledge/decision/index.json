@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "e38148e93cf9bdd010259db88563538b614fdee2ac1dbcabcb70c2d83d4c6967",
+  "source_fingerprint": "218c0a55fb7e67382d0c4345398902f30ddb31fd08bb0c52913ea5efcbf8ed45",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 416,
-    "current_terminals": 197,
+    "current_terminals": 198,
     "run_associations": 414
   },
   "failure_layers": [
@@ -24608,6 +24608,47 @@
       "search_text": "terminal-mz92-cross-sensor-calibration-20260912 obstacle-avoidance CALIBRATION_GATE_NOT_MET Causal ToF Radar relative offset MAE falls7.123 to2.128deg on424 active proxy frames but all alerts equal333TP151FP158FN F1.6831. No real-only or persistent-phantom FP removed. Explicitly authorized decision-changing hypothesis; distinguish relative bias estimation from calibrated full spatial uncertainty and useful alert readout. NEGATIVE_CONTROL  MZ92 causal cross-sensor calibration plus frozen localization veto on consumed sensor proxy research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md Relative angle MAE improves but zero changed final alerts; no FP improvement Explicit new hypothesis connecting available spatial evidence to task effect Claim lower relative offset MAE establishes alert improvement Tune thresholds or calibration windows on consumed MZ92 outcomes Use true ambiguity, source identity or missing returns as calibration evidence Automatically launch another experiment or promote this full policy"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz93-supported-prediction-20260912",
+      "status": "negative",
+      "question": "Supported future occupancy veto removes8 extra raw returns but only2 raw-support and2 hysteresis frames differ; differences disappear at ToF branch selection before hold. Final333TP151FP158FN F1.6831 unchanged.",
+      "baseline": null,
+      "change": "Explicitly authorized decision-changing hypothesis with evidence of final intervention coverage, not another upstream filter inferred from score changes.",
+      "primary_metric": null,
+      "decision": "SUPPORTED_PREDICTION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "57d149fb8b426aa8abced6227ef0d8eaf8923e56",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Explicitly authorized decision-changing hypothesis with evidence of final intervention coverage, not another upstream filter inferred from score changes.",
+      "forbidden_repeats": [
+        "Claim changed raw scores or vetoes prove alert gain",
+        "Blame one-frame hold for erasing differences already absent before hold",
+        "Tune the directional criterion on consumed MZ93 outcomes",
+        "Automatically launch another source or policy experiment"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ93 supported future occupancy readout on consumed MZ90",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+      "failure_signature": "Eight extra return vetoes but zero final decision changes after ToF branch selection",
+      "revisit_trigger": "Explicitly authorized mechanism with demonstrated final decision coverage",
+      "assignment_basis": "No strict FP gain; stage diagnostics preserve why internal changes fail to affect outcomes",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md"
+      ],
+      "association_id": "mz93-supported-prediction-20260912",
+      "search_text": "terminal-mz93-supported-prediction-20260912 obstacle-avoidance SUPPORTED_PREDICTION_GATE_NOT_MET Supported future occupancy veto removes8 extra raw returns but only2 raw-support and2 hysteresis frames differ; differences disappear at ToF branch selection before hold. Final333TP151FP158FN F1.6831 unchanged. Explicitly authorized decision-changing hypothesis with evidence of final intervention coverage, not another upstream filter inferred from score changes. NEGATIVE_CONTROL  MZ93 supported future occupancy readout on consumed MZ90 research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md Eight extra return vetoes but zero final decision changes after ToF branch selection Explicitly authorized mechanism with demonstrated final decision coverage Claim changed raw scores or vetoes prove alert gain Blame one-frame hold for erasing differences already absent before hold Tune the directional criterion on consumed MZ93 outcomes Automatically launch another source or policy experiment"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33650,26 +33691,25 @@
     {
       "kind": "experiment",
       "id": "mz93-supported-prediction-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Does requiring observed inward motion for future occupancy reduce speculative alerts?",
       "baseline": "Frozen matched_hold and MZ92 calibrated localization",
       "change": "Separate current occupancy from future increment; fixed inward angular-rate evidence gate",
-      "primary_metric": "TP FP FN F1 UNKNOWN future-only TP delay fragments provenance",
-      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md",
+      "primary_metric": "333TP151FP158FN F1.6831 unchanged;2 Radar frame differences disappear at ToF branch",
+      "decision": "SUPPORTED_PREDICTION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
       "source": "Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition",
-      "commit": "096f9eb958c1ab187d59a5f3d776fa777baa2534",
+      "commit": "57d149fb8b426aa8abced6227ef0d8eaf8923e56",
       "association_id": "mz93-supported-prediction-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
-        "temporal_belief": 3,
         "geometry_motion": 6,
         "decision_lifecycle": 3,
-        "evaluation_evidence": 3
+        "evaluation_evidence": 8
       },
-      "search_text": "mz93-supported-prediction-20260912 Does requiring observed inward motion for future occupancy reduce speculative alerts? Frozen matched_hold and MZ92 calibrated localization Separate current occupancy from future increment; fixed inward angular-rate evidence gate TP FP FN F1 UNKNOWN future-only TP delay fragments provenance PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition"
+      "search_text": "mz93-supported-prediction-20260912 Does requiring observed inward motion for future occupancy reduce speculative alerts? Frozen matched_hold and MZ92 calibrated localization Separate current occupancy from future increment; fixed inward angular-rate evidence gate 333TP151FP158FN F1.6831 unchanged;2 Radar frame differences disappear at ToF branch SUPPORTED_PREDICTION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition"
     }
   ],
   "associations": [
@@ -37611,13 +37651,14 @@
       "run_id": "mz93-supported-prediction-20260912",
       "use_ids": [],
       "protocol_id": "mz93-supported-prediction-20260912",
-      "code_revision": "096f9eb958c1ab187d59a5f3d776fa777baa2534",
+      "code_revision": "57d149fb8b426aa8abced6227ef0d8eaf8923e56",
       "input_fingerprint": "2415e6f930b307adbf578f527522f1771651531b6a35b0da9df586ff1b2f1925",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md",
-        "artifacts.local/work/mz93-supported-prediction-20260912/run-v1"
+        "artifacts.local/work/mz93-supported-prediction-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz93-supported-prediction-20260912",
       "source_rows": 1
     },
     {

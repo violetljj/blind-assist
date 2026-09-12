@@ -1971,6 +1971,16 @@
       "failure_signature": "Relative angle MAE improves but zero changed final alerts; no FP improvement",
       "revisit_trigger": "Explicit new hypothesis connecting available spatial evidence to task effect",
       "assignment_basis": "Full policy fails strict FP gain; preserve narrow calibration diagnostic without policy promotion"
+    },
+    {
+      "terminal_id": "terminal-mz93-supported-prediction-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "MZ93 supported future occupancy readout on consumed MZ90",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+      "failure_signature": "Eight extra return vetoes but zero final decision changes after ToF branch selection",
+      "revisit_trigger": "Explicitly authorized mechanism with demonstrated final decision coverage",
+      "assignment_basis": "No strict FP gain; stage diagnostics preserve why internal changes fail to affect outcomes"
     }
   ]
 }

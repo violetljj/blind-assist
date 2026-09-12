@@ -5,6 +5,16 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ93 supported future occupancy (2026-09-12)
+
+[MZ93](nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md) closes as
+SUPPORTED_PREDICTION_GATE_NOT_MET / NEGATIVE_CONTROL. Requiring observed inward
+motion for future-only support adds8 raw-return exclusions, but only2 raw-support
+and2 Radar-hysteresis frames differ; all differences disappear at ToF branch
+selection before one-frame hold. Final333TP/151FP/158FN F1.6831 remains identical.
+Keep matched_hold. Further upstream filters need evidence of final intervention
+coverage; no tuning, promotion or automatic successor.
+
 ## MZ92 cross-sensor calibration (2026-09-12)
 
 [MZ92](nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md) closes as

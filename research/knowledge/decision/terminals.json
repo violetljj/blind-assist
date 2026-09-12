@@ -4659,6 +4659,30 @@
         "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_20260912.md"
       ],
       "commit": "460625fd1b65183af929e5e0db171f17b02fc01d"
+    },
+    {
+      "id": "terminal-mz93-supported-prediction-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "temporal_belief",
+        "geometry_motion",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "SUPPORTED_PREDICTION_GATE_NOT_MET",
+      "summary": "Supported future occupancy veto removes8 extra raw returns but only2 raw-support and2 hysteresis frames differ; differences disappear at ToF branch selection before hold. Final333TP151FP158FN F1.6831 unchanged.",
+      "successor_requires": "Explicitly authorized decision-changing hypothesis with evidence of final intervention coverage, not another upstream filter inferred from score changes.",
+      "forbidden_repeats": [
+        "Claim changed raw scores or vetoes prove alert gain",
+        "Blame one-frame hold for erasing differences already absent before hold",
+        "Tune the directional criterion on consumed MZ93 outcomes",
+        "Automatically launch another source or policy experiment"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md"
+      ],
+      "commit": "57d149fb8b426aa8abced6227ef0d8eaf8923e56"
     }
   ]
 }
