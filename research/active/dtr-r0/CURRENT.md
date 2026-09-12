@@ -5,6 +5,25 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ87 IMU rotation realism falsifier (2026-09-12)
+
+[MZ87](nearfield/MZ87_IMU_REALISM_FALSIFIER_RESULTS_20260912.md) freezes MZ85 and
+runs36 analytic transform-error replays. Every smallest stress preserves
+160TP/0FP/11FN, so rotation compensation is not smallest-perturbation-oracle
+fragile. The declared medium tolerance region nevertheless fails: +2deg/s bias
+and +2deg extrinsic error each add2 lateral-crossing FP, one of four2deg/s-noise
+seeds adds1 and loses1 lateral frame, and both signed medium combinations restore
+4 head-motion FP plus lateral FP or TP loss. Two-frame IMU dropout restores all8
+head-motion FP. The terminal is `ROTATION_COMPENSATION_TOLERANCE_NOT_ESTABLISHED`.
+
+Retain MZ85 as the ideal mechanism baseline, not a robust operating point. Hard
+angular boundaries in a miscalibrated stabilized frame fail before or alongside
+the original head-motion mechanism. The apparent +/-50ms stability is specific
+to the locally flat constructed motion. Require fresh motion and calibrated
+timing/extrinsic evidence before soft association or a state estimator; do not
+tune thresholds or train on this consumed grid. MZ86 remains reserved for the
+separate two-event continuity defect.
+
 ## MZ85 gyro rotation-compensated ToF state (2026-09-12)
 
 [MZ85](nearfield/MZ85_ROTATION_COMPENSATED_STATE_RESULTS_20260912.md) preserves
