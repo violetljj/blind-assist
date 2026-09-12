@@ -7,7 +7,19 @@ Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
 ## Active mainline correction: one RGB + ToF + Radar + IMU (2026-09-13)
 
-Latest bounded optimization: [MZ108](nearfield/MZ108_RESULTS_20260913.md) retains
+Latest bounded optimization: [MZ109](nearfield/MZ109_RESULTS_20260913.md) propagates
+working range/pose/box intervals into corridor geometry. Across288 frames it
+retains all142 three-sensor baseline TP and reduces FP33to31, but it is not a
+uniform upgrade over nominal MZ108. New-panel baseline42/8/22 becomes42/6/22;
+nominal gives46/6/18. Interval loses5 nominal TP and restores1 other TP, all on
+the1cm-intrusion stratum (baseline1/16,nominal5/16,interval1/16). Old MZ108 FP18
+returns to17. Retain analytic interval states as COMPONENT_OR_CHALLENGER only,
+no alert promotion. Baseline-only gate success is insufficient; future claims
+must include absolute critical recall and challenger-specific positives.
+18 tests pass; capture/analysis complete and resources released. Registration
+pending the historical ledger fingerprint error; no automatic successor.
+
+Previous bounded optimization: [MZ108](nearfield/MZ108_RESULTS_20260913.md) retains
 stable image regions as a Development component. Projected-box recall rises
 61/96 to96/96 on consumed MZ107 and42/96 to96/96 on the new controlled panel;
 reciprocal association reduces wrong matches but abstains on some correct matches.

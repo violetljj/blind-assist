@@ -40,6 +40,11 @@ sensor merely because another sensor missed the object.
 First verify input provenance and that actual RGB pixels affect association.
 Then measure a paired task effect with an RGB-disabled control. A gain must
 retain critical baseline positives; fewer reported points alone is not a gain.
+MZ109 exposes an additional requirement: also report absolute critical-stratum
+recall and positives unique to the active RGB challenger. Retaining100% of a
+baseline that detects1/16 true boundary frames does not establish adequate recall.
+Keep comparator-specific gains and tradeoffs visible; do not promote a method
+solely because a baseline-only gate passes.
 If image proposals or associations fail, report that specific mechanism and stop
 the bounded attempt. Do not jump to larger depth models or more sensors.
 
