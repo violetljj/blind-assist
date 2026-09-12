@@ -5,6 +5,17 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ91 causal Radar localization (2026-09-12)
+
+[MZ91](nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md) is closed as
+LOCALIZATION_GATE_NOT_MET / NEGATIVE_CONTROL. Five-frame polar localization with
+non-shrinking common angle uncertainty changes402 qualified Radar support scores,
+but final alerts equal both matched_hold and the single-frame control:
+333TP/151FP/158FN, F1.6831;29 false segments,49 fragments,1 missed event.
+No real-only85FP or persistent-only45FP are removed. Ideal predictions also equal
+the baseline. Preserve matched_hold for this comparison; internal score changes
+are not task gains. No tuning, source expansion, model promotion or successor run.
+
 ## MZ90 fallback diagnosis (2026-09-12)
 
 [Read-only provenance audit](nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md)

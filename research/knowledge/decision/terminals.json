@@ -4610,6 +4610,31 @@
           "research/active/dtr-r0/nearfield/MZ90_RADAR_FALLBACK_AUDIT_20260912.md"
       ],
       "commit": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8"
+    },
+    {
+      "id": "terminal-mz91-radar-localization-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "geometry_motion",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "LOCALIZATION_GATE_NOT_MET",
+      "summary": "Causal five-frame Radar localization changes402 qualified support scores but no final alert. Sensor_proxy333TP151FP158FN F1.6831 equals matched_hold and single-frame; no85 real-only FP or45 persistent-only FP removed.",
+      "successor_requires": "An explicitly authorized evidenced change to spatial information or justified uncertainty/readout; current consumed run cannot support tuning or promotion.",
+      "forbidden_repeats": [
+        "Promote multiframe localization from changed internal scores without changed task effects",
+        "Tune veto thresholds or shared bias floor on consumed MZ91 outcomes",
+        "Claim calibrated probabilities, full correlated pose covariance or real sensor collision performance",
+        "Use simulator identities, periodic clutter or sampling-probability artifacts as predictor features"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md"
+      ],
+      "commit": "fb5928649e3cfbd4bbad051bb6cc6a0478b0447f"
     }
   ]
 }

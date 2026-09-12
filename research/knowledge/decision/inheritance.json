@@ -1951,6 +1951,16 @@
       "failure_signature": "Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback",
       "revisit_trigger": "Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue",
       "assignment_basis": "One frozen paired common-world run, full and zero-added-FP transfer checks fail; raw sensor contract and isolated ideal gain retained as diagnostic evidence"
+    },
+    {
+      "terminal_id": "terminal-mz91-radar-localization-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed five-frame uncertainty-aware Radar veto on consumed MZ90 contract",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
+      "failure_signature": "Internal scores change but zero alert gain;333TP151FP158FN equals matched_hold",
+      "revisit_trigger": "Explicitly authorized different spatial evidence or justified uncertainty/readout model",
+      "assignment_basis": "Fixed run failed strict FP improvement; preserve as negative comparator, not promotion"
     }
   ]
 }

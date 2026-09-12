@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "f71bdb4b64b8922b7dae241affacb4cff9f7a4fc0a79971aebecb11b64c2687a",
+  "source_fingerprint": "81788a0a8ab8fa4bd8cdd639ab6f47dc4ba181ffc333441ebf87a64fc56290f8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 414,
-    "current_terminals": 195,
+    "current_terminals": 196,
     "run_associations": 412
   },
   "failure_layers": [
@@ -24525,6 +24525,48 @@
       "search_text": "terminal-mz90-observable-contract-20260912 obstacle-avoidance OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED On48 common2D scenes, joint covariance adds78TP0FP in ideal but14TP6FP under raw quantized missing sensor proxies. Full joint spatial276TP134FP215FN F1.6127 trails matched hold333/151/158 F1.6831;126of134FP arise from no-ToF Radar fallback. A separately authorized observation-aware hypothesis addressing local sensor availability and correlated measurement uncertainty on the common contract; changing only the valid-ToF spatial gate does not touch126 fallback FP. NEGATIVE_CONTROL  Transfer of frozen joint temporal angular covariance plus spatial Radar to common unprivileged horizontal sensor proxies research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue Claim MZ89 zero-added-FP covariance gain transfers to coarse noisy sensor observations Tune thresholds, source probabilities, ambiguity or lifetime on consumed MZ90 outcomes Treat any valid ToF zone as full hazard observability or no-return as clearance Claim measured8x8 ToF Radar body-tube thin-pole or safety performance from this horizontal proxy Automatically launch a soft Radar head, training or new source expansion"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz91-radar-localization-20260912",
+      "status": "negative",
+      "question": "Causal five-frame Radar localization changes402 qualified support scores but no final alert. Sensor_proxy333TP151FP158FN F1.6831 equals matched_hold and single-frame; no85 real-only FP or45 persistent-only FP removed.",
+      "baseline": null,
+      "change": "An explicitly authorized evidenced change to spatial information or justified uncertainty/readout; current consumed run cannot support tuning or promotion.",
+      "primary_metric": null,
+      "decision": "LOCALIZATION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "fb5928649e3cfbd4bbad051bb6cc6a0478b0447f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "temporal_belief": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "An explicitly authorized evidenced change to spatial information or justified uncertainty/readout; current consumed run cannot support tuning or promotion.",
+      "forbidden_repeats": [
+        "Promote multiframe localization from changed internal scores without changed task effects",
+        "Tune veto thresholds or shared bias floor on consumed MZ91 outcomes",
+        "Claim calibrated probabilities, full correlated pose covariance or real sensor collision performance",
+        "Use simulator identities, periodic clutter or sampling-probability artifacts as predictor features"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed five-frame uncertainty-aware Radar veto on consumed MZ90 contract",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
+      "failure_signature": "Internal scores change but zero alert gain;333TP151FP158FN equals matched_hold",
+      "revisit_trigger": "Explicitly authorized different spatial evidence or justified uncertainty/readout model",
+      "assignment_basis": "Fixed run failed strict FP improvement; preserve as negative comparator, not promotion",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md"
+      ],
+      "association_id": "mz91-radar-localization-20260912",
+      "search_text": "terminal-mz91-radar-localization-20260912 obstacle-avoidance LOCALIZATION_GATE_NOT_MET Causal five-frame Radar localization changes402 qualified support scores but no final alert. Sensor_proxy333TP151FP158FN F1.6831 equals matched_hold and single-frame; no85 real-only FP or45 persistent-only FP removed. An explicitly authorized evidenced change to spatial information or justified uncertainty/readout; current consumed run cannot support tuning or promotion. NEGATIVE_CONTROL  Fixed five-frame uncertainty-aware Radar veto on consumed MZ90 contract research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md Internal scores change but zero alert gain;333TP151FP158FN equals matched_hold Explicitly authorized different spatial evidence or justified uncertainty/readout model Promote multiframe localization from changed internal scores without changed task effects Tune veto thresholds or shared bias floor on consumed MZ91 outcomes Claim calibrated probabilities, full correlated pose covariance or real sensor collision performance Use simulator identities, periodic clutter or sampling-probability artifacts as predictor features"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33522,25 +33564,25 @@
     {
       "kind": "experiment",
       "id": "mz91-radar-localization-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts?",
       "baseline": "Sealed MZ90 matched_hold plus same-readout single-frame ablation",
       "change": "Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto",
-      "primary_metric": "TP FP FN F1 UNKNOWN event delay fragmentation provenance slices",
-      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
-      "report": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md",
+      "primary_metric": "All three arms333TP151FP158FN F1.6831; zero changed alerts; no strict FP gain",
+      "decision": "LOCALIZATION_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md",
       "source": "Consumed MZ90 paired ideal and sensor_proxy raw observations",
-      "commit": "77bd6a675fa8a21870b2f0dffc78f1df5b847f5f",
+      "commit": "fb5928649e3cfbd4bbad051bb6cc6a0478b0447f",
       "association_id": "mz91-radar-localization-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
-        "temporal_belief": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 6
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 5
       },
-      "search_text": "mz91-radar-localization-20260912 Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts? Sealed MZ90 matched_hold plus same-readout single-frame ablation Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto TP FP FN F1 UNKNOWN event delay fragmentation provenance slices PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md Consumed MZ90 paired ideal and sensor_proxy raw observations"
+      "search_text": "mz91-radar-localization-20260912 Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts? Sealed MZ90 matched_hold plus same-readout single-frame ablation Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto All three arms333TP151FP158FN F1.6831; zero changed alerts; no strict FP gain LOCALIZATION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md Consumed MZ90 paired ideal and sensor_proxy raw observations"
     }
   ],
   "associations": [
@@ -37454,13 +37496,14 @@
       "run_id": "mz91-radar-localization-20260912",
       "use_ids": [],
       "protocol_id": "mz91-radar-localization-20260912",
-      "code_revision": "77bd6a675fa8a21870b2f0dffc78f1df5b847f5f",
+      "code_revision": "fb5928649e3cfbd4bbad051bb6cc6a0478b0447f",
       "input_fingerprint": "20c4a31c115fae9d3732b2deb18ae12911c2bc38038211e68b459755789e9d54",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md",
-        "artifacts.local/work/mz91-radar-localization-20260912/run-v1"
+        "artifacts.local/work/mz91-radar-localization-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz91-radar-localization-20260912",
       "source_rows": 1
     },
     {
