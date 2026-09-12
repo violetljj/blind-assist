@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "a153919cf361c9b76569bccd0578844b8f459918121a04a9a6c1be937380836d",
+  "source_fingerprint": "d7002e2f9e7c71fb0458fdda9d33ed46900d45caed77f7eebf4fb3bb20e34582",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 412,
-    "current_terminals": 194,
-    "run_associations": 410
+    "experiments": 413,
+    "current_terminals": 195,
+    "run_associations": 411
   },
   "failure_layers": [
     {
@@ -24479,6 +24479,51 @@
       "search_text": "terminal-mz89-joint-geometry-20260912 obstacle-avoidance JOINT_GEOMETRY_FULL_GATE_NOT_MET Fresh constructed36-episode1080-frame comparison: hard382TP101FP41FN F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075. Covariance alone adds46 crossing TP at fixed23FP versus independent marginals, but full method loses80 hard TP and misses2 baseline-detected events. A separately authorized hypothesis and fresh evidence that preserve current boundary/weak-Radar support without restoring false confirmation; retain the isolated joint covariance delta as narrow diagnostic evidence, not a promoted full recipe. NEGATIVE_CONTROL  Joint temporal yaw covariance with conservative fixed spatial Radar confirmation on the MZ89 analytic source research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md Full302TP23FP121FN trails hard382TP101FP41FN;2 additional event misses; isolated covariance restores46 crossing TP versus independent marginals New separately authorized evidence preserving boundary and weak-Radar recall without restoring false confirmation Tune covariance, matching gates, Radar margin or hold on consumed MZ89 outcomes Claim overall superiority from FP reduction while hiding UNKNOWN or missed events Claim 8x8 ToF, physical body tube, thin-pole recovery, measured uncertainty or safety from angular proxy evidence Automatically launch a successor or resume MZ86"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz90-observable-contract-20260912",
+      "status": "negative",
+      "question": "On48 common2D scenes, joint covariance adds78TP0FP in ideal but14TP6FP under raw quantized missing sensor proxies. Full joint spatial276TP134FP215FN F1.6127 trails matched hold333/151/158 F1.6831;126of134FP arise from no-ToF Radar fallback.",
+      "baseline": null,
+      "change": "A separately authorized observation-aware hypothesis addressing local sensor availability and correlated measurement uncertainty on the common contract; changing only the valid-ToF spatial gate does not touch126 fallback FP.",
+      "primary_metric": null,
+      "decision": "OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "observation_perception": 30,
+        "temporal_belief": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A separately authorized observation-aware hypothesis addressing local sensor availability and correlated measurement uncertainty on the common contract; changing only the valid-ToF spatial gate does not touch126 fallback FP.",
+      "forbidden_repeats": [
+        "Claim MZ89 zero-added-FP covariance gain transfers to coarse noisy sensor observations",
+        "Tune thresholds, source probabilities, ambiguity or lifetime on consumed MZ90 outcomes",
+        "Treat any valid ToF zone as full hazard observability or no-return as clearance",
+        "Claim measured8x8 ToF Radar body-tube thin-pole or safety performance from this horizontal proxy",
+        "Automatically launch a soft Radar head, training or new source expansion"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Transfer of frozen joint temporal angular covariance plus spatial Radar to common unprivileged horizontal sensor proxies",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
+      "failure_signature": "Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback",
+      "revisit_trigger": "Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue",
+      "assignment_basis": "One frozen paired common-world run, full and zero-added-FP transfer checks fail; raw sensor contract and isolated ideal gain retained as diagnostic evidence",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md"
+      ],
+      "association_id": "mz90-observable-contract-20260912",
+      "search_text": "terminal-mz90-observable-contract-20260912 obstacle-avoidance OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED On48 common2D scenes, joint covariance adds78TP0FP in ideal but14TP6FP under raw quantized missing sensor proxies. Full joint spatial276TP134FP215FN F1.6127 trails matched hold333/151/158 F1.6831;126of134FP arise from no-ToF Radar fallback. A separately authorized observation-aware hypothesis addressing local sensor availability and correlated measurement uncertainty on the common contract; changing only the valid-ToF spatial gate does not touch126 fallback FP. NEGATIVE_CONTROL  Transfer of frozen joint temporal angular covariance plus spatial Radar to common unprivileged horizontal sensor proxies research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue Claim MZ89 zero-added-FP covariance gain transfers to coarse noisy sensor observations Tune thresholds, source probabilities, ambiguity or lifetime on consumed MZ90 outcomes Treat any valid ToF zone as full hazard observability or no-return as clearance Claim measured8x8 ToF Radar body-tube thin-pole or safety performance from this horizontal proxy Automatically launch a soft Radar head, training or new source expansion"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33450,6 +33495,28 @@
         "evaluation_evidence": 5
       },
       "search_text": "mz89-joint-geometry-20260912 Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets? Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations Hard382/101/41 F1.8433; hold383/101/40 F1.8445; joint spatial302/23/121 F1.8075; covariance alone adds46 crossing TP without FP changes; full gates fail JOINT_GEOMETRY_FULL_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz90-observable-contract-20260912",
+      "status": "archived",
+      "question": "Does the MZ89 covariance gain survive a common unprivileged raw-sensor observation contract?",
+      "baseline": "Current hard geometry, causally matched hard geometry, and one-frame hold on identical nearest-two observations",
+      "change": "Paired ideal and noisy quantized sensor regimes from common moving-world geometry; no truth motion hint or stabilized Radar; frozen MZ88 MZ89 policies",
+      "primary_metric": "Ideal covariance+78TP0FP; proxy+14TP6FP. Proxy joint276/134/215 F1.6127 versus hold333/151/158 F1.6831;126of134FP from missing-ToF Radar fallback",
+      "decision": "OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
+      "source": "48 common 2D world scenes, two paired1920frame regimes; eight horizontal ToF proxy bins and raw Radar; simulation only",
+      "commit": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8",
+      "association_id": "mz90-observable-contract-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "decision_lifecycle": 3
+      },
+      "search_text": "mz90-observable-contract-20260912 Does the MZ89 covariance gain survive a common unprivileged raw-sensor observation contract? Current hard geometry, causally matched hard geometry, and one-frame hold on identical nearest-two observations Paired ideal and noisy quantized sensor regimes from common moving-world geometry; no truth motion hint or stabilized Radar; frozen MZ88 MZ89 policies Ideal covariance+78TP0FP; proxy+14TP6FP. Proxy joint276/134/215 F1.6127 versus hold333/151/158 F1.6831;126of134FP from missing-ToF Radar fallback OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md 48 common 2D world scenes, two paired1920frame regimes; eight horizontal ToF proxy bins and raw Radar; simulation only"
     }
   ],
   "associations": [
@@ -37343,6 +37410,20 @@
         "artifacts.local/work/mz9-source-supervision-20260910/run-v1/audit.json"
       ],
       "decision_id": "terminal-mz9-source-supervision-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz90-observable-contract-20260912",
+      "use_ids": [],
+      "protocol_id": "mz90-observable-contract-r0",
+      "code_revision": "5bcf8d75b66eb71c29b416dbb978370e07b84cd8",
+      "input_fingerprint": "be1a68959c087f78639356cf04a35cd1ae9489cb67837a364d5e7d5ff2efc901",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md",
+        "artifacts.local/work/mz90-observable-contract-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md"
+      ],
+      "decision_id": "terminal-mz90-observable-contract-20260912",
       "source_rows": 1
     },
     {

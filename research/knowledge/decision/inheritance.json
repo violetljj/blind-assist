@@ -1941,6 +1941,16 @@
       "failure_signature": "Full302TP23FP121FN trails hard382TP101FP41FN;2 additional event misses; isolated covariance restores46 crossing TP versus independent marginals",
       "revisit_trigger": "New separately authorized evidence preserving boundary and weak-Radar recall without restoring false confirmation",
       "assignment_basis": "One frozen controlled run; full performance gates fail, isolated covariance effect retained only as explanatory evidence"
+    },
+    {
+      "terminal_id": "terminal-mz90-observable-contract-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Transfer of frozen joint temporal angular covariance plus spatial Radar to common unprivileged horizontal sensor proxies",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md",
+      "failure_signature": "Covariance delta14TP6FP versus ideal78TP0FP; full276/134/215 F1.6127 loses to matched hold333/151/158 F1.6831;126FP from Radar fallback",
+      "revisit_trigger": "Separately authorized local-observability and measurement-uncertainty hypothesis with independent or disclosed new evidence, without consumed threshold rescue",
+      "assignment_basis": "One frozen paired common-world run, full and zero-added-FP transfer checks fail; raw sensor contract and isolated ideal gain retained as diagnostic evidence"
     }
   ]
 }

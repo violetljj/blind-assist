@@ -5,6 +5,26 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ90 common observable sensor contract (2026-09-12)
+
+[MZ90](nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md) follows a
+[literature-guided protocol](nearfield/MZ90_LITERATURE_AND_PROTOCOL_20260912.md):
+48 common2D world scenes, ideal and sensor-proxy observations with identical truth,
+no truth motion/height hints, raw-frame Radar and shared causal yaw. Joint versus
+independent covariance adds78TP/0FP in ideal but14TP/6FP in sensor_proxy; false
+segments rise23 to28. Record
+`OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED` / NEGATIVE_CONTROL.
+
+Proxy full joint+spatial reaches276TP/134FP/215FN, F1.6127, below matched hard
+309/142/182, F1.6561 and simple hold333/151/158, F1.6831. One baseline-detected
+event is lost and maximum added shared-event delay is0.3s.126of134FP (and202TP)
+come from the no-valid-ToF Radar fallback, untouched by the valid-ToF spatial
+gate. Preserve the shared raw-observation harness and narrow ideal covariance
+benefit as diagnostics, not a promoted policy. Local observability and full
+measurement uncertainty are unresolved; no soft-head, training or source expansion
+is automatically launched. This is an uncalibrated horizontal eight-bin surrogate,
+not actual8x8 ToF, real Radar, physical body-tube or safety evidence.
+
 ## MZ89 joint temporal geometry (2026-09-12)
 
 [MZ89](nearfield/MZ89_JOINT_GEOMETRY_RESULTS_20260912.md) tests joint temporal yaw
