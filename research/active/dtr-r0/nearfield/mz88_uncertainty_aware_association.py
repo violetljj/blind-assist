@@ -17,7 +17,6 @@ from mz84_bidirectional_complementarity import (
     episodes,
     f1,
     radar_expert,
-    radar_sensor,
 )
 from mz85_rotation_compensated_state import rotate_ray
 
@@ -238,6 +237,43 @@ def flatten_source(source: list[dict]) -> dict[str, np.ndarray]:
                 result['tof_height'][cursor, slot] = obj['height']
             cursor += 1
     return result
+
+
+def radar_materializer(source: list[dict], rng: np.random.Generator
+                       ) -> tuple[np.ndarray, ...]:
+    """Apply the frozen MZ84 radar proxy with the MZ88 frame count."""
+    total = sum(len(episode['frames']) for episode in source)
+    ranges = np.zeros((total, 4), np.float32)
+    velocities = np.zeros_like(ranges)
+    angles = np.zeros_like(ranges)
+    valid = np.zeros_like(ranges, bool)
+    cursor = 0
+    for episode in source:
+        for frame in episode['frames']:
+            returns = []
+            for obj in frame['radar_objects']:
+                probability = float(np.clip(
+                    obj['rcs'] * math.exp(-obj['range'] / 18.0), 0.01, 0.97))
+                if rng.random() > probability:
+                    continue
+                returns.append((
+                    round((obj['range'] + rng.normal(0, 0.06)) / 0.05) * 0.05,
+                    round((obj['vr'] + rng.normal(0, 0.08)) / 0.1) * 0.1,
+                    round((obj['theta'] + rng.normal(0, 2.0)) / 10.0) * 10.0,
+                ))
+            merged = []
+            for row in sorted(returns, key=lambda value: (value[2], value[0])):
+                if (merged and row[2] == merged[-1][2] and
+                        abs(row[0] - merged[-1][0]) <= 0.35):
+                    prior = merged[-1]
+                    merged[-1] = (min(prior[0], row[0]), min(prior[1], row[1]), row[2])
+                else:
+                    merged.append(row)
+            for slot, row in enumerate(merged[:4]):
+                ranges[cursor, slot], velocities[cursor, slot], angles[cursor, slot] = row
+                valid[cursor, slot] = True
+            cursor += 1
+    return ranges, velocities, angles, valid
 
 
 def sample_with_offset(values: np.ndarray, offset_ms: float) -> np.ndarray:
@@ -505,7 +541,8 @@ def run(root: Path, output: Path) -> None:
         'episodes': source,
     })
     imu = materialize_imu(source)
-    ranges, velocities, angles, radar_valid = radar_sensor(source, np.random.default_rng(SEED))
+    ranges, velocities, angles, radar_valid = radar_materializer(
+        source, np.random.default_rng(SEED))
     observations_path = output / 'observations.npz'
     np.savez_compressed(
         observations_path,

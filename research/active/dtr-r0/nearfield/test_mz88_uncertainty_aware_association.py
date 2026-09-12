@@ -4,8 +4,10 @@ import numpy as np
 
 from mz88_uncertainty_aware_association import (
     apply_authority,
+    build_source,
     crossing_state,
     point_state,
+    radar_materializer,
 )
 
 
@@ -34,6 +36,12 @@ class Mz88UncertaintyAssociationTest(unittest.TestCase):
         result = apply_authority(
             state, np.ones(1, dtype=bool), np.ones(1, dtype=bool), np.asarray(['a']))
         self.assertFalse(result['full'][0])
+
+    def test_radar_materializer_uses_fresh_source_frame_count(self):
+        source = build_source()
+        arrays = radar_materializer(source, np.random.default_rng(8801))
+        self.assertEqual(len(source), 36)
+        self.assertTrue(all(array.shape[0] == 1080 for array in arrays))
 
 
 if __name__ == '__main__':
