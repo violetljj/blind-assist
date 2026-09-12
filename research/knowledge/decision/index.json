@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "6fdf5759976f5018c035bf962a3aca6dbf0944d277aa51f014dc1b4832d2ccb4",
+  "source_fingerprint": "e5c818c651c9d2667b15b5a14726a0dc6d4dbb6b49e2c7e2c80a8c70ab82ca1e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 421,
+    "experiments": 422,
     "current_terminals": 203,
-    "run_associations": 419
+    "run_associations": 420
   },
   "failure_layers": [
     {
@@ -34033,6 +34033,28 @@
         "decision_lifecycle": 3
       },
       "search_text": "mz98-a-mechanism-audit-20260912 Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97? Sealed matched_hold and A on both test panels Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls Combined R578TP284FP future102; fullA596TP345FP future106; strictfuture increment8TP46FP;120of173 GTfuture frames already current A_MECHANISM_AUDIT_COMPLETE research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md Consumed sealed MZ96 and MZ97 test observations and evaluator labels"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz99-angle-information-20260912",
+      "status": "active",
+      "question": "Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets?",
+      "baseline": "Frozen baseline R R+F A on measured packets",
+      "change": "Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation",
+      "primary_metric": "R current-route FP reduction TP retention missed intervals; separate contact timing and all arms",
+      "decision": "PENDING_FROZEN_DIAGNOSTIC",
+      "report": "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md",
+      "source": "Fresh UE seed99013 128scenes5120frames paired angle intervention",
+      "commit": "82a76b38975c971807c2d171d6d9a429e5a2428c",
+      "association_id": "mz99-angle-information-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "mz99-angle-information-20260912 Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets? Frozen baseline R R+F A on measured packets Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation R current-route FP reduction TP retention missed intervals; separate contact timing and all arms PENDING_FROZEN_DIAGNOSTIC research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md Fresh UE seed99013 128scenes5120frames paired angle intervention"
     }
   ],
   "associations": [
@@ -38055,6 +38077,20 @@
         "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz98-a-mechanism-audit-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz99-angle-information-20260912",
+      "use_ids": [],
+      "protocol_id": "mz99-angle-information-20260912",
+      "code_revision": "82a76b38975c971807c2d171d6d9a429e5a2428c",
+      "input_fingerprint": "4929e469015b1352bc5f86550be08fad6d9d6433c9eaf2a1fbfe5d25ed6f11ae",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_PROTOCOL_20260912.md",
+        "artifacts.local/work/mz99-angle-information-20260912/capture-v1",
+        "artifacts.local/work/mz99-angle-information-20260912/comparison-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
