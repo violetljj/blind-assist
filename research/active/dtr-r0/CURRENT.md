@@ -5,6 +5,18 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ106: temporal near/far contradiction fails retention (2026-09-12)
+
+[MZ106](nearfield/MZ106_TEMPORAL_GEOMETRY_RESULTS_20260912.md) runs one fixed
+past-frame LK geometric contradiction check on576 consumed frames, with RGB
+stereo/PnP relative pose and separate ideal-pose control. Raw435/62/11 becomes
+426/58/20 with RGB pose; final402/40/44 becomes388/39/58. smallHEAD retention
+8/15 and1.75s extra delay fail. Ideal pose gives434/61/12 raw and401/40/45 final:
+no finalFP reduction. Only19/62 false raw queries have any usable ideal-pose
+check. Retain baseline; fixed verifier is an intended NEGATIVE_CONTROL, metadata
+pending the historical ASE fingerprint failure. No future frames, threshold
+rescue, integration or fresh capture; independent ToF preserved. Processes exited.
+
 ## MZ105: residual local matching scores lack lossless task benefit (2026-09-12)
 
 [MZ105](nearfield/MZ105_RESIDUAL_MATCHING_RESULTS_20260912.md) diagnoses the576
