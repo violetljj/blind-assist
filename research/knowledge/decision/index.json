@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "2e975e42c11ddc5d5b449ac29a761fd44b288ae436b830b072413d66b6d18468",
+  "source_fingerprint": "8d6b2afa930d785710b79e2d957c7a5302af60f9fdee91ca3bdc3943a02cb654",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 416,
+    "experiments": 417,
     "current_terminals": 198,
-    "run_associations": 414
+    "run_associations": 415
   },
   "failure_layers": [
     {
@@ -33711,6 +33711,28 @@
         "evaluation_evidence": 8
       },
       "search_text": "mz93-supported-prediction-20260912 Does requiring observed inward motion for future occupancy reduce speculative alerts? Frozen matched_hold and MZ92 calibrated localization Separate current occupancy from future increment; fixed inward angular-rate evidence gate 333TP151FP158FN F1.6831 unchanged;2 Radar frame differences disappear at ToF branch SUPPORTED_PREDICTION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz94-radar-horizon-20260912",
+      "status": "active",
+      "question": "Can causal CV route-horizon admission recover range-blocked risks without growing false alerts?",
+      "baseline": "Sealed matched_hold plus range-only3.6 diagnostic",
+      "change": "Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state",
+      "primary_metric": "TP FP FN F1 fixed69FN108FP168TP cohorts events delay",
+      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md",
+      "source": "Consumed MZ90 paired sensor observations",
+      "commit": "7666babdeae15e77aa3bd411ec3db1c77f3f1662",
+      "association_id": "mz94-radar-horizon-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "decision_lifecycle": 10
+      },
+      "search_text": "mz94-radar-horizon-20260912 Can causal CV route-horizon admission recover range-blocked risks without growing false alerts? Sealed matched_hold plus range-only3.6 diagnostic Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state TP FP FN F1 fixed69FN108FP168TP cohorts events delay PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md Consumed MZ90 paired sensor observations"
     }
   ],
   "associations": [
@@ -37660,6 +37682,19 @@
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz93-supported-prediction-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz94-radar-horizon-20260912",
+      "use_ids": [],
+      "protocol_id": "mz94-radar-horizon-20260912",
+      "code_revision": "7666babdeae15e77aa3bd411ec3db1c77f3f1662",
+      "input_fingerprint": "f2ff205bce6d63d6e450168b976ff3c3bab53ce00996e6cad2151e006f348ee3",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md",
+        "artifacts.local/work/mz94-radar-horizon-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
