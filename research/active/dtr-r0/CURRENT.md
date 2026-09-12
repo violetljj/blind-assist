@@ -22,6 +22,16 @@ vibration and measured sensor noise, so the next IMU claim requires fresh or
 device-calibrated evidence; do not infer hardware, alert, user-benefit or safety
 performance and do not launch learned state estimation from this result.
 
+[Residual FN audit](nearfield/MZ85_RESIDUAL_FN_AUDIT_RESULTS_20260912.md) finds
+no single dominant mechanism among the remaining11 generic FN:4 are lateral
+episode-frame-zero history cold starts,4 have qualifying raw radar evidence but
+no activated radar state, and3 have instantaneous ToF UNKNOWN plus no qualifying
+radar return. Five are gap-related, but only the two already-fragmented events
+have a prior hazard that an authority-aware hold can preserve. Separately,39
+radar-only generic TP remain HEIGHT_UNKNOWN attribution debt. Bound any MZ86
+continuity claim to those two frames/events; use fresh or perturbed evidence for
+the larger robustness question.
+
 ## MZ84 bidirectional ToF/radar complementarity (2026-09-12)
 
 [MZ84](nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_RESULTS_20260912.md) runs a
