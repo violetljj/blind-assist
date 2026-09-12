@@ -81,6 +81,17 @@ inference. A later changed hypothesis could test observable correspondence
 reliability before granting dense predictions spatial authority; this run did
 not test such a filter, and MZ102 still rejects its previous size-based recipe.
 
+Interpretation clarified by [MZ105](MZ105_RESIDUAL_MATCHING_RESULTS_20260912.md):
+SGBM already applies uniqueness10, explicit <=1px left/right consistency and
+>=8px connected-valid support; this TAO path lacks equivalent external matching
+validation. The comparison replaces complete frontends, so all regression cannot
+be attributed to pretrained weights alone. Deletion-only validation cannot
+recover the two missing small_head raw TP (95% of15 requires15). Per-panel strict
+FP gates require at least90+123=213 removed FP; MZ101 can lose at most2 TP and
+MZ102 none. The existing inference cost also remains. No rescue run is implied.
+The metric named false_sessions counts fully false contiguous alert segments
+separately per episode and BODY/HEAD, not distinct capture scenes/sessions.
+
 ## Runtime and evidence
 
 ONNX Runtime GPU1.30.0, RTX5060Laptop, official FP32 graph. The first-frame

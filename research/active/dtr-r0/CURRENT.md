@@ -5,6 +5,19 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ105: residual local matching scores lack lossless task benefit (2026-09-12)
+
+[MZ105](nearfield/MZ105_RESIDUAL_MATCHING_RESULTS_20260912.md) diagnoses the576
+consumed SGBM frames, reproducing cached depth and baseline support exactly.
+Of62 rawFP,32 are exclusively native-far,19 mixed far/near-outside and11 entirely
+near-outside; all are stereo-only despite existing LR/uniqueness/component checks.
+Fixed5x5 ZNCC/near-versus-far/competitor score envelopes preserve all435 rawTP but
+remove only1/0/0 FP. The sole raw removal loses2 finalTP with0 finalFP removed
+and1.25s extra delay. Low-score actual HEAD support confirms a real retention
+cost. Retain baseline; no filter integration, TAO rerun or fresh capture. Intended
+NEGATIVE_CONTROL for these fixed local gates; metadata pending the historical
+ASE fingerprint failure. Sealed features/audit retained; processes released.
+
 ## MZ104: pretrained stereo adds far-surface false support (2026-09-12)
 
 [MZ104](nearfield/MZ104_FOUNDATION_STEREO_RESULTS_20260912.md) completes576
