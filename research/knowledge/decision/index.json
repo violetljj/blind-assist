@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "cc1e05244b63233c746f9f65e9294962a14489dd1cc96ea3ef30f7865ff0df52",
+  "source_fingerprint": "7c0cc27113eb5b43d7ee24847cd6f4a9e7a11aa4ec31eb4fc15f054f676a9526",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 422,
+    "experiments": 423,
     "current_terminals": 204,
-    "run_associations": 420
+    "run_associations": 421
   },
   "failure_layers": [
     {
@@ -34096,6 +34096,29 @@
         "evaluation_evidence": 6
       },
       "search_text": "mz99-angle-information-20260912 Does correcting only Radar bearing reveal spatial-information limits under separate route and contact targets? Frozen baseline R R+F A on measured packets Paired evaluator-only exact Radar angle plus explicit fixed-width route contact and warning-session evaluation R current-route987TP753FP to1016TP559FP; retained980/987TP; body future124 to125 of171;12/12 carried timely contacts all arms ANGLE_INFORMATION_BENEFIT_ON_CURRENT_ROUTE research/active/dtr-r0/nearfield/MZ99_ANGLE_INFORMATION_RESULTS_20260912.md Fresh UE seed99013 128scenes5120frames paired angle intervention"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz100-causal-angle-anchor-20260912",
+      "status": "active",
+      "question": "Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage?",
+      "baseline": "Frozen R on consumed MZ99 measured packets",
+      "change": "Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence",
+      "primary_metric": "Anchor coverage bias accuracy actual-application angular MAE; conditional final route retention and FP",
+      "decision": "PENDING_FROZEN_ANCHOR_FEASIBILITY",
+      "report": "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md",
+      "source": "Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators",
+      "commit": "783d0cfb8ebea60ee309aff2e938b94bf04293d0",
+      "association_id": "mz100-causal-angle-anchor-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 7,
+        "source_coverage": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "mz100-causal-angle-anchor-20260912 Can earlier observable ToF Radar anchors calibrate later Radar fallback without label leakage? Frozen R on consumed MZ99 measured packets Unique nominal angle intervals and expiring strictly past offset applied only during ToF absence Anchor coverage bias accuracy actual-application angular MAE; conditional final route retention and FP PENDING_FROZEN_ANCHOR_FEASIBILITY research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md Consumed MZ99 seed99013 128episodes5120frames raw packets and posthoc evaluators"
     }
   ],
   "associations": [
@@ -36734,6 +36757,19 @@
         "artifacts.local/work/mz10-availability-20260910/run-v2/audit.json"
       ],
       "decision_id": "terminal-mz10-availability-20260910",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz100-causal-angle-anchor-20260912",
+      "use_ids": [],
+      "protocol_id": "mz100-causal-angle-anchor-20260912",
+      "code_revision": "783d0cfb8ebea60ee309aff2e938b94bf04293d0",
+      "input_fingerprint": "6f2f4442158453c26b234a8ab7b6b410ea3dd82ca68694133f771101f7c018ee",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md",
+        "artifacts.local/work/mz100-causal-angle-anchor-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
