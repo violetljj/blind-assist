@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "ec8d2d2666dc13ac68cf030f060ddfdc522599f178554d42e6742dd032f46e9e",
+  "source_fingerprint": "b1cb9f46abf71766278b2fb6e1a7af615f1102e063a5f03c48c821ea00d411c0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 424,
+    "experiments": 425,
     "current_terminals": 206,
-    "run_associations": 422
+    "run_associations": 423
   },
   "failure_layers": [
     {
@@ -34224,6 +34224,29 @@
         "decision_lifecycle": 3
       },
       "search_text": "mz101-stereo-tof-spatial-20260912 Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF? Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state Rendered stereo SGBM points and ToF union; same common FOV and readout Event misses false sessions FP duration and first correct alert delay SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md Fresh curated posed UE rendered stereo and native collision ToF surrogate"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz102-stereo-witness-20260912",
+      "status": "active",
+      "question": "Can query-local stereo surface span reject false supports while retaining incremental thin-obstacle detections?",
+      "baseline": "MZ101 full64-zone ToF and unqualified stereo union with same corridor and state",
+      "change": "Primary query-local disparity-coherent projected span qualification; fixed interval diagnostic",
+      "primary_metric": "Incremental TP and thin TP retention; extra FP; false sessions and event timing",
+      "decision": "PENDING_FROZEN_WITNESS_COMPARISON",
+      "report": "research/active/dtr-r0/nearfield/MZ102_STEREO_WITNESS_PROTOCOL_20260912.md",
+      "source": "Consumed MZ101 development plus fresh seed102013 posed UE stereo with shared generator families",
+      "commit": "98446de429fa93f23ed7612126e9638c1e14b389",
+      "association_id": "mz102-stereo-witness-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz102-stereo-witness-20260912 Can query-local stereo surface span reject false supports while retaining incremental thin-obstacle detections? MZ101 full64-zone ToF and unqualified stereo union with same corridor and state Primary query-local disparity-coherent projected span qualification; fixed interval diagnostic Incremental TP and thin TP retention; extra FP; false sessions and event timing PENDING_FROZEN_WITNESS_COMPARISON research/active/dtr-r0/nearfield/MZ102_STEREO_WITNESS_PROTOCOL_20260912.md Consumed MZ101 development plus fresh seed102013 posed UE stereo with shared generator families"
     }
   ],
   "associations": [
@@ -36894,6 +36917,19 @@
         "artifacts.local/work/mz101-stereo-tof-spatial-20260912/fp-diagnostic.json"
       ],
       "decision_id": "terminal-mz101-stereo-tof-spatial-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz102-stereo-witness-20260912",
+      "use_ids": [],
+      "protocol_id": "mz102-stereo-witness-20260912",
+      "code_revision": "98446de429fa93f23ed7612126e9638c1e14b389",
+      "input_fingerprint": "71fefdecb8a912dd8b0ccd445fcb3eaa2fff1cefd0698e27319823cf73d54793",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ102_STEREO_WITNESS_PROTOCOL_20260912.md",
+        "artifacts.local/work/mz102-stereo-support-20260912/source-v1/spec.json"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
