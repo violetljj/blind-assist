@@ -82,7 +82,10 @@ def run(capture,out):
         values=rules[split]
         values['residual']=residual.apply(values['horizon_A'],probabilities[split],selection['threshold'])
         assert not (values['residual']&~values['horizon_A']).any()
-        np.savez_compressed(out/split/'predictions.npz',**values,false_alert_score=probabilities[split])
+        rejected=values['horizon_A']&~values['residual']
+        policy_unknown=(~observations[split]['tof_known']&~values['residual'])|rejected
+        np.savez_compressed(out/split/'predictions.npz',**values,false_alert_score=probabilities[split],
+            residual_abstention=rejected,residual_policy_UNKNOWN=policy_unknown)
     old.write(out/'test-prediction-seal.json',dict(status='SEALED_BEFORE_TEST_EVALUATION',
         model_sha256=old.sha(out/'model.ubj'),selection_sha256=old.sha(out/'selection.json'),prediction_sha256=old.sha(out/'test/predictions.npz'),
         implementation_sha256={str(Path(m.__file__).resolve().relative_to(ROOT.resolve())):old.sha(Path(m.__file__))
@@ -92,6 +95,9 @@ def run(capture,out):
     labels=dict(np.load(out/'test/labels.npz'));obs=observations['test'];ids=obs['episode_id'];values=rules['test']
     metrics,events=common.score(ids,labels,values)
     for name,v in values.items():metrics[name].update(UNKNOWN=int((~obs['tof_known']&~v).sum()),positive_UNKNOWN=int((labels['truth']&~obs['tof_known']&~v).sum()))
+    rejected=values['horizon_A']&~values['residual'];policy_unknown=(~obs['tof_known']&~values['residual'])|rejected
+    metrics['residual'].update(abstentions=int(rejected.sum()),policy_UNKNOWN=int(policy_unknown.sum()),
+        positive_policy_UNKNOWN=int((labels['truth']&policy_unknown).sum()))
     pairs={name:residual.compare(ids,labels,values[ref],values[candidate]) for name,ref,candidate in (
         ('A_vs_matched_hold','matched_hold','horizon_A'),('AB_vs_A','horizon_A','A_plus_B'),('residual_vs_A','horizon_A','residual'))}
     result_pair=pairs['residual_vs_A'];gates={**result_pair['gates'],
