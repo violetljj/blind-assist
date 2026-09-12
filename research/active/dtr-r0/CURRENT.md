@@ -7,6 +7,17 @@ Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
 ## Active mainline correction: one RGB + ToF + Radar + IMU (2026-09-13)
 
+Latest bounded optimization: [MZ108](nearfield/MZ108_RESULTS_20260913.md) retains
+stable image regions as a Development component. Projected-box recall rises
+61/96 to96/96 on consumed MZ107 and42/96 to96/96 on the new controlled panel;
+reciprocal association reduces wrong matches but abstains on some correct matches.
+Combined association counts are44correct/2wrong and16/1. Spatial task gain is
+absent: old61TP/8FP/3FN unchanged; new baseline39/17/9 becomes39/18/9. No old TP
+lost, but one boundary FP removed and two added through noisy extent projection.
+Keep baseline, no alert promotion. Next uncertainty is corridor extent after
+association; no automatic next experiment. Intended COMPONENT_OR_CHALLENGER
+for visual/diagnostic components, registration pending the historical ledger error.
+
 The user-confirmed [four-sensor simulation mainline](nearfield/FOUR_SENSOR_MAINLINE.md)
 supersedes historical successor suggestions. Prioritize algorithmic improvement
 in deciding which measured object occupies the current corridor and which sensor
