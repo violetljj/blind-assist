@@ -5,6 +5,24 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ82 explicit temporal visual canary (2026-09-12)
+
+[MZ82](nearfield/MZ82_TEMPORAL_VISUAL_CANARY_RESULTS_20260912.md) tests a fixed,
+causal five-frame RGB-only flow/expansion/image-TTC score on the consumed MZ77
+Development sequence. At added FP<=5, the three MZ79 5-klux typical profiles
+rescue0/0/2TP versus predeclared10TP canary and22/25/28TP 25%-FN targets. The
+only low-FP recovery is two HEAD_NEAR wall bits with one HEAD_FAR wall error;
+head-bar and thin-pole recover none. At10FP the recipe recovers only4/5/7TP.
+
+Close this explicit temporal recipe as a negative control. Do not tune its
+corridor, flow, TTC, window, or cutoff on MZ77, and do not automatically launch
+a learned temporal RGB expert. A revisit needs source-separated motion evidence
+and a changed mechanism such as measured ego-motion compensation. Shift the main
+research bet toward ToF+radar with IMU infrastructure, or a stronger depth
+sensor; dual identical ToF remains secondary because it does not address shared
+ambient-light range collapse. This is a consumed simulation priority decision,
+not hardware, alert, deployment, user-benefit, or safety evidence.
+
 ## MZ81 conditional RGB feature probe (2026-09-12)
 
 [MZ81](nearfield/MZ81_CONDITIONAL_FEATURE_PROBE_RESULTS_20260912.md) freezes the
