@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "a14508abc83a207fc293f7852ea68fe1031a8167a89cb7a2b407c11d001e6086",
+  "source_fingerprint": "ad68d33f587a7c166afaef72f92bd59046a11a992d2a455fd041161c7eec44b8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 419,
+    "experiments": 420,
     "current_terminals": 201,
-    "run_associations": 417
+    "run_associations": 418
   },
   "failure_layers": [
     {
@@ -33906,6 +33906,29 @@
         "evaluation_evidence": 5
       },
       "search_text": "mz96-ue-decision-head-20260912 Does a small structured risk head beat strong fixed rules on fresh UE geometry episodes? matched_hold range-only A horizon B coverage and A+B on same new scene split Fresh UE native collision sensor proxies and fixed small XGBoost head with validation threshold Test tree297TP84FP112FN F1.7519 vs A+B368TP205FP41FN .7495;2 lost events and0.9s delay FRESH_UE_TREE_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md Fresh UE source-v3 seed96013 128episode scene-disjoint split"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz97-residual-suppression-20260912",
+      "status": "active",
+      "question": "Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes?",
+      "baseline": "Frozen A reference plus matched_hold range-only B and A+B replication",
+      "change": "Train false-alert target only on A positives and select constrained validation threshold with disabled fallback",
+      "primary_metric": "FP reduction TP retention future-only retention events delay fragments F1",
+      "decision": "PENDING_FROZEN_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md",
+      "source": "Fresh UE seed97013 128 scene instances split80/16/32",
+      "commit": "d2d0d3bdfca02d64554859487aa436521ab6dd8d",
+      "association_id": "mz97-residual-suppression-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "identity_binding": 3,
+        "temporal_belief": 3,
+        "decision_lifecycle": 13
+      },
+      "search_text": "mz97-residual-suppression-20260912 Can A-conditioned residual rejection reduce false alerts under recall and event constraints on fresh UE scenes? Frozen A reference plus matched_hold range-only B and A+B replication Train false-alert target only on A positives and select constrained validation threshold with disabled fallback FP reduction TP retention future-only retention events delay fragments F1 PENDING_FROZEN_RUN research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md Fresh UE seed97013 128 scene instances split80/16/32"
     }
   ],
   "associations": [
@@ -37899,6 +37922,20 @@
         "research/active/dtr-r0/nearfield/MZ96_UE_DECISION_HEAD_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz96-ue-decision-head-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz97-residual-suppression-20260912",
+      "use_ids": [],
+      "protocol_id": "mz97-residual-suppression-20260912",
+      "code_revision": "d2d0d3bdfca02d64554859487aa436521ab6dd8d",
+      "input_fingerprint": "02b40e065f10e2a74c47c3abbf16f2abe4bf237bd379640952ec72113c67196c",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md",
+        "artifacts.local/work/mz97-residual-suppression-20260912/capture-v1",
+        "artifacts.local/work/mz97-residual-suppression-20260912/comparison-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
