@@ -5,6 +5,20 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ103: native depth separates spatial errors from alert-state costs (2026-09-12)
+
+[MZ103](nearfield/MZ103_DEPTH_FRONTEND_RESULTS_20260912.md) replays consumed
+MZ101/MZ102 576 frames with exact baseline support/prediction parity. Native
+reference raw geometry446TP/0FP/0FN becomes390/16/56 through unchanged state;
+SGBM union402/40/44. All56 native FN are event-entry confirmation, all16FP are
+first-exit holding. All21 old TP lost by native borrowed earlier false spatial
+support; native adds9otherTP. No lost events, false sessions2to0. The frozen
+no-more-FN gate fails; FoundationStereo stage was not run. Retain the diagnostic
+insight that frontend geometry and alert lifecycle need separate attribution,
+not an achieved model improvement. Intended COMPONENT_OR_CHALLENGER/diagnostic
+metadata is pending the unrelated historical ASE fingerprint error. No promotion,
+no automatic model resumption; source/dependency acquisition processes released.
+
 ## MZ102: stereo span rejection loses real small support (2026-09-12)
 
 [MZ102](nearfield/MZ102_STEREO_WITNESS_RESULTS_20260912.md) freezes query-local
