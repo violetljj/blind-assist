@@ -12,6 +12,14 @@ Natural-distribution and safety claims require their own evidence; a build or a 
 
 ## Current research lines
 
+Forward-perception architecture correction (2026-09-13): the user-confirmed
+simulation mainline is **one RGB camera + ToF + Radar + IMU**. Prioritize measurable
+algorithmic improvement in object association and current-corridor occupancy.
+MZ101--106 are a separate stereo+ToF branch, not evidence about this four-sensor
+system. Follow the [four-sensor mainline](../research/active/dtr-r0/nearfield/FOUR_SENSOR_MAINLINE.md)
+and its paired ToF+Radar+IMU versus +RGB comparison. Architecture changes require
+an explicit new user decision; historical experiment suggestions do not change it.
+
 | Line | Capability and present emphasis | Owning current |
 | --- | --- | --- |
 | `L10_R0_ACTIVE` | Recover and retain the requested target with useful evidence and observation cost; distinguish missing support, identity contradiction and endpoint extent. | [L10 current](../research/active/l10-r0/CURRENT.md) |

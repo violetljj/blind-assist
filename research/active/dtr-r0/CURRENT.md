@@ -5,6 +5,31 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Active mainline correction: one RGB + ToF + Radar + IMU (2026-09-13)
+
+The user-confirmed [four-sensor simulation mainline](nearfield/FOUR_SENSOR_MAINLINE.md)
+supersedes historical successor suggestions. Prioritize algorithmic improvement
+in deciding which measured object occupies the current corridor and which sensor
+observations refer to it. MZ90--100 did not consume RGB; MZ101--106 consumed stereo
+RGB+ToF and omitted Radar. Neither branch establishes a tested four-sensor system
+or its ceiling. Preserve their results within those scopes.
+
+[MZ107 protocol](nearfield/MZ107_FOUR_SENSOR_PROTOCOL_20260913.md) implements a
+bounded fresh single-camera source and paired ToF+Radar+IMU / +RGB association
+canary. Actual image pixels enter prediction; native geometry/identities remain
+evaluator-only. No RGB proposal is not clearance; independent ToF survives.
+No second camera, larger depth frontend, training sweep or automatic successor.
+
+[MZ107 result](nearfield/MZ107_FOUR_SENSOR_RESULTS_20260913.md):96 fresh controlled
+frames complete the four-sensor data path, but both arms remain61TP/8FP/3FN.
+31 accepted associations include2 ghost-to-object mistakes; HEAD/turning image
+proposal coverage is5/16 and4/16. All8FP are hypothetical persistent Radar ghosts;
+this panel has no real-object offroute FP opportunity. Retain comparator, no
+promotion or claim that RGB cannot help. Fixed rule intended NEGATIVE_CONTROL;
+registration pending the historical ledger fingerprint error. Next decision is
+visual-region coverage and competing identity explanations within this same
+architecture; no automatic successor. Evidence and source retained.
+
 ## MZ106: temporal near/far contradiction fails retention (2026-09-12)
 
 [MZ106](nearfield/MZ106_TEMPORAL_GEOMETRY_RESULTS_20260912.md) runs one fixed

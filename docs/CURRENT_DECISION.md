@@ -35,6 +35,18 @@ by this navigation update. The existing frozen result remains unchanged.
 
 ## Forward obstacle awareness complementary to a cane
 
+**Active architecture, corrected 2026-09-13: one RGB camera + ToF + Radar + IMU,
+simulation only.** The next capability is observable cross-sensor association and
+current walking-corridor localization. Compare matched ToF+Radar+IMU against the
+same pipeline with RGB spatial association. Preserve independently valid sensor
+support and UNKNOWN. RGB is not a second camera, stereo depth, or a substitute
+for Radar. IMU rotation is not metric translation or future walking intention.
+See the [four-sensor mainline and stop points](../research/active/dtr-r0/nearfield/FOUR_SENSOR_MAINLINE.md).
+
+The depth-front-end diagnostics described below are historical and scoped to
+their named branches. MZ101--106 omitted Radar and used stereo; their failures
+must not be presented as the bottleneck or ceiling of the four-sensor mainline.
+
 The current goal is cane-complementary, class-agnostic forward obstacle
 awareness (盲杖互补的类别无关前视障碍感知). Prioritize walls/large forward barriers,
 body/head protrusions and suspended hazards; then multi-height poles/supports.
