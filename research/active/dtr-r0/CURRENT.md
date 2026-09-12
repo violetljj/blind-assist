@@ -5,6 +5,27 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ84 bidirectional ToF/radar complementarity (2026-09-12)
+
+[MZ84](nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_RESULTS_20260912.md) runs a
+zero-fit new analytic source: six stress families,24episodes and480frames. Fixed
+`ToF OR (ToF_UNKNOWN AND Radar)` reaches160TP/8FP/11FN, F1.944 versus ToF
+121/8/50,F1.807 and radar79/119/92,F1.428. ToF uniquely recovers weak reflectors
+and low-radial-velocity crossings; radar uniquely recovers strong-light wall and
+multi-target gap frames. Fusion FP equals ToF, all positive-event first alerts
+match the earlier correct expert, and radar-only39 true frames remain
+HEIGHT_UNKNOWN. All four predeclared complementarity gates pass.
+
+Retain responsibility-separated late fusion as a controlled-simulation
+challenger, not a sensor-performance result. Twelve of14 positive events have
+one fusion segment; two multi-target episodes fragment once at gap onset. All8
+fusion FP are ToF head-motion association errors, while valid ToF suppresses the
+additional radar head-motion/clutter/ghost errors. Preserve both defects: do not
+posthoc tune hold time or train learned fusion. The next state-estimation question
+must add credible ego-motion information or measured/device-calibrated traces;
+MZ84's RCS, multipath, sunlight, gaps and motion are analytic proxies, not
+hardware, alert, deployment, user-benefit or safety evidence.
+
 ## MZ83 coarse radar information canary (2026-09-12)
 
 [MZ83](nearfield/MZ83_RADAR_INFORMATION_CANARY_RESULTS_20260912.md) converts
