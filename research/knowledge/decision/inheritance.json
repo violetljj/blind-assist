@@ -2021,6 +2021,16 @@
       "failure_signature": "No active validation threshold feasible; disabled output equals A with zero suppression gain",
       "revisit_trigger": "Authorized changed residual or temporal hypothesis with an independent evaluation boundary",
       "assignment_basis": "One fixed model and101 thresholds selected on validation only; sealed test parity and fresh A versus A+B replication"
+    },
+    {
+      "terminal_id": "terminal-mz98-a-mechanism-audit-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed mechanism attribution and FP path diagnostic only; no exclusion policy promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
+      "failure_signature": "Strict future-entry adds8TP46FP; most future-only gain is current extended-wedge GT",
+      "revisit_trigger": "Authorized new evaluation of a simpler task-aligned current admission primitive",
+      "assignment_basis": "Exact sealed parity, fixed branch exclusions and evaluator GT split distinguish current occupancy from genuine future entry"
     }
   ]
 }

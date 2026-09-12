@@ -4777,6 +4777,30 @@
         "research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_20260912.md"
       ],
       "commit": "c65ca7c609d8ef95c579d1963784139dc89a5658"
+    },
+    {
+      "id": "terminal-mz98-a-mechanism-audit-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "A_MECHANISM_AUDIT_COMPLETE",
+      "summary": "Consumed MZ96/MZ97 audit: fullA596TP345FP; current Radar R578TP284FP; R+fitted-current588TP299FP. Strictfuture adds8TP46FP and4 future-only TP.120 of173 future-only GT frames are current extended-wedge occupancy. Predictive-entry-primary benefit claim unsupported; diagnostic variants not promoted.",
+      "successor_requires": "Authorized fresh comparison of current route eligibility and fitted-current correction with full A; preserve recall/event constraints and do not select from consumed F1.",
+      "forbidden_repeats": [
+        "Attribute all future-only recall gain to strict future prediction",
+        "Treat current/latest support labels as unique physical causes or ghost identities",
+        "Claim target versus wearer translational motion separation from relative Doppler",
+        "Promote an exclusion variant or tune thresholds on consumed diagnostic results"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md"
+      ],
+      "commit": "cf9a244391762c6c819500f0d684e1ca30a509ff"
     }
   ]
 }

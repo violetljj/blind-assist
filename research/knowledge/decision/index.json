@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "170ea2703b677f8de55a28468a2df2a6e0f98442426758ee218ecaf7cf2c5759",
+  "source_fingerprint": "6fdf5759976f5018c035bf962a3aca6dbf0944d277aa51f014dc1b4832d2ccb4",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 421,
-    "current_terminals": 202,
+    "current_terminals": 203,
     "run_associations": 419
   },
   "failure_layers": [
@@ -24811,6 +24811,47 @@
       "search_text": "terminal-mz97-residual-suppression-20260912 obstacle-avoidance RESIDUAL_DISABLED_NO_VALIDATION_GAIN A-conditioned tree has no active validation threshold satisfying98percent overall/future TP retention and event constraints. Disabled test equals A254TP169FP51FN F1.6978; matched_hold231TP167FP74FN .6572; A+B272TP211FP33FN .6904. A recall gain repeats but A+B F1 superiority does not. Explicitly authorized changed hypothesis and new evaluation boundary; current post-alert residual/grid is consumed and not eligible for test-driven tuning. NEGATIVE_CONTROL  Fixed A-positive-only post-alert tree rejection under98percent retention and event constraints research/active/dtr-r0/nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md No active validation threshold feasible; disabled output equals A with zero suppression gain Authorized changed residual or temporal hypothesis with an independent evaluation boundary Claim disabled parity demonstrates learned false-positive suppression Relax recall or event constraints after seeing this outcome Claim A consistently reduces FP or A+B consistently beats A across panels Infer ghost identity or physical Radar/body collision validation from synthetic scene slices"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz98-a-mechanism-audit-20260912",
+      "status": "negative",
+      "question": "Consumed MZ96/MZ97 audit: fullA596TP345FP; current Radar R578TP284FP; R+fitted-current588TP299FP. Strictfuture adds8TP46FP and4 future-only TP.120 of173 future-only GT frames are current extended-wedge occupancy. Predictive-entry-primary benefit claim unsupported; diagnostic variants not promoted.",
+      "baseline": null,
+      "change": "Authorized fresh comparison of current route eligibility and fitted-current correction with full A; preserve recall/event constraints and do not select from consumed F1.",
+      "primary_metric": null,
+      "decision": "A_MECHANISM_AUDIT_COMPLETE",
+      "report": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "cf9a244391762c6c819500f0d684e1ca30a509ff",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Authorized fresh comparison of current route eligibility and fitted-current correction with full A; preserve recall/event constraints and do not select from consumed F1.",
+      "forbidden_repeats": [
+        "Attribute all future-only recall gain to strict future prediction",
+        "Treat current/latest support labels as unique physical causes or ghost identities",
+        "Claim target versus wearer translational motion separation from relative Doppler",
+        "Promote an exclusion variant or tune thresholds on consumed diagnostic results"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed mechanism attribution and FP path diagnostic only; no exclusion policy promotion",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
+      "failure_signature": "Strict future-entry adds8TP46FP; most future-only gain is current extended-wedge GT",
+      "revisit_trigger": "Authorized new evaluation of a simpler task-aligned current admission primitive",
+      "assignment_basis": "Exact sealed parity, fixed branch exclusions and evaluator GT split distinguish current occupancy from genuine future entry",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md"
+      ],
+      "association_id": "mz98-a-mechanism-audit-20260912",
+      "search_text": "terminal-mz98-a-mechanism-audit-20260912 obstacle-avoidance A_MECHANISM_AUDIT_COMPLETE Consumed MZ96/MZ97 audit: fullA596TP345FP; current Radar R578TP284FP; R+fitted-current588TP299FP. Strictfuture adds8TP46FP and4 future-only TP.120 of173 future-only GT frames are current extended-wedge occupancy. Predictive-entry-primary benefit claim unsupported; diagnostic variants not promoted. Authorized fresh comparison of current route eligibility and fitted-current correction with full A; preserve recall/event constraints and do not select from consumed F1. COMPONENT_OR_CHALLENGER COMPONENT Consumed mechanism attribution and FP path diagnostic only; no exclusion policy promotion research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md Strict future-entry adds8TP46FP; most future-only gain is current extended-wedge GT Authorized new evaluation of a simpler task-aligned current admission primitive Attribute all future-only recall gain to strict future prediction Treat current/latest support labels as unique physical causes or ghost identities Claim target versus wearer translational motion separation from relative Doppler Promote an exclusion variant or tune thresholds on consumed diagnostic results"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -33973,26 +34014,25 @@
     {
       "kind": "experiment",
       "id": "mz98-a-mechanism-audit-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97?",
       "baseline": "Sealed matched_hold and A on both test panels",
       "change": "Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls",
-      "primary_metric": "Paired TP FP changes future-only semantics branch and current/history source paths",
-      "decision": "PENDING_DIAGNOSTIC",
-      "report": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md",
+      "primary_metric": "Combined R578TP284FP future102; fullA596TP345FP future106; strictfuture increment8TP46FP;120of173 GTfuture frames already current",
+      "decision": "A_MECHANISM_AUDIT_COMPLETE",
+      "report": "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md",
       "source": "Consumed sealed MZ96 and MZ97 test observations and evaluator labels",
-      "commit": "dc200d2b9a8d2db38f5585501ee01b8c65aa9257",
+      "commit": "cf9a244391762c6c819500f0d684e1ca30a509ff",
       "association_id": "mz98-a-mechanism-audit-20260912",
       "routes": [
         "obstacle-avoidance"
       ],
       "layer_scores": {
         "authority_truth": 3,
-        "source_coverage": 3,
         "temporal_belief": 3,
         "decision_lifecycle": 3
       },
-      "search_text": "mz98-a-mechanism-audit-20260912 Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97? Sealed matched_hold and A on both test panels Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls Paired TP FP changes future-only semantics branch and current/history source paths PENDING_DIAGNOSTIC research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md Consumed sealed MZ96 and MZ97 test observations and evaluator labels"
+      "search_text": "mz98-a-mechanism-audit-20260912 Which A admission branches affect final alerts and false positives on consumed MZ96 and MZ97? Sealed matched_hold and A on both test panels Instrument unchanged tracks and replay fixed branch exclusions plus current gate controls Combined R578TP284FP future102; fullA596TP345FP future106; strictfuture increment8TP46FP;120of173 GTfuture frames already current A_MECHANISM_AUDIT_COMPLETE research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md Consumed sealed MZ96 and MZ97 test observations and evaluator labels"
     }
   ],
   "associations": [
@@ -38007,13 +38047,14 @@
       "run_id": "mz98-a-mechanism-audit-20260912",
       "use_ids": [],
       "protocol_id": "mz98-a-mechanism-audit-20260912",
-      "code_revision": "dc200d2b9a8d2db38f5585501ee01b8c65aa9257",
+      "code_revision": "cf9a244391762c6c819500f0d684e1ca30a509ff",
       "input_fingerprint": "3278bf30d35c4da50c95e670a1e1216bda056a1f3b1959344f4ac1fd038a0188",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_20260912.md",
-        "artifacts.local/work/mz98-a-mechanism-audit-20260912/run-v1"
+        "artifacts.local/work/mz98-a-mechanism-audit-20260912/run-v1",
+        "research/active/dtr-r0/nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz98-a-mechanism-audit-20260912",
       "source_rows": 1
     },
     {

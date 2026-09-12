@@ -5,6 +5,19 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ98: A mechanism attribution correction (2026-09-12)
+
+[MZ98](nearfield/MZ98_A_MECHANISM_AUDIT_RESULTS_20260912.md) exactly reproduces
+sealed MZ96/MZ97 alerts and separates raw current route occupancy R, fitted-current
+correction F and strict future entry P without changing tracks or downstream state.
+Descriptive combined R578TP/284FP/future102 versus full A596/345/future106;
+R+F588/299/future102. P adds8TP/46FP.120/173 future-only GT frames are already
+inside the current extended wedge, so most future-only gain does not demonstrate
+strict future prediction. Retain task-aligned route admission as the mechanism;
+do not headline predictive crossing as its established main benefit. Exclusion
+variants are consumed diagnostic components, not selected successors. Physical
+ghost identities and wearer/target motion contributions remain unidentifiable.
+
 ## MZ97: residual filter disabled; fresh rule replication (2026-09-12)
 
 [MZ97](nearfield/MZ97_RESIDUAL_SUPPRESSION_RESULTS_20260912.md) closes as
