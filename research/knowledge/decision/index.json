@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "83bcaacbd3551c241b2a48758da90b13042f9dbb27244cdda79a202447286f82",
+  "source_fingerprint": "c41b90230f40e6bf87ce6280ab4b7324758fa2308353ea6a184d7f0efbda7456",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 411,
+    "experiments": 412,
     "current_terminals": 193,
-    "run_associations": 409
+    "run_associations": 410
   },
   "failure_layers": [
     {
@@ -33383,6 +33383,30 @@
         "evaluation_evidence": 6
       },
       "search_text": "mz88-uncertainty-aware-association-20260912 Can fixed scalar pose/calibration uncertainty make MZ85 geometric association robust on fresh analytic motion without corridor widening? Fresh-source hard MZ85 association398TP124FP17FN F1.850 Only fixed k1 tri-state uncertainty geometry, conditional coarse-Radar confirmation and one-frame credentialed hold; zero training and zero threshold search Full arm338TP155FP77FN F1.744; tri-UNKNOWN295/48/120; Radar confirmation326/151/89; all performance gates fail, authority integrity passes SCALAR_UNCERTAINTY_ASSOCIATION_NOT_RETAINED research/active/dtr-r0/nearfield/MZ88_UNCERTAINTY_AWARE_ASSOCIATION_RESULTS_20260912.md Fresh controlled analytic36-episode1080-frame source with new motion, boundary, crossing, gap, distance and signed medium-error variants"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz89-joint-geometry-20260912",
+      "status": "active",
+      "question": "Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets?",
+      "baseline": "Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold",
+      "change": "Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations",
+      "primary_metric": "TP FP FN F1 UNKNOWN false segments contiguous-event timing and fragmentation",
+      "decision": "PENDING_ONE_FROZEN_ANALYTIC_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md",
+      "source": "New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar",
+      "commit": "0b2b1e19ee40d0b63a41101f577f0267140dcc1f",
+      "association_id": "mz89-joint-geometry-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 6,
+        "geometry_motion": 3,
+        "decision_lifecycle": 10
+      },
+      "search_text": "mz89-joint-geometry-20260912 Can joint temporal geometry reduce boundary false alerts while retaining crossing response on identical analytic packets? Frozen hard MZ85 and a non-reseeding one-frame missing-ToF hold Joint angular nuisance covariance and spatially compatible Radar, with marginal and coarse-Radar ablations TP FP FN F1 UNKNOWN false segments contiguous-event timing and fragmentation PENDING_ONE_FROZEN_ANALYTIC_RUN research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md New source-aware constructed analytic episodes; exact ToF returns with shared synthetic lateral hint and stabilized Radar"
     }
   ],
   "associations": [
@@ -37247,6 +37271,19 @@
         "artifacts.local/work/mz88-uncertainty-aware-association-20260912/run-v2"
       ],
       "decision_id": "terminal-mz88-uncertainty-aware-association-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz89-joint-geometry-20260912",
+      "use_ids": [],
+      "protocol_id": "mz89-joint-geometry-r0",
+      "code_revision": "0b2b1e19ee40d0b63a41101f577f0267140dcc1f",
+      "input_fingerprint": "f1163f6fb85225e9c2443c40085eb9355a1aaaa723571c455dfb69d588a65c4f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ89_JOINT_GEOMETRY_20260912.md",
+        "artifacts.local/work/mz89-joint-geometry-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
