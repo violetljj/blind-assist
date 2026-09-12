@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "d3d4e4359ad75dfd9879b7f5eb2f8f0e4cb7c2e8e5f2456eb798c4e626e5eb9b",
+  "source_fingerprint": "f71bdb4b64b8922b7dae241affacb4cff9f7a4fc0a79971aebecb11b64c2687a",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 413,
+    "experiments": 414,
     "current_terminals": 195,
-    "run_associations": 411
+    "run_associations": 412
   },
   "failure_layers": [
     {
@@ -33518,6 +33518,29 @@
         "decision_lifecycle": 3
       },
       "search_text": "mz90-observable-contract-20260912 Does the MZ89 covariance gain survive a common unprivileged raw-sensor observation contract? Current hard geometry, causally matched hard geometry, and one-frame hold on identical nearest-two observations Paired ideal and noisy quantized sensor regimes from common moving-world geometry; no truth motion hint or stabilized Radar; frozen MZ88 MZ89 policies Ideal covariance+78TP0FP; proxy+14TP6FP. Proxy joint276/134/215 F1.6127 versus hold333/151/158 F1.6831;126of134FP from missing-ToF Radar fallback OBSERVABLE_CONTRACT_COVARIANCE_TRANSFER_NOT_ESTABLISHED research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md 48 common 2D world scenes, two paired1920frame regimes; eight horizontal ToF proxy bins and raw Radar; simulation only"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz91-radar-localization-20260912",
+      "status": "active",
+      "question": "Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts?",
+      "baseline": "Sealed MZ90 matched_hold plus same-readout single-frame ablation",
+      "change": "Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto",
+      "primary_metric": "TP FP FN F1 UNKNOWN event delay fragmentation provenance slices",
+      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md",
+      "source": "Consumed MZ90 paired ideal and sensor_proxy raw observations",
+      "commit": "77bd6a675fa8a21870b2f0dffc78f1df5b847f5f",
+      "association_id": "mz91-radar-localization-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 6
+      },
+      "search_text": "mz91-radar-localization-20260912 Does causal Radar localization reject nonhazardous returns while retaining matched-hold alerts? Sealed MZ90 matched_hold plus same-readout single-frame ablation Five-frame polar WLS with common bearing uncertainty and fixed exclusion veto TP FP FN F1 UNKNOWN event delay fragmentation provenance slices PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md Consumed MZ90 paired ideal and sensor_proxy raw observations"
     }
   ],
   "associations": [
@@ -37425,6 +37448,19 @@
         "research/active/dtr-r0/nearfield/MZ90_OBSERVABLE_CONTRACT_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz90-observable-contract-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz91-radar-localization-20260912",
+      "use_ids": [],
+      "protocol_id": "mz91-radar-localization-20260912",
+      "code_revision": "77bd6a675fa8a21870b2f0dffc78f1df5b847f5f",
+      "input_fingerprint": "20c4a31c115fae9d3732b2deb18ae12911c2bc38038211e68b459755789e9d54",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ91_RADAR_LOCALIZATION_20260912.md",
+        "artifacts.local/work/mz91-radar-localization-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
