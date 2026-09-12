@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "8d6b2afa930d785710b79e2d957c7a5302af60f9fdee91ca3bdc3943a02cb654",
+  "source_fingerprint": "86ae468d9772d68ef70e0ee46ef724ee70f7c6e893bc1ab90e7eb4f4539a83b2",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 417,
+    "experiments": 418,
     "current_terminals": 198,
-    "run_associations": 415
+    "run_associations": 416
   },
   "failure_layers": [
     {
@@ -33733,6 +33733,30 @@
         "decision_lifecycle": 10
       },
       "search_text": "mz94-radar-horizon-20260912 Can causal CV route-horizon admission recover range-blocked risks without growing false alerts? Sealed matched_hold plus range-only3.6 diagnostic Replace Radar raw gate with current or1s corridor trajectory admission; unchanged ToF and state TP FP FN F1 fixed69FN108FP168TP cohorts events delay PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md Consumed MZ90 paired sensor observations"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz95-coverage-authority-20260912",
+      "status": "active",
+      "question": "Can local ToF compatibility qualify negative authority without losing useful vetoes?",
+      "baseline": "Frozen matched_hold with original Radar gate",
+      "change": "Release negative ToF veto only when not all Radar support has compatible ToF range and bearing",
+      "primary_metric": "TP FP FN F1 fixedproxy20FN8TN ideal9FN82TN events",
+      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md",
+      "source": "Consumed MZ90 paired observations independent of A",
+      "commit": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
+      "association_id": "mz95-coverage-authority-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 9
+      },
+      "search_text": "mz95-coverage-authority-20260912 Can local ToF compatibility qualify negative authority without losing useful vetoes? Frozen matched_hold with original Radar gate Release negative ToF veto only when not all Radar support has compatible ToF range and bearing TP FP FN F1 fixedproxy20FN8TN ideal9FN82TN events PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md Consumed MZ90 paired observations independent of A"
     }
   ],
   "associations": [
@@ -37693,6 +37717,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ94_RADAR_HORIZON_20260912.md",
         "artifacts.local/work/mz94-radar-horizon-20260912/run-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz95-coverage-authority-20260912",
+      "use_ids": [],
+      "protocol_id": "mz95-coverage-authority-20260912",
+      "code_revision": "4b8bda023862ce3736a564ae0e1fee4a5ce077fb",
+      "input_fingerprint": "e629b5905799690ed7a3f058c041d5b00e1225c0a7afcbbbf0b3b76ffe60d334",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ95_COVERAGE_AUTHORITY_20260912.md",
+        "artifacts.local/work/mz95-coverage-authority-20260912/run-v1"
       ],
       "decision_id": null,
       "source_rows": 1
