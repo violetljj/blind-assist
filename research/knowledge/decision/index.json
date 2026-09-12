@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "2100a75a58f619eef804815c2a90a04518ed6801721f2978fe66e251c97b6ff8",
+  "source_fingerprint": "e38148e93cf9bdd010259db88563538b614fdee2ac1dbcabcb70c2d83d4c6967",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 415,
+    "experiments": 416,
     "current_terminals": 197,
-    "run_associations": 413
+    "run_associations": 414
   },
   "failure_layers": [
     {
@@ -33646,6 +33646,30 @@
         "evaluation_evidence": 11
       },
       "search_text": "mz92-cross-sensor-calibration-20260912 Can causal ToF Radar angular calibration give the spatial veto useful evidence? Frozen matched_hold and MZ91 uncalibrated localization Estimate relative angular bias from unique causal co-observed range pairs; unchanged veto and hold 333TP151FP158FN F1.6831 unchanged; active relative bias MAE7.123 to2.128deg CALIBRATION_GATE_NOT_MET research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md Consumed sealed MZ90 paired raw observations; MZ91 negative control"
+    },
+    {
+      "kind": "experiment",
+      "id": "mz93-supported-prediction-20260912",
+      "status": "active",
+      "question": "Does requiring observed inward motion for future occupancy reduce speculative alerts?",
+      "baseline": "Frozen matched_hold and MZ92 calibrated localization",
+      "change": "Separate current occupancy from future increment; fixed inward angular-rate evidence gate",
+      "primary_metric": "TP FP FN F1 UNKNOWN future-only TP delay fragments provenance",
+      "decision": "PENDING_FIXED_DEVELOPMENT_RUN",
+      "report": "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md",
+      "source": "Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition",
+      "commit": "096f9eb958c1ab187d59a5f3d776fa777baa2534",
+      "association_id": "mz93-supported-prediction-20260912",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 3,
+        "geometry_motion": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "mz93-supported-prediction-20260912 Does requiring observed inward motion for future occupancy reduce speculative alerts? Frozen matched_hold and MZ92 calibrated localization Separate current occupancy from future increment; fixed inward angular-rate evidence gate TP FP FN F1 UNKNOWN future-only TP delay fragments provenance PENDING_FIXED_DEVELOPMENT_RUN research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md Consumed MZ90 ideal sensor_proxy with disclosed MZ92 score decomposition"
     }
   ],
   "associations": [
@@ -37581,6 +37605,19 @@
         "research/active/dtr-r0/nearfield/MZ92_CROSS_SENSOR_CALIBRATION_RESULTS_20260912.md"
       ],
       "decision_id": "terminal-mz92-cross-sensor-calibration-20260912",
+      "source_rows": 1
+    },
+    {
+      "run_id": "mz93-supported-prediction-20260912",
+      "use_ids": [],
+      "protocol_id": "mz93-supported-prediction-20260912",
+      "code_revision": "096f9eb958c1ab187d59a5f3d776fa777baa2534",
+      "input_fingerprint": "2415e6f930b307adbf578f527522f1771651531b6a35b0da9df586ff1b2f1925",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md",
+        "artifacts.local/work/mz93-supported-prediction-20260912/run-v1"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
