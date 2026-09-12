@@ -2,13 +2,13 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "2dd1e532d9733f3cdbd2fdaa217bad83515b1f97829f0143eacea903b50c1b39",
+  "source_fingerprint": "ec8d2d2666dc13ac68cf030f060ddfdc522599f178554d42e6742dd032f46e9e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
     "experiments": 424,
-    "current_terminals": 205,
+    "current_terminals": 206,
     "run_associations": 422
   },
   "failure_layers": [
@@ -24934,6 +24934,47 @@
       "search_text": "terminal-mz100-causal-angle-anchor-20260912 obstacle-avoidance CAUSAL_ANGLE_ANCHOR_FEASIBILITY_FAILED Consumed MZ99 causal unique ToF Radar angle anchors cover98/2875 fallback frames in19 episodes;80/98 within5deg fails90percent gate. Actual real-slot MAE7.3679 to3.9260 but zero-bias subset2.9587 to4.3378. Stage1 failed; no downstream candidate predictions or scoring. Changed observable reference or association premise and new evaluation; no tolerance/cache/gate relaxation using this outcome. NEGATIVE_CONTROL  Fixed causal nominal angle-anchor estimator on consumed MZ99; no downstream evaluation research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md 3.41percent fallback coverage and81.63percent within5deg; zero-bias measurements harmed despite aggregate local MAE gain Changed observable reference or association premise with appropriate new evaluation Claim local angular MAE improvement establishes final alert benefit Treat nominal narrow interval as calibrated certainty or matching identity Hide zero-bias harm or low fallback coverage Use simulator bias or provenance for per-frame calibration selection"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-mz101-stereo-tof-spatial-20260912",
+      "status": "negative",
+      "question": "Fresh288-frame rendered stereo/full64-zone ToF current BODY HEAD corridor comparison: ToF148TP6FP76FN to union202TP25FP22FN.54 newTP no lostTP; thinpole36 to67 of68.28 of28 events already covered by ToF; false sessions0 to2 fails integration. Paired noncarried nonleftcensored19 entry delays.5658 to.1447 seconds. Retain spatial complementarity evidence only.",
+      "baseline": null,
+      "change": "Authorized new observable stereo-support reliability hypothesis preserving spatial recall and event timing with appropriate new evaluation; no native-depth filtering or test threshold tuning.",
+      "primary_metric": null,
+      "decision": "SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION",
+      "report": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+      "source": "decision/terminals.json",
+      "commit": "7eaa4b58965d9c0b3fbc7dc4c3c39a7c27e0d683",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30
+      },
+      "successor_requires": "Authorized new observable stereo-support reliability hypothesis preserving spatial recall and event timing with appropriate new evaluation; no native-depth filtering or test threshold tuning.",
+      "forbidden_repeats": [
+        "Claim same-input algorithm superiority from different sensor input arms",
+        "Call current corridor entry latency collision prediction or real safety benefit",
+        "Replace the failed primary integration gate with the secondary proxy event recovery",
+        "Use native depth or actor truth to reject stereo points in the deployed predictor"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Rendered stereo and full ToF spatial complementarity in controlled current BODY HEAD corridor; direct union not promoted",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+      "failure_signature": "Union adds54TP but19FP and2 false sessions; idealToF already detects all28events so new-event gate has no opportunity",
+      "revisit_trigger": "Authorized observable support-reliability mechanism with paired recall timing and false-session evaluation",
+      "assignment_basis": "Frozen288frame paired simulation, actual stereo image depth, separate native truth, six tests, sealed hashes and independent result audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md"
+      ],
+      "association_id": "mz101-stereo-tof-spatial-20260912",
+      "search_text": "terminal-mz101-stereo-tof-spatial-20260912 obstacle-avoidance SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION Fresh288-frame rendered stereo/full64-zone ToF current BODY HEAD corridor comparison: ToF148TP6FP76FN to union202TP25FP22FN.54 newTP no lostTP; thinpole36 to67 of68.28 of28 events already covered by ToF; false sessions0 to2 fails integration. Paired noncarried nonleftcensored19 entry delays.5658 to.1447 seconds. Retain spatial complementarity evidence only. Authorized new observable stereo-support reliability hypothesis preserving spatial recall and event timing with appropriate new evaluation; no native-depth filtering or test threshold tuning. COMPONENT_OR_CHALLENGER COMPONENT Rendered stereo and full ToF spatial complementarity in controlled current BODY HEAD corridor; direct union not promoted research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md Union adds54TP but19FP and2 false sessions; idealToF already detects all28events so new-event gate has no opportunity Authorized observable support-reliability mechanism with paired recall timing and false-session evaluation Claim same-input algorithm superiority from different sensor input arms Call current corridor entry latency collision prediction or real safety benefit Replace the failed primary integration gate with the secondary proxy event recovery Use native depth or actor truth to reject stereo points in the deployed predictor"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -34164,15 +34205,15 @@
     {
       "kind": "experiment",
       "id": "mz101-stereo-tof-spatial-20260912",
-      "status": "active",
+      "status": "archived",
       "question": "Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF?",
       "baseline": "Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state",
       "change": "Rendered stereo SGBM points and ToF union; same common FOV and readout",
       "primary_metric": "Event misses false sessions FP duration and first correct alert delay",
-      "decision": "PENDING_FROZEN_SPATIAL_COMPARISON",
-      "report": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md",
+      "decision": "SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION",
+      "report": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
       "source": "Fresh curated posed UE rendered stereo and native collision ToF surrogate",
-      "commit": "003bb1714d9148107b542f886b84c6d86da06f19",
+      "commit": "7eaa4b58965d9c0b3fbc7dc4c3c39a7c27e0d683",
       "association_id": "mz101-stereo-tof-spatial-20260912",
       "routes": [
         "obstacle-avoidance"
@@ -34180,10 +34221,9 @@
       "layer_scores": {
         "observation_perception": 3,
         "geometry_motion": 3,
-        "decision_lifecycle": 3,
-        "evaluation_evidence": 3
+        "decision_lifecycle": 3
       },
-      "search_text": "mz101-stereo-tof-spatial-20260912 Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF? Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state Rendered stereo SGBM points and ToF union; same common FOV and readout Event misses false sessions FP duration and first correct alert delay PENDING_FROZEN_SPATIAL_COMPARISON research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md Fresh curated posed UE rendered stereo and native collision ToF surrogate"
+      "search_text": "mz101-stereo-tof-spatial-20260912 Can computed stereo add useful missing BODY HEAD spatial support beyond full 64-zone ToF? Full 8x8 ideal ToF geometry with shared current corridor and 2on 2off state Rendered stereo SGBM points and ToF union; same common FOV and readout Event misses false sessions FP duration and first correct alert delay SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md Fresh curated posed UE rendered stereo and native collision ToF surrogate"
     }
   ],
   "associations": [
@@ -36842,13 +36882,18 @@
       "run_id": "mz101-stereo-tof-spatial-20260912",
       "use_ids": [],
       "protocol_id": "mz101-stereo-tof-20260912",
-      "code_revision": "003bb1714d9148107b542f886b84c6d86da06f19",
+      "code_revision": "7eaa4b58965d9c0b3fbc7dc4c3c39a7c27e0d683",
       "input_fingerprint": "1f96a04604c2d1506776df737fef741b94936db95b64a73abdefebb66352f304",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md",
-        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/spec.json"
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/spec.json",
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/capture-v1/receipt.json",
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/comparison-v1/receipt.json",
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/comparison-v1/summary.json",
+        "artifacts.local/work/mz101-stereo-tof-spatial-20260912/fp-diagnostic.json"
       ],
-      "decision_id": null,
+      "decision_id": "terminal-mz101-stereo-tof-spatial-20260912",
       "source_rows": 1
     },
     {

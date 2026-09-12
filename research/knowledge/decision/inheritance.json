@@ -2051,6 +2051,16 @@
       "failure_signature": "3.41percent fallback coverage and81.63percent within5deg; zero-bias measurements harmed despite aggregate local MAE gain",
       "revisit_trigger": "Changed observable reference or association premise with appropriate new evaluation",
       "assignment_basis": "Frozen stage1 gates, observable-only estimator, sealed actual-application errors, independent review and six unit tests"
+    },
+    {
+      "terminal_id": "terminal-mz101-stereo-tof-spatial-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Rendered stereo and full ToF spatial complementarity in controlled current BODY HEAD corridor; direct union not promoted",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+      "failure_signature": "Union adds54TP but19FP and2 false sessions; idealToF already detects all28events so new-event gate has no opportunity",
+      "revisit_trigger": "Authorized observable support-reliability mechanism with paired recall timing and false-session evaluation",
+      "assignment_basis": "Frozen288frame paired simulation, actual stereo image depth, separate native truth, six tests, sealed hashes and independent result audit"
     }
   ]
 }

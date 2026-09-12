@@ -5,6 +5,20 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ101: spatial complementarity, direct union not promoted (2026-09-12)
+
+[MZ101](nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md) runs288 fresh rendered
+stereo/full64-zone ToF frames,24 appearance-paired episodes/12 geometry families.
+Same current BODY/HEAD corridor and common FOV: ToF148TP/6FP/76FN becomes
+union202/25/22, F1.7831 to.8958; thin-pole TP36 to67 of68. Flat-wall stereo misses
+are rescued by ToF. Union retains all148TP and adds54, but adds19FP and2 entirely
+false sessions. ToF already covers28/28 events, leaving no new-event opportunity;
+the separate FP gate fails.19 non-left-censored/non-carried event entry delays
+improve.5658 to.1447s. Retain spatial complementarity as COMPONENT, not direct
+union promotion or collision prediction. Known pose, point-ray ToF and posed
+synthetic textures are controlled assumptions, not hardware evidence. No training,
+threshold tuning or automatic successor; historical retained core unchanged.
+
 ## MZ100: observable angle anchors fail feasibility (2026-09-12)
 
 [MZ100](nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_RESULTS_20260912.md) freezes one causal

@@ -4849,6 +4849,30 @@
         "research/active/dtr-r0/nearfield/MZ100_CAUSAL_ANGLE_ANCHOR_PROTOCOL_20260912.md"
       ],
       "commit": "5981475b8ff52ebb459dcf003cd9eef82a5a93b7"
+    },
+    {
+      "id": "terminal-mz101-stereo-tof-spatial-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "SPATIAL_COMPLEMENTARITY_WITH_FP_REGRESSION",
+      "summary": "Fresh288-frame rendered stereo/full64-zone ToF current BODY HEAD corridor comparison: ToF148TP6FP76FN to union202TP25FP22FN.54 newTP no lostTP; thinpole36 to67 of68.28 of28 events already covered by ToF; false sessions0 to2 fails integration. Paired noncarried nonleftcensored19 entry delays.5658 to.1447 seconds. Retain spatial complementarity evidence only.",
+      "successor_requires": "Authorized new observable stereo-support reliability hypothesis preserving spatial recall and event timing with appropriate new evaluation; no native-depth filtering or test threshold tuning.",
+      "forbidden_repeats": [
+        "Claim same-input algorithm superiority from different sensor input arms",
+        "Call current corridor entry latency collision prediction or real safety benefit",
+        "Replace the failed primary integration gate with the secondary proxy event recovery",
+        "Use native depth or actor truth to reject stereo points in the deployed predictor"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ101_STEREO_TOF_PROTOCOL_20260912.md"
+      ],
+      "commit": "7eaa4b58965d9c0b3fbc7dc4c3c39a7c27e0d683"
     }
   ]
 }
