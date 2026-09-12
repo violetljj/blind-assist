@@ -38,6 +38,13 @@ ITEM_KINDS = {
 }
 USE_STATES = {"candidate", "planned", "active", "adopted", "rejected", "retired"}
 PROMOTED_USE_STATES = {"planned", "active"}
+INHERITANCE_ROLES = {
+    "RETAINED_CORE",
+    "COMPONENT_OR_CHALLENGER",
+    "NEGATIVE_CONTROL",
+    "DEAD_FOR_THIS_ROLE",
+}
+INHERITANCE_MODES = {"COMPONENT", "CHALLENGER"}
 ADOPTION_MODES = {
     "reference",
     "mechanism_adaptation",
@@ -88,12 +95,13 @@ ROUTE_CANONICAL = {
     for alias in aliases
 }
 DECISION_SCHEMA_VERSION = 1
-DECISION_INDEX_SCHEMA_VERSION = 2
+DECISION_INDEX_SCHEMA_VERSION = 3
 DECISION_DEFAULT_MECHANISM_LIMIT = 2
 DECISION_DEFAULT_ATTEMPT_LIMIT = 4
 DECISION_CONFIG_RELATIVE = Path("decision") / "config.json"
 DECISION_INDEX_RELATIVE = Path("decision") / "index.json"
 DECISION_TERMINALS_RELATIVE = Path("decision") / "terminals.json"
+DECISION_INHERITANCE_RELATIVE = Path("decision") / "inheritance.json"
 DECISION_GOLDEN_RELATIVE = Path("decision") / "golden_cases.json"
 
 
@@ -953,6 +961,13 @@ def _context_terminal_entry(
         "summary": terminal.get("question"),
         "successor_requires": terminal.get("successor_requires"),
         "forbidden_repeats": terminal.get("forbidden_repeats", []),
+        "inheritance_role": terminal.get("inheritance_role"),
+        "inheritance_mode": terminal.get("inheritance_mode"),
+        "role_scope": terminal.get("role_scope"),
+        "retained_surface": terminal.get("retained_surface"),
+        "failure_signature": terminal.get("failure_signature"),
+        "revisit_trigger": terminal.get("revisit_trigger"),
+        "assignment_basis": terminal.get("assignment_basis"),
         "evidence": terminal.get("evidence", []),
         "commit": terminal.get("commit"),
         "association": association,
@@ -1002,6 +1017,11 @@ def _context_terminals(
                 "decision",
                 "summary",
                 "successor_requires",
+                "inheritance_role",
+                "inheritance_mode",
+                "role_scope",
+                "retained_surface",
+                "failure_signature",
             )
         )
         score = _record_query_score(query, terminal, primary) if query else 0
@@ -1061,6 +1081,9 @@ def _build_context(
     verdict_counts = Counter(
         entry["use"]["evaluation"]["verdict"] for entry in entries
     )
+    inheritance_counts = Counter(
+        terminal["inheritance_role"] for terminal in terminal_entries
+    )
     matched_count = len(entries)
     matched_terminal_count = len(terminal_entries)
     if limit is None:
@@ -1089,6 +1112,7 @@ def _build_context(
             "omitted_records": matched_records - returned_records,
             "states": dict(sorted(state_counts.items())),
             "verdicts": dict(sorted(verdict_counts.items())),
+            "inheritance_roles": dict(sorted(inheritance_counts.items())),
             "selection_policy": (
                 "return the newest current terminal first, then represent every "
                 "present use tier once before filling: evaluated or rejected; "
@@ -1142,6 +1166,11 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
     ) or "none"
     print(f"States: {states}")
     print(f"Verdicts: {verdicts}")
+    inheritance_roles = ", ".join(
+        f"{name}={count}"
+        for name, count in summary["inheritance_roles"].items()
+    ) or "none"
+    print(f"Inheritance roles: {inheritance_roles}")
 
     for terminal in payload["terminals"]:
         print()
@@ -1150,6 +1179,13 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
         )
         print(f"- Decision: {_one_line(terminal['decision'])}")
         print(f"- Summary: {_one_line(terminal['summary'])}")
+        role = terminal["inheritance_role"]
+        mode = terminal.get("inheritance_mode")
+        print(f"- Inheritance: {role}" + (f" / {mode}" if mode else ""))
+        print(f"- Role scope: {_one_line(terminal['role_scope'])}")
+        print(f"- Retained surface: {_one_line(terminal['retained_surface'])}")
+        print(f"- Failure signature: {_one_line(terminal['failure_signature'])}")
+        print(f"- Revisit trigger: {_one_line(terminal['revisit_trigger'])}")
         print(f"- Historical successor suggestion: {_one_line(terminal['successor_requires'])}")
         print(
             "- Historical restrictions (check scope): "
@@ -1251,6 +1287,10 @@ def _decision_index_path(root: Path) -> Path:
 
 def _decision_terminals_path(root: Path) -> Path:
     return root / DECISION_TERMINALS_RELATIVE
+
+
+def _decision_inheritance_path(root: Path) -> Path:
+    return root / DECISION_INHERITANCE_RELATIVE
 
 
 def _validate_decision_config(
@@ -1392,6 +1432,9 @@ def _decision_source_fingerprint(root: Path) -> str:
     terminals_path = _decision_terminals_path(root)
     if terminals_path.is_file():
         paths.append(terminals_path)
+    inheritance_path = _decision_inheritance_path(root)
+    if inheritance_path.is_file():
+        paths.append(inheritance_path)
     paths.extend(sorted((root / "items").glob("*.json")))
     paths.extend(sorted((root / "uses").glob("*.json")))
     experiment_ledger = repo_root / "experiments" / "index.jsonl"
@@ -1514,9 +1557,87 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _read_terminal_inheritance(
+    root: Path,
+    terminal_ids: set[str],
+) -> dict[str, dict[str, Any]]:
+    path = _decision_inheritance_path(root)
+    if not terminal_ids and not path.is_file():
+        return {}
+    if not path.is_file():
+        raise KnowledgeError(
+            f"missing terminal inheritance ledger: {path}; every current terminal "
+            "needs an explicit inheritance role"
+        )
+    payload = _read_json(path)
+    errors: list[str] = []
+    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+        errors.append(
+            f"{path}: schema_version must be {DECISION_SCHEMA_VERSION}"
+        )
+    _check_date(errors, payload.get("updated_at"), "updated_at", str(path))
+    roles = payload.get("roles")
+    if not isinstance(roles, list):
+        errors.append(f"{path}: roles must be a list")
+        roles = []
+    by_terminal: dict[str, dict[str, Any]] = {}
+    for index, record in enumerate(roles):
+        context = f"{path}.roles[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{context}: must be an object")
+            continue
+        terminal_id = record.get("terminal_id")
+        if not isinstance(terminal_id, str) or not ID_PATTERN.fullmatch(terminal_id):
+            errors.append(f"{context}: terminal_id must match {ID_PATTERN.pattern}")
+            continue
+        if terminal_id in by_terminal:
+            errors.append(f"{context}: duplicate terminal_id {terminal_id}")
+            continue
+        role = record.get("inheritance_role")
+        if role not in INHERITANCE_ROLES:
+            errors.append(
+                f"{context}: inheritance_role must be one of "
+                f"{sorted(INHERITANCE_ROLES)}"
+            )
+        mode = record.get("inheritance_mode")
+        if role == "COMPONENT_OR_CHALLENGER":
+            if mode not in INHERITANCE_MODES:
+                errors.append(
+                    f"{context}: inheritance_mode must be one of "
+                    f"{sorted(INHERITANCE_MODES)} for COMPONENT_OR_CHALLENGER"
+                )
+        elif mode is not None:
+            errors.append(
+                f"{context}: inheritance_mode must be null unless role is "
+                "COMPONENT_OR_CHALLENGER"
+            )
+        for field in (
+            "role_scope",
+            "retained_surface",
+            "failure_signature",
+            "revisit_trigger",
+            "assignment_basis",
+        ):
+            _check_string(errors, record, field, context)
+        by_terminal[terminal_id] = record
+    missing = sorted(terminal_ids - by_terminal.keys())
+    extra = sorted(by_terminal.keys() - terminal_ids)
+    if missing:
+        errors.append(f"{path}: missing inheritance roles for terminals {missing}")
+    if extra:
+        errors.append(f"{path}: unknown terminal_ids {extra}")
+    if errors:
+        raise KnowledgeError(
+            "invalid terminal inheritance ledger:\n - " + "\n - ".join(errors)
+        )
+    return by_terminal
+
+
 def _read_current_terminals(
     root: Path,
     layer_ids: set[str],
+    *,
+    include_inheritance: bool = True,
 ) -> list[dict[str, Any]]:
     path = _decision_terminals_path(root)
     if not path.is_file():
@@ -1586,6 +1707,10 @@ def _read_current_terminals(
                 errors.append(f"{context}: missing evidence path {reference}")
     if errors:
         raise KnowledgeError("invalid decision terminals:\n - " + "\n - ".join(errors))
+    if include_inheritance:
+        inheritance = _read_terminal_inheritance(root, seen_ids)
+        for terminal in terminals:
+            terminal.update(inheritance[terminal["id"]])
     return terminals
 
 
@@ -1840,6 +1965,12 @@ def _build_decision_index_payload(
                 terminal["decision"],
                 terminal["summary"],
                 terminal["successor_requires"],
+                terminal["inheritance_role"],
+                str(terminal["inheritance_mode"] or ""),
+                terminal["role_scope"],
+                terminal["retained_surface"],
+                terminal["failure_signature"],
+                terminal["revisit_trigger"],
                 *terminal["forbidden_repeats"],
             ]
         )
@@ -1862,6 +1993,13 @@ def _build_decision_index_payload(
                 },
                 "successor_requires": terminal["successor_requires"],
                 "forbidden_repeats": terminal["forbidden_repeats"],
+                "inheritance_role": terminal["inheritance_role"],
+                "inheritance_mode": terminal["inheritance_mode"],
+                "role_scope": terminal["role_scope"],
+                "retained_surface": terminal["retained_surface"],
+                "failure_signature": terminal["failure_signature"],
+                "revisit_trigger": terminal["revisit_trigger"],
+                "assignment_basis": terminal["assignment_basis"],
                 "evidence": terminal["evidence"],
                 "association_id": (
                     association_by_decision[terminal["id"]]["run_id"]
@@ -2403,7 +2541,7 @@ def _rank_prior_attempts(
                 score += (45, 28, 16)[rank]
         folded = experiment["search_text"].casefold()
         lexical_hits = [term for term in terms if term in folded]
-        score += min(36, len(lexical_hits) * 4)
+        score += len(lexical_hits) * 4
         if experiment.get("kind") == "current_terminal":
             score += 60 if lexical_hits else 0
         markers = _terminal_markers(str(experiment.get("decision") or ""))
@@ -2427,12 +2565,32 @@ def _rank_prior_attempts(
                     "do_not_repeat": None,
                     "successor_requires": experiment.get("successor_requires"),
                     "forbidden_repeats": experiment.get("forbidden_repeats", []),
+                    "inheritance_role": experiment.get("inheritance_role"),
+                    "inheritance_mode": experiment.get("inheritance_mode"),
+                    "role_scope": experiment.get("role_scope"),
+                    "retained_surface": experiment.get("retained_surface"),
+                    "failure_signature": experiment.get("failure_signature"),
+                    "revisit_trigger": experiment.get("revisit_trigger"),
                     "evidence": experiment.get("evidence", []),
                 },
             )
         )
     attempts.sort(key=lambda value: (-value[0], value[1]))
-    return [attempt for _, _, attempt in attempts[:limit]]
+    # Mechanism uses are already shown on the mechanism cards. Keep them from
+    # crowding all direct experiment evidence out of a short history list.
+    direct = [item for item in attempts if item[2]["kind"] != "route_use"]
+    use_budget = max(0, limit - min(len(direct), (limit + 1) // 2))
+    selected = []
+    uses = 0
+    for item in attempts:
+        if len(selected) >= limit:
+            break
+        if item[2]["kind"] == "route_use":
+            if uses >= use_budget:
+                continue
+            uses += 1
+        selected.append(item[2])
+    return selected
 
 
 def _slugify(value: str, fallback: str = "fault") -> str:
@@ -2521,6 +2679,44 @@ def _build_minimum_experiment(
             attempt["successor_requires"] for attempt in successor_attempts
         )
     )
+    retained_core_baselines = [
+        {
+            "terminal_id": attempt["id"],
+            "role_scope": attempt["role_scope"],
+            "retained_surface": attempt["retained_surface"],
+        }
+        for attempt in attempts
+        if attempt.get("inheritance_role") == "RETAINED_CORE"
+    ]
+    required_negative_controls = [
+        {
+            "terminal_id": attempt["id"],
+            "role_scope": attempt["role_scope"],
+            "failure_signature": attempt["failure_signature"],
+        }
+        for attempt in attempts
+        if attempt.get("inheritance_role") == "NEGATIVE_CONTROL"
+    ]
+    eligible_components_or_challengers = [
+        {
+            "terminal_id": attempt["id"],
+            "mode": attempt["inheritance_mode"],
+            "role_scope": attempt["role_scope"],
+            "retained_surface": attempt["retained_surface"],
+        }
+        for attempt in attempts
+        if attempt.get("inheritance_role") == "COMPONENT_OR_CHALLENGER"
+    ]
+    dead_role_constraints = [
+        {
+            "terminal_id": attempt["id"],
+            "role_scope": attempt["role_scope"],
+            "failure_signature": attempt["failure_signature"],
+            "revisit_trigger": attempt["revisit_trigger"],
+        }
+        for attempt in attempts
+        if attempt.get("inheritance_role") == "DEAD_FOR_THIS_ROLE"
+    ]
     if selected_mechanism is not None:
         single_change = f"{template['single_change']} 候选机制：{factor}。"
         plan_status = "proposal"
@@ -2552,6 +2748,10 @@ def _build_minimum_experiment(
         "blocked_candidates": [],
         "history_scope_notes": history_scope_notes,
         "successor_requirements": successor_requirements,
+        "retained_core_baselines": retained_core_baselines,
+        "required_negative_controls": required_negative_controls,
+        "eligible_components_or_challengers": eligible_components_or_challengers,
+        "dead_role_constraints": dead_role_constraints,
         "prior_terminals_to_preserve": list(dict.fromkeys(terminal_markers)),
         "default_output": (
             f"artifacts.local/knowledge/decision/{plan_id}.json"
@@ -2690,6 +2890,14 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
                     "  Historical successor suggestion: "
                     + _short_text(attempt["successor_requires"])
                 )
+            if attempt.get("inheritance_role"):
+                mode = attempt.get("inheritance_mode")
+                print(
+                    "  Inheritance: "
+                    + attempt["inheritance_role"]
+                    + (f" / {mode}" if mode else "")
+                    + f" — {_short_text(attempt['role_scope'])}"
+                )
             if attempt.get("forbidden_repeats"):
                 print(
                     "  Historical restrictions (check scope): "
@@ -2717,6 +2925,22 @@ def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
         print(f"History applicability unassessed: {note['id']} — {scope}")
     print(f"Hypothesis: {_one_line(experiment['hypothesis'])}")
     print(f"Baseline: {_one_line(experiment['baseline'])}")
+    for baseline in experiment["retained_core_baselines"]:
+        print(
+            "Retained-core baseline: "
+            f"{baseline['terminal_id']} — {_one_line(baseline['retained_surface'])}"
+        )
+    for control in experiment["required_negative_controls"]:
+        print(
+            "Required negative control: "
+            f"{control['terminal_id']} — {_one_line(control['failure_signature'])}"
+        )
+    for component in experiment["eligible_components_or_challengers"]:
+        print(
+            "Eligible inherited candidate: "
+            f"{component['terminal_id']} / {component['mode']} — "
+            f"{_one_line(component['retained_surface'])}"
+        )
     print(f"Hypothesis change: {_one_line(experiment['single_change'])}")
     print(f"Cohort: {_one_line(experiment['cohort'])}")
     print(f"Primary metric: {_one_line(experiment['primary_metric'])}")
@@ -3271,6 +3495,11 @@ def _command_register_experiment(args: argparse.Namespace) -> int:
             raise KnowledgeError(f"{field} must match {ID_PATTERN.pattern}")
     if args.decision_id is not None and not ID_PATTERN.fullmatch(args.decision_id):
         raise KnowledgeError(f"--decision-id must match {ID_PATTERN.pattern}")
+    if args.status == "archived" and args.decision_id is None:
+        raise KnowledgeError(
+            "archived experiments require --decision-id so their terminal has an "
+            "explicit inheritance role"
+        )
     rows = _read_experiment_rows(repo_root)
     if any(row["id"] == args.id for row in rows):
         raise KnowledgeError(f"experiment id already exists: {args.id}")
@@ -3371,6 +3600,75 @@ def _command_register_experiment(args: argparse.Namespace) -> int:
     return 0
 
 
+def _command_set_terminal_inheritance(args: argparse.Namespace) -> int:
+    items, uses = _require_valid(args.root)
+    config = _load_decision_config(args.root, items)
+    layer_ids = {layer["id"] for layer in config["failure_layers"]}
+    terminals = _read_current_terminals(
+        args.root, layer_ids, include_inheritance=False
+    )
+    terminal_ids = {terminal["id"] for terminal in terminals}
+    if args.terminal_id not in terminal_ids:
+        raise KnowledgeError(f"unknown terminal id: {args.terminal_id}")
+    if args.inheritance_role == "COMPONENT_OR_CHALLENGER":
+        if args.inheritance_mode is None:
+            raise KnowledgeError(
+                "--inheritance-mode is required for COMPONENT_OR_CHALLENGER"
+            )
+    elif args.inheritance_mode is not None:
+        raise KnowledgeError(
+            "--inheritance-mode is only valid for COMPONENT_OR_CHALLENGER"
+        )
+
+    path = _decision_inheritance_path(args.root)
+    original = path.read_bytes() if path.is_file() else None
+    existing: dict[str, dict[str, Any]] = {}
+    if path.is_file():
+        payload = _read_json(path)
+        for record in payload.get("roles", []):
+            if isinstance(record, dict) and _is_nonempty_string(
+                record.get("terminal_id")
+            ):
+                existing[record["terminal_id"]] = record
+    existing[args.terminal_id] = {
+        "terminal_id": args.terminal_id,
+        "inheritance_role": args.inheritance_role,
+        "inheritance_mode": args.inheritance_mode,
+        "role_scope": args.role_scope,
+        "retained_surface": args.retained_surface,
+        "failure_signature": args.failure_signature,
+        "revisit_trigger": args.revisit_trigger,
+        "assignment_basis": args.assignment_basis,
+    }
+    ordered_ids = [terminal["id"] for terminal in terminals]
+    candidate = {
+        "schema_version": DECISION_SCHEMA_VERSION,
+        "updated_at": date.today().isoformat(),
+        "roles": [existing[terminal_id] for terminal_id in ordered_ids if terminal_id in existing],
+    }
+    _write_json_atomic(path, candidate)
+    try:
+        _read_current_terminals(args.root, layer_ids)
+        payload = _build_decision_index_payload(args.root, items, uses, config)
+        association_errors = _decision_association_errors(payload)
+        if association_errors:
+            raise KnowledgeError(
+                "inheritance update produced invalid decision associations:\n - "
+                + "\n - ".join(association_errors)
+            )
+        _write_json_atomic(_decision_index_path(args.root), payload)
+    except Exception:
+        _restore_file_bytes(path, original)
+        raise
+
+    print(
+        f"INHERITANCE {args.terminal_id}: {args.inheritance_role}"
+        + (f"/{args.inheritance_mode}" if args.inheritance_mode else "")
+        + "; decision index refreshed"
+    )
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Manage the BlindAssist research knowledge reserve."
@@ -3461,6 +3759,24 @@ def _build_parser() -> argparse.ArgumentParser:
     register_experiment_parser.add_argument("--code-revision")
     register_experiment_parser.add_argument("--tag")
     register_experiment_parser.set_defaults(handler=_command_register_experiment)
+
+    inheritance_parser = subparsers.add_parser(
+        "set-terminal-inheritance",
+        help="Assign one current terminal its role in future research and refresh the index.",
+    )
+    inheritance_parser.add_argument("terminal_id")
+    inheritance_parser.add_argument(
+        "--inheritance-role", choices=sorted(INHERITANCE_ROLES), required=True
+    )
+    inheritance_parser.add_argument(
+        "--inheritance-mode", choices=sorted(INHERITANCE_MODES)
+    )
+    inheritance_parser.add_argument("--role-scope", required=True)
+    inheritance_parser.add_argument("--retained-surface", required=True)
+    inheritance_parser.add_argument("--failure-signature", required=True)
+    inheritance_parser.add_argument("--revisit-trigger", required=True)
+    inheritance_parser.add_argument("--assignment-basis", required=True)
+    inheritance_parser.set_defaults(handler=_command_set_terminal_inheritance)
 
     diagnose_parser = subparsers.add_parser(
         "diagnose",

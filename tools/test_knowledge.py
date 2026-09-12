@@ -12,6 +12,35 @@ from tools import knowledge
 
 
 class KnowledgeCliTest(unittest.TestCase):
+    def test_history_preserves_lexical_specificity_and_direct_evidence(self) -> None:
+        terms = [f"signal{number:02d}" for number in range(17)]
+        def experiment(identifier: str, words: list[str], layers: dict) -> dict:
+            return {"id": identifier, "routes": ["test-route"],
+                    "layer_scores": layers, "search_text": " ".join(words)}
+        precise = experiment("precise", terms, {"primary": 1})
+        broad = experiment("broad", terms[:9], {"primary": 1, "secondary": 1})
+        diagnosis = {"layers": [{"id": "primary"}, {"id": "secondary"}]}
+        index = {"experiments": [broad, precise]}
+        # More than nine matching terms must still distinguish specific history
+        # from a record that merely spans more diagnosed layers.
+        ranked = knowledge._rank_prior_attempts(
+            index, "test-route", " ".join(terms), diagnosis, [], 2)
+        self.assertEqual("precise", ranked[0]["id"])
+        mechanisms = [{"score": 500, "route_history": {
+            "id": f"use-{number}", "verdict": "positive", "use_state": "active",
+            "observed_effect": "effect", "expected_effect": "", "claim_boundary": "",
+            "metrics": {}, "evidence": []}} for number in range(4)]
+        ranked = knowledge._rank_prior_attempts(
+            index, "test-route", " ".join(terms), diagnosis, mechanisms, 4)
+        self.assertEqual(["use-0", "use-1", "precise", "broad"],
+                         [item["id"] for item in ranked])
+        # With no direct evidence, route uses may fill all available slots.
+        ranked = knowledge._rank_prior_attempts(
+            {"experiments": []}, "test-route", "", diagnosis, mechanisms, 4)
+        self.assertEqual(4, len(ranked))
+        self.assertEqual([], knowledge._rank_prior_attempts(
+            index, "test-route", "", diagnosis, mechanisms, 0))
+
     def test_historical_input_integrity_survives_checkout_drift(self) -> None:
         with TemporaryDirectory(prefix="blindassist-input-history-") as temporary:
             repo = Path(temporary)
@@ -445,6 +474,61 @@ class KnowledgeCliTest(unittest.TestCase):
             associations[0]["artifact_refs"],
         )
 
+    def test_terminal_inheritance_requires_full_coverage_and_scoped_mode(self) -> None:
+        with TemporaryDirectory(prefix="blindassist-inheritance-test-") as temporary:
+            root = Path(temporary) / "research" / "knowledge"
+            (root / "decision").mkdir(parents=True)
+            path = root / "decision" / "inheritance.json"
+            record = {
+                "terminal_id": "terminal-smoke",
+                "inheritance_role": "COMPONENT_OR_CHALLENGER",
+                "inheritance_mode": "COMPONENT",
+                "role_scope": "Smoke evidence below final authority.",
+                "retained_surface": "Frozen smoke component.",
+                "failure_signature": "Standalone smoke gate was not met.",
+                "revisit_trigger": "Fresh evidence with a new authority layer.",
+                "assignment_basis": "The component has bounded value.",
+            }
+            path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "updated_at": "2026-08-31",
+                        "roles": [record],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            roles = knowledge._read_terminal_inheritance(
+                root, {"terminal-smoke"}
+            )
+            self.assertEqual("COMPONENT", roles["terminal-smoke"]["inheritance_mode"])
+
+            with self.assertRaisesRegex(knowledge.KnowledgeError, "missing inheritance"):
+                knowledge._read_terminal_inheritance(
+                    root, {"terminal-smoke", "terminal-unclassified"}
+                )
+
+            record["inheritance_role"] = "DEAD_FOR_THIS_ROLE"
+            path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "updated_at": "2026-08-31",
+                        "roles": [record],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(knowledge.KnowledgeError, "must be null"):
+                knowledge._read_terminal_inheritance(root, {"terminal-smoke"})
+
     def test_register_experiment_writes_p1_and_refreshes_index(self) -> None:
         with TemporaryDirectory(prefix="blindassist-register-experiment-") as temporary:
             repo_root = Path(temporary) / "repo"
@@ -672,6 +756,13 @@ class KnowledgeCliTest(unittest.TestCase):
                     "question": "Current route-family terminal.",
                     "successor_requires": "Fresh causal evidence.",
                     "forbidden_repeats": ["alias-only rerun"],
+                    "inheritance_role": "RETAINED_CORE",
+                    "inheritance_mode": None,
+                    "role_scope": "Current route baseline.",
+                    "retained_surface": "Frozen route-family core.",
+                    "failure_signature": "No authority beyond the smoke route.",
+                    "revisit_trigger": "Fresh route evidence.",
+                    "assignment_basis": "Current baseline.",
                     "evidence": ["reports/terminal.md"],
                     "commit": "abc123",
                     "routes": ["ten-meter-copilot"],
@@ -700,6 +791,9 @@ class KnowledgeCliTest(unittest.TestCase):
         )
         self.assertEqual(2, compact["summary"]["returned_records"])
         self.assertEqual("terminal-route-family", compact["terminals"][0]["id"])
+        self.assertEqual(
+            "RETAINED_CORE", compact["terminals"][0]["inheritance_role"]
+        )
         self.assertEqual(
             "run-route-family",
             compact["terminals"][0]["association"]["run_id"],
@@ -749,7 +843,7 @@ class KnowledgeCliTest(unittest.TestCase):
                 "claim_ceiling": "Replay-only temporal evidence.",
             }
             index = {
-                "schema_version": 2,
+                "schema_version": 3,
                 "engine_version": "decision-test",
                 "source_fingerprint": knowledge._decision_source_fingerprint(root),
                 "failure_layers": [
@@ -824,6 +918,13 @@ class KnowledgeCliTest(unittest.TestCase):
                         "layer_scores": {"temporal_belief": 30},
                         "successor_requires": "Causal temporal information.",
                         "forbidden_repeats": ["threshold sweep"],
+                        "inheritance_role": "NEGATIVE_CONTROL",
+                        "inheritance_mode": None,
+                        "role_scope": "Static observation dropout control.",
+                        "retained_surface": "Frozen static observation replay.",
+                        "failure_signature": "Static observations do not bridge gaps.",
+                        "revisit_trigger": "Causal temporal information.",
+                        "assignment_basis": "Preserve the old failure as a control.",
                         "evidence": ["docs/result.md"],
                         "search_text": "track dropout static observations",
                     }
@@ -858,6 +959,12 @@ class KnowledgeCliTest(unittest.TestCase):
             self.assertEqual(
                 "paper-temporal#bounded-belief",
                 card["minimum_experiment"]["selected_mechanism"]["id"],
+            )
+            self.assertEqual(
+                "terminal-old-dropout",
+                card["minimum_experiment"]["required_negative_controls"][0][
+                    "terminal_id"
+                ],
             )
             self.assertTrue(
                 knowledge._experiment_plan_is_valid(card["minimum_experiment"])

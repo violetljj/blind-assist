@@ -94,8 +94,10 @@ python tools/knowledge.py diagnose --route goal-copilot-p0 --symptom "near-ident
 
 `decision/config.json` 持有故障层、双语签名、机制 override 和实验模板；
 `decision/terminals.json` 只保存当前决策所需的窄 terminal 摘要及仓库证据锚点，
-不替代 owning route README；`decision/golden_cases.json` 冻结真实故障回归集。
-编译索引 schema v2 的 `associations` 将同一 run 的重复 ledger 行合并，并稳定保存
+`decision/inheritance.json` 为每个 current terminal 强制保存后续继承角色、职责范围、
+保留表面、失败签名和重开条件；二者都不替代 owning route README。
+`decision/golden_cases.json` 冻结真实故障回归集。编译索引 schema v3 的
+`associations` 将同一 run 的重复 ledger 行合并，并稳定保存
 `run_id / use_ids / protocol_id / code_revision / input_fingerprint /
 artifact_refs / decision_id`。只从显式字段、experiment evidence 或完全一致的
 terminal decision 建边；没有权威来源的关联保持 `null`，不靠文本相似度猜测。
@@ -119,8 +121,24 @@ python tools/knowledge.py register-experiment `
 ```
 
 `--decision-id` 只在已有 current terminal 时填写；active protocol 可以显式保持
-`null`。`--input` 可重复，指纹绑定排序后的路径和原始文件字节；`--artifact-ref`
-与 `--use-id` 也可重复。
+`null`；archived run 必须填写，并且该 terminal 已有完整继承角色。`--input` 可重复，
+指纹绑定排序后的路径和原始文件字节；`--artifact-ref` 与 `--use-id` 也可重复。
+
+current terminal 的继承角色统一通过命令更新，命令会原子写账本并刷新决策索引：
+
+```powershell
+python tools/knowledge.py set-terminal-inheritance terminal-example `
+  --inheritance-role COMPONENT_OR_CHALLENGER --inheritance-mode COMPONENT `
+  --role-scope "命名职责和证据域" `
+  --retained-surface "后续真正保留的代码、表示或 evaluator" `
+  --failure-signature "必须继续暴露的旧错误" `
+  --revisit-trigger "能够改变决定的新信息" `
+  --assignment-basis "为什么是这个角色而不是 CLOSED"
+```
+
+`context` 和 `diagnose` 会消费这些字段：保留核心进入 baseline，负对照进入下一次
+相关 falsifier，组件/挑战者保留候选资格，只有 `DEAD_FOR_THIS_ROLE` 阻止同职责原样
+重开。新增 terminal 若未分类，`validate`、refresh 和 commit hook 都会失败。
 
 当 item、use、experiment、配置或 terminal 变化时，重建索引并运行冻结回归：
 
@@ -170,17 +188,31 @@ canonical id、aliases 和全文字段都能被 `search/show` 解析。
 
 ## 状态不是一个混合标签
 
-use 用三个正交字段描述当前判断：
+知识 use 用前三个正交字段描述当前判断；实验或 current terminal 再用第四个
+维度描述它怎样被后续算法继承：
 
 | 维度 | 示例 | 回答的问题 |
 | --- | --- | --- |
 | `use_state` | `candidate / active / adopted / rejected / retired` | 项目现在还打算怎样使用它？ |
 | `reproduction_status` | `not_attempted / partial / reproduced / failed` | 原作机制或目标效果复现到了什么程度？ |
 | `verdict` | `positive / negative / mixed / falsified / not_evaluable / unknown` | 当前证据对路线假设意味着什么？ |
+| `inheritance_role` | `RETAINED_CORE / COMPONENT_OR_CHALLENGER / NEGATIVE_CONTROL / DEAD_FOR_THIS_ROLE` | 这个精确版本在这个明确职责上怎样进入后续工作？ |
 
 因此“代码跑通但功能门槛失败”可以写成
 `mechanics_only + negative`；“来源真值不够”应写成
 `not_attempted + not_evaluable`，不能写成 falsified。
+
+`inheritance_role` 不是由 `CLOSED` 或 `gate not met` 自动映射出来的。它必须绑定
+`method version x responsibility x evidence domain`：核心保留项继续随主算法运行；
+`COMPONENT_OR_CHALLENGER` 还要注明是组合组件还是完整挑战者；负对照冻结一个可复现
+的旧错误签名；`DEAD_FOR_THIS_ROLE` 只禁止已被严重检验证伪的同一职责。若证据是
+`unknown / not_evaluable`，工作材料阶段可以暂不分类；进入 current terminal 前必须把
+实际继承的表面标成组件或负对照等合法角色，不能把信息不足写成死亡结论。
+
+当旧实验下一次被用作 baseline、组合输入、负对照或 successor 依据时，在 owning
+current/ledger 中补记继承角色、保留表面或失败签名、禁止复用和重新评估触发条件；
+不要仅凭历史状态批量回填。完整规则见
+[`docs/formal/RESEARCH_GOVERNANCE.md`](../../docs/formal/RESEARCH_GOVERNANCE.md)。
 
 ## 新增知识
 

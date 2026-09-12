@@ -5,530 +5,1655 @@
     {
       "id": "terminal-dtr-r6-static-occupancy-unreachable",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE",
       "summary": "Perspective metric depth and current/past raw LiDAR both recovered 0/9 dropout windows because the frozen matcher had no admissible closing signal; this is not a metric-depth or LiDAR negative.",
       "successor_requires": "An independent causal spatiotemporal occupancy-flow signal with evaluator identity excluded from temporal association.",
-      "forbidden_repeats": ["closing threshold sweep", "route-tube widening", "lifecycle tuning", "imputation tuning", "depth-backbone swap on the consumed cohort"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "closing threshold sweep",
+        "route-tube widening",
+        "lifecycle tuning",
+        "imputation tuning",
+        "depth-backbone swap on the consumed cohort"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "2bc7f681"
     },
     {
       "id": "terminal-dtr-r7p-causal-occupancy-flow-gate-not-met",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8",
       "summary": "Causal raw-LiDAR occupancy flow recovered 9/9 induced windows and 3/3 critical events, proving an independent spatiotemporal signal exists, but false segments rose 12 to 20 and one-to-one event F1 remained 22.22%.",
       "successor_requires": "A different motion information source or a separately frozen fresh protocol.",
-      "forbidden_repeats": ["R8 training", "voxel/history/speed/overlap sweep", "attribution/tube/lifecycle tuning on the opened cohort"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "R8 training",
+        "voxel/history/speed/overlap sweep",
+        "attribution/tube/lifecycle tuning on the opened cohort"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "ff86e37f"
     },
     {
       "id": "terminal-dtr-m1-point-velocity-oracle-gate-not-met",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE",
       "summary": "Causal native-box point velocity suppressed 8/9 M0 diagnostic pseudo-motion entries but recovered only 6/9 dropout trials, created five new motion-source-induced false segments, and reduced event F1 from 22.22% to 16.00% under the frozen hard point/cell downstream.",
       "successor_requires": "A newly authorized representation-level question and fresh protocol; changing the scene-flow estimator is not eligible under the consumed frozen downstream.",
-      "forbidden_repeats": ["TeFlow or DeltaFlow on the consumed protocol", "another scene-flow estimator", "R8 training", "body-dilation/tube/lifecycle tuning", "route-conditioned forecasting on the consumed cohort"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "TeFlow or DeltaFlow on the consumed protocol",
+        "another scene-flow estimator",
+        "R8 training",
+        "body-dilation/tube/lifecycle tuning",
+        "route-conditioned forecasting on the consumed cohort"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "ff7e0ffc"
     },
     {
       "id": "terminal-dtr-m2-extent-gap-not-supported",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O",
       "summary": "On the consumed M1 cohort, all three repeated pedestrian:35 misses remained POINT_MISS_FOOTPRINT_MISS under the same direct velocity plus current native swept OBB, while all five M1-induced/modified false segments were FOOTPRINT_HIT_TRUTH_NEGATIVE.",
       "successor_requires": "A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence.",
-      "forbidden_repeats": ["fresh M2-O from the rejected current-extent hypothesis", "TeFlow or DeltaFlow", "another scene-flow estimator", "R8 training", "route-conditioned forecasting without new authorization"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "fresh M2-O from the rejected current-extent hypothesis",
+        "TeFlow or DeltaFlow",
+        "another scene-flow estimator",
+        "R8 training",
+        "route-conditioned forecasting without new authorization"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "d808051d"
     },
     {
       "id": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch",
       "route": "obstacle-avoidance",
-      "failure_layers": ["authority_truth", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "authority_truth",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O",
       "summary": "All three repeated pedestrian:35 dropout rows are positive under the evaluator's realized-center circle but negative under every realized future native OBB; at first contact the circle is 0.0209 m inside while the OBB is 0.0374 m outside. Three M1 false rows are target-owned realized-OBB misses and two are other-component attribution errors.",
       "successor_requires": "Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling.",
-      "forbidden_repeats": ["fresh M3-O before truth-contract revision", "learned or residual future occupancy", "route-conditioned forecasting", "R8 training", "another scene-flow estimator"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "fresh M3-O before truth-contract revision",
+        "learned or residual future occupancy",
+        "route-conditioned forecasting",
+        "R8 training",
+        "another scene-flow estimator"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "8a604df3"
     },
     {
       "id": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable",
       "route": "obstacle-avoidance",
-      "failure_layers": ["authority_truth", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "authority_truth",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW",
       "summary": "C0 adopts wearer-global realized-OBB CONTACT plus simultaneous circle-only PROXIMITY, but overlapping p33/p34/p36 futures make all 143/143 consumed frames CONTACT, leaving zero bounded events and 0.0 known non-CONTACT wearer minutes. Primary F1 and false segments/minute are therefore not evaluable; M1/R7 stressed-target contribution is only a consumed 6/6 mechanism diagnostic.",
       "successor_requires": "A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work.",
-      "forbidden_repeats": ["claiming descriptive 1.0 overlap F1 as performance", "claiming zero false alerts without non-CONTACT authority", "promoting consumed 6/6 to recovery success", "deployable motion-estimator work", "forecasting or R8"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "forbidden_repeats": [
+        "claiming descriptive 1.0 overlap F1 as performance",
+        "claiming zero false alerts without non-CONTACT authority",
+        "promoting consumed 6/6 to recovery success",
+        "deployable motion-estimator work",
+        "forecasting or R8"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
       "commit": "d1e51734"
     },
     {
       "id": "terminal-dtr-c1-fresh-global-obb-cohort-admitted",
       "route": "obstacle-avoidance",
-      "failure_layers": ["authority_truth", "evaluation_evidence"],
+      "failure_layers": [
+        "authority_truth",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY",
       "summary": "A metadata-only scan excluded the consumed Packard sequence and froze the lexicographic seven-sequence JRDB prefix with 21 bounded global-OBB CONTACT events, 21 unique-first-responsible events, and 409.66 s known non-CONTACT wearer time. This admits evaluation denominators, not an algorithm result.",
       "successor_requires": "Acquire raw sensors only for the frozen C1 sequence/event roster, then replay unchanged R2/R3-C/R7-P/M1-O under the global OBB CONTACT plus secondary PROXIMITY contract without training or tuning.",
-      "forbidden_repeats": ["reordering sequences by event yield", "adding the consumed C0 sequence", "claiming algorithm performance from metadata admission", "using multi-responsible events for single-target dropout", "forecasting or R8", "TeFlow or DeltaFlow training"],
-      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md", "research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json"],
+      "forbidden_repeats": [
+        "reordering sequences by event yield",
+        "adding the consumed C0 sequence",
+        "claiming algorithm performance from metadata admission",
+        "using multi-responsible events for single-target dropout",
+        "forecasting or R8",
+        "TeFlow or DeltaFlow training"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md",
+        "research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json"
+      ],
       "commit": "0e0b75d8"
     },
     {
       "id": "terminal-dtr-carla-x24-plan-adherent-development",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "temporal_belief", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "temporal_belief",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET",
       "summary": "On the same scripted CARLA C2 source, issued-plan adherence plus bounded causal track memory improved complete-occlusion route-risk coverage from 0/8 to 8/8, increased lead from 2.80 s to 2.95 s, added zero post-divergence SAFE false segments, and preserved 62/62 NO_PLAN fallback frames.",
       "successor_requires": "Freeze X24 and its constants, then run one genuinely source-disjoint confirmation cohort; this same-source Development result does not establish generalization, real-world transfer, product benefit, deployment, or safety.",
-      "forbidden_repeats": ["retuning C2", "relabeling same-source replay as confirmation", "claiming general CARLA robustness", "claiming real-world, product, deployment, or safety benefit"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md"],
+      "forbidden_repeats": [
+        "retuning C2",
+        "relabeling same-source replay as confirmation",
+        "claiming general CARLA robustness",
+        "claiming real-world, product, deployment, or safety benefit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md"
+      ],
       "commit": "3b72c4d6"
     },
     {
       "id": "terminal-dtr-carla-x26-support-consensus-gate-not-met",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On fresh CARLA C4, X26 improved frame F1 from 0.5308 to 0.8571 and recall from 47.46% to 96.61%, but produced four false-alert segments across the two fresh SAFE episodes, failing the frozen zero-segment promotion gate.",
       "successor_requires": "A fresh cohort and a structural occupancy-support authority decomposition that separates ego-carried, static-scene, rigid-dynamic, and unauthorized motion.",
-      "forbidden_repeats": ["route-tube tuning", "confirmation or HOLD tuning", "association-distance tuning", "target or C4 scene changes", "rescuing consumed C4"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md"],
+      "forbidden_repeats": [
+        "route-tube tuning",
+        "confirmation or HOLD tuning",
+        "association-distance tuning",
+        "target or C4 scene changes",
+        "rescuing consumed C4"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md"
+      ],
       "commit": "5b99dfe7"
     },
     {
       "id": "terminal-dtr-carla-x30-adaptive-surface-gate-not-met",
       "route": "obstacle-avoidance",
-      "failure_layers": ["geometry_motion", "temporal_belief", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "temporal_belief",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On fresh CARLA C7, X30 improved F1 from 0.6000 to 0.6376 and removed X24's one SAFE false segment, but completely missed one dynamic CONTACT, retained only 0.3333 future-positive recall on another, and missed the frozen 0.95 precision and 0.80 F1 gates.",
       "successor_requires": "A fresh X31 cohort using ambiguity-preserving set-valued surface-transport ancestry; C7 remains consumed pre-truth Development rather than pristine confirmation.",
-      "forbidden_repeats": ["detector or route threshold tuning", "confirmation, HOLD, or association tuning", "seed, weather, target, or backbone changes", "iterating on consumed C7", "claiming source-disjoint confirmation"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md"],
+      "forbidden_repeats": [
+        "detector or route threshold tuning",
+        "confirmation, HOLD, or association tuning",
+        "seed, weather, target, or backbone changes",
+        "iterating on consumed C7",
+        "claiming source-disjoint confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md"
+      ],
       "commit": "2053de3b"
     },
     {
       "id": "terminal-dtr-carla-c8-x31-scripted-pose-drift",
       "route": "obstacle-avoidance",
-      "failure_layers": ["source_coverage", "authority_truth", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "authority_truth",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT",
       "summary": "The sole frozen C8 capture stopped in the first instance shard when CARLA collision response displaced an authoritatively scripted asset; no complete source, model replay, evaluator, or X24/X31 metric result exists.",
       "successor_requires": "A new source identity that decouples scripted pose authority from engine collision response while keeping rendered geometry, X31, route, detector, and metric gates frozen.",
-      "forbidden_repeats": ["resuming or reseeding C8", "loosening the scripted-pose gate", "scoring the partial source", "interpreting the failure as an X31 false negative"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"],
+      "forbidden_repeats": [
+        "resuming or reseeding C8",
+        "loosening the scripted-pose gate",
+        "scoring the partial source",
+        "interpreting the failure as an X31 false negative"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"
+      ],
       "commit": "9479e891"
     },
     {
       "id": "terminal-dtr-carla-c9-x31-occluder-route-intersection",
       "route": "obstacle-avoidance",
-      "failure_layers": ["source_coverage", "authority_truth", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "authority_truth",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION",
       "summary": "C9 removed C8 pose drift, but every SAFE twin became CONTACT because the physical occluder entered the wearer corridor, and the planned occlusion durations also violated the frozen source contract; no model or metric run began.",
       "successor_requires": "A fresh deterministic early single-pass occluder source that stays outside the wearer corridor and yields the frozen 0.6-1.3 s complete target-loss interval with required pre/post trackability.",
-      "forbidden_repeats": ["resuming, replaying, or reseeding C9", "moving only the consumed occluders", "partially selecting C9", "joining, modeling, or scoring the failed source"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"],
+      "forbidden_repeats": [
+        "resuming, replaying, or reseeding C9",
+        "moving only the consumed occluders",
+        "partially selecting C9",
+        "joining, modeling, or scoring the failed source"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"
+      ],
       "commit": "92b84abd"
     },
     {
       "id": "terminal-dtr-carla-c10-x31-raster-permeable-occluder",
       "route": "obstacle-avoidance",
-      "failure_layers": ["source_coverage", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER",
       "summary": "C10 fixed C9 route contamination and completed all four sensor shards, but target instance pixels remained visible through the bus silhouette, so the complete physical-occlusion source gate failed and no X24/X31 prediction or score ran.",
       "successor_requires": "The already frozen fresh C11 solid-body firetruck protocol must run once; it is pending source materialization and is not yet a result or terminal.",
-      "forbidden_repeats": ["resuming, replaying, or reseeding C10", "treating 3-D OBB containment as pixel occlusion", "modeling or scoring the failed source", "representing frozen C11 as a completed result"],
-      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md", "research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json"],
+      "forbidden_repeats": [
+        "resuming, replaying, or reseeding C10",
+        "treating 3-D OBB containment as pixel occlusion",
+        "modeling or scoring the failed source",
+        "representing frozen C11 as a completed result"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+        "research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json"
+      ],
       "commit": "f6ac7728"
     },
     {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "temporal_belief",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "SC5_SET_VALUED_NAVIGATION_SIGNAL_EXACT_INSTANCE_NOT_EVALUABLE",
       "summary": "On consumed video17, set-valued belief preserved 100% navigation precision and increased coverage from 73.45% to 81.42%; exact-instance identity was not evaluable because each public goal mapped to multiple physical IDs without a public instance reference.",
       "successor_requires": "A legal public exact-instance authority source rather than matcher tuning.",
-      "forbidden_repeats": ["treating set-valued navigation as exact-instance success", "using evaluator physical IDs", "reopening video17 for selection"],
-      "evidence": ["docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "treating set-valued navigation as exact-instance success",
+        "using evaluator physical IDs",
+        "reopening video17 for selection"
+      ],
+      "evidence": [
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "238c9733"
     },
     {
       "id": "terminal-l10-sc6-reference-bound-belief-effect",
       "route": "ten-meter-copilot",
-      "failure_layers": ["authority_truth", "identity_binding", "temporal_belief"],
+      "failure_layers": [
+        "authority_truth",
+        "identity_binding",
+        "temporal_belief"
+      ],
       "status": "positive",
       "decision": "SC6_REFERENCE_BOUND_BELIEF_EFFECT",
       "summary": "On fresh source-disjoint video18, legal public instance binding plus temporal belief achieved 100% precision, 91.67% coverage, zero wrong-instance frames/switches, and 6/6 gap reacquisition/end-to-end episodes.",
       "successor_requires": "A new claim layer and separately authorized evidence; the replay result itself cannot establish active observation, arrival, product, user, or safety effects.",
-      "forbidden_repeats": ["claiming identity from OCR alone", "using evaluator physical IDs at inference", "promoting replay evidence to product or safety"],
-      "evidence": ["docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "claiming identity from OCR alone",
+        "using evaluator physical IDs at inference",
+        "promoting replay evidence to product or safety"
+      ],
+      "evidence": [
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "4f8a1ca5"
     },
     {
       "id": "terminal-l10-sc8-task-relational-functional-binding",
       "route": "ten-meter-copilot",
-      "failure_layers": ["functional_grounding", "actionable_region", "handoff_completion"],
+      "failure_layers": [
+        "functional_grounding",
+        "actionable_region",
+        "handoff_completion"
+      ],
       "status": "positive",
       "decision": "SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL",
       "summary": "On one SceneFun3D Development scene, task-relational selection over evaluator-provided unlabeled functional-part proposals improved legal commits from 4/6 to 6/6, mean target-set recall from 50% to 100%, and wrong parts from 2 to 0 while preserving the parent binding.",
       "successor_requires": "A task-conditioned multi-view RGB/RGB-D functional-part proposer behind the frozen parent-binding interface on separately authorized evidence.",
-      "forbidden_repeats": ["using parent-box center as a functional handoff", "claiming GT functional proposals as a deployable detector", "promoting part selection to reachability, arrival, completion, product, user, or safety evidence"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "using parent-box center as a functional handoff",
+        "claiming GT functional proposals as a deployable detector",
+        "promoting part selection to reachability, arrival, completion, product, user, or safety evidence"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "376b35eb"
     },
     {
       "id": "terminal-l10-sc11-task-grounded-rgbd-multiview-functional-proposal",
       "route": "ten-meter-copilot",
-      "failure_layers": ["functional_grounding", "observation_perception", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "functional_grounding",
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL",
       "summary": "On one opened SceneFun3D Development scene, truth-blind task-grounded RGB-D proposals plus multi-view consensus raised proposal recall from 8/10 to 10/10, legal task commits from 3/6 to 4/6, mean target-set recall from 50% to 83.33%, and reduced wrong parts from 8 to 2 versus the single-view arm.",
       "successor_requires": "A genuinely new candidate-integrity or action-geometry source on separately versioned evidence; the remaining two in-parent false clusters cannot be rescued by tuning the opened cohort.",
-      "forbidden_repeats": ["detector or prompt threshold sweeps on visit 420683", "DBSCAN, seed, or fusion sweeps on the opened cohort", "reopening SC9, SC9T, or SC10 with another generic handle detector", "promoting privileged parent RGB-D evidence to phone, open-world, arrival, completion, product, user, or safety claims"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "detector or prompt threshold sweeps on visit 420683",
+        "DBSCAN, seed, or fusion sweeps on the opened cohort",
+        "reopening SC9, SC9T, or SC10 with another generic handle detector",
+        "promoting privileged parent RGB-D evidence to phone, open-world, arrival, completion, product, user, or safety claims"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "bdef3a0f"
     },
     {
       "id": "terminal-l10-sc12-task-conditioned-dual-axis-action-pose",
       "route": "ten-meter-copilot",
-      "failure_layers": ["geometry_motion", "interaction_readiness", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "interaction_readiness",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "SC12_TASK_CONDITIONED_DUAL_AXIS_ACTION_POSE_GATE_NOT_MET",
       "summary": "On source-disjoint SceneFun3D 421013, static parent-surface geometry already reached 7/9 signed translation-direction hits, while task-signed dual-axis geometry regressed to 6/9 and increased mean angular error from 20.40 to 30.39 degrees.",
       "successor_requires": "A causal before/after motion source or other genuinely new kinematic evidence; task verbs and static parent geometry cannot close action direction.",
-      "forbidden_repeats": ["task-verb remapping on 421013", "OBB face or direction-threshold sweeps", "seed or geometry-fusion rescue", "promoting a static action axis to HANDOFF_READY"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "task-verb remapping on 421013",
+        "OBB face or direction-threshold sweeps",
+        "seed or geometry-fusion rescue",
+        "promoting a static action axis to HANDOFF_READY"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "0f22103b"
     },
     {
       "id": "terminal-l10-sc13-decoupled-local-action-frame",
       "route": "ten-meter-copilot",
-      "failure_layers": ["geometry_motion", "interaction_readiness", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "interaction_readiness",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "SC13_DECOUPLED_APPROACH_AND_LOCAL_ACTION_FRAME_GATE_NOT_MET",
       "summary": "On fresh SceneFun3D 421010, separating the parent-facing approach axis from a local 3-D contact-surface action normal retained 4/6 direction hits and improved mean error only from 30.39 to 28.18 degrees.",
       "successor_requires": "Observed causal motion that can distinguish translation from rotation and recover a signed action model; another static normal representation is not eligible.",
-      "forbidden_repeats": ["local PCA radius sweep on 421010", "surface-normal or OBB-axis detector swaps", "threshold, seed, or fusion rescue", "claiming local contact geometry as reachability or completion"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "local PCA radius sweep on 421010",
+        "surface-normal or OBB-axis detector swaps",
+        "threshold, seed, or fusion rescue",
+        "claiming local contact geometry as reachability or completion"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "0f22103b"
     },
     {
       "id": "terminal-l10-sc14-causal-micro-motion-action-belief",
       "route": "ten-meter-copilot",
-      "failure_layers": ["geometry_motion", "temporal_belief", "interaction_readiness", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "temporal_belief",
+        "interaction_readiness",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL",
       "summary": "On SceneFun3D 421013, causal paired motion improved type correctness from 7/8 to 8/8, translation-direction hits from 4/7 to 7/7, and mean direction error from 38.89 to 0.91 degrees; the sole rotational axis passed with 2.22 cm pivot-line error.",
       "successor_requires": "Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority.",
-      "forbidden_repeats": ["promoting evaluator-paired simulated motion to phone capability", "claiming safe user probing without authorization and evidence", "returning to static action-axis tuning", "emitting HANDOFF_READY, arrival, or completion from action geometry alone"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "promoting evaluator-paired simulated motion to phone capability",
+        "claiming safe user probing without authorization and evidence",
+        "returning to static action-axis tuning",
+        "emitting HANDOFF_READY, arrival, or completion from action geometry alone"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "0f22103b"
     },
     {
       "id": "terminal-l10-sc15-passive-action-conditioned-observation-gain",
       "route": "ten-meter-copilot",
-      "failure_layers": ["geometry_motion", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "geometry_motion",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "SC15_PASSIVE_ACTION_CONDITIONED_OBSERVATION_GAIN_GATE_NOT_MET",
       "summary": "Across 17 consumed ArTVideo Development PAN/SCAN opportunities, 12 geometrically aligned transitions had lower mean target semantic gain than five opposed transitions (0.6667 vs 0.8000) and higher wrong-gate creation (16.67% vs 0%).",
       "successor_requires": "A new action-quality representation and source-disjoint evidence, or an actually issued observation action with before/after outcome receipt.",
-      "forbidden_repeats": ["changing the three-frame horizon", "centering-gain thresholds", "adding consumed video subsets", "claiming passive alignment as action causality"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "changing the three-frame horizon",
+        "centering-gain thresholds",
+        "adding consumed video subsets",
+        "claiming passive alignment as action causality"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "2d192300"
     },
     {
       "id": "terminal-l10-sc16-pareto-observability-semantic-gain",
       "route": "ten-meter-copilot",
-      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "SC16_PARETO_OBSERVABILITY_SEMANTIC_GAIN_GATE_NOT_MET",
       "summary": "On fresh protocol-frozen DSText V2 indoor video, 422 Pareto-aligned versus 444 opposed transitions produced only +0.0093 mean semantic-gain delta, +0.0322 improvement-rate delta, and lower gate crossing (1.66% vs 4.28%).",
       "successor_requires": "An action-outcome source that can observe causal information gain and repair policy, or genuinely new semantic/identity information.",
-      "forbidden_repeats": ["height, sharpness, or centering weight sweeps", "quality thresholds", "horizon changes", "opening another video with the same Pareto rule"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "height, sharpness, or centering weight sweeps",
+        "quality thresholds",
+        "horizon changes",
+        "opening another video with the same Pareto rule"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "2d192300"
     },
     {
       "id": "terminal-l10-sc17-triview-semantic-consensus-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["temporal_belief", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "temporal_belief",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
       "summary": "A fixed exact-normalized majority over views 0/3/6 raised precision only 90.97% to 91.88%, reduced wrong outputs 24.31%, and still formed wrong consensus on 5/49 consumed SC16 tracks.",
       "successor_requires": "Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule.",
-      "forbidden_repeats": ["view-offset sweeps", "edit-distance matching", "vote-count or confidence tuning", "opening a fresh DSText video with SC17"],
-      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "forbidden_repeats": [
+        "view-offset sweeps",
+        "edit-distance matching",
+        "vote-count or confidence tuning",
+        "opening a fresh DSText video with SC17"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
       "commit": "2d192300"
     },
     {
       "id": "terminal-l10-panolab-active-entrance-ray-recovery",
       "route": "ten-meter-copilot",
-      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET",
       "summary": "Across four fresh provider-adjacent Panoramax episodes, a reciprocal SIDESTEP_TO_ENTRANCE_FACE action changed exact OSM entrance rays from geometry-blocked to geometry-authorized in 4/4 cases, with 4/4 action receipts and zero occluded-state false authorizations.",
       "successor_requires": "An independent entrance-identity credential before any pixel-portal successor; this real posed-street-sequence Development result establishes only active entrance-ray geometry recovery.",
-      "forbidden_repeats": ["claiming a pixel portal hit", "inferring entrance ownership from pixels", "claiming public access, walkability, arrival, HANDOFF_READY, or safety", "matcher rescue on the consumed source"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json"],
+      "forbidden_repeats": [
+        "claiming a pixel portal hit",
+        "inferring entrance ownership from pixels",
+        "claiming public access, walkability, arrival, HANDOFF_READY, or safety",
+        "matcher rescue on the consumed source"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json"
+      ],
       "commit": "19633a60"
     },
     {
       "id": "terminal-l10-panoramax-generic-pixel-portal-source-closed",
       "route": "ten-meter-copilot",
-      "failure_layers": ["source_coverage", "identity_binding", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "identity_binding",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL",
       "summary": "Successive generic Panoramax pixel-portal routes failed source admission even after strict orientation, close-range, federated coverage, and mapped-width improvements; the final width-first audit admitted 0/3 reference and 0/3 query portals, so no matcher call was authorized.",
       "successor_requires": "Sub-metre camera-to-portal registration or a directly posed portal mask or mesh frozen before pixels; Panoramax may provide imagery but is not the missing entrance-identity source.",
-      "forbidden_repeats": ["mining more generic Panoramax cities", "resampling opened rows", "widening the entrance ray", "narrowing declared camera uncertainty", "matcher, crop, or threshold rescue"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_panolab_stratified_source_pixel_audit_v1.json", "research/active/l10-r0/l10_panolab_federated_portal_source_admission_result_v1.json", "research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json"],
+      "forbidden_repeats": [
+        "mining more generic Panoramax cities",
+        "resampling opened rows",
+        "widening the entrance ray",
+        "narrowing declared camera uncertainty",
+        "matcher, crop, or threshold rescue"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_panolab_stratified_source_pixel_audit_v1.json",
+        "research/active/l10-r0/l10_panolab_federated_portal_source_admission_result_v1.json",
+        "research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json"
+      ],
       "commit": "cac7dd54"
     },
     {
       "id": "terminal-l10-hypersim-posed-portal-transfer",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET",
       "summary": "A provider-posed Hypersim reference door surface transferred across independent trajectories with 3/3 correct door instances, zero wrong-door commits, 3/3 centroids inside target envelopes, and median envelope IoU 0.7063.",
       "successor_requires": "Real posed door geometry for confirmation; outdoor use still requires sub-metre imagery co-registered to an independent portal anchor.",
-      "forbidden_repeats": ["promoting synthetic posed-door transfer to real or outdoor confirmation", "treating a semantic door surface as doorway aperture or traversability", "claiming access, arrival, HANDOFF_READY, product, user, or safety authority", "reopening Panoramax without an independent anchor"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json"],
+      "forbidden_repeats": [
+        "promoting synthetic posed-door transfer to real or outdoor confirmation",
+        "treating a semantic door surface as doorway aperture or traversability",
+        "claiming access, arrival, HANDOFF_READY, product, user, or safety authority",
+        "reopening Panoramax without an independent anchor"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json"
+      ],
       "commit": "7b1c09cb"
     },
     {
       "id": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET",
       "summary": "On three source-disjoint real SceneNN RGB-D scenes, partial metric portal transfer selected the correct door in 2/3 cases, placed the centroid inside in 1/3, reached median IoU 0.2647, and had 0.985 m median world-centroid error; source-side reference visibility was the decisive failure.",
       "successor_requires": "A fresh real-scene cohort with source-side visibility authority from a provider 2-D door-instance mask or z-buffered semantic triangle surface checked against synchronized depth before forming the reference credential.",
-      "forbidden_repeats": ["reselecting consumed SceneNN scenes or frames", "changing the 70-percent plane fit", "tuning metric or image gates", "opening query-side RGB or depth to prediction", "reopening Panoramax without an independent absolute portal anchor"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json"],
+      "forbidden_repeats": [
+        "reselecting consumed SceneNN scenes or frames",
+        "changing the 70-percent plane fit",
+        "tuning metric or image gates",
+        "opening query-side RGB or depth to prediction",
+        "reopening Panoramax without an independent absolute portal anchor"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json"
+      ],
       "commit": "6cfb781a"
     },
     {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",
       "route": "goal-copilot-p0",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE_DEVELOPMENT_GATE_NOT_MET_NO_FINAL_TEST",
       "summary": "Fixed three-view appearance increased PRESERVE bias, collapsed Doorway FLIP to 0/24 in both seeds, and left owner-group macro balanced accuracy near chance.",
       "successor_requires": "A genuinely new information source or representation under a new versioned protocol.",
-      "forbidden_repeats": ["view-selector tuning", "G0 fusion", "pose/model sweep", "opening final test"],
-      "evidence": ["docs/PROJECT_STATE.md", "docs/CURRENT_DECISION.md"],
+      "forbidden_repeats": [
+        "view-selector tuning",
+        "G0 fusion",
+        "pose/model sweep",
+        "opening final test"
+      ],
+      "evidence": [
+        "docs/PROJECT_STATE.md",
+        "docs/CURRENT_DECISION.md"
+      ],
       "commit": "4db9a119"
     },
     {
       "id": "terminal-msls-router-development-gate-not-met",
       "route": "goal-copilot-p0",
-      "failure_layers": ["source_coverage", "identity_binding", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "identity_binding",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "MSLS_SOURCE_ADMITTED_ROUTER_DEVELOPMENT_GATE_NOT_MET_TEST_UNOPENED",
       "summary": "Frame-level MSLS GPS was admitted, but the frozen router underperformed static fusion and collapsed toward GPS; source admission did not establish routing benefit.",
       "successor_requires": "A new representation or fresh cohort; do not rescue the consumed router cohort.",
-      "forbidden_repeats": ["GPS-weight tuning", "seed sweep", "fusion sweep", "opening test"],
-      "evidence": ["experiments/index.jsonl"],
+      "forbidden_repeats": [
+        "GPS-weight tuning",
+        "seed sweep",
+        "fusion sweep",
+        "opening test"
+      ],
+      "evidence": [
+        "experiments/index.jsonl"
+      ],
       "commit": "ebc003eb"
     },
     {
       "id": "terminal-l10-3dstreetview-center-target-lock-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_3DSTREETVIEW_CENTER_TARGET_LOCK_DEVELOPMENT_GATE_MET",
       "summary": "On 426 endpoint-prefix-disjoint real 3D Street View pairs, the frozen center-scale DINOv2 score improved AUROC 0.949859 to 0.984860 and 32-anchor Top-1 0.843750 to 1.000000.",
       "successor_requires": "An unchanged provider-disjoint exact-point transfer or independent portal-class and ownership truth around the verified point.",
-      "forbidden_repeats": ["changing crop scales or score weights on the consumed split", "repartitioning endpoint groups", "calling point truth a door or named entrance", "claiming access, arrival, handoff, user benefit, or safety"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json"],
+      "forbidden_repeats": [
+        "changing crop scales or score weights on the consumed split",
+        "repartitioning endpoint groups",
+        "calling point truth a door or named entrance",
+        "claiming access, arrival, handoff, user benefit, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3dstreetview_center_target_lock_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-center-target-door-transfer-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["source_coverage", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "source_coverage",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
       "summary": "Six consumed SceneNN truth proposals were severe edge slivers; the unchanged center-scale score reached only 2/6 Top-1, AUROC 0.444444, and minimum margin -0.221899.",
       "successor_requires": "A new provider cohort whose target surface is fully visible under a frozen geometry or provider-mask admission rule before RGB.",
-      "forbidden_repeats": ["tuning the six consumed crops", "loosening visibility after RGB", "substituting SceneNN scenes or frames", "treating a truth crop as door detection", "claiming a general cross-provider failure"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json"],
+      "forbidden_repeats": [
+        "tuning the six consumed crops",
+        "loosening visibility after RGB",
+        "substituting SceneNN scenes or frames",
+        "treating a truth crop as door detection",
+        "claiming a general cross-provider failure"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_center_target_door_retrieval_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-center-target-pairwise-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_3RSCAN_CENTER_TARGET_DOOR_RETRIEVAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On three fully visible truth-proposed stable 3RScan doors, global cosine reached 5/6 while the center-scale score reached 4/6 because two sibling doors collided.",
       "successor_requires": "A frozen composition that supplies independent roster structure or new context, then proves incremental value on physically target-disjoint evidence.",
-      "forbidden_repeats": ["tuning center scales or 0.25/0.75 weights", "resampling the three consumed doors", "using scan identity to rerank", "promoting independent pairwise scores to open-set identity"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json"],
+      "forbidden_repeats": [
+        "tuning center scales or 0.25/0.75 weights",
+        "resampling the three consumed doors",
+        "using scan identity to rerank",
+        "promoting independent pairwise scores to open-set identity"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_center_target_door_retrieval_result_v2.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-roster-assignment-target-disjoint-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_3RSCAN_ROSTER_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
       "summary": "A parameter-free one-to-one assignment repaired the consumed center-scale matrix from 4/6 to an equivalent 6/6, then achieved 3/3 identity with 0.419960 assignment margin on three physically target-disjoint 3RScan doorframes.",
       "successor_requires": "A provider-disjoint independently labelled named-entrance roster with extra or absent candidates, or another authority that justifies a complete one-to-one roster.",
-      "forbidden_repeats": ["tuning assignment or pair scores on consumed targets", "reusing prior physical reference targets", "assuming one-to-one completeness without external authority", "calling closed-roster identity open-set detection", "claiming ownership, access, arrival, or handoff"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json"],
+      "forbidden_repeats": [
+        "tuning assignment or pair scores on consumed targets",
+        "reusing prior physical reference targets",
+        "assuming one-to-one completeness without external authority",
+        "calling closed-roster identity open-set detection",
+        "claiming ownership, access, arrival, or handoff"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_roster_assignment_confirmation_result_v2.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-open-roster-appearance-zero-assignment-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "observation_perception", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_3RSCAN_OPEN_ROSTER_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On four new physical targets under closed, extra, missing, and balanced missing-plus-extra rosters, multiview appearance reciprocal zero assignment retained only 4/12 true matches, emitted 5 false matches, missed 8, and reached F1 0.380952.",
       "successor_requires": "An independent structural or authority-bearing information source that can establish absolute correspondence support rather than another relative appearance rank rule.",
-      "forbidden_repeats": ["tuning center scales or score weights", "adding a dustbin threshold on the consumed matrix", "changing the four consumed targets or scenarios", "claiming appearance-only open-set identity", "using evaluator target IDs in the matcher"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json"],
+      "forbidden_repeats": [
+        "tuning center scales or score weights",
+        "adding a dustbin threshold on the consumed matrix",
+        "changing the four consumed targets or scenarios",
+        "claiming appearance-only open-set identity",
+        "using evaluator target IDs in the matcher"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_open_roster_zero_assignment_result_v2.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-registered-surface-zero-assignment-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_3RSCAN_REGISTERED_SURFACE_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_NOT_MET",
       "summary": "Registered surface distance recovered all 12 true correspondences on four fresh same-family targets, but relative reciprocal ranking still emitted one adjacent doorframe-to-door match in the balanced missing-plus-extra roster; F1 stayed 0.96 and exact zero assignment was 3/4 scenarios.",
       "successor_requires": "A predeclared external registration witness or other absolute support authority, followed by a fresh cohort where it proves incremental rejection beyond rank-only surface matching.",
-      "forbidden_repeats": ["tuning a distance threshold on the consumed surfaces", "reselecting targets or the balanced-swap construction", "calling nearest registered surface an existence proof", "using semantic labels after outcome to veto the observed false pair", "claiming raw-image or provider-independent authority"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json"],
+      "forbidden_repeats": [
+        "tuning a distance threshold on the consumed surfaces",
+        "reselecting targets or the balanced-swap construction",
+        "calling nearest registered surface an existence proof",
+        "using semantic labels after outcome to veto the observed false pair",
+        "claiming raw-image or provider-independent authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_registered_surface_zero_assignment_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-witness-calibrated-zero-assignment-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_3RSCAN_WITNESS_CALIBRATED_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
       "summary": "Two predeclared registration witnesses set a 0.038756 m surface-distance ceiling on four fresh physical targets. Witness-calibrated zero assignment reached 12/12 true, 0 false, 0 missed, exact unmatched sets in 4/4 scenarios, and F1 1.0 versus complete-assignment F1 0.96.",
       "successor_requires": "A fresh scan-family- or provider-disjoint roster with same-class missing/extra candidates where the witness ceiling is decision-changing relative to rank-only surface matching.",
-      "forbidden_repeats": ["claiming witness incremental value from this cohort where rank-only also reached F1 1.0", "adding slack or a multiplier to the two-witness ceiling", "reusing the eight consumed witness/evaluated surfaces", "claiming statistical coverage from two witnesses", "promoting privileged registered geometry to raw-phone authority"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json"],
+      "forbidden_repeats": [
+        "claiming witness incremental value from this cohort where rank-only also reached F1 1.0",
+        "adding slack or a multiplier to the two-witness ceiling",
+        "reusing the eight consumed witness/evaluated surfaces",
+        "claiming statistical coverage from two witnesses",
+        "promoting privileged registered geometry to raw-phone authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_witness_calibrated_zero_assignment_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-scan-family-disjoint-witness-incremental-gate-not-met",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_3RSCAN_SCAN_FAMILY_DISJOINT_WITNESS_INCREMENTAL_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On a new scan family with six same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only surface matching reached TP=64, FP=2, FN=0 and F1 0.984615. The unchanged two-witness raw-distance ceiling removed both false matches but reduced TP to 48, added 16 misses, and lowered F1 to 0.857143.",
       "successor_requires": "A genuinely new absolute support source, such as parameter-free registered extent overlap, evaluated on fresh physical targets without modifying the consumed raw-distance ceiling.",
-      "forbidden_repeats": ["adding slack or a multiplier to the consumed 0.376774 m ceiling", "changing the two witnesses or six doors", "dropping failed balanced swaps", "selecting a raw-distance statistic after outcome", "claiming two witnesses generalize registration residuals across a scan family", "promoting privileged registered geometry to raw-phone authority"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json"],
+      "forbidden_repeats": [
+        "adding slack or a multiplier to the consumed 0.376774 m ceiling",
+        "changing the two witnesses or six doors",
+        "dropping failed balanced swaps",
+        "selecting a raw-distance statistic after outcome",
+        "claiming two witnesses generalize registration residuals across a scan family",
+        "promoting privileged registered geometry to raw-phone authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_scan_family_disjoint_witness_incremental_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-registered-extent-support-zero-assignment-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_3RSCAN_REGISTERED_EXTENT_SUPPORT_ZERO_ASSIGNMENT_TARGET_DISJOINT_DEVELOPMENT_GATE_MET",
       "summary": "On six fresh same-class doorframes and all thirty ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=136, FP=4, FN=0 and F1 0.985507. Parameter-free positive registered planar extent overlap retained all 136 true matches, removed all four false matches, reached F1 1.0, and recovered exact unmatched sets in 33/33 scenarios.",
       "successor_requires": "An unchanged scan-family- or provider-disjoint same-class roster, then an independently justified phone-side geometric support source before any raw-device or portal-authority promotion.",
-      "forbidden_repeats": ["setting a positive IoU magnitude threshold on the consumed cohort", "reselecting the six doorframes or thirty swaps", "reusing consumed physical targets for confirmation", "calling projected overlap portal ownership, access, arrival, or handoff", "promoting provider surfaces or rigid transforms to phone-side evidence"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json"],
+      "forbidden_repeats": [
+        "setting a positive IoU magnitude threshold on the consumed cohort",
+        "reselecting the six doorframes or thirty swaps",
+        "reusing consumed physical targets for confirmation",
+        "calling projected overlap portal ownership, access, arrival, or handoff",
+        "promoting provider surfaces or rigid transforms to phone-side evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_registered_extent_support_zero_assignment_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-3rscan-extent-support-scan-family-disjoint-development",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "positive",
       "decision": "L10_3RSCAN_EXTENT_SUPPORT_SCAN_FAMILY_DISJOINT_DEVELOPMENT_GATE_MET",
       "summary": "On a newly materialized scan family with four same-class doors and all twelve ordered balanced missing-plus-extra swaps, rank-only registered-surface matching reached TP=34, FP=2, FN=0 and F1 0.971429. The unchanged positive registered planar-extent support rule retained all 34 true matches, removed both false matches, reached F1 1.0, and recovered exact unmatched sets in 15/15 scenarios.",
       "successor_requires": "A provider-disjoint confirmation or an independently justified phone-side source that can supply comparable target-conditioned planar support without privileged complete surfaces and registration.",
-      "forbidden_repeats": ["adding an IoU magnitude threshold", "changing the portal frame or support predicate", "reselecting the four doors or twelve swaps", "reusing consumed scan families for another confirmation claim", "calling registered overlap ownership, access, arrival, or handoff", "promoting provider geometry to raw-phone evidence"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json"],
+      "forbidden_repeats": [
+        "adding an IoU magnitude threshold",
+        "changing the portal frame or support predicate",
+        "reselecting the four doors or twelve swaps",
+        "reusing consumed scan families for another confirmation claim",
+        "calling registered overlap ownership, access, arrival, or handoff",
+        "promoting provider geometry to raw-phone evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_3rscan_extent_support_scan_family_confirmation_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-single-frame-observed-extent-support-not-evaluable",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "not_evaluable",
       "decision": "L10_SCENENN_SINGLE_FRAME_OBSERVED_EXTENT_SUPPORT_PROVIDER_DISJOINT_NOT_EVALUABLE_SOURCE_SUPPORT",
       "summary": "SceneNN scene 096 supplied four provider-labeled doors and 8/8 frozen synchronized RGB-D frames, but the preregistered single-frame carrier stopped before scoring: two query observations retained only 159 and 120 depth-consistent target points, below the fixed 256-point minimum. Six other observations supplied 927 to 10,971 points before the 4,096 cap.",
       "successor_requires": "A structurally different registered temporal-depth carrier that accumulates a preregistered local frame window, or a fresh provider/phone source with sufficient target-conditioned planar observations. The consumed single-frame minimum and tolerance may not be tuned.",
-      "forbidden_repeats": ["lowering the consumed 256-point minimum", "increasing the consumed 0.08 m depth-consistency tolerance", "replacing either sparse query frame", "dropping SO01 or SO04", "evaluating only the six passing observations", "calling missing carrier support an extent-support algorithm failure"],
-      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json"],
+      "forbidden_repeats": [
+        "lowering the consumed 256-point minimum",
+        "increasing the consumed 0.08 m depth-consistency tolerance",
+        "replacing either sparse query frame",
+        "dropping SO01 or SO04",
+        "evaluating only the six passing observations",
+        "calling missing carrier support an extent-support algorithm failure"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-temporal-fused-extent-support-posthoc-negative",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_TEMPORAL_FUSED_EXTENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
       "summary": "The frozen three-frame registered-depth carrier made all eight SceneNN observations evaluable, including the previously sparse queries at 2,710 and 931 fused points. Rank-only matching reached TP=34, FP=3, FN=0 and F1 0.957746, but unchanged strictly positive convex-hull intersection lost nine true matches because one true pair had zero observed overlap; the support-gated result fell to TP=25, FP=2, FN=9, F1 0.819672 and 6/15 exact scenarios.",
       "successor_requires": "A structurally different partial-observation support mechanism independently motivated by partial point-cloud evidence, followed by fresh scene/provider confirmation before any generalization claim.",
-      "forbidden_repeats": ["adding a positive IoU magnitude threshold to the consumed scene", "changing the frozen three-frame offsets, 0.08 m tolerance, 256-point minimum, or 4,096-point caps", "dropping the zero-overlap true pair", "reselecting targets, anchors, or scenarios", "calling temporal fused provider geometry raw-phone evidence", "calling observed-surface support ownership, access, traversability, arrival, or handoff"],
-      "evidence": ["research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_protocol_v1.json", "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json", "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_transport_repair_v1.json"],
+      "forbidden_repeats": [
+        "adding a positive IoU magnitude threshold to the consumed scene",
+        "changing the frozen three-frame offsets, 0.08 m tolerance, 256-point minimum, or 4,096-point caps",
+        "dropping the zero-overlap true pair",
+        "reselecting targets, anchors, or scenarios",
+        "calling temporal fused provider geometry raw-phone evidence",
+        "calling observed-surface support ownership, access, traversability, arrival, or handoff"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_result_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_fused_extent_support_transport_repair_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_TEMPORAL_HUE_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
       "summary": "A threshold-free intersection of geometric reciprocal matches with saturation-weighted Hue reciprocal matches removed all three geometry false positives, but Hue was not instance-discriminative: pairwise similarities clustered from about 0.90 to 0.98, Hue-only reached TP=2 FP=23 FN=32, and consensus reached TP=2 FP=0 FN=32, F1 0.111111 and 0/15 exact scenarios versus geometry F1 0.957746.",
       "successor_requires": "A local texture or learned cross-view appearance representation that can express more than global color mass, evaluated first as a separate challenger and then on fresh scenes before any generalization claim.",
-      "forbidden_repeats": ["changing the consumed Hue bin count", "adding a Hue similarity threshold or fitted geometry-color weight", "switching color spaces after inspecting failed pairs", "dropping any of the four targets or fifteen scenarios", "calling global color agreement instance identity", "promoting privileged target masks to raw-phone perception"],
-      "evidence": ["research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_protocol_v1.json", "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"],
+      "forbidden_repeats": [
+        "changing the consumed Hue bin count",
+        "adding a Hue similarity threshold or fitted geometry-color weight",
+        "switching color spaces after inspecting failed pairs",
+        "dropping any of the four targets or fifteen scenarios",
+        "calling global color agreement instance identity",
+        "promoting privileged target masks to raw-phone perception"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-negative",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_TEMPORAL_DINOV2_FFA_GEOMETRY_CONSENSUS_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
       "summary": "Frozen DINOv2-S foreground feature averaging over all exact three-frame target masks improved on global Hue but remained view-dominated: FFA-only reached TP=7 FP=21 FN=27, while intersection with geometry reached TP=7 FP=1 FN=27, F1 0.333333 and 0/15 exact scenarios versus geometry TP=34 FP=3 FN=0, F1 0.957746 and 12/15 exact.",
       "successor_requires": "A representation explicitly trained or constructed for same physical instance across severe partial-view changes, evaluated as a non-authoritative challenger on fresh targets with an explicit NONE mechanism; generic frozen FFA must not veto the retained geometry core.",
-      "forbidden_repeats": ["changing DINO layers, crop geometry, mask pooling, or view aggregation on the consumed cohort", "fine-tuning or fitting an adapter on the consumed four doors", "adding an appearance threshold or geometry-appearance weight after outcome", "dropping any failed true pair", "calling truth-mask FFA raw-phone identity evidence"],
-      "evidence": ["research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_protocol_v1.json", "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json"],
+      "forbidden_repeats": [
+        "changing DINO layers, crop geometry, mask pooling, or view aggregation on the consumed cohort",
+        "fine-tuning or fitting an adapter on the consumed four doors",
+        "adding an appearance threshold or geometry-appearance weight after outcome",
+        "dropping any failed true pair",
+        "calling truth-mask FFA raw-phone identity evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_temporal_dinov2_ffa_consensus_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
     },
     {
       "id": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative",
       "route": "ten-meter-copilot",
-      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
       "status": "negative",
       "decision": "L10_SCENENN_EFFICIENTLOFTR_FRESH_NONE_DEVELOPMENT_GATE_NOT_MET",
       "summary": "On four fresh SceneNN door targets and fifteen frozen missing-plus-extra scenarios, truth-cropped EfficientLoFTR absolute support improved over the same-crop DINOv2 reciprocal baseline from TP=6 FP=24 FN=28 F1=0.1875 to TP=11 FP=18 FN=23 F1=0.349206. The hard gate failed: only LF01 and LF03 had supported true diagonals, LF02 and LF04 abstained, repeated indoor structures produced false supports, and exact assignment reached 0/15 scenarios.",
       "successor_requires": "A calibrated dense correspondence certainty and spatial-coverage mechanism independently motivated by indoor low-texture evidence, evaluated on fresh physical targets with explicit NONE; the consumed EfficientLoFTR thresholds and crops may not be tuned.",
-      "forbidden_repeats": ["changing the consumed 0.2 matcher threshold, eight-match minimum, six-inlier minimum, or six-pixel RANSAC tolerance", "changing the consumed 1.25 truth-visible crop expansion", "dropping LF02, LF04, or any failed scenario", "fitting a confidence, coverage, or geometry weight on the consumed four doors", "calling a truth-visible crop raw-phone target perception", "calling local correspondence portal ownership, access, traversability, arrival, handoff, safety, or user benefit"],
-      "evidence": ["research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_protocol_v1.json", "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_cohort_v1.json", "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_rgb_receipt_v1.json", "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json"],
+      "forbidden_repeats": [
+        "changing the consumed 0.2 matcher threshold, eight-match minimum, six-inlier minimum, or six-pixel RANSAC tolerance",
+        "changing the consumed 1.25 truth-visible crop expansion",
+        "dropping LF02, LF04, or any failed scenario",
+        "fitting a confidence, coverage, or geometry weight on the consumed four doors",
+        "calling a truth-visible crop raw-phone target perception",
+        "calling local correspondence portal ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_efficientloftr_fresh_none_result_v1.json"
+      ],
       "commit": "WORKTREE_UNCOMMITTED_2026-08-31"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-active-none-development-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_SCENENN_ROMA_ACTIVE_NONE_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On four fresh SceneNN doors, frozen 0.30 m minimum-baseline active observations and symmetric RoMa cycle support removed all 23 DINOv2 false positives and improved F1 from 0.268657 to 0.418605 at precision 1.0. The complete gate failed because only RA02 had absolute true-pair support, leaving TP=9, FP=0, FN=25 and 0/15 exact scenarios.",
+      "successor_requires": "Retain RoMa cycle support as a high-precision confirmation component, but change the action policy structurally before any fresh successor; do not lower the consumed certainty, cycle-fraction, purity, or cycle-error gates.",
+      "forbidden_repeats": [
+        "lowering the consumed 0.05 certainty, 0.01 directional cycle-fraction, 0.5 cycle-purity, or six-pixel cycle-error gates",
+        "changing the consumed 1.25 truth-visible crop expansion",
+        "reselecting RA01-RA04 frames or targets",
+        "dropping any failed true pair or scenario",
+        "calling truth-cropped RoMa raw-phone portal evidence",
+        "calling dense correspondence ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_active_none_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_active_none_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_active_none_oni_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_active_none_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_active_none_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-temporal-local-posthoc-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_SCENENN_ROMA_TEMPORAL_LOCAL_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On the consumed four-door cohort, changing only pair selection from minimum-baseline-first to minimum-frame-gap-first reduced gaps from 90-525 frames to 20-35 while retaining 0.30-0.37 m displacement. DINOv2 rose to TP=34 FP=2 FN=0 F1=0.971429 and 13/15 exact; unchanged RoMa absolute support rose from one to three true diagonals and reached TP=27 FP=0 FN=7 F1=0.885246 and 8/15 exact. The full gate still failed because TL04 had no absolute support.",
+      "successor_requires": "Confirm the unchanged temporally local active-observation rule on fresh physical targets before treating it as generalized. Preserve RoMa as a precision confirmation branch and DINOv2 rank as a non-authoritative retrieval component.",
+      "forbidden_repeats": [
+        "claiming fresh or confirmation authority from this consumed posthoc replay",
+        "changing matcher, crop, certainty, cycle, support, or assignment values on TL01-TL04",
+        "using the two remaining DINOv2 false positives to fit a confidence threshold",
+        "dropping TL04 or any failed scenario",
+        "calling provider truth-mask crops raw-phone perception",
+        "calling active identity evidence ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_posthoc_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_posthoc_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-temporal-local-fresh-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_SCENENN_ROMA_TEMPORAL_LOCAL_FRESH_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On four fresh source-disjoint SceneNN doors, the unchanged temporal-local action rule selected 20-50 frame gaps at 0.30-0.34 m and therefore generalized as an action policy. Same-crop DINOv2 reached TP=25 FP=4 FN=9 F1=0.793651 and 5/15 exact. Frozen RoMa absolute support retained precision 1.0 and removed all four false positives, but supported only TF01 and TF04, yielding TP=16 FP=0 FN=18 F1=0.64 and 2/15 exact; the consumed-cohort F1=0.885246 did not confirm.",
+      "successor_requires": "Retain temporal-local selection as an action component and RoMa cycle support as a high-precision confirmation branch. Before any further fresh claim, test a structurally different viewpoint-normalization or multi-frame support carrier on consumed scenes; do not tune the consumed matcher or support gates.",
+      "forbidden_repeats": [
+        "lowering the consumed 0.05 certainty, 0.01 directional cycle-fraction, 0.5 cycle-purity, or six-pixel cycle-error gates",
+        "changing the consumed 1.25 truth-visible crop expansion",
+        "reselecting TF01-TF04 frames or targets",
+        "using TF02 or TF03 outcomes to fit a threshold",
+        "dropping any failed true pair or scenario",
+        "calling truth-cropped correspondence raw-phone perception, ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_fresh_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_fresh_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_fresh_oni_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_fresh_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_temporal_local_fresh_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-planar-rectified-posthoc-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_SCENENN_ROMA_PLANAR_RECTIFIED_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On the consumed fresh four-door cohort, exact target-mesh PCA plane rectification and target-visible cycle counting changed no assignment metric: rectified RoMa remained TP=16 FP=0 FN=18, precision 1.0, recall 0.470588, F1 0.64, 2/15 exact and 2/4 true supports. TF04 purity improved to about 0.90, but TF02 remained about 0.34 and edge-clipped TF03 had zero cycle matches.",
+      "successor_requires": "Use temporal evidence that introduces actually observed intermediate appearance rather than another single-view warp; preserve the frozen RoMa thresholds and evaluate first on consumed scenes.",
+      "forbidden_repeats": [
+        "changing PCA axes, exact plane extent, 384x768 output, invalid fill, or visibility denominator on this cohort",
+        "adding a rectification confidence or purity threshold",
+        "using a different plane padding or percentile after observing TF02 and TF03",
+        "claiming fresh authority from this consumed replay",
+        "calling provider target-plane geometry phone-side perception or navigation authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_planar_rectified_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_planar_rectified_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-midpoint-bridge-posthoc-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_SCENENN_ROMA_MIDPOINT_BRIDGE_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On the consumed fresh four-door cohort, one pre-RGB geometry-selected midpoint and unchanged RoMa support on both reference-to-midpoint and midpoint-to-query produced exactly the predecessor assignment: TP=16 FP=0 FN=18 F1=0.64, 2/15 exact and 2/4 supported true pairs. The midpoint carrier added no recall or assignment value.",
+      "successor_requires": "Do not add another temporal hop on this cohort. Change the spatial evidence domain structurally, preserve all matcher thresholds, and require a fresh-scene confirmation after any consumed-cohort mechanism gain.",
+      "forbidden_repeats": [
+        "changing the four frozen midpoint frames",
+        "adding more selected bridge frames after outcome",
+        "relaxing certainty, cycle fraction, purity, or cycle error",
+        "dropping TF02 or TF03",
+        "claiming fresh authority from this consumed replay",
+        "calling temporal correspondence ownership, access, traversability, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_midpoint_bridge_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_midpoint_bridge_posthoc_source_admission_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_midpoint_bridge_posthoc_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_midpoint_bridge_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-full-context-mask-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "On the consumed fresh four-door cohort, running unchanged RoMa on full 640x480 frames and counting cycles only from the source target-visible mask into the paired target-visible mask improved TP from 16 to 34, kept FP=0, removed all 18 FN, raised F1 from 0.64 to 1.0, exact scenarios from 2/15 to 15/15, and true support from 2/4 to 4/4 without changing any matcher threshold.",
+      "successor_requires": "Run the identical whole-frame input, nearest-neighbour mask domain, denominator, matcher, thresholds, assignment and gate on newly selected SceneNN scenes before any generalized component claim; then replace provider masks with an independently justified phone-side proposal source before product promotion.",
+      "forbidden_repeats": [
+        "tuning mask dilation, erosion, denominator, certainty, cycle fraction, purity, or cycle error on the consumed cohort",
+        "changing full-frame resize or assignment after outcome",
+        "dropping any target or failed different-target pair",
+        "claiming confirmation before fresh scenes",
+        "calling provider target masks raw-phone perception",
+        "calling correspondence venue ownership, access, traversability, waypoint, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-full-context-mask-fresh-confirmation-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_SCENENN_ROMA_FULL_CONTEXT_MASK_FRESH_CONFIRMATION_GATE_MET",
+      "summary": "On the final four source-disjoint, previously unconsumed SceneNN scenes containing exactly one door label, the unchanged full-image RoMa plus exact target-mask-gated cycle mechanism reached TP=34 FP=0 FN=0, precision=recall=F1=1.0, 15/15 exact NONE-aware scenarios, and absolute support for all four true pairs. This independently retained the consumed-cohort perfect result without threshold or cohort tuning.",
+      "successor_requires": "Replace privileged provider target-visible masks with an independently justified phone-side proposal carrier while keeping whole-image context, cycle-support thresholds, reciprocal NONE assignment and exact target truth fixed; provider-disjoint or real-phone evidence is still required before promotion beyond Development.",
+      "forbidden_repeats": [
+        "using any of the eight SceneNN scenes to tune mask shape, denominator, certainty, cycle fraction, purity, cycle error, assignment, or action selection",
+        "reselecting FF01-FF04 frames or targets",
+        "dropping different-target pairs or NONE scenarios",
+        "calling provider target masks raw-phone proposals",
+        "calling correspondence named-entrance ownership, access, traversability, waypoint, arrival, handoff, safety, or user benefit"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_source_admission_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_cohort_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_oni_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_rgb_receipt_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_full_context_mask_fresh_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-scenenn-roma-grounded-sam-proposal-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_SCENENN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "On the consumed four-scene confirmation cohort, replacing all eight exact provider target masks with truth-blind highest-score GroundingDINO door boxes and native SAM2.1 masks retained the complete RoMa result: TP=34 FP=0 FN=0, precision=recall=F1=1.0, 15/15 exact NONE-aware scenarios, and 4/4 supported true pairs. Proposal-mask truth IoU ranged from 0.60 to 0.95, so perfect overlap was not required.",
+      "successor_requires": "Freeze the unchanged prompt, thresholds, top-one selection, SAM postprocess and RoMa responsibility on a source-disjoint multi-door or provider-disjoint cohort where target selection cannot rely on exactly-one-door admission; separately measure Android or edge deployment before any phone-runtime claim.",
+      "forbidden_repeats": [
+        "tuning the door prompt, 0.4 box threshold, 0.3 text threshold, top-one rule, SAM mask postprocess, or RoMa thresholds on these eight frames",
+        "selecting proposals by provider truth overlap or RoMa outcome",
+        "calling consumed posthoc evidence fresh or source-disjoint",
+        "calling one-door proposal reachability multi-door target selection",
+        "calling correspondence named-entrance ownership, access, traversability, arrival, handoff, user benefit, deployment, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_scenenn_roma_grounded_sam_proposal_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_scenenn_roma_grounded_sam_proposal_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-roma-grounded-sam-proposal-source-not-evaluable",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "source_coverage",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "not_evaluable",
+      "decision": "L10_3RSCAN_ROMA_GROUNDED_SAM_PROPOSAL_POSTHOC_SOURCE_NOT_EVALUABLE",
+      "summary": "The unchanged SceneNN-successful single door prompt at GroundingDINO box/text thresholds 0.4/0.3 returned zero retained boxes on the first frozen 3RScan reference frame. The protocol stopped before SAM2 and RoMa, so no correspondence or NONE metric is authorized. The full target projected bbox was present in the consumed source, isolating category-prompt reachability as the blocker.",
+      "successor_requires": "Change the proposal information source structurally, preferably from an already bound visual reference to target-conditioned box or point prompts. Do not lower the consumed GroundingDINO thresholds or alter the door prompt on these frames.",
+      "forbidden_repeats": [
+        "lowering the 0.4 box or 0.3 text threshold on the consumed 3RScan frames",
+        "changing or expanding the door prompt after the observed miss",
+        "calling NOT_EVALUABLE a SAM2, RoMa, identity, or NONE failure",
+        "claiming source-disjoint or fresh evidence from consumed 3RScan images",
+        "calling proposal reachability named-entrance ownership, access, traversability, arrival, handoff, benefit, deployment, reliability, or safety evidence"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_roma_grounded_sam_proposal_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_grounded_sam_proposal_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-roma-cycle-prompt-sam-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_SAM_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "Replacing the unreachable category text proposal with an already-bound reference rectangle transported by largest-component bidirectional RoMa cycles generated the correct target-conditioned box and native SAM2 mask for all three provider-distinct multi-door pairs. Prompt-box IoU was 0.638-0.838 and SAM-mask bbox IoU was 0.584-0.916. The full gate missed because unchanged bilateral support was 2/3: DR01 forward cycle purity was 0.494961 against the frozen 0.5 gate, while DR02 and DR03 passed.",
+      "successor_requires": "Retain reference-conditioned cycle-affine proposal transport as a challenger. Change the privileged initial reference representation from a rectangular bbox to one native SAM2 reference mask before transport; do not tune the 0.5 purity gate or alter the generated query boxes on the consumed frames.",
+      "forbidden_repeats": [
+        "lowering the frozen 0.5 cycle-purity or 0.01 cycle-fraction gate",
+        "expanding or shrinking any transported prompt after target IoU",
+        "choosing another connected component or affine fit after outcome",
+        "using query target truth to generate a prompt",
+        "claiming the 3/3 proposal result solves raw-camera initial binding, open-world absence, named entrance, ownership, access, traversability, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_sam_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_sam_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-roma-cycle-prompt-sam-reference-mask-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_SAM_REFERENCE_MASK_POSTHOC_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "Changing only the initial reference support from a rectangle to one native SAM2 mask restored bilateral absolute support from 2/3 to 3/3 and raised DR01 forward purity from 0.494961 to 0.690015. It reduced DR01 geometric coverage because the reference mask bbox overlapped only 0.352211 of the bound rectangle, so minimum prompt IoU fell to 0.309975 and minimum query-mask bbox IoU to 0.487915; the full gate remained unmet.",
+      "successor_requires": "Keep the native reference SAM mask as the identity-support domain while projecting the original already-bound rectangle as the complete extent through the same frozen affine map. Do not tune IoU, cycle or mask thresholds.",
+      "forbidden_repeats": [
+        "lowering the 0.5 IoU or cycle-purity gates",
+        "expanding the DR01 prompt after outcome",
+        "choosing another SAM mask or connected component",
+        "using query target truth for proposal generation",
+        "claiming consumed Development initial binding, named entrance, ownership, access, traversability, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-roma-cycle-prompt-dual-surface-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "Separating the native reference SAM identity-support surface from the already-bound rectangular extent passed the frozen three-target multi-door gate. Target-conditioned prompt IoU was 0.637-0.837, native query SAM-mask bbox IoU was 0.582-0.909, and unchanged bilateral RoMa absolute support passed 3/3. DR01 forward purity rose from the rectangular predecessor's 0.494961 to 0.634361 without lowering any threshold.",
+      "successor_requires": "Freeze the dual-surface responsibilities, models and thresholds on physically target-disjoint images before any generalized component claim. Replace the privileged initial reference bbox only in a separate raw-camera binding experiment.",
+      "forbidden_repeats": [
+        "tuning support or extent surfaces, RoMa thresholds, connected components, affine fit, or SAM masks on DR01-DR03",
+        "using query truth to generate or select proposals",
+        "calling consumed posthoc evidence fresh or provider-independent confirmation",
+        "calling privileged initial reference binding raw-camera discovery",
+        "calling correspondence named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-dual-surface-physical-target-confirmation-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_NOT_MET",
+      "summary": "On three pre-RGB physical-target-disjoint doors, transported boxes localized 3/3 at IoU 0.767-0.920 and unchanged bilateral support passed 3/3. The single-mask geometric-output gate failed only because DR02 native query SAM support undersegmented the target (bbox IoU 0.371), while the transported extent IoU was 0.767.",
+      "successor_requires": "Retain query SAM masks as identity support and transported boxes as geometric extent; confirm that four-surface responsibility split on another physical-target-disjoint cohort.",
+      "forbidden_repeats": [
+        "tuning DR02 SAM mask or prompt",
+        "lowering the 0.5 mask-output IoU gate retroactively",
+        "calling correct extent and support a pixel-mask confirmation",
+        "claiming same-provider evidence raw-camera binding, ownership, access, traversability, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_dual_surface_confirmation_source_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_dual_surface_confirmation_cohort_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-four-surface-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "observation_perception",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_FOUR_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "A zero-model-call posthoc responsibility split retained native reference/query SAM masks only as identity support and reference/transported boxes only as geometric extent. On the opened first confirmation cohort, extent IoU remained at least 0.766775 and bilateral support remained 3/3 despite diagnostic query-support bbox IoU 0.371054.",
+      "successor_requires": "Freeze the four surface roles directly on another physical-target-disjoint cohort before confirmation authority.",
+      "forbidden_repeats": [
+        "calling posthoc reinterpretation fresh confirmation",
+        "hiding support-mask IoU diagnostics",
+        "changing stored masks or extents",
+        "claiming pixel-accurate segmentation or raw-camera binding"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_four_surface_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_four_surface_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-four-surface-physical-target-confirmation-negative",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "L10_3RSCAN_ROMA_CYCLE_PROMPT_FOUR_SURFACE_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_NOT_MET",
+      "summary": "On a second pre-RGB physical-target-disjoint cohort, all three transported extents reached IoU 0.738-0.793 and all query SAM support bboxes reached IoU 0.724-0.870. Legacy whole-mask global purity supported only 2/3 because DR03 forward/reverse purity was 0.473/0.422 despite a 17624-pixel dominant cycle component and low affine residual.",
+      "successor_requires": "Use frozen cycle opportunity plus majority dominance of the largest spatially coherent bidirectional cycle component; do not lower global purity thresholds.",
+      "forbidden_repeats": [
+        "lowering 0.5 global purity",
+        "fitting a component-size or residual threshold",
+        "dropping DR03",
+        "calling correct extents alone identity confirmation",
+        "claiming raw-camera binding or navigation authority"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_four_surface_confirmation_source_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_four_surface_confirmation_cohort_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_four_surface_confirmation_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-cycle-component-support-posthoc-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "On the opened second confirmation cohort, unchanged cycle opportunity was at least 0.242408 and the largest spatial cycle component contained at least 0.653030 of all valid cycles for every target, while extent IoU stayed at least 0.737735. Coherent support was 3/3 versus 2/3 for legacy global purity.",
+      "successor_requires": "Freeze 0.01 cycle opportunity, 0.5 component-majority and the unchanged four-surface transport on a third physical-target-disjoint cohort.",
+      "forbidden_repeats": [
+        "fitting component size or affine residual",
+        "lowering 0.5 majority",
+        "calling consumed posthoc evidence confirmation",
+        "using query truth to select components"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_cycle_component_support_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_support_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-cycle-component-support-physical-target-confirmation",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_MET",
+      "summary": "On a third pre-RGB physical-target-disjoint cohort, transported extent IoU was 0.532-0.851, query SAM support bbox IoU was 0.542-0.915, reference cycle opportunity was at least 0.507526, and the dominant component held at least 0.825031 of all valid cycles. Coherent support confirmed 3/3 while legacy global purity again supported only 2/3.",
+      "successor_requires": "Retain the confirmed four-surface plus coherent-cycle component within same-provider Development. Next change must address privileged initial reference binding or negative-pair/open-world rejection on a distinct source; do not spend more targets tuning 3RScan positives.",
+      "forbidden_repeats": [
+        "tuning the nine consumed confirmation targets",
+        "changing 0.01 opportunity or 0.5 dominance",
+        "claiming negative-pair rejection",
+        "calling same-provider component confirmation raw-camera binding, provider independence, named entrance, ownership, access, traversability, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_cycle_component_confirmation_source_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_confirmation_cohort_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_support_confirmation_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_support_confirmation_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-cycle-component-open-set-posthoc",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_CYCLE_COMPONENT_OPEN_SET_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "On the consumed third cohort, unchanged coherent-cycle transport retained 3/3 positives and rejected 4/4 exact-target-absent cross-scene queries with zero false commits. Positive cycle opportunity was 0.507526-0.644900; all negatives stayed below 0.01 at 0-0.002821 even when residual component dominance exceeded 0.5.",
+      "successor_requires": "Retain cross-scene exact-target-absence rejection as Development evidence. Next address privileged raw initial binding or freeze harder same-scene sibling-door negatives; do not tune this consumed panel.",
+      "forbidden_repeats": [
+        "tuning 0.01 cycle opportunity or 0.5 dominance on these negatives",
+        "dropping a negative or positive pair",
+        "calling cross-scene negatives same-scene sibling-door rejection",
+        "claiming raw-camera binding, provider independence, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_cycle_component_open_set_posthoc_execution_failure_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_open_set_posthoc.py",
+        "research/active/l10-r0/l10_3rscan_cycle_component_open_set_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_cycle_component_open_set_posthoc_result_v1.json"
+      ],
+      "commit": "WORKTREE_UNCOMMITTED_2026-09-01"
+    },
+    {
+      "id": "terminal-l10-3rscan-complementary-corroboration-posthoc",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "identity_binding",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "L10_3RSCAN_COMPLEMENTARY_CORROBORATION_POSTHOC_DEVELOPMENT_GATE_MET",
+      "summary": "On the consumed hard sibling-door panel, local bilateral binding plus either target-excluded global epipolar majority or bidirectional active-query majority retained 3/3 positives, rejected 2/2 exact-target-absent siblings, made zero false commits, and reached committed precision 1.0. Global geometry preserved DR01/DR02 while active-query majority preserved DR02/DR03.",
+      "successor_requires": "Run the exact Boolean composition and unchanged 0.5 majority on a pre-frozen physical-target-disjoint sibling panel; do not treat consumed recomposition as confirmation.",
+      "forbidden_repeats": [
+        "sweeping the 0.5 majority",
+        "changing Boolean composition on the consumed five pairs",
+        "dropping DR01, DR03 or either sibling negative",
+        "claiming fresh confirmation, arbitrary sibling rejection, raw-camera binding, navigation, arrival, handoff, benefit, reliability, or safety"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_complementary_corroboration_posthoc.py",
+        "research/active/l10-r0/l10_3rscan_complementary_corroboration_posthoc_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_complementary_corroboration_posthoc_result_v1.json"
+      ],
+      "commit": "0a222409"
+    },
+    {
+      "id": "terminal-l10-3rscan-complementary-confirmation-source-not-evaluable",
+      "route": "ten-meter-copilot",
+      "failure_layers": [
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "not_evaluable",
+      "decision": "L10_3RSCAN_COMPLEMENTARY_CONFIRMATION_ACTIVE_QUERY_SOURCE_NOT_EVALUABLE",
+      "summary": "The first physical-target-disjoint confirmation freeze stopped on fixed target FC30 before RGB or model access. Its best second query covered only 0.591093 of the target versus the frozen 0.98 completeness requirement, so the panel cannot adjudicate the complementary algorithm.",
+      "successor_requires": "A separately frozen source that does not require an unavailable FC30 active query, or a new target/source selected before RGB/model outcomes with adequate active-query reachability.",
+      "forbidden_repeats": [
+        "silently replacing FC30",
+        "lowering 0.98 after opening model results",
+        "counting FC30 as an evaluated algorithm miss",
+        "claiming source failure disproves active corroboration"
+      ],
+      "evidence": [
+        "research/active/l10-r0/l10_3rscan_complementary_confirmation_freeze.py",
+        "research/active/l10-r0/l10_3rscan_complementary_confirmation_freeze_protocol_v1.json",
+        "research/active/l10-r0/l10_3rscan_complementary_confirmation_freeze_execution_failure_v1.json"
+      ],
+      "commit": "0a222409"
+    },
+    {
+      "id": "terminal-city-finetune-pilot-20260908-diagnostic-no-promotion",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_PILOT_FORMAL_RULE_PASS_FALSE_POSITIVE_COLLAPSE_NO_PROMOTION",
+      "summary": "One seed17 final-step200 City fine-tune lowers plaza macro balanced error 0.495173 to 0.459379 and passes the predeclared rule, but BODY FP 3 to 561 and HEAD FP 4 to 348 collapse group joint correctness 115/250 to 3/250. Retain original G13 D checkpoint as baseline; new checkpoint is diagnostic only.",
+      "successor_requires": "A separately authorized protocol addressing false-positive discrimination and localization, with frozen operating criteria and no rescue tuning of this consumed City TEST region.",
+      "forbidden_repeats": [
+        "threshold or recipe rescue on the consumed plaza TEST750",
+        "automatic replacement of G13 baseline",
+        "calling the one-map single-seed pilot natural-world confirmation or WARNING/DANGER validation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_FINETUNE_PILOT_20260908.md",
+        "artifacts.local/nearfield/city-pcg-20260908/worker-finetune-prep-v1/run-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_PROTOCOL_2026-09-08"
+    },
+    {
+      "id": "terminal-city-gate-intervention-20260908-diagnostic-no-promotion",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_GATE_REPLACEMENT_ATTENUATES_RECALL_NOT_A_REPAIR_NO_PROMOTION",
+      "summary": "Zero-training same-image original-gate replacement reduces consumed plaza BODY FPR 91.22% to 1.14% but recall 94.81% to 10.37%; HEAD recall 60% to 0%. This is attenuation, not useful repair or causal isolation. Cached BODY ranking AUC improves 0.682 to 0.829 in the preceding fine-tune, so no total-ranking-collapse claim follows.",
+      "successor_requires": "A separately authorized diagnostic or training protocol; retain fixed checkpoints and consumed source boundaries, without threshold rescue or automatic follow-on training.",
+      "forbidden_repeats": [
+        "promoting the hybrid as a repaired model",
+        "claiming gate intervention identifies the training loss or exonerates the backbone",
+        "threshold tuning on consumed plaza to rescue this result",
+        "claiming poor fixed-threshold specificity proves universally poor ranking"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_GATE_INTERVENTION_20260908.md",
+        "artifacts.local/nearfield/city-gate-intervention-20260908/worker-evidence/run-worker-v1/receipt.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_RECEIPT_2026-09-08"
     },
     {
       "id": "terminal-city-native-validation-20260908-diagnostic-no-promotion",
@@ -561,6 +1686,77 @@
       "assignment_basis": "Completed 40-frame curated static-route comparison with zero training; retain acquisition/evaluation components, not models as proven city perception."
     },
     {
+      "id": "terminal-city-dev-baseline-20260908-dev-selected-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_DEV_B_SELECTED_WEAK_DIAGNOSTIC_CHALLENGER_NO_FRESH_TEST_NO_PROMOTION",
+      "summary": "Same-map DEV128/32groups selects whole B checkpoint at BODY/HEAD thresholds 0.4268244802951813/0.4970442056655884: recall26/64 and16/64, FP6/64 and5/64. Joint2/32, support IoU0.06448/0. On consumed plaza frozen DEV thresholds yield BODY29/135 and HEAD0/15 recall. Weak diagnostic challenger only; original G13 retained.",
+      "successor_requires": "A separately authorized fresh-region TEST of the frozen whole B checkpoint and DEV thresholds; no consumed-plaza reselection or claim that backbone freezing is a causal repair.",
+      "forbidden_repeats": [
+        "tuning thresholds or winner on consumed plaza",
+        "calling DEV-selected performance independent-world or unbiased TEST evidence",
+        "splicing heads from A/B/C",
+        "promoting the weak B checkpoint or claiming backbone freezing repaired the task"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_DEV_BASELINE_20260908.md",
+        "artifacts.local/work/city-dev-baseline-20260908/model-run-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_PROTOCOL_2026-09-08"
+    },
+    {
+      "id": "terminal-city-relational-train-20260908-diagnostic-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_RELATIONAL_DATA_MIXED_DEV_WEAK_TRAIN_FIT_DIAGNOSTIC_NO_PROMOTION",
+      "summary": "One frozen-backbone B200 fit on old750+new384 yields consumed DEV BODY24/64 and HEAD18/64 recall versus prior B26/64 and16/64; joint remains2/32. New TRAIN AUC0.64390/0.61575 and diagnostic FPR<=10% recall envelopes0.30890/0.17708 show weak TRAIN separation, not only a0.5 operating-point issue. Retain data/diagnostic challenger; no promotion or claim that data are useless or backbone freezing is causal.",
+      "successor_requires": "Separately authorize a bounded optimization/fit sanity check; current200-step fit is complete. Preserve consumed DEV and no-fresh-TEST boundaries.",
+      "forbidden_repeats": [
+        "claiming mixed DEV tradeoff is a general gain",
+        "declaring new data useless or isolating backbone causality from joint prior/shape/region intervention",
+        "exporting TRAIN diagnostic thresholds or tuning on consumed plaza",
+        "claiming fresh TEST, Willow regression, natural-world validation or promotion"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_RELATIONAL_TRAIN_20260908.md",
+        "artifacts.local/work/city-relational-train-20260908/model-run-v1/result.json",
+        "artifacts.local/work/city-relational-train-20260908/train-score-diagnostic.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_PROTOCOL_2026-09-08"
+    },
+    {
+      "id": "terminal-city-fit-adequacy-20260908-diagnostic-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_BUDGET2000_MIXED_WEAK_CANDIDATE_NEW_TRAIN_HEAD_UNRESOLVED_NO_PROMOTION",
+      "summary": "Only budget changes200 to2000 with exact step200 parity and frozen backbone/BN. DEV BODY/HEAD recall37.5/28.125% to43.75/31.25% at per-head FPR<=10%, but joint2/32 to1/32 and negative-pixel activation grows. NewTRAIN HEAD AUC0.61575 to0.61081 and recall envelope0.17708 to0.171875; joint remains0/96. Retain trajectory/data/optimizer state as weak diagnostic challenger; extra budget alone does not resolve HEAD, without claiming convergence or architectural defect.",
+      "successor_requires": "Separately authorize a small balanced-TRAIN overfit or loss-gradient fit diagnostic before new mechanisms; no additional fits in this completed run.",
+      "forbidden_repeats": [
+        "claiming DEV recall gain is general repair or promotion",
+        "claiming2000 steps establish convergence or architectural impossibility",
+        "compensating consumed-plaza HEAD0/15 by aggregate joint127/250",
+        "using TRAIN intermediate diagnostics for retrospective best-checkpoint selection",
+        "claiming fresh TEST or Willow regression"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_FIT_ADEQUACY_20260908.md",
+        "artifacts.local/work/city-fit-adequacy-20260908/model-run-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_PROTOCOL_2026-09-08"
+    },
+    {
       "id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
       "route": "obstacle-avoidance",
       "failure_layers": [
@@ -589,6 +1785,32 @@
       "failure_signature": "DEV BODY recall 13/28 and HEAD 8/18 both below 0.5; Willow support IoU declines to 0.1345/0.0266. Corrected original-route meter is NOT_EVALUABLE, not a scored miss.",
       "revisit_trigger": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
       "assignment_basis": "One completed seed17 300-step fit failed predeclared retention; preserve diagnostic component without model promotion or further automatic fitting."
+    },
+    {
+      "id": "terminal-city-tiny-fit-20260908-diagnostic-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_TINY_MEMORIZATION_FULL_UPDATE_EVIDENCE_STRONG_FIT_NOT_MET_NO_PROMOTION",
+      "summary": "Fixed tinyTRAIN32 B/F2000 both achieve64/64 near bits and8/8 groups. B support IoU0.109734/0.089016; F0.555432/0.487975, so both fail unchanged strong-fit criterion requiring both heads>=0.5. Expected gradient paths were nonzero with no observed disconnection. F positive-mask HEAD TP116 FP118 FN0 implicates excess known-pixel activation in this shortfall, not missing positive pixels. Retain full-update fitting evidence and G13 architecture; no generalized candidate promotion.",
+      "successor_requires": "Separately authorize matched full-update TRAIN1134 versus retained B2000 from original initialization, final DEV only; never warm-start from memorized tiny weights.",
+      "forbidden_repeats": [
+        "lowering0.5 HEAD IoU strong-fit criterion",
+        "extra tiny optimization to rescue the stopped budget",
+        "calling memorization DEV or generalization evidence",
+        "claiming sampled nonzero gradients prove the entire pipeline correct",
+        "using tiny weights to warm-start the proposed matched comparison",
+        "claiming DEV plaza or Willow evaluation occurred"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_TINY_FIT_20260908.md",
+        "artifacts.local/work/city-tiny-fit-20260908/model-run-v1/result.json",
+        "artifacts.local/work/city-tiny-fit-20260908/support-error-diagnostic.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_INPUTS_2026-09-08"
     },
     {
       "id": "terminal-city-native-replay-20260908-diagnostic-no-promotion",
@@ -621,6 +1843,30 @@
       "assignment_basis": "One completed 300-step combined replay/thin recipe fails head recall, thin-target joint and old-localization retention; retain reproducible sampling and diagnostics only."
     },
     {
+      "id": "terminal-city-full-fit-20260908-development-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_FULL_PARAMETER2000_RETAIN_DEVELOPMENT_FITTING_CANDIDATE_NO_PROMOTION",
+      "summary": "Full-parameter2000 on1134 TRAIN frames reaches DEV BODY52/64 and HEAD46/64 recall with6/64 FP each; support IoU0.20745/0.20324, joint6/32. Retain full-update training and DEV candidate. Frozen DEV thresholds on consumed plaza give BODY51/135 TP31/615 FP and HEAD0/15 TP171/735 FP, joint81/250: no repaired-transfer, generalization or promotion claim.",
+      "successor_requires": "Separately authorize the next diagnostic or independent-region evaluation, preserving final2000 checkpoint and frozen DEV thresholds; consumed plaza cannot revise the candidate.",
+      "forbidden_repeats": [
+        "calling consumed DEV selection unbiased generalization",
+        "claiming full updates repaired plaza HEAD0/15",
+        "tuning thresholds on consumed plaza",
+        "automatic model or app promotion",
+        "claiming fresh TEST or Willow regression"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_FULL_FIT_20260908.md",
+        "artifacts.local/work/city-full-fit-20260908/model-run-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_PROTOCOL_2026-09-08"
+    },
+    {
       "id": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion",
       "route": "obstacle-avoidance",
       "failure_layers": [
@@ -650,6 +1896,32 @@
       "failure_signature": "Replay DEV-selected joint alerts fall 2/2 to 0/2 in the two reliable pairs despite transverse target overlap and peak hits. Historical control agreement is only 3/4; far two target pairs remain UNKNOWN.",
       "revisit_trigger": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
       "assignment_basis": "Selected same-instance two-reliable-pair Development evidence supports view/context sensitivity but cannot isolate yaw, background or appearance causes."
+    },
+    {
+      "id": "terminal-head-x0-20260908-diagnostic-coverage-candidate",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "HEAD_X0_RANKING_CONTEXT_SENSITIVITY_COVERAGE_DIAGNOSTIC_NO_CAUSAL_REPAIR_NO_PROMOTION",
+      "summary": "Zero-training original/B/F audit finds F plazaHEAD AUC0.2575; old15/plaza15 matched pooled positive masks are exactly equal. FP peaks concentrate on distant-building views but35 are UNKNOWN. ROI-versus-sham blur median probability delta-0.0811 contrasts with mean-fill+0.0207, so pure-background causality is not established. F ROI NN positive-minus-negative cosine gaps FP+0.1504, positives-0.0513, TN+0.0271 are prediction-conditioned association, not causality. Retain diagnostics and data-coverage candidate only.",
+      "successor_requires": "Separately authorized coverage or hard-negative pilot with original consumed plaza excluded from training; no new mechanism or promotion inferred from this audit.",
+      "forbidden_repeats": [
+        "claiming pure-background shortcut causally proved by blur alone",
+        "treating UNKNOWN support peaks as known background",
+        "calling ROI-conditioned nearest-neighbor cosine causal evidence",
+        "claiming pooled mask equality establishes full-image or physical-object equivalence",
+        "counting failed parity inference attempts as training",
+        "reusing consumed plaza as training or fresh confirmation without an explicit new contract"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/HEAD_X0_AUDIT_20260908.md",
+        "artifacts.local/work/head-x0-20260908/recovery-v3/summary.json",
+        "artifacts.local/work/head-x0-20260908/matched-scaffold-check.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_RECOVERY_RECEIPT_2026-09-08"
     },
     {
       "id": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion",
@@ -684,6 +1956,31 @@
       "assignment_basis": "Completed fixed-v1 receipt PASS108, optimizer_steps0; retain reproducible field diagnosis and failure cases. Direct RGB-to-risk failures cannot establish monocular-depth error as a cause."
     },
     {
+      "id": "terminal-city-coverage64-20260908-limited-transfer",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "CITY_COVERAGE64_LIMITED_TRANSFER_SIGNAL_NO_RELATIONAL_GENERALIZATION_REPAIR_NO_PROMOTION",
+      "summary": "One matched full-parameter2000 fit on1198 TRAIN versus reused F2000. New same-plaza EVAL64 HEAD TP8 to12/32, FP3 to1/32, AUC0.655273 to0.708984 and positive support IoU0.138472 to0.185173; HEAD correct43 to51/64, joint groups0 to3/16. New TRAIN64 near128/128 bits fit, yet EVAL HEAD still misses20/32. DEV HEAD IoU0.203243 to0.185211 and EVAL BODY AUC0.782227 to0.753906 regress. Limited coverage signal only; retain current G13-D baseline.",
+      "successor_requires": "Separately authorized next diagnosis or source coverage evaluation; preserve this one-fit budget, frozen DEV selection and consumed cohort boundaries.",
+      "forbidden_repeats": [
+        "calling same-plaza regional evidence independent-world confirmation",
+        "claiming relational generalization repaired while20/32 EVAL HEAD positives are missed",
+        "promoting this candidate over the current G13-D baseline",
+        "rescue fitting or increasing this completed experiment budget",
+        "training on EVAL64 or consumed plaza"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_COVERAGE64_20260908.md",
+        "artifacts.local/work/city-coverage64-20260908/model-run-v1/result.json",
+        "artifacts.local/work/city-coverage64-20260908/model-run-v1/receipt.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_MODEL_RUN_2026-09-08"
+    },
+    {
       "id": "terminal-city-field-approach-20260908-distance-view-diagnostic",
       "route": "obstacle-avoidance",
       "failure_layers": [
@@ -716,6 +2013,102 @@
       "failure_signature": "G10 misses39/64 eligible opportunities with23 joint hits but18/21 matched-clear false-alert frames; only3 joint hits have silent controls. G13 misses64/64. Eight hit sequences lose nearer; nearest-only ninth persistence NOT_TESTED.",
       "revisit_trigger": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
       "assignment_basis": "Completed fixed capture and inference with zero fitting; five focused tests and independent cached count review support the diagnostic artifact. Results do not establish target-only causality, continuous-motion lead time or monocular-depth error."
+    },
+    {
+      "id": "terminal-city-support-dice-20260908-transfer-tradeoff",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "FIXED_SUPPORT_DICE_RECIPE_NEGATIVE_CONTROL_FOR_GENERALIZATION_REPAIR",
+      "summary": "Fixed Dice-only recipe improves addedTRAIN HEAD support IoU0.20551 to0.44215 and reduces positive-frame FP1035 to344, pixel recall1 to0.99627. EVAL HEAD IoU0.18517 to0.19299 contrasts with pixel recall0.55944 to0.36713, near TP12 to11/32, FP1 to3/32, AUC0.70898 to0.67480 and joint3 to2/16. DEV near HEAD54 to42/64 and BODY58 to46/64 with FP6 to5. Retain training-localization evidence; fixed recipe is a negative control for generalization repair, not evidence against all Dice or the architecture. Coverage64 and default G13 remain unchanged.",
+      "successor_requires": "Separately authorize a bounded follow-up; retain this fixed recipe as a negative control and do not sweep or rescue-fit this completed experiment.",
+      "forbidden_repeats": [
+        "claiming generalization repaired from TRAIN localization or mean EVAL IoU alone",
+        "generalizing the fixed-recipe outcome to all Dice losses or architecture defects",
+        "promoting over coverage64 or default G13",
+        "adding a second fit or sweep to this completed budget"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CITY_SUPPORT_DICE_20260908.md",
+        "artifacts.local/work/city-support-dice-20260908/model-run-v1/result.json",
+        "artifacts.local/work/city-support-dice-20260908/model-run-v1/pixel-assessment.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_MODEL_RUN_2026-09-08"
+    },
+    {
+      "id": "terminal-head-s1-20260908-support-transfer-diagnostic",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "HEAD_S1_RETAIN_SUPPORT_TRANSFER_DIAGNOSTIC_NO_READOUT_REPLACEMENT",
+      "summary": "Zero-training HEAD-S1 compares learned near and support max/top6/LSE on consumed cohorts. Current Coverage1198 HEAD AUC near/max/top6/LSE: DEV0.930/0.795/0.808/0.807; EVAL0.709/0.651/0.648/0.647; plaza0.228/0.384/0.386/0.376, with all four plaza recall-at-FPR10 zero. EVAL max recall-at-FPR10 gives13 versus learned near12/32, not strong improvement. Historical F1134 BODY plaza LSE AUC0.809 versus near0.701 does not reproduce with current Coverage BODY. Retain diagnostic evidence for cross-region support stability; neither proves readout harmless nor justifies direct MIL replacement.",
+      "successor_requires": "Separately authorized cross-region evidence-stability diagnosis; no training or readout replacement from this consumed ranking audit.",
+      "forbidden_repeats": [
+        "claiming learned readout is harmless from this audit",
+        "direct MIL replacement based on consumed score comparisons",
+        "calling13 versus12/32 a strong improvement",
+        "generalizing historical F1134 BODY benefit to current Coverage",
+        "treating descriptive recall envelopes as selected operating thresholds"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/HEAD_S1_20260908.md",
+        "artifacts.local/work/head-s1-20260908/audit-v2/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_AUDIT_V2_2026-09-08"
+    },
+    {
+      "id": "terminal-head-paired-20260908-appearance-diagnostic",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "HEAD_P1_RETAIN_PAIRED_DIAGNOSTIC",
+      "summary": "96-frame static-background paired diagnostic passes64 native positive/UNKNOWN comparisons and both original DEV32 exact predictions. Coverage1198 L damage3/16, M0/16: one TRAIN alert loss, one EVAL ordering reversal, one EVAL positive-support loss. Original A already has only1/8 paired EVAL HEAD TP. A/A RGB and model residuals limit pure appearance-causal attribution.",
+      "successor_requires": "A distinct source or mechanism and separately scoped question; retain consumed same-world status and report correct relations, positive support and false alarms together.",
+      "forbidden_repeats": [
+        "claiming appearance invariance alone is task success",
+        "counting equal degraded support as recovery",
+        "promoting either fitted model from this run",
+        "repeating this fixed weight or reopening plaza without a distinct question",
+        "claiming independent-world or real-device generalization"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/HEAD_PAIRED_RESULTS_20260908.md",
+        "artifacts.local/work/head-paired-20260908/inference-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_RECEIPTS_2026-09-08"
+    },
+    {
+      "id": "terminal-head-paired-20260908-weak-consistency-no-benefit",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "HEAD_P1_FIXED_WEAK_CONSISTENCY_NEGATIVE_KEEP_COVERAGE",
+      "summary": "Two matched originalG13 seed17 final2000-step fits share48 paired TRAIN images,40000 original1198 draws and24000 paired draws. ERM versus .1 probability consistency has identical originalEVAL64 HEAD TP17/32 FP8/32 AUC0.702148; support recall58.39% to57.69%; BODY TP10/32 FP1/32 both. Original Coverage HEAD TP12 FP1 and BODY TP16, so preserve Coverage. Paired damage3 to1 partly hides oblique-rod support5/6 to3/6 becoming1/6 to1/6. Archive this fixed recipe; no weight sweep or promotion.",
+      "successor_requires": "A distinct source or mechanism and separately scoped question; retain consumed same-world status and report correct relations, positive support and false alarms together.",
+      "forbidden_repeats": [
+        "claiming appearance invariance alone is task success",
+        "counting equal degraded support as recovery",
+        "promoting either fitted model from this run",
+        "repeating this fixed weight or reopening plaza without a distinct question",
+        "claiming independent-world or real-device generalization"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/HEAD_PAIRED_RESULTS_20260908.md",
+        "artifacts.local/work/head-paired-20260908/fit-v1/result.json"
+      ],
+      "commit": "WORKTREE_EXECUTED_SOURCE_HASHES_IN_RECEIPTS_2026-09-08"
     },
     {
       "id": "terminal-body-query-v1-20260909-mixed-no-replacement",
@@ -888,6 +2281,28 @@
       "commit": "WORKTREE_FROZEN_INPUT_AND_RESULT_HASHES_IN_RECEIPT"
     },
     {
+      "id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "evaluation_evidence",
+        "geometry_motion"
+      ],
+      "status": "not_evaluable",
+      "decision": "ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST",
+      "summary": "Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training.",
+      "successor_requires": "A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits.",
+      "forbidden_repeats": [
+        "Automatic source or frame expansion to rescue this fixed subset",
+        "Treating native ASE counts as V1 pinhole-equivalent labels",
+        "Claiming no visible endpoints as certified free space"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
+        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md"
+      ],
+      "commit": "d141298c52746c832ac56f215558145b4824c95c"
+    },
+    {
       "id": "terminal-body-query-depth-oracle-20260909-limited-routing",
       "route": "obstacle-avoidance",
       "failure_layers": [
@@ -911,28 +2326,6 @@
         "artifacts.local/work/body-query-depth-oracle-20260909/validation.json"
       ],
       "commit": "WORKTREE_SOURCE_NATIVE_INPUT_AND_RESULT_HASHES_IN_RECEIPTS"
-    },
-    {
-      "id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
-      "route": "obstacle-avoidance",
-      "failure_layers": [
-        "evaluation_evidence",
-        "geometry_motion"
-      ],
-      "status": "not_evaluable",
-      "decision": "ASE_BODY_QUERY_PILOT_COVERAGE_INSUFFICIENT_FOR_HEAD_ONLY_TEST",
-      "summary": "Official ASE scenes0,4,8 fixed72 frames: BODY_ONLY15 HEAD_ONLY0 BOTH47 NEITHER10. Geometry adapter works but HEAD-only coverage does not admit model testing. No model inference or training.",
-      "successor_requires": "A separately authorized source selection with HEAD-only opportunities and reviewed model-compatible projection; retain camera-anchored proxy limits.",
-      "forbidden_repeats": [
-        "Automatic source or frame expansion to rescue this fixed subset",
-        "Treating native ASE counts as V1 pinhole-equivalent labels",
-        "Claiming no visible endpoints as certified free space"
-      ],
-      "evidence": [
-        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_RESULTS_20260909.md",
-        "research/active/dtr-r0/nearfield/ASE_BODY_QUERY_PILOT_20260909.md"
-      ],
-      "commit": "d141298c52746c832ac56f215558145b4824c95c"
     },
     {
       "id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
@@ -2976,6 +4369,165 @@
         "research/active/dtr-r0/nearfield/MZ77_APPROACH_SEQUENCE_20260911.md"
       ],
       "commit": "38efdc18ed05b3d727d277525da298e8333396ae"
+    },
+    {
+      "id": "terminal-mz82-temporal-visual-canary-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "failed",
+      "decision": "EXPLICIT_TEMPORAL_VISUAL_CANARY_NO_LOW_FP_TAIL",
+      "summary": "Fixed causal five-frame BODY/HEAD corridor flow, expansion, image-TTC and stability scores rescue 0/0/2 TP at added FP<=5 under the three MZ79 5-klux typical profiles, below the 10-TP canary and 22/25/28 25%-FN targets. Only two wall HEAD_NEAR bits are rescued with one wall HEAD_FAR error; head-bar and thin-pole rescue none.",
+      "successor_requires": "Do not tune this recipe or automatically launch learned temporal RGB on consumed MZ77. Revisit temporal vision only with source-separated motion evidence and a changed information mechanism such as measured IMU ego-motion compensation. Prioritize ToF+radar+IMU or stronger depth as a separate physical-observability route.",
+      "forbidden_repeats": [
+        "Tune corridor, flow, TTC, history or cutoff on consumed MZ77",
+        "Treat oracle thresholds as deployable cuts",
+        "Escalate directly to ConvGRU or a larger video model on this source",
+        "Claim all temporal vision is impossible",
+        "Translate consumed simulation into hardware, alert, user-benefit or safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ82_TEMPORAL_VISUAL_CANARY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ82_TEMPORAL_VISUAL_CANARY_20260912.md"
+      ],
+      "commit": "d2e6aab4c242c926dcf05163d2777bf66cfdd4c9"
+    },
+    {
+      "id": "terminal-mz83-radar-information-canary-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RADAR_INFORMATION_CANARY_PASSES_LOW_FP_RESCUE",
+      "summary": "A fixed identity-free radar-like forward model and generic range/closing-velocity/azimuth expert rescues 47/53/59 MZ79 generic ToF FN at zero added FP, exceeding required 12/14/15. Fixed ToF OR radar is77TP0FP1FN; radar-only rescue remains HEIGHT_UNKNOWN.",
+      "successor_requires": "One bounded late-fusion comparison on harder preferably new scenes with weak/small reflectors, near off-corridor clutter, wall/multipath proxies and head motion; retain generic HEIGHT_UNKNOWN output and unchanged ToF attribution.",
+      "forbidden_repeats": [
+        "Treat 77TP0FP1FN as measured radar performance",
+        "Use target IDs, masks, actor names or evaluator labels in the sensor predictor",
+        "Fabricate radar BODY or HEAD attribution",
+        "Train a radar network or launch a full state estimator from this one easy source",
+        "Translate consumed simulation into alert, deployment, user-benefit or safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ83_RADAR_INFORMATION_CANARY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ83_RADAR_INFORMATION_CANARY_20260912.md"
+      ],
+      "commit": "bb55e4efd538c4c2e5cf9a7f14335fd9a0bb82d4"
+    },
+    {
+      "id": "terminal-mz84-bidirectional-complementarity-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "BIDIRECTIONAL_TOF_RADAR_COMPLEMENTARITY_CANARY_PASSES",
+      "summary": "On a new six-family 480-frame analytic source, fixed ToF OR (ToF_UNKNOWN AND radar) reaches160TP8FP11FN, F1.944 versus ToF F1.807 and radar F1.428. ToF and radar each recover distinct failure families, fusion adds no FP or first-alert delay, and39 radar-only true frames remain HEIGHT_UNKNOWN.",
+      "successor_requires": "Change the information source with measured or credible device-calibrated sensor traces, or run one bounded fresh-source state-estimation canary with explicit IMU ego-motion compensation; retain generic radar HEIGHT_UNKNOWN output and valid-clear ToF veto semantics.",
+      "forbidden_repeats": [
+        "Treat analytic RCS, multipath, sunlight, gap or motion proxies as measured sensor performance",
+        "Train learned fusion on the consumed MZ84 source",
+        "Posthoc tune fusion hold time to remove the two observed event fragments",
+        "Fabricate radar BODY or HEAD attribution",
+        "Translate simulation policy logic into alert, deployment, user-benefit or safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_20260912.md"
+      ],
+      "commit": "bfca8812f60fd490e6d0c70d760e05ef5d3cfe27"
+    },
+    {
+      "id": "terminal-mz85-rotation-compensated-state-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "ROTATION_COMPENSATION_MECHANISM_CANARY_PASSES",
+      "summary": "On the consumed MZ84 analytic source, causal gyro yaw/pitch rotation changes fusion from160TP8FP11FN F1.944 to160TP0FP11FN F1.967. Sealed MZ84 prediction identity, every non-head-motion bit, first-alert frame and fragmentation count are preserved.",
+      "successor_requires": "Fresh source-separated head-motion simulation or measured/device-calibrated gyro plus ToF/radar traces with bias, timestamp and extrinsic errors; gap-onset continuity remains a separate mechanism.",
+      "forbidden_repeats": [
+        "Treat perfect correction on the consumed constructed source as IMU generalization",
+        "Use accelerometer translation or tune gyro thresholds on MZ85",
+        "Posthoc repair the two MZ84 gap-onset fragments in this experiment",
+        "Launch learned state estimation from the consumed mechanism canary",
+        "Translate analytic mechanism evidence into hardware, alert, user-benefit or safety performance"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ85_ROTATION_COMPENSATED_STATE_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ85_ROTATION_COMPENSATED_STATE_20260912.md"
+      ],
+      "commit": "02a524b625898275fd0c06b08413f95cdb45f8d7"
+    },
+    {
+      "id": "terminal-mz85-residual-fn-audit-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "diagnostic",
+      "decision": "RESIDUAL_FN_SPLIT_NO_SINGLE_DOMINANT_MECHANISM",
+      "summary": "The11 sealed MZ85 generic FN split into4 lateral frame-zero history cold starts,4 ToF-UNKNOWN frames with qualifying raw radar evidence not yet activated, and3 dual instantaneous evidence absences. Five are gap-related but only2 already have a prior hazard directly preservable by authority hold;39 HEIGHT_UNKNOWN generic TP are separate attribution debt.",
+      "successor_requires": "Keep any continuity hold bounded to the two prior-hazard gap-onset frames; test orientation robustness with fresh declared gyro bias, noise, timing and extrinsic perturbations before broader state-estimator claims.",
+      "forbidden_repeats": [
+        "Describe all11 generic FN as gap continuity failures",
+        "Count39 HEIGHT_UNKNOWN generic true positives as generic false negatives",
+        "Use an authority hold to invent hazard before any prior positive state",
+        "Treat episode-frame-zero cold start as measured sensor failure prevalence",
+        "Train a state estimator on this consumed post-result audit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ85_RESIDUAL_FN_AUDIT_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ85_RESIDUAL_FN_AUDIT_20260912.md"
+      ],
+      "commit": "38b41ed6416127cfbd11d792feb6de550396e84c"
+    },
+    {
+      "id": "terminal-mz87-imu-realism-falsifier-20260912",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "geometry_motion",
+        "evaluation_evidence",
+        "decision_lifecycle"
+      ],
+      "status": "negative",
+      "decision": "ROTATION_COMPENSATION_TOLERANCE_NOT_ESTABLISHED",
+      "summary": "All smallest analytic IMU transform stresses preserve160TP0FP11FN, but the preregistered medium region fails: +2deg/s bias and +2deg extrinsic error add lateral FP, one2deg/s noise seed changes lateral decisions, both medium combinations restore4 head-motion FP, and two-frame dropout restores all8.",
+      "successor_requires": "Change the evidence source with fresh rapid head/lateral motion and explicit calibrated timing/extrinsic uncertainty; establish uncertainty margins before considering soft association.",
+      "forbidden_repeats": [
+        "Present ideal MZ85160TP0FP11FN as a robust operating point",
+        "Interpret analytic pressure levels as a specific IMU error distribution",
+        "Claim a50ms synchronization tolerance from the locally flat constructed trajectory",
+        "Tune hard corridor thresholds or fit soft association on the consumed stress grid",
+        "Merge the separate MZ86 continuity defect into this rotation robustness result"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MZ87_IMU_REALISM_FALSIFIER_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ87_IMU_REALISM_FALSIFIER_20260912.md"
+      ],
+      "commit": "028bafc829137212a9e4fbfc7b0955c7d8c12552"
     },
     {
       "id": "terminal-mz88-uncertainty-aware-association-20260912",

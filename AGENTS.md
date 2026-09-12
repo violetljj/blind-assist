@@ -70,6 +70,11 @@ These modes constrain the affected claim/action, not nearby reversible work.
   performance.
 - Preserve failed/consumed terminals. Reuse permits diagnostics, regression, or
   disclosed Development, never fresh confirmation authority.
+- Every current terminal must have one structured inheritance role in
+  `research/knowledge/decision/inheritance.json`. `RETAINED_CORE` supplies the
+  next baseline, `COMPONENT_OR_CHALLENGER` remains eligible only in its recorded
+  mode, `NEGATIVE_CONTROL` is carried into the next related falsifier, and only
+  `DEAD_FOR_THIS_ROLE` blocks the same scoped responsibility from reopening.
 - Do not leak protected outcomes, silently change denominators, hide collapsed
   coverage, or read evaluator truth from observations.
 
@@ -93,6 +98,9 @@ These modes constrain the affected claim/action, not nearby reversible work.
 - SkyDiscover is optional and isolated. BlindAssist owns evaluation and claims; never mutate/clean SkyDiscover or use it to replace missing evidence.
 - Run Android/Gradle through `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`.
 - Register new runs with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
+- Assign or revise a current terminal with `python tools/knowledge.py
+  set-terminal-inheritance`; an archived registration must link `--decision-id`
+  to a terminal whose inheritance role is already complete.
 - Install the knowledge hook once with `pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; full refresh is for stale-index repair or a requested rebuild.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for an affected prerequisite or failure, not as a per-task gate.
 - Use the worker for scoped work without renewed approval; see [host compute](docs/HOST_RESEARCH_COMPUTE.md). Keep host details in ignored config.
@@ -107,4 +115,6 @@ These modes constrain the affected claim/action, not nearby reversible work.
 - Never rewrite history, force-push, delete branches, change remotes, or perform destructive actions without explicit authorization.
 - Deliver routine research directly to the default branch unless requested otherwise; verify remote parity and never absorb unrelated changes.
 
-Completion means the outcome exists, its narrow check passes or the gap is stated, the scoped diff is reviewed, task-owned resources are released, and no speculative polish remains.
+Completion means the outcome exists, its narrow check passes or the gap is stated,
+any current terminal has a structured inheritance disposition, the scoped diff
+is reviewed, task-owned resources are released, and no speculative polish remains.

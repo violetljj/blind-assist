@@ -1,7 +1,837 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-10",
+  "updated_at": "2026-09-12",
   "roles": [
+    {
+      "terminal_id": "terminal-dtr-r6-static-occupancy-unreachable",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Metric depth and raw LiDAR as observation components for DTR motion reasoning, not as standalone dropout recovery.",
+      "retained_surface": "Calibrated perspective depth and current/past raw-LiDAR adapters with their source and timing contracts.",
+      "failure_signature": "The frozen static matcher supplied no admissible closing signal, so both observation sources recovered 0/9 dropout windows.",
+      "revisit_trigger": "A causal spatiotemporal matcher that can consume these observations without evaluator identity.",
+      "assignment_basis": "The source components were not falsified; the downstream static matching role was not evaluable."
+    },
+    {
+      "terminal_id": "terminal-dtr-r7p-causal-occupancy-flow-gate-not-met",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Causal raw-LiDAR occupancy flow as bounded motion evidence inside DTR, not direct alert authority.",
+      "retained_surface": "Independent spatiotemporal occupancy-flow signal and its 9/9 induced-window recovery harness.",
+      "failure_signature": "Direct use raised false segments from 12 to 20 and left one-to-one event F1 at 22.22%.",
+      "revisit_trigger": "A fresh authority decomposition that gates the retained flow signal without tuning the consumed cohort.",
+      "assignment_basis": "The signal is real and complementary, but its standalone promotion contract failed."
+    },
+    {
+      "terminal_id": "terminal-dtr-m1-point-velocity-oracle-gate-not-met",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Point-velocity or scene-flow replacement as the standalone dropout-risk solution under the frozen hard point/cell downstream.",
+      "retained_surface": "Oracle replay, attribution table, and pseudo-motion suppression evidence as a closed constraint on successors.",
+      "failure_signature": "Recovery fell to 6/9, five new false segments appeared, and event F1 fell to 16.00% despite oracle point velocity.",
+      "revisit_trigger": "A materially different downstream representation or responsibility with a new protocol and fresh evidence.",
+      "assignment_basis": "The oracle ceiling severely tested and falsified estimator replacement for this exact role."
+    },
+    {
+      "terminal_id": "terminal-dtr-m2-extent-gap-not-supported",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Current native extent or swept-OBB expansion as the repair for M1 dropout misses.",
+      "retained_surface": "Point-miss/footprint-miss attribution and target-owned false-hit diagnostics.",
+      "failure_signature": "All three misses remained footprint misses while every M1-induced or modified false segment was already a footprint hit.",
+      "revisit_trigger": "A new time-varying future-occupancy information contract on fresh evidence.",
+      "assignment_basis": "The consumed diagnostic directly contradicted the current-extent repair hypothesis."
+    },
+    {
+      "terminal_id": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Truth-contract validation for circle proximity versus realized oriented-body contact.",
+      "retained_surface": "The exact three-row circle/OBB disagreement ledger and first-contact margins.",
+      "failure_signature": "Rows are positive under realized-center circle semantics but negative under every realized future native OBB.",
+      "revisit_trigger": "A preregistered evaluator contract revision followed by a fresh cohort.",
+      "assignment_basis": "The mismatch is a stable falsifier for any successor that silently mixes contact semantics."
+    },
+    {
+      "terminal_id": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Cohort-denominator admission for wearer-global oriented CONTACT evaluation.",
+      "retained_surface": "The 143-frame all-CONTACT cohort and its zero non-CONTACT-time receipt.",
+      "failure_signature": "An all-positive window makes event bounds and false segments per minute structurally not evaluable.",
+      "revisit_trigger": "A fresh cohort with bounded CONTACT events and known non-CONTACT wearer time.",
+      "assignment_basis": "It is a reusable negative control for denominator collapse, not an algorithm result."
+    },
+    {
+      "terminal_id": "terminal-dtr-c1-fresh-global-obb-cohort-admitted",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Current DTR global-OBB evaluation denominator and single-target responsibility roster.",
+      "retained_surface": "The frozen seven-sequence roster with 21 bounded events and 409.66 seconds of known non-CONTACT time.",
+      "failure_signature": "Metadata admission alone contains no algorithm-performance evidence.",
+      "revisit_trigger": "A versioned evaluator change that materially alters CONTACT semantics or denominator ownership.",
+      "assignment_basis": "This is the current admitted evaluation core, while its claim remains metadata-only."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-x24-plan-adherent-development",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Current CARLA plan-adherent DTR Development reference and fallback baseline.",
+      "retained_surface": "Issued-plan adherence, bounded causal track memory, and unchanged NO_PLAN fallback.",
+      "failure_signature": "Evidence is same-source scripted C2 Development and has no source-disjoint or real-world authority.",
+      "revisit_trigger": "One genuinely source-disjoint confirmation of the frozen mechanism.",
+      "assignment_basis": "X24 remains the current CARLA reference against which successors are measured."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-x26-support-consensus-gate-not-met",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Support consensus as a recall-bearing proposal component below final risk authority.",
+      "retained_surface": "The support-consensus representation that raised frame F1 to 0.8571 and recall to 96.61%.",
+      "failure_signature": "It created four false-alert segments across two fresh SAFE episodes.",
+      "revisit_trigger": "A fresh structural authority decomposition that isolates unauthorized support before alert issuance.",
+      "assignment_basis": "The component carries useful signal but failed the zero-false-segment standalone gate."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-x30-adaptive-surface-gate-not-met",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Adaptive surface-contact authority for dynamic CONTACT coverage in CARLA.",
+      "retained_surface": "Frozen X30 predictor and C7 paired SAFE/dynamic episodes as a successor regression control.",
+      "failure_signature": "One dynamic CONTACT was completely missed and another retained only 0.3333 future-positive recall.",
+      "revisit_trigger": "A fresh ambiguity-preserving set-valued transport representation rather than X30 tuning.",
+      "assignment_basis": "X30 is most valuable as a fixed under-coverage falsifier for the successor."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-c8-x31-scripted-pose-drift",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "CARLA source-construction control for authoritative scripted asset pose.",
+      "retained_surface": "C8 partial capture and scripted-pose drift receipt.",
+      "failure_signature": "Engine collision response displaced the scripted asset before a complete source existed.",
+      "revisit_trigger": "A new source identity that decouples pose authority from collision response.",
+      "assignment_basis": "The source is not algorithm evidence but is a concrete regression control for pose drift."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-c9-x31-occluder-route-intersection",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "CARLA source-construction control for SAFE-twin route separation and occlusion duration.",
+      "retained_surface": "C9 route-intersection and duration-violation receipts.",
+      "failure_signature": "Every SAFE twin became CONTACT because the physical occluder entered the wearer corridor.",
+      "revisit_trigger": "A fresh single-pass occluder source outside the route with the frozen loss interval.",
+      "assignment_basis": "C9 is a stable source-validity falsifier and never reached model evaluation."
+    },
+    {
+      "terminal_id": "terminal-dtr-carla-c10-x31-raster-permeable-occluder",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "CARLA source-construction control for pixel-complete physical occlusion.",
+      "retained_surface": "C10 four-shard source plus target-pixel visibility audit.",
+      "failure_signature": "Target pixels remained visible through the bus silhouette despite 3-D containment.",
+      "revisit_trigger": "A fresh solid-body source that passes pixel-level complete-occlusion admission.",
+      "assignment_basis": "It directly guards against treating 3-D containment as raster occlusion."
+    },
+    {
+      "terminal_id": "terminal-l10-sc5-set-valued-video17",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Set-valued temporal navigation belief under ambiguous public identity.",
+      "retained_surface": "Set-valued belief, abstention, and gap-state mechanics that preserved navigation precision.",
+      "failure_signature": "Public goals mapped to multiple physical instances, so exact-instance identity was not evaluable.",
+      "revisit_trigger": "A legal public exact-instance reference bound before later observations.",
+      "assignment_basis": "The temporal mechanics remain useful, but cannot own identity or independently advance the claim."
+    },
+    {
+      "terminal_id": "terminal-l10-sc6-reference-bound-belief-effect",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Current L10 public-reference-bound exact-instance temporal belief and reacquisition core.",
+      "retained_surface": "Legal public reference binding, temporal belief, ambiguity handling, and gap reacquisition.",
+      "failure_signature": "Replay identity success does not establish active observation, portal ownership, arrival, or user benefit.",
+      "revisit_trigger": "A separately authorized claim layer with causal observation and exact portal or handoff truth.",
+      "assignment_basis": "SC6 remains the current exact-instance temporal identity core within its replay ceiling."
+    },
+    {
+      "terminal_id": "terminal-l10-sc8-task-relational-functional-binding",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Task-relational selection among already available functional-part proposals.",
+      "retained_surface": "Parent-preserving relational selector and legal-commit guard.",
+      "failure_signature": "The proposals were evaluator-provided and therefore do not establish a deployable RGB owner.",
+      "revisit_trigger": "A truth-blind functional-part proposer behind the frozen selector interface.",
+      "assignment_basis": "The selector is useful downstream structure but cannot independently supply proposals."
+    },
+    {
+      "terminal_id": "terminal-l10-sc11-task-grounded-rgbd-multiview-functional-proposal",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Task-grounded RGB-D multiview functional-part proposal in privileged Development scenes.",
+      "retained_surface": "Task-grounded proposal, multiview consensus, and parent-binding interface.",
+      "failure_signature": "Two in-parent false clusters remained and the input is privileged scene RGB-D rather than phone/open-world evidence.",
+      "revisit_trigger": "A fresh candidate-integrity or action-geometry source under a new protocol.",
+      "assignment_basis": "The proposer adds measurable value but remains a bounded Development component."
+    },
+    {
+      "terminal_id": "terminal-l10-sc12-task-conditioned-dual-axis-action-pose",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Task-signed dual-axis static geometry as an owner of signed manipulation direction.",
+      "retained_surface": "Static-geometry baseline and its source-disjoint direction-error ledger.",
+      "failure_signature": "Direction hits regressed from 7/9 to 6/9 and angular error increased from 20.40 to 30.39 degrees.",
+      "revisit_trigger": "Observed causal before/after motion or another genuinely kinematic source.",
+      "assignment_basis": "The source-disjoint test falsified task verbs plus static parent geometry for this role."
+    },
+    {
+      "terminal_id": "terminal-l10-sc13-decoupled-local-action-frame",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Local static contact-surface normal as the owner of signed action direction.",
+      "retained_surface": "Decoupled approach/action frame implementation and fresh direction ledger.",
+      "failure_signature": "It retained only 4/6 hits and reduced mean error by just 2.21 degrees.",
+      "revisit_trigger": "Observed causal motion; another static normal or OBB-axis representation is not sufficient.",
+      "assignment_basis": "A second fresh static-geometry formulation failed to close the action-direction role."
+    },
+    {
+      "terminal_id": "terminal-l10-sc14-causal-micro-motion-action-belief",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Causal paired-motion inference of local action type and signed direction.",
+      "retained_surface": "Paired-motion action belief, translation axis, rotation pivot, and receipt schema.",
+      "failure_signature": "Evidence uses evaluator-paired simulated motion and does not authorize real probing or handoff.",
+      "revisit_trigger": "Passive natural before/after motion or an authorized benign micro-interaction source.",
+      "assignment_basis": "The causal representation is strongly positive mechanics evidence but not a complete or deployable action owner."
+    },
+    {
+      "terminal_id": "terminal-l10-sc15-passive-action-conditioned-observation-gain",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Passive geometric alignment as a proxy for causal action-conditioned semantic gain.",
+      "retained_surface": "The 17-opportunity aligned-versus-opposed transition ledger.",
+      "failure_signature": "Aligned transitions had lower semantic gain and higher wrong-gate creation than opposed transitions.",
+      "revisit_trigger": "An actually issued action with before/after outcome receipts or a new action-quality representation.",
+      "assignment_basis": "It is a direct falsifier for successors that mistake passive alignment for causal gain."
+    },
+    {
+      "terminal_id": "terminal-l10-sc16-pareto-observability-semantic-gain",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "The frozen height/sharpness/centering Pareto proxy as an owner of semantic-gain action selection.",
+      "retained_surface": "Fresh DSText Pareto transition ledger and frozen feature definition.",
+      "failure_signature": "Mean gain delta was only +0.0093 and aligned gate crossing was lower than opposed crossing.",
+      "revisit_trigger": "Causal action-outcome feedback or a new independent identity signal.",
+      "assignment_basis": "Fresh evidence severely tested and rejected this exact observability proxy for the role."
+    },
+    {
+      "terminal_id": "terminal-l10-sc17-triview-semantic-consensus-development",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed exact-normalized three-view majority as a semantic-consensus verifier.",
+      "retained_surface": "Frozen views 0/3/6 majority rule and 49-track error ledger.",
+      "failure_signature": "Precision rose less than one point and wrong consensus persisted on 5/49 tracks.",
+      "revisit_trigger": "A new independent identity source or causal observation feedback, not vote tuning.",
+      "assignment_basis": "The fixed wrong-consensus signature is a useful control for future multiview successors."
+    },
+    {
+      "terminal_id": "terminal-l10-panolab-active-entrance-ray-recovery",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Active entrance-ray geometry recovery and reciprocal action receipts below portal ownership.",
+      "retained_surface": "SIDESTEP_TO_ENTRANCE_FACE controller, reciprocal receipt, and zero-pose geometry contract.",
+      "failure_signature": "Geometry authorization contains no pixel portal identity, access, arrival, or handoff truth.",
+      "revisit_trigger": "An independent entrance-identity credential paired with the frozen action mechanics.",
+      "assignment_basis": "The active-observation effect is retained as a geometry/action component only."
+    },
+    {
+      "terminal_id": "terminal-l10-panoramax-generic-pixel-portal-source-closed",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Generic unanchored Panoramax imagery as the source of exact pixel-portal ownership.",
+      "retained_surface": "Successive source-admission audits and the final 0/3 reference, 0/3 query ledger.",
+      "failure_signature": "Orientation, range, coverage, and mapped-width improvements still admitted no joint portal pair.",
+      "revisit_trigger": "Sub-metre co-registration or a directly posed portal mask or mesh supplied before pixels.",
+      "assignment_basis": "Repeated source admission falsified generic panorama mining for this exact authority role."
+    },
+    {
+      "terminal_id": "terminal-l10-hypersim-posed-portal-transfer",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Provider-posed portal-surface transfer as a geometric proposal component.",
+      "retained_surface": "Posed reference surface transfer, target-envelope check, and centroid/IoU evaluator.",
+      "failure_signature": "The positive result is synthetic and semantic door surface is not aperture, traversability, or access truth.",
+      "revisit_trigger": "Fresh real posed-door geometry with independent source-side visibility authority.",
+      "assignment_basis": "The transfer mechanism is positive and reusable but cannot own real portal authority."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Partial metric portal transfer behind an independently admitted source-side reference credential.",
+      "retained_surface": "Metric transfer implementation, correct-door proposal path, and world-centroid evaluator.",
+      "failure_signature": "Only 2/3 doors were correct, 1/3 centroids were inside, and median world error was 0.985 m because source visibility failed.",
+      "revisit_trigger": "A fresh real-scene source with provider mask or z-buffered surface visibility authority.",
+      "assignment_basis": "The transfer path retains component value; the observed failure belongs to source credential reachability."
+    },
+    {
+      "terminal_id": "terminal-grail-g1-active-multiview-appearance-closed",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Fixed three-view appearance as owner-canonical orientation or doorway-FLIP authority.",
+      "retained_surface": "Frozen G1 development ledger and owner-group controls.",
+      "failure_signature": "Doorway FLIP collapsed to 0/24 in both seeds and macro balanced accuracy remained near chance.",
+      "revisit_trigger": "A genuinely new information source or representation under a new versioned protocol.",
+      "assignment_basis": "The frozen route produced terminal negative evidence for the named appearance role."
+    },
+    {
+      "terminal_id": "terminal-msls-router-development-gate-not-met",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "The frozen coarse-GPS dynamic router as an improvement over static fusion.",
+      "retained_surface": "Static-fusion baseline, GPS-admission audit, and frozen router result.",
+      "failure_signature": "The router underperformed static fusion and collapsed toward GPS despite admitted frame-level GPS.",
+      "revisit_trigger": "A new representation or fresh cohort with materially stronger frame-aligned routing information.",
+      "assignment_basis": "The exact router hypothesis failed while the static baseline remains the valid comparison."
+    },
+    {
+      "terminal_id": "terminal-l10-3dstreetview-center-target-lock-development",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Provider-target-centered scale-gated DINO appearance scoring as the current real-image exact-point pair score below portal authority.",
+      "retained_surface": "Frozen DINOv2-small model, centered 1.0/0.5/0.25 crops, 0.25/0.75 score, endpoint-prefix split, and exact-point evaluator.",
+      "failure_signature": "The positive evidence is one provider archive prefix and has no door class, venue ownership, access, arrival, or handoff truth.",
+      "revisit_trigger": "An unchanged provider-disjoint exact-point replay or independently labelled portal-class and ownership truth around the verified point.",
+      "assignment_basis": "The source-disjoint test groups show a strong positive real-image point-lock effect and the exact frozen score is inherited by the current roster mechanism."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-center-target-door-transfer-gate-not-met",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Partial-visibility source and proposal admission for truth-proposed real door appearance transfer.",
+      "retained_surface": "The six fixed SceneNN edge-sliver crops, their source receipts, and the 2/6 Top-1 failure matrix.",
+      "failure_signature": "Severe image-edge clipping violates the center-target information contract and produces AUROC 0.444444 with minimum margin -0.221899.",
+      "revisit_trigger": "A new provider cohort with full-visible provider masks or geometry admitted before RGB.",
+      "assignment_basis": "The cohort is most useful as a stable falsifier for successors that mistake partial slivers for target-centered door support; it is not a general cross-provider negative."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-center-target-pairwise-gate-not-met",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen center-scale pair scoring inside a closed-roster identity composition, not standalone exact-door authority.",
+      "retained_surface": "DINOv2 embeddings, centered scales, unchanged pair-score interface, and fully visible 3RScan proposal contract.",
+      "failure_signature": "Independent retrieval fell to 4/6 because two sibling doors from one scan family collided.",
+      "revisit_trigger": "A fresh composition with independently justified roster or context structure that proves incremental value on physically target-disjoint evidence.",
+      "assignment_basis": "The pair score remains informative and achieved perfect new-target pair metrics after composition, but failed its standalone sibling-door gate."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-roster-assignment-target-disjoint-development",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Parameter-free one-to-one identity assignment for externally justified complete closed reference/query door rosters.",
+      "retained_surface": "Hungarian maximum-total assignment, physical-target exclusion, 32-pixel visibility admission, frozen pair-score interface, and assignment-margin diagnostic.",
+      "failure_signature": "The mechanism requires a complete one-to-one roster, privileged truth proposals, and single-provider Development; it has no extra-candidate or absent-target authority.",
+      "revisit_trigger": "A provider-disjoint independently labelled named-entrance roster with extra or absent candidates, or another authority that justifies one-to-one completeness.",
+      "assignment_basis": "It repaired the consumed sibling collision from 4/6 to equivalent 6/6 and passed 3/3 with 0.419960 margin on physically target-disjoint targets."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-open-roster-appearance-zero-assignment-gate-not-met",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Appearance-only partial-roster rejection for stable door identity under extra, missing, and balanced-swap candidates.",
+      "retained_surface": "The four frozen physical targets, sixteen proposal crops, multiview score matrices, and 4/12 true plus 5-false failure signature.",
+      "failure_signature": "Relative multiview appearance ranking cannot establish correspondence existence; balanced swap produced zero true matches and two false matches.",
+      "revisit_trigger": "A new independent structural or authority-bearing source on a fresh physical-target cohort.",
+      "assignment_basis": "The consumed matrix is valuable as a stable falsifier for successors that treat mutual appearance rank as unknown rejection, but the role itself failed."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-registered-surface-zero-assignment-gate-not-met",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Provider-registered target-surface scoring inside partial roster identity, not standalone absence authority.",
+      "retained_surface": "Official rigid transform, symmetric median nearest-surface score, common-family cohort builder, and 12/12 true-correspondence ranking.",
+      "failure_signature": "Rank-only registered surface matching emitted one adjacent doorframe-to-door false match in the equal-size missing-plus-extra roster.",
+      "revisit_trigger": "An externally justified absolute registration witness or other existence authority tested on a fresh cohort.",
+      "assignment_basis": "The surface carrier correctly ranked every true pair and therefore remains useful, but relative rank alone failed exact zero assignment."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-witness-calibrated-zero-assignment-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Two externally confirmed registered surfaces as an absolute rejector scale for bounded partial-roster identity.",
+      "retained_surface": "Fixed two-witness maximum-residual rule, registered-surface score, exact zero-assignment evaluator, and the 12/12 zero-false fresh result.",
+      "failure_signature": "On the fresh cohort rank-only surface matching also reached F1 1.0, so incremental witness value was not established despite the witness-calibrated gate pass.",
+      "revisit_trigger": "A fresh scan-family- or provider-disjoint same-class missing-plus-extra roster where rank-only emits a false match and the unchanged witness ceiling rejects it.",
+      "assignment_basis": "The mechanism passed every frozen gate but remains a challenger because its specific witness contribution was redundant on the fresh confirmation cohort."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-scan-family-disjoint-witness-incremental-gate-not-met",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Raw maximum of two registered surface residuals as a scan-family-general absolute rejector for same-class partial-roster identity.",
+      "retained_surface": "Frozen six-door, fifteen-scenario scan-family-disjoint failure cohort and its over-rejection signature, for diagnosis and successor comparison only.",
+      "failure_signature": "The ceiling removed rank-only false positives 2 to 0 but reduced true positives 64 to 48, introduced 16 misses, lowered F1 0.984615 to 0.857143, and reduced exact zero-assignment scenarios 13 to 2.",
+      "revisit_trigger": "Only a genuinely new absolute support source or representation on fresh targets; never another statistic, slack, multiplier, or witness selection on the consumed residuals.",
+      "assignment_basis": "A predeclared severe scan-family-disjoint same-class test falsified the core hypothesis that two raw witness residuals provide a family-general existence ceiling."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-registered-extent-support-zero-assignment-development",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Parameter-free positive registered portal-plane extent overlap as absolute support for strict reciprocal surface matching in privileged same-family partial rosters.",
+      "retained_surface": "Unchanged registered-surface ranker, positive-area convex-hull support predicate, exhaustive missing-extra evaluator, and the 136/0/0 fresh result.",
+      "failure_signature": "Outside this bounded role, projected support has no ownership, access, traversability, arrival, handoff, provider-disjoint, or raw-phone authority.",
+      "revisit_trigger": "Unchanged scan-family- or provider-disjoint confirmation, or an independently justified phone-side support carrier with exact target truth.",
+      "assignment_basis": "Fresh physical-target-disjoint evidence showed strict incremental value over rank-only: false positives 4 to 0, F1 0.985507 to 1.0, exact unmatched scenarios 29 to 33, with no true-match loss."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-extent-support-scan-family-disjoint-development",
+      "inheritance_role": "RETAINED_CORE",
+      "inheritance_mode": null,
+      "role_scope": "Unchanged positive registered portal-plane extent overlap as absolute support for strict reciprocal surface matching across privileged partial rosters and disjoint 3RScan families.",
+      "retained_surface": "The frozen pair score, portal frame, positive-area support predicate, exhaustive swap evaluator, and independent-family 34/0/0 confirmation.",
+      "failure_signature": "The confirmation remains same-provider and privileged; it supplies no raw-phone, named-entrance, ownership, access, traversability, arrival, handoff, or safety authority.",
+      "revisit_trigger": "Provider-disjoint confirmation or a target-conditioned phone-side planar support carrier evaluated with exact missing-extra truth.",
+      "assignment_basis": "An unchanged scan-family-disjoint confirmation independently improved rank-only false positives 2 to 0, F1 0.971429 to 1.0, and exact unmatched scenarios 13 to 15 with no true-match loss."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-single-frame-observed-extent-support-not-evaluable",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Frozen single selected RGB-D frame per role as a provider-general carrier for at least 256 depth-consistent target points.",
+      "retained_surface": "Eight synchronized SceneNN frames, exact target-conditioned point-count diagnostics, and the rule that NOT_EVALUABLE is not an extent-support algorithm negative.",
+      "failure_signature": "Two frozen query observations retained only 159 and 120 points under the preregistered 0.08 m consistency rule, below the 256-point source-support minimum before any score or overlap was computed.",
+      "revisit_trigger": "Do not revive this single-frame role on the consumed scene; use a structurally different preregistered temporal fusion carrier or a fresh provider or phone source.",
+      "assignment_basis": "research/active/l10-r0/l10_scenenn_observed_extent_support_result_v1.json"
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-temporal-fused-extent-support-posthoc-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Strictly positive registered convex-hull intersection as a provider-general support gate over three-frame fused partial RGB-D target observations.",
+      "retained_surface": "The temporal carrier repaired source support for all eight observations; preserve its frozen frame-level diagnostics, rank-only TP=34 FP=3 FN=0 F1=0.957746 baseline, and the exact zero-overlap true-pair counterexample.",
+      "failure_signature": "One true pair retained zero planar convex-hull overlap, so support gating deleted nine true scenario matches while removing only one false match: TP=25 FP=2 FN=9 F1=0.819672 and 6/15 exact scenarios.",
+      "revisit_trigger": "Revisit only with an independently motivated partial-observation support representation and then a fresh scene/provider confirmation; do not tune an IoU threshold or refit the consumed SceneNN scene.",
+      "assignment_basis": "Frozen posthoc result repaired evaluability but falsified positive convex-hull intersection as a general support predicate for partial observed surfaces."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Global saturation-weighted Hue histogram reciprocal agreement as a provider-general identity support gate for partial SceneNN target observations.",
+      "retained_surface": "Preserve the exact color carrier, threshold-free descriptor, full similarity matrix, and evidence that Hue agreement removed all three geometric false matches but retained only two of thirty-four true matches.",
+      "failure_signature": "Pairwise Hue similarities clustered around 0.90 to 0.98 and did not align with identity; consensus produced TP2 FP0 FN32 F1 0.111111 and zero exact scenarios.",
+      "revisit_trigger": "Do not retune this global color role; revisit appearance only with a structurally different local texture or learned cross-view representation and fresh-scene confirmation.",
+      "assignment_basis": "Frozen posthoc result directly falsified global Hue reciprocal agreement as an identity discriminator on the consumed SceneNN doors."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-temporal-dinov2-ffa-consensus-posthoc-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Frozen generic DINOv2-S foreground feature averaging as a hard identity veto for severe partial-view SceneNN door observations.",
+      "retained_surface": "Preserve the exact privileged-mask FFA carrier, 3-by-3 max-view cosine matrix, and result showing that it removed two geometry false matches but also deleted twenty-seven true matches.",
+      "failure_signature": "FFA-only TP7 FP21 FN27; geometry consensus TP7 FP1 FN27 F1 0.333333 and zero exact scenarios versus retained geometry F1 0.957746.",
+      "revisit_trigger": "Revisit only with a representation explicitly intended for same-physical-instance severe partial views and a fresh-target NONE protocol; generic frozen FFA remains diagnostic, not a veto.",
+      "assignment_basis": "A frozen posthoc replay using the project-owned immutable DINOv2 asset directly falsified the hard-veto role without model or threshold tuning."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-efficientloftr-fresh-none-development-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Frozen MegaDepth EfficientLoFTR with homography-inlier absolute support as a hard NONE gate over truth-visible SceneNN door context crops.",
+      "retained_surface": "Preserve the fresh four-scene diagnostics and the positive mechanism delta over same-crop DINOv2: F1 0.1875 to 0.349206, TP +5, FP -6, FN -5, with exact pair-level match and inlier counts.",
+      "failure_signature": "Only 2/4 true diagonals had absolute support; the challenger reached TP=11 FP=18 FN=23 F1=0.349206 and 0/15 exact scenarios, with false homographies on repeated indoor structure.",
+      "revisit_trigger": "Revisit only as a frozen baseline or after an independently motivated calibrated dense-certainty and spatial-coverage representation is fixed on fresh targets; do not tune the consumed cohort.",
+      "assignment_basis": "The preregistered fresh-scene gate required all four diagonals, TP=34 FP=0 FN=0 and 15/15 exact; the terminal result failed every complete-assignment criterion despite improving on DINOv2."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-active-none-development-negative",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "High-precision truth-cropped indoor dense cycle confirmation for same-door and NONE decisions, not standalone full-recall authority.",
+      "retained_surface": "Frozen RoMa indoor symmetric warp, official 0.05 certainty, six-pixel cycle consistency, bilateral one-percent cycle coverage, majority purity, and zero-false-positive result.",
+      "failure_signature": "Maximum-baseline-first active frames left only one of four true diagonals supported and recall 0.264706 despite precision 1.0.",
+      "revisit_trigger": "A structurally different geometry-only active-observation policy evaluated without changing the matcher or support thresholds.",
+      "assignment_basis": "The zero-false-positive confirmation signal is decision-useful, while standalone complete NONE authority failed."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-temporal-local-posthoc-negative",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Temporally local geometry-only active-observation policy for cross-view referent retrieval, plus RoMa as a precision confirmation branch.",
+      "retained_surface": "Minimum qualifying frame-gap selection at at least 0.30 m, DINOv2 rank F1 0.971429, and unchanged RoMa precision 1.0 with three of four true diagonals.",
+      "failure_signature": "The consumed posthoc full gate remained unmet because TL04 had no RoMa absolute support and DINOv2 retained two false positives.",
+      "revisit_trigger": "An unchanged fresh-scene replay of the temporal-local action policy, followed by a separately justified fusion responsibility if needed.",
+      "assignment_basis": "The single action-policy change produced a large mechanism effect but cannot regain fresh authority on the consumed cohort."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-temporal-local-fresh-negative",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Temporal-local active-frame selection and high-precision RoMa cycle evidence inside L10 identity confirmation, not standalone identity or navigation authority.",
+      "retained_surface": "The fresh-confirmed 20-50 frame local action policy plus zero-false-positive RoMa absolute support branch.",
+      "failure_signature": "Fresh cross-scene recall fell to 0.470588: only two of four true pairs had absolute support, and F1 0.64 trailed the DINOv2 rank baseline 0.793651.",
+      "revisit_trigger": "A consumed-cohort viewpoint-normalization or multi-frame carrier that improves true support without relaxing the frozen RoMa thresholds, followed by new fresh scenes.",
+      "assignment_basis": "The action policy generalized and the precision branch remained clean, while standalone recall and the full assignment gate failed."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-planar-rectified-posthoc-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Single-view target-plane PCA rectification as the standalone RoMa recall repair on truth-visible SceneNN portal proposals.",
+      "retained_surface": "Frozen rectification protocol, per-view plane/visibility diagnostics, and the TF04 purity improvement as mechanism evidence only.",
+      "failure_signature": "Aggregate assignments were identical to the predecessor: TP16 FP0 FN18 F1 0.64, with TF02 still below purity and TF03 at zero cycle support.",
+      "revisit_trigger": "A materially different source that supplies observed intermediate views or phone-side depth-conditioned virtual views on a new protocol.",
+      "assignment_basis": "Even privileged exact target-plane geometry did not recover one additional true match under unchanged RoMa support."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-midpoint-bridge-posthoc-negative",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "One fixed observed midpoint as a two-edge standalone recall repair for truth-cropped RoMa on temporally local SceneNN portal proposals.",
+      "retained_surface": "Frozen midpoint selection, sparse RGB receipts, and exact evidence that both-edge support preserved precision but recovered no additional true assignment.",
+      "failure_signature": "Aggregate metrics and supported true pairs were identical to the direct endpoint predecessor: TP16 FP0 FN18 F1 0.64, 2/15 exact, 2/4 supported.",
+      "revisit_trigger": "Only a materially different spatial/context carrier or learned multi-frame model on a new protocol; do not add or reselect hops on this cohort.",
+      "assignment_basis": "The frozen bridge introduced real intermediate appearance yet delivered zero metric, support, or assignment gain under unchanged thresholds."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-full-context-mask-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Whole-image RoMa context followed by provider target-visible mask-gated cycle support for high-precision referent correspondence and explicit NONE.",
+      "retained_surface": "Complete 640x480 inputs, nearest-neighbour 864x864 source and target mask domains, unchanged RoMa thresholds, strict reciprocal assignment, and the consumed-cohort TP34 FP0 FN0 F1 1.0 result.",
+      "failure_signature": "The perfect result uses consumed scenes and privileged provider target masks; it has no fresh confirmation, raw-phone proposal, ownership, access, arrival, handoff, benefit, deployment, or safety authority.",
+      "revisit_trigger": "Immediate unchanged fresh-scene confirmation, then a separately justified phone-side proposal source while keeping mask-gated correspondence responsibility narrow.",
+      "assignment_basis": "A single literature-motivated spatial-domain change recovered all 18 misses, retained zero false positives, and improved exact scenarios from 2/15 to 15/15 without threshold changes."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-full-context-mask-fresh-confirmation-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Whole-image RoMa context plus exact proposal-mask-gated bilateral cycle support for high-precision same-instance referent correspondence and explicit NONE in same-provider Development.",
+      "retained_surface": "Complete 640x480 frames, nearest-neighbour 864x864 proposal-mask domains, official RoMa indoor weights and certainty, six-pixel cycles, bilateral one-percent coverage, majority purity, strict reciprocal assignment, and two independent four-scene 34/0/0 results.",
+      "failure_signature": "The confirmed mechanism still depends on privileged provider target-visible masks and same-provider SceneNN data; it has no raw-phone proposal, provider-disjoint, named-entrance, ownership, access, traversability, arrival, handoff, user-benefit, deployment, or safety authority.",
+      "revisit_trigger": "An independently justified phone-side proposal carrier evaluated with exact target truth and unchanged correspondence responsibility, followed by provider-disjoint or real-phone confirmation.",
+      "assignment_basis": "The unchanged mechanism reproduced TP34 FP0 FN0 F1 1.0, 15/15 exact and 4/4 supported on the final four unconsumed source-disjoint SceneNN scenes without threshold tuning."
+    },
+    {
+      "terminal_id": "terminal-l10-scenenn-roma-grounded-sam-proposal-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Truth-blind open-vocabulary door box plus promptable native mask as the proposal carrier feeding whole-image RoMa correspondence in exactly-one-door indoor scenes.",
+      "retained_surface": "Single door prompt, fixed GroundingDINO 0.4/0.3 thresholds, deterministic highest-score selection, frozen SAM2.1 native mask postprocess, and the retained 34/0/0 NONE-aware correspondence result.",
+      "failure_signature": "The positive evidence is consumed posthoc, restricted to exactly-one-door SceneNN scenes, and executed on desktop GPU; it does not solve multi-door target selection, provider-disjoint generalization, Android runtime, ownership, access, arrival, handoff, benefit, reliability, or safety.",
+      "revisit_trigger": "An unchanged source-disjoint multi-door or provider-disjoint proposal-to-correspondence replay with exact target and NONE truth, followed separately by measured edge deployment.",
+      "assignment_basis": "Truth-blind proposal masks with target IoU 0.60-0.95 preserved TP34 FP0 FN0 F1 1.0, 15/15 exact and 4/4 support without changing RoMa or proposal thresholds."
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-roma-grounded-sam-proposal-source-not-evaluable",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Strict single-category door prompt reachability for multi-door cross-provider full-frame RGB",
+      "retained_surface": "Frozen DR01 reference zero-box receipt at prompt door and box/text thresholds 0.4/0.3",
+      "failure_signature": "Zero strict GroundingDINO boxes on DR01 reference despite evaluation-only provider target bbox; stopped before SAM2 and RoMa",
+      "revisit_trigger": "A visual-reference-conditioned proposal source that does not tune the consumed text prompt or thresholds",
+      "assignment_basis": "Frozen source reachability failed on the first required frame, so no proposal-to-correspondence algorithm opportunity existed"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-roma-cycle-prompt-sam-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Reference-conditioned multi-door query proposal transport from an already-bound visual target",
+      "retained_surface": "Largest-component bidirectional RoMa cycle affine box plus one native SAM2 query mask; 3/3 proposal boxes and masks met IoU 0.5",
+      "failure_signature": "Overall gate 2/3 because DR01 forward cycle purity was 0.494961 against unchanged 0.5 despite correct proposal localization",
+      "revisit_trigger": "Use one native SAM2 mask for privileged initial reference binding before unchanged cycle-affine transport",
+      "assignment_basis": "Proposal reachability and localization generalized across all three targets, while only the downstream bilateral support gate remained incomplete"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-roma-cycle-prompt-sam-reference-mask-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Native reference SAM mask as identity-support domain for cycle-consistent multi-door transport",
+      "retained_surface": "Reference SAM support restored unchanged bilateral absolute support to 3/3 and DR01 forward purity to 0.690015",
+      "failure_signature": "Using the same SAM mask as the geometric envelope reduced DR01 prompt IoU to 0.309975 and query-mask bbox IoU to 0.487915",
+      "revisit_trigger": "Pair this support surface with the original already-bound bbox as a separate extent surface",
+      "assignment_basis": "The component repaired the exact support failure but its envelope responsibility caused a distinct localization regression"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-roma-cycle-prompt-dual-surface-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Dual-surface target-conditioned proposal transport for an already-bound referent in multi-door scenes",
+      "retained_surface": "Native SAM identity support plus bound-bbox geometric extent passed 3/3 prompt, mask and bilateral support gates",
+      "failure_signature": "No frozen gate failure; authority remains consumed posthoc with privileged initial reference binding",
+      "revisit_trigger": "Physically target-disjoint unchanged confirmation, followed separately by a raw-camera initial-binding source",
+      "assignment_basis": "The structural responsibility split retained prompt and mask IoU above 0.5 and restored absolute support for every target without threshold changes"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-dual-surface-physical-target-confirmation-negative",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Physical-target-disjoint transported extent and identity-support localization",
+      "retained_surface": "Transported boxes localized 3/3 at IoU 0.767-0.920 and bilateral support passed 3/3",
+      "failure_signature": "DR02 query SAM support mask bbox IoU 0.371 when incorrectly used as complete geometric output",
+      "revisit_trigger": "Four-surface representation separating query identity support from query geometric extent",
+      "assignment_basis": "Target selection and support transferred, while only the overloaded support-mask extent role failed"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-four-surface-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Four-surface referent state separating semantic support from geometric extent on both views",
+      "retained_surface": "Reference/query SAM identity masks plus reference/transported extent boxes",
+      "failure_signature": "No posthoc gate failure; authority is consumed reinterpretation only",
+      "revisit_trigger": "Direct pre-RGB physical-target-disjoint four-surface confirmation",
+      "assignment_basis": "The responsibility split preserved 3/3 correct extents and support without model reruns"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-four-surface-physical-target-confirmation-negative",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Whole-mask global high-certainty purity as identity support in repetitive multi-door views",
+      "retained_surface": "DR03 0.473/0.422 global purity despite correct extent, support-mask localization and coherent component",
+      "failure_signature": "Global purity rejects a correct target because spatially unrelated high-certainty pixels pollute the denominator",
+      "revisit_trigger": "Spatially coherent largest-cycle-component dominance with unchanged opportunity threshold",
+      "assignment_basis": "The negative isolates support aggregation rather than localization or segmentation failure"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-cycle-component-support-posthoc-development",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Spatially coherent dominant-cycle support for reference-conditioned multi-door transport",
+      "retained_surface": "Minimum 0.01 cycle opportunity plus majority largest 8-connected cycle component",
+      "failure_signature": "No posthoc gate failure; source is opened and lacks fresh authority",
+      "revisit_trigger": "Unchanged physical-target-disjoint confirmation",
+      "assignment_basis": "Spatial coherence retained 3/3 correct targets where global purity retained 2/3"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-cycle-component-support-physical-target-confirmation",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Confirmed same-provider target-conditioned multi-door transport and coherent identity support",
+      "retained_surface": "Four-surface state plus 0.01 cycle opportunity and majority dominant component",
+      "failure_signature": "No frozen confirmation failure; lacks negative-pair, raw-camera and provider-independent authority",
+      "revisit_trigger": "Distinct-source raw initial binding or frozen negative-pair/open-world evaluation",
+      "assignment_basis": "Unchanged rule confirmed 3/3 on a third physical-target-disjoint cohort and outperformed legacy purity 3/3 versus 2/3"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-cycle-component-open-set-posthoc",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Exact-target-absent cross-scene rejection for coherent same-provider 3RScan transport",
+      "retained_surface": "Unchanged 0.01 reference-cycle opportunity plus 0.5 dominant-component support on four-surface target-conditioned transport",
+      "failure_signature": "No frozen gate failure; authority excludes same-scene sibling-door negatives, raw initial binding and provider-independent generalization",
+      "revisit_trigger": "Fresh same-scene sibling-door negative panel or raw-camera initial-binding source",
+      "assignment_basis": "Three of three positives retained and four of four exact-target-absent cross-scene pairs rejected with zero false commits under frozen gates"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-complementary-corroboration-posthoc",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Same-provider Development exact-target binding corroboration on repeated indoor structures",
+      "retained_surface": "Local bilateral binding plus target-excluded global epipolar majority or bidirectional active-query majority; fixed Boolean composition and 0.5 majority",
+      "failure_signature": "Single local, global, learned, dual-reference, or weak active-query gates either lose a true target or retain the DR01-to-DR02 sibling alias",
+      "revisit_trigger": "Pre-frozen physical-target-disjoint sibling positives and exact-target-absent negatives with evaluable active views",
+      "assignment_basis": "The recomposition produces a visible zero-false-commit effect but remains consumed posthoc and therefore a component, not retained core"
+    },
+    {
+      "terminal_id": "terminal-l10-3rscan-complementary-confirmation-source-not-evaluable",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Active-query source reachability for physical-target-disjoint 3RScan confirmation",
+      "retained_surface": "FC30 source failure receipt and frozen 0.98 completeness boundary",
+      "failure_signature": "No FC30 second query in 0.05-1.10m reaches 0.98 target completeness; maximum is 0.591093 before RGB/model access",
+      "revisit_trigger": "A separately frozen source or protocol that does not require FC30 active-query completeness",
+      "assignment_basis": "This is a source ceiling that must remain visible to prevent outcome-driven target replacement, not an algorithm verdict"
+    },
+    {
+      "terminal_id": "terminal-city-finetune-pilot-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "One-seed City visible-support fine-tune diagnostic; original G13 D remains baseline.",
+      "retained_surface": "Fixed seed17 final-step200 checkpoint, paired predictions and false-positive/localization diagnostics only; no model promotion.",
+      "failure_signature": "Formal macro-error/recall/Willow rule passes while City BODY FP rises 3 to 561, HEAD FP 4 to 348 and joint correctness falls 115/250 to 3/250.",
+      "revisit_trigger": "A separately authorized source/protocol and false-positive criterion frozen before new outcome access; no consumed-TEST rescue.",
+      "assignment_basis": "Completed paired City750 and consumed Willow96 result: formal rule true, severe specificity and localization tradeoffs; diagnostic challenger only."
+    },
+    {
+      "terminal_id": "terminal-city-gate-intervention-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Fixed-weight City gate intervention diagnostic only; no promotion.",
+      "retained_surface": "Original/step200 checkpoints and same-image gate-swap predictions, parity checks and attenuation evidence.",
+      "failure_signature": "Reduced false alarms with BODY recall 94.81% to 10.37% and HEAD 60% to 0%; not restored discrimination.",
+      "revisit_trigger": "Separately authorized protocol with consumed-data status explicit; no automatic training or threshold rescue.",
+      "assignment_basis": "Completed zero-optimizer-step worker diagnostic with numerical parity PASS; hybrid retained as diagnostic challenger only."
+    },
+    {
+      "terminal_id": "terminal-city-native-validation-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Original City Sample static-route Development capture and evaluator component; no model promotion.",
+      "retained_surface": "Source-preserving capture, native instance/depth/collision-ray labels, fixed RGB-only inference and consumed evidence.",
+      "failure_signature": "G10 target alert misses 7/8 BODY/HEAD frame opportunities; G13 8/8. Frame29 floor UNKNOWN; independently suspended-bar coverage NOT_EVALUABLE.",
+      "revisit_trigger": "Separately authorized source-transfer diagnostic carrying these errors and UNKNOWN cases; post-hoc changes are not fresh confirmation.",
+      "assignment_basis": "Completed 40-frame curated static-route comparison with zero training; retain acquisition/evaluation components, not models as proven city perception."
+    },
+    {
+      "terminal_id": "terminal-city-dev-baseline-20260908-dev-selected-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Weak DEV-selected whole B City checkpoint only; original G13 retained, no fresh TEST or promotion.",
+      "retained_surface": "B SHA256 42cc4d1bbba632b81b8b391a644170361c2e701f879601a9646cd499974f892e; BODY/HEAD thresholds 0.4268244802951813/0.4970442056655884; matched A/B/C workflow and evidence.",
+      "failure_signature": "DEV recall40.625%/25%, joint2/32 and HEAD support IoU0; consumed plaza HEAD recall0/15. DEV selection is not independent evaluation or causal repair.",
+      "revisit_trigger": "Separately authorized fresh-region evaluation of the frozen candidate and thresholds; preserve DEV and consumed-plaza selection boundaries.",
+      "assignment_basis": "Two200-step fits; B wins prespecified per-head FPR<=10% whole-model rule on same-map133.47m-separated DEV128, but remains weak diagnostic challenger."
+    },
+    {
+      "terminal_id": "terminal-city-relational-train-20260908-diagnostic-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Relational City training data and fixed200-step B diagnostic only; no fresh TEST, Willow or natural-world claim.",
+      "retained_surface": "Native384-frame data with actual BODY191/193 and HEAD192/192 labels, preserved gap209; checkpoint5e4ea3b1435a2158517f8195fc7c8032d023b821d827713b98bca933c16b8f84 and full paired diagnostics.",
+      "failure_signature": "Mixed DEV recall24/64 and18/64 versus26/64 and16/64; joint2/32. Weak new-TRAIN AUC0.64390/0.61575, HEAD IoU0 and joint0/96; fixed200-step B does not fit TRAIN well.",
+      "revisit_trigger": "Separately authorized bounded fit sanity or optimization check; no extra current fits, causal backbone attribution or data-uselessness conclusion.",
+      "assignment_basis": "One200-step fit on1134 frames, joint prior/shape/region data intervention; immutable consumedDEV selection and frozen-threshold plaza diagnostics, not promotion."
+    },
+    {
+      "terminal_id": "terminal-city-fit-adequacy-20260908-diagnostic-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Fixed-budget2000 frozen-B fit adequacy diagnostic only; consumed DEV, no fresh TEST, Willow or promotion.",
+      "retained_surface": "Exact200-prefix parity, frozen backbone/BN invariants, training trajectory/data/optimizer state and final2000 checkpoint with frozen DEV thresholds.",
+      "failure_signature": "Modest DEV recall improvement but joint1/32, broad negative support activation, newTRAIN HEAD AUC0.61081 and joint0/96; consumed plaza HEAD0/15. Budget alone did not solve HEAD.",
+      "revisit_trigger": "Separately authorized small balanced-TRAIN overfit or loss-gradient diagnosis; no convergence or architectural-defect inference from this budget.",
+      "assignment_basis": "One2000-step run102.314s with exact200 checkpoint parity; final-only DEV selection and post-fit TRAIN snapshots, mixed weak candidate without promotion."
+    },
+    {
+      "terminal_id": "terminal-city-native-adapt-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Diagnostic-only native City adaptation pipeline and fitted checkpoint; retain original model, no promotion.",
+      "retained_surface": "Source-separated same-map capture, corrected native geometry labels, bounded fit/evaluation pipeline and checkpoint retained for diagnostics.",
+      "failure_signature": "DEV BODY recall 13/28 and HEAD 8/18 both below 0.5; Willow support IoU declines to 0.1345/0.0266. Corrected original-route meter is NOT_EVALUABLE, not a scored miss.",
+      "revisit_trigger": "Separately authorized comparison addressing thin-obstacle misses and localization forgetting; preserve corrected UNKNOWN and consumed Development boundaries.",
+      "assignment_basis": "One completed seed17 300-step fit failed predeclared retention; preserve diagnostic component without model promotion or further automatic fitting."
+    },
+    {
+      "terminal_id": "terminal-city-tiny-fit-20260908-diagnostic-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "TinyTRAIN memorization/gradient diagnostic; full-update fitting evidence, not DEV/plaza/Willow or a promoted model.",
+      "retained_surface": "G13 architecture, fixed32-frame batch and B/F2000 loss/gradient/checkpoint evidence; retain full-update capacity evidence, not tiny weights as production initialization.",
+      "failure_signature": "Both near-perfect but strict strong-fit false: F HEAD IoU0.487975 below0.5. Positive-frame HEAD TP116 FP118 FN0 shows excess known-pixel activation; sampled gradient paths connected, not complete pipeline proof.",
+      "revisit_trigger": "Separately authorized matched full-update1134 comparison from original G13 initialization against B2000; no extra current fits or tiny-weight warm-start.",
+      "assignment_basis": "Two fixed2000-step arms339.850s CUDA; B backbone unchanged and both BN buffers unchanged; all expected sampled gradients nonzero, strong-fit rule retained, all non-TRAIN sets unread."
+    },
+    {
+      "terminal_id": "terminal-city-native-replay-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Weak diagnostic-only replay/thin sampling component; retain original model, no default-model promotion.",
+      "retained_surface": "Reproducible 4 thin / 4 native / 8 replay sampling, bounded fit pipeline, checkpoint and consumed diagnostic evidence.",
+      "failure_signature": "DEV-selected HEAD recall 3/18 fails retention despite BODY 15/28; route bollard joint detection remains 0/2. Willow BODY/HEAD support IoU 0.2312068429/0.0897128790 versus initial 0.4428473216/0.2037178882 both miss 80 percent retention.",
+      "revisit_trigger": "New bounded evidence on target-view coverage and score separation, preserving corrected UNKNOWN and consumed single-seed Development scope.",
+      "assignment_basis": "One completed 300-step combined replay/thin recipe fails head recall, thin-target joint and old-localization retention; retain reproducible sampling and diagnostics only."
+    },
+    {
+      "terminal_id": "terminal-city-full-fit-20260908-development-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Full-parameter City Development fitting and final2000 DEV candidate; no generalized model promotion.",
+      "retained_surface": "Checkpoint d911a3a717efb5a93fadb3268ba962db94455565805effc7077f75215670cf46; BODY/HEAD thresholds0.6319661140441895/0.9686279892921448; matched frozen-B comparison and training trajectory.",
+      "failure_signature": "DEV joint6/32 and support IoU0.20745/0.20324 remain limited; consumed plaza HEAD0/15 TP with171/735 FP. DEV improvement does not establish cross-region repair.",
+      "revisit_trigger": "Separately authorized diagnostic or independent-region assessment of the frozen candidate; no consumed-plaza reselection or promotion.",
+      "assignment_basis": "One2000-step full-parameter fit306.826s CUDA, matched1134 TRAIN and final-only unchanged DEV selection; retain fitting capability/DEV candidate while preserving old terminals."
+    },
+    {
+      "terminal_id": "terminal-city-native-view-probe-20260908-diagnostic-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Eight-view same-instance diagnostic and native label pipeline only; no model promotion.",
+      "retained_surface": "Frozen eight-view matched controls/transverse capture, corrected UNKNOWN-aware native labels and fixed-checkpoint score diagnostics.",
+      "failure_signature": "Replay DEV-selected joint alerts fall 2/2 to 0/2 in the two reliable pairs despite transverse target overlap and peak hits. Historical control agreement is only 3/4; far two target pairs remain UNKNOWN.",
+      "revisit_trigger": "New bounded matched-view/context training-coverage test preserving disjoint DEV and old-localization retention; no budget extension of this completed probe.",
+      "assignment_basis": "Selected same-instance two-reliable-pair Development evidence supports view/context sensitivity but cannot isolate yaw, background or appearance causes."
+    },
+    {
+      "terminal_id": "terminal-head-x0-20260908-diagnostic-coverage-candidate",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "HEAD-X0 zero-training cached/ROI sensitivity and coverage diagnostic on original/B/F; consumed Development, no causal repair or promotion.",
+      "retained_surface": "Score distributions,186-error atlas,k4 patch clusters, matched15 scaffold masks and parity-valid padded32 original/B/F perturbation/ROI-feature evidence.",
+      "failure_signature": "F plazaHEAD ranking reversal AUC0.2575; sensitivity depends on blur versus mean-fill,35FP peaks UNKNOWN; ROI cosine gaps prediction-conditioned. Exact pooled mask match does not explain transfer causally.",
+      "revisit_trigger": "Separately authorized training-source coverage/hard-negative pilot while keeping consumed plaza out of training; no current new fits or model promotion.",
+      "assignment_basis": "Recovery-v3 padded32 passes numerical parity after retained v1/v2 batch9-versus32 failures; all attempts zero training. Diagnostics motivate coverage review without pure-background causal claims."
+    },
+    {
+      "terminal_id": "terminal-city-field-diagnostic-20260908-fixed-method-no-promotion",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Frozen G10/G13 inference-only City field Development diagnosis; no model promotion or sealed-test authority.",
+      "retained_surface": "Immutable108-frame nine-route field, fixed-checkpoint predictions, BODY/HEAD target-band failures, seven native-clear controls and floor-REVIEW sensitivity evidence.",
+      "failure_signature": "G10 misses30/45 target-band opportunities with11/45 joint hits and3/7 clear false-alert frames; G13 misses45/45 with0/45 joint hits and0/7 clear false alerts. All33 BODY and33 HEAD scene positives missed by G13; dropping five floor-REVIEW rows does not change positive counts or false negatives.",
+      "revisit_trigger": "A bounded method or coverage change with consumed-diagnostic and source-partition boundaries explicit; no threshold reselection or budget extension of this completed run.",
+      "assignment_basis": "Completed fixed-v1 receipt PASS108, optimizer_steps0; retain reproducible field diagnosis and failure cases. Direct RGB-to-risk failures cannot establish monocular-depth error as a cause."
+    },
+    {
+      "terminal_id": "terminal-city-coverage64-20260908-limited-transfer",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Limited same-plaza regional coverage signal after exactly one2000-step fit; current G13-D baseline retained, no promotion.",
+      "retained_surface": "Role-frozen TRAIN64/EVAL64 captures, native support caches, final1198-TRAIN full-update checkpoint and frozen DEV-threshold comparison.",
+      "failure_signature": "EVAL HEAD still misses20/32 despite complete newTRAIN near fit; DEV HEAD IoU and EVAL BODY AUC regress. Same-world two-region evidence does not establish relational generalization.",
+      "revisit_trigger": "Separately authorized diagnosis or new source coverage evaluation; no second fit or budget expansion in this terminal.",
+      "assignment_basis": "Independent result/receipt PASS; HEAD EVAL TP8 to12 and FP3 to1 with support IoU improvement are limited transfer evidence, not baseline promotion."
+    },
+    {
+      "terminal_id": "terminal-city-field-approach-20260908-distance-view-diagnostic",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Same-route consumed City Development acquisition and fixed-model distance/view diagnosis; no sealed-test, warning-time or model-promotion authority.",
+      "retained_surface": "Exact-source supported fixture identities,21 measured floor poses,105 paired settled captures, strict UNKNOWN-aware geometry labels, frozen G10/G13 predictions and corrected cached summary-v2.",
+      "failure_signature": "G10 misses39/64 eligible opportunities with23 joint hits but18/21 matched-clear false-alert frames; only3 joint hits have silent controls. G13 misses64/64. Eight hit sequences lose nearer; nearest-only ninth persistence NOT_TESTED.",
+      "revisit_trigger": "A bounded method or source-coverage change using these consumed approach failures as disclosed Development; preserve fixed source geometry and exclude UNKNOWN or noneligible query support from misses.",
+      "assignment_basis": "Completed fixed capture and inference with zero fitting; five focused tests and independent cached count review support the diagnostic artifact. Results do not establish target-only causality, continuous-motion lead time or monocular-depth error."
+    },
+    {
+      "terminal_id": "terminal-city-support-dice-20260908-transfer-tradeoff",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This fixed Dice-only recipe as generalization repair on1198 TRAIN and consumed Development; not all Dice losses or the G13 architecture.",
+      "retained_surface": "One2000-step checkpoint, frozen DEV thresholds, TRAIN localization improvement and EVAL pixel/near tradeoff evidence.",
+      "failure_signature": "AddedTRAIN localization improves but EVAL HEAD pixel recall, near TP/FPR, AUC and joint groups worsen; DEV near recall also drops.",
+      "revisit_trigger": "Use as a matched negative control in a separately authorized follow-up; no current second fit, sweep or promotion.",
+      "assignment_basis": "One fixed-budget fit and result receipt PASS; better TRAIN masks and slightly higher EVAL IoU do not compensate reduced EVAL recall. Keep coverage64/defaultG13 unchanged."
+    },
+    {
+      "terminal_id": "terminal-head-s1-20260908-support-transfer-diagnostic",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Zero-training consumed cross-region learned-near versus support-readout diagnostic only; no architectural selection or baseline promotion.",
+      "retained_surface": "Matched near/max/top6/LSE ranking and descriptive recall envelopes across DEV,EVAL and plaza for current Coverage and historical F1134.",
+      "failure_signature": "Current HEAD plaza all four recall-at-FPR10 zero; support alternatives also lose cross-region ranking. EVAL max only13 versus12/32; historical BODY LSE gain does not reproduce in current Coverage.",
+      "revisit_trigger": "Separately authorized cross-region evidence-stability diagnostic; no current training, threshold selection or direct MIL replacement.",
+      "assignment_basis": "Audit-v2 PASS and0 training; only missing Coverage-plaza cache required750 forward observations4.12s. Retain scoped diagnostic component without proving learned readout harmless."
+    },
+    {
+      "terminal_id": "terminal-head-paired-20260908-appearance-diagnostic",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed same-world appearance diagnostic and fixed matched recipe only; no baseline replacement.",
+      "retained_surface": "Exact native-equal pairs, raw near/support logits and matched exposure comparison.",
+      "failure_signature": "96-frame static-background paired diagnostic passes64 native positive/UNKNOWN comparisons and both original DEV32 exact predictions. Coverage1198 L damage3/16, M0/16: one TRAIN alert loss, one EVAL ordering reversal, one EVAL positive-support loss. Original A already has only1/8 paired EVAL HEAD TP. A/A RGB and model residuals limit pure appearance-causal attribution.",
+      "revisit_trigger": "Distinct source coverage or representation mechanism; no automatic repeat, weight scan or App promotion.",
+      "assignment_basis": "Completed immutable-source receipts, native correspondence and controller revalidation; descriptive one-seed evidence."
+    },
+    {
+      "terminal_id": "terminal-head-paired-20260908-weak-consistency-no-benefit",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Consumed same-world appearance diagnostic and fixed matched recipe only; no baseline replacement.",
+      "retained_surface": "Exact native-equal pairs, raw near/support logits and matched exposure comparison.",
+      "failure_signature": "Two matched originalG13 seed17 final2000-step fits share48 paired TRAIN images,40000 original1198 draws and24000 paired draws. ERM versus .1 probability consistency has identical originalEVAL64 HEAD TP17/32 FP8/32 AUC0.702148; support recall58.39% to57.69%; BODY TP10/32 FP1/32 both. Original Coverage HEAD TP12 FP1 and BODY TP16, so preserve Coverage. Paired damage3 to1 partly hides oblique-rod support5/6 to3/6 becoming1/6 to1/6. Archive this fixed recipe; no weight sweep or promotion.",
+      "revisit_trigger": "Distinct source coverage or representation mechanism; no automatic repeat, weight scan or App promotion.",
+      "assignment_basis": "Completed immutable-source receipts, native correspondence and controller revalidation; descriptive one-seed evidence."
+    },
     {
       "terminal_id": "terminal-body-query-v1-20260909-mixed-no-replacement",
       "inheritance_role": "COMPONENT_OR_CHALLENGER",
@@ -73,16 +903,6 @@
       "assignment_basis": "Zero-fit full-frame comparison with independent explicit aggregation checks"
     },
     {
-      "terminal_id": "terminal-body-query-depth-oracle-20260909-limited-routing",
-      "inheritance_role": "COMPONENT_OR_CHALLENGER",
-      "inheritance_mode": "COMPONENT",
-      "role_scope": "Limited privileged depth routing diagnostic, not general depth ceiling",
-      "retained_surface": "Axial residuals, UNKNOWN passthrough counts, fixed depth perturbations",
-      "failure_signature": "HEAD TP7 at FP<=2;217/240 HEAD cells passthrough due to UNKNOWN",
-      "revisit_trigger": "Distinct scoped depth-information test; no automatic prior download or native-truth causal claim",
-      "assignment_basis": "Hash-bound native arrays, exact Q3 membership and counterfactual gate checks"
-    },
-    {
       "terminal_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
       "inheritance_role": "COMPONENT_OR_CHALLENGER",
       "inheritance_mode": "COMPONENT",
@@ -91,6 +911,16 @@
       "failure_signature": "Zero HEAD-only cases in72 fixed frames across3 layouts; no HEAD-only recall denominator",
       "revisit_trigger": "Separately authorized source selection with head-only structures and reviewed fixed-pinhole compatibility",
       "assignment_basis": "Source geometry is usable; this subset lacks the target opportunity and does not adjudicate a learned model"
+    },
+    {
+      "terminal_id": "terminal-body-query-depth-oracle-20260909-limited-routing",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Limited privileged depth routing diagnostic, not general depth ceiling",
+      "retained_surface": "Axial residuals, UNKNOWN passthrough counts, fixed depth perturbations",
+      "failure_signature": "HEAD TP7 at FP<=2;217/240 HEAD cells passthrough due to UNKNOWN",
+      "revisit_trigger": "Distinct scoped depth-information test; no automatic prior download or native-truth causal claim",
+      "assignment_basis": "Hash-bound native arrays, exact Q3 membership and counterfactual gate checks"
     },
     {
       "terminal_id": "terminal-bodylift-r0-20260909-no-low-fp-gain",
@@ -1031,6 +1861,66 @@
       "failure_signature": "No added true sequence detections, five extra false bits, gap interruptions and weak wall coverage",
       "revisit_trigger": "Separate authorization for a bounded mechanism comparison preserving original models, cuts, per-query costs and UNKNOWN; no automatic successor",
       "assignment_basis": "160 admitted native frames; frozen parity; eight tests; independent 7680-query score"
+    },
+    {
+      "terminal_id": "terminal-mz82-temporal-visual-canary-20260912",
+      "inheritance_role": "DEAD_FOR_THIS_ROLE",
+      "inheritance_mode": null,
+      "role_scope": "Fixed causal five-frame Farneback corridor flow, expansion, image-TTC and stability rescue on consumed MZ77",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ82_TEMPORAL_VISUAL_CANARY_RESULTS_20260912.md",
+      "failure_signature": "At added FP<=5 rescues 0/0/2 TP, below the 10-TP canary and all 25%-FN targets; only wall HEAD bits appear",
+      "revisit_trigger": "Source-separated motion evidence plus a changed information mechanism such as measured IMU ego-motion compensation",
+      "assignment_basis": "Predeclared MZ82 stop rule and sealed run-v2 consumed-Development result"
+    },
+    {
+      "terminal_id": "terminal-mz83-radar-information-canary-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Identity-free coarse radar-like packet contract and fixed generic hazard expert on consumed MZ77",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ83_RADAR_INFORMATION_CANARY_RESULTS_20260912.md",
+      "failure_signature": "Pass is limited by an easy single-scene depth-derived forward model without RCS, multipath, antenna or measured calibration; HEIGHT attribution remains unknown",
+      "revisit_trigger": "Harder preferably new scenes testing weak/small reflectors, near off-corridor clutter, wall/multipath proxies and head motion under the same late-fusion semantics",
+      "assignment_basis": "Predeclared all-profile 25%-FN rescue at added FP<=5 gate; sealed run-v2 passes47/53/59 rescue at0FP"
+    },
+    {
+      "terminal_id": "terminal-mz84-bidirectional-complementarity-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Fixed responsibility-separated ToF/radar generic hazard fusion on the six-family analytic source",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ84_BIDIRECTIONAL_COMPLEMENTARITY_RESULTS_20260912.md",
+      "failure_signature": "Analytic proxies only;8 residual ToF head-motion FP and two multi-target gap-onset fragments remain, with no measured radar, ToF or IMU calibration",
+      "revisit_trigger": "Measured or credible device-calibrated heterogeneous traces, or fresh-source explicit IMU ego-motion compensation",
+      "assignment_basis": "All four predeclared gates pass: fusion F1.944 exceeds both singles, bidirectional unique wins exist, FP stays8 and first-alert delay is0.0s"
+    },
+    {
+      "terminal_id": "terminal-mz85-rotation-compensated-state-20260912",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Causal gyroscope rotation of ToF rays into a stabilized frame before temporal association",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ85_ROTATION_COMPENSATED_STATE_RESULTS_20260912.md",
+      "failure_signature": "Perfect correction is limited to the consumed constructed MZ84 head-motion path without gyro bias, timing/extrinsic error, translation, vibration or measured noise",
+      "revisit_trigger": "Fresh source-separated head motion or measured device-calibrated gyro and heterogeneous sensor traces",
+      "assignment_basis": "All predeclared gates pass: FP8to0, TP160 and FN11 unchanged, zero added first-alert delay and zero added fragmentation"
+    },
+    {
+      "terminal_id": "terminal-mz85-residual-fn-audit-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Read-only sealed residual taxonomy bounding continuity and attribution claims",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ85_RESIDUAL_FN_AUDIT_RESULTS_20260912.md",
+      "failure_signature": "No single dominant residual:4 lateral cold-start,4 radar activation latency and3 dual evidence absence; authority hold directly targets only2",
+      "revisit_trigger": "Fresh temporal source with explicit pre-roll and independent gap/head-motion schedules, or measured synchronized sensor traces",
+      "assignment_basis": "Hash-verified audit of all11 generic FN with mutually exclusive primary categories and orthogonal gap/HEIGHT_UNKNOWN tags"
+    },
+    {
+      "terminal_id": "terminal-mz87-imu-realism-falsifier-20260912",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Frozen analytic IMU transform stress grid bounding the ideal MZ85 rotation mechanism",
+      "retained_surface": "research/active/dtr-r0/nearfield/MZ87_IMU_REALISM_FALSIFIER_RESULTS_20260912.md",
+      "failure_signature": "Smallest stresses are stable but the preregistered medium single-factor and combination tolerance region fails through lateral boundary errors and restored head-motion FP",
+      "revisit_trigger": "Fresh rapid motion with measured or device-calibrated gyro, timestamps and ToF-IMU extrinsics",
+      "assignment_basis": "Thirty-six frozen zero-fit replays; medium gate fails without algorithm or threshold changes"
     },
     {
       "terminal_id": "terminal-mz88-uncertainty-aware-association-20260912",

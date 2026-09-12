@@ -33,10 +33,16 @@ material; do not add ceremony without a named risk.
 
 ## Result
 
-- Terminal status:
+- Terminal status (execution/contract only):
+- Evidence verdict (`positive / negative / mixed / not_evaluable / unknown`):
 - Primary metric:
 - Coverage and exclusions:
 - Failure mechanism:
 - Supported claim:
 - Unsupported claims:
-- Next decision or closure:
+- Inheritance role (`RETAINED_CORE / COMPONENT_OR_CHALLENGER /
+  NEGATIVE_CONTROL / DEAD_FOR_THIS_ROLE`; required for a current terminal):
+- Inheritance mode (`COMPONENT / CHALLENGER`, when applicable):
+- Role scope and exact retained surface or failure signature:
+- Forbidden reuse and decision-changing revisit trigger:
+- Next decision:
