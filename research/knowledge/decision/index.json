@@ -2,7 +2,7 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-12",
-  "source_fingerprint": "218c0a55fb7e67382d0c4345398902f30ddb31fd08bb0c52913ea5efcbf8ed45",
+  "source_fingerprint": "2e975e42c11ddc5d5b449ac29a761fd44b288ae436b830b072413d66b6d18468",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
@@ -24643,6 +24643,7 @@
       "assignment_basis": "No strict FP gain; stage diagnostics preserve why internal changes fail to affect outcomes",
       "evidence": [
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md",
+        "research/active/dtr-r0/nearfield/MZ90_FINAL_DECISION_AUDIT_20260912.md",
         "research/active/dtr-r0/nearfield/MZ93_SUPPORTED_PREDICTION_20260912.md"
       ],
       "association_id": "mz93-supported-prediction-20260912",

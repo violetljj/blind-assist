@@ -5,6 +5,19 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## Frozen final-error diagnosis (2026-09-12)
+
+[Final decision audit](nearfield/MZ90_FINAL_DECISION_AUDIT_20260912.md) separates
+selected sensor from current/history support. Proxy151FP include108 current-Radar,
+18 Radar-hysteresis-only,16 current-ToF and9 outer-hold FP, each with paired TP
+counts.158FN include94 raw Radar gate failures,21 hysteresis entry failures,
+20 nonalerting-ToF-over-Radar conflicts,17 other ToF nonalerts and6 no-return cases.
+139FN have current hazardous-source returns by evaluator-only provenance.69FN
+have all such Radar returns outside the raw range gate,66 with future-only truth.
+Paired degradation is135 lost/11 recovered TP and128 added/18 removed FP.
+Investigate range/horizon consistency and local ToF coverage before another
+front-end filter. No new policy or change to retained matched_hold authority.
+
 ## MZ93 supported future occupancy (2026-09-12)
 
 [MZ93](nearfield/MZ93_SUPPORTED_PREDICTION_RESULTS_20260912.md) closes as
