@@ -5,6 +5,26 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ83 coarse radar information canary (2026-09-12)
+
+[MZ83](nearfield/MZ83_RADAR_INFORMATION_CANARY_RESULTS_20260912.md) converts
+MZ77 native scene depth into sealed radar-like `(range, radial velocity,
+azimuth, valid)` packets through a fixed uncalibrated forward model with coarse
+angular cells, support clustering, noise/quantization, misses, return merging,
+FoV and clutter. The generic causal expert sees no depth, IDs, masks, source
+cases or labels. Against the three MZ79 5-klux typical profiles it rescues
+47/53/59 generic ToF FN at0 added FP, exceeding required12/14/15; fixed late OR
+is77TP/0FP/1FN in each. Radar-only rescue remains HEIGHT_UNKNOWN.
+
+Retain this as an information-sufficiency component and authorize one bounded
+ToF+radar late-fusion successor on harder, preferably new scenes. Do not read the
+77/0/1 as real-radar performance: MZ77 is one straight, constant-speed synthetic
+scene with simple opaque targets and an easy control, while the forward model
+lacks RCS/material response, multipath, antenna pattern, ambiguity, interference
+and measured calibration. Before a radar network or ToF+radar+IMU state estimator,
+challenge weak/small reflectors, near off-corridor clutter, wall/multipath proxies
+and head motion while preserving generic HEIGHT_UNKNOWN output.
+
 ## MZ82 explicit temporal visual canary (2026-09-12)
 
 [MZ82](nearfield/MZ82_TEMPORAL_VISUAL_CANARY_RESULTS_20260912.md) tests a fixed,
