@@ -5,6 +5,22 @@ Updated: 2026-09-12
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 Current work: cane-complementary, class-agnostic forward obstacle awareness.
 
+## MZ81 conditional RGB feature probe (2026-09-12)
+
+[MZ81](nearfield/MZ81_CONDITIONAL_FEATURE_PROBE_RESULTS_20260912.md) freezes the
+current RGB backbone and trains only a4,652-parameter576-8-4 query head onMZ61,
+selects epoch/cutoff on topology-disjointMZ67, then tests once on theMZ77
+approach source. The locked low-FP MZ67 cutoff transfers as8/15/24 rescued TP
+but211 added FP in the three5-klux profiles; MZ77 conditional PR-AUC is only
+0.104/0.120/0.139. More decisively, the forbidden posthoc ceiling at added
+FP<=5 is0TP in all three profiles. CLEAN remains exactly unchanged by `U_ToF`.
+
+Pause the single-frame RGB residual route and retain the probe as a negative
+control. Do not increase head/backbone size or retune on consumed MZ77. A future
+restart must change the information source or geometry (temporal RGB, explicit
+corridor/perspective representation, dual/higher-resolution ToF, ToF+IMU or
+radar) under a separately bounded hypothesis. No successor is auto-started.
+
 ## MZ80 observability-conditioned visual rescue (2026-09-12)
 
 [MZ80](nearfield/MZ80_OBSERVABILITY_RESCUE_RESULTS_20260912.md) evaluates
