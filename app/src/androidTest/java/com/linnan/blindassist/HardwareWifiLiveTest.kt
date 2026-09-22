@@ -53,6 +53,12 @@ class HardwareWifiLiveTest {
                         .put("camera_age_upper_ms", diag.cameraAgeUpperMs)
                         .put("tof_age_upper_ms", diag.tofAgeUpperMs)
                         .put("camera_clock_error_ms", diag.cameraClockErrorMs)
+                        .put("camera_acquisition_ms", diag.cameraAcquisitionMs)
+                        .put("camera_transfer_upper_ms", diag.cameraTransferUpperMs)
+                        .put("camera_decode_ms", diag.cameraDecodeMs)
+                        .put("camera_copy_ms", diag.cameraCopyMs)
+                        .put("tof_arrival_age_upper_ms", diag.tofArrivalAgeUpperMs)
+                        .put("valid_tof_zones", snapshot.decision.validZones)
                         .put("status", snapshot.status))
                 }
                 Thread.sleep(33)

@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.content.Intent
 import android.provider.Settings
 import android.os.SystemClock
+import android.os.Handler
+import android.os.Looper
+import android.view.Choreographer
 import android.speech.tts.TextToSpeech
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -67,6 +70,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /** Explicit, foreground-only hardware demonstration; never runs the normal assist session. */
 class HardwareDemoActivity : ComponentActivity() {
@@ -191,7 +196,7 @@ class HardwareDemoActivity : ComponentActivity() {
             try {
             while (isActive) {
                 try {
-                    val result = withContext(Dispatchers.IO) { ownedWifi?.poll() ?: requireNotNull(usbClient).poll() }
+                    val result = ownedWifi?.poll() ?: withContext(Dispatchers.IO) { requireNotNull(usbClient).poll() }
                     if (generation != connectionGeneration) break
                     lastResultAt = SystemClock.elapsedRealtime()
                     snapshot = result
@@ -203,7 +208,7 @@ class HardwareDemoActivity : ComponentActivity() {
                 } catch (_: Exception) {
                     invalidate(if (useWifi) "无线连接失效 · 请检查热点和硬件供电" else "连接失效 · 请检查电脑中转与 USB")
                 }
-                delay(if (useWifi) 33 else 200)
+                if (useWifi) awaitDisplayFrame() else delay(200)
             }
             } finally {
                 ownedWifi?.close()
@@ -222,6 +227,19 @@ class HardwareDemoActivity : ComponentActivity() {
                 lastSpokenAt = now
                 lastSpokenFrame = key
             }
+        }
+    }
+
+    private suspend fun awaitDisplayFrame(): Unit = suspendCancellableCoroutine { continuation ->
+        // Activity lifecycleScope has no Compose MonotonicFrameClock. Use the main looper's
+        // real display callback, cancelling it when the page stops or reconnects.
+        val choreographer = Choreographer.getInstance()
+        val callback = Choreographer.FrameCallback {
+            if (continuation.isActive) continuation.resume(Unit)
+        }
+        choreographer.postFrameCallback(callback)
+        continuation.invokeOnCancellation {
+            Handler(Looper.getMainLooper()).post { choreographer.removeFrameCallback(callback) }
         }
     }
 

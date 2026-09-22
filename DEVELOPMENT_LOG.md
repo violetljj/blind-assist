@@ -4,6 +4,33 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.12.1 latency reduction, fixed 10 Hz
+
+- Initial 15 Hz / 5 ms HTTP poll pilot reduced ToF snapshot age bound from 177
+  to 99 ms median, but had 17/1303 invalid snapshots in one transient burst.
+  Preserved that receipt; user then explicitly fixed ToF at 10 Hz.
+- Final firmware v3 sends new samples via leased UDP3335 (1 s renewal, 5 s lease).
+  Phone rejects foreign, duplicate, regressing and expired packets with per-boot
+  UDP3333 clock mapping. HTTP remains diagnostics-only. No stale sample refresh.
+- Removed Activity's 33 ms plus IO-dispatch poll delay for wireless snapshots;
+  lifecycle-owned Choreographer callback consumes latest state at display refresh.
+- Final direct-hotspot 45 s transport test: 1300/1300 usable, 996 distinct camera
+  frames, 445 ToF frames; ToF sequence advanced 455. Snapshot age upper bounds
+  camera median/P95 86/162 ms, ToF 71/132 ms. ToF arrival bound median/P95 14/44 ms.
+- Camera acquisition/JPEG-ready median 36.6 ms, transfer bound 14.9 ms, decode
+  5.4 ms, copy 2.3 ms. Preserved VGA and safe bitmap ownership. Independent
+  distributions must not be added as a single frame's end-to-end latency.
+- Old HTTP ToF bound included full request RTT; UDP uses clock mapping instead.
+  The smaller bound is partly tighter estimation, not a controlled claim of 60%
+  physical response improvement. Readout excludes preceding sensing and I2C time;
+  neither screen latency nor increased-frequency ranging accuracy is established.
+- Evidence: ignored hardware-bringup/wifi-latency-20260923. First packaging
+  attempt failed without a diagnostic cause; stacktrace retry succeeded.
+- Final build/lint, six contract tests and APK verification passed; final
+  Choreographer UI displayed live on-device and ToF disconnect/reboot recovery
+  was checked by screenshots. Final APK SHA256
+  437A26013D1E30CE2020976631196C02F05D86CB78EE4F6CC375726288D8DA64.
+
 ## 2026-09-23 — v10.12.0 phone hotspot and presentation
 
 - Camera and 8x8 ToF join the phone hotspot; UDP discovery, latest MJPEG, bounded

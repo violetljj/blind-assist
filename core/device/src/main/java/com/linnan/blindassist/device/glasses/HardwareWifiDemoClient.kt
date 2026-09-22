@@ -8,6 +8,11 @@ import com.linnan.blindassist.risk.DemoTofCell
 import com.linnan.blindassist.risk.TofCorridorDemo
 import com.linnan.blindassist.vision.NativeImageVisionFrame
 import org.json.JSONObject
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.net.SocketTimeoutException
+import java.net.URI
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
@@ -27,6 +32,7 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     private val workers = Executors.newFixedThreadPool(2)
     private val cameraGeneration = AtomicLong()
     private val connections = mutableSetOf<HttpURLConnection>()
+    @Volatile private var tofSocket: DatagramSocket? = null
     @Volatile private var source: AtomS3rMjpegFrameSource? = null
     @Volatile private var camera: CameraSample? = null
     @Volatile private var tof: TofSample? = null
@@ -43,7 +49,8 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
             return HardwareWifiDiagnostics(
                 c?.let { it.ageAtReceiveMs + now - it.receivedMs },
                 t?.let { it.ageAtReceiveMs + now - it.receivedMs },
-                c?.clockErrorMs, c?.sequence, t?.sequence
+                c?.clockErrorMs, c?.sequence, t?.sequence,
+                c?.acquisitionMs, c?.transferUpperMs, c?.decodeMs, c?.copyMs, t?.ageAtReceiveMs
             )
         }
 
@@ -152,7 +159,11 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
                                 if (ageMs in 0..HardwareWifiFreshness.MAX_AGE_MS && running.get() &&
                                     cameraGeneration.get() == generation) {
                                     camera = CameraSample(boot, stamp.frameId, copy, doneNs / 1_000_000L,
-                                        ageMs, (error + 999_999L) / 1_000_000L)
+                                        ageMs, (error + 999_999L) / 1_000_000L,
+                                        (timing.deviceJpegReadyNs - timing.deviceCaptureNs) / 1_000_000.0,
+                                        timing.deviceSendStartNs?.let { (timing.androidJpegCompleteNs - (it - offset) + error) / 1_000_000.0 },
+                                        (timing.androidDecodeCompleteNs - timing.androidDecodeStartNs) / 1_000_000.0,
+                                        (doneNs - nowNs) / 1_000_000.0)
                                     cameraProblem = "相机数据过期 · 等待新帧"
                                 }
                             }
@@ -167,39 +178,75 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
 
     private fun tofLoop() {
         val progression = HardwareWifiProgress()
+        val address = InetAddress.getByName(URI(tofEndpoint).host)
+        val request = "BADEMO_TOF_V1".toByteArray(Charsets.US_ASCII)
         var boot: String? = null
-        while (running.get()) {
-            try {
-                val requested = SystemClock.elapsedRealtime()
-                val json = readJson(tofEndpoint, "/api/tof")
-                val received = SystemClock.elapsedRealtime()
-                val nextBoot = json.getString("boot_id").also { require(it.isNotBlank()) }
-                if (boot != nextBoot) { tof = null; boot = nextBoot }
-                val sequence = json.getLong("seq")
-                val sampled = json.getLong("sampled_us")
-                val send = json.getLong("send_us")
-                require(json.getInt("rows") == 8 && json.getInt("cols") == 8)
-                val distances = json.getJSONArray("distance_mm")
-                val statuses = json.getJSONArray("target_status")
-                val targets = json.getJSONArray("nb_target")
-                require(distances.length() == 64 && statuses.length() == 64 && targets.length() == 64)
-                val cells = (0 until 64).map { zone ->
-                    val range = distances.getDouble(zone).also { require(it.isFinite()) }
-                    val status = statuses.getInt(zone).also { require(it in 0..255) }
-                    val count = targets.getInt(zone).also { require(it in 0..255) }
-                    DemoTofCell(zone, range, status, count, "KNOWN")
+        var mapping: com.linnan.blindassist.camera.AtomS3rClockMapping? = null
+        var mappedAt = 0L
+        try {
+            DatagramSocket().use { socket ->
+                tofSocket = socket
+                socket.soTimeout = 150
+                var subscribedAt = -1_000L
+                while (running.get()) {
+                    try {
+                        val now = SystemClock.elapsedRealtime()
+                        if (now - subscribedAt >= 1000) {
+                            socket.send(DatagramPacket(request, request.size, address, 3335))
+                            subscribedAt = now
+                        }
+                        val packet = DatagramPacket(ByteArray(4096), 4096)
+                        socket.receive(packet)
+                        if (packet.address != address || packet.port != 3335) continue
+                        val json = JSONObject(String(packet.data, packet.offset, packet.length, Charsets.UTF_8))
+                        val nextBoot = json.getString("boot_id").also { require(it.isNotBlank()) }
+                        if (boot != nextBoot) { tof = null; boot = nextBoot; mapping = null }
+                        if (mapping == null || now - mappedAt > 10_000) {
+                            mapping = AtomS3rClockSynchronizer(tofEndpoint, attempts = 2).synchronize()
+                            mappedAt = SystemClock.elapsedRealtime()
+                            // Discard the queued packet from before this mapping; next frame is independently timed.
+                            continue
+                        }
+                        val receivedNs = SystemClock.elapsedRealtimeNanos()
+                        val sequence = json.getLong("seq")
+                        val sampled = json.getLong("sampled_us")
+                        val send = json.getLong("send_us")
+                        require(sampled > 0 && send >= sampled && send - sampled <= 750_000)
+                        require(sampled <= Long.MAX_VALUE / 1000)
+                        val ageNs = receivedNs - mapping.deviceToAndroidNs(sampled * 1000)
+                        require(ageNs >= -mapping.errorBoundNs && mapping.errorBoundNs in 0..100_000_000L)
+                        val age = (ageNs + mapping.errorBoundNs + 999_999L) / 1_000_000L
+                        require(age in 0..HardwareWifiFreshness.MAX_AGE_MS)
+                        require(json.getInt("rows") == 8 && json.getInt("cols") == 8)
+                        val distances = json.getJSONArray("distance_mm")
+                        val statuses = json.getJSONArray("target_status")
+                        val targets = json.getJSONArray("nb_target")
+                        require(distances.length() == 64 && statuses.length() == 64 && targets.length() == 64)
+                        val cells = (0 until 64).map { zone ->
+                            val range = distances.getDouble(zone).also { require(it.isFinite()) }
+                            val status = statuses.getInt(zone).also { require(it in 0..255) }
+                            val count = targets.getInt(zone).also { require(it in 0..255) }
+                            DemoTofCell(zone, range, status, count, "KNOWN")
+                        }
+                        if (progression.accept(nextBoot, sequence, sampled) && running.get()) {
+                            tof = TofSample(nextBoot, sequence, cells, receivedNs / 1_000_000L, age)
+                            tofProblem = "ToF 数据过期 · 等待新测距"
+                        }
+                    } catch (_: SocketTimeoutException) {
+                        // A missing datagram never advances sample time; poll expires the last valid sample.
+                        tofProblem = "ToF 数据过期 · 检查热点与电源"
+                    } catch (_: Exception) {
+                        tof = null
+                        mapping = null
+                        tofProblem = "ToF 时间或数据失效 · 正在重新同步"
+                        if (!pause(100)) break
+                    }
                 }
-                val age = requireNotNull(HardwareWifiFreshness.requestAgeUpperMs(sampled, send, requested, received))
-                if (progression.accept(nextBoot, sequence, sampled)) {
-                    if (running.get()) tof = TofSample(nextBoot, sequence, cells, received, age)
-                    tofProblem = "ToF 数据过期 · 等待新测距"
-                }
-            } catch (_: Exception) {
-                tof = null
-                tofProblem = "ToF 未连接或读数失效 · UNKNOWN"
             }
-            if (!pause(50L)) break
-        }
+        } catch (_: Exception) {
+            tof = null
+            tofProblem = "ToF 无线接收已停止"
+        } finally { tofSocket = null }
     }
 
     private fun readJson(endpoint: String, path: String): JSONObject {
@@ -246,6 +293,7 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
         cameraGeneration.incrementAndGet()
         camera = null
         tof = null
+        tofSocket?.close()
         workers.shutdownNow()
         // Lifecycle callers may be on Android's main thread. Teardown is bounded but asynchronous.
         Thread({
@@ -266,10 +314,13 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     }
 
     private data class CameraSample(val boot: String, val sequence: Long, val bitmap: Bitmap,
-        val receivedMs: Long, val ageAtReceiveMs: Long, val clockErrorMs: Long)
+        val receivedMs: Long, val ageAtReceiveMs: Long, val clockErrorMs: Long,
+        val acquisitionMs: Double, val transferUpperMs: Double?, val decodeMs: Double, val copyMs: Double)
     private data class TofSample(val boot: String, val sequence: Long, val cells: List<DemoTofCell>,
         val receivedMs: Long, val ageAtReceiveMs: Long)
 }
 
 data class HardwareWifiDiagnostics(val cameraAgeUpperMs: Long?, val tofAgeUpperMs: Long?,
-    val cameraClockErrorMs: Long?, val cameraSequence: Long?, val tofSequence: Long?)
+    val cameraClockErrorMs: Long?, val cameraSequence: Long?, val tofSequence: Long?,
+    val cameraAcquisitionMs: Double?, val cameraTransferUpperMs: Double?, val cameraDecodeMs: Double?,
+    val cameraCopyMs: Double?, val tofArrivalAgeUpperMs: Long?)

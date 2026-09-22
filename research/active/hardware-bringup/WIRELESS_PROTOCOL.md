@@ -22,9 +22,17 @@ The XIAO serves `GET /api/tof` with `boot_id`, `seq`, `sampled_us`, `send_us`,
 `rows=8`, `cols=8`, and 64-element integer arrays `distance_mm`,
 `target_status`, `nb_target`. Until the first successful read it returns 503.
 Sample time is read completion; no exposure or RGB synchronization is implied.
-Existing 5 Hz ranging and all raw validity values are retained. Readers must
+Version 3 fixes ranging at the user-selected 10 Hz; all raw validity values are retained. Readers must
 reject stale/frozen sequences even when HTTP succeeds. A stalled sensor can
 still return its old sample, identifiable from timestamp and sequence.
+
+For low-delay reception, the phone sends the exact 13-byte `BADEMO_TOF_V1` to
+UDP 3335 from its receiving socket once per second. A subscription lasts five
+seconds; each new sample is sent once to that source IP/port, with the same JSON
+as HTTP. There is no historical replay queue or sample resend on renewal.
+Wi-Fi disconnect clears the subscription. The phone rejects foreign endpoints,
+duplicate/regressing sequences and expired timestamps using a separate ToF
+UDP3333 clock mapping. Missing datagrams do not refresh a sample's timestamp.
 
 Both implement the existing 3333/UDP timing exchange: little-endian 16-byte
 request (`BAT0`, uint32 ID, int64 client start ns), 24-byte response (`BAT1`,
