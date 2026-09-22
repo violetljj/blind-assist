@@ -96,7 +96,7 @@ fun GlassesHardwareScreen(
             onClick = onOpenHardwareDemo,
             modifier = Modifier.fillMaxWidth().heightIn(min = 58.dp).testTag("open_hardware_demo")
         ) {
-            Text(if (english) "Hardware obstacle demo (USB relay)" else "硬件避障展示（USB中转）")
+            Text(if (english) "Hardware perception demo" else "实物前视感知展示")
         }
         Spacer(Modifier.height(16.dp))
         HardwareStatusSection(state = state, language = language)

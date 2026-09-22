@@ -1,28 +1,36 @@
 package com.linnan.blindassist
 
 import android.os.Bundle
+import android.content.Intent
+import android.provider.Settings
 import android.os.SystemClock
 import android.speech.tts.TextToSpeech
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -30,10 +38,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +55,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.linnan.blindassist.device.glasses.HardwareDemoClient
 import com.linnan.blindassist.device.glasses.HardwareDemoSnapshot
+import com.linnan.blindassist.device.glasses.HardwareWifiDemoClient
+import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
+import com.linnan.blindassist.device.glasses.HardwareWifiEndpoint
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import java.util.Locale
 import kotlinx.coroutines.CancellationException
@@ -55,7 +71,12 @@ import kotlinx.coroutines.withContext
 /** Explicit, foreground-only hardware demonstration; never runs the normal assist session. */
 class HardwareDemoActivity : ComponentActivity() {
     private var snapshot by mutableStateOf<HardwareDemoSnapshot?>(null)
-    private var connectionStatus by mutableStateOf("等待电脑中转连接")
+    private var connectionStatus by mutableStateOf("等待无线硬件连接")
+    private var wireless by mutableStateOf(true)
+    private var cameraEndpoint by mutableStateOf("")
+    private var tofEndpoint by mutableStateOf("")
+    private var wifiClient: HardwareWifiDemoClient? = null
+    private var connectionGeneration = 0
     private var speechEnabled by mutableStateOf(true)
     private var speechStatus by mutableStateOf("语音初始化中")
     private var tts: TextToSpeech? = null
@@ -70,6 +91,10 @@ class HardwareDemoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val preferences = getSharedPreferences("hardware_demo", MODE_PRIVATE)
+        cameraEndpoint = preferences.getString("camera", "") ?: ""
+        tofEndpoint = preferences.getString("tof", "") ?: ""
+        wireless = preferences.getBoolean("wireless", true)
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
@@ -84,6 +109,22 @@ class HardwareDemoActivity : ComponentActivity() {
                     connectionStatus = connectionStatus,
                     speechEnabled = speechEnabled,
                     speechStatus = speechStatus,
+                    wireless = wireless,
+                    cameraEndpoint = cameraEndpoint,
+                    tofEndpoint = tofEndpoint,
+                    onCameraChanged = { cameraEndpoint = it },
+                    onTofChanged = { tofEndpoint = it },
+                    onConnect = { beginConnection(discover = false) },
+                    onDiscover = { beginConnection(discover = true) },
+                    onModeChanged = {
+                        wireless = it
+                        getSharedPreferences("hardware_demo", MODE_PRIVATE).edit()
+                            .putBoolean("wireless", it).apply()
+                        beginConnection(discover = it)
+                    },
+                    onHotspotSettings = {
+                        runCatching { startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS)) }
+                    },
                     onSpeechChanged = {
                         speechEnabled = it
                         if (!it) tts?.stop()
@@ -98,13 +139,60 @@ class HardwareDemoActivity : ComponentActivity() {
         super.onStart()
         foreground = true
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        beginConnection(discover = wireless)
+        // Independent clock: a blocked request must never keep an alert alive.
+        watchdog = lifecycleScope.launch {
+            while (isActive) {
+                delay(100)
+                if (snapshot != null && SystemClock.elapsedRealtime() - lastResultAt > 1_500) {
+                    invalidate("连接失效 · 超过 1.5 秒未收到结果")
+                }
+            }
+        }
+    }
+
+    private fun beginConnection(discover: Boolean) {
+        if (!foreground) return
+        val generation = ++connectionGeneration
+        polling?.cancel()
+        wifiClient?.close()
+        wifiClient = null
+        invalidate(if (wireless) "正在连接无线硬件…" else "等待 USB 电脑中转")
         lastResultAt = SystemClock.elapsedRealtime()
-        // Each start owns a new client. Cancelled old IO cannot publish into a new session.
-        val client = HardwareDemoClient()
         polling = lifecycleScope.launch {
+            val useWifi = wireless
+            var ownedWifi: HardwareWifiDemoClient? = null
+            try {
+                if (useWifi) {
+                    if (discover) {
+                        connectionStatus = "正在发现热点内的相机和 ToF…"
+                        val devices = withContext(Dispatchers.IO) { HardwareWifiDiscovery.discover() }
+                        if (generation != connectionGeneration) return@launch
+                        devices.firstOrNull { it.role == "camera" }?.let { cameraEndpoint = it.endpoint }
+                        devices.firstOrNull { it.role == "tof" }?.let { tofEndpoint = it.endpoint }
+                    }
+                    val camera = HardwareWifiEndpoint.normalize(cameraEndpoint)
+                    val tof = HardwareWifiEndpoint.normalize(tofEndpoint)
+                    ownedWifi = HardwareWifiDemoClient(camera, tof)
+                    wifiClient = ownedWifi
+                    ownedWifi.start()
+                    getSharedPreferences("hardware_demo", MODE_PRIVATE).edit()
+                        .putString("camera", camera).putString("tof", tof).apply()
+                }
+            } catch (cancelled: CancellationException) {
+                ownedWifi?.close()
+                throw cancelled
+            } catch (_: Exception) {
+                ownedWifi?.close()
+                invalidate("未连接 · 请开启手机热点并给两块硬件供电，再点自动发现")
+                return@launch
+            }
+            val usbClient = if (useWifi) null else HardwareDemoClient()
+            try {
             while (isActive) {
                 try {
-                    val result = withContext(Dispatchers.IO) { client.poll() }
+                    val result = withContext(Dispatchers.IO) { ownedWifi?.poll() ?: requireNotNull(usbClient).poll() }
+                    if (generation != connectionGeneration) break
                     lastResultAt = SystemClock.elapsedRealtime()
                     snapshot = result
                     connectionStatus = result.status
@@ -113,18 +201,12 @@ class HardwareDemoActivity : ComponentActivity() {
                 } catch (cancelled: CancellationException) {
                     throw cancelled
                 } catch (_: Exception) {
-                    invalidate("连接失效 · 请检查电脑中转与 USB")
+                    invalidate(if (useWifi) "无线连接失效 · 请检查热点和硬件供电" else "连接失效 · 请检查电脑中转与 USB")
                 }
-                delay(200)
+                delay(if (useWifi) 33 else 200)
             }
-        }
-        // Independent main-dispatcher clock: a slow/blocking network request cannot keep an alert alive.
-        watchdog = lifecycleScope.launch {
-            while (isActive) {
-                delay(100)
-                if (SystemClock.elapsedRealtime() - lastResultAt > 1_500) {
-                    invalidate("连接失效 · 超过 1.5 秒未收到结果")
-                }
+            } finally {
+                ownedWifi?.close()
             }
         }
     }
@@ -151,7 +233,10 @@ class HardwareDemoActivity : ComponentActivity() {
 
     override fun onStop() {
         foreground = false
+        connectionGeneration++
         polling?.cancel()
+        wifiClient?.close()
+        wifiClient = null
         watchdog?.cancel()
         polling = null
         watchdog = null
@@ -169,103 +254,151 @@ class HardwareDemoActivity : ComponentActivity() {
     }
 }
 
+private val DemoBackground = Color(0xFF101112)
+private val DemoPanel = Color(0xFF1A1C1D)
+private val DemoInk = Color(0xFFF2F1ED)
+private val DemoMuted = Color(0xFF9B9E9E)
+private val DemoTeal = Color(0xFFB6C9BE)
+private val DemoAmber = Color(0xFFE9BD87)
+
 @Composable
 private fun HardwareDemoScreen(
-    snapshot: HardwareDemoSnapshot?,
-    connectionStatus: String,
-    speechEnabled: Boolean,
-    speechStatus: String,
-    onSpeechChanged: (Boolean) -> Unit,
-    onBack: () -> Unit
+    snapshot: HardwareDemoSnapshot?, connectionStatus: String,
+    speechEnabled: Boolean, speechStatus: String, wireless: Boolean,
+    cameraEndpoint: String, tofEndpoint: String,
+    onCameraChanged: (String) -> Unit, onTofChanged: (String) -> Unit,
+    onConnect: () -> Unit, onDiscover: () -> Unit, onModeChanged: (Boolean) -> Unit,
+    onHotspotSettings: () -> Unit, onSpeechChanged: (Boolean) -> Unit, onBack: () -> Unit
 ) {
     val replay = snapshot?.mode == "replay"
     val usable = snapshot != null && (snapshot.liveUsable || (replay && snapshot.image != null))
     val alert = usable && snapshot?.decision?.alert == true
-    val accent = when {
-        !usable -> Color(0xFF8B4513)
-        replay -> Color(0xFF5B408F)
-        alert -> Color(0xFFA52624)
-        else -> Color(0xFF425466)
-    }
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.safeDrawingPadding().verticalScroll(rememberScrollState()).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("硬件避障展示", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
-                OutlinedButton(onClick = onBack) { Text("返回") }
-            }
-            Text("基础 ToF 走廊相交", fontWeight = FontWeight.Bold)
-            Surface(color = accent, contentColor = Color.White, shape = RoundedCornerShape(12.dp)) {
-                Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(
-                        when {
-                            !usable && replay -> "回放 · 输入缺失或过期 · 静音"
-                            !usable -> "连接失效 / 等待连接"
-                            replay -> "回放 · 全程静音"
-                            else -> "实物实时 · USB 电脑中转"
-                        },
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.testTag("hardware_demo_mode")
-                    )
-                    Text(
-                        when {
-                            !usable -> "UNKNOWN · 当前无法判断"
-                            alert && replay -> "回放结果：前方可能有障碍"
-                            alert -> "前方可能有障碍"
-                            else -> "UNKNOWN · 未触发障碍提示"
-                        },
-                        fontSize = 23.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.testTag("hardware_demo_decision")
-                    )
-                    Text(if (usable) "未提示不代表道路安全" else "旧画面和旧提示已清除")
-                }
-            }
-            Text(connectionStatus, style = MaterialTheme.typography.bodySmall)
-            val bitmap = snapshot?.image?.takeIf { usable }
-            Box(
-                Modifier.fillMaxWidth().aspectRatio(4f / 3f).background(Color(0xFF18232C), RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                if (bitmap != null) {
-                    Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = if (replay) "回放相机画面" else "实物相机画面",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Fit
-                    )
-                } else {
-                    Text("等待有效相机画面", color = Color.White)
-                }
-            }
-            if (usable && snapshot != null) {
-                Text("原始 ToF ${snapshot.rows} × ${snapshot.cols} 网格 · 单位 mm", fontWeight = FontWeight.Bold)
-                TofGrid(snapshot)
-                Text(
-                    "有效 zone：${snapshot.decision.validZones}/${snapshot.rows * snapshot.cols} · " +
-                        "支持 zone：${snapshot.decision.triggeringZones.joinToString().ifEmpty { "无" }}"
-                )
-                snapshot.decision.nearestMm?.takeIf { alert }?.let {
-                    Text("支持测距最近值：$it mm（传感器测距）")
-                }
-                Text(
-                    "相机帧 ${snapshot.cameraSequence ?: "—"} · ToF 帧 ${snapshot.tofSequence ?: "—"}",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            } else {
-                Text("ToF：UNKNOWN · 等待有效测距")
-            }
-            Text("相机与 ToF 仅粗略同向，尚未完成标定；网格不与相机像素对齐。")
-            Row(verticalAlignment = Alignment.CenterVertically) {
+    val accent = if (alert) DemoAmber else DemoTeal
+    var detailsExpanded by remember { mutableStateOf(false) }
+    var connectionExpanded by remember { mutableStateOf(false) }
+    Surface(Modifier.fillMaxSize(), color = DemoBackground, contentColor = DemoInk) {
+        Column(Modifier.safeDrawingPadding().verticalScroll(rememberScrollState())
+            .padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(22.dp)) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("实时障碍语音", fontWeight = FontWeight.Bold)
-                    Text(if (replay) "回放强制静音" else speechStatus, style = MaterialTheme.typography.bodySmall)
+                    Text("BLINDASSIST", color = DemoMuted, fontSize = 10.sp, letterSpacing = 2.sp)
+                    Text("前视感知", fontSize = 27.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium)
                 }
-                Switch(checked = speechEnabled, onCheckedChange = onSpeechChanged)
+                TextButton(onClick = onBack) { Text("退出", color = DemoMuted, fontSize = 12.sp) }
             }
-            Text("研究演示 · 不可用于独立行走", style = MaterialTheme.typography.bodySmall)
+            Box(Modifier.fillMaxWidth().aspectRatio(0.94f).clip(RoundedCornerShape(5.dp))
+                .background(DemoPanel)) {
+                val bitmap = snapshot?.image?.takeIf { usable }
+                if (bitmap != null) {
+                    // Fit preserves the camera's full field of view; no decorative crop or fake detections.
+                    Image(bitmap.asImageBitmap(), "实物相机视野", Modifier.fillMaxWidth()
+                        .aspectRatio(4f / 3f).align(Alignment.Center), contentScale = ContentScale.Fit)
+                } else {
+                    Column(Modifier.align(Alignment.Center).testTag("hardware_demo_empty_image"),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("等待实时画面", fontSize = 18.sp, color = DemoInk)
+                        Text("请连接相机与 ToF", fontSize = 12.sp, color = DemoMuted)
+                    }
+                }
+                Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(
+                    Color.Black.copy(alpha = 0.45f), Color.Transparent, Color.Black.copy(alpha = 0.8f)))))
+                Row(Modifier.align(Alignment.TopStart).fillMaxWidth().padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(5.dp).background(if (usable) accent else DemoMuted, RoundedCornerShape(3.dp)))
+                    Text(when { replay -> "  REPLAY / 静音"; usable -> "  LIVE VIEW"; else -> "  OFFLINE" },
+                        color = DemoInk, fontSize = 10.sp, letterSpacing = 1.sp,
+                        modifier = Modifier.weight(1f).testTag("hardware_demo_mode"))
+                    Text(if (wireless) "Wi-Fi" else "USB", color = DemoInk, fontSize = 10.sp)
+                }
+                Row(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(18.dp),
+                    verticalAlignment = Alignment.Bottom) {
+                    Column(Modifier.weight(1f)) {
+                        Text("最近触发测距", fontSize = 10.sp, color = DemoMuted, letterSpacing = 1.sp)
+                        Row(verticalAlignment = Alignment.Bottom) {
+                            Text(if (usable) snapshot?.decision?.nearestMm?.let {
+                                String.format(Locale.US, "%.2f", it / 1000.0) } ?: "—" else "—",
+                                fontSize = 46.sp, lineHeight = 54.sp, fontWeight = FontWeight.Light)
+                            Text(" m", fontSize = 18.sp, color = DemoMuted, modifier = Modifier.padding(bottom = 7.dp))
+                        }
+                    }
+                    Column(horizontalAlignment = Alignment.End, modifier = Modifier.padding(bottom = 5.dp)) {
+                        Text(if (usable) "${snapshot!!.decision.validZones} / 64" else "— / 64",
+                            fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                        Text("有效测距区域", fontSize = 10.sp, color = DemoMuted)
+                    }
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(3.dp, 44.dp).background(if (alert) DemoAmber else DemoMuted))
+                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Text(when {
+                        !usable -> "等待有效感知"
+                        alert && replay -> "回放 · 前方可能有障碍"
+                        alert -> "前方可能有障碍"
+                        else -> "当前未触发提示"
+                    }, fontSize = 20.sp, lineHeight = 27.sp, fontWeight = FontWeight.Medium,
+                        modifier = Modifier.testTag("hardware_demo_decision"))
+                    Text(if (!usable) connectionStatus else "未提示不代表可通行 · 请以实际环境为准",
+                        color = DemoMuted, fontSize = 11.sp, lineHeight = 16.sp)
+                }
+            }
+            Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF303233)))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("语音提示", fontSize = 14.sp)
+                    Text(if (replay) "回放静音" else if (!speechEnabled) "已关闭" else speechStatus,
+                        color = DemoMuted, fontSize = 10.sp)
+                }
+                Switch(speechEnabled && !replay, onSpeechChanged, enabled = !replay,
+                    colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
+                        checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
+            }
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                TextButton(onClick = { detailsExpanded = !detailsExpanded },
+                    modifier = Modifier.testTag("hardware_demo_detail_toggle")) {
+                    Text(if (detailsExpanded) "收起数据 −" else "感知数据 ＋", color = DemoMuted, fontSize = 12.sp)
+                }
+                TextButton(onClick = { connectionExpanded = !connectionExpanded }) {
+                    Text(if (connectionExpanded) "收起连接 −" else "设备连接 ＋", color = DemoMuted, fontSize = 12.sp)
+                }
+            }
+            if (connectionExpanded) {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Wi-Fi 直连", modifier = Modifier.weight(1f))
+                        Switch(wireless, onModeChanged)
+                    }
+                    if (wireless) {
+                        Text("开启 2.4 GHz 手机热点，给两块硬件供电。", fontSize = 12.sp, color = DemoMuted)
+                        Row {
+                            TextButton(onClick = onDiscover) { Text("自动发现", color = DemoTeal) }
+                            TextButton(onClick = onHotspotSettings) { Text("网络设置", color = DemoTeal) }
+                        }
+                        OutlinedTextField(cameraEndpoint, onCameraChanged, label = { Text("相机 IP") },
+                            singleLine = true, modifier = Modifier.fillMaxWidth())
+                        OutlinedTextField(tofEndpoint, onTofChanged, label = { Text("ToF IP") },
+                            singleLine = true, modifier = Modifier.fillMaxWidth())
+                        TextButton(onClick = onConnect) { Text("连接指定设备", color = DemoTeal) }
+                    }
+                }
+            }
+            if (detailsExpanded) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("ToF / 8 × 8", fontSize = 14.sp, letterSpacing = 1.sp)
+                    if (usable && snapshot != null) TofGrid(snapshot)
+                    else Text("UNKNOWN · 等待有效测距", color = DemoMuted,
+                        modifier = Modifier.testTag("hardware_demo_empty_heatmap"))
+                    Text("原始距离 · mm  /  橙色为触发区域；其他颜色不代表安全。", color = DemoMuted, fontSize = 10.sp)
+                    Text(connectionStatus, color = DemoTeal, fontSize = 11.sp, lineHeight = 17.sp)
+                    if (usable && snapshot != null) Text("相机帧 ${snapshot.cameraSequence} · ToF 帧 ${snapshot.tofSequence}",
+                        color = DemoMuted, fontSize = 11.sp)
+                    Text("ToF 完整区域与前方走廊相交判定。相机提供现场画面；两路独立采样，尚未完成空间标定。",
+                        color = DemoMuted, fontSize = 11.sp, lineHeight = 17.sp)
+                }
+            }
+            Text("研究演示  /  不可用于独立行走", color = DemoMuted.copy(alpha = 0.8f),
+                fontSize = 9.sp, letterSpacing = 1.sp, modifier = Modifier.padding(bottom = 8.dp))
         }
     }
 }
@@ -275,11 +408,11 @@ private fun TofGrid(snapshot: HardwareDemoSnapshot) {
     val rows = snapshot.rows
     val cols = snapshot.cols
     if (rows !in listOf(4, 8) || cols !in listOf(4, 8)) {
-        Text("UNKNOWN · 网格尺寸无效")
+        Text("UNKNOWN · 网格尺寸无效", color = DemoMuted)
         return
     }
     val byZone = snapshot.cells.associateBy { it.zone }
-    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+    Column(Modifier.testTag("hardware_demo_heatmap"), verticalArrangement = Arrangement.spacedBy(3.dp)) {
         repeat(rows) { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                 repeat(cols) { col ->
@@ -287,26 +420,25 @@ private fun TofGrid(snapshot: HardwareDemoSnapshot) {
                     val cell = byZone[zone]
                     val support = zone in snapshot.decision.triggeringZones
                     val hasRawRange = cell != null && cell.rangeMm.isFinite()
-                    Box(
-                        modifier = Modifier.weight(1f).aspectRatio(1f).background(
-                            if (support) Color(0xFFA52624) else Color(0xFFF1EFEA),
-                            RoundedCornerShape(4.dp)
-                        ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("#$zone", fontSize = 9.sp, color = if (support) Color.White else Color(0xFF51616D))
-                            Text(
-                                if (hasRawRange) cell!!.rangeMm.toInt().toString() else "—",
-                                fontSize = if (cols == 8) 10.sp else 15.sp,
-                                color = if (support) Color.White else Color(0xFF18232C),
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                    // Color encodes raw distance only, never validity, confidence, or safe passage.
+                    val intensity = if (hasRawRange)
+                        (1.0 - cell!!.rangeMm / 4000.0).coerceIn(0.0, 1.0).toFloat() else 0f
+                    val fill = when {
+                        support -> DemoAmber
+                        hasRawRange -> lerp(Color(0xFF112838), Color(0xFF256E6B), intensity)
+                        else -> DemoBackground
+                    }
+                    Box(modifier = Modifier.weight(1f).height(if (rows == 8) 17.dp else 36.dp)
+                        .background(fill, RoundedCornerShape(3.dp)), contentAlignment = Alignment.Center) {
+                        // At 8 × 8 the compact overview retains every numeric reading. Zone IDs
+                        // remain in the expandable trigger list instead of crowding each cell.
+                        Text(if (hasRawRange) cell!!.rangeMm.toInt().toString() else "—",
+                            fontSize = if (cols == 8) 9.sp else 12.sp, lineHeight = 14.sp,
+                            color = if (support) DemoBackground else DemoTeal.copy(alpha = 0.65f + intensity * 0.35f),
+                            fontWeight = FontWeight.Medium)
                     }
                 }
             }
         }
     }
-    Text("红色：算法支持提示的 zone；其余为原始读数，可能无效。有效数量以算法判断为准。", style = MaterialTheme.typography.bodySmall)
 }

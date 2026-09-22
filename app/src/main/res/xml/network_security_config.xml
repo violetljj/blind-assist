@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="false" />
+    <!-- Hotspot DHCP addresses vary. HardwareWifiEndpoint admits only RFC1918 IPv4,
+         HTTP port 80, no credentials/path/redirects. Hardware streams use port 81.
+         ESP32 demo transport is plaintext within the user's trusted local network. -->
+    <base-config cleartextTrafficPermitted="true" />
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">127.0.0.1</domain>
         <domain includeSubdomains="false">192.168.5.11</domain>

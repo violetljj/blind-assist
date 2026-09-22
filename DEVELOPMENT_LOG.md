@@ -4,6 +4,28 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.12.0 phone hotspot and presentation
+
+- Camera and 8x8 ToF join the phone hotspot; UDP discovery, latest MJPEG, bounded
+  ToF reads and conservative freshness run directly in core:device. No PC relay.
+- Reworked the initially rejected dashboard into a graphite camera-first page;
+  raw grid and connection controls are collapsed. Risk algorithm is unchanged.
+- Both original 8 MB flashes backed up and verified; only app0 flashed. Fixed
+  an observed ToF warm-reset I2C failure with bus release and init retry.
+- Six wireless contract tests and four USB client device tests passed. App/test
+  APK and lint passed (0 errors, 19 warnings, including intentional local cleartext).
+  Package/version/signature/16 KB checks passed; installed upgrade preserves data.
+- S24 Ultra hotspot, 45 seconds after warmup: 1295/1295 usable snapshots,
+  919 distinct camera frames, 230 ToF frames. Camera age upper bound median/P95
+  95/203 ms; ToF readout age bound 177/310 ms. Clock error bound 5 ms.
+  These are client observation ages, not screen, speech or exposure-sync measurements.
+- First next-day test failed because hotspot was off; preserved that result.
+  After enabling it, discovery and direct transport passed. ToF reset clears old
+  output and recovery after the firmware fix was observed on the phone.
+- Evidence, private config, original firmware backups and archived APK remain in
+  ignored hardware-bringup artifacts; no credentials committed. TalkBack and
+  real-world accuracy not tested. User dashboard retained, no ADB reverse used.
+
 ## 2026-09-22 — v10.11.0 hardware obstacle showcase
 
 - Added an opt-in page in the latest default App with a read-only localhost USB

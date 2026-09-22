@@ -1,5 +1,14 @@
 # 实机接入：当前状态
 
+2026-09-23：已完成相机与 8×8 ToF → 手机热点 → Android v10.12.0 直连展示。
+两板当前分别为 `atom-camera-wifi-v1`、`xiao-tof-8x8-wifi-v1`，不再运行下文 USB 固件。
+两份原始完整 Flash 已备份，凭据仅保存在本地忽略文件与硬件 NVS。
+45 秒手机测试 1295/1295 有效快照、919 相机帧与 230 ToF 帧，未使用电脑中转。
+界面改为相机主视图，原始数据可展开；算法仍是基础完整 ToF 区域走廊相交。
+使用、时龄边界和验证见 [展示指南](../../../docs/HARDWARE_OBSTACLE_DEMO.md)；
+协议见 [WIRELESS_PROTOCOL.md](WIRELESS_PROTOCOL.md)。证据在
+`artifacts.local/hardware-bringup/wireless-demo-20260922/`。历史研究结论不变。
+
 2026-09-22：用户授权硬件展示并暂不使用 CNH。XIAO 已切回现有
 `xiao-tof-8x8-v1`，完整旧 Flash/配置已备份，Atom 未改。
 80 帧/约 5.130 Hz 的 64 区读出连续且无解析错误；已有异常/UNKNOWN 仍保留。
