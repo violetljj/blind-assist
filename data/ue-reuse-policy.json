@@ -3,6 +3,13 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-local-support-20260922",
+      "source_family": "ue-local-transfer-20260922",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_PROTOCOL_20260922.md",
+      "allowed_inputs": [{"relative_path": "plan", "role": "configuration"}]
+    },
+    {
       "locator": "evidence/ba-local-transfer-20260922",
       "source_family": "ue-local-transfer-20260922",
       "evidence_status": "source_material",
