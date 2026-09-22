@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-22",
+  "updated_at": "2026-09-23",
   "roles": [
     {
       "terminal_id": "terminal-dtr-r6-static-occupancy-unreachable",
@@ -2171,6 +2171,16 @@
       "failure_signature": "Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs.",
       "revisit_trigger": "Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic",
       "assignment_basis": "Frozen one-pass576frame reconstruction,8synthetic tests,16audit assertions and independent native plus full metric recount"
+    },
+    {
+      "terminal_id": "terminal-return-correspondence-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Perfect contributor association as an any-possible-public-interval gate for the frozen LOCAL winning centre",
+      "retained_surface": "Native support and LOCAL components remain unchanged; preserve distinction between angular association and native metric XYZ",
+      "failure_signature": "Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative.",
+      "revisit_trigger": "Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter",
+      "assignment_basis": "Frozen576frame readout,7synthetic tests and15614independent analytical/hash/metric checks; no student fit"
     }
   ]
 }

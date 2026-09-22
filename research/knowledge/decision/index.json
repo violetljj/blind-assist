@@ -1,15 +1,15 @@
 {
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-22",
-  "source_fingerprint": "36d95341130d26fe6d3464382240b36d1881f633eabf9eeee4ac95827e3d2edf",
+  "generated_at": "2026-09-23",
+  "source_fingerprint": "542de400ebdadaf35eb90c63ff20ac5280945d49ecc7f155458b391b0b07a202",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 436,
-    "current_terminals": 217,
-    "run_associations": 434
+    "experiments": 437,
+    "current_terminals": 218,
+    "run_associations": 435
   },
   "failure_layers": [
     {
@@ -25427,6 +25427,47 @@
       "search_text": "terminal-local-support-20260922 obstacle-avoidance PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs. Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic COMPONENT_OR_CHALLENGER COMPONENT Exact privileged observed-winning-bin support requirement on the saved score-winning centre query; information diagnostic only Native support partitions and pixel-band compatibility diagnosis; unchanged public LOCAL component A and UNKNOWN Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs. Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic Treat privileged native occupancy witnesses as public RGB ToF ownership or deployable predictions Promote any-centre control instead of reporting a failed primary or hide LOCAL timing losses Retune native point count box tolerance centre selection or original HGB cutoff on these outcomes"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-return-correspondence-20260923",
+      "status": "negative",
+      "question": "Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative.",
+      "baseline": null,
+      "change": "Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter",
+      "primary_metric": null,
+      "decision": "STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED",
+      "report": "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "88c20ce5e5036a086d57048618e0660cab45c098",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter",
+      "forbidden_repeats": [
+        "Claim perfect contributor association plus unchanged public possibility support removes these two LOCAL false alerts",
+        "Retune range interval grid point count query or cutoff on this consumed feasibility check",
+        "Treat this pre-student diagnostic as a trained-model failure or a general impossibility of RGB learning"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Perfect contributor association as an any-possible-public-interval gate for the frozen LOCAL winning centre",
+      "retained_surface": "Native support and LOCAL components remain unchanged; preserve distinction between angular association and native metric XYZ",
+      "failure_signature": "Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative.",
+      "revisit_trigger": "Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter",
+      "assignment_basis": "Frozen576frame readout,7synthetic tests and15614independent analytical/hash/metric checks; no student fit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_PROTOCOL_20260923.md"
+      ],
+      "association_id": "return-correspondence-20260923",
+      "search_text": "terminal-return-correspondence-20260923 obstacle-avoidance STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative. Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter NEGATIVE_CONTROL  Perfect contributor association as an any-possible-public-interval gate for the frozen LOCAL winning centre Native support and LOCAL components remain unchanged; preserve distinction between angular association and native metric XYZ Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative. Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter Claim perfect contributor association plus unchanged public possibility support removes these two LOCAL false alerts Retune range interval grid point count query or cutoff on this consumed feasibility check Treat this pre-student diagnostic as a trained-model failure or a general impossibility of RGB learning"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -34952,6 +34993,27 @@
         "decision_lifecycle": 6
       },
       "search_text": "local-support-20260922 Which retained LOCAL rescues have observed native support in their score-winning centre query? Saved A and A OR LOCAL decisions on all576consumed transfer frames Evaluator-only contributor and2x2native subpixel audit; fixed winning-centre and either-centre diagnostic readouts Rescues retained >=32of36 with2addedFP removed, full onset gap and native support opportunity costs PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md Consumed UE local-transfer576frames; no new captured or learned observations"
+    },
+    {
+      "kind": "experiment",
+      "id": "return-correspondence-20260923",
+      "status": "archived",
+      "question": "Can perfect contributor correspondence remove LOCAL false alerts with unchanged public range intervals?",
+      "baseline": "Frozen LOCAL228TP6FP28FN and A192TP4FP64FN on576consumed transfer frames",
+      "change": "Full native-contributor angular support plus public interval possibility; fixed1024ray and nativeXYZ controls",
+      "primary_metric": "Retain at least32of36rescues and remove2addedFP with A preservation and full timing costs",
+      "decision": "STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED",
+      "report": "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md",
+      "source": "Consumed LOCALtransfer576frames and previously sealed contributor lineage",
+      "commit": "88c20ce5e5036a086d57048618e0660cab45c098",
+      "association_id": "return-correspondence-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 4
+      },
+      "search_text": "return-correspondence-20260923 Can perfect contributor correspondence remove LOCAL false alerts with unchanged public range intervals? Frozen LOCAL228TP6FP28FN and A192TP4FP64FN on576consumed transfer frames Full native-contributor angular support plus public interval possibility; fixed1024ray and nativeXYZ controls Retain at least32of36rescues and remove2addedFP with A preservation and full timing costs STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md Consumed LOCALtransfer576frames and previously sealed contributor lineage"
     }
   ],
   "associations": [
@@ -40552,6 +40614,20 @@
         "docs/research/goal-copilot/TYPED_SEMANTIC_REFERENT_GRAPH_V3_A_RESULT_2026-08-25.md"
       ],
       "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "return-correspondence-20260923",
+      "use_ids": [],
+      "protocol_id": "return-correspondence-20260923-v1",
+      "code_revision": "88c20ce5e5036a086d57048618e0660cab45c098",
+      "input_fingerprint": "b7472d0d753778208fd6463801149d2d6b88f6695080727df045daa1596c6419",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-return-correspondence-20260923-run",
+        "artifacts.local/evidence/ba-return-correspondence-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-return-correspondence-20260923",
       "source_rows": 1
     },
     {

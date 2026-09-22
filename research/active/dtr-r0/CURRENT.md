@@ -26,6 +26,11 @@ winning-query witness retains 32/36 rescues; either-centre control 32/36,
 primary PASS. Native false-alert removal is privileged geometry;
 retain full support partitions and LOCAL onset costs, without public ownership
 or filter promotion. Original LOCAL transfer remains a COMPONENT.
+[Public-interval feasibility](nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md),2026-09-23:
+even perfect contributor angular association preserves all36rescues but removes0/2addedFP;
+full and1024ray controls exactly reproduce LOCAL228/6/28. NativeXYZ32/36does
+not establish this unchanged-interval filter opportunity. Exact readout NEGATIVE_CONTROL;
+stop before student training, preserve LOCAL/A/UNKNOWN and prior diagnostic roles.
 Additional hypothetical returns plus unchanged hold give 254/29/2 versus
 225/26/31, with entry-sample detection 17/32 to 31/32; retain information and
 its added costs, not a lossless upgrade. Support inheritance returns exactly

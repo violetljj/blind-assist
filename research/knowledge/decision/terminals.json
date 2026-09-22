@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-22",
+  "updated_at": "2026-09-23",
   "terminals": [
     {
       "id": "terminal-dtr-r6-static-occupancy-unreachable",
@@ -5138,6 +5138,30 @@
         "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_PROTOCOL_20260922.md"
       ],
       "commit": "e2f2e0293cbd3f5fdd7a0cd3717409115181d04e"
+    },
+    {
+      "id": "terminal-return-correspondence-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED",
+      "summary": "Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative.",
+      "successor_requires": "Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter",
+      "forbidden_repeats": [
+        "Claim perfect contributor association plus unchanged public possibility support removes these two LOCAL false alerts",
+        "Retune range interval grid point count query or cutoff on this consumed feasibility check",
+        "Treat this pre-student diagnostic as a trained-model failure or a general impossibility of RGB learning"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_PROTOCOL_20260923.md"
+      ],
+      "commit": "88c20ce5e5036a086d57048618e0660cab45c098"
     }
   ]
 }
