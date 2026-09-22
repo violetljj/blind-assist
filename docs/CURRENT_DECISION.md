@@ -1,3 +1,11 @@
+2026-09-23 [counterfactual contact-boundary pilot](../research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md):
+Consumed1728-frame source, frozen shared visual features and new width/horizon queries.
+On576layout-held images, direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN:
+recall74.65/86.88%,FPR5.016/9.479%. Both rank lateral pairs>99%, but width within5cm
+is37/528 versus43/528 and horizon19/352 versus61/352. Neither contact package passes;
+retain exact NEGATIVE_CONTROL and partial boundary/ranking evidence.22tests and
+independent714816-label auditPASS. No capture, retry or App change; A/LOCAL/UNKNOWN retained.
+
 2026-09-22 [tiny-training spatial-query fitting check](../research/active/dtr-r0/nearfield/QUERY_SPATIAL_FIT_RESULTS_20260922.md):
 84 consumed train images,504queries. Original global FiLM179TP1FP1FN versus
 spatial180TP0FP0FN; both540/540same-imagequerypairs correct. Both learn

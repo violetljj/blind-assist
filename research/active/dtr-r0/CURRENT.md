@@ -1,3 +1,15 @@
+## Contact-boundary generalization: ranking without accurate metric crossings (2026-09-23)
+
+[Fixed two-arm Development](nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md) reuses
+1728consumed frames; whole-layout24/8/16split and novel width/horizon queries.
+Direct3346TP1162FP1136FN versus monotone geometry3894TP2196FP588FN on576held images:
+74.65/86.88%recall,5.016/9.479%FPR. Pair ordering99.80/99.20%does not yield joint
+pair decisions47.02/36.45%. Within5cm width37/528 versus43/528, horizon19/352 versus61/352;
+missing boundaries count as failures. Both exact packages NEGATIVE_CONTROL;
+preserve partial error reduction and A/LOCAL/UNKNOWN.22tests and independent
+714816-label/count/selection auditPASS. Frozen features and unequal effective
+capacity limit attribution. No capture, post-evaluation fit or App promotion.
+
 ## Tiny-training query fitting: added spatial branch not retained (2026-09-22)
 
 [Fixed paired check](nearfield/QUERY_SPATIAL_FIT_RESULTS_20260922.md):

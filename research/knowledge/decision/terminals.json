@@ -5186,6 +5186,29 @@
         "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md"
       ],
       "commit": "31c4f97bb4969b8a9c9318641a3c6872ea557925"
+    },
+    {
+      "id": "terminal-contact-boundary-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "CONTACT_BOUNDARY_RANKING_WITHOUT_METRIC_GENERALIZATION",
+      "summary": "Consumed576layout-held images: direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN on27648novel queries. Recall74.65/86.88%,FPR5.016/9.479%. Pair order99.80/99.20% but width within5cm37/528 versus43/528 and horizon19/352 versus61/352. Neither package passes; preserve partial gains and all costs.",
+      "successor_requires": "Separately scoped mechanism resolving metric boundary information or absolute calibration; preserve this fixed cached-feature comparison and prior negatives",
+      "forbidden_repeats": [
+        "Retune this consumed run threshold backbone loss seed or epochs to rescue its fixed gate",
+        "Treat query counts as independent samples or near-perfect pair ordering as accurate contact",
+        "Promote latent geometry or model confidence into measured space complete-body walking or App safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_PROTOCOL_20260923.md"
+      ],
+      "commit": "ab271f6577101cde2e42f17aba6e5a5e14c7b578"
     }
   ]
 }

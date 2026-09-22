@@ -2191,6 +2191,16 @@
       "failure_signature": "New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN.",
       "revisit_trigger": "Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer",
       "assignment_basis": "Predeclared new576frame capture, unchanged models, sealed predictions and independent geometry/output/event/gate audit"
+    },
+    {
+      "terminal_id": "terminal-contact-boundary-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Frozen shared-feature direct versus monotone geometry contact-width and horizon readout; consumed grouped Development only",
+      "retained_surface": "Relative lateral ranking and conditional metric-error reduction with all false costs; preserve A LOCAL UNKNOWN and old recipe dispositions",
+      "failure_signature": "Neither component gate passes; geometry recall gain12.23points costs4.46points FPR and boundary within5cm remains8.14percent width17.33percent horizon",
+      "revisit_trigger": "Separately scoped changed mechanism addressing metric boundary information or absolute calibration, not tuning this consumed package",
+      "assignment_basis": "Two100epoch fits,22focused tests,714816independent world labels and full saved-output selection/count/pair/bootstrap audit"
     }
   ]
 }

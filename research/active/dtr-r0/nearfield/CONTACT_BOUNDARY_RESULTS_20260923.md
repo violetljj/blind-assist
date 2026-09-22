@@ -153,3 +153,9 @@ no continuing task-owned compute remains. Retained payload is durable evidence.
 The documentation-link check passes. The repository-wide structure check reports
 pre-existing oversized current pages, scripts/research and top-level documentation
 count. These unrelated surfaces were preserved; this task adds no new route.
+
+Terminal `terminal-contact-boundary-20260923` has explicit NEGATIVE_CONTROL
+inheritance. Experiment `ba-contact-boundary-20260923` is archived through the
+supported registry, anchored to source commit `ab271f65`; original ledger rows
+are preserved. Initial short-SHA registration rejection and corrected full-SHA
+success receipts remain beside the results.

@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "d813ce70cb860d4245e21e631957887397daa8cca7be31cd5819fa9be54cd385",
+  "source_fingerprint": "e961781abb1210ff2035055409b7392c7cdc520241ad7f879d322b8731123433",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 438,
-    "current_terminals": 219,
-    "run_associations": 436
+    "experiments": 439,
+    "current_terminals": 220,
+    "run_associations": 437
   },
   "failure_layers": [
     {
@@ -25509,6 +25509,46 @@
       "search_text": "terminal-local-stability-20260923 obstacle-avoidance LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN. Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer NEGATIVE_CONTROL  Frozen LOCAL stability across this composite-shape two-size two-posed-trajectory cohort Full frame/event/cost/subgroup evidence; prior LOCAL component and A/UNKNOWN remain independently retained New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN. Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer Retune frozen LOCAL or select geometry subgroups to rescue this consumed transfer Turn posed timing or primitive-composition results into physical continuous-motion natural-distribution or safety evidence Erase prior LOCAL component value because a broader transfer fails"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-contact-boundary-20260923",
+      "status": "negative",
+      "question": "Consumed576layout-held images: direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN on27648novel queries. Recall74.65/86.88%,FPR5.016/9.479%. Pair order99.80/99.20% but width within5cm37/528 versus43/528 and horizon19/352 versus61/352. Neither package passes; preserve partial gains and all costs.",
+      "baseline": null,
+      "change": "Separately scoped mechanism resolving metric boundary information or absolute calibration; preserve this fixed cached-feature comparison and prior negatives",
+      "primary_metric": null,
+      "decision": "CONTACT_BOUNDARY_RANKING_WITHOUT_METRIC_GENERALIZATION",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "ab271f6577101cde2e42f17aba6e5a5e14c7b578",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately scoped mechanism resolving metric boundary information or absolute calibration; preserve this fixed cached-feature comparison and prior negatives",
+      "forbidden_repeats": [
+        "Retune this consumed run threshold backbone loss seed or epochs to rescue its fixed gate",
+        "Treat query counts as independent samples or near-perfect pair ordering as accurate contact",
+        "Promote latent geometry or model confidence into measured space complete-body walking or App safety evidence"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Frozen shared-feature direct versus monotone geometry contact-width and horizon readout; consumed grouped Development only",
+      "retained_surface": "Relative lateral ranking and conditional metric-error reduction with all false costs; preserve A LOCAL UNKNOWN and old recipe dispositions",
+      "failure_signature": "Neither component gate passes; geometry recall gain12.23points costs4.46points FPR and boundary within5cm remains8.14percent width17.33percent horizon",
+      "revisit_trigger": "Separately scoped changed mechanism addressing metric boundary information or absolute calibration, not tuning this consumed package",
+      "assignment_basis": "Two100epoch fits,22focused tests,714816independent world labels and full saved-output selection/count/pair/bootstrap audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-contact-boundary-20260923",
+      "search_text": "terminal-contact-boundary-20260923 obstacle-avoidance CONTACT_BOUNDARY_RANKING_WITHOUT_METRIC_GENERALIZATION Consumed576layout-held images: direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN on27648novel queries. Recall74.65/86.88%,FPR5.016/9.479%. Pair order99.80/99.20% but width within5cm37/528 versus43/528 and horizon19/352 versus61/352. Neither package passes; preserve partial gains and all costs. Separately scoped mechanism resolving metric boundary information or absolute calibration; preserve this fixed cached-feature comparison and prior negatives NEGATIVE_CONTROL  Frozen shared-feature direct versus monotone geometry contact-width and horizon readout; consumed grouped Development only Relative lateral ranking and conditional metric-error reduction with all false costs; preserve A LOCAL UNKNOWN and old recipe dispositions Neither component gate passes; geometry recall gain12.23points costs4.46points FPR and boundary within5cm remains8.14percent width17.33percent horizon Separately scoped changed mechanism addressing metric boundary information or absolute calibration, not tuning this consumed package Retune this consumed run threshold backbone loss seed or epochs to rescue its fixed gate Treat query counts as independent samples or near-perfect pair ordering as accurate contact Promote latent geometry or model confidence into measured space complete-body walking or App safety evidence"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35078,6 +35118,28 @@
         "decision_lifecycle": 3
       },
       "search_text": "local-stability-20260923 Does frozen LOCAL retain earlier detections under composite shapes size changes and approach dwell return? Unchanged A and A OR RAW compared with A OR LOCAL; samepublic RGB and8x8ToF Eight new two-cuboid composites crossed with two sizes per family two posed trajectories and three lateral placements At least8earlier/recovered events with3pertrajectory, addedFP<=2segments<=1, plus>=5pp recall overRAW and group/layer checks LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md New same-generator composite shape/size Development; static posed samples not physical continuous motion"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-contact-boundary-20260923",
+      "status": "archived",
+      "question": "Do direct or monotone contact functions generalize to unseen body widths and horizons on layout-disjoint Development?",
+      "baseline": "Shared frozen RGB features and regional ToF direct contact-query MLP",
+      "change": "Same contact supervision and feature trunk, monotone folded-lateral depth-grid aggregation; new continuous query task",
+      "primary_metric": "Primary query recall FPR and all-finite-boundary within5cm success; matched lateral pairs and whole-layout bootstrap",
+      "decision": "NEITHER_CONTACT_PACKAGE_PASSES; geometry improves recall and conditional error but increases false cost; retain exact negative control",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "ab271f6577101cde2e42f17aba6e5a5e14c7b578",
+      "association_id": "ba-contact-boundary-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 9
+      },
+      "search_text": "ba-contact-boundary-20260923 Do direct or monotone contact functions generalize to unseen body widths and horizons on layout-disjoint Development? Shared frozen RGB features and regional ToF direct contact-query MLP Same contact supervision and feature trunk, monotone folded-lateral depth-grid aggregation; new continuous query task Primary query recall FPR and all-finite-boundary within5cm success; matched lateral pairs and whole-layout bootstrap NEITHER_CONTACT_PACKAGE_PASSES; geometry improves recall and conditional error but increases false cost; retain exact negative control research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35094,6 +35156,21 @@
         "artifacts.local/evidence/ase-body-query-pilot-20260909"
       ],
       "decision_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-contact-boundary-20260923",
+      "use_ids": [],
+      "protocol_id": "contact-boundary-20260923",
+      "code_revision": "ab271f6577101cde2e42f17aba6e5a5e14c7b578",
+      "input_fingerprint": "a526b9a0e9382cbe5c1d92f7b9c67cc19302db2d99305053636221aa4b213c1e",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-contact-boundary-20260923/result.json",
+        "artifacts.local/evidence/ba-contact-boundary-20260923/prediction-seal.json",
+        "artifacts.local/evidence/ba-contact-boundary-20260923/independent-audit.json"
+      ],
+      "decision_id": "terminal-contact-boundary-20260923",
       "source_rows": 1
     },
     {
