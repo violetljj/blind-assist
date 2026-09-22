@@ -1,6 +1,7 @@
 package com.linnan.blindassist
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -129,6 +130,10 @@ class MainActivity : ComponentActivity() {
                             onDismissGlassesCenter = appViewModel::onDismissGlassesCenter
                         ),
                         glasses = GlassesSimulatorActions(
+                            onOpenHardwareDemo = {
+                                assistSession.dispatch(AssistRuntimeIntent.CloseCamera)
+                                startActivity(Intent(this@MainActivity, HardwareDemoActivity::class.java))
+                            },
                             onConnect = appViewModel::onConnectGlassesDevice,
                             onDisconnect = appViewModel::onDisconnectGlassesDevice,
                             onStartLiveAssist = { endpoint ->

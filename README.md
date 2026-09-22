@@ -22,6 +22,7 @@ deployed or validated. See the [current perception route](research/active/dtr-r0
 
 ## Start here
 
+- 最新硬件展示（v10.11.0）：[8×8 ToF + 相机 + Android App，经电脑 USB 中转](docs/HARDWARE_OBSTACLE_DEMO.md)。
 - Current project state: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 current: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)

@@ -4,6 +4,27 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-22 — v10.11.0 hardware obstacle showcase
+
+- Added an opt-in page in the latest default App with a read-only localhost USB
+  bridge, native RGB/8x8 ToF display, full-zone corridor baseline and throttled TTS.
+  Geometry lives in core:assist, transport in core:device, App owns presentation.
+- Chose the basic support-intersection readout rather than the stronger calibrated
+  or learned research arms. Hardware FOV, uncertainty and coarse alignment remain
+  engineering assumptions, with invalid/stale input and nonalerts kept UNKNOWN.
+- User authorized switching XIAO back to 8x8; backed up the complete old 8 MB
+  Flash, changed only app0, and verified 80 continuous 64-zone frames. Atom unchanged.
+- Eight JVM tests and four on-device client tests passed. Debug and test APK builds
+  plus lint passed (0 errors / 18 existing-surface warnings). Package/version/signature
+  and 16 KB alignment verified; Samsung SM-S9280 upgraded in place to 39/10.11.0.
+- Bounded live collection saved 4242 JPEG / 919 ToF with no transport gaps/errors.
+  Screenshots verified advancing live data, disconnect UNKNOWN, reconnection and
+  explicit silent replay. TTS engine ready; audibility and alert accuracy not tested.
+  Dynamic accessibility dump failed twice; screenshot evidence remains diagnostic.
+- Archived APK SHA256: `79DE5B2869D95FB9C0E8B08286F799A97DF1AA215B394CC8A05F729676C2C0E2`.
+  [Usage and evidence](docs/HARDWARE_OBSTACLE_DEMO.md). Owned capture/forwarding and
+  foreground App session released; existing dashboard retained for replay.
+
 ## 2026-08-28 — v10.10.0 default app visual promotion
 
 - Promoted the refined Compose home and settings experience into the default

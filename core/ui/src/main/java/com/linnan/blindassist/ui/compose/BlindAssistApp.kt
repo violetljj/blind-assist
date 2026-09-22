@@ -175,6 +175,7 @@ fun BlindAssistApp(
                         onConnect = actions.glasses.onConnect,
                         onDisconnect = actions.glasses.onDisconnect,
                         onStartLiveAssist = actions.glasses.onStartLiveAssist,
+                        onOpenHardwareDemo = actions.glasses.onOpenHardwareDemo,
                         onReplayScenarioSelected = actions.glasses.onReplayScenarioSelected,
                         onStartReplay = actions.runtime.onStartOfflineReplay
                     )

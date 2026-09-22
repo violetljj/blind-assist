@@ -73,5 +73,6 @@ data class GlassesSimulatorActions(
     val onConnect: () -> Unit,
     val onDisconnect: () -> Unit,
     val onStartLiveAssist: (String) -> Unit,
-    val onReplayScenarioSelected: (ReplayScenario) -> Unit
+    val onReplayScenarioSelected: (ReplayScenario) -> Unit,
+    val onOpenHardwareDemo: () -> Unit = {}
 )

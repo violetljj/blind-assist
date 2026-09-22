@@ -12,6 +12,7 @@ load them only after the matching compact current.
 
 ## Engineering
 
+- [8×8 ToF hardware obstacle demonstration](HARDWARE_OBSTACLE_DEMO.md)
 - [Code map](CODE_MAP.md)
 - [Device regression](DEVICE_REGRESSION.md)
 - [Release and verification](RELEASE_AND_VERIFICATION.md)

@@ -40,8 +40,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 38
-        versionName = "10.10.0"
+        versionCode = 39
+        versionName = "10.11.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
@@ -137,6 +137,11 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":core:assist"))
+    implementation(project(":core:device"))
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui)
     implementation(project(":feature:assist"))
     implementation(project(":core:vision"))
     implementation(project(":core:ui"))

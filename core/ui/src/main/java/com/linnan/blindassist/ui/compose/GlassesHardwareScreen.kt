@@ -45,7 +45,8 @@ fun GlassesHardwareScreen(
     onStartLiveAssist: (String) -> Unit,
     @Suppress("UNUSED_PARAMETER") onReplayScenarioSelected: (ReplayScenario) -> Unit,
     @Suppress("UNUSED_PARAMETER") onStartReplay: (ReplayScenario) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOpenHardwareDemo: () -> Unit = {}
 ) {
     val english = language == AppLanguage.EN
     BackHandler(onBack = onBack)
@@ -84,13 +85,20 @@ fun GlassesHardwareScreen(
             text = if (english) {
                 "Real external-hardware connection. Current adapter: AtomS3R-M12 + ToF4M over local Wi-Fi."
             } else {
-                "真实外界硬件连接入口。当前适配器：AtomS3R-M12 + ToF4M 局域网连接。"
+                "硬件展示：Atom 相机 + 8×8 ToF，经电脑 USB 中转。下方另保留旧 ToF4M 局域网适配器。"
             },
             color = BaHomeTextMuted,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.testTag("glasses_hardware_boundary")
         )
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
+        Button(
+            onClick = onOpenHardwareDemo,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 58.dp).testTag("open_hardware_demo")
+        ) {
+            Text(if (english) "Hardware obstacle demo (USB relay)" else "硬件避障展示（USB中转）")
+        }
+        Spacer(Modifier.height(16.dp))
         HardwareStatusSection(state = state, language = language)
         Spacer(Modifier.height(26.dp))
         when (state.connectionState) {

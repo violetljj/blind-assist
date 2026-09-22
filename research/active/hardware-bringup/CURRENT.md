@@ -1,5 +1,13 @@
 # 实机接入：当前状态
 
+2026-09-22：用户授权硬件展示并暂不使用 CNH。XIAO 已切回现有
+`xiao-tof-8x8-v1`，完整旧 Flash/配置已备份，Atom 未改。
+80 帧/约 5.130 Hz 的 64 区读出连续且无解析错误；已有异常/UNKNOWN 仍保留。
+手机 App 接入与用法见 [8×8 展示](../../../docs/HARDWARE_OBSTACLE_DEMO.md)，
+一键中转入口为 `app-demo.ps1`；这取代下文“暂不推进手机”的当前操作状态，
+历史 CNH 结果和原始证据不变。证据位于
+`artifacts.local/hardware-bringup/demo-8x8-20260922/`。
+
 更新：2026-09-21。性质：工程接入，独立于避障模拟研究。
 
 最新 [CNH 增量价值审计](CNH_INCREMENTAL_20260921.md) 完成：全部 242 个可评估

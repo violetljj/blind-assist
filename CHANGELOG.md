@@ -8,6 +8,12 @@
 - 新增 tag 驱动的 fail-closed GitHub Release 工作流，自动校验 debug evaluation APK 并生成 `SHA256SUMS`、机器 manifest 和证据边界说明；不产生生产签名或安全证明。
 - 默认检测、风险与提醒策略以及 YOLO11n 模型资产不变；研究候选仍未替换正式 App 默认模型。
 
+## 10.11.0 — 2026-09-22
+
+- 最新主 App 的外设中心增加 8×8 ToF 硬件避障展示入口，电脑 USB 中转相机与测距。
+- 使用基础 ToF 完整区域走廊相交判定，显示原始网格、有效支持和实时语音；回放静音，过期/断连回到 UNKNOWN。
+- 这是硬件展示适配，未完成空间标定；模拟成绩不作为实物准确率。使用及边界见 [展示指南](docs/HARDWARE_OBSTACLE_DEMO.md)。
+
 ## v10.10.0 - 默认应用视觉系统更新
 
 - 状态：当前精修后的 Compose 应用替换此前默认界面；`versionCode=38`，`versionName=10.10.0`，正式包名继续使用 `com.linnan.blindassist`，可覆盖升级旧默认 App。
