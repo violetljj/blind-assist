@@ -3,6 +3,37 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-local-stability-20260923",
+      "source_family": "ue-local-stability-20260923",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md",
+      "allowed_inputs": [{"relative_path": "plan", "role": "configuration"}, {"relative_path": "stage-seals", "role": "configuration"}]
+    },
+    {
+      "locator": "evidence/ba-local-stability-20260923-capture",
+      "source_family": "ue-local-stability-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {"relative_path": "observations", "role": "observation"},
+        {"relative_path": "evaluator", "role": "evaluator"},
+        {"relative_path": "receipt.json", "role": "configuration"},
+        {"relative_path": "launch-receipt.json", "role": "configuration"},
+        {"relative_path": "process-release.json", "role": "configuration"}
+      ]
+    },
+    {
+      "locator": "evidence/ba-local-stability-20260923-prepared",
+      "source_family": "ue-local-stability-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {"relative_path": "observations", "role": "observation"},
+        {"relative_path": "labels", "role": "evaluator"},
+        {"relative_path": "materialization.json", "role": "configuration"}
+      ]
+    },
+    {
       "locator": "evidence/ba-return-correspondence-20260923",
       "source_family": "ue-local-transfer-20260922",
       "evidence_status": "source_material",
