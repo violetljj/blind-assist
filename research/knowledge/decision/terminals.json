@@ -5162,6 +5162,30 @@
         "research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_PROTOCOL_20260923.md"
       ],
       "commit": "88c20ce5e5036a086d57048618e0660cab45c098"
+    },
+    {
+      "id": "terminal-local-stability-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE",
+      "summary": "New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN.",
+      "successor_requires": "Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer",
+      "forbidden_repeats": [
+        "Retune frozen LOCAL or select geometry subgroups to rescue this consumed transfer",
+        "Turn posed timing or primitive-composition results into physical continuous-motion natural-distribution or safety evidence",
+        "Erase prior LOCAL component value because a broader transfer fails"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md"
+      ],
+      "commit": "31c4f97bb4969b8a9c9318641a3c6872ea557925"
     }
   ]
 }

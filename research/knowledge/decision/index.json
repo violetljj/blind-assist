@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "542de400ebdadaf35eb90c63ff20ac5280945d49ecc7f155458b391b0b07a202",
+  "source_fingerprint": "d813ce70cb860d4245e21e631957887397daa8cca7be31cd5819fa9be54cd385",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 437,
-    "current_terminals": 218,
-    "run_associations": 435
+    "experiments": 438,
+    "current_terminals": 219,
+    "run_associations": 436
   },
   "failure_layers": [
     {
@@ -25468,6 +25468,47 @@
       "search_text": "terminal-return-correspondence-20260923 obstacle-avoidance STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative. Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter NEGATIVE_CONTROL  Perfect contributor association as an any-possible-public-interval gate for the frozen LOCAL winning centre Native support and LOCAL components remain unchanged; preserve distinction between angular association and native metric XYZ Consumed576frames: perfect observed-contributor angular association plus unchanged public range intervals retains36/36LOCALrescues but removes0/2addedFP; exact and1024ray controls reproduceLOCAL228/6/28 and5false segments. NativeXYZcontrol224/4/32 retains32rescues with4early-onset losses. Scoped interval-readout opportunity fails; stop before student training, not a trained-model negative. Materially different decision mechanism or independently justified joint angular/range information; no consumed point-count grid interval or threshold sweep to rescue this fixed possibility-preserving filter Claim perfect contributor association plus unchanged public possibility support removes these two LOCAL false alerts Retune range interval grid point count query or cutoff on this consumed feasibility check Treat this pre-student diagnostic as a trained-model failure or a general impossibility of RGB learning"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-local-stability-20260923",
+      "status": "negative",
+      "question": "New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN.",
+      "baseline": null,
+      "change": "Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer",
+      "primary_metric": null,
+      "decision": "LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "31c4f97bb4969b8a9c9318641a3c6872ea557925",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer",
+      "forbidden_repeats": [
+        "Retune frozen LOCAL or select geometry subgroups to rescue this consumed transfer",
+        "Turn posed timing or primitive-composition results into physical continuous-motion natural-distribution or safety evidence",
+        "Erase prior LOCAL component value because a broader transfer fails"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Frozen LOCAL stability across this composite-shape two-size two-posed-trajectory cohort",
+      "retained_surface": "Full frame/event/cost/subgroup evidence; prior LOCAL component and A/UNKNOWN remain independently retained",
+      "failure_signature": "New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN.",
+      "revisit_trigger": "Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer",
+      "assignment_basis": "Predeclared new576frame capture, unchanged models, sealed predictions and independent geometry/output/event/gate audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/LOCAL_STABILITY_PROTOCOL_20260923.md"
+      ],
+      "association_id": "local-stability-20260923",
+      "search_text": "terminal-local-stability-20260923 obstacle-avoidance LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN. Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer NEGATIVE_CONTROL  Frozen LOCAL stability across this composite-shape two-size two-posed-trajectory cohort Full frame/event/cost/subgroup evidence; prior LOCAL component and A/UNKNOWN remain independently retained New576composite shape/size/posed-trajectory Development: LOCAL119/20/105, RAW109/16/115, A107/12/117 TP/FP/FN; LOCAL18false segments, 8earlier-or-recovered events out of22A opportunities. Frozen stabilityFAIL; no fit or cutoff change. Preserve old LOCAL component, A and UNKNOWN. Materially different mechanism or independently justified source/observation evidence; no source exclusion or fit threshold interval rescue on this consumed transfer Retune frozen LOCAL or select geometry subgroups to rescue this consumed transfer Turn posed timing or primitive-composition results into physical continuous-motion natural-distribution or safety evidence Erase prior LOCAL component value because a broader transfer fails"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35014,6 +35055,29 @@
         "decision_lifecycle": 4
       },
       "search_text": "return-correspondence-20260923 Can perfect contributor correspondence remove LOCAL false alerts with unchanged public range intervals? Frozen LOCAL228TP6FP28FN and A192TP4FP64FN on576consumed transfer frames Full native-contributor angular support plus public interval possibility; fixed1024ray and nativeXYZ controls Retain at least32of36rescues and remove2addedFP with A preservation and full timing costs STOP_BEFORE_STUDENT_INTERVAL_READOUT_OPPORTUNITY_FAILED research/active/dtr-r0/nearfield/RETURN_CORRESPONDENCE_RESULTS_20260923.md Consumed LOCALtransfer576frames and previously sealed contributor lineage"
+    },
+    {
+      "kind": "experiment",
+      "id": "local-stability-20260923",
+      "status": "archived",
+      "question": "Does frozen LOCAL retain earlier detections under composite shapes size changes and approach dwell return?",
+      "baseline": "Unchanged A and A OR RAW compared with A OR LOCAL; samepublic RGB and8x8ToF",
+      "change": "Eight new two-cuboid composites crossed with two sizes per family two posed trajectories and three lateral placements",
+      "primary_metric": "At least8earlier/recovered events with3pertrajectory, addedFP<=2segments<=1, plus>=5pp recall overRAW and group/layer checks",
+      "decision": "LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md",
+      "source": "New same-generator composite shape/size Development; static posed samples not physical continuous motion",
+      "commit": "31c4f97bb4969b8a9c9318641a3c6872ea557925",
+      "association_id": "local-stability-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 6,
+        "geometry_motion": 6,
+        "decision_lifecycle": 3
+      },
+      "search_text": "local-stability-20260923 Does frozen LOCAL retain earlier detections under composite shapes size changes and approach dwell return? Unchanged A and A OR RAW compared with A OR LOCAL; samepublic RGB and8x8ToF Eight new two-cuboid composites crossed with two sizes per family two posed trajectories and three lateral placements At least8earlier/recovered events with3pertrajectory, addedFP<=2segments<=1, plus>=5pp recall overRAW and group/layer checks LOCAL_COMPOSITE_TRAJECTORY_STABILITY_NEGATIVE research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md New same-generator composite shape/size Development; static posed samples not physical continuous motion"
     }
   ],
   "associations": [
@@ -36489,6 +36553,22 @@
         "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"
       ],
       "decision_id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
+      "source_rows": 1
+    },
+    {
+      "run_id": "local-stability-20260923",
+      "use_ids": [],
+      "protocol_id": "local-stability-20260923-v1",
+      "code_revision": "31c4f97bb4969b8a9c9318641a3c6872ea557925",
+      "input_fingerprint": "e5ee9019bc400e1a3cdffe30e14d5fd25f500c24a65ce1f6f9b1321a4eba0af1",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/LOCAL_STABILITY_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-local-stability-20260923-capture/launcher-terminal.json",
+        "artifacts.local/evidence/ba-local-stability-20260923-predictions/prediction-seal.json",
+        "artifacts.local/evidence/ba-local-stability-20260923-evaluated",
+        "artifacts.local/evidence/ba-local-stability-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-local-stability-20260923",
       "source_rows": 1
     },
     {

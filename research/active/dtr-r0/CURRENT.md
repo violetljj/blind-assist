@@ -31,6 +31,10 @@ even perfect contributor angular association preserves all36rescues but removes0
 full and1024ray controls exactly reproduce LOCAL228/6/28. NativeXYZ32/36does
 not establish this unchanged-interval filter opportunity. Exact readout NEGATIVE_CONTROL;
 stop before student training, preserve LOCAL/A/UNKNOWN and prior diagnostic roles.
+[Composite stability transfer](nearfield/LOCAL_STABILITY_RESULTS_20260923.md),2026-09-23:
+new576frames LOCAL119/20/105, RAW109/16/115, A107/12/117; 8earlier/recovered events.
+Frozen stabilityFAIL; retain full trajectory/size/shape costs and prior LOCAL value.
+No fitting, source exclusion, cutoff change or physical-motion claim.
 Additional hypothetical returns plus unchanged hold give 254/29/2 versus
 225/26/31, with entry-sample detection 17/32 to 31/32; retain information and
 its added costs, not a lossless upgrade. Support inheritance returns exactly
