@@ -21,6 +21,11 @@ with5/7/4false segments. Task transfer, background tolerance and geometry rank
 pass;14/16base rescues survive background changes, with2lostTP/6gainedTP/2removedFP.
 This cohort passes the strict cost gate; the old failure remains. Retain LOCAL
 COMPONENT, A and UNKNOWN; no appearance-invariance, hardware or App claim.
+[Native support diagnostic](nearfield/LOCAL_SUPPORT_RESULTS_20260922.md):
+winning-query witness retains 32/36 rescues; either-centre control 32/36,
+primary PASS. Native false-alert removal is privileged geometry;
+retain full support partitions and LOCAL onset costs, without public ownership
+or filter promotion. Original LOCAL transfer remains a COMPONENT.
 Additional hypothetical returns plus unchanged hold give 254/29/2 versus
 225/26/31, with entry-sample detection 17/32 to 31/32; retain information and
 its added costs, not a lossless upgrade. Support inheritance returns exactly

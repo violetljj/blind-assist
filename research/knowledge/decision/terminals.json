@@ -5114,6 +5114,30 @@
         "research/active/dtr-r0/nearfield/LOCAL_TRANSFER_PROTOCOL_20260922.md"
       ],
       "commit": "bda91338dfea2ede2be4e1e91611e8b97821cba4"
+    },
+    {
+      "id": "terminal-local-support-20260922",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "positive",
+      "decision": "PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED",
+      "summary": "Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs.",
+      "successor_requires": "Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic",
+      "forbidden_repeats": [
+        "Treat privileged native occupancy witnesses as public RGB ToF ownership or deployable predictions",
+        "Promote any-centre control instead of reporting a failed primary or hide LOCAL timing losses",
+        "Retune native point count box tolerance centre selection or original HGB cutoff on these outcomes"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md",
+        "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_PROTOCOL_20260922.md"
+      ],
+      "commit": "e2f2e0293cbd3f5fdd7a0cd3717409115181d04e"
     }
   ]
 }

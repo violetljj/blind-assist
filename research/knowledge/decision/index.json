@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-22",
-  "source_fingerprint": "2bb9f23da5fe5f4b9b64ff9db119b8827a635d70277075304404cce72caea6e6",
+  "source_fingerprint": "36d95341130d26fe6d3464382240b36d1881f633eabf9eeee4ac95827e3d2edf",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 435,
-    "current_terminals": 216,
-    "run_associations": 433
+    "experiments": 436,
+    "current_terminals": 217,
+    "run_associations": 434
   },
   "failure_layers": [
     {
@@ -25386,6 +25386,47 @@
       "search_text": "terminal-local-transfer-20260922 obstacle-avoidance FROZEN_LOCAL_TRANSFER_COMPONENT_PASS_WITH_BACKGROUND_DEPENDENCE 576new controlled frames: A192TP4FP64FN, A RAW193/7/63, A LOCAL228/6/28; segments4/7/5. All three transfer gates and this-cohort strict gatePASS;14of16base rescues retained after background change. Preserve old failed strict gate and A UNKNOWN. Separately authorized materially different support-ownership or external-distribution check; preserve frozen thresholds and both old and new results COMPONENT_OR_CHALLENGER COMPONENT Frozen query-local HGB component on eight new same-generator geometries and paired background material intervention LOCAL component transfer and full measured false costs; old LOCAL component and RAW negative control remain; no default App promotion Two addedFP and one segment meet cost limits exactly; background changes lose2TP gain6TP remove2FP; no appearance invariance or physical return ownership Separately authorized materially different support-ownership or external-distribution check; preserve frozen thresholds and both old and new results Refit or retune this frozen recipe on consumed outcomes Equate aggregate background tolerance with appearance invariance or physical ownership Replace old failed system evidence or claim default App hardware or safety validation"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-local-support-20260922",
+      "status": "positive",
+      "question": "Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs.",
+      "baseline": null,
+      "change": "Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic",
+      "primary_metric": null,
+      "decision": "PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md",
+      "source": "decision/terminals.json",
+      "commit": "e2f2e0293cbd3f5fdd7a0cd3717409115181d04e",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic",
+      "forbidden_repeats": [
+        "Treat privileged native occupancy witnesses as public RGB ToF ownership or deployable predictions",
+        "Promote any-centre control instead of reporting a failed primary or hide LOCAL timing losses",
+        "Retune native point count box tolerance centre selection or original HGB cutoff on these outcomes"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Exact privileged observed-winning-bin support requirement on the saved score-winning centre query; information diagnostic only",
+      "retained_surface": "Native support partitions and pixel-band compatibility diagnosis; unchanged public LOCAL component A and UNKNOWN",
+      "failure_signature": "Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs.",
+      "revisit_trigger": "Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic",
+      "assignment_basis": "Frozen one-pass576frame reconstruction,8synthetic tests,16audit assertions and independent native plus full metric recount",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md",
+        "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_PROTOCOL_20260922.md"
+      ],
+      "association_id": "local-support-20260922",
+      "search_text": "terminal-local-support-20260922 obstacle-avoidance PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs. Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic COMPONENT_OR_CHALLENGER COMPONENT Exact privileged observed-winning-bin support requirement on the saved score-winning centre query; information diagnostic only Native support partitions and pixel-band compatibility diagnosis; unchanged public LOCAL component A and UNKNOWN Consumed576frames: exact originalToF parity; primary retains32/36LOCALrescues and removes2/2addedFP; either-centre control retains32/36. PrimaryPASS; native witness is privileged, false-alert removal largely constructive; preserve original LOCAL component and all timing costs. Separately justified public-input mechanism informed by observed versus unreturned support; no point-count tolerance or query sweep on this consumed diagnostic Treat privileged native occupancy witnesses as public RGB ToF ownership or deployable predictions Promote any-centre control instead of reporting a failed primary or hide LOCAL timing losses Retune native point count box tolerance centre selection or original HGB cutoff on these outcomes"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -34890,6 +34931,27 @@
         "decision_lifecycle": 12
       },
       "search_text": "local-transfer-20260922 Does frozen LOCAL transfer to new geometry and retain useful decisions under a paired background-only intervention? Unchanged A plus sealed matched RAW HGB at old threshold Eight new base geometries with three lateral relations and two paired background appearances; frozen models and thresholds Recall precision FP false segments onset; paired rescue retention, geometry rank and whole-base-group bootstrap FROZEN_LOCAL_TRANSFER_COMPONENT_PASS_WITH_BACKGROUND_DEPENDENCE research/active/dtr-r0/nearfield/LOCAL_TRANSFER_RESULTS_20260922.md 576new same-generator UE controlled Development frames;8base groups48clips288appearance pairs; now consumed"
+    },
+    {
+      "kind": "experiment",
+      "id": "local-support-20260922",
+      "status": "archived",
+      "question": "Which retained LOCAL rescues have observed native support in their score-winning centre query?",
+      "baseline": "Saved A and A OR LOCAL decisions on all576consumed transfer frames",
+      "change": "Evaluator-only contributor and2x2native subpixel audit; fixed winning-centre and either-centre diagnostic readouts",
+      "primary_metric": "Rescues retained >=32of36 with2addedFP removed, full onset gap and native support opportunity costs",
+      "decision": "PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md",
+      "source": "Consumed UE local-transfer576frames; no new captured or learned observations",
+      "commit": "e2f2e0293cbd3f5fdd7a0cd3717409115181d04e",
+      "association_id": "local-support-20260922",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 6
+      },
+      "search_text": "local-support-20260922 Which retained LOCAL rescues have observed native support in their score-winning centre query? Saved A and A OR LOCAL decisions on all576consumed transfer frames Evaluator-only contributor and2x2native subpixel audit; fixed winning-centre and either-centre diagnostic readouts Rescues retained >=32of36 with2addedFP removed, full onset gap and native support opportunity costs PRIVILEGED_WINNING_QUERY_SUPPORT_OPPORTUNITY_PUBLIC_ASSOCIATION_UNTESTED research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md Consumed UE local-transfer576frames; no new captured or learned observations"
     }
   ],
   "associations": [
@@ -36365,6 +36427,20 @@
         "research/active/l10-r0/l10_scenenn_temporal_hue_geometry_consensus_result_v1.json"
       ],
       "decision_id": "terminal-l10-scenenn-temporal-hue-geometry-consensus-posthoc-negative",
+      "source_rows": 1
+    },
+    {
+      "run_id": "local-support-20260922",
+      "use_ids": [],
+      "protocol_id": "local-support-20260922-v1",
+      "code_revision": "e2f2e0293cbd3f5fdd7a0cd3717409115181d04e",
+      "input_fingerprint": "5f4cbafc39d419d0e23bbeec8e66c90e7265b8793a1e51bd2dd11e410e399d8c",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/LOCAL_SUPPORT_RESULTS_20260922.md",
+        "artifacts.local/evidence/ba-local-support-20260922-run",
+        "artifacts.local/evidence/ba-local-support-20260922-audit/result.json"
+      ],
+      "decision_id": "terminal-local-support-20260922",
       "source_rows": 1
     },
     {
