@@ -1,3 +1,14 @@
+## Boundary-error attribution: coarse labels and violated constraints (2026-09-23)
+
+[Saved-output diagnostic](nearfield/BOUNDARY_ERROR_RESULTS_20260923.md): width label
+brackets24-36cm, horizon30cm; geometry held-layout errors violate even these
+brackets in292/485width and156/291horizon cases. Returned-near native support
+463/528width,277/352horizon retains broad public spans. Training horizon violations
+41/385 versus held156/291 distinguish coarse fitting from transfer. Diagnostic
+COMPONENT; no refit/cutoff change. Preserve failed contact packages and A/LOCAL/UNKNOWN.
+Independent13824-row and48native-frame auditPASS. Next proposal: separate metric
+supervision from representation/optimization; no automatic successor started.
+
 ## Contact-boundary generalization: ranking without accurate metric crossings (2026-09-23)
 
 [Fixed two-arm Development](nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md) reuses

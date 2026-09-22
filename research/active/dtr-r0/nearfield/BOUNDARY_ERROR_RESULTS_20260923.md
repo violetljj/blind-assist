@@ -158,3 +158,8 @@ Version1 and its receipt remain after independent review found minimum-versus-
 nearest support and float-endpoint issues. Version2 preserved complete corrected
 rows but failed JSON receipt serialization on a NumPy integer; version3 fixes
 serialization. These are diagnostic repairs, not additional model attempts.
+
+Terminal `terminal-boundary-error-20260923` retains this diagnostic as
+COMPONENT_OR_CHALLENGER/COMPONENT. Archived experiment `ba-boundary-error-20260923`
+is registered through the supported ledger, anchored to source commit27040e82.
+All prior terminal dispositions remain unchanged.

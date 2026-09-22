@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "e961781abb1210ff2035055409b7392c7cdc520241ad7f879d322b8731123433",
+  "source_fingerprint": "47659913ce38fdc02bfd910be7012878b7325178e6b8ab172e2dd34037e1c8f7",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 439,
-    "current_terminals": 220,
-    "run_associations": 437
+    "experiments": 440,
+    "current_terminals": 221,
+    "run_associations": 438
   },
   "failure_layers": [
     {
@@ -25549,6 +25549,46 @@
       "search_text": "terminal-contact-boundary-20260923 obstacle-avoidance CONTACT_BOUNDARY_RANKING_WITHOUT_METRIC_GENERALIZATION Consumed576layout-held images: direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN on27648novel queries. Recall74.65/86.88%,FPR5.016/9.479%. Pair order99.80/99.20% but width within5cm37/528 versus43/528 and horizon19/352 versus61/352. Neither package passes; preserve partial gains and all costs. Separately scoped mechanism resolving metric boundary information or absolute calibration; preserve this fixed cached-feature comparison and prior negatives NEGATIVE_CONTROL  Frozen shared-feature direct versus monotone geometry contact-width and horizon readout; consumed grouped Development only Relative lateral ranking and conditional metric-error reduction with all false costs; preserve A LOCAL UNKNOWN and old recipe dispositions Neither component gate passes; geometry recall gain12.23points costs4.46points FPR and boundary within5cm remains8.14percent width17.33percent horizon Separately scoped changed mechanism addressing metric boundary information or absolute calibration, not tuning this consumed package Retune this consumed run threshold backbone loss seed or epochs to rescue its fixed gate Treat query counts as independent samples or near-perfect pair ordering as accurate contact Promote latent geometry or model confidence into measured space complete-body walking or App safety evidence"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-boundary-error-20260923",
+      "status": "diagnostic",
+      "question": "Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative.",
+      "baseline": null,
+      "change": "Separately scoped boundary-localized supervision versus fixed public representation; distinguish train fitting, held-layout transfer and missing native support without rescuing consumed gates",
+      "primary_metric": null,
+      "decision": "COARSE_SUPERVISION_AND_CONSTRAINT_VIOLATIONS_COEXIST",
+      "report": "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "27040e8244c82373132ec4a5a654d8ea227e7f54",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately scoped boundary-localized supervision versus fixed public representation; distinguish train fitting, held-layout transfer and missing native support without rescuing consumed gates",
+      "forbidden_repeats": [
+        "Claim coarse labels or broad single-return intervals prove RGB-ToF information impossibility",
+        "Treat native near-boundary support as public metric localization or erase UNKNOWN",
+        "Retune the old contact package or start an automatic successor from this diagnostic"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed boundary-error attribution only; no predictor promotion",
+      "retained_surface": "Per-image label brackets, frozen constraint errors and native-return support partitions; A LOCAL UNKNOWN and failed contact packages preserved",
+      "failure_signature": "Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative.",
+      "revisit_trigger": "New scoped mechanism that distinguishes metric supervision from representation or observational limitations",
+      "assignment_basis": "Saved-output audit with exact576-frame ToF parity and independent13824-row/48-native-frame checks",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-boundary-error-20260923",
+      "search_text": "terminal-boundary-error-20260923 obstacle-avoidance COARSE_SUPERVISION_AND_CONSTRAINT_VIOLATIONS_COEXIST Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative. Separately scoped boundary-localized supervision versus fixed public representation; distinguish train fitting, held-layout transfer and missing native support without rescuing consumed gates COMPONENT_OR_CHALLENGER COMPONENT Consumed boundary-error attribution only; no predictor promotion Per-image label brackets, frozen constraint errors and native-return support partitions; A LOCAL UNKNOWN and failed contact packages preserved Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative. New scoped mechanism that distinguishes metric supervision from representation or observational limitations Claim coarse labels or broad single-return intervals prove RGB-ToF information impossibility Treat native near-boundary support as public metric localization or erase UNKNOWN Retune the old contact package or start an automatic successor from this diagnostic"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35140,6 +35180,29 @@
         "geometry_motion": 9
       },
       "search_text": "ba-contact-boundary-20260923 Do direct or monotone contact functions generalize to unseen body widths and horizons on layout-disjoint Development? Shared frozen RGB features and regional ToF direct contact-query MLP Same contact supervision and feature trunk, monotone folded-lateral depth-grid aggregation; new continuous query task Primary query recall FPR and all-finite-boundary within5cm success; matched lateral pairs and whole-layout bootstrap NEITHER_CONTACT_PACKAGE_PASSES; geometry improves recall and conditional error but increases false cost; retain exact negative control research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-boundary-error-20260923",
+      "status": "archived",
+      "question": "Do metric errors exceed binary supervision ambiguity and is native boundary support retained?",
+      "baseline": "Frozen direct and geometry contact predictions with original cutoffs",
+      "change": "Read-only monotone label constraints, native support and feature diagnostic; no model change",
+      "primary_metric": "All finite-interior errors versus incompatible label brackets; nearest native support and interval spans",
+      "decision": "DIAGNOSTIC_COMPONENT; coarse supervision and constraint violations coexist; no algorithm promotion",
+      "report": "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "27040e8244c82373132ec4a5a654d8ea227e7f54",
+      "association_id": "ba-boundary-error-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "geometry_motion": 9,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-boundary-error-20260923 Do metric errors exceed binary supervision ambiguity and is native boundary support retained? Frozen direct and geometry contact predictions with original cutoffs Read-only monotone label constraints, native support and feature diagnostic; no model change All finite-interior errors versus incompatible label brackets; nearest native support and interval spans DIAGNOSTIC_COMPONENT; coarse supervision and constraint violations coexist; no algorithm promotion research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35156,6 +35219,21 @@
         "artifacts.local/evidence/ase-body-query-pilot-20260909"
       ],
       "decision_id": "terminal-dtr-ase-body-query-pilot-coverage-insufficient",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-boundary-error-20260923",
+      "use_ids": [],
+      "protocol_id": "boundary-error-20260923",
+      "code_revision": "27040e8244c82373132ec4a5a654d8ea227e7f54",
+      "input_fingerprint": "fe35b5b7a7b0f91206c7834dae55991e06a268c62741afe79c6d3327bfa250ea",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-boundary-error-20260923-v3/result.json",
+        "artifacts.local/evidence/ba-boundary-error-20260923-v3/rows.json",
+        "artifacts.local/evidence/ba-boundary-error-20260923-audit-v2/result.json"
+      ],
+      "decision_id": "terminal-boundary-error-20260923",
       "source_rows": 1
     },
     {

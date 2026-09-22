@@ -5209,6 +5209,29 @@
         "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_PROTOCOL_20260923.md"
       ],
       "commit": "ab271f6577101cde2e42f17aba6e5a5e14c7b578"
+    },
+    {
+      "id": "terminal-boundary-error-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "COARSE_SUPERVISION_AND_CONSTRAINT_VIOLATIONS_COEXIST",
+      "summary": "Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative.",
+      "successor_requires": "Separately scoped boundary-localized supervision versus fixed public representation; distinguish train fitting, held-layout transfer and missing native support without rescuing consumed gates",
+      "forbidden_repeats": [
+        "Claim coarse labels or broad single-return intervals prove RGB-ToF information impossibility",
+        "Treat native near-boundary support as public metric localization or erase UNKNOWN",
+        "Retune the old contact package or start an automatic successor from this diagnostic"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/BOUNDARY_ERROR_PROTOCOL_20260923.md"
+      ],
+      "commit": "27040e8244c82373132ec4a5a654d8ea227e7f54"
     }
   ]
 }

@@ -1,3 +1,10 @@
+2026-09-23 [boundary-error source audit](../research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md):
+Coarse width24-36cm/horizon30cm labels coexist with geometry held-layout bracket
+violations292/485width errors and156/291horizon errors. Returned-near native support
+463/528width and277/352horizon does not establish precise public localization.
+Independent13824-row/48native-frame auditPASS; diagnostic COMPONENT. No refit,
+cutoff change or App promotion; old contact negatives and A/LOCAL/UNKNOWN remain.
+
 2026-09-23 [counterfactual contact-boundary pilot](../research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md):
 Consumed1728-frame source, frozen shared visual features and new width/horizon queries.
 On576layout-held images, direct3346TP1162FP1136FN versus geometry3894TP2196FP588FN:

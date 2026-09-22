@@ -2201,6 +2201,16 @@
       "failure_signature": "Neither component gate passes; geometry recall gain12.23points costs4.46points FPR and boundary within5cm remains8.14percent width17.33percent horizon",
       "revisit_trigger": "Separately scoped changed mechanism addressing metric boundary information or absolute calibration, not tuning this consumed package",
       "assignment_basis": "Two100epoch fits,22focused tests,714816independent world labels and full saved-output selection/count/pair/bootstrap audit"
+    },
+    {
+      "terminal_id": "terminal-boundary-error-20260923",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Consumed boundary-error attribution only; no predictor promotion",
+      "retained_surface": "Per-image label brackets, frozen constraint errors and native-return support partitions; A LOCAL UNKNOWN and failed contact packages preserved",
+      "failure_signature": "Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative.",
+      "revisit_trigger": "New scoped mechanism that distinguishes metric supervision from representation or observational limitations",
+      "assignment_basis": "Saved-output audit with exact576-frame ToF parity and independent13824-row/48-native-frame checks"
     }
   ]
 }
