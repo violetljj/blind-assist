@@ -1,3 +1,8 @@
+2026-09-23 [matched range diagnostic](../research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md):
+All three fixed public readouts fail3m admission. Nearest-compatible noise
+ordering99.22/99.87percent, but outsideFPR26.17/41.54percent. Retain exact
+NEGATIVE_CONTROL and partial signal; no input-impossibility or App claim.
+
 2026-09-23 [contact error decomposition](../research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):
 No training: exact conditional position hits404/560train ->100/352held; binary
 held also100/352. Only31/165blocked exact cases hide accurate median positions.

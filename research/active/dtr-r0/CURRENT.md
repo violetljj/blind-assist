@@ -1,3 +1,12 @@
+## Matched range admission not established (2026-09-23)
+
+[Consumed paired diagnostic](nearfield/RANGE_PAIR_RESULTS_20260923.md):144unique
+pairs/16groups plus16noise draws. Nearest compatible crossing76.56/88.02percent
+with outsideFPR26.17/41.54percent; median3 loses crossing coverage. All three
+fixed readouts NEGATIVE_CONTROL; ordering retained but background and ownership
+confounding unresolved. Eight tests and independent103397assertions pass.
+No fit, cutoff selection, fresh confirmation or A/LOCAL/App change.
+
 ## Contact decomposition: position transfer gap beyond probability gating (2026-09-23)
 
 [Frozen selected-checkpoint diagnostic](nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):

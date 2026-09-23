@@ -5370,6 +5370,29 @@
         "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md"
       ],
       "commit": "a3aecb678a02101ef5f52bdc507a8d5fe6bb0478"
+    },
+    {
+      "id": "terminal-range-pair-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED",
+      "summary": "Three frozen public readouts fail joint3m admission across two consumed cohorts. Nearest compatible noise ranking99.22/99.87percent but crossing76.56/88.02percent and outsideFPR26.17/41.54percent. Preserve ordering and attribution diagnostic; no fit or App change.",
+      "successor_requires": "Separately justified public return ownership or range mechanism; retain exact readout negatives and consumed evidence boundary",
+      "forbidden_repeats": [
+        "Retune consumed cutoff to claim frozen criteria passed",
+        "Treat near far ordering as target ownership or reliable absolute range",
+        "Use evaluator target mask as public gate or claim input impossibility"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/RANGE_PAIR_PROTOCOL_20260923.md"
+      ],
+      "commit": "a7b3ffbc8b787f5ca4cfa91b24b5dd38214cac01"
     }
   ]
 }

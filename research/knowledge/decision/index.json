@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "971f57d1c6b92944b274dd999ed0082e0235928358f2b075ffa8c1df9e8fb940",
+  "source_fingerprint": "e125ab28abcb2da3444f328f065398104a68e72c9bfb381f91cc3b1132eaa627",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 446,
-    "current_terminals": 227,
-    "run_associations": 444
+    "experiments": 447,
+    "current_terminals": 228,
+    "run_associations": 445
   },
   "failure_layers": [
     {
@@ -25829,6 +25829,46 @@
       "search_text": "terminal-contact-decomposition-20260923 obstacle-avoidance POSITION_TRANSFER_GAP_NOT_GATE_ONLY Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged. Independently justified transferable regional observation correspondence or coupled readout comparison; no retrospective threshold checkpoint promotion COMPONENT_OR_CHALLENGER COMPONENT Read-only frozen CDF probability position and width diagnostic on consumed Development Full gate-location partitions transfer distributions and width-order tests with no model promotion Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged. Mechanism adding transferable position evidence; preserve sensor UNKNOWN and legacy predictors Deploy q-unity or evaluator-conditioned position readout Claim gate or monotonicity adjustment alone solves metric transfer Infer causal memorization or sensor impossibility from conditional error partitions"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-range-pair-20260923",
+      "status": "negative",
+      "question": "Three frozen public readouts fail joint3m admission across two consumed cohorts. Nearest compatible noise ranking99.22/99.87percent but crossing76.56/88.02percent and outsideFPR26.17/41.54percent. Preserve ordering and attribution diagnostic; no fit or App change.",
+      "baseline": null,
+      "change": "Separately justified public return ownership or range mechanism; retain exact readout negatives and consumed evidence boundary",
+      "primary_metric": null,
+      "decision": "PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "a7b3ffbc8b787f5ca4cfa91b24b5dd38214cac01",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified public return ownership or range mechanism; retain exact readout negatives and consumed evidence boundary",
+      "forbidden_repeats": [
+        "Retune consumed cutoff to claim frozen criteria passed",
+        "Treat near far ordering as target ownership or reliable absolute range",
+        "Use evaluator target mask as public gate or claim input impossibility"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Three fixed public range readouts for3m admission on consumed controlled pairs",
+      "retained_surface": "Ordering signal and evaluator attribution diagnostic",
+      "failure_signature": "Joint crossing and outside false alert criteria fail",
+      "revisit_trigger": "Separately justified public return ownership or range mechanism",
+      "assignment_basis": "Frozen paired diagnostic and independent103397assertion audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/RANGE_PAIR_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-range-pair-20260923",
+      "search_text": "terminal-range-pair-20260923 obstacle-avoidance PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED Three frozen public readouts fail joint3m admission across two consumed cohorts. Nearest compatible noise ranking99.22/99.87percent but crossing76.56/88.02percent and outsideFPR26.17/41.54percent. Preserve ordering and attribution diagnostic; no fit or App change. Separately justified public return ownership or range mechanism; retain exact readout negatives and consumed evidence boundary NEGATIVE_CONTROL  Three fixed public range readouts for3m admission on consumed controlled pairs Ordering signal and evaluator attribution diagnostic Joint crossing and outside false alert criteria fail Separately justified public return ownership or range mechanism Retune consumed cutoff to claim frozen criteria passed Treat near far ordering as target ownership or reliable absolute range Use evaluator target mask as public gate or claim input impossibility"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35578,6 +35618,25 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-contact-decomposition-20260923 Are frozen selected contact errors hidden accurate positions or localization and width transfer failures? Selected binary and exact-supervision CDF weights and original cutoffs Read-only q location scale decomposition across widths and train versus evaluation; no fit Blocked/admitted by median accurate/inaccurate partitions and allfinite hit5 MAE plus width order DIAGNOSTIC_COMPONENT: position transfer remains poor beyond gate removal; no predictor promotion research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-range-pair-20260923",
+      "status": "archived",
+      "question": "Can public range readouts distinguish matched3m crossings",
+      "baseline": "Saved public8x8ToF and global nearest control",
+      "change": "Fixed compatible nearest and median3 paired observability diagnostic",
+      "primary_metric": "Joint crossing and outside endpoint FPR including missing",
+      "decision": "PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md",
+      "source": "ue-local-stability-and-rescue-consumed-development",
+      "commit": "a7b3ffbc8b787f5ca4cfa91b24b5dd38214cac01",
+      "association_id": "ba-range-pair-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {},
+      "search_text": "ba-range-pair-20260923 Can public range readouts distinguish matched3m crossings Saved public8x8ToF and global nearest control Fixed compatible nearest and median3 paired observability diagnostic Joint crossing and outside endpoint FPR including missing PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md ue-local-stability-and-rescue-consumed-development"
     }
   ],
   "associations": [
@@ -35774,6 +35833,20 @@
         "artifacts.local/evidence/ba-query-spatial-fit-20260922/independent-audit.json"
       ],
       "decision_id": "terminal-query-spatial-fit-20260922",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-range-pair-20260923",
+      "use_ids": [],
+      "protocol_id": "range-pair-20260923",
+      "code_revision": "a7b3ffbc8b787f5ca4cfa91b24b5dd38214cac01",
+      "input_fingerprint": "f9e06925d7f825f1c906aaafdc64cb4feafa07d75d0227f2c33db189acf60264",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-range-pair-20260923-run/result.json",
+        "artifacts.local/evidence/ba-range-pair-audit-20260923-run/result.json"
+      ],
+      "decision_id": "terminal-range-pair-20260923",
       "source_rows": 1
     },
     {
