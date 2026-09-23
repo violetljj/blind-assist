@@ -3,6 +3,16 @@
   "updated_at": "2026-09-23",
   "roles": [
     {
+      "terminal_id": "terminal-observation-separation-20260923",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "matched-pose-public-observation-separation",
+      "retained_surface": "Fixed local RGB differences survive renderer variation in32matched pairs; ToF boundary/inside disparity and complete coverage retained",
+      "failure_signature": "No transferable task decoder, no calibrated hardware noise, no range-entry or general information ceiling",
+      "revisit_trigger": "New geometry-group-held local spatial readout with explicit ToF correspondence uncertainty",
+      "assignment_basis": "Fixed controlled diagnostic and sealed public matrices before evaluator join"
+    },
+    {
       "terminal_id": "terminal-dtr-r6-static-occupancy-unreachable",
       "inheritance_role": "COMPONENT_OR_CHALLENGER",
       "inheritance_mode": "COMPONENT",

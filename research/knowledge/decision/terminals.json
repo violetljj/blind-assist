@@ -3,6 +3,25 @@
   "updated_at": "2026-09-23",
   "terminals": [
     {
+      "id": "terminal-observation-separation-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "status": "diagnostic",
+      "decision": "MATCHED_RGB_DIFFERENCES_SURVIVE_VARIATION",
+      "summary": "Matched16groups32opposite-label pairs at2.38/2.55m: fixed local RGB distances separate32/32beyond repeated-pose variation, including arrival exclusion. Standardized ToF separates8/16boundary and16/16inside. Preserve observation diagnostic; no transferable decoder, hardware noise or input ceiling claim.",
+      "successor_requires": "Separately specified geometry-group-held lateral readout with preserved local RGB and explicit ToF correspondence uncertainty; retain prior regional/contact negatives",
+      "forbidden_repeats": [
+        "Treat pair-distance separation as deployed obstacle accuracy or generalization",
+        "Treat metric failure as information-theoretic sensor impossibility",
+        "Treat renderer repeats or proxy draws as calibrated hardware noise or new scenes"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/OBSERVATION_SEPARATION_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/OBSERVATION_SEPARATION_PROTOCOL_20260923.md"
+      ],
+      "commit": "421173a8"
+    },
+    {
       "id": "terminal-dtr-r6-static-occupancy-unreachable",
       "route": "obstacle-avoidance",
       "failure_layers": [

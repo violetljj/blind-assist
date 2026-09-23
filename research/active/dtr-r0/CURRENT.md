@@ -1,3 +1,9 @@
+2026-09-23 [matched observation separation](nearfield/OBSERVATION_SEPARATION_RESULTS_20260923.md):
+Local RGB distances separate32/32opposite-label pairs beyond repeated-pose variation
+at2.38/2.55m, including arrival exclusion. Standardized ToF separates8/16boundary
+and16/16inside pairs. Diagnostic COMPONENT: input differences remain, transferable
+readout unproven. No hardware-noise, information-ceiling or App claim; A/LOCAL/UNKNOWN retained.
+
 2026-09-23 [regional contact pairing](nearfield/REGIONAL_CONTACT_RESULTS_20260923.md):
 Regional pairing raises held query recall58.01% to70.06%, but actual Z5cm
 12/352 to28/352 and conditional median55/352 to51/352 fail localization gate.
