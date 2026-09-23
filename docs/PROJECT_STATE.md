@@ -1,3 +1,9 @@
+2026-09-23 [regional contact pairing](../research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md):
+Regional pairing raises held query recall58.01% to70.06%, but actual Z5cm
+12/352 to28/352 and conditional median55/352 to51/352 fail localization gate.
+Width false crossings98/624 to176/624. Exact NEGATIVE_CONTROL with partial
+classification signal;12 tests and independent audit pass. No App change.
+
 2026-09-23 [frozen contact decomposition](../research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):
 Position transfer remains weak beyond gating: exact internal median72.14%train
 versus28.41%held within5cm;134/165blocked cases also have inaccurate positions.

@@ -1,3 +1,9 @@
+2026-09-23 [regional contact pairing](../research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md):
+Regional pairing raises held query recall58.01% to70.06%, but actual Z5cm
+12/352 to28/352 and conditional median55/352 to51/352 fail localization gate.
+Width false crossings98/624 to176/624. Exact NEGATIVE_CONTROL with partial
+classification signal;12 tests and independent audit pass. No App change.
+
 2026-09-23 [public motion attribution](../research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md):
 Frozen two-frame motion residual AUC0.603/0.596 under static control0.637/0.633;
 matched contributor coverage66.68/64.81percent. Exact NEGATIVE_CONTROL; no

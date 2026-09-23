@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "ddf440db0ccd1fc3ecf035e0d27768c26a0b0616c77ce1012dc63b057b7b6cfe",
+  "source_fingerprint": "9e91b21c9c95a6aabb695552591f29bd6972f80393996d38cb22a330d5ff0bf9",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 448,
-    "current_terminals": 229,
-    "run_associations": 446
+    "experiments": 449,
+    "current_terminals": 230,
+    "run_associations": 447
   },
   "failure_layers": [
     {
@@ -25909,6 +25909,46 @@
       "search_text": "terminal-motion-return-20260923 obstacle-avoidance MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED Frozen public two-frame projection residual within-zone contributor AUC0.603/0.596 below static0.637/0.633; matched contributor coverage66.68/64.81percent on1152consumed frames. No incremental attribution gate pass; no student or App change. Separately justified return identity or joint angular range mechanism with explicit coverage and matched controls NEGATIVE_CONTROL  Fixed two-frame public projection residual as return attribution on consumed pure translation Public residual diagnostics and explicit tracking coverage AUC0.603/0.596 below static0.637/0.633 with incomplete coverage Separately justified joint angular range or return identity mechanism Tune consumed LK or ownership cutoff to rescue the frozen diagnostic Promote contributor ranking or conditional AUC to target ownership or alert benefit Infer all RGB or temporal information absent from this fixed residual failure"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-regional-contact-20260923",
+      "status": "negative",
+      "question": "Matched regional pairing raises held query recall58.01to70.06percent but actualZ5cm12to28of352 and conditionalmedian55to51of352 fail joint localization gains. Width false crossings98to176of624. Preserve classification partial signal and exact negative; no App change.",
+      "baseline": null,
+      "change": "Separately justified transferable observation or readout mechanism with new fixed comparison; retain consumed negatives and coverage costs",
+      "primary_metric": null,
+      "decision": "REGIONAL_PAIRING_LOCALIZATION_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "a966ef4a5f12ea21dc9328b7c4e2d1da54507ed5",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified transferable observation or readout mechanism with new fixed comparison; retain consumed negatives and coverage costs",
+      "forbidden_repeats": [
+        "Retune consumed checkpoint cutoff or pairing seed to claim frozen gate passed",
+        "Treat query recall gain as precise contact geometry or return ownership",
+        "Claim sensor impossibility from this coarse regional model"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed coarse regional pairing contact localization on consumed Development",
+      "retained_surface": "Matched pairing controls and partial recall ordering gain",
+      "failure_signature": "Held actualZ gain4.55pp and median gain-1.14pp; width false crossings grow98to176",
+      "revisit_trigger": "Separately justified observation or readout mechanism with new explicit comparison",
+      "assignment_basis": "Frozen twoarm experiment independent audit and report",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-regional-contact-20260923",
+      "search_text": "terminal-regional-contact-20260923 obstacle-avoidance REGIONAL_PAIRING_LOCALIZATION_NOT_ESTABLISHED Matched regional pairing raises held query recall58.01to70.06percent but actualZ5cm12to28of352 and conditionalmedian55to51of352 fail joint localization gains. Width false crossings98to176of624. Preserve classification partial signal and exact negative; no App change. Separately justified transferable observation or readout mechanism with new fixed comparison; retain consumed negatives and coverage costs NEGATIVE_CONTROL  Fixed coarse regional pairing contact localization on consumed Development Matched pairing controls and partial recall ordering gain Held actualZ gain4.55pp and median gain-1.14pp; width false crossings grow98to176 Separately justified observation or readout mechanism with new explicit comparison Retune consumed checkpoint cutoff or pairing seed to claim frozen gate passed Treat query recall gain as precise contact geometry or return ownership Claim sensor impossibility from this coarse regional model"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35701,6 +35741,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-motion-return-20260923 Does public temporal projection consistency add return attribution evidence Same matched population static coordinate and wrong prior zone controls Fixed bidirectional RGB optical flow with current prior ToF ratio Within mixed zone contributor macro AUC and all contributor coverage MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md ue-local-stability-and-rescue-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-regional-contact-20260923",
+      "status": "archived",
+      "question": "Does correctly paired regional RGB ToF improve contact localization?",
+      "baseline": "Same model with within-frame RGB derangement",
+      "change": "Correct regional RGB pairing with sensor tokens fixed",
+      "primary_metric": "Held actual and conditional-median Z5cm gain with coverage and false-crossing controls",
+      "decision": "Joint localization gate failed; retain query recall partial gain and exact NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "a966ef4a5f12ea21dc9328b7c4e2d1da54507ed5",
+      "association_id": "ba-regional-contact-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3
+      },
+      "search_text": "ba-regional-contact-20260923 Does correctly paired regional RGB ToF improve contact localization? Same model with within-frame RGB derangement Correct regional RGB pairing with sensor tokens fixed Held actual and conditional-median Z5cm gain with coverage and false-crossing controls Joint localization gate failed; retain query recall partial gain and exact NEGATIVE_CONTROL research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35925,6 +35987,20 @@
         "artifacts.local/evidence/ba-range-pair-audit-20260923-run/result.json"
       ],
       "decision_id": "terminal-range-pair-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-regional-contact-20260923",
+      "use_ids": [],
+      "protocol_id": "regional-contact-20260923",
+      "code_revision": "a966ef4a5f12ea21dc9328b7c4e2d1da54507ed5",
+      "input_fingerprint": "cabea8d4bafa5fd3cb698382318d3eb17035e7143aeac5ba7e405d8234a14b4a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-regional-contact-20260923/result.json",
+        "artifacts.local/evidence/ba-regional-contact-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-regional-contact-20260923",
       "source_rows": 1
     },
     {

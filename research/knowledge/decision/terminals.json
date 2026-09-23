@@ -5416,6 +5416,29 @@
         "research/active/dtr-r0/nearfield/MOTION_RETURN_PROTOCOL_20260923.md"
       ],
       "commit": "ec3a1ebd9498b3aff5f7107c415b0057313b0256"
+    },
+    {
+      "id": "terminal-regional-contact-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "REGIONAL_PAIRING_LOCALIZATION_NOT_ESTABLISHED",
+      "summary": "Matched regional pairing raises held query recall58.01to70.06percent but actualZ5cm12to28of352 and conditionalmedian55to51of352 fail joint localization gains. Width false crossings98to176of624. Preserve classification partial signal and exact negative; no App change.",
+      "successor_requires": "Separately justified transferable observation or readout mechanism with new fixed comparison; retain consumed negatives and coverage costs",
+      "forbidden_repeats": [
+        "Retune consumed checkpoint cutoff or pairing seed to claim frozen gate passed",
+        "Treat query recall gain as precise contact geometry or return ownership",
+        "Claim sensor impossibility from this coarse regional model"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "commit": "a966ef4a5f12ea21dc9328b7c4e2d1da54507ed5"
     }
   ]
 }

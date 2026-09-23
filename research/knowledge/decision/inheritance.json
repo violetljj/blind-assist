@@ -2291,6 +2291,16 @@
       "failure_signature": "AUC0.603/0.596 below static0.637/0.633 with incomplete coverage",
       "revisit_trigger": "Separately justified joint angular range or return identity mechanism",
       "assignment_basis": "Frozen1152frame diagnostic and independent756511check audit"
+    },
+    {
+      "terminal_id": "terminal-regional-contact-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed coarse regional pairing contact localization on consumed Development",
+      "retained_surface": "Matched pairing controls and partial recall ordering gain",
+      "failure_signature": "Held actualZ gain4.55pp and median gain-1.14pp; width false crossings grow98to176",
+      "revisit_trigger": "Separately justified observation or readout mechanism with new explicit comparison",
+      "assignment_basis": "Frozen twoarm experiment independent audit and report"
     }
   ]
 }
