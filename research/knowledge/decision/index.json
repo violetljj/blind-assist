@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "d3ca82454be9917776d3e1f4c355679faaf9ea4da5262fb40e3fd042f3e71164",
+  "source_fingerprint": "971f57d1c6b92944b274dd999ed0082e0235928358f2b075ffa8c1df9e8fb940",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 445,
-    "current_terminals": 226,
-    "run_associations": 443
+    "experiments": 446,
+    "current_terminals": 227,
+    "run_associations": 444
   },
   "failure_layers": [
     {
@@ -25789,6 +25789,46 @@
       "search_text": "terminal-local-rescue-20260923 obstacle-avoidance RESCUE_GATE_NEW_INSTANCE_NEGATIVE Frozen public ambiguity gate keeps41/41 incremental TP and all LOCAL onsets on576 new controlled frames, but removes4/15 incremental FP below50percent. A118/7/106 versus LOCAL159/22/65 and gate159/18/65; events24/29/29 of32. Retain partial lossless filtering, not reliable admission. Separately justified public evidence mechanism with frozen new evaluation; retain all remaining false alerts misses UNKNOWN and prior negatives NEGATIVE_CONTROL  Fixed ambiguity fraction scalar gate as reliable LOCAL-only admission on composite controlled trajectories Causal selective-rescue tooling; new-instance41of41true retention and4of15false removal without onset loss; all baseline and UNKNOWN costs 26.7percent incremental FP rejection below frozen50percent target; still11added false segments versus A Different justified public evidence mechanism and separately frozen new source, not consumed cutoff tuning Tune the frozen scalar cutoff on this consumed new-instance result Treat partial filtering as passing full stability or deployed benefit Use native ownership geometry as gate input"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-contact-decomposition-20260923",
+      "status": "diagnostic",
+      "question": "Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged.",
+      "baseline": null,
+      "change": "Independently justified transferable regional observation correspondence or coupled readout comparison; no retrospective threshold checkpoint promotion",
+      "primary_metric": null,
+      "decision": "POSITION_TRANSFER_GAP_NOT_GATE_ONLY",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "a3aecb678a02101ef5f52bdc507a8d5fe6bb0478",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Independently justified transferable regional observation correspondence or coupled readout comparison; no retrospective threshold checkpoint promotion",
+      "forbidden_repeats": [
+        "Deploy q-unity or evaluator-conditioned position readout",
+        "Claim gate or monotonicity adjustment alone solves metric transfer",
+        "Infer causal memorization or sensor impossibility from conditional error partitions"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Read-only frozen CDF probability position and width diagnostic on consumed Development",
+      "retained_surface": "Full gate-location partitions transfer distributions and width-order tests with no model promotion",
+      "failure_signature": "Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged.",
+      "revisit_trigger": "Mechanism adding transferable position evidence; preserve sensor UNKNOWN and legacy predictors",
+      "assignment_basis": "8tests146880worldtargets independentCDFbisection and39168exact representative component replays",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-contact-decomposition-20260923",
+      "search_text": "terminal-contact-decomposition-20260923 obstacle-avoidance POSITION_TRANSFER_GAP_NOT_GATE_ONLY Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged. Independently justified transferable regional observation correspondence or coupled readout comparison; no retrospective threshold checkpoint promotion COMPONENT_OR_CHALLENGER COMPONENT Read-only frozen CDF probability position and width diagnostic on consumed Development Full gate-location partitions transfer distributions and width-order tests with no model promotion Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged. Mechanism adding transferable position evidence; preserve sensor UNKNOWN and legacy predictors Deploy q-unity or evaluator-conditioned position readout Claim gate or monotonicity adjustment alone solves metric transfer Infer causal memorization or sensor impossibility from conditional error partitions"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35516,6 +35556,28 @@
         "decision_lifecycle": 10
       },
       "search_text": "ba-local-rescue-20260923 Can causal public admission preserve LOCAL rescues while rejecting added false alerts? Frozen A and A OR LOCAL plus two-frame confirmation Consumed feature diagnosis then one transfer-selected ambiguity fraction gate frozen before new576frame capture Incremental TP retention FP rejection event onset coverage and UNKNOWN RESCUE_GATE_NEW_INSTANCE_NEGATIVE; partial lossless filtering retained but4of15FP rejection below50percent research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md ue-local-rescue-consumed-and-new-instance-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-contact-decomposition-20260923",
+      "status": "archived",
+      "question": "Are frozen selected contact errors hidden accurate positions or localization and width transfer failures?",
+      "baseline": "Selected binary and exact-supervision CDF weights and original cutoffs",
+      "change": "Read-only q location scale decomposition across widths and train versus evaluation; no fit",
+      "primary_metric": "Blocked/admitted by median accurate/inaccurate partitions and allfinite hit5 MAE plus width order",
+      "decision": "DIAGNOSTIC_COMPONENT: position transfer remains poor beyond gate removal; no predictor promotion",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "a3aecb678a02101ef5f52bdc507a8d5fe6bb0478",
+      "association_id": "ba-contact-decomposition-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-contact-decomposition-20260923 Are frozen selected contact errors hidden accurate positions or localization and width transfer failures? Selected binary and exact-supervision CDF weights and original cutoffs Read-only q location scale decomposition across widths and train versus evaluation; no fit Blocked/admitted by median accurate/inaccurate partitions and allfinite hit5 MAE plus width order DIAGNOSTIC_COMPONENT: position transfer remains poor beyond gate removal; no predictor promotion research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35577,6 +35639,21 @@
         "artifacts.local/evidence/ba-contact-boundary-20260923/independent-audit.json"
       ],
       "decision_id": "terminal-contact-boundary-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-contact-decomposition-20260923",
+      "use_ids": [],
+      "protocol_id": "contact-decomposition-20260923",
+      "code_revision": "a3aecb678a02101ef5f52bdc507a8d5fe6bb0478",
+      "input_fingerprint": "d60ad8bcc628d74446fb060ddf9869020c94f0426c2a066123f422175b1b1f63",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-contact-decomposition-20260923-v3/result.json",
+        "artifacts.local/evidence/ba-contact-decomposition-20260923/component-seal.json",
+        "artifacts.local/evidence/ba-contact-decomposition-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-contact-decomposition-20260923",
       "source_rows": 1
     },
     {

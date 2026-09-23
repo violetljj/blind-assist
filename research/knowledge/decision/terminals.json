@@ -5347,6 +5347,29 @@
         "research/active/dtr-r0/nearfield/LOCAL_RESCUE_GATE_PROTOCOL_20260923.md"
       ],
       "commit": "79dc812fa8c6453b650e867e4fe93a8baf877a4f"
+    },
+    {
+      "id": "terminal-contact-decomposition-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "POSITION_TRANSFER_GAP_NOT_GATE_ONLY",
+      "summary": "Frozen contact split: binary/exact held conditional median both100/352within5cm; exact train404/560. Only31/165exact blocked finite cases have accurate median,134also mislocalized. Exact width order passes1cmcheck but localization stays poor. Diagnostic COMPONENT; old negatives A LOCAL UNKNOWN unchanged.",
+      "successor_requires": "Independently justified transferable regional observation correspondence or coupled readout comparison; no retrospective threshold checkpoint promotion",
+      "forbidden_repeats": [
+        "Deploy q-unity or evaluator-conditioned position readout",
+        "Claim gate or monotonicity adjustment alone solves metric transfer",
+        "Infer causal memorization or sensor impossibility from conditional error partitions"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md"
+      ],
+      "commit": "a3aecb678a02101ef5f52bdc507a8d5fe6bb0478"
     }
   ]
 }
