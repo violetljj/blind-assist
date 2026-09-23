@@ -18,7 +18,9 @@ class ActionFootprints:
         self.episode_id = episode_id
         self.route_frame = route_frame
         self.calibration = calibration
-        self.tracker = replay.x25.RigidFootprintTracker()
+        from ue_cadence_footprint_tracker import CadenceRigidFootprintTracker
+
+        self.tracker = CadenceRigidFootprintTracker()
         self.update_count = 0
         self.first_time_s = self.last_time_s = None
         self.source_interval_s = self.fit_window_s = None

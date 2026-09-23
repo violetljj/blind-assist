@@ -10,6 +10,7 @@ import numpy as np
 
 import ue_dtr_replay as replay
 from ue_action_footprints import ActionFootprints
+from ue_cadence_footprint_tracker import robust_motion
 
 
 class ActionFootprintsTests(unittest.TestCase):
@@ -35,6 +36,26 @@ class ActionFootprintsTests(unittest.TestCase):
         with patch.object(action, "_measurements", return_value=(
                 [self.measurement(t)] if measurements is None else measurements)):
             return action.update(self.observation(index, t), value)
+
+    def test_cadence_motion_default_matches_frozen_and_explicit_window_is_isolated(self):
+        history = [(i * .2, np.array([i * .05, i * .08])) for i in range(4)]
+        frozen_fit = replay.x24.robust_motion
+        self.assertIsNone(frozen_fit(history, .6))
+        self.assertIsNone(robust_motion(history, .6))
+        position, velocity = robust_motion(history, .6, window_s=.6)
+        np.testing.assert_allclose(position, [.15, .24])
+        np.testing.assert_allclose(velocity, [.25, .4])
+        self.assertIs(frozen_fit, replay.x24.robust_motion)
+        self.assertIsNone(frozen_fit(history, .6))
+        dense = [(i * .05, np.array([i * .02, -i * .03])) for i in range(12)]
+        for actual, expected in zip(robust_motion(dense, .55), frozen_fit(dense, .55)):
+            np.testing.assert_array_equal(actual, expected)
+
+    def test_cadence_motion_rejects_invalid_explicit_windows(self):
+        for window in (0., -1., float("nan"), float("inf")):
+            with self.subTest(window=window):
+                with self.assertRaisesRegex(RuntimeError, "x24_motion_fit_window"):
+                    robust_motion([], 0., window_s=window)
 
     def test_twenty_hz_matches_original_tracker_every_frame(self):
         original, action = replay.x25.RigidFootprintTracker(), self.action()

@@ -39,3 +39,57 @@
 /research/active/dtr-r0/carla/dtr_carla_c42_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol
 /research/active/dtr-r0/carla/dtr_carla_c43_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol
 /research/active/dtr-r0/carla/dtr_carla_c44_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol
+
+# Frozen component sources: preserve bytes; extend via separate modules.
+/research/active/dtr-r0/carla/dtr_carla_bounded_event_emitter.py -text
+/research/active/dtr-r0/carla/dtr_carla_classic_motion_baselines.py -text
+/research/active/dtr-r0/carla/dtr_carla_raw_kalman_baseline.py -text
+/research/active/dtr-r0/carla/dtr_carla_x24_plan_adherent_predictor.py -text
+/research/active/dtr-r0/carla/dtr_carla_x25_rigid_footprint_predictor.py -text
+/research/active/dtr-r0/carla/dtr_carla_x45_causal_state_cycle_credential.py -text
+/research/active/dtr-r0/carla/dtr_carla_x46_evidence_terminated_object_permanence.py -text
+/research/active/dtr-r0/carla/dtr_carla_x47_depth_free_space_permanence_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x51_provisional_motion_belief_update.py -text
+/research/active/dtr-r0/carla/dtr_carla_x52_cross_parent_provisional_reidentification.py -text
+/research/active/dtr-r0/carla/dtr_carla_x53_anchor_redundant_parent_continuation.py -text
+/research/active/dtr-r0/carla/dtr_carla_x54_metric_bootstrap_dropout_continuation.py -text
+/research/active/dtr-r0/carla/dtr_carla_x55_parent_sibling_state_cycle_consensus.py -text
+/research/active/dtr-r0/carla/dtr_carla_x56_zero_eligible_fusion_metric_handback.py -text
+/research/active/dtr-r0/carla/dtr_carla_x57_retained_core_metric_handback.py -text
+/research/active/dtr-r0/carla/dtr_carla_x59_modality_evidence_reliability_router.py -text
+/research/active/dtr-r0/carla/dtr_carla_x60_route_entry_credential_memory.py -text
+/research/active/dtr-r0/carla/dtr_carla_x61_conflict_localized_route_entry.py -text
+/research/active/dtr-r0/carla/dtr_carla_x62_synchronized_conflict_handback.py -text
+/research/active/dtr-r0/carla/dtr_carla_x63_existence_only_object_permanence.py -text
+/research/active/dtr-r0/carla/dtr_carla_x64_unanchored_crossing_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x65_ancestry_synchronized_conflict_handback.py -text
+/research/active/dtr-r0/carla/dtr_carla_x67_measurement_horizon_receding_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x68_object_local_lateral_dequantization.py -text
+/research/active/dtr-r0/carla/dtr_carla_x69_mature_cross_route_rigid_contradiction.py -text
+/research/active/dtr-r0/carla/dtr_carla_x70_triple_credential_surface_dropout_handback.py -text
+/research/active/dtr-r0/carla/dtr_carla_x71_entry_cotransport_occupancy_birth.py -text
+/research/active/dtr-r0/carla/dtr_carla_x72_credentialed_surface_boundary_completion.py -text
+/research/active/dtr-r0/carla/dtr_carla_x73_credentialed_parent_hull_reconstruction.py -text
+/research/active/dtr-r0/carla/dtr_carla_x74_metric_handback_class_contradiction.py -text
+/research/active/dtr-r0/carla/dtr_carla_x75_collision_credentialed_object_permanence.py -text
+/research/active/dtr-r0/carla/dtr_carla_x76_zero_shift_parent_hull_motion_rejection.py -text
+/research/active/dtr-r0/carla/dtr_carla_x77_receding_metric_temporal_handoff_rejection.py -text
+/research/active/dtr-r0/carla/dtr_carla_x78_nonclosing_zero_shift_permanence_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x79_collision_credentialed_lateral_only_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x80_cross_route_footprint_credential_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x81_zero_shift_cross_route_shape_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x82_held_proxy_consensus_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x83_rigid_risk_reference_projection.py -text
+/research/active/dtr-r0/carla/dtr_carla_x84_branch_overloaded_closing_continuation_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x85_dequantization_completion_precedence_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x86_receding_handback_horizon_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x87_solo_completion_horizon_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x88_motion_epoch_contradiction_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x89_branch_overloaded_receding_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x90_collision_credentialed_lateral_dominant_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x91_held_risk_birth_horizon_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x92_held_risk_birth_horizon_latch.py -text
+/research/active/dtr-r0/carla/dtr_carla_x93_conflicted_nonclosing_future_release.py -text
+/research/active/dtr-r0/carla/dtr_carla_x94_one_frame_full_dropout_continuity.py -text
+/research/active/dtr-r0/carla/dtr_carla_x95_credentialed_hazard_state_model.py -text
+/research/active/dtr-r0/carla/dtr_carla_x96_credentialed_bounded_dropout_survival.py -text

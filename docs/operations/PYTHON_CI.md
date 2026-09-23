@@ -64,13 +64,13 @@ Ubuntu/Windows CI 在干净检出上执行此项检查。清单
 JSON 内容及其中哈希不变。日志保留在
 `artifacts.local/maintenance/frozen-rules-20260924/`；这不是 Ubuntu runner 的实测结果。
 
-## 两处历史冻结锁差异
+## 冻结组件源码恢复（2026-09-24）
 
-对干净副本中协议 JSON 的 `frozen_component_sha256` 字典做只读诊断，
+前一轮对干净副本中协议 JSON 的 `frozen_component_sha256` 字典做只读诊断，
 共 48 个唯一 `(文件, 预期哈希)`：46 个匹配，2 个内容不匹配，
 没有仅因 LF/CRLF 导致的差异。此统计不包含协议里其他格式的哈希字段。
 
-两项均来自 `research/active/dtr-r0/carla/dtr_carla_ivca_c1_protocol.json`：
+这两项不只出现在 `dtr_carla_ivca_c1_protocol.json`，也包含在 C44 等协议中：
 
 | 文件 | 冻结 SHA-256 |
 | --- | --- |
@@ -80,13 +80,30 @@ JSON 内容及其中哈希不变。日志保留在
 2026-09-05 的提交 `1560e3e8a794eb2ffb22e89d9c1d5b9127577f2d` 给 X24
 运动拟合增加可选窗口参数，并让 X25 传入该参数。读取该提交父版本的两个 Git blob，
 其原始 SHA-256 分别与上述冻结值精确一致。因此，这两处是可定位的历史源码更新，
-不是跨平台换行问题。此次保留当前源码和历史锁；如果重放该冻结协议，必须恢复对应历史
-版本及其完整依赖，不能直接使用当前源码并把旧锁改成新值。
+不是跨平台换行问题。现已分别从 Git 历史 `ed808e7f`、`5b99dfe7` 恢复两个
+源码文件的冻结原始字节，未改锁。它们在本机和干净检出上曾同样不匹配；
+前一轮只报告测试首先失败的 X24，并非只有 X24 需要修复。
 
 同一 X24 历史值也出现在 Final Reckoning 的 `implementation_locks`。
-当前 `test_validate_dtr_final_reckoning_roster.py` 的完整锁验证仍在 X24 失败；
-这是已知源码版本差异，不能通过替换旧哈希、回退当前算法或跳过断言伪装修复。
-新增 CI 冻结协议字节检查独立报告其范围，并不声称这个完整历史测试通过。
+恢复后 `test_validate_dtr_final_reckoning_roster.py` 的两项测试通过并接入 CI。
+UE 所需的可配置窗口保留在独立 `ue_cadence_footprint_tracker.py` 中，由
+ActionFootprints 调用；原冻结模块不增参、不作全局 monkey patch。
+新增能力应放在独立扩展中，不能再以“默认行为不变”为由原地修改冻结源码。
+
+同一个字节检查现读取 24 份已跟踪组件协议中的全部
+`frozen_component_sha256` 和 `implementation_locks` 条目，不仅挑选 X24/X25。
+目前共有 369 个组件引用，覆盖 52 份 Python 源码和 C44 协议；加上原先的
+28 份协议引用，共 80 个不同的 `(路径, 哈希)` 锁。C44 自身的 33 个组件全覆盖。
+清单保存协议路径，新增到这些字典/列表的组件会自动受检；新协议应加入清单。
+52 份源码逐路径设置 `-text` 保留原字节，当前原始换行为 LF。
+测试还覆盖源码内容损坏、新增缺失组件、同文件冲突锁和删除组件锁表，失败不会自动修复。
+范围是上述 CARLA 冻结协议和源码，不代表重跑仿真或重新确认旧研究结论。
+
+本次从待提交索引以 `core.autocrlf=true` 生成干净检出，80 个锁全部匹配；
+字节检查回归 3 项、Final Reckoning 2 项、Unreal 单元测试 99 项通过。
+测试覆盖默认跟踪一致性、5 Hz 显式窗口、无共享状态修改及非法窗口拒绝。
+两个远程 UE 部署脚本已包含新模块。日志保留在
+`artifacts.local/maintenance/frozen-components-20260924/validation.log`；没有启动仿真或设备实验。
 
 验证临时 Python 环境和检出工作文件已释放；共享克隆的隐藏 `.git` 元数据仍在
 `artifacts.local/tmp/python-ci-20260924/git-checkout/.git`，因不使用强制删除而保留。

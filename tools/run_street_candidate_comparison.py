@@ -80,7 +80,7 @@ def main():
     output.mkdir(parents=True,exist_ok=args.resume)
     names=('capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_action_risk.py',
            'street_scenarios.py','scenario_bank.py','evaluate_street_closed_loop.py','reuse_street_open_loop.py',
-           'street_process_lifecycle.py','ue_action_footprints.py','visual_geometry.py','street_bank_loader.py','discriminating_bank.py')
+           'street_process_lifecycle.py','ue_action_footprints.py','ue_cadence_footprint_tracker.py','visual_geometry.py','street_bank_loader.py','discriminating_bank.py')
     sources=sorted(set(source_paths()+[scripts/name for name in names]+[Path(__file__),repo/'tools/run_street_closed_loop.py']))
     project=repo/'artifacts.local/unreal/BlindAssistStreetLab'
     inputs=[args.scenario_manifest.resolve(),project/'Content/StreetLab/StreetLabV4.umap',

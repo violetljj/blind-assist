@@ -1,5 +1,5 @@
 {
-  "description": "Raw-byte preservation targets; expected hashes remain in their existing frozen protocols. This is not a complete historical source-closure audit.",
+  "description": "Raw-byte locks read from existing frozen protocols. All entries of frozen_component_sha256 and implementation_locks in listed component protocols are checked; expected hashes are never replaced.",
   "locks": [
     {
       "path": "research/active/dtr-r0/carla/dtr_carla_c17_x42_counterfactual_protocol.json",
@@ -229,5 +229,31 @@
         "sha256"
       ]
     }
+  ],
+  "component_protocols": [
+    "research/active/dtr-r0/carla/dtr_carla_c23_x54_fresh_generalization_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c24_x54_source_corrected_generalization_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c25_x56_graceful_degradation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c26_x56_source_corrected_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c27_x57_daylight_transfer_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c28_x59_mixed_lighting_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c29_x64_sensor_topology_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c30_x64_source_corrected_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c31_x64_camera_corrected_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c32_x64_l03_restored_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c33_x65_render_transfer_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c34_x65_fresh_source_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c35_x73_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c36_x74_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c37_x75_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c38_x77_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c39_x79_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c40_x81_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c41_x82_fresh_confirmation_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c42_x96_dropout_survival_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c43_x96_dropout_survival_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_c44_x96_dropout_survival_protocol.json",
+    "research/active/dtr-r0/carla/dtr_carla_ivca_c1_protocol.json",
+    "research/active/dtr-r0/carla/dtr_final_reckoning_roster_protocol.json"
   ]
 }

@@ -51,7 +51,7 @@ def main():
     output.mkdir(parents=True,exist_ok=args.resume)
     sources=['capture_street_closed_loop.py','street_live_server.py','street_live_policy.py','street_action_risk.py',
              'street_scenarios.py','ue_dtr_replay.py','ue_incremental.py','ue_replay_cache.py','reuse_street_open_loop.py',
-             'street_process_lifecycle.py','ue_action_footprints.py','visual_geometry.py']
+             'street_process_lifecycle.py','ue_action_footprints.py','ue_cadence_footprint_tracker.py','visual_geometry.py']
     from ue_incremental import source_paths
     identity={'cases':args.case,'sources':{name:sha(scripts/name) for name in sources},
               'dtr_source_closure':{str(path.relative_to(repo)):sha(path) for path in source_paths()},
