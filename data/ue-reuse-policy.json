@@ -3,6 +3,30 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
       {
+        "locator": "evidence/ba-motion-return-audit-20260923",
+        "source_family": "ue-motion-return-consumed-20260923",
+        "evidence_status": "source_material",
+        "evidence": "research/active/dtr-r0/nearfield/MOTION_RETURN_PROTOCOL_20260923.md",
+        "allowed_inputs": [
+          {
+            "relative_path": "plan",
+            "role": "configuration"
+          }
+        ]
+      },
+      {
+        "locator": "evidence/ba-motion-return-20260923",
+        "source_family": "ue-motion-return-consumed-20260923",
+        "evidence_status": "source_material",
+        "evidence": "research/active/dtr-r0/nearfield/MOTION_RETURN_PROTOCOL_20260923.md",
+        "allowed_inputs": [
+          {
+            "relative_path": "plan",
+            "role": "configuration"
+          }
+        ]
+      },
+      {
         "locator": "evidence/ba-range-pair-audit-20260923",
         "source_family": "ue-range-pair-consumed-20260923",
         "evidence_status": "source_material",
