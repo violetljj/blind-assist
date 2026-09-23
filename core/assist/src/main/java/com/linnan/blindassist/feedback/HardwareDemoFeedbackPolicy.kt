@@ -4,9 +4,11 @@ enum class HardwareDemoFeedbackEvent(val spokenText: String) {
     OBSTACLE("前方可能有障碍"),
     CLOSER("前方测距变近，请留意"),
     REMINDER("前方仍可能有障碍"),
-    CONNECTION_LOST("硬件数据已中断，暂时无法判断"),
-    RECOVERED("硬件数据已恢复"),
-    RECOVERED_OBSTACLE("硬件数据已恢复，前方可能有障碍"),
+    CONNECTION_LOST("测距数据已中断，暂时无法判断"),
+    RECOVERED("测距数据已恢复"),
+    RECOVERED_OBSTACLE("测距数据已恢复，前方可能有障碍"),
+    CAMERA_ONLY("画面不可用，当前仅测距"),
+    CAMERA_RECOVERED("画面已恢复"),
 }
 
 /** Event feedback for the demonstration, not an independent obstacle detector.

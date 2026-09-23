@@ -22,7 +22,11 @@ data class HardwareDemoSnapshot(
     val cols: Int,
     val decision: DemoTofDecision,
     val liveUsable: Boolean,
-    val status: String
+    val status: String,
+    val cameraUsable: Boolean = liveUsable,
+    val tofUsable: Boolean = liveUsable,
+    val cameraAgeMs: Long? = null,
+    val tofAgeMs: Long? = null
 )
 
 /** Read-only USB/localhost bridge. No capture controls or device-clock comparisons. */
@@ -101,7 +105,7 @@ class HardwareDemoClient(
                 replay -> "实物记录回放 · 静音 · 非实时"
                 usable -> "实时 · 电脑 USB 中转 · 接收时间配对"
                 else -> "UNKNOWN · 采集停止、输入缺失或数据过期"
-            })
+            }, cameraUsable = usable || (replay && freshPair), tofUsable = usable || (replay && freshPair))
     }
 
     private fun fresh(value: JSONObject): Boolean {

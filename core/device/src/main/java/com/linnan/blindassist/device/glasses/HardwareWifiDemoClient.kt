@@ -61,29 +61,29 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
         workers.execute(::tofLoop)
     }
 
-    /** Non-blocking immutable view; stale pairs clear both image and algorithm support. */
+    /** Independent expiry: only fresh ToF supports judgment; only fresh camera supplies an image. */
     fun poll(): HardwareDemoSnapshot {
         val now = SystemClock.elapsedRealtime()
         val c = camera
         val t = tof
-        val freshCamera = c != null && HardwareWifiFreshness.fresh(c.receivedMs, c.ageAtReceiveMs, now)
-        val freshTof = t != null && HardwareWifiFreshness.fresh(t.receivedMs, t.ageAtReceiveMs, now)
-        val usable = running.get() && !closed.get() && cameraStatusValid && freshCamera && freshTof
-        val cells = if (usable) t!!.cells else emptyList()
-        val decision = TofCorridorDemo.evaluate(8, 8, cells, usable)
-        val status = if (usable) {
-            "无线直连 · 相机 ≤${c!!.ageAtReceiveMs + now - c.receivedMs} ms · " +
-                "ToF ≤${t!!.ageAtReceiveMs + now - t.receivedMs} ms · 独立采样"
-        } else {
-            "UNKNOWN · " + when {
-                !running.get() -> "无线连接已停止"
-                !cameraStatusValid || !freshCamera -> cameraProblem.ifBlank { "相机数据过期" }
-                else -> tofProblem.ifBlank { "ToF 数据过期" }
-            }
+        val available = HardwareWifiAvailability.evaluate(
+            running.get() && !closed.get(), cameraStatusValid, now,
+            c?.receivedMs, c?.ageAtReceiveMs, t?.receivedMs, t?.ageAtReceiveMs)
+        val cells = if (available.tofUsable) t!!.cells else emptyList()
+        val decision = TofCorridorDemo.evaluate(8, 8, cells, available.tofUsable)
+        val cameraAge = c?.let { it.ageAtReceiveMs + now - it.receivedMs }
+        val tofAge = t?.let { it.ageAtReceiveMs + now - it.receivedMs }
+        val status = when {
+            available.liveUsable -> "无线直连 · 相机 ≤$cameraAge ms · ToF ≤$tofAge ms · 独立采样"
+            available.tofUsable -> "仅测距模式 · ToF ≤$tofAge ms · ${cameraProblem.ifBlank { "相机不可用" }}"
+            available.cameraUsable -> "仅画面 · UNKNOWN · ${tofProblem.ifBlank { "ToF 不可用" }}"
+            !running.get() || closed.get() -> "UNKNOWN · 无线连接已停止"
+            else -> "UNKNOWN · $cameraProblem · $tofProblem"
         }
         return HardwareDemoSnapshot("live", "wifi:${c?.boot ?: "?"}:${t?.boot ?: "?"}",
-            c?.sequence, t?.sequence, if (usable) c?.bitmap else null, cells, 8, 8,
-            decision, usable, status)
+            c?.sequence, t?.sequence, if (available.cameraUsable) c?.bitmap else null, cells, 8, 8,
+            decision, available.liveUsable, status,
+            available.cameraUsable, available.tofUsable, cameraAge, tofAge)
     }
 
     private fun cameraSupervisor() {
@@ -318,6 +318,23 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
         val acquisitionMs: Double, val transferUpperMs: Double?, val decodeMs: Double, val copyMs: Double)
     private data class TofSample(val boot: String, val sequence: Long, val cells: List<DemoTofCell>,
         val receivedMs: Long, val ageAtReceiveMs: Long)
+}
+
+/** Transport freshness only: per-zone validity remains the ToF evaluator's responsibility. */
+internal data class HardwareWifiAvailability(val cameraUsable: Boolean, val tofUsable: Boolean) {
+    val liveUsable: Boolean get() = cameraUsable && tofUsable
+
+    companion object {
+        fun evaluate(active: Boolean, cameraStatusValid: Boolean, nowMs: Long,
+            cameraReceivedMs: Long?, cameraAgeAtReceiveMs: Long?,
+            tofReceivedMs: Long?, tofAgeAtReceiveMs: Long?): HardwareWifiAvailability {
+            fun fresh(received: Long?, age: Long?) = received != null && age != null &&
+                HardwareWifiFreshness.fresh(received, age, nowMs)
+            return HardwareWifiAvailability(
+                active && cameraStatusValid && fresh(cameraReceivedMs, cameraAgeAtReceiveMs),
+                active && fresh(tofReceivedMs, tofAgeAtReceiveMs))
+        }
+    }
 }
 
 data class HardwareWifiDiagnostics(val cameraAgeUpperMs: Long?, val tofAgeUpperMs: Long?,

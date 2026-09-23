@@ -14,6 +14,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
@@ -62,6 +63,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.linnan.blindassist.device.glasses.HardwareDemoClient
 import com.linnan.blindassist.device.glasses.HardwareDemoSnapshot
+import com.linnan.blindassist.device.glasses.HardwareEvidenceRecorder
+import com.linnan.blindassist.device.glasses.HardwareEvidenceStore
+import com.linnan.blindassist.device.glasses.HardwareEvidenceSummary
+import com.linnan.blindassist.device.glasses.HardwareEvidenceClip
+import com.linnan.blindassist.device.glasses.HardwareEvidenceEvent
 import com.linnan.blindassist.device.glasses.HardwareWifiDemoClient
 import com.linnan.blindassist.feedback.HardwareDemoFeedbackPolicy
 import com.linnan.blindassist.feedback.HardwareDemoFeedbackEvent
@@ -69,6 +75,7 @@ import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
 import com.linnan.blindassist.device.glasses.HardwareWifiEndpoint
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import java.util.Locale
+import java.io.File
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -100,6 +107,36 @@ class HardwareDemoActivity : ComponentActivity() {
     private val vibrator by lazy { getSystemService(Vibrator::class.java) }
     private val feedbackPolicy = HardwareDemoFeedbackPolicy()
     private var obstacleSpeech = false
+    private var previousCameraUsable: Boolean? = null
+    private val recorder by lazy { HardwareEvidenceRecorder(BuildConfig.VERSION_NAME) }
+    private val evidenceStore by lazy { HardwareEvidenceStore(File(noBackupFilesDir, "hardware-evidence")) }
+    private var recordImages by mutableStateOf(false)
+    private var evidenceBusy by mutableStateOf(false)
+    private var evidenceStatus by mutableStateOf("最近 20 秒循环暂存 · 默认不记录画面")
+    private var recordings by mutableStateOf<List<HardwareEvidenceSummary>>(emptyList())
+    private var replayClip by mutableStateOf<HardwareEvidenceClip?>(null)
+    private var replayId by mutableStateOf<String?>(null)
+    private var replayPosition by mutableStateOf(0L)
+    private var replayPlaying by mutableStateOf(false)
+    private var replayJob: Job? = null
+    private var replayGeneration = 0
+    private var pendingExport: String? = null
+    private var replayLoading = false
+    private var replayLoadGeneration = 0
+    private var pendingReplayId: String? = null
+    private val exportDocument = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        val id = pendingExport
+        pendingExport = null
+        if (uri != null && id != null) lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val bytes = evidenceStore.readBytes(id)
+                    requireNotNull(contentResolver.openOutputStream(uri, "wt")).use { it.write(bytes) }
+                }
+                evidenceStatus = "记录已导出"
+            } catch (_: Exception) { evidenceStatus = "导出失败，请重新选择保存位置" }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +147,8 @@ class HardwareDemoActivity : ComponentActivity() {
         wireless = preferences.getBoolean("wireless", true)
         speechEnabled = preferences.getBoolean("speech", true)
         vibrationEnabled = preferences.getBoolean("vibration", true)
+        pendingExport = savedInstanceState?.getString("hardware_export_id")
+        refreshRecordings()
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
@@ -129,6 +168,20 @@ class HardwareDemoActivity : ComponentActivity() {
                     wireless = wireless,
                     cameraEndpoint = cameraEndpoint,
                     tofEndpoint = tofEndpoint,
+                    evidenceContent = {
+                        HardwareEvidencePanel(recordImages, evidenceBusy, evidenceStatus, recordings,
+                            replayId, replayClip, replayPosition, replayPlaying,
+                            onImages = {
+                                recordImages = it; recorder.captureImages = it
+                                evidenceStatus = if (it) "正在暂存测距和 2 Hz 画面抽帧，仅保存后保留" else "只暂存测距；未保存画面已清除"
+                            },
+                            onSave = ::saveEvidence, onReplay = { openReplay(it) },
+                            onExport = { id -> pendingExport = id; exportDocument.launch(id) },
+                            onDelete = ::deleteEvidence,
+                            onSeek = { showReplay(it, false) },
+                            onPlay = { showReplay(if (replayPosition >= (replayClip?.durationMs ?: 0)) 0 else replayPosition, !replayPlaying) },
+                            onLive = ::returnToLive)
+                    },
                     onCameraChanged = { cameraEndpoint = it },
                     onTofChanged = { tofEndpoint = it },
                     onConnect = { beginConnection(discover = false) },
@@ -162,19 +215,25 @@ class HardwareDemoActivity : ComponentActivity() {
                 )
             }
         }
+        savedInstanceState?.getString("hardware_replay_id")?.let {
+            openReplay(it, savedInstanceState.getLong("hardware_replay_position", 0))
+        }
     }
 
     override fun onStart() {
         super.onStart()
         foreground = true
         feedbackPolicy.reset()
+        previousCameraUsable = null
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        beginConnection(discover = wireless)
+        if (!replayLoading) {
+            if (replayClip == null) beginConnection(discover = wireless) else showReplay(replayPosition, false)
+        }
         // Independent clock: a blocked request must never keep an alert alive.
         watchdog = lifecycleScope.launch {
             while (isActive) {
                 delay(100)
-                if (snapshot != null && SystemClock.elapsedRealtime() - lastResultAt > 1_500) {
+                if (replayClip == null && snapshot != null && SystemClock.elapsedRealtime() - lastResultAt > 1_500) {
                     invalidate("连接失效 · 超过 1.5 秒未收到结果", notifyLoss = true)
                 }
             }
@@ -182,7 +241,7 @@ class HardwareDemoActivity : ComponentActivity() {
     }
 
     private fun beginConnection(discover: Boolean) {
-        if (!foreground) return
+        if (!foreground || replayClip != null || replayLoading) return
         val generation = ++connectionGeneration
         polling?.cancel()
         wifiClient?.close()
@@ -226,6 +285,7 @@ class HardwareDemoActivity : ComponentActivity() {
                     lastResultAt = SystemClock.elapsedRealtime()
                     snapshot = result
                     connectionStatus = result.status
+                    recorder.offer(result, lastResultAt)
                     updateFeedback(result)
                 } catch (cancelled: CancellationException) {
                     throw cancelled
@@ -242,21 +302,34 @@ class HardwareDemoActivity : ComponentActivity() {
 
     private fun updateFeedback(result: HardwareDemoSnapshot) {
         if (!foreground) return
-        if (result.mode != "live" || (!result.liveUsable || !result.decision.alert) && obstacleSpeech) {
+        if (result.mode != "live" || (!result.tofUsable || !result.decision.alert) && obstacleSpeech) {
             tts?.stop()
             vibrator?.cancel()
             obstacleSpeech = false
         }
-        feedbackPolicy.update(SystemClock.elapsedRealtime(), result.mode == "live",
-            result.liveUsable, result.decision.alert, result.decision.nearestMm)?.let(::emitFeedback)
+        val event = feedbackPolicy.update(SystemClock.elapsedRealtime(), result.mode == "live",
+            result.tofUsable, result.decision.alert, result.decision.nearestMm)
+        val cameraEvent = if (result.mode == "live" && result.tofUsable) when {
+            !result.cameraUsable && previousCameraUsable != false -> HardwareDemoFeedbackEvent.CAMERA_ONLY
+            result.cameraUsable && previousCameraUsable == false -> HardwareDemoFeedbackEvent.CAMERA_RECOVERED
+            else -> null
+        } else null
+        if (result.mode == "live" && result.tofUsable) previousCameraUsable = result.cameraUsable
+        if (event != null) emitFeedback(event, cameraEvent?.spokenText?.plus("，") ?: "")
+        else cameraEvent?.let { emitFeedback(it) }
     }
 
-    private fun emitFeedback(event: HardwareDemoFeedbackEvent) {
+    private fun emitFeedback(event: HardwareDemoFeedbackEvent, prefix: String = "") {
         if (!foreground) return
         obstacleSpeech = event !in setOf(HardwareDemoFeedbackEvent.CONNECTION_LOST,
-            HardwareDemoFeedbackEvent.RECOVERED)
+            HardwareDemoFeedbackEvent.RECOVERED, HardwareDemoFeedbackEvent.CAMERA_ONLY,
+            HardwareDemoFeedbackEvent.CAMERA_RECOVERED)
+        val text = prefix + event.spokenText
+        var speechQueued = false
+        var vibrationRequested = false
         if (speechEnabled && ttsReady) {
-            val result = tts?.speak(event.spokenText, TextToSpeech.QUEUE_FLUSH, null, "hardware-${event.name}")
+            val result = tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "hardware-${event.name}")
+            speechQueued = result == TextToSpeech.SUCCESS
             if (result != TextToSpeech.SUCCESS) speechStatus = "语音播放失败，请查看屏幕或震动"
         }
         if (vibrationEnabled && vibrator?.hasVibrator() == true) {
@@ -267,7 +340,9 @@ class HardwareDemoActivity : ComponentActivity() {
                 else -> longArrayOf(0, 180)
             }
             vibrator?.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            vibrationRequested = true
         }
+        recorder.recordEvent(HardwareEvidenceEvent(SystemClock.elapsedRealtime(), event.name, text, speechQueued, vibrationRequested))
     }
 
     private suspend fun awaitDisplayFrame(): Unit = suspendCancellableCoroutine { continuation ->
@@ -284,6 +359,12 @@ class HardwareDemoActivity : ComponentActivity() {
     }
 
     private fun invalidate(status: String, notifyLoss: Boolean = false) {
+        if (foreground && replayClip == null && notifyLoss) snapshot?.let { previous ->
+            recorder.offer(previous.copy(image = null, cells = emptyList(), liveUsable = false,
+                cameraUsable = false, tofUsable = false,
+                decision = com.linnan.blindassist.risk.TofCorridorDemo.evaluate(8, 8, emptyList(), false),
+                status = status), SystemClock.elapsedRealtime())
+        }
         snapshot = null
         connectionStatus = status
         if (obstacleSpeech || !notifyLoss) {
@@ -292,13 +373,18 @@ class HardwareDemoActivity : ComponentActivity() {
             obstacleSpeech = false
         }
         if (notifyLoss && foreground) {
-            feedbackPolicy.update(SystemClock.elapsedRealtime(), true, false, false, null)?.let(::emitFeedback)
+            feedbackPolicy.update(SystemClock.elapsedRealtime(), true, false, false, null)?.let { emitFeedback(it) }
         }
     }
 
     override fun onStop() {
         foreground = false
         feedbackPolicy.reset()
+        previousCameraUsable = null
+        replayJob?.cancel()
+        replayGeneration++
+        replayPlaying = false
+        recorder.clear()
         vibrator?.cancel()
         connectionGeneration++
         polling?.cancel()
@@ -313,11 +399,132 @@ class HardwareDemoActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+        recorder.close()
         ttsReady = false
         tts?.stop()
         tts?.shutdown()
         tts = null
         super.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("hardware_export_id", pendingExport)
+        outState.putString("hardware_replay_id", pendingReplayId ?: replayId)
+        outState.putLong("hardware_replay_position", replayPosition)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun refreshRecordings() {
+        lifecycleScope.launch { recordings = withContext(Dispatchers.IO) { evidenceStore.list() } }
+    }
+
+    private fun saveEvidence() {
+        if (evidenceBusy || replayClip != null || snapshot?.mode == "replay") return
+        val clip = try { recorder.freeze() } catch (error: IllegalStateException) {
+            evidenceStatus = error.message ?: "暂无记录"; return
+        }
+        evidenceBusy = true
+        lifecycleScope.launch {
+            try {
+                val saved = withContext(Dispatchers.IO) { evidenceStore.save(clip) }
+                evidenceStatus = "已保存 ${"%.1f".format(clip.durationMs / 1000.0)} 秒 · ${saved.bytes / 1024} KB"
+                refreshRecordings()
+            } catch (error: Exception) { evidenceStatus = error.message ?: "保存失败" }
+            finally { evidenceBusy = false }
+        }
+    }
+
+    private fun stopLive() {
+        connectionGeneration++
+        polling?.cancel(); polling = null
+        wifiClient?.close(); wifiClient = null
+        feedbackPolicy.reset(); previousCameraUsable = null
+        tts?.stop(); vibrator?.cancel(); obstacleSpeech = false
+        snapshot = null
+    }
+
+    private fun openReplay(id: String, initialPosition: Long = 0) {
+        if (evidenceBusy) return
+        evidenceBusy = true
+        replayLoading = true
+        pendingReplayId = id
+        val loadGeneration = ++replayLoadGeneration
+        stopLive()
+        replayJob?.cancel(); replayGeneration++
+        lifecycleScope.launch {
+            try {
+                val clip = withContext(Dispatchers.IO) { evidenceStore.load(id) }
+                if (loadGeneration != replayLoadGeneration) return@launch
+                stopLive()
+                replayLoading = false
+                replayClip = clip; replayId = id
+                evidenceStatus = "回放保存时的测距与判决 · 不发语音或震动"
+                replayPosition = initialPosition.coerceIn(0, clip.durationMs)
+                if (foreground) showReplay(replayPosition, false)
+            } catch (error: Exception) {
+                if (loadGeneration != replayLoadGeneration) return@launch
+                evidenceStatus = error.message ?: "读取失败"
+                replayLoading = false
+                replayClip = null; replayId = null
+                if (foreground) beginConnection(false)
+            } finally {
+                if (loadGeneration == replayLoadGeneration) pendingReplayId = null
+                evidenceBusy = false
+            }
+        }
+    }
+
+    private fun showReplay(positionMs: Long, play: Boolean) {
+        val clip = replayClip ?: return
+        replayJob?.cancel()
+        val generation = ++replayGeneration
+        replayPlaying = play
+        replayPosition = positionMs.coerceIn(0, clip.durationMs)
+        val startPosition = replayPosition
+        replayJob = lifecycleScope.launch {
+            val started = SystemClock.elapsedRealtime()
+            var lastIndex = -1
+            do {
+                val position = if (play) (startPosition + SystemClock.elapsedRealtime() - started).coerceAtMost(clip.durationMs)
+                    else startPosition
+                val index = clip.frameIndex(position)
+                if (index != lastIndex) {
+                    val frame = withContext(Dispatchers.IO) { clip.snapshotAt(position) }
+                    if (!foreground || generation != replayGeneration) return@launch
+                    snapshot = frame; connectionStatus = frame.status
+                    lastIndex = index
+                }
+                replayPosition = position
+                if (!play || position >= clip.durationMs) break
+                delay(50)
+            } while (isActive)
+            replayPlaying = false
+        }
+    }
+
+    private fun returnToLive() {
+        replayLoadGeneration++
+        replayLoading = false
+        pendingReplayId = null
+        replayJob?.cancel(); replayGeneration++
+        replayPlaying = false; replayClip = null; replayId = null; replayPosition = 0
+        recorder.clear()
+        evidenceStatus = "最近 20 秒循环暂存 · ${if (recordImages) "含 2 Hz 画面抽帧" else "不记录画面"}"
+        beginConnection(discover = wireless)
+    }
+
+    private fun deleteEvidence(id: String) {
+        if (evidenceBusy) return
+        evidenceBusy = true
+        lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) { evidenceStore.delete(id) }
+                if (replayId == id) returnToLive()
+                evidenceStatus = "记录已删除"
+                refreshRecordings()
+            } catch (error: Exception) { evidenceStatus = error.message ?: "删除失败" }
+            finally { evidenceBusy = false }
+        }
     }
 }
 
@@ -333,17 +540,20 @@ private fun HardwareDemoScreen(
     snapshot: HardwareDemoSnapshot?, connectionStatus: String,
     speechEnabled: Boolean, speechStatus: String, vibrationEnabled: Boolean, wireless: Boolean,
     cameraEndpoint: String, tofEndpoint: String,
+    evidenceContent: @Composable () -> Unit,
     onCameraChanged: (String) -> Unit, onTofChanged: (String) -> Unit,
     onConnect: () -> Unit, onDiscover: () -> Unit, onModeChanged: (Boolean) -> Unit,
     onHotspotSettings: () -> Unit, onSpeechChanged: (Boolean) -> Unit,
     onVibrationChanged: (Boolean) -> Unit, onMore: () -> Unit
 ) {
     val replay = snapshot?.mode == "replay"
-    val usable = snapshot != null && (snapshot.liveUsable || (replay && snapshot.image != null))
+    val usable = snapshot?.tofUsable == true
+    val cameraUsable = snapshot?.cameraUsable == true
     val alert = usable && snapshot?.decision?.alert == true
     val accent = if (alert) DemoAmber else DemoTeal
     var detailsExpanded by remember { mutableStateOf(false) }
     var connectionExpanded by remember { mutableStateOf(false) }
+    var mountExpanded by remember { mutableStateOf(false) }
     Surface(Modifier.fillMaxSize(), color = DemoBackground, contentColor = DemoInk) {
         Column(Modifier.safeDrawingPadding().verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(22.dp)) {
@@ -358,7 +568,7 @@ private fun HardwareDemoScreen(
             }
             Box(Modifier.fillMaxWidth().aspectRatio(0.94f).clip(RoundedCornerShape(5.dp))
                 .background(DemoPanel)) {
-                val bitmap = snapshot?.image?.takeIf { usable }
+                val bitmap = snapshot?.image?.takeIf { cameraUsable }
                 if (bitmap != null) {
                     // Fit preserves the camera's full field of view; no decorative crop or fake detections.
                     Image(bitmap.asImageBitmap(), "实物相机视野", Modifier.fillMaxWidth()
@@ -367,8 +577,8 @@ private fun HardwareDemoScreen(
                     Column(Modifier.align(Alignment.Center).testTag("hardware_demo_empty_image"),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("等待实时画面", fontSize = 18.sp, color = DemoInk)
-                        Text("请连接相机与 ToF", fontSize = 12.sp, color = DemoMuted)
+                        Text(if (replay) "此时未记录画面" else if (usable) "仅测距模式" else "等待实时画面", fontSize = 18.sp, color = DemoInk)
+                        Text(if (replay) "历史测距可在下方查看" else if (usable) "相机不可用 · ToF 仍在工作" else "请连接相机与 ToF", fontSize = 12.sp, color = DemoMuted)
                     }
                 }
                 Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(
@@ -376,7 +586,8 @@ private fun HardwareDemoScreen(
                 Row(Modifier.align(Alignment.TopStart).fillMaxWidth().padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(5.dp).background(if (usable) accent else DemoMuted, RoundedCornerShape(3.dp)))
-                    Text(when { replay -> "  REPLAY / 静音"; usable -> "  LIVE VIEW"; else -> "  OFFLINE" },
+                    Text(when { replay -> "  REPLAY / 静音"; usable && cameraUsable -> "  LIVE VIEW";
+                        usable -> "  TOF ONLY / 仅测距"; cameraUsable -> "  CAMERA ONLY / 仅画面"; else -> "  OFFLINE" },
                         color = DemoInk, fontSize = 10.sp, letterSpacing = 1.sp,
                         modifier = Modifier.weight(1f).testTag("hardware_demo_mode"))
                     Text(if (wireless) "Wi-Fi" else "USB", color = DemoInk, fontSize = 10.sp)
@@ -409,12 +620,12 @@ private fun HardwareDemoScreen(
                         else -> "当前未触发提示"
                     }, fontSize = 20.sp, lineHeight = 27.sp, fontWeight = FontWeight.Medium,
                         modifier = Modifier.testTag("hardware_demo_decision"))
-                    Text(if (!usable) connectionStatus else "未提示不代表可通行 · 请以实际环境为准",
+                    Text(if (!usable || !cameraUsable) connectionStatus else "未提示不代表可通行 · 请以实际环境为准",
                         color = DemoMuted, fontSize = 11.sp, lineHeight = 16.sp)
                 }
             }
             Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF303233)))
-            if (!usable && !replay) {
+            if ((!usable || !cameraUsable) && !replay) {
                 TextButton(onClick = onDiscover, modifier = Modifier.testTag("hardware_demo_reconnect")) {
                     Text(if (wireless) "重新发现并连接" else "重新连接 USB 中转", color = DemoTeal)
                 }
@@ -440,6 +651,11 @@ private fun HardwareDemoScreen(
                     colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
                         checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
             }
+            evidenceContent()
+            TextButton(onClick = { mountExpanded = !mountExpanded }, modifier = Modifier.testTag("hardware_mount_toggle")) {
+                Text(if (mountExpanded) "收起安装检查 −" else "安装朝向检查 ＋", color = DemoMuted)
+            }
+            if (mountExpanded) HardwareMountCheckPanel(snapshot)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton(onClick = { detailsExpanded = !detailsExpanded },
                     modifier = Modifier.testTag("hardware_demo_detail_toggle")) {

@@ -4,6 +4,31 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.14.0 local evidence, replay, mount check and split inputs
+
+- Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions,
+  optional asynchronous 2 Hz thumbnails, no-backup local records and explicit export/delete.
+  Replay owns its timeline, disables output, stops live acquisition and restores paused
+  after Activity recreation. Generation checks prevent late live/replay writes.
+- Camera and ToF validity now gate their own output. ToF-only operation is explicit;
+  stale ToF cannot keep a verdict alive. Full-pair liveUsable retains its former meaning.
+  Firmware, 10 Hz sampling, 750 ms expiry and geometric parameters remain unchanged.
+- Four guided captures check coarse center/left/right consistency against background;
+  session-only result is not calibration and never changes geometry.
+- 31 focused JVM tests and 17 S24 Ultra / Android 16 tests passed. Three 8 s real
+  windows yielded 479/479 full-live samples; recorder offer P95 scalar/thumb was
+  0.242/0.398 ms. Save/load preserved decisions; role-rejected camera and unavailable
+  ToF checks passed. No optical, accuracy or user benefit claim.
+- Visual smoke saved a 19.989 s, 234-frame, 2-event scalar clip on the phone and
+  exercised its replay; screenshots cover live/records/replay/mount panels.
+  System document export to Downloads matched the private record SHA256 byte-for-byte;
+  both scalar copies are retained for the user. Test acquisition was stopped afterward.
+- Debug + test APK builds, lint (0 errors / 19 warnings), signature/version/16 KB
+  verification passed. v10.14.0 (43) installed in place and archived.
+  Evidence: artifacts.local/hardware-bringup/app-evidence-20260923-*.
+  Physical mount placement, manual TalkBack, human output perception and long-run
+  behavior remain untested. All test-owned cache fixtures and debugger forwards released.
+
 ## 2026-09-23 — v10.13.0 hardware-first entry and event feedback
 
 - User-authorized launcher promotion: HardwareDemoActivity is the main launcher;
