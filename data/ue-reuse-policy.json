@@ -3,6 +3,54 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-metric-contact-20260923",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/METRIC_CONTACT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-contact-sampling-20260923",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "training-queries.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "source-seal.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "prediction-seal.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "result.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "geometry-selection.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "geometry-train-predictions.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "geometry-evaluation-predictions.npz",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-boundary-supervision-20260923-v2",
       "source_family": "ue-query-occupancy-20260922",
       "evidence_status": "development_consumed",
