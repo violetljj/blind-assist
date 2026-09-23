@@ -3,6 +3,13 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-boundary-supervision-20260923-v2",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_PROTOCOL_20260923.md",
+      "allowed_inputs": [{"relative_path": ".", "role": "evaluator"}]
+    },
+    {
       "locator": "evidence/ba-boundary-error-20260923-v2",
       "source_family": "ue-query-occupancy-20260922",
       "evidence_status": "development_consumed",
@@ -21,7 +28,19 @@
       "source_family": "ue-query-occupancy-20260922",
       "evidence_status": "development_consumed",
       "evidence": "research/active/dtr-r0/nearfield/CONTACT_BOUNDARY_RESULTS_20260923.md",
-      "allowed_inputs": [{"relative_path": ".", "role": "evaluator"}]
+      "allowed_inputs": [
+        {"relative_path": ".", "role": "evaluator"},
+        {"relative_path": "features.npy", "role": "observation"},
+        {"relative_path": "normalization.npz", "role": "configuration"},
+        {"relative_path": "initial.pt", "role": "configuration"},
+        {"relative_path": "batch-schedule.npy", "role": "configuration"},
+        {"relative_path": "cohort.json", "role": "configuration"},
+        {"relative_path": "source-seal.json", "role": "configuration"},
+        {"relative_path": "prediction-seal.json", "role": "configuration"},
+        {"relative_path": "feature-receipt.json", "role": "configuration"},
+        {"relative_path": "direct-selection.json", "role": "configuration"},
+        {"relative_path": "geometry-selection.json", "role": "configuration"}
+      ]
     },
     {
       "locator": "evidence/ba-local-stability-20260923",
