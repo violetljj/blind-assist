@@ -6,6 +6,8 @@ import android.provider.Settings
 import android.os.SystemClock
 import android.os.Handler
 import android.os.Looper
+import android.os.Vibrator
+import android.os.VibrationEffect
 import android.view.Choreographer
 import android.speech.tts.TextToSpeech
 import android.view.WindowManager
@@ -52,6 +54,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +63,8 @@ import androidx.lifecycle.lifecycleScope
 import com.linnan.blindassist.device.glasses.HardwareDemoClient
 import com.linnan.blindassist.device.glasses.HardwareDemoSnapshot
 import com.linnan.blindassist.device.glasses.HardwareWifiDemoClient
+import com.linnan.blindassist.feedback.HardwareDemoFeedbackPolicy
+import com.linnan.blindassist.feedback.HardwareDemoFeedbackEvent
 import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
 import com.linnan.blindassist.device.glasses.HardwareWifiEndpoint
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
@@ -90,8 +96,10 @@ class HardwareDemoActivity : ComponentActivity() {
     private var polling: Job? = null
     private var watchdog: Job? = null
     private var lastResultAt = 0L
-    private var lastSpokenAt = -3_000L
-    private var lastSpokenFrame: Pair<String, Long?>? = null
+    private var vibrationEnabled by mutableStateOf(true)
+    private val vibrator by lazy { getSystemService(Vibrator::class.java) }
+    private val feedbackPolicy = HardwareDemoFeedbackPolicy()
+    private var obstacleSpeech = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,10 +108,13 @@ class HardwareDemoActivity : ComponentActivity() {
         cameraEndpoint = preferences.getString("camera", "") ?: ""
         tofEndpoint = preferences.getString("tof", "") ?: ""
         wireless = preferences.getBoolean("wireless", true)
+        speechEnabled = preferences.getBoolean("speech", true)
+        vibrationEnabled = preferences.getBoolean("vibration", true)
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
                 ttsReady = result != null && result >= TextToSpeech.LANG_AVAILABLE
+                if (ttsReady) feedbackPolicy.reset()
             }
             speechStatus = if (ttsReady) "中文语音可用" else "中文语音不可用，请查看屏幕"
         }
@@ -114,6 +125,7 @@ class HardwareDemoActivity : ComponentActivity() {
                     connectionStatus = connectionStatus,
                     speechEnabled = speechEnabled,
                     speechStatus = speechStatus,
+                    vibrationEnabled = vibrationEnabled,
                     wireless = wireless,
                     cameraEndpoint = cameraEndpoint,
                     tofEndpoint = tofEndpoint,
@@ -132,9 +144,21 @@ class HardwareDemoActivity : ComponentActivity() {
                     },
                     onSpeechChanged = {
                         speechEnabled = it
+                        preferences.edit().putBoolean("speech", it).apply()
+                        feedbackPolicy.reset()
                         if (!it) tts?.stop()
                     },
-                    onBack = ::finish
+                    onVibrationChanged = {
+                        vibrationEnabled = it
+                        preferences.edit().putBoolean("vibration", it).apply()
+                        feedbackPolicy.reset()
+                        if (!it) vibrator?.cancel()
+                    },
+                    onMore = {
+                        startActivity(Intent(this, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        })
+                    }
                 )
             }
         }
@@ -143,6 +167,7 @@ class HardwareDemoActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         foreground = true
+        feedbackPolicy.reset()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         beginConnection(discover = wireless)
         // Independent clock: a blocked request must never keep an alert alive.
@@ -150,7 +175,7 @@ class HardwareDemoActivity : ComponentActivity() {
             while (isActive) {
                 delay(100)
                 if (snapshot != null && SystemClock.elapsedRealtime() - lastResultAt > 1_500) {
-                    invalidate("连接失效 · 超过 1.5 秒未收到结果")
+                    invalidate("连接失效 · 超过 1.5 秒未收到结果", notifyLoss = true)
                 }
             }
         }
@@ -201,12 +226,11 @@ class HardwareDemoActivity : ComponentActivity() {
                     lastResultAt = SystemClock.elapsedRealtime()
                     snapshot = result
                     connectionStatus = result.status
-                    if (!result.liveUsable || !result.decision.alert) tts?.stop()
-                    maybeSpeak(result)
+                    updateFeedback(result)
                 } catch (cancelled: CancellationException) {
                     throw cancelled
                 } catch (_: Exception) {
-                    invalidate(if (useWifi) "无线连接失效 · 请检查热点和硬件供电" else "连接失效 · 请检查电脑中转与 USB")
+                    invalidate(if (useWifi) "无线连接失效 · 请检查热点和硬件供电" else "连接失效 · 请检查电脑中转与 USB", notifyLoss = true)
                 }
                 if (useWifi) awaitDisplayFrame() else delay(200)
             }
@@ -216,17 +240,33 @@ class HardwareDemoActivity : ComponentActivity() {
         }
     }
 
-    private fun maybeSpeak(result: HardwareDemoSnapshot) {
-        val now = SystemClock.elapsedRealtime()
-        val key = result.runId to result.tofSequence
-        if (foreground && speechEnabled && ttsReady && result.mode == "live" &&
-            result.liveUsable && result.decision.alert && result.tofSequence != null &&
-            key != lastSpokenFrame && now - lastSpokenAt >= 3_000
-        ) {
-            if (tts?.speak("前方可能有障碍", TextToSpeech.QUEUE_FLUSH, null, "hardware-demo") == TextToSpeech.SUCCESS) {
-                lastSpokenAt = now
-                lastSpokenFrame = key
+    private fun updateFeedback(result: HardwareDemoSnapshot) {
+        if (!foreground) return
+        if (result.mode != "live" || (!result.liveUsable || !result.decision.alert) && obstacleSpeech) {
+            tts?.stop()
+            vibrator?.cancel()
+            obstacleSpeech = false
+        }
+        feedbackPolicy.update(SystemClock.elapsedRealtime(), result.mode == "live",
+            result.liveUsable, result.decision.alert, result.decision.nearestMm)?.let(::emitFeedback)
+    }
+
+    private fun emitFeedback(event: HardwareDemoFeedbackEvent) {
+        if (!foreground) return
+        obstacleSpeech = event !in setOf(HardwareDemoFeedbackEvent.CONNECTION_LOST,
+            HardwareDemoFeedbackEvent.RECOVERED)
+        if (speechEnabled && ttsReady) {
+            val result = tts?.speak(event.spokenText, TextToSpeech.QUEUE_FLUSH, null, "hardware-${event.name}")
+            if (result != TextToSpeech.SUCCESS) speechStatus = "语音播放失败，请查看屏幕或震动"
+        }
+        if (vibrationEnabled && vibrator?.hasVibrator() == true) {
+            val pattern = when (event) {
+                HardwareDemoFeedbackEvent.CONNECTION_LOST -> longArrayOf(0, 250, 120, 250)
+                HardwareDemoFeedbackEvent.CLOSER -> longArrayOf(0, 120, 80, 120)
+                HardwareDemoFeedbackEvent.RECOVERED -> longArrayOf(0, 80)
+                else -> longArrayOf(0, 180)
             }
+            vibrator?.vibrate(VibrationEffect.createWaveform(pattern, -1))
         }
     }
 
@@ -243,14 +283,23 @@ class HardwareDemoActivity : ComponentActivity() {
         }
     }
 
-    private fun invalidate(status: String) {
+    private fun invalidate(status: String, notifyLoss: Boolean = false) {
         snapshot = null
         connectionStatus = status
-        tts?.stop()
+        if (obstacleSpeech || !notifyLoss) {
+            tts?.stop()
+            vibrator?.cancel()
+            obstacleSpeech = false
+        }
+        if (notifyLoss && foreground) {
+            feedbackPolicy.update(SystemClock.elapsedRealtime(), true, false, false, null)?.let(::emitFeedback)
+        }
     }
 
     override fun onStop() {
         foreground = false
+        feedbackPolicy.reset()
+        vibrator?.cancel()
         connectionGeneration++
         polling?.cancel()
         wifiClient?.close()
@@ -282,11 +331,12 @@ private val DemoAmber = Color(0xFFE9BD87)
 @Composable
 private fun HardwareDemoScreen(
     snapshot: HardwareDemoSnapshot?, connectionStatus: String,
-    speechEnabled: Boolean, speechStatus: String, wireless: Boolean,
+    speechEnabled: Boolean, speechStatus: String, vibrationEnabled: Boolean, wireless: Boolean,
     cameraEndpoint: String, tofEndpoint: String,
     onCameraChanged: (String) -> Unit, onTofChanged: (String) -> Unit,
     onConnect: () -> Unit, onDiscover: () -> Unit, onModeChanged: (Boolean) -> Unit,
-    onHotspotSettings: () -> Unit, onSpeechChanged: (Boolean) -> Unit, onBack: () -> Unit
+    onHotspotSettings: () -> Unit, onSpeechChanged: (Boolean) -> Unit,
+    onVibrationChanged: (Boolean) -> Unit, onMore: () -> Unit
 ) {
     val replay = snapshot?.mode == "replay"
     val usable = snapshot != null && (snapshot.liveUsable || (replay && snapshot.image != null))
@@ -302,7 +352,9 @@ private fun HardwareDemoScreen(
                     Text("BLINDASSIST", color = DemoMuted, fontSize = 10.sp, letterSpacing = 2.sp)
                     Text("前视感知", fontSize = 27.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium)
                 }
-                TextButton(onClick = onBack) { Text("退出", color = DemoMuted, fontSize = 12.sp) }
+                TextButton(onClick = onMore, modifier = Modifier.testTag("hardware_demo_more")) {
+                    Text("更多功能", color = DemoMuted, fontSize = 12.sp)
+                }
             }
             Box(Modifier.fillMaxWidth().aspectRatio(0.94f).clip(RoundedCornerShape(5.dp))
                 .background(DemoPanel)) {
@@ -362,6 +414,11 @@ private fun HardwareDemoScreen(
                 }
             }
             Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF303233)))
+            if (!usable && !replay) {
+                TextButton(onClick = onDiscover, modifier = Modifier.testTag("hardware_demo_reconnect")) {
+                    Text(if (wireless) "重新发现并连接" else "重新连接 USB 中转", color = DemoTeal)
+                }
+            }
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("语音提示", fontSize = 14.sp)
@@ -369,6 +426,17 @@ private fun HardwareDemoScreen(
                         color = DemoMuted, fontSize = 10.sp)
                 }
                 Switch(speechEnabled && !replay, onSpeechChanged, enabled = !replay,
+                    modifier = Modifier.testTag("hardware_demo_speech").semantics { contentDescription = "语音提示" },
+                    colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
+                        checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
+            }
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("震动提示", fontSize = 14.sp)
+                    Text(if (replay) "回放不震动" else "障碍事件与连接中断提醒", color = DemoMuted, fontSize = 10.sp)
+                }
+                Switch(vibrationEnabled && !replay, onVibrationChanged, enabled = !replay,
+                    modifier = Modifier.testTag("hardware_demo_vibration").semantics { contentDescription = "震动提示" },
                     colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
                         checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
             }

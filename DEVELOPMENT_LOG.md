@@ -4,6 +4,23 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.13.0 hardware-first entry and event feedback
+
+- User-authorized launcher promotion: HardwareDemoActivity is the main launcher;
+  MainActivity remains available through More functions. Added direct offline retry.
+- Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder,
+  300 mm approach escalation with 1-second pacing, 1-second non-alert release,
+  single loss notification and recovery. UNKNOWN never announces clear space.
+- Speech and vibration have independent persisted switches and accessibility labels.
+  Replay is silent; leaving the page releases acquisition and stops feedback.
+- 15 focused JVM tests and 7 on-device tests passed on S24 Ultra / Android 16;
+  final accessibility-label revision reran its 2 affected Compose tests successfully.
+  10-second wireless receipt: 287/287 usable snapshots, 203 camera / 100 ToF frames.
+- Final debug APK 42 / 10.13.0 installed in place and archived; signature/version/
+  16 KB static checks passed. No firmware, sampling, geometry or freshness change.
+  Human speech/haptic experience, manual TalkBack and long-run behavior untested.
+  Evidence: artifacts.local/hardware-bringup/app-entry-20260923-*.
+
 ## 2026-09-23 — bounded camera coalescing A/B/A, original retained
 
 - Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return

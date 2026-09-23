@@ -22,7 +22,7 @@ deployed or validated. See the [current perception route](research/active/dtr-r0
 
 ## Start here
 
-- 最新硬件展示（v10.12.1）：[相机与 10 Hz 8×8 ToF 连接手机热点，App 无线直连](docs/HARDWARE_OBSTACLE_DEMO.md)。
+- 默认入口（v10.13.0）：打开 App 直接进入[相机与 10 Hz 8×8 ToF 无线实物展示](docs/HARDWARE_OBSTACLE_DEMO.md)，支持事件式语音和震动；原首页从“更多功能”进入。
 - Current project state: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 current: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)
