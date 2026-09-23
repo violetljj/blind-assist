@@ -3,6 +3,18 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "work/cnh-route-comparison-20260924/plan",
+      "source_family": "ue-cnh-route-new-layouts-20260924",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-stereo-adapt-20260923",
       "source_family": "ue-stereo-adapt-layouts-20260923",
       "evidence_status": "development_consumed",

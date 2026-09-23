@@ -1,15 +1,15 @@
 {
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-23",
-  "source_fingerprint": "7fe0c9f7d9a6a9fa70e0a0cbc0707439d6d9fd8aa3abdd12ff729db613a7c8a7",
+  "generated_at": "2026-09-24",
+  "source_fingerprint": "7262c8863895137035a4c8b4289696995cafaa9781ee35d240e8c4c9e4c9741a",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 454,
+    "experiments": 455,
     "current_terminals": 236,
-    "run_associations": 452
+    "run_associations": 453
   },
   "failure_layers": [
     {
@@ -36122,6 +36122,28 @@
         "evaluation_evidence": 9
       },
       "search_text": "stereo-adapt-20260923 Can fixed nearfield disparity-update adaptation recover missing obstacles and reduce false near geometry on heldout layouts? Frozen original23-51-11 VPP with identical public ToF and direct metric contact queries Two paired192step adapters; ordinary versus balanced visible disparity supervision,48train/24eval layouts New distance5cm215/220/209of256; historical1299/1306/1308of1692; falsecontactnew3/3/12 historical48/17/23 for frozen/ordinary/balanced ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md artifacts.local/evidence/ba-stereo-adapt-20260923-evaluation/summary.json"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-route-comparison-20260924",
+      "status": "active",
+      "question": "Does CNH improve camera-forward alerts and add information over matched scalar readouts?",
+      "baseline": "G1 scalar H1 plus G3s and G4s matched scalar controls",
+      "change": "Fixed simulation benchmark with seven input arms and predefined sensor stress scenarios",
+      "primary_metric": "Head and rod macro event recall at fixed false-alert budget",
+      "decision": "ACTIVE_IMPLEMENTATION_NO_RESULTS",
+      "report": "artifacts.local/work/cnh-route-comparison-20260924/progress.json",
+      "source": "research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md",
+      "commit": "3ba20fc1eed2d1e3fa3a319a7b319e1c046e675a",
+      "association_id": "cnh-route-comparison-20260924",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 7,
+        "evaluation_evidence": 3
+      },
+      "search_text": "cnh-route-comparison-20260924 Does CNH improve camera-forward alerts and add information over matched scalar readouts? G1 scalar H1 plus G3s and G4s matched scalar controls Fixed simulation benchmark with seven input arms and predefined sensor stress scenarios Head and rod macro event recall at fixed false-alert budget ACTIVE_IMPLEMENTATION_NO_RESULTS artifacts.local/work/cnh-route-comparison-20260924/progress.json research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md"
     }
   ],
   "associations": [
@@ -37040,6 +37062,19 @@
         "artifacts.local/work/city-tiny-fit-20260908/support-error-diagnostic.json"
       ],
       "decision_id": "terminal-city-tiny-fit-20260908-diagnostic-candidate",
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-route-comparison-20260924",
+      "use_ids": [],
+      "protocol_id": "cnh-route-v3-execution-20260924",
+      "code_revision": "3ba20fc1eed2d1e3fa3a319a7b319e1c046e675a",
+      "input_fingerprint": "648185f85506ef8c12c6d95ec1ca5ed726af2b995088302e67a45814b08beef4",
+      "artifact_refs": [
+        "artifacts.local/work/cnh-route-comparison-20260924/progress.json",
+        "artifacts.local/work/cnh-route-comparison-20260924"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {

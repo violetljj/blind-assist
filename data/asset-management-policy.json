@@ -429,6 +429,24 @@
     }
   },
   "managed_assets": {
+    "work/cnh-route-comparison-20260924/plan": {
+      "asset_kind": "configuration",
+      "asset_class": "experiment_input",
+      "evidence_status": "source_material",
+      "storage_status": "active",
+      "owner": "cnh-route-comparison-20260924",
+      "retention_reason": "Frozen outcome-free layout and source configuration",
+      "claim_ceiling": "SIMULATION_CONFIGURATION_NO_MODEL_RESULTS"
+    },
+    "work/cnh-route-comparison-20260924/dispatch": {
+      "asset_kind": "execution_receipt",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "active",
+      "owner": "cnh-route-comparison-20260924",
+      "retention_reason": "Hashed worker dispatch acknowledgements and failed engineering attempts",
+      "claim_ceiling": "DISPATCH_ACKNOWLEDGEMENT_NOT_CAPTURE_OR_MODEL_SUCCESS"
+    },
     "runtime/carla-asset-library": {
       "asset_kind": "simulator_asset_library",
       "asset_class": "data",
