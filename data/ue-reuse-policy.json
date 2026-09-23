@@ -3,6 +3,154 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-foundation-geometry-20260923",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "plan",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-foundation-geometry-20260923-rgb",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations",
+          "role": "observation"
+        },
+        {
+          "relative_path": "rgb-inputs.json",
+          "role": "observation"
+        },
+        {
+          "relative_path": "materialization.json",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "work/mz101-stereo-tof-spatial-20260912",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture-v1",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "comparison-v1/stereo-depth",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "work/mz102-stereo-support-20260912",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture-v1",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "fresh-v1/depth",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "work/mz103-depth-frontend-20260912",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "native-v1",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "FoundationStereo",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "work/mz104-foundation-stereo-20260912",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "rgb-inputs.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "frontend-v1",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "evaluation-v1",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "work/mz105-residual-matching-20260912",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "features-v3/seal.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "work/foundation-geometry-20260923",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "weights/23-51-11",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-foundation-geometry-20260923-frontend-v1",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-foundation-geometry-20260923-evaluation-v1",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-observation-separation-audit-20260923",
       "source_family": "ue-observation-separation-consumed-20260923",
       "evidence_status": "source_material",

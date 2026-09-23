@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "bccbc7497d50fe14be8e545cef4c2e880c52d60eb6010a09fefe314fa2b60322",
+  "source_fingerprint": "08507f06f6552673bd205d571e64118ab099b880d2c9446f26f3418782a2432b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 450,
-    "current_terminals": 231,
-    "run_associations": 448
+    "experiments": 451,
+    "current_terminals": 232,
+    "run_associations": 449
   },
   "failure_layers": [
     {
@@ -16642,6 +16642,47 @@
     }
   ],
   "experiments": [
+    {
+      "kind": "current_terminal",
+      "id": "terminal-foundation-geometry-20260923",
+      "status": "diagnostic",
+      "question": "Original23-51-11 ViT-Large completes576historical stereo pairs. Fixed-denominator correct-query Z5cm48.67to87.62percent, but final SGBM+ToF402/40/44 becomes377/22/69; small_head_flat event lost and near-outside support increases. Retain geometry component, reject direct alert substitution.",
+      "baseline": null,
+      "change": "Separate same-depth structure or explicitly specified geometry-estimation mechanism with fixed downstream; preserve small_head_flat missingness, near-outside errors and historical SGBM; new layouts before confirmation.",
+      "primary_metric": null,
+      "decision": "ORIGINAL_STEREO_GEOMETRY_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "e71068de",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separate same-depth structure or explicitly specified geometry-estimation mechanism with fixed downstream; preserve small_head_flat missingness, near-outside errors and historical SGBM; new layouts before confirmation.",
+      "forbidden_repeats": [
+        "Promote this configuration as direct SGBM or current-A replacement",
+        "Rescue consumed outputs with local confidence threshold tuning",
+        "Treat ideal64ray ToF as real zonal sensor validation",
+        "Treat no depth support as clear or structure as recovery of unobserved geometry"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Original stereo geometry for separate structure or estimation experiments, not direct alert ownership",
+      "retained_surface": "Full576original Large outputs; improved fixed-denominator localization and thin-object coverage",
+      "failure_signature": "FinalFN44to69, small_head_flat zero of5452visible pixels retained, near-outside support grows",
+      "revisit_trigger": "Explicitly different mechanism with unchanged downstream and small-HEAD/no-hint diagnostics; no threshold rescue",
+      "assignment_basis": "One fixed original checkpoint, sealed outputs, exact baseline parity and62533independent assertions",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_PROTOCOL_20260923.md"
+      ],
+      "association_id": "foundation-geometry-20260923",
+      "search_text": "terminal-foundation-geometry-20260923 obstacle-avoidance ORIGINAL_STEREO_GEOMETRY_COMPONENT_ONLY Original23-51-11 ViT-Large completes576historical stereo pairs. Fixed-denominator correct-query Z5cm48.67to87.62percent, but final SGBM+ToF402/40/44 becomes377/22/69; small_head_flat event lost and near-outside support increases. Retain geometry component, reject direct alert substitution. Separate same-depth structure or explicitly specified geometry-estimation mechanism with fixed downstream; preserve small_head_flat missingness, near-outside errors and historical SGBM; new layouts before confirmation. COMPONENT_OR_CHALLENGER COMPONENT Original stereo geometry for separate structure or estimation experiments, not direct alert ownership Full576original Large outputs; improved fixed-denominator localization and thin-object coverage FinalFN44to69, small_head_flat zero of5452visible pixels retained, near-outside support grows Explicitly different mechanism with unchanged downstream and small-HEAD/no-hint diagnostics; no threshold rescue Promote this configuration as direct SGBM or current-A replacement Rescue consumed outputs with local confidence threshold tuning Treat ideal64ray ToF as real zonal sensor validation Treat no depth support as clear or structure as recovery of unobserved geometry"
+    },
     {
       "kind": "current_terminal",
       "id": "terminal-observation-separation-20260923",
@@ -35825,6 +35866,30 @@
         "runtime_infrastructure": 3
       },
       "search_text": "ba-observation-separation-20260923 Do matched opposite corridor truths retain public RGB ToF differences beyond repeated-pose variation? Same-pose RGB repeats and unchanged16draw ToF noise proxy Fixed local and full RGB distances plus common-valid ToF distances on matched lateral contrasts Cross distances above within-pose95th percentile;32pairs16groups; missing and UNKNOWN retained Local RGB32/32separated; standardized ToF boundary8/16inside16/16; retain diagnostic COMPONENT, no transferable decoder or hardware ceiling research/active/dtr-r0/nearfield/OBSERVATION_SEPARATION_RESULTS_20260923.md ue-local-stability-and-rescue-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "foundation-geometry-20260923",
+      "status": "archived",
+      "question": "Can original Large stereo fix historical false geometry while preserving thin and HEAD obstacles?",
+      "baseline": "Exact historical SGBM+ToF and MZ104 TAO+ToF on576consumed stereo pairs",
+      "change": "One original23-51-11 ViT-Large fullresolution frontend, unchanged downstream",
+      "primary_metric": "Geometric origins, fixed native-query pixel accuracy/coverage, TPFPFN and event timing",
+      "decision": "ORIGINAL_STEREO_GEOMETRY_COMPONENT_ONLY; direct alert substitution rejected",
+      "report": "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md",
+      "source": "MZ101/MZ102 consumed rendered Development",
+      "commit": "e71068dea1b7c43cbc01c38166b9cf191265bd4c",
+      "association_id": "foundation-geometry-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3
+      },
+      "search_text": "foundation-geometry-20260923 Can original Large stereo fix historical false geometry while preserving thin and HEAD obstacles? Exact historical SGBM+ToF and MZ104 TAO+ToF on576consumed stereo pairs One original23-51-11 ViT-Large fullresolution frontend, unchanged downstream Geometric origins, fixed native-query pixel accuracy/coverage, TPFPFN and event timing ORIGINAL_STEREO_GEOMETRY_COMPONENT_ONLY; direct alert substitution rejected research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md MZ101/MZ102 consumed rendered Development"
     }
   ],
   "associations": [
@@ -36843,6 +36908,20 @@
         "docs/CURRENT_DECISION.md"
       ],
       "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "foundation-geometry-20260923",
+      "use_ids": [],
+      "protocol_id": "foundation-geometry-20260923",
+      "code_revision": "e71068dea1b7c43cbc01c38166b9cf191265bd4c",
+      "input_fingerprint": "262a1e22356f41be86ed72e70359f73d397ea838ceabfe6c7edbbe4e91ef581a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-foundation-geometry-20260923-evaluation-v1/summary.json",
+        "artifacts.local/evidence/ba-foundation-geometry-20260923-audit-v1/result.json"
+      ],
+      "decision_id": "terminal-foundation-geometry-20260923",
       "source_rows": 1
     },
     {

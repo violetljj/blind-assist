@@ -1,3 +1,9 @@
+2026-09-23 [original stereo geometry](nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md):
+Original23-51-11 ViT-Large576pair Development gives correct-query Z5cm48.67% to87.62%,
+but final SGBM+ToF402/40/44 becomes377/22/69 and loses small_head_flat event.
+Retain geometry COMPONENT only; direct alert substitution rejected, no confidence
+rescue.62,533independent audit assertions pass. Current A/LOCAL/UNKNOWN retained.
+
 2026-09-23 [matched observation separation](nearfield/OBSERVATION_SEPARATION_RESULTS_20260923.md):
 Local RGB distances separate32/32opposite-label pairs beyond repeated-pose variation
 at2.38/2.55m, including arrival exclusion. Standardized ToF separates8/16boundary
