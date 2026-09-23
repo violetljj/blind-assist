@@ -1,3 +1,8 @@
+2026-09-23 [exact contact supervision result](../research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md):
+Adding exact train labels fails selected transfer: Z5cm33.24 ->7.67%,recall72.45
+->49.53%. Train-only trajectory shows metric fitting capacity with false-crossing
+costs; preserve this partial evidence and frozen negatives. App unchanged.
+
 2026-09-23 [direct metric contact pilot](../research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md):
 One completed same-query CDF fit fails the joint boundary upgrade: Z5cm47.73 ->33.24%,
 width25.38 ->10.80%,recall78.49 ->72.45%; fewer false Z crossings cost missing

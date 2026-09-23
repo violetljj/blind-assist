@@ -5301,6 +5301,29 @@
         "research/active/dtr-r0/nearfield/METRIC_CONTACT_PROTOCOL_20260923.md"
       ],
       "commit": "980f78b87c06f3f2b7b979670f59a471f4feeccf"
+    },
+    {
+      "id": "terminal-exact-contact-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "EXACT_SUPERVISION_SELECTED_TRANSFER_FAILURE",
+      "summary": "Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only.",
+      "successor_requires": "Separately scoped matched metric-selection comparison; train-only fit cannot substitute for held-layout evidence",
+      "forbidden_repeats": [
+        "Promote a posthoc epoch or cutoff from this consumed package",
+        "Infer sensor or representation impossibility from selected checkpoint failure",
+        "Treat lower conditional error or training hit rate as lossless transfer or clear-space evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/EXACT_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "commit": "cdbd83299503ad34bd41f0c64ed3da34b8fe248a"
     }
   ]
 }

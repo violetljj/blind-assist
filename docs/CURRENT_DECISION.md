@@ -1,3 +1,9 @@
+2026-09-23 [exact contact supervision](../research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md):
+Same CDF plus exact train labels: selected held Z5cm117/352 ->27/352,
+recall72.45 ->49.53%,missing94 ->165. Train trajectory can fit Z precisely,
+but selected transfer fails; no proof metric selection fixes generalization.
+Exact package NEGATIVE_CONTROL; no posthoc checkpoint promotion or App change.
+
 2026-09-23 [direct metric contact result](../research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md):
 One same-binary-label CDF fit: held Z5cm168/352 ->117/352,width134/528 ->57/528;
 false Z crossings146 ->111 but missing47 ->94,recall78.49 ->72.45%. Joint

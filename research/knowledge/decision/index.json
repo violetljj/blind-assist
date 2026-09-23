@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "933c6383a65398da5008942d73f80a73ca45cc63270f4f9283337e219b7cea6c",
+  "source_fingerprint": "51311a7d83ecbc2869c9b850c4441572e0766bfb449aa8d2a666f07081d63440",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 443,
-    "current_terminals": 224,
-    "run_associations": 441
+    "experiments": 444,
+    "current_terminals": 225,
+    "run_associations": 442
   },
   "failure_layers": [
     {
@@ -25709,6 +25709,46 @@
       "search_text": "terminal-metric-contact-20260923 obstacle-avoidance DIRECT_METRIC_CDF_COVERAGE_REGRESSION Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains. Separately justified mechanism and identifiable supervision; preserve exact sampling and direct CDF negatives NEGATIVE_CONTROL  Fixed sampled-label direct current-status CDF as a joint metric upgrade Reduced false horizon crossings with all lost coverage and prior sampling gains retained; A LOCAL UNKNOWN unchanged Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains. New separately justified mechanism; no automatic retry of consumed package Retune this consumed head loss seed epochs or cutoff to rescue joint criteria Treat fewer false crossings with lost coverage as accurate contact geometry Interpret q or no crossing as certified clear space"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-exact-contact-20260923",
+      "status": "negative",
+      "question": "Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only.",
+      "baseline": null,
+      "change": "Separately scoped matched metric-selection comparison; train-only fit cannot substitute for held-layout evidence",
+      "primary_metric": null,
+      "decision": "EXACT_SUPERVISION_SELECTED_TRANSFER_FAILURE",
+      "report": "research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "cdbd83299503ad34bd41f0c64ed3da34b8fe248a",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately scoped matched metric-selection comparison; train-only fit cannot substitute for held-layout evidence",
+      "forbidden_repeats": [
+        "Promote a posthoc epoch or cutoff from this consumed package",
+        "Infer sensor or representation impossibility from selected checkpoint failure",
+        "Treat lower conditional error or training hit rate as lossless transfer or clear-space evidence"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed direct CDF with exact interval supervision under inherited binary dev selection",
+      "retained_surface": "Predeclared train trajectory demonstrates partial distance fitting with full falsecross and width costs; prior sampling and A LOCAL UNKNOWN preserved",
+      "failure_signature": "Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only.",
+      "revisit_trigger": "New declared metric-aligned selection comparison without retrospective promotion",
+      "assignment_basis": "One100epoch fit15tests independent62208world labels and832896exact checkpoint probabilities",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/EXACT_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-exact-contact-20260923",
+      "search_text": "terminal-exact-contact-20260923 obstacle-avoidance EXACT_SUPERVISION_SELECTED_TRANSFER_FAILURE Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only. Separately scoped matched metric-selection comparison; train-only fit cannot substitute for held-layout evidence NEGATIVE_CONTROL  Fixed direct CDF with exact interval supervision under inherited binary dev selection Predeclared train trajectory demonstrates partial distance fitting with full falsecross and width costs; prior sampling and A LOCAL UNKNOWN preserved Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only. New declared metric-aligned selection comparison without retrospective promotion Promote a posthoc epoch or cutoff from this consumed package Infer sensor or representation impossibility from selected checkpoint failure Treat lower conditional error or training hit rate as lossless transfer or clear-space evidence"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35391,6 +35431,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-metric-contact-20260923 Does direct first-contact CDF improve boundaries under the same sampled binary supervision? Frozen sampled geometry control Width-layer conditioned q location scale head and normalized current-status CDF Grid horizon within5cm missing falsecross width retention and query recall FPR NEGATIVE_CONTROL: fewer false horizon crossings but worse precision coverage and recall research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-exact-contact-20260923",
+      "status": "archived",
+      "question": "Can exact first-contact supervision improve fixed CDF fitting and held-layout boundaries?",
+      "baseline": "Frozen binary-only direct CDF with same initial weights and schedule; sampled geometry reference",
+      "change": "Add unit-weight train-only censored5cm interval NLL to original sampled binary BCE",
+      "primary_metric": "Selected train and evaluation Z5cm gains plus missing falsecross width retention recall FPR; predeclared train trajectory",
+      "decision": "NEGATIVE_CONTROL: selected transfer worsens; retain narrower train distance-fitting evidence with costs",
+      "report": "research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "cdbd83299503ad34bd41f0c64ed3da34b8fe248a",
+      "association_id": "ba-exact-contact-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 9,
+        "evaluation_evidence": 6
+      },
+      "search_text": "ba-exact-contact-20260923 Can exact first-contact supervision improve fixed CDF fitting and held-layout boundaries? Frozen binary-only direct CDF with same initial weights and schedule; sampled geometry reference Add unit-weight train-only censored5cm interval NLL to original sampled binary BCE Selected train and evaluation Z5cm gains plus missing falsecross width retention recall FPR; predeclared train trajectory NEGATIVE_CONTROL: selected transfer worsens; retain narrower train distance-fitting evidence with costs research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35467,6 +35529,20 @@
         "artifacts.local/evidence/ba-contact-sampling-20260923/independent-audit.json"
       ],
       "decision_id": "terminal-contact-sampling-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-exact-contact-20260923",
+      "use_ids": [],
+      "protocol_id": "exact-contact-20260923",
+      "code_revision": "cdbd83299503ad34bd41f0c64ed3da34b8fe248a",
+      "input_fingerprint": "c626c4b635d9a714dc0ddf4e12ea5c210dc9bef20eb87892ed365ca887ac5e3c",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-exact-contact-20260923/result.json",
+        "artifacts.local/evidence/ba-exact-contact-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-exact-contact-20260923",
       "source_rows": 1
     },
     {

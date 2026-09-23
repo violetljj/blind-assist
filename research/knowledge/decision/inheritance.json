@@ -2241,6 +2241,16 @@
       "failure_signature": "Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains.",
       "revisit_trigger": "New separately justified mechanism; no automatic retry of consumed package",
       "assignment_basis": "One100epoch fit7tests independent counts selection hashes and832896exact checkpoint probabilities"
+    },
+    {
+      "terminal_id": "terminal-exact-contact-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed direct CDF with exact interval supervision under inherited binary dev selection",
+      "retained_surface": "Predeclared train trajectory demonstrates partial distance fitting with full falsecross and width costs; prior sampling and A LOCAL UNKNOWN preserved",
+      "failure_signature": "Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only.",
+      "revisit_trigger": "New declared metric-aligned selection comparison without retrospective promotion",
+      "assignment_basis": "One100epoch fit15tests independent62208world labels and832896exact checkpoint probabilities"
     }
   ]
 }

@@ -1,3 +1,13 @@
+## Exact contact supervision: train fits but selected transfer fails (2026-09-23)
+
+[One unchanged-CDF fit](nearfield/EXACT_CONTACT_RESULTS_20260923.md) adds exact
+train contact/censoring labels. Binary dev selection chooses epoch10: held Z5cm
+117/352 ->27/352,width57/528 ->10/528,recall72.45 ->49.53%; missing94 ->165.
+Predeclared train0.5 diagnostics reach548/560Zhits at epoch30 but254falsecross;
+final epoch465/560with17falsecross. These are not held/checkpoint-selection gains.
+Exact joint-upgrade NEGATIVE_CONTROL; retain train-fit evidence and prior sampling
+component. No retry,posthoc epoch/cutoff promotion or A/LOCAL/App/UNKNOWN change.
+
 ## Direct metric contact head: reduced false crossings with worse coverage (2026-09-23)
 
 [One current-status CDF fit](nearfield/METRIC_CONTACT_RESULTS_20260923.md) reuses
