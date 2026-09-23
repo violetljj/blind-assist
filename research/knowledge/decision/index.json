@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "47659913ce38fdc02bfd910be7012878b7325178e6b8ab172e2dd34037e1c8f7",
+  "source_fingerprint": "d815039023e2bce803c3999680248cf877898d442238fc20904b375994219315",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 440,
-    "current_terminals": 221,
-    "run_associations": 438
+    "experiments": 441,
+    "current_terminals": 222,
+    "run_associations": 439
   },
   "failure_layers": [
     {
@@ -25589,6 +25589,46 @@
       "search_text": "terminal-boundary-error-20260923 obstacle-avoidance COARSE_SUPERVISION_AND_CONSTRAINT_VIOLATIONS_COEXIST Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative. Separately scoped boundary-localized supervision versus fixed public representation; distinguish train fitting, held-layout transfer and missing native support without rescuing consumed gates COMPONENT_OR_CHALLENGER COMPONENT Consumed boundary-error attribution only; no predictor promotion Per-image label brackets, frozen constraint errors and native-return support partitions; A LOCAL UNKNOWN and failed contact packages preserved Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative. New scoped mechanism that distinguishes metric supervision from representation or observational limitations Claim coarse labels or broad single-return intervals prove RGB-ToF information impossibility Treat native near-boundary support as public metric localization or erase UNKNOWN Retune the old contact package or start an automatic successor from this diagnostic"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-contact-sampling-20260923",
+      "status": "partial",
+      "question": "Fixed72query sampling: geometry evaluation width within5cm43/528 to134/528 and horizon61/352 to168/352; train horizon175/560 to467/560. Recall86.88 to78.49percent; horizon falsecross119/800 to146/800. Retain sampling mechanism COMPONENT, neither full package passes.",
+      "baseline": null,
+      "change": "Separately scoped mechanism comparison retaining sampling and censoring controls; test residual transfer and metric error without consumed threshold rescue",
+      "primary_metric": null,
+      "decision": "BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "7f23bf61739e9075ae8ed53ac239616e352833dc",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately scoped mechanism comparison retaining sampling and censoring controls; test residual transfer and metric error without consumed threshold rescue",
+      "forbidden_repeats": [
+        "Treat sampling improvement as unique occupancy or precise virtual walking",
+        "Hide missing boundaries false crossings or recall loss",
+        "Retune this consumed two-fit package to rescue the old component gate"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Boundary-aware query sampling mechanism on fixed consumed RGB ToF contact Development; no checkpoint promotion",
+      "retained_surface": "Geometry metric-boundary gains under same72query budget; old controls and A LOCAL UNKNOWN preserved",
+      "failure_signature": "Neither full package passes; geometry recall loses8.39points and horizon falsecross increases27/800 despite width and horizon hit gains17.23/30.40points",
+      "revisit_trigger": "Separately scoped metric readout or transfer comparison preserving sampling censoring and all costs",
+      "assignment_basis": "Two fixed100epoch fits13tests777024independent worldlabels sealed controls and full output audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-contact-sampling-20260923",
+      "search_text": "terminal-contact-sampling-20260923 obstacle-avoidance BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS Fixed72query sampling: geometry evaluation width within5cm43/528 to134/528 and horizon61/352 to168/352; train horizon175/560 to467/560. Recall86.88 to78.49percent; horizon falsecross119/800 to146/800. Retain sampling mechanism COMPONENT, neither full package passes. Separately scoped mechanism comparison retaining sampling and censoring controls; test residual transfer and metric error without consumed threshold rescue COMPONENT_OR_CHALLENGER COMPONENT Boundary-aware query sampling mechanism on fixed consumed RGB ToF contact Development; no checkpoint promotion Geometry metric-boundary gains under same72query budget; old controls and A LOCAL UNKNOWN preserved Neither full package passes; geometry recall loses8.39points and horizon falsecross increases27/800 despite width and horizon hit gains17.23/30.40points Separately scoped metric readout or transfer comparison preserving sampling censoring and all costs Treat sampling improvement as unique occupancy or precise virtual walking Hide missing boundaries false crossings or recall loss Retune this consumed two-fit package to rescue the old component gate"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35203,6 +35243,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-boundary-error-20260923 Do metric errors exceed binary supervision ambiguity and is native boundary support retained? Frozen direct and geometry contact predictions with original cutoffs Read-only monotone label constraints, native support and feature diagnostic; no model change All finite-interior errors versus incompatible label brackets; nearest native support and interval spans DIAGNOSTIC_COMPONENT; coarse supervision and constraint violations coexist; no algorithm promotion research/active/dtr-r0/nearfield/BOUNDARY_ERROR_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-contact-sampling-20260923",
+      "status": "archived",
+      "question": "Does boundary-aware continuous sampling improve metric contact boundaries at fixed query budget?",
+      "baseline": "Sealed ba-contact-boundary-20260923 direct and geometry72query fits",
+      "change": "36uniform plus36boundary-or-fallback queries perimage; identical frozen features initial schedule architecture and loss",
+      "primary_metric": "All finite boundary within5cm coverage conditional error and rightcensored falsecross; query recall FPR",
+      "decision": "BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS",
+      "report": "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "7f23bf61739e9075ae8ed53ac239616e352833dc",
+      "association_id": "ba-contact-sampling-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-contact-sampling-20260923 Does boundary-aware continuous sampling improve metric contact boundaries at fixed query budget? Sealed ba-contact-boundary-20260923 direct and geometry72query fits 36uniform plus36boundary-or-fallback queries perimage; identical frozen features initial schedule architecture and loss All finite boundary within5cm coverage conditional error and rightcensored falsecross; query recall FPR BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35249,6 +35312,21 @@
         "artifacts.local/evidence/ba-contact-boundary-20260923/independent-audit.json"
       ],
       "decision_id": "terminal-contact-boundary-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-contact-sampling-20260923",
+      "use_ids": [],
+      "protocol_id": "contact-sampling-20260923",
+      "code_revision": "7f23bf61739e9075ae8ed53ac239616e352833dc",
+      "input_fingerprint": "0bd8d01755f0b621dfceaad87175d8d95d42d8f15e7ee47b173e6dcac8f2b1f1",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-contact-sampling-20260923/result.json",
+        "artifacts.local/evidence/ba-contact-sampling-20260923/prediction-seal.json",
+        "artifacts.local/evidence/ba-contact-sampling-20260923/independent-audit.json"
+      ],
+      "decision_id": "terminal-contact-sampling-20260923",
       "source_rows": 1
     },
     {

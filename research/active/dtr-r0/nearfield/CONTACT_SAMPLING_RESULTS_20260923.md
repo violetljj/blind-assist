@@ -174,3 +174,11 @@ gains are +13.37 to +21.40 points (width) and +16.48 to +42.83 points (Z).
 These intervals describe the existing 16 layouts and were not used to select
 the model or alter any gate. The independent audit retains its own code hash
 and artifact hashes. Plotting only reads sealed results.
+
+Terminal `terminal-contact-sampling-20260923` retains the sampling mechanism as
+COMPONENT_OR_CHALLENGER / COMPONENT. Experiment `ba-contact-sampling-20260923`
+is archived through the supported registry, anchored to complete source commit
+`7f23bf61739e9075ae8ed53ac239616e352833dc`. The new source files were incorporated
+by a concurrent shared-index commit `5783195c`; this was detected and preserved,
+and the input-role declaration was then committed separately. No history was
+rewritten. Source/prediction seals establish the actual experiment bytes.

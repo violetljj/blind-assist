@@ -2211,6 +2211,16 @@
       "failure_signature": "Consumed contact audit: width label brackets24-36cm and horizon30cm; geometry evaluation bracket-incompatible errors292/485width and156/291horizon. Returned-near native support463/528width and277/352horizon does not imply precise public localization. No refit or threshold change; old packages remain negative.",
       "revisit_trigger": "New scoped mechanism that distinguishes metric supervision from representation or observational limitations",
       "assignment_basis": "Saved-output audit with exact576-frame ToF parity and independent13824-row/48-native-frame checks"
+    },
+    {
+      "terminal_id": "terminal-contact-sampling-20260923",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "Boundary-aware query sampling mechanism on fixed consumed RGB ToF contact Development; no checkpoint promotion",
+      "retained_surface": "Geometry metric-boundary gains under same72query budget; old controls and A LOCAL UNKNOWN preserved",
+      "failure_signature": "Neither full package passes; geometry recall loses8.39points and horizon falsecross increases27/800 despite width and horizon hit gains17.23/30.40points",
+      "revisit_trigger": "Separately scoped metric readout or transfer comparison preserving sampling censoring and all costs",
+      "assignment_basis": "Two fixed100epoch fits13tests777024independent worldlabels sealed controls and full output audit"
     }
   ]
 }

@@ -1,3 +1,12 @@
+## Boundary-aware query sampling: metric gains with costs (2026-09-23)
+
+[Fixed-budget result](nearfield/CONTACT_SAMPLING_RESULTS_20260923.md):
+Fixed72query Development: geometry evaluation width within5cm43/528 ->134/528,
+horizon61/352 ->168/352; train horizon175/560 ->467/560. Recall86.88 ->78.49%,
+FPR9.48 ->5.16%, horizon falsecross119/800 ->146/800. Retain sampling COMPONENT;
+neither full package passes.13tests/777024world-label auditPASS. Old controls,
+A/LOCAL/UNKNOWN preserved; two fits complete, no automatic successor.
+
 ## Boundary-error attribution: coarse labels and violated constraints (2026-09-23)
 
 [Saved-output diagnostic](nearfield/BOUNDARY_ERROR_RESULTS_20260923.md): width label

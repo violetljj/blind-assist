@@ -1,3 +1,10 @@
+2026-09-23 [boundary-aware sampling result](../research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md):
+Fixed72query Development: geometry evaluation width within5cm43/528 ->134/528,
+horizon61/352 ->168/352; train horizon175/560 ->467/560. Recall86.88 ->78.49%,
+FPR9.48 ->5.16%, horizon falsecross119/800 ->146/800. Retain sampling COMPONENT;
+neither full package passes.13tests/777024world-label auditPASS. Old controls,
+A/LOCAL/UNKNOWN preserved; two fits complete, no automatic successor.
+
 2026-09-22 [single-frame spatial-learning pilot](../research/active/dtr-r0/nearfield/QUERY_OCCUPANCY_RESULTS_20260922.md)
 completed as a scoped negative control. Joint occupancy supervision increases
 matched-classifier event recall but exceeds false-alert costs and yields zero
