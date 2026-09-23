@@ -3,6 +3,30 @@
   "updated_at": "2026-09-23",
   "terminals": [
     {
+      "id": "terminal-surface-contact-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "BOUNDED_LOCAL_SURFACE_CONTACT_NO_ADDITIONAL_GAIN",
+      "summary": "Frozen576pairs camera-aligned boundary task: original/VPP directpoint distance5cm1156/1299 of1692; local surface1157/1301 exactlymatches fittedpoint control. No width/contact-presence/falsecontact/alert gain from surface. Close fixed3x3recipe; VPP retains boundary component value.",
+      "successor_requires": "A materially different source of boundary or correspondence evidence; retain far-background false contact, thin/HEAD and no-hint failures. No retuning this fixed local recipe on consumed data.",
+      "forbidden_repeats": [
+        "Tune this3x3fit or adjacency thresholds on consumed cohort to rescue boundary scores",
+        "Claim surface interpolation gains already explained by fittedpoint control",
+        "Treat camera-aligned labels as unchanged historical body-frame labels",
+        "Treat missing contact as free space or fill absent smallHEAD with unsupported surfaces"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/SURFACE_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "commit": "77d0c2667f5727828bb7aa466b71fc5507e6b7b5"
+    },
+    {
       "id": "terminal-vpp-geometry-20260923",
       "route": "obstacle-avoidance",
       "failure_layers": [

@@ -3,6 +3,16 @@
   "updated_at": "2026-09-23",
   "roles": [
     {
+      "terminal_id": "terminal-surface-contact-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed complete3x3inverse-depth fit plus bounded adjacent surface as contact-boundary recovery on frozen Large depths",
+      "retained_surface": "ExactcameraOBB contact oracle, raw/fitted/surface controls, fullwidth and UNKNOWN accounting, fixed576pair negative result",
+      "failure_signature": "Surface addszero5cmhits beyond fittedpoints, zero contactcoverage or falsecontact gain;18of18taggednegativequeries stillfalse; smallHEAD36of36missing",
+      "revisit_trigger": "Materially different boundary evidence mechanism, not window/edge/threshold rescue; new layouts for confirmation",
+      "assignment_basis": "Sealed576predictions before exactLP scene truth;24synthetic tests and565461independent audit assertions"
+    },
+    {
       "terminal_id": "terminal-vpp-geometry-20260923",
       "inheritance_role": "COMPONENT_OR_CHALLENGER",
       "inheritance_mode": "COMPONENT",

@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "3710dac7101e8808276a4ed72adbb9eec0b9b73aec5263294e82e5f581cbc466",
+  "source_fingerprint": "4fc85f1acc5a5df331492a619aac2df374b3592c7fc339f57c2ffb766de6fa4e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 452,
-    "current_terminals": 233,
-    "run_associations": 450
+    "experiments": 453,
+    "current_terminals": 234,
+    "run_associations": 451
   },
   "failure_layers": [
     {
@@ -16642,6 +16642,47 @@
     }
   ],
   "experiments": [
+    {
+      "kind": "current_terminal",
+      "id": "terminal-surface-contact-20260923",
+      "status": "diagnostic",
+      "question": "Frozen576pairs camera-aligned boundary task: original/VPP directpoint distance5cm1156/1299 of1692; local surface1157/1301 exactlymatches fittedpoint control. No width/contact-presence/falsecontact/alert gain from surface. Close fixed3x3recipe; VPP retains boundary component value.",
+      "baseline": null,
+      "change": "A materially different source of boundary or correspondence evidence; retain far-background false contact, thin/HEAD and no-hint failures. No retuning this fixed local recipe on consumed data.",
+      "primary_metric": null,
+      "decision": "BOUNDED_LOCAL_SURFACE_CONTACT_NO_ADDITIONAL_GAIN",
+      "report": "research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "77d0c2667f5727828bb7aa466b71fc5507e6b7b5",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A materially different source of boundary or correspondence evidence; retain far-background false contact, thin/HEAD and no-hint failures. No retuning this fixed local recipe on consumed data.",
+      "forbidden_repeats": [
+        "Tune this3x3fit or adjacency thresholds on consumed cohort to rescue boundary scores",
+        "Claim surface interpolation gains already explained by fittedpoint control",
+        "Treat camera-aligned labels as unchanged historical body-frame labels",
+        "Treat missing contact as free space or fill absent smallHEAD with unsupported surfaces"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed complete3x3inverse-depth fit plus bounded adjacent surface as contact-boundary recovery on frozen Large depths",
+      "retained_surface": "ExactcameraOBB contact oracle, raw/fitted/surface controls, fullwidth and UNKNOWN accounting, fixed576pair negative result",
+      "failure_signature": "Surface addszero5cmhits beyond fittedpoints, zero contactcoverage or falsecontact gain;18of18taggednegativequeries stillfalse; smallHEAD36of36missing",
+      "revisit_trigger": "Materially different boundary evidence mechanism, not window/edge/threshold rescue; new layouts for confirmation",
+      "assignment_basis": "Sealed576predictions before exactLP scene truth;24synthetic tests and565461independent audit assertions",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/SURFACE_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "association_id": "surface-contact-20260923",
+      "search_text": "terminal-surface-contact-20260923 obstacle-avoidance BOUNDED_LOCAL_SURFACE_CONTACT_NO_ADDITIONAL_GAIN Frozen576pairs camera-aligned boundary task: original/VPP directpoint distance5cm1156/1299 of1692; local surface1157/1301 exactlymatches fittedpoint control. No width/contact-presence/falsecontact/alert gain from surface. Close fixed3x3recipe; VPP retains boundary component value. A materially different source of boundary or correspondence evidence; retain far-background false contact, thin/HEAD and no-hint failures. No retuning this fixed local recipe on consumed data. NEGATIVE_CONTROL  Fixed complete3x3inverse-depth fit plus bounded adjacent surface as contact-boundary recovery on frozen Large depths ExactcameraOBB contact oracle, raw/fitted/surface controls, fullwidth and UNKNOWN accounting, fixed576pair negative result Surface addszero5cmhits beyond fittedpoints, zero contactcoverage or falsecontact gain;18of18taggednegativequeries stillfalse; smallHEAD36of36missing Materially different boundary evidence mechanism, not window/edge/threshold rescue; new layouts for confirmation Tune this3x3fit or adjacency thresholds on consumed cohort to rescue boundary scores Claim surface interpolation gains already explained by fittedpoint control Treat camera-aligned labels as unchanged historical body-frame labels Treat missing contact as free space or fill absent smallHEAD with unsupported surfaces"
+    },
     {
       "kind": "current_terminal",
       "id": "terminal-vpp-geometry-20260923",
@@ -35954,6 +35995,30 @@
         "evaluation_evidence": 6
       },
       "search_text": "vpp-geometry-20260923 Can public sparse distance hints improve stereo geometry and fixed contact events? Frozen original23-51-11 Large with and without ToF union; historical SGBM+ToF reference Official VPP rnd3x3 blending0.4 from ideal64ray public ToF; all model and downstream settings fixed Correct-query Z5cm87.62to94.75percent; final union TP/FP/FN377/22/69to375/24/71 COMPONENT_ONLY: geometry improves, direct alert replacement rejected research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md artifacts.local/evidence/ba-vpp-geometry-20260923-evaluation-v1/summary.json"
+    },
+    {
+      "kind": "experiment",
+      "id": "surface-contact-20260923",
+      "status": "archived",
+      "question": "Can bounded local surfaces recover more accurate camera-forward contact boundaries from frozen stereo depths?",
+      "baseline": "Frozen unguided and VPP Large rawpoints plus matched fittedpoint controls and unchanged ToF union",
+      "change": "One complete3x3inverse-depth fit and bounded adjacent edges/triangles, independent cameraOBB boundary oracle",
+      "primary_metric": "Distance5cm1156/1299to1157/1301of1692; surfaceequalsfitted control, width/contactpresence/falsecontact unchanged",
+      "decision": "NEGATIVE_CONTROL: close fixedlocal recipe; retain VPP boundary evidence, no surface gain",
+      "report": "research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md",
+      "source": "artifacts.local/evidence/ba-surface-contact-20260923-evaluation-v1/summary.json",
+      "commit": "77d0c2667f5727828bb7aa466b71fc5507e6b7b5",
+      "association_id": "surface-contact-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "surface-contact-20260923 Can bounded local surfaces recover more accurate camera-forward contact boundaries from frozen stereo depths? Frozen unguided and VPP Large rawpoints plus matched fittedpoint controls and unchanged ToF union One complete3x3inverse-depth fit and bounded adjacent edges/triangles, independent cameraOBB boundary oracle Distance5cm1156/1299to1157/1301of1692; surfaceequalsfitted control, width/contactpresence/falsecontact unchanged NEGATIVE_CONTROL: close fixedlocal recipe; retain VPP boundary evidence, no surface gain research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md artifacts.local/evidence/ba-surface-contact-20260923-evaluation-v1/summary.json"
     }
   ],
   "associations": [
@@ -41772,6 +41837,20 @@
         "artifacts.local/evidence/ba-return-correspondence-20260923-audit/result.json"
       ],
       "decision_id": "terminal-return-correspondence-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "surface-contact-20260923",
+      "use_ids": [],
+      "protocol_id": "surface-contact-20260923",
+      "code_revision": "77d0c2667f5727828bb7aa466b71fc5507e6b7b5",
+      "input_fingerprint": "22d7b69406d69c6034d2698e3add1b2b4e2fcfb2ff821c4b339039565020c40f",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-surface-contact-20260923-evaluation-v1/summary.json",
+        "artifacts.local/evidence/ba-surface-contact-20260923-audit-v1/result.json"
+      ],
+      "decision_id": "terminal-surface-contact-20260923",
       "source_rows": 1
     },
     {

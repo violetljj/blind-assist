@@ -1,3 +1,9 @@
+2026-09-23 [local surface contact](nearfield/SURFACE_CONTACT_RESULTS_20260923.md):
+Frozen576pair camera-aligned boundary task: unguided/VPP directpoint5cm hits1156/1299
+of1692; surface1157/1301 equals fittedpoint control, no falsecontact/width/alert gain.
+Close fixed3x3recipe as NEGATIVE_CONTROL; retain VPP boundary component and all
+far-background/smallHEAD failures.565,461audit assertions pass; new labels, not oldbody task.
+
 2026-09-23 [VPP stereo guidance](nearfield/VPP_GEOMETRY_RESULTS_20260923.md):
 Fixed ideal-ray VPP576pair Development improves correct-query Z5cm87.62% to94.75%,
 but final Large+ToF377/22/69 becomes375/24/71; small_head_flat remains missed.
