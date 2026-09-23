@@ -3,6 +3,90 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-stereo-adapt-20260923",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "plan",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-stereo-adapt-20260923-capture-v1",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-stereo-adapt-20260923-prepared",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "train_examples",
+          "role": "observation"
+        },
+        {
+          "relative_path": "eval_observations",
+          "role": "observation"
+        },
+        {
+          "relative_path": "eval_truth",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-stereo-adapt-20260923-models",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-stereo-adapt-20260923-predictions",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-stereo-adapt-20260923-evaluation",
+      "source_family": "ue-stereo-adapt-layouts-20260923",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-surface-contact-20260923",
       "source_family": "ue-historical-stereo-mz101-mz102",
       "evidence_status": "source_material",

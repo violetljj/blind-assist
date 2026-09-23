@@ -1,3 +1,6 @@
+2026-09-23 [nearfield stereo adaptation](../research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md):
+Fixed192step original Large VPP adaptation,48train/24eval layouts: ordinary newdistance5cm215to220of256 but missing15to18; historical falsecontact48to17 and uniondistance1302to1309of1692. Retain ordinary as CHALLENGER only; close balanced0.5/0.5four-stratum recipe as NEGATIVE_CONTROL (new209of256,falsecontact12). Historical flat smallHEAD remains0of36 accurate contacts.26tests and independent integrity/group audit PASS. A/LOCAL and frozen VPP ownership unchanged.
+
 2026-09-23 [local surface contact](../research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md):
 Frozen576pair camera-aligned boundary task: unguided/VPP directpoint5cm hits1156/1299
 of1692; surface1157/1301 equals fittedpoint control, no falsecontact/width/alert gain.

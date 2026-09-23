@@ -3,6 +3,26 @@
   "updated_at": "2026-09-23",
   "roles": [
     {
+      "terminal_id": "terminal-stereo-adapt-balanced-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This fixed0.5uniform plus0.5equal four-native-region loss with192updates and three selected update/upsampling modules",
+      "retained_surface": "Final balanced delta and all raw outputs as paired negative control; same initial weights, order and projected RGB confirmed",
+      "failure_signature": "Newmean pixel5cm96.19percent highest but contact209of256 and falsecontact12 worse; historical smallHEAD last-frame output wrong by about1.90m",
+      "revisit_trigger": "Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe",
+      "assignment_basis": "Fixed matched ordinary control, separate24layout Development evaluation, fullhistorical regression and independent audit"
+    },
+    {
+      "terminal_id": "terminal-stereo-adapt-20260923",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Original Large VPP disparity-update and upsampling adaptation for controlled nearfield metric contact geometry",
+      "retained_surface": "Ordinary final delta, new192train/96eval grouped source, full672pair regressions, exact contact evaluation, matched VPP inputs and frozen-weight proof",
+      "failure_signature": "New layouts only2groups improve and2regress; newmissing15to18, thin5cm96to93; historical flat smallHEAD0of36 accurate contacts despite last-frame pixel recovery",
+      "revisit_trigger": "A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot",
+      "assignment_basis": "Both192step trainings and all1440inferences complete; new24heldoutlayouts plus576historicalpairs;26synthetic tests and independent input/weight/group audit PASS"
+    },
+    {
       "terminal_id": "terminal-surface-contact-20260923",
       "inheritance_role": "NEGATIVE_CONTROL",
       "inheritance_mode": null,

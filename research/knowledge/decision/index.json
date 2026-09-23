@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "4fc85f1acc5a5df331492a619aac2df374b3592c7fc339f57c2ffb766de6fa4e",
+  "source_fingerprint": "7fe0c9f7d9a6a9fa70e0a0cbc0707439d6d9fd8aa3abdd12ff729db613a7c8a7",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 453,
-    "current_terminals": 234,
-    "run_associations": 451
+    "experiments": 454,
+    "current_terminals": 236,
+    "run_associations": 452
   },
   "failure_layers": [
     {
@@ -16642,6 +16642,87 @@
     }
   ],
   "experiments": [
+    {
+      "kind": "current_terminal",
+      "id": "terminal-stereo-adapt-balanced-20260923",
+      "status": "diagnostic",
+      "question": "Same192examples/order/budget; balanced newdistance209of256 versus ordinary220 and frozen215, falsecontact12 versus3; no layout net accuracy gains over ordinary,3 regressions. Historical gains do not justify retaining this fixed recipe.",
+      "baseline": null,
+      "change": "Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe",
+      "primary_metric": null,
+      "decision": "FIXED_REGION_BALANCED_STEREO_ADAPTATION_NOT_RETAINED",
+      "report": "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "611e5b6d38427865f58dba54ff5bf291dee92384",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe",
+      "forbidden_repeats": [
+        "Rescue this run by posthoc region-weight or epoch search",
+        "Select balanced from historical gains while ignoring worse heldout-layout contact",
+        "Use mean pixel precision as proof of nearest-contact correctness"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This fixed0.5uniform plus0.5equal four-native-region loss with192updates and three selected update/upsampling modules",
+      "retained_surface": "Final balanced delta and all raw outputs as paired negative control; same initial weights, order and projected RGB confirmed",
+      "failure_signature": "Newmean pixel5cm96.19percent highest but contact209of256 and falsecontact12 worse; historical smallHEAD last-frame output wrong by about1.90m",
+      "revisit_trigger": "Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe",
+      "assignment_basis": "Fixed matched ordinary control, separate24layout Development evaluation, fullhistorical regression and independent audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md"
+      ],
+      "association_id": null,
+      "search_text": "terminal-stereo-adapt-balanced-20260923 obstacle-avoidance FIXED_REGION_BALANCED_STEREO_ADAPTATION_NOT_RETAINED Same192examples/order/budget; balanced newdistance209of256 versus ordinary220 and frozen215, falsecontact12 versus3; no layout net accuracy gains over ordinary,3 regressions. Historical gains do not justify retaining this fixed recipe. Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe NEGATIVE_CONTROL  This fixed0.5uniform plus0.5equal four-native-region loss with192updates and three selected update/upsampling modules Final balanced delta and all raw outputs as paired negative control; same initial weights, order and projected RGB confirmed Newmean pixel5cm96.19percent highest but contact209of256 and falsecontact12 worse; historical smallHEAD last-frame output wrong by about1.90m Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe Rescue this run by posthoc region-weight or epoch search Select balanced from historical gains while ignoring worse heldout-layout contact Use mean pixel precision as proof of nearest-contact correctness"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-stereo-adapt-20260923",
+      "status": "diagnostic",
+      "question": "Fixed192-step ordinary adapter: new layout distance5cm215to220of256 but missing15to18; historical distance1299to1306of1692 and falsecontact48to17. Retain geometry challenger; no current-A or alert baseline replacement. Balanced recipe separately closed.",
+      "baseline": null,
+      "change": "A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot",
+      "primary_metric": null,
+      "decision": "ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY",
+      "report": "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "611e5b6d38427865f58dba54ff5bf291dee92384",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot",
+      "forbidden_repeats": [
+        "Promote this candidate as stable joint avoidance or current-A replacement",
+        "Tune epochs layers loss weights or masks on these consumed outcomes to rescue this pilot",
+        "Call partially recovered smallHEAD pixels accurate nearest contact",
+        "Treat same-renderer layout transfer as hardware or natural-distribution evidence"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "CHALLENGER",
+      "role_scope": "Original Large VPP disparity-update and upsampling adaptation for controlled nearfield metric contact geometry",
+      "retained_surface": "Ordinary final delta, new192train/96eval grouped source, full672pair regressions, exact contact evaluation, matched VPP inputs and frozen-weight proof",
+      "failure_signature": "New layouts only2groups improve and2regress; newmissing15to18, thin5cm96to93; historical flat smallHEAD0of36 accurate contacts despite last-frame pixel recovery",
+      "revisit_trigger": "A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot",
+      "assignment_basis": "Both192step trainings and all1440inferences complete; new24heldoutlayouts plus576historicalpairs;26synthetic tests and independent input/weight/group audit PASS",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md"
+      ],
+      "association_id": "stereo-adapt-20260923",
+      "search_text": "terminal-stereo-adapt-20260923 obstacle-avoidance ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY Fixed192-step ordinary adapter: new layout distance5cm215to220of256 but missing15to18; historical distance1299to1306of1692 and falsecontact48to17. Retain geometry challenger; no current-A or alert baseline replacement. Balanced recipe separately closed. A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot COMPONENT_OR_CHALLENGER CHALLENGER Original Large VPP disparity-update and upsampling adaptation for controlled nearfield metric contact geometry Ordinary final delta, new192train/96eval grouped source, full672pair regressions, exact contact evaluation, matched VPP inputs and frozen-weight proof New layouts only2groups improve and2regress; newmissing15to18, thin5cm96to93; historical flat smallHEAD0of36 accurate contacts despite last-frame pixel recovery A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot Promote this candidate as stable joint avoidance or current-A replacement Tune epochs layers loss weights or masks on these consumed outcomes to rescue this pilot Call partially recovered smallHEAD pixels accurate nearest contact Treat same-renderer layout transfer as hardware or natural-distribution evidence"
+    },
     {
       "kind": "current_terminal",
       "id": "terminal-surface-contact-20260923",
@@ -36019,6 +36100,28 @@
         "evaluation_evidence": 6
       },
       "search_text": "surface-contact-20260923 Can bounded local surfaces recover more accurate camera-forward contact boundaries from frozen stereo depths? Frozen unguided and VPP Large rawpoints plus matched fittedpoint controls and unchanged ToF union One complete3x3inverse-depth fit and bounded adjacent edges/triangles, independent cameraOBB boundary oracle Distance5cm1156/1299to1157/1301of1692; surfaceequalsfitted control, width/contactpresence/falsecontact unchanged NEGATIVE_CONTROL: close fixedlocal recipe; retain VPP boundary evidence, no surface gain research/active/dtr-r0/nearfield/SURFACE_CONTACT_RESULTS_20260923.md artifacts.local/evidence/ba-surface-contact-20260923-evaluation-v1/summary.json"
+    },
+    {
+      "kind": "experiment",
+      "id": "stereo-adapt-20260923",
+      "status": "archived",
+      "question": "Can fixed nearfield disparity-update adaptation recover missing obstacles and reduce false near geometry on heldout layouts?",
+      "baseline": "Frozen original23-51-11 VPP with identical public ToF and direct metric contact queries",
+      "change": "Two paired192step adapters; ordinary versus balanced visible disparity supervision,48train/24eval layouts",
+      "primary_metric": "New distance5cm215/220/209of256; historical1299/1306/1308of1692; falsecontactnew3/3/12 historical48/17/23 for frozen/ordinary/balanced",
+      "decision": "ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY",
+      "report": "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+      "source": "artifacts.local/evidence/ba-stereo-adapt-20260923-evaluation/summary.json",
+      "commit": "611e5b6d38427865f58dba54ff5bf291dee92384",
+      "association_id": "stereo-adapt-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "stereo-adapt-20260923 Can fixed nearfield disparity-update adaptation recover missing obstacles and reduce false near geometry on heldout layouts? Frozen original23-51-11 VPP with identical public ToF and direct metric contact queries Two paired192step adapters; ordinary versus balanced visible disparity supervision,48train/24eval layouts New distance5cm215/220/209of256; historical1299/1306/1308of1692; falsecontactnew3/3/12 historical48/17/23 for frozen/ordinary/balanced ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md artifacts.local/evidence/ba-stereo-adapt-20260923-evaluation/summary.json"
     }
   ],
   "associations": [
@@ -41837,6 +41940,20 @@
         "artifacts.local/evidence/ba-return-correspondence-20260923-audit/result.json"
       ],
       "decision_id": "terminal-return-correspondence-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "stereo-adapt-20260923",
+      "use_ids": [],
+      "protocol_id": "stereo-adapt-20260923",
+      "code_revision": "611e5b6d38427865f58dba54ff5bf291dee92384",
+      "input_fingerprint": "f196675d106f1b9e7123cc38fa15c4c682d4cb6c93687d159ebf7d35e5bd4b01",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-stereo-adapt-20260923-evaluation/summary.json",
+        "artifacts.local/evidence/ba-stereo-adapt-20260923/audit-v1/audit.json"
+      ],
+      "decision_id": "terminal-stereo-adapt-20260923",
       "source_rows": 1
     },
     {

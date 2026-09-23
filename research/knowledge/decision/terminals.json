@@ -3,6 +3,53 @@
   "updated_at": "2026-09-23",
   "terminals": [
     {
+      "id": "terminal-stereo-adapt-balanced-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "FIXED_REGION_BALANCED_STEREO_ADAPTATION_NOT_RETAINED",
+      "summary": "Same192examples/order/budget; balanced newdistance209of256 versus ordinary220 and frozen215, falsecontact12 versus3; no layout net accuracy gains over ordinary,3 regressions. Historical gains do not justify retaining this fixed recipe.",
+      "successor_requires": "Materially different supervision or correspondence mechanism under a new explicit protocol; not reweighting this consumed recipe",
+      "forbidden_repeats": [
+        "Rescue this run by posthoc region-weight or epoch search",
+        "Select balanced from historical gains while ignoring worse heldout-layout contact",
+        "Use mean pixel precision as proof of nearest-contact correctness"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md"
+      ],
+      "commit": "611e5b6d38427865f58dba54ff5bf291dee92384"
+    },
+    {
+      "id": "terminal-stereo-adapt-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "diagnostic",
+      "decision": "ORDINARY_STEREO_ADAPTATION_GEOMETRY_CHALLENGER_ONLY",
+      "summary": "Fixed192-step ordinary adapter: new layout distance5cm215to220of256 but missing15to18; historical distance1299to1306of1692 and falsecontact48to17. Retain geometry challenger; no current-A or alert baseline replacement. Balanced recipe separately closed.",
+      "successor_requires": "A separately specified mechanism or training budget targeting no-hint smallHEAD and boundary regressions, with unconsumed layout evaluation; no retrospective rescue of this fixed pilot",
+      "forbidden_repeats": [
+        "Promote this candidate as stable joint avoidance or current-A replacement",
+        "Tune epochs layers loss weights or masks on these consumed outcomes to rescue this pilot",
+        "Call partially recovered smallHEAD pixels accurate nearest contact",
+        "Treat same-renderer layout transfer as hardware or natural-distribution evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/STEREO_ADAPT_PROTOCOL_20260923.md"
+      ],
+      "commit": "611e5b6d38427865f58dba54ff5bf291dee92384"
+    },
+    {
       "id": "terminal-surface-contact-20260923",
       "route": "obstacle-avoidance",
       "failure_layers": [
