@@ -79,6 +79,16 @@ class ProbeTest(unittest.TestCase):
             self.assertEqual(result['meshes'][0]['status'], 'NOT_EXPORTED')
             self.assertIn('no proxy fallback', result['meshes'][0]['error'])
 
+    def test_hidden_editor_visualization_is_not_native_geometry(self):
+        component = Instanced()
+        component.get_editor_property = lambda name: True if name in ('is_editor_only', 'hidden_in_game') else None
+        actor = NS(get_path_name=lambda: '/Map/Actor', get_components_by_class=lambda cls: [component])
+        with tempfile.TemporaryDirectory() as directory:
+            result = probe(self.unreal(), NS(get_all_level_actors=lambda: [actor]),
+                           dict(x=0,y=0,z=0), 5, Path(directory)/'p')
+            self.assertEqual(result['instance_count'], 0)
+            self.assertEqual(len(result['excluded_editor_primitives']), 1)
+
     def test_invalid_bounds_and_nonfinite_radius(self):
         for low, high, radius in [([2,0,0], [1,1,1], 5), ([0,0,0], [1,1,1], float('nan'))]:
             with self.assertRaises(ValueError):

@@ -73,7 +73,7 @@ def probe(u, api, camera, radius_m, out):
     out.mkdir(parents=True, exist_ok=False)
     (out/'geometry').mkdir()
     started = time.monotonic()
-    rows, errors, unsupported, meshes = [], [], [], {}
+    rows, errors, unsupported, meshes, excluded = [], [], [], {}, []
     library = getattr(u, 'ProceduralMeshLibrary', None)
 
     def export(mesh):
@@ -115,6 +115,9 @@ def probe(u, api, camera, radius_m, out):
         for component in sorted(actor.get_components_by_class(u.PrimitiveComponent), key=lambda c: c.get_path_name()):
             identity = dict(actor_path=actor.get_path_name(), component_path=component.get_path_name(),
                             component_class=component.get_class().get_name())
+            if property_value(component, 'is_editor_only') is True and property_value(component, 'hidden_in_game') is True:
+                excluded.append(dict(identity, reason='EDITOR_ONLY_AND_HIDDEN_IN_GAME'))
+                continue
             if not isinstance(component, u.StaticMeshComponent):
                 unsupported.append(dict(identity, status='UNSUPPORTED_PRIMITIVE', spatial_scope='NOT_ESTABLISHED'))
                 continue
@@ -144,7 +147,7 @@ def probe(u, api, camera, radius_m, out):
     receipt = dict(schema='cnh-loaded-scene-probe-v1', status='NOT_ADMITTED',
         authority='LOADED_STATIC_MESH_LOD0_CAPABILITY_ONLY', camera_m=center, radius_m=radius_m,
         selection='TRANSFORMED_MESH_AABB_INTERSECTS_SPHERE', instances=rows, meshes=list(meshes.values()),
-        unsupported_primitives=unsupported, errors=errors, instance_count=len(rows),
+        unsupported_primitives=unsupported, excluded_editor_primitives=excluded, errors=errors, instance_count=len(rows),
         uint16_capacity_ok=len(rows) <= 65534, instance_raster='NOT_IMPLEMENTED',
         full_scene_coverage='NOT_ESTABLISHED', streaming_completeness='NOT_ESTABLISHED',
         render_geometry_equivalence='NOT_VERIFIED', wall_s=time.monotonic()-started)

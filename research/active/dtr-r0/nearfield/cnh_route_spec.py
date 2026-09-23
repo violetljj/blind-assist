@@ -16,7 +16,7 @@ from pathlib import Path
 import random
 
 
-ENVIRONMENTS = ('corridor', 'room', 'sidewalk', 'plaza')
+ENVIRONMENTS = ('sidewalk', 'intersection', 'plaza', 'alley')
 FAMILIES = ('head', 'rod', 'body', 'wall', 'low')
 COUNTS = {'train': (54, 45, 27, 27, 27), 'dev': (12, 10, 6, 6, 6),
           'test': (64, 64, 12, 12, 12)}
@@ -133,17 +133,20 @@ def make_layout(split, family, environment, index, seed):
     if back_distance is not None:
         backgrounds.append(object_row(101,'rear_wall',(back_distance,0.,1.8),(.2,12.,3.6),
                                       [rng.uniform(.1,.8) for _ in range(3)],rng.uniform(.15,.8)))
-    if environment in ('corridor','room'):
+    if environment=='alley':
         width=rng.uniform(1.4,2.4)
         for sign,ident in ((-1,102),(1,103)):
             backgrounds.append(object_row(ident,'side_wall',(-1.,sign*width,1.6),(24.,.15,3.2),
                                           [rng.uniform(.12,.8) for _ in range(3)],rng.uniform(.15,.8)))
-        if environment=='room':
-            backgrounds.append(object_row(104,'ceiling',(-1.,0.,3.6),(24.,12.,.15),tint,.5))
     elif environment=='sidewalk':
         backgrounds.append(object_row(105,'kerb',(-1.,-2.,.15),(24.,.2,.3),tint,.3))
+    elif environment=='intersection':
+        # Representative open junction fixture only, not a realistic street source.
+        for sign,ident in ((-1,106),(1,107)):
+            backgrounds.append(object_row(ident,'junction_kerb',(-3.,sign*3.,.15),
+                                          (.2,2.,.3),tint,.3))
     row['backgrounds']=backgrounds
-    row['illumination']=dict(mode=rng.choice(('daylight','indoor','dusk')),intensity=rng.uniform(.7,1.3))
+    row['illumination']=dict(mode=rng.choice(('daylight','dusk')),intensity=rng.uniform(.7,1.3))
     row['asset_bundle_id']=digest(dict(target=target,backgrounds=backgrounds,illumination=row['illumination']))
     row['shared_source_primitives']=['/Engine/BasicShapes/Cube','/Engine/BasicShapes/Cylinder']
     return row
