@@ -12,13 +12,16 @@ The user decides a new research question, budget expansion, or changed success
 criteria. Reuse authorization already given for that question: routine implementation,
 mechanical recovery, targeted validation and delivery proceed without new approval.
 A failed frozen experiment cannot be reopened by changing its threshold or subset.
-This is not a requirement to ask before every command, diagnostic or engineering fix.
+Propose ideas freely; starting a new research question requires user authorization.
+A technical Git branch alone does not create a new research question. This is not
+a requirement to ask before every command, diagnostic or engineering fix.
 
 For exploration, put question, comparison, decision rule, result and next decision
 in one existing record, with necessary input/code identity and UNKNOWN/cost reporting.
 Do not create separate protocol, audit and approval documents by default. Register
-runs and terminal inheritance through the existing supported commands; batch the
-metadata work at a decision-changing terminal, without inventing ledger entries.
+runs through existing supported commands. Ordinary exploration needs a conclusion,
+not a new formal terminal. Assign structured inheritance when a terminal changes
+mainline, baseline or reuse decisions; batch metadata there without invented entries.
 Use independent audit when a paper-critical claim or a concrete integrity risk
 justifies it. Large assertion counts are mechanical checks, not independent samples.
 Use one meaningful falsifier; expand only for an observed defect or evidence gap.
@@ -49,6 +52,29 @@ Use one explanatory hypothesis. It may require coordinated changes to representa
 observation, state, and decision interfaces. Preserve comparable inputs and metrics;
 add an ablation only if it changes the contribution judgment. Revisit a run of local
 patches when a simpler common mechanism may explain their gains and failure modes.
+
+## Benchmark, data roles and statistical decisions
+
+Compare algorithms on the current fixed benchmark by default; the active decision
+page names its version. Reuse existing data before new acquisition. If the benchmark
+cannot test the mechanism, explain the gap and smallest useful supplement; execute
+only within the authorized question and budget, and ask for changed scope first.
+
+Training and validation splits may be reused throughout Development. Record their
+role, identity and lineage once in the owning benchmark/run records and reference
+it; repeated use needs no new consumption ceremony. Preserve existing access and
+lineage receipts. A locked test set supports independent confirmation only under
+its frozen access plan. Outcomes used for tuning or repeated unplanned selection
+cannot become fresh confirmation by keeping the test label or changing its name.
+
+Before collecting data for significance, non-inferiority or other inferential
+gates, assess power or expected precision using independent sampling units,
+plausible effect size and dependence between observations. Frames/assertions are
+not automatically independent samples. Report small-category event counts and
+uncertainty; do not claim reliable category-level inference from inadequate data.
+A predeclared engineering retention/stop rule may still use small counts, provided
+its limited purpose is explicit. Freeze criteria before outcomes; this guidance
+never authorizes retrospective gate changes or reopening a consumed experiment.
 
 ## Three kinds of work
 
@@ -107,6 +133,9 @@ take precedence over retrieved templates. It does not authorize execution.
 - **Not evaluable:** state the missing evidence or runtime prerequisite. Continue
   independent authorized work; missing evidence is not a negative method result.
 
+Begin each result report with one or two plain Chinese sentences explaining what
+improved, its cost and the decision. Then report clearly labeled metrics, units
+and denominators; tables are optional, cryptic compressed counts are not.
 Report raw effect and costs before interpreting a gate. Zero wrong commits with
 zero correct commits is not useful identification or perfect precision. A source
 failure does not adjudicate an algorithm. A local positive result need not establish
@@ -115,6 +144,21 @@ system-level benefit, natural-distribution performance, or safety.
 An experiment stop ends its allocation, not automatically the user's broader task.
 Finish remaining authorized validation, documentation, scoped commit/push, and
 release of task-owned resources. Do not expand a frozen run or budget to continue.
+
+## Inheritance at decision-changing terminals
+
+Use `python tools/knowledge.py set-terminal-inheritance` for formal current terminals
+in `research/knowledge/decision/inheritance.json`. `RETAINED_CORE` supplies the next
+baseline; `COMPONENT_OR_CHALLENGER` remains eligible only in its recorded mode and
+must identify the reusable mechanism, evidence and limits; `NEGATIVE_CONTROL` is
+carried into the next related falsifier; only `DEAD_FOR_THIS_ROLE` blocks reopening
+the same scoped responsibility. Preserve historical roles and failed results.
+
+A normal exploratory check can end with a clear conclusion in its owning record.
+Once it changes the mainline, baseline or a reuse decision, assign its formal role.
+This reduces unnecessary terminals, not evidence obligations: do not remove existing
+records or bypass validator requirements. Archived registration still links a
+`--decision-id` whose terminal inheritance is complete, using supported tooling.
 
 ## Keep the process useful
 
@@ -134,3 +178,7 @@ Remove `--check` only after eligibility succeeds. This path preserves cached
 experiment outcomes and records that ledger validation was not performed; source
 or retrieval drift requires a full rebuild. It cannot repair an already stale
 cache or certify historical records.
+
+Install the knowledge hook once with
+`pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; full refresh
+is for stale-index repair or a requested rebuild.

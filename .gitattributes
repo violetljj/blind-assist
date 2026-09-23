@@ -9,3 +9,33 @@
 /data/*.csv text eol=lf
 /data/*.json text eol=lf
 /experiments/*.jsonl text eol=lf
+
+# Frozen raw-byte protocols: retain original CRLF bytes, never rewrite locks.
+/research/active/dtr-r0/carla/dtr_carla_c17_x42_counterfactual_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c18_x42_counterfactual_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c19_x42_visual_transfer_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c20_x42_fresh_visual_holdout_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c21_x43_weather_transfer_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c22_x44_kinematic_transfer_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c23_x54_fresh_generalization_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c24_x54_source_corrected_generalization_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c25_x56_graceful_degradation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c26_x56_source_corrected_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c27_x57_daylight_transfer_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c28_x59_mixed_lighting_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c29_x64_sensor_topology_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c30_x64_source_corrected_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c31_x64_camera_corrected_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c32_x64_l03_restored_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c33_x65_render_transfer_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c34_x65_fresh_source_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c35_x73_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c36_x74_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c37_x75_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c38_x77_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c39_x79_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c40_x81_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c41_x82_fresh_confirmation_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c42_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c43_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol
+/research/active/dtr-r0/carla/dtr_carla_c44_x96_dropout_survival_protocol.json -text whitespace=cr-at-eol

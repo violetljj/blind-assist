@@ -38,6 +38,8 @@ jobs:
           python -m pip install numpy==2.1.3 pillow==11.1.0 OpenEXR==3.3.3
       - name: Verify research checkout byte identity
         run: python tools/check_research_checkout_bytes.py
+      - name: Verify original CARLA frozen protocol hashes
+        run: python tools/check_frozen_carla_bytes.py
       - name: Prepare isolated test scratch
         run: python -c "from pathlib import Path; Path('artifacts.local/tmp').mkdir(parents=True, exist_ok=True)"
       - name: Test research tools

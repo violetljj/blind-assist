@@ -187,6 +187,14 @@ a separate controlled evaluator is frozen.
 
 ## Backend and throughput
 
+GPU-helpful work is GPU-first. Record actual backend, device, providers and timing;
+compare equivalent CPU/GPU work when choosing placement. Reuse measurements while
+the workload and environment remain equivalent. CPU placement must identify one
+of `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`,
+`GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`. Small scalar/metadata
+work stays on CPU. Reuse `tools/research_backend.py`; CPU execution is never CUDA
+evidence. Frozen protocols retain their backend and comparison constraints.
+
 - Use a short representative benchmark before choosing batch size, worker
   count, or backend.
 - When scientific results are equivalent, use the measured faster path.
