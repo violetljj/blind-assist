@@ -1,3 +1,9 @@
+2026-09-23 [VPP stereo guidance](nearfield/VPP_GEOMETRY_RESULTS_20260923.md):
+Fixed ideal-ray VPP576pair Development improves correct-query Z5cm87.62% to94.75%,
+but final Large+ToF377/22/69 becomes375/24/71; small_head_flat remains missed.
+Retain geometry COMPONENT only, no direct alert replacement or parameter rescue.
+204zero-hint frames identical;167,368independent assertions pass. A/LOCAL/UNKNOWN retained.
+
 2026-09-23 [original stereo geometry](nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md):
 Original23-51-11 ViT-Large576pair Development gives correct-query Z5cm48.67% to87.62%,
 but final SGBM+ToF402/40/44 becomes377/22/69 and loses small_head_flat event.

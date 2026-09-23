@@ -3,6 +3,16 @@
   "updated_at": "2026-09-23",
   "roles": [
     {
+      "terminal_id": "terminal-vpp-geometry-20260923",
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "VPP-guided original Large geometry as a component for separate spatial structure tests, not direct alert ownership",
+      "retained_surface": "Sealed576depth outputs; fixed-denominator localization94.75percent, coverage98.11percent,138144corrected versus6466regressed pixels",
+      "failure_signature": "Final union loses2TP adds2FP; small_head_flat unchanged; negative-query far-background support28518to33890;62.6percent net pixel gain fromwall",
+      "revisit_trigger": "Explicitly different structure/contact mechanism and no-hint/negative-query diagnostics; no parameter rescue of this fixed recipe",
+      "assignment_basis": "One frozen VPP intervention, exact historical baseline parity, all204zero-hint identities and167368independent audit assertions"
+    },
+    {
       "terminal_id": "terminal-foundation-geometry-20260923",
       "inheritance_role": "COMPONENT_OR_CHALLENGER",
       "inheritance_mode": "COMPONENT",

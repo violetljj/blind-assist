@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "08507f06f6552673bd205d571e64118ab099b880d2c9446f26f3418782a2432b",
+  "source_fingerprint": "3710dac7101e8808276a4ed72adbb9eec0b9b73aec5263294e82e5f581cbc466",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 451,
-    "current_terminals": 232,
-    "run_associations": 449
+    "experiments": 452,
+    "current_terminals": 233,
+    "run_associations": 450
   },
   "failure_layers": [
     {
@@ -16642,6 +16642,47 @@
     }
   ],
   "experiments": [
+    {
+      "kind": "current_terminal",
+      "id": "terminal-vpp-geometry-20260923",
+      "status": "diagnostic",
+      "question": "Fixed ideal-ray VPP on576historical pairs improves correct-query Z5cm87.62to94.75percent and missing50519to34935. Final union377/22/69 becomes375/24/71; small_head_flat remains missed. Retain geometry component, reject direct alert replacement.",
+      "baseline": null,
+      "change": "Separate same-depth structure/contact experiment preserving no-hint small HEAD, negative-query far-background errors and frozen downstream controls; new layouts before confirmation.",
+      "primary_metric": null,
+      "decision": "VPP_GEOMETRY_COMPONENT_ONLY",
+      "report": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "0e8c2ead96d886a37121a4926ff41b7ab4269bd8",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separate same-depth structure/contact experiment preserving no-hint small HEAD, negative-query far-background errors and frozen downstream controls; new layouts before confirmation.",
+      "forbidden_repeats": [
+        "Promote this fixed VPP recipe as direct alert or current-A replacement",
+        "Tune alpha patch seed confidence or hysteresis on the consumed cohort to rescue this run",
+        "Treat ideal registered rays as real regional ToF validation",
+        "Treat no return as free space or this recipe failure as a sensor information ceiling"
+      ],
+      "inheritance_role": "COMPONENT_OR_CHALLENGER",
+      "inheritance_mode": "COMPONENT",
+      "role_scope": "VPP-guided original Large geometry as a component for separate spatial structure tests, not direct alert ownership",
+      "retained_surface": "Sealed576depth outputs; fixed-denominator localization94.75percent, coverage98.11percent,138144corrected versus6466regressed pixels",
+      "failure_signature": "Final union loses2TP adds2FP; small_head_flat unchanged; negative-query far-background support28518to33890;62.6percent net pixel gain fromwall",
+      "revisit_trigger": "Explicitly different structure/contact mechanism and no-hint/negative-query diagnostics; no parameter rescue of this fixed recipe",
+      "assignment_basis": "One frozen VPP intervention, exact historical baseline parity, all204zero-hint identities and167368independent audit assertions",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md"
+      ],
+      "association_id": "vpp-geometry-20260923",
+      "search_text": "terminal-vpp-geometry-20260923 obstacle-avoidance VPP_GEOMETRY_COMPONENT_ONLY Fixed ideal-ray VPP on576historical pairs improves correct-query Z5cm87.62to94.75percent and missing50519to34935. Final union377/22/69 becomes375/24/71; small_head_flat remains missed. Retain geometry component, reject direct alert replacement. Separate same-depth structure/contact experiment preserving no-hint small HEAD, negative-query far-background errors and frozen downstream controls; new layouts before confirmation. COMPONENT_OR_CHALLENGER COMPONENT VPP-guided original Large geometry as a component for separate spatial structure tests, not direct alert ownership Sealed576depth outputs; fixed-denominator localization94.75percent, coverage98.11percent,138144corrected versus6466regressed pixels Final union loses2TP adds2FP; small_head_flat unchanged; negative-query far-background support28518to33890;62.6percent net pixel gain fromwall Explicitly different structure/contact mechanism and no-hint/negative-query diagnostics; no parameter rescue of this fixed recipe Promote this fixed VPP recipe as direct alert or current-A replacement Tune alpha patch seed confidence or hysteresis on the consumed cohort to rescue this run Treat ideal registered rays as real regional ToF validation Treat no return as free space or this recipe failure as a sensor information ceiling"
+    },
     {
       "kind": "current_terminal",
       "id": "terminal-foundation-geometry-20260923",
@@ -35890,6 +35931,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "foundation-geometry-20260923 Can original Large stereo fix historical false geometry while preserving thin and HEAD obstacles? Exact historical SGBM+ToF and MZ104 TAO+ToF on576consumed stereo pairs One original23-51-11 ViT-Large fullresolution frontend, unchanged downstream Geometric origins, fixed native-query pixel accuracy/coverage, TPFPFN and event timing ORIGINAL_STEREO_GEOMETRY_COMPONENT_ONLY; direct alert substitution rejected research/active/dtr-r0/nearfield/FOUNDATION_GEOMETRY_RESULTS_20260923.md MZ101/MZ102 consumed rendered Development"
+    },
+    {
+      "kind": "experiment",
+      "id": "vpp-geometry-20260923",
+      "status": "archived",
+      "question": "Can public sparse distance hints improve stereo geometry and fixed contact events?",
+      "baseline": "Frozen original23-51-11 Large with and without ToF union; historical SGBM+ToF reference",
+      "change": "Official VPP rnd3x3 blending0.4 from ideal64ray public ToF; all model and downstream settings fixed",
+      "primary_metric": "Correct-query Z5cm87.62to94.75percent; final union TP/FP/FN377/22/69to375/24/71",
+      "decision": "COMPONENT_ONLY: geometry improves, direct alert replacement rejected",
+      "report": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md",
+      "source": "artifacts.local/evidence/ba-vpp-geometry-20260923-evaluation-v1/summary.json",
+      "commit": "0e8c2ead96d886a37121a4926ff41b7ab4269bd8",
+      "association_id": "vpp-geometry-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "vpp-geometry-20260923 Can public sparse distance hints improve stereo geometry and fixed contact events? Frozen original23-51-11 Large with and without ToF union; historical SGBM+ToF reference Official VPP rnd3x3 blending0.4 from ideal64ray public ToF; all model and downstream settings fixed Correct-query Z5cm87.62to94.75percent; final union TP/FP/FN377/22/69to375/24/71 COMPONENT_ONLY: geometry improves, direct alert replacement rejected research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md artifacts.local/evidence/ba-vpp-geometry-20260923-evaluation-v1/summary.json"
     }
   ],
   "associations": [
@@ -41734,6 +41798,20 @@
         "research/active/unseen-location-router/README.md"
       ],
       "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "vpp-geometry-20260923",
+      "use_ids": [],
+      "protocol_id": "vpp-geometry-20260923",
+      "code_revision": "0e8c2ead96d886a37121a4926ff41b7ab4269bd8",
+      "input_fingerprint": "03d06e2cd2d2a914e43fe750535e1b20be9399c3cfe7f23230e18d50fd567b5a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/VPP_GEOMETRY_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-vpp-geometry-20260923-evaluation-v1/summary.json",
+        "artifacts.local/evidence/ba-vpp-geometry-20260923-audit-v1/result.json"
+      ],
+      "decision_id": "terminal-vpp-geometry-20260923",
       "source_rows": 1
     }
   ]

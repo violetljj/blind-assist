@@ -3,6 +3,82 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-vpp-geometry-20260923",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "plan",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-vpp-geometry-20260923-prepared",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "rgb",
+          "role": "observation"
+        },
+        {
+          "relative_path": "tof",
+          "role": "observation"
+        },
+        {
+          "relative_path": "rgb-inputs.json",
+          "role": "observation"
+        },
+        {
+          "relative_path": "tof-inputs.json",
+          "role": "observation"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "work/vpp-geometry-20260923",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "vppstereo/vpp_standalone.py",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-vpp-geometry-20260923-frontend-v1",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-vpp-geometry-20260923-evaluation-v1",
+      "source_family": "ue-historical-stereo-mz101-mz102",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/VPP_GEOMETRY_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-foundation-geometry-20260923",
       "source_family": "ue-historical-stereo-mz101-mz102",
       "evidence_status": "source_material",
