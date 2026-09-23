@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "876c892612eb35e2b6dfa88ad187c17dc99916e0c98a123d40587f58198a7726",
+  "source_fingerprint": "933c6383a65398da5008942d73f80a73ca45cc63270f4f9283337e219b7cea6c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 442,
-    "current_terminals": 223,
-    "run_associations": 440
+    "experiments": 443,
+    "current_terminals": 224,
+    "run_associations": 441
   },
   "failure_layers": [
     {
@@ -25669,6 +25669,46 @@
       "search_text": "terminal-boundary-supervision-20260923 obstacle-avoidance DENSE_BOUNDARY_ACCURACY_RECALL_TRADEOFF Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative. Separately justified mechanism addressing accuracy recall coverage; no consumed density cutoff loss seed or epoch rescue NEGATIVE_CONTROL  This fixed-budget dense-slice geometry package as a joint boundary-and-contact upgrade Large train and layout-transfer boundary gains with reduced false positives; retain all recall coverage and individual boundary losses and A LOCAL UNKNOWN Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative. Separately scoped materially different mechanism; no additional fit from this pilot Treat improved conditional error or boundary precision as a lossless contact upgrade Retune the consumed fixed query schedule loss checkpoint or threshold to rescue its failed joint gate Erase measured boundary supervision gains or promote them to hardware safety evidence"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-metric-contact-20260923",
+      "status": "negative",
+      "question": "Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains.",
+      "baseline": null,
+      "change": "Separately justified mechanism and identifiable supervision; preserve exact sampling and direct CDF negatives",
+      "primary_metric": null,
+      "decision": "DIRECT_METRIC_CDF_COVERAGE_REGRESSION",
+      "report": "research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "980f78b87c06f3f2b7b979670f59a471f4feeccf",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified mechanism and identifiable supervision; preserve exact sampling and direct CDF negatives",
+      "forbidden_repeats": [
+        "Retune this consumed head loss seed epochs or cutoff to rescue joint criteria",
+        "Treat fewer false crossings with lost coverage as accurate contact geometry",
+        "Interpret q or no crossing as certified clear space"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed sampled-label direct current-status CDF as a joint metric upgrade",
+      "retained_surface": "Reduced false horizon crossings with all lost coverage and prior sampling gains retained; A LOCAL UNKNOWN unchanged",
+      "failure_signature": "Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains.",
+      "revisit_trigger": "New separately justified mechanism; no automatic retry of consumed package",
+      "assignment_basis": "One100epoch fit7tests independent counts selection hashes and832896exact checkpoint probabilities",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/METRIC_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-metric-contact-20260923",
+      "search_text": "terminal-metric-contact-20260923 obstacle-avoidance DIRECT_METRIC_CDF_COVERAGE_REGRESSION Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains. Separately justified mechanism and identifiable supervision; preserve exact sampling and direct CDF negatives NEGATIVE_CONTROL  Fixed sampled-label direct current-status CDF as a joint metric upgrade Reduced false horizon crossings with all lost coverage and prior sampling gains retained; A LOCAL UNKNOWN unchanged Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains. New separately justified mechanism; no automatic retry of consumed package Retune this consumed head loss seed epochs or cutoff to rescue joint criteria Treat fewer false crossings with lost coverage as accurate contact geometry Interpret q or no crossing as certified clear space"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35328,6 +35368,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-boundary-supervision-20260923 Does finer fixed-budget supervision improve boundary fitting and layout transfer at acceptable contact costs? Saved coarse-query geometry model with same initial features schedule optimizer and dev selection Geometry-independent72query curriculum from24coarse and48fine slice queries per image per epoch; one new fit Train/evaluation both-axis joint5cm gains with recall FPR and censored-crossing retention ACCURACY_COST_TRADEOFF; retain measured boundary gains; exact joint-upgrade NEGATIVE_CONTROL research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-metric-contact-20260923",
+      "status": "archived",
+      "question": "Does direct first-contact CDF improve boundaries under the same sampled binary supervision?",
+      "baseline": "Frozen sampled geometry control",
+      "change": "Width-layer conditioned q location scale head and normalized current-status CDF",
+      "primary_metric": "Grid horizon within5cm missing falsecross width retention and query recall FPR",
+      "decision": "NEGATIVE_CONTROL: fewer false horizon crossings but worse precision coverage and recall",
+      "report": "research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "980f78b87c06f3f2b7b979670f59a471f4feeccf",
+      "association_id": "ba-metric-contact-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-metric-contact-20260923 Does direct first-contact CDF improve boundaries under the same sampled binary supervision? Frozen sampled geometry control Width-layer conditioned q location scale head and normalized current-status CDF Grid horizon within5cm missing falsecross width retention and query recall FPR NEGATIVE_CONTROL: fewer false horizon crossings but worse precision coverage and recall research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35404,6 +35467,20 @@
         "artifacts.local/evidence/ba-contact-sampling-20260923/independent-audit.json"
       ],
       "decision_id": "terminal-contact-sampling-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-metric-contact-20260923",
+      "use_ids": [],
+      "protocol_id": "metric-contact-20260923",
+      "code_revision": "980f78b87c06f3f2b7b979670f59a471f4feeccf",
+      "input_fingerprint": "129a6757a145ce25c4d212fee3f9c135deec1ea6bb89ca56db32828777743d22",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-metric-contact-20260923/result.json",
+        "artifacts.local/evidence/ba-metric-contact-20260923-audit/result.json"
+      ],
+      "decision_id": "terminal-metric-contact-20260923",
       "source_rows": 1
     },
     {

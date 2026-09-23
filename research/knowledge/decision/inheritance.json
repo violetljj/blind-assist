@@ -2231,6 +2231,16 @@
       "failure_signature": "Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative.",
       "revisit_trigger": "Separately scoped materially different mechanism; no additional fit from this pilot",
       "assignment_basis": "One completed fit with frozen representation and independent label selection metric audit"
+    },
+    {
+      "terminal_id": "terminal-metric-contact-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed sampled-label direct current-status CDF as a joint metric upgrade",
+      "retained_surface": "Reduced false horizon crossings with all lost coverage and prior sampling gains retained; A LOCAL UNKNOWN unchanged",
+      "failure_signature": "Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains.",
+      "revisit_trigger": "New separately justified mechanism; no automatic retry of consumed package",
+      "assignment_basis": "One100epoch fit7tests independent counts selection hashes and832896exact checkpoint probabilities"
     }
   ]
 }

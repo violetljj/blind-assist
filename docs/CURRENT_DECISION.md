@@ -1,3 +1,9 @@
+2026-09-23 [direct metric contact result](../research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md):
+One same-binary-label CDF fit: held Z5cm168/352 ->117/352,width134/528 ->57/528;
+false Z crossings146 ->111 but missing47 ->94,recall78.49 ->72.45%. Joint
+upgrade NEGATIVE_CONTROL, preserving sampling COMPONENT and A/LOCAL/UNKNOWN.
+No exact-distance labels, fresh confirmation, retry or App change.
+
 2026-09-23 [dense boundary supervision](../research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md):
 Same representation/model and equal query budget improve held width5cm8.14to36.36%
 and horizon17.33to34.66%. FPR9.479to6.013%,but recall86.88to81.44% exceeds the

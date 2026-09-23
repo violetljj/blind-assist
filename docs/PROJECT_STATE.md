@@ -1,3 +1,8 @@
+2026-09-23 [direct metric contact pilot](../research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md):
+One completed same-query CDF fit fails the joint boundary upgrade: Z5cm47.73 ->33.24%,
+width25.38 ->10.80%,recall78.49 ->72.45%; fewer false Z crossings cost missing
+finite contacts. Retain exact negative control and prior sampling gains; no App change.
+
 2026-09-23 [boundary-aware sampling result](../research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md):
 Fixed72query Development: geometry evaluation width within5cm43/528 ->134/528,
 horizon61/352 ->168/352; train horizon175/560 ->467/560. Recall86.88 ->78.49%,

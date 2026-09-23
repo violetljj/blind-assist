@@ -1,3 +1,12 @@
+## Direct metric contact head: reduced false crossings with worse coverage (2026-09-23)
+
+[One current-status CDF fit](nearfield/METRIC_CONTACT_RESULTS_20260923.md) reuses
+exact sampled72binary queries and frozen public features. Versus sampled geometry,
+held Z within5cm168/352 ->117/352,width134/528 ->57/528; Z falsecross146 ->111
+but finite missing47 ->94. Recall78.49 ->72.45%,FPR5.16 ->6.04%. Train also
+regresses; joint upgrade fails. Exact package NEGATIVE_CONTROL; retain sampling
+mechanism and A/LOCAL/UNKNOWN. No refit,threshold rescue or App promotion.
+
 ## Dense boundary supervision: precision gains with recall cost (2026-09-23)
 
 [One fixed-representation fit](nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md)

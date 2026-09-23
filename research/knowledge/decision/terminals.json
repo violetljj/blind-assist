@@ -5278,6 +5278,29 @@
         "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_PROTOCOL_20260923.md"
       ],
       "commit": "dc006dc6f22e8b761288b2377bf8890ab19bbda5"
+    },
+    {
+      "id": "terminal-metric-contact-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "DIRECT_METRIC_CDF_COVERAGE_REGRESSION",
+      "summary": "Same72binary-query CDF head: held horizon5cm168/352to117/352,width134/528to57/528; horizon falsecross146to111 but finite missing47to94,recall78.49to72.45percent,FPR5.16to6.04percent. Joint upgrade fails; preserve sampling gains.",
+      "successor_requires": "Separately justified mechanism and identifiable supervision; preserve exact sampling and direct CDF negatives",
+      "forbidden_repeats": [
+        "Retune this consumed head loss seed epochs or cutoff to rescue joint criteria",
+        "Treat fewer false crossings with lost coverage as accurate contact geometry",
+        "Interpret q or no crossing as certified clear space"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/METRIC_CONTACT_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/METRIC_CONTACT_PROTOCOL_20260923.md"
+      ],
+      "commit": "980f78b87c06f3f2b7b979670f59a471f4feeccf"
     }
   ]
 }
