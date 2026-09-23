@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist-hardware-local-v1",
+  "source_model_sha256": "1e6a4345353887effebb2aa798ace9dcdc5a46111166486179402bfcd4cc610e",
+  "selection_sha256": "fa4ab0845aab5eb62a2c3dadacc82bc073c73b2e52da198527609384e6b4a753",
+  "threshold": 0.7959699076137833,
+  "asset_sha256": "73e909c079b812a29fc75c1fd35fe79a3e7019401703f2a96eab9772a216a354",
+  "features": 961,
+  "trees": 200,
+  "fits": 0,
+  "selections": 0,
+  "extractor_sha256": "c0bd6dfaf391c4aab5455de988ea922975a5b933898b0d9aa9bd94315d694dcf",
+  "scope": "Frozen controlled-simulation LOCAL model; nominal physical camera/ToF adaptation is experimental, not calibrated or validated safety performance"
+}

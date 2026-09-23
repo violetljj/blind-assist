@@ -45,4 +45,17 @@ class HardwareDemoEntryTest {
             preferences.edit().putBoolean("speech", speech).putBoolean("vibration", vibration).commit()
         }
     }
+
+    @Test fun algorithmSwitchPersistsAndCanReturnToOriginalMode() {
+        val preferences = compose.activity.getSharedPreferences("hardware_demo", 0)
+        val original = preferences.getBoolean("a_local", true)
+        try {
+            val toggle = compose.onNodeWithTag("hardware_demo_local").performScrollTo()
+            toggle.assertContentDescriptionEquals("A+LOCAL 实验模式")
+            toggle.performClick()
+            compose.activityRule.scenario.recreate()
+            val restored = compose.onNodeWithTag("hardware_demo_local").performScrollTo()
+            if (original) restored.assertIsOff() else restored.assertIsOn()
+        } finally { preferences.edit().putBoolean("a_local", original).commit() }
+    }
 }

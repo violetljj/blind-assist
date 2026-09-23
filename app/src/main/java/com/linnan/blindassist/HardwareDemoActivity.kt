@@ -63,6 +63,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.linnan.blindassist.device.glasses.HardwareDemoClient
 import com.linnan.blindassist.device.glasses.HardwareDemoSnapshot
+import com.linnan.blindassist.device.glasses.HardwareLocalRuntime
+import com.linnan.blindassist.risk.HardwareLocalModel
 import com.linnan.blindassist.device.glasses.HardwareEvidenceRecorder
 import com.linnan.blindassist.device.glasses.HardwareEvidenceStore
 import com.linnan.blindassist.device.glasses.HardwareEvidenceSummary
@@ -96,6 +98,7 @@ class HardwareDemoActivity : ComponentActivity() {
     private var wifiClient: HardwareWifiDemoClient? = null
     private var connectionGeneration = 0
     private var speechEnabled by mutableStateOf(true)
+    private var localEnabled by mutableStateOf(true)
     private var speechStatus by mutableStateOf("语音初始化中")
     private var tts: TextToSpeech? = null
     private var ttsReady = false
@@ -146,6 +149,7 @@ class HardwareDemoActivity : ComponentActivity() {
         tofEndpoint = preferences.getString("tof", "") ?: ""
         wireless = preferences.getBoolean("wireless", true)
         speechEnabled = preferences.getBoolean("speech", true)
+        localEnabled = preferences.getBoolean("a_local", true)
         vibrationEnabled = preferences.getBoolean("vibration", true)
         pendingExport = savedInstanceState?.getString("hardware_export_id")
         refreshRecordings()
@@ -163,6 +167,13 @@ class HardwareDemoActivity : ComponentActivity() {
                     snapshot = snapshot,
                     connectionStatus = connectionStatus,
                     speechEnabled = speechEnabled,
+                    localEnabled = localEnabled,
+                    onLocalChanged = {
+                        localEnabled = it
+                        preferences.edit().putBoolean("a_local", it).apply()
+                        feedbackPolicy.reset()
+                        beginConnection(discover = false)
+                    },
                     speechStatus = speechStatus,
                     vibrationEnabled = vibrationEnabled,
                     wireless = wireless,
@@ -250,6 +261,15 @@ class HardwareDemoActivity : ComponentActivity() {
         lastResultAt = SystemClock.elapsedRealtime()
         polling = lifecycleScope.launch {
             val useWifi = wireless
+            val useLocal = localEnabled
+            var localProblem: String? = null
+            val localRuntime = if (useLocal) try {
+                withContext(Dispatchers.Default) {
+                    assets.open("hardware_local/local-v1.bin").use { HardwareLocalRuntime(HardwareLocalModel.read(it)) }
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { localProblem = "模型加载失败，已回退基础 ToF"; null }
+            else null
             var ownedWifi: HardwareWifiDemoClient? = null
             try {
                 if (useWifi) {
@@ -280,7 +300,15 @@ class HardwareDemoActivity : ComponentActivity() {
             try {
             while (isActive) {
                 try {
-                    val result = ownedWifi?.poll() ?: withContext(Dispatchers.IO) { requireNotNull(usbClient).poll() }
+                    val raw = ownedWifi?.poll() ?: withContext(Dispatchers.IO) { requireNotNull(usbClient).poll() }
+                    val processingStart = SystemClock.elapsedRealtime()
+                    var result = if (localRuntime != null) {
+                        try { withContext(Dispatchers.Default) { localRuntime.evaluate(raw, processingStart) } }
+                        catch (cancelled: CancellationException) { throw cancelled }
+                        catch (_: Exception) { raw.copy(status = "A+LOCAL 输入不兼容，已回退基础 ToF · ${raw.status}") }
+                    } else if (useLocal) raw.copy(status = "A+LOCAL ${localProblem.orEmpty()} · ${raw.status}") else raw
+                    val processingMs = SystemClock.elapsedRealtime() - processingStart
+                    result = HardwareLocalRuntime.afterProcessing(raw, result, processingMs)
                     if (generation != connectionGeneration) break
                     lastResultAt = SystemClock.elapsedRealtime()
                     snapshot = result
@@ -538,6 +566,7 @@ private val DemoAmber = Color(0xFFE9BD87)
 @Composable
 private fun HardwareDemoScreen(
     snapshot: HardwareDemoSnapshot?, connectionStatus: String,
+    localEnabled: Boolean, onLocalChanged: (Boolean) -> Unit,
     speechEnabled: Boolean, speechStatus: String, vibrationEnabled: Boolean, wireless: Boolean,
     cameraEndpoint: String, tofEndpoint: String,
     evidenceContent: @Composable () -> Unit,
@@ -625,6 +654,20 @@ private fun HardwareDemoScreen(
                 }
             }
             Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF303233)))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("A+LOCAL 实验模式", fontSize = 14.sp)
+                    Text(if (replay) "回放使用保存的判决" else if (localEnabled) "未完成实物标定 · 模拟效果不代表实机效果" else "当前使用基础 ToF",
+                        color = DemoMuted, fontSize = 10.sp)
+                }
+                Switch(localEnabled, onLocalChanged, enabled = !replay,
+                    modifier = Modifier.testTag("hardware_demo_local").semantics { contentDescription = "A+LOCAL 实验模式" },
+                    colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
+                        checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
+            }
+            if (localEnabled || replay) Text(snapshot?.status ?: connectionStatus,
+                color = DemoMuted, fontSize = 10.sp,
+                modifier = Modifier.testTag("hardware_demo_algorithm_status"))
             if ((!usable || !cameraUsable) && !replay) {
                 TextButton(onClick = onDiscover, modifier = Modifier.testTag("hardware_demo_reconnect")) {
                     Text(if (wireless) "重新发现并连接" else "重新连接 USB 中转", color = DemoTeal)

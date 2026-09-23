@@ -4,6 +4,27 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.15.0 frozen A+LOCAL phone experiment
+
+- User requested the research combination on the hardware phone. Added the exact
+  retained-A integral/threshold and frozen LOCAL HGB classifier, with source/model
+  hashes and no fit or threshold change. Portable core tests cover 111 A oracle
+  cases and 48 LOCAL feature/probability queries, including consumed observations.
+- Hardware adaptation remains nominal: centre-cropped VGA, 100-degree camera,
+  45-degree ToF, original coarse orientation, zone-centre radial-to-axial conversion.
+  No physical calibration, motion synchrony or simulation-to-real accuracy claim.
+- Switch defaults to experiment and persists; the original ToF mode is retained.
+  LOCAL uses central queries only, runs off-main without queues, and cannot survive
+  stale RGB/ToF or dispatcher delay. Camera loss retains A; LOCAL-only alerts keep
+  UNKNOWN and no attributed distance. Saved evidence retains original verdict/status.
+- Independent integration review found a post-dispatch RGB-expiry gap, fixed with
+  a regression for both expiry and cached-verdict/new-preview cases. Seven focused
+  JVM tests passed without skips. Device/release receipts are recorded in the guide.
+- Eight S24 Ultra / Android 16 checks passed. Real-input 10 s window completed
+  101/101 inferences, processing median/P95/max 53/61/82 ms; no physical event labels.
+  Build/lint and APK identity/signature/16 KB checks passed; installed without data
+  clearing. Final asset metadata newline normalization changes no code/model bytes.
+
 ## 2026-09-23 — v10.14.0 local evidence, replay, mount check and split inputs
 
 - Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions,

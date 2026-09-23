@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist-hardware-local-parity-v1",
+  "cases": 8,
+  "synthetic_cases": 4,
+  "synthetic_seed": 20260923,
+  "consumed_public_cases": 4,
+  "observations": "artifacts.local\\evidence\\ba-local-rescue-fresh-20260923-prepared\\observations",
+  "indices": [
+    0,
+    192,
+    288,
+    575
+  ],
+  "inputs_sha256": {
+    "rgb.npy": "b1caa56598fb0785f48d9026527355d5e25936c00fa51638bd9cb198a9c34ac0",
+    "tof.npy": "828fbea859f23c90b93c0365122219536a156d2586dc49b60e5c3b0e6b451fd2"
+  },
+  "fixture_sha256": "f1e0eba9703399f9b6df952242fb34b30764dbe09a5411ae3bea484dd484b042",
+  "payload_sha256": "6b47ffda80f58d7c6f1714a8985921321802c5daf5c95fbe444b7e2bc33eaaf6",
+  "model": {
+    "schema": "blindassist-hardware-local-v1",
+    "source_model_sha256": "1e6a4345353887effebb2aa798ace9dcdc5a46111166486179402bfcd4cc610e",
+    "selection_sha256": "fa4ab0845aab5eb62a2c3dadacc82bc073c73b2e52da198527609384e6b4a753",
+    "threshold": 0.7959699076137833,
+    "asset_sha256": "73e909c079b812a29fc75c1fd35fe79a3e7019401703f2a96eab9772a216a354",
+    "features": 961,
+    "trees": 200,
+    "fits": 0,
+    "selections": 0,
+    "extractor_sha256": "c0bd6dfaf391c4aab5455de988ea922975a5b933898b0d9aa9bd94315d694dcf",
+    "scope": "Frozen controlled-simulation LOCAL model; nominal physical camera/ToF adaptation is experimental, not calibrated or validated safety performance"
+  },
+  "scope": "Engineering regression only; reused public observations, no evaluation labels or fresh performance claims"
+}
