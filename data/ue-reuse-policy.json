@@ -3,6 +3,42 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/ba-contact-decomposition-20260923-v3",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-contact-decomposition-20260923-v2",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/ba-contact-decomposition-20260923",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/ba-local-rescue-fresh-audit-20260923",
       "source_family": "ue-local-rescue-fresh-20260923",
       "evidence_status": "source_material",
