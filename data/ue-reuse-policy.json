@@ -2,6 +2,18 @@
   "schema": "blindassist-ue-reuse-policy-v1",
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
+    {
+      "locator": "evidence/ba-regional-contact-20260923",
+      "source_family": "ue-query-occupancy-20260922",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/REGIONAL_CONTACT_PROTOCOL_20260923.md",
+      "allowed_inputs": [
+        {
+          "relative_path": ".",
+          "role": "evaluator"
+        }
+      ]
+    },
       {
         "locator": "evidence/ba-motion-return-audit-20260923",
         "source_family": "ue-motion-return-consumed-20260923",
