@@ -1,3 +1,13 @@
+## Contact decomposition: position transfer gap beyond probability gating (2026-09-23)
+
+[Frozen selected-checkpoint diagnostic](nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):
+binary/exact held conditional medians both100/352within5cm; exact train404/560.
+Only31/165exact blocked finite contacts have accurate median;134are inaccurate.
+Exact width curves have zero>1cmwrong-direction increases, yet location stays poor.
+q=1would falsecross800/800right-censored cases; never a usable replacement.
+Diagnostic COMPONENT; no fit,cutoff change,causal claim or App promotion. Old
+negative controls and A/LOCAL/UNKNOWN preserved; independent146880target auditPASS.
+
 ## Selective LOCAL rescue: partial filtering, rejection target missed (2026-09-23)
 
 [Completed frozen check](nearfield/LOCAL_RESCUE_RESULTS_20260923.md):

@@ -1,3 +1,9 @@
+2026-09-23 [contact error decomposition](../research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):
+No training: exact conditional position hits404/560train ->100/352held; binary
+held also100/352. Only31/165blocked exact cases hide accurate median positions.
+Width order alone does not solve localization. Diagnostic COMPONENT; old negatives,
+A/LOCAL/UNKNOWN preserved. No q-unity or checkpoint promotion.
+
 2026-09-23 [selective LOCAL rescue](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md):
 One frozen ambiguity-fraction gate on576new controlled frames keeps41/41
 incremental LOCAL TP and all event onsets, but removes4/15added FP (26.7%),

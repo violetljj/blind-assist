@@ -1,3 +1,8 @@
+2026-09-23 [frozen contact decomposition](../research/active/dtr-r0/nearfield/CONTACT_DECOMPOSITION_RESULTS_20260923.md):
+Position transfer remains weak beyond gating: exact internal median72.14%train
+versus28.41%held within5cm;134/165blocked cases also have inaccurate positions.
+Read-only diagnostic retained; no new predictor,training or App change.
+
 2026-09-23 [exact contact supervision result](../research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md):
 Adding exact train labels fails selected transfer: Z5cm33.24 ->7.67%,recall72.45
 ->49.53%. Train-only trajectory shows metric fitting capacity with false-crossing
