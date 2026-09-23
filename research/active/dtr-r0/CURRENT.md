@@ -1,3 +1,11 @@
+## Public motion attribution: no incremental evidence (2026-09-23)
+
+[Consumed two-frame check](nearfield/MOTION_RETURN_RESULTS_20260923.md):1152frames,
+16geometry groups. Within-zone contributor macro AUC0.603/0.596 versus static
+0.637/0.633 and wrong-zone0.581/0.568; matched coverage66.68/64.81percent.
+Both frozen gates fail. Preserve exact NEGATIVE_CONTROL, prior range and
+association controls, A/LOCAL/UNKNOWN. No fit, cutoff rescue or App change.
+
 ## Matched range admission not established (2026-09-23)
 
 [Consumed paired diagnostic](nearfield/RANGE_PAIR_RESULTS_20260923.md):144unique

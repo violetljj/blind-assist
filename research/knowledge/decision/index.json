@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "e125ab28abcb2da3444f328f065398104a68e72c9bfb381f91cc3b1132eaa627",
+  "source_fingerprint": "ddf440db0ccd1fc3ecf035e0d27768c26a0b0616c77ce1012dc63b057b7b6cfe",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 447,
-    "current_terminals": 228,
-    "run_associations": 445
+    "experiments": 448,
+    "current_terminals": 229,
+    "run_associations": 446
   },
   "failure_layers": [
     {
@@ -25869,6 +25869,46 @@
       "search_text": "terminal-range-pair-20260923 obstacle-avoidance PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED Three frozen public readouts fail joint3m admission across two consumed cohorts. Nearest compatible noise ranking99.22/99.87percent but crossing76.56/88.02percent and outsideFPR26.17/41.54percent. Preserve ordering and attribution diagnostic; no fit or App change. Separately justified public return ownership or range mechanism; retain exact readout negatives and consumed evidence boundary NEGATIVE_CONTROL  Three fixed public range readouts for3m admission on consumed controlled pairs Ordering signal and evaluator attribution diagnostic Joint crossing and outside false alert criteria fail Separately justified public return ownership or range mechanism Retune consumed cutoff to claim frozen criteria passed Treat near far ordering as target ownership or reliable absolute range Use evaluator target mask as public gate or claim input impossibility"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-motion-return-20260923",
+      "status": "negative",
+      "question": "Frozen public two-frame projection residual within-zone contributor AUC0.603/0.596 below static0.637/0.633; matched contributor coverage66.68/64.81percent on1152consumed frames. No incremental attribution gate pass; no student or App change.",
+      "baseline": null,
+      "change": "Separately justified return identity or joint angular range mechanism with explicit coverage and matched controls",
+      "primary_metric": null,
+      "decision": "MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "ec3a1ebd9498b3aff5f7107c415b0057313b0256",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "temporal_belief": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified return identity or joint angular range mechanism with explicit coverage and matched controls",
+      "forbidden_repeats": [
+        "Tune consumed LK or ownership cutoff to rescue the frozen diagnostic",
+        "Promote contributor ranking or conditional AUC to target ownership or alert benefit",
+        "Infer all RGB or temporal information absent from this fixed residual failure"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed two-frame public projection residual as return attribution on consumed pure translation",
+      "retained_surface": "Public residual diagnostics and explicit tracking coverage",
+      "failure_signature": "AUC0.603/0.596 below static0.637/0.633 with incomplete coverage",
+      "revisit_trigger": "Separately justified joint angular range or return identity mechanism",
+      "assignment_basis": "Frozen1152frame diagnostic and independent756511check audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/MOTION_RETURN_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-motion-return-20260923",
+      "search_text": "terminal-motion-return-20260923 obstacle-avoidance MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED Frozen public two-frame projection residual within-zone contributor AUC0.603/0.596 below static0.637/0.633; matched contributor coverage66.68/64.81percent on1152consumed frames. No incremental attribution gate pass; no student or App change. Separately justified return identity or joint angular range mechanism with explicit coverage and matched controls NEGATIVE_CONTROL  Fixed two-frame public projection residual as return attribution on consumed pure translation Public residual diagnostics and explicit tracking coverage AUC0.603/0.596 below static0.637/0.633 with incomplete coverage Separately justified joint angular range or return identity mechanism Tune consumed LK or ownership cutoff to rescue the frozen diagnostic Promote contributor ranking or conditional AUC to target ownership or alert benefit Infer all RGB or temporal information absent from this fixed residual failure"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35637,6 +35677,30 @@
       ],
       "layer_scores": {},
       "search_text": "ba-range-pair-20260923 Can public range readouts distinguish matched3m crossings Saved public8x8ToF and global nearest control Fixed compatible nearest and median3 paired observability diagnostic Joint crossing and outside endpoint FPR including missing PUBLIC_RANGE_ADMISSION_NOT_ESTABLISHED research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md ue-local-stability-and-rescue-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-motion-return-20260923",
+      "status": "archived",
+      "question": "Does public temporal projection consistency add return attribution evidence",
+      "baseline": "Same matched population static coordinate and wrong prior zone controls",
+      "change": "Fixed bidirectional RGB optical flow with current prior ToF ratio",
+      "primary_metric": "Within mixed zone contributor macro AUC and all contributor coverage",
+      "decision": "MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED",
+      "report": "research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md",
+      "source": "ue-local-stability-and-rescue-consumed-development",
+      "commit": "ec3a1ebd9498b3aff5f7107c415b0057313b0256",
+      "association_id": "ba-motion-return-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-motion-return-20260923 Does public temporal projection consistency add return attribution evidence Same matched population static coordinate and wrong prior zone controls Fixed bidirectional RGB optical flow with current prior ToF ratio Within mixed zone contributor macro AUC and all contributor coverage MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md ue-local-stability-and-rescue-consumed-development"
     }
   ],
   "associations": [
@@ -35771,6 +35835,20 @@
         "artifacts.local/evidence/ba-metric-contact-20260923-audit/result.json"
       ],
       "decision_id": "terminal-metric-contact-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-motion-return-20260923",
+      "use_ids": [],
+      "protocol_id": "motion-return-20260923",
+      "code_revision": "ec3a1ebd9498b3aff5f7107c415b0057313b0256",
+      "input_fingerprint": "22abd8fdde4562bdf1716660dff93f95298fc9f5b0bc639d1e272046f48e3223",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-motion-return-20260923-run/result.json",
+        "artifacts.local/evidence/ba-motion-return-audit-20260923-run-v3/result.json"
+      ],
+      "decision_id": "terminal-motion-return-20260923",
       "source_rows": 1
     },
     {

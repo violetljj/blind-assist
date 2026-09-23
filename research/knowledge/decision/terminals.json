@@ -5393,6 +5393,29 @@
         "research/active/dtr-r0/nearfield/RANGE_PAIR_PROTOCOL_20260923.md"
       ],
       "commit": "a7b3ffbc8b787f5ca4cfa91b24b5dd38214cac01"
+    },
+    {
+      "id": "terminal-motion-return-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "temporal_belief",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "MOTION_RETURN_ATTRIBUTION_NOT_ESTABLISHED",
+      "summary": "Frozen public two-frame projection residual within-zone contributor AUC0.603/0.596 below static0.637/0.633; matched contributor coverage66.68/64.81percent on1152consumed frames. No incremental attribution gate pass; no student or App change.",
+      "successor_requires": "Separately justified return identity or joint angular range mechanism with explicit coverage and matched controls",
+      "forbidden_repeats": [
+        "Tune consumed LK or ownership cutoff to rescue the frozen diagnostic",
+        "Promote contributor ranking or conditional AUC to target ownership or alert benefit",
+        "Infer all RGB or temporal information absent from this fixed residual failure"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/MOTION_RETURN_PROTOCOL_20260923.md"
+      ],
+      "commit": "ec3a1ebd9498b3aff5f7107c415b0057313b0256"
     }
   ]
 }

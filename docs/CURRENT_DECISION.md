@@ -1,3 +1,8 @@
+2026-09-23 [public motion attribution](../research/active/dtr-r0/nearfield/MOTION_RETURN_RESULTS_20260923.md):
+Frozen two-frame motion residual AUC0.603/0.596 under static control0.637/0.633;
+matched contributor coverage66.68/64.81percent. Exact NEGATIVE_CONTROL; no
+ownership cutoff, student, alert/App change or general RGB-impossibility claim.
+
 2026-09-23 [matched range diagnostic](../research/active/dtr-r0/nearfield/RANGE_PAIR_RESULTS_20260923.md):
 All three fixed public readouts fail3m admission. Nearest-compatible noise
 ordering99.22/99.87percent, but outsideFPR26.17/41.54percent. Retain exact
