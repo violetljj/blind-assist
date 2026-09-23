@@ -5324,6 +5324,29 @@
         "research/active/dtr-r0/nearfield/EXACT_CONTACT_PROTOCOL_20260923.md"
       ],
       "commit": "cdbd83299503ad34bd41f0c64ed3da34b8fe248a"
+    },
+    {
+      "id": "terminal-local-rescue-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "decision_lifecycle",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "RESCUE_GATE_NEW_INSTANCE_NEGATIVE",
+      "summary": "Frozen public ambiguity gate keeps41/41 incremental TP and all LOCAL onsets on576 new controlled frames, but removes4/15 incremental FP below50percent. A118/7/106 versus LOCAL159/22/65 and gate159/18/65; events24/29/29 of32. Retain partial lossless filtering, not reliable admission.",
+      "successor_requires": "Separately justified public evidence mechanism with frozen new evaluation; retain all remaining false alerts misses UNKNOWN and prior negatives",
+      "forbidden_repeats": [
+        "Tune the frozen scalar cutoff on this consumed new-instance result",
+        "Treat partial filtering as passing full stability or deployed benefit",
+        "Use native ownership geometry as gate input"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/LOCAL_RESCUE_GATE_PROTOCOL_20260923.md"
+      ],
+      "commit": "79dc812fa8c6453b650e867e4fe93a8baf877a4f"
     }
   ]
 }

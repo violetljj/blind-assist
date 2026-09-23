@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "51311a7d83ecbc2869c9b850c4441572e0766bfb449aa8d2a666f07081d63440",
+  "source_fingerprint": "d3ca82454be9917776d3e1f4c355679faaf9ea4da5262fb40e3fd042f3e71164",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 444,
-    "current_terminals": 225,
-    "run_associations": 442
+    "experiments": 445,
+    "current_terminals": 226,
+    "run_associations": 443
   },
   "failure_layers": [
     {
@@ -25749,6 +25749,46 @@
       "search_text": "terminal-exact-contact-20260923 obstacle-avoidance EXACT_SUPERVISION_SELECTED_TRANSFER_FAILURE Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only. Separately scoped matched metric-selection comparison; train-only fit cannot substitute for held-layout evidence NEGATIVE_CONTROL  Fixed direct CDF with exact interval supervision under inherited binary dev selection Predeclared train trajectory demonstrates partial distance fitting with full falsecross and width costs; prior sampling and A LOCAL UNKNOWN preserved Exact train supervision same CDF: selected held Z5cm117/352to27/352,width57/528to10/528,recall72.45to49.53percent,missing94to165. Fixed0.5 train trajectory reaches548/560Zhits with254falsecross; final465/560with17falsecross. Selected transfer fails; retain train-fit evidence only. New declared metric-aligned selection comparison without retrospective promotion Promote a posthoc epoch or cutoff from this consumed package Infer sensor or representation impossibility from selected checkpoint failure Treat lower conditional error or training hit rate as lossless transfer or clear-space evidence"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-local-rescue-20260923",
+      "status": "negative",
+      "question": "Frozen public ambiguity gate keeps41/41 incremental TP and all LOCAL onsets on576 new controlled frames, but removes4/15 incremental FP below50percent. A118/7/106 versus LOCAL159/22/65 and gate159/18/65; events24/29/29 of32. Retain partial lossless filtering, not reliable admission.",
+      "baseline": null,
+      "change": "Separately justified public evidence mechanism with frozen new evaluation; retain all remaining false alerts misses UNKNOWN and prior negatives",
+      "primary_metric": null,
+      "decision": "RESCUE_GATE_NEW_INSTANCE_NEGATIVE",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "79dc812fa8c6453b650e867e4fe93a8baf877a4f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified public evidence mechanism with frozen new evaluation; retain all remaining false alerts misses UNKNOWN and prior negatives",
+      "forbidden_repeats": [
+        "Tune the frozen scalar cutoff on this consumed new-instance result",
+        "Treat partial filtering as passing full stability or deployed benefit",
+        "Use native ownership geometry as gate input"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "Fixed ambiguity fraction scalar gate as reliable LOCAL-only admission on composite controlled trajectories",
+      "retained_surface": "Causal selective-rescue tooling; new-instance41of41true retention and4of15false removal without onset loss; all baseline and UNKNOWN costs",
+      "failure_signature": "26.7percent incremental FP rejection below frozen50percent target; still11added false segments versus A",
+      "revisit_trigger": "Different justified public evidence mechanism and separately frozen new source, not consumed cutoff tuning",
+      "assignment_basis": "Frozen gate and new576frame source plus independent15629assertion audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/LOCAL_RESCUE_GATE_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-local-rescue-20260923",
+      "search_text": "terminal-local-rescue-20260923 obstacle-avoidance RESCUE_GATE_NEW_INSTANCE_NEGATIVE Frozen public ambiguity gate keeps41/41 incremental TP and all LOCAL onsets on576 new controlled frames, but removes4/15 incremental FP below50percent. A118/7/106 versus LOCAL159/22/65 and gate159/18/65; events24/29/29 of32. Retain partial lossless filtering, not reliable admission. Separately justified public evidence mechanism with frozen new evaluation; retain all remaining false alerts misses UNKNOWN and prior negatives NEGATIVE_CONTROL  Fixed ambiguity fraction scalar gate as reliable LOCAL-only admission on composite controlled trajectories Causal selective-rescue tooling; new-instance41of41true retention and4of15false removal without onset loss; all baseline and UNKNOWN costs 26.7percent incremental FP rejection below frozen50percent target; still11added false segments versus A Different justified public evidence mechanism and separately frozen new source, not consumed cutoff tuning Tune the frozen scalar cutoff on this consumed new-instance result Treat partial filtering as passing full stability or deployed benefit Use native ownership geometry as gate input"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35453,6 +35493,29 @@
         "evaluation_evidence": 6
       },
       "search_text": "ba-exact-contact-20260923 Can exact first-contact supervision improve fixed CDF fitting and held-layout boundaries? Frozen binary-only direct CDF with same initial weights and schedule; sampled geometry reference Add unit-weight train-only censored5cm interval NLL to original sampled binary BCE Selected train and evaluation Z5cm gains plus missing falsecross width retention recall FPR; predeclared train trajectory NEGATIVE_CONTROL: selected transfer worsens; retain narrower train distance-fitting evidence with costs research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-local-rescue-20260923",
+      "status": "archived",
+      "question": "Can causal public admission preserve LOCAL rescues while rejecting added false alerts?",
+      "baseline": "Frozen A and A OR LOCAL plus two-frame confirmation",
+      "change": "Consumed feature diagnosis then one transfer-selected ambiguity fraction gate frozen before new576frame capture",
+      "primary_metric": "Incremental TP retention FP rejection event onset coverage and UNKNOWN",
+      "decision": "RESCUE_GATE_NEW_INSTANCE_NEGATIVE; partial lossless filtering retained but4of15FP rejection below50percent",
+      "report": "research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md",
+      "source": "ue-local-rescue-consumed-and-new-instance-development",
+      "commit": "79dc812fa8c6453b650e867e4fe93a8baf877a4f",
+      "association_id": "ba-local-rescue-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 6,
+        "decision_lifecycle": 10
+      },
+      "search_text": "ba-local-rescue-20260923 Can causal public admission preserve LOCAL rescues while rejecting added false alerts? Frozen A and A OR LOCAL plus two-frame confirmation Consumed feature diagnosis then one transfer-selected ambiguity fraction gate frozen before new576frame capture Incremental TP retention FP rejection event onset coverage and UNKNOWN RESCUE_GATE_NEW_INSTANCE_NEGATIVE; partial lossless filtering retained but4of15FP rejection below50percent research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md ue-local-rescue-consumed-and-new-instance-development"
     }
   ],
   "associations": [
@@ -35543,6 +35606,21 @@
         "artifacts.local/evidence/ba-exact-contact-20260923-audit/result.json"
       ],
       "decision_id": "terminal-exact-contact-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-local-rescue-20260923",
+      "use_ids": [],
+      "protocol_id": "local-rescue-gate-20260923",
+      "code_revision": "79dc812fa8c6453b650e867e4fe93a8baf877a4f",
+      "input_fingerprint": "a920377677d84c0fba9041a9a6b9fd2ca8b095c73c1c31934e834ce92055062a",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-local-rescue-fresh-20260923-evaluated/result.json",
+        "artifacts.local/evidence/ba-local-rescue-fresh-audit-20260923-run/result.json",
+        "artifacts.local/evidence/ba-local-rescue-audit-20260923/run/compact.json"
+      ],
+      "decision_id": "terminal-local-rescue-20260923",
       "source_rows": 1
     },
     {

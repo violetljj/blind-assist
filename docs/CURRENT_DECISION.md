@@ -1,3 +1,11 @@
+2026-09-23 [selective LOCAL rescue](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md):
+One frozen ambiguity-fraction gate on576new controlled frames keeps41/41
+incremental LOCAL TP and all event onsets, but removes4/15added FP (26.7%),
+below50%. A118/7/106 versus LOCAL159/22/65 and gate159/18/65; events24/29/29
+of32. Retain partial filtering and exact NEGATIVE_CONTROL; no cutoff retry,
+App change or safety claim.12tests and independent15629assertion auditPASS;
+one capture complete and all owned processes released. A/LOCAL/UNKNOWN retained.
+
 2026-09-23 [exact contact supervision](../research/active/dtr-r0/nearfield/EXACT_CONTACT_RESULTS_20260923.md):
 Same CDF plus exact train labels: selected held Z5cm117/352 ->27/352,
 recall72.45 ->49.53%,missing94 ->165. Train trajectory can fit Z precisely,
