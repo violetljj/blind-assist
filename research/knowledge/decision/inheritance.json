@@ -2221,6 +2221,16 @@
       "failure_signature": "Neither full package passes; geometry recall loses8.39points and horizon falsecross increases27/800 despite width and horizon hit gains17.23/30.40points",
       "revisit_trigger": "Separately scoped metric readout or transfer comparison preserving sampling censoring and all costs",
       "assignment_basis": "Two fixed100epoch fits13tests777024independent worldlabels sealed controls and full output audit"
+    },
+    {
+      "terminal_id": "terminal-boundary-supervision-20260923",
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This fixed-budget dense-slice geometry package as a joint boundary-and-contact upgrade",
+      "retained_surface": "Large train and layout-transfer boundary gains with reduced false positives; retain all recall coverage and individual boundary losses and A LOCAL UNKNOWN",
+      "failure_signature": "Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative.",
+      "revisit_trigger": "Separately scoped materially different mechanism; no additional fit from this pilot",
+      "assignment_basis": "One completed fit with frozen representation and independent label selection metric audit"
     }
   ]
 }

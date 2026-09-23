@@ -1,3 +1,14 @@
+## Dense boundary supervision: precision gains with recall cost (2026-09-23)
+
+[One fixed-representation fit](nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md)
+improves held width5cm43/528to192/528 and horizon61/352to122/352; train gains
+31.07/26.25points,held gains28.22/17.33points. Contact query3894/2196/588 becomes
+3650/1393/832 TP/FP/FN: FPR9.479to6.013%,recall86.88to81.44%. Recall loss5.44points
+fails3point retention. Keep partial boundary effect; exact joint-upgrade package
+NEGATIVE_CONTROL, not A/LOCAL/App replacement. One100epoch CUDA fit complete;
+independent labels,all10checkpoint losses,selection and metrics auditPASS.
+No schedule/loss/cutoff/seed retry; A,LOCAL,UNKNOWN and prior negatives retained.
+
 ## Boundary-aware query sampling: metric gains with costs (2026-09-23)
 
 [Fixed-budget result](nearfield/CONTACT_SAMPLING_RESULTS_20260923.md):

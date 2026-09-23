@@ -5255,6 +5255,29 @@
         "research/active/dtr-r0/nearfield/CONTACT_SAMPLING_PROTOCOL_20260923.md"
       ],
       "commit": "7f23bf61739e9075ae8ed53ac239616e352833dc"
+    },
+    {
+      "id": "terminal-boundary-supervision-20260923",
+      "route": "obstacle-avoidance",
+      "failure_layers": [
+        "observation_perception",
+        "geometry_motion",
+        "evaluation_evidence"
+      ],
+      "status": "negative",
+      "decision": "DENSE_BOUNDARY_ACCURACY_RECALL_TRADEOFF",
+      "summary": "Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative.",
+      "successor_requires": "Separately justified mechanism addressing accuracy recall coverage; no consumed density cutoff loss seed or epoch rescue",
+      "forbidden_repeats": [
+        "Treat improved conditional error or boundary precision as a lossless contact upgrade",
+        "Retune the consumed fixed query schedule loss checkpoint or threshold to rescue its failed joint gate",
+        "Erase measured boundary supervision gains or promote them to hardware safety evidence"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_PROTOCOL_20260923.md"
+      ],
+      "commit": "dc006dc6f22e8b761288b2377bf8890ab19bbda5"
     }
   ]
 }

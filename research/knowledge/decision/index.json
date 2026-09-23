@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-23",
-  "source_fingerprint": "d815039023e2bce803c3999680248cf877898d442238fc20904b375994219315",
+  "source_fingerprint": "876c892612eb35e2b6dfa88ad187c17dc99916e0c98a123d40587f58198a7726",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 441,
-    "current_terminals": 222,
-    "run_associations": 439
+    "experiments": 442,
+    "current_terminals": 223,
+    "run_associations": 440
   },
   "failure_layers": [
     {
@@ -25629,6 +25629,46 @@
       "search_text": "terminal-contact-sampling-20260923 obstacle-avoidance BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS Fixed72query sampling: geometry evaluation width within5cm43/528 to134/528 and horizon61/352 to168/352; train horizon175/560 to467/560. Recall86.88 to78.49percent; horizon falsecross119/800 to146/800. Retain sampling mechanism COMPONENT, neither full package passes. Separately scoped mechanism comparison retaining sampling and censoring controls; test residual transfer and metric error without consumed threshold rescue COMPONENT_OR_CHALLENGER COMPONENT Boundary-aware query sampling mechanism on fixed consumed RGB ToF contact Development; no checkpoint promotion Geometry metric-boundary gains under same72query budget; old controls and A LOCAL UNKNOWN preserved Neither full package passes; geometry recall loses8.39points and horizon falsecross increases27/800 despite width and horizon hit gains17.23/30.40points Separately scoped metric readout or transfer comparison preserving sampling censoring and all costs Treat sampling improvement as unique occupancy or precise virtual walking Hide missing boundaries false crossings or recall loss Retune this consumed two-fit package to rescue the old component gate"
     },
     {
+      "kind": "current_terminal",
+      "id": "terminal-boundary-supervision-20260923",
+      "status": "negative",
+      "question": "Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative.",
+      "baseline": null,
+      "change": "Separately justified mechanism addressing accuracy recall coverage; no consumed density cutoff loss seed or epoch rescue",
+      "primary_metric": null,
+      "decision": "DENSE_BOUNDARY_ACCURACY_RECALL_TRADEOFF",
+      "report": "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md",
+      "source": "decision/terminals.json",
+      "commit": "dc006dc6f22e8b761288b2377bf8890ab19bbda5",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Separately justified mechanism addressing accuracy recall coverage; no consumed density cutoff loss seed or epoch rescue",
+      "forbidden_repeats": [
+        "Treat improved conditional error or boundary precision as a lossless contact upgrade",
+        "Retune the consumed fixed query schedule loss checkpoint or threshold to rescue its failed joint gate",
+        "Erase measured boundary supervision gains or promote them to hardware safety evidence"
+      ],
+      "inheritance_role": "NEGATIVE_CONTROL",
+      "inheritance_mode": null,
+      "role_scope": "This fixed-budget dense-slice geometry package as a joint boundary-and-contact upgrade",
+      "retained_surface": "Large train and layout-transfer boundary gains with reduced false positives; retain all recall coverage and individual boundary losses and A LOCAL UNKNOWN",
+      "failure_signature": "Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative.",
+      "revisit_trigger": "Separately scoped materially different mechanism; no additional fit from this pilot",
+      "assignment_basis": "One completed fit with frozen representation and independent label selection metric audit",
+      "evidence": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md",
+        "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_PROTOCOL_20260923.md"
+      ],
+      "association_id": "ba-boundary-supervision-20260923",
+      "search_text": "terminal-boundary-supervision-20260923 obstacle-avoidance DENSE_BOUNDARY_ACCURACY_RECALL_TRADEOFF Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative. Separately justified mechanism addressing accuracy recall coverage; no consumed density cutoff loss seed or epoch rescue NEGATIVE_CONTROL  This fixed-budget dense-slice geometry package as a joint boundary-and-contact upgrade Large train and layout-transfer boundary gains with reduced false positives; retain all recall coverage and individual boundary losses and A LOCAL UNKNOWN Fixed-feature geometry dense supervision improves held width5cm43/528to192/528 and horizon61/352to122/352; FPR9.479to6.013percent, recall86.88to81.44percent. Accuracy gains pass train/transfer but5.44point recall loss fails3point retention. Preserve partial boundary gain and exact joint-upgrade negative. Separately scoped materially different mechanism; no additional fit from this pilot Treat improved conditional error or boundary precision as a lossless contact upgrade Retune the consumed fixed query schedule loss checkpoint or threshold to rescue its failed joint gate Erase measured boundary supervision gains or promote them to hardware safety evidence"
+    },
+    {
       "kind": "experiment",
       "id": "dtr-r0",
       "status": "active",
@@ -35266,6 +35306,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "ba-contact-sampling-20260923 Does boundary-aware continuous sampling improve metric contact boundaries at fixed query budget? Sealed ba-contact-boundary-20260923 direct and geometry72query fits 36uniform plus36boundary-or-fallback queries perimage; identical frozen features initial schedule architecture and loss All finite boundary within5cm coverage conditional error and rightcensored falsecross; query recall FPR BOUNDARY_SAMPLING_COMPONENT_WITH_QUERY_COSTS research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "ba-boundary-supervision-20260923",
+      "status": "archived",
+      "question": "Does finer fixed-budget supervision improve boundary fitting and layout transfer at acceptable contact costs?",
+      "baseline": "Saved coarse-query geometry model with same initial features schedule optimizer and dev selection",
+      "change": "Geometry-independent72query curriculum from24coarse and48fine slice queries per image per epoch; one new fit",
+      "primary_metric": "Train/evaluation both-axis joint5cm gains with recall FPR and censored-crossing retention",
+      "decision": "ACCURACY_COST_TRADEOFF; retain measured boundary gains; exact joint-upgrade NEGATIVE_CONTROL",
+      "report": "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md",
+      "source": "ue-query-occupancy-20260922-consumed-development",
+      "commit": "dc006dc6f22e8b761288b2377bf8890ab19bbda5",
+      "association_id": "ba-boundary-supervision-20260923",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "ba-boundary-supervision-20260923 Does finer fixed-budget supervision improve boundary fitting and layout transfer at acceptable contact costs? Saved coarse-query geometry model with same initial features schedule optimizer and dev selection Geometry-independent72query curriculum from24coarse and48fine slice queries per image per epoch; one new fit Train/evaluation both-axis joint5cm gains with recall FPR and censored-crossing retention ACCURACY_COST_TRADEOFF; retain measured boundary gains; exact joint-upgrade NEGATIVE_CONTROL research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md ue-query-occupancy-20260922-consumed-development"
     }
   ],
   "associations": [
@@ -35297,6 +35359,21 @@
         "artifacts.local/evidence/ba-boundary-error-20260923-audit-v2/result.json"
       ],
       "decision_id": "terminal-boundary-error-20260923",
+      "source_rows": 1
+    },
+    {
+      "run_id": "ba-boundary-supervision-20260923",
+      "use_ids": [],
+      "protocol_id": "boundary-supervision-20260923",
+      "code_revision": "dc006dc6f22e8b761288b2377bf8890ab19bbda5",
+      "input_fingerprint": "e98595820b49bc181cf0b1a7ce96798656ac656b71e35887064654356be567ed",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md",
+        "artifacts.local/evidence/ba-boundary-supervision-20260923-v2/result.json",
+        "artifacts.local/evidence/ba-boundary-supervision-20260923-v2/prediction-seal.json",
+        "artifacts.local/evidence/ba-boundary-supervision-20260923-audit-v2/result.json"
+      ],
+      "decision_id": "terminal-boundary-supervision-20260923",
       "source_rows": 1
     },
     {

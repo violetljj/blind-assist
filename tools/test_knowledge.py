@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 from tools import knowledge
 
@@ -42,7 +44,15 @@ class KnowledgeCliTest(unittest.TestCase):
             index, "test-route", "", diagnosis, mechanisms, 0))
 
     def test_historical_input_integrity_survives_checkout_drift(self) -> None:
-        with TemporaryDirectory(prefix="blindassist-input-history-") as temporary:
+        # A commit hook may use a private index. Its fixture repository must not
+        # inherit that index (or another repository's Git location/object store).
+        repository_variables = {"GIT_INDEX_FILE", "GIT_DIR", "GIT_WORK_TREE",
+                                "GIT_COMMON_DIR", "GIT_OBJECT_DIRECTORY",
+                                "GIT_ALTERNATE_OBJECT_DIRECTORIES"}
+        environment = {key: value for key, value in os.environ.items()
+                       if key not in repository_variables}
+        with TemporaryDirectory(prefix="blindassist-input-history-") as temporary, \
+                patch.dict(os.environ, environment, clear=True):
             repo = Path(temporary)
             def git(*arguments: str) -> str:
                 return subprocess.check_output(

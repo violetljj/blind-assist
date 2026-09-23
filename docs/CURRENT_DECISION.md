@@ -1,3 +1,9 @@
+2026-09-23 [dense boundary supervision](../research/active/dtr-r0/nearfield/BOUNDARY_SUPERVISION_RESULTS_20260923.md):
+Same representation/model and equal query budget improve held width5cm8.14to36.36%
+and horizon17.33to34.66%. FPR9.479to6.013%,but recall86.88to81.44% exceeds the
+3point loss budget. Retain boundary gains and all costs; exact joint-upgrade
+NEGATIVE_CONTROL. One fit and independent audit complete; no automatic retry.
+
 2026-09-23 [boundary-aware contact sampling](../research/active/dtr-r0/nearfield/CONTACT_SAMPLING_RESULTS_20260923.md):
 Fixed72query Development: geometry evaluation width within5cm43/528 ->134/528,
 horizon61/352 ->168/352; train horizon175/560 ->467/560. Recall86.88 ->78.49%,
