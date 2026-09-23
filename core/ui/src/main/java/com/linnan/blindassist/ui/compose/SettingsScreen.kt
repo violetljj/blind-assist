@@ -79,6 +79,7 @@ fun SettingsScreen(
                 body = if (language == AppLanguage.EN) "Speak short risk prompts" else "播报短句式风险提示",
                 checked = controls.speechEnabled,
                 language = language,
+                modifier = Modifier.testTag("settings_speech_toggle"),
                 onCheckedChange = onSpeechChange
             )
             SettingsDivider()
@@ -88,6 +89,7 @@ fun SettingsScreen(
                 body = if (language == AppLanguage.EN) "Give tactile feedback for near and critical risks" else "在近处和迫近风险时给出触觉反馈",
                 checked = controls.vibrationEnabled,
                 language = language,
+                modifier = Modifier.testTag("settings_vibration_toggle"),
                 onCheckedChange = onVibrationChange
             )
         }

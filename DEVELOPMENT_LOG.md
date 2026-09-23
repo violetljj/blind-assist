@@ -4,6 +4,18 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — v10.15.1 restore home and explicit Start assist
+
+- Corrected the user's intended scope: MainActivity is launcher again; home stays
+  idle. Its existing Start assist action selects Wi-Fi A+LOCAL and transfers speech/
+  vibration toggles, instead of dispatching the old phone-camera algorithm.
+- End assist returns to home and lifecycle cleanup stops acquisition/feedback.
+  Hardware Activity is internal-only; frozen model and threshold bytes unchanged.
+- Updated the affected entry, idle/start/end, settings handoff and detail-toggle
+  regressions. Validation receipts live under artifacts.local/hardware-bringup/home-assist-20260923.
+- Six device tests, debug/androidTest build, lint and APK checks passed. Installed
+  v10.15.1 without clearing data, inspected the restored home, and left the session idle.
+
 ## 2026-09-23 — v10.15.0 frozen A+LOCAL phone experiment
 
 - User requested the research combination on the hardware phone. Added the exact

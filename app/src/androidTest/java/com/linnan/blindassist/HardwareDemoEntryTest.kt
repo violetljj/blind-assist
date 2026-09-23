@@ -18,10 +18,10 @@ import org.junit.runner.RunWith
 class HardwareDemoEntryTest {
     @get:Rule val compose = createAndroidComposeRule<HardwareDemoActivity>()
 
-    @Test fun launcherResolvesToHardwareWithMoreFunctionsAvailable() {
+    @Test fun launcherResolvesToHomeAndExplicitSessionCanEnd() {
         val activity = compose.activity
         val launch = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
-        assertEquals(HardwareDemoActivity::class.java.name, launch?.component?.className)
+        assertEquals(MainActivity::class.java.name, launch?.component?.className)
         compose.onNodeWithTag("hardware_demo_more").assertIsDisplayed()
         compose.onNodeWithTag("hardware_demo_mode").assertIsDisplayed()
     }

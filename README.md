@@ -5,7 +5,8 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
-Hardware demo v10.15.0 includes a switchable **A+LOCAL experimental mode** with
+App v10.15.1 opens the original home without starting perception. **Start assist**
+explicitly starts the **A+LOCAL experimental mode** with
 the frozen research classifier running offline on the phone. Its nominal camera/ToF
 registration is not physical calibration; simulation results do not establish hardware
 accuracy. The original ToF mode remains available. See [hardware guide](docs/HARDWARE_OBSTACLE_DEMO.md).
@@ -27,7 +28,7 @@ deployed or validated. See the [current perception route](research/active/dtr-r0
 
 ## Start here
 
-- 默认入口（v10.15.0）：打开 App 直接进入[相机与 10 Hz 8×8 ToF 无线实物展示](docs/HARDWARE_OBSTACLE_DEMO.md)，支持 A+LOCAL 未标定实验模式、基础 ToF 切换、事件提醒、最近 20 秒留证、静音回放、安装粗检查与分路降级；原首页从“更多功能”进入。
+- 默认入口（v10.15.1）：打开 App 停留原首页；点击“开始辅助”才运行[相机与 10 Hz 8×8 ToF 的 A+LOCAL](docs/HARDWARE_OBSTACLE_DEMO.md)，点击“结束辅助”回首页并停止会话。支持基础 ToF 切换、事件提醒、最近 20 秒留证、静音回放与分路降级。
 - Current project state: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 current: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)

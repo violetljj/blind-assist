@@ -61,6 +61,7 @@ import java.io.FileInputStream
 
 @RunWith(AndroidJUnit4::class)
 class BlindAssistComposeTest {
+    private var feedbackBefore: com.linnan.blindassist.preferences.UserPreferenceState? = null
     private val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
     private val composeRule = createAndroidComposeRule<MainActivity>()
 
@@ -74,6 +75,21 @@ class BlindAssistComposeTest {
 
     @After
     fun closeCameraIfOpen() {
+        feedbackBefore?.let { saved ->
+            val context = InstrumentationRegistry.getInstrumentation().targetContext
+            com.linnan.blindassist.preferences.UserPreferences(context).apply {
+                setSpeechEnabled(saved.speechEnabled)
+                setVibrationEnabled(saved.vibrationEnabled)
+            }
+            context.getSharedPreferences("hardware_demo", 0).edit()
+                .putBoolean("speech", saved.speechEnabled).putBoolean("vibration", saved.vibrationEnabled).commit()
+        }
+        if (composeRule.onAllNodesWithTag("hardware_demo_more").fetchSemanticsNodes().isNotEmpty()) {
+            composeRule.onNodeWithTag("hardware_demo_more").performScrollTo().performClick()
+            composeRule.waitUntil(timeoutMillis = 5000) {
+                composeRule.onAllNodesWithTag("home_primary_assist").fetchSemanticsNodes().isNotEmpty()
+            }
+        }
         val backDescription = when {
             hasContentDescription("返回功能页") -> "返回功能页"
             hasContentDescription("Back to features") -> "Back to features"
@@ -108,15 +124,23 @@ class BlindAssistComposeTest {
     }
 
     @Test
-    fun phoneCameraEntryUsesExistingCameraPath() {
+    fun homeStaysIdleUntilStartAndEndsBackAtHome() {
         prepareMainShell()
         openFeaturesTab()
 
         composeRule.onNodeWithTag("daily_usage_mode_selector").assertExists()
+        composeRule.onAllNodesWithTag("hardware_demo_mode").assertCountEquals(0)
+        val launch = composeRule.activity.packageManager.getLaunchIntentForPackage(composeRule.activity.packageName)
+        org.junit.Assert.assertEquals(MainActivity::class.java.name, launch?.component?.className)
         composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasTextOrContentDescription("返回功能页")
+            composeRule.onAllNodesWithTag("hardware_demo_mode").fetchSemanticsNodes().isNotEmpty()
         }
+        composeRule.onNodeWithTag("hardware_demo_local").performScrollTo().assertExists()
+        org.junit.Assert.assertTrue(composeRule.activity.getSharedPreferences("hardware_demo", 0).getBoolean("a_local", false))
+        composeRule.onNodeWithTag("hardware_demo_more").performScrollTo().performClick()
+        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().assertIsDisplayed()
+        composeRule.onAllNodesWithTag("hardware_demo_mode").assertCountEquals(0)
     }
 
     @Test
@@ -187,54 +211,43 @@ class BlindAssistComposeTest {
     }
 
     @Test
-    fun cameraPanelShowsScenarioAndRiskExplanationWhenCameraPathOpens() {
+    fun startUsesCurrentAlgorithmAndHomeFeedbackSettings() {
         prepareMainShell()
         openFeaturesTab()
-
-        composeRule.onNodeWithContentDescription("选择日常辅助模式")
-            .performScrollTo()
-            .performClick()
-        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
-        composeRule.waitUntil(timeoutMillis = 5000) {
-            hasTextOrContentDescription("返回功能页")
-        }
-        composeRule.waitUntil(timeoutMillis = 5000) {
-            hasAnyText("相机启动中", "检测已开启", "持续检测中", "模型不可用")
-        }
-
-        composeRule.onNodeWithTag("camera_scenario_label").assertExists()
-        composeRule.onNodeWithTag("camera_daily_mode_label").assertExists()
-        composeRule.onNodeWithTag("risk_explanation_headline").assertExists()
-        composeRule.onAllNodesWithTag("camera_quiet_shortcut").assertCountEquals(0)
-        composeRule.onAllNodesWithTag("camera_sensitive_shortcut").assertCountEquals(0)
-        composeRule.onAllNodesWithTag("camera_scenario_toggle").assertCountEquals(0)
-        composeRule.onAllNodesWithTag("camera_debug_toggle").assertCountEquals(0)
-        composeRule.onNodeWithContentDescription("检测，当前已开启，点击关闭").performClick()
-        composeRule.waitUntil(timeoutMillis = 5000) {
-            hasText("检测已暂停")
-        }
-    }
-
-    @Test
-    fun cameraDebugAreaAppearsOnlyAfterSettingsOptIn() {
-        prepareMainShell()
+        feedbackBefore = com.linnan.blindassist.preferences.UserPreferences(composeRule.activity).load()
 
         composeRule.onNodeWithText("设置").performClick()
-        setSettingsSwitch("settings_care_mode_toggle", enabled = false)
-        setSettingsSwitch("settings_debug_toggle", enabled = true)
+        setSettingsSwitch("settings_speech_toggle", enabled = false)
+        setSettingsSwitch("settings_vibration_toggle", enabled = false)
         composeRule.onNodeWithText("辅助").performClick()
         composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasTextOrContentDescription("返回功能页")
+            composeRule.onAllNodesWithTag("hardware_demo_mode").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("hardware_demo_algorithm_status").performScrollTo().assertExists()
+        val prefs = composeRule.activity.getSharedPreferences("hardware_demo", 0)
+        org.junit.Assert.assertFalse(prefs.getBoolean("speech", true))
+        org.junit.Assert.assertFalse(prefs.getBoolean("vibration", true))
+        composeRule.onNodeWithTag("hardware_demo_more").performScrollTo().performClick()
+        composeRule.onNodeWithText("设置").performClick()
+        setSettingsSwitch("settings_speech_toggle", enabled = feedbackBefore!!.speechEnabled)
+        setSettingsSwitch("settings_vibration_toggle", enabled = feedbackBefore!!.vibrationEnabled)
+    }
+
+    @Test
+    fun hardwareDataDetailsRemainCollapsibleAfterStart() {
+        prepareMainShell()
+
+        composeRule.onNodeWithText("辅助").performClick()
+        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            composeRule.onAllNodesWithTag("hardware_demo_mode").fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeRule.onNodeWithTag("camera_debug_toggle")
-            .assertStateDescription("已收起")
-            .assertExists()
-        composeRule.onAllNodesWithText("FPS", substring = true).assertCountEquals(0)
-        composeRule.onNodeWithTag("camera_debug_toggle").performClick()
-        composeRule.onNodeWithTag("camera_debug_toggle").assertStateDescription("已展开")
-        composeRule.onNodeWithText("FPS", substring = true).assertExists()
+        composeRule.onNodeWithTag("hardware_demo_detail_toggle").performScrollTo().performClick()
+        composeRule.onNodeWithText("收起数据 −").assertExists()
+        composeRule.onNodeWithTag("hardware_demo_detail_toggle").performClick()
+        composeRule.onNodeWithText("感知数据 ＋").assertExists()
     }
 
     private fun prepareMainShell() {

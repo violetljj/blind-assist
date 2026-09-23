@@ -592,7 +592,7 @@ private fun HardwareDemoScreen(
                     Text("前视感知", fontSize = 27.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium)
                 }
                 TextButton(onClick = onMore, modifier = Modifier.testTag("hardware_demo_more")) {
-                    Text("更多功能", color = DemoMuted, fontSize = 12.sp)
+                    Text("结束辅助", color = DemoMuted, fontSize = 12.sp)
                 }
             }
             Box(Modifier.fillMaxWidth().aspectRatio(0.94f).clip(RoundedCornerShape(5.dp))

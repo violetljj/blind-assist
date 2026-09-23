@@ -124,7 +124,8 @@ fun FeatureScreen(
             Spacer(Modifier.height(28.dp))
 
             PrimaryAssistAction(
-                subtitle = feedbackSummary,
+                subtitle = if (language == AppLanguage.EN) "A+LOCAL · Camera + ToF hardware\n$feedbackSummary"
+                    else "A+LOCAL · 相机与 ToF 硬件\n$feedbackSummary",
                 language = language,
                 onClick = onOpenCamera
             )
