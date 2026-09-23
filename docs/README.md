@@ -2,9 +2,9 @@
 
 The hot path is intentionally short:
 
-1. [Project state](PROJECT_STATE.md)
+1. [中文一页状态：系统、指标、当前问题](PROJECT_STATE.md)
 2. [Current research decision](CURRENT_DECISION.md)
-3. [Current L10-R0 Goal-Lock route](../research/active/l10-r0/CURRENT.md)
+3. [Paused L10-R0 Goal-Lock evidence](../research/active/l10-r0/CURRENT.md)
 4. [Cane-complementary forward perception / retained DTR history](../research/active/dtr-r0/CURRENT.md)
 
 The route `README.md` files are detailed ledgers and reproduction surfaces;
@@ -17,6 +17,8 @@ load them only after the matching compact current.
 - [Device regression](DEVICE_REGRESSION.md)
 - [Release and verification](RELEASE_AND_VERIFICATION.md)
 - [Local artifacts](LOCAL_ARTIFACTS.md)
+- [关键证据备份与恢复](operations/CRITICAL_EVIDENCE_BACKUP.md)
+- [Python CI 与冻结文件跨平台检查](operations/PYTHON_CI.md)
 - [Asset management system](asset-management/README.md)
 - [Resource fabric and data reuse](RESOURCE_FABRIC.md)
 - [Host research compute](HOST_RESEARCH_COMPUTE.md)

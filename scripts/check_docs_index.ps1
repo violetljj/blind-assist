@@ -2,8 +2,9 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1).Trim()
 if (-not $repoRoot) { throw 'Run inside the BlindAssist Git checkout.' }
 $sources = @(
-    'README.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
+    'README.md', 'idea.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'docs/DOCUMENT_GOVERNANCE.md',
+    'docs/operations/CRITICAL_EVIDENCE_BACKUP.md', 'docs/operations/PYTHON_CI.md',
     'docs/history-index.md', 'docs/CODE_MAP.md', 'scripts/README.md',
     'research/active/l10-r0/CURRENT.md',
     'research/active/hardware-bringup/README.md',
@@ -46,10 +47,10 @@ Require-Literal 'README.md' 'research/active/dtr-r0/CURRENT.md' 'DTR compact-cur
 Require-Literal 'docs/README.md' 'Cane-complementary forward perception / retained DTR history' 'current perception and historical DTR route label'
 Require-Literal 'README.md' 'cane-complementary' 'cane-complementary research positioning'
 Require-Literal 'docs/PROJECT_STATE.md' 'cane-complementary' 'current forward perception objective'
-Require-Literal 'docs/PROJECT_STATE.md' 'L10_R0_ACTIVE' 'L10 active status'
+Require-Literal 'docs/PROJECT_STATE.md' 'L10_R0_PAUSED' 'L10 paused status'
 Require-Literal 'docs/PROJECT_STATE.md' 'DTR_R2_DYNAMIC_RETAINED' 'DTR R2 status'
-Require-Literal 'docs/CURRENT_DECISION.md' 'L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED' 'cross-route status'
-Require-Literal 'research/active/l10-r0/CURRENT.md' 'Status: `L10_R0_ACTIVE`' 'L10 route status'
+Require-Literal 'docs/CURRENT_DECISION.md' 'L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED' 'cross-route status'
+Require-Literal 'research/active/l10-r0/CURRENT.md' 'Status: `L10_R0_PAUSED`' 'L10 route status'
 Require-Literal 'research/active/dtr-r0/CURRENT.md' 'Status: `DTR_R2_DYNAMIC_RETAINED`' 'DTR route status'
 Require-Literal 'docs/CODE_MAP.md' '../research/active/l10-r0/CURRENT.md' 'L10 current-first route link'
 Require-Literal 'docs/CODE_MAP.md' '../research/active/dtr-r0/CURRENT.md' 'DTR current-first route link'

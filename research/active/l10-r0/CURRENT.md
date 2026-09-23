@@ -1,8 +1,13 @@
 # L10-R0 current
 
-Updated: 2026-09-05
+Updated: 2026-09-24
 
-Status: `L10_R0_ACTIVE`
+Status: `L10_R0_PAUSED`
+
+Research is paused. Preserve all results, code and reproduction paths; do not
+start successors automatically. The thesis mainline is forward obstacle perception.
+The evidence below is retained as of 2026-09-05, not a renewed execution plan.
+See [current scope](../../../docs/CURRENT_DECISION.md).
 
 ## Core capability and present gap
 

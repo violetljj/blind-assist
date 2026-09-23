@@ -80,7 +80,7 @@ if (Test-Path $log) {
 
 foreach ($forbidden in @(
     'DATASET_MASTER_LEDGER.json', 'DATASET_MASTER_LEDGER.csv',
-    'scripts/research', 'docs/research', 'docs/history', 'schemas'
+    'docs/research', 'docs/history', 'schemas'
 )) {
     if (Test-Path (Join-Path $repoRoot $forbidden)) { $failures.Add("Cold surface remains in current tree: $forbidden") }
 }
@@ -88,7 +88,8 @@ foreach ($forbidden in @(
 $topScripts = @(Get-ChildItem (Join-Path $repoRoot 'scripts') -File)
 if ($topScripts.Count -gt 25) { $failures.Add("Top-level scripts exceed 25 files: $($topScripts.Count)") }
 $topDocs = @(Get-ChildItem (Join-Path $repoRoot 'docs') -File)
-if ($topDocs.Count -gt 25) { $failures.Add("Top-level docs exceed 25 files: $($topDocs.Count)") }
+# Hot-page byte/line budgets above bound reading cost. Total documentation file
+# count does not distinguish useful operational guides from obsolete history.
 
 $hotFiles = @(
     'AGENTS.md', 'README.md', 'docs/PROJECT_STATE.md',

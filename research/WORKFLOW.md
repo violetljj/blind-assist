@@ -1,10 +1,27 @@
 # Research workflow
 
-Updated: 2026-09-07
+Updated: 2026-09-24
 
 Improve a concrete BlindAssist capability and explain why the improvement works.
 Use this page for implementation choices; route currents own active evidence and
 priorities. The workflow is a default, not an extra approval or registration gate.
+
+## User direction and proportionate execution
+
+The user decides a new research question, budget expansion, or changed success
+criteria. Reuse authorization already given for that question: routine implementation,
+mechanical recovery, targeted validation and delivery proceed without new approval.
+A failed frozen experiment cannot be reopened by changing its threshold or subset.
+This is not a requirement to ask before every command, diagnostic or engineering fix.
+
+For exploration, put question, comparison, decision rule, result and next decision
+in one existing record, with necessary input/code identity and UNKNOWN/cost reporting.
+Do not create separate protocol, audit and approval documents by default. Register
+runs and terminal inheritance through the existing supported commands; batch the
+metadata work at a decision-changing terminal, without inventing ledger entries.
+Use independent audit when a paper-critical claim or a concrete integrity risk
+justifies it. Large assertion counts are mechanical checks, not independent samples.
+Use one meaningful falsifier; expand only for an observed defect or evidence gap.
 
 ## Effect before novelty
 

@@ -51,6 +51,16 @@ Run `scripts/check_project_structure.ps1` after layout changes and
 changes, inspect the scoped diff and document budgets; do not trigger a full
 knowledge refresh, archive audit, or unrelated route checks.
 
+## Maintenance clarification (2026-09-24)
+
+Enforce the hot-page budgets above, not an arbitrary total count of operational
+guides. `scripts/research` contains tracked, used research helpers; its directory
+name is not evidence of an obsolete research route. Preserve its code and tests.
+Historical current snapshots retain old decisions and pending messages; read the
+short current first. A pending line in a snapshot does not reopen a fixed issue.
+When compacting a dirty current, preserve the original bytes and move its pre-existing
+diff into the historical snapshot without staging that diff as maintenance work.
+
 ## Work in progress
 
 Uncommitted files and untracked candidate directories are not authority. Update
