@@ -4,6 +4,18 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-09-23 — bounded camera coalescing A/B/A, original retained
+
+- Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return
+  camera framebuffer before TCP send, combine multipart header/JPEG into one chunk.
+  VGA/Q12 and ToF 10 Hz were fixed; original timestamp semantics preserved.
+- Three 45-second runs gave camera age-bound P95 200 / 161 / 175 ms (A/B/A), with
+  all snapshots usable. First apparent 19.5% gain narrowed to 8% against restored
+  baseline; a stable substantial improvement was not established. Original firmware
+  and source restored, transport rechecked. No app version bump or new mechanism.
+- See [trial receipt](research/active/hardware-bringup/CAMERA_LATENCY_TRIAL_20260923.md).
+  Physical scene-to-screen optical latency remains unmeasured.
+
 ## 2026-09-23 — v10.12.1 latency reduction, fixed 10 Hz
 
 - Initial 15 Hz / 5 ms HTTP poll pilot reduced ToF snapshot age bound from 177
