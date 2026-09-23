@@ -12,6 +12,11 @@ Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`
 
 ## 工作顺序
 
+CNH v3 已授权采用“障碍物/同类干扰物资产族隔离、普通背景资产共享并披露”的考场定义；
+物理场地实例与布局仍分区，侵入查询通道的建筑构件不享受背景豁免。先打通写实来源导出，
+再比较Street200V7与City Sample各2布局；四类环境、384布局和原预算不变。
+完整七路采集与20布局正式试采尚未通过；[方案与范围](../research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md)。
+
 1. 已完成选定关键模型、基准与评估证据的副机备份及逐文件恢复校验；[范围与回执](operations/CRITICAL_EVIDENCE_BACKUP.md)明确未覆盖项，不能宣称全论文依赖已备份。
 2. 已整理短中文状态入口并接入 Python CI；本地工具测试与 Windows 检出检查通过，Ubuntu 执行仍由 CI 覆盖。[测试与历史哈希差异](operations/PYTHON_CI.md)。
 3. 提醒策略作为避障的有界工作包：固定检测输出，比较首次提醒延迟、重复提醒及关键事件被抑制次数；实际疲劳与 TalkBack 配合仍需交互验收。本次整理不启动新提醒实验。
