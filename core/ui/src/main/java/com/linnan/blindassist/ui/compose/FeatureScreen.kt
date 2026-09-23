@@ -55,11 +55,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -287,7 +290,7 @@ private fun PrimaryAssistAction(
                     fontSize = 27.sp,
                     lineHeight = 36.sp,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(5.dp))
@@ -298,7 +301,7 @@ private fun PrimaryAssistAction(
                         fontSize = 14.sp,
                         lineHeight = 20.sp
                     ),
-                    maxLines = 2,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
             }
@@ -315,46 +318,95 @@ private fun HomeModeSelector(
     onSensitiveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val largeFont = LocalDensity.current.fontScale >= 1.3f
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .height(if (largeFont) 304.dp else 72.dp)
             .testTag("daily_usage_mode_selector"),
         shape = RoundedCornerShape(30.dp),
         color = BaHomeControlRail,
         shadowElevation = 4.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(6.dp)
-                .selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            HomeModeItem(
-                mode = HomeAssistMode.DAILY,
-                selected = selectedMode == HomeAssistMode.DAILY,
-                language = language,
-                icon = Icons.Outlined.LightMode,
-                onClick = onDailyClick,
-                modifier = Modifier.weight(1f)
-            )
-            HomeModeItem(
-                mode = HomeAssistMode.QUIET,
-                selected = selectedMode == HomeAssistMode.QUIET,
-                language = language,
-                icon = Icons.Outlined.Eco,
-                onClick = onQuietClick,
-                modifier = Modifier.weight(1f)
-            )
-            HomeModeItem(
-                mode = HomeAssistMode.SENSITIVE,
-                selected = selectedMode == HomeAssistMode.SENSITIVE,
-                language = language,
-                icon = Icons.Outlined.Bolt,
-                onClick = onSensitiveClick,
-                modifier = Modifier.weight(1f)
-            )
+        if (largeFont) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                HomeModeItem(
+                    mode = HomeAssistMode.DAILY,
+                    selected = selectedMode == HomeAssistMode.DAILY,
+                    language = language,
+                    icon = Icons.Outlined.LightMode,
+                    onClick = onDailyClick,
+                    largeFont = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(96.dp)
+                )
+                HomeModeItem(
+                    mode = HomeAssistMode.QUIET,
+                    selected = selectedMode == HomeAssistMode.QUIET,
+                    language = language,
+                    icon = Icons.Outlined.Eco,
+                    onClick = onQuietClick,
+                    largeFont = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(96.dp)
+                )
+                HomeModeItem(
+                    mode = HomeAssistMode.SENSITIVE,
+                    selected = selectedMode == HomeAssistMode.SENSITIVE,
+                    language = language,
+                    icon = Icons.Outlined.Bolt,
+                    onClick = onSensitiveClick,
+                    largeFont = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(96.dp)
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .selectableGroup(),
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                HomeModeItem(
+                    mode = HomeAssistMode.DAILY,
+                    selected = selectedMode == HomeAssistMode.DAILY,
+                    language = language,
+                    icon = Icons.Outlined.LightMode,
+                    onClick = onDailyClick,
+                    largeFont = false,
+                    modifier = Modifier.weight(1f)
+                )
+                HomeModeItem(
+                    mode = HomeAssistMode.QUIET,
+                    selected = selectedMode == HomeAssistMode.QUIET,
+                    language = language,
+                    icon = Icons.Outlined.Eco,
+                    onClick = onQuietClick,
+                    largeFont = false,
+                    modifier = Modifier.weight(1f)
+                )
+                HomeModeItem(
+                    mode = HomeAssistMode.SENSITIVE,
+                    selected = selectedMode == HomeAssistMode.SENSITIVE,
+                    language = language,
+                    icon = Icons.Outlined.Bolt,
+                    onClick = onSensitiveClick,
+                    largeFont = false,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
@@ -366,6 +418,7 @@ private fun HomeModeItem(
     language: AppLanguage,
     icon: ImageVector,
     onClick: () -> Unit,
+    largeFont: Boolean,
     modifier: Modifier = Modifier
 ) {
     val background by animateColorAsState(
@@ -401,31 +454,65 @@ private fun HomeModeItem(
                 } else {
                     "选择${label}辅助模式"
                 }
+                stateDescription = if (selected) {
+                    if (language == AppLanguage.EN) "Current assist mode" else "当前辅助模式"
+                } else {
+                    if (language == AppLanguage.EN) "Not selected" else "未选择"
+                }
             },
         shape = shape,
         color = background,
         shadowElevation = elevation
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = foreground,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(Modifier.width(7.dp))
-            Text(
-                text = label,
-                color = foreground,
-                fontSize = 16.sp,
-                lineHeight = 22.sp,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
-                maxLines = 1
-            )
+        if (largeFont) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp, vertical = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = foreground,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = label,
+                    color = foreground,
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = foreground,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(Modifier.width(7.dp))
+                Text(
+                    text = label,
+                    color = foreground,
+                    fontSize = 16.sp,
+                    lineHeight = 22.sp,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
