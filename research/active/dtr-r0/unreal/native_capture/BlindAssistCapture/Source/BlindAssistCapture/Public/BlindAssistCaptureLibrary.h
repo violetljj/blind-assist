@@ -62,6 +62,15 @@ class BLINDASSISTCAPTURE_API UBlindAssistCaptureLibrary : public UBlueprintFunct
     GENERATED_BODY()
 
 public:
+    /** Read-only active-RHI material shader capability JSON; never scene admission. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static FString GetMaterialGeometryCapability(class UMaterialInterface* Material);
+
+    /** Only unsaved /Game/CNH.../D_... clones: preserve attributes and zero WPO/PDO.
+     * Does not save or compile; caller recompiles and verifies source immutability. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool ZeroDerivedMaterialDeformation(class UMaterial* Material);
+
     /** Read-only loaded HLOD source-actor mappings. Writes only a fresh path under BA_CITY_OUT.
      * True means JSON export succeeded, never source/visibility admission. Does not load source actors. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture", meta = (WorldContext = "WorldContextObject"))

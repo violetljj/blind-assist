@@ -3,6 +3,37 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/cnh-city-two-layout-20260924-v6",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-city-two-layout-20260924-v5",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-inserted-asset-canary-20260924-v8",
+      "source_family": "ue-cnh-inserted-real-asset-unit-canary",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [{"relative_path": "capture", "role": "evaluator"}]
+    },
+    {
       "locator": "evidence/cnh-street-mesh-preflight-20260924-v4",
       "source_family": "ue-citysample-shared-background-source",
       "evidence_status": "development_consumed",

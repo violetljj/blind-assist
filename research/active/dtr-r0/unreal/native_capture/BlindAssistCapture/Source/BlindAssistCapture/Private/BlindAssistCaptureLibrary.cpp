@@ -12,8 +12,125 @@
 #include "Serialization/Archive.h"
 #include "ShaderCompiler.h"
 #include "UObject/UObjectIterator.h"
+#include "Materials/Material.h"
+#include "Materials/MaterialExpressionConstant.h"
+#include "Materials/MaterialExpressionConstant3Vector.h"
+#include "Materials/MaterialExpressionSetMaterialAttributes.h"
+#include "UObject/Package.h"
+#include "Materials/MaterialInterface.h"
+#include "Materials/MaterialRelevance.h"
+#include "MaterialShared.h"
+#include "RHI.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBlindAssistCapture, Log, All);
+
+FString UBlindAssistCaptureLibrary::GetMaterialGeometryCapability(UMaterialInterface* Material)
+{
+    TSharedRef<FJsonObject> Data = MakeShared<FJsonObject>();
+    Data->SetStringField(TEXT("schema"), TEXT("cnh_material_geometry_capability_v1"));
+    Data->SetBoolField(TEXT("scene_admission"), false);
+    Data->SetStringField(TEXT("material"), Material ? Material->GetPathName() : TEXT(""));
+    Data->SetStringField(TEXT("data_status"), TEXT("UNAVAILABLE"));
+    Data->SetStringField(TEXT("capability"), TEXT("UNKNOWN"));
+    Data->SetNumberField(TEXT("shader_platform_id"), static_cast<int32>(GMaxRHIShaderPlatform));
+    Data->SetNumberField(TEXT("feature_level_id"), static_cast<int32>(GMaxRHIFeatureLevel));
+    Data->SetStringField(TEXT("platform_source"), TEXT("ACTIVE_GMaxRHIShaderPlatform"));
+    auto Finish = [&Data](const TCHAR* Reason)
+    {
+        Data->SetStringField(TEXT("reason"), Reason);
+        FString Json;
+        TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&Json);
+        FJsonSerializer::Serialize(Data, Writer);
+        return Json;
+    };
+    if (!IsInGameThread()) return Finish(TEXT("GAME_THREAD_REQUIRED"));
+    if (!Material) return Finish(TEXT("MATERIAL_MISSING"));
+    const EMaterialQualityLevel::Type Quality = GetCurrentMaterialQualityLevelChecked();
+    Data->SetNumberField(TEXT("quality_level_id"), static_cast<int32>(Quality));
+    FMaterialResource* Resource = Material->GetMaterialResource(GMaxRHIShaderPlatform, Quality);
+    if (!Resource) return Finish(TEXT("ACTIVE_MATERIAL_RESOURCE_MISSING"));
+    if (!Resource->IsCompilationFinished()) return Finish(TEXT("MATERIAL_COMPILATION_PENDING"));
+    const FMaterialShaderMap* ShaderMap = Resource->GetGameThreadShaderMap();
+    if (!ShaderMap || !ShaderMap->IsValidForRendering()) return Finish(TEXT("VALID_SHADER_MAP_MISSING"));
+    const bool UsesWpo = ShaderMap->UsesWorldPositionOffset();
+    const bool UsesPdo = ShaderMap->UsesPixelDepthOffset();
+    const bool UsesDisplacement = ShaderMap->UsesDisplacement();
+    const bool ModifiesPosition = ShaderMap->ModifiesMeshPosition();
+    const FMaterialRelevance Relevance = Material->GetRelevance_Concurrent(GMaxRHIShaderPlatform);
+    const float MaxWpo = Material->GetMaxWorldPositionOffsetDisplacement();
+    Data->SetStringField(TEXT("data_status"), TEXT("AVAILABLE"));
+    Data->SetBoolField(TEXT("uses_wpo"), UsesWpo);
+    Data->SetBoolField(TEXT("uses_pdo"), UsesPdo);
+    Data->SetBoolField(TEXT("uses_displacement"), UsesDisplacement);
+    Data->SetBoolField(TEXT("modifies_mesh_position"), ModifiesPosition);
+    Data->SetBoolField(TEXT("uses_first_person_interpolation"), bool(Relevance.bUsesFirstPersonInterpolation));
+    Data->SetBoolField(TEXT("always_evaluate_wpo"), Material->ShouldAlwaysEvaluateWorldPositionOffset());
+    if (FMath::IsFinite(MaxWpo)) Data->SetNumberField(TEXT("configured_max_wpo_per_axis_cm"), MaxWpo);
+    if (UsesPdo || UsesDisplacement || Relevance.bUsesFirstPersonInterpolation || (ModifiesPosition && !UsesWpo))
+        return Finish(TEXT("NON_WPO_DEFORMATION_NOT_BOUNDED_BY_THIS_HELPER"));
+    if (!UsesWpo)
+    {
+        Data->SetStringField(TEXT("capability"), TEXT("NO_COMPILED_MATERIAL_DEFORMATION"));
+        Data->SetNumberField(TEXT("required_material_inflation_cm"), 0);
+        return Finish(TEXT("ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"));
+    }
+    if (GMaxRHIFeatureLevel <= ERHIFeatureLevel::ES3_1)
+        return Finish(TEXT("MOBILE_WPO_CLAMP_NOT_GUARANTEED"));
+    if (!FMath::IsFinite(MaxWpo) || MaxWpo <= 0)
+        return Finish(TEXT("WPO_CLAMP_ZERO_OR_INVALID_IS_UNBOUNDED"));
+    Data->SetStringField(TEXT("capability"), TEXT("WPO_CLAMP_CONFIGURED"));
+    Data->SetBoolField(TEXT("requires_all_component_materials_and_primitive_max_wpo_extent"), true);
+    return Finish(TEXT("AGGREGATE_ALL_SLOT_CLAMPS_BEFORE_WORLD_AABB_INFLATION"));
+}
+
+bool UBlindAssistCaptureLibrary::ZeroDerivedMaterialDeformation(UMaterial* Material)
+{
+#if WITH_EDITOR
+    if (!IsInGameThread() || !Material) return false;
+    const FString PackageName = Material->GetOutermost()->GetName();
+    if (!PackageName.StartsWith(TEXT("/Game/CNH")) || !PackageName.Contains(TEXT("/D_"))
+        || !Material->GetName().Contains(TEXT("_CNH_"))) return false;
+    FExpressionInput* Wpo = Material->GetExpressionInputForProperty(MP_WorldPositionOffset);
+    FExpressionInput* Pdo = Material->GetExpressionInputForProperty(MP_PixelDepthOffset);
+    FExpressionInput* Attributes = Material->GetExpressionInputForProperty(MP_MaterialAttributes);
+    if (!Wpo || !Pdo || !Attributes || (Material->bUseMaterialAttributes && !Attributes->Expression)) return false;
+    UMaterialExpression* OriginalAttributes = Attributes->Expression;
+    const int32 OriginalOutput = Attributes->OutputIndex;
+    auto* ZeroVector = NewObject<UMaterialExpressionConstant3Vector>(Material);
+    auto* ZeroScalar = NewObject<UMaterialExpressionConstant>(Material);
+    ZeroVector->Material = Material;
+    ZeroScalar->Material = Material;
+    ZeroVector->Constant = FLinearColor(0, 0, 0, 0);
+    ZeroScalar->R = 0.0f;
+    Material->GetExpressionCollection().AddExpression(ZeroVector);
+    Material->GetExpressionCollection().AddExpression(ZeroScalar);
+    UMaterialExpressionSetMaterialAttributes* Wrapper = nullptr;
+    if (Material->bUseMaterialAttributes)
+    {
+        Wrapper = NewObject<UMaterialExpressionSetMaterialAttributes>(Material);
+        Wrapper->Material = Material;
+        Material->GetExpressionCollection().AddExpression(Wrapper);
+        // Public Engine API maintains Inputs/AttributeSetTypes atomically. Never
+        // mutate the protected parallel arrays through Python property callbacks.
+        if (!Wrapper->ConnectInputAttribute(MP_MaterialAttributes, OriginalAttributes, OriginalOutput)
+            || !Wrapper->ConnectInputAttribute(MP_WorldPositionOffset, ZeroVector)
+            || !Wrapper->ConnectInputAttribute(MP_PixelDepthOffset, ZeroScalar)) return false;
+        Attributes->Connect(0, Wrapper);
+        if (Wrapper->GetInput(0)->Expression != OriginalAttributes
+            || Wrapper->GetInput(0)->OutputIndex != OriginalOutput
+            || Wrapper->GetInput(1)->Expression != ZeroVector
+            || Wrapper->GetInput(2)->Expression != ZeroScalar) return false;
+    }
+    Wpo->Connect(0, ZeroVector);
+    Pdo->Connect(0, ZeroScalar);
+    return Wpo->Expression == ZeroVector && Pdo->Expression == ZeroScalar
+        && (!Wrapper || Attributes->Expression == Wrapper);
+#else
+    return false;
+#endif
+}
 
 namespace
 {

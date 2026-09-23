@@ -19,7 +19,11 @@ CNH v3 已授权采用“障碍物/同类干扰物资产族隔离、普通背景
 总384布局、障碍族分配和原预算不变；室内移至第二阶段，实际功效仍依赖方差与布局独立性。
 生成时先让原生几何避开四段轨迹的全部查询体积至少15cm，正例（含墙）由受控派生插入物承担；
 净空与资产隔离分别检查，发现原生侵入不能忽略或改为负标签。
-完整七路采集与20布局正式试采尚未通过；[方案与范围](../research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md)。
+真实派生资产与可见ID单元通路已通过；两来源固定工程检查已给出结论：Street200因原生树木WPO
+边界未建立而前置拒绝，City完成两布局16端点七路采集但径向最大误差/局部回波覆盖失败。
+当前不选主力，20布局试采与384布局未运行；不调门槛补PASS。
+[工程回执](../research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md) ·
+[方案与范围](../research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md)。
 
 1. 已完成选定关键模型、基准与评估证据的副机备份及逐文件恢复校验；[范围与回执](operations/CRITICAL_EVIDENCE_BACKUP.md)明确未覆盖项，不能宣称全论文依赖已备份。
 2. 已整理短中文状态入口并接入 Python CI；本地工具测试与 Windows 检出检查通过，Ubuntu 执行仍由 CI 覆盖。[测试与历史哈希差异](operations/PYTHON_CI.md)。
