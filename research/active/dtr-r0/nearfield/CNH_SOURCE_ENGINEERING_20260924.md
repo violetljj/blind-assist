@@ -343,3 +343,12 @@ City近场派生副本真实预检止于混合近/远ISM：同一组件同时含
 `cnh-street-crossmachine-comparison-20260924-v3/v4`、`cnh-city-nearfield-derived-20260924-v3`。
 持久控制器队列在work根`development-queue-v1.json`；机械失败最多一次新路径重试，
 质量失败只隔离受影响布局，已完成布局不重采。队列记录不代替几何/标签准入。
+
+副机追加固定6个新布局也已完成960/960帧格式PASS，总计12个新布局、1920帧。
+副机v6单进程原生脚本183.67s、全流程420.59s（格式整理192.06s），2880/2880异步任务完成、
+32/32参考字节一致、源项目未改、进程释放。原始数据保留在副机
+`G:/DevWorkspace/BlindAssist/artifacts/evidence/cnh-street-development-worker-batch-20260924-v1`，
+主机thin回执位于`cnh-street-development-worker-batch-thin-20260924-v1/payload`，62文件hash核验通过。
+副机这批几何抽样尚未运行；两批能量、完整标签与独立性仍PENDING。用户再次要求提高效率后，
+停止新增优化和诊断，只完成已运行批次；没有继续开采或遗留活动UE任务。
+本次121项针对性测试、插件v6-r2实编译、真实异步字节对照与文档索引检查通过。
