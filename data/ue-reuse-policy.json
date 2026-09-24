@@ -3,6 +3,54 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/cnh-street-e2e-main-20260924-v2",
+      "source_family": "ue-street-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-street-e2e-worker-20260924-v1",
+      "source_family": "ue-street-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/cnh-street-development-worker-thin-20260924-v1",
       "source_family": "ue-citysample-shared-background-source",
       "evidence_status": "development_consumed",

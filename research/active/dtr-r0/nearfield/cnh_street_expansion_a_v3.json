@@ -1,0 +1,31 @@
+{
+  "schema": "cnh-street-expansion-design-v1",
+  "map_asset": "/Game/BAResearchExpansion/BrickServiceA_V3",
+  "asset_root": "/Game/BAResearchExpansion/BrickServiceA_V3_Assets",
+  "physical_site_id": "authored-brick-service-a-v1-single-block",
+  "concept": "A: brick service block, straight 3 m alley opening into small plaza",
+  "concept_authority": "IMAGE_GUIDED_APPEARANCE_ONLY_NOT_MEASURED_GEOMETRY",
+  "preserved_source_map": "/Game/BAResearchSlice/Street200V7",
+  "alley_clear_width_m": 3.0,
+  "wall_modules_per_side": 4,
+  "wall_storeys": 2,
+  "plaza_width_m": 12.0,
+  "plaza_length_m": 12.0,
+  "entry_length_m": 6.0,
+  "wall_asset": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Mesh/SM_BLDG_CHI_L1_A_Wall_09_N1",
+  "paving_asset": "/Game/Road/Kit_Sidewalk_A/Mesh/SM_Sidewalk_1M_square_A",
+  "data_role": "AUTHORING_PREVIEW_NOT_BENCHMARK",
+  "independence": "ONE_NEW_AUTHORED_SYNTHETIC_SITE_SHARED_SOURCE_ASSET_FAMILIES_NOT_INDEPENDENT_TEST",
+  "categories": [
+    "entry_sidewalk",
+    "straight_alley",
+    "plaza_transition",
+    "small_plaza"
+  ],
+  "automatic_admission": false,
+  "revision_of": "/Game/BAResearchExpansion/BrickServiceA_V2",
+  "repair_evidence": "Actual V2 screenshots show pale stone and oversized paving texture; final targeted component brick override and texture-free neutral ground",
+  "wall_choice_evidence": "Actual local Wall09 package name table references Bldg_brick_brown and MI_CHI_L1_A_Wall_09 without Bldg_glass; runtime opaque blend check required",
+  "surrounding_ground_disclosure": "Task-owned constant neutral rough material with no texture on simplified surrounding ground; not a complete art environment",
+  "wall_material_override": "/Game/Building/CH/I/Material/MI_Bldg_BrickOffset_Brown"
+}

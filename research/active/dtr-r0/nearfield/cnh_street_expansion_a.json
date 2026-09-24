@@ -1,0 +1,21 @@
+{
+  "schema": "cnh-street-expansion-design-v1",
+  "map_asset": "/Game/BAResearchExpansion/BrickServiceA_V1",
+  "asset_root": "/Game/BAResearchExpansion/BrickServiceA_V1_Assets",
+  "physical_site_id": "authored-brick-service-a-v1-single-block",
+  "concept": "A: brick service block, straight 3 m alley opening into small plaza",
+  "concept_authority": "IMAGE_GUIDED_APPEARANCE_ONLY_NOT_MEASURED_GEOMETRY",
+  "preserved_source_map": "/Game/BAResearchSlice/Street200V7",
+  "alley_clear_width_m": 3.0,
+  "wall_modules_per_side": 4,
+  "wall_storeys": 2,
+  "plaza_width_m": 12.0,
+  "plaza_length_m": 12.0,
+  "entry_length_m": 6.0,
+  "wall_asset": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Mesh/SM_BLDG_CHI_L1_A_Wall_04_N1",
+  "paving_asset": "/Game/Road/Kit_Sidewalk_A/Mesh/SM_Sidewalk_1M_square_A",
+  "data_role": "AUTHORING_PREVIEW_NOT_BENCHMARK",
+  "independence": "ONE_NEW_AUTHORED_SYNTHETIC_SITE_SHARED_SOURCE_ASSET_FAMILIES_NOT_INDEPENDENT_TEST",
+  "categories": ["entry_sidewalk", "straight_alley", "plaza_transition", "small_plaza"],
+  "automatic_admission": false
+}
