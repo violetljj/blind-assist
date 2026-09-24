@@ -1,6 +1,6 @@
 # 前视障碍感知：当前状态
 
-更新：2026-09-24
+更新：2026-09-25
 
 Status: `DTR_R2_DYNAMIC_RETAINED` (historical algorithm; no new promotion).
 
@@ -80,6 +80,7 @@ City按逐区/边缘/角度/预测物体归属诊断，未发现z/径向混用�
 已实现[CNH+RGB局部视锥融合接口](nearfield/CNH_RGB_FUSION_INTERFACE_20260924.md)并完成几何与未训练前向检查；
 一帧原始Street Development RGB/H3同帧身份烟测通过。六场巷道修复RGB上已完成[三seed同划分对照](nearfield/cnh_rgb_dev_comparison.py)：480 train/480 dev，ToF-only和CNH+RGB在固定logit 0阈值下每次均为TP0/FP0/FN408/TN2472；[保存预测的排序诊断](../../../artifacts.local/evidence/cnh-rgb-alley-rank-diagnostic-20260925-v1/result.json)显示AUROC约0.677、AP约0.269，两臂差异极小。此轮无RGB收益证据，亦未建立可用检测器；Street本地精简源仅有8/960张RGB，不能冒充四类环境对照。
 独立冻结的[V2方位掩码与训练集类别平衡对照](nearfield/CNH_RGB_ALLEY_DEV_V2_PROTOCOL_20260925.md)在相同六场/三seed上解除了全负退化：ToF-only dev TP148–160/408、FP486–512/2472；CNH+RGB TP148、154、159，FP504、491、503。预声明结论为 `NONCOLLAPSED_DEVELOPMENT`、`NO_CONSISTENT_DEV_PARETO_SIGNAL`；误报仍高，不能声称融合获益。
+新增[巷道瓶颈诊断](nearfield/CNH_ALLEY_BOTTLENECK_DIAGNOSIS_20260925.md)：V2两臂 dev AUPRC 均约0.22–0.23，跨帧打乱/置零 RGB 几乎不变；同预算全分辨率可见深度学习臂弱且不稳定，但预定义盒直接可见深度规则为 TP405/408、FP0/2472。可见几何大体对齐，先查模型表征、视锥汇聚和训练；不能由弱学习臂推断标签/查询不可观测。按本轮停止规则，预训练 RGB 与 CNH 对同响应标量控制均 `NOT_RUN`，City 与完整164布局test暂停，不再采集。
 完整164布局test的[准备度审核](nearfield/CNH_FULL_TEST_READINESS_20260925.md)为真实场地和采集spec 0/164，受保护采集入口未实现；不以三张候选巷道图代替完整test。
 
 新研究问题/预算/规则由用户确认；已授权问题内自主完成合理实现和验证。每个问题用一个能推翻假设的关键对照，保留成功、失败和不可评估的原始结果。具体规则见[研究工作方式](../../WORKFLOW.md)。
