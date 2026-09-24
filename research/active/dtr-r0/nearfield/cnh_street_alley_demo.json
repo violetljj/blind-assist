@@ -1,0 +1,217 @@
+{
+  "schema": "cnh-street-alley-generator-v1",
+  "namespace": "/Game/BAResearchAlley",
+  "clearance_margin_m": 0.15,
+  "authority": "AUTHORING_ASSIGNMENT_NOT_DATASET_ADMISSION",
+  "partition_rule": "Separate physical map per site. Each prospective split contains straight, L and T topology. No dataset frames or protected model results exist yet.",
+  "background_disclosure": "Native CitySample project meshes shared with Street source; roof/service equipment repurposed as static alley dressing; target obstacle asset families excluded.",
+  "sites": [
+    {
+      "site_id": "Alley_train_straight_R2",
+      "proposed_split": "train",
+      "topology": "straight",
+      "width_m": 1.8,
+      "length_m": 24.0,
+      "branch_length_m": 14.0,
+      "wall_material": "brick_brown",
+      "floor_material": "MI_Sidewalk_Plaza_A",
+      "seed": 2026092400,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_train_L_R2",
+      "proposed_split": "train",
+      "topology": "L",
+      "width_m": 2.6,
+      "length_m": 28.0,
+      "branch_length_m": 17.0,
+      "wall_material": "MI_CHI_L1_A_Wall_04_0",
+      "floor_material": "M_Sidewalk_Master_Inst_4",
+      "seed": 2026092401,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_train_T_R2",
+      "proposed_split": "train",
+      "topology": "T",
+      "width_m": 3.6,
+      "length_m": 32.0,
+      "branch_length_m": 20.0,
+      "wall_material": "MI_SFC_L1_A1_Wall_01_1",
+      "floor_material": "BA_AsphaltDark",
+      "seed": 2026092402,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_dev_straight_R2",
+      "proposed_split": "dev",
+      "topology": "straight",
+      "width_m": 1.95,
+      "length_m": 26.0,
+      "branch_length_m": 15.0,
+      "wall_material": "MI_CHI_L1_A_Wall_04_0",
+      "floor_material": "BA_AsphaltDark",
+      "seed": 2026092410,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_dev_L_R2",
+      "proposed_split": "dev",
+      "topology": "L",
+      "width_m": 2.75,
+      "length_m": 30.0,
+      "branch_length_m": 18.0,
+      "wall_material": "MI_SFC_L1_A1_Wall_01_1",
+      "floor_material": "MI_Sidewalk_Plaza_A",
+      "seed": 2026092411,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_dev_T_R2",
+      "proposed_split": "dev",
+      "topology": "T",
+      "width_m": 3.75,
+      "length_m": 34.0,
+      "branch_length_m": 21.0,
+      "wall_material": "brick_brown",
+      "floor_material": "M_Sidewalk_Master_Inst_4",
+      "seed": 2026092412,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_test_straight_R2",
+      "proposed_split": "test",
+      "topology": "straight",
+      "width_m": 2.1,
+      "length_m": 28.0,
+      "branch_length_m": 16.0,
+      "wall_material": "MI_SFC_L1_A1_Wall_01_1",
+      "floor_material": "M_Sidewalk_Master_Inst_4",
+      "seed": 2026092420,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_test_L_R2",
+      "proposed_split": "test",
+      "topology": "L",
+      "width_m": 2.9,
+      "length_m": 32.0,
+      "branch_length_m": 19.0,
+      "wall_material": "brick_brown",
+      "floor_material": "BA_AsphaltDark",
+      "seed": 2026092421,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    },
+    {
+      "site_id": "Alley_test_T_R2",
+      "proposed_split": "test",
+      "topology": "T",
+      "width_m": 3.9,
+      "length_m": 36.0,
+      "branch_length_m": 22.0,
+      "wall_material": "MI_CHI_L1_A_Wall_04_0",
+      "floor_material": "MI_Sidewalk_Plaza_A",
+      "seed": 2026092422,
+      "clutter_count": 8,
+      "clutter_scales": {
+        "pipe": 0.195,
+        "breaker_box": 0.3
+      },
+      "clutter_assets": [
+        "trashcan",
+        "breaker_box",
+        "hvac",
+        "pipe",
+        "pallet"
+      ]
+    }
+  ]
+}

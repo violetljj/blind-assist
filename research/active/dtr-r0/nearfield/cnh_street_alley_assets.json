@@ -1,0 +1,626 @@
+{
+  "schema": "cnh-street-alley-asset-catalog-v1",
+  "status": "LOCAL_SOURCE_CATALOG_PROTOTYPE_NOT_RUNTIME_ADMISSION",
+  "source_project": "artifacts.local/unreal/CitySample/CitySample.uproject",
+  "source_map": "/Game/BAResearchSlice/Street200V7",
+  "scope": "Ten source meshes, five material choices; six existing bounded native probes only. No UE launched.",
+  "bounds_policy": "Never use example world bounds as local bounds. Runtime loaded mesh bounds are authoritative.",
+  "material_policy": "Existing shader capability applies only to recorded platform/configuration. Recheck all loaded slots; reject nonopaque or unresolved deformation, or use disclosed static opaque overrides.",
+  "materials": {
+    "MI_CHI_L1_A_Wall_04_0": {
+      "asset_path": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.MI_CHI_L1_A_Wall_04_0",
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "effective_render_material": {
+        "schema": "cnh_material_geometry_capability_v1",
+        "scene_admission": false,
+        "material": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.MI_CHI_L1_A_Wall_04_0",
+        "data_status": "AVAILABLE",
+        "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+        "shader_platform_id": 49,
+        "feature_level_id": 4,
+        "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+        "blend_mode": 0,
+        "two_sided": false,
+        "is_masked": false,
+        "quality_level_id": 1,
+        "uses_wpo": false,
+        "uses_pdo": false,
+        "uses_displacement": false,
+        "modifies_mesh_position": false,
+        "uses_first_person_interpolation": false,
+        "always_evaluate_wpo": false,
+        "configured_max_wpo_per_axis_cm": 0,
+        "required_material_inflation_cm": 0,
+        "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+      },
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.uasset",
+      "uasset_sha256": "ba5dbfaad3f303cc555a00719c9190def4d918b9a5d86d55c553863aa549e7ff",
+      "bytes": 7534,
+      "provenance": {
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.uasset"
+      }
+    },
+    "MI_SFC_L1_A1_Wall_01_1": {
+      "asset_path": "/Game/Building/SF/C/Kit_Bldg_SFC_L1_A/Material/MI/MI_SFC_L1_A1_Wall_01_1.MI_SFC_L1_A1_Wall_01_1",
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "effective_render_material": {
+        "schema": "cnh_material_geometry_capability_v1",
+        "scene_admission": false,
+        "material": "/Game/Building/SF/C/Kit_Bldg_SFC_L1_A/Material/MI/MI_SFC_L1_A1_Wall_01_1.MI_SFC_L1_A1_Wall_01_1",
+        "data_status": "AVAILABLE",
+        "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+        "shader_platform_id": 49,
+        "feature_level_id": 4,
+        "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+        "blend_mode": 0,
+        "two_sided": false,
+        "is_masked": false,
+        "quality_level_id": 1,
+        "uses_wpo": false,
+        "uses_pdo": false,
+        "uses_displacement": false,
+        "modifies_mesh_position": false,
+        "uses_first_person_interpolation": false,
+        "always_evaluate_wpo": false,
+        "configured_max_wpo_per_axis_cm": 0,
+        "required_material_inflation_cm": 0,
+        "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+      },
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/SF/C/Kit_Bldg_SFC_L1_A/Material/MI/MI_SFC_L1_A1_Wall_01_1.uasset",
+      "uasset_sha256": "2892860a08e66532e93cda73a67db228a776e8b83b47a20cecee6ccf88936200",
+      "bytes": 10798,
+      "provenance": {
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/SF/C/Kit_Bldg_SFC_L1_A/Material/MI/MI_SFC_L1_A1_Wall_01_1.uasset"
+      }
+    },
+    "M_Sidewalk_Master_Inst_4": {
+      "asset_path": "/Game/Road/Material/MI/M_Sidewalk_Master_Inst_4.M_Sidewalk_Master_Inst_4",
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "effective_render_material": {
+        "schema": "cnh_material_geometry_capability_v1",
+        "scene_admission": false,
+        "material": "/Game/Road/Material/MI/M_Sidewalk_Master_Inst_4.M_Sidewalk_Master_Inst_4",
+        "data_status": "AVAILABLE",
+        "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+        "shader_platform_id": 49,
+        "feature_level_id": 4,
+        "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+        "blend_mode": 0,
+        "two_sided": false,
+        "is_masked": false,
+        "quality_level_id": 1,
+        "uses_wpo": false,
+        "uses_pdo": false,
+        "uses_displacement": false,
+        "modifies_mesh_position": false,
+        "uses_first_person_interpolation": false,
+        "always_evaluate_wpo": false,
+        "configured_max_wpo_per_axis_cm": 0,
+        "required_material_inflation_cm": 0,
+        "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+      },
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Road/Material/MI/M_Sidewalk_Master_Inst_4.uasset",
+      "uasset_sha256": "1da967b81d95317b14c004f3fe22e98677aa4c96f8284239bc99614ff43b1ac6",
+      "bytes": 19479,
+      "provenance": {
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Road/Material/MI/M_Sidewalk_Master_Inst_4.uasset"
+      }
+    },
+    "MI_Sidewalk_Plaza_A": {
+      "asset_path": "/Game/Road/Material/MI/MI_Sidewalk_Plaza_A.MI_Sidewalk_Plaza_A",
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "effective_render_material": {
+        "schema": "cnh_material_geometry_capability_v1",
+        "scene_admission": false,
+        "material": "/Game/Road/Material/MI/MI_Sidewalk_Plaza_A.MI_Sidewalk_Plaza_A",
+        "data_status": "AVAILABLE",
+        "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+        "shader_platform_id": 49,
+        "feature_level_id": 4,
+        "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+        "blend_mode": 0,
+        "two_sided": false,
+        "is_masked": false,
+        "quality_level_id": 1,
+        "uses_wpo": false,
+        "uses_pdo": false,
+        "uses_displacement": false,
+        "modifies_mesh_position": false,
+        "uses_first_person_interpolation": false,
+        "always_evaluate_wpo": false,
+        "configured_max_wpo_per_axis_cm": 0,
+        "required_material_inflation_cm": 0,
+        "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+      },
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Road/Material/MI/MI_Sidewalk_Plaza_A.uasset",
+      "uasset_sha256": "c6c8ef7de421a4a7a002e9b0052a59fb9a02839eb386443b6f99f21c3baee514",
+      "bytes": 22569,
+      "provenance": {
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Road/Material/MI/MI_Sidewalk_Plaza_A.uasset"
+      }
+    },
+    "BA_AsphaltDark": {
+      "asset_path": "/Game/BAResearchSlice/Street200V6_Materials/BA_AsphaltDark.BA_AsphaltDark",
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "effective_render_material": {
+        "schema": "cnh_material_geometry_capability_v1",
+        "scene_admission": false,
+        "material": "/Game/BAResearchSlice/Street200V6_Materials/BA_AsphaltDark.BA_AsphaltDark",
+        "data_status": "AVAILABLE",
+        "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+        "shader_platform_id": 49,
+        "feature_level_id": 4,
+        "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+        "blend_mode": 0,
+        "two_sided": false,
+        "is_masked": false,
+        "quality_level_id": 1,
+        "uses_wpo": false,
+        "uses_pdo": false,
+        "uses_displacement": false,
+        "modifies_mesh_position": false,
+        "uses_first_person_interpolation": false,
+        "always_evaluate_wpo": false,
+        "configured_max_wpo_per_axis_cm": 0,
+        "required_material_inflation_cm": 0,
+        "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+      },
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/BAResearchSlice/Street200V6_Materials/BA_AsphaltDark.uasset",
+      "uasset_sha256": "8a9f729bf40e36801667957c2d3a73d4be1a852b860a4b3fe8694103166274c7",
+      "bytes": 10775,
+      "provenance": {
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/BAResearchSlice/Street200V6_Materials/BA_AsphaltDark.uasset"
+      }
+    },
+    "brick_brown": {
+      "asset_path": "/Game/Building/CH/I/Material/MI_Bldg_BrickOffset_Brown.MI_Bldg_BrickOffset_Brown",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/CH/I/Material/MI_Bldg_BrickOffset_Brown.uasset",
+        "sha256": "f7940b07ac4ef019ee716d5da40ba5dd020664117953f95530a6e5af1672fd40",
+        "recipe": "artifacts.local/work/cnh-route-comparison-20260924/plan/street-expansion-a-v3.json",
+        "build_receipt": "artifacts.local/evidence/cnh-street-expansion-a-20260924-v3/build-run/build/build-receipt.json",
+        "build_receipt_sha256": "b86bf3b0dd6a11d772330223b77cc63a2c96ab6970ed3b14c988ef0d0149c8af",
+        "evidence": "Saved V3 build used this material override and records source uasset hash; new builder must recheck active compiled capability"
+      },
+      "runtime_opaque_verification": "REQUIRED_IN_CURRENT_BUILDER"
+    }
+  },
+  "material_sets": [
+    {
+      "id": "chi_sidewalk",
+      "wall": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.MI_CHI_L1_A_Wall_04_0",
+      "ground": "/Game/Road/Material/MI/M_Sidewalk_Master_Inst_4.M_Sidewalk_Master_Inst_4"
+    },
+    {
+      "id": "sfc_plaza",
+      "wall": "/Game/Building/SF/C/Kit_Bldg_SFC_L1_A/Material/MI/MI_SFC_L1_A1_Wall_01_1.MI_SFC_L1_A1_Wall_01_1",
+      "ground": "/Game/Road/Material/MI/MI_Sidewalk_Plaza_A.MI_Sidewalk_Plaza_A"
+    },
+    {
+      "id": "chi_asphalt",
+      "wall": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Material/MI/MI_CHI_L1_A_Wall_04_0.MI_CHI_L1_A_Wall_04_0",
+      "ground": "/Game/BAResearchSlice/Street200V6_Materials/BA_AsphaltDark.BA_AsphaltDark"
+    }
+  ],
+  "meshes": {
+    "trashcan": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_Trashcan_A/Mesh/SM_Trashcan_A_01.uasset",
+      "uasset_sha256": "780cae554ca082e939525db1cf3fda6adc9f446cfcad14cd5a6a448b471c08ba",
+      "bytes": 35268345,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_Trashcan_A/Mesh/SM_Trashcan_A_01.SM_Trashcan_A_01",
+      "category": "trashcan",
+      "placement": "ground",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_Trashcan_A/Mesh/SM_Trashcan_A_01.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "breaker_box": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_antenna_RR/Mesh/SM_roof_breaker_box_a_N1.uasset",
+      "uasset_sha256": "bbcdb7038e3ebd23b8d9212ca59fe1c05076fceba30e8b27da2dc908f70d8c5d",
+      "bytes": 81852,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_antenna_RR/Mesh/SM_roof_breaker_box_a_N1.SM_roof_breaker_box_a_N1",
+      "category": "breaker_box",
+      "placement": "wall",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_antenna_RR/Mesh/SM_roof_breaker_box_a_N1.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "hvac": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_roof_AC_Unit_B/Mesh/SM_roof_AC_Unit_B_01_N1.uasset",
+      "uasset_sha256": "d823818aae48a626f0e80a4db57674eeca03cff5cf5c049418504a753e6cb3e5",
+      "bytes": 3240405,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_roof_AC_Unit_B/Mesh/SM_roof_AC_Unit_B_01_N1.SM_roof_AC_Unit_B_01_N1",
+      "category": "hvac",
+      "placement": "ground",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_roof_AC_Unit_B/Mesh/SM_roof_AC_Unit_B_01_N1.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "pipe": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_ventilation_RR/Mesh/SM_roof_Ac_pipe_long_N1.uasset",
+      "uasset_sha256": "24bd5032f2f86dd10efdb5bfa374fb6b465a2607c2bd8f02f8c2c031ee41c592",
+      "bytes": 81791,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_ventilation_RR/Mesh/SM_roof_Ac_pipe_long_N1.SM_roof_Ac_pipe_long_N1",
+      "category": "pipe",
+      "placement": "wall",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_ventilation_RR/Mesh/SM_roof_Ac_pipe_long_N1.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "door_stair": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_roof_door_stair_RR/Mesh/SM_roof_door_stair_N1.uasset",
+      "uasset_sha256": "08af1a38d3539ff72a317586afef8b8265cc21f665360af15b0005e3db8e4970",
+      "bytes": 77537,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_roof_door_stair_RR/Mesh/SM_roof_door_stair_N1.SM_roof_door_stair_N1",
+      "category": "door_stair",
+      "placement": "ground",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_roof_door_stair_RR/Mesh/SM_roof_door_stair_N1.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "sign": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_Sign_C_E_A/Mesh/SM_Sign_C_A.uasset",
+      "uasset_sha256": "94ee7b7393e5bb05378ed2b711fdb6f6e5b6e33d5c40814c6b880e26c4436e17",
+      "bytes": 457304,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/Kit_Sign_C_E_A/Mesh/SM_Sign_C_A.SM_Sign_C_A",
+      "category": "sign",
+      "placement": "wall",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_Sign_C_E_A/Mesh/SM_Sign_C_A.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "pallet": {
+      "project_available": true,
+      "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/CONSTRUCTION/Kit_Pallet/Mesh/SM_WoodenPallet_A01_N1.uasset",
+      "uasset_sha256": "3ff2725fc77218daca9671abfa87d06997a2d41563c6e5c42d8c2999640369b0",
+      "bytes": 1203799,
+      "materials": [],
+      "material_status": "UNINSPECTED_REQUIRE_NATIVE_COMPILED_BLEND_WPO_PDO_CHECK",
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/CONSTRUCTION/Kit_Pallet/Mesh/SM_WoodenPallet_A01_N1.SM_WoodenPallet_A01_N1",
+      "category": "pallet",
+      "placement": "ground",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/CONSTRUCTION/Kit_Pallet/Mesh/SM_WoodenPallet_A01_N1.uasset",
+        "native_probe": null,
+        "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "awning": {
+      "project_available": true,
+      "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_Awning_A01_N1.uasset",
+      "uasset_sha256": "9153a8d01c6d92c816e689ca6b8ff56d0dff777af3657a6cc108ff80c90605cc",
+      "bytes": 7723761,
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "example_world_bounds_m": [
+        [
+          -36.59685852955165,
+          -15.246306493525783,
+          2.0357137407552544
+        ],
+        [
+          -33.957633170262405,
+          -14.315179215206474,
+          2.9490873596192704
+        ]
+      ],
+      "nanite": "ENABLED",
+      "materials": [
+        {
+          "asset_path": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_BLDG_Prop_BA_Awning_A01.MI_BLDG_Prop_BA_Awning_A01",
+          "effective_render_material": {
+            "schema": "cnh_material_geometry_capability_v1",
+            "scene_admission": false,
+            "material": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_BLDG_Prop_BA_Awning_A01.MI_BLDG_Prop_BA_Awning_A01",
+            "data_status": "AVAILABLE",
+            "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+            "shader_platform_id": 49,
+            "feature_level_id": 4,
+            "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+            "blend_mode": 0,
+            "two_sided": false,
+            "is_masked": false,
+            "quality_level_id": 1,
+            "uses_wpo": false,
+            "uses_pdo": false,
+            "uses_displacement": false,
+            "modifies_mesh_position": false,
+            "uses_first_person_interpolation": false,
+            "always_evaluate_wpo": false,
+            "configured_max_wpo_per_axis_cm": 0,
+            "required_material_inflation_cm": 0,
+            "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+          }
+        }
+      ],
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_Awning_A01_N1.SM_BLDG_Prop_BA_Awning_A01_N1",
+      "category": "awning",
+      "placement": "overhead",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_Awning_A01_N1.uasset",
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "firehose_outlet": {
+      "project_available": true,
+      "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/Kit_Prop_FirehoseConn/Mesh/SM_BLDG_Prop_FirehoseConn_Outlet_A01_N1.uasset",
+      "uasset_sha256": "051c0ecf86b5dc04817ec0e109ded9fc3c2f59ce70ebaea75a4538085337c48b",
+      "bytes": 3722165,
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "example_world_bounds_m": [
+        [
+          -38.02699673672279,
+          -18.066183980305986,
+          0.70768260623287
+        ],
+        [
+          -37.75323448588221,
+          -17.554218076070146,
+          1.0901330184936524
+        ]
+      ],
+      "nanite": "ENABLED",
+      "materials": [
+        {
+          "asset_path": "/Game/Prop/BLDG/Kit_Prop_FirehoseConn/Material/MI_BLDG_Prop_FirehoseConn_Outlet_A01.MI_BLDG_Prop_FirehoseConn_Outlet_A01",
+          "effective_render_material": {
+            "schema": "cnh_material_geometry_capability_v1",
+            "scene_admission": false,
+            "material": "/Game/Prop/BLDG/Kit_Prop_FirehoseConn/Material/MI_BLDG_Prop_FirehoseConn_Outlet_A01.MI_BLDG_Prop_FirehoseConn_Outlet_A01",
+            "data_status": "AVAILABLE",
+            "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+            "shader_platform_id": 49,
+            "feature_level_id": 4,
+            "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+            "blend_mode": 0,
+            "two_sided": false,
+            "is_masked": false,
+            "quality_level_id": 1,
+            "uses_wpo": false,
+            "uses_pdo": false,
+            "uses_displacement": false,
+            "modifies_mesh_position": false,
+            "uses_first_person_interpolation": false,
+            "always_evaluate_wpo": false,
+            "configured_max_wpo_per_axis_cm": 0,
+            "required_material_inflation_cm": 0,
+            "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+          }
+        }
+      ],
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/BLDG/Kit_Prop_FirehoseConn/Mesh/SM_BLDG_Prop_FirehoseConn_Outlet_A01_N1.SM_BLDG_Prop_FirehoseConn_Outlet_A01_N1",
+      "category": "firehose_outlet",
+      "placement": "wall",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/Kit_Prop_FirehoseConn/Mesh/SM_BLDG_Prop_FirehoseConn_Outlet_A01_N1.uasset",
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "wall_banner": {
+      "project_available": true,
+      "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE",
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_LargeBanner_C01_N1.uasset",
+      "uasset_sha256": "d99fc28b020bda5ea45626d42b18dc590d8f66cbeb495b22ae644b4ae4f19a49",
+      "bytes": 8625501,
+      "probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+      "example_world_bounds_m": [
+        [
+          -38.028984962941664,
+          -16.359336185455312,
+          4.63583550453186
+        ],
+        [
+          -37.21606846898566,
+          -16.17418808937072,
+          8.694285278320313
+        ]
+      ],
+      "nanite": "ENABLED",
+      "materials": [
+        {
+          "asset_path": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_BLDG_Prop_BA_Design_B01.MI_BLDG_Prop_BA_Design_B01",
+          "effective_render_material": {
+            "schema": "cnh_material_geometry_capability_v1",
+            "scene_admission": false,
+            "material": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_BLDG_Prop_BA_Design_B01.MI_BLDG_Prop_BA_Design_B01",
+            "data_status": "AVAILABLE",
+            "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+            "shader_platform_id": 49,
+            "feature_level_id": 4,
+            "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+            "blend_mode": 0,
+            "two_sided": false,
+            "is_masked": false,
+            "quality_level_id": 1,
+            "uses_wpo": false,
+            "uses_pdo": false,
+            "uses_displacement": false,
+            "modifies_mesh_position": false,
+            "uses_first_person_interpolation": false,
+            "always_evaluate_wpo": false,
+            "configured_max_wpo_per_axis_cm": 0,
+            "required_material_inflation_cm": 0,
+            "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+          }
+        },
+        {
+          "asset_path": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_Sign_Modular_Frame_A01.MI_Sign_Modular_Frame_A01",
+          "effective_render_material": {
+            "schema": "cnh_material_geometry_capability_v1",
+            "scene_admission": false,
+            "material": "/Game/Prop/BLDG/B/Kit_Prop_BA/Material/MI_Sign_Modular_Frame_A01.MI_Sign_Modular_Frame_A01",
+            "data_status": "AVAILABLE",
+            "capability": "NO_COMPILED_MATERIAL_DEFORMATION",
+            "shader_platform_id": 49,
+            "feature_level_id": 4,
+            "platform_source": "ACTIVE_GMaxRHIShaderPlatform",
+            "blend_mode": 0,
+            "two_sided": false,
+            "is_masked": false,
+            "quality_level_id": 1,
+            "uses_wpo": false,
+            "uses_pdo": false,
+            "uses_displacement": false,
+            "modifies_mesh_position": false,
+            "uses_first_person_interpolation": false,
+            "always_evaluate_wpo": false,
+            "configured_max_wpo_per_axis_cm": 0,
+            "required_material_inflation_cm": 0,
+            "reason": "ACTIVE_SHADER_HAS_NO_GEOMETRY_DEFORMATION"
+          }
+        }
+      ],
+      "placement_constraint": "Place whole transformed bounds outside protected clearance volume; roof-origin assets are repurposed dressing, not asserted original alley objects.",
+      "asset_path": "/Game/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_LargeBanner_C01_N1.SM_BLDG_Prop_BA_LargeBanner_C01_N1",
+      "category": "wall_banner",
+      "placement": "wall",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/BLDG/B/Kit_Prop_BA/Mesh/SM_BLDG_Prop_BA_LargeBanner_C01_N1.uasset",
+        "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
+        "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
+      },
+      "role": "OUTSIDE_CLEARANCE_DECOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "wall": {
+      "asset_path": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Mesh/SM_BLDG_CHI_L1_A_Wall_09_N1.SM_BLDG_CHI_L1_A_Wall_09_N1",
+      "category": "wall",
+      "placement": "ground",
+      "project_available": true,
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Building/CH/I/Kit_Bldg_CHI_L1_A/Mesh/SM_BLDG_CHI_L1_A_Wall_09_N1.uasset",
+        "sha256": "f7882dc758412fd2e3973c0c399b099ef22b3e4fba19faef6f13218c12460e38",
+        "recipe": "artifacts.local/work/cnh-route-comparison-20260924/plan/street-expansion-a-v3.json"
+      },
+      "street200_membership": "EXISTING_EXPANSION_RECIPE_NOT_OLD_STREET_INSTANCE_CLAIM",
+      "role": "STRUCTURAL_BACKGROUND",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "paving": {
+      "asset_path": "/Game/Road/Kit_Sidewalk_A/Mesh/SM_Sidewalk_1M_square_A.SM_Sidewalk_1M_square_A",
+      "category": "paving",
+      "placement": "ground",
+      "project_available": true,
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Road/Kit_Sidewalk_A/Mesh/SM_Sidewalk_1M_square_A.uasset",
+        "sha256": "94c816b662bf735c6666b799710b9d623d680e141a8b292c58e9ba214b72792e",
+        "recipe": "artifacts.local/work/cnh-route-comparison-20260924/plan/street-expansion-a-v3.json"
+      },
+      "street200_membership": "EXISTING_EXPANSION_RECIPE_NOT_OLD_STREET_INSTANCE_CLAIM",
+      "role": "STRUCTURAL_BACKGROUND",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    }
+  },
+  "preferred_decor_keys": [
+    "trashcan",
+    "hvac",
+    "breaker_box",
+    "pipe",
+    "pallet"
+  ],
+  "asset_family_policy": {
+    "decor_role": "SHARED_PROJECT_BACKGROUND_DECOR_OUTSIDE_CLEARANCE_ONLY",
+    "forbidden_target_families": [
+      "/Game/Megascans/3D_Assets/Metal_Bollard_00",
+      "/Game/Megascans/3D_Assets/No_Parking_Road_Sign_00"
+    ],
+    "semantic_sign_risk": "sign and wall_banner are opt-in visual decor only, never targets or same-class distractors; default planner should prefer service utilities",
+    "new_namespace": "/Game/BAResearchAlley"
+  }
+}
