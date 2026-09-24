@@ -28,6 +28,10 @@ def finalize(out):
     engine=json.loads((out/'engine-receipt.json').read_text())
     if not engine.get('source_unchanged') or not engine.get('actor_release',{}).get('released'):
         raise ValueError('Native source integrity/release failed: '+str(engine.get('error')))
+    if engine['status']=='CONTROL_PREFLIGHT_REJECTED':
+        return dict(status='NOT_ADMITTED_CONTROL_PREFLIGHT',benchmark_eligible=False,frames=0,
+            source_gate='NOT_RUN_NEAR_FAR_INSTANCE_SCOPE_UNRESOLVED',
+            control_preflight=engine['control_preflight'],seven_pass='NOT_RUN',formal_pilot='NOT_ADMITTED')
     if engine['status']=='PREFILTER_REJECTED':
         return dict(status='NOT_ADMITTED_PREFILTER',benchmark_eligible=False,frames=0,
             source_gate='FAIL_PREFILTER_OR_UNRESOLVED',selection=json.loads((out/'candidate-selection.json').read_text()),
@@ -37,9 +41,14 @@ def finalize(out):
     manifest=json.loads((out/'raw-manifest.json').read_text())
     rows=manifest['frames']; h,w=manifest['rig']['height'],manifest['rig']['width']
     layout_ids={r['layout_id'] for r in rows}
-    expected={(l,c,i) for l in layout_ids for c in ('centre','boundary','outside','removed') for i in (0,1)}
-    if len(layout_ids)!=2 or len(rows)!=16 or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in rows}!=expected:
-        raise ValueError('Expected exactly two layouts and four pairs of endpoints')
+    spec=json.loads((out/'source/spec.json').read_text(encoding='utf-8-sig'))
+    validate(spec)
+    selected=spec['layouts']
+    if spec.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+        selected=[l for l in json.loads((out/'candidate-selection.json').read_text())['selected_layouts'] if l is not None]
+    expected={(l['layout_id'],c['id'],i) for l in selected for c in l['clips'] for i in range(len(c['poses']))}
+    if layout_ids!={l['layout_id'] for l in selected} or len(rows)!=len(expected) or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in rows}!=expected:
+        raise ValueError('Frames do not match the frozen source spec')
     reports=[]
     for row in rows:
         folder=(out/row['folder']).resolve()
@@ -86,7 +95,7 @@ def finalize(out):
             hashes={p.name:common.file_hash(p) for p in folder.iterdir() if p.is_file()}))
     receipt=dict(status='PASS_SEVEN_PASS_SOURCE_TRANSPORT_ONLY',benchmark_eligible=False,
         source_gate='NOT_ADMITTED_REQUIRES_GEOMETRY_ECHO_LABEL_AND_PROVENANCE_GATES',
-        formal_pilot='NOT_ADMITTED',frame_count=16,frames=reports,
+        formal_pilot='NOT_ADMITTED',data_role='Development',frame_count=len(rows),frames=reports,
         temporal_authority=manifest['temporal_authority'])
     common.write(out/'format-receipt.json',receipt)
     return receipt
@@ -99,7 +108,8 @@ def launch(args):
     def source_run(command,env,out,timeout):
         extras=('cnh_route_source_capture.py','cnh_route_source_compare_adapter.py','cnh_route_source_clearance.py',
                 'cnh_route_native_clearance.py','cnh_route_scene_probe.py','cnh_route_source_launch.py',
-                'cnh_route_street_static_background.py','cnh_route_city_lod0.py')
+                'cnh_route_street_static_background.py','cnh_route_city_lod0.py','cnh_city_nearfield_derived.py',
+                'ue_attribute_export.py')
         launch_path=out/'launch.json';receipt=json.loads(launch_path.read_text())
         for name in extras:
             dest=out/'source'/name;shutil.copy2(HERE/name,dest)
@@ -107,7 +117,9 @@ def launch(args):
         command=[('-ExecCmds=py '+(out/'source/cnh_route_source_capture.py').as_posix())
                  if arg.startswith('-ExecCmds=py ') else arg for arg in command]
         env=dict(env,BA_CNH_SOURCE_SPEC=env['BA_CNH_INSERT_SPEC'],BA_CNH_SOURCE_OUTPUT=env['BA_CNH_INSERT_OUTPUT'])
-        receipt.update(command=command,scope='TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK')
+        frozen_spec=json.loads((out/'source/spec.json').read_text(encoding='utf-8-sig'))
+        receipt.update(command=command,scope=frozen_spec['scope'],machine_id=__import__('platform').node(),
+            configuration_sha256=common.file_hash(out/'source/spec.json'))
         common.write(launch_path,receipt)
         stop=threading.Event();samples=[];errors=[]
         def sample_gpu():
@@ -143,4 +155,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('project','engine','plugin','spec','output','result'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--timeout',type=float,default=600)
-    print(json.dumps(launch(p.parse_args())))
+    result=launch(p.parse_args())
+    print(json.dumps({k:v for k,v in result.items() if k not in ('frames','control_preflight','selection')}))

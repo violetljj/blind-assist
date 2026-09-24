@@ -40,8 +40,10 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
     WorldPartition descriptor matching is necessary but cannot certify external
     dependencies, landscape, runtime-spawned geometry or full-world completeness.
     """
-    if len(layouts) != 2 or len({r['layout_id'] for r in layouts}) != 2:
-        raise ValueError('Exactly two fixed layouts required')
+    development=source_receipt.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+    valid_count=1<=len(layouts)<=20 if development else len(layouts)==2
+    if not valid_count or len({r['layout_id'] for r in layouts})!=len(layouts):
+        raise ValueError('Invalid fixed layout batch')
     actors = list(api.get_all_level_actors())
     loaded_guids = {normalized_guid(property_value(a, 'actor_guid')) for a in actors
                     if property_value(a, 'actor_guid') is not None}
@@ -153,8 +155,18 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
         required.append('STATIC_MATERIAL_OR_MOTION_BOUNDS_UNRESOLVED')
     candidates = []
     for layout in layouts:
+        clips=layout.get('clips', [])
+        if development:
+            compact=[]
+            for clip in clips:
+                poses=clip['poses'];a,b=poses[0],poses[-1]
+                linear=all(all(abs(p[k]-(a[k]+(b[k]-a[k])*i/(len(poses)-1)))<1e-8
+                    for k in ('x','y','z','pitch','yaw','roll')) for i,p in enumerate(poses))
+                compact.append(dict(clip,poses=[a,b],clearance_sweep='EXACT_LINEAR_PATH_ENDPOINT_ENVELOPE',
+                    original_pose_count=len(poses)) if linear else clip)
+            clips=compact
         manifest = dict(native_entities=entities, native_coverage_complete=not required,
-                        coverage_scope='ENUMERATED_LOADED_WORLD_ONLY', clips=layout.get('clips', []))
+                        coverage_scope='ENUMERATED_LOADED_WORLD_ONLY', clips=clips)
         result = evaluate(manifest)
         # AABB overlap is a prefilter rejection, not proven surface intrusion.
         candidates.append(dict(layout_id=layout['layout_id'], manifest=manifest, result=result,

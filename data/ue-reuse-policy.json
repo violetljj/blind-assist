@@ -3,6 +3,54 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/cnh-street-development-worker-thin-20260924-v1",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "payload",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-city-nearfield-derived-preparation-20260924-v1",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "spec.json",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "work/cnh-route-comparison-20260924/native-build-v5/package",
+      "source_family": "ue-cnh-native-capture-runtime",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "BlindAssistCapture.uplugin",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-street-development-batch-20260924-v1",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
       "locator": "evidence/cnh-city-lod0-control-20260924-v3",
       "source_family": "ue-citysample-shared-background-source",
       "evidence_status": "development_consumed",

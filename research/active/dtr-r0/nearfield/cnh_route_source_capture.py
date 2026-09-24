@@ -8,6 +8,7 @@ import json
 import hashlib
 import math
 import os
+import platform
 from pathlib import Path
 import sys
 import time
@@ -30,12 +31,37 @@ def prevent_reentry(callback):
     return guarded
 
 
+def probe_radius_m(layout):
+    """Enclose every frozen camera's 8m geometry neighborhood at probe origin."""
+    origin=layout['camera']
+    variants=[layout]+[dict(layout,**candidate) for candidate in layout.get('candidates',[])]
+    poses=[variant['camera'] for variant in variants]
+    poses += [pose for variant in variants for clip in variant['clips'] for pose in clip['poses']]
+    displacement=max(math.sqrt(sum((float(p[k])-float(origin[k]))**2 for k in ('x','y','z'))) for p in poses)
+    if not math.isfinite(displacement):
+        raise ValueError('Nonfinite probe coverage displacement')
+    return 8.+displacement
+
+
 def validate_insertions(spec):
-    if spec.get('native_geometry_policy') not in (None,'CITY_COMPONENT_LOD0_FALLBACK_CONTROL'):
+    from cnh_route_source_compare_adapter import SCOPE, DEVELOPMENT_SCOPE, is_development, validated_pose
+    if spec.get('transport_policy') not in (None,'NATIVE_SEVEN_ASYNC_V1'):
+        raise ValueError('Unknown transport policy')
+    if spec.get('transport_policy') and not is_development(spec):
+        raise ValueError('New async transport is Development-only until parity checked')
+    if spec.get('native_geometry_policy') not in (None,'CITY_COMPONENT_LOD0_FALLBACK_CONTROL',
+            'CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED'):
         raise ValueError('Unknown native geometry intervention')
     if spec.get('native_geometry_policy') and spec.get('map_asset')!='/Game/Map/Small_City_LVL':
         raise ValueError('LOD0 diagnostic control is City-only')
-    if spec.get('scene_layer')!='TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK' or spec.get('benchmark_eligible') is not False:
+    if spec.get('native_geometry_policy')=='CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED':
+        control=spec.get('city_derived_control',{})
+        if (is_development(spec) or len(spec['layouts'])!=2 or
+                control.get('authority')!='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or
+                control.get('benchmark_eligible') is not False or
+                any('candidates' in layout for layout in spec['layouts'])):
+            raise ValueError('City derived control requires two frozen consumed layouts without candidate search')
+    if spec.get('scene_layer') not in (SCOPE, DEVELOPMENT_SCOPE) or spec.get('scene_layer') != spec.get('scope', SCOPE) or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit source engineering scope required')
     if spec.get('native_material_policy') not in (None, 'STREET_TRANSIENT_ZERO_WPO_PDO'):
         raise ValueError('Unsupported native material policy')
@@ -67,8 +93,12 @@ def validate_insertions(spec):
         if len(layout.get('clips',[]))!=4 or {c['id'] for c in layout['clips']}!={'centre','boundary','outside','removed'}:
             raise ValueError('Four named fixed clips required per layout')
         for clip in layout['clips']:
-            if len(clip.get('poses',[]))!=2 or clip.get('trajectory_model')!='piecewise_linear_fixed_orientation':
-                raise ValueError('Two fixed endpoint poses per clip required')
+            count = 40 if is_development(spec) else 2
+            if len(clip.get('poses',[]))!=count or clip.get('trajectory_model')!='piecewise_linear_fixed_orientation':
+                raise ValueError(f'{count} fixed poses per clip required')
+            poses = [validated_pose(p) for p in clip['poses']]
+            if any(any(p[k] != poses[0][k] for k in ('pitch','yaw','roll')) for p in poses):
+                raise ValueError('Fixed orientation required throughout a clip')
             objects=clip.get('insertions',[])
             if len(objects)!=2 or {a['id'] for a in objects}!={1,254}:
                 raise ValueError('Both inserted identities must be explicit in each clip')
@@ -101,18 +131,37 @@ def engine():
     spec=json.loads(Path(os.environ['BA_CNH_SOURCE_SPEC']).read_text(encoding='utf-8-sig'))
     validate_insertions(spec)
     world,source=load_source(u,spec)
+    fast=spec.get('render_recipe')=='STATIC_SPATIAL_V1'
+    if fast:
+        if spec['scope']!='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+            raise ValueError('Spatial recipe is separately declared Development only')
+        commands=['r.AntiAliasingMethod 0','r.TemporalAA.Upsampling 0',
+            'r.Lumen.ScreenProbeGather.Temporal 0','r.Lumen.Reflections.Temporal 0',
+            'r.LumenScene.Radiosity.Temporal 0','r.Shadow.Denoiser 0',
+            'r.AmbientOcclusion.Denoiser 0','r.Streaming.PoolSize 2500']
+        for command in commands:u.SystemLibrary.execute_console_command(world,command)
+        source['render_recipe']=dict(name='STATIC_SPATIAL_V1',commands=commands,
+            authority='NEW_DEVELOPMENT_RECIPE_REQUIRES_SAMPLE_PARITY_NOT_INHERITED_RGB_EQUIVALENCE')
     source['capture_debug_flags']={'Navigation':False,'ZoneGraph':False}
     write_json(out/'source-receipt.json',source)
     api=u.get_editor_subsystem(u.EditorActorSubsystem)
     rig=dict(width=640,height=360,hfov_deg=100.,baseline_m=.06)
     actors=[]; captures={}; targets={}; derived={}; frames=[]; probes=[]
-    state=dict(stage='PROBE_PREPARE',probe_index=0,index=0,warm=0,finished=False)
+    state=dict(stage='PROBE_PREPARE',probe_index=0,index=0,warm=0,finished=False,last_layout=None)
     handle=[None];started=time.monotonic()
     native_before=[None]
+    city_derived_session=[None]
     readiness=CaptureReadiness(u,timeout=300)
-    pairs=PairExporter(u,'native_async',limit=4)
-    report=dict(status='RUNNING',scope=spec['scope'],benchmark_eligible=False,expected_frames=16,
-        temporal_authority='TWO_FIXED_SETTLED_ENDPOINTS_PER_CLIP_NOT_SIMULATED_VIDEO',
+    async_attributes=spec.get('transport_policy')=='NATIVE_SEVEN_ASYNC_V1'
+    if async_attributes:
+        from ue_attribute_export import AttributePairExporter
+        pairs=AttributePairExporter(u,'native_async',limit=4,probe_indices=(0,39,40,79,80,119,120,159))
+    else:
+        pairs=PairExporter(u,'native_async',limit=4)
+    development = spec['scope'] == 'STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+    expected_frames=sum(len(c['poses']) for l in spec['layouts'] for c in l['clips'])
+    report=dict(status='RUNNING',scope=spec['scope'],benchmark_eligible=False,expected_frames=expected_frames,
+        temporal_authority=('NOMINAL_10HZ_POSES_STATIC_WORLD_NOT_REALTIME_OR_DYNAMIC_VIDEO' if development else 'TWO_FIXED_SETTLED_ENDPOINTS_PER_CLIP_NOT_SIMULATED_VIDEO'),
         instance_method='PER_INSERTED_ID_ISOLATED_NATIVE_DEPTH_AGREEMENT',
         engine_version=u.SystemLibrary.get_engine_version(),source_unchanged=False)
     cases=[(layout,clip,i,camera) for layout in spec['layouts'] for clip in layout['clips'] for i,camera in enumerate(clip['poses'])]
@@ -177,6 +226,12 @@ def engine():
             report['pair_export']=pairs.finish()
         except Exception:
             error=(error or '')+traceback.format_exc()
+        if city_derived_session[0] is not None:
+            try:
+                city_derived_session[0].restore()
+            except Exception:
+                error=(error or '')+traceback.format_exc()
+            write_json(out/'native-geometry-intervention.json',city_derived_session[0].receipt)
         for name in list(captures):
             try:
                 destroy_capture(name)
@@ -197,7 +252,8 @@ def engine():
             actor_release=release,frames=len(frames),wall_s=time.monotonic()-started,source_unchanged=unchanged)
         if error:
             report['error']=error
-        write_json(out/'raw-manifest.json',dict(rig=rig,frames=frames,derived_assets={str(k):r for k,(_,r) in derived.items()},
+        write_json(out/'raw-manifest.json',dict(rig=rig,frames=frames,scope=spec['scope'],data_role='Development',benchmark_eligible=False,
+            derived_assets={str(k):r for k,(_,r) in derived.items()},
             temporal_authority=report['temporal_authority']))
         write_json(out/'engine-receipt.json',report)
         if handle[0] is not None:
@@ -214,8 +270,8 @@ def engine():
         if source_type==u.SceneCaptureSource.SCS_FINAL_COLOR_LDR:
             c.texture_target.target_gamma=2.2
             c.set_editor_property('show_flag_settings',[
-                u.EngineShowFlagsSetting(show_flag_name='TemporalAA',enabled=True),
-                u.EngineShowFlagsSetting(show_flag_name='AntiAliasing',enabled=True)])
+                u.EngineShowFlagsSetting(show_flag_name='TemporalAA',enabled=not fast),
+                u.EngineShowFlagsSetting(show_flag_name='AntiAliasing',enabled=not fast)])
             volumes=[a for a in api.get_all_level_actors() if isinstance(a,u.PostProcessVolume)]
             if volumes:
                 c.post_process_settings=max(volumes,key=lambda a:a.priority).settings
@@ -279,6 +335,7 @@ def engine():
             desired_bounds_center_m=obj['center_m'],derived_nanite_enabled=False,material_wpo='EXPLICIT_ZERO')
 
     def prepare_frame():
+        state['frame_started']=time.monotonic()
         layout,clip,index,camera=cases[state['index']]
         folder=out/'frames'/f'frame-{state["index"]:04d}';folder.mkdir(parents=True,exist_ok=False)
         geometry=[position_and_geometry(obj) for obj in clip['insertions']]
@@ -286,7 +343,14 @@ def engine():
         write_json(folder/'camera.json',camera_record(camera,rig))
         place_captures(u,captures,camera)
         state['folder']=folder
-        readiness.begin(world,captures['rgb_left'].capture_component2d)
+        state['layout_changed']=state['last_layout']!=layout['layout_id']
+        if not fast or state['layout_changed']:
+            readiness.begin(world,captures['rgb_left'].capture_component2d)
+        else:
+            counters=readiness._snapshot()
+            if counters['asset_registry_loading'] or any(counters[k] for k in readiness.COUNTERS) or not counters['streaming_update_completed']:
+                readiness.begin(world,captures['rgb_left'].capture_component2d)
+        state['prepare_s']=time.monotonic()-state['frame_started']
 
     def raw(name,path):
         c=captures[name].capture_component2d;c.capture_scene()
@@ -303,8 +367,20 @@ def engine():
             stage=state['stage']
             if stage=='PROBE_PREPARE':
                 if state['probe_index']==0 and spec.get('native_geometry_policy'):
-                    from cnh_route_city_lod0 import apply as apply_lod0
-                    source['native_geometry_intervention']=apply_lod0(u,api)
+                    if spec['native_geometry_policy']=='CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED':
+                        from cnh_city_nearfield_derived import apply as apply_derived, NearFarPreflightError
+                        try:
+                            city_derived_session[0]=apply_derived(u,api,spec)
+                        except NearFarPreflightError as exc:
+                            source['native_geometry_intervention']=exc.receipt
+                            write_json(out/'native-geometry-intervention.json',exc.receipt)
+                            write_json(out/'source-receipt.json',source)
+                            report['control_preflight']=exc.receipt
+                            finish(status='CONTROL_PREFLIGHT_REJECTED');return
+                        source['native_geometry_intervention']=city_derived_session[0].receipt
+                    else:
+                        from cnh_route_city_lod0 import apply as apply_lod0
+                        source['native_geometry_intervention']=apply_lod0(u,api)
                     write_json(out/'native-geometry-intervention.json',source['native_geometry_intervention'])
                     write_json(out/'source-receipt.json',source)
                 if state['probe_index']==0 and spec.get('native_material_policy'):
@@ -331,18 +407,18 @@ def engine():
                     write_json(out/'native-material-intervention.json',source['native_material_intervention'])
                     write_json(out/'source-receipt.json',source)
                 destroy_capture('probe_left')
-                receipt=probe(u,api,layout['camera'],8.,out/'evaluator'/f'layout-{state["probe_index"]:02d}')
+                receipt=probe(u,api,layout['camera'],probe_radius_m(layout),out/'evaluator'/f'layout-{state["probe_index"]:02d}')
                 probes.append(receipt)
                 state['probe_index']+=1
-                if state['probe_index']<2:
+                if state['probe_index']<len(spec['layouts']):
                     state['stage']='PROBE_PREPARE';return
                 native_before[0]=native_fingerprint()
                 write_json(out/'native-state-before.json',native_before[0])
                 combined=dict(instances=[row for receipt in probes for row in receipt['instances']])
                 banks=[[dict(layout,**candidate) for candidate in layout.get('candidates',[{}])] for layout in spec['layouts']]
-                selected=[None,None];selected_indices=[None,None];attempts=[]
+                selected=[None]*len(banks);selected_indices=[None]*len(banks);attempts=[]
                 for candidate_index in range(max(len(bank) for bank in banks)):
-                    current=[selected[i] if selected[i] is not None else banks[i][min(candidate_index,len(banks[i])-1)] for i in range(2)]
+                    current=[selected[i] if selected[i] is not None else banks[i][min(candidate_index,len(banks[i])-1)] for i in range(len(banks))]
                     clearance=audit(u,api,current,combined,source)
                     examined=[]
                     for i,candidate in enumerate(clearance['candidates']):
@@ -365,7 +441,9 @@ def engine():
                 write_json(out/'clearance.json',clearance)
                 if any(item is None for item in selected):
                     report['prefilter_rejections']=dict(reason='NO_PASS_WITHIN_FROZEN_CANDIDATES',selection=selection)
-                    finish(status='PREFILTER_REJECTED');return
+                    if not development or not any(item is not None for item in selected):
+                        finish(status='PREFILTER_REJECTED');return
+                selected=[item for item in selected if item is not None]
                 # Freeze selected layouts before spawning objects or collecting any frame.
                 cases[:]=[(layout,clip,i,camera) for layout in selected for clip in layout['clips'] for i,camera in enumerate(clip['poses'])]
                 setup_insertions();state['stage']='PREPARE';return
@@ -378,26 +456,43 @@ def engine():
             for side in ('left','right'):
                 captures['rgb_'+side].capture_component2d.capture_scene()
             state['warm']+=1
-            if state['warm']<32:
+            if state['warm']<(32 if not fast or state['layout_changed'] else 1):
                 return
             folder=state['folder']
+            export_started=time.monotonic()
             for side in ('left','right'):
                 rgb=captures['rgb_'+side].capture_component2d;depth=captures['depth_'+side].capture_component2d
                 depth.capture_scene()
                 pairs.export(world,rgb.texture_target,depth.texture_target,folder/(side+'.png'),
                     folder/('depth_'+side+'.transport.npy'),state['index']*2+int(side=='right'))
-            raw('normal_left',folder/'normal_left.transport.npy');raw('albedo_left',folder/'albedo_left.transport.npy')
-            for identifier in (1,254):
-                component=captures['isolated_'+str(identifier)].capture_component2d;component.capture_scene()
-                if not u.BlindAssistCaptureLibrary.export_depth_npy(world,component.texture_target,str(folder/f'isolated_depth_{identifier}.transport.npy')):
-                    raise RuntimeError('Per-ID native depth export failed')
+            if async_attributes:
+                names=('normal_left','albedo_left','isolated_1','isolated_254')
+                components=[captures[name].capture_component2d for name in names]
+                for component in components:component.capture_scene()
+                paths=[folder/(name+'.transport.npy') for name in ('normal_left','albedo_left','isolated_depth_1','isolated_depth_254')]
+                pairs.export_attributes(world,[c.texture_target for c in components],paths,[False,False,True,True],state['index'])
+            else:
+                raw('normal_left',folder/'normal_left.transport.npy');raw('albedo_left',folder/'albedo_left.transport.npy')
+                for identifier in (1,254):
+                    component=captures['isolated_'+str(identifier)].capture_component2d;component.capture_scene()
+                    if not u.BlindAssistCaptureLibrary.export_depth_npy(world,component.texture_target,str(folder/f'isolated_depth_{identifier}.transport.npy')):
+                        raise RuntimeError('Per-ID native depth export failed')
             layout,clip,index,camera=cases[state['index']]
             frames.append(dict(id=folder.name,folder=folder.relative_to(out).as_posix(),layout_id=layout['layout_id'],
                 physical_site_id=layout['physical_site_id'],clip_id=clip['id'],pose_index=index,
+                environment_category=layout.get('environment_category'),data_role='Development',
+                nominal_time_s=round(index*.1,6) if development else None,
+                machine_id=platform.node(),render_recipe=spec.get('render_recipe','FROZEN_STATIC_MATERIAL_ORIGINAL_RENDER'),
+                timing=dict(prepare_s=state['prepare_s'],settle_and_wait_s=export_started-state['frame_started']-state['prepare_s'],
+                    submit_and_attribute_readback_s=time.monotonic()-export_started,total_s=time.monotonic()-state['frame_started']),
                 asset_ids=[1,254],target_hidden=clip['id']=='removed',readiness=readiness.receipt()))
+            state['last_layout']=layout['layout_id']
+            if index==len(clip['poses'])-1 and clip['id']=='removed':
+                write_json(out/'batches'/f'{layout["layout_id"]}.json',dict(status='RAW_LAYOUT_COMPLETE_REQUIRES_FINALIZE',
+                    layout_id=layout['layout_id'],frames=[r for r in frames if r['layout_id']==layout['layout_id']],machine_id=platform.node()))
             state.update(index=state['index']+1,stage='PREPARE')
-            write_json(out/'progress.json',dict(frames=len(frames),expected_frames=16,wall_s=time.monotonic()-started))
-            if len(frames)==16:
+            write_json(out/'progress.json',dict(frames=len(frames),expected_frames=len(cases),requested_frames=expected_frames,wall_s=time.monotonic()-started))
+            if len(frames)==len(cases):
                 finish()
         except Exception:
             finish(traceback.format_exc())

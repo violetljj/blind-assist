@@ -117,6 +117,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static bool SubmitCapturePair(UTextureRenderTarget2D* RgbTarget, UTextureRenderTarget2D* DepthTarget, const FString& RgbFilename, const FString& DepthFilename, int32 MaxPending = 4);
 
+    /** Queue 1..4 RGBA32F attribute/depth copies in ONE slot of the SAME pair queue.
+     * DepthMetres=true: red cm -> metres [0,100), invalid=0, shape HxW.
+     * false: unchanged RGB float32, shape HxWx3. Poll/drain via CapturePairs.
+     * Caller must submit after CaptureScene and before reusing any target. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static bool SubmitCaptureNpyBatch(const TArray<UTextureRenderTarget2D*>& Targets, const TArray<FString>& Filenames, const TArray<bool>& DepthMetres, int32 MaxPending = 4);
+
     /** Schedule GPU fence checks and reap completed pairs. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FBlindAssistRgbWriteProfile PollCapturePairs();

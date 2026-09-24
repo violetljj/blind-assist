@@ -18,6 +18,13 @@
 namespace
 {
 enum class EPairState { Queued, Copied, Checking, Writing, Done };
+struct FNpyPart
+{
+    FString Filename;
+    int32 Width = 0, Height = 0;
+    bool bDepthMetres = false;
+    TUniquePtr<FRHIGPUTextureReadback> Readback;
+};
 struct FPairJob
 {
     FString RgbFilename, DepthFilename, Error;
@@ -29,6 +36,7 @@ struct FPairJob
     TFuture<void> Writer;
     double Started = 0.0, GpuReadySeconds = 0.0, ReadbackSeconds = 0.0;
     double EncodeSeconds = 0.0, WriteSeconds = 0.0;
+    TArray<FNpyPart> NpyParts;
 };
 using FJob = TSharedPtr<FPairJob, ESPMode::ThreadSafe>;
 TArray<FJob> Jobs;
@@ -41,6 +49,20 @@ struct FReadbackSlot
 };
 // Render-thread-only ring slots, recycled once GPU and CPU copies have finished.
 TArray<FReadbackSlot> FreeSlots;
+struct FNpySlot
+{
+    int32 Width, Height;
+    TUniquePtr<FRHIGPUTextureReadback> Readback;
+};
+TArray<FNpySlot> FreeNpySlots;
+
+bool JobOwnsPath(const FJob& Job, const FString& Output)
+{
+    return Job->RgbFilename.Equals(Output, ESearchCase::IgnoreCase)
+        || Job->DepthFilename.Equals(Output, ESearchCase::IgnoreCase)
+        || Job->NpyParts.ContainsByPredicate([&Output](const FNpyPart& Part)
+            { return Part.Filename.Equals(Output, ESearchCase::IgnoreCase); });
+}
 
 bool PairReject(const FString& Error)
 {
@@ -68,6 +90,23 @@ bool WritePartial(const FString& Filename, const void* Data, int64 Bytes)
     return true;
 }
 
+TArray64<uint8> EncodeNpy(const TArray<float>& Values, int32 Width, int32 Height, int32 Channels)
+{
+    FString Header = Channels == 1
+        ? FString::Printf(TEXT("{'descr': '<f4', 'fortran_order': False, 'shape': (%d, %d)}"), Height, Width)
+        : FString::Printf(TEXT("{'descr': '<f4', 'fortran_order': False, 'shape': (%d, %d, %d)}"), Height, Width, Channels);
+    Header += FString::ChrN((64 - (10 + Header.Len() + 1) % 64) % 64, TEXT(' '));
+    Header += TEXT("\n");
+    FTCHARToUTF8 HeaderBytes(*Header);
+    const uint16 Length = static_cast<uint16>(HeaderBytes.Length());
+    const uint8 Prefix[] = {0x93, 'N', 'U', 'M', 'P', 'Y', 1, 0, static_cast<uint8>(Length & 255), static_cast<uint8>(Length >> 8)};
+    TArray64<uint8> Npy;
+    Npy.Append(Prefix, sizeof(Prefix));
+    Npy.Append(reinterpret_cast<const uint8*>(HeaderBytes.Get()), HeaderBytes.Length());
+    Npy.Append(reinterpret_cast<const uint8*>(Values.GetData()), int64(Values.Num()) * sizeof(float));
+    return Npy;
+}
+
 void WritePair(FJob Job, FImage Rgb, TArray<float> Depth)
 {
     const double EncodeStart = FPlatformTime::Seconds();
@@ -77,16 +116,7 @@ void WritePair(FJob Job, FImage Rgb, TArray<float> Depth)
         Job->Error = TEXT("Pair PNG encode failed: ") + Job->RgbFilename;
         return;
     }
-    FString Header = FString::Printf(TEXT("{'descr': '<f4', 'fortran_order': False, 'shape': (%d, %d)}"), Job->Height, Job->Width);
-    Header += FString::ChrN((64 - (10 + Header.Len() + 1) % 64) % 64, TEXT(' '));
-    Header += TEXT("\n");
-    FTCHARToUTF8 HeaderBytes(*Header);
-    const uint16 Length = static_cast<uint16>(HeaderBytes.Length());
-    const uint8 Prefix[] = {0x93, 'N', 'U', 'M', 'P', 'Y', 1, 0, static_cast<uint8>(Length & 255), static_cast<uint8>(Length >> 8)};
-    TArray64<uint8> Npy;
-    Npy.Append(Prefix, sizeof(Prefix));
-    Npy.Append(reinterpret_cast<const uint8*>(HeaderBytes.Get()), HeaderBytes.Length());
-    Npy.Append(reinterpret_cast<const uint8*>(Depth.GetData()), int64(Depth.Num()) * sizeof(float));
+    TArray64<uint8> Npy = EncodeNpy(Depth, Job->Width, Job->Height, 1);
     Job->EncodeSeconds = FPlatformTime::Seconds() - EncodeStart;
 
     const double WriteStart = FPlatformTime::Seconds();
@@ -114,8 +144,87 @@ void WritePair(FJob Job, FImage Rgb, TArray<float> Depth)
     Job->WriteSeconds = FPlatformTime::Seconds() - WriteStart;
 }
 
+void CheckNpyReadback(FRHICommandListImmediate& RHICmdList, FJob Job, bool bWait)
+{
+    for (FNpyPart& Part : Job->NpyParts)
+    {
+        if (bWait) Part.Readback->Wait(RHICmdList, Part.Readback->GetLastCopyGPUMask());
+        if (!Part.Readback->IsReady())
+        {
+            Job->State.store(EPairState::Copied);
+            return;
+        }
+    }
+    Job->GpuReadySeconds = FPlatformTime::Seconds() - Job->Started;
+    const double ReadStart = FPlatformTime::Seconds();
+    TArray<TArray<float>> Arrays;
+    for (FNpyPart& Part : Job->NpyParts)
+    {
+        int32 Pitch = 0, Height = 0;
+        const float* Pixels = static_cast<const float*>(Part.Readback->Lock(Pitch, &Height));
+        if (!Pixels || Pitch < Part.Width || Height < Part.Height)
+        {
+            if (Pixels) Part.Readback->Unlock();
+            // All fences are ready here: release every owned readback on render thread.
+            for (FNpyPart& Release : Job->NpyParts) Release.Readback.Reset();
+            Job->Error = TEXT("Invalid attribute GPU readback mapping/pitch");
+            Job->State.store(EPairState::Done);
+            return;
+        }
+        const int32 Channels = Part.bDepthMetres ? 1 : 3;
+        TArray<float>& Values = Arrays.AddDefaulted_GetRef();
+        Values.SetNumUninitialized(Part.Width * Part.Height * Channels);
+        for (int32 Y = 0; Y < Part.Height; ++Y)
+        {
+            for (int32 X = 0; X < Part.Width; ++X)
+            {
+                const float* Source = Pixels + (int64(Y) * Pitch + X) * 4;
+                float* Dest = Values.GetData() + (int64(Y) * Part.Width + X) * Channels;
+                if (Part.bDepthMetres)
+                    Dest[0] = FMath::IsFinite(Source[0]) && Source[0] > 0.0f && Source[0] < 10000.0f
+                        ? static_cast<float>(static_cast<double>(Source[0]) / 100.0) : 0.0f;
+                else
+                    FMemory::Memcpy(Dest, Source, 3 * sizeof(float));
+            }
+        }
+        Part.Readback->Unlock();
+        FreeNpySlots.Add(FNpySlot{Part.Width, Part.Height, MoveTemp(Part.Readback)});
+    }
+    Job->ReadbackSeconds = FPlatformTime::Seconds() - ReadStart;
+    Job->Writer = Async(EAsyncExecution::ThreadPool, [Job, Arrays = MoveTemp(Arrays)]() mutable
+    {
+        for (int32 Index = 0; Index < Arrays.Num(); ++Index)
+        {
+            const FNpyPart& Part = Job->NpyParts[Index];
+            const double EncodeStart = FPlatformTime::Seconds();
+            TArray64<uint8> Npy = EncodeNpy(Arrays[Index], Part.Width, Part.Height, Part.bDepthMetres ? 1 : 3);
+            Job->EncodeSeconds += FPlatformTime::Seconds() - EncodeStart;
+            const double WriteStart = FPlatformTime::Seconds();
+            const FString Partial = Part.Filename + TEXT(".partial");
+            if (!WritePartial(Partial, Npy.GetData(), Npy.Num()))
+            {
+                Job->Error = TEXT("Attribute partial write failed: ") + Part.Filename;
+                break;
+            }
+            if (!IFileManager::Get().Move(*Part.Filename, *Partial, false, false, false, true))
+            {
+                IFileManager::Get().Delete(*Partial, false, false, true);
+                Job->Error = TEXT("Attribute rename failed: ") + Part.Filename;
+                break;
+            }
+            Job->WriteSeconds += FPlatformTime::Seconds() - WriteStart;
+        }
+    });
+    Job->State.store(EPairState::Writing);
+}
+
 void CheckReadback(FRHICommandListImmediate& RHICmdList, FJob Job, bool bWait)
 {
+    if (!Job->NpyParts.IsEmpty())
+    {
+        CheckNpyReadback(RHICmdList, Job, bWait);
+        return;
+    }
     if (bWait)
     {
         Job->RgbReadback->Wait(RHICmdList, Job->RgbReadback->GetLastCopyGPUMask());
@@ -229,7 +338,7 @@ bool UBlindAssistCaptureLibrary::SubmitCapturePair(UTextureRenderTarget2D* RgbTa
     for (const FString& Output : {RgbOutput, DepthOutput})
     {
         if (IFileManager::Get().FileExists(*Output) || IFileManager::Get().FileExists(*(Output + TEXT(".partial")))
-            || Jobs.ContainsByPredicate([&Output](const FJob& Job) { return Job->RgbFilename.Equals(Output, ESearchCase::IgnoreCase) || Job->DepthFilename.Equals(Output, ESearchCase::IgnoreCase); }))
+            || Jobs.ContainsByPredicate([&Output](const FJob& Job) { return JobOwnsPath(Job, Output); }))
             return PairReject(TEXT("Pair output exists or is pending: ") + Output);
     }
     FModuleManager::LoadModuleChecked<IImageWrapperModule>(TEXT("ImageWrapper"));
@@ -272,6 +381,72 @@ bool UBlindAssistCaptureLibrary::SubmitCapturePair(UTextureRenderTarget2D* RgbTa
     return true;
 }
 
+bool UBlindAssistCaptureLibrary::SubmitCaptureNpyBatch(const TArray<UTextureRenderTarget2D*>& Targets,
+    const TArray<FString>& Filenames, const TArray<bool>& DepthMetres, int32 MaxPending)
+{
+    static_assert(PLATFORM_LITTLE_ENDIAN && sizeof(float) == 4, "NPY output requires little-endian float32");
+    check(IsInGameThread());
+    const double SubmitStart = FPlatformTime::Seconds();
+    PumpPairs(false);
+    if (MaxPending <= 0 || Targets.Num() < 1 || Targets.Num() > 4
+        || Filenames.Num() != Targets.Num() || DepthMetres.Num() != Targets.Num())
+        return PairReject(TEXT("Invalid attribute batch dimensions"));
+    if (Jobs.Num() >= MaxPending) return false;
+    FJob Job = MakeShared<FPairJob, ESPMode::ThreadSafe>();
+    TArray<FTextureRHIRef> Textures;
+    for (int32 Index = 0; Index < Targets.Num(); ++Index)
+    {
+        UTextureRenderTarget2D* Target = Targets[Index];
+        if (!Target || !Target->GetResource() || Target->SizeX <= 0 || Target->SizeY <= 0 || Filenames[Index].IsEmpty())
+            return PairReject(TEXT("Invalid attribute target/filename"));
+        FTextureRHIRef Texture = Target->GetResource()->TextureRHI;
+        if (!Texture || Texture->GetFormat() != PF_A32B32G32R32F || Texture->IsMultisampled()
+            || int64(Target->SizeX) * Target->SizeY * 3 > MAX_int32)
+            return PairReject(TEXT("Attribute batch requires bounded RGBA32F targets"));
+        const FString Output = FPaths::ConvertRelativePathToFull(Filenames[Index]);
+        if (!IFileManager::Get().DirectoryExists(*FPaths::GetPath(Output))
+            || IFileManager::Get().FileExists(*Output) || IFileManager::Get().FileExists(*(Output + TEXT(".partial")))
+            || JobOwnsPath(Job, Output)
+            || Jobs.ContainsByPredicate([&Output](const FJob& Pending) { return JobOwnsPath(Pending, Output); }))
+            return PairReject(TEXT("Attribute output exists, is pending, or parent is missing: ") + Output);
+        FNpyPart& Part = Job->NpyParts.AddDefaulted_GetRef();
+        Part.Filename = Output; Part.Width = Target->SizeX; Part.Height = Target->SizeY;
+        Part.bDepthMetres = DepthMetres[Index];
+        Textures.Add(Texture);
+    }
+    Job->Started = FPlatformTime::Seconds();
+    Jobs.Add(Job);
+    ENQUEUE_RENDER_COMMAND(BlindAssistSubmitNpyBatch)([Job, Textures = MoveTemp(Textures)](FRHICommandListImmediate& RHICmdList)
+    {
+        for (int32 Index = 0; Index < Job->NpyParts.Num(); ++Index)
+        {
+            FNpyPart& Part = Job->NpyParts[Index];
+            const int32 SlotIndex = FreeNpySlots.IndexOfByPredicate([&Part](const FNpySlot& Slot)
+                { return Slot.Width == Part.Width && Slot.Height == Part.Height; });
+            if (SlotIndex != INDEX_NONE)
+            {
+                Part.Readback = MoveTemp(FreeNpySlots[SlotIndex].Readback);
+                FreeNpySlots.RemoveAtSwap(SlotIndex);
+            }
+            else
+            {
+                // Bound stale staging memory if callers change dimensions.
+                FreeNpySlots.Empty();
+                Part.Readback = MakeUnique<FRHIGPUTextureReadback>(TEXT("BlindAssistAttribute"));
+            }
+            RHICmdList.Transition(FRHITransitionInfo(Textures[Index], ERHIAccess::Unknown, ERHIAccess::CopySrc));
+            Part.Readback->EnqueueCopy(RHICmdList, Textures[Index]);
+            RHICmdList.Transition(FRHITransitionInfo(Textures[Index], ERHIAccess::CopySrc, ERHIAccess::SRVMask));
+        }
+        Job->State.store(EPairState::Copied);
+    });
+    ++PairProfile.Submitted;
+    PairProfile.Pending = Jobs.Num();
+    PairProfile.PeakPending = FMath::Max(PairProfile.PeakPending, PairProfile.Pending);
+    PairProfile.SubmitSeconds += FPlatformTime::Seconds() - SubmitStart;
+    return true;
+}
+
 FBlindAssistRgbWriteProfile UBlindAssistCaptureLibrary::PollCapturePairs()
 {
     return PumpPairs(false);
@@ -299,7 +474,7 @@ FBlindAssistRgbWriteProfile UBlindAssistCaptureLibrary::DrainCapturePairs()
         }
         PumpPairs(false);
     }
-    ENQUEUE_RENDER_COMMAND(BlindAssistReleasePairSlots)([](FRHICommandListImmediate&) { FreeSlots.Empty(); });
+    ENQUEUE_RENDER_COMMAND(BlindAssistReleasePairSlots)([](FRHICommandListImmediate&) { FreeSlots.Empty(); FreeNpySlots.Empty(); });
     FlushRenderingCommands();
     return PairProfile;
 }

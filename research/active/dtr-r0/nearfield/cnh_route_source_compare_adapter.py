@@ -15,6 +15,11 @@ from cnh_route_capture import basis
 
 SOURCES = {'/Game/BAResearchSlice/Street200V7', '/Game/Map/Small_City_LVL'}
 SCOPE = 'TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK'
+DEVELOPMENT_SCOPE = 'STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+
+
+def is_development(spec):
+    return spec.get('scope') == DEVELOPMENT_SCOPE
 
 
 def normalized_guid(value):
@@ -34,15 +39,16 @@ def validated_pose(camera):
 
 
 def validate_spec(spec):
-    if spec.get('scope') != SCOPE or spec.get('benchmark_eligible') is not False:
+    if spec.get('scope') not in (SCOPE, DEVELOPMENT_SCOPE) or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit engineering-only comparison scope required')
     if spec.get('map_asset') not in SOURCES:
         raise ValueError('Only the two declared source maps are supported')
     if spec.get('native_full_detail_only', True) is not True or spec.get('background_hlod_min_distance_m'):
         raise ValueError('This bounded adapter supports full-detail-only captures; distant HLOD requires the original collector')
     layouts = spec.get('layouts', [])
-    if len(layouts) != 2 or len({r['layout_id'] for r in layouts}) != 2:
-        raise ValueError('Exactly two fixed, uniquely identified layouts required')
+    valid_count = 1 <= len(layouts) <= 20 if is_development(spec) else len(layouts) == 2
+    if not valid_count or len({r['layout_id'] for r in layouts}) != len(layouts):
+        raise ValueError('Engineering requires two layouts; Development batches require 1..20 unique layouts')
     for row in layouts:
         validated_pose(row['camera'])
         candidates = row.get('candidates')
@@ -53,7 +59,16 @@ def validate_spec(spec):
                 validated_pose(candidate['camera'])
         if not row.get('physical_site_id'):
             raise ValueError('Declared physical site identity required; independence remains unverified')
-    if len({r['physical_site_id'] for r in layouts}) != 2:
+    if is_development(spec):
+        if (spec['map_asset'] != '/Game/BAResearchSlice/Street200V7'
+                or spec.get('data_role') != 'Development'
+                or spec.get('native_material_policy') != 'STREET_TRANSIENT_ZERO_WPO_PDO'
+                or spec.get('nominal_sample_interval_s') != .1
+                or spec.get('render_recipe') not in (None,'STATIC_SPATIAL_V1')
+                or any(r['physical_site_id'] != 'Street200V7-single-street-block' for r in layouts)
+                or any(r.get('environment_category') not in ('sidewalk','intersection','plaza') for r in layouts)):
+            raise ValueError('Development requires frozen static Street, declared categories, one shared street block and nominal 0.1s spacing')
+    elif len({r['physical_site_id'] for r in layouts}) != 2:
         raise ValueError('Two camera views of one declared site are not two layouts')
     region = spec.get('world_partition_region_m')
     if spec['map_asset'] == '/Game/Map/Small_City_LVL' and region is None:
@@ -90,7 +105,7 @@ def load_source(u, spec):
     world = editor.get_editor_world()
     api = u.get_editor_subsystem(u.EditorActorSubsystem)
     u.SystemLibrary.execute_console_command(world, 'wp.Editor.HLOD.AllowShowingHLODsInEditor 0')
-    receipt = dict(scope=SCOPE, map_asset=spec['map_asset'], map_file=spec['map_file'],
+    receipt = dict(scope=spec['scope'], map_asset=spec['map_asset'], map_file=spec['map_file'],
                    map_sha256_before=digest, loaded_world=world.get_path_name(),
                    layouts=[r['layout_id'] for r in spec['layouts']],
                    native_coverage_complete=False, bounds_conservative=False,

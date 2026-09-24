@@ -78,7 +78,7 @@ def aggregate_status(statuses):
     return 'FAIL' if 'FAIL' in statuses else ('NOT_RUN' if 'NOT_RUN' in statuses or not statuses else 'PASS')
 
 
-def audit(capture, diagnostic=None, scene_depth_materials=False):
+def audit(capture, diagnostic=None, scene_depth_materials=False, development_sample=False):
     import torch
     from PIL import Image
     from cnh_route_scene_depth_audit import world_triangles,trace_cuda
@@ -95,9 +95,24 @@ def audit(capture, diagnostic=None, scene_depth_materials=False):
         raise ValueError('Successful 16-frame source transport required')
     manifest=json.loads((capture/'raw-manifest.json').read_text());spec=json.loads((capture/'source/spec.json').read_text(encoding='utf-8-sig'))
     frame_rows=manifest['frames'];layout_ids=[r['layout_id'] for r in spec['layouts']]
-    expected={(layout,clip,pose) for layout in layout_ids for clip in ('centre','boundary','outside','removed') for pose in (0,1)}
-    if len(set(layout_ids))!=2 or len(frame_rows)!=16 or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in frame_rows}!=expected:
-        raise ValueError('Exactly two fixed layouts and 16 endpoint frames required')
+    sample_policy=None
+    if development_sample:
+        if spec.get('scope')!='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+            raise ValueError('Explicit Development capture required for sampling')
+        selected=[l for l in json.loads((capture/'candidate-selection.json').read_text())['selected_layouts'] if l is not None]
+        expected={(l['layout_id'],c['id'],i) for l in selected for c in l['clips'] for i in range(len(c['poses']))}
+        if len(frame_rows)!=len(expected) or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in frame_rows}!=expected:
+            raise ValueError('Development transport does not match selected layouts')
+        # Fixed before first batch outcomes. The original 8m export around the
+        # starting camera covers the <=5m rays after a 1.9m translation; it does
+        # not authenticate the 3.9m endpoint. No endpoint PASS is inferred.
+        sample_policy=dict(name='DEVELOPMENT_FIXED_START_MIDPOINT_V1',pairs=[['centre',0],['boundary',19],['removed',0]],
+            limitation='Three frames per layout only; original 8m native export does not certify terminal pose geometry')
+        frame_rows=[r for r in frame_rows if [r['clip_id'],r['pose_index']] in sample_policy['pairs']]
+    else:
+        expected={(layout,clip,pose) for layout in layout_ids for clip in ('centre','boundary','outside','removed') for pose in (0,1)}
+        if len(set(layout_ids))!=2 or len(frame_rows)!=16 or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in frame_rows}!=expected:
+            raise ValueError('Exactly two fixed layouts and 16 endpoint frames required')
     started=time.monotonic();torch.cuda.reset_peak_memory_stats()
     native_geometry={};native_surface_ids={};native_surfaces={};export_reports={};background_errors={layout:[] for layout in layout_ids};frames=[]
     source_receipt=json.loads((capture/'source-receipt.json').read_text())
@@ -119,7 +134,8 @@ def audit(capture, diagnostic=None, scene_depth_materials=False):
         folder=(capture/row['folder']).resolve(strict=True)
         if not folder.is_relative_to(capture):raise ValueError('Frame path escapes capture')
         camera=json.loads((folder/'camera.json').read_text());geometry=json.loads((folder/'inserted-geometry.json').read_text())
-        depth=np.load(folder/'depth_left.transport.npy',allow_pickle=False)
+        from cnh_street_development_baseline import load_depth
+        depth,depth_path=load_depth(folder) if development_sample else (np.load(folder/'depth_left.transport.npy',allow_pickle=False),folder/'depth_left.transport.npy')
         with Image.open(folder/'instance_left.png') as image: ids=np.asarray(image).copy()
         if depth.shape!=(360,640) or depth.dtype!=np.dtype('<f4') or ids.shape!=depth.shape:raise ValueError('Native depth/ID schema differs')
         yy,xx,optical,weights,zones=ray_grid(camera);norm=np.linalg.norm(optical,axis=-1)
@@ -167,7 +183,7 @@ def audit(capture, diagnostic=None, scene_depth_materials=False):
             background_radial_abs_error=statistics(radial),all_common_radial_abs_error=statistics(np.abs(predicted[common]-observed[common])*norm[common]),
             all_common_axial_abs_error=statistics(np.abs(predicted[common]-observed[common])),
             coverage_status=aggregate_status([r['status'] for r in coverage]),zones=coverage,thin_layers=layers,
-            input_sha256={name:digest(folder/name) for name in ('camera.json','inserted-geometry.json','depth_left.transport.npy','instance_left.png')}))
+            input_sha256={name:digest(folder/name) for name in ('camera.json','inserted-geometry.json',depth_path.name,'instance_left.png')}))
     layouts=[]
     for layout in layout_ids:
         selected=[r for r in frames if r['layout_id']==layout]
@@ -179,6 +195,7 @@ def audit(capture, diagnostic=None, scene_depth_materials=False):
             sampled_inserted_near_layer_gate=thin,tested_gates_status=aggregate_status([distance['status'],coverage,thin])))
     return dict(status=aggregate_status([l['tested_gates_status'] for l in layouts]),
         authority='NUMERICAL_GEOMETRY_AND_SAMPLED_COVERAGE_GATES_ONLY',benchmark_eligible=False,formal_admission='NOT_RUN',
+        sampling=sample_policy,capture_manifest_sha256=digest(capture/'raw-manifest.json'),
         protocol=PROTOCOL,protocol_sha256=hashlib.sha256(json.dumps(PROTOCOL,sort_keys=True).encode()).hexdigest(),
         energy_convergence='NOT_RUN',label_precision='NOT_RUN',provenance='NOT_RUN',
         thin_layer_scope='VISIBLE_INSERTED_IDENTITIES_AT_FIXED_GRID_ONLY_NOT_ALL_SUBPIXEL_LAYERS',
@@ -193,7 +210,8 @@ def audit(capture, diagnostic=None, scene_depth_materials=False):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--capture',type=Path,required=True);parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--development-sample',action='store_true')
     args=parser.parse_args();root=(Path(__file__).resolve().parents[4]/'artifacts.local').resolve();output=args.output.resolve()
     if output.exists() or not output.is_relative_to(root) or output==root:raise ValueError('Fresh artifact output required')
-    result=audit(args.capture)
+    result=audit(args.capture,development_sample=args.development_sample)
     with output.open('x',encoding='utf-8') as stream:json.dump(result,stream,indent=2,allow_nan=False)

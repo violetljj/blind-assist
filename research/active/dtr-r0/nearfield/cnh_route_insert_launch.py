@@ -154,8 +154,6 @@ def launch(args):
     journal = os.environ.get('BLINDASSIST_ASSET_RUN_JOURNAL')
     if not journal or json.loads(Path(journal).read_text(encoding='utf-8-sig')).get('state') != 'running':
         raise RuntimeError('Use governed research-ue execution')
-    if not math.isfinite(args.timeout) or not 0 < args.timeout <= 600:
-        raise ValueError('Canary timeout must be within 600 seconds')
     project = artifact_file(args.project,'Project')
     if project.suffix.lower() != '.uproject':
         raise ValueError('Unreal project descriptor required')
@@ -163,6 +161,9 @@ def launch(args):
     plugin = artifact_file(args.plugin,'Plugin')
     binary = artifact_file(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll','Plugin DLL')
     spec = json.loads(spec_path.read_text(encoding='utf-8-sig')); validate_spec(spec)
+    timeout_limit=3600 if spec.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK' else 600
+    if not math.isfinite(args.timeout) or not 0 < args.timeout <= timeout_limit:
+        raise ValueError(f'Capture timeout must be within {timeout_limit} seconds')
     result = Path(args.result).resolve()
     root = (REPO/'artifacts.local').resolve()
     if not result.is_relative_to(root) or result == root or result.exists():
