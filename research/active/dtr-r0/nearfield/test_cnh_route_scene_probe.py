@@ -5,7 +5,7 @@ from types import SimpleNamespace as NS
 import tempfile
 import unittest
 
-from cnh_route_scene_probe import intersects_sphere, probe, transformed_bounds
+from cnh_route_scene_probe import intersects_sphere, probe, transformed_bounds, material_record
 
 
 def vector(x=0, y=0, z=0):
@@ -93,6 +93,19 @@ class ProbeTest(unittest.TestCase):
         for low, high, radius in [([2,0,0], [1,1,1], 5), ([0,0,0], [1,1,1], float('nan'))]:
             with self.assertRaises(ValueError):
                 intersects_sphere(low, high, [0,0,0], radius)
+
+    def test_effective_instance_material_and_nonordinal_section_slot(self):
+        material=NS(get_path_name=lambda:'/MI',get_editor_property=lambda name:None)
+        result=material_record(material,lambda m:json.dumps(dict(blend_mode=2,two_sided=True,is_masked=False)))
+        self.assertEqual(result['effective_render_material']['blend_mode'],2)
+        u=self.unreal();u.StaticMeshEditorSubsystem=object
+        u.get_editor_subsystem=lambda cls:NS(get_lod_material_slot=lambda mesh,lod,section:5)
+        actor=NS(get_path_name=lambda:'/Map/A',get_components_by_class=lambda cls:[Instanced()])
+        with tempfile.TemporaryDirectory() as directory:
+            out=Path(directory)/'probe'
+            result=probe(u,NS(get_all_level_actors=lambda:[actor]),dict(x=0,y=0,z=0),5,out)
+            mesh=json.loads((out/result['meshes'][0]['path']).read_text())
+            self.assertEqual(mesh['sections'][0]['material_slot'],5)
 
 
 if __name__ == '__main__':

@@ -26,6 +26,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogBlindAssistCapture, Log, All);
 
+UMaterialInterface* UBlindAssistCaptureLibrary::GetDefaultSurfaceMaterial()
+{
+    return UMaterial::GetDefaultMaterial(MD_Surface);
+}
+
 FString UBlindAssistCaptureLibrary::GetMaterialGeometryCapability(UMaterialInterface* Material)
 {
     TSharedRef<FJsonObject> Data = MakeShared<FJsonObject>();
@@ -47,6 +52,9 @@ FString UBlindAssistCaptureLibrary::GetMaterialGeometryCapability(UMaterialInter
     };
     if (!IsInGameThread()) return Finish(TEXT("GAME_THREAD_REQUIRED"));
     if (!Material) return Finish(TEXT("MATERIAL_MISSING"));
+    Data->SetNumberField(TEXT("blend_mode"), static_cast<int32>(Material->GetBlendMode()));
+    Data->SetBoolField(TEXT("two_sided"), Material->IsTwoSided());
+    Data->SetBoolField(TEXT("is_masked"), Material->IsMasked());
     const EMaterialQualityLevel::Type Quality = GetCurrentMaterialQualityLevelChecked();
     Data->SetNumberField(TEXT("quality_level_id"), static_cast<int32>(Quality));
     FMaterialResource* Resource = Material->GetMaterialResource(GMaxRHIShaderPlatform, Quality);

@@ -10,7 +10,7 @@ import torch
 from cnh_route_capture import camera_record
 
 
-def world_triangles(folder, receipt):
+def world_triangles(folder, receipt, section_filter=None):
     triangles, owners, paths, missing = [], [], [], []
     cached = {}
     for instance in receipt['instances']:
@@ -32,6 +32,8 @@ def world_triangles(folder, receipt):
             [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]], dtype=np.float64)
         owner = len(paths); paths.append(descriptor['asset_path'])
         for section in cached[path]['sections']:
+            if section_filter is not None and not section_filter(instance,section):
+                continue
             vertices = np.asarray(section['vertices_m'], dtype=np.float64)*instance['actual_scale']
             vertices = vertices@rotation.T + instance['actual_translation_m']
             tri = vertices[np.asarray(section['triangles']).reshape(-1,3)]

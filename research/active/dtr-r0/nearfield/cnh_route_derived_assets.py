@@ -24,7 +24,7 @@ def _stable_state(value):
     return re.sub(r"(<Struct '[^']+' )\([0-9a-fA-Fx]+\)", r'\1(WRAPPER)', str(value))
 
 
-def derive(u, mesh_asset_path, package_root):
+def derive(u, mesh_asset_path, package_root, *, material_only=False):
     def stage(name):
         message = 'CNH_DERIVE_STAGE '+name+' source='+mesh_asset_path
         u.log_warning(message)
@@ -33,15 +33,15 @@ def derive(u, mesh_asset_path, package_root):
     if not re.fullmatch(r'/Game/CNH[A-Za-z0-9_/]*', package_root) or '..' in package_root:
         raise ValueError('Derived assets require a task-owned /Game/CNH... package root')
     source = u.load_asset(mesh_asset_path)
-    if not isinstance(source, u.StaticMesh):
+    if not material_only and not isinstance(source, u.StaticMesh):
         raise ValueError('Source is not a StaticMesh: '+mesh_asset_path)
     editor = u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
     library = u.MaterialEditingLibrary
     assets = u.AssetToolsHelpers.get_asset_tools()
     run_root = package_root.rstrip('/')+'/D_'+uuid.uuid4().hex
-    source_settings = _stable_state(editor.get_nanite_settings(source))
-    source_enabled = bool(editor.get_nanite_settings(source).get_editor_property('enabled'))
-    source_slots = [_path(slot.get_editor_property('material_interface')) for slot in source.get_editor_property('static_materials')]
+    source_settings = None if material_only else _stable_state(editor.get_nanite_settings(source))
+    source_enabled = False if material_only else bool(editor.get_nanite_settings(source).get_editor_property('enabled'))
+    source_slots = [] if material_only else [_path(slot.get_editor_property('material_interface')) for slot in source.get_editor_property('static_materials')]
     records, cache, snapshots = [], {}, []
     # Do not enumerate every EMaterialProperty: the UE editing helper dereferences
     # a null input for unsupported enum members (e.g. diffuse/specular legacy).
@@ -157,6 +157,16 @@ def derive(u, mesh_asset_path, package_root):
             raise ValueError('Unsupported material interface: '+key)
         cache[key] = clone
         return clone
+
+    if material_only:
+        material = material_clone(source)
+        for kind, original, state in snapshots:
+            current = graph(original) if kind == 'root' else (_path(original.get_editor_property('parent')), instance_state(original))
+            if current != state:
+                raise RuntimeError('Source material changed: '+_path(original))
+        return material, dict(schema='cnh_derived_material_v1', source_material=_path(source),
+            derived_material=_path(material), saved=False, source_configuration_unchanged=True,
+            materials=records, mesh_and_nanite_unchanged=True)
 
     mesh = duplicate(source)
     for index, slot in enumerate(source.get_editor_property('static_materials')):

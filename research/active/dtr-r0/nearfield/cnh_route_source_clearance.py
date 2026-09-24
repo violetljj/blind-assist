@@ -88,6 +88,11 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
                 reasons.append('MATERIAL_SLOTS_UNRESOLVED')
             for slot in range(count):
                 material = component.get_material(slot)
+                # UE 5.8 BaseDynamicMeshSceneProxy.cpp:120-123 uses this exact
+                # engine fallback for null slots. Do not change the component.
+                if material is None and is_dynamic_mesh:
+                    fallback = getattr(getattr(u,'BlindAssistCaptureLibrary',None), 'get_default_surface_material', None)
+                    material = fallback() if fallback else None
                 key = material.get_path_name() if material is not None else path+':null:'+str(slot)
                 material_paths.append(key)
                 if key not in materials:

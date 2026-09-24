@@ -78,11 +78,13 @@ def aggregate_status(statuses):
     return 'FAIL' if 'FAIL' in statuses else ('NOT_RUN' if 'NOT_RUN' in statuses or not statuses else 'PASS')
 
 
-def audit(capture):
+def audit(capture, diagnostic=None, scene_depth_materials=False):
     import torch
     from PIL import Image
     from cnh_route_scene_depth_audit import world_triangles,trace_cuda
     from cnh_route_insert_geometry_audit import world_triangles as inserted_triangles
+    from cnh_route_depth_surface import DepthSurfaceFilter
+    surface_filter=DepthSurfaceFilter() if scene_depth_materials else None
     journal=os.environ.get('BLINDASSIST_ASSET_RUN_JOURNAL')
     if not journal or json.loads(Path(journal).read_text(encoding='utf-8-sig')).get('state')!='running':
         raise RuntimeError('Governed research-ue execution required')
@@ -97,7 +99,7 @@ def audit(capture):
     if len(set(layout_ids))!=2 or len(frame_rows)!=16 or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in frame_rows}!=expected:
         raise ValueError('Exactly two fixed layouts and 16 endpoint frames required')
     started=time.monotonic();torch.cuda.reset_peak_memory_stats()
-    native_geometry={};export_reports={};background_errors={layout:[] for layout in layout_ids};frames=[]
+    native_geometry={};native_surface_ids={};native_surfaces={};export_reports={};background_errors={layout:[] for layout in layout_ids};frames=[]
     source_receipt=json.loads((capture/'source-receipt.json').read_text())
     hidden_actors=set(source_receipt.get('hidden_native_hlod_actors',[]))
     clearance=json.loads((capture/'clearance.json').read_text())
@@ -107,8 +109,10 @@ def audit(capture):
         probe_path=folder/'scene-probe.json';probe=json.loads(probe_path.read_text())
         original_count=len(probe['instances'])
         probe=dict(probe,instances=[r for r in probe['instances'] if r['actor_path'] not in hidden_actors and r['component_path'] not in hidden_components])
-        triangles,_,_,missing=world_triangles(folder,probe)
+        triangles,surface_ids,_,missing=world_triangles(folder,probe,section_filter=surface_filter)
         native_geometry[layout]=triangles
+        native_surface_ids[layout]=surface_ids
+        native_surfaces[layout]=[r for r in probe['instances'] if r['mesh'].get('status')=='EXPORTED_LOD0_NOT_RENDER_VERIFIED']
         export_reports[layout]=dict(probe_sha256=digest(probe_path),exported_triangles=len(triangles),authenticated_hidden_instances_excluded=original_count-len(probe['instances']),
             missing_exports=missing,unsupported_primitives=len(probe.get('unsupported_primitives',[])))
     for row in frame_rows:
@@ -121,11 +125,13 @@ def audit(capture):
         yy,xx,optical,weights,zones=ray_grid(camera);norm=np.linalg.norm(optical,axis=-1)
         matrix=np.asarray(camera['T_world_camera'],dtype=float);origin=matrix[:3,3]
         chunks=[native_geometry[row['layout_id']]];owner_chunks=[np.zeros(len(chunks[0]),dtype=np.uint16)]
+        surface_chunks=[native_surface_ids[row['layout_id']]]
         for instance in geometry['instances']:
             if instance.get('hidden') is False:
                 chunks.append(inserted_triangles(instance));owner_chunks.append(np.full(len(chunks[-1]),instance['inserted_id'],dtype=np.uint16))
+                surface_chunks.append(np.full(len(chunks[-1]),-int(instance['inserted_id']),dtype=np.int64))
             elif instance.get('hidden') is not True:raise ValueError('Explicit hidden flag required')
-        triangles=np.concatenate(chunks);owners=np.concatenate(owner_chunks)
+        triangles=np.concatenate(chunks);owners=np.concatenate(owner_chunks);surface_ids=np.concatenate(surface_chunks)
         # Conservative triangle-AABB/sphere filter cannot remove a <=5m hit.
         low=triangles.min(axis=1);high=triangles.max(axis=1)
         separation=np.maximum(np.maximum(low-origin,origin-high),0)
@@ -135,6 +141,13 @@ def audit(capture):
         predicted_owner=np.zeros(len(predicted),dtype=np.uint16)
         has_winner=winner>=0
         predicted_owner[has_winner]=owners[winner[has_winner]]
+        if diagnostic is not None:
+            predicted_surface=np.full(len(predicted),-65535,dtype=np.int64)
+            predicted_surface[has_winner]=surface_ids[in_range][winner[has_winner]]
+            diagnostic(row=row,folder=folder,camera=camera,yy=yy,xx=xx,optical=optical,
+                weights=weights,zones=zones,predicted=predicted,observed=depth[yy,xx],
+                sampled_ids=ids[yy,xx],predicted_owner=predicted_owner,
+                predicted_surface=predicted_surface,surfaces=native_surfaces[row['layout_id']])
         observed=depth[yy,xx];sampled_ids=ids[yy,xx]
         coverage,native_hit,mesh_hit=zone_coverage(observed,predicted,norm,weights,zones)
         common=native_hit&mesh_hit;background=common&(sampled_ids==0)
@@ -171,6 +184,7 @@ def audit(capture):
         thin_layer_scope='VISIBLE_INSERTED_IDENTITIES_AT_FIXED_GRID_ONLY_NOT_ALL_SUBPIXEL_LAYERS',
         backend='CUDA',device=torch.cuda.get_device_name(),peak_cuda_bytes=torch.cuda.max_memory_allocated(),
         source_exports=export_reports,layouts=layouts,frames=frames,capture=str(capture),
+        depth_surface_policy=surface_filter.receipt() if surface_filter else None,
         auditor_sha256=digest(__file__),spec_sha256=digest(capture/'source/spec.json'),
         limitations='Exported static LOD geometry only; dynamic or unsupported surfaces can cause measured misses. No energy-density convergence test or label/provenance admission.',
         wall_s=time.monotonic()-started)

@@ -31,8 +31,16 @@ def prevent_reentry(callback):
 
 
 def validate_insertions(spec):
+    if spec.get('native_geometry_policy') not in (None,'CITY_COMPONENT_LOD0_FALLBACK_CONTROL'):
+        raise ValueError('Unknown native geometry intervention')
+    if spec.get('native_geometry_policy') and spec.get('map_asset')!='/Game/Map/Small_City_LVL':
+        raise ValueError('LOD0 diagnostic control is City-only')
     if spec.get('scene_layer')!='TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK' or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit source engineering scope required')
+    if spec.get('native_material_policy') not in (None, 'STREET_TRANSIENT_ZERO_WPO_PDO'):
+        raise ValueError('Unsupported native material policy')
+    if spec.get('native_material_policy') and spec.get('map_asset') != '/Game/BAResearchSlice/Street200V7':
+        raise ValueError('Native material intervention is Street-only')
     assets=spec.get('assets',[])
     if len(assets)!=2 or {a['id'] for a in assets}!={1,254}:
         raise ValueError('Two actual assets with IDs 1 and 254 required')
@@ -294,6 +302,16 @@ def engine():
                 return
             stage=state['stage']
             if stage=='PROBE_PREPARE':
+                if state['probe_index']==0 and spec.get('native_geometry_policy'):
+                    from cnh_route_city_lod0 import apply as apply_lod0
+                    source['native_geometry_intervention']=apply_lod0(u,api)
+                    write_json(out/'native-geometry-intervention.json',source['native_geometry_intervention'])
+                    write_json(out/'source-receipt.json',source)
+                if state['probe_index']==0 and spec.get('native_material_policy'):
+                    from cnh_route_street_static_background import apply
+                    source['native_material_intervention']=apply(u,api)
+                    write_json(out/'native-material-intervention.json',source['native_material_intervention'])
+                    write_json(out/'source-receipt.json',source)
                 layout=spec['layouts'][state['probe_index']]
                 actor=capture('probe_left',u.SceneCaptureSource.SCS_FINAL_COLOR_LDR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
                 place_captures(u,captures,layout['camera'])
@@ -307,6 +325,11 @@ def engine():
                 if state['warm']<32:
                     return
                 layout=spec['layouts'][state['probe_index']]
+                if state['probe_index']==0 and spec.get('native_material_policy'):
+                    from cnh_route_street_static_background import verify
+                    verify(u,source['native_material_intervention'])
+                    write_json(out/'native-material-intervention.json',source['native_material_intervention'])
+                    write_json(out/'source-receipt.json',source)
                 destroy_capture('probe_left')
                 receipt=probe(u,api,layout['camera'],8.,out/'evaluator'/f'layout-{state["probe_index"]:02d}')
                 probes.append(receipt)

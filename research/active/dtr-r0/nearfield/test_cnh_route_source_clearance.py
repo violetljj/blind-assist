@@ -87,6 +87,18 @@ class MaterialBoundTests(unittest.TestCase):
             self.assertFalse(audit(u,api,layouts,{},source)['excluded_primitives'])
             component.class_name='DynamicMeshComponent'
             u.StaticMeshComponent=type('OtherStaticMesh',(object,),{})
+            component.get_material=lambda index: None
+            component.bounds_scale=1.
+            component.get_world_transform=lambda: object()
+            u.SystemLibrary=SimpleNamespace(get_component_bounds=lambda _: (
+                SimpleNamespace(x=2000.,y=2000.,z=2000.),
+                SimpleNamespace(x=10.,y=10.,z=10.), 20.))
+            # Null is genuinely unresolved without the exact engine fallback.
+            self.assertEqual(audit(u,api,layouts,{},source)['candidates'][0]['status'],'UNKNOWN')
+            u.BlindAssistCaptureLibrary.get_default_surface_material=lambda: SimpleNamespace(get_path_name=lambda:'/Engine/Default')
+            result=audit(u,api,layouts,{},source)
+            self.assertEqual(result['candidates'][0]['status'],'PASS_LOADED_WORLD_ONLY')
+            self.assertIn('/Engine/Default',result['material_capabilities'])
             for invalid_scale in (.5,0.,float('nan'),None,True):
                 component.bounds_scale=invalid_scale
                 result=audit(u,api,layouts,{},source)

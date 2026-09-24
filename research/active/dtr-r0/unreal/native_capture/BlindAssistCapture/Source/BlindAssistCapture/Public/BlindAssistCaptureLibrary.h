@@ -62,6 +62,10 @@ class BLINDASSISTCAPTURE_API UBlindAssistCaptureLibrary : public UBlueprintFunct
     GENERATED_BODY()
 
 public:
+    /** Exact engine MD_Surface fallback used by DynamicMesh null material slots. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static class UMaterialInterface* GetDefaultSurfaceMaterial();
+
     /** Read-only active-RHI material shader capability JSON; never scene admission. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FString GetMaterialGeometryCapability(class UMaterialInterface* Material);

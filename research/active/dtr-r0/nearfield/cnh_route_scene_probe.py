@@ -41,16 +41,20 @@ def property_value(obj, name):
         return None
 
 
-def material_record(material):
+def material_record(material, capability=None):
     if material is None:
         return dict(asset_path=None, blend_mode='UNKNOWN', masked='UNKNOWN',
                     world_position_offset='UNKNOWN', status='NOT_VERIFIED')
     # Instances may inherit/override properties. A successful property read alone
     # does not prove the compiled material has no deformation or opacity logic.
     blend = property_value(material, 'blend_mode')
-    return dict(asset_path=material.get_path_name(), blend_mode=str(blend) if blend is not None else 'UNKNOWN',
+    result=dict(asset_path=material.get_path_name(), blend_mode=str(blend) if blend is not None else 'UNKNOWN',
                 masked=('OBSERVED_MASKED' if blend is not None and 'MASKED' in str(blend).upper() else 'UNKNOWN'),
                 world_position_offset='UNKNOWN', status='NOT_VERIFIED')
+    if capability is not None:
+        try:result['effective_render_material']=json.loads(capability(material))
+        except Exception as exc:result['effective_render_material']=dict(status='UNKNOWN',error=str(exc))
+    return result
 
 
 def write_fresh(path, value):
@@ -75,6 +79,9 @@ def probe(u, api, camera, radius_m, out):
     started = time.monotonic()
     rows, errors, unsupported, meshes, excluded = [], [], [], {}, []
     library = getattr(u, 'ProceduralMeshLibrary', None)
+    capability=getattr(getattr(u,'BlindAssistCaptureLibrary',None),'get_material_geometry_capability',None)
+    editor=(u.get_editor_subsystem(u.StaticMeshEditorSubsystem)
+            if hasattr(u,'StaticMeshEditorSubsystem') else None)
 
     def export(mesh):
         key = mesh.get_path_name()
@@ -96,7 +103,9 @@ def probe(u, api, camera, radius_m, out):
                     raise ValueError('Empty or malformed render section')
                 if any(i < 0 or i >= len(vertices) for i in triangles):
                     raise ValueError('Triangle index outside vertex buffer')
-                sections.append(dict(section=section, vertices_m=[[v/100 for v in xyz(p)] for p in vertices],
+                sections.append(dict(section=section,
+                                     material_slot=int(editor.get_lod_material_slot(mesh,0,section)) if editor is not None else None,
+                                     vertices_m=[[v/100 for v in xyz(p)] for p in vertices],
                                      triangles=list(triangles), normals=[xyz(p) for p in normals],
                                      uv=[[float(p.x), float(p.y)] for p in uv]))
             if not sections:
@@ -139,7 +148,7 @@ def probe(u, api, camera, radius_m, out):
                         actual_translation_m=[v/100 for v in xyz(transform.translation)],
                         actual_rotation_quaternion=[*xyz(rotation), float(rotation.w)],
                         actual_scale=xyz(transform.scale3d),
-                        materials=[material_record(component.get_material(slot))
+                        materials=[material_record(component.get_material(slot),capability)
                                    for slot in range(component.get_num_materials())],
                         visibility='NOT_VERIFIED', material_surface_equivalence='NOT_VERIFIED'))
             except Exception as exc:

@@ -98,7 +98,8 @@ def launch(args):
     original_finalize=common.finalize
     def source_run(command,env,out,timeout):
         extras=('cnh_route_source_capture.py','cnh_route_source_compare_adapter.py','cnh_route_source_clearance.py',
-                'cnh_route_native_clearance.py','cnh_route_scene_probe.py','cnh_route_source_launch.py')
+                'cnh_route_native_clearance.py','cnh_route_scene_probe.py','cnh_route_source_launch.py',
+                'cnh_route_street_static_background.py','cnh_route_city_lod0.py')
         launch_path=out/'launch.json';receipt=json.loads(launch_path.read_text())
         for name in extras:
             dest=out/'source'/name;shutil.copy2(HERE/name,dest)
