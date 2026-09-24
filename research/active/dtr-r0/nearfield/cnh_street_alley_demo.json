@@ -4,10 +4,10 @@
   "clearance_margin_m": 0.15,
   "authority": "AUTHORING_ASSIGNMENT_NOT_DATASET_ADMISSION",
   "partition_rule": "Separate physical map per site. Each prospective split contains straight, L and T topology. No dataset frames or protected model results exist yet.",
-  "background_disclosure": "Native CitySample project meshes shared with Street source; roof/service equipment repurposed as static alley dressing; target obstacle asset families excluded.",
+  "background_disclosure": "Wall, paving and materials are disclosed shared background. All placed dressing is DISTRACTOR with disjoint family pools across prospective splits.",
   "sites": [
     {
-      "site_id": "Alley_train_straight_R2",
+      "site_id": "Alley_train_straight_R3a",
       "proposed_split": "train",
       "topology": "straight",
       "width_m": 1.8,
@@ -18,19 +18,22 @@
       "seed": 2026092400,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
         "breaker_box": 0.3
       },
       "clutter_assets": [
         "trashcan",
         "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "hvac"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_train_straight_R2",
+      "physical_site_id": "Alley_train_straight_R2",
+      "insert_assets": [
+        "bollard",
+        "road_sign"
       ]
     },
     {
-      "site_id": "Alley_train_L_R2",
+      "site_id": "Alley_train_L_R3a",
       "proposed_split": "train",
       "topology": "L",
       "width_m": 2.6,
@@ -41,19 +44,22 @@
       "seed": 2026092401,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
         "breaker_box": 0.3
       },
       "clutter_assets": [
         "trashcan",
         "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "hvac"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_train_L_R2",
+      "physical_site_id": "Alley_train_L_R2",
+      "insert_assets": [
+        "bollard",
+        "road_sign"
       ]
     },
     {
-      "site_id": "Alley_train_T_R2",
+      "site_id": "Alley_train_T_R3a",
       "proposed_split": "train",
       "topology": "T",
       "width_m": 3.6,
@@ -64,19 +70,22 @@
       "seed": 2026092402,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
         "breaker_box": 0.3
       },
       "clutter_assets": [
         "trashcan",
         "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "hvac"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_train_T_R2",
+      "physical_site_id": "Alley_train_T_R2",
+      "insert_assets": [
+        "bollard",
+        "road_sign"
       ]
     },
     {
-      "site_id": "Alley_dev_straight_R2",
+      "site_id": "Alley_dev_straight_R3a",
       "proposed_split": "dev",
       "topology": "straight",
       "width_m": 1.95,
@@ -88,18 +97,22 @@
       "clutter_count": 8,
       "clutter_scales": {
         "pipe": 0.195,
-        "breaker_box": 0.3
+        "door_stair": 0.25
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
         "pipe",
-        "pallet"
+        "pallet",
+        "door_stair"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_dev_straight_R2",
+      "physical_site_id": "Alley_dev_straight_R2",
+      "insert_assets": [
+        "traffic_cone",
+        "mailbox"
       ]
     },
     {
-      "site_id": "Alley_dev_L_R2",
+      "site_id": "Alley_dev_L_R3a",
       "proposed_split": "dev",
       "topology": "L",
       "width_m": 2.75,
@@ -111,18 +124,22 @@
       "clutter_count": 8,
       "clutter_scales": {
         "pipe": 0.195,
-        "breaker_box": 0.3
+        "door_stair": 0.25
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
         "pipe",
-        "pallet"
+        "pallet",
+        "door_stair"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_dev_L_R2",
+      "physical_site_id": "Alley_dev_L_R2",
+      "insert_assets": [
+        "traffic_cone",
+        "mailbox"
       ]
     },
     {
-      "site_id": "Alley_dev_T_R2",
+      "site_id": "Alley_dev_T_R3a",
       "proposed_split": "dev",
       "topology": "T",
       "width_m": 3.75,
@@ -134,18 +151,22 @@
       "clutter_count": 8,
       "clutter_scales": {
         "pipe": 0.195,
-        "breaker_box": 0.3
+        "door_stair": 0.25
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
         "pipe",
-        "pallet"
+        "pallet",
+        "door_stair"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_dev_T_R2",
+      "physical_site_id": "Alley_dev_T_R2",
+      "insert_assets": [
+        "traffic_cone",
+        "mailbox"
       ]
     },
     {
-      "site_id": "Alley_test_straight_R2",
+      "site_id": "Alley_test_straight_R3a",
       "proposed_split": "test",
       "topology": "straight",
       "width_m": 2.1,
@@ -156,19 +177,23 @@
       "seed": 2026092420,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
-        "breaker_box": 0.3
+        "awning": 0.3,
+        "bench": 0.5
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "awning",
+        "firehose_outlet",
+        "bench"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_test_straight_R2",
+      "physical_site_id": "Alley_test_straight_R2",
+      "insert_assets": [
+        "plastic_drum",
+        "bike_stand"
       ]
     },
     {
-      "site_id": "Alley_test_L_R2",
+      "site_id": "Alley_test_L_R3a",
       "proposed_split": "test",
       "topology": "L",
       "width_m": 2.9,
@@ -179,19 +204,23 @@
       "seed": 2026092421,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
-        "breaker_box": 0.3
+        "awning": 0.3,
+        "bench": 0.5
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "awning",
+        "firehose_outlet",
+        "bench"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_test_L_R2",
+      "physical_site_id": "Alley_test_L_R2",
+      "insert_assets": [
+        "plastic_drum",
+        "bike_stand"
       ]
     },
     {
-      "site_id": "Alley_test_T_R2",
+      "site_id": "Alley_test_T_R3a",
       "proposed_split": "test",
       "topology": "T",
       "width_m": 3.9,
@@ -202,15 +231,19 @@
       "seed": 2026092422,
       "clutter_count": 8,
       "clutter_scales": {
-        "pipe": 0.195,
-        "breaker_box": 0.3
+        "awning": 0.3,
+        "bench": 0.5
       },
       "clutter_assets": [
-        "trashcan",
-        "breaker_box",
-        "hvac",
-        "pipe",
-        "pallet"
+        "awning",
+        "firehose_outlet",
+        "bench"
+      ],
+      "revision_of_map_asset": "/Game/BAResearchAlley/Alley_test_T_R2",
+      "physical_site_id": "Alley_test_T_R2",
+      "insert_assets": [
+        "plastic_drum",
+        "bike_stand"
       ]
     }
   ]

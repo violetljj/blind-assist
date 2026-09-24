@@ -130,6 +130,31 @@ def clearance_record(row,bounds,site):
         required_margin_m=site['clearance_margin_m'],minimum_gap_m=minimum,passed=passed,gaps=gaps)
 
 
+def dependency_closure(u, roots):
+    registry=u.AssetRegistryHelpers.get_asset_registry()
+    options=u.AssetRegistryDependencyOptions(include_soft_package_references=True,include_hard_package_references=True,
+        include_searchable_names=False,include_soft_management_references=False,include_hard_management_references=False)
+    pending=list(roots);seen=set();packages=[];files={};external=[]
+    while pending:
+        package=str(pending.pop()).split('.')[0]
+        if package in seen:continue
+        seen.add(package)
+        if package.startswith('/Script/'):
+            external.append(package);continue
+        if package.startswith('/Game/'):base=Path(u.Paths.project_content_dir())/package[6:]
+        elif package.startswith('/Engine/'):base=Path(u.Paths.engine_content_dir())/package[8:]
+        else:raise ValueError('Unresolved dependency mount: '+package)
+        found=[]
+        for suffix in ('.uasset','.umap','.uexp','.ubulk'):
+            path=Path(str(base)+suffix)
+            if path.exists():
+                key=str(path.resolve());files[key]=dict(path=key,sha256=sha(path),bytes=path.stat().st_size,package=package);found.append(key)
+        if not found:raise FileNotFoundError('Missing dependency package files: '+package)
+        deps=[str(x) for x in registry.get_dependencies(package,options)]
+        pending.extend(deps);packages.append(dict(package=package,files=found,dependencies=deps))
+    return dict(status='COMPLETE_HARD_AND_SOFT_PACKAGE_CLOSURE',roots=sorted(roots),packages=packages,files=list(files.values()),script_packages=sorted(external))
+
+
 def prepare(u,config,out):
     from cnh_street_alley_plan import generate,check_registry,register_saved_site
     validate(config);out=Path(out)
@@ -138,6 +163,11 @@ def prepare(u,config,out):
     loading=AssetBank(u,config['namespace']+'/PreflightUnused_Assets')
     needed={'wall','paving'} | {key for s in config['sites'] for key in s['clutter_assets']}
     for key in sorted(needed):loading.load(key,catalog['meshes'][key]['asset_path'])
+    insert_keys={key for site in config['sites'] for key in site.get('insert_assets',[])}
+    for key in sorted(insert_keys):
+        loading.load('insert__'+key,catalog['insert_assets'][key]['asset_path'])
+        for material in loading.receipts['insert__'+key]['materials']:
+            if material.get('blend_mode')!=0:raise ValueError('Controlled insert must be opaque: '+key)
     materials={};material_receipts={}
     selected_materials={s[field] for s in config['sites'] for field in ('wall_material','floor_material')}
     for key in sorted(selected_materials):
@@ -148,6 +178,11 @@ def prepare(u,config,out):
         materials[key]=material;material_receipts[key]=capability
     write(out/'loaded-assets.json',dict(bounds=loading.bounds,assets=loading.receipts,materials=material_receipts))
     generated=generate(config,loading.bounds)
+    write(out/'family-receipt.json',dict(status='NATIVE_STATIC_FAMILY_CAPABILITY_VERIFIED_NOT_CAPTURE_ADMISSION',
+        family_assignment=generated['family_assignment'],
+        sites=[{k:s[k] for k in ('site_id','proposed_split','clutter_assets','insert_assets','physical_site_id','revision_of_map_asset')} for s in generated['sites']],
+        assets={key:dict(loading.receipts[key],family_id=(catalog['insert_assets'][key.removeprefix('insert__')]['family_id'] if key.startswith('insert__') else catalog['meshes'][key].get('family_id'))) for key in sorted(loading.receipts)},
+        source_hashes=loading.files))
     sites=generated['sites']
     registry_path=Path(u.Paths.project_dir())/'Saved/CNHAlley/site-registry.json'
     if registry_path.exists():check_registry(sites,json.loads(registry_path.read_text()))
@@ -219,6 +254,11 @@ def prepare(u,config,out):
             receipt.update(status='SAVED_AUTHORING_GEOMETRY_REQUIRES_VISUAL_REVIEW',source_integrity=bank.verify(),
                 derived_assets=bank.receipts)
             map_file=content/(site['map_asset'].removeprefix('/Game/')+'.umap')
+            roots={site['map_asset']}|{r['source'].split('.')[0] for r in loading.receipts.values()}|{v.get_path_name().split('.')[0] for v in materials.values()}
+            u.AssetRegistryHelpers.get_asset_registry().scan_modified_asset_files([str(map_file)])
+            closure=dependency_closure(u,roots)
+            closure_path=out/(site['site_id']+'-dependency-closure.json')
+            write(closure_path,closure);receipt['dependency_closure']=dict(path=str(closure_path),sha256=sha(closure_path),status=closure['status'])
             register_saved_site(registry_path,site,receipt,sha(map_file))
             receipt['persistent_site_registry']=str(registry_path)
         except Exception:

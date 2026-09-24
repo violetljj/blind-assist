@@ -7,18 +7,20 @@ import os
 from pathlib import Path
 import time
 import numpy as np
+from cnh_street_e2e_partitions import guard_rows, planned_split, declared_partition
 
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def load_inputs(roots):
+def load_inputs(roots, partition_plan=None):
     features, labels, rows, sources = [], [], [], []
     query_names = None
     assumptions = None
     for root in map(Path, roots):
         manifest = json.loads((root/'manifest.json').read_text(encoding='utf-8-sig'))
+        guard_rows(manifest['frames'], partition_plan)  # Before NPZ/hash/target access.
         receipt = json.loads((root/'receipt.json').read_text(encoding='utf-8-sig'))
         if receipt.get('status') != 'PASS_DEVELOPMENT_MATERIALIZATION_ONLY':
             raise ValueError('Completed materialization required')
@@ -92,16 +94,20 @@ def metrics(y, logits):
                 accuracy=float(((pred == truth) & known).sum()/known.sum()) if known.any() else None)
 
 
-def run(roots, output, epochs=30, seed=20260924):
+def run(roots, output, epochs=30, seed=20260924, partition_plan=None, expected_frames=1920):
     os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
     import torch
     started = time.monotonic()
     if epochs != 30:
         raise ValueError('This interface run fixes 30 epochs; no sweep or outcome-based extension')
-    x, y, rows, query_names, sources = load_inputs(roots)
-    if len(rows) != 1920:
-        raise ValueError('This bounded run requires all 1920 frames')
-    train, val, split = layout_split(rows)
+    plan=json.loads(Path(partition_plan).read_text(encoding='utf-8-sig')) if partition_plan else None
+    x, y, rows, query_names, sources = load_inputs(roots,plan)
+    if plan is None and any(declared_partition(row) is not None for row in rows):
+        raise ValueError('Authored partitions require an explicit frozen partition plan')
+    if len(rows) != expected_frames or expected_frames < 1 or (plan is None and expected_frames != 1920):
+        raise ValueError('Frame count differs from explicitly bounded run')
+    train, val, split = planned_split(rows,plan) if plan is not None else layout_split(rows)
+    if partition_plan:split['partition_plan_sha256']=sha(partition_plan)
     known = y >= 0
     if not known[train].any() or not known[val].any():
         raise ValueError('No evaluable targets for training or debug validation')
@@ -175,7 +181,9 @@ def run(roots, output, epochs=30, seed=20260924):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--inputs', type=Path, nargs=2, required=True)
+    p.add_argument('--inputs', type=Path, nargs='+', required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--partition-plan',type=Path)
+    p.add_argument('--expected-frames',type=int,default=1920)
     a = p.parse_args()
-    run(a.inputs, a.output)
+    run(a.inputs, a.output,partition_plan=a.partition_plan,expected_frames=a.expected_frames)

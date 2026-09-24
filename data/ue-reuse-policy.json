@@ -3,6 +3,206 @@
   "description": "Reviewed input scopes, not inferred permission from directory names. Unlisted bundles need a scoped contract before governed use.",
   "contracts": [
     {
+      "locator": "evidence/cnh-alley-e2e-train-straight-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-e2e-train-L-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-e2e-train-T-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-e2e-dev-straight-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-e2e-dev-L-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-e2e-dev-T-20260924-v1",
+      "source_family": "ue-alley-development-e2e-proxy",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "observations.npz",
+          "role": "observation"
+        },
+        {
+          "relative_path": "targets.npz",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "manifest.json",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "receipt.json",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-alley-worker-r3a-thin-20260924-v1",
+      "source_family": "ue-alley-development-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "Alley_train_straight_R3a/capture",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "Alley_train_L_R3a/capture",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "Alley_dev_T_R3a/capture",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "Alley_dev_L_R3a/capture",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "Alley_dev_straight_R3a/capture",
+          "role": "evaluator"
+        },
+        {
+          "relative_path": "Alley_train_T_R3a/capture",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "evidence/cnh-city-vehicle-mask-20260924-v4",
+      "source_family": "ue-citysample-shared-background-source",
+      "evidence_status": "development_consumed",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "capture",
+          "role": "evaluator"
+        }
+      ]
+    },
+    {
+      "locator": "work/cnh-route-comparison-20260924/native-build-v7-r1/package",
+      "source_family": "ue-cnh-native-capture-runtime",
+      "evidence_status": "source_material",
+      "evidence": "research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md",
+      "allowed_inputs": [
+        {
+          "relative_path": "BlindAssistCapture.uplugin",
+          "role": "configuration"
+        }
+      ]
+    },
+    {
       "locator": "evidence/cnh-street-e2e-main-20260924-v2",
       "source_family": "ue-street-development-e2e-proxy",
       "evidence_status": "development_consumed",

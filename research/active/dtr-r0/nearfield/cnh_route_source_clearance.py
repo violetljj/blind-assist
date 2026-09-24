@@ -10,7 +10,7 @@ import json
 import math
 
 from cnh_route_native_clearance import evaluate
-from cnh_route_scene_probe import property_value, transformed_bounds
+from cnh_route_scene_probe import property_value, transformed_bounds, xyz
 from cnh_route_source_compare_adapter import normalized_guid
 
 
@@ -40,7 +40,8 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
     WorldPartition descriptor matching is necessary but cannot certify external
     dependencies, landscape, runtime-spawned geometry or full-world completeness.
     """
-    development=source_receipt.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+    from cnh_route_source_compare_adapter import is_development
+    development=is_development(source_receipt)
     valid_count=1<=len(layouts)<=20 if development else len(layouts)==2
     if not valid_count or len({r['layout_id'] for r in layouts})!=len(layouts):
         raise ValueError('Invalid fixed layout batch')
@@ -123,6 +124,10 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
                     # Recompute current engine mesh bounds; probe hashes/geometry
                     # are associated evidence, never a frozen transform substitute.
                     if is_static_mesh:
+                        if xyz(transform.scale3d)==[0.,0.,0.]:
+                            excluded.append(dict(component=path,instance_index=instance_index,
+                                                 reason='ZERO_SCALE_NO_RENDER_SURFACE'))
+                            continue
                         low, high = transformed_bounds(u, component.static_mesh, transform)
                     else:
                         scale = property_value(component, 'bounds_scale')
@@ -147,7 +152,10 @@ def audit(u, api, layouts, probe_receipt, source_receipt):
     required = []
     if missing_guids:
         required.append('REQUESTED_WORLD_PARTITION_ACTORS_NOT_LOADED')
-    if not requested and source_receipt.get('map_asset') != '/Game/BAResearchSlice/Street200V7':
+    authored_alley = (source_receipt.get('scope') == 'ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+        and source_receipt.get('authored_nonpartitioned_map') == 'FROZEN_PACKAGE_HASHES_VERIFIED'
+        and source_receipt.get('map_asset', '').startswith('/Game/BAResearchAlley/'))
+    if not requested and source_receipt.get('map_asset') != '/Game/BAResearchSlice/Street200V7' and not authored_alley:
         required.append('NO_WORLD_PARTITION_DESCRIPTOR_AUDIT')
     if unsupported:
         required.append('UNSUPPORTED_PRIMITIVES_REQUIRE_CONSERVATIVE_BOUNDS_OR_AUTHENTICATED_EXCLUSION')

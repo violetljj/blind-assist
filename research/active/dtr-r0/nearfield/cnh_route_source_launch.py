@@ -10,7 +10,7 @@ import threading
 import time
 import cnh_route_insert_launch as common
 from cnh_route_source_capture import validate_insertions
-from cnh_route_source_compare_adapter import validate_spec as validate_source
+from cnh_route_source_compare_adapter import validate_spec as validate_source, is_development
 
 HERE=Path(__file__).resolve().parent
 
@@ -44,7 +44,7 @@ def finalize(out):
     spec=json.loads((out/'source/spec.json').read_text(encoding='utf-8-sig'))
     validate(spec)
     selected=spec['layouts']
-    if spec.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+    if is_development(spec):
         selected=[l for l in json.loads((out/'candidate-selection.json').read_text())['selected_layouts'] if l is not None]
     expected={(l['layout_id'],c['id'],i) for l in selected for c in l['clips'] for i in range(len(c['poses']))}
     if layout_ids!={l['layout_id'] for l in selected} or len(rows)!=len(expected) or {(r['layout_id'],r['clip_id'],r['pose_index']) for r in rows}!=expected:
@@ -109,7 +109,7 @@ def launch(args):
         extras=('cnh_route_source_capture.py','cnh_route_source_compare_adapter.py','cnh_route_source_clearance.py',
                 'cnh_route_native_clearance.py','cnh_route_scene_probe.py','cnh_route_source_launch.py',
                 'cnh_route_street_static_background.py','cnh_route_city_lod0.py','cnh_city_nearfield_derived.py',
-                'ue_attribute_export.py')
+                'ue_attribute_export.py','cnh_city_vehicle_mask.py')
         launch_path=out/'launch.json';receipt=json.loads(launch_path.read_text())
         for name in extras:
             dest=out/'source'/name;shutil.copy2(HERE/name,dest)

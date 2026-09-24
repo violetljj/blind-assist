@@ -3,7 +3,7 @@
   "status": "LOCAL_SOURCE_CATALOG_PROTOTYPE_NOT_RUNTIME_ADMISSION",
   "source_project": "artifacts.local/unreal/CitySample/CitySample.uproject",
   "source_map": "/Game/BAResearchSlice/Street200V7",
-  "scope": "Ten source meshes, five material choices; six existing bounded native probes only. No UE launched.",
+  "scope": "Twelve source mesh families and structural meshes; distractors require family-disjoint pools, actual material capability rechecked at authoring runtime.",
   "bounds_policy": "Never use example world bounds as local bounds. Runtime loaded mesh bounds are authoritative.",
   "material_policy": "Existing shader capability applies only to recorded platform/configuration. Recheck all loaded slots; reject nonopaque or unresolved deformation, or use disclosed static opaque overrides.",
   "materials": {
@@ -227,8 +227,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "waste_receptacle",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_Trashcan_A"
     },
     "breaker_box": {
       "project_available": true,
@@ -249,8 +252,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "electrical_cabinet",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_antenna_RR"
     },
     "hvac": {
       "project_available": true,
@@ -271,8 +277,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "air_conditioner",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_roof_AC_Unit_B"
     },
     "pipe": {
       "project_available": true,
@@ -293,8 +302,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "service_pipe",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_ventilation_RR"
     },
     "door_stair": {
       "project_available": true,
@@ -315,8 +327,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "door_stair",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_roof_door_stair_RR"
     },
     "sign": {
       "project_available": true,
@@ -337,8 +352,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "road_sign",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_Sign_C_E_A"
     },
     "pallet": {
       "project_available": true,
@@ -359,8 +377,11 @@
         "native_probe": null,
         "street200_membership": "NOT_OBSERVED_IN_SIX_BOUNDED_PROBES_NOT_PROOF_OF_ABSENCE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "wooden_pallet",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/CONSTRUCTION/Kit_Pallet"
     },
     "awning": {
       "project_available": true,
@@ -421,8 +442,11 @@
         "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
         "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "awning",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/BLDG/B/Kit_Prop_BA"
     },
     "firehose_outlet": {
       "project_available": true,
@@ -483,8 +507,11 @@
         "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
         "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "firehose_connection",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/BLDG/Kit_Prop_FirehoseConn"
     },
     "wall_banner": {
       "project_available": true,
@@ -571,8 +598,11 @@
         "native_probe": "artifacts.local/evidence/cnh-street-development-batch-20260924-v1/capture/evaluator/layout-00/scene-probe.json",
         "street200_membership": "OBSERVED_IN_EXISTING_NATIVE_PROBE"
       },
-      "role": "OUTSIDE_CLEARANCE_DECOR",
-      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+      "role": "DISTRACTOR",
+      "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced",
+      "family_id": "signage_banner",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/BLDG/B/Kit_Prop_BA"
     },
     "wall": {
       "asset_path": "/Game/Building/CH/I/Kit_Bldg_CHI_L1_A/Mesh/SM_BLDG_CHI_L1_A_Wall_09_N1.SM_BLDG_CHI_L1_A_Wall_09_N1",
@@ -605,6 +635,25 @@
       "street200_membership": "EXISTING_EXPANSION_RECIPE_NOT_OLD_STREET_INSTANCE_CLAIM",
       "role": "STRUCTURAL_BACKGROUND",
       "source_disclosure": "Shared CitySample project source asset; Street200 membership only as separately evidenced"
+    },
+    "bench": {
+      "asset_path": "/Game/Prop/Kit_bench_RR/mesh/SM_street_bench.SM_street_bench",
+      "category": "bench",
+      "placement": "ground",
+      "project_available": true,
+      "local_bounds_m": null,
+      "bounds_authority": "UE_RUNTIME_STATIC_MESH_LOCAL_BOUNDS_REQUIRED",
+      "materials": [],
+      "material_status": "REQUIRES_NATIVE_COMPILED_STATIC_CHECK_BEFORE_USE",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Prop/Kit_bench_RR/mesh/SM_street_bench.uasset",
+        "sha256": "f267b1169d8795e9b124319b0eca5c81630b9a8f686876302b5ecbec3bcee17f"
+      },
+      "street200_membership": "PROJECT_AVAILABLE_NOT_VERIFIED_STREET_INSTANCE",
+      "family_id": "bench",
+      "role": "DISTRACTOR",
+      "family_definition": "Semantic object family plus native kit lineage; all variants of this family remain in one split",
+      "source_family_root": "/Game/Prop/Kit_bench_RR"
     }
   },
   "preferred_decor_keys": [
@@ -615,12 +664,212 @@
     "pallet"
   ],
   "asset_family_policy": {
-    "decor_role": "SHARED_PROJECT_BACKGROUND_DECOR_OUTSIDE_CLEARANCE_ONLY",
+    "decor_role": "DISTRACTOR_OUTSIDE_CLEARANCE_STILL_SPLIT_ISOLATED",
     "forbidden_target_families": [
       "/Game/Megascans/3D_Assets/Metal_Bollard_00",
       "/Game/Megascans/3D_Assets/No_Parking_Road_Sign_00"
     ],
-    "semantic_sign_risk": "sign and wall_banner are opt-in visual decor only, never targets or same-class distractors; default planner should prefer service utilities",
+    "semantic_sign_risk": "Sign and wall banner excluded from R3 pools; no semantic relabeling as background",
     "new_namespace": "/Game/BAResearchAlley"
+  },
+  "split_family_pools": {
+    "train": [
+      "trashcan",
+      "breaker_box",
+      "hvac"
+    ],
+    "dev": [
+      "pipe",
+      "pallet",
+      "door_stair"
+    ],
+    "test": [
+      "awning",
+      "firehose_outlet",
+      "bench"
+    ]
+  },
+  "r2_family_audit": {
+    "source": "artifacts.local/evidence/cnh-street-alley-generator-20260924-v2/build-run/generated-plan.json",
+    "sha256": "e786b97390f98f7087cba8d290a4701192ed24ea8bce075d603087ebc6c35007",
+    "placed_count": 72,
+    "counts_by_site": {
+      "Alley_train_straight_R2": {
+        "breaker_box": 2,
+        "hvac": 2,
+        "pallet": 2,
+        "pipe": 1,
+        "trashcan": 1
+      },
+      "Alley_train_L_R2": {
+        "pipe": 2,
+        "trashcan": 2,
+        "hvac": 2,
+        "pallet": 1,
+        "breaker_box": 1
+      },
+      "Alley_train_T_R2": {
+        "pipe": 2,
+        "trashcan": 2,
+        "pallet": 2,
+        "breaker_box": 1,
+        "hvac": 1
+      },
+      "Alley_dev_straight_R2": {
+        "pallet": 2,
+        "trashcan": 2,
+        "pipe": 2,
+        "breaker_box": 1,
+        "hvac": 1
+      },
+      "Alley_dev_L_R2": {
+        "breaker_box": 2,
+        "trashcan": 2,
+        "pallet": 2,
+        "pipe": 1,
+        "hvac": 1
+      },
+      "Alley_dev_T_R2": {
+        "hvac": 2,
+        "breaker_box": 2,
+        "pipe": 2,
+        "trashcan": 1,
+        "pallet": 1
+      },
+      "Alley_test_straight_R2": {
+        "pallet": 2,
+        "hvac": 2,
+        "pipe": 2,
+        "breaker_box": 1,
+        "trashcan": 1
+      },
+      "Alley_test_L_R2": {
+        "trashcan": 2,
+        "breaker_box": 2,
+        "pallet": 2,
+        "pipe": 1,
+        "hvac": 1
+      },
+      "Alley_test_T_R2": {
+        "trashcan": 2,
+        "hvac": 2,
+        "pallet": 2,
+        "pipe": 1,
+        "breaker_box": 1
+      }
+    },
+    "pairwise_intersections": {
+      "train_dev": [
+        "waste_receptacle",
+        "electrical_cabinet",
+        "air_conditioner",
+        "service_pipe",
+        "wooden_pallet"
+      ],
+      "train_test": [
+        "waste_receptacle",
+        "electrical_cabinet",
+        "air_conditioner",
+        "service_pipe",
+        "wooden_pallet"
+      ],
+      "dev_test": [
+        "waste_receptacle",
+        "electrical_cabinet",
+        "air_conditioner",
+        "service_pipe",
+        "wooden_pallet"
+      ]
+    },
+    "controlled_insert_family_overlap": [],
+    "status": "FAIL_SPLIT_FAMILY_ISOLATION_NOT_RETROACTIVELY_REPAIRED"
+  },
+  "insert_assets": {
+    "bollard": {
+      "asset_path": "/Game/Megascans/3D_Assets/Metal_Bollard_00/uiyjbcega_LOD0.uiyjbcega_LOD0",
+      "family_id": "bollard",
+      "source_family_root": "/Game/Megascans/3D_Assets/Metal_Bollard_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "train",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/Metal_Bollard_00/uiyjbcega_LOD0.uasset",
+        "sha256": "4010a53660a00b8e72129cd659e4f775f181b2f28230b274aadf67b23d00394a"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    },
+    "road_sign": {
+      "asset_path": "/Game/Megascans/3D_Assets/No_Parking_Road_Sign_00/ui1lbhlbb_LOD0.ui1lbhlbb_LOD0",
+      "family_id": "road_sign",
+      "source_family_root": "/Game/Megascans/3D_Assets/No_Parking_Road_Sign_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "train",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/No_Parking_Road_Sign_00/ui1lbhlbb_LOD0.uasset",
+        "sha256": "9f9d9ae4eb00edf17e430ba67afd8a9c9a28cb7815f93f83db446652552f4cec"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    },
+    "traffic_cone": {
+      "asset_path": "/Game/Megascans/3D_Assets/Traffic_Cone_00/uhrhabqfa_LOD0.uhrhabqfa_LOD0",
+      "family_id": "traffic_cone",
+      "source_family_root": "/Game/Megascans/3D_Assets/Traffic_Cone_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "dev",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/Traffic_Cone_00/uhrhabqfa_LOD0.uasset",
+        "sha256": "e9da0954e1602a74b17d727909214b39c11df5643b6929b69a83be9dd0f867af"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    },
+    "mailbox": {
+      "asset_path": "/Game/Megascans/3D_Assets/Mailbox_00/uhcjaisfa_LOD0.uhcjaisfa_LOD0",
+      "family_id": "mailbox",
+      "source_family_root": "/Game/Megascans/3D_Assets/Mailbox_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "dev",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/Mailbox_00/uhcjaisfa_LOD0.uasset",
+        "sha256": "a3e33b56e5abfc4279191fc6e4f993c8d9a2de47dbbe7811419338689eeb0f2f"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    },
+    "plastic_drum": {
+      "asset_path": "/Game/Megascans/3D_Assets/Plastic_Drum_00/uiujbcxva_LOD0.uiujbcxva_LOD0",
+      "family_id": "plastic_drum",
+      "source_family_root": "/Game/Megascans/3D_Assets/Plastic_Drum_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "test",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/Plastic_Drum_00/uiujbcxva_LOD0.uasset",
+        "sha256": "26e1dc75ecf603937ac55036a06ead9a8b1fc039c7cc865c37657d607fc92ba6"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    },
+    "bike_stand": {
+      "asset_path": "/Game/Megascans/3D_Assets/Bike_Stand_00/uhcgehnfa_LOD0.uhcgehnfa_LOD0",
+      "family_id": "bike_stand",
+      "source_family_root": "/Game/Megascans/3D_Assets/Bike_Stand_00",
+      "role": "CONTROLLED_INSERT",
+      "proposed_split": "test",
+      "provenance": {
+        "local_uasset": "artifacts.local/unreal/CitySample/Content/Megascans/3D_Assets/Bike_Stand_00/uhcgehnfa_LOD0.uasset",
+        "sha256": "391b59e7d9a9e9a4c80cfdff5fc546e872404698b2ceaadd60f59ed6ee64120a"
+      },
+      "runtime_status": "REQUIRES_NATIVE_STATIC_MATERIAL_AND_BOUNDS_CHECK"
+    }
+  },
+  "insert_split_pools": {
+    "train": [
+      "bollard",
+      "road_sign"
+    ],
+    "dev": [
+      "traffic_cone",
+      "mailbox"
+    ],
+    "test": [
+      "plastic_drum",
+      "bike_stand"
+    ]
   }
 }

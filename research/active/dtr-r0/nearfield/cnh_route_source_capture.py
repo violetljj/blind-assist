@@ -43,29 +43,43 @@ def probe_radius_m(layout):
     return 8.+displacement
 
 
+def verify_alley_static_probe(receipt):
+    """Read-only compiled capability gate; never rewrite source material graphs."""
+    if not receipt.get('instances'):
+        raise ValueError('Alley probe has no native instances')
+    for instance in receipt['instances']:
+        if not instance.get('materials'):
+            raise ValueError('Alley native instance has no material capability evidence')
+        for material in instance['materials']:
+            effective = material.get('effective_render_material', {})
+            if (effective.get('data_status') != 'AVAILABLE' or
+                    effective.get('capability') != 'NO_COMPILED_MATERIAL_DEFORMATION'):
+                raise ValueError('Alley native material deformation unknown or present: '+str(material))
+
+
 def validate_insertions(spec):
-    from cnh_route_source_compare_adapter import SCOPE, DEVELOPMENT_SCOPE, is_development, validated_pose
+    from cnh_route_source_compare_adapter import SCOPE, DEVELOPMENT_SCOPE, ALLEY_SCOPE, is_development, validated_pose
     if spec.get('transport_policy') not in (None,'NATIVE_SEVEN_ASYNC_V1'):
         raise ValueError('Unknown transport policy')
     if spec.get('transport_policy') and not is_development(spec):
         raise ValueError('New async transport is Development-only until parity checked')
     if spec.get('native_geometry_policy') not in (None,'CITY_COMPONENT_LOD0_FALLBACK_CONTROL',
-            'CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED'):
+            'CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED','CITY_NEARFIELD_VEHICLE_ZERO_SCALE'):
         raise ValueError('Unknown native geometry intervention')
     if spec.get('native_geometry_policy') and spec.get('map_asset')!='/Game/Map/Small_City_LVL':
         raise ValueError('LOD0 diagnostic control is City-only')
-    if spec.get('native_geometry_policy')=='CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED':
+    if spec.get('native_geometry_policy') in ('CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED','CITY_NEARFIELD_VEHICLE_ZERO_SCALE'):
         control=spec.get('city_derived_control',{})
         if (is_development(spec) or len(spec['layouts'])!=2 or
                 control.get('authority')!='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or
                 control.get('benchmark_eligible') is not False or
                 any('candidates' in layout for layout in spec['layouts'])):
             raise ValueError('City derived control requires two frozen consumed layouts without candidate search')
-    if spec.get('scene_layer') not in (SCOPE, DEVELOPMENT_SCOPE) or spec.get('scene_layer') != spec.get('scope', SCOPE) or spec.get('benchmark_eligible') is not False:
+    if spec.get('scene_layer') not in (SCOPE, DEVELOPMENT_SCOPE, ALLEY_SCOPE) or spec.get('scene_layer') != spec.get('scope', SCOPE) or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit source engineering scope required')
-    if spec.get('native_material_policy') not in (None, 'STREET_TRANSIENT_ZERO_WPO_PDO'):
+    if spec.get('native_material_policy') not in (None, 'STREET_TRANSIENT_ZERO_WPO_PDO', 'ALLEY_FROZEN_STATIC_COMPILED'):
         raise ValueError('Unsupported native material policy')
-    if spec.get('native_material_policy') and spec.get('map_asset') != '/Game/BAResearchSlice/Street200V7':
+    if spec.get('native_material_policy') == 'STREET_TRANSIENT_ZERO_WPO_PDO' and spec.get('map_asset') != '/Game/BAResearchSlice/Street200V7':
         raise ValueError('Native material intervention is Street-only')
     assets=spec.get('assets',[])
     if len(assets)!=2 or {a['id'] for a in assets}!={1,254}:
@@ -130,10 +144,11 @@ def engine():
     out=Path(os.environ['BA_CNH_SOURCE_OUTPUT'])
     spec=json.loads(Path(os.environ['BA_CNH_SOURCE_SPEC']).read_text(encoding='utf-8-sig'))
     validate_insertions(spec)
+    from cnh_route_source_compare_adapter import is_development
     world,source=load_source(u,spec)
     fast=spec.get('render_recipe')=='STATIC_SPATIAL_V1'
     if fast:
-        if spec['scope']!='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+        if not is_development(spec):
             raise ValueError('Spatial recipe is separately declared Development only')
         commands=['r.AntiAliasingMethod 0','r.TemporalAA.Upsampling 0',
             'r.Lumen.ScreenProbeGather.Temporal 0','r.Lumen.Reflections.Temporal 0',
@@ -158,7 +173,7 @@ def engine():
         pairs=AttributePairExporter(u,'native_async',limit=4,probe_indices=(0,39,40,79,80,119,120,159))
     else:
         pairs=PairExporter(u,'native_async',limit=4)
-    development = spec['scope'] == 'STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+    development = is_development(spec)
     expected_frames=sum(len(c['poses']) for l in spec['layouts'] for c in l['clips'])
     report=dict(status='RUNNING',scope=spec['scope'],benchmark_eligible=False,expected_frames=expected_frames,
         temporal_authority=('NOMINAL_10HZ_POSES_STATIC_WORLD_NOT_REALTIME_OR_DYNAMIC_VIDEO' if development else 'TWO_FIXED_SETTLED_ENDPOINTS_PER_CLIP_NOT_SIMULATED_VIDEO'),
@@ -378,12 +393,16 @@ def engine():
                             report['control_preflight']=exc.receipt
                             finish(status='CONTROL_PREFLIGHT_REJECTED');return
                         source['native_geometry_intervention']=city_derived_session[0].receipt
+                    elif spec['native_geometry_policy']=='CITY_NEARFIELD_VEHICLE_ZERO_SCALE':
+                        from cnh_city_vehicle_mask import apply as apply_vehicle_mask
+                        city_derived_session[0]=apply_vehicle_mask(u,api,spec)
+                        source['native_geometry_intervention']=city_derived_session[0].receipt
                     else:
                         from cnh_route_city_lod0 import apply as apply_lod0
                         source['native_geometry_intervention']=apply_lod0(u,api)
                     write_json(out/'native-geometry-intervention.json',source['native_geometry_intervention'])
                     write_json(out/'source-receipt.json',source)
-                if state['probe_index']==0 and spec.get('native_material_policy'):
+                if state['probe_index']==0 and spec.get('native_material_policy') == 'STREET_TRANSIENT_ZERO_WPO_PDO':
                     from cnh_route_street_static_background import apply
                     source['native_material_intervention']=apply(u,api)
                     write_json(out/'native-material-intervention.json',source['native_material_intervention'])
@@ -401,13 +420,15 @@ def engine():
                 if state['warm']<32:
                     return
                 layout=spec['layouts'][state['probe_index']]
-                if state['probe_index']==0 and spec.get('native_material_policy'):
+                if state['probe_index']==0 and spec.get('native_material_policy') == 'STREET_TRANSIENT_ZERO_WPO_PDO':
                     from cnh_route_street_static_background import verify
                     verify(u,source['native_material_intervention'])
                     write_json(out/'native-material-intervention.json',source['native_material_intervention'])
                     write_json(out/'source-receipt.json',source)
                 destroy_capture('probe_left')
                 receipt=probe(u,api,layout['camera'],probe_radius_m(layout),out/'evaluator'/f'layout-{state["probe_index"]:02d}')
+                if spec.get('native_material_policy') == 'ALLEY_FROZEN_STATIC_COMPILED':
+                    verify_alley_static_probe(receipt)
                 probes.append(receipt)
                 state['probe_index']+=1
                 if state['probe_index']<len(spec['layouts']):

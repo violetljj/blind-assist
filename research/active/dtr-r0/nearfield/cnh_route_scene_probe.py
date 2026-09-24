@@ -139,6 +139,10 @@ def probe(u, api, camera, radius_m, out):
                 count = component.get_instance_count() if instanced else 1
                 for index in range(count):
                     transform = component.get_instance_transform(index, True) if instanced else component.get_world_transform()
+                    if xyz(transform.scale3d)==[0.,0.,0.]:
+                        excluded.append(dict(identity,instance_index=index if instanced else None,
+                                             reason='ZERO_SCALE_NO_RENDER_SURFACE'))
+                        continue
                     low, high = transformed_bounds(u, mesh, transform)
                     if not intersects_sphere(low, high, center, radius_m):
                         continue

@@ -3,6 +3,7 @@
 #include "AssetCompilingManager.h"
 #include "ContentStreaming.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/StreamableRenderAsset.h"
 #include "Engine/TextureRenderTarget2D.h"
@@ -25,6 +26,44 @@
 #include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBlindAssistCapture, Log, All);
+
+FString UBlindAssistCaptureLibrary::GetIsmPreservationState(UInstancedStaticMeshComponent* Component)
+{
+    TSharedRef<FJsonObject> Data = MakeShared<FJsonObject>();
+    Data->SetStringField(TEXT("schema"), TEXT("cnh_ism_preservation_state_v1"));
+    Data->SetStringField(TEXT("data_status"), IsValid(Component) ? TEXT("AVAILABLE") : TEXT("UNAVAILABLE"));
+    if (IsValid(Component))
+    {
+        Data->SetNumberField(TEXT("instance_count"), Component->GetInstanceCount());
+        Data->SetNumberField(TEXT("num_custom_data_floats"), Component->NumCustomDataFloats);
+        Data->SetNumberField(TEXT("instancing_random_seed"), Component->InstancingRandomSeed);
+        TArray<TSharedPtr<FJsonValue>> CustomData;
+        CustomData.Reserve(Component->PerInstanceSMCustomData.Num());
+        for (float Value : Component->PerInstanceSMCustomData)
+        {
+            if (!FMath::IsFinite(Value))
+            {
+                Data->SetStringField(TEXT("data_status"), TEXT("UNAVAILABLE_NONFINITE_CUSTOM_DATA"));
+                CustomData.Add(MakeShared<FJsonValueNull>());
+            }
+            else CustomData.Add(MakeShared<FJsonValueNumber>(static_cast<double>(Value)));
+        }
+        Data->SetArrayField(TEXT("per_instance_sm_custom_data"), CustomData);
+        TArray<TSharedPtr<FJsonValue>> Seeds;
+        for (const FInstancedStaticMeshRandomSeed& Seed : Component->AdditionalRandomSeeds)
+        {
+            TSharedRef<FJsonObject> Entry = MakeShared<FJsonObject>();
+            Entry->SetNumberField(TEXT("start_instance_index"), Seed.StartInstanceIndex);
+            Entry->SetNumberField(TEXT("random_seed"), Seed.RandomSeed);
+            Seeds.Add(MakeShared<FJsonValueObject>(Entry));
+        }
+        Data->SetArrayField(TEXT("additional_random_seeds"), Seeds);
+    }
+    FString Result;
+    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&Result);
+    FJsonSerializer::Serialize(Data, Writer);
+    return Result;
+}
 
 UMaterialInterface* UBlindAssistCaptureLibrary::GetDefaultSurfaceMaterial()
 {

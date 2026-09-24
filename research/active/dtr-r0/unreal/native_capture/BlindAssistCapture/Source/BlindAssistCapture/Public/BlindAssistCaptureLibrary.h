@@ -70,6 +70,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
     static FString GetMaterialGeometryCapability(class UMaterialInterface* Material);
 
+    /** Read-only full ISM custom-data and random-seed state for preservation checks. */
+    UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")
+    static FString GetIsmPreservationState(class UInstancedStaticMeshComponent* Component);
+
     /** Only unsaved /Game/CNH.../D_... clones: preserve attributes and zero WPO/PDO.
      * Does not save or compile; caller recompiles and verifies source immutability. */
     UFUNCTION(BlueprintCallable, Category = "BlindAssist|Capture")

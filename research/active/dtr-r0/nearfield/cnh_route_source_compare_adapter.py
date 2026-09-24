@@ -16,10 +16,11 @@ from cnh_route_capture import basis
 SOURCES = {'/Game/BAResearchSlice/Street200V7', '/Game/Map/Small_City_LVL'}
 SCOPE = 'TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK'
 DEVELOPMENT_SCOPE = 'STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK'
+ALLEY_SCOPE = 'ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK'
 
 
 def is_development(spec):
-    return spec.get('scope') == DEVELOPMENT_SCOPE
+    return spec.get('scope') in (DEVELOPMENT_SCOPE, ALLEY_SCOPE)
 
 
 def normalized_guid(value):
@@ -38,10 +39,36 @@ def validated_pose(camera):
     return result
 
 
+def validate_alley_manifest(spec):
+    """Bind one authored map and its package evidence; no formal split admission."""
+    manifest = spec.get('alley_manifest', {})
+    asset = spec.get('map_asset', '')
+    if (not asset.startswith('/Game/BAResearchAlley/') or '..' in asset
+            or manifest.get('map_asset') != asset
+            or not manifest.get('physical_site_id')
+            or manifest.get('proposed_split') not in ('train', 'dev', 'test')
+            or spec.get('data_role') != 'Development'
+            or spec.get('native_material_policy') != 'ALLEY_FROZEN_STATIC_COMPILED'
+            or spec.get('nominal_sample_interval_s') != .1
+            or spec.get('render_recipe') != 'STATIC_SPATIAL_V1'
+            or any(r['physical_site_id'] != manifest['physical_site_id'] for r in spec['layouts'])):
+        raise ValueError('Alley requires one declared authored map/site, proposed split only, frozen static Development recipe')
+    files = manifest.get('files', [])
+    if not files or not any(Path(r['path']).resolve() == Path(spec['map_file']).resolve()
+                            and r['sha256'] == spec['map_sha256'] for r in files):
+        raise ValueError('Alley package manifest must include the source map')
+    family = manifest.get('family_receipt', {})
+    if not family.get('path') or not family.get('sha256'):
+        raise ValueError('Frozen family receipt required; hash binding is not independent admission')
+    for row in files + [family]:
+        if hashlib.sha256(Path(row['path']).read_bytes()).hexdigest() != row['sha256']:
+            raise ValueError('Alley frozen dependency or family receipt hash mismatch')
+
+
 def validate_spec(spec):
-    if spec.get('scope') not in (SCOPE, DEVELOPMENT_SCOPE) or spec.get('benchmark_eligible') is not False:
+    if spec.get('scope') not in (SCOPE, DEVELOPMENT_SCOPE, ALLEY_SCOPE) or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit engineering-only comparison scope required')
-    if spec.get('map_asset') not in SOURCES:
+    if spec.get('map_asset') not in SOURCES and spec.get('scope') != ALLEY_SCOPE:
         raise ValueError('Only the two declared source maps are supported')
     if spec.get('native_full_detail_only', True) is not True or spec.get('background_hlod_min_distance_m'):
         raise ValueError('This bounded adapter supports full-detail-only captures; distant HLOD requires the original collector')
@@ -59,7 +86,9 @@ def validate_spec(spec):
                 validated_pose(candidate['camera'])
         if not row.get('physical_site_id'):
             raise ValueError('Declared physical site identity required; independence remains unverified')
-    if is_development(spec):
+    if spec.get('scope') == ALLEY_SCOPE:
+        validate_alley_manifest(spec)
+    elif is_development(spec):
         if (spec['map_asset'] != '/Game/BAResearchSlice/Street200V7'
                 or spec.get('data_role') != 'Development'
                 or spec.get('native_material_policy') != 'STREET_TRANSIENT_ZERO_WPO_PDO'
@@ -112,6 +141,9 @@ def load_source(u, spec):
                    deformation_bounded=False, asset_isolation='NOT_VERIFIED',
                    streaming_completeness='NOT_VERIFIED', admitted_layouts=0,
                    saved=False)
+    if spec.get('scope') == ALLEY_SCOPE:
+        receipt['alley_manifest'] = spec['alley_manifest']
+        receipt['authored_nonpartitioned_map'] = 'FROZEN_PACKAGE_HASHES_VERIFIED'
     receipt['visibility_policy'] = 'TASK_OWNED_EDITOR_FULL_DETAIL_ONLY_NO_MAP_SAVE'
     region = spec.get('world_partition_region_m')
     if region is not None:

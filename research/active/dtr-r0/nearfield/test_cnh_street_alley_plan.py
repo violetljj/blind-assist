@@ -1,6 +1,9 @@
 import copy
+import json
+import tempfile
+from pathlib import Path
 import unittest
-from cnh_street_alley_plan import generate,box_gap,network,union_cells,boundary,check_registry
+from cnh_street_alley_plan import generate,box_gap,network,union_cells,boundary,check_registry,check_family_pools,register_saved_site
 
 
 def config(topology='straight',width=1.8):
@@ -60,6 +63,44 @@ class PlanTest(unittest.TestCase):
                                        .3*(BOUNDS['trashcan'][1][2]-BOUNDS['trashcan'][0][2]))
         a['sites'][0]['clutter_scales']['trashcan']=float('nan')
         with self.assertRaises(ValueError):generate(a,BOUNDS)
+
+    def test_explicit_same_split_revision_preserves_physical_identity(self):
+        a=generate(config(),BOUNDS)['sites'][0]
+        b=copy.deepcopy(a);b.update(site_id='Alley_Revision',map_asset='/Game/BAResearchAlley/Alley_Revision',
+            revision_of_map_asset=a['map_asset'],physical_site_id=a['site_id'])
+        registry=dict(schema='cnh-street-alley-site-registry-v1',sites=[a])
+        check_registry([b],registry)
+        b['proposed_split']='test'
+        with self.assertRaisesRegex(ValueError,'Revision must inherit'):check_registry([b],registry)
+        b['proposed_split']='train';b['physical_site_id']='Fake_New_Site'
+        with self.assertRaisesRegex(ValueError,'Revision must inherit'):check_registry([b],registry)
+
+    def test_demo_joint_family_pools_disjoint(self):
+        demo=json.loads(Path(__file__).with_name('cnh_street_alley_demo.json').read_text())
+        check_family_pools(demo)
+        for split in ('train','dev','test'):
+            self.assertEqual({s['topology'] for s in demo['sites'] if s['proposed_split']==split},{'straight','L','T'})
+        demo['sites'][3]['insert_assets']=['bollard']
+        with self.assertRaisesRegex(ValueError,'family crosses'):check_family_pools(demo)
+
+    def test_semantic_alias_cannot_bypass_cross_role_isolation(self):
+        demo=json.loads(Path(__file__).with_name('cnh_street_alley_demo.json').read_text())
+        catalog=json.loads(Path(__file__).with_name('cnh_street_alley_assets.json').read_text())
+        catalog['insert_assets']['mailbox']['family_id']='waste_receptacle'
+        with self.assertRaisesRegex(ValueError,'family crosses'):check_family_pools(demo,catalog)
+
+    def test_registry_revision_append_retains_original_record(self):
+        a=generate(config(),BOUNDS)['sites'][0]
+        receipt=dict(status='SAVED_AUTHORING_GEOMETRY_REQUIRES_VISUAL_REVIEW',clearance_checks=[dict(passed=True)])
+        b=dict(a,site_id='Alley_Revision',map_asset='/Game/BAResearchAlley/Alley_Revision',
+               revision_of_map_asset=a['map_asset'],physical_site_id=a['site_id'])
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'registry.json'
+            first=register_saved_site(path,a,receipt,'a'*64)['sites'][0]
+            result=register_saved_site(path,b,receipt,'b'*64)
+            self.assertEqual(result['sites'][0],first)
+            self.assertEqual(len(result['sites']),2)
+            self.assertEqual(result['sites'][1]['physical_site_id'],first['physical_site_id'])
 
 
 if __name__=='__main__':unittest.main()

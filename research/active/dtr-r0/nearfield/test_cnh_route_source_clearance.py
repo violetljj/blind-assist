@@ -35,7 +35,7 @@ class MaterialBoundTests(unittest.TestCase):
             def get_editor_property(self,key): return {'mobility':'STATIC','visible':True,'hidden_in_game':False,'bounds_scale':self.bounds_scale}.get(key)
             def get_num_materials(self): return 1
             def get_material(self,index): return SimpleNamespace(get_path_name=lambda:'material')
-            def get_world_transform(self): return object()
+            def get_world_transform(self): return SimpleNamespace(scale3d=SimpleNamespace(x=1.,y=1.,z=1.))
         component=Component()
         class Actor:
             def get_path_name(self): return 'actor'
@@ -56,6 +56,10 @@ class MaterialBoundTests(unittest.TestCase):
             result=audit(u,api,layouts,{},source)
             self.assertEqual(result['candidates'][0]['status'],'PASS_LOADED_WORLD_ONLY')
             self.assertFalse(result['native_coverage_complete'])
+            alley=dict(scope='ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK',map_asset='/Game/BAResearchAlley/Fixture',authored_nonpartitioned_map='FROZEN_PACKAGE_HASHES_VERIFIED')
+            self.assertEqual(audit(u,api,layouts[:1],{},alley)['candidates'][0]['status'],'PASS_LOADED_WORLD_ONLY')
+            alley.pop('authored_nonpartitioned_map')
+            self.assertEqual(audit(u,api,layouts[:1],{},alley)['candidates'][0]['status'],'UNKNOWN')
             source['native_region']['requested_guids'].append('MISSING')
             result=audit(u,api,layouts,{},source)
             self.assertEqual(result['candidates'][0]['status'],'UNKNOWN')

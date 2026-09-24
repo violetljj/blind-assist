@@ -15,6 +15,8 @@ import time
 import numpy as np
 from cnh_street_development_baseline import load_depth, sample_depth
 from cnh_route_sensor import synthesize_response, derive_readout, H3
+from cnh_street_e2e_partitions import guard_rows, declared_partition
+from cnh_route_source_compare_adapter import is_development
 
 QUERY_NAMES = ['left_HEAD','left_BODY','centre_HEAD','centre_BODY','right_HEAD','right_BODY']
 BOXES = np.array([[[x-.3,y[0],.3],[x+.3,y[1],3.]] for x in (-.3,0.,.3)
@@ -80,6 +82,22 @@ def frame_identity(manifest_hash,row,camera_hash,depth_hash):
 def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 
 
+def authored_layout_metadata(spec):
+    layouts={row['layout_id']:dict(row) for row in spec['layouts']}
+    if spec.get('scope')=='ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+        manifest=spec['alley_manifest'];partition=declared_partition(manifest)
+        if partition is None or not manifest.get('physical_site_id'):
+            raise ValueError('Alley manifest requires authored partition and physical site')
+        for row in layouts.values():
+            if row.get('physical_site_id')!=manifest['physical_site_id']:
+                raise ValueError('Alley layout physical site differs from manifest')
+            existing=declared_partition(row)
+            if existing is not None and existing!=partition:
+                raise ValueError('Alley layout conflicts with manifest partition')
+            row['proposed_split']=partition
+    return layouts
+
+
 def materialize(capture,output,sensor_backend='numpy',device='cpu'):
     from cnh_route_scene_depth_audit import world_triangles
     from cnh_route_insert_geometry_audit import world_triangles as inserted_triangles
@@ -89,7 +107,17 @@ def materialize(capture,output,sensor_backend='numpy',device='cpu'):
     if output.is_relative_to(capture):raise ValueError('Keep outputs separate from source capture')
     manifest=read(capture/'raw-manifest.json'); spec=read(capture/'source/spec.json'); transport=read(capture/'format-receipt.json')
     rows=manifest['frames'];layout_ids=[r['layout_id'] for r in spec['layouts']]
-    if spec.get('scope')!='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK' or not rows:
+    layout_metadata=authored_layout_metadata(spec)
+    guard_rows([dict(layout_metadata[row['layout_id']],data_role=row.get('data_role')) for row in rows])
+    for row in rows:
+        authored=declared_partition(layout_metadata[row['layout_id']]);frame_partition=declared_partition(row)
+        if authored is not None and frame_partition is not None and authored!=frame_partition:
+            raise ValueError('Frame changes authored layout partition')
+    rows=[dict(row,**{k:row.get(k) or layout_metadata[row['layout_id']].get(k)
+        for k in ('split','proposed_split','authoring_partition')
+        if (row.get(k) or layout_metadata[row['layout_id']].get(k)) is not None}) for row in rows]
+    guard_rows(rows)  # Before any depth or physical geometry payload access.
+    if not is_development(spec) or not rows:
         raise ValueError('Explicit nonempty Development capture required')
     if transport.get('status')!='PASS_SEVEN_PASS_SOURCE_TRANSPORT_ONLY' or transport.get('frame_count')!=len(rows):
         raise ValueError('Completed transport frame count mismatch')
@@ -156,7 +184,7 @@ def materialize(capture,output,sensor_backend='numpy',device='cpu'):
             tri,complete,center,radius,bounds=native[row['layout_id']]
             labels[index],reasons=physical_labels(tri,inserted,np.asarray(camera['T_world_camera']),complete,center,radius,bounds)
             keys.append(key)
-            metadata.append({k:row.get(k) for k in ('id','layout_id','clip_id','pose_index','machine_id','environment_category','physical_site_id','nominal_time_s')}|
+            metadata.append({k:row.get(k) for k in ('id','layout_id','clip_id','pose_index','machine_id','environment_category','physical_site_id','nominal_time_s','split','proposed_split','authoring_partition')}|
                 dict(frame_key=key,data_role='Development',seed=seed,camera_sha256=camera_hash,depth_sha256=depth_hash,
                     depth_valid_sha256=sha(folder/'depth_left_valid.npy'),inserted_geometry_sha256=sha(folder/'inserted-geometry.json'),label_reasons=reasons))
             if (index+1)%160==0:print(json.dumps(dict(materialized=index+1,total=count,wall_s=time.monotonic()-started)),flush=True)

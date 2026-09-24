@@ -193,7 +193,8 @@ def generate_site(site, bounds, config):
             # Entire footprint must be supported by the union of walkable cells.
             corners=itertools.product((box[0][0],box[1][0]),(box[0][1],box[1][1]))
             if not all(any(a-1e-6<=x<=c+1e-6 and b-1e-6<=y<=d+1e-6 for a,b,c,d in cells.values()) for x,y in corners):continue
-            if min(box_gap(box,[p['low'],p['high']]) for p in protected)<.15-1e-6:continue
+            # Reserve 2 cm for native component bounds inflation; measured gate remains 15 cm.
+            if min(box_gap(box,[p['low'],p['high']]) for p in protected)<.17-1e-6:continue
             if any(box_gap(box,r['planned_bounds_m'])<.05 for r in clutter):continue
             if any(box_gap(box,r['planned_bounds_m'])<.02 for r in walls):continue
             row['placement']='elevated_service_equipment' if lift else 'service_bay_or_wallside'
@@ -232,10 +233,34 @@ def generate(config, bounds):
     sites=[generate_site(site,bounds,config) for site in config['sites']]
     signatures=[s['geometry_signature'] for s in sites]
     if len(set(signatures))!=len(signatures):raise ValueError('Duplicate physical geometry across site IDs rejected')
+    family_assignment=check_family_pools(config)
     return dict(schema='cnh-street-alley-plan-v1',sites=sites,benchmark_eligible=False,
+        family_assignment=family_assignment,
         partition_rule='A physical map/site ID belongs to one prospective partition; layouts may not cross it',
         independence_limit='Distinct authored maps and geometry; shared background assets and procedural distribution are not independent real-world sources',
         protected_definition='All centreline segments plus lateral0.6m, height0..2m, and separate15cm geometry margin; supports excluded')
+
+
+def check_family_pools(config, catalog=None):
+    """One semantic/source family belongs to one split, across both roles."""
+    if catalog is None:
+        catalog=json.loads(Path(__file__).with_name('cnh_street_alley_assets.json').read_text())
+    owners={}
+    for site in config['sites']:
+        families=set()
+        for role,keys,table in [('distractor',site['clutter_assets'],catalog['meshes']),
+                                ('insert',site.get('insert_assets',[]),catalog.get('insert_assets',{}))]:
+            for key in keys:
+                entry=table[key]
+                family=entry['family_id']
+                if role=='distractor':families.add(family)
+                identities=('semantic:'+family,'source:'+entry['source_family_root'])
+                for identity in identities:
+                    old=owners.setdefault(identity,site['proposed_split'])
+                    if old!=site['proposed_split']:
+                        raise ValueError('Asset family crosses partitions or roles: '+identity)
+        if len(families)<3:raise ValueError('At least three distractor families required per site')
+    return owners
 
 
 def check_registry(sites, registry):
@@ -243,11 +268,18 @@ def check_registry(sites, registry):
     if registry.get('schema')!='cnh-street-alley-site-registry-v1':
         raise ValueError('Unknown persistent site registry schema')
     for site in sites:
+        revision=site.get('revision_of_map_asset')
+        parent=next((s for s in registry['sites'] if s['map_asset']==revision),None) if revision else None
+        if revision and (parent is None or parent['geometry_signature']!=site['geometry_signature'] or
+                         parent['proposed_split']!=site['proposed_split'] or
+                         site.get('physical_site_id')!=parent.get('physical_site_id',parent['site_id'])):
+            raise ValueError('Revision must inherit registered geometry, physical identity and partition')
         for old in registry['sites']:
             if old['site_id']==site['site_id'] or old['map_asset']==site['map_asset']:
                 raise ValueError('Previously authored physical site cannot be reassigned or overwritten: '+site['site_id'])
             if old['geometry_signature']==site['geometry_signature']:
-                raise ValueError('Previously authored geometry cannot acquire a new identity or partition: '+site['site_id'])
+                same_lineage=parent is not None and old.get('physical_site_id',old['site_id'])==site['physical_site_id'] and old['proposed_split']==site['proposed_split']
+                if not same_lineage:raise ValueError('Previously authored geometry cannot acquire a new identity or partition: '+site['site_id'])
 
 
 def register_saved_site(path,site,geometry_receipt,map_sha256):
@@ -258,7 +290,8 @@ def register_saved_site(path,site,geometry_receipt,map_sha256):
     if geometry_receipt.get('status')!='SAVED_AUTHORING_GEOMETRY_REQUIRES_VISUAL_REVIEW' or not geometry_receipt.get('clearance_checks') or not all(r['passed'] for r in geometry_receipt['clearance_checks']):
         raise ValueError('Saved map with measured clearance required before registry append')
     registry['sites'].append({k:site[k] for k in ('site_id','map_asset','geometry_signature','proposed_split','topology')}|
-        dict(map_sha256=map_sha256,authority='PROSPECTIVE_PARTITION_NOT_BENCHMARK_ADMISSION'))
+        dict(physical_site_id=site.get('physical_site_id',site['site_id']),revision_of_map_asset=site.get('revision_of_map_asset'),
+             map_sha256=map_sha256,authority='PROSPECTIVE_PARTITION_NOT_BENCHMARK_ADMISSION'))
     path.parent.mkdir(parents=True,exist_ok=True)
     temp=path.with_suffix('.writing.json')
     if temp.exists():raise FileExistsError('Unresolved prior registry write: '+str(temp))

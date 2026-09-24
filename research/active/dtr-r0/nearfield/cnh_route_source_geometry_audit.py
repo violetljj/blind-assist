@@ -97,7 +97,8 @@ def audit(capture, diagnostic=None, scene_depth_materials=False, development_sam
     frame_rows=manifest['frames'];layout_ids=[r['layout_id'] for r in spec['layouts']]
     sample_policy=None
     if development_sample:
-        if spec.get('scope')!='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK':
+        from cnh_route_source_compare_adapter import is_development
+        if not is_development(spec):
             raise ValueError('Explicit Development capture required for sampling')
         selected=[l for l in json.loads((capture/'candidate-selection.json').read_text())['selected_layouts'] if l is not None]
         expected={(l['layout_id'],c['id'],i) for l in selected for c in l['clips'] for i in range(len(c['poses']))}

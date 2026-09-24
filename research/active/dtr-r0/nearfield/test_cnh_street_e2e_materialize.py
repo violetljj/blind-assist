@@ -1,9 +1,26 @@
 import unittest
 import numpy as np
-from cnh_street_e2e_materialize import triangle_box_hits, physical_labels, frame_identity
+from cnh_street_e2e_materialize import triangle_box_hits, physical_labels, frame_identity, is_development, authored_layout_metadata
 
 
 class MaterializeTests(unittest.TestCase):
+    def test_alley_inherits_manifest_partition_without_mutating_spec(self):
+        spec=dict(scope='ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK',
+            alley_manifest=dict(physical_site_id='site',proposed_split='train'),
+            layouts=[dict(layout_id='layout',physical_site_id='site')])
+        self.assertEqual(authored_layout_metadata(spec)['layout']['proposed_split'],'train')
+        self.assertNotIn('proposed_split',spec['layouts'][0])
+        spec['layouts'][0]['split']='dev'
+        with self.assertRaisesRegex(ValueError,'conflicts'):authored_layout_metadata(spec)
+        del spec['layouts'][0]['split'];spec['layouts'][0]['physical_site_id']='other'
+        with self.assertRaisesRegex(ValueError,'physical site'):authored_layout_metadata(spec)
+
+    def test_materializer_accepts_both_development_sources_only(self):
+        for scope in ('STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK','ALLEY_DEVELOPMENT_PILOT_NOT_BENCHMARK'):
+            self.assertTrue(is_development({'scope':scope}))
+        self.assertFalse(is_development({'scope':'TWO_LAYOUT_SOURCE_ENGINEERING_NOT_BENCHMARK'}))
+        self.assertFalse(is_development({'scope':'ALLEY_FINAL_TEST'}))
+
     def test_triangle_crossing_without_inside_vertices(self):
         tri=np.array([[[-2.,0.,0.],[2.,0.,0.],[0.,2.,0.]]])
         self.assertTrue(triangle_box_hits(tri,[-.1,-.1,-.1],[.1,.1,.1]))
