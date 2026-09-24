@@ -55,12 +55,19 @@ CNH v3 的用户决定：目标/同类干扰物资产族隔离，普通背景资
 完整布局960/960同场地调试，误报仍多；不作独立测试/算法收益结论，不替代能量和标签精度准入。
 新增[参数化巷道生成器](nearfield/CNH_ALLEY_GENERATOR_20260924.md)：9个场地、72件杂物按干扰物隔离。
 R2跨划分复用失败保留；R3a联合隔离杂物和插入族，实测最小净空175.334mm。
+九图实际摆放和六份开发采集规格的[隔离复核](nearfield/CNH_ALLEY_ASSET_ISOLATION_AUDIT_20260924.md)确认
+杂物/插入物语义族、源网格与场地跨区交集为0；旧插入材质三张 UE 实际使用纹理跨区共享，隔离 FAIL。
+未保存派生材质关闭 MFPD 后，六份实际 train/dev 重采使用纹理跨区交集为0；与 test 的交集0仍仅有未保存材质探针一侧，test 未采。
 3060六场采满960帧，18帧固定抽样原门槛全PASS、背景max最高0.615mm；test三场未采。
-RGB欠曝不可用，本轮仅ToF；与旧Street合并2880帧、18布局，冻结1440/1440和30epochs完成重训。
+旧RGB欠曝不可用；train/dev 六场已按每布局近场测光固定 EV 重采960对双目，逐图数值门槛1920/1920通过，首/中/末双目抽查已记录。旧ToF、深度和标签按帧键及哈希绑定，未重写。
+与旧Street合并2880帧、18布局的原ToF基线仍保留，冻结1440/1440和30epochs完成重训。
 开发验证TP/FP/FN/TN=942/2249/358/5091、UNKNOWN=0，模型重载逐位一致，不作算法收益声明。
 场地登记阻止换名跨区；只有墙/地面等背景共享，简化美术与Development范围保持披露。
 City车辆移除开发诊断已跑通16帧并恢复：16近实例临时清零、48远实例不动、metadata保持。
 City1 max428.617→28.341mm且原覆盖通过，City0仍881.078mm与5m边界FAIL，未宣布整体准入。
+新增[路缘石逐实例派生替换反证](nearfield/CNH_CITY_CURB_SUBSTITUTION_20260924.md)：同一16帧旧布局中
+Nanite关闭、LOD0锁定后City0 max仍880.927mm，四次重复射线未消失；zone53覆盖extra仍2.2214%>2%。
+相邻射线指向停车收费表实例2边缘，但原生可见ID未获证；City0标记 phase 1 排除并停止追因。City1[新位姿同场地Development采集](nearfield/CNH_CITY1_FRESH_DEVELOPMENT_20260925.md)16/16帧中，一布局几何PASS但RGB近场亮度FAIL，另一布局几何FAIL；整批不准入当前融合训练，不算新物理场地确认。City整体正式准入仍未建立。
 City按逐区/边缘/角度/预测物体归属诊断，未发现z/径向混用证据，不能直接归结为来源不合格；
 5m缓冲带、轮廓容差是未启用的规则建议，不改旧FAIL。
 背景像素ID聚合，
@@ -70,6 +77,10 @@ City按逐区/边缘/角度/预测物体归属诊断，未发现z/径向混用�
 每布局最多16个候选，不通过则报告生成失败；不靠忽略原生侵入或背景角色改名绕过标签与资产隔离。
 
 此前已完成选定证据的副机备份与恢复校验、短状态页和 Python/冻结文本回归接入。提醒策略保留为后续固定检测输出的比较问题；CNH现在推进Development批采与观测基线接口，不启动保护测试选模。
+已实现[CNH+RGB局部视锥融合接口](nearfield/CNH_RGB_FUSION_INTERFACE_20260924.md)并完成几何与未训练前向检查；
+一帧原始Street Development RGB/H3同帧身份烟测通过。六场巷道修复RGB上已完成[三seed同划分对照](nearfield/cnh_rgb_dev_comparison.py)：480 train/480 dev，ToF-only和CNH+RGB在固定logit 0阈值下每次均为TP0/FP0/FN408/TN2472；[保存预测的排序诊断](../../../artifacts.local/evidence/cnh-rgb-alley-rank-diagnostic-20260925-v1/result.json)显示AUROC约0.677、AP约0.269，两臂差异极小。此轮无RGB收益证据，亦未建立可用检测器；Street本地精简源仅有8/960张RGB，不能冒充四类环境对照。
+独立冻结的[V2方位掩码与训练集类别平衡对照](nearfield/CNH_RGB_ALLEY_DEV_V2_PROTOCOL_20260925.md)在相同六场/三seed上解除了全负退化：ToF-only dev TP148–160/408、FP486–512/2472；CNH+RGB TP148、154、159，FP504、491、503。预声明结论为 `NONCOLLAPSED_DEVELOPMENT`、`NO_CONSISTENT_DEV_PARETO_SIGNAL`；误报仍高，不能声称融合获益。
+完整164布局test的[准备度审核](nearfield/CNH_FULL_TEST_READINESS_20260925.md)为真实场地和采集spec 0/164，受保护采集入口未实现；不以三张候选巷道图代替完整test。
 
 新研究问题/预算/规则由用户确认；已授权问题内自主完成合理实现和验证。每个问题用一个能推翻假设的关键对照，保留成功、失败和不可评估的原始结果。具体规则见[研究工作方式](../../WORKFLOW.md)。
 

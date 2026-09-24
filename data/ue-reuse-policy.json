@@ -418,6 +418,30 @@
         {
           "relative_path": "Content/Map/Small_City_LVL.umap",
           "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_train_straight_R3a.umap",
+          "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_train_L_R3a.umap",
+          "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_train_T_R3a.umap",
+          "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_dev_straight_R3a.umap",
+          "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_dev_L_R3a.umap",
+          "role": "configuration"
+        },
+        {
+          "relative_path": "Content/BAResearchAlley/Alley_dev_T_R3a.umap",
+          "role": "configuration"
         }
       ]
     },

@@ -58,3 +58,66 @@ R3a九场72件实测最小间隔175.334mm。第一次R3的147.924mm失败记录�
 
 数据采集时以登记的物理场地身份约束所有布局及端点，先落实实际采集查询净空，
 继续原 30/75 mm、2% 规则；作者预览不是深度验收，也不直接增加现有 1920 帧。
+
+## 巷道 RGB 固定曝光重采
+
+旧 train/dev 六场 960 帧 RGB 严重欠曝；旧 ToF、深度和几何原件及回执保留。
+最初的 `ALLEY_SINGLE_PROBE_FIXED_BIAS_V1` 在 13.2 EV100 的几乎全黑 LDR 探测帧上
+估算 +6 档偏移；train-straight v4/v5 各生成 160 对 RGB，图像仍近黑，首帧 ROI
+亮度 p60 为 1/255、p90 为 7/255，不能因传输成功而认定 RGB 可用。v1–v3 单位姿
+曝光诊断表明：v2 自动曝光在开启或关闭 Lumen 时 p60 都约为 0.448；v3 的固定
+EV100 −2 窄窗 p60 为 0.230、墙面、地面、细杆可见。因此主要障碍是探测起点处于
+LDR 量化黑位，不是缺少间接照明。原图太阳、SkyAtmosphere、SkyLight 和几何不修改。
+
+随后 `ALLEY_SINGLE_PROBE_FIXED_EV_V1` 从 EV100 −2 的非黑探测帧按中央 p60
+选取固定 EV。train-straight v6 的 160 对图像数值和目视通过；但 train-T v1 被
+高亮墙面驱动到 EV100 −0.5，中央 p60 虽通过，近场地面/细杆仍太暗：首帧
+近场 p30=0.048、p60=0.075。该两批及 train-L v1 均保留为 Development 诊断，
+不冒充最终重采。train-T 的单位姿 EV100 −2 探针近场 p30=0.150、p60=0.205，
+中央 p99=0.942，细杆可辨；开启 Lumen 与关闭时几乎相同，所以没有改动原图的
+太阳、SkyAtmosphere、SkyLight、间接照明或几何。
+
+最终六图统一采用 `ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2`：每个布局首个 centre
+位姿的已摆放插入物上，等待读取就绪，在固定 EV100 −2、曝光补偿 0 下取一张稳定
+左目探测帧。每 4 像素采样近场 ROI（x=42.1875–67.1875%，y=50–95.8333%）
+的亮度 p30，计算
+`最终 EV100 = −2 − round(4 × log2(0.15 / 近场p30)) / 4`。
+探测近场 p30 不在 0.03–0.75、中央 ROI（x=15–85%，y=30–85%）p99 超过 0.98、
+或需调整超过 4 档即拒绝。布局所有左右目帧使用同一个 EV100 ±0.01 档窄窗，
+回执绑定该布局唯一探测、最终 EV、每帧姿态和材质配方。`ALLEY_RGB_ONLY_REPLAY_V1`
+只写新 RGB；原 ToF、深度、标签、法线、反照率、实例 ID 和旧原始回执不重写。
+
+逐帧、逐目最终门槛同时要求中央 ROI p60=0.12–0.85、p90−p10≥0.08、p99≤0.98，
+以及近场 ROI p30≥0.10、p60≥0.14。任一图失败标为 `FAIL_UNUSABLE_RGB`，数值全过
+仍须首、中、末帧双目目视。六个最终 v2 回执位于
+`artifacts.local/evidence/cnh-alley-rgb-replay-{train-straight,train-l,train-t,dev-straight,dev-l,dev-t}-20260925-v2/capture/`；
+每图各 160 对、320 张均通过上述冻结门槛：
+
+| Development 布局 | 固定 EV100 | 全图最小近场 p30 | 全图最大中央 p99 |
+|---|---:|---:|---:|
+| train-straight | −1.5 | 0.132 | 0.919 |
+| train-L | −2.0 | 0.102 | 0.916 |
+| train-T | −2.0 | 0.146 | 0.952 |
+| dev-straight | −2.0 | 0.154 | 0.954 |
+| dev-L | −1.25 | 0.135 | 0.883 |
+| dev-T | −2.0 | 0.102 | 0.952 |
+
+每图在未保存的两件派生插入物材质上关闭 `Enable MFPD`，其余源 mesh/材质身份保留；
+实际逐插入物回执记录 UE 使用纹理由 6 降到各自的 3 张 Albedo/Normal/Roughness。
+train-T 同位姿的 MFPD-off 一帧七路深度与旧 MFPD-on 原件比较：相机哈希、
+插入顶点/三角面/变换完全一致，218,694 个共同有效像素深度差最大 0 m，
+有效掩码差 0 像素；纠正的 `Z` 通道回执是
+`artifacts.local/evidence/cnh-alley-mfpd-depth-parity-train-t-20260925-v1/capture/format-receipt-corrected-z.json`。
+首次 cv2 误读单 `Z` 通道为全零的失败回执保留。MFPD-off 和 on 的同 EV 图像中
+插入物仍可见；此单位姿核查并不证明所有姿态深度逐像素不变。
+
+六份 `rgb-tof-overlay.json` 按帧 ID、frame_key、相机/几何/旧左目深度哈希将新双目
+RGB 绑定原 `observations.npz` ToF 与 `targets.npz` 标签的同一数组索引。
+`artifacts.local/evidence/cnh-alley-rgb-replay-six-20260925-v2/collection-overlay.json`
+汇总 960 帧/1920 张 RGB，`visual-review.json` 列出六图各首、中、末帧双目样本；
+`contact-sheets.json` 索引每场一张六格抽查图，生成时重新核对了全部 36 张源图哈希。
+`actual-used-texture-audit.json` 从最终实际采集材质回执核对 train/dev 的交集为 0；
+与 test 的交集也为 0，但 test 一侧仅是未保存材质探针，**不是 test 采集或准入**。
+本地精简旧源缺少右目深度原件，右目旧哈希绑定旧回执但未重新核验。
+train-L 与 dev-T 的近场 p30 最低仅约 0.102，接近 0.10 门槛；保留这一边界。
+所有证据均为已消费 Development RGB 修复，不构成 benchmark、硬件或部署结论。

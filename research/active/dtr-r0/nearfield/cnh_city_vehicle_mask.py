@@ -85,10 +85,17 @@ def apply(u,api,spec):
     if spec.get('map_asset')!='/Game/Map/Small_City_LVL' or spec.get('native_geometry_policy')!=POLICY:
         raise ValueError('Explicit consumed City vehicle diagnostic required')
     control=spec.get('city_derived_control',{})
-    if control.get('authority')!='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or control.get('benchmark_eligible') is not False:
-        raise ValueError('No new-layout admission under removal diagnostic')
+    fresh_city1=(control.get('authority')=='FRESH_CITY1_SAME_SITE_DEVELOPMENT' and
+                 control.get('physical_site_id')=='city-consumed-engineering-site-1' and
+                 control.get('independent_site_count')==1 and control.get('new_layouts') is True and
+                 spec.get('data_role')=='Development' and
+                 {row['physical_site_id'] for row in spec['layouts']}=={'city-consumed-engineering-site-1'})
+    if (control.get('benchmark_eligible') is not False or
+            not (control.get('authority')=='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or fresh_city1)):
+        raise ValueError('Explicit consumed or fresh same-site City1 Development control required')
     centres=camera_centres(spec)
     receipt=dict(policy=POLICY,status='PREFLIGHT',radius_m=8.,camera_centres_m=centres,
+        source_authority=control['authority'],independent_site_count=control.get('independent_site_count'),
         saved=False,geometry_thresholds='UNCHANGED_V1',near_vehicles_removed=True,
         instance_removal_method='ZERO_SCALE_KEEP_INDEX_AND_CUSTOM_DATA',components=[],hlod=[])
     session=Session(u,api,receipt);planned=[]

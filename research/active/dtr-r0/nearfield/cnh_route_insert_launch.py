@@ -146,9 +146,6 @@ def release_temp(out, launched):
 
 
 def launch(args):
-    import numpy
-    import OpenEXR
-    import PIL
     from run_city_pcg_capture import artifact_file, cache_service_port
     from run_obstacle_research import engine_root
     journal = os.environ.get('BLINDASSIST_ASSET_RUN_JOURNAL')
@@ -161,6 +158,15 @@ def launch(args):
     plugin = artifact_file(args.plugin,'Plugin')
     binary = artifact_file(plugin.parent/'Binaries/Win64/UnrealEditor-BlindAssistCapture.dll','Plugin DLL')
     spec = json.loads(spec_path.read_text(encoding='utf-8-sig')); validate_spec(spec)
+    if spec.get('capture_mode') in ('ALLEY_RGB_ONLY_REPLAY_V1','ALLEY_RGB_EXPOSURE_DIAGNOSTIC_V1',
+                                    'ALLEY_MFPD_DEPTH_DIAGNOSTIC_V1'):
+        dependencies=dict(numpy=None,OpenEXR=None,PIL=None,scope='RGB_ONLY_NO_SEVEN_PASS_FORMATTER')
+    else:
+        import numpy
+        import OpenEXR
+        import PIL
+        dependencies=dict(numpy=numpy.__version__,OpenEXR=OpenEXR.__version__,
+            PIL=PIL.__version__,OpenEXR_path=OpenEXR.__file__)
     timeout_limit=3600 if spec.get('scope')=='STREET_DEVELOPMENT_PILOT_NOT_BENCHMARK' else 600
     if not math.isfinite(args.timeout) or not 0 < args.timeout <= timeout_limit:
         raise ValueError(f'Capture timeout must be within {timeout_limit} seconds')
@@ -191,7 +197,7 @@ def launch(args):
         env['UE-LocalDataCachePath'] = str(cache)
         command = [str(engine/'Engine/Binaries/Win64/UnrealEditor.exe'),str(project),'-ExecCmds=py '+(source/'cnh_route_insert_capture.py').as_posix(),'-RenderOffscreen','-unattended','-nosound','-nop4','-NoSplash','-ddc=NoShared','-ini:Engine:[Zen.AutoLaunch]:DesiredPort='+str(port),'-abslog='+str(out/'editor.log'),'-PLUGIN='+str(plugin),'-EnablePlugins=CitySamplePCG,BlindAssistCapture,PythonScriptPlugin,ProceduralMeshComponent','-DisablePlugins=CLionSourceCodeAccess,VisualStudioCodeSourceCodeAccess','-ini:Engine:[/Script/EngineSettings.GameMapsSettings]:EditorStartupMap=','-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:LoadLevelAtStartup=None']
         write(out/'launch.json',dict(command=command,project_sha256=before,plugin_sha256=file_hash(binary),source_hashes={p.name:file_hash(p) for p in source.iterdir()},cache=str(cache),zen_port=port,journal=journal,
-            python_dependencies=dict(numpy=numpy.__version__,OpenEXR=OpenEXR.__version__,PIL=PIL.__version__,OpenEXR_path=OpenEXR.__file__)))
+            python_dependencies=dependencies))
         launched = True
         run_owned(command,env,out,args.timeout)
         if file_hash(project) != before:

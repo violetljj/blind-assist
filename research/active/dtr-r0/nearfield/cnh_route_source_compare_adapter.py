@@ -98,7 +98,18 @@ def validate_spec(spec):
                 or any(r.get('environment_category') not in ('sidewalk','intersection','plaza') for r in layouts)):
             raise ValueError('Development requires frozen static Street, declared categories, one shared street block and nominal 0.1s spacing')
     elif len({r['physical_site_id'] for r in layouts}) != 2:
-        raise ValueError('Two camera views of one declared site are not two layouts')
+        control = spec.get('city_derived_control', {})
+        fresh_city1 = (spec.get('map_asset') == '/Game/Map/Small_City_LVL'
+                       and spec.get('data_role') == 'Development'
+                       and control.get('authority') == 'FRESH_CITY1_SAME_SITE_DEVELOPMENT'
+                       and control.get('new_layouts') is True
+                       and control.get('independent_site_count') == 1
+                       and control.get('physical_site_id') == 'city-consumed-engineering-site-1'
+                       and {r['physical_site_id'] for r in layouts} == {'city-consumed-engineering-site-1'}
+                       and {r['layout_id'] for r in layouts} == {
+                           'city1-fresh-development-00', 'city1-fresh-development-01'})
+        if not fresh_city1:
+            raise ValueError('Two camera views of one declared site are not two layouts')
     region = spec.get('world_partition_region_m')
     if spec['map_asset'] == '/Game/Map/Small_City_LVL' and region is None:
         raise ValueError('City requires an explicit bounded World Partition region')

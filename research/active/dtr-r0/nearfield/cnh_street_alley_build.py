@@ -19,6 +19,22 @@ def write(path,value):
     Path(path).write_text(json.dumps(value,indent=2,allow_nan=False)+'\n',encoding='utf-8')
 
 
+def closure_roots_for_site(site, source_assets, materials):
+    """Map and this site's visible/planned assets, excluding other split pools.
+
+    Insert meshes are capture candidates, not actors in the saved authoring map.
+    Including them here makes the closure useful for pre-capture review while
+    retaining the distinction from what the saved map actually renders.
+    """
+    keys={row['asset'] for row in site['rows']}
+    keys.update('insert__'+key for key in site['insert_assets'])
+    roots={site['map_asset']}
+    roots.update(source_assets[key]['source'].split('.')[0] for key in keys)
+    roots.update(materials[site[field]].get_path_name().split('.')[0]
+                 for field in ('wall_material','floor_material'))
+    return roots
+
+
 def aabb_gap(a,b):
     """Euclidean separation of closed 3D AABBs; intersection has zero gap."""
     if any(len(x)!=3 for x in (*a,*b)):
@@ -254,7 +270,7 @@ def prepare(u,config,out):
             receipt.update(status='SAVED_AUTHORING_GEOMETRY_REQUIRES_VISUAL_REVIEW',source_integrity=bank.verify(),
                 derived_assets=bank.receipts)
             map_file=content/(site['map_asset'].removeprefix('/Game/')+'.umap')
-            roots={site['map_asset']}|{r['source'].split('.')[0] for r in loading.receipts.values()}|{v.get_path_name().split('.')[0] for v in materials.values()}
+            roots=closure_roots_for_site(site,loading.receipts,materials)
             u.AssetRegistryHelpers.get_asset_registry().scan_modified_asset_files([str(map_file)])
             closure=dependency_closure(u,roots)
             closure_path=out/(site['site_id']+'-dependency-closure.json')

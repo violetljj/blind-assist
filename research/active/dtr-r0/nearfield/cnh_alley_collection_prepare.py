@@ -1,5 +1,7 @@
 """Freeze six train/dev authoring-map acquisition specs; no test map capture."""
 from copy import deepcopy
+import json
+from pathlib import Path
 
 def insertion(identifier, bounds, x, y, hidden=False):
     lo,hi=bounds
@@ -11,9 +13,21 @@ def insertion(identifier, bounds, x, y, hidden=False):
     return dict(id=identifier,center_m=[x,y,size[2]/2],scale=[size[i]/extent[i] for i in range(3)],
         rotation_deg=dict(pitch=0.,yaw=0.,roll=0.),hidden=hidden)
 
-def make_spec(template, site, manifest, assets):
+def make_spec(template, site, manifest, assets, catalog=None):
     split=site['proposed_split']
     if split not in ('train','dev'):raise ValueError('Test maps reserved, no capture permitted')
+    if catalog is None:
+        catalog=json.loads(Path(__file__).with_name('cnh_street_alley_assets.json').read_text(encoding='utf-8'))
+    keys=site.get('insert_assets')
+    if not isinstance(keys,list) or len(keys)!=2 or len(set(keys))!=2 or len(assets)!=2:
+        raise ValueError('Two distinct site-declared inserted asset families required')
+    declarations=[catalog['insert_assets'][key] for key in keys]
+    for actual,declared in zip(assets,declarations):
+        if (declared.get('role')!='CONTROLLED_INSERT' or declared.get('proposed_split')!=split or
+                actual.get('source')!=declared.get('asset_path')):
+            raise ValueError('Inserted asset differs from site declaration or partition')
+    if len({row['family_id'] for row in declarations})!=2 or len({row['source_family_root'] for row in declarations})!=2:
+        raise ValueError('Inserted assets share a semantic or source family')
     target,distractor=assets
     poses=[dict(x=round(2.+i*.1,8),y=0.,z=1.6,pitch=0.,yaw=0.,roll=0.) for i in range(40)]
     clips=[]
@@ -29,6 +43,7 @@ def make_spec(template, site, manifest, assets):
         map_sha256=manifest['map_sha256'],alley_manifest={k:v for k,v in manifest.items() if k not in ('map_file','map_sha256')},
         native_material_policy='ALLEY_FROZEN_STATIC_COMPILED',nominal_sample_interval_s=.1,
         render_recipe='STATIC_SPATIAL_V1',transport_policy='NATIVE_SEVEN_ASYNC_V1',
+        rgb_exposure_policy='ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2',rgb_probe_ev100=-2.,
         assets=[dict(mesh_asset=row['source'],id=i) for row,i in zip(assets,(1,254))],
         layouts=[dict(layout_id=site['site_id']+'-worker-00',physical_site_id=manifest['physical_site_id'],
             environment_category='alley',camera=poses[0],clips=clips)],limits=dict(frames=160,layouts=1,timeout_s=600),
@@ -36,5 +51,6 @@ def make_spec(template, site, manifest, assets):
         disclosure=['Authored map Development acquisition; proposed split labels are not formal test access.',
             'Controlled insertions explicitly nonuniform-scaled to 0.24x0.12m footprint; source family preserved.',
             'One fixed layout per map; nominal static-world 10Hz poses, no dynamic video claim.',
+            'One settled RGB probe selects a fixed per-layout exposure bias; RGB-only recipe revision.',
             'Sample geometry only; failed layout quarantined without threshold tuning or quality retry.'])
     return spec

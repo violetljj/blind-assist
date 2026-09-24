@@ -31,14 +31,24 @@ Street200可清点人行道、交叉口、广场，未确认巷道；同街区�
 3×27m巷道接12×12m广场，实际UE图已查看。巷道现已参数化：独立保存9个不同几何场地，
 各预分区均含直巷/L/T。72件杂物按干扰物而非共享背景处理；R2跨区重复判FAIL，
 R3a已按分区联合隔离9杂物族和6插入物族，最小实测净空175.334mm，保留原150mm门槛。
+实际九图的杂物/插入物家族和源网格跨区交集为0，但旧插入材质有三张跨区共用的 UE 实际使用纹理，隔离 FAIL。
+未保存的派生材质关闭 MFPD 后，六份实际 train/dev 重采材质的使用纹理跨区交集为0；与 test 的零交集仍只由未保存材质探针支持，正式 test 未采。
+[隔离复核](../research/active/dtr-r0/nearfield/CNH_ALLEY_ASSET_ISOLATION_AUDIT_20260924.md)。
 巷道train/dev六场960帧已在3060完成，18帧固定抽样原门槛全PASS，背景max最高0.615mm；
-三个test场地未采。RGB严重欠曝标为不可用，仅接入ToF；共享墙/地面与简化美术仍披露。
+三个test候选场地未采。旧RGB严重欠曝；六场train/dev已重采960对双目，按帧绑定旧ToF、深度和标签；1920张图全部通过亮度门槛，首/中/末双目抽查见[采集说明](../research/active/dtr-r0/nearfield/CNH_ALLEY_GENERATOR_20260924.md)。共享墙/地面与简化美术仍披露。
 City已恢复车辆移除开发诊断：16近实例临时清零，48远实例与完整metadata保留，
 旧布局1最大误差428.617→28.341mm且覆盖通过；布局0仍881.078mm及5m边界覆盖FAIL。
-不改原门槛，不宣布City整体准入，完整近场副本尚未完成。
+路缘石原位Nanite关闭/LOD0派生替换的同布局16帧反证中，布局0最大误差仍880.927mm，
+同一射线重复四次超限，zone53覆盖extra仍2.2214%>2%；相邻证据提示停车收费表边缘，原生可见ID未证实。
+不改原门槛；City0标记phase 1排除并停止追因。[City1同场地新位姿采集](../research/active/dtr-r0/nearfield/CNH_CITY1_FRESH_DEVELOPMENT_20260925.md)完成16帧，其中一布局几何PASS但RGB近场亮度FAIL，另一布局几何FAIL；整批不作可用融合数据或新物理场地确认。City整体正式准入未建立，完整近场车辆派生替换虽已实现但未运行。
+[City反证](../research/active/dtr-r0/nearfield/CNH_CITY_CURB_SUBSTITUTION_20260924.md)。
 Street1920+巷道960共2880帧、18布局已完成H3合成→几何监督→CUDA线性基线与逐位一致重载；
 冻结1440/1440开发划分、30epochs，验证TP/FP/FN/TN为942/2249/358/5091，UNKNOWN为0。
 保留原Street同场地划分，巷道按作者分区；不作算法收益或独立测试结论。
+CNH+RGB局部视锥[融合接口](../research/active/dtr-r0/nearfield/CNH_RGB_FUSION_INTERFACE_20260924.md)已实现并做几何/未训练前向检查；
+一帧原始Street Development RGB/H3身份烟测通过。已在六场巷道修复RGB上完成同划分三seed ToF-only对CNH+RGB训练：每臂每seed在480帧dev的2880个查询均为TP0、FP0、FN408、TN2472；排序AUROC约0.677、AP约0.269，RGB增量接近0。此Development结果未建立可用模型或RGB收益；Street本地精简源只有8/960张RGB，四类环境对照尚未完成。
+另立冻结[V2方位约束与训练集类别平衡协议](../research/active/dtr-r0/nearfield/CNH_RGB_ALLEY_DEV_V2_PROTOCOL_20260925.md)后，同划分三seed的ToF-only在dev检出148–160/408个正例查询、误报486–512/2472个负例查询；CNH+RGB检出148、154、159，误报504、491、503。解除了全负退化但仍有高误报，预设规则判定无稳定RGB增益。
+用户选择的完整164布局test当前真实布局和正式采集spec为0/164；[准备度记录](../research/active/dtr-r0/nearfield/CNH_FULL_TEST_READINESS_20260925.md)保留空槽计划，三张巷道候选图不可缩减替代。
 能量、独立标签精度与正式隔离继续保持未完成，所有本轮采集/后处理进程已释放。
 20布局完整配额与384布局尚未完成；不使用5m缓冲带、轮廓豁免或改门槛追认旧FAIL。
 [工程回执](../research/active/dtr-r0/nearfield/CNH_SOURCE_ENGINEERING_20260924.md) ·

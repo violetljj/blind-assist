@@ -57,6 +57,51 @@ def verify_alley_static_probe(receipt):
                 raise ValueError('Alley native material deformation unknown or present: '+str(material))
 
 
+def choose_layout_rgb_exposure(pixels, width, height, initial_ev100):
+    """One settled fixed-EV probe meters the shadowed nearfield."""
+    if len(pixels) != width * height or width < 8 or height < 8:
+        raise ValueError('RGB exposure probe dimensions differ')
+    # Keep sky and the darkest ground edge from steering wall/obstacle exposure.
+    def levels(x0,x1,y0,y1):
+        result=[]
+        for y in range(int(height*y0),int(height*y1),4):
+            for x in range(int(width*x0),int(width*x1),4):
+                pixel=pixels[y*width+x]
+                channels=[float(getattr(pixel,k)) for k in ('r','g','b')]
+                # UE ReadRenderTargetRaw returns byte-valued FLinearColor for RGBA8.
+                if not all(math.isfinite(v) and 0. <= v <= 255. for v in channels):
+                    raise ValueError('RGB exposure probe is not finite LDR byte data')
+                result.append(sum(v*w for v,w in zip(channels,(.2126,.7152,.0722)))/255.)
+        result.sort()
+        return result
+    centre=levels(.15,.85,.30,.85)
+    near=levels(.421875,.671875,.50,.9583333333)
+    quantile=lambda values,fraction:values[int(fraction*(len(values)-1))]
+    near_p30=quantile(near,.30)
+    if not .03 <= near_p30 <= .75 or quantile(centre,.99)>.98:
+        raise ValueError('RGB exposure probe shadow is quantized black or highlight is clipped')
+    target=.15
+    desired_adjustment=math.log2(target/near_p30)
+    if abs(desired_adjustment)>4.:
+        raise ValueError('RGB exposure probe needs more than four stops')
+    # Higher EV darkens; quantize the EV change for reproducible replay.
+    adjustment=round(desired_adjustment*4)/4
+    fixed_ev100=float(initial_ev100)-adjustment
+    return dict(policy='ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2',initial_ev100=float(initial_ev100),
+        initial_bias_ev=0.,fixed_ev100=fixed_ev100,ev_adjustment=adjustment,
+        fixed_ev_window=[fixed_ev100-.01,fixed_ev100+.01],
+        probe_luma_p60=quantile(centre,.60),probe_luma_p10=quantile(centre,.10),
+        probe_luma_p90=quantile(centre,.90),probe_luma_p99=quantile(centre,.99),
+        probe_nearfield_p30=near_p30,probe_nearfield_p60=quantile(near,.60),
+        target_nearfield_p30=target,sampled_pixels=dict(centre=len(centre),nearfield=len(near)),
+        probe_channel_scale='RGBA8_BYTE_0_TO_255',
+        roi_fraction=dict(centre=dict(x=[.15,.85],y=[.30,.85]),
+                          nearfield=dict(x=[.421875,.671875],y=[.50,.9583333333])),
+        selection='initial_ev_minus_nearest_quarter_stop_log2_target_over_nearfield_p30',
+        max_adjustment_stops=4.,
+        authority='ONE_SETTLED_LDR_RGB_PROBE_PER_LAYOUT_NO_DEPTH_OR_GEOMETRY_CHANGE')
+
+
 def validate_insertions(spec):
     from cnh_route_source_compare_adapter import SCOPE, DEVELOPMENT_SCOPE, ALLEY_SCOPE, is_development, validated_pose
     if spec.get('transport_policy') not in (None,'NATIVE_SEVEN_ASYNC_V1'):
@@ -64,23 +109,51 @@ def validate_insertions(spec):
     if spec.get('transport_policy') and not is_development(spec):
         raise ValueError('New async transport is Development-only until parity checked')
     if spec.get('native_geometry_policy') not in (None,'CITY_COMPONENT_LOD0_FALLBACK_CONTROL',
-            'CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED','CITY_NEARFIELD_VEHICLE_ZERO_SCALE'):
+            'CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED','CITY_NEARFIELD_VEHICLE_ZERO_SCALE',
+            'CITY_NEAR_INSTANCE_DERIVED_LOD0_SUBSTITUTION'):
         raise ValueError('Unknown native geometry intervention')
     if spec.get('native_geometry_policy') and spec.get('map_asset')!='/Game/Map/Small_City_LVL':
         raise ValueError('LOD0 diagnostic control is City-only')
-    if spec.get('native_geometry_policy') in ('CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED','CITY_NEARFIELD_VEHICLE_ZERO_SCALE'):
+    if spec.get('native_geometry_policy') in ('CITY_NEARFIELD_DERIVED_LOD0_MATERIALS_UNCHANGED',
+            'CITY_NEARFIELD_VEHICLE_ZERO_SCALE','CITY_NEAR_INSTANCE_DERIVED_LOD0_SUBSTITUTION'):
         control=spec.get('city_derived_control',{})
+        fresh_city1=(spec.get('native_geometry_policy')=='CITY_NEARFIELD_VEHICLE_ZERO_SCALE' and
+                     spec.get('data_role')=='Development' and
+                     control.get('authority')=='FRESH_CITY1_SAME_SITE_DEVELOPMENT' and
+                     control.get('physical_site_id')=='city-consumed-engineering-site-1' and
+                     control.get('independent_site_count')==1 and control.get('new_layouts') is True)
         if (is_development(spec) or len(spec['layouts'])!=2 or
-                control.get('authority')!='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or
+                not (control.get('authority')=='CONSUMED_TWO_LAYOUT_ENGINEERING_DIAGNOSTIC' or fresh_city1) or
                 control.get('benchmark_eligible') is not False or
                 any('candidates' in layout for layout in spec['layouts'])):
-            raise ValueError('City derived control requires two frozen consumed layouts without candidate search')
+            raise ValueError('City derived control requires bounded frozen layouts without candidate search')
     if spec.get('scene_layer') not in (SCOPE, DEVELOPMENT_SCOPE, ALLEY_SCOPE) or spec.get('scene_layer') != spec.get('scope', SCOPE) or spec.get('benchmark_eligible') is not False:
         raise ValueError('Explicit source engineering scope required')
     if spec.get('native_material_policy') not in (None, 'STREET_TRANSIENT_ZERO_WPO_PDO', 'ALLEY_FROZEN_STATIC_COMPILED'):
         raise ValueError('Unsupported native material policy')
     if spec.get('native_material_policy') == 'STREET_TRANSIENT_ZERO_WPO_PDO' and spec.get('map_asset') != '/Game/BAResearchSlice/Street200V7':
         raise ValueError('Native material intervention is Street-only')
+    if spec.get('rgb_exposure_policy') not in (None,'ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2'):
+        raise ValueError('Unknown RGB exposure policy')
+    if spec.get('rgb_exposure_policy') and spec['scene_layer'] != ALLEY_SCOPE:
+        raise ValueError('Layout RGB exposure probe is alley Development only')
+    if spec.get('rgb_exposure_policy') and spec.get('rgb_probe_ev100')!=-2.:
+        raise ValueError('Alley RGB exposure requires declared fixed -2 EV100 probe')
+    if spec.get('capture_mode') not in (None,'ALLEY_RGB_ONLY_REPLAY_V1','ALLEY_RGB_EXPOSURE_DIAGNOSTIC_V1',
+                                      'ALLEY_MFPD_DEPTH_DIAGNOSTIC_V1'):
+        raise ValueError('Unknown capture mode')
+    if spec.get('capture_mode') and (spec['scene_layer']!=ALLEY_SCOPE or
+            len(spec.get('layouts',[]))!=1 or not spec.get('rgb_replay_source')):
+        raise ValueError('RGB-only replay requires one alley layout, exposure probe and old source')
+    if spec.get('capture_mode')=='ALLEY_RGB_ONLY_REPLAY_V1' and (
+            spec.get('rgb_exposure_policy')!='ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2' or
+            spec.get('rgb_insert_material_policy')!='ALLEY_DERIVED_MFPD_OFF_V1'):
+        raise ValueError('RGB-only replay requires frozen shadow exposure and derived MFPD-off material')
+    if spec.get('rgb_insert_material_policy') not in (None,'ALLEY_DERIVED_MFPD_OFF_V1'):
+        raise ValueError('Unknown derived RGB insert material policy')
+    if spec.get('rgb_insert_material_policy') and spec.get('capture_mode') not in (
+            'ALLEY_RGB_ONLY_REPLAY_V1','ALLEY_MFPD_DEPTH_DIAGNOSTIC_V1'):
+        raise ValueError('Derived MFPD-off material only belongs to Development RGB/depth comparison')
     assets=spec.get('assets',[])
     if len(assets)!=2 or {a['id'] for a in assets}!={1,254}:
         raise ValueError('Two actual assets with IDs 1 and 254 required')
@@ -141,9 +214,15 @@ def engine():
     from cnh_route_source_clearance import audit
     from ue_capture_readiness import CaptureReadiness
     from ue_pair_export import PairExporter
+    from ue_rgb_export import RgbExporter
     out=Path(os.environ['BA_CNH_SOURCE_OUTPUT'])
     spec=json.loads(Path(os.environ['BA_CNH_SOURCE_SPEC']).read_text(encoding='utf-8-sig'))
     validate_insertions(spec)
+    exposure_diagnostic=spec.get('capture_mode')=='ALLEY_RGB_EXPOSURE_DIAGNOSTIC_V1'
+    material_depth_diagnostic=spec.get('capture_mode')=='ALLEY_MFPD_DEPTH_DIAGNOSTIC_V1'
+    rgb_only=spec.get('capture_mode') in ('ALLEY_RGB_ONLY_REPLAY_V1','ALLEY_RGB_EXPOSURE_DIAGNOSTIC_V1')
+    if rgb_only and out.resolve().is_relative_to(Path(spec['rgb_replay_source']['capture_root']).resolve()):
+        raise ValueError('RGB replay output cannot overwrite historical capture')
     from cnh_route_source_compare_adapter import is_development
     world,source=load_source(u,spec)
     fast=spec.get('render_recipe')=='STATIC_SPATIAL_V1'
@@ -161,20 +240,23 @@ def engine():
     write_json(out/'source-receipt.json',source)
     api=u.get_editor_subsystem(u.EditorActorSubsystem)
     rig=dict(width=640,height=360,hfov_deg=100.,baseline_m=.06)
-    actors=[]; captures={}; targets={}; derived={}; frames=[]; probes=[]
+    actors=[]; captures={}; targets={}; derived={}; frames=[]; probes=[]; layout_exposures={}
     state=dict(stage='PROBE_PREPARE',probe_index=0,index=0,warm=0,finished=False,last_layout=None)
     handle=[None];started=time.monotonic()
     native_before=[None]
     city_derived_session=[None]
     readiness=CaptureReadiness(u,timeout=300)
     async_attributes=spec.get('transport_policy')=='NATIVE_SEVEN_ASYNC_V1'
-    if async_attributes:
+    if rgb_only:
+        pairs=RgbExporter(u,'native_async',limit=4)
+    elif async_attributes:
         from ue_attribute_export import AttributePairExporter
         pairs=AttributePairExporter(u,'native_async',limit=4,probe_indices=(0,39,40,79,80,119,120,159))
     else:
         pairs=PairExporter(u,'native_async',limit=4)
     development = is_development(spec)
-    expected_frames=sum(len(c['poses']) for l in spec['layouts'] for c in l['clips'])
+    alley_rgb_probe=spec.get('rgb_exposure_policy')=='ALLEY_SINGLE_PROBE_SHADOW_FIXED_EV_V2'
+    expected_frames=1 if material_depth_diagnostic else sum(len(c['poses']) for l in spec['layouts'] for c in l['clips'])
     report=dict(status='RUNNING',scope=spec['scope'],benchmark_eligible=False,expected_frames=expected_frames,
         temporal_authority=('NOMINAL_10HZ_POSES_STATIC_WORLD_NOT_REALTIME_OR_DYNAMIC_VIDEO' if development else 'TWO_FIXED_SETTLED_ENDPOINTS_PER_CLIP_NOT_SIMULATED_VIDEO'),
         instance_method='PER_INSERTED_ID_ISOLATED_NATIVE_DEPTH_AGREEMENT',
@@ -238,7 +320,10 @@ def engine():
             except Exception:
                 error=(error or '')+traceback.format_exc()
         try:
-            report['pair_export']=pairs.finish()
+            if rgb_only:
+                report['rgb_export']=pairs.finish()
+            else:
+                report['pair_export']=pairs.finish()
         except Exception:
             error=(error or '')+traceback.format_exc()
         if city_derived_session[0] is not None:
@@ -269,7 +354,8 @@ def engine():
             report['error']=error
         write_json(out/'raw-manifest.json',dict(rig=rig,frames=frames,scope=spec['scope'],data_role='Development',benchmark_eligible=False,
             derived_assets={str(k):r for k,(_,r) in derived.items()},
-            temporal_authority=report['temporal_authority']))
+            temporal_authority=report['temporal_authority'],rgb_exposure_by_layout=layout_exposures))
+        report['rgb_exposure_by_layout']=layout_exposures
         write_json(out/'engine-receipt.json',report)
         if handle[0] is not None:
             u.unregister_slate_post_tick_callback(handle[0])
@@ -286,15 +372,19 @@ def engine():
             c.texture_target.target_gamma=2.2
             c.set_editor_property('show_flag_settings',[
                 u.EngineShowFlagsSetting(show_flag_name='TemporalAA',enabled=not fast),
-                u.EngineShowFlagsSetting(show_flag_name='AntiAliasing',enabled=not fast)])
+                u.EngineShowFlagsSetting(show_flag_name='AntiAliasing',enabled=not fast),
+                *((u.EngineShowFlagsSetting(show_flag_name='EyeAdaptation',enabled=True),)
+                  if alley_rgb_probe else ())])
             volumes=[a for a in api.get_all_level_actors() if isinstance(a,u.PostProcessVolume)]
             if volumes:
                 c.post_process_settings=max(volumes,key=lambda a:a.priority).settings
             pp=c.post_process_settings
+            initial_rgb_ev=float(spec['rgb_probe_ev100']) if alley_rgb_probe else float(spec['exposure_ev100'])
             for key,value in [('motion_blur_amount',0.),('film_grain_intensity',0.),('vignette_intensity',0.),
                 ('lens_flare_intensity',0.),('bloom_intensity',0.),('lumen_scene_lighting_quality',2.),
-                ('lumen_final_gather_quality',2.),('auto_exposure_min_brightness',float(spec['exposure_ev100'])),
-                ('auto_exposure_max_brightness',float(spec['exposure_ev100']))]:
+                ('lumen_final_gather_quality',2.),('auto_exposure_min_brightness',initial_rgb_ev-.01 if alley_rgb_probe else initial_rgb_ev),
+                ('auto_exposure_max_brightness',initial_rgb_ev+.01 if alley_rgb_probe else initial_rgb_ev),
+                *((('auto_exposure_bias',0.),) if alley_rgb_probe else ())]:
                 pp.set_editor_property('override_'+key,True);pp.set_editor_property(key,value)
             c.post_process_settings=pp;c.post_process_blend_weight=1.
         else:
@@ -309,7 +399,8 @@ def engine():
 
     def setup_insertions():
         for asset in spec['assets']:
-            mesh,receipt=derive(u,asset['mesh_asset'],'/Game/CNHSourceInsertion_'+str(os.getpid()))
+            mesh,receipt=derive(u,asset['mesh_asset'],'/Game/CNHSourceInsertion_'+str(os.getpid()),
+                disable_mfpd=spec.get('rgb_insert_material_policy')=='ALLEY_DERIVED_MFPD_OFF_V1')
             derived[asset['id']]=(mesh,receipt)
             write_json(out/f'derived-{asset["id"]}.json',receipt)
             actor=api.spawn_actor_from_class(u.StaticMeshActor,u.Vector(0,0,100000));actors.append(actor)
@@ -319,13 +410,15 @@ def engine():
             targets[asset['id']]=actor
         for side in ('left','right'):
             capture('rgb_'+side,u.SceneCaptureSource.SCS_FINAL_COLOR_LDR,u.TextureRenderTargetFormat.RTF_RGBA8_SRGB)
-            capture('depth_'+side,u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
-        capture('normal_left',u.SceneCaptureSource.SCS_NORMAL,u.TextureRenderTargetFormat.RTF_RGBA32F)
-        capture('albedo_left',u.SceneCaptureSource.SCS_BASE_COLOR,u.TextureRenderTargetFormat.RTF_RGBA32F)
-        for identifier in (1,254):
-            actor=capture('isolated_'+str(identifier),u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
-            actor.capture_component2d.primitive_render_mode=u.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST
-            actor.capture_component2d.show_only_component(targets[identifier].static_mesh_component)
+            if not rgb_only:
+                capture('depth_'+side,u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
+        if not rgb_only:
+            capture('normal_left',u.SceneCaptureSource.SCS_NORMAL,u.TextureRenderTargetFormat.RTF_RGBA32F)
+            capture('albedo_left',u.SceneCaptureSource.SCS_BASE_COLOR,u.TextureRenderTargetFormat.RTF_RGBA32F)
+            for identifier in (1,254):
+                actor=capture('isolated_'+str(identifier),u.SceneCaptureSource.SCS_SCENE_DEPTH,u.TextureRenderTargetFormat.RTF_RGBA32F)
+                actor.capture_component2d.primitive_render_mode=u.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST
+                actor.capture_component2d.show_only_component(targets[identifier].static_mesh_component)
 
     def position_and_geometry(obj):
         identifier=obj['id'];actor=targets[identifier];mesh,receipt=derived[identifier]
@@ -367,6 +460,49 @@ def engine():
                 readiness.begin(world,captures['rgb_left'].capture_component2d)
         state['prepare_s']=time.monotonic()-state['frame_started']
 
+    def set_rgb_fixed_ev(value):
+        for side in ('left','right'):
+            component=captures['rgb_'+side].capture_component2d
+            settings=component.post_process_settings
+            for key,setting in (('auto_exposure_min_brightness',float(value)-.01),
+                                ('auto_exposure_max_brightness',float(value)+.01),
+                                ('auto_exposure_bias',0.)):
+                settings.set_editor_property('override_'+key,True)
+                settings.set_editor_property(key,setting)
+            component.post_process_settings=settings
+
+    def configure_rgb_diagnostic(arm):
+        for side in ('left','right'):
+            component=captures['rgb_'+side].capture_component2d
+            settings=component.post_process_settings
+            for key,value in (('auto_exposure_min_brightness',arm['min_ev100']),
+                              ('auto_exposure_max_brightness',arm['max_ev100']),
+                              ('auto_exposure_bias',arm['bias_ev'])):
+                settings.set_editor_property('override_'+key,True)
+                settings.set_editor_property(key,float(value))
+            if arm['lumen']:
+                settings.set_editor_property('override_dynamic_global_illumination_method',True)
+                settings.set_editor_property('dynamic_global_illumination_method',u.DynamicGlobalIlluminationMethod.LUMEN)
+                settings.set_editor_property('override_reflection_method',True)
+                settings.set_editor_property('reflection_method',u.ReflectionMethod.LUMEN)
+                flags=[flag for flag in component.get_editor_property('show_flag_settings')
+                       if str(flag.show_flag_name) not in ('GlobalIllumination','SkyLighting','LumenGlobalIllumination')]
+                flags.extend(u.EngineShowFlagsSetting(show_flag_name=name,enabled=True)
+                             for name in ('GlobalIllumination','SkyLighting','LumenGlobalIllumination'))
+                component.set_editor_property('show_flag_settings',flags)
+            component.post_process_settings=settings
+
+    def prepare_exposure_probe():
+        layout,clip,index,camera=cases[state['index']]
+        if index != 0 or clip['id'] != 'centre':
+            raise ValueError('Layout RGB probe must precede its first collection frame')
+        for obj in clip['insertions']:
+            position_and_geometry(obj)
+        set_rgb_fixed_ev(spec['rgb_probe_ev100'])
+        place_captures(u,captures,camera)
+        readiness.begin(world,captures['rgb_left'].capture_component2d)
+        state.update(stage='EXPOSURE_PROBE_READY',warm=0)
+
     def raw(name,path):
         c=captures[name].capture_component2d;c.capture_scene()
         values=u.RenderingLibrary.read_render_target_raw(world,c.texture_target,normalize=False)
@@ -396,6 +532,10 @@ def engine():
                     elif spec['native_geometry_policy']=='CITY_NEARFIELD_VEHICLE_ZERO_SCALE':
                         from cnh_city_vehicle_mask import apply as apply_vehicle_mask
                         city_derived_session[0]=apply_vehicle_mask(u,api,spec)
+                        source['native_geometry_intervention']=city_derived_session[0].receipt
+                    elif spec['native_geometry_policy']=='CITY_NEAR_INSTANCE_DERIVED_LOD0_SUBSTITUTION':
+                        from cnh_city_instance_substitution import apply as apply_substitution
+                        city_derived_session[0]=apply_substitution(u,api,spec)
                         source['native_geometry_intervention']=city_derived_session[0].receipt
                     else:
                         from cnh_route_city_lod0 import apply as apply_lod0
@@ -467,9 +607,77 @@ def engine():
                 selected=[item for item in selected if item is not None]
                 # Freeze selected layouts before spawning objects or collecting any frame.
                 cases[:]=[(layout,clip,i,camera) for layout in selected for clip in layout['clips'] for i,camera in enumerate(clip['poses'])]
+                if material_depth_diagnostic:
+                    cases[:]=cases[:1]
                 setup_insertions();state['stage']='PREPARE';return
             if stage=='PREPARE':
+                if alley_rgb_probe and cases[state['index']][0]['layout_id'] not in layout_exposures:
+                    prepare_exposure_probe();return
                 prepare_frame();state.update(stage='READY',warm=0);return
+            if stage=='EXPOSURE_PROBE_READY':
+                if not readiness.poll():
+                    return
+                rgb=captures['rgb_left'].capture_component2d
+                rgb.capture_scene();state['warm']+=1
+                if state['warm']<32:
+                    return
+                values=u.RenderingLibrary.read_render_target_raw(world,rgb.texture_target,normalize=False)
+                layout,clip,index,camera=cases[state['index']]
+                decision=choose_layout_rgb_exposure(values,640,360,spec['rgb_probe_ev100'])
+                decision.update(layout_id=layout['layout_id'],physical_site_id=layout['physical_site_id'],
+                    probe_clip_id=clip['id'],probe_pose_index=index,probe_camera=camera,
+                    sky_and_indirect_illumination='EXISTING_MAP_LIGHTS_UNCHANGED')
+                layout_exposures[layout['layout_id']]=decision
+                write_json(out/'rgb-exposure'/f'{layout["layout_id"]}.json',decision)
+                if exposure_diagnostic:
+                    pairs.export(world,rgb.texture_target,out/'rgb-exposure-diagnostic'/'baseline.png',0)
+                    state['diagnostic_arms']=[
+                        dict(name='bias_only',min_ev100=float(spec['rgb_probe_ev100'])-.01,
+                             max_ev100=float(spec['rgb_probe_ev100'])+.01,bias_ev=decision['ev_adjustment'],lumen=False),
+                        dict(name='fixed_ev_only',min_ev100=decision['fixed_ev100']-.01,
+                             max_ev100=decision['fixed_ev100']+.01,bias_ev=0.,lumen=False),
+                        dict(name='narrow_ev_minus1',min_ev100=-1.01,max_ev100=-.99,bias_ev=0.,lumen=False),
+                        dict(name='narrow_ev_minus1_5',min_ev100=-1.51,max_ev100=-1.49,bias_ev=0.,lumen=False),
+                        dict(name='narrow_ev_minus2',min_ev100=-2.01,max_ev100=-1.99,bias_ev=0.,lumen=False),
+                        dict(name='narrow_ev_minus2_5',min_ev100=-2.51,max_ev100=-2.49,bias_ev=0.,lumen=False),
+                        dict(name='auto_no_lumen',min_ev100=-10.,max_ev100=20.,bias_ev=-1.5,lumen=False),
+                        dict(name='fixed_ev_lumen',min_ev100=decision['fixed_ev100']-.01,
+                             max_ev100=decision['fixed_ev100']+.01,bias_ev=0.,lumen=True),
+                        dict(name='narrow_ev_minus1_5_lumen',min_ev100=-1.51,max_ev100=-1.49,bias_ev=0.,lumen=True),
+                        dict(name='narrow_ev_minus2_lumen',min_ev100=-2.01,max_ev100=-1.99,bias_ev=0.,lumen=True),
+                        dict(name='auto_lumen',min_ev100=-10.,max_ev100=20.,bias_ev=-1.5,lumen=True)]
+                    state['diagnostic_results']=[dict(name='baseline',probe_luma_p60=decision['probe_luma_p60'])]
+                    state['diagnostic_index']=0;state['warm']=0
+                    configure_rgb_diagnostic(state['diagnostic_arms'][0])
+                    readiness.begin(world,rgb)
+                    state['stage']='EXPOSURE_DIAG_READY';return
+                set_rgb_fixed_ev(decision['fixed_ev100'])
+                state['stage']='PREPARE';return
+            if stage=='EXPOSURE_DIAG_READY':
+                if not readiness.poll():
+                    return
+                rgb=captures['rgb_left'].capture_component2d
+                rgb.capture_scene();state['warm']+=1
+                if state['warm']<32:
+                    return
+                arm=state['diagnostic_arms'][state['diagnostic_index']]
+                pixels=u.RenderingLibrary.read_render_target_raw(world,rgb.texture_target,normalize=False)
+                try:
+                    measurement=choose_layout_rgb_exposure(pixels,640,360,spec['rgb_probe_ev100'])
+                    observed=dict(probe_luma_p60=measurement['probe_luma_p60'])
+                except ValueError as exc:
+                    observed=dict(probe_measurement_error=str(exc))
+                state['diagnostic_results'].append(dict(arm,**observed))
+                pairs.export(world,rgb.texture_target,out/'rgb-exposure-diagnostic'/(arm['name']+'.png'),
+                    state['diagnostic_index']+1)
+                state['diagnostic_index']+=1
+                if state['diagnostic_index']==len(state['diagnostic_arms']):
+                    report['rgb_exposure_diagnostic']=state['diagnostic_results']
+                    finish(status='PASS_RGB_EXPOSURE_DIAGNOSTIC');return
+                state['warm']=0
+                configure_rgb_diagnostic(state['diagnostic_arms'][state['diagnostic_index']])
+                readiness.begin(world,rgb)
+                return
             if stage=='READY':
                 if not readiness.poll():
                     return
@@ -481,12 +689,20 @@ def engine():
                 return
             folder=state['folder']
             export_started=time.monotonic()
-            for side in ('left','right'):
-                rgb=captures['rgb_'+side].capture_component2d;depth=captures['depth_'+side].capture_component2d
-                depth.capture_scene()
-                pairs.export(world,rgb.texture_target,depth.texture_target,folder/(side+'.png'),
-                    folder/('depth_'+side+'.transport.npy'),state['index']*2+int(side=='right'))
-            if async_attributes:
+            if rgb_only:
+                for side in ('left','right'):
+                    path=folder/(side+'.png')
+                    pairs.export(world,captures['rgb_'+side].capture_component2d.texture_target,
+                        path,state['index']*2+int(side=='right'))
+            else:
+                for side in ('left','right'):
+                    rgb=captures['rgb_'+side].capture_component2d;depth=captures['depth_'+side].capture_component2d
+                    depth.capture_scene()
+                    pairs.export(world,rgb.texture_target,depth.texture_target,folder/(side+'.png'),
+                        folder/('depth_'+side+'.transport.npy'),state['index']*2+int(side=='right'))
+            if rgb_only:
+                pass
+            elif async_attributes:
                 names=('normal_left','albedo_left','isolated_1','isolated_254')
                 components=[captures[name].capture_component2d for name in names]
                 for component in components:component.capture_scene()
@@ -504,6 +720,9 @@ def engine():
                 environment_category=layout.get('environment_category'),data_role='Development',
                 nominal_time_s=round(index*.1,6) if development else None,
                 machine_id=platform.node(),render_recipe=spec.get('render_recipe','FROZEN_STATIC_MATERIAL_ORIGINAL_RENDER'),
+                capture_mode=spec.get('capture_mode','NATIVE_SEVEN_PASS'),
+                rgb_exposure=layout_exposures.get(layout['layout_id'],dict(policy='SOURCE_FIXED_EV100_ONLY',
+                    initial_ev100=float(spec['exposure_ev100']))),
                 timing=dict(prepare_s=state['prepare_s'],settle_and_wait_s=export_started-state['frame_started']-state['prepare_s'],
                     submit_and_attribute_readback_s=time.monotonic()-export_started,total_s=time.monotonic()-state['frame_started']),
                 asset_ids=[1,254],target_hidden=clip['id']=='removed',readiness=readiness.receipt()))
@@ -514,7 +733,7 @@ def engine():
             state.update(index=state['index']+1,stage='PREPARE')
             write_json(out/'progress.json',dict(frames=len(frames),expected_frames=len(cases),requested_frames=expected_frames,wall_s=time.monotonic()-started))
             if len(frames)==len(cases):
-                finish()
+                finish(status='PASS_MFPD_DEPTH_DIAGNOSTIC' if material_depth_diagnostic else None)
         except Exception:
             finish(traceback.format_exc())
 

@@ -24,7 +24,43 @@ def _stable_state(value):
     return re.sub(r"(<Struct '[^']+' )\([0-9a-fA-Fx]+\)", r'\1(WRAPPER)', str(value))
 
 
-def derive(u, mesh_asset_path, package_root, *, material_only=False):
+def _disable_mfpd_on_clone(u, source, clone):
+    """Change the unsaved leaf instance only; report compiled texture use on both sides."""
+    library = u.MaterialEditingLibrary
+    name = 'Enable MFPD'
+    if name not in {str(x) for x in library.get_static_switch_parameter_names(clone)}:
+        raise RuntimeError('Derived material lacks Enable MFPD: '+_path(clone))
+
+    def switch(material):
+        return bool(library.get_material_instance_static_switch_parameter_value(material, name))
+
+    def used(material):
+        return sorted({_path(texture) for texture in library.get_material_used_textures(material)
+                       if texture is not None})
+
+    source_switch_before, derived_switch_before = switch(source), switch(clone)
+    source_used_before, derived_used_before = used(source), used(clone)
+    if not source_switch_before or not derived_switch_before:
+        raise RuntimeError('Enable MFPD must be enabled before the derived-only intervention')
+    library.set_material_instance_static_switch_parameter_value(clone, name, False)
+    library.update_material_instance(clone)
+    source_switch_after, derived_switch_after = switch(source), switch(clone)
+    source_used_after, derived_used_after = used(source), used(clone)
+    if derived_switch_after or not source_switch_after or source_used_after != source_used_before:
+        raise RuntimeError('MFPD intervention did not isolate the cloned material')
+    return dict(parameter=name, source_material=_path(source), derived_material=_path(clone),
+                source_switch_before=source_switch_before, source_switch_after=source_switch_after,
+                derived_switch_before=derived_switch_before, derived_switch_after=derived_switch_after,
+                source_editor_used_textures_before=source_used_before,
+                source_editor_used_textures_after=source_used_after,
+                derived_editor_used_textures_before=derived_used_before,
+                derived_editor_used_textures_after=derived_used_after,
+                removed_editor_used_textures=sorted(set(derived_used_before)-set(derived_used_after)),
+                added_editor_used_textures=sorted(set(derived_used_after)-set(derived_used_before)),
+                source_used_textures_unchanged=True)
+
+
+def derive(u, mesh_asset_path, package_root, *, material_only=False, disable_mfpd=False):
     def stage(name):
         message = 'CNH_DERIVE_STAGE '+name+' source='+mesh_asset_path
         u.log_warning(message)
@@ -160,17 +196,39 @@ def derive(u, mesh_asset_path, package_root, *, material_only=False):
 
     if material_only:
         material = material_clone(source)
+        mfpd = None
+        if disable_mfpd:
+            if not isinstance(source, u.MaterialInstanceConstant):
+                raise ValueError('MFPD intervention requires a source material instance')
+            mfpd = _disable_mfpd_on_clone(u, source, material)
+            next(record for record in records if record['derived'] == _path(material))[
+                'post_copy_static_switch_intervention'] = 'Enable MFPD=False'
         for kind, original, state in snapshots:
             current = graph(original) if kind == 'root' else (_path(original.get_editor_property('parent')), instance_state(original))
             if current != state:
                 raise RuntimeError('Source material changed: '+_path(original))
-        return material, dict(schema='cnh_derived_material_v1', source_material=_path(source),
+        receipt = dict(schema='cnh_derived_material_v1', source_material=_path(source),
             derived_material=_path(material), saved=False, source_configuration_unchanged=True,
             materials=records, mesh_and_nanite_unchanged=True)
+        if mfpd is not None:
+            receipt['mfpd_intervention'] = mfpd
+        return material, receipt
 
+    source_materials = [slot.get_editor_property('material_interface')
+                        for slot in source.get_editor_property('static_materials')]
+    if disable_mfpd and (len(source_materials) != 1 or not isinstance(source_materials[0], u.MaterialInstanceConstant)):
+        raise ValueError('MFPD intervention requires one source material-instance slot')
     mesh = duplicate(source)
-    for index, slot in enumerate(source.get_editor_property('static_materials')):
-        mesh.set_material(index, material_clone(slot.get_editor_property('material_interface')))
+    mfpd = None
+    if disable_mfpd:
+        cloned_material = material_clone(source_materials[0])
+        mfpd = _disable_mfpd_on_clone(u, source_materials[0], cloned_material)
+        next(record for record in records if record['derived'] == _path(cloned_material))[
+            'post_copy_static_switch_intervention'] = 'Enable MFPD=False'
+        mesh.set_material(0, cloned_material)
+    else:
+        for index, material in enumerate(source_materials):
+            mesh.set_material(index, material_clone(material))
     settings = editor.get_nanite_settings(mesh)
     settings.set_editor_property('enabled', False)
     stage('disable_derived_nanite')
@@ -194,4 +252,7 @@ def derive(u, mesh_asset_path, package_root, *, material_only=False):
                    local_bounds_cm=dict(origin=_vec(bounds.origin), extent=_vec(bounds.box_extent)),
                    configuration=dict(wpo='ZERO_ON_CLONED_ROOTS', pixel_depth_offset='ZERO_ON_CLONED_ROOTS', nanite=False,
                                       component_lod='CALLER_MUST_FORCE_EXPORTED_LOD', textures_and_appearance='DUPLICATED_GRAPH_RETAINED'))
+    if mfpd is not None:
+        receipt['mfpd_intervention'] = mfpd
+        receipt['configuration']['textures_and_appearance'] = 'DUPLICATED_GRAPH_WITH_MFPD_DISABLED_ON_DERIVED_INSTANCE'
     return mesh, receipt
