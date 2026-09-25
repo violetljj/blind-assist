@@ -1,15 +1,15 @@
 {
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-24",
-  "source_fingerprint": "7262c8863895137035a4c8b4289696995cafaa9781ee35d240e8c4c9e4c9741a",
+  "generated_at": "2026-09-25",
+  "source_fingerprint": "ac6bc35e891d67df72b1a8abb22e9854b620106a5fc6ef2f3f8f49aec24eaa43",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 455,
+    "experiments": 456,
     "current_terminals": 236,
-    "run_associations": 453
+    "run_associations": 454
   },
   "failure_layers": [
     {
@@ -36144,6 +36144,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-route-comparison-20260924 Does CNH improve camera-forward alerts and add information over matched scalar readouts? G1 scalar H1 plus G3s and G4s matched scalar controls Fixed simulation benchmark with seven input arms and predefined sensor stress scenarios Head and rod macro event recall at fixed false-alert budget ACTIVE_IMPLEMENTATION_NO_RESULTS artifacts.local/work/cnh-route-comparison-20260924/progress.json research/active/dtr-r0/nearfield/CNH_ROUTE_COMPARISON_PLAN_20260924.md"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-learning-diagnostic-20260925",
+      "status": "active",
+      "question": "Why do full-depth and ToF V2 learners fail on existing Development?",
+      "baseline": "Frozen V2 and learned visible-depth checkpoints",
+      "change": "Exact input audit, train AP, bounded 32-frame overfit and H3 geometry rule",
+      "primary_metric": "Train/dev query AP; per-frame depth equality; overfit train AP",
+      "decision": "Diagnose implementation versus representation; no test or City",
+      "report": "research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_learning_diagnostic.py",
+      "commit": "79cf3c0cbdbe8aea0dc398513acec7068f931c14",
+      "association_id": "cnh-learning-diagnostic-20260925",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 6
+      },
+      "search_text": "cnh-learning-diagnostic-20260925 Why do full-depth and ToF V2 learners fail on existing Development? Frozen V2 and learned visible-depth checkpoints Exact input audit, train AP, bounded 32-frame overfit and H3 geometry rule Train/dev query AP; per-frame depth equality; overfit train AP Diagnose implementation versus representation; no test or City research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md research/active/dtr-r0/nearfield/cnh_learning_diagnostic.py"
     }
   ],
   "associations": [
@@ -37062,6 +37084,18 @@
         "artifacts.local/work/city-tiny-fit-20260908/support-error-diagnostic.json"
       ],
       "decision_id": "terminal-city-tiny-fit-20260908-diagnostic-candidate",
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-learning-diagnostic-20260925",
+      "use_ids": [],
+      "protocol_id": "cnh-learning-diagnostic-20260925",
+      "code_revision": "79cf3c0cbdbe8aea0dc398513acec7068f931c14",
+      "input_fingerprint": "09e4b09483fbce3d5b038f63c61691ce6773cfc5763ef3ab929ab68141c10247",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md"
+      ],
+      "decision_id": null,
       "source_rows": 1
     },
     {
