@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-25",
-  "source_fingerprint": "1f210adb712026e949da4275b63dd081cadbaecb7340eec7c580d5405c08e142",
+  "source_fingerprint": "aa2ae5837fd2dc99176f1662ec120eda3bab4caf640c2bc945b3ed623407256d",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 459,
+    "experiments": 460,
     "current_terminals": 236,
-    "run_associations": 457
+    "run_associations": 458
   },
   "failure_layers": [
     {
@@ -36235,6 +36235,28 @@
         "geometry_motion": 3
       },
       "search_text": "cnh-track-a-pilot12-20260925 Can independent procedural nearfield sequences pass frozen geometry and label gates? v1.0 acceptance; old alley smoke only Python label-first causal 12-unit Track A with H3-only B1-R G0 G1 G2 G3-sim G4 G5 and descriptive layout AP Stop on gate failure or after 12 units; no scale-up research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_1_20260925.md user-authorized-procedural-development"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-scan-development-20260925",
+      "status": "active",
+      "question": "Does standardized query-supported scanning improve fixed consumed Development readouts?",
+      "baseline": "Exact stored H3 R0",
+      "change": "Fixed window scan and K4 accumulation; literal and corrected null variance",
+      "primary_metric": "alley dev AP with train-only tau and F1 threshold; Street descriptive",
+      "decision": "Directional consumed Development only; no independent confirmation",
+      "report": "research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_PROTOCOL_20260925.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_scan_development.py",
+      "commit": "a9194827f938878430984fdab1ae6c9f58610f11",
+      "association_id": "cnh-scan-development-20260925",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "cnh-scan-development-20260925 Does standardized query-supported scanning improve fixed consumed Development readouts? Exact stored H3 R0 Fixed window scan and K4 accumulation; literal and corrected null variance alley dev AP with train-only tau and F1 threshold; Street descriptive Directional consumed Development only; no independent confirmation research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_PROTOCOL_20260925.md research/active/dtr-r0/nearfield/cnh_scan_development.py"
     }
   ],
   "associations": [
@@ -37203,6 +37225,19 @@
       "artifact_refs": [
         "artifacts.local/work/cnh-route-comparison-20260924/progress.json",
         "artifacts.local/work/cnh-route-comparison-20260924"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-scan-development-20260925",
+      "use_ids": [],
+      "protocol_id": "cnh-scan-development-v1",
+      "code_revision": "a9194827f938878430984fdab1ae6c9f58610f11",
+      "input_fingerprint": "7b8485852ad1e29f30f58629850fb13d4b9713e11734fb1fef23a986972c4f82",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_PROTOCOL_20260925.md",
+        "artifacts.local/evidence/cnh-scan-development-20260925-v1"
       ],
       "decision_id": null,
       "source_rows": 1
