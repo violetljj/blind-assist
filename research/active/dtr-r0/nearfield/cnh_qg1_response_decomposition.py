@@ -113,6 +113,53 @@ def metric_bundle(labels, scores, train, dev, layouts):
     return result
 
 
+def scale_diagnostic(labels, original, factor, train, dev, layouts, baseline_metrics):
+    """Report finite-precision rank/tie effects; never change scientific scores."""
+    if not np.isfinite(factor) or factor <= 0:
+        raise ValueError('Positive finite scale required')
+    scaled = original * factor
+    scaled_metrics = metric_bundle(labels, scaled, train, dev, layouts)
+    result = dict(factor=factor, numerical_invariance_verified=True, splits={})
+    for split, selection in [('train', train), ('dev', dev)]:
+        details = {}
+        for query in range(original.shape[1]):
+            selected = selection & (labels[:, query] >= 0)
+            base, changed = original[selected, query], scaled[selected, query]
+            order = np.argsort(base, kind='stable')
+            changed_order = np.argsort(changed, kind='stable')
+            a, b = base[order], changed[order]
+            original_ties = a[1:] == a[:-1]
+            scaled_ties = b[1:] == b[:-1]
+            details[str(query)] = dict(
+                known=int(selected.sum()), raw_score_different=int(np.count_nonzero(base != changed)),
+                roundtrip_score_different=int(np.count_nonzero(base != changed / factor)),
+                stable_sort_positions_different=int(np.count_nonzero(order != changed_order)),
+                adjacent_original_order_ties_changed=int(np.count_nonzero(original_ties != scaled_ties)),
+                adjacent_original_order_inversions=int(np.count_nonzero(b[1:] < b[:-1])),
+                original_unique_scores=int(len(np.unique(base))), scaled_unique_scores=int(len(np.unique(changed))))
+        # Pooled metrics also compare scores across different queries, so pooled
+        # ordering/ties must be checked in addition to per-query diagnostics.
+        known = labels[selection] >= 0
+        base, changed = original[selection][known], scaled[selection][known]
+        order = np.argsort(base, kind='stable')
+        changed_order = np.argsort(changed, kind='stable')
+        pooled = dict(stable_sort_positions_different=int(np.count_nonzero(order != changed_order)),
+                      adjacent_original_order_ties_changed=int(np.count_nonzero(
+                          (base[order][1:] == base[order][:-1]) != (changed[order][1:] == changed[order][:-1]))))
+        values = {}
+        for metric in ('auprc', 'auroc'):
+            before, after = baseline_metrics[split][metric], scaled_metrics[split][metric]
+            values[metric] = dict(original=before, scaled=after, difference=after - before)
+        invariant = (all(v['difference'] == 0 for v in values.values()) and
+                     all(v == 0 for v in pooled.values()) and
+                     all(d['stable_sort_positions_different'] == d['adjacent_original_order_ties_changed'] ==
+                         d['adjacent_original_order_inversions'] == 0 for d in details.values()))
+        result['splits'][split] = dict(metrics=values, per_query=details, pooled=pooled,
+                                        numerical_invariance_verified=invariant)
+        result['numerical_invariance_verified'] &= invariant
+    return result
+
+
 def run(collection, partition, prepared, output, protocol, protocol_sha256):
     from cnh_rgb_dev_comparison import read_inputs, checked, sha
     from cnh_rgb_alley_v2 import COLLECTION_SHA256, PARTITION_SHA256
@@ -193,15 +240,14 @@ def run(collection, partition, prepared, output, protocol, protocol_sha256):
         layouts = np.asarray([row['layout_id'] for row in data['rows']])
         results = {name: metric_bundle(data['labels'], values, data['train'], data['dev'], layouts)
                    for name, values in scores.items()}
+        # Persist fixed predictions and their metrics before optional numerical
+        # diagnostics, so a reporting check cannot erase completed evaluation.
+        np.savez_compressed(output / 'scores.npz', frame_key=keys, train=data['train'], dev=data['dev'], weights=weights, **scores)
+        (output / 'metrics.json').write_text(json.dumps(results, indent=2, allow_nan=False) + '\n', encoding='utf-8')
         scale_checks = {}
         for name, factor in [('positive_global_gain_7', 7.), ('uniform_rho_half_without_range_law', .5)]:
-            scaled = scores['AREA4000'] * factor
-            checks = metric_bundle(data['labels'], scaled, data['train'], data['dev'], layouts)
-            scale_checks[name] = dict(factor=factor, train_auprc=checks['train']['auprc'], dev_auprc=checks['dev']['auprc'],
-                                     train_auroc=checks['train']['auroc'], dev_auroc=checks['dev']['auroc'])
-            for split in ('train', 'dev'):
-                if any(checks[split][metric] != results['AREA4000'][split][metric] for metric in ('auprc', 'auroc')):
-                    raise ValueError('Positive scale rank invariance check failed')
+            scale_checks[name] = scale_diagnostic(data['labels'], scores['AREA4000'], factor,
+                                                   data['train'], data['dev'], layouts, results['AREA4000'])
         drops = {}
         for split in ('train', 'dev'):
             base = results['AREA4000'][split]['auprc']
@@ -211,7 +257,6 @@ def run(collection, partition, prepared, output, protocol, protocol_sha256):
                                 interaction_residual=full - sum(isolated.values()),
                                 cumulative_ap_changes={c: results[CUMULATIVE[i]][split]['auprc'] - results[c][split]['auprc']
                                                        for i, c in enumerate(COMPONENTS)})
-        np.savez_compressed(output / 'scores.npz', frame_key=keys, train=data['train'], dev=data['dev'], weights=weights, **scores)
         result = dict(status='COMPLETE_FROZEN_RESPONSE_DECOMPOSITION_DEVELOPMENT_ONLY', results=results,
                       parameters=asdict(PARAMETERS), cumulative_order=list(CUMULATIVE), isolated_components=list(COMPONENTS),
                       positive_scale_checks=scale_checks, ap_drop_diagnostics=drops,
@@ -224,11 +269,13 @@ def run(collection, partition, prepared, output, protocol, protocol_sha256):
                       not_implemented=['QUANTIZATION', 'CLIPPING'],
                       limits='One fixed geometric score, uncalibrated simulator and three fixed layouts per split; component AP changes are order-dependent interactions, not additive causal information loss or information-theoretic limits. No training/capture/test/City.',
                       protocol_sha256=protocol_sha256, collection_sha256=sha(collection), partition_sha256=sha(partition),
+                      mechanical_erratum_sha256=sha(Path(__file__).with_name('CNH_QG1_RESPONSE_ERRATUM_20260925.md')),
                       prepared_receipt_sha256=sha(receipt_path), perfect_h3_sha256=sha(cache_path),
                       source_code_sha256={name: sha(Path(__file__).with_name(name)) for name in
                                           ('cnh_qg1_response_decomposition.py', 'cnh_route_sensor.py', 'cnh_street_development_baseline.py',
                                            'cnh_rgb_visible_depth_audit.py', 'cnh_h3_geometry_diagnostic.py', 'cnh_street_e2e_materialize.py')},
-                      scores_sha256=sha(output / 'scores.npz'), compute='NumPy CPU; fixed 8x8x128 response arithmetic; no training', wall_s=time.monotonic()-started)
+                      scores_sha256=sha(output / 'scores.npz'), metrics_sha256=sha(output / 'metrics.json'),
+                      compute='NumPy CPU; fixed 8x8x128 response arithmetic; no training', wall_s=time.monotonic()-started)
         (output / 'result.json').write_text(json.dumps(result, indent=2, allow_nan=False) + '\n', encoding='utf-8')
         return result
     except Exception as error:

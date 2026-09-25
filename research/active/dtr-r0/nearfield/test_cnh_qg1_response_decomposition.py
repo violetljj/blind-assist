@@ -6,6 +6,7 @@ import numpy as np
 from cnh_route_sensor import angular_rays, synthesize_response, derive_readout, H3, RAW_BINS
 from cnh_qg1_response_decomposition import (
     COMPONENTS, PARAMETERS, aggregate, exchange, frame_stages, raw_stage, checked_identity,
+    metric_bundle, scale_diagnostic,
 )
 
 
@@ -68,6 +69,25 @@ class ResponseDecompositionTest(unittest.TestCase):
         row['seed'] += 1
         with self.assertRaises(ValueError):
             checked_identity(manifest, row, frame)
+
+    def test_scale_diagnostic_preserves_scores_and_reports_rounding(self):
+        # Adjacent float64 values can merge under a non-power-of-two multiplier.
+        values = np.arange(48, dtype=np.float64) * np.spacing(1.5) + 1.5
+        scores = values.reshape(8, 6)
+        labels = (np.arange(48).reshape(8, 6) % 3 == 0).astype(np.int8)
+        train = np.arange(8) < 4
+        dev = ~train
+        layouts = np.where(train, 'train', 'dev')
+        original = scores.copy()
+        baseline = metric_bundle(labels, scores, train, dev, layouts)
+        report = scale_diagnostic(labels, scores, 7., train, dev, layouts, baseline)
+        self.assertIn('numerical_invariance_verified', report)
+        self.assertEqual(set(report['splits']['train']['per_query']), set(map(str, range(6))))
+        self.assertGreater(report['splits']['train']['pooled']['adjacent_original_order_ties_changed'], 0)
+        self.assertFalse(report['numerical_invariance_verified'])
+        binary_scale = scale_diagnostic(labels, scores, .5, train, dev, layouts, baseline)
+        self.assertTrue(binary_scale['numerical_invariance_verified'])
+        np.testing.assert_array_equal(scores, original)
 
 
 if __name__ == '__main__':
