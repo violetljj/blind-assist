@@ -215,7 +215,8 @@ def run(folder):
     complete=len(units)==12 and set(units)==set(range(12)) and all(len(v)==32 for v in details.values())
     if len(set(units))!=len(units):errors.append('duplicate_units')
     if not units:errors.append('no_units')
-    return dict(schema='cnh.track-a.v12.readonly-audit.v1',cohort_complete=complete,completed_units=units,
+    return dict(schema='cnh.track-a.v12.readonly-audit.v1',cohort_complete=complete,
+                encountered_unit_files=units,completed_units=[u for u in units if len(details.get(str(u),[]))==32],
                 source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),input_hashes=hashes,
                 G0=dict(pass_gate=not errors,errors=errors),G1=dict(pass_gate=not duplicates and not near_failed,
                 nonempty_configs=len(fingerprints),exact_duplicates=duplicates,near_failed=near_failed),

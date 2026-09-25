@@ -53,6 +53,9 @@ CNH+RGB局部视锥[融合接口](../research/active/dtr-r0/nearfield/CNH_RGB_FU
 新授权的[QG-1](../research/active/dtr-r0/nearfield/CNH_QG1_RESULTS_20260925.md)完成冻结诊断：全深度Gate0 AP0.9951，但三seed dev仅0.7205/0.7937/0.8070，完整结构门槛未过；ToF数值门槛勉强过，RGB在重复dev上有一致AP增量及置乱下降，不能声称独立融合收益。响应分解精确复现0.8452→0.2101；串扰首先破坏固定读出的跨查询校准，非单查询信息消失，噪声另有显著影响。保留旧失败和新负结果，不追加训练；[近场验收方案](../research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_20260925.md)待用户审阅，不采集、不进入City/test。
 后续[R1非学习读出](../research/active/dtr-r0/nearfield/CNH_R1_READOUT_RESULTS_20260925.md)主集train选定K4补偿AP0.3183，未达0.42，整体门槛失败；完整1920帧Street仅描述，R0为0.8211、同一K4为0.8828。串扰检查、同K补偿收益和两项指定噪声稳健性通过。signal×2的新seed敏感性AP0.5799揭示假设计数尺度的重要性，不据原条件失败认定ToF物理上限或自动转相机主导。使用raw128/名义轨迹的诊断不等于现有H3硬件或早提醒证据，不追加模型、采集或City/test。
 随后用户明确授权Python Track A最多12单位试采；[v1.1结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_PILOT12_RESULTS_20260925.md)完成2880几何帧、1625主帧，M1按冻结视场规则选-10°。G0通过，G1出现3对精确1cm体素指纹重复；G2在全部12单位未全过，主要为多对象共现和合格组合不足。已按停止规则结束：传感合成、G5、B0/B1评估均NOT_RUN，无放量；17项几何/H3重投影合成测试通过不构成算法收益。失败不回改，后续需新生成计划；硬件、UE/RGB、City及保护test仍暂停。
+
+新增[扫描复现](../research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_RESULTS_20260926.md)：旧巷道H3 S2 AP0.6632正式复现，raw对齐正确方差版0.6609（TP190/408、FP5/2472），仅消费Development方向证据。[v1.2试采](../research/active/dtr-r0/nearfield/CNH_TRACK_A_V12_PILOT_RESULTS_20260926.md)前三单位G2通过，单位3/配置9的32候选均规划不可行，206秒停止；共1260几何帧、0传感帧，G3–G5及audit读出NOT_RUN。已有98个非空配置精确重复0；不换轨迹、不做第三次生成计划。距离平方补偿使静态墙L1由0.589升至0.617，未消除空间错位。
+
 用户选择的完整164布局test当前真实布局和正式采集spec为0/164；[准备度记录](../research/active/dtr-r0/nearfield/CNH_FULL_TEST_READINESS_20260925.md)保留空槽计划，三张巷道候选图不可缩减替代。
 能量、独立标签精度与正式隔离继续保持未完成，所有本轮采集/后处理进程已释放。
 20布局完整配额与384布局尚未完成；不使用5m缓冲带、轮廓豁免或改门槛追认旧FAIL。

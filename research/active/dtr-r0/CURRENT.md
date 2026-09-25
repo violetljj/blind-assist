@@ -94,3 +94,6 @@ City按逐区/边缘/角度/预测物体归属诊断，未发现z/径向混用�
 [整理前完整正文](CURRENT_HISTORY_20260924.md)保留旧数字与历史 pending；[详细账本](README.md)保留结果与复现入口。历史文字不授予新执行权限。
 
 ledger303 的回执与指定登记已[修复](nearfield/LEDGER_REPAIR_20260922.md)；未在修复范围内的历史缺失登记不能据此宣称全部解决。
+
+
+新增[扫描复现](nearfield/CNH_SCAN_DEVELOPMENT_RESULTS_20260926.md)：旧巷道H3 S2 AP0.6632正式复现，raw对齐正确方差版0.6609（TP190/408、FP5/2472），仅消费Development方向证据。[v1.2试采](nearfield/CNH_TRACK_A_V12_PILOT_RESULTS_20260926.md)前三单位G2通过，单位3/配置9的32候选均规划不可行，206秒停止；共1260几何帧、0传感帧，G3–G5及audit读出NOT_RUN。已有98个非空配置精确重复0；不换轨迹、不做第三次生成计划。距离平方补偿使静态墙L1由0.589升至0.617，未消除空间错位。
