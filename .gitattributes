@@ -93,3 +93,7 @@
 /research/active/dtr-r0/carla/dtr_carla_x94_one_frame_full_dropout_continuity.py -text
 /research/active/dtr-r0/carla/dtr_carla_x95_credentialed_hazard_state_model.py -text
 /research/active/dtr-r0/carla/dtr_carla_x96_credentialed_bounded_dropout_survival.py -text
+
+# Preserve the exact pre-fast-lane current snapshots, including CRLF bytes.
+/docs/operations/snapshots/CURRENT_DECISION_20260926_PRE_FASTLANE.md -text whitespace=cr-at-eol
+/research/active/dtr-r0/CURRENT_HISTORY_20260926_PRE_FASTLANE.md -text whitespace=cr-at-eol

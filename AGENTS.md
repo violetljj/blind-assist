@@ -26,38 +26,41 @@ checks; preserve route authority and consumed evidence.
 
 ## Execution policy
 
-Propose different mechanisms and unconventional hypotheses; recommend a direction
-with reasons. Ideas need no experiment registration.
-The user decides new research questions, budget expansion and changed success criteria.
-Existing authorization covers implementation, recovery, validation and delivery;
-a technical Git branch alone is not a new research direction.
-Default mode is `EXPLORE`: bound an authorized hypothesis, baseline and decision.
-Use [research workflow](research/WORKFLOW.md) for experiments and coupled edits.
-Engineering fixes need no registration; experiment stops preserve other authorized work.
-
-In `EXPLORE`, complete authorized reversible work autonomously; ask for material unresolved choices.
-
-- disclosed consumed/curated Development data and controlled scenarios are allowed;
-- record a failure in the owning current/ledger when it changes a decision;
-- use one falsifying check; expand for an observed defect, explicit acceptance
-  criterion, or decision-changing evidence gap;
-- missing deployment/safety evidence limits claims, not reversible experiments;
-- reuse declared training/validation splits as Development; locked tests retain
-  independence only under their fixed access plan, never through relabeling reuse.
-- compare on the current fixed benchmark by default; propose a scoped supplement
-  when it cannot test the mechanism, within user-authorized scope and budget.
-- before collection for inferential gates, check power/precision at the independent
-  sampling unit; small-sample engineering rules do not establish reliable inference.
-  Freeze criteria before outcomes; never repair a failed gate retrospectively.
-
-Keep process proportionate; update current for changed decisions, `idea.md` for ideas.
-Public data needs provenance; access grants no redistribution, promotion, consent or license rights.
-
-Use `FINAL` only before protected blind/final access or a claim-critical paper
-number; follow [research governance](docs/formal/RESEARCH_GOVERNANCE.md). Use
-`EXTERNAL` only for release, deployment, credentials, privacy, destructive
-external actions, default-App promotion, or real-user/product-safety claims.
-These modes constrain the affected claim/action, not nearby reversible work.
+Propose mechanisms by measured effect; ideas need no registration. The user decides
+new research questions, budget expansions and changed success criteria. Existing
+authorization covers implementation, recovery, validation and delivery. Preserve
+frozen failures and stop rules; do not reopen them by changing thresholds/subsets.
+Default mode is `EXPLORE`, with two proportionate lanes (2026-09-26 decision):
+- **Fast lane:** diagnostics, prechecks, engineering troubleshooting and pilots.
+  No experiment registration or separate protocol. Reuse validated inputs without
+  repeating hash-chain audits unless inputs changed or concrete integrity evidence
+  requires a check. Deliver at most one page: conclusion, one table with denominators,
+  next step, and one combined scope/limitations paragraph, in `artifacts.local/` or
+  a short Markdown file. Do not update either CURRENT page for routine diagnostics.
+- **Formal lane:** experiments changing the mainline/baseline or producing paper
+  numbers. Freeze criteria before outcomes, register, verify input identity, provide
+  the full report and update the owning current decision. Follow
+  [research workflow](research/WORKFLOW.md); keep train/calib/evaluation separate.
+- When uncertain, start in the fast lane. Before using its outcome to change a
+  decision or support a paper claim, perform a frozen formal reproduction. This is
+  not permission to retrospectively promote consumed diagnostic results.
+- From **v1.3**, pilot quota gates (G2 counts/combination counts) report shortfalls
+  without stopping downstream. G0 identity/coordinates and G1 duplicates remain
+  hard stops; all gates remain hard at scale-up. Other frozen criteria remain as
+  written. Frozen **v1.2 is unchanged**; preserve its failure and stop conditions.
+- Lead reports with the conclusion and main table; consolidate limitations once.
+  Keep `docs/CURRENT_DECISION.md` and the route CURRENT near 3KB: current decision,
+  key numbers/denominators, pending questions and links. Update only when decisions
+  change; archive the prior full text rather than append chronological results.
+Use independent sampling units for power/precision before inferential collection;
+small pilots do not establish generalization. Reused Development stays consumed.
+Use one falsifying check; expand for observed defects or material evidence gaps.
+Compare on the fixed benchmark by default; supplements need scoped authorization.
+Public data needs provenance; access grants no redistribution, consent or license rights.
+Use `FINAL` before protected blind/final access or claim-critical paper numbers and
+[research governance](docs/formal/RESEARCH_GOVERNANCE.md). Use `EXTERNAL` for release,
+deployment, credentials, privacy, destructive external actions or real-user safety
+claims. Missing deployment evidence limits claims, not authorized reversible work.
 
 ## Integrity and evidence
 
@@ -96,7 +99,7 @@ These modes constrain the affected claim/action, not nearby reversible work.
 
 - Prefer Exa for external search, literature discovery, and multi-source research when available.
 - Run Android/Gradle through `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`.
-- Register new runs with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
+- Register formal experiments with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
 - Use `python tools/knowledge.py set-terminal-inheritance`; archived registration
   links `--decision-id` to a terminal with complete inheritance.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for an affected prerequisite or failure, not as a per-task gate.
