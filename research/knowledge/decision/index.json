@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-25",
-  "source_fingerprint": "3352309f88e0017218156eb56cd89eab9784ca1e22e1112d6271f99cc8c11ab0",
+  "source_fingerprint": "13d03880d481c61422f02971140e3f7a6a51c703fa7c5225f5c2bac6ed145b09",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 457,
+    "experiments": 458,
     "current_terminals": 236,
-    "run_associations": 455
+    "run_associations": 456
   },
   "failure_layers": [
     {
@@ -36189,6 +36189,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-qg1-20260925 Can query geometry repair full-depth fitting and which sensor components lose ranking? Frozen V2 and H3 geometry rule on repeated Development QG1 ROI and query bin conditioning; fixed cumulative and isolated response diagnosis Gate0 train AP; Gate1 three seed AP; response stage AP differences Frozen gates before dev; diagnostic only, no generalization claims research/active/dtr-r0/nearfield/CNH_QG1_PROTOCOL_20260925.md research/active/dtr-r0/nearfield/cnh_qg1_train.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-r1-readout-20260925",
+      "status": "active",
+      "question": "Can fixed causal rule readouts improve simulated ToF ranking without network training?",
+      "baseline": "Frozen H3 geometry rule AP 0.2101159982",
+      "change": "Train median bias, known calibration control, raw128 matched filter and causal motion-aligned averaging",
+      "primary_metric": "Frozen dev AP gates and train-selected K",
+      "decision": "Development diagnostic only; no sensor information ceiling inference",
+      "report": "research/active/dtr-r0/nearfield/CNH_R1_READOUT_PROTOCOL_20260925.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_r1_readout_run.py",
+      "commit": "73363031a71d570905d1eb4c9a0c130a789e1914",
+      "association_id": "cnh-r1-readout-20260925",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "evaluation_evidence": 6,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "cnh-r1-readout-20260925 Can fixed causal rule readouts improve simulated ToF ranking without network training? Frozen H3 geometry rule AP 0.2101159982 Train median bias, known calibration control, raw128 matched filter and causal motion-aligned averaging Frozen dev AP gates and train-selected K Development diagnostic only; no sensor information ceiling inference research/active/dtr-r0/nearfield/CNH_R1_READOUT_PROTOCOL_20260925.md research/active/dtr-r0/nearfield/cnh_r1_readout_run.py"
     }
   ],
   "associations": [
@@ -37131,6 +37154,19 @@
         "research/active/dtr-r0/nearfield/CNH_QG1_PROTOCOL_20260925.md",
         "artifacts.local/evidence/cnh-qg1-20260925-v1",
         "artifacts.local/evidence/cnh-qg1-response-decomposition-20260925-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-r1-readout-20260925",
+      "use_ids": [],
+      "protocol_id": "cnh-r1-readout-20260925",
+      "code_revision": "73363031a71d570905d1eb4c9a0c130a789e1914",
+      "input_fingerprint": "808b9397eec62221f3da285607752a0c1292b19e1da4a32b127a8aaa9074c0ac",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_R1_READOUT_PROTOCOL_20260925.md",
+        "artifacts.local/evidence/cnh-r1-readout-20260925-v1"
       ],
       "decision_id": null,
       "source_rows": 1
