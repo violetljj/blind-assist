@@ -1,15 +1,15 @@
 {
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-09-25",
-  "source_fingerprint": "aa2ae5837fd2dc99176f1662ec120eda3bab4caf640c2bc945b3ed623407256d",
+  "generated_at": "2026-09-26",
+  "source_fingerprint": "bbfc776fda8d32216ba5577ee61ded0f1ecceabf384d7f751f250e5a3e5109f0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 460,
+    "experiments": 461,
     "current_terminals": 236,
-    "run_associations": 458
+    "run_associations": 459
   },
   "failure_layers": [
     {
@@ -36257,6 +36257,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-scan-development-20260925 Does standardized query-supported scanning improve fixed consumed Development readouts? Exact stored H3 R0 Fixed window scan and K4 accumulation; literal and corrected null variance alley dev AP with train-only tau and F1 threshold; Street descriptive Directional consumed Development only; no independent confirmation research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_PROTOCOL_20260925.md research/active/dtr-r0/nearfield/cnh_scan_development.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-track-a-v12-pilot12-20260926",
+      "status": "active",
+      "question": "Can trajectory-level fixed quotas pass unchanged geometry acceptance and support H3 scan diagnostics?",
+      "baseline": "Frozen v1.1 G1/G2 FAIL retained",
+      "change": "Purpose-isolated seeds,32 configs,trajectory MILP,dedup,r2 H3 scan matrix",
+      "primary_metric": "Unchanged G0 G1 G2 gates; conditional descriptive sensor/readout checks",
+      "decision": "One12-unit cohort; stop on failure; no third generation plan or scaleup",
+      "report": "research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_2_20260925.md",
+      "source": "controlled-python-track-a",
+      "commit": "9873b52967a462786aedb4bcc82729975e2f2b6f",
+      "association_id": "cnh-track-a-v12-pilot12-20260926",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 6
+      },
+      "search_text": "cnh-track-a-v12-pilot12-20260926 Can trajectory-level fixed quotas pass unchanged geometry acceptance and support H3 scan diagnostics? Frozen v1.1 G1/G2 FAIL retained Purpose-isolated seeds,32 configs,trajectory MILP,dedup,r2 H3 scan matrix Unchanged G0 G1 G2 gates; conditional descriptive sensor/readout checks One12-unit cohort; stop on failure; no third generation plan or scaleup research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_2_20260925.md controlled-python-track-a"
     }
   ],
   "associations": [
@@ -37251,6 +37274,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_1_20260925.md",
         "artifacts.local/evidence/cnh-track-a-pilot12-20260925-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-track-a-v12-pilot12-20260926",
+      "use_ids": [],
+      "protocol_id": "cnh-track-a-v1.2-20260926",
+      "code_revision": "9873b52967a462786aedb4bcc82729975e2f2b6f",
+      "input_fingerprint": "40e746db498556d0cc1544de5b07b25e3570db3aa074b77aafe8738303852a22",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_2_20260925.md",
+        "artifacts.local/evidence/cnh-track-a-v12-pilot12-20260926-v1"
       ],
       "decision_id": null,
       "source_rows": 1
