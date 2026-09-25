@@ -15,7 +15,7 @@ import numpy as np
 def score_unit_gpu(job):
     geometry, sensor, output, unit, mount, snr_index, family = job
     import cnh_track_a_scale_evaluate as se
-    import cnh_track_a_gpu_readout as g
+    import cnh_track_a_gpu_readout2 as g
     from cnh_track_a_readout import noisy_poses
     from cnh_track_a_v13_evaluate import observability
     se.sensor_module.FAMILY = family
