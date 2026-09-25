@@ -23,6 +23,12 @@ FAMILY = 'cnh-track-a-v13-20260926'
 PURPOSES = ('layout', 'trajectory', 'size_placement', 'material')
 REPLANS = 3
 TINY_FRACTION = .25
+SPLIT_COUNTS = (6, 2, 4)  # train, calib, audit units; pilot default
+
+
+def split_of(unit):
+    train, calib, _ = SPLIT_COUNTS
+    return 'train' if unit < train else 'calib' if unit < train+calib else 'audit'
 
 
 def purpose_seed(unit, config, purpose, candidate=0):
@@ -124,7 +130,7 @@ def run(output, units=range(12)):
                         for n in ('cnh_track_a_v13_generate.py', 'cnh_track_a_v12_generate.py',
                                   'cnh_track_a_generate.py', 'cnh_track_a_geometry.py')},
          units=list(units), configs_per_unit=32, frames_5hz=12, frames_10hz=23, replans=REPLANS,
-         tiny_fraction=TINY_FRACTION, split={'train': list(range(6)), 'calib': [6, 7], 'audit': [8, 9, 10, 11]}))
+         tiny_fraction=TINY_FRACTION, split_counts=list(SPLIT_COUNTS)))
 
     def finish(status, **extra):
         result = dict(status=status, completed_units=[u['unit'] for u in done], incomplete_units=incomplete,
@@ -134,7 +140,7 @@ def run(output, units=range(12)):
         return result
 
     for u in units:
-        split = 'train' if u < 6 else 'calib' if u < 8 else 'audit'
+        split = split_of(u)
         layout_seed = purpose_seed(u, -1, 'layout')
         rng = np.random.default_rng(layout_seed)
         height = float(rng.uniform(1.45, 1.75))
@@ -236,5 +242,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--units', type=int, nargs='*', default=list(range(12)))
+    parser.add_argument('--family', default=FAMILY)
+    parser.add_argument('--split-counts', type=int, nargs=3, default=list(SPLIT_COUNTS))
     args = parser.parse_args()
+    FAMILY, SPLIT_COUNTS = args.family, tuple(args.split_counts)
     print(run(args.output, args.units)['status'])

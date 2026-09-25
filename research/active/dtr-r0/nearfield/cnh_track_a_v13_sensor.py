@@ -140,5 +140,7 @@ if __name__ == '__main__':
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--unit', type=int, required=True)
     p.add_argument('--mount', type=int, choices=MOUNTS, required=True)
+    p.add_argument('--family', default=FAMILY)
     a = p.parse_args()
+    FAMILY = a.family
     print(json.dumps(dict(unit=a.unit, mount=a.mount, rate_frames=run(a.geometry, a.output, a.unit, a.mount))))

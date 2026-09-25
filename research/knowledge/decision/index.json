@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-26",
-  "source_fingerprint": "bbfc776fda8d32216ba5577ee61ded0f1ecceabf384d7f751f250e5a3e5109f0",
+  "source_fingerprint": "2e8aadc1b3ba3ee00a87108e4ee90c7830841116f7dd01aca9533243855a7cec",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 461,
+    "experiments": 462,
     "current_terminals": 236,
-    "run_associations": 459
+    "run_associations": 460
   },
   "failure_layers": [
     {
@@ -36280,6 +36280,28 @@
         "geometry_motion": 6
       },
       "search_text": "cnh-track-a-v12-pilot12-20260926 Can trajectory-level fixed quotas pass unchanged geometry acceptance and support H3 scan diagnostics? Frozen v1.1 G1/G2 FAIL retained Purpose-isolated seeds,32 configs,trajectory MILP,dedup,r2 H3 scan matrix Unchanged G0 G1 G2 gates; conditional descriptive sensor/readout checks One12-unit cohort; stop on failure; no third generation plan or scaleup research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_2_20260925.md controlled-python-track-a"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-track-a-scale-20260926",
+      "status": "active",
+      "question": "On 64 independent procedural audit layouts, do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY?",
+      "baseline": "B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen)",
+      "change": "Standardized multi-scale scan S1/S2 and 8-frame near-field memory S3; v1.3 generator and sensor at 192 units",
+      "primary_metric": "audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego",
+      "decision": "Hard G0-G4 gates; stop on failure; no reseed; secondary conditions descriptive only; learner excluded",
+      "report": "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_PROTOCOL_20260926.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_track_a_scale_evaluate.py",
+      "commit": "56c07669ca128d5762aeddb6b7b6b17ab8189ca9",
+      "association_id": "cnh-track-a-scale-20260926",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "cnh-track-a-scale-20260926 On 64 independent procedural audit layouts, do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY? B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen) Standardized multi-scale scan S1/S2 and 8-frame near-field memory S3; v1.3 generator and sensor at 192 units audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego Hard G0-G4 gates; stop on failure; no reseed; secondary conditions descriptive only; learner excluded research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_PROTOCOL_20260926.md research/active/dtr-r0/nearfield/cnh_track_a_scale_evaluate.py"
     }
   ],
   "associations": [
@@ -37274,6 +37296,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_V1_1_20260925.md",
         "artifacts.local/evidence/cnh-track-a-pilot12-20260925-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-track-a-scale-20260926",
+      "use_ids": [],
+      "protocol_id": "cnh-track-a-scale-protocol-20260926",
+      "code_revision": "56c07669ca128d5762aeddb6b7b6b17ab8189ca9",
+      "input_fingerprint": "4891c28542a498ef7653367edebb5148ce91c69aa1af2eb38c57481b163e8151",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_PROTOCOL_20260926.md",
+        "artifacts.local/evidence/cnh-track-a-scale-20260926-v1"
       ],
       "decision_id": null,
       "source_rows": 1
