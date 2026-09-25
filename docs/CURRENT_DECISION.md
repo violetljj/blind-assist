@@ -50,6 +50,7 @@ CNH+RGB局部视锥[融合接口](../research/active/dtr-r0/nearfield/CNH_RGB_FU
 另立冻结[V2方位约束与训练集类别平衡协议](../research/active/dtr-r0/nearfield/CNH_RGB_ALLEY_DEV_V2_PROTOCOL_20260925.md)后，同划分三seed的ToF-only在dev检出148–160/408个正例查询、误报486–512/2472个负例查询；CNH+RGB检出148、154、159，误报504、491、503。解除了全负退化但仍有高误报，预设规则判定无稳定RGB增益。
 本轮[瓶颈定位](../research/active/dtr-r0/nearfield/CNH_ALLEY_BOTTLENECK_DIAGNOSIS_20260925.md)在现有数据上发现：三个V2融合checkpoint对dev RGB布局内打乱或置零几乎不变；同预算全分辨率可见深度学习臂弱，但直接用可见深度回投预定查询盒为TP405/408、FP0/2472。学习/表征与三训练布局覆盖是优先核查方向；该直接规则不独立证明标签精度。按“(b)弱则停下汇报”停止追加训练；预训练RGB和CNH对同响应标量均未运行。用户暂停City和完整164布局test，不新采集。
 随后用户授权的[学习器诊断](../research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md)已完成：960帧实际深度转换与规则读取一致，未重现全零；全深度32帧拟合AP0.1576，ToF-only为0.9966。无噪声H3直接几何dev AP0.8452，原模拟传感响应H3为0.2101；0.29不再有信息上限解释。固定列掩码与盒投影不一致、查询前汇聚是明确结构问题；未查出使旧结果作废的运行bug，未触发V2重跑。下一结构应显式查询盒→区/bin及图像区域；本轮只诊断并定义未来对象ID schema，不自动启动新模型实验或采集。
+新授权的[QG-1](../research/active/dtr-r0/nearfield/CNH_QG1_RESULTS_20260925.md)完成冻结诊断：全深度Gate0 AP0.9951，但三seed dev仅0.7205/0.7937/0.8070，完整结构门槛未过；ToF数值门槛勉强过，RGB在重复dev上有一致AP增量及置乱下降，不能声称独立融合收益。响应分解精确复现0.8452→0.2101；串扰首先破坏固定读出的跨查询校准，非单查询信息消失，噪声另有显著影响。保留旧失败和新负结果，不追加训练；[近场验收方案](../research/active/dtr-r0/nearfield/CNH_NEARFIELD_ACCEPTANCE_PLAN_20260925.md)待用户审阅，不采集、不进入City/test。
 用户选择的完整164布局test当前真实布局和正式采集spec为0/164；[准备度记录](../research/active/dtr-r0/nearfield/CNH_FULL_TEST_READINESS_20260925.md)保留空槽计划，三张巷道候选图不可缩减替代。
 能量、独立标签精度与正式隔离继续保持未完成，所有本轮采集/后处理进程已释放。
 20布局完整配额与384布局尚未完成；不使用5m缓冲带、轮廓豁免或改门槛追认旧FAIL。
