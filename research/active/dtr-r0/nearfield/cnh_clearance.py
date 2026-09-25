@@ -14,7 +14,7 @@ import numpy as np
 from cnh_route_sensor import SensorParameters, synthesize_response, angular_rays
 from cnh_track_a_readout import cell_points, _transform, BOXES, START, WIDTH
 
-KAPPA, VOXEL, T_MEM, EPS = 3., .1, 8, .1
+KAPPA, KAPPA_OCC, VOXEL, T_MEM, EPS = 3., 3., .1, 8, .1
 SLAB = .1
 
 
@@ -40,7 +40,7 @@ def cell_states(r, v, ref):
     z = (r/np.sqrt(np.maximum(v, 1e-9))).reshape(64, 16)
     z2 = np.concatenate([(r[..., :-1]+r[..., 1:]).reshape(64, 15)/np.sqrt(np.maximum(v[..., :-1]+v[..., 1:], 1e-9).reshape(64, 15)),
                          np.full((64, 1), -np.inf)], 1)
-    detect = (z >= KAPPA) | (z2 >= KAPPA) | (np.roll(z2, 1, 1) >= KAPPA) & (np.arange(16) > 0)
+    detect = (z >= KAPPA_OCC) | (z2 >= KAPPA_OCC) | (np.roll(z2, 1, 1) >= KAPPA_OCC) & (np.arange(16) > 0)
     first = np.where(detect.any(1), detect.argmax(1), 16)
     zcap = counts[None]/np.sqrt(np.maximum(width[None]*v.reshape(64, 16), 1e-9))
     bins = np.arange(16)[None]
@@ -51,9 +51,15 @@ def cell_states(r, v, ref):
     return state
 
 
+_DIRS = angular_rays(4)[0].reshape(64, 16, 3)
+_DIRS = _DIRS/np.linalg.norm(_DIRS, axis=-1, keepdims=True)
+_RADII = START+(np.arange(16)[:, None]+(np.arange(6)+.5)/6)*WIDTH           # [bin, 6 depth samples]
+_CELL_SAMPLES = (_DIRS[:, None, :, None, :]*_RADII[None, :, None, :, None]).reshape(64, 16, 96, 3)
+
+
 def world_voxels(state, world_from_tof):
-    """Voxel keys of free (+1) and occupied (-1) cells from 4x4 sub-rays at bin centres."""
-    pts = _transform(cell_points(), world_from_tof).reshape(64, 16, 16, 3)
+    """Voxel keys of free (+1) and occupied (-1) cells: 4x4 sub-rays x 6 depths per cell."""
+    pts = _transform(_CELL_SAMPLES, world_from_tof)
     out = {}
     for s in (1, -1):
         sel = state == s
