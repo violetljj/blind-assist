@@ -1,6 +1,8 @@
 """Synthetic engineering tests only; no development datasets read."""
 import unittest
 import numpy as np
+from cnh_route_sensor import (angular_rays, SensorParameters, synthesize_response,
+                              derive_readout, H3)
 from cnh_track_a_readout import (accumulate, transport, cell_points, query_weights,
     fit_calib_bias, subtract_bias, noisy_poses, WIDTH, SHAPE)
 
@@ -76,6 +78,18 @@ class ReadoutTests(unittest.TestCase):
         poses = np.array([t, np.eye(4)])
         _, w = accumulate(np.zeros((2,)+SHAPE), poses)
         np.testing.assert_array_equal(w[1], 1+cover)
+
+    def test_noiseless_wall_integrated_photon_mass(self):
+        rays, area = angular_rays(16)
+        cosine = rays[..., 2]
+        ranges = 2/cosine
+        params = SensorParameters(noise_scale=0, pulse_sigma_bins=0, tail_mass=0,
+                                  neighbour_leak=0, crosstalk_fraction=0)
+        response = synthesize_response(ranges, .5, cosine, area, params=params)
+        hist = derive_readout(response, H3)['histogram']
+        expected = (params.signal_counts*.5*cosine/ranges**2
+                    *area/area.sum(-1, keepdims=True)).sum(-1)*params.output_gain
+        np.testing.assert_allclose(hist.sum(-1), expected, rtol=1e-12, atol=1e-10)
 
     def test_h3_only_and_calib_bias(self):
         with self.assertRaises(ValueError):
