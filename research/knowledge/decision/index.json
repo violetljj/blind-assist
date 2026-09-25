@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-25",
-  "source_fingerprint": "ac6bc35e891d67df72b1a8abb22e9854b620106a5fc6ef2f3f8f49aec24eaa43",
+  "source_fingerprint": "3352309f88e0017218156eb56cd89eab9784ca1e22e1112d6271f99cc8c11ab0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 456,
+    "experiments": 457,
     "current_terminals": 236,
-    "run_associations": 454
+    "run_associations": 455
   },
   "failure_layers": [
     {
@@ -36166,6 +36166,29 @@
         "geometry_motion": 6
       },
       "search_text": "cnh-learning-diagnostic-20260925 Why do full-depth and ToF V2 learners fail on existing Development? Frozen V2 and learned visible-depth checkpoints Exact input audit, train AP, bounded 32-frame overfit and H3 geometry rule Train/dev query AP; per-frame depth equality; overfit train AP Diagnose implementation versus representation; no test or City research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md research/active/dtr-r0/nearfield/cnh_learning_diagnostic.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-qg1-20260925",
+      "status": "active",
+      "question": "Can query geometry repair full-depth fitting and which sensor components lose ranking?",
+      "baseline": "Frozen V2 and H3 geometry rule on repeated Development",
+      "change": "QG1 ROI and query bin conditioning; fixed cumulative and isolated response diagnosis",
+      "primary_metric": "Gate0 train AP; Gate1 three seed AP; response stage AP differences",
+      "decision": "Frozen gates before dev; diagnostic only, no generalization claims",
+      "report": "research/active/dtr-r0/nearfield/CNH_QG1_PROTOCOL_20260925.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_qg1_train.py",
+      "commit": "80f84ee70f026729d61653230d5f2f5ea32aaff3",
+      "association_id": "cnh-qg1-20260925",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "cnh-qg1-20260925 Can query geometry repair full-depth fitting and which sensor components lose ranking? Frozen V2 and H3 geometry rule on repeated Development QG1 ROI and query bin conditioning; fixed cumulative and isolated response diagnosis Gate0 train AP; Gate1 three seed AP; response stage AP differences Frozen gates before dev; diagnostic only, no generalization claims research/active/dtr-r0/nearfield/CNH_QG1_PROTOCOL_20260925.md research/active/dtr-r0/nearfield/cnh_qg1_train.py"
     }
   ],
   "associations": [
@@ -37094,6 +37117,20 @@
       "input_fingerprint": "09e4b09483fbce3d5b038f63c61691ce6773cfc5763ef3ab929ab68141c10247",
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CNH_LEARNING_DIAGNOSTIC_20260925.md"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-qg1-20260925",
+      "use_ids": [],
+      "protocol_id": "cnh-qg1-20260925",
+      "code_revision": "80f84ee70f026729d61653230d5f2f5ea32aaff3",
+      "input_fingerprint": "808b9397eec62221f3da285607752a0c1292b19e1da4a32b127a8aaa9074c0ac",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_QG1_PROTOCOL_20260925.md",
+        "artifacts.local/evidence/cnh-qg1-20260925-v1",
+        "artifacts.local/evidence/cnh-qg1-response-decomposition-20260925-v1"
       ],
       "decision_id": null,
       "source_rows": 1
