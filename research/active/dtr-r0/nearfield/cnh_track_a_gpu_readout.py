@@ -172,7 +172,7 @@ def sequence_readouts(hist, ambient, bias, poses, tq, noisy, with_r4=True):
             if power == 1:
                 mean = total64/cov
                 out[f'B1-R/{motion}'] = torch.einsum('nc,nqc->nq', mean, w64.reshape(n, 6, 1024))
-        out[f'memory/{motion}'] = memory(r, v, p, tq)
+        out[f"memory/{motion}"] = memory_batched(r, v, p, tq)
     return {k: val.double().cpu().numpy() for k, val in out.items()}
 
 
@@ -214,3 +214,47 @@ def memory(r, v, p, tq):
             var = torch.zeros(len(vk), dtype=DT, device=DEV).scatter_add_(0, cv, coef*coef*vf[js_t, cs])
             res[i, q] = torch.maximum(res[i, q], (tot/var.clamp_min(1e-9).sqrt()).max())
     return res
+
+
+def memory_batched(r, v, p, tq):
+    """Vectorized memory scan for a whole trajectory (same definition as memory())."""
+    n = len(r)
+    pairs = [(i, j) for i in range(n) for j in range(max(0, i-7), i+1)]
+    I = torch.tensor([a for a, _ in pairs], device=DEV)
+    J = torch.tensor([b for _, b in pairs], device=DEV)
+    rel = torch.linalg.inv(p[I]) @ p[J]                                  # [K,4,4]
+    cur = transform(_orig, rel)                                          # [K,1024,16,3]
+    radius = cur.norm(dim=-1)
+    z = cur[..., 2]
+    tan = cur[..., :2]/z[..., None].clamp_min(1e-12)
+    outside = ~((z > 0) & (tan.abs() < EDGE).all(-1))
+    tqi = tq[I]
+    pq = torch.einsum('kstj,kij->ksti', cur, tqi[:, :3, :3]) + tqi[:, None, None, :3, 3]
+    gain = torch.where(radius > 0, _orig_r/radius.clamp_min(1e-12), torch.ones_like(radius))**2
+    gain = torch.where((I == J)[:, None, None], torch.ones_like(gain), gain)
+    vox = torch.floor(pq/.2).long()
+    rf, vf = r.reshape(n, 1024), v.reshape(n, 1024)
+    rows = []
+    for q, (lo, hi) in enumerate(_boxes.to(D64)):
+        keep = outside & (radius > 0) & (pq >= lo).all(-1) & (pq <= hi).all(-1)
+        k, s, _ = keep.nonzero(as_tuple=True)
+        if len(k):
+            vx = vox[keep]
+            rows.append((torch.stack([I[k], torch.full_like(k, q), vx[:, 0], vx[:, 1], vx[:, 2], J[k], s], 1),
+                         (gain[keep]/16).to(DT)))
+    res = torch.full((n, 6), -50., dtype=DT, device=DEV)
+    if not rows:
+        return res
+    keys = torch.cat([a for a, _ in rows])
+    gains = torch.cat([b for _, b in rows])
+    k1, inv1 = torch.unique(keys, dim=0, return_inverse=True)            # (i,q,voxel,j,src)
+    coef = torch.zeros(len(k1), dtype=DT, device=DEV).scatter_add_(0, inv1, gains)
+    contrib_t = coef*rf[k1[:, 5], k1[:, 6]]
+    contrib_v = coef*coef*vf[k1[:, 5], k1[:, 6]]
+    k2, inv2 = torch.unique(k1[:, :5], dim=0, return_inverse=True)     # (i,q,voxel)
+    tot = torch.zeros(len(k2), dtype=DT, device=DEV).scatter_add_(0, inv2, contrib_t)
+    var = torch.zeros(len(k2), dtype=DT, device=DEV).scatter_add_(0, inv2, contrib_v)
+    zv = tot/var.clamp_min(1e-9).sqrt()
+    flat = k2[:, 0]*6+k2[:, 1]
+    best = torch.full((n*6,), -float('inf'), dtype=DT, device=DEV).scatter_reduce_(0, flat, zv, 'amax')
+    return torch.maximum(res, best.reshape(n, 6))
