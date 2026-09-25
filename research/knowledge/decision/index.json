@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-26",
-  "source_fingerprint": "2e8aadc1b3ba3ee00a87108e4ee90c7830841116f7dd01aca9533243855a7cec",
+  "source_fingerprint": "670275d2295367bb24999b7e8efd19d36dcd9f223473e85f3481d6cf1d848f2d",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 462,
+    "experiments": 463,
     "current_terminals": 236,
-    "run_associations": 460
+    "run_associations": 461
   },
   "failure_layers": [
     {
@@ -36302,6 +36302,30 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-track-a-scale-20260926 On 64 independent procedural audit layouts, do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY? B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen) Standardized multi-scale scan S1/S2 and 8-frame near-field memory S3; v1.3 generator and sensor at 192 units audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego Hard G0-G4 gates; stop on failure; no reseed; secondary conditions descriptive only; learner excluded research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_PROTOCOL_20260926.md research/active/dtr-r0/nearfield/cnh_track_a_scale_evaluate.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-track-a-scale-v2-20260926",
+      "status": "active",
+      "question": "On independent procedural audit layouts (new seed family), do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY?",
+      "baseline": "B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen)",
+      "change": "Same readouts as v1 protocol plus S1cell ablation; split-level label gates; certified fast margins; 5 Hz only",
+      "primary_metric": "audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego",
+      "decision": "v1 FAIL preserved; hard integrity gates and split-level G2; INCOMPLETE excluded up to 5% per split; secondary descriptive only",
+      "report": "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V2_PROTOCOL_20260926.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_track_a_scale_evaluate.py",
+      "commit": "d8e0a4378fb2e9ef32c8f83fbbb102bf7bd20826",
+      "association_id": "cnh-track-a-scale-v2-20260926",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "identity_binding": 3,
+        "temporal_belief": 6,
+        "evaluation_evidence": 3
+      },
+      "search_text": "cnh-track-a-scale-v2-20260926 On independent procedural audit layouts (new seed family), do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY? B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen) Same readouts as v1 protocol plus S1cell ablation; split-level label gates; certified fast margins; 5 Hz only audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego v1 FAIL preserved; hard integrity gates and split-level G2; INCOMPLETE excluded up to 5% per split; secondary descriptive only research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V2_PROTOCOL_20260926.md research/active/dtr-r0/nearfield/cnh_track_a_scale_evaluate.py"
     }
   ],
   "associations": [
@@ -37309,6 +37333,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_PROTOCOL_20260926.md",
         "artifacts.local/evidence/cnh-track-a-scale-20260926-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-track-a-scale-v2-20260926",
+      "use_ids": [],
+      "protocol_id": "cnh-track-a-scale-v2-protocol-20260926",
+      "code_revision": "d8e0a4378fb2e9ef32c8f83fbbb102bf7bd20826",
+      "input_fingerprint": "ec582994d5204c09fbb7537aa5d26eaebad5110982b457503ab5df95f9263e21",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V2_PROTOCOL_20260926.md",
+        "artifacts.local/evidence/cnh-track-a-scale-v2-20260926-v1"
       ],
       "decision_id": null,
       "source_rows": 1

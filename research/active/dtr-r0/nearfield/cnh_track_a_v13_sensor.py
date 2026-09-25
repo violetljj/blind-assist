@@ -108,12 +108,15 @@ def render_config(c, mount, params, rate, keep_oracle):
     return obs, oracle
 
 
+FORCE_RATE = None
+
+
 def run(geometry, output, unit, mount):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     params, g3 = reference_parameters()
     data = json.loads((Path(geometry)/f'unit{unit:02d}'/f'unit{unit:02d}.json').read_text(encoding='utf-8-sig'))
-    rate = 5 if data['split'] == 'train' else 10
+    rate = FORCE_RATE or (5 if data['split'] == 'train' else 10)
     keep = data['split'] == 'audit'
     parts, oracles = [], []
     for c in data['configs']:
@@ -141,6 +144,7 @@ if __name__ == '__main__':
     p.add_argument('--unit', type=int, required=True)
     p.add_argument('--mount', type=int, choices=MOUNTS, required=True)
     p.add_argument('--family', default=FAMILY)
+    p.add_argument('--rate', type=int, choices=(5,), default=None, help='force 5 Hz rendering for all splits')
     a = p.parse_args()
-    FAMILY = a.family
+    FAMILY, FORCE_RATE = a.family, a.rate
     print(json.dumps(dict(unit=a.unit, mount=a.mount, rate_frames=run(a.geometry, a.output, a.unit, a.mount))))

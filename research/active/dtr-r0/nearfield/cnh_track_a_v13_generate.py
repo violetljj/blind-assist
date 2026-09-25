@@ -116,6 +116,9 @@ def labels_for_poses(objects, poses):
     return margins, np.asarray(labels), contributors, boundary
 
 
+WITH_10HZ = True
+
+
 def run(output, units=range(12)):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -129,7 +132,7 @@ def run(output, units=range(12)):
          source_sha256={n: hashlib.sha256(Path(__file__).with_name(n).read_bytes()).hexdigest()
                         for n in ('cnh_track_a_v13_generate.py', 'cnh_track_a_v12_generate.py',
                                   'cnh_track_a_generate.py', 'cnh_track_a_geometry.py')},
-         units=list(units), configs_per_unit=32, frames_5hz=12, frames_10hz=23, replans=REPLANS,
+         units=list(units), configs_per_unit=32, frames_5hz=12, frames_10hz=23 if WITH_10HZ else 0, replans=REPLANS,
          tiny_fraction=TINY_FRACTION, split_counts=list(SPLIT_COUNTS)))
 
     def finish(status, **extra):
@@ -210,7 +213,7 @@ def run(output, units=range(12)):
             continue
         for key, fp in pending:
             buckets.setdefault(key, []).append(fp)
-        if split in ('calib', 'audit'):
+        if WITH_10HZ and split in ('calib', 'audit'):
             for c in configs:
                 objs = [dict(o, triangles_world=np.asarray(o['triangles_world'])) for o in c['objects']]
                 m, lab, contrib, bnd = labels_for_poses(objs, c['world_from_Q_10hz'])
@@ -244,6 +247,15 @@ if __name__ == '__main__':
     parser.add_argument('--units', type=int, nargs='*', default=list(range(12)))
     parser.add_argument('--family', default=FAMILY)
     parser.add_argument('--split-counts', type=int, nargs=3, default=list(SPLIT_COUNTS))
+    parser.add_argument('--fast-margin', action='store_true', help='certified AABB bound before exact LP')
+    parser.add_argument('--no-10hz', action='store_true', help='skip 10 Hz labels (5 Hz-only cohorts)')
     args = parser.parse_args()
-    FAMILY, SPLIT_COUNTS = args.family, tuple(args.split_counts)
+    FAMILY, SPLIT_COUNTS, WITH_10HZ = args.family, tuple(args.split_counts), not args.no_10hz
+    if args.fast_margin:
+        import cnh_track_a_v12_generate as v12
+        from cnh_track_a_fastmargin import fast_margin, STATS
+        v12.signed_margin = fast_margin
+        signed_margin = fast_margin
     print(run(args.output, args.units)['status'])
+    if args.fast_margin:
+        print(json.dumps(dict(margin_stats=STATS)))

@@ -27,8 +27,8 @@ B, BOOT_SEED, ALPHA = 10000, 20260926, .05
 def unit_records(geometry, sensor, unit, mount, snr_index):
     data = json.loads((geometry/f'unit{unit:02d}'/f'unit{unit:02d}.json').read_text(encoding='utf-8-sig'))
     with np.load(sensor/f'unit{unit:02d}-mount{mount}-observations.npz') as f:
-        obs = {k: f[k] for k in ('hist', 'ambient', 'world_from_tof', 'T_Q_tof', 'config', 'frame')}
-    step = 1 if data['split'] == 'train' else 2
+        obs = {k: f[k] for k in ('hist', 'ambient', 'world_from_tof', 'T_Q_tof', 'config', 'frame', 'rate')}
+    step = 2 if int(obs['rate']) == 10 else 1
     records = []
     for c in data['configs']:
         sel = np.flatnonzero(obs['config'] == c['config'])[::step]
@@ -41,7 +41,18 @@ def unit_records(geometry, sensor, unit, mount, snr_index):
                             size_classes=c['size_classes'],
                             world_from_Q=np.asarray(c['world_from_Q_10hz'])[::2] if 'world_from_Q_10hz' in c else np.asarray(c['world_from_Q']),
                             ego_seed=seed_for(unit, c['config'], 'ego', rate=5)))
-    return data['split'], records
+    return data['split'], records, step
+
+
+def s1_cell(r, v, w, tau):
+    """Per-cell z test inside the query support (single-window ablation of S1)."""
+    z = (r/np.sqrt(np.maximum(v, 1e-9))).reshape(64, 16)
+    out = np.full(6, -50.)
+    for q in range(6):
+        support = np.asarray(w).reshape(6, 64, 16)[q] >= tau
+        if support.any():
+            out[q] = max(-50., float(z[support].max()))
+    return out
 
 
 def strata_of(records):
@@ -64,7 +75,7 @@ def score_unit(job):
     if target.exists():
         return unit
     bias = np.load(Path(output)/'bias.npy')
-    split, records = unit_records(Path(geometry), Path(sensor), unit, mount, snr_index)
+    split, records, step = unit_records(Path(geometry), Path(sensor), unit, mount, snr_index)
     scores = {}
     for rec in records:
         r = rec['hist']-bias
@@ -73,6 +84,7 @@ def score_unit(job):
         out = {'B0': np.array([np.einsum('zb,qzb->q', y.reshape(64, 16), w) for y, w in zip(rec['hist'], weights)])}
         for tau in TAUS:
             out[f'S1|{tau}'] = np.array([s1(r[i:i+1], v[i:i+1], w, tau)[0] for i, w in enumerate(weights)])
+            out[f'S1cell|{tau}'] = np.array([s1_cell(r[i], v[i], w, tau) for i, w in enumerate(weights)])
         for motion, p in (('GT', rec['poses']), ('noisy', noisy_poses(rec['poses'], rec['ego_seed'], dt=.2))):
             acc = accumulate(r, v, p, 4)
             out[f'B1-R/{motion}'] = np.array([np.einsum('zb,qzb->q', m.reshape(64, 16), w) for m, w in zip(acc['mean'], weights)])
@@ -92,7 +104,7 @@ def score_unit(job):
                  config=np.repeat([r['config'] for r in records], 12), frame=np.tile(np.arange(12), len(records)),
                  split=np.array(split))
     if split == 'audit':
-        extra['visibility'] = observability(Path(sensor), records, mount, 5)
+        extra['visibility'] = observability(Path(sensor), records, mount, 5, step=step)
     np.savez_compressed(target, **arrays, **extra)
     return unit
 
@@ -151,7 +163,7 @@ def analyze(output, n_units, splits, primary):
             with np.load(path) as f:
                 data[u] = {k: f[k] for k in f.files}
     units_all = sorted(data)
-    keys = [k for k in data[units_all[0]] if '__' in k or k in ('B0',) or k.startswith('S1@')]
+    keys = [k for k in data[units_all[0]] if '__' in k or k in ('B0',) or k.startswith('S1@') or k.startswith('S1cell@')]
     cat = lambda k: np.concatenate([data[u][k] for u in units_all])
     y, main, witness, strata = cat('labels'), cat('main'), cat('witness'), cat('strata')
     unit = np.concatenate([np.full(len(data[u]['labels']), u) for u in units_all])
@@ -162,6 +174,8 @@ def analyze(output, n_units, splits, primary):
     calib, audit = (split == 'calib') & main, (split == 'audit') & main
     arms, selection = {'B0': raw['B0']}, {}
     families = [('S1', 'S1|{}'), ('S2/GT', 'S2/GT|{}'), ('S2/noisy', 'S2/noisy|{}')]
+    if 'S1cell|0.25' in raw:
+        families.append(('S1cell', 'S1cell|{}'))
     if 'S2r4/noisy|0.25' in raw:
         families.append(('S2r4/noisy', 'S2r4/noisy|{}'))
     for name, fmt in families:
@@ -265,11 +279,13 @@ def main():
     if not (a.output/'bias.npy').exists():
         calib = []
         for u in range(ntr, ntr+nca):
-            _, recs = unit_records(a.geometry, a.sensor, u, a.mount, snr_index)
+            if not (a.geometry/f'unit{u:02d}'/f'unit{u:02d}.json').exists():
+                continue
+            _, recs, _ = unit_records(a.geometry, a.sensor, u, a.mount, snr_index)
             calib.extend(r['hist'] for r in recs)
         np.save(a.output/'bias.npy', np.median(np.concatenate(calib), axis=0))
     jobs = [(str(a.geometry), str(a.sensor), str(a.output), u, a.mount, snr_index, a.family, a.primary)
-            for u in range(ntr, n)]
+            for u in range(ntr, n) if (a.geometry/f'unit{u:02d}'/f'unit{u:02d}.json').exists()]
     with ProcessPoolExecutor(a.workers) as pool:
         for u in pool.map(score_unit, jobs):
             pass

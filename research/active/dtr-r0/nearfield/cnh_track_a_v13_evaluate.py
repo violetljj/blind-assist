@@ -110,7 +110,7 @@ def positive_strata(records):
     return np.asarray(strata)
 
 
-def observability(oracle_dir, records, mount, rate):
+def observability(oracle_dir, records, mount, rate, step=None):
     """Offline ray-sampled visibility: solid-angle fraction of ToF rays whose first hit
     is a label-causing object inside the query box; plus expected target counts."""
     dirs, w = angular_rays(16)
@@ -126,7 +126,7 @@ def observability(oracle_dir, records, mount, rate):
             with np.load(oracle_dir/f"unit{rec['unit']:02d}-mount{mount}-observations.npz") as f:
                 cache[rec['unit']]['config'] = f['config']
         o = cache[rec['unit']]
-        rows = np.flatnonzero(o['config'] == rec['config'])[::(2 if rate == 5 else 1)]
+        rows = np.flatnonzero(o['config'] == rec['config'])[::(step or (2 if rate == 5 else 1))]
         vis = np.zeros((len(rows), 6))
         for i, (row, pose, wq) in enumerate(zip(rows, rec['poses'], rec['world_from_Q'])):
             dist, oid = o['raydistance'][row], o['object_id'][row]
