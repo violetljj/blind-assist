@@ -4,7 +4,8 @@ H3 observations and evaluator-only first-hit geometry are stored separately;
 readouts never open the oracle files. calib/audit units are rendered at 10 Hz
 (even frames are the 5 Hz stream, same exposures); train units at 5 Hz.
 Assumption (ASSUMED): per-frame integration identical at 5 and 10 Hz; hardware
-bus throughput DEFERRED_PHASE2. Oracle arrays are written for audit units only.
+bus throughput DEFERRED_PHASE2. Oracle arrays default to audit units only;
+--oracle-calib explicitly enables evaluator-only calib arrays for Development.
 """
 import argparse
 from dataclasses import asdict, replace
@@ -111,13 +112,13 @@ def render_config(c, mount, params, rate, keep_oracle):
 FORCE_RATE = None
 
 
-def run(geometry, output, unit, mount):
+def run(geometry, output, unit, mount, oracle_calib=False):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     params, g3 = reference_parameters()
     data = json.loads((Path(geometry)/f'unit{unit:02d}'/f'unit{unit:02d}.json').read_text(encoding='utf-8-sig'))
     rate = FORCE_RATE or (5 if data['split'] == 'train' else 10)
-    keep = data['split'] == 'audit'
+    keep = data['split'] == 'audit' or (oracle_calib and data['split'] == 'calib')
     parts, oracles = [], []
     for c in data['configs']:
         obs, oracle = render_config(c, mount, params, rate, keep)
@@ -145,6 +146,7 @@ if __name__ == '__main__':
     p.add_argument('--mount', type=int, choices=MOUNTS, required=True)
     p.add_argument('--family', default=FAMILY)
     p.add_argument('--rate', type=int, choices=(5,), default=None, help='force 5 Hz rendering for all splits')
+    p.add_argument('--oracle-calib', action='store_true', help='write evaluator-only calib oracle (default: audit only)')
     a = p.parse_args()
     FAMILY, FORCE_RATE = a.family, a.rate
-    print(json.dumps(dict(unit=a.unit, mount=a.mount, rate_frames=run(a.geometry, a.output, a.unit, a.mount))))
+    print(json.dumps(dict(unit=a.unit, mount=a.mount, rate_frames=run(a.geometry, a.output, a.unit, a.mount, a.oracle_calib))))
