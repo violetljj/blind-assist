@@ -2,14 +2,14 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-09-26",
-  "source_fingerprint": "fab1a9ff7b43297638946391d1cff453538ef19fa25142e7505f0b925297b769",
+  "source_fingerprint": "9d5dd05c1819cf24419a9d1ea9211220d269b4c3a8bdadf2ecf24008124df4b7",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 464,
+    "experiments": 465,
     "current_terminals": 236,
-    "run_associations": 462
+    "run_associations": 463
   },
   "failure_layers": [
     {
@@ -36349,6 +36349,29 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-track-a-scale-v3-20260926 On independent procedural audit layouts (v3 seed family), do scan readouts (S1 vs B0, S2 vs B1-R) and near-field memory (S3 vs S2) improve layout-macro AP for HEAD and BODY? B0 weighted-sum H3 rule and B1-R K4 accumulation (v1.2 frozen) v2 protocol plus sequential cross-unit dedup repair after parallel generation audit layout-macro AP per group; six one-sided paired unit-bootstrap tests with Holm at 0.05; M1 SNR6 5Hz noisy ego v1 and v2 FAIL preserved; gates unchanged from v2; secondary descriptive only research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_PROTOCOL_20260926.md research/active/dtr-r0/nearfield/cnh_track_a_scale_fast.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-track-a-scale-v4-20260926",
+      "status": "active",
+      "question": "On a fresh procedural seed family, do the v3 readout gains (S2 vs B1-R, S1 vs B0, S3 vs S2) replicate, and at calib-matched false-alert budgets (5/10/20%) does memory reduce BODY never-warned near events and do single-frame thresholds warn more timely than 2/2 persistence?",
+      "baseline": "v3 frozen readouts and evaluator; S2 single-frame alerts; B1-R and B0 baselines",
+      "change": "fresh seed family (calib 0-31, audit 32-95, no train), primary condition only, alert family with calib-only thresholds at three false-alert budgets",
+      "primary_metric": "P: six v3 macro-AP tests (Holm .05); A: nine alert tests A1 BODY never-warned S2-S3 and A2 timely S2 1/1 - 2/2 x HEAD/BODY at 5/10/20% budgets (Holm .05; claim needs all three budgets)",
+      "decision": "frozen before generation; descriptive visibility and model-conditional matched-filter reference make no physical-limit claims",
+      "report": "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_PROTOCOL_20260926.md",
+      "source": "research/active/dtr-r0/nearfield/cnh_track_a_v4_analysis.py",
+      "commit": "1a26c719379d928fb9fd5acfcd8ad72282b14ba0",
+      "association_id": "cnh-track-a-scale-v4-20260926",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "temporal_belief": 6,
+        "decision_lifecycle": 13,
+        "evaluation_evidence": 6
+      },
+      "search_text": "cnh-track-a-scale-v4-20260926 On a fresh procedural seed family, do the v3 readout gains (S2 vs B1-R, S1 vs B0, S3 vs S2) replicate, and at calib-matched false-alert budgets (5/10/20%) does memory reduce BODY never-warned near events and do single-frame thresholds warn more timely than 2/2 persistence? v3 frozen readouts and evaluator; S2 single-frame alerts; B1-R and B0 baselines fresh seed family (calib 0-31, audit 32-95, no train), primary condition only, alert family with calib-only thresholds at three false-alert budgets P: six v3 macro-AP tests (Holm .05); A: nine alert tests A1 BODY never-warned S2-S3 and A2 timely S2 1/1 - 2/2 x HEAD/BODY at 5/10/20% budgets (Holm .05; claim needs all three budgets) frozen before generation; descriptive visibility and model-conditional matched-filter reference make no physical-limit claims research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_PROTOCOL_20260926.md research/active/dtr-r0/nearfield/cnh_track_a_v4_analysis.py"
     }
   ],
   "associations": [
@@ -37382,6 +37405,19 @@
       "artifact_refs": [
         "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_PROTOCOL_20260926.md",
         "artifacts.local/evidence/cnh-track-a-scale-v3-20260926-v1"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-track-a-scale-v4-20260926",
+      "use_ids": [],
+      "protocol_id": "cnh-track-a-scale-v4-protocol-20260926",
+      "code_revision": "1a26c719379d928fb9fd5acfcd8ad72282b14ba0",
+      "input_fingerprint": "42eec4f485e8a169906d007ecee04b7d3c5cf12440433e2c24ac3fa4696b0343",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_PROTOCOL_20260926.md",
+        "artifacts.local/evidence/cnh-track-a-scale-v4-20260926-v1"
       ],
       "decision_id": null,
       "source_rows": 1
