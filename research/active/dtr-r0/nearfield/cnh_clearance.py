@@ -16,6 +16,7 @@ from cnh_track_a_readout import cell_points, _transform, BOXES, START, WIDTH
 
 KAPPA, KAPPA_OCC, VOXEL, T_MEM, EPS = 3., 3., .1, 8, .1
 SLAB = .1
+POOL = False            # also detect with 2x2-zone windows (marks all four zones)
 
 
 def reference_counts(gain, rho, fill):
@@ -34,6 +35,78 @@ def reference_counts(gain, rho, fill):
     return counts, width
 
 
+def _marking_z(h, pool, b):
+    """Strongest unit-noise statistic that marks zone (3,3) occupied at a bin <= b."""
+    wins = [h[3:4, 3:4]]+([h[i:i+2, j:j+2] for i in (2, 3) for j in (2, 3)] if pool else [])
+    best = -np.inf
+    for w in wins:
+        s, n = w.sum((0, 1)), w.shape[0]*w.shape[1]
+        best = max(best, (s[:b+1]/np.sqrt(n)).max(), ((s[:b+1]+s[1:b+2])/np.sqrt(2*n)).max())
+    return best
+
+
+def reference_worst(gain, rho, side_m=None, fill=.25, pool=True, n_offsets=6,
+                    range_offsets=(.1, .35, .6, .85), max_bin=9):
+    """Worst-placement reference counts [16] (use width 1: z_cap = counts/sqrt(v_zone)).
+
+    A square reference target (side side_m, or sqrt(fill) of a zone when side_m is None)
+    overlaps zone (3,3) anywhere in angle and lies anywhere inside range bin b. For each
+    placement the strongest statistic that marks that zone at a bin <= b is taken (1x1
+    zone and, with pool, the four 2x2 windows containing it; 1 or 2 bins), assuming
+    locally uniform zone noise; counts[b] is the minimum over placements. Bins beyond
+    max_bin get 0 (never certified).
+    """
+    dirs, w = angular_rays(16)
+    tx, ty = dirs[..., 0]/dirs[..., 2], dirs[..., 1]/dirs[..., 2]
+    edge = np.tan(np.deg2rad(45/2))
+    wz = 2*edge/8
+    c0 = -edge+3.5*wz
+    base = SensorParameters()
+    p = replace(base, signal_counts=1., noise_scale=0., neighbour_leak=0.)
+    empty = synthesize_response(np.full((8, 8, 256), np.inf), rho, 1., w, params=p, seed=0)['histogram']
+    counts = np.zeros(16)
+    for b in range(1, max_bin+1):
+        worst = np.inf
+        for f in range_offsets:
+            r = START+(b+f)*WIDTH
+            # All target rays share one range, so the response is linear in per-zone
+            # solid angle: one leak-free full-zone profile, then the model's zone leak.
+            d = np.full((8, 8, 256), np.inf)
+            d[3, 3] = r
+            prof = (synthesize_response(d, rho, 1., w, params=p, seed=0)['histogram']-empty)[3, 3]
+            prof = prof.reshape(16, 8).sum(-1)/w[3, 3].sum()
+            t = np.sqrt(fill) if side_m is None else side_m/(r*wz)
+            for dx in np.linspace(0, .5+t/2-1/32, n_offsets):
+                for dy in np.linspace(0, .5+t/2-1/32, n_offsets):
+                    mask = (np.abs(tx-c0-dx*wz) <= t*wz/2) & (np.abs(ty-c0-dy*wz) <= t*wz/2)
+                    if not mask[3, 3].any():
+                        continue
+                    e = (w*mask).sum(-1)
+                    old, leak = e.copy(), base.neighbour_leak/4
+                    e[1:] += leak*(old[:-1]-old[1:])
+                    e[:-1] += leak*(old[1:]-old[:-1])
+                    e[:, 1:] += leak*(old[:, :-1]-old[:, 1:])
+                    e[:, :-1] += leak*(old[:, 1:]-old[:, :-1])
+                    worst = min(worst, _marking_z(e[..., None]*prof, pool, b))
+        counts[b] = gain*worst
+    return counts, np.ones(16)
+
+
+def _pooled_detect(r, v):
+    """[64,16] zones marked by a 2x2-window detection (1 or 2 bins)."""
+    R = r[:-1, :-1]+r[1:, :-1]+r[:-1, 1:]+r[1:, 1:]
+    V = v[:-1, :-1]+v[1:, :-1]+v[:-1, 1:]+v[1:, 1:]
+    z = R/np.sqrt(np.maximum(V, 1e-9))
+    z2 = np.concatenate([(R[..., :-1]+R[..., 1:])/np.sqrt(np.maximum(V[..., :-1]+V[..., 1:], 1e-9)),
+                         np.full(R.shape[:2]+(1,), -np.inf)], -1)
+    win = (z >= KAPPA_OCC) | (z2 >= KAPPA_OCC) | (np.roll(z2, 1, -1) >= KAPPA_OCC) & (np.arange(16) > 0)
+    out = np.zeros((8, 8, 16), bool)
+    for i in (0, 1):
+        for j in (0, 1):
+            out[i:i+7, j:j+7] |= win
+    return out.reshape(64, 16)
+
+
 def cell_states(r, v, ref):
     """[64,16] states for one frame: +1 certified free, -1 occupied/occluded, 0 unknown."""
     counts, width = ref
@@ -41,6 +114,8 @@ def cell_states(r, v, ref):
     z2 = np.concatenate([(r[..., :-1]+r[..., 1:]).reshape(64, 15)/np.sqrt(np.maximum(v[..., :-1]+v[..., 1:], 1e-9).reshape(64, 15)),
                          np.full((64, 1), -np.inf)], 1)
     detect = (z >= KAPPA_OCC) | (z2 >= KAPPA_OCC) | (np.roll(z2, 1, 1) >= KAPPA_OCC) & (np.arange(16) > 0)
+    if POOL:
+        detect = detect | _pooled_detect(r, v)
     first = np.where(detect.any(1), detect.argmax(1), 16)
     zcap = counts[None]/np.sqrt(np.maximum(width[None]*v.reshape(64, 16), 1e-9))
     bins = np.arange(16)[None]
