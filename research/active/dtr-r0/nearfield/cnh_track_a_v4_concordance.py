@@ -7,6 +7,7 @@ Fails if any scan-type key exceeds 1e-5 or B0/B1-R exceeds 1e-10.
 import argparse
 import json
 import shutil
+import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 import numpy as np
@@ -29,6 +30,9 @@ def main():
     jobs = [(str(a.evidence/'geometry'), str(a.evidence/'sensor'), str(out), u, -10, 1, a.family, True) for u in units]
     with ProcessPoolExecutor(a.workers) as pool:
         list(pool.map(sf.score_unit_fast, jobs))
+    # Post-run fix (v4 execution note): wait for the concurrent GPU run to write every unit.
+    while not all((gpu/f'unit{u:02d}.npz').exists() for u in units):
+        time.sleep(5)
     worst = {}
     for u in units:
         with np.load(gpu/f'unit{u:02d}.npz') as g, np.load(out/f'unit{u:02d}.npz') as c:

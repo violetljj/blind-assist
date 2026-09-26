@@ -19,13 +19,14 @@ Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史DTR保留）。
 |旧巷道扫描raw→H3 S2|AP0.660945；TP190/408，FP5/2472|消费Development方向证据|
 |Track A v1.2|105配置、1260几何帧；3完整+1部分单位；传感帧0|生成206秒后停止，G3–G5/audit读出NOT_RUN|
 |**Track A 放量 v3（正式，63 独立 audit 单位，M1/SNR6/5Hz/带噪自运动）**|六个 Holm 主检验全部成立：S2−B1-R HEAD/BODY +0.099/+0.079，S1−B0 +0.077/+0.062，S3−S2 +0.005/+0.068；宏 AP S3 0.756/0.749|[结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_RESULTS_20260926.md)；受控仿真，SNR6 经 ZJUL5 粗锚定|
+|**Track A 放量 v4（正式复现，64 新 audit 单位，同条件）**|六个主检验全部复现：S2−B1-R HEAD/BODY +0.092/+0.078，S1−B0 +0.078/+0.058，S3−S2 +0.005/+0.054；提醒层（calib 选阈，假警预算 5/10/20%）：S3 使 BODY 近距离没报少 5.1–5.4pp，单帧提阈比连续 2 帧及时率高 4.8–9.2pp|[结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_RESULTS_20260926.md)；仅限本生成器分布|
 |Track A v1.3试采（M1/SNR6/5Hz/带噪自运动）|audit 4单位宏平均AP HEAD/BODY：B1-R 0.652/0.624，S2 0.759/0.681，S3 0.770/0.733；1081/1051正查询|描述性；S2−B1-R 8条件×两组全为正，非显著性结论|
 |v1.2指纹|98非空配置，重复0|已有部分的完整性，不代表12单位完成|
 |完整保护test|真实布局/spec 0/164|继续暂停，不用3张候选巷道图替代|
 
 ## 待决问题
 
-放量 v3 已完成并通过主判定（v1、v2 失败记录保留）。已决（2026-09-26，用户）：“确认畅通距离”降为论文附录的辅助可确认性地图（承诺 ≥10 cm、ρ≥0.5、最坏摆放），不作核心能力、不做正式检验，见 [CNH_CLEARANCE_RULEFIX_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_CLEARANCE_RULEFIX_DEV_20260926.md)；当前无硬件，默认全部以模拟推进，L8CH 桌面标定待硬件可用时再排（真机 CNH 可配 8×8×16 bin，5468/6160 字节，满足 H3）。待决：头部近处是否启动相机线（可见性诊断：HEAD 视场外正例 93% 在记忆窗口内被照到过，从未照到仅 0.3%，记忆上限约 +0.02 AP；头部差距主要在视场内小目标，AP 0.27，见 [CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926.md)；信号上限诊断（条件性）：S2 在强信号段已接近理想，漏检集中在 z<2 的弱信号段（HEAD 可见正例 25%，小块 54%）；已知模板理想检测器 HEAD 召回 0.80，S2 为 0.62，差距能否收回尚未测量，见 [CNH_SIGNAL_CEILING_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_SIGNAL_CEILING_DEV_20260926.md)；事件级：走到 1 m 内的 HEAD 障碍 76% 及时报警、始终没报 5%（小块 53%/15%），BODY 始终没报 21%，序列假警 33%，见 [CNH_EVENT_CEILING_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_EVENT_CEILING_DEV_20260926.md)；提醒策略：同 10% 假警下单帧提阈优于连续 N 帧，HEAD 报警率 0.78、及时率 0.77，见 [CNH_ALERT_PERSISTENCE_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_ALERT_PERSISTENCE_DEV_20260926.md)）。真实传感器计数/串扰与安装参数仍待标定，SNR 结论按 SNR3/6/12 档报告；算法未达标不能推断物理信息上限。RGB线和实机方案另行决定。
+放量 v3 通过、v4 正式复现通过（v1、v2 失败保留）。已决（2026-09-26，用户）：“确认畅通距离”降为附录辅助可确认性地图（≥10 cm、ρ≥0.5、最坏摆放）；当前无硬件，全部以模拟推进，L8CH 桌面标定待硬件（真机 CNH 可配 8×8×16 bin）。诊断（快速道，条件性）：头部视场外正例绝大多数在记忆窗口内被照到过；S2 命中与目标自身回波强度高度一致（AUC 0.975），已知模板参考召回 HEAD 0.78 对 S2 0.60，差距来源未测；小目标及时提醒仍是主要缺口。待决：相机线是否启动（依据为小目标及时提醒不足，而非 ToF 已被证明无空间）；产品报警工作点。真实传感器计数/串扰与安装参数仍待标定；SNR 结论按 SNR3/6/12 档报告。RGB 线和实机方案另行决定。诊断索引：[清晰度规则](../research/active/dtr-r0/nearfield/CNH_CLEARANCE_RULEFIX_DEV_20260926.md) · [可见性](../research/active/dtr-r0/nearfield/CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926.md) · [信号参考](../research/active/dtr-r0/nearfield/CNH_SIGNAL_CEILING_DEV_20260926.md) · [事件级](../research/active/dtr-r0/nearfield/CNH_EVENT_CEILING_DEV_20260926.md) · [提醒策略](../research/active/dtr-r0/nearfield/CNH_ALERT_PERSISTENCE_DEV_20260926.md)。
 
 ## 证据与历史
 
