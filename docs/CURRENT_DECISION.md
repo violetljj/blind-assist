@@ -25,7 +25,7 @@ Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史DTR保留）。
 
 ## 待决问题
 
-放量 v3 已完成并通过主判定（v1、v2 失败记录保留）。已决（2026-09-26，用户）：“确认畅通距离”降为论文附录的辅助可确认性地图（承诺 ≥10 cm、ρ≥0.5、最坏摆放），不作核心能力、不做正式检验，见 [CNH_CLEARANCE_RULEFIX_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_CLEARANCE_RULEFIX_DEV_20260926.md)；当前无硬件，默认全部以模拟推进，L8CH 桌面标定待硬件可用时再排（真机 CNH 可配 8×8×16 bin，5468/6160 字节，满足 H3）。待决：头部近处是否启动相机线（可见性诊断：HEAD 视场外正例 93% 在记忆窗口内被照到过，从未照到仅 0.3%，记忆上限约 +0.02 AP；头部差距主要在视场内小目标，AP 0.27，见 [CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926.md)）。真实传感器计数/串扰与安装参数仍待标定，SNR 结论按 SNR3/6/12 档报告；算法未达标不能推断物理信息上限。RGB线和实机方案另行决定。
+放量 v3 已完成并通过主判定（v1、v2 失败记录保留）。已决（2026-09-26，用户）：“确认畅通距离”降为论文附录的辅助可确认性地图（承诺 ≥10 cm、ρ≥0.5、最坏摆放），不作核心能力、不做正式检验，见 [CNH_CLEARANCE_RULEFIX_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_CLEARANCE_RULEFIX_DEV_20260926.md)；当前无硬件，默认全部以模拟推进，L8CH 桌面标定待硬件可用时再排（真机 CNH 可配 8×8×16 bin，5468/6160 字节，满足 H3）。待决：头部近处是否启动相机线（可见性诊断：HEAD 视场外正例 93% 在记忆窗口内被照到过，从未照到仅 0.3%，记忆上限约 +0.02 AP；头部差距主要在视场内小目标，AP 0.27，见 [CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926.md)；信号上限诊断：HEAD 可见正例 25%（小块 54%）的 4 帧匹配滤波上限 z<2，任何 ToF 读出不可检，SNR12 下小块仍 37%；ToF 读出理想剩余约 +0.14 召回，见 [CNH_SIGNAL_CEILING_DEV_20260926](../research/active/dtr-r0/nearfield/CNH_SIGNAL_CEILING_DEV_20260926.md)）。真实传感器计数/串扰与安装参数仍待标定，SNR 结论按 SNR3/6/12 档报告；算法未达标不能推断物理信息上限。RGB线和实机方案另行决定。
 
 ## 证据与历史
 
