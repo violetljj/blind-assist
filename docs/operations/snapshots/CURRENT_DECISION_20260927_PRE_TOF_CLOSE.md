@@ -1,0 +1,35 @@
+# 当前研究决定
+
+更新：2026-09-26。主线：盲杖互补的前视障碍感知。
+
+Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史DTR保留）。
+
+## 当前决定
+
+- 手机继续保留A基线与原首页→手动开始A+LOCAL→结束返回首页。研究组件不自动替换App；UNKNOWN不等于无障碍。
+- Python Track A v1.2已停止（失败保留）。v1.3试采（用户授权，现实尺寸+25%小目标层，轨迹重抽）12/12单位完成，G0–G4通过，G5未运行；描述性读出见[v1.3结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_V13_PILOT_RESULTS_20260926.md)。未放量。
+- 旧巷道仅作重复Development诊断。扫描收益已正式复现，但不能据此主张独立泛化、RGB收益或ToF信息上限。City、保护test、UE/RGB与硬件第二阶段均暂停。
+- 采用[两级流程](../AGENTS.md)：诊断/预检/工程/试采走快速道，不登记或另写协议，报告≤1页；改变主线、基线或产生论文数字走正式道。v1.3起试采G2计数/组合短缺只报告；G0/G1及放量门槛仍硬停止，v1.2不追改。
+
+## 当前关键数字
+
+|证据|结果与分母|当前用途|
+|---|---|---|
+|受控A / A OR LOCAL|TP118 / 159，FP7 / 22；224正、352负|增量与误报成本，非自然分布|
+|旧巷道扫描raw→H3 S2|AP0.660945；TP190/408，FP5/2472|消费Development方向证据|
+|Track A v1.2|105配置、1260几何帧；3完整+1部分单位；传感帧0|生成206秒后停止，G3–G5/audit读出NOT_RUN|
+|**Track A 放量 v3（正式，63 独立 audit 单位，M1/SNR6/5Hz/带噪自运动）**|六个 Holm 主检验全部成立：S2−B1-R HEAD/BODY +0.099/+0.079，S1−B0 +0.077/+0.062，S3−S2 +0.005/+0.068；宏 AP S3 0.756/0.749|[结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_RESULTS_20260926.md)；受控仿真，SNR6 经 ZJUL5 粗锚定|
+|**Track A 放量 v4（正式复现，64 新 audit 单位，同条件）**|六个主检验全部复现：S2−B1-R HEAD/BODY +0.092/+0.078，S1−B0 +0.078/+0.058，S3−S2 +0.005/+0.054；提醒层（calib 选阈，假警预算 5/10/20%）：S3 使 BODY 近距离没报少 5.1–5.4pp，单帧提阈比连续 2 帧及时率高 4.8–9.2pp|[结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_RESULTS_20260926.md)；仅限本生成器分布|
+|Track A v1.3试采（M1/SNR6/5Hz/带噪自运动）|audit 4单位宏平均AP HEAD/BODY：B1-R 0.652/0.624，S2 0.759/0.681，S3 0.770/0.733；1081/1051正查询|描述性；S2−B1-R 8条件×两组全为正，非显著性结论|
+|v1.2指纹|98非空配置，重复0|已有部分的完整性，不代表12单位完成|
+|完整保护test|真实布局/spec 0/164|继续暂停，不用3张候选巷道图替代|
+
+## 待决问题
+
+放量 v3 通过、v4 正式复现通过（v1、v2 失败保留）。已决（2026-09-26，用户）：“确认畅通距离”降为附录辅助可确认性地图（≥10 cm、ρ≥0.5、最坏摆放）；当前无硬件，全部以模拟推进，L8CH 桌面标定待硬件（真机 CNH 可配 8×8×16 bin）。诊断（快速道，条件性）：头部视场外正例绝大多数在记忆窗口内被照到过；S2 命中与目标自身回波强度高度一致（AUC 0.975），已知模板参考召回 HEAD 0.78 对 S2 0.60，差距来源未测；小目标及时提醒仍是主要缺口。待决：相机线是否启动（依据为小目标及时提醒不足，而非 ToF 已被证明无空间）；产品报警工作点。真实传感器计数/串扰与安装参数仍待标定；SNR 结论按 SNR3/6/12 档报告。RGB 线和实机方案另行决定。诊断索引：[清晰度规则](../research/active/dtr-r0/nearfield/CNH_CLEARANCE_RULEFIX_DEV_20260926.md) · [可见性](../research/active/dtr-r0/nearfield/CNH_HEAD_MEMORY_VISIBILITY_DEV_20260926.md) · [信号参考](../research/active/dtr-r0/nearfield/CNH_SIGNAL_CEILING_DEV_20260926.md) · [事件级](../research/active/dtr-r0/nearfield/CNH_EVENT_CEILING_DEV_20260926.md) · [提醒策略](../research/active/dtr-r0/nearfield/CNH_ALERT_PERSISTENCE_DEV_20260926.md)。
+
+## 证据与历史
+
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [扫描全表](../research/active/dtr-r0/nearfield/CNH_SCAN_DEVELOPMENT_RESULTS_20260926.md) · [v1.2回执](../research/active/dtr-r0/nearfield/CNH_TRACK_A_V12_PILOT_RESULTS_20260926.md) · [LOCAL对照](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md) · [test准备度](../research/active/dtr-r0/nearfield/CNH_FULL_TEST_READINESS_20260925.md)
+
+[压缩前完整原文](operations/snapshots/CURRENT_DECISION_20260926_PRE_FASTLANE.md)逐字节保留此前正文；旧决定与pending按当时日期解读。项目入口见[PROJECT_STATE](PROJECT_STATE.md)。本页仅在决定变化时更新。
