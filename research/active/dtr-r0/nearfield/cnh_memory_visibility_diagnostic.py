@@ -40,7 +40,7 @@ def unit_rows(geometry, sensor, readouts, unit):
         dist_all, oid_all = f['raydistance'], f['object_id']
     with np.load(sensor/f'unit{unit:02d}-mount-10-observations.npz') as f:
         obs_config = f['config']
-    with np.load(readouts/f'unit{unit}.npz') as f:
+    with np.load(readouts/f'unit{unit:02d}.npz') as f:
         s2, mem = f['S2__noisy@0.75'], f['memory__noisy']
         index = {(int(c), int(t)): n for n, (c, t) in enumerate(zip(f['config'], f['frame']))}
     out = []
@@ -93,7 +93,7 @@ def main():
     a.out.mkdir(parents=True, exist_ok=True)
     for u in a.units:
         target = a.out/f'unit{u}.json'
-        if not target.exists() and (a.readouts/f'unit{u}.npz').exists():
+        if not target.exists() and (a.readouts/f'unit{u:02d}.npz').exists():
             target.write_text(json.dumps(unit_rows(a.geometry, a.sensor, a.readouts, u)), encoding='utf-8')
         print(u, flush=True)
 
@@ -103,7 +103,7 @@ def attach_scores(rows, readouts):
     cache = {}
     for r in rows:
         if r['unit'] not in cache:
-            with np.load(readouts/f"unit{r['unit']}.npz") as f:
+            with np.load(readouts/f"unit{r['unit']:02d}.npz") as f:
                 cache[r['unit']] = (f['memory__noisy'], f['strata'],
                                     {(int(c), int(t)): n for n, (c, t) in enumerate(zip(f['config'], f['frame']))})
         mem, strata, index = cache[r['unit']]

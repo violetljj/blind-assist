@@ -49,7 +49,7 @@ def unit_rows(geometry, sensor, readouts, unit, snr):
         dist_all, oid_all, cos_all = f['raydistance'], f['object_id'], f['raycos']
     with np.load(sensor/f'unit{unit:02d}-mount-10-observations.npz') as f:
         obs_config = f['config']
-    with np.load(readouts/f'unit{unit}.npz') as f:
+    with np.load(readouts/f'unit{unit:02d}.npz') as f:
         s2, mem, strata = f['S2__noisy@0.75'], f['memory__noisy'], f['strata']
         index = {(int(c), int(t)): n for n, (c, t) in enumerate(zip(f['config'], f['frame']))}
     out = []
@@ -145,7 +145,7 @@ def main():
     a.out.mkdir(parents=True, exist_ok=True)
     for u in a.units:
         target = a.out/f'unit{u}.json'
-        if not target.exists() and (a.readouts/f'unit{u}.npz').exists():
+        if not target.exists() and (a.readouts/f'unit{u:02d}.npz').exists():
             target.write_text(json.dumps(unit_rows(a.geometry, a.sensor, a.readouts, u, a.snr)), encoding='utf-8')
         print(u, flush=True)
 

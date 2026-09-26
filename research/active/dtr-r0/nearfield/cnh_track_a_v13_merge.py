@@ -83,8 +83,10 @@ def run(root, n_units=12, v2_gates=False, split_counts=None):
     g2_units = [u['unit'] for u in units if u['checks']['pass_gate']]
     if v2_gates:
         # v2: split-level label diversity is the hard gate; unit shortfalls are reported.
-        g2 = all(c and c['pass_gate'] for c in split_checks.values())
+        # A split configured with zero units (v4 generates no train units) is not gated.
         ntr, nca, nau = split_counts
+        configured = dict(train=ntr, calib=nca, audit=nau)
+        g2 = all(c and c['pass_gate'] for s, c in split_checks.items() if configured[s] > 0)
         limits = dict(train=int(.05*ntr), calib=int(.05*nca), audit=int(.05*nau))
         excluded = {s: sum(1 for i in incomplete if i['split'] == s) for s in limits}
         complete = all(excluded[s] <= limits[s] for s in limits)
