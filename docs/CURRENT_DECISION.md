@@ -6,7 +6,7 @@ Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF 阶段
 
 ## 当前决定
 
-角距对应诊断确认几何表示损失：96既有训练单位、54912查询帧，边缘化误差约为径向量化的8.18倍；浅2314帧额外总L1为0.00066471 [0.00061503,0.00072400]，2243条全程清晰序列非零伪质量由同射线量化的1条增到842条。质量不是误停，oracle几何不是模型收益。下一步检验逐方向首可见距离/可见性是否能由native多帧CNH学出；尚未训练。M3保留，SURF的25/31浅及时、224次清晰误停及`NOT_ESTABLISHED_SINGLE_SEED_DEV`不改判，不扩该配方。[诊断](../research/active/dtr-r0/nearfield/CNH_SURFACE_FACTORIZATION_PROBE_20261002.md) · [前轮报警结果](../research/active/dtr-r0/nearfield/CNH_SURFACE_DISTRIBUTION_RESULTS_20261002.md)。均为已消费Development，无新实机证据。
+逐射线距离/valid模型未建立报警收益：同结构BCEO/RAY各seed0十轮，浅及时M3/BCEO/RAY为26/25/25（n31）；RAY−M3 −3.23pp [−10.34,0]、相对BCEO 0pp [0,0]。整体清晰首停205/214/217次（194.35代理分钟），外10–20cm为69/71/74次（40.69分钟），浅及时与外侧清晰护栏均失败，判`NOT_ESTABLISHED_SINGLE_SEED_DEV`，不扩五种子或追加该配方调参，M3保留。角距对应已保留，几何表示修正仍未转成报警收益；下一问题是区分预测几何与报警映射误差，尚未执行。独立原始分数复算通过；已消费Development、单种子，无新实机证据。[本轮结果](../research/active/dtr-r0/nearfield/CNH_RAY_SURFACE_RESULTS_20261002.md) · [前轮角距诊断](../research/active/dtr-r0/nearfield/CNH_SURFACE_FACTORIZATION_PROBE_20261002.md)。
 
 - **M3优先保留；全物体三级真值审计后浅擦碰优势与条件关系不变。** 固定分数/阈值，不重校准：source评估clear NEAR543/4741=11.45%→M3 519/4741=10.95%，context260/3920=6.63%→254/3920=6.48%。原立杆M3的95次clear报警有30次实际属于背景0–10cm擦身，修正65/560=11.61% [8.83,14.34]；不可当负例盲目抑制。原浅/深检出完全不变，M8 context新clear增2.30pp仍超限。仅描述性旧条件复核，旧判读保留；18432查询几何与144旧指标核对通过。横梁原深净少4实际为丢5补1；末帧差异不能直接当漏停，新的实际轨迹序列结果见上。旧序列结果按原定义保留。[审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
 
