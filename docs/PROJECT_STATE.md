@@ -23,7 +23,7 @@ LOCAL 多发现 5 个事件，同时增加 15 个误报帧；并未解决稳定�
 
 ## 当前只攻什么
 
-原生角距可见表面读出判为`NOT_ESTABLISHED_SINGLE_SEED_DEV`。SURF浅及时25/31，对冻结M3的26/31差−3.23pp [-10.53,0.00]；对同结构仅报警BCEO的24/31差+3.23pp [0.00,10.72]，均未过下界>0。外侧清晰首停73次对两对照69次（40.69代理分钟），整体224次对M3 205次（194.35分钟）。不扩五种子，不追加此配方调参；M3继续保留。既有96训练/48校准/96评估、相同原生多帧输入，仅训练几何监督；单种子已消费Development，无新渲染或硬件结论。[本轮结果](../research/active/dtr-r0/nearfield/CNH_SURFACE_DISTRIBUTION_RESULTS_20261002.md)。前轮共享signed场留帧预测`NOT_SUPPORTED`及旧失败保留，后续仅提出微格内角—距联合归属假设，尚未执行。
+角距对应诊断确认几何表示损失：96既有训练单位、54912查询帧，边缘化误差约为径向量化的8.18倍；浅2314帧额外总L1为0.00066471 [0.00061503,0.00072400]，2243条全程清晰序列非零伪质量由同射线量化的1条增到842条。质量不是误停，oracle几何不是模型收益。下一步检验逐方向首可见距离/可见性是否能由native多帧CNH学出；尚未训练。M3保留，SURF的25/31浅及时、224次清晰误停及`NOT_ESTABLISHED_SINGLE_SEED_DEV`不改判，不扩该配方。[诊断](../research/active/dtr-r0/nearfield/CNH_SURFACE_FACTORIZATION_PROBE_20261002.md) · [前轮报警结果](../research/active/dtr-r0/nearfield/CNH_SURFACE_DISTRIBUTION_RESULTS_20261002.md)。均为已消费Development，无新实机证据。
 
 最新完成全物体三级真值审计：立杆M3原95次“清晰报警”有30次实际为背景0–10cm擦身。固定分数与阈值后，source评估清晰NEAR543/4741=11.45%→M3 519/4741=10.95%；旧六背景260/3920=6.63%→254/3920=6.48%。浅/深检出原值不变，M3继续作为候选，M8跨背景增幅2.30pp仍超限。修正评价归属不是新模型增益；原判读与序列目标标签结果保留。双读出补报仍未过预设条件，不压制可接受擦身。[最新审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
 
