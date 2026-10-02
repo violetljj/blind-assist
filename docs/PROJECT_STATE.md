@@ -23,7 +23,7 @@ LOCAL 多发现 5 个事件，同时增加 15 个误报帧；并未解决稳定�
 
 ## 当前只攻什么
 
-逐射线距离/valid模型未建立报警收益：同结构BCEO/RAY各seed0十轮，浅及时M3/BCEO/RAY为26/25/25（n31）；RAY−M3 −3.23pp [−10.34,0]、相对BCEO 0pp [0,0]。整体清晰首停205/214/217次（194.35代理分钟），外10–20cm为69/71/74次（40.69分钟），浅及时与外侧清晰护栏均失败，判`NOT_ESTABLISHED_SINGLE_SEED_DEV`，不扩五种子或追加该配方调参，M3保留。角距对应已保留，几何表示修正仍未转成报警收益；下一问题是区分预测几何与报警映射误差，尚未执行。独立原始分数复算通过；已消费Development、单种子，无新实机证据。[本轮结果](../research/active/dtr-r0/nearfield/CNH_RAY_SURFACE_RESULTS_20261002.md) · [前轮角距诊断](../research/active/dtr-r0/nearfield/CNH_SURFACE_FACTORIZATION_PROBE_20261002.md)。
+冻结逐射线RAY的训练集诊断显示局部拟合瓶颈：96单位、54912查询帧，全部有效ray径向MAE10.09cm，浅查询相关局部89.58cm [83.73,96.51]，2cm内仅2.55% [2.26,2.86]（176905 ray分母）；有EXACT可见支持的浅子层仍89.59cm。teacher替入head后浅平均logit下降、清晰上升，该反事实含分布偏移，不能当部署增益或上界。下一步优先检验面向公开身体查询的局部可见表面质量预测，尚未训练；仍用浅及时/深保留/清晰误停检验任务收益。旧RAY浅25/31、清晰217次及`NOT_ESTABLISHED_SINGLE_SEED_DEV`保留，不扩旧配方种子或调参，M3保留。训练拟合是已消费Development，无新实机证据。[本轮诊断](../research/active/dtr-r0/nearfield/CNH_RAY_SURFACE_GEOMETRY_PROBE_20261003.md) · [原报警结果](../research/active/dtr-r0/nearfield/CNH_RAY_SURFACE_RESULTS_20261002.md)。
 
 最新完成全物体三级真值审计：立杆M3原95次“清晰报警”有30次实际为背景0–10cm擦身。固定分数与阈值后，source评估清晰NEAR543/4741=11.45%→M3 519/4741=10.95%；旧六背景260/3920=6.63%→254/3920=6.48%。浅/深检出原值不变，M3继续作为候选，M8跨背景增幅2.30pp仍超限。修正评价归属不是新模型增益；原判读与序列目标标签结果保留。双读出补报仍未过预设条件，不压制可接受擦身。[最新审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
 
