@@ -20,11 +20,15 @@ Ownership: `:app` shell/assets, `:feature:assist` runtime, `:core:assist` risk,
 
 ## Execution
 
-Default to a small working implementation and a task-effect check.
+Prioritize breakthroughs at the current bottleneck and useful working results.
+Start with a direct implementation and one decision-changing check; this is a
+starting point, not a ceiling on ambition or authorized follow-through.
 The user decides new questions, budget expansions and changed frozen criteria;
 within an authorized question/budget, comparisons, iteration, recovery and delivery
 proceed without another approval.
 
+- Do not delay reversible progress for hypothetical risks, low-value details or
+  procedural completeness. Judge work by useful capability and decisions gained.
 - **Fast lane (`EXPLORE`, default):** diagnostics, engineering and pilots. Reuse
   Development for iteration and source repair under the [data/log rules](research/WORKFLOW.md#data-and-run-records).
 - **Formal lane:** mainline/baseline promotion or confirmatory paper claims. Use the
@@ -32,11 +36,13 @@ proceed without another approval.
   for protected blind/final access or claim-critical numbers (`FINAL`).
 - Use `EXTERNAL` for release/deployment, credentials, privacy, destructive external
   actions or real-user safety claims. Missing evidence limits claims, not reversible work.
-- Add a precheck, review, test or abstraction for a concrete defect, acceptance
-  requirement, consequential action or decision-changing evidence gap; name the reason briefly.
+- Add a precheck, review, test, defensive layer or abstraction only for an observed
+  defect, explicit acceptance criterion, concrete data-integrity need, material
+  irreversible risk or evidence gap that changes the next decision; name the reason briefly.
 - Start with one meaningful check. Broaden for actual failures or integration impact;
   stop when relevant checks pass and repeat only for changed inputs or new concerns.
-- Implement the current need directly; keep necessary error/data-integrity handling.
+- Implement the current need directly. Defer speculative edge cases, generalization
+  and polish until they affect the result; keep necessary error/data-integrity handling.
 
 ## Integrity and evidence
 
