@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -43,14 +44,12 @@ import com.linnan.blindassist.localization.AppLanguage
 private fun SelectorSection(
     title: String,
     description: String,
-    accessibilityDescription: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .semantics { contentDescription = accessibilityDescription }
     ) {
         Text(
             text = title,
@@ -80,64 +79,109 @@ private fun <T> SegmentedSelector(
     onSelected: (T) -> Unit
 ) {
     val railShape = RoundedCornerShape(30.dp)
-    val optionShape = RoundedCornerShape(25.dp)
+    val largeFont = LocalDensity.current.fontScale >= 1.3f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = railShape,
         color = BaHomeControlRail,
         shadowElevation = 4.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
-                .selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            options.forEach { option ->
-                val isSelected = selected == option
-                Surface(
-                    modifier = Modifier
-                        .weight(1f)
-                        .heightIn(min = 48.dp)
-                        .clip(optionShape)
-                        .selectable(
-                            selected = isSelected,
-                            role = Role.RadioButton,
-                            onClick = { onSelected(option) }
-                        )
-                        .semantics {
-                            role = Role.RadioButton
-                            stateDescription = if (isSelected) {
-                                selectedStateDescription
-                            } else {
-                                unselectedStateDescription
-                            }
-                            contentDescription = optionDescription(option)
-                        },
-                    shape = optionShape,
-                    color = if (isSelected) BaHomeSurface else Color.Transparent,
-                    shadowElevation = if (isSelected) 2.dp else 0.dp
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 48.dp)
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = optionLabel(option),
-                            color = if (isSelected) BaHomeGreen else BaHomeInk,
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+        if (largeFont) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                options.forEach { option ->
+                    SegmentedSelectorOption(
+                        option = option,
+                        selected = selected == option,
+                        optionLabel = optionLabel,
+                        selectedStateDescription = selectedStateDescription,
+                        unselectedStateDescription = unselectedStateDescription,
+                        optionDescription = optionDescription,
+                        onSelected = onSelected,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .selectableGroup(),
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                options.forEach { option ->
+                    SegmentedSelectorOption(
+                        option = option,
+                        selected = selected == option,
+                        optionLabel = optionLabel,
+                        selectedStateDescription = selectedStateDescription,
+                        unselectedStateDescription = unselectedStateDescription,
+                        optionDescription = optionDescription,
+                        onSelected = onSelected,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T> SegmentedSelectorOption(
+    option: T,
+    selected: Boolean,
+    optionLabel: (T) -> String,
+    selectedStateDescription: String,
+    unselectedStateDescription: String,
+    optionDescription: (T) -> String,
+    onSelected: (T) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val optionShape = RoundedCornerShape(25.dp)
+    Surface(
+        modifier = modifier
+            .heightIn(min = 48.dp)
+            .clip(optionShape)
+            .selectable(
+                selected = selected,
+                role = Role.RadioButton,
+                onClick = { onSelected(option) }
+            )
+            .semantics {
+                role = Role.RadioButton
+                stateDescription = if (selected) {
+                    selectedStateDescription
+                } else {
+                    unselectedStateDescription
+                }
+                contentDescription = optionDescription(option)
+            },
+        shape = optionShape,
+        color = if (selected) BaHomeSurface else Color.Transparent,
+        shadowElevation = if (selected) 2.dp else 0.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = optionLabel(option),
+                color = if (selected) BaHomeGreen else BaHomeInk,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -190,7 +234,7 @@ private fun ScenarioRow(
                 color = if (selected) BaHomeGreen else BaHomeInk,
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.height(2.dp))
@@ -198,7 +242,7 @@ private fun ScenarioRow(
                 text = scenario.description(language),
                 color = BaHomeTextMuted,
                 style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
         }
@@ -250,11 +294,6 @@ internal fun ProfileSelector(
             "Quiet reduces interruption, Sensitive confirms medium risk earlier."
         } else {
             "安静减少打扰，敏感更早确认中风险。"
-        },
-        accessibilityDescription = if (english) {
-            "Reminder profile, current ${selected.displayName(language)}. Quiet reduces interruption, Sensitive confirms medium risk earlier."
-        } else {
-            "提醒档位，当前${selected.displayName(language)}。安静减少打扰，敏感更早确认中风险。"
         }
     ) {
         SegmentedSelector(
@@ -288,11 +327,6 @@ internal fun LanguageSelector(
         } else {
             "选择核心提醒和设置界面的中文或英文。"
         },
-        accessibilityDescription = if (english) {
-            "Interface language, current English"
-        } else {
-            "界面语言，当前中文"
-        },
         modifier = Modifier.testTag("language_selector")
     ) {
         SegmentedSelector(
@@ -324,11 +358,6 @@ internal fun ScenarioSelector(
         } else {
             "手动选择行走环境，调整提醒确认、冷却和震动计划。"
         },
-        accessibilityDescription = if (english) {
-            "Usage scenario, current ${selected.displayName(language)}. ${selected.description(language)}"
-        } else {
-            "使用场景，当前${selected.displayName(language)}。${selected.description(language)}"
-        },
         modifier = Modifier.testTag("scenario_selector")
     ) {
         ScenarioRows(
@@ -352,11 +381,6 @@ internal fun SpeechStyleSelector(
             "Brief reduces interruption, Detailed adds object type."
         } else {
             "简短减少打扰，详细会补充目标类别。"
-        },
-        accessibilityDescription = if (english) {
-            "Speech style, current ${selected.displayName(language)}. ${selected.description(language)}"
-        } else {
-            "语音风格，当前${selected.displayName(language)}。${selected.description(language)}"
         }
     ) {
         SegmentedSelector(
@@ -390,11 +414,6 @@ internal fun VibrationStrengthSelector(
             "Choose soft, standard, or stronger feedback for tactile sensitivity."
         } else {
             "按触觉敏感度选择轻柔、标准或更强提醒。"
-        },
-        accessibilityDescription = if (english) {
-            "Vibration strength, current ${selected.displayName(language)}. ${selected.description(language)}"
-        } else {
-            "震动强度，当前${selected.displayName(language)}。${selected.description(language)}"
         }
     ) {
         SegmentedSelector(
