@@ -1,32 +1,30 @@
-SIM_READOUT_VARIANTS_PAUSED_FOR_REPLAY_AND_EVALUATION_AUDIT
+REALISTIC_HEADROOM_CONDITIONAL_DEV / NEW_READOUT_TRAINING_PAUSED
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-03。已消费Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
-Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
+更新：2026-10-04。已消费Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
+Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
-## 当前优先顺序
+## 当前决定
 
-新的模拟读出变体暂停，包括同场景受控位移难例。真实回放定位与评估可行性审计已完成：04原NN/A2逐值复现，未平滑NN也左/中128/128；同一区两bin稳定均值偏移，归零贡献诊断使A2左/中降至37/128、12/128，不是修复或真实误报率。raw/scaler和bin合同一致，整背景减法与训练串扰bias减法含义不同；物理成因/逐query真值仍未识别。
+U8/U12测量完成：复用已消费的48个直行场景，不训练。1.2–2.1m宏AUC，M3/U8/U12为0.8708/0.9678/0.9804；U8−M3 +0.0970 [0.0720,0.1225]。
+匹配外20cm工作点，U8与M3外15/20cm报警均5/1152、11/1152；内1/2cm召回U8为952/1152、995/1152，M3为549/1152、629/1152。
+判为REALISTIC_HEADROOM：余量主要在1.6m以外、BODY/panel，不自动训练。U未知尺寸/反射率，但背景/姿态仍取真值；有限网格参照不是真实先验观测上界。[结果与边界](nearfield/CNH_UNKNOWN_TARGET_REFERENCE_20261004.md)
 
-M3浅26/31、剩5漏分属5单位。原bootstrap设置补1–3且零丢仍不能过浅条件，补4(+12.90pp)才可能过；该条件可达，但不适合选择3–5pp的小收益。双侧exact配对α=.05、80%power，若不一致率10%，3/5pp需920/337独立浅事件；这是新设计的条件规划，非旧标准或采样授权。外侧负例与校准必须保留，QMASS已有外侧误停增加的区间高于0。下一步先让真实观测保留已有障碍语义，区分仪器偏置与场景表面，再决定评估设计及是否恢复比较。不靠删格、改阈值或增加同批变体宣布收益。[综合审计与复现](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)。
+新的模拟读出训练暂停。真实回放问题已定位，待设备会话：需串扰/bias标定、ambient、几何记录和空走廊段。现有04逐值复现及两bin贡献诊断不能识别物理成因，也未修复迁移；不继续分析01/04。[回放与评价审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
 
-CCON浅23/31、补0丢3，训练拟合未转化为及时报警；CBASE/CCON均不采用，不继续排序损失权重搜索。[原结果与复现](../../../artifacts.local/work/cnh-boundary-contrast-20261003/REPORT.md)。
+此前受控位移测量：48场景×7位移×4噪声，无新训练；1.2–2.1m已知场景oracle8/12 AUC0.969/0.981，M3平滑0.871。两者可辨，未触发新训练分支；这是已知场景的乐观诊断，不能当未知目标或物理分辨率上界。[完整结果与限制](../../../artifacts.local/work/cnh-displacement-ceiling-20261003/REPORT.md)
 
-已启动的受控位移测量完成，无新训练：48直行场景，每场景7个位移×4噪声实现。1.2–2.1m已知场景oracle8 AUC0.969 [0.947,0.987]、匹配M3历史的oracle12为0.981 [0.965,0.993]，M3平滑0.871 [0.833,0.908]。两套预设参照均为“两者可辨/中间分支”，不支持观测完全不可分，也未触发oracle高而M3≤0.75的训练分支。M3浅及时309/384（48独立场景），实际外15/20cm清晰首停18/384、16.64代理分钟；外10cm属可接受擦身，保留在名义位置AUC但不计误停。
+## 保留基线与失败
 
-主距离logit斜率中位0.240/IQR[0.149,0.406]每cm，拟合阈值交点IQR[−5.27,6.88]cm；非线性残差RMSE中位1.14，不能强制归因为分辨率或偏置。oracle最远可分通常2.1–2.6m（采样前距2.25–2.57、相对0.5m提前2.19–2.59s），内1cm对外10cm为1.6–2.1档；K4点值不是稳定物理分辨率。渲染183.45s、冻结推理104.16s、评价62.11s。仅已消费同源仿真、已知场景乐观诊断；更宽panel gap与无转弯设计不能外推旧队列。保留M3与真实输入合同优先事项，本批保持评价用途。[测量结果/图/复现](../../../artifacts.local/work/cnh-displacement-ceiling-20261003/REPORT.md)。
+M3保留。原浅及时26/31、清晰首停205次；QMASS浅25/31、清晰222次，拟合改善未转化为报警收益。[QMASS结果](../../../artifacts.local/work/cnh-query-mass-20261003/REPORT.md)。RAY浅25/31、清晰217次；CCON浅23/31、补0丢3，均不采用，不继续原配方搜索。[RAY](nearfield/CNH_RAY_SURFACE_RESULTS_20261002.md) · [CCON](../../../artifacts.local/work/cnh-boundary-contrast-20261003/REPORT.md)
 
-## 保留报警基线
+SURF/HIST/AGG、共享signed场、NEST/MAX/source yaw、外扩guard与mask失败保留，同批H3单帧小试停止。v5保留NN+A2；正式增益仅在程序化生成器中成立，手机A/A+LOCAL不据此改动。
 
-局部支持QMASS训练非零格MAE0.3643→0.1830，却浅25/31、整体清晰222次、外侧79次，未赢M3。[结果](../../../artifacts.local/work/cnh-query-mass-20261003/REPORT.md)。RAY浅25/31、整体清晰217次、外侧74次，原固定配方失败保留。[原结果](nearfield/CNH_RAY_SURFACE_RESULTS_20261002.md)。RAY浅局部径向MAE89.58cm；teacher替入冻结head含分布偏移，不作部署上界。[诊断](nearfield/CNH_RAY_SURFACE_GEOMETRY_PROBE_20261003.md)
+## 评价与使用边界
 
-角距边缘化oracle误差约径向量化8.18倍，但几何表示修正未建立报警收益。SURF/HIST/AGG、共享signed场、NEST/MAX/source yaw、原外扩guard与mask失败保留；同批H3单帧小试停止。
+原报警96单位7680查询仅1138覆盖0.9m，6542右删失；31浅事件来自26单位。旧浅条件不适合选3–5pp小收益，功效规划与负例成本见审计，不等于采样授权。
 
-## 必要边界
+三级真值：伸入必须报，身体外0–10cm只报告，更远或其他高度计清晰误报。代理分钟与条件提前量不代表真实提醒负担或安全停止。固定模型条件区间不含重训练/校准不确定性；可见支持为零不证明畅通，密输出不增加8×8物理分辨率。无跨源/实机效果；UNKNOWN不等于安全。City、保护test、新UE和硬件第二阶段暂停。
 
-本轮复用96训练单位，评价区间按96整单位bootstrap，条件于单种子模型和校准阈值，不含重训练/校准不确定性。负样本重复使用且物体不同，配对不支持因果归因。可见支持不是碰撞概率，零支持不证明畅通；valid非实际SNR或UNKNOWN。密输出依赖先验，不增加8×8物理分辨率。
-
-原报警评估96单位7680查询仅1138覆盖0.9m，6542右删失；浅31来自26单位。三级真值：伸入必须报、身体外0–10cm只报告、更远或其他高度才计清晰。代理分钟含首停后时间，提前量条件于已报，不代表人安全停止；无跨源/实机效果。v5保留A2；手机A/A+LOCAL与UNKNOWN语义不变；City、保护test、新UE、硬件第二阶段暂停。
-
-[前版](CURRENT_HISTORY_20261003_PRE_RAY_GEOMETRY.md) · [RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。历次完整文字保留在Git历史及原结果中。
