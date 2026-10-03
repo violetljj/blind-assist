@@ -1,19 +1,17 @@
-BOUNDARY_CONTRAST_NOT_ESTABLISHED_SINGLE_SEED_DEV
+SIM_READOUT_VARIANTS_PAUSED_FOR_REPLAY_AND_EVALUATION_AUDIT
 
 # 前视障碍感知：当前状态
 
 更新：2026-10-03。已消费Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
-## 当前发现与下一问题
+## 当前优先顺序
 
-浅擦碰/外侧清晰的分界对比小试完成。CBASE/CCON同结构、seed0各10轮，同初始化/基础顺序/额外样本：每步均加8对训练样本及0.5倍pair BCE，仅CCON再加margin1排序损失。maps仅为latent。954对按运动模式、时刻、查询、高度背景及前距匹配，来自不同场景；负例全13时刻全物体清晰，0–10cm擦身不当负例。不是同物体位移反事实。
+新的模拟读出变体暂停，包括同场景受控位移难例。真实回放定位与评估可行性审计已完成：04原NN/A2逐值复现，未平滑NN也左/中128/128；同一区两bin稳定均值偏移，归零贡献诊断使A2左/中降至37/128、12/128，不是修复或真实误报率。raw/scaler和bin合同一致，整背景减法与训练串扰bias减法含义不同；物理成因/逐query真值仍未识别。
 
-48校准/96评估，M3阈值冻结，新臂各按1清晰首停/代理分钟校准。浅及时M3/CBASE/CCON为26/24/23（n31、26单位），深162/159/158（n164）。CCON对M3浅补0丢3，差−9.68pp [−20.70,0]；对CBASE补0丢1。清晰首停205/212/207（194.35代理分钟），同高度外10–20cm69/77/76（40.69分钟）；CCON−M3外侧+0.1720 [−0.1312,0.4814]次/分钟。两新臂均不采用，保留M3。独立raw计数与来源核验188项通过。
+M3浅26/31、剩5漏分属5单位。原bootstrap设置补1–3且零丢仍不能过浅条件，补4(+12.90pp)才可能过；该条件可达，但不适合选择3–5pp的小收益。双侧exact配对α=.05、80%power，若不一致率10%，3/5pp需920/337独立浅事件；这是新设计的条件规划，非旧标准或采样授权。外侧负例与校准必须保留，QMASS已有外侧误停增加的区间高于0。下一步先让真实观测保留已有障碍语义，区分仪器偏置与场景表面，再决定评估设计及是否恢复比较。不靠删格、改阈值或增加同批变体宣布收益。[综合审计与复现](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)。
 
-训练匹配对M3已正确排序945/954，两新臂均954/954且margin≥1。此训练任务较易，拟合仍未转化为及时报警；不能据此归因所有失败或宣称ToF无信息。下一方向优先同场景受控位移构造真正相邻的难例，检验分界信息；不继续本损失配方的权重搜索。训练循环两臂合计190.56秒，144单位推理31.23秒（RTX5060 Laptop），非端到端成本。
-
-[本轮结果与复现](../../../artifacts.local/work/cnh-boundary-contrast-20261003/REPORT.md) · [配对](nearfield/cnh_boundary_contrast_data.py) · [训练/推理](nearfield/cnh_boundary_contrast_train.py) · [评价](nearfield/cnh_boundary_contrast_evaluate.py)
+CCON浅23/31、补0丢3，训练拟合未转化为及时报警；CBASE/CCON均不采用，不继续排序损失权重搜索。[原结果与复现](../../../artifacts.local/work/cnh-boundary-contrast-20261003/REPORT.md)。
 
 ## 保留报警基线
 

@@ -1,12 +1,12 @@
 # 当前研究决定
 
-更新：2026-10-03。主线：盲杖互补的前视障碍感知。冻结v5与回放已完成；用户新授权持续推进ToF相关突破，开展Development机制探索。
+更新：2026-10-03。主线：盲杖互补的前视障碍感知。本轮先诊断已有真实回放、审计评估可行性；新的模拟读出变体暂停，包括同场景受控位移难例。
 
 Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF 阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 
 ## 当前决定
 
-浅擦碰/外侧清晰分界对比小试完成，仍保留M3。CBASE/CCON同初始化、顺序和额外配对样本各10轮，仅CCON增加排序损失；训练954对均拟合，M3原已正确排序945/954。48校准/96评估中浅及时M3/CBASE/CCON为26/24/23（n31），深162/159/158（n164）；清晰首停205/212/207（194.35代理分钟），同高度外10–20cm69/77/76（40.69分钟）。CCON−M3浅−9.68pp [−20.70,0]、补0丢3，外侧+0.1720 [−0.1312,0.4814]次/分钟；两新臂均不采用。训练匹配对较易，未建立分界泛化；下一方向优先同场景受控位移难例，不继续本排序损失的权重搜索。旧QMASS/RAY失败保留。独立raw核验188项通过；已消费仿真Development、单种子，无新实机证据。[结果与复现](../artifacts.local/work/cnh-boundary-contrast-20261003/REPORT.md) · [路线当前页](../research/active/dtr-r0/CURRENT.md)。
+**真实回放定位与评估可行性审计完成，保持新模拟读出暂停。** 冻结v5的04分数逐值复现；同一区两个bin均值偏移，四帧z中位8.31/9.74，未平滑NN也左/中128/128。只归零这两格输入后A2左/中降为37/128、12/128，是贡献诊断，不是修复。解码/bin配置一致、无方差floor；整场景背景减法与训练的串扰bias减法合同不同，物理成因与逐query真值仍未识别。31浅事件中M3剩5漏；原bootstrap设置补1–3且零丢仍过不了浅条件，补4(+12.90pp)才可能过，条件可达但只适合筛大幅改善。3/5pp条件功效规划及误停边界见[本轮审计](../research/active/dtr-r0/nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)。下一步优先让真实观测保留已有障碍语义、区分仪器偏置和场景表面，再决定评估设计与恢复比较；不靠删格或调阈值宣称迁移成功。M3和旧失败保留。
 
 - **M3优先保留；全物体三级真值审计后浅擦碰优势与条件关系不变。** 固定分数/阈值，不重校准：source评估clear NEAR543/4741=11.45%→M3 519/4741=10.95%，context260/3920=6.63%→254/3920=6.48%。原立杆M3的95次clear报警有30次实际属于背景0–10cm擦身，修正65/560=11.61% [8.83,14.34]；不可当负例盲目抑制。原浅/深检出完全不变，M8 context新clear增2.30pp仍超限。仅描述性旧条件复核，旧判读保留；18432查询几何与144旧指标核对通过。横梁原深净少4实际为丢5补1；末帧差异不能直接当漏停，新的实际轨迹序列结果见上。旧序列结果按原定义保留。[审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
 
@@ -30,7 +30,7 @@ Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF 阶段
 
 RGB逼近选择性首轮失败保留；后续局部边缘小试发现理想正确距离可改善净距，但实际粗格对象/表面归属未解决。产品报警工作点仍未决定；短模拟序列及“序列×查询盒”假警不能换算真实提醒负担。真实计数/串扰/安装标定待硬件。确认畅通距离仅作≥10cm、ρ≥0.5、最坏摆放的附录辅助地图。
 
-[公开数据检索](../artifacts.local/work/tof-real-histogram-search-20260927/REPORT.md)：已核实LCSPCData（TMF8820）真实直方图与部分真值的文件目录；THDR3K（L8CH）入口仍未核验。未下载数据；后续文件审计/验证另行决定，不直接迁移为L8CH标定。
+[LCSPCData最小样本审查](../research/active/dtr-r0/nearfield/LCSPCDATA_SUITABILITY_20260927.md)已于9月27日完成：下载tall_block JSON/STL及说明、许可共2,281,173 B，128帧TMF8820 3×3×128数据；所查样本无固定视点重复帧、独立背景，时间戳全零，暂不能检验冻结时序报警排名。仅支持有限脉冲形态参考，不作L8CH标定。[公开检索记录](../artifacts.local/work/tof-real-histogram-search-20260927/REPORT.md)与THDR3K入口未核验状态保留。
 
 [路线当前页](../research/active/dtr-r0/CURRENT.md) · [v3结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_RESULTS_20260926.md) · [软先验诊断](../research/active/dtr-r0/nearfield/CNH_SOFT_PRIOR_DEV_20260927.md) · [项目入口](PROJECT_STATE.md)
 
