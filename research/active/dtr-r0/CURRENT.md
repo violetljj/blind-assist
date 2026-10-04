@@ -1,4 +1,4 @@
-TEMPORAL_PILOT_INTERMEDIATE_DEV / M3_RETAINED
+READOUT_PILOT2_NO_CANDIDATE_DEV / M3_RETAINED
 
 # 前视障碍感知：当前状态
 
@@ -7,7 +7,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 当前决定
 
-V/T训练试点完成：新48场景主AUC M3/V/T/D=.8683/.8944/.6031/.9591；V−M3+.0260 [.0169,.0350]、补上28.7%，自然浅26/31、深163/164、清晰212/194.35min，护栏通过但未到+.03。T失败；INTERMEDIATE，保留M3，不追加训练。各3seed/8epoch与480训练场景完整，主计算48.1min。[结果、种子及分层](nearfield/CNH_TEMPORAL_READOUT_PILOT_20261004.md)。已知背景/目标仍是D特权；[前置2×2](nearfield/CNH_POSE_FACTORIAL_20261004.md)。
+读出试点2：新48场景M3/V/VD/D主AUC=.8740/.8987/.9012/.9519；V复现+.0247 [.0160,.0346]，补上31.7%；VD补上34.9%，对V+.0024未到+.02。自然清晰V/VD=212/193次，浅26/31、深163/164均不变。均未到+.045，NO_CANDIDATE、M3保留。T2硬loss.2946>.2756，UNFIT，不跑其余seed；表示问题未解。主计算56.6min。模拟/教师特权边界、事后成本区间及旧失败见[完整结果](nearfield/CNH_READOUT_PILOT2_20261005.md)。
 
 位姿容错参照已补齐48/48。同全批清晰首停18/384，低12浅及时M3/普通8/12/容错8/12=32/56/55/58/61（分母96）；容错12补回33丢4，但61次首报均仍可见、60次≥2.1m。窗口直接延长不是主要及时收益，下一问题转远距弱证据读出与位姿不确定性；高组清晰首停10→11仍披露。合并宏AUC.8477，不触发旧C，本轮未训练，M3保留。[完整结果](nearfield/CNH_POSE_MARGINAL_REFERENCE_COMPLETE_20261004.md)。
 
