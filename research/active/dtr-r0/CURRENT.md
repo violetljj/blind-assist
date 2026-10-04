@@ -1,4 +1,4 @@
-POSE_ENSEMBLE_NOT_ESTABLISHED_DEV / M3_RETAINED
+FIT_DIAGNOSTIC_MIXED_DEV / M3_RETAINED
 
 # 前视障碍感知：当前状态
 
@@ -9,7 +9,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 固定M3的24位姿先验平均完成：同清晰首停18/384，浅及时仍309/384；视场外32/96、视场内277/288，补回/丢失0/0与1/1。视场外主AUC .6941→.6999，差区间跨0；成本分层10/8→9/9。固定平均未带来报警收益，停止该配方；自然候选未运行，M3保留。推理30.2min，无训练/新渲染。[结果与边界](nearfield/CNH_M3_POSE_ENSEMBLE_20261004.md)。
 
-读出试点2保留：V复现+.0247，VD对V仅+.0024，均未到候选门槛；自然浅26/31、深163/164，清晰V/VD=212/193。T2拟合未过、无候选。[完整结果](nearfield/CNH_READOUT_PILOT2_20261005.md)。
+T2诊断MIXED：从零CVR训练优于T2，留出排序高+.0444但损失更差。T2可fit256行、2048行平台未过；优化/泛化与表示未分离。公平V三对M3三改善+.0303 [.0221,.0397]，原试点判定不改。无新网络/候选，M3保留。[完整诊断](nearfield/CNH_T2_FIT_DIAGNOSTIC_20261004.md) · [原试点2](nearfield/CNH_READOUT_PILOT2_20261005.md)。
 
 已知场景位姿容错参照48/48保留：同清晰18/384，低组M3/普通8/12/容错8/12及时32/56/55/58/61（分母96）。61次首报均仍可见、60次≥2.1m；不能称延窗记忆收益。高组成本10→11，宏AUC.8477未触发旧C。[完整结果](nearfield/CNH_POSE_MARGINAL_REFERENCE_COMPLETE_20261004.md)。
 
