@@ -1,4 +1,4 @@
-HEADROOM_SURVIVES_POSE_DEV / TRAINING_NOT_RUN / M3_RETAINED
+TEMPORAL_PILOT_INTERMEDIATE_DEV / M3_RETAINED
 
 # 前视障碍感知：当前状态
 
@@ -7,9 +7,9 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 当前决定
 
-本轮位姿容错参照按3600s计算预算停止，25/48完成（高19/低6）。低组已完成子集合并宏AUC：普通12帧.7811、容错12帧.7968、容错8帧.7151；仅运行时选择的部分描述，余23缺失，不作全48/误停预算/训练判读。本轮未训练，M3保留。[部分结果与续跑状态](nearfield/CNH_POSE_MARGINAL_REFERENCE_20261004.md)。
+V/T训练试点完成：新48场景主AUC M3/V/T/D=.8683/.8944/.6031/.9591；V−M3+.0260 [.0169,.0350]、补上28.7%，自然浅26/31、深163/164、清晰212/194.35min，护栏通过但未到+.03。T失败；INTERMEDIATE，保留M3，不追加训练。各3seed/8epoch与480训练场景完整，主计算48.1min。[结果、种子及分层](nearfield/CNH_TEMPORAL_READOUT_PILOT_20261004.md)。已知背景/目标仍是D特权；[前置2×2](nearfield/CNH_POSE_FACTORIAL_20261004.md)。
 
-最新8帧位姿2×2：48场景主域1.2–2.1m，M3 noisy/true AUC .8708/.8822，oracle8估计相对/true .9495/.9686；D−A +.0788 [.0575,.1024]，HEADROOM_SURVIVES_POSE。余量集中1.6m以外。外15cm帧成本点浅及时309→341/384、全序列外侧首停18→13；外20cm点及时363但首停48，帧成本匹配不等于序列预算匹配。仅建议逐帧hist＋相对位姿时序试点，新评价批/每臂≥3种子/整段误停预算；未训练。已知目标、背景和当前锚位姿仍是特权。[2×2完整结果](nearfield/CNH_POSE_FACTORIAL_20261004.md)
+另一路位姿容错参照按3600s计算预算停止，25/48完成（高19/低6）。低组已完成子集合并宏AUC：普通12帧.7811、容错12帧.7968、容错8帧.7151；仅运行时选择的部分描述，余23缺失，不作全48/误停预算/训练判读。该测量未训练，M3保留。[部分结果与续跑状态](nearfield/CNH_POSE_MARGINAL_REFERENCE_20261004.md)。
 
 另有低可见12场景长窗口诊断：合并0.9–2.1m估计位姿oracle12/16 AUC .8077/.8092，INTERMEDIATE，未触发训练；不证明窗口短。[记忆诊断](nearfield/CNH_MEMORY_REALITY_20261004.md)。此前U8/U12未知目标参照 .9678/.9804（M3 .8708），真背景/姿态条件余量保留。[未知目标结果](nearfield/CNH_UNKNOWN_TARGET_REFERENCE_20261004.md)
 
