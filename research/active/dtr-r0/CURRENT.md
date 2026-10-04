@@ -1,4 +1,4 @@
-REALISTIC_HEADROOM_CONDITIONAL_DEV / NEW_READOUT_TRAINING_PAUSED
+MEMORY_POSE_INTERMEDIATE_DEV / LONG_WINDOW_C_NOT_RUN / M3_RETAINED
 
 # 前视障碍感知：当前状态
 
@@ -7,11 +7,11 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 当前决定
 
-U8/U12测量完成：复用已消费的48个直行场景，不训练。1.2–2.1m宏AUC，M3/U8/U12为0.8708/0.9678/0.9804；U8−M3 +0.0970 [0.0720,0.1225]。
-匹配外20cm工作点，U8与M3外15/20cm报警均5/1152、11/1152；内1/2cm召回U8为952/1152、995/1152，M3为549/1152、629/1152。
-判为REALISTIC_HEADROOM：余量主要在1.6m以外、BODY/panel，不自动训练。U未知尺寸/反射率，但背景/姿态仍取真值；有限网格参照不是真实先验观测上界。[结果与边界](nearfield/CNH_UNKNOWN_TARGET_REFERENCE_20261004.md)
+用户授权的记忆A/B测量完成，真实输入合同暂缓。源31浅事件中五漏报有四个目标已出视场，但四个raw8内仍有可见曝光；不能简单归因为窗口短。受控低可见12场景，估计相对位姿oracle12/16在合并0.9–2.1m宏AUC为0.8077/0.8092（正768/负1152），真位姿16为0.9272、M3为0.6609。未到0.85训练门槛、也未到≤0.75停止分支，判为INTERMEDIATE，C不运行。下一问题建议聚焦历史对齐与信息利用，M3保留；不自动开新实验。[本轮诊断与分母](nearfield/CNH_MEMORY_REALITY_20261004.md)
 
-新的模拟读出训练暂停。真实回放问题已定位，待设备会话：需串扰/bias标定、ambient、几何记录和空走廊段。现有04逐值复现及两bin贡献诊断不能识别物理成因，也未修复迁移；不继续分析01/04。[回放与评价审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
+此前U8/U12未知目标尺寸/反射率参照发现条件余量：1.2–2.1m M3/U8/U12宏AUC0.8708/0.9678/0.9804；背景/姿态仍取真值，有限网格不是真实先验观测上界，不自动训练。[完整结果](nearfield/CNH_UNKNOWN_TARGET_REFERENCE_20261004.md)
+
+本轮长窗口训练条件未触发。真实回放仍待设备会话：需串扰/bias标定、ambient、几何记录和空走廊段。现有04逐值复现及两bin贡献诊断不能识别物理成因，也未修复迁移；不继续分析01/04。[回放与评价审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
 
 此前受控位移测量：48场景×7位移×4噪声，无新训练；1.2–2.1m已知场景oracle8/12 AUC0.969/0.981，M3平滑0.871。两者可辨，未触发新训练分支；这是已知场景的乐观诊断，不能当未知目标或物理分辨率上界。[完整结果与限制](../../../artifacts.local/work/cnh-displacement-ceiling-20261003/REPORT.md)
 
