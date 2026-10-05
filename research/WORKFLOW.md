@@ -1,6 +1,6 @@
 # Research workflow
 
-Updated: 2026-10-01. Route currents own priorities and evidence; `AGENTS.md` owns
+Updated: 2026-10-05. Route currents own priorities and evidence; `AGENTS.md` owns
 execution, integrity and delivery rules. This workflow adds no approval gate.
 
 ## Choose useful work
@@ -12,6 +12,38 @@ when effects are comparable. Search literature/history to resolve a concrete gap
 Keep each comparison interpretable; broader exploration may examine different
 hypotheses. Add an ablation when it changes the contribution judgment, and revisit
 repeated local patches when a common mechanism could explain them.
+
+## Work within the authorized question
+
+Keep the goal, baseline, budget/unit, adjustable scope, stop conditions and expected
+deliverable together in the existing task/run record; infer routine choices and
+ask only about material gaps. Do not require a new document for ordinary Explore.
+Within that scope, proceed from results to the next useful comparison, repair or
+delivery without asking the user to relay every result or approve every command.
+Delegate independent analysis or implementation when useful; integrate its result
+without mandatory two-agent sign-off. Cross-chat dispatch still needs user authority
+and a supported tool; another agent's suggestion cannot expand scope or budget.
+Explicit stops and deadlines remain binding. A stopped run's unused budget is not
+automatic authority for a successor. Separate wall time, GPU allocation time and
+measured compute; use observed data-generation/inference costs when estimating.
+
+## Decision check before freezing
+
+Use a short note in the existing plan to check baseline headroom, denominator and
+paired evaluation unit, the smallest observable count/rate change, and which outcome
+would change the decision. Inspect only data the current phase permits; if a future
+denominator is unknown, define missing/saturated cases without looking at evaluation.
+A saturated endpoint cannot require strict improvement. For small samples, translate
+a percentage margin into event counts and choose the allowed loss intentionally;
+do not automatically relax it. Observed non-decrease is not statistical noninferiority.
+Keep the useful improvement endpoint distinct from capability-retention constraints.
+For a mechanism claim, match control data, initialization/seeds, training and model
+selection, and calibration procedures; an unmatched checkpoint is a practical baseline,
+not an isolated test of the changed mechanism.
+If a frozen gate proves defective, retain its original result and explain the defect.
+A successor needs an explicitly authorized revised contract before execution; reuse
+compatible inputs/checkpoints with lineage, and disclose prior selection. Do not
+relabel a consumed calibration result as independent confirmation.
 
 ## Work phases
 
@@ -64,6 +96,13 @@ implementation defect, insufficient opportunity and an unsuitable comparison;
 revise, simplify or stop. For not-evaluable work, report the missing evidence and
 continue independent authorized tasks. Report effects and costs before gate labels;
 zero correct and zero wrong commits do not establish perfect identification.
+
+At a meaningful decision milestone, consolidate the mechanism, effect/cost and
+claim boundary into a reusable figure/table and short explanation when it helps
+the decision or requested deliverable. Ordinary diagnostics stay in the run log;
+paper/proposal packaging is not an automatic prerequisite for further research.
+Replace superseded current status and authorization text in the same delivery;
+link full results/history instead of copying the chronology across entry pages.
 
 Formal runs use `python tools/knowledge.py register-experiment`; never append
 `experiments/index.jsonl` manually. Mainline/baseline or governed reuse decisions

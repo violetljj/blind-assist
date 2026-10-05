@@ -23,9 +23,14 @@ Ownership: `:app` shell/assets, `:feature:assist` runtime, `:core:assist` risk,
 Prioritize breakthroughs at the current bottleneck and useful working results.
 Start with a direct implementation and one decision-changing check; this is a
 starting point, not a ceiling on ambition or authorized follow-through.
-The user decides new questions, budget expansions and changed frozen criteria;
-within an authorized question/budget, comparisons, iteration, recovery and delivery
-proceed without another approval.
+Carry an authorized question through implementation, comparison, recovery and
+delivery within its budget and stop conditions; do not end each step for approval.
+Record the goal, budget (including its unit), adjustable scope and deliverables once
+in the existing task/run record. Ask only for a material missing decision, changed
+frozen criteria, scope/budget expansion or an action needing new authority.
+Delegate independent work when useful; the primary agent integrates results and
+continues without requiring the user to relay them or routine dual sign-off.
+Before freezing experiment gates, apply the brief [decision check](research/WORKFLOW.md#decision-check-before-freezing).
 
 - Do not delay reversible progress for hypothetical risks, low-value details or
   procedural completeness. Judge work by useful capability and decisions gained.

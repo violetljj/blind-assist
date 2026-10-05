@@ -41,6 +41,15 @@ results/ledgers or exact Git history; replace superseded current prose rather
 than append another result chain. Project state routes work; cross-route
 decisions set priorities; each route owns its evidence details.
 
+For handoff, keep one current statement of the active question, retained baseline,
+effective authorization/budget and stop scope, latest decision, and next executable
+step or material pending decision. Target roughly 3 KiB per current page; the hard
+limits below are ceilings, not a reason to retain superseded chronology. Project
+state routes to the cross-route decision, which routes to detailed route evidence.
+Update affected entries together; label old restrictions by their run rather than
+leaving them as current prohibitions. Preserve clean prior text in exact Git history
+(record its revision when compacting), and preserve result reports and payloads.
+
 ## Budgets
 
 - one active directory per explicitly parallel product line under
