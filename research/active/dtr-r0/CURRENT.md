@@ -1,11 +1,13 @@
-EXTRINSIC_AUG_NOT_SUPPORTED / M3_RETAINED / HARDWARE_DEFERRED
+COVERAGE_CLOSED_SIM / TRISTATE_DESIGN_ONLY / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
 更新：2026-10-05。已消费Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
-## 最新结果：外参增强接续结束
+## 覆盖线收口：最新评价保留
+
+用户决定停止覆盖线追加优化，已有模拟证据整理成章，不再续跑融合、阈值或增强训练。本轮只整理；[章节证据链](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)与[三态待审方案](nearfield/CNH_TRISTATE_DRAFT_20261005.md)已记录，未启动试算或模型推广。
 
 保留冻结M3。原试点6/6还要求严格增加，数学上不可达；校准转弯查询clear 65→28/644、浅及时6→6/6。原FAIL与用户批准事后改为净≥0所得的修订PASS并存，不能隐去修订时点。
 
@@ -31,7 +33,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 下一问题、权限与边界
 
-待决定：双路残余转弯代价的机制是否值得继续投入；单路增强收益若要归因，需要匹配训练条件的对照。当前只整理工作流，不开新实验，不续用结束的4小时/150分钟预算。授权问题与预算内自主推进，变更问题、冻结指标和预算按[工作流](../../WORKFLOW.md)处理。
+下一步只审三态输出的风险分母、标签时窗与数据划分。旧95000–99000仅作开发；普通保形边际覆盖不能直接保证“输出畅通时的错误率”。正式证书需适当的选择性风险校准及未消费独立unit，不把帧/config当独立样本。增强三seed标为开发候选，M3仍是冻结参照；不改运行默认。CPU试算、新数据和训练均未启动，不续用已结束预算。按[工作流](../../WORKFLOW.md)区分描述性探索与确认性主张。
 
 R读出、T2、位姿平均、融合及外参本轮停止，不泛化为永久禁训。[读出收尾](nearfield/CNH_READOUT_CLOSEOUT_20261004.md)和原失败保留。真实回放待设备会话，不继续01/04分析。[审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
 
