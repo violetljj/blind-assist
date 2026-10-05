@@ -1,10 +1,12 @@
 # 当前研究决定
 
-更新：2026-10-05。主线：盲杖互补的前视障碍感知。覆盖提示修正后判为GEOMETRY_DOMINATED_SYNTH；估计误差不是本合成预算主瓶颈，覆盖主手段建议转向传感器配置验证。M3保留，硬件仍暂停。
+更新：2026-10-05。主线：盲杖互补的前视障碍感知。双±15°冻结M3报警验证达到DUAL_ALARM_SUPPORTED_SIM；每路2.5Hz总体浅及时下降，下一瓶颈是双路吞吐与真实信号代价。M3保留，硬件仍暂停。
 
 Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF 阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 
 ## 当前决定
+
+**双±15°的覆盖收益已转成模拟报警收益，2.5Hz不能直接采用。** 原48/K4分层整场景24校准/24评价，修正unit奇偶与HEAD/BODY完全混杂。校准联合clear各17/192，dual阈值.6549558985617854；评价原FOV_OUT浅13→47/48（6场景，+70.8pp，场景区间[60,80]）、FOV_IN140→144/144、联合clear24→14/192，DUAL_ALARM_SUPPORTED_SIM。原阈值dual为47/48、143/144、10/192。原始观测交替2.5Hz再推理为OUT31/48、IN116/144、clear0/192，总浅147/192低于single153/192；保留每路5Hz为模拟有益工作条件，不能把降频零误停当整体改善。共享相对位姿误差、原名义当前查询框、零横向基线与合成光子均为条件；自然raw CNH未存，整批NOT_EVALUABLE。本轮不训练、不动硬件；完整splay、次臂、分母和检查见[报警结果](../research/active/dtr-r0/nearfield/CNH_DUAL_SENSOR_ALARM_20261005.md)。
 
 **修正后合成诊断偏向几何覆盖，软件提示保留UNKNOWN/兜底。** 原48流只重算新指标，另跑oracle/重力参照估计各48流，全部80配置保留；12可回正单元zero缺口为0。≤10次听觉事件/min下，E_oracle/E_grav有9/8格（分母12）软件比dual低≥30pp，均GEOMETRY_DOMINATED_SYNTH；E_orig历史污染参照为MIXED。dual消除70.1–89.6%缺口，重力估计与oracle前沿差≤5pp为10/12，中位−.47pp，ESTIMATION_NOT_BOTTLENECK_SYNTH。修正v1不再永久双侧触发；.97m上.12/下.78中心需45.86°，纵向边界不能靠yaw回正。纯CPU科学计算4.55分钟无缩量；先不下载头姿数据，不自动启动硬件、模型或俯仰改造。以上仅合成几何描述，非硬件/真实负担证据。[冻结、12格前沿、间隔分布和纵向表](../research/active/dtr-r0/nearfield/CNH_COVERAGE_CUE_CORRECTED_20261005.md)。
 

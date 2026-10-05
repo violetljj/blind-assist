@@ -1,4 +1,4 @@
-GEOMETRY_DOMINATED_SYNTH / M3_RETAINED
+DUAL_ALARM_SUPPORTED_SIM / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
@@ -6,6 +6,8 @@ GEOMETRY_DOMINATED_SYNTH / M3_RETAINED
 Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 当前决定
+
+**双±15°冻结M3达到模拟报警支持，下一关是保持吞吐。** 同48/K4整场景分层24校准/24评价，避免unit奇偶=HEAD/BODY混杂；校准联合clear各17/192。评价匹配阈值dual：FOV_OUT浅13→47/48（6场景，+70.8pp [60,80]）、IN140→144/144、联合clear24→14/192；DUAL_ALARM_SUPPORTED_SIM。2.5Hz先删原观测再推理：OUT31/48、IN116/144、clear0/192，总浅147/192低于single153/192，不能直接采用。继承名义当前头部/查询框和共享估计相对位姿、零横向基线；自然raw未存，整批NOT_EVALUABLE，3条z1逐位复现单列。M3/俯仰−10°保持；不启动硬件。[主表、splay次臂、验证与限度](nearfield/CNH_DUAL_SENSOR_ALARM_20261005.md)。
 
 **修正后覆盖主手段建议转向传感器配置验证，软件保留UNKNOWN/兜底。** 同48合成流、12可回正球，oracle/重力估计各重跑48流；原48台账仅重算，保留旧v1缺陷作历史参照。≤10次/min，软件落后dual≥30pp格为oracle9/12、重力8/12，均GEOMETRY_DOMINATED_SYNTH；dual消除70.1–89.6%缺口。两估计前沿绝对差≤5pp为10/12，中位重力−oracle−.47pp，估计不是本预算主要瓶颈。zero主缺口0；纵向.97m上.12/下.78需45.86°，不能靠yaw回正。全部80配置未缩量，CPU科学摘要4.55分钟；旧曝光门438/440保留。当前不下载头姿、不自动启动硬件，不改M3/阈值/俯仰；合成几何不是人体负担或硬件收益证据。[更正、前沿与纵向表](nearfield/CNH_COVERAGE_CUE_CORRECTED_20261005.md)。
 
