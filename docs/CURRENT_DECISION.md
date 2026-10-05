@@ -1,7 +1,7 @@
 # 当前研究决定
 
 更新：2026-10-05。唯一研究主线：盲杖互补的前视障碍感知。
-最新授权与结果：三态第一阶段CPU开发已完成（新75分钟预算）；两臂畅通0、风险0/0，2.1m径向门与2.5m走廊冲突且有效性NOT_AVAILABLE；第二阶段先定门输入契约，不启动认证批。[开发报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_DEV_20261006.md)
+最新授权与结果：三态r2修正量程/名义掩码/模拟有效性后，正视直行自检1613/10240=15.75%，低于90%停止线；后续A/B曲线、认证批未启动，保留r1；下一步需审全格门的边界/历史敏感性。[开发报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_DEV_20261006.md)
 Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 
 ## 当前决定与瓶颈
