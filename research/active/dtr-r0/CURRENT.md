@@ -1,4 +1,4 @@
-COVERAGE_CLOSED_SIM / TRISTATE_DESIGN_ONLY / M3_RETAINED / HARDWARE_DEFERRED
+COVERAGE_CLOSED_SIM / TRISTATE_EVENT_DEV_COMPLETE / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
@@ -7,7 +7,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 覆盖线收口：最新评价保留
 
-用户决定停止覆盖线追加优化，已有模拟证据整理成章，不再续跑融合、阈值或增强训练。本轮只整理；[章节证据链](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)与[三态待审方案](nearfield/CNH_TRISTATE_DRAFT_20261005.md)已记录，未启动试算或模型推广。
+用户决定停止覆盖线追加优化，已有模拟证据整理成章，不再续跑融合、阈值或增强训练。覆盖线整理保留；[章节证据链](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)与[三态方案](nearfield/CNH_TRISTATE_DRAFT_20261005.md)已记录。用户新授权的[三态事件级CPU开发](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md)完成：精确0.9 m截止960事件single/dual及时909/929、最大τ静默10/30；3473采样畅通control同≤10次静默预算unknown 60.59%/39.77%，配对重选区间跨零，零静默端反转。冻结M3/r3门不变，正式证书暂缓，转向写作。
 
 保留冻结M3。原试点6/6还要求严格增加，数学上不可达；校准转弯查询clear 65→28/644、浅及时6→6/6。原FAIL与用户批准事后改为净≥0所得的修订PASS并存，不能隐去修订时点。
 
@@ -33,7 +33,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
 
 ## 下一问题、权限与边界
 
-下一步只审三态输出的风险分母、标签时窗与数据划分。旧95000–99000仅作开发；普通保形边际覆盖不能直接保证“输出畅通时的错误率”。正式证书需适当的选择性风险校准及未消费独立unit，不把帧/config当独立样本。增强三seed标为开发候选，M3仍是冻结参照；不改运行默认。CPU试算、新数据和训练均未启动，不续用已结束预算。按[工作流](../../WORKFLOW.md)区分描述性探索与确认性主张。
+下一步整理事件级主图与覆盖/读出局限；真参考核心gap最大τ single 8/10、dual25/30，不把残余全归读出。旧95000–99000仅作开发，1.5 m重标不执行，α/认证规模NOT_FIXED，GPU确认批NOT_RUN。增强三seed仍仅开发候选，M3冻结；本轮CPU分析82.42 s，不修改运行默认或追加门/阈值优化。统一论文确认若获授权需同时固定穿越截止的contact episode与完整畅通controls；按[工作流](../../WORKFLOW.md)区分描述性与确认性。
 
 R读出、T2、位姿平均、融合及外参本轮停止，不泛化为永久禁训。[读出收尾](nearfield/CNH_READOUT_CLOSEOUT_20261004.md)和原失败保留。真实回放待设备会话，不继续01/04分析。[审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
 
