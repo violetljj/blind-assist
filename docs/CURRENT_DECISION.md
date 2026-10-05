@@ -1,7 +1,7 @@
 # 当前研究决定
 
 更新：2026-10-05。唯一研究主线：盲杖互补的前视障碍感知。
-最新授权与结果：三态r2修正量程/名义掩码/模拟有效性后，正视直行自检1613/10240=15.75%，低于90%停止线；后续A/B曲线、认证批未启动，保留r1；下一步需审全格门的边界/历史敏感性。[开发报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_DEV_20261006.md)
+最新授权与结果（2026-10-06）：三态r3完成描述性重放；冻结噪声m=3°、自检99.25%、核心97.45%，最大τ single A/B错畅通2067/61560、1880/58765，dual 3829/125317、3369/117230；建议α=5%、A主变体、约1500认证unit+独立审计，400仅试点；无证书、GPU批未启动，r1/r2保留。[开发报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_DEV_20261006.md)
 Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 
 ## 当前决定与瓶颈
