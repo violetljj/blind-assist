@@ -228,6 +228,8 @@ mode2双路的26个未及时事件以浅侵入为主：按深度，0–2 cm为17
 
 这一结果修正了3.5节的解读：头部朝向的作用依然存在（精确查询下ALN比NAT单路及时多18 [7, 29]），但在自然头动下单路的覆盖已接近头部正对的水平（无法判断时间8.85%对5.86%），剩余差距主要来自方向估计。事后选出的自适应速度平滑把单路及时提高25 [14, 36]、双路34 [23, 46]，大于第二个传感器带来的差别。另一方面，真实头动下覆盖门更常通过，静默漏报随之增加（单路E1为68/1002，SYN为9/1011）；要求三个方向都低才判畅通，可把静默压到19和21，代价是无法判断时间增加约15个百分点。[E14]
 
+上述头动只来自一位步行者。为检验方向估计误差的代表性，又在BlindWays（10位视障或低视力步行者的户外Xsens动捕，只有关节位置、没有头部朝向）上用头部位置轨迹重复了方向估计。由于多数参与者步速只有0.5–0.8 m/s、路径更曲折，过去1 s位移估计的误差约为HEADS-UP的两倍；把这些误差代入冻结M3后，误报≤2.5%时单路及时减少89–128次、双路81–118次（/369，范围取决于真值口径），约为HEADS-UP的两倍，只取步速≥0.8 m/s的片段时接近HEADS-UP。因此确认批中的方向损失对典型视障步行者偏乐观；BlindWays无法检验与头部朝向有关的P1和P2。[E15]
+
 ## 4 局限
 
 **证据范围与工作点。** 全部结果来自同一模拟器。v3/v4保留原正式检验身份；M3相对NEAR的确认是在新单位上的开发确认，覆盖与三态分析复用已消费模拟数据。模型选择、阈值校准和生成器外推的不确定性没有由新单位自动消除。M3确认的末帧检出与三态的精确截止及时提醒使用不同工作点和分母；早期S3与M3没有直接比较。相同校准假警预算也不等于评估时相同实际假警。[E1、E2、E8]
@@ -273,6 +275,7 @@ mode2双路的26个未及时事件以浅侵入为主：按深度，0–2 cm为17
 |E7|[M3标签实现](../nearfield/cnh_margin_labels.py) f083e847；[CVR实现](../nearfield/cnh_cvr_pilot.py) d90835f0|M3/NEAR标签宽度及学习读出身份|
 |E8|[M3新单位确认](../nearfield/CNH_MARGIN_CONFIRM_RESULTS_20261002.md) aefbc465；协议b6174d1b|评估96000–96095，浅末帧122/168→145/168、46→23、+13.69pp及区间；EXPLORE模拟Development确认|
 |E12|[方向不确定性试验](../nearfield/CNH_HEADING_UNCERTAINTY_DEV_20261007.md)；[result.json](../../../../artifacts.local/work/cnh-heading-uncertainty-dev-20261007/result.json)、[frontier.json](../../../../artifacts.local/work/cnh-heading-uncertainty-dev-20261007/frontier.json)|σ=2/4/8°误差、三种处理、相同误报下的阈值扫描；融合投影与FP16推理数值核对|
+|E15|[BlindWays方向估计复核](../nearfield/CNH_BLINDWAYS_HEADING_DEV_20261007.md)；[result.json](../../../../artifacts.local/work/cnh-blindways-heading-20261007/result.json)、[result_replay_T2.json](../../../../artifacts.local/work/cnh-blindways-heading-20261007/result_replay_T2.json)|10位视障/低视力参与者Xsens位置（许可未声明，仅本地分析），E1/EMA误差、躯干偏角、误差窗口代入M3（开发批98000/99000）
 |E14|[真实头动确认批结果](../nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)；[协议](../nearfield/CNH_REAL_HEAD_CONFIRM_PROTOCOL_20261007.md) `08ba6864`，登记cnh-rhc-20261007；[result.json](../../../../artifacts.local/work/cnh-real-head-confirm-20261007/result.json)|新单位400000–400479（校准96/评估384），SYN/NAT/ALN三臂，P1–P3预设判定；头动来自HEADS-UP一段录制，EMA事后选出
 |E13|[真实头部运动方向估计](../nearfield/CNH_HEADS_UP_HEADING_DEV_20261007.md)；[step1.json](../../../../artifacts.local/work/cnh-heads-up-heading-20261007/step1.json)、[result_step2.json](../../../../artifacts.local/work/cnh-heads-up-heading-20261007/result_step2.json)|HEADS-UP公开头戴位姿（Apache-2.0，经同意条款获取；easy/hard为同一录制），E1/E2误差与头部偏角；真实误差窗口代入冻结M3，369事件/1255对照，相同误报比较；描述性
 |E11|[查询方向误差试验](../nearfield/CNH_QUERY_DIRECTION_DEV_20261006.md)；[result.json](../../../../artifacts.local/work/cnh-query-direction-dev-20261006/result.json)|±10°偏差、1 s位移估计、mode2滞后补偿；369事件/1255对照；补偿条件为事后加入的描述性结果|
