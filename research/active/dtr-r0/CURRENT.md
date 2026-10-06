@@ -1,4 +1,4 @@
-COVERAGE_CLOSED_SIM / MODE2_SEAM_NOT_SUPPORTED_DEV / QUERY_CONDITION_DISCLOSED / M3_RETAINED / HARDWARE_DEFERRED
+REAL_HEAD_CONFIRMED_SIM / COVERAGE_CLOSED_SIM / MODE2_SEAM_NOT_SUPPORTED_DEV / QUERY_CONDITION_DISCLOSED / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
@@ -11,7 +11,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 [精确事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`：0.9 m截止960个episode，single/dual及时909/929；最大τ unknown漏报41/1、静默10/30。3473条采样畅通controls，同≤10静默时unknown时间60.59%/39.77%，差−20.82pp重选区间[−47.25,+0.76]跨零；预算0时87.70%/97.05%，方向反转。旧978代理不混入分母，不能写dual整体更安全。
 
-方向线（10-06/07）：mode2残余与转弯相关（直行正视双路未及时2/234、转弯12/135）；[主动扫视](nearfield/CNH_ACTIVE_SCAN_DEV_20261006.md)头部正对时单路366/静默3优于被动双路354/15；[查询方向](nearfield/CNH_QUERY_DIRECTION_DEV_20261006.md)与[方向不确定性](nearfield/CNH_HEADING_UNCERTAINTY_DEV_20261007.md)：M3对head-to-travel极敏感，合成RMS 2.3/4.5/9.1°时单路及时339/318/287、双路352/338/316，并集判畅通把静默压回精确水平。[真实头部运动](nearfield/CNH_HEADS_UP_HEADING_DEV_20261007.md)（HEADS-UP公开头戴位姿，两段各约6分钟）：1 s位移估计直行RMS约5°、转弯17–25°，滞后补偿更差；代入M3后误报≤2.5%时单路及时349→291、双路354→309，影响介于合成2.3°与4.5°之间；事后自适应速度平滑恢复到314/331。早期S1/S2/S3与M3分开，v4偏差保留。
+方向线（10-06/07）：mode2残余与转弯相关（直行正视双路未及时2/234、转弯12/135）；[主动扫视](nearfield/CNH_ACTIVE_SCAN_DEV_20261006.md)头部正对时单路366/静默3优于被动双路354/15；[查询方向](nearfield/CNH_QUERY_DIRECTION_DEV_20261006.md)与[方向不确定性](nearfield/CNH_HEADING_UNCERTAINTY_DEV_20261007.md)：M3对head-to-travel极敏感，合成RMS 2.3/4.5/9.1°时单路及时339/318/287、双路352/338/316，并集判畅通把静默压回精确水平。[真实头动确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)（登记cnh-rhc-20261007，新单位384评估/96校准，HEADS-UP真实头部轨迹驱动）：单路无法判断时间合成59.45%→自然8.85%（P1支持）；自然头动+E1、误报≤2.5%时双路−单路及时−4 [−16,+7]/1002（双路优势不成立，<2%）；E1相对精确单/双路−39/−51（P3确认）；事后EMA收回+25/+34；SYN复现章节主结果。早期S1/S2/S3与M3分开，v4偏差保留。
 
 ## 保留决定
 
@@ -21,7 +21,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 ## 下一步与权限边界
 
-用户接受既有章节修订，本次CPU≤1h查询核实/支路诊断及模式措辞修订完成；原CPU≤3h姿态两臂保留。用户明确不批准合成路径延长，曲线两臂未执行并停止：门几乎放行、换门不补及时报警、报警查询已有精确相对方向且直线接触真值与曲线检查不同。前融合/偏角扫描、新“直行且持续正视”模式均未启动；后者可列最终统一确认事前配方，但须先固定方法、事件、controls及独立采样/深度分布，规模NOT_FIXED。正式证书暂缓，1.5m重标不执行；本轮预算随交付结束，不启动GPU新批。
+真实头动确认批已完成并写入章节3.6；本轮预算随交付结束，不启动新GPU批。曲线路径延长、前融合/偏角扫描未运行；正式证书暂缓。后续候选（需用户决定）：更多真实头动来源（BlindWays/Nymeria）复核、方向估计改进的独立确认、转弯时计入方向不确定性的畅通规则。
 
 City、保护test、新UE采集和硬件第二阶段仍暂停；真实回放待设备会话，不继续01/04分析。UNKNOWN不是安全，代理分钟不是人体负担，oracle不是物理上界，无跨源/实机结论。
 
