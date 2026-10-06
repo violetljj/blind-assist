@@ -1,42 +1,28 @@
-COVERAGE_CLOSED_SIM / TRISTATE_EVENT_DEV_COMPLETE / M3_RETAINED / HARDWARE_DEFERRED
+COVERAGE_CLOSED_SIM / TRISTATE_WRITING_COMPLETE / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-05。已消费Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
-Status: `DTR_R2_DYNAMIC_RETAINED`（仅为历史状态）。
+更新：2026-10-06。已消费模拟Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
+Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
-## 覆盖线收口：最新评价保留
+## 当前交付
 
-用户决定停止覆盖线追加优化，已有模拟证据整理成章，不再续跑融合、阈值或增强训练。覆盖线整理保留；[章节证据链](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)与[三态方案](nearfield/CNH_TRISTATE_DRAFT_20261005.md)已记录。用户新授权的[三态事件级CPU开发](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md)完成：精确0.9 m截止960事件single/dual及时909/929、最大τ静默10/30；3473采样畅通control同≤10次静默预算unknown 60.59%/39.77%，配对重选区间跨零，零静默端反转。冻结M3/r3门不变，正式证书暂缓，转向写作。
+用户确认转向写作。[章节草稿](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)串联统计读出、冻结M3、覆盖门与三态事件，附来源及五条答辩问答；[主张台账](THESIS_CLAIMS_20260927.md)追加精确事件口径；[图清单](thesis/CNH_TRISTATE_FIGURES_20261006.md)给出A主图与mode副图。只从既有CSV绘图，没有新实验、训练、推理或场景渲染，冻结载荷和运行默认不变。
 
-保留冻结M3。原试点6/6还要求严格增加，数学上不可达；校准转弯查询clear 65→28/644、浅及时6→6/6。原FAIL与用户批准事后改为净≥0所得的修订PASS并存，不能隐去修订时点。
+[精确事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`：0.9 m截止960个episode，single/dual及时909/929；最大τ unknown漏报41/1、静默10/30。3473条采样畅通controls，同≤10静默时unknown时间60.59%/39.77%，差−20.82pp重选区间[−47.25,+0.76]跨零；预算0时87.70%/97.05%，方向反转。旧978代理不混入分母，不能写dual整体更安全。
 
-接续三seed 0/1/2，校准98000冻结增强阈值1.2440962676079044，再生成新99000全96×40评价。以下按single-M3 / dual-M3 / dual-增强 / single-增强列示：
+最大τ残余静默single10/10、dual26/30在转弯；真参考核心gap8/10、25/30，与未检查区代理交叠，不作读出单因果归因。早期S1/S2/S3正式AP比较与后续M3学习读出分开；v4接受的执行偏差仍披露。
 
-|指标|共同分母|计数|
-|---|---:|---|
-|全模式物理clear首停|825|104 / 92 / 104 / 81|
-|全模式查询clear首停|4424|192 / 229 / 249 / 161|
-|浅0–2cm及时|32|28 / 26 / 30 / 29|
-|中2–5cm及时|54|47 / 49 / 52 / 48|
-|深>5cm及时|141|138 / 140 / 141 / 137|
-|转弯查询clear首停|1299|24 / 81 / 57 / 16|
-|转弯浅及时|14|13 / 8 / 12 / 14|
+## 保留决定
 
-增强dual转弯clear相对single为2.375倍，超过1.5倍（36次）上限，最终NOT_SUPPORTED；不按评价结果调阈值。增强反侧容限0/10/15/20°均48/48、25°47/48、30°14/48，复用旧观测，不是独立验证。历史V训练unit、镜像和yaw同时不同，不能作纯外参消融。[完整六臂、左右转、计划修订与效率](nearfield/CNH_EXTRINSIC_AUG_20261006.md)
+[覆盖线收口](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)，M3继续冻结。外参增强接续NOT_SUPPORTED：转弯query首停57/1299对single24/1299，2.375倍超过1.5倍门；原不可达严格增益FAIL和事后修订PASS同时保留。[完整报告](nearfield/CNH_EXTRINSIC_AUG_20261006.md)
 
-## 仍影响下一决定的证据
+读出R、T2、位姿平均、融合及外参各按本轮停止规则结束，不扩大为永久禁训。[读出收尾](nearfield/CNH_READOUT_CLOSEOUT_20261004.md)。低可见组仍曾曝光，近距持续支持是机制问题。[曝光拆分](nearfield/CNH_FOV_FAILURE_SPLIT_20261005.md)
 
-- 公开G3融合97000：single / OR / G3查询clear首停219 / 271 / 243（n4443），浅及时25 / 25 / 23（n29）。成本门通过、浅及时下降6.90pp超过3pp，GATING_NOT_SUPPORTED；原判读保留。[融合报告](nearfield/CNH_DUAL_GATED_FUSION_20261005.md)
-- 覆盖拆分：低可见88条均曾曝光，VD及时26/88；最后可见距离中位1.93m，对照高可见296条为0.97m。FOV_OUT不是全程无信息，下一机制关注近距持续曝光。[拆分](nearfield/CNH_FOV_FAILURE_SPLIT_20261005.md)
-- 修正合成提示中dual消除70.1–89.6%几何缺口，软件仍受提示负担和纵向覆盖约束。不是人体/硬件证据；1.7m/0.4s渐进回正仅为模拟参照。[合成诊断](nearfield/CNH_COVERAGE_CUE_CORRECTED_20261005.md) · [回正参照](nearfield/CNH_COVERAGE_POLICY_20261004.md)
+## 下一步与权限边界
 
-## 下一问题、权限与边界
+本轮写作完成，后续按用户反馈修订章节。转弯的真实姿态替换/路径曲率因素拆分只列未来方案，NOT_RUN；不得继承过去预算自动开算。最终统一确认批须另固定episode、截止、controls及独立采样/模式深度分布，规模NOT_FIXED。正式证书暂缓，1.5 m重标不执行，GPU新批未启动。
 
-下一步整理事件级主图与覆盖/读出局限；真参考核心gap最大τ single 8/10、dual25/30，不把残余全归读出。旧95000–99000仅作开发，1.5 m重标不执行，α/认证规模NOT_FIXED，GPU确认批NOT_RUN。增强三seed仍仅开发候选，M3冻结；本轮CPU分析82.42 s，不修改运行默认或追加门/阈值优化。统一论文确认若获授权需同时固定穿越截止的contact episode与完整畅通controls；按[工作流](../../WORKFLOW.md)区分描述性与确认性。
+City、保护test、新UE采集和硬件第二阶段仍暂停；真实回放待设备会话，不继续01/04分析。UNKNOWN不是安全，代理分钟不是人体负担，oracle不是物理上界，无跨源/实机结论。
 
-R读出、T2、位姿平均、融合及外参本轮停止，不泛化为永久禁训。[读出收尾](nearfield/CNH_READOUT_CLOSEOUT_20261004.md)和原失败保留。真实回放待设备会话，不继续01/04分析。[审计](nearfield/CNH_REPLAY_EVALUATION_AUDIT_20261003.md)
-
-三级真值：侵入必须报，身体外0–10cm只报告，更远或其他高度计清晰误报。代理分钟不是人体负担；oracle不是物理上界，密输出不增加8×8物理分辨率，UNKNOWN不等于安全。无跨源/实机效果；City、保护test、新UE及硬件第二阶段暂停。
-
-[RUNS](RUNS.md) · [主张台账](THESIS_CLAIMS_20260927.md) · [总决定](../../../docs/CURRENT_DECISION.md)。整理前完整结果链与链接：Git revision `4f174009da62a8fcd9f219bb6758375f3f1ce2aa` 的 `research/active/dtr-r0/CURRENT.md`；旧待决状态不恢复授权。
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。整理前全文保留于Git revision `fd55b74dcf9567be17903fa527da11f56a94da04` 的本页；历史待决状态不恢复授权。

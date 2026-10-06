@@ -39,3 +39,17 @@ v4 恢复事件、可核查日志和接受理由见结果文件末尾的用户�
 |低可见组是下一覆盖调查重点，尚未证明缺信息|EXPLORE / 描述性分层|[R结果](nearfield/CNH_LOCATION_REFERENCE_20261004.md) `21084c27`|FOV_OUT为可见比例<.5的11场景，浅序列88；全批384|VD/R_any/R_query/D及时26/22/25/49；R_any AUC .5583。全批清晰16/384；OUT VD/R为6/9次|不是全程不可见，OUT成本未匹配；不能说传感器没观测信息、靠读出绝对无解，或把几何覆盖当报警增益|
 
 可组织为“训练分布改善与特权参照拆分”的探索章节；必须保留失败、混杂和背景特权未拆的边界，不能将各批差值相加组成因果贡献分解。
+
+## 2026-10-06 追加：覆盖线与三态事件级
+
+本节采用精确0.9 m截止的960个物理接触episode，替代旧978个代理事件的写作口径；两者标签和截止不同，不逐项相减。以下均为已消费模拟Development的EXPLORE描述性证据，不能继承v3/v4正式主检验身份。原障碍报警阈值冻结；τ是允许输出clear的低分门槛，最大τ端点不等于重新选择报警阈值。主比较采用A（无保持）。[章节草稿](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md) · [图清单](thesis/CNH_TRISTATE_FIGURES_20261006.md)。
+
+|主张|证据层级（正式/描述性/已消费 Development 诊断）|来源文件与提交|数据与分母|关键数字|适用范围|禁用表述|
+|---|---|---|---|---|---|---|
+|冻结M3在精确截止前的事件及时提醒计数|已消费模拟Development；descriptive|[事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`；同报告所链`result.json`的`groups.all.curves`|384场景unit×40config；精确截止可评价接触960；HEAD/BODY合并为episode，不是逐物体或963个contact query|single/dual及时909/929 /960；未及时51/31。及时计数不随本轮20个低分τ改变|0.9 m为模拟参考截止；任一查询曾报警即算episode及时，不证明正确目标定位、用户获知或实机有效性；13073右删失不算漏报|“dual更安全”“真实行走及时率已验证”“0.9 m为人体安全距离”|
+|single覆盖门将部分未及时事件转为unknown|已消费模拟Development；descriptive|[事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`；[r3门](nearfield/CNH_TRISTATE_DEV_20261006.md) `8f9dbebe`|single/A最大τ索引19：接触960、未及时51；畅通controls3473条、总6946模拟秒；mode0 controls1444条|及时/unknown漏报/静默909/41/10；control unknown时间60.59%；mode0恒偏15°为97.06%|覆盖门没有补成及时报警，而是改变漏报时的输出；controls为保存采样帧均畅通的短模拟序列，时间比例不是自然用户负担|“漏报全部修复”“unknown即安全”“提示效果已验证”|
+|dual最大τ端点的低unknown负担伴随静默漏报|已消费模拟Development；descriptive|[事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`|dual/A索引19：接触960、未及时31；同3473条controls、6946模拟秒|及时/unknown漏报/静默929/1/30；control unknown时间1.59%|低unknown不代表漏报已处理；最大τ只是冻结网格端点，原障碍阈值未改|“dual更安全”“unknown低就代表覆盖充分”“残余均为读出漏检”|
+|同≤10次静默预算时dual负担描述性较少，零静默端反转|已消费模拟Development；经验网格选择与描述性重选区间|[事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`；`result.json`的`matched.A`|同960事件、3473 controls；single/dual选中索引19/11；1000次整unit、批/mode/左右转分层配对bootstrap，每次重选网格点|≤10：实际静默10/10，unknown60.59%/39.77%，dual−single −20.82pp，95%区间[−47.25,+0.76]跨零；预算0：索引5/0，87.70%/97.05%，差+9.35pp，区间[−25.70,+31.02]|比较的是给定经验静默上限下的负担，不是已知相同真实风险；预算2亦跨零；预算15/30实际静默数不相同，不能写精确等风险|“任意相同风险下dual更省”“dual整条曲线都更好”“统计优越已证”“零风险证书”|
+|最大τ残余静默集中转弯，并与核心缺口代理及未检查区交叠|已消费模拟Development；描述性分层/事后代理诊断|[事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`；`result.json`的mode曲线及逐点代理计数；[覆盖收口](nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md) `b96a11e1`|最大τ/A静默single10、dual30；转弯接触313；真姿态参考核心代理可评价10/30|转弯静默single10/10、dual26/30；核心gap8/10、25/30；未检查区5/10、18/30；当前视场见证6/6、20/20（可评价子集）|真参考核心代理、当前视场见证及未检查区允许交叠；截止标签与最后输出帧代理不同；见证不验证无遮挡或识别。不作读出、姿态或直线路径单因果归因|“残余均为读出漏检”“转弯失败原因已查明”“盲杖已兜底未检查区”“零风险证书”|
+
+写作撤回旧近似口径下的“dual剩下的漏报基本是看得见但没读出来”和“dual整条曲线都更好”。保留的结论是：覆盖检查能将部分未及时事件转为无法判断；在若干给定经验静默上限下，dual的采样畅通控制unknown时间描述性较少，极低静默端存在反转。转弯的姿态误差与直线前进区域假设拆分只列未来问题，本轮不执行。
