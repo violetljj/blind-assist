@@ -1,4 +1,4 @@
-COVERAGE_CLOSED_SIM / TURN_POSE_DIAGNOSTIC_COMPLETE_PATH_NOT_EVALUABLE / M3_RETAINED / HARDWARE_DEFERRED
+COVERAGE_CLOSED_SIM / MODE2_SEAM_NOT_SUPPORTED_DEV / QUERY_CONDITION_DISCLOSED / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
@@ -11,7 +11,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 [精确事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`：0.9 m截止960个episode，single/dual及时909/929；最大τ unknown漏报41/1、静默10/30。3473条采样畅通controls，同≤10静默时unknown时间60.59%/39.77%，差−20.82pp重选区间[−47.25,+0.76]跨零；预算0时87.70%/97.05%，方向反转。旧978代理不混入分母，不能写dual整体更安全。
 
-最大τ残余静默single10/10、dual26/30在转弯；真参考核心gap8/10、25/30，与未检查区代理交叠，不作读出单因果归因。早期S1/S2/S3正式AP比较与后续M3学习读出分开；v4接受的执行偏差仍披露。
+最大τ残余静默single10/10、dual26/30在mode2（转弯且唯一持续头部正视行进方向），两因素混淆；按模式未及时single33/8/10、dual2/3/26，分母294/353/313。新[支路诊断](nearfield/CNH_MODE2_SEAM_DEV_20261006.md)：26漏报中single及时20；目标相关高度无遮挡表面的水平范围均被一支路完整覆盖，313事件双路并集与较好支路完整FOV面积比例均相同，不支持简单水平交界切分。报警查询取得精确当前head-to-travel信息，部署需估计；已补章节局限。既有核心gap代理仍不作读出单因果归因。早期S1/S2/S3与M3分开，v4偏差保留。
 
 ## 保留决定
 
@@ -21,7 +21,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 ## 下一步与权限边界
 
-本轮写作完成，后续按用户反馈修订章节。新授权CPU≤3h[转弯因素诊断](nearfield/CNH_TURN_FACTOR_DEV_20261006.md)完成直线姿态两臂：转弯最大τ静默single10/dual26不变；全体≤10点true single/dual unknown59.01%/44.61%对估计60.59%/39.77%。曲线两臂NOT_EVALUABLE：事件截止后保存的真实未来只有0.16/0.32m，不足2.1m；第5臂需重新推理，NOT_RUN。不能判定读出单因果，延续原角速度的合成假设待明确；本轮不继承过去预算。最终统一确认批须另固定episode、截止、controls及独立采样/模式深度分布，规模NOT_FIXED。正式证书暂缓，1.5 m重标不执行，GPU新批未启动。
+用户接受既有章节修订，本次CPU≤1h查询核实/支路诊断及模式措辞修订完成；原CPU≤3h姿态两臂保留。用户明确不批准合成路径延长，曲线两臂未执行并停止：门几乎放行、换门不补及时报警、报警查询已有精确相对方向且直线接触真值与曲线检查不同。前融合/偏角扫描、新“直行且持续正视”模式均未启动；后者可列最终统一确认事前配方，但须先固定方法、事件、controls及独立采样/深度分布，规模NOT_FIXED。正式证书暂缓，1.5m重标不执行；本轮预算随交付结束，不启动GPU新批。
 
 City、保护test、新UE采集和硬件第二阶段仍暂停；真实回放待设备会话，不继续01/04分析。UNKNOWN不是安全，代理分钟不是人体负担，oracle不是物理上界，无跨源/实机结论。
 
