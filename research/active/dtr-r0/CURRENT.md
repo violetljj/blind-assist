@@ -2,7 +2,7 @@ COVERAGE_CLOSED_SIM / MODE2_SEAM_NOT_SUPPORTED_DEV / QUERY_CONDITION_DISCLOSED /
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-06。已消费模拟Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
+更新：2026-10-07。已消费模拟Development；`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 ## 当前交付
@@ -11,7 +11,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 [精确事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`：0.9 m截止960个episode，single/dual及时909/929；最大τ unknown漏报41/1、静默10/30。3473条采样畅通controls，同≤10静默时unknown时间60.59%/39.77%，差−20.82pp重选区间[−47.25,+0.76]跨零；预算0时87.70%/97.05%，方向反转。旧978代理不混入分母，不能写dual整体更安全。
 
-方向线（10-06/07）：mode2残余与转弯相关（直行正视双路未及时2/234，转弯12/135），交界切分不成立；[主动扫视](nearfield/CNH_ACTIVE_SCAN_DEV_20261006.md)头部正对时单路366/静默3/unknown0.15%优于被动双路354/15/1.66%，提示代价取决于假设回头行为；[查询方向](nearfield/CNH_QUERY_DIRECTION_DEV_20261006.md)M3对head-to-travel极敏感，1 s位移估计转弯滞后3.2°使mode2单路133→106，滞后补偿恢复135；[方向不确定性](nearfield/CNH_HEADING_UNCERTAINTY_DEV_20261007.md)RMS 2.3/4.5/9.1°时单路及时339/318/287、双路352/338/316，查询并集同误报下不优于降阈值，并集判畅通把静默压回精确水平。早期S1/S2/S3与M3分开，v4偏差保留。
+方向线（10-06/07）：mode2残余与转弯相关（直行正视双路未及时2/234、转弯12/135）；[主动扫视](nearfield/CNH_ACTIVE_SCAN_DEV_20261006.md)头部正对时单路366/静默3优于被动双路354/15；[查询方向](nearfield/CNH_QUERY_DIRECTION_DEV_20261006.md)与[方向不确定性](nearfield/CNH_HEADING_UNCERTAINTY_DEV_20261007.md)：M3对head-to-travel极敏感，合成RMS 2.3/4.5/9.1°时单路及时339/318/287、双路352/338/316，并集判畅通把静默压回精确水平。[真实头部运动](nearfield/CNH_HEADS_UP_HEADING_DEV_20261007.md)（HEADS-UP公开头戴位姿，两段各约6分钟）：1 s位移估计直行RMS约5°、转弯17–25°，滞后补偿更差；代入M3后误报≤2.5%时单路及时349→291、双路354→309，影响介于合成2.3°与4.5°之间；事后自适应速度平滑恢复到314/331。早期S1/S2/S3与M3分开，v4偏差保留。
 
 ## 保留决定
 
