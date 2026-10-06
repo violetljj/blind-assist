@@ -7,7 +7,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 ## 当前交付
 
-用户确认转向写作。[章节草稿](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)串联统计读出、冻结M3、覆盖门与三态事件，附来源及五条答辩问答；[主张台账](THESIS_CLAIMS_20260927.md)追加精确事件口径；[图清单](thesis/CNH_TRISTATE_FIGURES_20261006.md)给出A主图与mode副图。只从既有CSV绘图，没有新实验、训练、推理或场景渲染，冻结载荷和运行默认不变。
+用户确认转向写作。[章节草稿](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)已修订：补M3新单位衔接、三项贡献、形式化定义与拒识文献，局限集中一节，来源移附录；[答辩问答](thesis/CNH_DEFENSE_QA_20261006.md)另存。[图清单](thesis/CNH_TRISTATE_FIGURES_20261006.md)含主曲线、预算10模式柱图、方法示意及附录曲线；主张台账保留精确口径。统计图只读CSV，方法图只读配置，无新实验/统计，冻结载荷不变。
 
 [精确事件报告](nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`：0.9 m截止960个episode，single/dual及时909/929；最大τ unknown漏报41/1、静默10/30。3473条采样畅通controls，同≤10静默时unknown时间60.59%/39.77%，差−20.82pp重选区间[−47.25,+0.76]跨零；预算0时87.70%/97.05%，方向反转。旧978代理不混入分母，不能写dual整体更安全。
 

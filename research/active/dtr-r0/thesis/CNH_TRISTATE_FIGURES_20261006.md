@@ -1,40 +1,62 @@
-# 覆盖与三态章节图清单（2026-10-06）
+# 覆盖与三态章节图清单（2026-10-06 修订）
 
-主线配合[中文章节](CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)：先解释报警器已有的及时提醒，再展示覆盖检查如何改变未及时事件的输出和畅通控制负担。图为已消费模拟Development描述性结果，只有A无保持变体；不将unknown当作安全证明。
+配合[章节草稿](CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)。正文采用静默—无法判断主图、预算10模式柱图和方法示意图；完整模式曲线放附录。所有文件提供300 dpi PNG和文字转字形路径的SVG。
 
-## 图1：静默事件与无法判断负担（主图）
+## 图1：静默—无法判断主图
 
-[PNG，300 dpi](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/fig1_tristate_A_silent_unknown.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/fig1_tristate_A_silent_unknown.svg)
+[PNG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig1_tristate_A_silent_unknown.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig1_tristate_A_silent_unknown.svg)
 
-横轴为截止时静默漏报计数，共同事件分母960；纵轴为3473条采样畅通control的unknown时间百分比，时间分母6946模拟秒。single/dual各画冻结20点τ网格，用圆/方/菱形标记报告中预算0/2/10的选中点。曲线连接离散保存点，不对阈值插值，不画未保存的统计区间。
+横轴为静默漏报计数，分母960个接触事件；纵轴为3473条对照序列、6946模拟秒的无法判断时间。单路与双路使用A变体的冻结20点网格，标记沿用报告选点。删除原图内总标题和底部说明，相关内容由正文图注承担；零预算标签改为“静默=0”，87.70%与62.14%标签移到曲线外，使用引线关联。
 
-|全体静默预算 /960|single：索引，静默，unknown|dual：索引，静默，unknown|
+|预算 /960|单路索引：静默，无法判断时间|双路索引：静默，无法判断时间|
 |---|---|---|
-|0|5，0，87.70%|0，0，97.05%|
-|2|13，2，69.00%|7，2，62.14%|
-|10|19，10，60.59%|11，10，39.77%|
+|0|5：0，87.70%|0：0，97.05%|
+|2|13：2，69.00%|7：2，62.14%|
+|10|19：10，60.59%|11：10，39.77%|
 
-图注可用：**冻结M3与r3门的A变体经验权衡。每臂在共同20点τ网格中，沿用已报告的满足静默上限且unknown负担最小的点。预算2/10的配对重选区间跨零，负担差仅作描述；经验零静默端排序反转。模拟control时间不代表真实用户提示负担。** 区间由[精确事件报告](../nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md) `fd55b74d`提供，在正文表中呈现，未从CSV重造。
+## 图2：预算10的模式漏报构成及时间负担
 
-## 图2：mode分层（副图）
+[PNG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig2_tristate_A_mode_summary_budget10.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig2_tristate_A_mode_summary_budget10.svg)
 
-[PNG，300 dpi](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/fig2_tristate_A_by_mode.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/fig2_tristate_A_by_mode.svg)
+选中点为全体静默预算≤10的单路索引19、双路索引11。左侧为mode分组的水平堆叠柱，显示无法判断漏报和静默漏报；右侧为同模式对照序列的无法判断时间。各模式沿用全体阈值，未重新选点。接触事件分母写入行标签，时间分母在正文图注中给出。
 
-mode0恒偏15°、mode1±20°扫视、mode2转弯分别成面板。横轴读取各mode保存的静默率，事件分母为294/353/313；纵轴读取该mode controls的unknown时间，control序列分母为1444/1342/687，每条仍按原定义贡献2.0模拟秒。沿用图1全体索引，不在各mode重选。数字0/2/10表示**全体预算**，不表示各mode的静默上限；重合坐标合并标签，空心圆标最大τ端点。
+|模式|接触事件 / 对照序列|单路：无法判断漏报，静默，时间|双路：无法判断漏报，静默，时间|
+|---|---|---|---|
+|mode0 恒偏15°|294 / 1444|33，0，97.06%|2，0，27.56%|
+|mode1 ±20°扫视|353 / 1342|8，0，52.28%|1，2，39.17%|
+|mode2 转弯|313 / 687|0，10，0.16%|18，8，66.64%|
 
-图注可用：**全体选中阈值在不同头部运动模式中的表现。single最大τ静默10个均在转弯，dual为30个中的26个；副图保留阈值继承关系，不将全体负担下降解释为转弯优势。模式来自既有模拟配方，分层不是纯运动或转向因果消融。**
+柱段和时间只读取既存CSV字段unknown_miss、silent、unknown_time；零计数不绘有面积的柱段，不推算新的置信区间。
 
-## 输入、代码与复现范围
+## 方法示意图：单路与双路的覆盖检查
 
-唯一绘图数值输入是[已保存curves.csv](../../../../artifacts.local/work/cnh-tristate-event-dev-20261006/curves.csv)，SHA256 `2f69d24d3a2108c9a4b66bbd117fd18b50f4c95375d448243552bb0a6946919f`；来源报告提交`fd55b74d`。代码为[cnh_tristate_thesis_figures.py](../nearfield/cnh_tristate_thesis_figures.py)，样式参考既有[cnh_thesis_figures.py](../nearfield/cnh_thesis_figures.py)。新脚本不修改旧图脚本或任何冻结载荷。
+[PNG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig3_coverage_method_topview_schematic.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/fig3_coverage_method_topview_schematic.svg)
 
-代码读取`all/mode0/mode1/mode2`的`single/A/dual/A`，合计8条曲线、160行。只将已保存比例转成百分比，并取报告已定索引；不重新选阈值、不重算bootstrap/模型/几何。CSV无配对重选区间，图未添加误差带。[提取行](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/extracted_plot_data.json)保留原CSV文本值；[哈希manifest](../../../../artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/hash_manifest.json)记录输入、脚本及输出身份，输入绘图前后不变。
+两面板俯视示意，包含行人、行进方向、头部方向、单路视场、双路视场并集、收缩检查核心、0.9 m截止线及未检查侧带。头部偏转15°为示意选择；实际视场沿头部方向，参考核心沿行进方向，不将两者画成同一方向。参数来自冻结配置而非实验结果：
 
-CPU绘图命令（使用已有含matplotlib的Python环境，当前目录为checkout）：
+|参数|值|只读来源|
+|---|---|---|
+|标称视场 / 核心收缩|45° / 水平垂直各3°|r3 PLAN及事件PLAN|
+|双路相对头部偏航|−15°、+15°|[ARMS定义](../nearfield/cnh_tristate_dev_r3_truth.py)，8f9dbebe|
+|覆盖检查前向 / 横向|0.9–2.1 m / ±0.29 m|r3 PLAN|
+|标签横向 / 未检查窄侧带|±0.30 m / 0.29<横向绝对值≤0.30 m|r3 PLAN|
+|径向限制 / 历史窗|2.303063 m / 0.6 s|r3 PLAN|
+|标称俯仰|−10°|r3标定轨迹配置|
 
-```powershell
-$env:PYTHONDONTWRITEBYTECODE = '1'
-python research/active/dtr-r0/nearfield/cnh_tristate_thesis_figures.py
-```
+图是单姿态、传感器高度的水平截面，按标称俯仰绘制水平投影；实际门还使用最近历史姿态并集与两个高度片。图不表示某个接触事件，也不以阴影面积推出实验覆盖率。源代码[cnh_tristate_dev_r2.py](../nearfield/cnh_tristate_dev_r2.py) 5ed0c72a及[r3核心定义](../nearfield/cnh_tristate_dev_r3_geometry.py) 8f9dbebe用于核对方向和核心语义，未导入运行。
 
-输出默认在新的ignored `artifacts.local/work/cnh-tristate-thesis-writing-20261006/figures/`，不写入冻结事件目录。PNG为300 dpi，SVG文字转字形路径；本轮已检查两图可读性、标记与标签，修正副图标签重叠。没有重新运行事件分析或场景渲染。
+## 附录图A1：完整模式曲线
+
+[PNG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/figA1_tristate_A_mode_curves.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/figA1_tristate_A_mode_curves.svg)
+
+原mode0/1/2曲线移到章节附录。横轴为各模式保存的静默率；标记继承全体预算0/2/10的索引，空心圆标最大低分阈值。曲线补充全网格，正文柱图承担模式间比较。
+
+## 输入、代码与复现
+
+绘图代码：[cnh_tristate_thesis_figures.py](../nearfield/cnh_tristate_thesis_figures.py)。统计图唯一数值输入为[既有curves.csv](../../../../artifacts.local/work/cnh-tristate-event-dev-20261006/curves.csv)，来源报告fd55b74d，SHA256为2f69d24d3a2108c9a4b66bbd117fd18b50f4c95375d448243552bb0a6946919f。代码提取8条A曲线、160行；百分比仅为保存比例的显示单位转换，没有模型推理、几何实验或bootstrap重算。
+
+方法图另读取[r3 PLAN](../../../../artifacts.local/work/cnh-tristate-dev-r3-20261006/PLAN.json)、[事件PLAN](../../../../artifacts.local/work/cnh-tristate-event-dev-20261006/PLAN.json)与上述三个源码的配置文本，使用AST及配置读取，不运行来源代码。[提取值](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/extracted_plot_data.json)保留CSV原始行和方法图配置；[哈希记录](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/hash_manifest.json)记录输入、脚本、四套图及提取文件。
+
+使用已有含matplotlib的Python环境，在checkout执行脚本即可；默认输出为ignored artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/。旧写作图目录和冻结结果均保留。本轮已检查四图及输入/输出身份。
+
+可选转弯示例时间线跳过：事件ledger.npz含分数和最终事件状态，但没有直接保存完整逐帧覆盖门与三态输出；本轮没有为了补图重新计算。

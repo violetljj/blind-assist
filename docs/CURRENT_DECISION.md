@@ -1,7 +1,7 @@
 # 当前研究决定
 
 更新：2026-10-06。唯一研究主线：盲杖互补的前视障碍感知。
-用户确认转向写作，本轮[章节](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)、主张追加与[CSV图清单](../research/active/dtr-r0/thesis/CNH_TRISTATE_FIGURES_20261006.md)完成。采用精确0.9 m截止960事件，single/dual及时909/929、最大τ静默10/30；同≤10静默unknown时间60.59%/39.77%，重选区间跨零，零静默端反转；核心gap8/10、25/30，不能全归读出。正式证书暂缓、1.5 m重标不执行；真姿态/路径曲率拆分仅列未来方案，GPU新批未启动。[事件报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md)
+用户确认转向写作，[章节修订](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)已补M3衔接、形式化定义及拒识文献；[图清单](../research/active/dtr-r0/thesis/CNH_TRISTATE_FIGURES_20261006.md)含预算10模式柱图及方法示意，答辩问答另存。精确0.9 m截止960事件single/dual及时909/929、最大τ静默10/30；同≤10静默unknown60.59%/39.77%，区间跨零，零静默端反转；核心gap8/10、25/30，不能全归读出。正式证书暂缓、1.5 m重标不执行；真姿态/路径曲率拆分仅列未来方案，GPU新批未启动。[事件报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md)
 Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
 
 ## 当前决定与瓶颈
