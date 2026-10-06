@@ -1,4 +1,4 @@
-COVERAGE_CLOSED_SIM / TRISTATE_WRITING_COMPLETE / M3_RETAINED / HARDWARE_DEFERRED
+COVERAGE_CLOSED_SIM / TURN_POSE_DIAGNOSTIC_COMPLETE_PATH_NOT_EVALUABLE / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
@@ -21,7 +21,7 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留）。
 
 ## 下一步与权限边界
 
-本轮写作完成，后续按用户反馈修订章节。转弯的真实姿态替换/路径曲率因素拆分只列未来方案，NOT_RUN；不得继承过去预算自动开算。最终统一确认批须另固定episode、截止、controls及独立采样/模式深度分布，规模NOT_FIXED。正式证书暂缓，1.5 m重标不执行，GPU新批未启动。
+本轮写作完成，后续按用户反馈修订章节。新授权CPU≤3h[转弯因素诊断](nearfield/CNH_TURN_FACTOR_DEV_20261006.md)完成直线姿态两臂：转弯最大τ静默single10/dual26不变；全体≤10点true single/dual unknown59.01%/44.61%对估计60.59%/39.77%。曲线两臂NOT_EVALUABLE：事件截止后保存的真实未来只有0.16/0.32m，不足2.1m；第5臂需重新推理，NOT_RUN。不能判定读出单因果，延续原角速度的合成假设待明确；本轮不继承过去预算。最终统一确认批须另固定episode、截止、controls及独立采样/模式深度分布，规模NOT_FIXED。正式证书暂缓，1.5 m重标不执行，GPU新批未启动。
 
 City、保护test、新UE采集和硬件第二阶段仍暂停；真实回放待设备会话，不继续01/04分析。UNKNOWN不是安全，代理分钟不是人体负担，oracle不是物理上界，无跨源/实机结论。
 
