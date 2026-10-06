@@ -45,6 +45,12 @@
 
 图是单姿态、传感器高度的水平截面，按标称俯仰绘制水平投影；实际门还使用最近历史姿态并集与两个高度片。图不表示某个接触事件，也不以阴影面积推出实验覆盖率。源代码[cnh_tristate_dev_r2.py](../nearfield/cnh_tristate_dev_r2.py) 5ed0c72a及[r3核心定义](../nearfield/cnh_tristate_dev_r3_geometry.py) 8f9dbebe用于核对方向和核心语义，未导入运行。
 
+## 图3：头部朝向与转头提示
+
+[PNG，300 dpi](../../../../artifacts.local/work/cnh-active-scan-dev-20261006/figures/fig4_active_scan_summary.png) · [SVG](../../../../artifacts.local/work/cnh-active-scan-dev-20261006/figures/fig4_active_scan_summary.svg)
+
+左：被动单路、被动双路、单路+提示（0.6 s反应）与单路头部正对上限的未及时事件构成（灰为无法判断漏报，彩色为静默），分母369；右：1255条畅通对照的无法判断时间，菱形为响应后窗口frame10–14。只读[主动扫视result.json](../../../../artifacts.local/work/cnh-active-scan-dev-20261006/result.json)最大τ点，代码[cnh_active_scan_figure.py](../nearfield/cnh_active_scan_figure.py)，不重算统计。用户响应为假设模型。
+
 ## 附录图A1：完整模式曲线
 
 [PNG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/figA1_tristate_A_mode_curves.png) · [SVG](../../../../artifacts.local/work/cnh-tristate-thesis-revision-20261006/figures/figA1_tristate_A_mode_curves.svg)
