@@ -6,15 +6,15 @@
 
 ## 当前算法问题
 
-[最新独立单调标定](../research/active/dtr-r0/nearfield/CNH_QUERYWISE_CALIBRATION_DEV_20261007.md)消除跨高度否决，但原369事件无启动及时query193、event192、原max202，实际误报2.367/2.390/2.629%；HB36事件23/24 vs max25。没有稳健改进，M3保留。
+[最新原始径向检查](../research/active/dtr-r0/nearfield/CNH_RAW_RADIAL_INFORMATION_DEV_20261007.md)：当前距离输入在原校准工作点无启动及时271/369 vs旧pair253，实际误报297 vs246/12550。评价控制2.5%上限的描述前沿为274 vs265，增益9 [0,18]；历史相对可见性支持对照仅+4 [-5,12.025]，未支持独立历史内容增益。M3保留。
 
-独立精确oracle允许看评价答案选两个固定高度阈值：逐fold误报≤2.5%时最多204/369无启动及时，matched max195，5%278 vs270。受检重标度家族空间有限；不覆盖跨fold预算重分配，不是部署或原观测信息上限。此前[双高度](../research/active/dtr-r0/nearfield/CNH_DOUBLE_HEIGHT_DEV_20261007.md)10unit物理反例仍说明旧浅树不可直接继承。
+双高度HB为当前距离21/36、历史18/36、原max25/36，误报1/1/8 of360，不能当等误报能力差。当前距离仍有9个物理anchor在单高度及时、组合高度漏掉。更多原始信息未彻底解决结构组合泛化；此前[单调修复与阈值上限](../research/active/dtr-r0/nearfield/CNH_QUERYWISE_CALIBRATION_DEV_20261007.md)的限定结论保留。
 
-下一步比较当前两分数、加当前原始径向摘要、再加过去径向变化，分开检验分数压缩与接近时序信息。使用带噪相对旋转、禁止travel/未来路径特征；同unit划分与低容量模型，HB继续作已消费结构检查。新原始观测实验尚未运行。
+下一步优先检验训练支持：按原完整unit folds，仅增加train角色的已有HB物理样本，对照同anchor、同新增权重的原单高度重复；先用旧两分数模型，原cal阈值规则不变。HB仅对应原OOF fold评价，明确已消费Development。每fold仅17/19/22个可用HB训练正例，负结果不能否定训练支持机制。该后续尚未运行。
 
 ## 授权与继承
 
-本轮CPU标定38.16/300秒，独立oracle0.422/120秒；5测试、525项重算及219个穷举案例通过，无GPU。持续目标授权内继续探索，不沿用已结束子实验预算或改写其失败；后续运行前明确输入、范围与判断问题。
+本轮CPU提取16.75/900秒、拟合评价87.66/900秒，8聚焦测试及独立几何/结果核验通过，无GPU、无存活计算任务。持续目标授权内继续探索，不沿用已结束子实验预算或改写失败；后续运行前明确输入、范围与判断问题。
 
 此前R/T2/V、外参、覆盖、方向扇形/加权和短时预测各轮的停止范围保留。新事件读出是输出端监督和新接触支持范围问题，不恢复旧结构搜索、旧门槛或已停止路径延长。[路线当前页](../research/active/dtr-r0/CURRENT.md)负责详细执行与数字。
 
@@ -24,4 +24,4 @@
 
 [章节](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)维持读出/三态、合成对照、真实头动确认和方向边界的证据链。BlindWays缺头部朝向，不能复核HEADS-UP的P1/P2；UNKNOWN不保证安全。City、保护test、新UE采集及硬件第二阶段仍暂停，实机回放待会话。
 
-[设备状态](PROJECT_STATE.md) · [主张台账](../research/active/dtr-r0/THESIS_CLAIMS_20260927.md)。此前全文保留于Git bd8852e2 同路径。
+[设备状态](PROJECT_STATE.md) · [主张台账](../research/active/dtr-r0/THESIS_CLAIMS_20260927.md)。此前全文保留于Git 33c5b228 同路径。
