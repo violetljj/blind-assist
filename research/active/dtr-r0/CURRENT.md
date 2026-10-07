@@ -2,18 +2,18 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-07。用户选择**方向估计优先，读出线保留**，持续目标“持续进行算法探索”。冻结M3不替换。
+更新：2026-10-08。用户选择**方向估计优先，读出线保留**，持续目标“持续进行算法探索”。冻结M3不替换。
 Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究）。
 
 ## 最新方向证据
 
-[朝向输入敏感性](nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)完成：复用原96评价unit、229事件/384clear控制，只扰动估计器躯干yaw，完整60Hz clip状态，sensor/光子/位置/几何/截止与M3冻结。恒定+5°/−5°、2–4s峰值+10°/−10°脉冲，同全13实际FA124/4992，gait−raw单/双净及时依次+26/+25、+16/+12、+3/+4、+4/+6；零扰动恢复原+8/+5。
+[物理头yaw重渲染](nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)完成：96评价unit、229事件/384clear，常量±15°、native2–4s峰值±20°；实际模拟sensor/光子/noisy/query/M3分数重算，固定gait、位置、几何/截止。每条件新E1选择全13实际FA124/4992，所有臂残差0；gait−raw单/双净及时+1/+8、+6/+7、+1/+1、+6/+5，零原+8/+5。
 
-gait绝对及时零202/197，四挑战168/170、184/186、181/181、185/188；相对收益保持不代表能力恢复。E1未扰动，不能据其197/198不变称真实头yaw鲁棒。原阈值成本差另列、不作可减性分解；未更新4/4/4/5/4事件保留，同query/score同阈值报警翻转0。
+gait绝对及时零202/197，四挑战148/205、169/199、195/197、201/198；单路常量yaw仍明显受损。gait−新E1四挑战0/+3、−2/+3、0/−2、+4/+1，未全面胜E1。脉冲实际受扰194/229、零δ35，全部样本保留；4未更新事件同query/score共θ翻转0。启动、主窗和旧阈值成本另列，不差分作贡献。
 
-保留受限候选，不继续本批择参。下一优先适配当前误差query侧向覆盖/三态，不能继承旧query不变门；真实sensor头yaw与有1–2秒截止机会的冷启动仍未测。局部/报警无改善先查机制，不自动推翻方向优先。[前轮同轨迹](nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)与[原近似搬运](nearfield/CNH_TORSO_BIAS_DEV_20261007.md)保留。
+保留受限候选，不继续本批择参。下一补1–2秒有实际截止机会的冷启动fixture；完整candidate query覆盖/UNKNOWN/三态仍待验证。旧观测7项稀疏覆盖接口PASS，helper未接入pipeline、不授权CLEAR或证明新yaw覆盖。局部转弯/报警无改善先查机制，核对后重复损失再降候选优先，不自动推翻方向优先。[前轮仅输入扰动](nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)、[同轨迹](nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)保留。
 
-已消费Development、人工压力假设、future-conditioned场景、torso-aligned sensor/理想骨盆原点仍在，非实测头动/眼镜/覆盖或三态验证。源窗口/clip/Pxx重叠、同源模型与映射未知，无新unitCI/人群结论；固定短窗FA非会话成本，评价选点非部署校准。4测试及96unit/40threshold/20工作点完整核验通过；独立阶段墙钟prepare5.219/120、run344.969/600、analysis含失败与复核7.534/120秒，GPU已结束。
+人工物理yaw模拟、已消费Development、future-conditioned场景、理想位置/torso proxy、重叠窗口/clip/Pxx和同源映射未知仍在，非实测头动/眼镜/人群，无CI。固定短窗FA非会话成本，评价选点非部署校准。8物理测试、首unit零重渲染、192pulse前缀通过；全96unit/80threshold/20工作点/262损失独立核验PASS。两缓弯损失状态/方向/共θ检查保留：共原躯干θ均未及时，不能判定吸收turn。prepare1.219/120、run1445.360/2400、分析含局部机制56.903/180秒；CPU/GPU已结束。
 
 ## 保留的其他证据
 

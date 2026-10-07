@@ -1,18 +1,18 @@
 # 当前研究决定
 
-更新：2026-10-07。唯一研究主线为盲杖互补的前视障碍感知。用户选择**方向估计优先，读出线保留**；冻结M3、手机A/A+LOCAL与已有论文证据保留。
+更新：2026-10-08。唯一研究主线为盲杖互补的前视障碍感知。用户选择**方向估计优先，读出线保留**；冻结M3、手机A/A+LOCAL与已有论文证据保留。
 
 历史路线状态：`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`。
 
-## 朝向输入敏感性已完成
+## 物理头yaw模拟重渲染已完成
 
-[输入压力重放](../research/active/dtr-r0/nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)复用同轨迹96评价unit、229事件/384严格clear控制，固定gait/M3；只改躯干yaw输入，sensor/观测/骨盆/几何/截止不改，完整60Hz clip状态。四组固定挑战为恒定±5°及2–4s峰值±10°脉冲，同全13实际误报124/4992时，gait−raw单/双净及时依次+26/+25、+16/+12、+3/+4、+4/+6；零扰动恢复+8/+5。
+[物理yaw配对重渲染](../research/active/dtr-r0/nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)完成原96评价unit、229事件/384严格clear控制：常量±15°、native2–4s峰值±20°脉冲；新sensor/光子/noisy/全部query及M3分数重算，gait、位置、几何/截止冻结。每条件用新E1匹配实际全13误报124/4992，残差0；gait−raw单/双净及时依次+1/+8、+6/+7、+1/+1、+6/+5，zero原+8/+5。
 
-收益在这些人工输入误差下保留，但gait绝对及时从零202/197降为168/170、184/186、181/181、185/188，不能把相对净差扩大称为原能力恢复。E1保持197/198且输入未扰动，不能据此宣称真实头yaw鲁棒或自动转选E1。原阈值成本另列；未更新4/4/4/5/4事件保留，同query/score且同阈值报警翻转0。
+gait及时零202/197，四挑战148/205、169/199、195/197、201/198；单路常量yaw绝对损失明显。gait−新E1四挑战0/+3、−2/+3、0/−2、+4/+1，未全面胜E1。脉冲实际受扰194/229、零δ35件全部保留；4件未更新、同score同θ报警翻转0。启动/主窗/原阈值成本独立列出，不能差分归因。
 
-决定：保留受限候选，M3冻结；下一优先适配误差query下侧向覆盖/三态，真实sensor头yaw及1–2秒有截止机会的冷启动仍未测。旧query不变门不能直接继承。证据仍为已消费、future-conditioned模拟、torso-aligned sensor及理想骨盆原点，同源/重叠/Pxx映射未知，无CI、人群或设备主张；全13短窗非任意会话成本，评价误报匹配非部署校准。
+决定：保留受限候选，M3冻结；下一补1–2秒有实际截止机会的冷启动fixture。旧观测上7项候选query稀疏覆盖接口检查通过，但helper未接入pipeline，不代表完整三态、新yaw覆盖或CLEAR资格。局部转弯/报警未改善先查机制，不自动推翻方向优先；机制核对后重复损失再降候选优先级。
 
-4测试、96unit/40阈值/20工作点完整独立核验通过；独立阶段墙钟准备5.219/120s、推理含setup/零核对/保存344.969/600s、分析含失败审查及复核7.534/120s，进程已结束。[前轮同轨迹结果](../research/active/dtr-r0/nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)与[原近似回放](../research/active/dtr-r0/nearfield/CNH_TORSO_BIAS_DEV_20261007.md)保留，不跨事件集相减归因。[RUNS](../research/active/dtr-r0/RUNS.md)。
+8物理测试、首unit零重渲染及192脉冲前缀PASS；全96unit/80阈值/20工作点/262损失独立重算通过。两组缓弯净0各1救回/1损失，检查两损失一件当前更新、另一件最后更新0.7秒前；共原躯干θ均未及时，不据此归因吸收转弯。prepare1.219/120s、run1445.360/2400s、分析含局部机制56.903/180s。人工物理yaw、future-conditioned模拟、理想位置/torso proxy及同源/重叠/Pxx映射未知边界保留，无CI或实测头动/人群/设备结论；评价选点非部署校准，固定短窗FA非会话成本。CPU/GPU已结束。[前轮仅输入压力](../research/active/dtr-r0/nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)、[同轨迹结果](../research/active/dtr-r0/nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)与[RUNS](../research/active/dtr-r0/RUNS.md)保留。
 
 ## 保留的读出与确认依据
 
