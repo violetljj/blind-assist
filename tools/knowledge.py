@@ -3600,6 +3600,71 @@ def _command_register_experiment(args: argparse.Namespace) -> int:
     return 0
 
 
+def _command_close_experiment(args: argparse.Namespace) -> int:
+    """Close one registered run without changing its frozen input identity."""
+    items, uses = _require_valid(args.root)
+    repo_root = args.root.parents[1]
+    rows = _read_experiment_rows(repo_root)
+    matches = [row for row in rows if row["id"] == args.id]
+    if len(matches) != 1:
+        raise KnowledgeError(f"expected one experiment with id {args.id}; found {len(matches)}")
+    row = matches[0]
+    if row.get("status") != "active":
+        raise KnowledgeError(f"experiment {args.id} must be active to close")
+    if not _is_nonempty_string(args.decision):
+        raise KnowledgeError("--decision must be non-empty")
+    config = _load_decision_config(args.root, items)
+    decision_id = args.decision_id or row.get("decision_id")
+    if args.status == "archived" and decision_id is None:
+        raise KnowledgeError("archived experiments require --decision-id and complete inheritance")
+    if decision_id is not None:
+        terminals = _read_current_terminals(
+            args.root, {layer["id"] for layer in config["failure_layers"]}
+        )
+        if decision_id not in {terminal["id"] for terminal in terminals}:
+            raise KnowledgeError(f"unknown --decision-id: {decision_id}")
+    if row.get("decision_id") not in (None, decision_id):
+        raise KnowledgeError("closing cannot replace an existing --decision-id")
+    report = _repo_file_reference(repo_root, args.report, "--report")
+    artifact_refs = list(row.get("artifact_refs", []))
+    for reference in [row.get("report"), report, *(args.artifact_ref or [])]:
+        if reference is None:
+            continue
+        normalized = reference.replace("\\", "/")
+        if not normalized.startswith(("https://", "http://")) and not _is_safe_repo_relative(normalized):
+            raise KnowledgeError("--artifact-ref must be HTTP(S) or a safe repository-relative path")
+        if normalized not in artifact_refs:
+            artifact_refs.append(normalized)
+    closed = dict(row, status=args.status, decision=args.decision, report=report,
+                  decision_id=decision_id, artifact_refs=artifact_refs)
+    ledger = repo_root / "experiments" / "index.jsonl"
+    original = ledger.read_bytes()
+    # Retain every other row byte-for-byte, including its original line ending.
+    lines = original.splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        if line.strip() and json.loads(line)["id"] == args.id:
+            ending = b"\r\n" if line.endswith(b"\r\n") else b"\n" if line.endswith(b"\n") else b""
+            lines[index] = json.dumps(closed, ensure_ascii=False, separators=(",", ":")).encode("utf-8") + ending
+            break
+    temporary = ledger.with_name(f".{ledger.name}.{os.getpid()}.tmp")
+    try:
+        temporary.write_bytes(b"".join(lines))
+        os.replace(temporary, ledger)
+        payload = _build_decision_index_payload(args.root, items, uses, config)
+        association_errors = _decision_association_errors(payload)
+        if association_errors:
+            raise KnowledgeError("closed experiment produced invalid decision associations:\n - "
+                                 + "\n - ".join(association_errors))
+        _write_json_atomic(_decision_index_path(args.root), payload)
+    except Exception:
+        _restore_file_bytes(ledger, original)
+        raise
+    finally:
+        temporary.unlink(missing_ok=True)
+    print(f"CLOSED {args.id}: {args.status}; frozen inputs retained; decision index refreshed")
+    return 0
+
+
 def _command_set_terminal_inheritance(args: argparse.Namespace) -> int:
     items, uses = _require_valid(args.root)
     config = _load_decision_config(args.root, items)
@@ -3759,6 +3824,18 @@ def _build_parser() -> argparse.ArgumentParser:
     register_experiment_parser.add_argument("--code-revision")
     register_experiment_parser.add_argument("--tag")
     register_experiment_parser.set_defaults(handler=_command_register_experiment)
+
+    close_experiment_parser = subparsers.add_parser(
+        "close-experiment",
+        help="Complete one active registration without changing its frozen inputs or inheritance.",
+    )
+    close_experiment_parser.add_argument("id")
+    close_experiment_parser.add_argument("--status", choices=("completed", "archived"), default="completed")
+    close_experiment_parser.add_argument("--decision", required=True)
+    close_experiment_parser.add_argument("--report", required=True)
+    close_experiment_parser.add_argument("--decision-id")
+    close_experiment_parser.add_argument("--artifact-ref", action="append")
+    close_experiment_parser.set_defaults(handler=_command_close_experiment)
 
     inheritance_parser = subparsers.add_parser(
         "set-terminal-inheritance",

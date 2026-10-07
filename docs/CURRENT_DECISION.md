@@ -1,33 +1,25 @@
 # 当前研究决定
 
-更新：2026-10-06。唯一研究主线：盲杖互补的前视障碍感知。
-用户接受既有章节修订；新授权CPU≤1h[mode2支路诊断](../research/active/dtr-r0/nearfield/CNH_MODE2_SEAM_DEV_20261006.md)完成，不支持简单水平交界切分。26个dual漏报中20个single及时；相关目标表面均有一支路覆盖全部水平范围。M3查询得到精确当前head-to-travel信息，部署需估计，已补[章节局限](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)。mode2同时转弯与唯一持续头部正视，两因素混淆；single按模式未及时33/8/10、dual2/3/26，不能用静默集中归因转弯。原960事件/3473controls、预算区间及图保留。[事件报告](../research/active/dtr-r0/nearfield/CNH_TRISTATE_EVENT_DEV_20261006.md)
-Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
+更新：2026-10-07。唯一研究主线为盲杖互补的前视障碍感知。当前转入既有证据写作，保留冻结M3与手机A/A+LOCAL流程。
 
-## 当前决定与瓶颈
+## 当前决定
 
-**覆盖线收口，保留冻结M3。** 现有模拟证据整理成章，不再追加融合、阈值或增强优化。[章节证据链](../research/active/dtr-r0/nearfield/CNH_COVERAGE_CLOSEOUT_20261005.md)。外参增强接续仍判NOT_SUPPORTED：转弯查询首停57/1299对single-M3的24/1299，超过1.5倍上限；其余七项通过。原6/6严格增加的试点FAIL与用户批准事后修订所得PASS均保留，评价门槛未改。完整分母、阈值和来源见[路线当前页](../research/active/dtr-r0/CURRENT.md)及[报告](../research/active/dtr-r0/nearfield/CNH_EXTRINSIC_AUG_20261006.md)。
+章节主线为“读出与事件级三态—合成运动对照—真实头动确认—方向估计的适用边界”。[章节](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)与[路线当前页](../research/active/dtr-r0/CURRENT.md)负责详细证据。
 
-单传感器近距覆盖和持续曝光不足仍是瓶颈；双路几何覆盖收益伴随转弯代价。软件覆盖提示仅保留UNKNOWN/兜底研究价值，合成几何改善不等于人体可执行或硬件收益。FOV_OUT不等于全程没有信息：低可见88条均曾曝光，重点是近距支持和证据如何使用。[覆盖拆分](../research/active/dtr-r0/nearfield/CNH_FOV_FAILURE_SPLIT_20261005.md)
+真实头动确认批480个新模拟单位已完成，作为指定模拟与HEADS-UP来源下的论文证据：合成设定高估单路无法判断负担；相同校准误报目标下未发现双路及时优势；方向估计损失成立。校准目标不等于评估实际误报相同。确认完成不提升硬件、安全或参与者总体结论，不替换冻结M3。
 
-## 有效授权与停止范围
+BlindWays与自适应查询开发诊断表明，已测身体参照、固定/自适应扇形及简单估计未收回预设的一半方向损失。谨慎判畅通减少静默，但不增加及时报警，并增加无法判断时间。行进意图估计列为主要开放问题；不能把本轮负结果概括成所有几何方法无效。[最新报告](../research/active/dtr-r0/nearfield/CNH_ADAPTIVE_QUERY_DEV_20261007.md)
 
-CPU≤1h查询核实/模式2诊断与章节文字修订完成；原CPU≤3h姿态两臂保留，模型/在线门/报警阈值未改。用户明确不批准按原角速度延长轨迹，曲线两臂未执行并停止：门几乎放行、换门不补及时报警、查询已有精确相对方向、直线接触真值与曲线检查不自洽。本轮及原4h/150min预算各随交付结束，不转作后续额度。新问题、预算和范围明确后自主完成；不能把已看过数据重新称作新鲜确认。
+## 有效范围与继承
 
-读出R低分支、T2优化、固定M3位姿平均、公开融合搜索及外参接续各按本轮停止规则结束；这些停止不构成所有新机制或训练的永久禁令。原模型、失败、修订前后判读及载荷保留，不按99000结果再调阈值。
+本轮只做章节重排、入口压缩、主张与登记状态核对，使用既有结果；无新增CPU/GPU实验、推理、训练或重新选阈值。各已结束实验预算不转作后续额度。确认批保留限定证据角色；EMA仍是开发选出的候选，三态扩展仍需独立验证。
 
-City、保护test、新UE采集和硬件第二阶段仍暂停。真实回放待串扰/bias、ambient、几何及空走廊设备会话，不继续01/04分析。手机保持A及手动开始A+LOCAL流程。[设备状态](PROJECT_STATE.md)
+读出R、T2、位姿平均、融合、外参增强及覆盖线按各轮停止规则结束；冻结协议、失败、事后修订及载荷保留。新机制并非永久禁止，需明确新的问题与范围。合成路径延长此前明确停止，不恢复。[路线记录](../research/active/dtr-r0/RUNS.md)
 
-## 下一待决问题
+## 后续问题与边界
 
-当前诊断削弱简单水平交界解释，不确认垂直FOV、信号强度或读出原因。前融合与偏角扫描只是待验证候选，未启动推理/训练；要拆开mode2转弯与正视，可在最终统一确认事前配方加入“直行且持续正视”，当前不渲染。正式证书暂缓、1.5m重标不执行；新确认批先固定方法、事件、controls和独立采样分布/规模，不沿用旧按帧1500unit建议。
+更多带头部朝向的独立来源、方向估计改进与真实设备/连续行走评价尚待单独安排。BlindWays缺头部朝向，不能复核HEADS-UP的P1/P2；采样模拟负担不是人体负担，UNKNOWN不是安全。
 
-增强三seed标为可复用开发候选，M3继续冻结参照；单路浅29/32对28/32、深137/141对138/141、物理首停81/825对104/825，不宣称统计非劣。三态首个方案保留M3单/双对照，不把工作读出升级与语义试算绑定；历史V不能隔离yaw作用。
+City、保护test、新UE采集与硬件第二阶段仍暂停；真实设备回放待会话。`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`为历史保留，ToF阶段`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。[设备状态](PROJECT_STATE.md)
 
-## 结论边界与入口
-
-当前新结果均为模拟Development；旧角容限重复使用观测，oracle含条件性真值。三级真值为侵入身体走廊必须报、身体外0–10cm擦身只报告、更远或另一高度计清晰误报。代理分钟不等于真实提醒负担，UNKNOWN不证明安全；尚无跨源/实机效果或ToF物理上限结论。v4接受的执行偏差和旧失败不改判。
-
-[路线证据](../research/active/dtr-r0/CURRENT.md) · [主张台账](../research/active/dtr-r0/THESIS_CLAIMS_20260927.md) · [运行日志](../research/active/dtr-r0/RUNS.md) · [工作流](../research/WORKFLOW.md)
-
-整理前全文：Git revision `4f174009da62a8fcd9f219bb6758375f3f1ce2aa` 的 `docs/CURRENT_DECISION.md`；历史结果按该版本链接追溯，旧授权与待决状态不覆盖本页。
+整理前全文保留于Git `4c5d5ed6` 同路径。原证据及主张边界见[主张台账](../research/active/dtr-r0/THESIS_CLAIMS_20260927.md)。

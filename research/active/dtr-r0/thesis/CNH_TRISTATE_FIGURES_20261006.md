@@ -1,6 +1,6 @@
-# 覆盖与三态章节图清单（2026-10-06 修订）
+# 覆盖与三态章节图清单（2026-10-07 编排同步）
 
-配合[章节草稿](CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)。正文采用静默—无法判断主图、预算10模式柱图和方法示意图；完整模式曲线放附录。所有文件提供300 dpi PNG和文字转字形路径的SVG。
+配合[章节草稿](CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)。正文采用静默—无法判断主图、预算10模式柱图和方法示意图；完整模式曲线放附录B，转头提示图随探索性结果移入附录C。本次只同步图号与位置，图片及其统计未改变。所有文件提供300 dpi PNG和文字转字形路径的SVG。
 
 ## 图1：静默—无法判断主图
 
@@ -45,7 +45,7 @@
 
 图是单姿态、传感器高度的水平截面，按标称俯仰绘制水平投影；实际门还使用最近历史姿态并集与两个高度片。图不表示某个接触事件，也不以阴影面积推出实验覆盖率。源代码[cnh_tristate_dev_r2.py](../nearfield/cnh_tristate_dev_r2.py) 5ed0c72a及[r3核心定义](../nearfield/cnh_tristate_dev_r3_geometry.py) 8f9dbebe用于核对方向和核心语义，未导入运行。
 
-## 图3：头部朝向与转头提示
+## 附录图C1：头部朝向与转头提示
 
 [PNG，300 dpi](../../../../artifacts.local/work/cnh-active-scan-dev-20261006/figures/fig4_active_scan_summary.png) · [SVG](../../../../artifacts.local/work/cnh-active-scan-dev-20261006/figures/fig4_active_scan_summary.svg)
 

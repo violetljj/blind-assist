@@ -2,7 +2,7 @@
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
   "generated_at": "2026-10-07",
-  "source_fingerprint": "aa27f3734273dabb33f661f241a0915d87853d18c09ae99e6a840fce225e41a4",
+  "source_fingerprint": "8e29dfc226d189b0b930f5898d0d4b0424c46ee57b6690681d00c32401daf823",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
@@ -36376,13 +36376,13 @@
     {
       "kind": "experiment",
       "id": "cnh-rhc-20261007",
-      "status": "active",
+      "status": "completed",
       "question": "Under real head motion (HEADS-UP) and deployable heading, how do single vs dual CNH compare, and is single burden overstated by synthetic head modes?",
       "baseline": "Synthetic head modes (SYN) with exact head-to-travel query, frozen M3",
       "change": "Sensor driven by real HEADS-UP head windows (NAT/ALN); deployable E1/EMA queries",
       "primary_metric": "P1 single control unknown time NAT-SYN; P2 dual-single timely at calibrated FA<=2.5% (NAT+E1); P3 E1-exact timely",
-      "decision": "PENDING",
-      "report": "research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_PROTOCOL_20261007.md",
+      "decision": "COMPLETED_SIM_CONFIRMATION_EVIDENCE_ONLY / P1_SUPPORTED / P2_DUAL_GAIN_NOT_ESTABLISHED_AT_CALIBRATED_TARGET / P3_HEADING_LOSS / M3_RETAINED_NO_PROMOTION",
+      "report": "research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md",
       "source": "research/active/dtr-r0/nearfield/cnh_real_head_confirm.py",
       "commit": "f393331b8db9d855ddb17d435c3dce4e58542727",
       "association_id": "cnh-rhc-20261007",
@@ -36393,7 +36393,7 @@
         "geometry_motion": 3,
         "evaluation_evidence": 3
       },
-      "search_text": "cnh-rhc-20261007 Under real head motion (HEADS-UP) and deployable heading, how do single vs dual CNH compare, and is single burden overstated by synthetic head modes? Synthetic head modes (SYN) with exact head-to-travel query, frozen M3 Sensor driven by real HEADS-UP head windows (NAT/ALN); deployable E1/EMA queries P1 single control unknown time NAT-SYN; P2 dual-single timely at calibrated FA<=2.5% (NAT+E1); P3 E1-exact timely PENDING research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_PROTOCOL_20261007.md research/active/dtr-r0/nearfield/cnh_real_head_confirm.py"
+      "search_text": "cnh-rhc-20261007 Under real head motion (HEADS-UP) and deployable heading, how do single vs dual CNH compare, and is single burden overstated by synthetic head modes? Synthetic head modes (SYN) with exact head-to-travel query, frozen M3 Sensor driven by real HEADS-UP head windows (NAT/ALN); deployable E1/EMA queries P1 single control unknown time NAT-SYN; P2 dual-single timely at calibrated FA<=2.5% (NAT+E1); P3 E1-exact timely COMPLETED_SIM_CONFIRMATION_EVIDENCE_ONLY / P1_SUPPORTED / P2_DUAL_GAIN_NOT_ESTABLISHED_AT_CALIBRATED_TARGET / P3_HEADING_LOSS / M3_RETAINED_NO_PROMOTION research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md research/active/dtr-r0/nearfield/cnh_real_head_confirm.py"
     }
   ],
   "associations": [
@@ -37360,7 +37360,9 @@
       "code_revision": "f393331b8db9d855ddb17d435c3dce4e58542727",
       "input_fingerprint": "39650a4e2af0c97de52cab0fe013fa7ae5692359a5661002e1676511ee67e400",
       "artifact_refs": [
-        "research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_PROTOCOL_20261007.md"
+        "research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_PROTOCOL_20261007.md",
+        "research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md",
+        "artifacts.local/work/cnh-real-head-confirm-20261007/result.json"
       ],
       "decision_id": null,
       "source_rows": 1

@@ -105,7 +105,10 @@ Replace superseded current status and authorization text in the same delivery;
 link full results/history instead of copying the chronology across entry pages.
 
 Formal runs use `python tools/knowledge.py register-experiment`; never append
-`experiments/index.jsonl` manually. Mainline/baseline or governed reuse decisions
+`experiments/index.jsonl` manually. Close an executed run with
+`python tools/knowledge.py close-experiment <id> --decision ... --report ...`;
+`completed` records execution completion and retained evidence without changing
+mainline/baseline inheritance or the frozen input identity. Mainline/baseline or governed reuse decisions
 use `python tools/knowledge.py set-terminal-inheritance` under formal governance;
 archived registrations link a `--decision-id` with complete inheritance.
 
