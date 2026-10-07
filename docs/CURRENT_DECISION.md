@@ -1,23 +1,27 @@
 # 当前研究决定
 
-更新：2026-10-08。唯一研究主线为盲杖互补的前视障碍感知。用户选择**方向估计优先，读出线保留**；冻结M3、手机A/A+LOCAL与已有论文证据保留。
+更新：2026-10-08。唯一研究主线为盲杖互补的前视障碍感知。方向估计优先，读出线保留不上调；M3、手机A/A+LOCAL和既有论文证据保留不替换。
 
 历史路线状态：`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`。
 
-## 物理头yaw模拟重渲染已完成
+## 步态对EMA：按配置收敛
 
-[物理yaw配对重渲染](../research/active/dtr-r0/nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)完成原96评价unit、229事件/384严格clear控制：常量±15°、native2–4s峰值±20°脉冲；新sensor/光子/noisy/全部query及M3分数重算，gait、位置、几何/截止冻结。每条件用新E1匹配实际全13误报124/4992，残差0；gait−raw单/双净及时依次+1/+8、+6/+7、+1/+1、+6/+5，zero原+8/+5。
+[推理级对照](../research/active/dtr-r0/nearfield/CNH_TORSO_EMA_COMPARE_DEV_20261008.md)完成96已消费Development评价unit、229事件/384clear，复用四物理yaw挑战和零观测，没有重新渲染或调参。每条件新E1实际FA124/4992，各臂整tie匹配残差0；启动/主窗成本另报。
 
-gait及时零202/197，四挑战148/205、169/199、195/197、201/198；单路常量yaw绝对损失明显。gait−新E1四挑战0/+3、−2/+3、0/−2、+4/+1，未全面胜E1。脉冲实际受扰194/229、零δ35件全部保留；4件未更新、同score同θ报警翻转0。启动/主窗/原阈值成本独立列出，不能差分归因。
+gait−EMA四挑战的单路救回/损失为8/10、9/11、6/14、11/12，净−2/−2/−8/−1；双路为11/6、13/12、13/18、18/18，净+5/+1/−5/0。依运行前规则，单路步态候选降优先级；双路取舍未决、保留记录、不自动归附录。两种配置均不自动追加冷启动。四组全零也只保留；不八格求和，零界线是投入规则而非统计优势/非劣证明。
 
-决定：保留受限候选，M3冻结；下一补1–2秒有实际截止机会的冷启动fixture。旧观测上7项候选query稀疏覆盖接口检查通过，但helper未接入pipeline，不代表完整三态、新yaw覆盖或CLEAR资格。局部转弯/报警未改善先查机制，不自动推翻方向优先；机制核对后重复损失再降候选优先级。
+输入无法完全对齐：E1理想60Hz头位置；躯干/gait理想60Hz肩线/骨盆代理、fullclip历史；EMA冻结τ0.5/0.25s、带噪5Hz、每窗口重置。EMA旋转保持确认的带噪sensor相对角，平移适配共同理想骨盆原点，区别于确认零平移Q。因此只比较整套方案在现有输入下的表现，不隔离归因。
 
-8物理测试、首unit零重渲染及192脉冲前缀PASS；全96unit/80阈值/20工作点/262损失独立重算通过。两组缓弯净0各1救回/1损失，检查两损失一件当前更新、另一件最后更新0.7秒前；共原躯干θ均未及时，不据此归因吸收转弯。prepare1.219/120s、run1445.360/2400s、分析含局部机制56.903/180s。人工物理yaw、future-conditioned模拟、理想位置/torso proxy及同源/重叠/Pxx映射未知边界保留，无CI或实测头动/人群/设备结论；评价选点非部署校准，固定短窗FA非会话成本。CPU/GPU已结束。[前轮仅输入压力](../research/active/dtr-r0/nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)、[同轨迹结果](../research/active/dtr-r0/nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)与[RUNS](../research/active/dtr-r0/RUNS.md)保留。
+prepare1.578/120秒、新M3推理215.578/1200秒、分析检查15.284/180秒；5测试和96unit/2400raw/307200query帧/50工作点核验PASS，计算已结束。人工yaw、future-conditioned模拟、源重叠及Pxx映射未知、理想原点、评价工作点非部署校准的边界保留，无CI/实机/新人群结论。[原物理yaw结果](../research/active/dtr-r0/nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)不改；单路202→148只与偏头限制方向一致，成因未验证。
 
-## 保留的读出与确认依据
+## 写作与证据身份
 
-[读出账本与区间](../research/active/dtr-r0/nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)保留全部280事件/728控制：原高度排序有信号，HB校准策略及时区间均跨零，不足以确认改善或证明非劣；启动误报与5%反例保留。读出线是否追加检查按后续证据安排，探针/集成未形成必须执行方案。
+[480新模拟unit确认](../research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)保留原确认身份，不与后续Development混同。E1比exact少39/51件及时（/1002），EMA收回25/34、约三分之二；双路及时优势未建立，比较用同校准目标、实际误报不等。并集判畅通把静默68→19/21 of1002，UNKNOWN增加15.64/14.23pp，及时不变。方向误差不能解释全部静默。
 
-[真实头动确认](../research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)为480新模拟unit：NAT+E1静默68/1002，不能全部归因于方向误差，也不能跨不同事件集合排名；方向误差已有明确损失证据，用户已决定优先研究。它不是实机或新人群确认；本轮Development限制不覆盖其原确认身份。
+头动源约6分钟、可能同一人，EMA事后选择；非实机/新人群确认。[章节](../research/active/dtr-r0/thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)及答辩问答已同步。不再开同类确认批。
 
-UNKNOWN不保证安全，校准目标不等于实际误报。City、保护test、新UE采集及硬件第二阶段暂停，设备回放待会话。[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md)。此前全文：Git `5668620a` 同路径。
+[读出区间](../research/active/dtr-r0/nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)未确认HB策略改善/非劣，启动及5%反例保留。读出、覆盖、三态仅阶段性结果；候选query完整覆盖/UNKNOWN/三态仍待验证，稀疏helper未接pipeline、不授权CLEAR。
+
+行进意图估计仍开放；带头部朝向的真实行走数据到达后，先走已有replay。方向准确且覆盖充分的事件若仍集中漏报，再提升读出优先级。设备验证继续暂缓，City、保护test、新UE及硬件第二阶段暂停。UNKNOWN不保证安全。
+
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。此前全文：Git `6ebb8338` 同路径。

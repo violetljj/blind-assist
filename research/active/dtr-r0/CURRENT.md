@@ -2,25 +2,32 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-08。用户选择**方向估计优先，读出线保留**，持续目标“持续进行算法探索”。冻结M3不替换。
+更新：2026-10-08。方向估计优先，读出线保留不上调；冻结M3不替换。
 Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究）。
 
-## 最新方向证据
+## 最新决定：EMA对照完成
 
-[物理头yaw重渲染](nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)完成：96评价unit、229事件/384clear，常量±15°、native2–4s峰值±20°；实际模拟sensor/光子/noisy/query/M3分数重算，固定gait、位置、几何/截止。每条件新E1选择全13实际FA124/4992，所有臂残差0；gait−raw单/双净及时+1/+8、+6/+7、+1/+1、+6/+5，零原+8/+5。
+[步态与EMA检查](nearfield/CNH_TORSO_EMA_COMPARE_DEV_20261008.md)复用96评价unit的物理yaw观测，不重渲染、不调参。229事件、384严格clear控制；四挑战按单/双分别判读，各臂全13实际误报124/4992，整tie匹配残差全部0。
 
-gait绝对及时零202/197，四挑战148/205、169/199、195/197、201/198；单路常量yaw仍明显受损。gait−新E1四挑战0/+3、−2/+3、0/−2、+4/+1，未全面胜E1。脉冲实际受扰194/229、零δ35，全部样本保留；4未更新事件同query/score共θ翻转0。启动、主窗和旧阈值成本另列，不差分作贡献。
+|挑战|单路gait/EMA及时|单路救回/损失（净）|双路gait/EMA及时|双路救回/损失（净）|
+|---|---:|---:|---:|---:|
+|常量+15°|148/150|8/10（−2）|205/200|11/6（+5）|
+|常量−15°|169/171|9/11（−2）|199/198|13/12（+1）|
+|正脉冲+20°|195/203|6/14（−8）|197/202|13/18（−5）|
+|负脉冲−20°|201/202|11/12（−1）|198/198|18/18（0）|
 
-保留受限候选，不继续本批择参。下一补1–2秒有实际截止机会的冷启动fixture；完整candidate query覆盖/UNKNOWN/三态仍待验证。旧观测7项稀疏覆盖接口PASS，helper未接入pipeline、不授权CLEAR或证明新yaw覆盖。局部转弯/报警无改善先查机制，核对后重复损失再降候选优先，不自动推翻方向优先。[前轮仅输入扰动](nearfield/CNH_TORSO_INPUT_SENSITIVITY_DEV_20261007.md)、[同轨迹](nearfield/CNH_TORSO_NATIVE_DEV_20261007.md)保留。
+按运行前投入规则：单路四净差均负，降低该配置步态候选优先级；双路有赢有输，取舍未决，保留记录、不自动归附录。两配置均不自动追加冷启动。没有八格求和或−3淘汰线；零界线不证明统计优势/非劣。
 
-人工物理yaw模拟、已消费Development、future-conditioned场景、理想位置/torso proxy、重叠窗口/clip/Pxx和同源映射未知仍在，非实测头动/眼镜/人群，无CI。固定短窗FA非会话成本，评价选点非部署校准。8物理测试、首unit零重渲染、192pulse前缀通过；全96unit/80threshold/20工作点/262损失独立核验PASS。两缓弯损失状态/方向/共θ检查保留：共原躯干θ均未及时，不能判定吸收turn。prepare1.219/120、run1445.360/2400、分析含局部机制56.903/180秒；CPU/GPU已结束。
+这是整套方案在现有输入下的比较：E1理想60Hz头位置，躯干/gait理想60Hz躯干/骨盆代理并继承fullclip历史；EMA为冻结确认函数，带噪5Hz、窗口重置、τ0.5/0.25s，保留带噪sensor相对旋转，平移适配共同理想骨盆原点（原确认Q平移0）。不能隔离归因于估计机制。人工yaw、future-conditioned模拟、同源/重叠/Pxx映射未知、评价选点非部署校准仍在，无CI、实机或新人群结论。
 
-## 保留的其他证据
+prepare1.578/120秒、新推理215.578/1200秒、分析检查15.284/180秒。5项契约检查、96unit/2400raw/307200query帧/50工作点独立核验PASS；计算已结束，载荷保留。[原物理yaw](nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)不改；单路202→148与偏头限制方向一致，成因未验证。
 
-[读出账本/区间](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)：280事件/728控制，原高度排序有条件信号，HB策略净及时区间均跨零，启动误报和5%损失保留；M3不替换，追加检查按后续证据，探针/集成未定为必须执行。
+## 保留的证据与下一问题
 
-[真实头动确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)：480新模拟unit，NAT+E1静默68/1002，不能全部归因于方向误差；并集判畅通降低静默并增加UNKNOWN负担。不是实机/新人群确认，本轮读出和方向Development限制不覆盖其原确认身份。
+[480新模拟unit确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)保留原确认身份，不与后续已消费Development混同。同校准2.5%目标下，E1较exact少39/51件及时（/1002），EMA收回25/34，约三分之二；双路及时优势未建立，实际误报并不相等。原θ并集判畅通使静默68→19/21 of1002，UNKNOWN增加15.64/14.23pp，及时不变。头动约6分钟、可能同一人；非实机、新人群确认，EMA事后选择。[章节](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)与[答辩问答](thesis/CNH_DEFENSE_QA_20261006.md)已整合。
 
-[章节](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)与[主张台账](THESIS_CLAIMS_20260927.md)保留。UNKNOWN不保证安全；City、保护test、新UE及硬件第二阶段暂停。旧停止范围不扩大，不恢复已停止路径延长。
+[读出账本/区间](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)保留280事件/728控制：HB策略净及时区间跨零，启动误报与5%损失保留。读出、覆盖、三态有阶段性结果；候选query下完整覆盖/UNKNOWN/三态仍待验证，稀疏helper未接pipeline，不授权CLEAR。
 
-[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `5668620a` 同路径。
+不开同类确认批，设备继续暂缓。行进意图估计为开放问题；拿到带头朝向的真实行走数据后先用既有replay评估估计器；若机制核对显示漏报集中在方向准确且覆盖充分事件，再提高读出优先级。UNKNOWN不保证安全，City、保护test、新UE及硬件第二阶段暂停。
+
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `6ebb8338` 同路径。
