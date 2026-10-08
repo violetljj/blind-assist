@@ -24,6 +24,6 @@
 
 [480新模拟unit确认](../research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)原身份保留：E1相对exact少39/51件及时（/1002），EMA收回25/34；同校准目标，实际误报不等。头动约6分钟、来源窄，EMA事后选择，非实机/新人群确认。读出HB净及时区间跨零，覆盖/UNKNOWN/三态仍待验证，UNKNOWN不保证安全。
 
-[Nymeria原版样本已下载并核验](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170骨架帧索引连续，但原时间有7异常间隔/2倒序、8帧在时钟和MPS范围外；保留原分母，最大连续333秒段做78878帧离线注册。运动残差P95 .821mm/.093°，分块外参差最高2.046cm/1.732°，仅内部一致性，非独立无漂移证明。实际包缺open-loop，在线输入因果性NOT_EVALUABLE。下一确认因果输入来源，再按参与者规划慢走/停走/转弯覆盖获取；未来骨盆只作标签，单样本不代表覆盖，不自动重跑配方。行进意图估计仍开放；设备、City、保护test、新UE及硬件第二阶段暂停。
+[Nymeria原版样本](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170骨架帧有7异常间隔/2倒序，按段保留；注册只用最大合法连续段内整体拟合，78878帧结果为离线参考。原始右/左IMU标称1000/800Hz，全流时间无倒序；右首60秒60129条全有效，厂参解析→初始化→gyro姿态→CPF水平前向七处/35项前缀比较通过，七类fixtures通过，科研CPU<100/180秒，无新下载/训练。姿态精度未评价，位置/PDR未实现，**E1整链NOT_EVALUABLE**；实际包缺open-loop，未来骨盆/closed-loop不进入估计器。下一先补因果位移接口与成本，再定行走参与者抽样；完整raw-head组清单约10.316GiB未下载。单样本不代表覆盖，三份头动数据统一标明上游因果限制，不自动重跑配方。行进意图仍开放；设备、City、保护test、新UE及硬件第二阶段暂停。
 
 [路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。此前全文：Git `401467ce` 同路径。

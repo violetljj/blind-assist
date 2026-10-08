@@ -25,6 +25,6 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究�
 
 [480新模拟确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)不与本轮开发混同：E1较exact少39/51件及时（/1002），EMA收回25/34；同校准目标下实际误报不等。源约6分钟、可能同一人，EMA事后选择；非实机或新人群确认。BlindWays虽本轮不进训练/择参，已用于开发回放，不能再称独立确认。[读出账本](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)HB净及时区间跨零，启动误报保留。
 
-[Nymeria原版样本核验完成](nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170帧索引连续，7异常时间间隔含2倒序；8帧在时钟/MPS范围外。全分母保留，8原连续段明示，最大333秒段裁边后78878帧离线注册；运动残差P95 .821mm/.093°，分块外参差最多2.046cm/1.732°，仅内部诊断，头锚定恒定非独立无漂移证据。实际包缺open-loop，真实在线因果输入NOT_EVALUABLE。后续先确认因果输入来源，再按参与者规划慢走/停走/转弯抽样；未来骨盆仅标签，不把单样本当覆盖或自动重跑条件。query完整覆盖/UNKNOWN/三态待验证，helper未接pipeline，不授权CLEAR；设备及同类确认批暂缓。
+[Nymeria样本与原始IMU补核](nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170骨架帧7时钟异常/2倒序，8原连续段保留，最大合法段内整体拟合注册78878帧，只是离线参考。右/左IMU标称1000/800Hz、785144/630221条，DEVICE_TIME无倒序。固定CPF+Z水平投影定义；右首60秒60129条全有效，原始读取/厂参/2秒初始化/gyro姿态/CPF七处×五类前缀检查通过，七类fixtures通过，CPU<100/180秒，无新下载/GPU。姿态精度未评价；位置/PDR未实现，E1整链NOT_EVALUABLE，MPS/未来骨盆不作输入。下一优先补因果位移接口与成本，再定行走参与者覆盖抽样；完整raw-head清单约10.316GiB未下载。HEADS-UP/BlindWays/Nymeria统一标明给定位姿下过去依赖与上游限制，原480确认身份不变。query覆盖/UNKNOWN/三态待验证，helper未接M3，不授权CLEAR；设备及同类确认批暂缓。
 
 [RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `401467ce` 同路径。
