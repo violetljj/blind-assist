@@ -1,33 +1,27 @@
 # 项目现在做到哪里
 
-更新：2026-10-08（研究路由；设备记录沿用）。本页负责运行能力和工作路由，研究决定以[总决定](CURRENT_DECISION.md)为准。
+更新：2026-10-08（研究路由；设备记录沿用）。研究决定以[总决定](CURRENT_DECISION.md)为准。
 
 ## 运行与使用边界
 
-Android v10.15.1 保留原首页，手动“开始辅助”后运行相机 + 8×8 ToF 的 A+LOCAL 实验模式，可切回基础 ToF；结束辅助即停止会话。模型在手机离线运行，几何配准仍为名义参数，未完成物理标定。[运行及设备证据](HARDWARE_OBSTACLE_DEMO.md)
+Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF的A+LOCAL实验模式，可切回基础ToF，结束即停止会话。模型离线运行，几何配准仍是名义参数，未完成物理标定。[设备证据](HARDWARE_OBSTACLE_DEMO.md)
 
-定位为盲杖互补的类别无关前视障碍感知（cane-complementary forward perception），关注墙体、身体/头部突出物、悬空障碍和杆状物。使用者决定如何移动；这是研究展示原型，未证明真实导航安全，UNKNOWN 不等于无障碍。
+定位为盲杖互补的类别无关前视障碍感知（cane-complementary forward perception），关注墙体、身体/头部突出物、悬空障碍和杆状物。使用者决定如何移动；研究展示原型未证明真实导航安全，UNKNOWN不等于无障碍。
 
-受控仿真固定对照为576帧、48段、32个正事件：A→A+LOCAL检出24→29/32，误报帧7→22、漏报帧106→65；UNKNOWN为538/576，可与提醒并存。不能换算实机准确率。[结果与分母](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md)
-
-手机已有10秒窗口中，101/101个ToF样本完成A+LOCAL，处理时间中位数53ms、P95 61ms。仅证明该窗口运行，不含感测到听到提醒的全链路时延，也无真实障碍真值。新模拟模型未据此替换手机方案。
+受控仿真A→A+LOCAL：24→29/32正事件检出，误报帧7→22、漏报帧106→65（576帧/48段）；UNKNOWN538/576，可与提醒并存。[原结果](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md)。手机10秒窗口101/101 ToF样本完成A+LOCAL，处理时间中位53ms/P95 61ms，未含提醒全链路时延或真实障碍真值；不能作为M3成绩。
 
 ## 当前工作
 
-方向扰动单种子小筛查完整完成但未通过：同M3seed0/27456原行/2epoch的Aug与Control，8cal/24eval、47接触/224clear，16主格实际FA56/2240且残差0。E1单路Aug35、Control40、冻结五种子M3为42；双路40/44/45。exact对M3各损7件，超出2件护栏；三条件均失败，停止配方，不追加seed/epoch或择扰动。GPU3087.703/3600秒、科研CPU核验<90/300秒、独立审计17.188秒PASS，计算结束。方位微调及稀疏空间支持/关联L3暂停，M3/手机保留；恢复设备先核对真实处理与逐query真值。[报告](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)。
+最新授权是暂缓方向估计和设备验证，先做对齐直行的能力边界与一个安装角度对照。[有限网格报告](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)已完成：168cube×4光子重复、冻结M3/exact位姿，−10°对−19°。同28/2496报警时间格，HEAD31→29/144，BODY31→52/144；配对损失超护栏，不推进−19°。全接触目标曾可见，但4cm及时仅7/144，两角度均未改善，下一复用光子查小目标可判别信号；无新训练或手机替换。
 
-空间支持×错误解剖缓存诊断保留：全96unit字段完整、229接触/384clear，NOT_EVALUABLE0。单簇改选四挑战净差单+1/−1/0/0、双全0；集合扩张和双分歧即弃权损失大量正确支持。关联机会计数过线但竞争存在/整体XZ更近在正确事件也全部成立，不证明可辨识性或收益，最新决定暂停该线。原L2、去平滑负结果与M3保留。CPU分析102.516秒、8测试及21019候选/2290事件独立汇总通过，无新推理。粗簇非深度/实例，UNKNOWN不否决；完整在线L3未实现，手机仍暂缓。[报告](../research/active/dtr-r0/nearfield/CNH_BEARING_SUPPORT_CROSS_DEV_20261008.md)。
+方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
 
-小筛查逐事件补核：冻结M3单双路各仅1件exact及时/E1不及时，反向0，余量不足以判断补偿能力。[Nymeria样本与IMU补核](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170帧7时钟异常/2倒序，所选合法连续段整体注册仅作离线参考。实际双IMU标称1000/800Hz；右首60秒60129条全有效，原始读取到CPF姿态七处/35项前缀比较及七类fixtures通过，CPU<100/180秒，无新下载/训练。位置/PDR仍未实现，E1整链不可评价，姿态准确度也未评价；下一先补因果位移接口与成本，再定行走参与者覆盖抽样。未来骨盆/closed-loop只作评价参考，不自动重开配方。
+[Nymeria](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)样本异常未修补、合法段注册仅离线参考。原始IMU→CPF姿态前缀检查通过，准确度未评；位置/PDR未实现，E1整链不可评价。相关位移接口与参与者抽样本轮暂缓。
 
-唯一研究主线是前视障碍感知，方向估计优先、读出保留不上调。步态与冻结EMA推理级对照完成：复用96unit物理yaw观测，229事件、全13实际FA124/4992各臂残差0；四挑战gait−EMA单路净−2/−2/−8/−1，降步态优先级；双路+5/+1/−5/0，取舍未决保留，两配置均不自动追加冷启动。输入为理想60Hz fullclip代理与带噪5Hz窗口EMA的整套方案比较。冻结M3不替换，候选query完整覆盖/三态待验证；不择参、不开同类确认批。详细边界、成本和报告在[避障当前页](../research/active/dtr-r0/CURRENT.md)维护。
-
-已有480新模拟unit确认与后续已消费Development分开：方向损失39/51 of1002，EMA收回约三分之二；并集降低静默并增加UNKNOWN，双路及时优势未建立，非实机/新人群。章节与答辩问答已整合。读出HB策略净及时区间跨零，不确认改善/非劣；启动误报保留。新EMA推理215.578/1200秒、分析检查15.284/180秒通过，计算已结束，载荷保留；旧机制、预算及停止结果不改。[研究工作方式](../research/WORKFLOW.md)。
-
-L10_R0_PAUSED；DTR_R2_DYNAMIC_RETAINED仅为历史算法状态，不表示恢复动态研究。TARO、SANPO、PanoLab、语义锚点不作独立推进线。City、保护test、新UE采集及硬件第二阶段暂停；真实回放待设备会话。
+恢复设备时，M3/CNH链路单独核对真实输入处理与逐query标定真值，再评价迁移效果。City、保护test、新UE及硬件第二阶段暂停。`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`仅历史状态；TARO、SANPO、PanoLab、语义锚点不作独立推进线。
 
 ## 按任务进入
 
-[研究决定](CURRENT_DECISION.md) · [避障证据与下一问题](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [关键证据备份](operations/CRITICAL_EVIDENCE_BACKUP.md)
+[研究决定](CURRENT_DECISION.md) · [避障证据](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [关键备份](operations/CRITICAL_EVIDENCE_BACKUP.md)
 
-整理前全文保存在Git revision `4f174009da62a8fcd9f219bb6758375f3f1ce2aa` 的 `docs/PROJECT_STATE.md`；旧待决状态不覆盖当前决定。
+本次压缩前全文：Git `fb8641cb` 同路径；更早设备记录见`4f174009da62a8fcd9f219bb6758375f3f1ce2aa`。旧待决不覆盖当前决定。
