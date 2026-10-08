@@ -2,13 +2,15 @@
 
 更新：2026-10-08。主线是盲杖互补的前视障碍感知，冻结M3和手机A+LOCAL保留。历史`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`不表示恢复动态研究。
 
-## 当前：按用户关心的障碍形状检验能力
+## 当前：暗细横杆的表示诊断与读出缺口
 
 用户最新授权在对齐直行、理想位姿、不实测条件下，优先横杆、竖杆、柜体突出物，标牌边缘作补充。[形状能力图](../research/active/dtr-r0/nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)已完成492场景×K4；316物理接触、344高度query接触、88pass/88clear，全格可评价。固定原−10°、M3与原阈值，不训练。
 
 对应高度及时HEAD/BODY：横杆119/224、85/224；竖杆217/224、177/224；柜体107/128、94/128；标牌74/112、50/112。整体clear46/4576报警时间格、25段、24clip，不是实际提醒频率。GPU墙钟187.188/600s，独立分类、原平滑、分组/账本/结果核验通过。有限方截面/板状模拟代理，不是实机效果。
 
-[横杆缓存诊断](../research/active/dtr-r0/nearfield/CNH_BAR_CACHED_DIAGNOSTIC_DEV_20261008.md)：暗4cm BODY原1/56，同θ去平滑8/56，但匹配全批46/4576 clear格后仍1/56。全批HEAD/BODY净+35/+3伴随损1/10，clear段25→34、pass clip74→86，不升级政策。全部172 BODY接触在f13/.97m仍有对应高度首命中；加长88对均增加目标贡献，不能单归因于退出或无额外回波。理想径向对齐增加条件分离度，但丢角度后的值远低于原角距参考，不是报警增益。下一优先A/B逐级表示损失、负背景及侧别保留，角距联合累积仍开放；完整无杆投影/M3对照NOT_RUN。不自动训练。此前[−19°俯角](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)仍不推进，不继续扫角度；方向/Nymeria位移接口与设备暂缓，旧方向瓶颈未解决。
+[横杆缓存诊断](../research/active/dtr-r0/nearfield/CNH_BAR_CACHED_DIAGNOSTIC_DEV_20261008.md)：暗4cm BODY原1/56，同θ去平滑8/56，同46/4576 clear格后仍1/56；全批HEAD/BODY净+35/+3伴随损1/10，不升级政策。172 BODY接触在f13/.97m均仍可见；88加长对均增目标贡献。径向对齐有条件分离度增益，但丢角度后远低于角距参考，不是报警收益。
+
+[同窗投影/FP16](../research/active/dtr-r0/nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)完成暗4cm的28 A、24 B几何×f12/f13共104窗。联合tot/lst条件d²保留下界全部≥96.1847%，数值上下界宽度≤3.9904e−8原d²；LSMR未收敛不冒充精确解。A远背景负差几乎全落在无投影子点赋权的输入箱，不能用总量掩盖模式损失。144已有K4重建、两处均值差误差中位0.0226%–0.0789%、最大0.1396%；A无杆真实hist缺失，未补采样。104窗/协方差fixture/逐箱支持/5096舍入指标核验完成，投影560.297/900s、FP16 15.610/300s，无训练/新M3推理。下一优先冻结M3读出敏感性（NOT_RUN），远负背景取样候选仍开放；不自动增加分辨率、换俯角/布局或训练。[−19°](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)仍不推进；方向/Nymeria位移接口与设备暂缓。
 
 ## 停止与保留
 
@@ -22,4 +24,4 @@
 
 恢复设备先核对M3真实输入与逐query真值；101/101和53ms属A+LOCAL，M3/CNH实机效果尚未建立。City、保护test、新UE及硬件第二阶段暂停。
 
-[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次更新前全文：Git `5f5554b3` 同路径。
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次更新前全文：Git `d26c865d` 同路径。
