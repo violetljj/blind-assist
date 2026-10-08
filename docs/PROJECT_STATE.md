@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-最新授权是对齐直行、理想位姿、不实测下，按横杆/竖杆/柜体突出物及标牌补充分组。[形状能力图](../research/active/dtr-r0/nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)完成492场景×K4，原−10°/M3/阈值不动。HEAD/BODY及时横119/224、85/224，竖217/224、177/224，柜107/128、94/128，标牌74/112、50/112；clear46/4576时间格，非实际提醒频率，独立核验通过。下一优先细暗浅伸入横杆的有效信号/读出诊断；小方块为补充，未开展训练或新模型提升。此前−19°损失超护栏仍不推进。
+对齐直行、理想位姿、不实测下，[形状能力图](../research/active/dtr-r0/nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)完成492场景×K4。HEAD/BODY及时横119/224、85/224，竖217/224、177/224，柜107/128、94/128，标牌74/112、50/112；clear46/4576时间格，非实际提醒频率。[缓存诊断](../research/active/dtr-r0/nearfield/CNH_BAR_CACHED_DIAGNOSTIC_DEV_20261008.md)发现暗4cm BODY去平滑的7次救回在同格成本下消失；172 BODY接触在及时截止仍可见，加长确实增加贡献。理想径向对齐有条件信号收益，未验证报警且损失角度信息。下一优先A/B表示、负背景和侧别保留，角距累积仍开放；无杆完整投影/M3对照NOT_RUN。原M3/−10°保留，无新训练或实机提升；−19°仍不推进。
 
 方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
 
@@ -24,4 +24,4 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 [研究决定](CURRENT_DECISION.md) · [避障证据](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [关键备份](operations/CRITICAL_EVIDENCE_BACKUP.md)
 
-本次压缩前全文：Git `fb8641cb` 同路径；更早设备记录见`4f174009da62a8fcd9f219bb6758375f3f1ce2aa`。旧待决不覆盖当前决定。
+本次更新前全文：Git `5f5554b3` 同路径；更早设备记录见`4f174009da62a8fcd9f219bb6758375f3f1ce2aa`。旧待决不覆盖当前决定。

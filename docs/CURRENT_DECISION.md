@@ -8,7 +8,7 @@
 
 对应高度及时HEAD/BODY：横杆119/224、85/224；竖杆217/224、177/224；柜体107/128、94/128；标牌74/112、50/112。整体clear46/4576报警时间格、25段、24clip，不是实际提醒频率。GPU墙钟187.188/600s，独立分类、原平滑、分组/账本/结果核验通过。有限方截面/板状模拟代理，不是实机效果。
 
-下一优先细、暗、浅伸入横杆：暗4cm粗杆30/90cm长的BODY及时0/28、1/28，全部接触几何曾可见；不能先归因FOV、信号或模型。复用本轮光子查有效信号与角距分布，再形成针对候选，不自动训练。小立方体降为补充，其特权解析分离度不证明可学；附近大面对照噪声抽样不同，只作描述。此前[−19°俯角](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)损失超护栏，仍不推进，不继续扫角度。方向估计/Nymeria位移接口和设备暂缓，既有方向损失瓶颈未解决。
+[横杆缓存诊断](../research/active/dtr-r0/nearfield/CNH_BAR_CACHED_DIAGNOSTIC_DEV_20261008.md)：暗4cm BODY原1/56，同θ去平滑8/56，但匹配全批46/4576 clear格后仍1/56。全批HEAD/BODY净+35/+3伴随损1/10，clear段25→34、pass clip74→86，不升级政策。全部172 BODY接触在f13/.97m仍有对应高度首命中；加长88对均增加目标贡献，不能单归因于退出或无额外回波。理想径向对齐增加条件分离度，但丢角度后的值远低于原角距参考，不是报警增益。下一优先A/B逐级表示损失、负背景及侧别保留，角距联合累积仍开放；完整无杆投影/M3对照NOT_RUN。不自动训练。此前[−19°俯角](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)仍不推进，不继续扫角度；方向/Nymeria位移接口与设备暂缓，旧方向瓶颈未解决。
 
 ## 停止与保留
 
@@ -22,4 +22,4 @@
 
 恢复设备先核对M3真实输入与逐query真值；101/101和53ms属A+LOCAL，M3/CNH实机效果尚未建立。City、保护test、新UE及硬件第二阶段暂停。
 
-[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次压缩前全文：Git `fb8641cb` 同路径。
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次更新前全文：Git `5f5554b3` 同路径。
