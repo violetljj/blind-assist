@@ -13,6 +13,8 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究�
 
 方位标签微调及稀疏空间支持/关联L3暂停，不作下一优先。首轮不归因方向补偿，不做已撤回的历史位姿exact对照。恢复设备先核对真实处理与逐query真值；手机101/101及53ms是A+LOCAL，未建立M3/CNH实机效果。
 
+逐事件补核：冻结M3五种子exact及时/E1不及时单双路各1件、反向0，都是99017/37；其余E1未及时单4/双1在exact也未及时。方向失配损失余量过小，不足以判断补偿能力；不是固定阈值方向因果对照。配方维持停止，实质不同机制需另行审查。
+
 ## 保留的Development结果
 
 [空间交叉诊断](nearfield/CNH_BEARING_SUPPORT_CROSS_DEV_20261008.md)全96unit/229接触/384clear/3840窗，字段完整NOT_EVALUABLE0。单簇改选四挑战净差单+1/−1/0/0、双全0；集合扩张与双分歧即弃权损正确较多，均未达直接候选投入条件。关联机会过线但竞争存在/整体更近也在全部正确事件成立，不证明可辨识性或收益，最新决定暂停该线。UNKNOWN不否决，粗簇非深度/实例，不改原指标。
@@ -23,6 +25,6 @@ Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究�
 
 [480新模拟确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)不与本轮开发混同：E1较exact少39/51件及时（/1002），EMA收回25/34；同校准目标下实际误报不等。源约6分钟、可能同一人，EMA事后选择；非实机或新人群确认。BlindWays虽本轮不进训练/择参，已用于开发回放，不能再称独立确认。[读出账本](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)HB净及时区间跨零，启动误报保留。
 
-不开同类确认批，设备继续暂缓。拿到带头朝向的真实行走数据后，先用既有replay评估行进意图估计；方向准确且覆盖充分事件若仍集中漏报，再提升读出优先级。候选query完整覆盖/UNKNOWN/三态待验证，稀疏helper未接pipeline，不授权CLEAR。UNKNOWN不保证安全；City、保护test、新UE及硬件第二阶段暂停。
+[Nymeria原版样本核验完成](nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)：149170帧索引连续，7异常时间间隔含2倒序；8帧在时钟/MPS范围外。全分母保留，8原连续段明示，最大333秒段裁边后78878帧离线注册；运动残差P95 .821mm/.093°，分块外参差最多2.046cm/1.732°，仅内部诊断，头锚定恒定非独立无漂移证据。实际包缺open-loop，真实在线因果输入NOT_EVALUABLE。后续先确认因果输入来源，再按参与者规划慢走/停走/转弯抽样；未来骨盆仅标签，不把单样本当覆盖或自动重跑条件。query完整覆盖/UNKNOWN/三态待验证，helper未接pipeline，不授权CLEAR；设备及同类确认批暂缓。
 
 [RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `401467ce` 同路径。
