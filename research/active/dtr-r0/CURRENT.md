@@ -2,31 +2,27 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 # 前视障碍感知：当前状态
 
-更新：2026-10-08。方向估计优先，读出线保留不上调；冻结M3不替换。
+更新：2026-10-08。方向估计优先，冻结M3不替换。历史`DTR_R2_DYNAMIC_RETAINED`不表示恢复动态研究。
 Status: `DTR_R2_DYNAMIC_RETAINED`（历史保留，不表示恢复动态研究）。
 
-## 最新决定：空间交叉诊断完成，保留L2；关联先查可辨识性
+## 单种子方向扰动训练筛查未通过，停止配方
 
-[空间支持×错误解剖](nearfield/CNH_BEARING_SUPPORT_CROSS_DEV_20261008.md)全96unit/229接触/384clear/3840窗完成，字段完整NOT_EVALUABLE0。运行前冻结z>3、有限bin采样/簇/覆盖及三去向绝对数量规则；先保存21019个全窗首提醒观测后接truth。唯一正簇改选四挑战clean及unique净差单+1/−1/0/0、双全0；直接集合扩张损正确单105/135/158/159、双169/177/172/180；双分歧弃权去错10/4/22/21却损正确114/134/98/110。三种直接输出及无支持否决均未达条件，原L2保留。
+用户修订圆桌结论授权[小筛查](nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)：Aug/Control同M3seed0权重、同27456原训练行、同2epoch；保持实际travel的M3±.33m监督，只扰当前query，零扰动原FP16输入逐值复现。冻结五种子M3和seed0另列。完整训练、32个unit评分和独立核验均完成。
 
-原冻结关联机会单20/15/22/23、双21/6/26/23过线但未证明收益：竞争物体存在/整体XZ更近在正确事件中也全部成立，宽并集相交不证明实例可分。保留原判定，不据此提高关联方法优先级，不更改接触目标指标。下一先只读比较正确/错误簇型与并集饱和，再拆缓存query×支路×body/head赢家；提出完整候选、冻结适用门槛后评价最终输出，新方法不自动继承本轮SWITCH门槛。边界×yaw非因果上界；UNKNOWN不否决，名义覆盖仍会误弃正确方向，粗簇非深度/实例。当前负面仅约束这些直接规则。
+测速后、训练及新结果前冻结8cal/24eval，评价47接触/224clear。所有16主格实际56/2240报警格、残差0；E1单路Aug35、Control40、M3为42，双路40/44/45。Aug相对M3 exact救回/损失单0/7、双1/7，超过≤2损失/net≥−2护栏；两配置三门槛全失败，停止本配方，不加seed/epoch或择扰动。GPU墙钟3087.703/3600秒、CPU科研核验<90/300秒，独立6类审计17.188秒PASS，计算释放。一件为2.128pp，绝对门槛非统计优势/非劣；工作点按评价clear选择，段数及clip报警另报。
 
-CPU字段核验12.906秒、分析102.516/900秒；8针对性测试、21019候选/2290事件独立汇总通过（0.359秒），无新推理，计算结束。[k1负结果](nearfield/CNH_EMA_BEARING_DESMOOTH_DEV_20261008.md)原单0/+5/−3/−2、双−2/−1/−2/−2保留，不追加本批k/阈值择参。本次是消费过的Development缓存诊断，完整在线L3未实现；主机离线成本非手机时延，设备仍暂缓。
+方位标签微调及稀疏空间支持/关联L3暂停，不作下一优先。首轮不归因方向补偿，不做已撤回的历史位姿exact对照。恢复设备先核对真实处理与逐query真值；手机101/101及53ms是A+LOCAL，未建立M3/CNH实机效果。
 
-原[EMA门控L2](nearfield/CNH_EMA_GATED_BEARING_DEV_20261008.md)相对L1支持单+22/+39/+32/+33、双+21/+30/+29/+25与局部损失仍保留。支持范围不等于定位/物体归因/用户收益，原[三查询独立触发负结果](nearfield/CNH_SECTOR_NOTICE_DEV_20261008.md)不混同补充标签；本次k1失败也不排除其他时间或空间机制。Development人工yaw及共同理想原点边界保留，不接手机/不晋升确认。
+## 保留的Development结果
 
-## 保留决定：EMA对照完成
+[空间交叉诊断](nearfield/CNH_BEARING_SUPPORT_CROSS_DEV_20261008.md)全96unit/229接触/384clear/3840窗，字段完整NOT_EVALUABLE0。单簇改选四挑战净差单+1/−1/0/0、双全0；集合扩张与双分歧即弃权损正确较多，均未达直接候选投入条件。关联机会过线但竞争存在/整体更近也在全部正确事件成立，不证明可辨识性或收益，最新决定暂停该线。UNKNOWN不否决，粗簇非深度/实例，不改原指标。
 
-[步态与EMA检查](nearfield/CNH_TORSO_EMA_COMPARE_DEV_20261008.md)复用96unit、229事件/384clear，各条件实际FA124/4992且残差0。四挑战gait−EMA单路−2/−2/−8/−1，降低步态优先级；双路+5/+1/−5/0混合保留，两配置均不自动冷启动/归附录。配对在报告，不求八格和；零界线非统计优势/非劣。此工作点按FA匹配，与新粗方位总提示预算不混用。
+[EMA门控L2](nearfield/CNH_EMA_GATED_BEARING_DEV_20261008.md)净支持增益及配对损失保留；[去平滑k1](nearfield/CNH_EMA_BEARING_DESMOOTH_DEV_20261008.md)未稳定改善，保留原L2，不追加本批平滑择参。[步态对EMA](nearfield/CNH_TORSO_EMA_COMPARE_DEV_20261008.md)单路降低优先级、双路混合保留，不自动冷启动或八格求和；输入契约不等，只比较整套方案。支持范围不等于物体归因/用户价值，均已消费Development。
 
-E1/躯干/gait理想60Hz fullclip与EMA带噪5Hz窗口重置输入不等；EMA保留相对旋转、适配理想骨盆原点，非原确认零平移Q。只比较整套方案，不隔离机制。人工yaw、future-conditioned模拟、源重叠/Pxx映射未知及评价选点边界保留；成本与5契约/独立核验在报告，计算结束。[原物理yaw](nearfield/CNH_TORSO_HEAD_YAW_DEV_20261007.md)不改。
+## 证据身份与下一问题
 
-## 保留的证据与下一问题
+[480新模拟确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)不与本轮开发混同：E1较exact少39/51件及时（/1002），EMA收回25/34；同校准目标下实际误报不等。源约6分钟、可能同一人，EMA事后选择；非实机或新人群确认。BlindWays虽本轮不进训练/择参，已用于开发回放，不能再称独立确认。[读出账本](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)HB净及时区间跨零，启动误报保留。
 
-[480新模拟unit确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)保留原确认身份，不与后续已消费Development混同。同校准2.5%目标下，E1较exact少39/51件及时（/1002），EMA收回25/34，约三分之二；双路及时优势未建立，实际误报并不相等。原θ并集判畅通使静默68→19/21 of1002，UNKNOWN增加15.64/14.23pp，及时不变。头动约6分钟、可能同一人；非实机、新人群确认，EMA事后选择。[章节](thesis/CNH_READOUT_COVERAGE_TRISTATE_CHAPTER_20261006.md)与[答辩问答](thesis/CNH_DEFENSE_QA_20261006.md)已整合。
+不开同类确认批，设备继续暂缓。拿到带头朝向的真实行走数据后，先用既有replay评估行进意图估计；方向准确且覆盖充分事件若仍集中漏报，再提升读出优先级。候选query完整覆盖/UNKNOWN/三态待验证，稀疏helper未接pipeline，不授权CLEAR。UNKNOWN不保证安全；City、保护test、新UE及硬件第二阶段暂停。
 
-[读出账本/区间](nearfield/CNH_EVENT_LEDGER_UNCERTAINTY_DEV_20261007.md)保留280事件/728控制：HB策略净及时区间跨零，启动误报与5%损失保留。读出、覆盖、三态有阶段性结果；候选query下完整覆盖/UNKNOWN/三态仍待验证，稀疏helper未接pipeline，不授权CLEAR。
-
-不开同类确认批，设备继续暂缓。行进意图估计为开放问题；拿到带头朝向的真实行走数据后先用既有replay评估估计器；若机制核对显示漏报集中在方向准确且覆盖充分事件，再提高读出优先级。UNKNOWN不保证安全，City、保护test、新UE及硬件第二阶段暂停。
-
-[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `6ebb8338` 同路径。
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。此前全文：Git `401467ce` 同路径。
