@@ -10,7 +10,9 @@
 
 [横杆缓存诊断](../research/active/dtr-r0/nearfield/CNH_BAR_CACHED_DIAGNOSTIC_DEV_20261008.md)：暗4cm BODY原1/56，同θ去平滑8/56，同46/4576 clear格后仍1/56；全批HEAD/BODY净+35/+3伴随损1/10，不升级政策。172 BODY接触在f13/.97m均仍可见；88加长对均增目标贡献。径向对齐有条件分离度增益，但丢角度后远低于角距参考，不是报警收益。
 
-[同窗投影/FP16](../research/active/dtr-r0/nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)完成暗4cm的28 A、24 B几何×f12/f13共104窗。联合tot/lst条件d²保留下界全部≥96.1847%，数值上下界宽度≤3.9904e−8原d²；LSMR未收敛不冒充精确解。A远背景负差几乎全落在无投影子点赋权的输入箱，不能用总量掩盖模式损失。144已有K4重建、两处均值差误差中位0.0226%–0.0789%、最大0.1396%；A无杆真实hist缺失，未补采样。104窗/协方差fixture/逐箱支持/5096舍入指标核验完成，投影560.297/900s、FP16 15.610/300s，无训练/新M3推理。下一优先冻结M3读出敏感性（NOT_RUN），远负背景取样候选仍开放；不自动增加分辨率、换俯角/布局或训练。[−19°](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)仍不推进；方向/Nymeria位移接口与设备暂缓。
+[同窗投影/FP16](../research/active/dtr-r0/nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)：28 A/24 B几何×f12/f13=104窗，联合条件d²下界全≥96.1847%，界宽≤3.9904e−8原d²；迭代上限不称收敛。A远负背景几乎全未入投影子点覆盖范围。144原K4重建、均值两处舍入误差中位0.0226%–0.0789%、max0.1396%，A原无杆hist缺失不回填。旧结果/工件保留。
+
+[冻结M3读出](../research/active/dtr-r0/nearfield/CNH_BAR_READOUT_DEV_20261008.md)已完成：37端点×64新条件噪声，f12/f13、α=.25/1共9472ensemble输入；不是新几何确认。对应高度原噪声方差失配68/76（全query132/148），同draw66/76；d_J只作敏感性。BODY实际d_MC f12/f13中位A .180/.235、B .199/.107，不是报警收益或信息损失率。原288logit逐值复现、504统计/148梯度传播及独立FD核验完成，GPU25.172/900s，无训练/阈值变化。下一建议实际噪声下检验局部角距读出、同clear成本逐事件增损（候选NOT_RUN）；远负背景取样仍开放，不自动加分辨率/换布局。[−19°](../research/active/dtr-r0/nearfield/CNH_ALIGNED_BOUNDARY_DEV_20261008.md)仍不推进；方向/Nymeria位移接口与设备暂缓。
 
 ## 停止与保留
 
@@ -24,4 +26,4 @@
 
 恢复设备先核对M3真实输入与逐query真值；101/101和53ms属A+LOCAL，M3/CNH实机效果尚未建立。City、保护test、新UE及硬件第二阶段暂停。
 
-[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次更新前全文：Git `d26c865d` 同路径。
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [设备状态](PROJECT_STATE.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。本次更新前全文：Git `e04b1363` 同路径。
