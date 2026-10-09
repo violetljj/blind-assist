@@ -55,6 +55,8 @@ head full-reachable query支持均47/74，已知TP≥16见证均45/74，不能�
 
 实时核查[TUM官方格式](https://cvg.cit.tum.de/data/datasets/rgbd-dataset/file_formats)和[许可](https://cvg.cit.tum.de/data/datasets/rgbd-dataset)：Kinect640×480 registered RGB/depth，Freiburg3去畸变、公用K535.4/539.2/320.1/247.6，opticalZ=uint16/5000，官方深度已预缩放。新adapter预定16个uniform RGB索引、最近depth≤20ms，选择先于深度读取，缺失/遮挡UNKNOWN，不叫完美同步/身体事件参考。4项新增选择/单位行为检查通过。
 
+后继源核查勘误：本报告先前将fr3 long_office_household笼统称为Kinect；[官方该序列说明](https://cvg.cit.tum.de/data/datasets/rgbd-dataset/download#freiburg3_long_office_household)实际明确写Asus Xtion，故硬件应为Asus Xtion结构光传感器。640×480注册、fr3 K、去畸变和深度单位合同不变，旧未完成下载和payload保持原记录；实时官方HTML与勘误收据留在后继`rgb-body-query-calibrated-transfer-dev-20261009/third-camera-source/hardware_correction.json`。此更正不新增真实评价结果。
+
 官方long_office_household源在约270.830s仅接收4194304B，不能在300s网络限额完成约1.48GB包；task-owned PID67556已释放，部分文件SHA和失败原因保存。`multicamera-sensor/`只有NOT_RUN收据，没有真实manifest/观察，真实帧准备、第三相机GPU、算法成绩均NOT_RUN。准备脚本可复用，但未实测完整源，不能称已补到第三相机或完整步行评价。这个网络失败不产生模型判断，也未扩大预算/留下后台下载。
 
 ## 下一决定、成本与交付
@@ -64,3 +66,5 @@ head full-reachable query支持均47/74，已知TP≥16见证均45/74，不能�
 GPU总61.358s/1200s：native DP27.118、derived DP27.229、冻结head共7.011；包含启动/存储，不作部署效率。CPU辅助保守200s/2400s（margin20、structure35、hires20、TUM10、pair25、主评分/收尾余量），不是性能测量。ARKit实际range/索引/K/README3618223B，未下载670242432B完整VGA包；TUM partial4194304B，另官方网页884601B，总已记接收8697128B/4GiB。TUM网络270.830s/300s，ARKit网络保守10s/300s；模型下载0B。所有计算/下载进程释放，原始段/索引/模型/参考/预测/审计/失败与partial为durable复算/续传证据留在canonical artifacts树；续传属于后续新范围/预算，不把旧网络限额重置。
 
 代码：[结构诊断](rgb_body_query_depth_structure.py)、[同帧准备](rgb_body_query_hires_prepare.py)、[配对独立复算](rgb_body_query_resolution_compare.py)、[可调几何](rgb_body_query_margin_baseline.py)、[TUM准备](rgb_body_query_tum_prepare.py)。复用[DP执行器](rgb_body_query_3rscan.py)和[冻结读出](rgb_body_query_frozen_transfer.py)，不更改旧输出。源码/输入/输出SHA、分阶段成本、实际partial与资源释放在payload总`completion_receipt.json`，热链接与scoped diff检查用于交付。
+
+后续[低参数距离校正与迁移](RGB_BODY_QUERY_CALIBRATED_TRANSFER_DEV_20261009.md)已补原train拟合/原cal余量的强几何比较；两个校正臂并列保留，不改本轮δ0及640→256结果。新第三相机传输仍未取得源数据，真实评价未新增。

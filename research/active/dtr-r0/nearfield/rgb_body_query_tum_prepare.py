@@ -37,10 +37,13 @@ def fixed_pairs(rgb_entries, depth_entries, count=16, tolerance=.02):
     return rows
 
 
-def prepare(source,output,frames=16,budget_s=240):
+def prepare(source,output,frames=16,budget_s=240,sequence='freiburg3_long_office_household',sensor='Asus Xtion structured-light sensor'):
     start=time.perf_counter(); output.mkdir(parents=True,exist_ok=True)
     if any(output.iterdir()): raise FileExistsError('Preserve preparation attempt')
     acquisition=json.loads((source/'download_receipt.json').read_text())
+    if not sequence.startswith('freiburg3_') or not all(c.isalnum() or c=='_' for c in sequence):
+        raise ValueError('Only public Freiburg3 sequence identities are supported')
+    environment='tum_'+sequence.replace('freiburg3_','fr3_',1)
     receipt=dict(status='STARTING',cpu_budget_s=budget_s,gpu_s=0,source_sha256=sha(Path(__file__)),
                  independent_xyz_checks=0,source_acquisition_sha256=sha(source/'download_receipt.json'))
     rows=[]; queries=task_queries(); k=np.array([[535.4,0,320.1],[0,539.2,247.6],[0,0,1]],np.float64)
@@ -60,7 +63,7 @@ def prepare(source,output,frames=16,budget_s=240):
                 elif path.name in ('rgb.txt','depth.txt'):
                     texts[path.name]=tar.extractfile(member).read().decode()
         chosen=fixed_pairs(rgb_entries,depth_entries,frames)
-        selection=dict(source='TUM RGB-D freiburg3_long_office_household',method='16 uniform RGB indices, nearest timestamp depth <=0.020 s, deterministic earlier-time tie break; no reference/image/outcome filtering',
+        selection=dict(source='TUM RGB-D '+sequence,method=f'{frames} uniform RGB indices, nearest timestamp depth <=0.020 s, deterministic earlier-time tie break; no reference/image/outcome filtering',
                        frames=chosen,rgb_frames=len(rgb_entries),depth_frames=len(depth_entries),queries=queries,
                        saved_before_depth_reads=True,time_tolerance_s=.02,exact_synchronization=False)
         write(output/'selection.json',selection)
@@ -84,11 +87,11 @@ def prepare(source,output,frames=16,budget_s=240):
             for label,q in zip(labels,queries):
                 if not np.array_equal(label,independent_labels(depth,k,q,observed)): raise ValueError('Independent XYZ mismatch')
                 receipt['independent_xyz_checks']+=1
-            stem=f'tum_fr3_long_office_household_{frame:06d}'
+            stem=f'{environment}_{frame:06d}'
             rgb_path=output/(stem+'.png'); rgb_path.write_bytes(rgb_bytes)
             ref_path=output/(stem+'.npz')
             np.savez_compressed(ref_path,labels=np.stack(labels),depth=depth,depth_K=k,color_K=k,map_x=xx,map_y=yy,observed=observed)
-            rows.append(dict(environment='tum_fr3_long_office_household',scan='tum_fr3_long_office_household',split='validation',official_split='public_sequence',
+            rows.append(dict(environment=environment,scan=environment,split='validation',official_split='public_sequence',
                              frame=frame,rgb_timestamp_s=selection_row['rgb_timestamp_s'],depth_timestamp_s=selection_row['depth_timestamp_s'],
                              time_difference_s=selection_row['time_difference_s'],rgb_path=str(rgb_path),rgb_sha256=sha(rgb_path),
                              reference_path=str(ref_path),reference_sha256=sha(ref_path),color_K=k.tolist(),depth_K=k.tolist(),
@@ -97,9 +100,9 @@ def prepare(source,output,frames=16,budget_s=240):
         counts=dict(Counter(q['state'] for r in rows for q in r['queries']))
         units={key:sum(q[key] for r in rows for q in r['queries']) for key in ('positive_pixels','free_ray_pixels','unknown_pixels','domain_pixels')}
         manifest=dict(status='REAL_SENSOR_SPARSE_QUERY_READY',frames=len(rows),rows=rows,queries=queries,
-                      groups=[dict(environment='tum_fr3_long_office_household',scan='tum_fr3_long_office_household',split='validation')],
+                      groups=[dict(environment=environment,scan=environment,split='validation')],
                       state_counts_by_split={'train':{},'cal':{},'validation':counts},query_ray_units=units,
-                      sensor='Kinect structured-light sensor, registered 640x480 Freiburg3 undistorted RGB/depth; optical Z=uint16/5000, invalid0 unknown; source pre-scaled, no extra ds',
+                      sensor=sensor+', registered 640x480 Freiburg3 undistorted RGB/depth; optical Z=uint16/5000, invalid0 unknown; source pre-scaled, no extra ds',
                       source_alignment_basis='Official TUM file_formats: depth reprojected to color frame pixel correspondence1:1; fr3 public RGB K, distortion0; nearest timestamps <=20ms, not exact synchronization',
                       label_contract='0 first measured surface after box;1 surface in box;2 missing/occluded;255 no ray-box intersection',
                       observation_contract='RGB/public K/query only; evaluator reference depth/labels excluded',
@@ -122,4 +125,5 @@ def prepare(source,output,frames=16,budget_s=240):
 if __name__=='__main__':
     p=argparse.ArgumentParser(); p.add_argument('--source',type=Path,required=True); p.add_argument('--output',type=Path,required=True)
     p.add_argument('--frames',type=int,default=16); p.add_argument('--budget-s',type=float,default=240)
-    a=p.parse_args(); prepare(a.source.resolve(),a.output.resolve(),a.frames,a.budget_s)
+    p.add_argument('--sequence',default='freiburg3_long_office_household'); p.add_argument('--sensor',default='Asus Xtion structured-light sensor')
+    a=p.parse_args(); prepare(a.source.resolve(),a.output.resolve(),a.frames,a.budget_s,a.sequence,a.sensor)
