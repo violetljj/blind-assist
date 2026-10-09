@@ -2,7 +2,7 @@
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线已获用户“推进”授权：[真实身体空间查询](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_DEV_20261009.md)。真实评价为硬目标，补充ToF/CNH主要模拟证据；50真实帧诊断、10帧20次Depth Pro推理及相机局部query读出完成，45连续真实帧配套已取得。保留图像细节有支持，但效果未评，身体外参/事件/pose参考待核验。继承旧BodyQuery并对照COPILOT，候选增量为可变米制query＋薄结构高分辨率因果证据＋真实事件定量。下一完成真实query标签与VDA因果基线；SANPO重新纳入该子线候选，CNH原预算、停止规则及M3保留。
+RGB独立子线：[真实连续段评价](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)。真实定量为硬目标，补充ToF/CNH主要模拟证据。45帧270格为59正/25空域负/186UNKNOWN，空域负剔除，GT定位oracle只评价参考域几何。共同18帧Depth Pro原图/128 IoU .3284/.3261，居中适配更差；VDA全45帧完成但近盒正格0/10，高分辨率/时序收益未建立。金属细杆漏标，下一补真实细障碍标注和非空角域负例，再训练可变query机制；事件提前量不可评。继承旧BodyQuery、对照COPILOT，SANPO重新纳入候选；CNH原预算/停止规则/M3保留。
 
 ## 当前：普通扩充有收益，完整交叉反事实未增加稳定收益
 

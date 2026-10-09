@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB另立独立研究子线：[真实身体空间查询](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_DEV_20261009.md)。已完成真实数据/文献核查、50真实帧输入诊断、10帧Depth Pro配对烟测及相机局部query读出，另取得45连续真实帧/180配套文件。128输入细节中位保留指标12.7%，不是检出率；真实身体/事件标签未闭合，训练与提前量NOT_RUN。下一核验连续段query标签及因果视频深度基线。继承旧BodyQuery、对照COPILOT；真实定量仍为硬目标，预算独立于CNH。
+RGB独立子线已完成[真实连续段参考与基线评价](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)：45帧/270格，59正/25空域负/186UNKNOWN；空域负排除评分，GT定位oracle不能证明独立检出或误报。共同18帧Depth Pro原图/128像素IoU .3284/.3261，高分辨率增益未建立；VDA全45帧完成但近盒正格0/10。金属细杆漏标，下一补真实细障碍标注与非空角域负例，再训练query机制；提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；真实定量仍为硬目标，预算独立于CNH，身体外参未闭合。
 
 [三臂三seed扩充](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)固定简化bin-token/BCE及7488步，新增普通与完整交叉反事实样本等量。普通OR在不同几何背景H315/313/323、B267/257/282各/384（旧融合298/244），clear均58/6656；pass60→89/103/115各/256。+3°固定校准阈值clear1297/1261/1352（旧1245），不是扰动同成本。CF对普通的独立读出H净−2/+13/0、B0/−4/−7，OR H−7/0/+2、B−10/−2/−10，无稳定增量；保留普通扩充Development候选，M3/原5格/L2不升级。
 

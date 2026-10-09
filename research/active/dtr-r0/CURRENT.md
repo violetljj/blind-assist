@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[真实身体空间查询](nearfield/RGB_BODY_QUERY_DEV_20261009.md)。真实数据/文献核查、50真实帧输入诊断、10帧Depth Pro配对烟测及6query读出完成，另物化45连续真实帧/180配套文件。下一核验相机局部query标签及因果视频深度基线；身体外参/事件真值未闭合，训练和提前量NOT_RUN。继承旧BodyQuery、对照COPILOT，可变米制区域与薄结构时序增量未验证；SANPO-Real重新纳入候选，真实评价硬目标、旧停止结果与CNH预算分别保留。
+RGB独立子线：[真实连续段参考与基线](nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)。45帧270格为59正/25空域负/186UNKNOWN，空域负剔除；仅GT定位oracle几何诊断。共同18帧Depth Pro原图/128 IoU .3284/.3261，居中适配劣化；VDA全45帧近盒正格0/10，机制收益未建立。金属细杆漏标，下一补真实细障碍标注和非空角域负例，再训练query机制；身体外参/事件真值未闭合，提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；SANPO-Real为候选，真实评价硬目标、旧停止结果与CNH预算分别保留。
 
 ## 当前：普通扩充有收益，完整交叉反事实未增加稳定收益
 
