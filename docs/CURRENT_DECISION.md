@@ -2,16 +2,17 @@
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；不恢复历史动态研究。
 
-## 当前：固定内外差门控不采用，保留浅伸入目标
+## 当前：单帧背景参照预检未通过，保留原M3
 
 [形状能力图](../research/active/dtr-r0/nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)492 AABB×K4，原−10°/理想物理位姿；316物理接触、344高度接触、88pass/88clear。原M3 H517/B406及时各/688，clear46/4576格、25段、24/352clip。非实机提醒频率。
 
 [5格融合](../research/active/dtr-r0/nearfield/CNH_BAR_FUSION_VERTICAL_DEV_20261009.md)固定θM=.940418/θL=4.625390的OR：H543/B461，救28/56损2/1；暗4cm BODY1→7/56损0；clear46格、25段/23clip。四Development点事后工程选择，不升级M3，真值形状不进门控。
 
-[边界内外对比](../research/active/dtr-r0/nearfield/CNH_BAR_BOUNDARY_CONTRAST_DEV_20261009.md)新完成：132竖杆K4、ideal/±3°；公开左右同y/z条带tot/cnt密度差，仅缓存统计。Dmax零差veto全不动；Dwin ideal M3clear12→11/1248且及时不变，−3°66→61却损H11/B6，+3°117→114损7/5，各/224；固定融合+3°损9/6。损失全在1/4cm浅伸入，12cm/center0。排名未稳定优于内峰；本两个门控不采用，非同成本比较，不排除所有边界机制。
+[背景参照预检](../research/active/dtr-r0/nearfield/CNH_BAR_BACKGROUND_REFERENCE_DEV_20261009.md)新完成：44暗4cm横杆×K4原hist，固定单帧双邻区找峰，上下邻行及时参照H0/B1各/56、同行左右均0/56。clear按侧别×长度整组分校准/验证；验证上下仅5/16384个zone×帧×K可用，目标远峰距离/宽度无可评价样本。几何污染上下37.36%（/1424目标zone×帧）少于同行100%（/1132），仍不足可靠覆盖。预检不通过，不启动联合读出，不证明原hist无远段信号；不处理竖杆query误报。
 
-prepare .563/180s、提取10.891/300s；独立10.564/120s，18工作点/5376事件/120排名及unknown保留核验通过，无新投影/推理/光子/训练。下一优先暗4cm横杆近增强/远衰减支路，先验证可观测背景参照和超出近峰增量，NOT_RUN。
+独立逐值重算5046272字段、224事件及几何一致；新几何计算而无新光子/期望渲染/投影/M3推理/训练。下一可另列同past8、保留角度的原hist远段统计预检，处理位姿/距离变化，NOT_RUN。原M3与5格候选不升级。
 
+[边界内外对比](../research/active/dtr-r0/nearfield/CNH_BAR_BOUNDARY_CONTRAST_DEV_20261009.md)：Dmax全不动，Dwin ideal只省1格；±3°省格少却损浅伸入目标，不采用；降低已失败一致性/裁剪/固定内外差方案优先级，不排除不同机制。
 [上一轮逐级诊断](../research/active/dtr-r0/nearfield/CNH_BAR_VERTICAL_EVIDENCE_DEV_20261009.md)：clear竖杆未入query但正均值差进入投影，±3°约3–4倍；直接裁剪ideal clear12→36且损H25/B18，不采用。[query成本](../research/active/dtr-r0/nearfield/CNH_BAR_QUERY_COST_DEV_20261009.md)：+3°全批175格主要raised170；三query min损27/32，不采用。[迁移](../research/active/dtr-r0/nearfield/CNH_BAR_TRANSFER_DEV_20261009.md)：留出/人工位姿/两新背景有相对净增，成本非普遍稳定。
 
 [投影/FP16](../research/active/dtr-r0/nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)暗横杆条件d²保留下界≥96.1847%，远负差未覆盖；[读出](../research/active/dtr-r0/nearfield/CNH_BAR_READOUT_DEV_20261008.md)方差失配68/76，d_J仅敏感性；[局部替换](../research/active/dtr-r0/nearfield/CNH_BAR_LOCAL_READOUT_DEV_20261009.md)全批损40/55，不替换M3。
@@ -24,4 +25,4 @@ prepare .563/180s、提取10.891/300s；独立10.564/120s，18工作点/5376事�
 
 [Nymeria](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)姿态准确度未评、位置/PDR未实现，E1整链NOT_EVALUABLE，future pelvis/闭环不进估计器。设备、City、保护test、新UE/硬件第二阶段暂停；101/101、53ms属A+LOCAL，M3/CNH实机效果未建立。
 
-[路线当前页](../research/active/dtr-r0/CURRENT.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。更新前全文：Git 615141bf同路径。
+[路线当前页](../research/active/dtr-r0/CURRENT.md) · [RUNS](../research/active/dtr-r0/RUNS.md)。更新前全文：Git d937fcda同路径。
