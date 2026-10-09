@@ -14,9 +14,9 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 RGB独立子线已完成[首批真实细结构补标](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)：15帧/9session/41个可见core，11正/2非空参考负/233UNKNOWN；两负格来自同一横杆，已知距离格仍仅1session。原7帧增补目标域后正query8→14，模型未变。新增为agent视觉复核/双目估计参考，非人工真值；可作稀疏空间监督，完整query训练/验证尚未补齐。下一跨session可靠距离与独立视觉核验，再训练query机制；旧高分辨率/VDA负结果及提前量不可评保留。真实定量仍为硬目标，预算独立于CNH。
 
-[擦边工作点与匹配续训](../research/active/dtr-r0/nearfield/CNH_PASS_BOUNDARY_DEV_20261009.md)完成零训练cal选点、32历史坐标等价检查及三seed各12轮原mask/弱pass对照。30%cal预算下独立读出弱pass−control HEAD净+5/+18/+13、BODY+4/+30/+25各/384；validation pass80/73/72→76/77/75各/256，clear0/0/0→3/1/0各/6656，不是严格同成本。预设40%点1cm HEAD净+4/+1/+3、BODY+1/+6/+8各/128，pass减少3/9/5但clear增加7/4/2；保留低擦边独立读出候选，不由validation选上线点。
+[已有点双条件与姿态诊断](../research/active/dtr-r0/nearfield/CNH_PASS_POSE_DIAGNOSTIC_DEV_20261009.md)完成缓存分析，无新训练/推理/阈值。40% weak独立读出在ideal H316/309/307、B282/264/279各/384，clear clip8/5/2各/512（M3 29、旧28），pass93/97/93各/256（两基线60）；+3 H306/289/299、B278/258/259各/384，clear clip148/120/140各/512（两基线172）、pass136/122/122各/256（M3 138、旧139）。总体双条件高于M3，但ideal pass成本更高，+3 BODY后两seed仍低旧融合3/2。候选保留，M3/原5格/L2不升级，未据validation选上线点。
 
-OR30% HEAD净−9/−5/−3、BODY−12/+1/+5各/384；+3°独立读出1cm HEAD净−6/−5/−7各/128，成本仍不稳定。原M3/5格/L2不升级。旧OR cal pass下限55使20%预算51不可行；坐标gauge输入/logits相同只排除覆盖的坐标依赖，query/pose时间与符号合同未闭合。弱pass新增2288槽，同时重归一化新增数据原有效权重×.985034，旧39936行不变；不能归因为mask单一原因。[此前反事实和摘要负结果](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)保留。科学阶段266.219/1200s、有记录CPU85.249/600s（初始映射时长未知），聚焦检查、6模型日程及258048账本行独立PASS；6衍生数组约5.153GB经SHA清理，证据/模型保留。已消费模拟Development，无新光子/硬件/保护480访问；更新前CNH段见Git d2afbaf1。
+40%同模型ideal→+3的1cm HEAD救9/10/10、损16/28/18各/128；30%弱监督HEAD损13/25/17全正x侧各/64，两臂共享方向响应线索，未证明边界变锐。严格同rho的HEAD/BODY配对0、各128未匹配；32几何对应仍rho混杂，f10前向距离全1.45m，不能归因高度/zone。下一优先逐事件输入支持与跨阈值对应，反号及同rho配对保留，未执行。已消费模拟Development，无新光子/设备/480访问；旧[弱pass配方](../research/active/dtr-r0/nearfield/CNH_PASS_BOUNDARY_DEV_20261009.md)及[CF/摘要负结果](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)保留，更新前CNH段见Git 44dd8ed6。
 
 方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
 
