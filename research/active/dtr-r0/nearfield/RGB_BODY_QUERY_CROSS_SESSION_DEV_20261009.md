@@ -2,6 +2,8 @@
 
 状态：REAL_SENSOR_TRAINING_PIPELINE_COMPLETE / RGB_GAIN_NOT_ESTABLISHED，2026-10-09。继承[首批补标](RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)的真实定量目标；已补跨环境参考并完成两种query模型/控制，不扩旧停止run，也不训练CNH。
 
+后续：[尺度、场景信息与度量表征诊断](RGB_BODY_QUERY_METRIC_DIAGNOSTIC_DEV_20261009.md)完成，RGB预测深度+新读出得到Development总体增量，环境/距离带仍有取舍。本文两旧query的负结果与停止规则保持。
+
 目标：解释SANPO稀疏core的跨场景距离缺口，利用已有真实RGB/实测深度形成可按采集组隔离的空间查询参考，并检查现成单目深度基线。原六个相机局部query、UNKNOWN及旧失败保留；身体外参和行走事件指标不凭相机深度补齐。
 
 资源上限：本轮CPU 1800秒（含子任务）、GPU执行壁时600秒、新增下载2GiB。优先已有缓存；允许调整数据源/样本规模，不调整旧评分阈值来凑已知标签。阶段到限即停该阶段，保存部分结果。不采集手机/实机，不访问受保护final，不将无许可数据再分发。payload位于`artifacts.local/work/rgb-body-query-cross-session-dev-20261009/`。

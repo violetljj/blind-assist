@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[真实跨环境参考与query训练](nearfield/RGB_BODY_QUERY_CROSS_SESSION_DEV_20261009.md)。3RScan96帧/12官方train环境按7/2/3隔离，1440格825正/615UNKNOWN，完整负query0；RGB+公开K/query独立推理，传感器距离仅监督/评分。DP validation检出146/198；两query候选均弱于无RGB控制，多尺度RGB射线召回/FPR .50386/.14587，对照.60742/.11727，shuffle退化尚无收益。GPU阶段184.566/600s，6fixture及几何/预测复算通过。下一几何预训练表征与步行/细结构负例覆盖；室内扫描射线非整盒/身体/事件真值。旧SANPO补标与DP/VDA负结果、真实硬目标、旧BodyQuery/COPILOT定位与CNH预算/停止规则各自保留。
+RGB独立子线：[尺度、场景信息与度量表征诊断](nearfield/RGB_BODY_QUERY_METRIC_DIAGNOSTIC_DEV_20261009.md)。沿用3RScan96帧/12环境7/2/3隔离，1440格825正/615UNKNOWN，无满足全部可观测采样射线free判据的负query。冻结Depth Pro的RGB预测深度+learned query读出，validation正/free query-ray1071771/1795858，召回/误支持.70048/.10663，匹配geometry .61966/.11535；新增32特征较弱(.65990/.10880)。depth-only打乱退化至.64691/.19574，相同head ray/query的417179近邻反标签pair排序.84421，支持场景信息。三环境和全距离带取舍并列，第三环境召回下降，前两环境误支持增加；cal阈值固定，不以validation改模型。GPU166.096/600s，独立SHA/预测复算通过。保留简洁预测深度读出候选，下一充分参考负query与步行/细结构覆盖；真实射线Development非完整身体/整盒/事件证据。旧两query/SANPO负结果及停止规则、真实硬目标、CNH预算保留。
 
 ## 当前：双条件独立读出候选保留，方向敏感性已定位到侧别
 
