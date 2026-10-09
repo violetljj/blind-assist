@@ -2,6 +2,8 @@
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
+RGB独立子线已获用户“推进”授权：[真实身体空间查询](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_DEV_20261009.md)。真实评价为硬目标，补充ToF/CNH主要模拟证据；50真实帧诊断、10帧20次Depth Pro推理及相机局部query读出完成，45连续真实帧配套已取得。保留图像细节有支持，但效果未评，身体外参/事件/pose参考待核验。继承旧BodyQuery并对照COPILOT，候选增量为可变米制query＋薄结构高分辨率因果证据＋真实事件定量。下一完成真实query标签与VDA因果基线；SANPO重新纳入该子线候选，CNH原预算、停止规则及M3保留。
+
 ## 当前：简化bin-token有效，先保留互补候选
 
 [新表示试点](../research/active/dtr-r0/nearfield/CNH_DELAYED_QUERY_DEV_20261009.md)复用训练39936行及492场景×K4，16-bin在学习交互后池化。8833名义参数的去signed-face简化臂HEAD578/BODY510各/688，clear46/4576；相对M3救77/117、损16/13。完整signed-face−简化臂净−26/−14（救9/8、损35/22）；本轮不支持signed-face或extent增量。旧12/64轮负结果完整保留。

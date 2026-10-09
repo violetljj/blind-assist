@@ -4,6 +4,8 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
+RGB独立子线：[真实身体空间查询](nearfield/RGB_BODY_QUERY_DEV_20261009.md)。真实数据/文献核查、50真实帧输入诊断、10帧Depth Pro配对烟测及6query读出完成，另物化45连续真实帧/180配套文件。下一核验相机局部query标签及因果视频深度基线；身体外参/事件真值未闭合，训练和提前量NOT_RUN。继承旧BodyQuery、对照COPILOT，可变米制区域与薄结构时序增量未验证；SANPO-Real重新纳入候选，真实评价硬目标、旧停止结果与CNH预算分别保留。
+
 ## 当前：简化bin-token有效，先保留互补候选
 
 [新表示试点](nearfield/CNH_DELAYED_QUERY_DEV_20261009.md)复用训练39936行及492场景×K4，16-bin在学习交互后池化。8833名义参数的去signed-face简化臂HEAD578/BODY510各/688，clear46/4576；相对M3救77/117、损16/13。完整signed-face−简化臂净−26/−14（救9/8、损35/22）；本轮不支持signed-face或extent增量。旧12/64轮负结果完整保留。
