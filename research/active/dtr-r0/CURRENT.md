@@ -6,20 +6,22 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 RGB独立子线：[真实连续段参考与基线](nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)。45帧270格为59正/25空域负/186UNKNOWN，空域负剔除；仅GT定位oracle几何诊断。共同18帧Depth Pro原图/128 IoU .3284/.3261，居中适配劣化；VDA全45帧近盒正格0/10，机制收益未建立。金属细杆漏标，下一补真实细障碍标注和非空角域负例，再训练query机制；身体外参/事件真值未闭合，提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；SANPO-Real为候选，真实评价硬目标、旧停止结果与CNH预算分别保留。
 
-## 当前：普通扩充有收益，完整交叉反事实未增加稳定收益
+## 当前：弱pass改善低擦边独立读出的权衡，旧融合不升级
 
-[三臂三seed实验](nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)固定简化8833参数bin-token、BCE、7488步及配对初始化；普通与完整交叉反事实等量扩充。BCE未使用pair身份，本轮检验数据覆盖增量。
+[工作点、坐标等价与匹配续训](nearfield/CNH_PASS_BOUNDARY_DEV_20261009.md)已完成。先按ideal cal选20/30/40% pass预算（51/76/102个clip），再固定阈值用于validation与+3°；独立读出/OR的cal clear上限65/80格。旧OR pass下限55，20%点不可行。只调阈值会损失接触检出，随后从普通扩充的三个最终checkpoint各做12轮/2808步原mask对照与弱pass续训，共6个模型。
 
-不同几何背景验证：普通扩充OR在旧5格融合上H315/313/323、B267/257/282各/384，旧融合298/244；clear均58/6656，pass却由60升至89/103/115各/256。+3°沿用ideal校准阈值，clear1297/1261/1352，旧融合1245；不支持扰动同成本。CF−普通独立读出H−2/+13/0、B0/−4/−7，OR H−7/0/+2、B−10/−2/−10，未获稳定增量。
+30%点弱pass−匹配对照：独立读出HEAD净+5/+18/+13、BODY+4/+30/+25各/384；实际pass80/73/72→76/77/75各/256，clear0/0/0→3/1/0各/6656，并非严格同成本。1cm HEAD净−2/+2/0、BODY+2/+11/+14各/128。预设40%点1cm HEAD+4/+1/+3、BODY+1/+6/+8各/128；pass减少3/9/5，但clear增加7/4/2。保留弱pass为低擦边独立读出Development候选，不据validation选上线工作点。
 
-保留普通扩充为Development候选，不升级M3/原5格/L2。新背景族先分train/cal/validation，同族干预不跨分区；只证明新增族隔离，继承39936训练行及M3的背景相似性未审计。AABB有限几何、相关K/帧及仿真噪声不构成真实材质、实机或独立确认。校准后阈值固定，验证未调参；下一优先公共query/pose输入合同与擦边成本：+3°基线clear M3由64→1255、旧融合58→1245；这不重启旧扰动训练。当前完整交叉配方本轮收敛，未来不同机制开放。
+OR30% HEAD净−9/−5/−3、BODY−12/+1/+5各/384，clear仍58/6656，1cm HEAD损失8/5/3各/128；+3°独立读出1cm HEAD净−6/−5/−7，成本不稳定。M3、原5格/L2/A+LOCAL保留。32代表历史的世界坐标gauge检查中，实际FP16 token/M3输入与logits逐值相同；只排除所覆盖的坐标依赖，时间、yaw符号及姿态合同仍待查。
 
-固定3标量摘要（first/peak/signed-total）对完整bin base的独立读出H净+11/−46/−49、B−29/−13/−30，clear102/104/140（base87/46/49）/6656；OR H+2/−6/−10、B−5/−3/−5。保留完整bin读出，但这不是所有压缩不可行或bin机制的普适证明。实验阶段含失败累计1190.955/3600s（失败10.187s）；13项聚焦检查、评价内复算及96训练epoch日程复核通过。12个衍生数组10.305GB及bindings经SHA留证后清理，raw/模型/ledger/失败保留，73728行独立账本核验PASS。
+弱pass给新增2288个pass query槽label0/mask1；归一化使新增数据的原有效loss权重共同乘.985034，旧39936行不变。因此这是弱监督加共同重归一化的配方比较，未证明原mask导致擦边增加。沿用已消费模拟Development、有限AABB/背景及相关K/帧，无新光子、实机或保护480访问。[此前反事实与摘要负结果](nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)保留；侧移排序独立候选暂缓，不以弱负例失败为前提，旧扰动配方不重启。
+
+科学阶段266.219/1200s；有记录CPU分析85.249/600s，初始监督映射时长未知。聚焦检查、6模型日程及258048行独立账本核验PASS；6个衍生数组约5.153GB经SHA留证后清理，观察、模型、scores、账本及失败记录保留。
 
 ## 停止与保留
 
 [旧扰动训练](nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)、T/T2、旧参照和门控的停止规则仍按各自run适用；不同机制开放。[480确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)原身份保留，UNKNOWN/三态/query覆盖待验证。方向/Nymeria位移、−19°、设备/City/保护test/新UE及硬件第二阶段暂缓；101/101与53ms属A+LOCAL，M3/CNH实机效果未建立。
 
-模拟AABB、有限背景、人工误差、相关K/帧及探索选择不构成实机、安全或独立确认。更新前CNH当前正文保留于Git 3564255a同路径；RGB子线继续沿用。
+模拟AABB、有限背景、人工误差、相关K/帧及探索选择不构成实机、安全或独立确认。更新前CNH当前正文保留于Git d2afbaf1同路径；RGB子线继续沿用。
 
 [RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。

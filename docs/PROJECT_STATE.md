@@ -14,9 +14,9 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 RGB独立子线已完成[真实连续段参考与基线评价](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)：45帧/270格，59正/25空域负/186UNKNOWN；空域负排除评分，GT定位oracle不能证明独立检出或误报。共同18帧Depth Pro原图/128像素IoU .3284/.3261，高分辨率增益未建立；VDA全45帧完成但近盒正格0/10。金属细杆漏标，下一补真实细障碍标注与非空角域负例，再训练query机制；提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；真实定量仍为硬目标，预算独立于CNH，身体外参未闭合。
 
-[三臂三seed扩充](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)固定简化bin-token/BCE及7488步，新增普通与完整交叉反事实样本等量。普通OR在不同几何背景H315/313/323、B267/257/282各/384（旧融合298/244），clear均58/6656；pass60→89/103/115各/256。+3°固定校准阈值clear1297/1261/1352（旧1245），不是扰动同成本。CF对普通的独立读出H净−2/+13/0、B0/−4/−7，OR H−7/0/+2、B−10/−2/−10，无稳定增量；保留普通扩充Development候选，M3/原5格/L2不升级。
+[擦边工作点与匹配续训](../research/active/dtr-r0/nearfield/CNH_PASS_BOUNDARY_DEV_20261009.md)完成零训练cal选点、32历史坐标等价检查及三seed各12轮原mask/弱pass对照。30%cal预算下独立读出弱pass−control HEAD净+5/+18/+13、BODY+4/+30/+25各/384；validation pass80/73/72→76/77/75各/256，clear0/0/0→3/1/0各/6656，不是严格同成本。预设40%点1cm HEAD净+4/+1/+3、BODY+1/+6/+8各/128，pass减少3/9/5但clear增加7/4/2；保留低擦边独立读出候选，不由validation选上线点。
 
-下一优先公共query/pose输入合同与擦边成本（+3°基线M3 clear64→1255、旧融合58→1245），不重启旧扰动训练。当前完整交叉配方本轮收敛，新机制开放。新增背景族train/cal/validation隔离；继承39936行/M3背景相似性未审计。BCE未读pair身份，不称反事实关系学习；AABB/有限背景/相关K仍为模拟探索。3标量摘要对完整bin base独立读出H净+11/−46/−49、B−29/−13/−30，clear102/104/140（base87/46/49）/6656；只支持保留完整bin相对该适配器，不作普适机制证明。实验累计1190.955/3600s含失败10.187s，13聚焦检查、96epoch日程及73728行独立账本复核通过；12衍生数组10.305GB经SHA留证清理，raw/模型/账本/失败保留。旧bin-token试点和预算保留在[原报告](../research/active/dtr-r0/nearfield/CNH_DELAYED_QUERY_DEV_20261009.md)，更新前CNH段见Git 3564255a；设备与保护480未访问。
+OR30% HEAD净−9/−5/−3、BODY−12/+1/+5各/384；+3°独立读出1cm HEAD净−6/−5/−7各/128，成本仍不稳定。原M3/5格/L2不升级。旧OR cal pass下限55使20%预算51不可行；坐标gauge输入/logits相同只排除覆盖的坐标依赖，query/pose时间与符号合同未闭合。弱pass新增2288槽，同时重归一化新增数据原有效权重×.985034，旧39936行不变；不能归因为mask单一原因。[此前反事实和摘要负结果](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)保留。科学阶段266.219/1200s、有记录CPU85.249/600s（初始映射时长未知），聚焦检查、6模型日程及258048账本行独立PASS；6衍生数组约5.153GB经SHA清理，证据/模型保留。已消费模拟Development，无新光子/硬件/保护480访问；更新前CNH段见Git d2afbaf1。
 
 方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
 
