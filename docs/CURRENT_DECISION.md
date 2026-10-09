@@ -2,7 +2,7 @@
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线：[真实细结构首批补标](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)。15帧/9session补41core，246格11正/2非空参考负/233UNKNOWN；两负格同一横杆，已知距离全属1session。原7帧正query8→14来自目标域补充，模型没变。新增agent视觉复核非人工GT，现为稀疏监督，完整query训练/验证仍缺可靠距离与独立视觉核验。下一先补跨session距离与核验再训练；旧DepthPro/VDA负结果及事件提前量不可评保留。真实定量硬目标、旧BodyQuery/COPILOT定位与CNH预算/停止规则/M3保留。
+RGB独立子线：[真实跨环境参考与query训练](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_CROSS_SESSION_DEV_20261009.md)。3RScan96帧/12官方train环境按7/2/3隔离，1440格825正/615UNKNOWN，完整负query0；实测深度只供监督/评分，模型全RGB+公开K/query。DP validation检出146/198。两版query模型均弱于匹配无RGB控制，多尺度RGB射线召回/FPR .50386/.14587，对照.60742/.11727；shuffle退化仍未建立贡献。GPU阶段184.566/600s，聚焦/独立核验通过。下一具度量几何预训练的RGB表征与步行/细结构负例覆盖；射线/室内扫描非身体、整盒无障碍或事件证据。旧SANPO/DP/VDA负结果、真实硬目标、旧BodyQuery/COPILOT定位与CNH预算/停止/M3分别保留。
 
 ## 当前：双条件独立读出候选保留，方向敏感性已定位到侧别
 

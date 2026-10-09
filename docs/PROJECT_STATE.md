@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB独立子线已完成[首批真实细结构补标](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)：15帧/9session/41个可见core，11正/2非空参考负/233UNKNOWN；两负格来自同一横杆，已知距离格仍仅1session。原7帧增补目标域后正query8→14，模型未变。新增为agent视觉复核/双目估计参考，非人工真值；可作稀疏空间监督，完整query训练/验证尚未补齐。下一跨session可靠距离与独立视觉核验，再训练query机制；旧高分辨率/VDA负结果及提前量不可评保留。真实定量仍为硬目标，预算独立于CNH。
+RGB独立子线已打通[真实跨环境参考与query训练](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_CROSS_SESSION_DEV_20261009.md)：3RScan96帧/12官方train环境按7/2/3隔离，1440格825正/615UNKNOWN，无完整负query。RGB+公开K/query独立推理，实测深度只供监督/评分。DP validation24帧检出146/198；两版query模型各有匹配无RGB控制，像素结果均弱于控制，多尺度RGB召回.50386/FPR.14587，对照.60742/.11727；打乱后退化但未建立图像收益。GPU阶段184.566/600s，6fixtures及独立几何/预测复算通过。下一几何预训练表征与真实步行/细结构负例覆盖；室内扫描/传感器射线非整盒清空、身体或事件真值。旧SANPO补标/DP/VDA负结果保留，真实定量硬目标、CNH预算各自保留。
 
 [已有点双条件与姿态诊断](../research/active/dtr-r0/nearfield/CNH_PASS_POSE_DIAGNOSTIC_DEV_20261009.md)完成缓存分析，无新训练/推理/阈值。40% weak独立读出在ideal H316/309/307、B282/264/279各/384，clear clip8/5/2各/512（M3 29、旧28），pass93/97/93各/256（两基线60）；+3 H306/289/299、B278/258/259各/384，clear clip148/120/140各/512（两基线172）、pass136/122/122各/256（M3 138、旧139）。总体双条件高于M3，但ideal pass成本更高，+3 BODY后两seed仍低旧融合3/2。候选保留，M3/原5格/L2不升级，未据validation选上线点。
 
