@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB独立子线已完成[真实连续段参考与基线评价](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)：45帧/270格，59正/25空域负/186UNKNOWN；空域负排除评分，GT定位oracle不能证明独立检出或误报。共同18帧Depth Pro原图/128像素IoU .3284/.3261，高分辨率增益未建立；VDA全45帧完成但近盒正格0/10。金属细杆漏标，下一补真实细障碍标注与非空角域负例，再训练query机制；提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；真实定量仍为硬目标，预算独立于CNH，身体外参未闭合。
+RGB独立子线已完成[首批真实细结构补标](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)：15帧/9session/41个可见core，11正/2非空参考负/233UNKNOWN；两负格来自同一横杆，已知距离格仍仅1session。原7帧增补目标域后正query8→14，模型未变。新增为agent视觉复核/双目估计参考，非人工真值；可作稀疏空间监督，完整query训练/验证尚未补齐。下一跨session可靠距离与独立视觉核验，再训练query机制；旧高分辨率/VDA负结果及提前量不可评保留。真实定量仍为硬目标，预算独立于CNH。
 
 [擦边工作点与匹配续训](../research/active/dtr-r0/nearfield/CNH_PASS_BOUNDARY_DEV_20261009.md)完成零训练cal选点、32历史坐标等价检查及三seed各12轮原mask/弱pass对照。30%cal预算下独立读出弱pass−control HEAD净+5/+18/+13、BODY+4/+30/+25各/384；validation pass80/73/72→76/77/75各/256，clear0/0/0→3/1/0各/6656，不是严格同成本。预设40%点1cm HEAD净+4/+1/+3、BODY+1/+6/+8各/128，pass减少3/9/5但clear增加7/4/2；保留低擦边独立读出候选，不由validation选上线点。
 

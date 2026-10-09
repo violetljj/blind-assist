@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[真实连续段参考与基线](nearfield/RGB_BODY_QUERY_EVAL_DEV_20261009.md)。45帧270格为59正/25空域负/186UNKNOWN，空域负剔除；仅GT定位oracle几何诊断。共同18帧Depth Pro原图/128 IoU .3284/.3261，居中适配劣化；VDA全45帧近盒正格0/10，机制收益未建立。金属细杆漏标，下一补真实细障碍标注和非空角域负例，再训练query机制；身体外参/事件真值未闭合，提前量NOT_EVALUABLE。继承旧BodyQuery、对照COPILOT；SANPO-Real为候选，真实评价硬目标、旧停止结果与CNH预算分别保留。
+RGB独立子线：[真实细结构首批补标](nearfield/RGB_BODY_QUERY_LABEL_COMPLETION_DEV_20261009.md)。15帧/9session/41core，11正/2非空参考负/233UNKNOWN，两负格同一横杆；已知距离全属1session。原7帧正query8→14为目标域扩大，模型未变。agent视觉复核与估计双目参考只供稀疏监督，完整query训练/验证尚缺可靠跨session距离与独立核验。下一补距离/核验再训练，旧DepthPro/VDA负结果、身体外参/事件缺口及提前量NOT_EVALUABLE保留。真实评价硬目标、旧BodyQuery/COPILOT定位与CNH预算/停止规则分别保留。
 
 ## 当前：弱pass改善低擦边独立读出的权衡，旧融合不升级
 
