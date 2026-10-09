@@ -2,6 +2,8 @@
 
 2026-10-09，EXPLORE / COMPLETE / PREDICTED_DEPTH_READOUT_CANDIDATE。只用RGB预测深度的新query读出，在3环境validation正射线召回.70048、free误支持.10663，匹配geometry为.61966/.11535；额外32特征本配方没有增量。逐环境/距离带有取舍，保留为已消费Development候选，尚非独立确认或完整身体查询贡献。用户“推进”执行经复核的讨论：用[跨环境缓存](RGB_BODY_QUERY_CROSS_SESSION_DEV_20261009.md)检查尺度调整能解释多少差距、固定查询条件下有多少场景信息，再选择度量表征读出。旧两版query及其停止规则保留。
 
+后续[冻结迁移与锚点旁路](RGB_BODY_QUERY_TRANSFER_DEV_20261009.md)已完成：8个未用3RScan环境保留总体对geometry增量；一个ARKitScenes低分辨率捕获没有复现两项同时改善及充分近场增量，保留工作点/来源限制。本文原结果和模型不改写。
+
 预算：本轮CPU辅助累计1800秒、GPU执行壁时600秒、新数据/模型下载0B；payload `artifacts.local/work/rgb-body-query-metric-diagnostic-dev-20261009/`。尺度/场景缓存诊断各CPU240秒，度量表征候选最多GPU480秒/辅助CPU240秒，余量供核验及修复；各阶段到限保存partial，旧run/CNH预算不扩。
 
 固定96帧/12官方train环境，7/2/3训练/cal/validation，以及15个query、原生224×172评分grid和UNKNOWN规则。每个query-ray是相关单位，非独立样本。1440格无满足全部可观测采样射线free判据的单位，不证明不存在实际空闲；约180万validation free单位供射线误支持评价，全部采样射线free也不证明整盒清空。

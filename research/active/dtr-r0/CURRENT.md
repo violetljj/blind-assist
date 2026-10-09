@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[尺度、场景信息与度量表征诊断](nearfield/RGB_BODY_QUERY_METRIC_DIAGNOSTIC_DEV_20261009.md)。沿用3RScan96帧/12环境7/2/3隔离，1440格825正/615UNKNOWN，无满足全部可观测采样射线free判据的负query。冻结Depth Pro的RGB预测深度+learned query读出，validation正/free query-ray1071771/1795858，召回/误支持.70048/.10663，匹配geometry .61966/.11535；新增32特征较弱(.65990/.10880)。depth-only打乱退化至.64691/.19574，相同head ray/query的417179近邻反标签pair排序.84421，支持场景信息。三环境和全距离带取舍并列，第三环境召回下降，前两环境误支持增加；cal阈值固定，不以validation改模型。GPU166.096/600s，独立SHA/预测复算通过。保留简洁预测深度读出候选，下一充分参考负query与步行/细结构覆盖；真实射线Development非完整身体/整盒/事件证据。旧两query/SANPO负结果及停止规则、真实硬目标、CNH预算保留。
+RGB独立子线：[冻结迁移与锚点旁路](nearfield/RGB_BODY_QUERY_TRANSFER_DEV_20261009.md)。原模型/归一化/cal实际cutoff冻结，无训练；8个未用3RScan环境64帧，正/free query-ray3400061/4344666，depth-only召回/误支持.59236/.08489 vs geometry .50464/.09513，6/8环境TP净增、2/8净减；相对raw DP .64005/.15911是取舍。ARKitScenes iPadPro单捕获16帧，depth-only .29567/.04188 vs geometry .42204/.05606，两项同时改善与充分近场增量未复现；场景、原图分辨率/K、预测距离及读出适配原因未定。28全采样free格各臂支持0/28，非整盒/身体误报；步行提前量仍缺事件/身体参考。同源实测锚点旁路改善直接几何但不证明ToF增量。GPU154.136/900s，官方数据357569481B/2GiB，独立保存预测复算及旧帧CUDA逐值核验PASS。下一高分辨率不同相机多环境与预测质量诊断、完整query/步行参考；旧两query/32特征不续训，原负结果/真实硬目标/CNH预算保留。
 
 ## 当前：加权方向读出改善部分偏差边界，理想BODY损失与成本取舍保留
 
