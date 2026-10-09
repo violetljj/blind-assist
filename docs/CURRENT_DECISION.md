@@ -2,7 +2,7 @@
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线：[低参数校正与迁移](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_CALIBRATED_TRANSFER_DEV_20261009.md)。只原train56帧/7环境1591791米制点拟合shift/affine；只原cal16帧选δ+.12/−.02m，实际FPR .143116/.139822非精确目标；head/checkpoint/归一化/实际cutoff冻结。原val affine-margin召回/误支持.704999/.132615 vs head .700483/.106626，TP≥16查询见证149/198 vs163/198；新3RScan .653427/.106888 vs .592361/.084894，384/570 vs411/570，射线取舍且query覆盖减少。ARKit单capture .297995/.014912 vs .295673/.041885，77/140 vs76/140；不能由一次比较裁定贡献。包括预定shift-direct的全部8臂及全部5cohort/环境/距离带/救回损失并列；训练距离监督不同，不作孤立架构归因。独立14400臂query/18000配对及冻结身份PASS，GPU0/600s、CPU保守200/1500s。TUM官方新镜像Python/curl均失败，源0B、第三相机NOT_RUN，官方HTML1110177B，网络保守175.857/600s，资源释放；fr3硬件勘误Asus Xtion。下一补可取得的真实参考/任务可观测覆盖与事件定义，以强基线检验度量表征/时序；旧640→256小变化/28采样free各0/28、完整身体/细结构/步行缺口保留。旧两query/32特征不续训，真实硬目标/同源锚点限制/CNH预算不变。
+RGB独立子线：[查询外推与负参考](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_QUERY_LEVEL_DEV_20261009.md)。固定27子盒、冻结旧head/cal且不重选阈值；136帧3672格，575格sampledFREE（572来自三ARKit capture），不是整盒/身体空闲。新3RScan正见证head352/866、affine-margin487/866，救/损109/244；旧ARKit采样free支持7/105对0/105；新增两个官方visit组head31/220、22/247，对照12/220、10/247。未证明冻结head对任意query的稳定增量，保留旧RGB距离信息Development收益；下一改距离/不确定性表征和query覆盖，以强几何及全量救回损失检验。第三硬件TUM仍因吞吐停止NOT_RUN，同iPad家族补参考不替代硬件迁移；完整身体/细障碍/步行仍缺。旧query/32特征不续训，真实硬目标/同源锚点限制/CNH预算不变。
 
 ## 当前：离线走廊参考已接通，因果位移仍缺
 

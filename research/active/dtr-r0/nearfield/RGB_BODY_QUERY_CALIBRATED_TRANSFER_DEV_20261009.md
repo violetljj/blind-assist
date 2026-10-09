@@ -73,3 +73,5 @@ Python首块在2s socket超时后改20s仍未取到源字节，两次失败保�
 新GPU0/600s、新模型0B；校正执行16.958s、独立数值审计17.817s+身份.014s，CPU保守总200/1500s（校正30、审计60、源准备40含curl收尾、主配对/交付70），不是部署性能；接收1110177B/512MiB全部官方HTML。完整源缺失时不触发模型推理。任务计算/下载进程结束，plan/源码快照/输入身份/fit/cal/全量结果/审计及所有失败留canonical artifacts树供复算，旧结果/partial仍保留。
 
 代码：[低参数校正与迁移](rgb_body_query_calibrated_geometry.py)、[TUM源适配](rgb_body_query_tum_prepare.py)；独立审计及传输工具在payload，总`completion_receipt.json`汇集源/结果SHA、资源释放和本轮交付。热文档只更新RGB段，旧CNH不吸收为本任务修改；scoped diff与docs index用于交付。
+
+后继：[查询外推与负参考](RGB_BODY_QUERY_QUERY_LEVEL_DEV_20261009.md)保留本报告原15query指标，另在预定27子盒及追加同相机家族capture评价冻结候选；不同查询定义的空闲支持不可互换。
