@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB独立子线：[冻结迁移与锚点旁路](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_TRANSFER_DEV_20261009.md)。原模型/归一化/cal实际cutoff冻结，无训练；8个未用3RScan环境64帧，正/free query-ray3400061/4344666，depth-only召回/误支持.59236/.08489 vs geometry .50464/.09513，6/8环境TP净增、2/8净减；相对raw DP .64005/.15911是取舍。ARKitScenes iPadPro单捕获16帧，depth-only .29567/.04188 vs geometry .42204/.05606，两项同时改善与充分近场增量未复现；场景、原图分辨率/K、预测距离及读出适配原因未定。28全采样free格各臂支持0/28，非整盒/身体误报；步行提前量仍缺事件/身体参考。同源实测锚点旁路改善直接几何但不证明ToF增量。GPU154.136/900s，官方数据357569481B/2GiB，独立保存预测复算及旧帧CUDA逐值核验PASS。下一高分辨率不同相机多环境与预测质量诊断、完整query/步行参考；旧两query/32特征不续训，原负结果/真实硬目标/CNH预算保留。
+RGB独立子线：[输入配对与可调基线](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_INPUT_BASELINE_DEV_20261009.md)。冻结模型/归一化/cal实际cutoff，无训练；同capture8个640→256同帧配对，共同正/free query-ray688483/930318，depth-only召回/误支持.34273/.04979 vs .34240/.05062，已知TP≥16见证均45/74，geometry均.45414/.06479；仅很小变化，不定位旧ARKit退化原因，原16帧结果不能直接作因果比较。16/16预测有空间变化，不称常数坍缩。原cal选择δ=0退化为raw本身，尚未回答学习读出的额外价值；下一修正强几何比较合同、检验不同度量深度表征/训练分布，补多相机多环境与身体/步行参考。TUM源4194304B partial，270.830/300s网络限额内未完成，真实帧/GPU NOT_RUN，进程释放。GPU61.358/1200s、接收8697128B/4GiB；配对4臂全量独立复算/冻结身份及新增行为检查PASS。旧新3RScan增量、ARKit负结果及28采样free支持0/28保留，本轮两路各0/15，非整盒/身体误报；提前量仍缺身体/事件参考，同源锚点非ToF增量。旧两query/32特征不续训，真实硬目标/CNH预算保留。
 
 [校准尾部与中心锚定读出](../research/active/dtr-r0/nearfield/CNH_DIRECTION_ANCHOR_DEV_20261009.md)完成三seed×control/weak_pass×20/30/40%点×ideal/+3°，36center参照与72新政策共108 validation格、54本轮cal记录。仅复用冻结方向raw分数，无训练或模型回放。中心锚定OR：中心θ保持single，偏离两侧逐帧max后原last5平滑；ideal-cal中心未报警联合clear slot及整段未报警pass clip的最大限制分数取nextafter，覆盖f3–15，校准零增量。高度混合为HEAD .25/.50/.25、BODY center，raw后原平滑，在原joint预算下只选一个共享θ。
 

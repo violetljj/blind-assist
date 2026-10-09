@@ -95,3 +95,5 @@ raw→anchor正救172230/损23130，free消除140829/新增27420。12环境全�
 GPU执行总154.136s/900s：新3RScan DP80.993s、ARKit DP49.987s，head v1/v2及旧帧CUDA窄核验23.157s；含启动/准备/保存，不是手机部署时延。CPU辅助保守记账300s/1800s（资料160、两准备12+5、锚点15、独立审计40、主评分/收尾余量），不是性能测量。下载357569481B/2GiB，新模型0B，官方网页源码另842481B。全部子进程完成，无服务/worker留存；官方包/参考/预测/模型/失败及v1/v2证据保留在canonical artifacts树供复算。
 
 代码：[新环境准备](rgb_body_query_transfer_prepare.py)、[ARKit适配](rgb_body_query_arkit_prepare.py)、[冻结读出](rgb_body_query_frozen_transfer.py)、[独立审计](rgb_body_query_transfer_audit.py)、[锚点旁路](rgb_body_query_anchor_probe.py)。总输入/输出/源码SHA、分阶段成本和释放说明在payload `completion_receipt.json`；docs index与scoped diff检查用于交付。
+
+后续已完成[同帧分辨率与可调基线诊断](RGB_BODY_QUERY_INPUT_BASELINE_DEV_20261009.md)：8对640→256仅很小查询变化，δ0校准合同退化，第三相机源下载未完成；旧16帧评分与本轮共同域不同，原结果保留，不作跨域因果比较。
