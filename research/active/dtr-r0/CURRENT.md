@@ -4,19 +4,19 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；不恢复历史动态研究。
 
-## 当前：query成本主要在M3，最小值门控不采用
+## 当前：竖杆空间混合参与query响应，直接裁剪不采用
 
-[形状能力图](nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)492 AABB×K4，原−10°/理想位姿；316物理接触、344高度接触、88pass/88clear。原M3 HEAD517/BODY406及时，各/688；clear46/4576格、25段、24/352clip。非实机提醒频率。
+[形状能力图](nearfield/CNH_ALIGNED_SHAPES_DEV_20261008.md)492 AABB×K4，原−10°/理想物理位姿；316物理接触、344高度接触、88pass/88clear。原M3 H517/B406及时各/688，clear46/4576格、25段、24/352clip。非实机提醒频率。
 
-[5格融合](nearfield/CNH_BAR_FUSION_VERTICAL_DEV_20261009.md)θM=.940418、θL=4.625390的OR：H543/B461，救28/56损2/1；暗4cm BODY1→7/56损0；同原46格，clear25段/23clip。四Development点中事后工程选择，不升级原M3政策，真值形状只评价不进门控。
+[5格融合](nearfield/CNH_BAR_FUSION_VERTICAL_DEV_20261009.md)固定θM=.940418/θL=4.625390的OR：H543/B461，救28/56损2/1；暗4cm BODY1→7/56损0；clear46格、25段/23clip。四Development点中事后工程选择，不升级M3，真值形状不进门控。
 
-[query成本诊断](nearfield/CNH_BAR_QUERY_COST_DEV_20261009.md)新完成：+3°融合175/4576格，其中raised-M3已触发170、local独有5（ideal也5）；成本主要来自M3。+3°相对ideal新增158、移除29、净+129格，竖杆净+106。几何SAT/独立裁剪：±1/2°原clear物体未入query，±3°仅f3少量edge_plate进入；+3°175报警中174当帧无几何接触，158新增全部无，不能解释为大多数物体进入。
+[竖杆逐级配对](nearfield/CNH_BAR_VERTICAL_EVIDENCE_DEV_20261009.md)新完成：132竖杆×K4、ideal/±3°；观测不变且24clear竖杆均未入query，f13对应高度投影正均值差在ideal已非零，±3°约增3–4倍；远负差在该query基本未覆盖。支持空间混合参与，不是物体进入/信息损失率。
 
-三query M3取min、local保持中心：−2..2° clear下降，但ideal H543→516/B461→429 /688，损27/32、救0，不采用。±3缺±4缓存NOT_EVALUABLE；部署需3query/15单网forward。无新推理/训练/采样，主.796+出图1.000/240s、几何60.640/120s、审计3.188/120s通过。下一竖杆clear的hist角距→投影query→M3逐级配对NOT_RUN，不先归因。
+只改tot/lst、cnt及入网处理保留：裁query外回波ideal clear12→36/1248，H217→192/B177→159各/224；+3°clear117→45，但H损21救1、B损12救12。外部回波单独+3°clear17，zero_echo M3各档0。分布干预不是物理移除，裁剪不采用。无新光子/训练；新增冻结M3 82368 ensemble输入，94.297/900s；观测7.365/180s含序列化失败，独立58.234/120s、5376事件核验。下一保留背景上下文的边界/侧别对比仅建议NOT_RUN。
 
-[上一轮迁移](nearfield/CNH_BAR_TRANSFER_DEV_20261009.md)保留：10整场景留出H/B全净增但4次成本增；18位姿档相对同档M3全净增，query+3°B461→409/688、clear46→175/4576。两新背景暗B4→9、6→10/56损0，clear42→40、32→32，强段/clip各+2；适配另列，不升级政策。几何真值只评价、人工Y轨迹和有限背景不等于真实鲁棒性。
+[上一轮query成本](nearfield/CNH_BAR_QUERY_COST_DEV_20261009.md)：+3°全批fusion175/4576，raised170/local独有5；竖杆净+106。三query min门控ideal损H27/B32，仍不采用。[迁移](nearfield/CNH_BAR_TRANSFER_DEV_20261009.md)：10场景留出全净增但4次成本增；18人工位姿档全相对净增但绝对成本敏感；两新背景暗B4→9、6→10/56损0，clear42→40/32→32，强段/clip各+2，不称普遍迁移。
 
-[投影/FP16](nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)条件d²保留下界≥96.1847%，远负差未覆盖；[读出](nearfield/CNH_BAR_READOUT_DEV_20261008.md)方差失配68/76，d_J仅敏感性。[局部替换](nearfield/CNH_BAR_LOCAL_READOUT_DEV_20261009.md)全批损40/55仍保留；尺度/形状库/跨窗/远箱支路开放，不自动训练。
+[投影/FP16](nearfield/CNH_BAR_REPRESENTATION_DEV_20261008.md)暗横杆条件d²保留下界≥96.1847%，与空间归属混合是不同问题；[M3读出](nearfield/CNH_BAR_READOUT_DEV_20261008.md)方差失配68/76，d_J仅敏感性；[局部替换](nearfield/CNH_BAR_LOCAL_READOUT_DEV_20261009.md)全批损40/55，不替换M3。形状库/跨窗/远箱支路仍开放。
 
 ## 停止与保留
 
@@ -26,4 +26,4 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 [Nymeria](nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)姿态准确度未评、位置/PDR未实现，E1整链NOT_EVALUABLE，future pelvis/闭环不进估计器。设备、City、保护test、新UE/硬件第二阶段暂停；101/101、53ms属A+LOCAL，M3/CNH实机效果未建立。
 
-[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。更新前全文：Git 2848e983同路径。
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。更新前全文：Git 3590176b同路径。
