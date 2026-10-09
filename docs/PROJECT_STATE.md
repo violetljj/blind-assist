@@ -14,9 +14,9 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 RGB另立独立研究子线：[真实身体空间查询](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_DEV_20261009.md)。已完成真实数据/文献核查、50真实帧输入诊断、10帧Depth Pro配对烟测及相机局部query读出，另取得45连续真实帧/180配套文件。128输入细节中位保留指标12.7%，不是检出率；真实身体/事件标签未闭合，训练与提前量NOT_RUN。下一核验连续段query标签及因果视频深度基线。继承旧BodyQuery、对照COPILOT；真实定量仍为硬目标，预算独立于CNH。
 
-[简化bin-token试点](../research/active/dtr-r0/nearfield/CNH_DELAYED_QUERY_DEV_20261009.md)复用训练39936行与492场景×K4；8833名义参数去signed-face臂H578/B510各/688、clear46/4576，相对M3救77/117、损16/13。本轮不支持signed-face或extent增量。优先保留旧5格融合＋简化臂互补候选H562/B481，相对旧融合救19/20、损0，暗4cm横杆H12/B7各/56保留；clear46格/25段/23clip，但pass74→101/352。+3°固定ideal阈值成本旧175→191格（M3为176），H514/B422；48训练外同生成器单位AUC .839265低于M3 .868327。已消费Development选择，不升级M3或声称实机/泛化效果。
+[三臂三seed扩充](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)固定简化bin-token/BCE及7488步，新增普通与完整交叉反事实样本等量。普通OR在不同几何背景H315/313/323、B267/257/282各/384（旧融合298/244），clear均58/6656；pass60→89/103/115各/256。+3°固定校准阈值clear1297/1261/1352（旧1245），不是扰动同成本。CF对普通的独立读出H净−2/+13/0、B0/−4/−7，OR H−7/0/+2、B−10/−2/−10，无稳定增量；保留普通扩充Development候选，M3/原5格/L2不升级。
 
-当前配方本轮不再加训，新机制开放；下一优先train-only反事实配对及不同背景、擦边和迁移。v1 pair是同观测HEAD/BODY query contrast，完整背景反事实尚未做；旧192输入响应NOT_RUN仅辅诊。11项聚焦检查及独立账本核验通过；GPU成功397.609s加两次启动失败5.7036556s，预算403.313/1200s；CPU准备/分析预算600s。20.457GB/16个衍生features已保存SHA manifest后清理，raw/模型/输入/ledger和失败保留；无新光子、硬件或保护480访问。
+下一优先公共query/pose输入合同与擦边成本（+3°基线M3 clear64→1255、旧融合58→1245），不重启旧扰动训练。当前完整交叉配方本轮收敛，新机制开放。新增背景族train/cal/validation隔离；继承39936行/M3背景相似性未审计。BCE未读pair身份，不称反事实关系学习；AABB/有限背景/相关K仍为模拟探索。3标量摘要对完整bin base独立读出H净+11/−46/−49、B−29/−13/−30，clear102/104/140（base87/46/49）/6656；只支持保留完整bin相对该适配器，不作普适机制证明。实验累计1190.955/3600s含失败10.187s，13聚焦检查、96epoch日程及73728行独立账本复核通过；12衍生数组10.305GB经SHA留证清理，raw/模型/账本/失败保留。旧bin-token试点和预算保留在[原报告](../research/active/dtr-r0/nearfield/CNH_DELAYED_QUERY_DEV_20261009.md)，更新前CNH段见Git 3564255a；设备与保护480未访问。
 
 方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
 
