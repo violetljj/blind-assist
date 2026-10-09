@@ -4,22 +4,22 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-09。主线为盲杖互补前视感知，M3和A+LOCAL保留；不恢复历史动态研究。
 
-## 当前：竖杆受控配对诊断完成，原M3不动
+## 当前：竖杆raw偏低与last5反转已分组，原M3不动
 
-[受控配对](nearfield/CNH_VERTICAL_CONTROLLED_PAIR_DEV_20261009.md)复用旧48竖杆期望、固定背景几何与sensor轨迹，生成K4共192个新模拟Poisson序列；共享count/减项与独立残余保持原边际，是人工统计耦合。±3°同光子投影、4224冻结五模型输入，无新期望渲染/训练/实机采集。本轮CPU180秒/GPU240秒上限，GPU28.093秒，独立核验通过。原M3及固定5格融合不动。
+[条件定位](nearfield/CNH_VERTICAL_RESPONSE_LOCALIZATION_DEV_20261009.md)仅现有受控响应，CPU新60秒内完成：1024近段高度窗、5120lag、2048去重来源窗。无新采样/投影/推理/训练。+3°镜像1cm中，ρ=.65的4/10cm长柱BODY raw均值差已为−4.143/−4.342；两组贡献前四窗负条件均值项77.84%（gross负项，非净值或报警数比例）。19/128窗raw差正而last5差负仍保留，不是19个事件损失。
 
-近f10–13共1024个同K配对高度窗，非上轮4096个K4×K4出现；八组contact−clear当前缩放支持差均值/中位数全正，内部正量份额差全负。条件线性支持差也全正，但在输入/特征FP16舍入前，不是实际FP16或非线性份额期望。共有随机分量相关，目标遮挡造成的可见背景差保留，未隔离纯目标回波或证明M3增量。
+跨角度共同20条件，连接320对包含640旧高度窗；每角另12条件/192窗未匹配，合384。共同镜像1cm的last5差均值−3°+2.700、+3°+1.238；不能混用完整128窗均值，未匹配长柱BODY缺对照不当零效应。同contact镜像−同侧差等于两clear臂差，不是contact变化；角度对照仍有物理左右镜像差异。
 
-+3°镜像1cm的raw M3差均值+.681，中位数+.636；last5后−.562/−.237。当前贡献+.352、前四窗−.914，19/128窗raw差正而平滑差负。定位的是分数序列贡献，raw仍含past8，不能归为回波拖尾或直接关闭last5。下一仅建议复用已存响应定位前四窗的宽度/ρ/高度/距离条件，再定是否值得同成本读出对照，细分定位NOT_RUN。
++3°镜像1cm来源f6–9（2.09–1.61m）平均累计支持/raw更偏向clear，近段聚合raw差至f12转正。但两长柱BODY在f10–13当前/累计粗支持差各帧均值皆正、raw仍负；需查完整空间/高度布局，不能归为物理拖尾或认定M3忽略信号。raw包含past8，last5只是分数序列贡献。
 
-[上轮缓存](nearfield/CNH_VERTICAL_VISIBLE_SUPPORT_DEV_20261009.md)远段−3/+3融合59/86各/672，靠近侧历史占比差仅+.417/+.164百分点，主要远段成本仍未解决；原clear名义gap仅15cm，无多间隔规律/定位精度结论。真实方向误差分布未知，竖杆排序仅本批压力条件；得到实际分布后结合尾部、可补回量和验证成本重评。
+下一优先两组长柱BODY的完整输入→raw响应，暂不从全组均值启动统一缩短last5。受控payload只存hist/粗支持/raw，完整voxel未保存；精确诊断需从同hist小范围重建投影，预算另列，不需新采样或默认重推M3，提案NOT_RUN。时间读出未被排除，可补回量未知；候选须同配对同报警成本报事件救回/损失及联合clear格/段/clip。
 
-[5格候选](nearfield/CNH_BAR_FUSION_VERTICAL_DEV_20261009.md)ideal H543/B461各/688、clear46/4576格25段23clip，不升级M3。[分类表](nearfield/CNH_BAR_CATEGORY_PRIORITY_DEV_20261009.md)可补回量未知；暗4cm仍第二缺口BODY7/56，检出也可能受方向误差影响。任何新读出须同配对同报警成本报救回/损失，均值差不代替性能，不做全组d′或借N64阈值。
+[受控配对](nearfield/CNH_VERTICAL_CONTROLLED_PAIR_DEV_20261009.md)48scene/K4共192新Poisson序列，保持原边际的人工耦合；八组缩放支持差均值/中位数正、内部正量份额负。不是M3增量证明；条件线性参考在FP16舍入前，背景遮挡变化保留。原M3/[5格候选](nearfield/CNH_BAR_FUSION_VERTICAL_DEV_20261009.md)不升级；ideal H543/B461各/688、clear46/4576格。主要远段86格问题仍未解决，竖杆优先级只限本批人工压力条件，真实误差分布未知。
 
-[单帧参照](nearfield/CNH_BAR_BACKGROUND_REFERENCE_DEV_20261009.md)停止，目标远峰容差null非零信号，联合/扰动/强背景复查不启动。时间累积暂缓；新依据支持可能改善参照或提供增量时可考虑诊断，无需启动前已证明。[旧门控](nearfield/CNH_BAR_BOUNDARY_CONTRAST_DEV_20261009.md)Dwin/Dmax不细化，裁剪/三query min不采用，不关闭不同机制。480确认身份及旧停止结果保留。本轮属于模拟AABB、固定有限背景、人工误差、loss条件选择后的已消费Development，非实机/安全/确认。
+[类别表](nearfield/CNH_BAR_CATEGORY_PRIORITY_DEV_20261009.md)暗4cm仍第二缺口BODY7/56，具体新机制另定；[单帧参照](nearfield/CNH_BAR_BACKGROUND_REFERENCE_DEV_20261009.md)停止、远峰容差null不能证明hist无远段信号，时间累积暂缓。有支持改善参照或增量的新依据可考虑累积诊断，不要求先证明。[旧门控](nearfield/CNH_BAR_BOUNDARY_CONTRAST_DEV_20261009.md)Dwin/Dmax不细化，裁剪/三query min不采用，不关闭不同机制。模拟AABB、固定有限背景、人工误差、loss筛选及相关K/高度/帧下已消费Development，非实机/安全/确认。
 
 ## 停止与保留
 
 [扰动训练](nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)原配方exact各损7超2，停止，不加seed/epoch/换分布；不同机制开放。L2、[480确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)原身份保留；UNKNOWN/三态/query覆盖待验证。方位微调、稀疏空间/关联L3、方向/Nymeria位移接口、−19°及设备/City/保护test/新UE/硬件第二阶段暂缓；101/101、53ms属A+LOCAL，M3/CNH实机效果未建立。
 
-[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。更新前全文：Git 1a8b3e8a同路径。
+[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。更新前全文：Git 5b750872同路径。
