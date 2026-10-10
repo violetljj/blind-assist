@@ -1,0 +1,267 @@
+{
+  "status": "PASS",
+  "PLAN_sha256": "5c21efd2bc0db01ccd6d54d7a5e151ba7f58b0269020f24e70506376604b0928",
+  "features_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+  "oof_sha256": "d84f84549ab03690cd53dd2f92990e76fd8e431e9c1bb32eedd2f9c39a77cde6",
+  "rows": 135756,
+  "frozen_feature_parity_queries": 32076,
+  "input_simulation_tests": 24,
+  "sampled_query_feature_tests": 648,
+  "folds": 5,
+  "train_weight_checks": 20,
+  "cal_ties": 359533,
+  "predictions": 814536,
+  "metrics": 648,
+  "paired": 864,
+  "bootstrap_replicates": 2000,
+  "clusters_pooled": 30,
+  "clusters_per_fold": 6,
+  "candidates": [
+    {
+      "model": "A",
+      "FARO_near_net": 11,
+      "stress_near_net": -653,
+      "native_middle_net": -122,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "B",
+      "FARO_near_net": 121,
+      "stress_near_net": 53,
+      "native_middle_net": 1224,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "C",
+      "FARO_near_net": 124,
+      "stress_near_net": 71,
+      "native_middle_net": 1205,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "D",
+      "FARO_near_net": 188,
+      "stress_near_net": 209,
+      "native_middle_net": 1380,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    }
+  ],
+  "CPU_command_wall_s": 28.48499999998603,
+  "GPU_s": 0,
+  "original_count_descriptor_candidates": [
+    {
+      "model": "B",
+      "FARO_near_nonnegative": true,
+      "stress_near_nonnegative": true,
+      "native_middle_count_preserved": true,
+      "original_count_candidate": true,
+      "A_positive_gain": false,
+      "retention": null,
+      "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+    },
+    {
+      "model": "C",
+      "FARO_near_nonnegative": true,
+      "stress_near_nonnegative": true,
+      "native_middle_count_preserved": true,
+      "original_count_candidate": true,
+      "A_positive_gain": false,
+      "retention": null,
+      "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+    },
+    {
+      "model": "D",
+      "FARO_near_nonnegative": true,
+      "stress_near_nonnegative": true,
+      "native_middle_count_preserved": true,
+      "original_count_candidate": true,
+      "A_positive_gain": false,
+      "retention": null,
+      "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+    }
+  ],
+  "protected_reads": 0,
+  "fits_performed": 0,
+  "audit_source_sha256": "52c507d5f5216df1b647dfa5d454e30b51e6c58817b5627c59a222c93a798cb1",
+  "executed_source_sha256": "91c3b46d600fe68db1de95b1e828de71354159489067229786fabd6e1fef921b",
+  "logistic_penalty_semantics": "L2; sklearn default deprecated with l1_ratio=0 accepted after inspecting installed LogisticRegression.fit",
+  "scaler_numerics": [
+    {
+      "fold": 0,
+      "model": "A",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 0,
+      "model": "B",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 0,
+      "model": "C",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 1,
+      "model": "A",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 1,
+      "model": "B",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 1,
+      "model": "C",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 2,
+      "model": "A",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 2,
+      "model": "B",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [
+        {
+          "feature": "dav_finite_fraction",
+          "value": -4.025101521305868e-37,
+          "scale": 1.0
+        },
+        {
+          "feature": "uni_finite_fraction",
+          "value": -4.025101521305868e-37,
+          "scale": 1.0
+        }
+      ],
+      "min_variance": -4.025101521305868e-37,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 2,
+      "model": "C",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [
+        {
+          "feature": "dav_finite_fraction",
+          "value": -4.025101521305868e-37,
+          "scale": 1.0
+        },
+        {
+          "feature": "uni_finite_fraction",
+          "value": -4.025101521305868e-37,
+          "scale": 1.0
+        }
+      ],
+      "min_variance": -4.025101521305868e-37,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 3,
+      "model": "A",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 3,
+      "model": "B",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 3,
+      "model": "C",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 4,
+      "model": "A",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [],
+      "min_variance": 0.0,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 4,
+      "model": "B",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [
+        {
+          "feature": "dav_finite_fraction",
+          "value": -3.1031921935586824e-37,
+          "scale": 1.0
+        },
+        {
+          "feature": "uni_finite_fraction",
+          "value": -3.1031921935586824e-37,
+          "scale": 1.0
+        }
+      ],
+      "min_variance": -3.1031921935586824e-37,
+      "all_scales_finite_positive": true
+    },
+    {
+      "fold": 4,
+      "model": "C",
+      "finite_transforms": true,
+      "negative_roundoff_variance": [
+        {
+          "feature": "dav_finite_fraction",
+          "value": -3.1031921935586824e-37,
+          "scale": 1.0
+        },
+        {
+          "feature": "uni_finite_fraction",
+          "value": -3.1031921935586824e-37,
+          "scale": 1.0
+        }
+      ],
+      "min_variance": -3.1031921935586824e-37,
+      "all_scales_finite_positive": true
+    }
+  ],
+  "boundaries": [
+    "Saved model inference and train scaler statistics independently recomputed; no refit",
+    "Bootstrap intervals conditional on fixed OOF fits; original residual fitting predates CV",
+    "Six fixed simulation samples per generated arm; all generated scale declarations checked"
+  ]
+}

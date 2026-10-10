@@ -1,0 +1,53 @@
+{
+  "task": "SYNC_FUSION_ROBUST_EVIDENCE_ADDENDUM_DEV_20261011",
+  "phase": "POST_RESULT_EXPLORE",
+  "authorization": {
+    "thread": "01a12702-557c-7823-8791-6182ba3e4ce1",
+    "human_turn": "01a12714-4cf8-79b2-abce-85a6c3387ed5",
+    "scope": "Human requested unfinished robust run add same prior baseline and evidence split; direct human message independently read. No no-position/gated model refit requested in this robust task."
+  },
+  "original": {
+    "PLAN_sha256": "5c21efd2bc0db01ccd6d54d7a5e151ba7f58b0269020f24e70506376604b0928",
+    "features_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+    "oof_sha256": "d84f84549ab03690cd53dd2f92990e76fd8e431e9c1bb32eedd2f9c39a77cde6",
+    "summary_sha256": "056b8ffb9e124046d0f854ed7e3d82ea39fced4038d6169c2aa04cb01ccde072"
+  },
+  "budget": {
+    "original_CPU_command_wall_limit_s": 1800,
+    "original_GPU_wall_limit_s": 300,
+    "additional_cap_s": 350,
+    "audit_cap_s": 90,
+    "no_budget_expansion": true
+  },
+  "prior": {
+    "features": [
+      "band_index",
+      "query_x_index",
+      "query_y_index",
+      "query_z_index"
+    ],
+    "indices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "recipe": "B logistic C1/L2/lbfgs1000, seeds955/956/957; same train-known row indices/weights/scaler and allarm inner-cal ties/targets; no sensor feature",
+    "evaluation": "Same five fixed outer folds; allarms use one same per-fold/band prior cut; original A-D models/cuts/predictions never changed"
+  },
+  "evidence": {
+    "primary": "ToF: each K own frozen projected peak depth has>=16 interval-inside pixel rays, require both K0/K1. RGB: selected Uni near/DAV midfar raw16th margin>=0. Four mutually exclusive classes per query.",
+    "K2_alternative": "Also split using K2 arithmetic mean raw16th margin>=0; averaging can pass when only one K meets>=16. This is the zero-cut version of aggregated ToF-only score, different from strict bothK.",
+    "calibration_alternative": "Also split using original fold ToF/RGB frozen cal boolean decisions; negative cal margin cuts may support absent raw interval intrusion; never conflate with raw minimum evidence.",
+    "source": "Frozen original/generated CNH hist/background/coverage/poses; no reference pixels or new RGB inference; query ray intervals unchanged",
+    "interpretation": "Neither raw minimum evidence is absent local evidence, not proof of pure prior causality. Coarse fractions/relative depths/other RGB model remain possible evidence. Pure prior baseline separately quantifies predictive scene-prior opportunity."
+  },
+  "outputs": [
+    "prior15models/prior_cuts",
+    "per_query_evidence.csv",
+    "prior_metrics",
+    "fourclass_count_tables including paired rescue/loss",
+    "independent_addon_audit"
+  ],
+  "restrictions": "No old conclusion/model/cut/readout edits; no protected480/test; label y used only for own train/cal/evaluation roles already fixed. Post-result addition is not preregistered confirmation."
+}

@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "report_sha256": "aca7ae1a94e31abb68d1e4d624d3205c661561eedee358462c77d12240a2feda",
+  "summary_sha256": "056b8ffb9e124046d0f854ed7e3d82ea39fced4038d6169c2aa04cb01ccde072",
+  "candidate_rows": 4,
+  "focus_rows": 12,
+  "full_fusion_rows": 432,
+  "baseline_rows": 108,
+  "retention_rows": 24,
+  "prior_rows": 108,
+  "raw_mean_margin_split_rows": 72,
+  "evidence_focus_rows": 12,
+  "checked_report_links": [
+    "SYNC_FUSION_ROBUST_PLAN_DEV_20261011.json",
+    "SYNC_FUSION_ROBUST_EVIDENCE_ADDENDUM_PLAN_DEV_20261011.json",
+    "SYNC_FUSION_ROBUST_EVIDENCE_INDEPENDENT_AUDIT_DEV_20261011.json",
+    "SYNC_FUSION_ROBUST_INDEPENDENT_AUDIT_DEV_20261011.json",
+    "SYNC_FUSION_ROBUST_RECEIPTS_DEV_20261011.json",
+    "../../../../artifacts.local/work/sync-fusion-robust-dev-20261011/per_query.csv",
+    "../../../../artifacts.local/work/sync-fusion-robust-dev-20261011/per_query_evidence.csv",
+    "../../../../artifacts.local/work/sync-fusion-robust-dev-20261011/folds.csv",
+    "../../../../artifacts.local/work/sync-fusion-robust-dev-20261011/summary.json"
+  ],
+  "receipt_output_hashes": 20,
+  "audit_copies_exact": true,
+  "CPU_command_wall_s": 0.0940000000409782,
+  "audit_source_sha256": "fb0df317f51ad16f94ccb682ea310fd35da75028179cfb97211ba68399fa7b4d",
+  "check": "Every displayed original-model metric/paired/CI cell and original-count clarification agrees with independently audited immutable summary"
+}

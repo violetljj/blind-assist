@@ -1,0 +1,8441 @@
+{
+  "task": "SYNC_FUSION_ROBUST_DEV_20261011",
+  "PLAN_sha256": "5c21efd2bc0db01ccd6d54d7a5e151ba7f58b0269020f24e70506376604b0928",
+  "report_sha256": "aca7ae1a94e31abb68d1e4d624d3205c661561eedee358462c77d12240a2feda",
+  "resource": {
+    "CPU_command_wall_conservative_s": 1000,
+    "CPU_limit_s": 1800,
+    "GPU_s": 0,
+    "GPU_limit_s": 300,
+    "unit": "summed command-wall, not core-seconds or chat elapsed",
+    "stage_seconds": {
+      "build_success": 244.922,
+      "fit": 76.203,
+      "summarize": 42.891,
+      "post_result_prior_and_evidence": 113.422,
+      "build_mapping_stop_upper": 65,
+      "build_memory_failure_upper": 153.031,
+      "startup_overhead_allowance": 20,
+      "all_independent_audit_commands_upper": 100,
+      "preparation_report_git_allowance": 184.531
+    },
+    "allowance_note": "Conservative total includes initial plan mkdir failure, environment/import diagnostics, both feature failures, audit compatibility failure, all report/metadata corrections and final normal Git delivery. Allowances are upper charges, not claimed measured time. No scientific extension beyond original1800.",
+    "retained_task_processes": [],
+    "protected_access": false,
+    "new_RGB_inference": false,
+    "download_bytes": 0
+  },
+  "candidates": [
+    {
+      "model": "A",
+      "FARO_near_net": 11,
+      "stress_near_net": -653,
+      "native_middle_net": -122,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "B",
+      "FARO_near_net": 121,
+      "stress_near_net": 53,
+      "native_middle_net": 1224,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "C",
+      "FARO_near_net": 124,
+      "stress_near_net": 71,
+      "native_middle_net": 1205,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    },
+    {
+      "model": "D",
+      "FARO_near_net": 188,
+      "stress_near_net": 209,
+      "native_middle_net": 1380,
+      "A_middle_net": -122,
+      "retention": null,
+      "robust_candidate": false
+    }
+  ],
+  "original_count_descriptor_candidates": [
+    {
+      "model": "A",
+      "original_count_candidate": false,
+      "retention_status": "NOT_EVALUABLE"
+    },
+    {
+      "model": "B",
+      "original_count_candidate": true,
+      "retention_status": "NOT_EVALUABLE"
+    },
+    {
+      "model": "C",
+      "original_count_candidate": true,
+      "retention_status": "NOT_EVALUABLE"
+    },
+    {
+      "model": "D",
+      "original_count_candidate": true,
+      "retention_status": "NOT_EVALUABLE"
+    }
+  ],
+  "retention": [
+    {
+      "fold": -1,
+      "model": "A",
+      "best_single": "tof",
+      "A_net": -122,
+      "model_net": -122,
+      "retention": null,
+      "retention_ci": {
+        "lo": 1.0,
+        "hi": 1.0,
+        "valid": 628
+      }
+    },
+    {
+      "fold": -1,
+      "model": "B",
+      "best_single": "tof",
+      "A_net": -122,
+      "model_net": 1224,
+      "retention": null,
+      "retention_ci": {
+        "lo": 3.0681652044417107,
+        "hi": 239.08166666666662,
+        "valid": 628
+      }
+    },
+    {
+      "fold": -1,
+      "model": "C",
+      "best_single": "tof",
+      "A_net": -122,
+      "model_net": 1205,
+      "retention": null,
+      "retention_ci": {
+        "lo": 3.038963870633559,
+        "hi": 236.29749999999999,
+        "valid": 628
+      }
+    },
+    {
+      "fold": -1,
+      "model": "D",
+      "best_single": "tof",
+      "A_net": -122,
+      "model_net": 1380,
+      "retention": null,
+      "retention_ci": {
+        "lo": 3.345052966101695,
+        "hi": 274.78583333333313,
+        "valid": 628
+      }
+    },
+    {
+      "fold": 0,
+      "model": "A",
+      "best_single": "tof",
+      "A_net": 139,
+      "model_net": 139,
+      "retention": 1.0,
+      "retention_ci": {
+        "lo": 1.0,
+        "hi": 1.0,
+        "valid": 1990
+      }
+    },
+    {
+      "fold": 0,
+      "model": "B",
+      "best_single": "tof",
+      "A_net": 139,
+      "model_net": 438,
+      "retention": 3.1510791366906474,
+      "retention_ci": {
+        "lo": 1.7398524904214558,
+        "hi": 12.676470588235293,
+        "valid": 1990
+      }
+    },
+    {
+      "fold": 0,
+      "model": "C",
+      "best_single": "tof",
+      "A_net": 139,
+      "model_net": 439,
+      "retention": 3.158273381294964,
+      "retention_ci": {
+        "lo": 1.747102490421456,
+        "hi": 12.705882352941176,
+        "valid": 1990
+      }
+    },
+    {
+      "fold": 0,
+      "model": "D",
+      "best_single": "tof",
+      "A_net": 139,
+      "model_net": 457,
+      "retention": 3.287769784172662,
+      "retention_ci": {
+        "lo": 1.7867132867132867,
+        "hi": 13.441176470588236,
+        "valid": 1990
+      }
+    },
+    {
+      "fold": 1,
+      "model": "A",
+      "best_single": "rgb",
+      "A_net": 100,
+      "model_net": 100,
+      "retention": 1.0,
+      "retention_ci": {
+        "lo": 1.0,
+        "hi": 1.0,
+        "valid": 1889
+      }
+    },
+    {
+      "fold": 1,
+      "model": "B",
+      "best_single": "rgb",
+      "A_net": 100,
+      "model_net": 98,
+      "retention": 0.98,
+      "retention_ci": {
+        "lo": 0.84375,
+        "hi": 1.0574712643678161,
+        "valid": 1889
+      }
+    },
+    {
+      "fold": 1,
+      "model": "C",
+      "best_single": "rgb",
+      "A_net": 100,
+      "model_net": 99,
+      "retention": 0.99,
+      "retention_ci": {
+        "lo": 0.9230769230769231,
+        "hi": 1.1095785440613024,
+        "valid": 1889
+      }
+    },
+    {
+      "fold": 1,
+      "model": "D",
+      "best_single": "rgb",
+      "A_net": 100,
+      "model_net": 99,
+      "retention": 0.99,
+      "retention_ci": {
+        "lo": 0.8095238095238095,
+        "hi": 1.2036363636363634,
+        "valid": 1889
+      }
+    },
+    {
+      "fold": 2,
+      "model": "A",
+      "best_single": "rgb",
+      "A_net": 165,
+      "model_net": 165,
+      "retention": 1.0,
+      "retention_ci": {
+        "lo": 1.0,
+        "hi": 1.0,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": 2,
+      "model": "B",
+      "best_single": "rgb",
+      "A_net": 165,
+      "model_net": 168,
+      "retention": 1.018181818181818,
+      "retention_ci": {
+        "lo": 1.0,
+        "hi": 1.0645235961768218,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": 2,
+      "model": "C",
+      "best_single": "rgb",
+      "A_net": 165,
+      "model_net": 169,
+      "retention": 1.0242424242424242,
+      "retention_ci": {
+        "lo": 1.0036496350364963,
+        "hi": 1.0786516853932584,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": 2,
+      "model": "D",
+      "best_single": "rgb",
+      "A_net": 165,
+      "model_net": 171,
+      "retention": 1.0363636363636364,
+      "retention_ci": {
+        "lo": 0.9914529914529915,
+        "hi": 1.1219512195121952,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": 3,
+      "model": "A",
+      "best_single": "rgb",
+      "A_net": -424,
+      "model_net": -424,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 3,
+      "model": "B",
+      "best_single": "rgb",
+      "A_net": -424,
+      "model_net": 180,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 3,
+      "model": "C",
+      "best_single": "rgb",
+      "A_net": -424,
+      "model_net": 171,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 3,
+      "model": "D",
+      "best_single": "rgb",
+      "A_net": -424,
+      "model_net": 167,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 4,
+      "model": "A",
+      "best_single": "tof",
+      "A_net": -306,
+      "model_net": -306,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 4,
+      "model": "B",
+      "best_single": "tof",
+      "A_net": -306,
+      "model_net": 136,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 4,
+      "model": "C",
+      "best_single": "tof",
+      "A_net": -306,
+      "model_net": 123,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    },
+    {
+      "fold": 4,
+      "model": "D",
+      "best_single": "tof",
+      "A_net": -306,
+      "model_net": 282,
+      "retention": null,
+      "retention_ci": {
+        "lo": null,
+        "hi": null,
+        "valid": 0
+      }
+    }
+  ],
+  "pooled_metrics": [
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "A",
+      "POS": 2976,
+      "W": 973,
+      "FREE": 5099,
+      "F": 37,
+      "UNKNOWN": 565,
+      "U": 159,
+      "W_rate_ci": {
+        "lo": 19.98986260537357,
+        "hi": 46.585598876807076,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.09216643866461262,
+        "hi": 1.7021059113994719,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "B",
+      "POS": 2976,
+      "W": 1595,
+      "FREE": 5099,
+      "F": 115,
+      "UNKNOWN": 565,
+      "U": 183,
+      "W_rate_ci": {
+        "lo": 42.21894792081912,
+        "hi": 64.59039620909078,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.8156902623755912,
+        "hi": 4.199260698841489,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "C",
+      "POS": 2976,
+      "W": 1608,
+      "FREE": 5099,
+      "F": 118,
+      "UNKNOWN": 565,
+      "U": 188,
+      "W_rate_ci": {
+        "lo": 42.71904114321986,
+        "hi": 64.99855932907238,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.8923217983454728,
+        "hi": 4.230587125665766,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "D",
+      "POS": 2976,
+      "W": 1758,
+      "FREE": 5099,
+      "F": 86,
+      "UNKNOWN": 565,
+      "U": 215,
+      "W_rate_ci": {
+        "lo": 47.7409006424293,
+        "hi": 69.13515462914937,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.611171126898562,
+        "hi": 3.097137557347923,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "rgb",
+      "POS": 2976,
+      "W": 1600,
+      "FREE": 5099,
+      "F": 201,
+      "UNKNOWN": 565,
+      "U": 212,
+      "W_rate_ci": {
+        "lo": 41.9150035726303,
+        "hi": 65.74445350353608,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8234237155676405,
+        "hi": 6.429242116944131,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "tof",
+      "POS": 2976,
+      "W": 555,
+      "FREE": 5099,
+      "F": 24,
+      "UNKNOWN": 565,
+      "U": 4,
+      "W_rate_ci": {
+        "lo": 14.426736001796119,
+        "hi": 22.445986493443698,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.16034145745745532,
+        "hi": 0.9077920622067469,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "A",
+      "POS": 4824,
+      "W": 2733,
+      "FREE": 2107,
+      "F": 52,
+      "UNKNOWN": 1709,
+      "U": 955,
+      "W_rate_ci": {
+        "lo": 44.26273862599248,
+        "hi": 68.811761957826,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.3886714672234176,
+        "hi": 5.87406893426605,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "B",
+      "POS": 4824,
+      "W": 4079,
+      "FREE": 2107,
+      "F": 85,
+      "UNKNOWN": 1709,
+      "U": 830,
+      "W_rate_ci": {
+        "lo": 78.42145533023263,
+        "hi": 89.85514051875654,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.351337090573055,
+        "hi": 8.207010029410924,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "C",
+      "POS": 4824,
+      "W": 4060,
+      "FREE": 2107,
+      "F": 82,
+      "UNKNOWN": 1709,
+      "U": 822,
+      "W_rate_ci": {
+        "lo": 77.80348044306729,
+        "hi": 89.67298050116776,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.223898702582643,
+        "hi": 8.078755634523276,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "D",
+      "POS": 4824,
+      "W": 4235,
+      "FREE": 2107,
+      "F": 87,
+      "UNKNOWN": 1709,
+      "U": 882,
+      "W_rate_ci": {
+        "lo": 82.93750767632909,
+        "hi": 91.97086742336374,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.5194746620281878,
+        "hi": 8.187930603792127,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "rgb",
+      "POS": 4824,
+      "W": 2716,
+      "FREE": 2107,
+      "F": 139,
+      "UNKNOWN": 1709,
+      "U": 1011,
+      "W_rate_ci": {
+        "lo": 45.57283126234603,
+        "hi": 66.08614987096026,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.428023163470158,
+        "hi": 12.971826071382804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "tof",
+      "POS": 4824,
+      "W": 2855,
+      "FREE": 2107,
+      "F": 45,
+      "UNKNOWN": 1709,
+      "U": 31,
+      "W_rate_ci": {
+        "lo": 51.928831417659055,
+        "hi": 66.13107162439901,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.6601827037989353,
+        "hi": 4.242111378073355,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "A",
+      "POS": 4867,
+      "W": 3809,
+      "FREE": 614,
+      "F": 22,
+      "UNKNOWN": 3159,
+      "U": 2228,
+      "W_rate_ci": {
+        "lo": 69.43267659674923,
+        "hi": 86.34083144724008,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.6398898305084746,
+        "hi": 7.649931101752644,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "B",
+      "POS": 4867,
+      "W": 4290,
+      "FREE": 614,
+      "F": 34,
+      "UNKNOWN": 3159,
+      "U": 676,
+      "W_rate_ci": {
+        "lo": 83.36199944382648,
+        "hi": 92.48976871613961,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.16203722983384,
+        "hi": 10.306707111560494,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "C",
+      "POS": 4867,
+      "W": 4285,
+      "FREE": 614,
+      "F": 36,
+      "UNKNOWN": 3159,
+      "U": 666,
+      "W_rate_ci": {
+        "lo": 83.30818818012062,
+        "hi": 92.35369991968241,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.316253048160943,
+        "hi": 10.638297872340425,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "D",
+      "POS": 4867,
+      "W": 4164,
+      "FREE": 614,
+      "F": 33,
+      "UNKNOWN": 3159,
+      "U": 523,
+      "W_rate_ci": {
+        "lo": 80.3427320412962,
+        "hi": 90.47181042228212,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.064715505816153,
+        "hi": 9.73547854020911,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "rgb",
+      "POS": 4867,
+      "W": 2784,
+      "FREE": 614,
+      "F": 138,
+      "UNKNOWN": 3159,
+      "U": 965,
+      "W_rate_ci": {
+        "lo": 46.95412967293853,
+        "hi": 68.06888660812292,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.236599518708275,
+        "hi": 40.801314387211356,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "tof",
+      "POS": 4867,
+      "W": 3708,
+      "FREE": 614,
+      "F": 22,
+      "UNKNOWN": 3159,
+      "U": 1305,
+      "W_rate_ci": {
+        "lo": 71.56947834690023,
+        "hi": 81.13852468709167,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8570821373371607,
+        "hi": 5.926379176379173,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "A",
+      "POS": 2976,
+      "W": 947,
+      "FREE": 5099,
+      "F": 212,
+      "UNKNOWN": 565,
+      "U": 149,
+      "W_rate_ci": {
+        "lo": 18.825176686972917,
+        "hi": 45.01891700951183,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.3016773449388867,
+        "hi": 10.289071426873281,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "B",
+      "POS": 2976,
+      "W": 1653,
+      "FREE": 5099,
+      "F": 236,
+      "UNKNOWN": 565,
+      "U": 181,
+      "W_rate_ci": {
+        "lo": 44.32015619286423,
+        "hi": 66.74164127986654,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.5198433242985552,
+        "hi": 9.553726156716689,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "C",
+      "POS": 2976,
+      "W": 1665,
+      "FREE": 5099,
+      "F": 246,
+      "UNKNOWN": 565,
+      "U": 189,
+      "W_rate_ci": {
+        "lo": 44.56929303159167,
+        "hi": 67.05882102530724,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.729685317099675,
+        "hi": 9.623807807802073,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "D",
+      "POS": 2976,
+      "W": 1802,
+      "FREE": 5099,
+      "F": 211,
+      "UNKNOWN": 565,
+      "U": 214,
+      "W_rate_ci": {
+        "lo": 49.550098257094064,
+        "hi": 70.4541603051591,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.3082275143654127,
+        "hi": 8.58926092704458,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "rgb",
+      "POS": 2976,
+      "W": 1600,
+      "FREE": 5099,
+      "F": 201,
+      "UNKNOWN": 565,
+      "U": 212,
+      "W_rate_ci": {
+        "lo": 41.9150035726303,
+        "hi": 65.74445350353608,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8234237155676405,
+        "hi": 6.429242116944131,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "tof",
+      "POS": 2976,
+      "W": 447,
+      "FREE": 5099,
+      "F": 170,
+      "UNKNOWN": 565,
+      "U": 5,
+      "W_rate_ci": {
+        "lo": 11.550255226057365,
+        "hi": 18.047435897435896,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.9889383346157719,
+        "hi": 6.480321158810813,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "A",
+      "POS": 4824,
+      "W": 2132,
+      "FREE": 2107,
+      "F": 106,
+      "UNKNOWN": 1709,
+      "U": 916,
+      "W_rate_ci": {
+        "lo": 30.021962047129993,
+        "hi": 59.53112797432297,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.2438235429306856,
+        "hi": 10.703643654794721,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "B",
+      "POS": 4824,
+      "W": 4027,
+      "FREE": 2107,
+      "F": 112,
+      "UNKNOWN": 1709,
+      "U": 824,
+      "W_rate_ci": {
+        "lo": 77.29855901187503,
+        "hi": 88.97364603481624,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.1680776987277697,
+        "hi": 9.939291261741891,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "C",
+      "POS": 4824,
+      "W": 3996,
+      "FREE": 2107,
+      "F": 113,
+      "UNKNOWN": 1709,
+      "U": 812,
+      "W_rate_ci": {
+        "lo": 76.41413163855286,
+        "hi": 88.6286486587046,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.1322876728126743,
+        "hi": 10.016775470451456,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "D",
+      "POS": 4824,
+      "W": 4199,
+      "FREE": 2107,
+      "F": 103,
+      "UNKNOWN": 1709,
+      "U": 889,
+      "W_rate_ci": {
+        "lo": 82.01720730854589,
+        "hi": 91.15808363345754,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.9206534327591753,
+        "hi": 9.438800061156735,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "rgb",
+      "POS": 4824,
+      "W": 2716,
+      "FREE": 2107,
+      "F": 139,
+      "UNKNOWN": 1709,
+      "U": 1011,
+      "W_rate_ci": {
+        "lo": 45.57283126234603,
+        "hi": 66.08614987096026,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.428023163470158,
+        "hi": 12.971826071382804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "tof",
+      "POS": 4824,
+      "W": 1863,
+      "FREE": 2107,
+      "F": 70,
+      "UNKNOWN": 1709,
+      "U": 29,
+      "W_rate_ci": {
+        "lo": 29.49499949791005,
+        "hi": 47.42774191036672,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.6420718705817527,
+        "hi": 5.677414195666482,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "A",
+      "POS": 4867,
+      "W": 3209,
+      "FREE": 614,
+      "F": 79,
+      "UNKNOWN": 3159,
+      "U": 2012,
+      "W_rate_ci": {
+        "lo": 53.04310011467613,
+        "hi": 79.03043987501819,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 4.700738569640032,
+        "hi": 23.650352786414725,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "B",
+      "POS": 4867,
+      "W": 4093,
+      "FREE": 614,
+      "F": 39,
+      "UNKNOWN": 3159,
+      "U": 581,
+      "W_rate_ci": {
+        "lo": 78.34071050455407,
+        "hi": 89.44326059549613,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.2452089145741994,
+        "hi": 12.057043286867202,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "C",
+      "POS": 4867,
+      "W": 4099,
+      "FREE": 614,
+      "F": 39,
+      "UNKNOWN": 3159,
+      "U": 561,
+      "W_rate_ci": {
+        "lo": 78.7149684651125,
+        "hi": 89.35454925219621,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.2895505214841574,
+        "hi": 11.929966044142613,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "D",
+      "POS": 4867,
+      "W": 3943,
+      "FREE": 614,
+      "F": 37,
+      "UNKNOWN": 3159,
+      "U": 498,
+      "W_rate_ci": {
+        "lo": 73.85183238748706,
+        "hi": 87.64481145927618,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.358467398153983,
+        "hi": 10.946208265033212,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "rgb",
+      "POS": 4867,
+      "W": 2784,
+      "FREE": 614,
+      "F": 138,
+      "UNKNOWN": 3159,
+      "U": 965,
+      "W_rate_ci": {
+        "lo": 46.95412967293853,
+        "hi": 68.06888660812292,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.236599518708275,
+        "hi": 40.801314387211356,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "tof",
+      "POS": 4867,
+      "W": 1947,
+      "FREE": 614,
+      "F": 39,
+      "UNKNOWN": 3159,
+      "U": 1035,
+      "W_rate_ci": {
+        "lo": 31.10507821685171,
+        "hi": 49.557140397147464,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.328552585576709,
+        "hi": 11.33624502432552,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "A",
+      "POS": 2976,
+      "W": 949,
+      "FREE": 5099,
+      "F": 216,
+      "UNKNOWN": 565,
+      "U": 152,
+      "W_rate_ci": {
+        "lo": 19.30465546319205,
+        "hi": 44.99741186391916,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.30771729511611956,
+        "hi": 10.393410576314627,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "B",
+      "POS": 2976,
+      "W": 1574,
+      "FREE": 5099,
+      "F": 221,
+      "UNKNOWN": 565,
+      "U": 178,
+      "W_rate_ci": {
+        "lo": 41.464913288260014,
+        "hi": 64.32283334723306,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.2882875878364874,
+        "hi": 9.229184404024767,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "C",
+      "POS": 2976,
+      "W": 1586,
+      "FREE": 5099,
+      "F": 217,
+      "UNKNOWN": 565,
+      "U": 185,
+      "W_rate_ci": {
+        "lo": 41.875745800569106,
+        "hi": 64.68850277251474,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.2687824522670592,
+        "hi": 9.02293805069631,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "D",
+      "POS": 2976,
+      "W": 1756,
+      "FREE": 5099,
+      "F": 203,
+      "UNKNOWN": 565,
+      "U": 215,
+      "W_rate_ci": {
+        "lo": 48.30769344378858,
+        "hi": 68.61471512886001,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.2621122232140742,
+        "hi": 8.321727470755624,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "rgb",
+      "POS": 2976,
+      "W": 1600,
+      "FREE": 5099,
+      "F": 201,
+      "UNKNOWN": 565,
+      "U": 212,
+      "W_rate_ci": {
+        "lo": 41.9150035726303,
+        "hi": 65.74445350353608,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8234237155676405,
+        "hi": 6.429242116944131,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "tof",
+      "POS": 2976,
+      "W": 464,
+      "FREE": 5099,
+      "F": 160,
+      "UNKNOWN": 565,
+      "U": 7,
+      "W_rate_ci": {
+        "lo": 12.156525668058006,
+        "hi": 18.618134513842772,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.7739675135870441,
+        "hi": 6.206158002813258,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "A",
+      "POS": 4824,
+      "W": 2293,
+      "FREE": 2107,
+      "F": 121,
+      "UNKNOWN": 1709,
+      "U": 923,
+      "W_rate_ci": {
+        "lo": 33.84272330039759,
+        "hi": 62.04956485622734,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.0924056139386864,
+        "hi": 11.10606077526998,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "B",
+      "POS": 4824,
+      "W": 3988,
+      "FREE": 2107,
+      "F": 77,
+      "UNKNOWN": 1709,
+      "U": 807,
+      "W_rate_ci": {
+        "lo": 77.40907194792992,
+        "hi": 87.48497225647348,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.0544760032586833,
+        "hi": 7.409924543346966,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "C",
+      "POS": 4824,
+      "W": 3937,
+      "FREE": 2107,
+      "F": 74,
+      "UNKNOWN": 1709,
+      "U": 790,
+      "W_rate_ci": {
+        "lo": 75.81278422250534,
+        "hi": 86.88342995488931,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.918225685509756,
+        "hi": 7.263682946915262,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "D",
+      "POS": 4824,
+      "W": 4193,
+      "FREE": 2107,
+      "F": 93,
+      "UNKNOWN": 1709,
+      "U": 875,
+      "W_rate_ci": {
+        "lo": 82.13794914217533,
+        "hi": 90.93043036650089,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.683858916602571,
+        "hi": 8.601661763316796,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "rgb",
+      "POS": 4824,
+      "W": 2716,
+      "FREE": 2107,
+      "F": 139,
+      "UNKNOWN": 1709,
+      "U": 1011,
+      "W_rate_ci": {
+        "lo": 45.57283126234603,
+        "hi": 66.08614987096026,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.428023163470158,
+        "hi": 12.971826071382804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "tof",
+      "POS": 4824,
+      "W": 2211,
+      "FREE": 2107,
+      "F": 125,
+      "UNKNOWN": 1709,
+      "U": 39,
+      "W_rate_ci": {
+        "lo": 35.77630886600092,
+        "hi": 55.21234034682188,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 3.27934183968533,
+        "hi": 9.744838527650343,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "A",
+      "POS": 4867,
+      "W": 3939,
+      "FREE": 614,
+      "F": 129,
+      "UNKNOWN": 3159,
+      "U": 2090,
+      "W_rate_ci": {
+        "lo": 72.78841828044382,
+        "hi": 88.71535017925079,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 10.49284893233541,
+        "hi": 33.33703703703702,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "B",
+      "POS": 4867,
+      "W": 4309,
+      "FREE": 614,
+      "F": 43,
+      "UNKNOWN": 3159,
+      "U": 616,
+      "W_rate_ci": {
+        "lo": 83.46580309263143,
+        "hi": 93.073883476772,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 3.241455281506076,
+        "hi": 12.204250615275518,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "C",
+      "POS": 4867,
+      "W": 4290,
+      "FREE": 614,
+      "F": 38,
+      "UNKNOWN": 3159,
+      "U": 597,
+      "W_rate_ci": {
+        "lo": 83.13484558869008,
+        "hi": 92.57915787336191,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.9869645280093042,
+        "hi": 10.79547968624296,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "D",
+      "POS": 4867,
+      "W": 4136,
+      "FREE": 614,
+      "F": 43,
+      "UNKNOWN": 3159,
+      "U": 515,
+      "W_rate_ci": {
+        "lo": 78.12448798795542,
+        "hi": 90.98071865771955,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 3.1116876592966753,
+        "hi": 12.163192853870813,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "rgb",
+      "POS": 4867,
+      "W": 2784,
+      "FREE": 614,
+      "F": 138,
+      "UNKNOWN": 3159,
+      "U": 965,
+      "W_rate_ci": {
+        "lo": 46.95412967293853,
+        "hi": 68.06888660812292,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.236599518708275,
+        "hi": 40.801314387211356,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "tof",
+      "POS": 4867,
+      "W": 3491,
+      "FREE": 614,
+      "F": 229,
+      "UNKNOWN": 3159,
+      "U": 1117,
+      "W_rate_ci": {
+        "lo": 62.37754568157617,
+        "hi": 81.07197118657166,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 23.15444390842386,
+        "hi": 52.45743276687015,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "A",
+      "POS": 2976,
+      "W": 955,
+      "FREE": 5099,
+      "F": 217,
+      "UNKNOWN": 565,
+      "U": 152,
+      "W_rate_ci": {
+        "lo": 19.3278303006423,
+        "hi": 45.320895469418744,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.30654164252620764,
+        "hi": 10.478068273748798,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "B",
+      "POS": 2976,
+      "W": 1638,
+      "FREE": 5099,
+      "F": 233,
+      "UNKNOWN": 565,
+      "U": 186,
+      "W_rate_ci": {
+        "lo": 43.770890409959705,
+        "hi": 66.31996693928463,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.4665341895365955,
+        "hi": 9.530982900518147,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "C",
+      "POS": 2976,
+      "W": 1644,
+      "FREE": 5099,
+      "F": 240,
+      "UNKNOWN": 565,
+      "U": 192,
+      "W_rate_ci": {
+        "lo": 44.00461512549895,
+        "hi": 66.45768633242548,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.5872362528053,
+        "hi": 9.53148561660454,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "D",
+      "POS": 2976,
+      "W": 1797,
+      "FREE": 5099,
+      "F": 208,
+      "UNKNOWN": 565,
+      "U": 217,
+      "W_rate_ci": {
+        "lo": 49.61837027227397,
+        "hi": 70.06783018509817,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.208356683748483,
+        "hi": 8.620209461814731,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "rgb",
+      "POS": 2976,
+      "W": 1600,
+      "FREE": 5099,
+      "F": 201,
+      "UNKNOWN": 565,
+      "U": 212,
+      "W_rate_ci": {
+        "lo": 41.9150035726303,
+        "hi": 65.74445350353608,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8234237155676405,
+        "hi": 6.429242116944131,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "tof",
+      "POS": 2976,
+      "W": 465,
+      "FREE": 5099,
+      "F": 165,
+      "UNKNOWN": 565,
+      "U": 5,
+      "W_rate_ci": {
+        "lo": 12.111164740561838,
+        "hi": 18.692303382994037,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.9061462563667141,
+        "hi": 6.258128493762467,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "A",
+      "POS": 4824,
+      "W": 2207,
+      "FREE": 2107,
+      "F": 105,
+      "UNKNOWN": 1709,
+      "U": 922,
+      "W_rate_ci": {
+        "lo": 31.72407290370663,
+        "hi": 60.68669044953563,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.375060825032176,
+        "hi": 10.298072509895471,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "B",
+      "POS": 4824,
+      "W": 4041,
+      "FREE": 2107,
+      "F": 101,
+      "UNKNOWN": 1709,
+      "U": 826,
+      "W_rate_ci": {
+        "lo": 78.04257747406186,
+        "hi": 89.02851484939308,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.9157450221712495,
+        "hi": 9.101721732928254,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "C",
+      "POS": 4824,
+      "W": 4003,
+      "FREE": 2107,
+      "F": 100,
+      "UNKNOWN": 1709,
+      "U": 816,
+      "W_rate_ci": {
+        "lo": 76.87982538350754,
+        "hi": 88.58025956397638,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.862841400894063,
+        "hi": 9.022696427422325,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "D",
+      "POS": 4824,
+      "W": 4213,
+      "FREE": 2107,
+      "F": 97,
+      "UNKNOWN": 1709,
+      "U": 890,
+      "W_rate_ci": {
+        "lo": 82.54767368446613,
+        "hi": 91.22561468739357,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.7174089632417342,
+        "hi": 8.960170211524055,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "rgb",
+      "POS": 4824,
+      "W": 2716,
+      "FREE": 2107,
+      "F": 139,
+      "UNKNOWN": 1709,
+      "U": 1011,
+      "W_rate_ci": {
+        "lo": 45.57283126234603,
+        "hi": 66.08614987096026,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.428023163470158,
+        "hi": 12.971826071382804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "tof",
+      "POS": 4824,
+      "W": 2005,
+      "FREE": 2107,
+      "F": 84,
+      "UNKNOWN": 1709,
+      "U": 33,
+      "W_rate_ci": {
+        "lo": 32.089072717552305,
+        "hi": 50.51704730147395,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.121197668335477,
+        "hi": 6.5546364627542095,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "A",
+      "POS": 4867,
+      "W": 3299,
+      "FREE": 614,
+      "F": 76,
+      "UNKNOWN": 3159,
+      "U": 2048,
+      "W_rate_ci": {
+        "lo": 55.6790716858312,
+        "hi": 79.97487837109148,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 4.7304624044202095,
+        "hi": 22.807311903920876,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "B",
+      "POS": 4867,
+      "W": 4135,
+      "FREE": 614,
+      "F": 36,
+      "UNKNOWN": 3159,
+      "U": 596,
+      "W_rate_ci": {
+        "lo": 79.44373514869775,
+        "hi": 89.95916080935959,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.9702981795658443,
+        "hi": 11.203985177624421,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "C",
+      "POS": 4867,
+      "W": 4140,
+      "FREE": 614,
+      "F": 34,
+      "UNKNOWN": 3159,
+      "U": 582,
+      "W_rate_ci": {
+        "lo": 79.64814897649345,
+        "hi": 89.86838115218336,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.155792058359565,
+        "hi": 10.312554632867133,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "D",
+      "POS": 4867,
+      "W": 3968,
+      "FREE": 614,
+      "F": 38,
+      "UNKNOWN": 3159,
+      "U": 504,
+      "W_rate_ci": {
+        "lo": 74.48032813117622,
+        "hi": 87.99257849666984,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.4309746849222282,
+        "hi": 11.162417943835633,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "rgb",
+      "POS": 4867,
+      "W": 2784,
+      "FREE": 614,
+      "F": 138,
+      "UNKNOWN": 3159,
+      "U": 965,
+      "W_rate_ci": {
+        "lo": 46.95412967293853,
+        "hi": 68.06888660812292,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.236599518708275,
+        "hi": 40.801314387211356,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "tof",
+      "POS": 4867,
+      "W": 2251,
+      "FREE": 614,
+      "F": 63,
+      "UNKNOWN": 3159,
+      "U": 1077,
+      "W_rate_ci": {
+        "lo": 37.124911477642726,
+        "hi": 55.76359356363928,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 4.458931509170974,
+        "hi": 17.866233272277764,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "A",
+      "POS": 1061,
+      "W": 699,
+      "FREE": 777,
+      "F": 177,
+      "UNKNOWN": 214,
+      "U": 121,
+      "W_rate_ci": {
+        "lo": 48.08910156060875,
+        "hi": 80.7518388513419,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.8531276701536561,
+        "hi": 45.17721989993032,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "B",
+      "POS": 1061,
+      "W": 809,
+      "FREE": 777,
+      "F": 137,
+      "UNKNOWN": 214,
+      "U": 96,
+      "W_rate_ci": {
+        "lo": 62.215658919803005,
+        "hi": 86.50422815193954,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.937006951495743,
+        "hi": 37.105074782856065,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "C",
+      "POS": 1061,
+      "W": 812,
+      "FREE": 777,
+      "F": 135,
+      "UNKNOWN": 214,
+      "U": 99,
+      "W_rate_ci": {
+        "lo": 62.581632869998145,
+        "hi": 86.63748121556185,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.0965287517531555,
+        "hi": 36.314710603803036,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "D",
+      "POS": 1061,
+      "W": 876,
+      "FREE": 777,
+      "F": 123,
+      "UNKNOWN": 214,
+      "U": 128,
+      "W_rate_ci": {
+        "lo": 69.15614025765751,
+        "hi": 90.72206736762872,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.248430466714049,
+        "hi": 32.06868787061476,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "rgb",
+      "POS": 1061,
+      "W": 688,
+      "FREE": 777,
+      "F": 78,
+      "UNKNOWN": 214,
+      "U": 100,
+      "W_rate_ci": {
+        "lo": 45.43394204990541,
+        "hi": 81.08685315480685,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.848283305155933,
+        "hi": 17.46295348024332,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "tof",
+      "POS": 1061,
+      "W": 311,
+      "FREE": 777,
+      "F": 92,
+      "UNKNOWN": 214,
+      "U": 3,
+      "W_rate_ci": {
+        "lo": 23.60045804851661,
+        "hi": 34.384685843683556,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.448080568284289,
+        "hi": 22.11692522889114,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "A",
+      "POS": 1072,
+      "W": 931,
+      "FREE": 116,
+      "F": 51,
+      "UNKNOWN": 864,
+      "U": 753,
+      "W_rate_ci": {
+        "lo": 73.16639881515094,
+        "hi": 95.50287464066992,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 4.828036053130931,
+        "hi": 78.57142857142857,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "B",
+      "POS": 1072,
+      "W": 1056,
+      "FREE": 116,
+      "F": 18,
+      "UNKNOWN": 864,
+      "U": 527,
+      "W_rate_ci": {
+        "lo": 97.28871885318728,
+        "hi": 99.42642730504782,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 37.21402911703533,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "C",
+      "POS": 1072,
+      "W": 1054,
+      "FREE": 116,
+      "F": 17,
+      "UNKNOWN": 864,
+      "U": 524,
+      "W_rate_ci": {
+        "lo": 96.93476157960625,
+        "hi": 99.3427092645274,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 37.21402911703533,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "D",
+      "POS": 1072,
+      "W": 1052,
+      "FREE": 116,
+      "F": 20,
+      "UNKNOWN": 864,
+      "U": 535,
+      "W_rate_ci": {
+        "lo": 96.10074653910272,
+        "hi": 99.41771198253973,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 3.6360342555994727,
+        "hi": 37.5,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "rgb",
+      "POS": 1072,
+      "W": 752,
+      "FREE": 116,
+      "F": 4,
+      "UNKNOWN": 864,
+      "U": 563,
+      "W_rate_ci": {
+        "lo": 50.925191570881225,
+        "hi": 84.53170289855072,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 9.75609756097561,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "tof",
+      "POS": 1072,
+      "W": 605,
+      "FREE": 116,
+      "F": 35,
+      "UNKNOWN": 864,
+      "U": 13,
+      "W_rate_ci": {
+        "lo": 37.77905979910606,
+        "hi": 78.36367248441363,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 22.364766081871345,
+        "hi": 40.984657419083646,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "A",
+      "POS": 539,
+      "W": 534,
+      "FREE": 16,
+      "F": 15,
+      "UNKNOWN": 1497,
+      "U": 1463,
+      "W_rate_ci": {
+        "lo": 96.49978070175439,
+        "hi": 100.0,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 66.66666666666667,
+        "hi": 100.0,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "B",
+      "POS": 539,
+      "W": 437,
+      "FREE": 16,
+      "F": 8,
+      "UNKNOWN": 1497,
+      "U": 148,
+      "W_rate_ci": {
+        "lo": 67.40668248319494,
+        "hi": 97.72248219420938,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 61.53846153846154,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "C",
+      "POS": 539,
+      "W": 441,
+      "FREE": 16,
+      "F": 4,
+      "UNKNOWN": 1497,
+      "U": 144,
+      "W_rate_ci": {
+        "lo": 70.54923872907138,
+        "hi": 96.17834394904459,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 30.76923076923077,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "D",
+      "POS": 539,
+      "W": 370,
+      "FREE": 16,
+      "F": 6,
+      "UNKNOWN": 1497,
+      "U": 118,
+      "W_rate_ci": {
+        "lo": 51.248104982796406,
+        "hi": 92.61927655677655,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 46.15384615384615,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "rgb",
+      "POS": 539,
+      "W": 365,
+      "FREE": 16,
+      "F": 0,
+      "UNKNOWN": 1497,
+      "U": 353,
+      "W_rate_ci": {
+        "lo": 47.262157055163485,
+        "hi": 79.85232627676115,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "tof",
+      "POS": 539,
+      "W": 311,
+      "FREE": 16,
+      "F": 4,
+      "UNKNOWN": 1497,
+      "U": 520,
+      "W_rate_ci": {
+        "lo": 34.20981751636682,
+        "hi": 97.92329545454542,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.6923076923076925,
+        "hi": 100.0,
+        "valid": 1777
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "A",
+      "POS": 2976,
+      "W": 947,
+      "FREE": 5099,
+      "F": 218,
+      "UNKNOWN": 565,
+      "U": 151,
+      "W_rate_ci": {
+        "lo": 18.91491825000529,
+        "hi": 45.10086179567452,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.3406475474338144,
+        "hi": 10.564756730487586,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "B",
+      "POS": 2976,
+      "W": 1653,
+      "FREE": 5099,
+      "F": 247,
+      "UNKNOWN": 565,
+      "U": 190,
+      "W_rate_ci": {
+        "lo": 44.257371847860114,
+        "hi": 66.71965251395852,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.6647155604762052,
+        "hi": 9.828466639689315,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "C",
+      "POS": 2976,
+      "W": 1671,
+      "FREE": 5099,
+      "F": 255,
+      "UNKNOWN": 565,
+      "U": 197,
+      "W_rate_ci": {
+        "lo": 44.663543342332545,
+        "hi": 67.29952821204083,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.826046387900645,
+        "hi": 9.806674767188307,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "D",
+      "POS": 2976,
+      "W": 1809,
+      "FREE": 5099,
+      "F": 229,
+      "UNKNOWN": 565,
+      "U": 214,
+      "W_rate_ci": {
+        "lo": 49.84758515952506,
+        "hi": 70.71068924477059,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.6003047910072834,
+        "hi": 8.992633893270629,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "rgb",
+      "POS": 2976,
+      "W": 1600,
+      "FREE": 5099,
+      "F": 201,
+      "UNKNOWN": 565,
+      "U": 212,
+      "W_rate_ci": {
+        "lo": 41.9150035726303,
+        "hi": 65.74445350353608,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.8234237155676405,
+        "hi": 6.429242116944131,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "tof",
+      "POS": 2976,
+      "W": 449,
+      "FREE": 5099,
+      "F": 167,
+      "UNKNOWN": 565,
+      "U": 6,
+      "W_rate_ci": {
+        "lo": 11.644948489572938,
+        "hi": 18.11787823058793,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 0.9300094201719064,
+        "hi": 6.4245596406194565,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "A",
+      "POS": 4824,
+      "W": 1974,
+      "FREE": 2107,
+      "F": 108,
+      "UNKNOWN": 1709,
+      "U": 915,
+      "W_rate_ci": {
+        "lo": 25.881037539646993,
+        "hi": 56.720189297431425,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.4177610703721955,
+        "hi": 10.673340854996745,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "B",
+      "POS": 4824,
+      "W": 3943,
+      "FREE": 2107,
+      "F": 104,
+      "UNKNOWN": 1709,
+      "U": 820,
+      "W_rate_ci": {
+        "lo": 75.12479743406419,
+        "hi": 87.55661566033221,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.9064106827474805,
+        "hi": 9.611246216032898,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "C",
+      "POS": 4824,
+      "W": 3923,
+      "FREE": 2107,
+      "F": 103,
+      "UNKNOWN": 1709,
+      "U": 813,
+      "W_rate_ci": {
+        "lo": 74.41073211129239,
+        "hi": 87.32726615236257,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.7740918172060935,
+        "hi": 9.600952792594246,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "D",
+      "POS": 4824,
+      "W": 4177,
+      "FREE": 2107,
+      "F": 99,
+      "UNKNOWN": 1709,
+      "U": 884,
+      "W_rate_ci": {
+        "lo": 81.48442146847707,
+        "hi": 90.88612144717457,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.7458131844438907,
+        "hi": 9.333902036323607,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "rgb",
+      "POS": 4824,
+      "W": 2716,
+      "FREE": 2107,
+      "F": 139,
+      "UNKNOWN": 1709,
+      "U": 1011,
+      "W_rate_ci": {
+        "lo": 45.57283126234603,
+        "hi": 66.08614987096026,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.428023163470158,
+        "hi": 12.971826071382804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "tof",
+      "POS": 4824,
+      "W": 1517,
+      "FREE": 2107,
+      "F": 53,
+      "UNKNOWN": 1709,
+      "U": 21,
+      "W_rate_ci": {
+        "lo": 23.23268022266745,
+        "hi": 39.403100622307406,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.1229462880690488,
+        "hi": 4.458836049856181,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "A",
+      "POS": 4867,
+      "W": 3063,
+      "FREE": 614,
+      "F": 62,
+      "UNKNOWN": 3159,
+      "U": 1929,
+      "W_rate_ci": {
+        "lo": 49.731293311091946,
+        "hi": 76.39331069718997,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 3.8023188472942917,
+        "hi": 18.691956408077903,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "B",
+      "POS": 4867,
+      "W": 4024,
+      "FREE": 614,
+      "F": 36,
+      "UNKNOWN": 3159,
+      "U": 566,
+      "W_rate_ci": {
+        "lo": 76.63112068896045,
+        "hi": 88.53356099521835,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.0436491659830462,
+        "hi": 11.347728092318787,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "C",
+      "POS": 4867,
+      "W": 4040,
+      "FREE": 614,
+      "F": 38,
+      "UNKNOWN": 3159,
+      "U": 551,
+      "W_rate_ci": {
+        "lo": 77.18108369138731,
+        "hi": 88.62703586521589,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.6083080825875555,
+        "hi": 11.170272136240717,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "D",
+      "POS": 4867,
+      "W": 3873,
+      "FREE": 614,
+      "F": 36,
+      "UNKNOWN": 3159,
+      "U": 479,
+      "W_rate_ci": {
+        "lo": 71.98841231415044,
+        "hi": 86.62206453555514,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 2.3046235679214404,
+        "hi": 10.739029426948886,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "rgb",
+      "POS": 4867,
+      "W": 2784,
+      "FREE": 614,
+      "F": 138,
+      "UNKNOWN": 3159,
+      "U": 965,
+      "W_rate_ci": {
+        "lo": 46.95412967293853,
+        "hi": 68.06888660812292,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 7.236599518708275,
+        "hi": 40.801314387211356,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "tof",
+      "POS": 4867,
+      "W": 1395,
+      "FREE": 614,
+      "F": 34,
+      "UNKNOWN": 3159,
+      "U": 986,
+      "W_rate_ci": {
+        "lo": 20.785944058539915,
+        "hi": 36.92994120341362,
+        "valid": 2000
+      },
+      "F_rate_ci": {
+        "lo": 1.9697259553302406,
+        "hi": 10.065442821740483,
+        "valid": 2000
+      }
+    }
+  ],
+  "pooled_paired": [
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 265,
+      "loss": 892,
+      "net": -627,
+      "FREE_added": 4,
+      "FREE_removed": 168,
+      "net_count_ci": {
+        "lo": -1024.0,
+        "hi": -239.95000000000027,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -35.14008234826977,
+        "hi": -7.758575507843563,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 562,
+      "loss": 144,
+      "net": 418,
+      "FREE_added": 29,
+      "FREE_removed": 16,
+      "net_count_ci": {
+        "lo": 92.975,
+        "hi": 826.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 3.3829824451206796,
+        "hi": 25.86954386087673,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 224,
+      "loss": 229,
+      "net": -5,
+      "FREE_added": 9,
+      "FREE_removed": 95,
+      "net_count_ci": {
+        "lo": -148.025,
+        "hi": 163.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -5.6077176905852815,
+        "hi": 5.046276044319535,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1167,
+      "loss": 127,
+      "net": 1040,
+      "FREE_added": 110,
+      "FREE_removed": 19,
+      "net_count_ci": {
+        "lo": 694.975,
+        "hi": 1417.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 25.541680103623435,
+        "hi": 44.40217585443907,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 235,
+      "loss": 227,
+      "net": 8,
+      "FREE_added": 9,
+      "FREE_removed": 92,
+      "net_count_ci": {
+        "lo": -135.0,
+        "hi": 172.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -5.145826275971093,
+        "hi": 5.4146263087285025,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1177,
+      "loss": 124,
+      "net": 1053,
+      "FREE_added": 113,
+      "FREE_removed": 19,
+      "net_count_ci": {
+        "lo": 710.0,
+        "hi": 1433.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 25.932609486121212,
+        "hi": 44.94187253157542,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 338,
+      "loss": 180,
+      "net": 158,
+      "FREE_added": 9,
+      "FREE_removed": 124,
+      "net_count_ci": {
+        "lo": -32.0,
+        "hi": 386.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -1.1301593494815254,
+        "hi": 11.985076795177639,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1301,
+      "loss": 98,
+      "net": 1203,
+      "FREE_added": 79,
+      "FREE_removed": 17,
+      "net_count_ci": {
+        "lo": 864.975,
+        "hi": 1574.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 31.585549592862826,
+        "hi": 48.81495660126567,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 795,
+      "loss": 778,
+      "net": 17,
+      "FREE_added": 12,
+      "FREE_removed": 99,
+      "net_count_ci": {
+        "lo": -558.025,
+        "hi": 558.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -11.253940153024978,
+        "hi": 11.934716127578724,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 624,
+      "loss": 746,
+      "net": -122,
+      "FREE_added": 34,
+      "FREE_removed": 27,
+      "net_count_ci": {
+        "lo": -638.075,
+        "hi": 336.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -12.949284643924301,
+        "hi": 6.967153002565119,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1487,
+      "loss": 124,
+      "net": 1363,
+      "FREE_added": 36,
+      "FREE_removed": 90,
+      "net_count_ci": {
+        "lo": 943.975,
+        "hi": 1826.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 20.14508001070169,
+        "hi": 37.08736036865379,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1353,
+      "loss": 129,
+      "net": 1224,
+      "FREE_added": 65,
+      "FREE_removed": 25,
+      "net_count_ci": {
+        "lo": 897.95,
+        "hi": 1556.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.998007336360224,
+        "hi": 31.598954252153597,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1472,
+      "loss": 128,
+      "net": 1344,
+      "FREE_added": 34,
+      "FREE_removed": 91,
+      "net_count_ci": {
+        "lo": 919.975,
+        "hi": 1808.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.727511146119596,
+        "hi": 36.69746872576322,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1342,
+      "loss": 137,
+      "net": 1205,
+      "FREE_added": 63,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": 880.975,
+        "hi": 1539.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.642142066894035,
+        "hi": 31.145736535567032,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1617,
+      "loss": 98,
+      "net": 1519,
+      "FREE_added": 37,
+      "FREE_removed": 89,
+      "net_count_ci": {
+        "lo": 1045.0,
+        "hi": 2048.075,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 22.07556366012422,
+        "hi": 41.44718017818285,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1511,
+      "loss": 131,
+      "net": 1380,
+      "FREE_added": 59,
+      "FREE_removed": 17,
+      "net_count_ci": {
+        "lo": 1027.0,
+        "hi": 1752.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 21.926132428340733,
+        "hi": 35.635252736914126,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 1332,
+      "loss": 307,
+      "net": 1025,
+      "FREE_added": 0,
+      "FREE_removed": 116,
+      "net_count_ci": {
+        "lo": 585.95,
+        "hi": 1516.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 12.217072608912359,
+        "hi": 30.29208900046059,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 568,
+      "loss": 467,
+      "net": 101,
+      "FREE_added": 17,
+      "FREE_removed": 17,
+      "net_count_ci": {
+        "lo": -347.0,
+        "hi": 551.0999999999995,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -7.196274984334524,
+        "hi": 11.166420615248635,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1648,
+      "loss": 142,
+      "net": 1506,
+      "FREE_added": 10,
+      "FREE_removed": 114,
+      "net_count_ci": {
+        "lo": 880.925,
+        "hi": 2133.075,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.210892424965664,
+        "hi": 41.3539606604715,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 792,
+      "loss": 210,
+      "net": 582,
+      "FREE_added": 31,
+      "FREE_removed": 19,
+      "net_count_ci": {
+        "lo": 261.95,
+        "hi": 931.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 5.637188606320439,
+        "hi": 18.02975978575044,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1643,
+      "loss": 142,
+      "net": 1501,
+      "FREE_added": 12,
+      "FREE_removed": 114,
+      "net_count_ci": {
+        "lo": 882.975,
+        "hi": 2123.075,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.09125213457221,
+        "hi": 41.08957283680174,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 789,
+      "loss": 212,
+      "net": 577,
+      "FREE_added": 32,
+      "FREE_removed": 18,
+      "net_count_ci": {
+        "lo": 258.975,
+        "hi": 918.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 5.61579607431388,
+        "hi": 17.882537047910834,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1592,
+      "loss": 212,
+      "net": 1380,
+      "FREE_added": 8,
+      "FREE_removed": 113,
+      "net_count_ci": {
+        "lo": 737.975,
+        "hi": 2023.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 16.336296839520426,
+        "hi": 39.051214353939194,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "native_perturbed",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 783,
+      "loss": 327,
+      "net": 456,
+      "FREE_added": 29,
+      "FREE_removed": 18,
+      "net_count_ci": {
+        "lo": 107.975,
+        "hi": 822.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 2.4503786341336316,
+        "hi": 16.063101563274618,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 262,
+      "loss": 915,
+      "net": -653,
+      "FREE_added": 145,
+      "FREE_removed": 134,
+      "net_count_ci": {
+        "lo": -1049.05,
+        "hi": -255.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -35.699581287805586,
+        "hi": -8.197329976584495,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 591,
+      "loss": 91,
+      "net": 500,
+      "FREE_added": 119,
+      "FREE_removed": 77,
+      "net_count_ci": {
+        "lo": 172.925,
+        "hi": 914.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 6.194376831672771,
+        "hi": 28.196589923360296,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 227,
+      "loss": 174,
+      "net": 53,
+      "FREE_added": 94,
+      "FREE_removed": 59,
+      "net_count_ci": {
+        "lo": -97.025,
+        "hi": 222.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.5214284086430685,
+        "hi": 7.026195050324891,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1269,
+      "loss": 63,
+      "net": 1206,
+      "FREE_added": 154,
+      "FREE_removed": 88,
+      "net_count_ci": {
+        "lo": 842.975,
+        "hi": 1605.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 30.87702556635192,
+        "hi": 50.49844321274145,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 243,
+      "loss": 178,
+      "net": 65,
+      "FREE_added": 100,
+      "FREE_removed": 55,
+      "net_count_ci": {
+        "lo": -88.025,
+        "hi": 237.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.2759581121267907,
+        "hi": 7.534678436317781,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1276,
+      "loss": 58,
+      "net": 1218,
+      "FREE_added": 159,
+      "FREE_removed": 83,
+      "net_count_ci": {
+        "lo": 852.95,
+        "hi": 1617.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 31.3620937318121,
+        "hi": 50.88010523700046,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 353,
+      "loss": 151,
+      "net": 202,
+      "FREE_added": 101,
+      "FREE_removed": 91,
+      "net_count_ci": {
+        "lo": 12.0,
+        "hi": 427.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 0.4411396756686385,
+        "hi": 13.803734309731704,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1405,
+      "loss": 50,
+      "net": 1355,
+      "FREE_added": 130,
+      "FREE_removed": 89,
+      "net_count_ci": {
+        "lo": 997.975,
+        "hi": 1730.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 36.60123198472589,
+        "hi": 53.909279833251006,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 505,
+      "loss": 1089,
+      "net": -584,
+      "FREE_added": 61,
+      "FREE_removed": 94,
+      "net_count_ci": {
+        "lo": -1166.125,
+        "hi": -28.950000000000273,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -24.25178288914579,
+        "hi": -0.5548747010977314,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 920,
+      "loss": 651,
+      "net": 269,
+      "FREE_added": 75,
+      "FREE_removed": 39,
+      "net_count_ci": {
+        "lo": -393.025,
+        "hi": 943.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -8.28910743209282,
+        "hi": 19.12277056766337,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1447,
+      "loss": 136,
+      "net": 1311,
+      "FREE_added": 57,
+      "FREE_removed": 84,
+      "net_count_ci": {
+        "lo": 909.975,
+        "hi": 1741.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.126164025620003,
+        "hi": 35.48921753258742,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2240,
+      "loss": 76,
+      "net": 2164,
+      "FREE_added": 84,
+      "FREE_removed": 42,
+      "net_count_ci": {
+        "lo": 1643.0,
+        "hi": 2736.075,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 35.49549903325161,
+        "hi": 54.45262086506812,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1429,
+      "loss": 149,
+      "net": 1280,
+      "FREE_added": 58,
+      "FREE_removed": 84,
+      "net_count_ci": {
+        "lo": 887.975,
+        "hi": 1697.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.66655831949421,
+        "hi": 34.7351384670258,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2215,
+      "loss": 82,
+      "net": 2133,
+      "FREE_added": 85,
+      "FREE_removed": 42,
+      "net_count_ci": {
+        "lo": 1606.975,
+        "hi": 2709.0999999999995,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 34.7432815761092,
+        "hi": 54.00256060405147,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1579,
+      "loss": 96,
+      "net": 1483,
+      "FREE_added": 49,
+      "FREE_removed": 85,
+      "net_count_ci": {
+        "lo": 1022.925,
+        "hi": 1997.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 21.665607570336302,
+        "hi": 40.3522773899342,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2429,
+      "loss": 93,
+      "net": 2336,
+      "FREE_added": 73,
+      "FREE_removed": 40,
+      "net_count_ci": {
+        "lo": 1821.875,
+        "hi": 2893.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 39.36723142955944,
+        "hi": 57.77991864393945,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 915,
+      "loss": 490,
+      "net": 425,
+      "FREE_added": 25,
+      "FREE_removed": 84,
+      "net_count_ci": {
+        "lo": -34.074999999999996,
+        "hi": 897.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -0.7078188185073804,
+        "hi": 17.995547630608737,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 1681,
+      "loss": 419,
+      "net": 1262,
+      "FREE_added": 57,
+      "FREE_removed": 17,
+      "net_count_ci": {
+        "lo": 468.9,
+        "hi": 2089.324999999998,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 9.645563636434595,
+        "hi": 40.99630396215256,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1537,
+      "loss": 228,
+      "net": 1309,
+      "FREE_added": 16,
+      "FREE_removed": 115,
+      "net_count_ci": {
+        "lo": 659.975,
+        "hi": 1940.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.489657728364259,
+        "hi": 37.81038402693662,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2317,
+      "loss": 171,
+      "net": 2146,
+      "FREE_added": 32,
+      "FREE_removed": 32,
+      "net_count_ci": {
+        "lo": 1502.9,
+        "hi": 2849.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 33.97519156933383,
+        "hi": 53.636082039418774,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1531,
+      "loss": 216,
+      "net": 1315,
+      "FREE_added": 16,
+      "FREE_removed": 115,
+      "net_count_ci": {
+        "lo": 674.925,
+        "hi": 1941.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.657752028537193,
+        "hi": 37.78863683833017,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2326,
+      "loss": 174,
+      "net": 2152,
+      "FREE_added": 33,
+      "FREE_removed": 33,
+      "net_count_ci": {
+        "lo": 1506.975,
+        "hi": 2853.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 34.117529145023255,
+        "hi": 53.74097576933523,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1511,
+      "loss": 352,
+      "net": 1159,
+      "FREE_added": 13,
+      "FREE_removed": 114,
+      "net_count_ci": {
+        "lo": 467.95,
+        "hi": 1826.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 9.773721574903856,
+        "hi": 35.38024441932359,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho015_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2244,
+      "loss": 248,
+      "net": 1996,
+      "FREE_added": 31,
+      "FREE_removed": 33,
+      "net_count_ci": {
+        "lo": 1324.95,
+        "hi": 2735.149999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 29.913550107929684,
+        "hi": 51.51739747951145,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 269,
+      "loss": 920,
+      "net": -651,
+      "FREE_added": 156,
+      "FREE_removed": 141,
+      "net_count_ci": {
+        "lo": -1044.025,
+        "hi": -253.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -35.50560283654797,
+        "hi": -8.42061636405163,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 586,
+      "loss": 101,
+      "net": 485,
+      "FREE_added": 118,
+      "FREE_removed": 62,
+      "net_count_ci": {
+        "lo": 151.975,
+        "hi": 897.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 5.607085839727617,
+        "hi": 27.835804254990368,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 204,
+      "loss": 230,
+      "net": -26,
+      "FREE_added": 92,
+      "FREE_removed": 72,
+      "net_count_ci": {
+        "lo": -175.0,
+        "hi": 143.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -6.327625017388409,
+        "hi": 4.452475031370583,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1206,
+      "loss": 96,
+      "net": 1110,
+      "FREE_added": 140,
+      "FREE_removed": 79,
+      "net_count_ci": {
+        "lo": 743.0,
+        "hi": 1510.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 27.273736218448615,
+        "hi": 47.67970449495146,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 211,
+      "loss": 225,
+      "net": -14,
+      "FREE_added": 90,
+      "FREE_removed": 74,
+      "net_count_ci": {
+        "lo": -162.0,
+        "hi": 152.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -5.848849227693822,
+        "hi": 4.827945029444854,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1215,
+      "loss": 93,
+      "net": 1122,
+      "FREE_added": 136,
+      "FREE_removed": 79,
+      "net_count_ci": {
+        "lo": 755.925,
+        "hi": 1523.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 27.657037956190226,
+        "hi": 48.03619208039897,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 327,
+      "loss": 171,
+      "net": 156,
+      "FREE_added": 96,
+      "FREE_removed": 94,
+      "net_count_ci": {
+        "lo": -21.0,
+        "hi": 383.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -0.7038544541206595,
+        "hi": 12.245098762132105,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1366,
+      "loss": 74,
+      "net": 1292,
+      "FREE_added": 124,
+      "FREE_removed": 81,
+      "net_count_ci": {
+        "lo": 945.0,
+        "hi": 1660.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 34.40924230625395,
+        "hi": 51.73236430052155,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 586,
+      "loss": 1009,
+      "net": -423,
+      "FREE_added": 69,
+      "FREE_removed": 87,
+      "net_count_ci": {
+        "lo": -970.05,
+        "hi": 95.04999999999973,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -19.850728287449186,
+        "hi": 2.0626892134319306,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 789,
+      "loss": 707,
+      "net": 82,
+      "FREE_added": 77,
+      "FREE_removed": 81,
+      "net_count_ci": {
+        "lo": -565.075,
+        "hi": 745.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -11.648216490399598,
+        "hi": 15.183563649491058,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1437,
+      "loss": 165,
+      "net": 1272,
+      "FREE_added": 37,
+      "FREE_removed": 99,
+      "net_count_ci": {
+        "lo": 885.0,
+        "hi": 1694.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.575443602301032,
+        "hi": 34.4335913161556,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1922,
+      "loss": 145,
+      "net": 1777,
+      "FREE_added": 49,
+      "FREE_removed": 97,
+      "net_count_ci": {
+        "lo": 1261.95,
+        "hi": 2335.149999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 27.341433306277057,
+        "hi": 47.1229452761016,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1404,
+      "loss": 183,
+      "net": 1221,
+      "FREE_added": 34,
+      "FREE_removed": 99,
+      "net_count_ci": {
+        "lo": 842.0,
+        "hi": 1624.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 17.558758101844166,
+        "hi": 33.262346511345825,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1882,
+      "loss": 156,
+      "net": 1726,
+      "FREE_added": 48,
+      "FREE_removed": 99,
+      "net_count_ci": {
+        "lo": 1211.925,
+        "hi": 2290.1749999999993,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 26.007280342898568,
+        "hi": 46.20952388089051,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1576,
+      "loss": 99,
+      "net": 1477,
+      "FREE_added": 44,
+      "FREE_removed": 90,
+      "net_count_ci": {
+        "lo": 1019.975,
+        "hi": 1992.1249999999993,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 21.479057249845095,
+        "hi": 40.09196391585146,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2135,
+      "loss": 153,
+      "net": 1982,
+      "FREE_added": 58,
+      "FREE_removed": 90,
+      "net_count_ci": {
+        "lo": 1452.95,
+        "hi": 2555.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 31.235165959291173,
+        "hi": 51.268186527188185,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 1430,
+      "loss": 275,
+      "net": 1155,
+      "FREE_added": 51,
+      "FREE_removed": 60,
+      "net_count_ci": {
+        "lo": 692.975,
+        "hi": 1648.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.940344006297163,
+        "hi": 32.34004365847134,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 801,
+      "loss": 353,
+      "net": 448,
+      "FREE_added": 46,
+      "FREE_removed": 146,
+      "net_count_ci": {
+        "lo": -61.05,
+        "hi": 1030.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -1.3732192919535207,
+        "hi": 20.53325361985315,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1690,
+      "loss": 165,
+      "net": 1525,
+      "FREE_added": 21,
+      "FREE_removed": 116,
+      "net_count_ci": {
+        "lo": 878.9,
+        "hi": 2157.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.93706309458864,
+        "hi": 42.14805268827357,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1061,
+      "loss": 243,
+      "net": 818,
+      "FREE_added": 17,
+      "FREE_removed": 203,
+      "net_count_ci": {
+        "lo": 380.975,
+        "hi": 1304.199999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 8.079749767111897,
+        "hi": 25.941002535603673,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1669,
+      "loss": 163,
+      "net": 1506,
+      "FREE_added": 15,
+      "FREE_removed": 115,
+      "net_count_ci": {
+        "lo": 865.975,
+        "hi": 2139.1749999999993,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.71196858462644,
+        "hi": 41.85274204442737,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1059,
+      "loss": 260,
+      "net": 799,
+      "FREE_added": 13,
+      "FREE_removed": 204,
+      "net_count_ci": {
+        "lo": 355.95,
+        "hi": 1295.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 7.474512125680282,
+        "hi": 25.60102807838974,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1631,
+      "loss": 279,
+      "net": 1352,
+      "FREE_added": 16,
+      "FREE_removed": 111,
+      "net_count_ci": {
+        "lo": 636.975,
+        "hi": 2022.3249999999982,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.256221040860567,
+        "hi": 39.28386346475002,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho060_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1024,
+      "loss": 379,
+      "net": 645,
+      "FREE_added": 18,
+      "FREE_removed": 204,
+      "net_count_ci": {
+        "lo": 186.925,
+        "hi": 1163.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 4.052850790721087,
+        "hi": 22.70395961940716,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 268,
+      "loss": 913,
+      "net": -645,
+      "FREE_added": 153,
+      "FREE_removed": 137,
+      "net_count_ci": {
+        "lo": -1041.025,
+        "hi": -248.90000000000055,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -35.537352174374455,
+        "hi": -8.157223674811062,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 589,
+      "loss": 99,
+      "net": 490,
+      "FREE_added": 121,
+      "FREE_removed": 69,
+      "net_count_ci": {
+        "lo": 158.0,
+        "hi": 901.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 5.776474727723371,
+        "hi": 27.993362848738947,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 224,
+      "loss": 186,
+      "net": 38,
+      "FREE_added": 95,
+      "FREE_removed": 63,
+      "net_count_ci": {
+        "lo": -108.025,
+        "hi": 206.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -4.043319213473136,
+        "hi": 6.500303532008829,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1249,
+      "loss": 76,
+      "net": 1173,
+      "FREE_added": 152,
+      "FREE_removed": 84,
+      "net_count_ci": {
+        "lo": 802.975,
+        "hi": 1574.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 29.664009215497067,
+        "hi": 49.7541069770902,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 238,
+      "loss": 194,
+      "net": 44,
+      "FREE_added": 100,
+      "FREE_removed": 61,
+      "net_count_ci": {
+        "lo": -109.0,
+        "hi": 212.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.956253713606655,
+        "hi": 6.730931183830606,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1250,
+      "loss": 71,
+      "net": 1179,
+      "FREE_added": 153,
+      "FREE_removed": 78,
+      "net_count_ci": {
+        "lo": 807.975,
+        "hi": 1584.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 29.850305869518156,
+        "hi": 49.9687900128041,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 347,
+      "loss": 150,
+      "net": 197,
+      "FREE_added": 96,
+      "FREE_removed": 89,
+      "net_count_ci": {
+        "lo": 14.0,
+        "hi": 421.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 0.5144739885203277,
+        "hi": 13.494252868487873,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1390,
+      "loss": 58,
+      "net": 1332,
+      "FREE_added": 132,
+      "FREE_removed": 89,
+      "net_count_ci": {
+        "lo": 974.975,
+        "hi": 1703.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 35.792469148986996,
+        "hi": 53.065432497982165,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 539,
+      "loss": 1048,
+      "net": -509,
+      "FREE_added": 62,
+      "FREE_removed": 96,
+      "net_count_ci": {
+        "lo": -1070.05,
+        "hi": 22.099999999999454,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -22.170107569987305,
+        "hi": 0.4807049975870664,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 847,
+      "loss": 645,
+      "net": 202,
+      "FREE_added": 71,
+      "FREE_removed": 50,
+      "net_count_ci": {
+        "lo": -441.025,
+        "hi": 843.174999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -9.10735895131475,
+        "hi": 17.377080274924694,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1461,
+      "loss": 136,
+      "net": 1325,
+      "FREE_added": 52,
+      "FREE_removed": 90,
+      "net_count_ci": {
+        "lo": 926.9,
+        "hi": 1749.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.378037660162523,
+        "hi": 35.60296588846865,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2127,
+      "loss": 91,
+      "net": 2036,
+      "FREE_added": 69,
+      "FREE_removed": 52,
+      "net_count_ci": {
+        "lo": 1523.825,
+        "hi": 2600.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 32.74589468543854,
+        "hi": 52.04435851458155,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1435,
+      "loss": 148,
+      "net": 1287,
+      "FREE_added": 51,
+      "FREE_removed": 90,
+      "net_count_ci": {
+        "lo": 890.925,
+        "hi": 1698.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 18.660610606828957,
+        "hi": 34.85310489949804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2096,
+      "loss": 98,
+      "net": 1998,
+      "FREE_added": 68,
+      "FREE_removed": 52,
+      "net_count_ci": {
+        "lo": 1480.925,
+        "hi": 2569.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 31.77352115949488,
+        "hi": 51.45398547120192,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1590,
+      "loss": 93,
+      "net": 1497,
+      "FREE_added": 46,
+      "FREE_removed": 88,
+      "net_count_ci": {
+        "lo": 1031.95,
+        "hi": 2013.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 21.726312179957016,
+        "hi": 40.608267347277796,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2311,
+      "loss": 103,
+      "net": 2208,
+      "FREE_added": 66,
+      "FREE_removed": 53,
+      "net_count_ci": {
+        "lo": 1689.975,
+        "hi": 2771.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 36.42032344601357,
+        "hi": 55.424597887190004,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 989,
+      "loss": 474,
+      "net": 515,
+      "FREE_added": 27,
+      "FREE_removed": 89,
+      "net_count_ci": {
+        "lo": 58.95,
+        "hi": 996.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 1.1862540680974583,
+        "hi": 19.898365315159474,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 1501,
+      "loss": 453,
+      "net": 1048,
+      "FREE_added": 48,
+      "FREE_removed": 35,
+      "net_count_ci": {
+        "lo": 289.0,
+        "hi": 1839.199999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 6.044827173297761,
+        "hi": 36.508262576689305,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1560,
+      "loss": 209,
+      "net": 1351,
+      "FREE_added": 13,
+      "FREE_removed": 115,
+      "net_count_ci": {
+        "lo": 709.925,
+        "hi": 1971.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 15.484990140542143,
+        "hi": 38.5650408555368,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2037,
+      "loss": 153,
+      "net": 1884,
+      "FREE_added": 28,
+      "FREE_removed": 55,
+      "net_count_ci": {
+        "lo": 1295.975,
+        "hi": 2521.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 29.13950389858158,
+        "hi": 48.0837190636279,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1554,
+      "loss": 198,
+      "net": 1356,
+      "FREE_added": 12,
+      "FREE_removed": 116,
+      "net_count_ci": {
+        "lo": 719.975,
+        "hi": 1976.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 15.783136008068263,
+        "hi": 38.60638929138204,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2044,
+      "loss": 155,
+      "net": 1889,
+      "FREE_added": 26,
+      "FREE_removed": 55,
+      "net_count_ci": {
+        "lo": 1300.0,
+        "hi": 2530.1749999999993,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 29.391751950457447,
+        "hi": 48.207305765384476,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1519,
+      "loss": 335,
+      "net": 1184,
+      "FREE_added": 11,
+      "FREE_removed": 111,
+      "net_count_ci": {
+        "lo": 492.85,
+        "hi": 1849.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 10.629799619495191,
+        "hi": 35.78067751205863,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient3",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1984,
+      "loss": 267,
+      "net": 1717,
+      "FREE_added": 30,
+      "FREE_removed": 55,
+      "net_count_ci": {
+        "lo": 1112.975,
+        "hi": 2407.2249999999985,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 24.54131403777171,
+        "hi": 45.46038548120457,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 219,
+      "loss": 208,
+      "net": 11,
+      "FREE_added": 129,
+      "FREE_removed": 30,
+      "net_count_ci": {
+        "lo": -229.0,
+        "hi": 264.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -22.166331397423832,
+        "hi": 25.107629654255312,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 413,
+      "loss": 25,
+      "net": 388,
+      "FREE_added": 99,
+      "FREE_removed": 14,
+      "net_count_ci": {
+        "lo": 163.975,
+        "hi": 651.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 20.271454206396676,
+        "hi": 51.365676656363384,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 149,
+      "loss": 28,
+      "net": 121,
+      "FREE_added": 77,
+      "FREE_removed": 18,
+      "net_count_ci": {
+        "lo": 27.0,
+        "hi": 246.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 2.878077782397529,
+        "hi": 21.470975821929674,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 536,
+      "loss": 38,
+      "net": 498,
+      "FREE_added": 67,
+      "FREE_removed": 22,
+      "net_count_ci": {
+        "lo": 266.0,
+        "hi": 761.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 32.32221717062951,
+        "hi": 58.46571688784804,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 151,
+      "loss": 27,
+      "net": 124,
+      "FREE_added": 75,
+      "FREE_removed": 18,
+      "net_count_ci": {
+        "lo": 31.0,
+        "hi": 248.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 3.282001993778672,
+        "hi": 21.581856340571974,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 537,
+      "loss": 36,
+      "net": 501,
+      "FREE_added": 64,
+      "FREE_removed": 21,
+      "net_count_ci": {
+        "lo": 269.0,
+        "hi": 765.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 32.722336988187934,
+        "hi": 58.83392857142857,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 218,
+      "loss": 30,
+      "net": 188,
+      "FREE_added": 64,
+      "FREE_removed": 19,
+      "net_count_ci": {
+        "lo": 43.0,
+        "hi": 378.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 4.5370276224368755,
+        "hi": 33.389544684464674,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 595,
+      "loss": 30,
+      "net": 565,
+      "FREE_added": 62,
+      "FREE_removed": 31,
+      "net_count_ci": {
+        "lo": 321.975,
+        "hi": 827.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 39.86258314684001,
+        "hi": 62.343247710189615,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 239,
+      "loss": 60,
+      "net": 179,
+      "FREE_added": 47,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": 46.975,
+        "hi": 330.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 4.7401102966480835,
+        "hi": 31.278704598162754,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 377,
+      "loss": 51,
+      "net": 326,
+      "FREE_added": 36,
+      "FREE_removed": 20,
+      "net_count_ci": {
+        "lo": 44.975,
+        "hi": 726.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 5.4812471202580255,
+        "hi": 52.43272131366028,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 304,
+      "loss": 0,
+      "net": 304,
+      "FREE_added": 14,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": 158.0,
+        "hi": 474.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.712261191901911,
+        "hi": 46.3474199851391,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 457,
+      "loss": 6,
+      "net": 451,
+      "FREE_added": 9,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": 164.0,
+        "hi": 854.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.827497109818054,
+        "hi": 61.2422884366925,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 303,
+      "loss": 1,
+      "net": 302,
+      "FREE_added": 13,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": 156.975,
+        "hi": 472.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.626773239235813,
+        "hi": 46.06950475379594,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 455,
+      "loss": 6,
+      "net": 449,
+      "FREE_added": 8,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": 163.0,
+        "hi": 850.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.70212670144236,
+        "hi": 61.01729878401851,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 303,
+      "loss": 3,
+      "net": 300,
+      "FREE_added": 16,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": 153.975,
+        "hi": 470.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 14.57020039814509,
+        "hi": 45.6794702714584,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 452,
+      "loss": 5,
+      "net": 447,
+      "FREE_added": 6,
+      "FREE_removed": 21,
+      "net_count_ci": {
+        "lo": 164.0,
+        "hi": 848.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.88207785642063,
+        "hi": 60.61776662643711,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 169,
+      "loss": 0,
+      "net": 169,
+      "FREE_added": 15,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": 59.0,
+        "hi": 309.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.257428940568477,
+        "hi": 50.85224232386291,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 227,
+      "loss": 4,
+      "net": 223,
+      "FREE_added": 12,
+      "FREE_removed": 1,
+      "net_count_ci": {
+        "lo": -2.0,
+        "hi": 589.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -0.56838649462929,
+        "hi": 65.09562319831197,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 119,
+      "loss": 47,
+      "net": 72,
+      "FREE_added": 8,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": -42.0,
+        "hi": 188.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -5.631435006435006,
+        "hi": 47.32839295592844,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 152,
+      "loss": 26,
+      "net": 126,
+      "FREE_added": 7,
+      "FREE_removed": 3,
+      "net_count_ci": {
+        "lo": -15.024999999999999,
+        "hi": 325.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -5.499547920433996,
+        "hi": 37.3052570698,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 115,
+      "loss": 39,
+      "net": 76,
+      "FREE_added": 4,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": -21.025,
+        "hi": 182.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -2.91162256006006,
+        "hi": 45.977260827287004,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 158,
+      "loss": 28,
+      "net": 130,
+      "FREE_added": 3,
+      "FREE_removed": 3,
+      "net_count_ci": {
+        "lo": -18.025,
+        "hi": 347.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -6.593860684769775,
+        "hi": 38.53208575952344,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 105,
+      "loss": 100,
+      "net": 5,
+      "FREE_added": 6,
+      "FREE_removed": 0,
+      "net_count_ci": {
+        "lo": -172.025,
+        "hi": 150.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -21.244044428562923,
+        "hi": 40.16312001251759,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient1",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 119,
+      "loss": 60,
+      "net": 59,
+      "FREE_added": 5,
+      "FREE_removed": 3,
+      "net_count_ci": {
+        "lo": -53.025,
+        "hi": 194.0,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -18.371126228269087,
+        "hi": 25.517506122178833,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 259,
+      "loss": 912,
+      "net": -653,
+      "FREE_added": 148,
+      "FREE_removed": 131,
+      "net_count_ci": {
+        "lo": -1050.075,
+        "hi": -254.97500000000014,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -35.625066868758914,
+        "hi": -8.266779363298703,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 592,
+      "loss": 94,
+      "net": 498,
+      "FREE_added": 127,
+      "FREE_removed": 76,
+      "net_count_ci": {
+        "lo": 167.975,
+        "hi": 914.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 6.198324572327383,
+        "hi": 28.00649799464064,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 228,
+      "loss": 175,
+      "net": 53,
+      "FREE_added": 99,
+      "FREE_removed": 53,
+      "net_count_ci": {
+        "lo": -96.0,
+        "hi": 219.0749999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.486067975316644,
+        "hi": 6.988176311813471,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 1262,
+      "loss": 58,
+      "net": 1204,
+      "FREE_added": 163,
+      "FREE_removed": 83,
+      "net_count_ci": {
+        "lo": 838.975,
+        "hi": 1605.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 30.68094547754378,
+        "hi": 50.55447354227842,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 245,
+      "loss": 174,
+      "net": 71,
+      "FREE_added": 104,
+      "FREE_removed": 50,
+      "net_count_ci": {
+        "lo": -82.025,
+        "hi": 242.02499999999986,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.031645563844592,
+        "hi": 7.661601703002268,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 1278,
+      "loss": 56,
+      "net": 1222,
+      "FREE_added": 168,
+      "FREE_removed": 80,
+      "net_count_ci": {
+        "lo": 854.95,
+        "hi": 1625.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 31.339878318584073,
+        "hi": 51.218081789840454,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 349,
+      "loss": 140,
+      "net": 209,
+      "FREE_added": 107,
+      "FREE_removed": 79,
+      "net_count_ci": {
+        "lo": 17.975,
+        "hi": 434.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 0.6554687997232437,
+        "hi": 14.207036049188087,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 0,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 1414,
+      "loss": 54,
+      "net": 1360,
+      "FREE_added": 145,
+      "FREE_removed": 83,
+      "net_count_ci": {
+        "lo": 999.925,
+        "hi": 1738.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 36.73780374334205,
+        "hi": 54.09293564528166,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 435,
+      "loss": 1177,
+      "net": -742,
+      "FREE_added": 64,
+      "FREE_removed": 95,
+      "net_count_ci": {
+        "lo": -1354.0,
+        "hi": -167.95000000000027,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -27.705076649065166,
+        "hi": -3.649031855084275,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 1025,
+      "loss": 568,
+      "net": 457,
+      "FREE_added": 81,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": -229.25,
+        "hi": 1138.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -4.859616086231659,
+        "hi": 23.435509711278872,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1377,
+      "loss": 150,
+      "net": 1227,
+      "FREE_added": 50,
+      "FREE_removed": 85,
+      "net_count_ci": {
+        "lo": 845.975,
+        "hi": 1640.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 17.709724494882373,
+        "hi": 33.28041415514646,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2489,
+      "loss": 63,
+      "net": 2426,
+      "FREE_added": 81,
+      "FREE_removed": 30,
+      "net_count_ci": {
+        "lo": 1918.975,
+        "hi": 2973.075,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 41.3638981613533,
+        "hi": 59.49332504547056,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1372,
+      "loss": 165,
+      "net": 1207,
+      "FREE_added": 49,
+      "FREE_removed": 85,
+      "net_count_ci": {
+        "lo": 827.0,
+        "hi": 1610.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 17.420885782367822,
+        "hi": 32.76852543807022,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2470,
+      "loss": 64,
+      "net": 2406,
+      "FREE_added": 80,
+      "FREE_removed": 30,
+      "net_count_ci": {
+        "lo": 1891.95,
+        "hi": 2949.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 40.824059413677254,
+        "hi": 59.08738288254409,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1553,
+      "loss": 92,
+      "net": 1461,
+      "FREE_added": 48,
+      "FREE_removed": 88,
+      "net_count_ci": {
+        "lo": 1016.95,
+        "hi": 1971.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 21.17362659996723,
+        "hi": 39.74236865990901,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 1,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2722,
+      "loss": 62,
+      "net": 2660,
+      "FREE_added": 79,
+      "FREE_removed": 33,
+      "net_count_ci": {
+        "lo": 2172.95,
+        "hi": 3195.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 46.96339947130936,
+        "hi": 63.368137671342964,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "A",
+      "baseline": "rgb",
+      "rescue": 832,
+      "loss": 553,
+      "net": 279,
+      "FREE_added": 23,
+      "FREE_removed": 99,
+      "net_count_ci": {
+        "lo": -178.05,
+        "hi": 739.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": -3.7030569492474066,
+        "hi": 14.901353116261312,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "A",
+      "baseline": "tof",
+      "rescue": 1972,
+      "loss": 304,
+      "net": 1668,
+      "FREE_added": 45,
+      "FREE_removed": 17,
+      "net_count_ci": {
+        "lo": 924.825,
+        "hi": 2477.0499999999997,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 19.261205229304295,
+        "hi": 48.954944414961034,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "B",
+      "baseline": "rgb",
+      "rescue": 1508,
+      "loss": 268,
+      "net": 1240,
+      "FREE_added": 14,
+      "FREE_removed": 116,
+      "net_count_ci": {
+        "lo": 581.85,
+        "hi": 1877.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 12.743715665304334,
+        "hi": 36.61194677575048,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "B",
+      "baseline": "tof",
+      "rescue": 2765,
+      "loss": 136,
+      "net": 2629,
+      "FREE_added": 28,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": 1971.925,
+        "hi": 3357.199999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 44.3012616181858,
+        "hi": 62.72972926963459,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "C",
+      "baseline": "rgb",
+      "rescue": 1506,
+      "loss": 250,
+      "net": 1256,
+      "FREE_added": 12,
+      "FREE_removed": 112,
+      "net_count_ci": {
+        "lo": 609.975,
+        "hi": 1880.0249999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 13.4045014100601,
+        "hi": 36.652784544668854,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "C",
+      "baseline": "tof",
+      "rescue": 2782,
+      "loss": 137,
+      "net": 2645,
+      "FREE_added": 30,
+      "FREE_removed": 26,
+      "net_count_ci": {
+        "lo": 1991.0,
+        "hi": 3369.0249999999996,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 44.859957167320516,
+        "hi": 62.974322806147406,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "D",
+      "baseline": "rgb",
+      "rescue": 1488,
+      "loss": 399,
+      "net": 1089,
+      "FREE_added": 13,
+      "FREE_removed": 115,
+      "net_count_ci": {
+        "lo": 365.975,
+        "hi": 1767.199999999999,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 8.086370728065628,
+        "hi": 34.3282602512621,
+        "valid": 2000
+      }
+    },
+    {
+      "fold": -1,
+      "arm": "faro_rho030_ambient10",
+      "band": 2,
+      "model": "D",
+      "baseline": "tof",
+      "rescue": 2672,
+      "loss": 194,
+      "net": 2478,
+      "FREE_added": 27,
+      "FREE_removed": 25,
+      "net_count_ci": {
+        "lo": 1784.975,
+        "hi": 3233.4499999999975,
+        "valid": 2000
+      },
+      "net_pp_ci": {
+        "lo": 40.04911541047012,
+        "hi": 60.935300591094396,
+        "valid": 2000
+      }
+    }
+  ],
+  "audit": {
+    "status": "PASS",
+    "PLAN_sha256": "5c21efd2bc0db01ccd6d54d7a5e151ba7f58b0269020f24e70506376604b0928",
+    "features_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+    "oof_sha256": "d84f84549ab03690cd53dd2f92990e76fd8e431e9c1bb32eedd2f9c39a77cde6",
+    "rows": 135756,
+    "frozen_feature_parity_queries": 32076,
+    "input_simulation_tests": 24,
+    "sampled_query_feature_tests": 648,
+    "folds": 5,
+    "train_weight_checks": 20,
+    "cal_ties": 359533,
+    "predictions": 814536,
+    "metrics": 648,
+    "paired": 864,
+    "bootstrap_replicates": 2000,
+    "clusters_pooled": 30,
+    "clusters_per_fold": 6,
+    "candidates": [
+      {
+        "model": "A",
+        "FARO_near_net": 11,
+        "stress_near_net": -653,
+        "native_middle_net": -122,
+        "A_middle_net": -122,
+        "retention": null,
+        "robust_candidate": false
+      },
+      {
+        "model": "B",
+        "FARO_near_net": 121,
+        "stress_near_net": 53,
+        "native_middle_net": 1224,
+        "A_middle_net": -122,
+        "retention": null,
+        "robust_candidate": false
+      },
+      {
+        "model": "C",
+        "FARO_near_net": 124,
+        "stress_near_net": 71,
+        "native_middle_net": 1205,
+        "A_middle_net": -122,
+        "retention": null,
+        "robust_candidate": false
+      },
+      {
+        "model": "D",
+        "FARO_near_net": 188,
+        "stress_near_net": 209,
+        "native_middle_net": 1380,
+        "A_middle_net": -122,
+        "retention": null,
+        "robust_candidate": false
+      }
+    ],
+    "CPU_command_wall_s": 28.48499999998603,
+    "GPU_s": 0,
+    "original_count_descriptor_candidates": [
+      {
+        "model": "B",
+        "FARO_near_nonnegative": true,
+        "stress_near_nonnegative": true,
+        "native_middle_count_preserved": true,
+        "original_count_candidate": true,
+        "A_positive_gain": false,
+        "retention": null,
+        "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+      },
+      {
+        "model": "C",
+        "FARO_near_nonnegative": true,
+        "stress_near_nonnegative": true,
+        "native_middle_count_preserved": true,
+        "original_count_candidate": true,
+        "A_positive_gain": false,
+        "retention": null,
+        "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+      },
+      {
+        "model": "D",
+        "FARO_near_nonnegative": true,
+        "stress_near_nonnegative": true,
+        "native_middle_count_preserved": true,
+        "original_count_candidate": true,
+        "A_positive_gain": false,
+        "retention": null,
+        "interpretation": "Post-result interpretation clarification: original user count inequality; negative A makes 80% preservation vacuous; fixed PLAN ratio candidate unchanged"
+      }
+    ],
+    "protected_reads": 0,
+    "fits_performed": 0,
+    "audit_source_sha256": "52c507d5f5216df1b647dfa5d454e30b51e6c58817b5627c59a222c93a798cb1",
+    "executed_source_sha256": "91c3b46d600fe68db1de95b1e828de71354159489067229786fabd6e1fef921b",
+    "logistic_penalty_semantics": "L2; sklearn default deprecated with l1_ratio=0 accepted after inspecting installed LogisticRegression.fit",
+    "scaler_numerics": [
+      {
+        "fold": 0,
+        "model": "A",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 0,
+        "model": "B",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 0,
+        "model": "C",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 1,
+        "model": "A",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 1,
+        "model": "B",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 1,
+        "model": "C",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 2,
+        "model": "A",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 2,
+        "model": "B",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [
+          {
+            "feature": "dav_finite_fraction",
+            "value": -4.025101521305868e-37,
+            "scale": 1.0
+          },
+          {
+            "feature": "uni_finite_fraction",
+            "value": -4.025101521305868e-37,
+            "scale": 1.0
+          }
+        ],
+        "min_variance": -4.025101521305868e-37,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 2,
+        "model": "C",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [
+          {
+            "feature": "dav_finite_fraction",
+            "value": -4.025101521305868e-37,
+            "scale": 1.0
+          },
+          {
+            "feature": "uni_finite_fraction",
+            "value": -4.025101521305868e-37,
+            "scale": 1.0
+          }
+        ],
+        "min_variance": -4.025101521305868e-37,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 3,
+        "model": "A",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 3,
+        "model": "B",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 3,
+        "model": "C",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 4,
+        "model": "A",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [],
+        "min_variance": 0.0,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 4,
+        "model": "B",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [
+          {
+            "feature": "dav_finite_fraction",
+            "value": -3.1031921935586824e-37,
+            "scale": 1.0
+          },
+          {
+            "feature": "uni_finite_fraction",
+            "value": -3.1031921935586824e-37,
+            "scale": 1.0
+          }
+        ],
+        "min_variance": -3.1031921935586824e-37,
+        "all_scales_finite_positive": true
+      },
+      {
+        "fold": 4,
+        "model": "C",
+        "finite_transforms": true,
+        "negative_roundoff_variance": [
+          {
+            "feature": "dav_finite_fraction",
+            "value": -3.1031921935586824e-37,
+            "scale": 1.0
+          },
+          {
+            "feature": "uni_finite_fraction",
+            "value": -3.1031921935586824e-37,
+            "scale": 1.0
+          }
+        ],
+        "min_variance": -3.1031921935586824e-37,
+        "all_scales_finite_positive": true
+      }
+    ],
+    "boundaries": [
+      "Saved model inference and train scaler statistics independently recomputed; no refit",
+      "Bootstrap intervals conditional on fixed OOF fits; original residual fitting predates CV",
+      "Six fixed simulation samples per generated arm; all generated scale declarations checked"
+    ]
+  },
+  "addon": {
+    "audit": {
+      "status": "PASS",
+      "ADDPLAN_sha256": "78eae35225b05a2018d2e8e1c4e72b9a5c31e65f3bc4676ba3da9fc7371613a6",
+      "rows": 135756,
+      "sampled_frame_arms": 36,
+      "sampled_K_queries": 1944,
+      "support_count_row_means_checked": 135756,
+      "prior_models": 15,
+      "prior_cal_ties": 150,
+      "prior_thresholds": 15,
+      "prior_metrics": 108,
+      "evidence_split_cells": 5184,
+      "bootstrap_replicates": 2000,
+      "original_results_unchanged": true,
+      "original_features_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+      "original_oof_sha256": "d84f84549ab03690cd53dd2f92990e76fd8e431e9c1bb32eedd2f9c39a77cde6",
+      "original_summary_sha256": "056b8ffb9e124046d0f854ed7e3d82ea39fced4038d6169c2aa04cb01ccde072",
+      "evidence_sha256": "aa7bc25805634084fa53c7928439e8bc3b3840468f51898faf6e4b44d95f5a9a",
+      "evidence_summary_sha256": "58cee510421286ffeb3c72807a466be03c7587a634a217815acdc0d082077896",
+      "per_query_evidence_sha256": "51ddfcbafba5873793d4c9e75195241c156467e267547e03271c7a1cc78b0e12",
+      "prior_oof_sha256": "63f6395ece12ecd6c0f03808e6c2807e74257ea1a5859420bb7c482cd01b71cc",
+      "audit_source_sha256": "c560bd7ef77e9c3f228de9ba4f7c31ce75ebb75925a5d4e2fd17591f43ef476a",
+      "CPU_command_wall_s": 8.0,
+      "GPU_s": 0,
+      "protected_reads": 0,
+      "fits_performed": 0,
+      "boundary": "Post-result consumed-Development addendum; neither raw minimum evidence is absent local support, not proof of pure-prior causality"
+    },
+    "PLAN_sha256": "78eae35225b05a2018d2e8e1c4e72b9a5c31e65f3bc4676ba3da9fc7371613a6",
+    "prior_metrics": [
+      {
+        "fold": -1,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 2976,
+        "W": 0,
+        "FREE": 5099,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 4824,
+        "W": 0,
+        "FREE": 2107,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 4867,
+        "W": 302,
+        "FREE": 614,
+        "F": 67,
+        "W_rate_ci": {
+          "lo": 3.2618674285586384,
+          "hi": 9.461850418306755,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 2.5295430672268906,
+          "hi": 23.186177021899145,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 2976,
+        "W": 0,
+        "FREE": 5099,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 4824,
+        "W": 0,
+        "FREE": 2107,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 4867,
+        "W": 302,
+        "FREE": 614,
+        "F": 67,
+        "W_rate_ci": {
+          "lo": 3.2618674285586384,
+          "hi": 9.461850418306755,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 2.5295430672268906,
+          "hi": 23.186177021899145,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 2976,
+        "W": 0,
+        "FREE": 5099,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 4824,
+        "W": 0,
+        "FREE": 2107,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 4867,
+        "W": 302,
+        "FREE": 614,
+        "F": 67,
+        "W_rate_ci": {
+          "lo": 3.2618674285586384,
+          "hi": 9.461850418306755,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 2.5295430672268906,
+          "hi": 23.186177021899145,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 2976,
+        "W": 0,
+        "FREE": 5099,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 4824,
+        "W": 0,
+        "FREE": 2107,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 4867,
+        "W": 302,
+        "FREE": 614,
+        "F": 67,
+        "W_rate_ci": {
+          "lo": 3.2618674285586384,
+          "hi": 9.461850418306755,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 2.5295430672268906,
+          "hi": 23.186177021899145,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 1061,
+        "W": 0,
+        "FREE": 777,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 1072,
+        "W": 0,
+        "FREE": 116,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 539,
+        "W": 41,
+        "FREE": 16,
+        "F": 2,
+        "W_rate_ci": {
+          "lo": 1.175960557633458,
+          "hi": 18.14208505488084,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 66.66666666666667,
+          "valid": 1777
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 2976,
+        "W": 0,
+        "FREE": 5099,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 4824,
+        "W": 0,
+        "FREE": 2107,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": -1,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 4867,
+        "W": 302,
+        "FREE": 614,
+        "F": 67,
+        "W_rate_ci": {
+          "lo": 3.2618674285586384,
+          "hi": 9.461850418306755,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 2.5295430672268906,
+          "hi": 23.186177021899145,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 539,
+        "W": 0,
+        "FREE": 1103,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 941,
+        "W": 0,
+        "FREE": 452,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 0,
+        "FREE": 167,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 539,
+        "W": 0,
+        "FREE": 1103,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 941,
+        "W": 0,
+        "FREE": 452,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 0,
+        "FREE": 167,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 539,
+        "W": 0,
+        "FREE": 1103,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 941,
+        "W": 0,
+        "FREE": 452,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 0,
+        "FREE": 167,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 539,
+        "W": 0,
+        "FREE": 1103,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 941,
+        "W": 0,
+        "FREE": 452,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 0,
+        "FREE": 167,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 225,
+        "W": 0,
+        "FREE": 49,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1963
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1963
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 96,
+        "W": 0,
+        "FREE": 2,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1963
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1342
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 13,
+        "W": 0,
+        "FREE": 0,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1829
+        },
+        "F_rate_ci": {
+          "lo": null,
+          "hi": null,
+          "valid": 0
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 539,
+        "W": 0,
+        "FREE": 1103,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 941,
+        "W": 0,
+        "FREE": 452,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 0,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 0,
+        "FREE": 167,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 579,
+        "W": 0,
+        "FREE": 996,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 866,
+        "W": 0,
+        "FREE": 516,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 204,
+        "FREE": 125,
+        "F": 57,
+        "W_rate_ci": {
+          "lo": 16.666666666666668,
+          "hi": 22.74926505479181,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 24.029605263157897,
+          "hi": 57.695652173913025,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 579,
+        "W": 0,
+        "FREE": 996,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 866,
+        "W": 0,
+        "FREE": 516,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 204,
+        "FREE": 125,
+        "F": 57,
+        "W_rate_ci": {
+          "lo": 16.666666666666668,
+          "hi": 22.74926505479181,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 24.029605263157897,
+          "hi": 57.695652173913025,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 579,
+        "W": 0,
+        "FREE": 996,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 866,
+        "W": 0,
+        "FREE": 516,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 204,
+        "FREE": 125,
+        "F": 57,
+        "W_rate_ci": {
+          "lo": 16.666666666666668,
+          "hi": 22.74926505479181,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 24.029605263157897,
+          "hi": 57.695652173913025,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 579,
+        "W": 0,
+        "FREE": 996,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 866,
+        "W": 0,
+        "FREE": 516,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 204,
+        "FREE": 125,
+        "F": 57,
+        "W_rate_ci": {
+          "lo": 16.666666666666668,
+          "hi": 22.74926505479181,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 24.029605263157897,
+          "hi": 57.695652173913025,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 161,
+        "W": 0,
+        "FREE": 142,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1995
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1995
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 176,
+        "W": 0,
+        "FREE": 24,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1995
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1811
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 85,
+        "W": 25,
+        "FREE": 3,
+        "F": 2,
+        "W_rate_ci": {
+          "lo": 26.666666666666668,
+          "hi": 32.5,
+          "valid": 1811
+        },
+        "F_rate_ci": {
+          "lo": 66.66666666666667,
+          "hi": 66.66666666666667,
+          "valid": 1331
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 579,
+        "W": 0,
+        "FREE": 996,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 866,
+        "W": 0,
+        "FREE": 516,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 1,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 1009,
+        "W": 204,
+        "FREE": 125,
+        "F": 57,
+        "W_rate_ci": {
+          "lo": 16.666666666666668,
+          "hi": 22.74926505479181,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 24.029605263157897,
+          "hi": 57.695652173913025,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 755,
+        "W": 0,
+        "FREE": 858,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 985,
+        "W": 0,
+        "FREE": 239,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 797,
+        "W": 0,
+        "FREE": 63,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1998
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 755,
+        "W": 0,
+        "FREE": 858,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 985,
+        "W": 0,
+        "FREE": 239,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 797,
+        "W": 0,
+        "FREE": 63,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1998
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 755,
+        "W": 0,
+        "FREE": 858,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 985,
+        "W": 0,
+        "FREE": 239,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 797,
+        "W": 0,
+        "FREE": 63,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1998
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 755,
+        "W": 0,
+        "FREE": 858,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 985,
+        "W": 0,
+        "FREE": 239,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 797,
+        "W": 0,
+        "FREE": 63,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1998
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 458,
+        "W": 0,
+        "FREE": 350,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 502,
+        "W": 0,
+        "FREE": 33,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1971
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 271,
+        "W": 0,
+        "FREE": 0,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": null,
+          "hi": null,
+          "valid": 0
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 755,
+        "W": 0,
+        "FREE": 858,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 985,
+        "W": 0,
+        "FREE": 239,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 2,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 797,
+        "W": 0,
+        "FREE": 63,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1998
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 628,
+        "W": 0,
+        "FREE": 979,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 1064,
+        "W": 0,
+        "FREE": 431,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 1125,
+        "W": 0,
+        "FREE": 170,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1992
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 628,
+        "W": 0,
+        "FREE": 979,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 1064,
+        "W": 0,
+        "FREE": 431,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1125,
+        "W": 0,
+        "FREE": 170,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1992
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 628,
+        "W": 0,
+        "FREE": 979,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 1064,
+        "W": 0,
+        "FREE": 431,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 1125,
+        "W": 0,
+        "FREE": 170,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1992
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 628,
+        "W": 0,
+        "FREE": 979,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 1064,
+        "W": 0,
+        "FREE": 431,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 1125,
+        "W": 0,
+        "FREE": 170,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1992
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 118,
+        "W": 0,
+        "FREE": 98,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1997
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1997
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 168,
+        "W": 0,
+        "FREE": 14,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1997
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1971
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 72,
+        "W": 0,
+        "FREE": 0,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1997
+        },
+        "F_rate_ci": {
+          "lo": null,
+          "hi": null,
+          "valid": 0
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 628,
+        "W": 0,
+        "FREE": 979,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 1064,
+        "W": 0,
+        "FREE": 431,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 3,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 1125,
+        "W": 0,
+        "FREE": 170,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1992
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "native_perturbed",
+        "band": 0,
+        "model": "prior",
+        "POS": 475,
+        "W": 0,
+        "FREE": 1163,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "native_perturbed",
+        "band": 1,
+        "model": "prior",
+        "POS": 968,
+        "W": 0,
+        "FREE": 469,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "native_perturbed",
+        "band": 2,
+        "model": "prior",
+        "POS": 927,
+        "W": 98,
+        "FREE": 89,
+        "F": 10,
+        "W_rate_ci": {
+          "lo": 8.11101853756123,
+          "hi": 12.102564102564102,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 22.22222222222222,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho015_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 475,
+        "W": 0,
+        "FREE": 1163,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho015_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 968,
+        "W": 0,
+        "FREE": 469,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho015_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 927,
+        "W": 98,
+        "FREE": 89,
+        "F": 10,
+        "W_rate_ci": {
+          "lo": 8.11101853756123,
+          "hi": 12.102564102564102,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 22.22222222222222,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho060_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 475,
+        "W": 0,
+        "FREE": 1163,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho060_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 968,
+        "W": 0,
+        "FREE": 469,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho060_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 927,
+        "W": 98,
+        "FREE": 89,
+        "F": 10,
+        "W_rate_ci": {
+          "lo": 8.11101853756123,
+          "hi": 12.102564102564102,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 22.22222222222222,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient3",
+        "band": 0,
+        "model": "prior",
+        "POS": 475,
+        "W": 0,
+        "FREE": 1163,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient3",
+        "band": 1,
+        "model": "prior",
+        "POS": 968,
+        "W": 0,
+        "FREE": 469,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient3",
+        "band": 2,
+        "model": "prior",
+        "POS": 927,
+        "W": 98,
+        "FREE": 89,
+        "F": 10,
+        "W_rate_ci": {
+          "lo": 8.11101853756123,
+          "hi": 12.102564102564102,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 22.22222222222222,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient1",
+        "band": 0,
+        "model": "prior",
+        "POS": 99,
+        "W": 0,
+        "FREE": 138,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1969
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1969
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient1",
+        "band": 1,
+        "model": "prior",
+        "POS": 130,
+        "W": 0,
+        "FREE": 43,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1969
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1812
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient1",
+        "band": 2,
+        "model": "prior",
+        "POS": 98,
+        "W": 16,
+        "FREE": 13,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 13.333333333333334,
+          "hi": 40.0,
+          "valid": 1969
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 1325
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient10",
+        "band": 0,
+        "model": "prior",
+        "POS": 475,
+        "W": 0,
+        "FREE": 1163,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient10",
+        "band": 1,
+        "model": "prior",
+        "POS": 968,
+        "W": 0,
+        "FREE": 469,
+        "F": 0,
+        "W_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 0.0,
+          "valid": 2000
+        }
+      },
+      {
+        "fold": 4,
+        "arm": "faro_rho030_ambient10",
+        "band": 2,
+        "model": "prior",
+        "POS": 927,
+        "W": 98,
+        "FREE": 89,
+        "F": 10,
+        "W_rate_ci": {
+          "lo": 8.11101853756123,
+          "hi": 12.102564102564102,
+          "valid": 2000
+        },
+        "F_rate_ci": {
+          "lo": 0.0,
+          "hi": 22.22222222222222,
+          "valid": 2000
+        }
+      }
+    ]
+  },
+  "outputs": {
+    "features.npz": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+    "per_query.csv": "44b756adfe8e9b8922c35c128dcd807f27319d9d698cb1b2ec89a965c7c4f803",
+    "oof.npz": "d84f84549ab03690cd53dd2f92990e76fd8e431e9c1bb32eedd2f9c39a77cde6",
+    "summary.json": "056b8ffb9e124046d0f854ed7e3d82ea39fced4038d6169c2aa04cb01ccde072",
+    "cuts.json": "fa364b051992f551392eb986eee5f8b695fc098bc4326116b376558a1c9dd300",
+    "models_manifest.json": "f4ac0404f029c0c71c087cd53e80ffe1041f3679eaf667bc6fcb8447b39f4cea",
+    "feature_manifest.json": "1eab0f7165fa2d455807ae2b2e3d3b7340e3d436f5f9fedb89811bdeec0f16cd",
+    "coefficients.json": "9558027ba994cc4841454713f4ba6e4527a5fa90c1ff5ef94ca585e215e1e6be",
+    "influence.csv": "2bfbb163dec6c689d86b7d3522258d4682b05db88ae49e4036358d4ac4f584e9",
+    "independent_audit.json": "b9fbcf975198f726e01b62c924d43c4ec5bc12c3873fb1c4077534b1eb773ed3",
+    "executed_source.py": "91c3b46d600fe68db1de95b1e828de71354159489067229786fabd6e1fef921b",
+    "dependency_seal.json": "841b75859ffd2aed59d7da87b0e7d00a2c467f78adc13f0cdd3946e3926e534d",
+    "evidence.npz": "aa7bc25805634084fa53c7928439e8bc3b3840468f51898faf6e4b44d95f5a9a",
+    "evidence_summary.json": "58cee510421286ffeb3c72807a466be03c7587a634a217815acdc0d082077896",
+    "evidence_split.csv": "e116e9b96e93c83f661757e58bf2cd7f0dc676969a982045635abe7b02603dec",
+    "per_query_evidence.csv": "51ddfcbafba5873793d4c9e75195241c156467e267547e03271c7a1cc78b0e12",
+    "independent_addon_audit.json": "63fe3b8a2ba27434cd1f3cb97681670aed1046a1af0e927943f731b0c45bc5aa",
+    "prior/oof.npz": "63f6395ece12ecd6c0f03808e6c2807e74257ea1a5859420bb7c482cd01b71cc",
+    "prior/cuts.json": "86cd4e988b113fb02c70d92129a294fd6bca9e79a03c0c398f1bbd0f8c5ab587",
+    "prior/models.json": "df15f3d276b4635f9bbf79a2f5052625cf006c7ce02ea8a64043619e14b2a2e6"
+  },
+  "failures": {
+    "plan_attempt0_error": "PYTHONPYCACHEPREFIX created task root before mkdir; fixed mkdir only and verified existing PLAN byte contract",
+    "build_attempt0_stop": "Independent code review found default ambient_scale10 for missing rho arms; task-owned process stopped at old dataset prefix before any training; simulated prefix retained in attempt0_ambient_mapping_simulated",
+    "build_attempt0_conservative_command_wall_s": 65,
+    "GPU_s": 0,
+    "build_attempt1_error": "MemoryError in cached_features: repeated NPZ array extraction plus row views retained full arrays. Fixed one extraction per array; original source/failure retained. Generated data reused only after full-array identity checks.",
+    "build_attempt1_command_wall_s": 153.031
+  },
+  "payload": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-robust-dev-20261011"
+}

@@ -1,0 +1,393 @@
+{
+  "task": "SYNC_FUSION_ROBUST_DEV_20261011",
+  "phase": "EXPLORE_CONSUMED_DEVELOPMENT",
+  "parent_commit": "1d16bde2",
+  "budget": {
+    "CPU_command_wall_s": 1800,
+    "GPU_wall_s": 300,
+    "allocations": {
+      "build": 650,
+      "fit": 450,
+      "audit": 180,
+      "delivery_and_reserve": 520
+    }
+  },
+  "data": {
+    "visits": [
+      "381650",
+      "381652",
+      "420673",
+      "421002",
+      "421006",
+      "421009",
+      "421065",
+      "421252",
+      "421254",
+      "421259",
+      "421260",
+      "421372",
+      "421393",
+      "421397",
+      "421647",
+      "421652",
+      "421657",
+      "421659",
+      "421667",
+      "422007",
+      "422011",
+      "422134",
+      "422148",
+      "422217",
+      "422521",
+      "422523",
+      "422535",
+      "422539",
+      "422569",
+      "422589"
+    ],
+    "frames": 960,
+    "queries_per_frame": 27,
+    "fold_seed": 20261011,
+    "folds": [
+      {
+        "fold": 0,
+        "eval": [
+          "381650",
+          "421009",
+          "421393",
+          "421647",
+          "422535",
+          "422569"
+        ],
+        "cal": [
+          "421065",
+          "421254",
+          "421657",
+          "421659",
+          "422217"
+        ],
+        "train": [
+          "381652",
+          "420673",
+          "421002",
+          "421006",
+          "421252",
+          "421259",
+          "421260",
+          "421372",
+          "421397",
+          "421652",
+          "421667",
+          "422007",
+          "422011",
+          "422134",
+          "422148",
+          "422521",
+          "422523",
+          "422539",
+          "422589"
+        ]
+      },
+      {
+        "fold": 1,
+        "eval": [
+          "421065",
+          "421397",
+          "421652",
+          "422134",
+          "422521",
+          "422523"
+        ],
+        "cal": [
+          "381652",
+          "421002",
+          "421667",
+          "422535",
+          "422589"
+        ],
+        "train": [
+          "381650",
+          "420673",
+          "421006",
+          "421009",
+          "421252",
+          "421254",
+          "421259",
+          "421260",
+          "421372",
+          "421393",
+          "421647",
+          "421657",
+          "421659",
+          "422007",
+          "422011",
+          "422148",
+          "422217",
+          "422539",
+          "422569"
+        ]
+      },
+      {
+        "fold": 2,
+        "eval": [
+          "420673",
+          "421252",
+          "421254",
+          "422007",
+          "422539",
+          "422589"
+        ],
+        "cal": [
+          "381652",
+          "421372",
+          "421397",
+          "421659",
+          "422134"
+        ],
+        "train": [
+          "381650",
+          "421002",
+          "421006",
+          "421009",
+          "421065",
+          "421259",
+          "421260",
+          "421393",
+          "421647",
+          "421652",
+          "421657",
+          "421667",
+          "422011",
+          "422148",
+          "422217",
+          "422521",
+          "422523",
+          "422535",
+          "422569"
+        ]
+      },
+      {
+        "fold": 3,
+        "eval": [
+          "381652",
+          "421006",
+          "421657",
+          "421659",
+          "421667",
+          "422148"
+        ],
+        "cal": [
+          "381650",
+          "421259",
+          "421260",
+          "421652",
+          "422535"
+        ],
+        "train": [
+          "420673",
+          "421002",
+          "421009",
+          "421065",
+          "421252",
+          "421254",
+          "421372",
+          "421393",
+          "421397",
+          "421647",
+          "422007",
+          "422011",
+          "422134",
+          "422217",
+          "422521",
+          "422523",
+          "422539",
+          "422569",
+          "422589"
+        ]
+      },
+      {
+        "fold": 4,
+        "eval": [
+          "421002",
+          "421259",
+          "421260",
+          "421372",
+          "422011",
+          "422217"
+        ],
+        "cal": [
+          "420673",
+          "421006",
+          "421393",
+          "422148",
+          "422569"
+        ],
+        "train": [
+          "381650",
+          "381652",
+          "421009",
+          "421065",
+          "421252",
+          "421254",
+          "421397",
+          "421647",
+          "421652",
+          "421657",
+          "421659",
+          "421667",
+          "422007",
+          "422134",
+          "422521",
+          "422523",
+          "422535",
+          "422539",
+          "422589"
+        ]
+      }
+    ],
+    "inner_cal": "5 of remaining24 visits: nearest integer to one fifth; train19. No stratification by labels/results.",
+    "bindings": [
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\public_roster.json",
+        "sha256": "ebc392c7459cecdc284a6777ea45b5de420eca8be74940502050254060f2010b"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\synthesis_manifest.json",
+        "sha256": "b15f61bc121d6d7c91f09382dd671b47e07356d44095eab31609a37dc08a362f"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\input_coverage_gate.csv",
+        "sha256": "8435405937915f5fb268f02ea6ff4a4941b7bddc206b87d9fb90e5992bb07021"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\frozen_readout_seal.json",
+        "sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\public_roster.json",
+        "sha256": "c388cff0e08c5a208bdb3a033a6c5bae12c090d35c9a3088ebfda117020a5616"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\synthesis_manifest.json",
+        "sha256": "fa3bde7115cd529df911740376199a1b25876d73402369d04abf8c96d56beb58"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\input_coverage_gate.csv",
+        "sha256": "3f8f5f3c5944a6ee3bff80779f1a8c73b4df40275b1ecb9a166f7238f5e56523"
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\frozen_readout_seal.json",
+        "sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47"
+      }
+    ],
+    "protected_access": false
+  },
+  "arms": [
+    "native_perturbed",
+    "faro_rho015_ambient1",
+    "faro_rho060_ambient1",
+    "faro_rho030_ambient3",
+    "faro_rho030_ambient1",
+    "faro_rho030_ambient10"
+  ],
+  "arm_contract": {
+    "native": "Inherited v1.1/v2 native_perturbed K2, residual pool unchanged",
+    "quality_arms": "Inherited v1.1 FARO geometry, all960 frames including missing geometry/pose; no native fill",
+    "FARO_gate": "Only faro_rho030_ambient1: frozen K0 joint_pass_zones>=52, other arms unfiltered",
+    "rho015": "rho=.15 ambient1; expectation=.5 times cached FARO rho.3 expectation",
+    "rho060": "rho=.6 ambient1; expectation=2 times cached FARO rho.3 expectation",
+    "ambient3": "rho=.3 ambient3; cached expectation unchanged and ambient times3",
+    "ambient10": "rho=.3 ambient10; cached expectation unchanged and ambient times10; no artificial dropout. Stress severity measured, not assumed.",
+    "sampling": "Frozen sample: signed Poisson(E+8ambient)-Poisson(8ambient), same per-frame/K seed as source; rho/ambient linear scaling is exact at noise_scale0. Old existing arms reused byte-identically.",
+    "K": "K0/K1 arithmetic mean features; raw margin missing if either K missing; one query row per arm",
+    "readout": "Frozen peak_readout SNR>=3 coverage>=.75 and16th query margin; RGB cached raw DAV/Uni unchanged"
+  },
+  "features": {
+    "base": [
+      "tof_margin16_m",
+      "tof_margin16_missing",
+      "tof_support_pixels",
+      "tof_unknown_fraction",
+      "tof_before_fraction",
+      "tof_inside_fraction",
+      "tof_after_fraction",
+      "tof_median_entry_offset_m",
+      "tof_median_exit_offset_m",
+      "tof_valid_K_count",
+      "dav_margin16_m",
+      "dav_margin16_missing",
+      "dav_finite_fraction",
+      "uni_margin16_m",
+      "uni_margin16_missing",
+      "uni_finite_fraction",
+      "band_index",
+      "query_x_index",
+      "query_y_index",
+      "query_z_index"
+    ],
+    "C_extra": [
+      "tof_margin_x_unknown",
+      "tof_margin_x_support",
+      "tof_margin_x_peak_snr_mean"
+    ],
+    "C_definition": "Clipped model ToF margin times respectively unknown_fraction, support_pixels, mean peak SNR across all64 zones then K mean (same quality function); only these products added, no standalone peak quality added.",
+    "excluded": "Reference states/depths, geometric truth, expectation/ambient/source identity, visit/frame IDs never features"
+  },
+  "models": {
+    "A": "Logistic v2 recipe, native-only training",
+    "B": "Same Logistic, six arms mixed",
+    "C": "B plus fixed3 interactions",
+    "D": {
+      "recipe": "HGB mixed",
+      "parameters": {
+        "max_iter": 100,
+        "learning_rate": 0.1,
+        "max_leaf_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 50,
+        "l2_regularization": 1.0,
+        "early_stopping": false
+      }
+    },
+    "seeds": [
+      955,
+      956,
+      957
+    ],
+    "logistic": {
+      "C": 1,
+      "solver": "lbfgs",
+      "max_iter": 1000,
+      "class_weight": null
+    },
+    "weight": "Known POS/FREE only: A weight1; B/C/D each arm sum=Nknown/6; per-row weight=Nknown/(6*nknown_arm), mean1. Each query contributes once per available arm. UNKNOWN excluded.",
+    "standardizer": "Train-known-only StandardScaler; B/C weighted with same arm weights; A unweighted. Three seed positive probabilities averaged; no hyperparameter selection."
+  },
+  "calibration": {
+    "targets": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "mixture": "Concatenate all six available arms, raw query counts, same for all models and both single sources; no per-arm cuts",
+    "rule": "All finite ties plus +inf; F<=floor(target*FREE), maximizeW then minimizeF then highest threshold; zeroFREE/POS => reject all.",
+    "baseline": "RGB-only Uni near/DAV midfar and ToF-only raw mean margin; same fold/band mixture thresholds as fusion. Existing sensor readout unchanged; fusion operating points newly CV calibrated."
+  },
+  "metrics": {
+    "W": "Prediction positive AND query POS",
+    "F": "Prediction positive AND strict sampled FREE",
+    "paired": "Each A/B/C/D vs RGB and same-arm ToF: POS rescue/loss/net and FREE added/removed",
+    "bootstrap": {
+      "seed": 20261011,
+      "replicates": 2000,
+      "cluster": "All30 visits pooled;6 visits per fold; zero-row FARO visits retained, zero denominators omitted with valid count",
+      "scope": "Resample fixed OOF predictions, not full retraining uncertainty",
+      "interval": "percentile2.5/97.5 for W/POS,F/FREE,net count/net pp"
+    },
+    "best": "Fixed pooled native middle best single by higherW, then fewerF, thenRGB; same comparator for all model retention and bootstrap",
+    "retention": "Delta middle to fixed best single divided by A delta on same OOF data; if A<=0 NOT_EVALUABLE. Per-fold own best identity and A denominator; no averaging fold ratios.",
+    "candidate": "B/C/D: pooled FARO near net vsRGB>=0 AND ambient10 near net vsRGB>=0 AND native middle delta>=.8*A delta; descriptive, not confirmatory/noninferiority gate"
+  },
+  "interpretation": "Existing residuals and reference-enriched consumed visits predate CV; outer split isolates current fits/calibration only. New exploratory method choice cannot alter v2 confirmation. No hardware/safety claim.",
+  "decision_check": "RGB headroom from v2 FARO near53%/mid62%; smallest event1. Count gains always accompanied by FREE cost/CI. Revisit next fresh confirmation only if descriptive robust candidate; no per-arm threshold, subset or feature retuning on OOF."
+}
