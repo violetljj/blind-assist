@@ -36,20 +36,25 @@ def horizontal_basis(axes):
     return axes.astype(np.float64)
 
 
-def legal_segments(timestamps_ns,split_indices=None):
+def legal_segments(timestamps_ns,split_indices=None,*,sample_hz=240.):
     """Return [begin,end) native row segments and invalid edge diagnostics.
 
     Optional split_indices are native segment starts; 0/N boundaries are also
-    accepted. Nonpositive or >1ms-deviant intervals independently force cuts.
+    accepted. Nonpositive or >1ms-deviant intervals from explicit sample_hz
+    independently force cuts. The sampling rate must be positive and finite.
     Every row belongs to one segment; no illegal edge is silently bridged.
     """
+    try:sample_hz=float(sample_hz)
+    except (TypeError,ValueError,OverflowError) as error:
+        raise ValueError('Positive finite sample_hz required') from error
+    if not np.isfinite(sample_hz) or sample_hz<=0:raise ValueError('Positive finite sample_hz required')
     t=np.asarray(timestamps_ns)
     if t.ndim!=1 or not np.issubdtype(t.dtype,np.integer):
         raise ValueError('Integral native timestamps_ns[N] required')
     n=len(t)
     if not n:return np.empty((0,2),np.int64),dict(edge_after_index=np.empty(0,np.int64),interval_ns=np.empty(0,np.float64),reason=np.empty(0,'U32'))
     dt=np.diff(t.astype(np.float64))
-    bad=(dt<=0)|(np.abs(dt-EXPECTED_PERIOD_NS)>INTERVAL_TOLERANCE_NS)
+    bad=(dt<=0)|(np.abs(dt-1e9/sample_hz)>INTERVAL_TOLERANCE_NS)
     cuts=set((np.flatnonzero(bad)+1).tolist())
     if split_indices is not None:
         split=np.asarray(split_indices)
@@ -81,7 +86,7 @@ def _max_chord_distance(path):
     return float(np.linalg.norm(path-(path[0]+ratio[:,None]*vector),axis=-1).max())
 
 
-def corridor_reference(timestamps_ns,positions,*,horizontal_axes,split_indices=None,min_displacement_m=.02):
+def corridor_reference(timestamps_ns,positions,*,horizontal_axes,split_indices=None,min_displacement_m=.02,sample_hz=240.):
     """Full anchor x {.5,1,1.5}s table with unavailable/low-motion rows.
 
     Columns are [R] arrays. Ragged paths have [R+1] offsets, native/interpolated
@@ -96,7 +101,7 @@ def corridor_reference(timestamps_ns,positions,*,horizontal_axes,split_indices=N
     if p.shape!=(len(t),3) or not np.isfinite(p).all():raise ValueError('Finite metric positions[N,3] required')
     if not np.isfinite(min_displacement_m) or min_displacement_m<=0:raise ValueError('Positive finite numerical direction floor required')
     basis=horizontal_basis(horizontal_axes)
-    segments,edges=legal_segments(t,split_indices)
+    segments,edges=legal_segments(t,split_indices,sample_hz=sample_hz)
     xy=p@basis.T
     rows=[];paths=[];path3=[];path_times=[];offsets=[0]
     for segment_id,(begin,end) in enumerate(segments):
@@ -166,7 +171,7 @@ def corridor_reference(timestamps_ns,positions,*,horizontal_axes,split_indices=N
                 future_path_timestamps_ns=np.concatenate(path_times) if path_times else np.empty(0,np.int64),
                 configuration=dict(horizontal_basis=basis.tolist(),position_unit='meters',timestamp_unit='nanoseconds',
                     horizons_s=list(HORIZONS_S),anchor_target_interval_s=1.,past_window_s=1.,
-                    expected_sample_hz=240.,interval_tolerance_ns=INTERVAL_TOLERANCE_NS,
+                    expected_sample_hz=float(sample_hz),interval_tolerance_ns=INTERVAL_TOLERANCE_NS,
                     numerical_direction_floor_m=float(min_displacement_m),direction_floor_scope='numerical proxy validity, not walking threshold',
                     swept_proxy_radius_m=.30,swept_proxy='complete future horizontal center polyline Minkowski-summed with radius.30m disk; not true body',
                     chord_deviation_scope='max center distance to endpoint chord segment; not body-region omission proportion',
@@ -216,9 +221,33 @@ def focused_fixtures():
     assert (sc['future_direction_status'][midpoint]=='LOW_MOTION_FUTURE_CHORD').all()
     assert np.isnan(sc['wrapped_error_rad'][midpoint]).all() and (sc['path_length_m'][midpoint]==0).all()
     checks.append('low motion: separate availability/direction statuses; no invented direction')
+    # 60Hz shares the same native anchor/causal-window contract, not 240Hz cuts.
+    times60=np.rint(np.arange(181)*1e9/60).astype(np.int64)
+    times60[60:]+=100
+    positions60=np.column_stack((.4*times60/1e9,np.zeros((len(times60),2))))
+    sixty=corridor_reference(times60,positions60,horizontal_axes=(0,1),sample_hz=60.)
+    s60=sixty['columns']
+    assert len(sixty['segments'])==1 and sixty['configuration']['expected_sample_hz']==60.
+    np.testing.assert_array_equal(s60['anchor_timestamp_ns'],times60[s60['anchor_index']])
+    assert (s60['anchor_target_delay_ns'][s60['anchor_index']==60]==100).all()
+    assert (s60['future_status'][s60['anchor_index']==180]=='NOT_AVAILABLE_FUTURE_WINDOW').all()
+    retained=np.arange(len(times60))!=90
+    dropped=corridor_reference(times60[retained],positions60[retained],horizontal_axes=(0,1),sample_hz=60.)
+    assert len(dropped['segments'])==2 and len(dropped['invalid_edges']['edge_after_index'])==1
+    assert (dropped['columns']['future_status'][dropped['columns']['anchor_index']==60]=='NOT_AVAILABLE_FUTURE_WINDOW').all()
+    changed=positions60.copy();changed[61:,1]=50.
+    future_change=corridor_reference(times60,changed,horizontal_axes=(0,1),sample_hz=60.)['columns']
+    anchor60=s60['anchor_index']==60
+    np.testing.assert_array_equal(future_change['past_direction_rad'][anchor60],s60['past_direction_rad'][anchor60])
+    assert (future_change['future_chord_direction_rad'][anchor60]!=s60['future_chord_direction_rad'][anchor60]).all()
+    for invalid_hz in (0.,-1.,np.inf,np.nan):
+        try:legal_segments(times60,sample_hz=invalid_hz)
+        except ValueError:pass
+        else:raise AssertionError('Invalid sample_hz accepted')
+    checks.append('60Hz: native anchors, tail censor, dropped-frame gap, future-independent past direction and rate validation')
     return dict(status='PASS',checks=checks,seconds=time.monotonic()-started,
                 source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),real_data_opened=False,
-                fixtures=5,native_anchor=True,training=0,inference=0,gpu=0)
+                fixtures=6,native_anchor=True,training=0,inference=0,gpu=0)
 
 
 if __name__=='__main__':
