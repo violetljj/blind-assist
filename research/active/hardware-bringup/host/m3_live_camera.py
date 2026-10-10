@@ -103,7 +103,9 @@ class CameraFeed:
     def image(self):
         with self.lock:
             if self.latest and time.monotonic_ns()-self.latest[2] < 1_500_000_000:
-                return self.latest[1], dict(self.latest[0])
+                header = dict(self.latest[0])
+                header['host_age_ms'] = (time.monotonic_ns()-self.latest[2])/1e6
+                return self.latest[1], header
             return None, None
 
     def configuration_started(self):

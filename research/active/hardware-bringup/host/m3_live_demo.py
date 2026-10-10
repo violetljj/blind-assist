@@ -335,12 +335,14 @@ def main():
         def log_message(self, *_):
             pass
 
-        def respond(self, data, content_type='application/json; charset=utf-8'):
+        def respond(self, data, content_type='application/json; charset=utf-8', headers=None):
             payload = data.encode('utf-8') if isinstance(data, str) else data
             self.send_response(200)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(payload)))
             self.send_header('Cache-Control', 'no-store')
+            for name, value in (headers or {}).items():
+                self.send_header(name, str(value))
             self.end_headers()
             self.wfile.write(payload)
 
@@ -356,11 +358,13 @@ def main():
                 except (ValueError, OSError, __import__('subprocess').TimeoutExpired):
                     self.respond(json.dumps(dict(profiles=[], current=None)))
             elif url.path == '/api/camera.jpg':
-                jpeg, _ = demo.camera.image() if demo.camera else (None, None)
+                jpeg, header = demo.camera.image() if demo.camera else (None, None)
                 if jpeg is None:
                     self.send_error(503, 'No fresh camera frame')
                 else:
-                    self.respond(jpeg, 'image/jpeg')
+                    self.respond(jpeg, 'image/jpeg', {
+                        'X-Frame-Sequence': header['seq'], 'X-Sequence-Id': header['sequence_id'],
+                        'X-Host-Age-Ms': round(header['host_age_ms'], 3)})
             elif url.path == '/api/zone':
                 try:
                     index = int(parse_qs(url.query).get('index', ['27'])[0])
