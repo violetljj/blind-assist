@@ -1,0 +1,34 @@
+{
+  "task": "SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011",
+  "phase": "POSTHOC_CONSUMED_DEVELOPMENT_AUDIT",
+  "budget": {"CPU_command_wall_s": 1200, "GPU_s": 0},
+  "scope": "Frozen v2 primary native_perturbed eval12; also source-specific FARO diagnostic rows, original admission unchanged",
+  "preserve": "Original v2 protocol, models, thresholds, immutable decisions, confirmation numbers and conclusion text. Append interpretation only. Never open protected480/test or rerun original eval entrypoint.",
+  "minimum_evidence": {
+    "ToF": "isfinite(original unclipped tof_score) AND tof_score>=0: unchanged SNR>=3, coverage>=.75, registered pixel rays, each K 16th-largest interval margin, two-K arithmetic mean with either margin missing propagating -inf. This implies at least one K has>=16 interval rays, not both K individually.",
+    "RGB": "isfinite(original unclipped rgb_score) AND rgb_score>=0: unchanged active Uni near/DAV middle-far 16th-largest interval margin, hence >=16 interval pixel rays.",
+    "groups": ["both", "tof_only", "rgb_only", "neither"],
+    "gate_b": "E_ToF OR E_RGB, same rule at calibration and evaluation",
+    "parallel_original_workpoint_split": "Also partition by original frozen ToF/RGB decisions from immutable cache. Negative cal cuts may support without minimum positive geometry.",
+    "interpretation": "neither is the requested pure-prior operational class, not a causal proof of using only priors: model can use negative/partial evidence, inactive RGB model or geometry encoded in sensor features"
+  },
+  "models": {
+    "prior_features": ["band_index", "query_x_index", "query_y_index", "query_z_index"],
+    "a_features": "Original20 minus all four prior_features, 16 sensor columns; band only selects threshold, no band/query index model input",
+    "b": "Reuse a fitted probabilities, no refit; score=-inf when gate_b fails; calibrate b separately with same original full ties rule",
+    "recipe": {"StandardScaler": "fit on original source train known POS/FREE only", "C": 1, "penalty": "l2", "solver": "lbfgs", "max_iter": 1000, "class_weight": null, "seeds": [955,956,957], "ensemble": "float64 arithmetic mean predict_proba; no interactions or model search"},
+    "train": "exact original old train6+consumed oldeval4, original row order/features and known labels; no new cal/eval training",
+    "cal": "exact original newcal6/source admission; per method/source/band full finite ties plus +inf; F<=floor(target*FREE), maxW then minF then highest threshold; zeroFREE/POS reject-all",
+    "targets": {"0.3-0.8m": 0.02, "0.8-1.5m": 0.05, "1.5-3m": 0.1},
+    "evaluation": "original source eval features; labels and original predictions exclusively from immutable per_query.jsonl; explicitly new posthoc outputs in separate run directory"
+  },
+  "analysis": {
+    "decomposition": "For each source/band original logit W/F and rescue/loss vs fixed original best single partition by minimum evidence and original workpoint categories; signed net across all four classes sums to original net. Primary mid 407rescue-22loss=385 must reproduce exactly.",
+    "best_single": "Fixed original frozen ToF/RGB full-eval best by W then fewerF thenRGB; same comparator identity for every posthoc variant and bootstrap",
+    "bootstrap": {"cluster": "all12 original eval visits, paired row contributions; zero-row FARO visits retained", "replicates": 2000, "seed": 20261011, "interval": "percentile2.5/97.5 net count and net/POS; omit zeroPOS repeats and report valid counts"},
+    "interpretation": "If native b middle net-rate CI lower>0, report de-explicit-prior gated benefit remains (posthoc) and recommend fresh-visit pre-registration; otherwise no posthoc evidence of that benefit. Observe prior baseline and decomposition before attributing primary benefit to priors; not an identified causal experiment.",
+    "decision_check": "Middle original single1382/1923 leaves541 query headroom; effect must include full rescue/loss and FREE costs, not positive counts only. One query is0.0520pp. Already consumed eval, no confirmatory authority or tuning based on these posthoc results."
+  },
+  "robust_coordination": "Task active when checked; user-authorized notification sent to chat01a12702-1927-71b0-803a-a872d7dcf142 to add prior baseline and evidence split within its budget; preserve its outputs. On completion add same interpretation limitation in this report.",
+  "deliverables": ["Chinese report", "all v2 eval query evidence table", "prior/a/b W/F and paired intervals", "independent verification", "append audit limitation beside v2 in CURRENT_DECISION and route CURRENT/RUNS", "normal push master"]
+}

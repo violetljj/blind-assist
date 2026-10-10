@@ -1,0 +1,1543 @@
+{
+  "task": "SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011",
+  "status": "POSTHOC_COMPLETE_INDEPENDENT_PASS",
+  "base_commit": "04b538e25f71decc31e4f1e30d8ef32f702e5613",
+  "phase": "CONSUMED_DEVELOPMENT_POSTHOC_ONLY",
+  "original_v2_conclusions_preserved": true,
+  "protected_access": false,
+  "new_eval_reference_reopens": 0,
+  "rows": 12150,
+  "plan_sha256": "55311e610bba48ae44a6f8382e5c9025a6955ade5c49c93e10c592868be188ba",
+  "conclusion": "去先验后融合收益仍成立（事后）",
+  "resources": {
+    "unit": "CPU command-wall seconds",
+    "CPU_conservative_booked_s": 150,
+    "CPU_limit_s": 1200,
+    "GPU_s": 0,
+    "GPU_limit_s": 0,
+    "downloads_bytes": 0,
+    "primary_command_wall_s": 8.025,
+    "primary_internal_s": 6.835244499961846,
+    "independent_command_wall_s": 4.902,
+    "mechanical_guard_failure_s": 1.101,
+    "description": "Conservative upper allocation including preparation, all scoped agents, main run, verification, report and Git; not a fabricated exact wall-time measurement",
+    "persistent_compute_processes": 0
+  },
+  "middle_evidence": {
+    "source": "native_perturbed",
+    "band": "0.8-1.5m",
+    "category": "evidence_group",
+    "best_single": "tof",
+    "parts": [
+      {
+        "group": "both",
+        "rows": 975,
+        "POS": 956,
+        "FREE": 8,
+        "UNKNOWN": 11,
+        "W": 951,
+        "F": 5,
+        "U": 11,
+        "rescue": 5,
+        "loss": 5,
+        "net": 0
+      },
+      {
+        "group": "tof_only",
+        "rows": 506,
+        "POS": 440,
+        "FREE": 52,
+        "UNKNOWN": 14,
+        "W": 421,
+        "F": 27,
+        "U": 13,
+        "rescue": 7,
+        "loss": 17,
+        "net": -10
+      },
+      {
+        "group": "rgb_only",
+        "rows": 880,
+        "POS": 309,
+        "FREE": 69,
+        "UNKNOWN": 502,
+        "W": 263,
+        "F": 8,
+        "U": 374,
+        "rescue": 263,
+        "loss": 0,
+        "net": 263
+      },
+      {
+        "group": "neither",
+        "rows": 1095,
+        "POS": 218,
+        "FREE": 830,
+        "UNKNOWN": 47,
+        "W": 132,
+        "F": 14,
+        "U": 27,
+        "rescue": 132,
+        "loss": 0,
+        "net": 132
+      }
+    ],
+    "evidence_net": 253,
+    "neither_net": 132
+  },
+  "middle_b": {
+    "source": "native_perturbed",
+    "band": "0.8-1.5m",
+    "method": "b",
+    "best_single": "tof",
+    "best_single_W": 1382,
+    "rescue": 294,
+    "loss": 12,
+    "net": 282,
+    "net_rate": 0.14664586583463338,
+    "net_CI": {
+      "lower": 186.975,
+      "upper": 391.0,
+      "valid_replicates": 2000,
+      "replicates": 2000
+    },
+    "net_rate_CI": {
+      "lower": 0.10065677640345783,
+      "upper": 0.2138539126917808,
+      "valid_replicates": 2000,
+      "replicates": 2000
+    },
+    "FREE_added": 11,
+    "FREE_removed": 17
+  },
+  "metrics": [
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "logit",
+      "W": 747,
+      "POS": 1110,
+      "F": 43,
+      "FREE": 2139,
+      "U": 146,
+      "UNKNOWN": 207,
+      "W_rate": 0.672972972972973,
+      "F_rate": 0.020102851799906497
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "tof",
+      "W": 611,
+      "POS": 1110,
+      "F": 70,
+      "FREE": 2139,
+      "U": 28,
+      "UNKNOWN": 207,
+      "W_rate": 0.5504504504504505,
+      "F_rate": 0.03272557269752221
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "rgb",
+      "W": 543,
+      "POS": 1110,
+      "F": 31,
+      "FREE": 2139,
+      "U": 45,
+      "UNKNOWN": 207,
+      "W_rate": 0.4891891891891892,
+      "F_rate": 0.014492753623188406
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "prior",
+      "W": 0,
+      "POS": 1110,
+      "F": 0,
+      "FREE": 2139,
+      "U": 0,
+      "UNKNOWN": 207,
+      "W_rate": 0.0,
+      "F_rate": 0.0
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "a",
+      "W": 735,
+      "POS": 1110,
+      "F": 33,
+      "FREE": 2139,
+      "U": 145,
+      "UNKNOWN": 207,
+      "W_rate": 0.6621621621621622,
+      "F_rate": 0.015427769985974754
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "b",
+      "W": 682,
+      "POS": 1110,
+      "F": 14,
+      "FREE": 2139,
+      "U": 99,
+      "UNKNOWN": 207,
+      "W_rate": 0.6144144144144145,
+      "F_rate": 0.0065451145395044414
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "logit",
+      "W": 1767,
+      "POS": 1923,
+      "F": 54,
+      "FREE": 959,
+      "U": 425,
+      "UNKNOWN": 574,
+      "W_rate": 0.9188767550702028,
+      "F_rate": 0.056308654848800835
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "tof",
+      "W": 1382,
+      "POS": 1923,
+      "F": 50,
+      "FREE": 959,
+      "U": 24,
+      "UNKNOWN": 574,
+      "W_rate": 0.71866874674987,
+      "F_rate": 0.05213764337851929
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "rgb",
+      "W": 1349,
+      "POS": 1923,
+      "F": 94,
+      "FREE": 959,
+      "U": 524,
+      "UNKNOWN": 574,
+      "W_rate": 0.7015080603224129,
+      "F_rate": 0.09801876955161627
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "prior",
+      "W": 204,
+      "POS": 1923,
+      "F": 106,
+      "FREE": 959,
+      "U": 74,
+      "UNKNOWN": 574,
+      "W_rate": 0.1060842433697348,
+      "F_rate": 0.1105318039624609
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "a",
+      "W": 1765,
+      "POS": 1923,
+      "F": 50,
+      "FREE": 959,
+      "U": 424,
+      "UNKNOWN": 574,
+      "W_rate": 0.9178367134685388,
+      "F_rate": 0.05213764337851929
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "b",
+      "W": 1664,
+      "POS": 1923,
+      "F": 44,
+      "FREE": 959,
+      "U": 449,
+      "UNKNOWN": 574,
+      "W_rate": 0.8653146125845034,
+      "F_rate": 0.045881126173096975
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "logit",
+      "W": 2093,
+      "POS": 2108,
+      "F": 96,
+      "FREE": 270,
+      "U": 870,
+      "UNKNOWN": 1078,
+      "W_rate": 0.9928842504743833,
+      "F_rate": 0.35555555555555557
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "tof",
+      "W": 1725,
+      "POS": 2108,
+      "F": 11,
+      "FREE": 270,
+      "U": 807,
+      "UNKNOWN": 1078,
+      "W_rate": 0.8183111954459203,
+      "F_rate": 0.040740740740740744
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "rgb",
+      "W": 1600,
+      "POS": 2108,
+      "F": 39,
+      "FREE": 270,
+      "U": 416,
+      "UNKNOWN": 1078,
+      "W_rate": 0.7590132827324478,
+      "F_rate": 0.14444444444444443
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "prior",
+      "W": 472,
+      "POS": 2108,
+      "F": 84,
+      "FREE": 270,
+      "U": 212,
+      "UNKNOWN": 1078,
+      "W_rate": 0.2239089184060721,
+      "F_rate": 0.3111111111111111
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "a",
+      "W": 2094,
+      "POS": 2108,
+      "F": 95,
+      "FREE": 270,
+      "U": 868,
+      "UNKNOWN": 1078,
+      "W_rate": 0.9933586337760911,
+      "F_rate": 0.35185185185185186
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "b",
+      "W": 1914,
+      "POS": 2108,
+      "F": 58,
+      "FREE": 270,
+      "U": 518,
+      "UNKNOWN": 1078,
+      "W_rate": 0.9079696394686907,
+      "F_rate": 0.21481481481481482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "logit",
+      "W": 52,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 0,
+      "UNKNOWN": 80,
+      "W_rate": 0.1716171617161716,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "tof",
+      "W": 0,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 0,
+      "UNKNOWN": 80,
+      "W_rate": 0.0,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "rgb",
+      "W": 162,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 4,
+      "UNKNOWN": 80,
+      "W_rate": 0.5346534653465347,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "prior",
+      "W": 0,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 0,
+      "UNKNOWN": 80,
+      "W_rate": 0.0,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "a",
+      "W": 55,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 0,
+      "UNKNOWN": 80,
+      "W_rate": 0.18151815181518152,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "b",
+      "W": 55,
+      "POS": 303,
+      "F": 0,
+      "FREE": 211,
+      "U": 0,
+      "UNKNOWN": 80,
+      "W_rate": 0.18151815181518152,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "logit",
+      "W": 234,
+      "POS": 284,
+      "F": 0,
+      "FREE": 22,
+      "U": 9,
+      "UNKNOWN": 288,
+      "W_rate": 0.823943661971831,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "tof",
+      "W": 109,
+      "POS": 284,
+      "F": 4,
+      "FREE": 22,
+      "U": 0,
+      "UNKNOWN": 288,
+      "W_rate": 0.38380281690140844,
+      "F_rate": 0.18181818181818182
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "rgb",
+      "W": 177,
+      "POS": 284,
+      "F": 0,
+      "FREE": 22,
+      "U": 281,
+      "UNKNOWN": 288,
+      "W_rate": 0.6232394366197183,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "prior",
+      "W": 0,
+      "POS": 284,
+      "F": 0,
+      "FREE": 22,
+      "U": 0,
+      "UNKNOWN": 288,
+      "W_rate": 0.0,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "a",
+      "W": 245,
+      "POS": 284,
+      "F": 0,
+      "FREE": 22,
+      "U": 11,
+      "UNKNOWN": 288,
+      "W_rate": 0.8626760563380281,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "b",
+      "W": 243,
+      "POS": 284,
+      "F": 0,
+      "FREE": 22,
+      "U": 9,
+      "UNKNOWN": 288,
+      "W_rate": 0.8556338028169014,
+      "F_rate": 0.0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "logit",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "tof",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "rgb",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "prior",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "a",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "b",
+      "W": 0,
+      "POS": 129,
+      "F": 0,
+      "FREE": 0,
+      "U": 0,
+      "UNKNOWN": 465,
+      "W_rate": 0.0,
+      "F_rate": null
+    }
+  ],
+  "paired": [
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "logit",
+      "best_single": "tof",
+      "best_single_W": 611,
+      "rescue": 199,
+      "loss": 63,
+      "net": 136,
+      "net_rate": 0.12252252252252252,
+      "net_CI": {
+        "lower": 37.0,
+        "upper": 235.02499999999986,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.03438675058500767,
+        "upper": 0.2301258998935659,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 37,
+      "FREE_removed": 64
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "prior",
+      "best_single": "tof",
+      "best_single_W": 611,
+      "rescue": 0,
+      "loss": 611,
+      "net": -611,
+      "net_rate": -0.5504504504504505,
+      "net_CI": {
+        "lower": -994.025,
+        "upper": -262.97500000000014,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.696057736309554,
+        "upper": -0.3360481229528849,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 70
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "a",
+      "best_single": "tof",
+      "best_single_W": 611,
+      "rescue": 191,
+      "loss": 67,
+      "net": 124,
+      "net_rate": 0.11171171171171171,
+      "net_CI": {
+        "lower": 23.0,
+        "upper": 224.02499999999986,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.02080310202671959,
+        "upper": 0.22004701107626035,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 27,
+      "FREE_removed": 64
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.3-0.8m",
+      "method": "b",
+      "best_single": "tof",
+      "best_single_W": 611,
+      "rescue": 204,
+      "loss": 133,
+      "net": 71,
+      "net_rate": 0.06396396396396396,
+      "net_CI": {
+        "lower": -76.0,
+        "upper": 189.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.06489660238751148,
+        "upper": 0.19859644950926256,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 9,
+      "FREE_removed": 65
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "logit",
+      "best_single": "tof",
+      "best_single_W": 1382,
+      "rescue": 407,
+      "loss": 22,
+      "net": 385,
+      "net_rate": 0.2002080083203328,
+      "net_CI": {
+        "lower": 267.0,
+        "upper": 520.0249999999999,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.15016953951300407,
+        "upper": 0.27495188705222656,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 23,
+      "FREE_removed": 19
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "prior",
+      "best_single": "tof",
+      "best_single_W": 1382,
+      "rescue": 54,
+      "loss": 1232,
+      "net": -1178,
+      "net_rate": -0.6125845033801353,
+      "net_CI": {
+        "lower": -1522.025,
+        "upper": -829.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.6685155498741183,
+        "upper": -0.5298139580602883,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 105,
+      "FREE_removed": 49
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "a",
+      "best_single": "tof",
+      "best_single_W": 1382,
+      "rescue": 406,
+      "loss": 23,
+      "net": 383,
+      "net_rate": 0.19916796671866874,
+      "net_CI": {
+        "lower": 269.0,
+        "upper": 514.0249999999999,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.15052139566975664,
+        "upper": 0.27196063946660604,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 21,
+      "FREE_removed": 21
+    },
+    {
+      "source": "native_perturbed",
+      "band": "0.8-1.5m",
+      "method": "b",
+      "best_single": "tof",
+      "best_single_W": 1382,
+      "rescue": 294,
+      "loss": 12,
+      "net": 282,
+      "net_rate": 0.14664586583463338,
+      "net_CI": {
+        "lower": 186.975,
+        "upper": 391.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.10065677640345783,
+        "upper": 0.2138539126917808,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 11,
+      "FREE_removed": 17
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "logit",
+      "best_single": "tof",
+      "best_single_W": 1725,
+      "rescue": 372,
+      "loss": 4,
+      "net": 368,
+      "net_rate": 0.174573055028463,
+      "net_CI": {
+        "lower": 171.975,
+        "upper": 605.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.09784765764369917,
+        "upper": 0.25183003746275784,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 88,
+      "FREE_removed": 3
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "prior",
+      "best_single": "tof",
+      "best_single_W": 1725,
+      "rescue": 76,
+      "loss": 1329,
+      "net": -1253,
+      "net_rate": -0.5944022770398482,
+      "net_CI": {
+        "lower": -1502.0,
+        "upper": -1004.9750000000001,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.6690922608989524,
+        "upper": -0.5176858319241232,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 82,
+      "FREE_removed": 9
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "a",
+      "best_single": "tof",
+      "best_single_W": 1725,
+      "rescue": 373,
+      "loss": 4,
+      "net": 369,
+      "net_rate": 0.17504743833017078,
+      "net_CI": {
+        "lower": 173.0,
+        "upper": 606.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.09784765764369917,
+        "upper": 0.25188830171541804,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 88,
+      "FREE_removed": 4
+    },
+    {
+      "source": "native_perturbed",
+      "band": "1.5-3m",
+      "method": "b",
+      "best_single": "tof",
+      "best_single_W": 1725,
+      "rescue": 265,
+      "loss": 76,
+      "net": 189,
+      "net_rate": 0.0896584440227704,
+      "net_CI": {
+        "lower": 86.0,
+        "upper": 298.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.04751879379232926,
+        "upper": 0.1279934061513021,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 54,
+      "FREE_removed": 7
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "logit",
+      "best_single": "rgb",
+      "best_single_W": 162,
+      "rescue": 9,
+      "loss": 119,
+      "net": -110,
+      "net_rate": -0.36303630363036304,
+      "net_CI": {
+        "lower": -250.0,
+        "upper": -17.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.47333333333333333,
+        "upper": -0.21100917431192662,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "prior",
+      "best_single": "rgb",
+      "best_single_W": 162,
+      "rescue": 0,
+      "loss": 162,
+      "net": -162,
+      "net_rate": -0.5346534653465347,
+      "net_CI": {
+        "lower": -367.075,
+        "upper": -23.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.6632826994434137,
+        "upper": -0.2980525362318842,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "a",
+      "best_single": "rgb",
+      "best_single_W": 162,
+      "rescue": 13,
+      "loss": 120,
+      "net": -107,
+      "net_rate": -0.35313531353135313,
+      "net_CI": {
+        "lower": -244.0,
+        "upper": -17.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.46,
+        "upper": -0.2057142857142857,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.3-0.8m",
+      "method": "b",
+      "best_single": "rgb",
+      "best_single_W": 162,
+      "rescue": 13,
+      "loss": 120,
+      "net": -107,
+      "net_rate": -0.35313531353135313,
+      "net_CI": {
+        "lower": -244.0,
+        "upper": -17.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.46,
+        "upper": -0.2057142857142857,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "logit",
+      "best_single": "rgb",
+      "best_single_W": 177,
+      "rescue": 75,
+      "loss": 18,
+      "net": 57,
+      "net_rate": 0.2007042253521127,
+      "net_CI": {
+        "lower": 7.0,
+        "upper": 133.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.05028899813978209,
+        "upper": 0.3160123311270286,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "prior",
+      "best_single": "rgb",
+      "best_single_W": 177,
+      "rescue": 0,
+      "loss": 177,
+      "net": -177,
+      "net_rate": -0.6232394366197183,
+      "net_CI": {
+        "lower": -304.0,
+        "upper": -66.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": -0.8147256891686564,
+        "upper": -0.4937480221518988,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "a",
+      "best_single": "rgb",
+      "best_single_W": 177,
+      "rescue": 79,
+      "loss": 11,
+      "net": 68,
+      "net_rate": 0.23943661971830985,
+      "net_CI": {
+        "lower": 13.0,
+        "upper": 150.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.10604993597951345,
+        "upper": 0.34546897546897537,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "0.8-1.5m",
+      "method": "b",
+      "best_single": "rgb",
+      "best_single_W": 177,
+      "rescue": 77,
+      "loss": 11,
+      "net": 66,
+      "net_rate": 0.2323943661971831,
+      "net_CI": {
+        "lower": 13.0,
+        "upper": 146.02499999999986,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.10604993597951345,
+        "upper": 0.3235313621469808,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "logit",
+      "best_single": "rgb",
+      "best_single_W": 0,
+      "rescue": 0,
+      "loss": 0,
+      "net": 0,
+      "net_rate": 0.0,
+      "net_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "prior",
+      "best_single": "rgb",
+      "best_single_W": 0,
+      "rescue": 0,
+      "loss": 0,
+      "net": 0,
+      "net_rate": 0.0,
+      "net_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "a",
+      "best_single": "rgb",
+      "best_single_W": 0,
+      "rescue": 0,
+      "loss": 0,
+      "net": 0,
+      "net_rate": 0.0,
+      "net_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "band": "1.5-3m",
+      "method": "b",
+      "best_single": "rgb",
+      "best_single_W": 0,
+      "rescue": 0,
+      "loss": 0,
+      "net": 0,
+      "net_rate": 0.0,
+      "net_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "net_rate_CI": {
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_replicates": 2000,
+        "replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 0
+    }
+  ],
+  "independent_counts": {
+    "models_checked": 12,
+    "cal_cells_checked": 18,
+    "cal_ties_checked": 10514,
+    "eval_queries_checked": 12150,
+    "eval_decisions_checked": 36450,
+    "metrics_checked": 36,
+    "paired_rows_checked": 24,
+    "decompositions_checked": 12
+  },
+  "files": [
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/attempt0_runtime_guard_failure.json",
+      "sha256": "e39bad8f23fbdf8d9e6d9852e827b361121eb022fcf1e2c4cce8cca6dec98b2d",
+      "bytes": 385
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_seal.json",
+      "sha256": "5ed08a59345199105a653375a3781becd81c08d333027118ffbe3cb52f0eb18f",
+      "bytes": 24322
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_a_0.3-0.8m.json",
+      "sha256": "cfcbf679af004b3f5ac3b345a49f84a8c13b4947fb76642da238a3773fdecc6d",
+      "bytes": 65738
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_a_0.8-1.5m.json",
+      "sha256": "b7f4de69f33d8beebed516ee19ea9438db077aa3d6ce7b9ac1275264fbba2d34",
+      "bytes": 65267
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_a_1.5-3m.json",
+      "sha256": "5265217fdbfd4a253a517c6cb1e40bf54d9b9bab3f518a3e1585d5123dcbf9c9",
+      "bytes": 65805
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_b_0.3-0.8m.json",
+      "sha256": "92e5536d3a7f0408ad4229ee44c2af21d5302c31926abe8e303c0e8d7548aa88",
+      "bytes": 40715
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_b_0.8-1.5m.json",
+      "sha256": "199c03438488f816365b5e7e393dcd347cf61bc8619496ba6075dc51fb338413",
+      "bytes": 52515
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_b_1.5-3m.json",
+      "sha256": "400a789151ac16bc3f3e48f1cb4574a13eb67a41293ebb297d3718a8eb320c75",
+      "bytes": 28601
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_prior_0.3-0.8m.json",
+      "sha256": "fc7b23438095f09fa6ff8b8864b745926744ac98910ee2dbd42ca2b07e439770",
+      "bytes": 1237
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_prior_0.8-1.5m.json",
+      "sha256": "7b52f7ba8116b5a19eeb8e921ac036dad662b16b39c79b7f7ffa0516a6b4d4ce",
+      "bytes": 1238
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/faro_rho030_ambient1_prior_1.5-3m.json",
+      "sha256": "8a2336f2186ea8173da0c42cc009443a8d63046d6f5fd1cdb76ef4bcacca3e56",
+      "bytes": 1232
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_a_0.3-0.8m.json",
+      "sha256": "960f7a056c04a07683e85fb49a50c9bc7c1866cad7dec3787c5bac8e2aa87822",
+      "bytes": 216709
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_a_0.8-1.5m.json",
+      "sha256": "b91e2b154737b37cb5f695ca2016afa31cd032357d496fd50064d96f9f2f4fef",
+      "bytes": 210175
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_a_1.5-3m.json",
+      "sha256": "552882eea224a1820d9a61c3e3adcf1efb3a6279cae443a7834bc741e719f7c6",
+      "bytes": 205275
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_b_0.3-0.8m.json",
+      "sha256": "f127967b3cb1fc8124ceb69520dad56702df61670ff84f6cb8afc3be6e7517e2",
+      "bytes": 76546
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_b_0.8-1.5m.json",
+      "sha256": "f990950ddaa36961781a6fe55644fe3e7f54dfb760a0e7bb634b70dc142f78b3",
+      "bytes": 142795
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_b_1.5-3m.json",
+      "sha256": "ecad56271918dba95a39d68e54fffc6e3c6a2400639c6144de03bd4903ac902a",
+      "bytes": 125230
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_prior_0.3-0.8m.json",
+      "sha256": "caa080e0ae494cecbbffd1b4fc02f9d4fc054d741a24ee2cfca5dfc5def26e45",
+      "bytes": 1253
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_prior_0.8-1.5m.json",
+      "sha256": "1d7dd5baa3dd36881e8ec5701c3cee9f967adcf8c21f5675ed5309bd529909ac",
+      "bytes": 1251
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_ties/native_perturbed_prior_1.5-3m.json",
+      "sha256": "ea29c6ed3b1dfec6c99d70a63849f06f130a7c9f37c031e011d068e5a737affe",
+      "bytes": 1248
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/decomposition.json",
+      "sha256": "55869f66342a22c589220ef7371562977801189d2df4869d55a4364d41a99988",
+      "bytes": 14457
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/faro_rho030_ambient1_cal_scores.npz",
+      "sha256": "e9cda5d37511e83a6fa5638fba35fbe91e99f28906a1fd44c8910a8cddb11d36",
+      "bytes": 23070
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/faro_rho030_ambient1_eval_scores.npz",
+      "sha256": "94508f00c0d1ff7eaec304197f526ba1486ff3815d2321146a320cdf87346fd0",
+      "bytes": 25749
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/independent_audit.json",
+      "sha256": "ef9e3166fe0c5072ac3189bd436a7ed9f752fbbea251119a673f945fba89b560",
+      "bytes": 3328
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/input_seal.json",
+      "sha256": "9a5d589d239eec4abfd3fc4e3e4c7b903f4085b3b4539b7e034930080d38e8d8",
+      "bytes": 7570
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/metrics.csv",
+      "sha256": "c25acda3f9f0debe8276b3298993320b3a1750e90f4f7eb7410356e773bf6ccf",
+      "bytes": 2937
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/a_955.joblib",
+      "sha256": "4829c63abe0f7b66c7d1188f90eecdedb0d24d704cbeec199ddea2c60f7991a6",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/a_956.joblib",
+      "sha256": "3d8676ace9728676e00b4bfc9b18019d68af024a10adcfea3477ee03c22a95b6",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/a_957.joblib",
+      "sha256": "0090413f7bb75239633ceb435de361adb75a337ec4d80e0af7397bf13ddaa60d",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/prior_955.joblib",
+      "sha256": "d4609def9a1a79e052d13cd48781a2f276174475644cf0d0d97a4761389aba92",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/prior_956.joblib",
+      "sha256": "71ca4c9c47e06c05d018dfb1788ccc265fb151e8d087a735f4ad1748d8c0d2f3",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/faro_rho030_ambient1/prior_957.joblib",
+      "sha256": "8f5b9b065246299c3b7e49c31602b0e13c17b26898fad7d66bcea1827d2643ea",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/a_955.joblib",
+      "sha256": "398e7d2d3e2de06e638cb389908e1255bd40f5ee983ab95848f603f7f22b9b63",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/a_956.joblib",
+      "sha256": "c0bbbc9010fc974fb6965e540682503435b8f01b3bc8197d8000a5d3c6c45df6",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/a_957.joblib",
+      "sha256": "f32f9361efe134139a538a0afd22a1437a43db555e18221733e02a64e89e71af",
+      "bytes": 1825
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/prior_955.joblib",
+      "sha256": "148a2b2a3234ab79ff9217d3712b0097f7ec7a1a848c7c80729c577f5785fe6e",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/prior_956.joblib",
+      "sha256": "e935fd6087c13e11dd5b6379a80336f9952268fe002082b89fecb5c4a75c3562",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/models/native_perturbed/prior_957.joblib",
+      "sha256": "d87072773ea0aafddbeddc5d6f8b575043ba8bb821b9ca92eb3f17e2db2d3490",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/native_perturbed_cal_scores.npz",
+      "sha256": "ee18a2d3cc652b7d7db5590bec6a18984aab80bd1a18fac71f0de316f36b8da9",
+      "bytes": 60022
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/native_perturbed_eval_scores.npz",
+      "sha256": "95e7479f9b456c51118dc3e4c2dc85a520700a811564c6b974dc6231e96002a5",
+      "bytes": 116654
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/paired.json",
+      "sha256": "85c18f933202abb96550b802599e0a45d28180160e2dad07be1f49786737f420",
+      "bytes": 13747
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/per_query_evidence.csv",
+      "sha256": "56f5550b5f73f79519741edb16457daccdb50e0dafc74788da026379f9bb8c1f",
+      "bytes": 2796048
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/per_query_evidence.jsonl",
+      "sha256": "99d62024c5816b068b41ba73028d0666ae60759e14984156d054a0e6f898acd3",
+      "bytes": 7868621
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/resources.json",
+      "sha256": "e3fd74f6140b50eba37cf4e2b03c84c75fef319a8cc322d6add51ae0c1310b27",
+      "bytes": 542
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/summary.json",
+      "sha256": "07c72cfbbb020f1d4694c877c864d8555780c099b05caa49c3f016bb8d3fd780",
+      "bytes": 41491
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/audit_sync_fusion_evidence_audit.py",
+      "sha256": "65866b9fa6bd396533a76d41472a27ee1d323265ecd13531537baa071e0b7d94",
+      "bytes": 19964
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/sync_fusion_evidence_audit.py",
+      "sha256": "01283fce43a649527524232f913a98976044584367379b0ed5496ccf4ecb5cd0",
+      "bytes": 14487
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.md",
+      "sha256": "c261d85b050604973d0296cdcd31d1c4d75de7b12b1988e68810e25c48da8d78",
+      "bytes": 12567
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/SYNC_FUSION_EVIDENCE_AUDIT_PLAN_DEV_20261011.json",
+      "sha256": "55311e610bba48ae44a6f8382e5c9025a6955ade5c49c93e10c592868be188ba",
+      "bytes": 4649
+    },
+    {
+      "path": "artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/report_review.json",
+      "sha256": "2370a45c1d519ba06750c2f5116a3a3d51d46cbbf4533571f3fddf5b318a275a",
+      "bytes": 4957
+    }
+  ],
+  "report_review": {
+    "status": "PASS",
+    "report_path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.md",
+    "report_sha256": "c261d85b050604973d0296cdcd31d1c4d75de7b12b1988e68810e25c48da8d78",
+    "summary_sha256": "07c72cfbbb020f1d4694c877c864d8555780c099b05caa49c3f016bb8d3fd780",
+    "independent_audit_sha256": "ef9e3166fe0c5072ac3189bd436a7ed9f752fbbea251119a673f945fba89b560",
+    "links_checked": 13,
+    "links": [
+      {
+        "relative": "SYNC_FUSION_CONFIRM_V2_DEV_20261011.md",
+        "resolved": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_CONFIRM_V2_DEV_20261011.md"
+      },
+      {
+        "relative": "SYNC_FUSION_EVIDENCE_AUDIT_PLAN_DEV_20261011.json",
+        "resolved": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_EVIDENCE_AUDIT_PLAN_DEV_20261011.json"
+      },
+      {
+        "relative": "sync_fusion_evidence_audit.py",
+        "resolved": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\sync_fusion_evidence_audit.py"
+      },
+      {
+        "relative": "audit_sync_fusion_evidence_audit.py",
+        "resolved": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\audit_sync_fusion_evidence_audit.py"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/per_query_evidence.csv",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\per_query_evidence.csv"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/summary.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\summary.json"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/metrics.csv",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\metrics.csv"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/decomposition.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\decomposition.json"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/paired.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\paired.json"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/independent_audit.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\independent_audit.json"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/cal_seal.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\cal_seal.json"
+      },
+      {
+        "relative": "../../../../artifacts.local/work/sync-fusion-evidence-audit-dev-20261011/input_seal.json",
+        "resolved": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-evidence-audit-dev-20261011\\input_seal.json"
+      },
+      {
+        "relative": "SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.json",
+        "resolved": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.json"
+      }
+    ],
+    "numeric_tables_checked": [
+      "native all-method W/F",
+      "native a/b rescue loss net rates and intervals",
+      "original logit evidence W/F and middle paired decomposition",
+      "native prior/a/b calibrated cuts",
+      "FARO W/F and closed zero-FREE far cells"
+    ],
+    "narrative_counts": {
+      "middle_evidence_net": 253,
+      "middle_neither_net": 132,
+      "middle_neither_supported": 173,
+      "middle_neither_inactive_Uni_minimum": 141,
+      "middle_neither_POS": 132,
+      "middle_neither_FREE": 14,
+      "middle_neither_UNKNOWN": 27,
+      "far_FREE_logit_without_RGB_minimum": 71,
+      "among_them_ToF_minimum": 1
+    },
+    "intervals_checked": [
+      "visit paired net query CI",
+      "visit paired net/POS rate CI",
+      "2000 replicates retaining all12 visits including zero-row FARO visits"
+    ],
+    "contract_review": "Raw unclipped positive geometry distinct from frozen single-source cal decisions; ToF K-mean guarantees at least one K with16 interval rays, not both; inactive Uni evidence distinguishes neither from causally pure priors; FARO zeroFREE closes support and remains N/E; posthoc benefit does not rewrite preregistered v2 or identify causal sensor contribution",
+    "corrected_initial_findings": [
+      "native far ToF F9 corrected to11",
+      "native far RGB W1596/F76 corrected toW1600/F39",
+      "native far a rescue371/loss2 corrected to373/4"
+    ],
+    "unresolved_findings": [],
+    "CPU_command_wall_s_conservative": 10,
+    "GPU_s": 0,
+    "protected_access": false,
+    "model_refits": 0
+  }
+}
