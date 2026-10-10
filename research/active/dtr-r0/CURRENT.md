@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[冻结分距离校准](nearfield/RGB_BODY_QUERY_DISTANCE_CAL_DEV_20261010.md)完成固定三带each<=5%、五臂absolute主/normalized辅，共30cal-only阈值；cal近395/中180/远13FREE，实际19/9/0、合计28/588，先于eval冻结，原全局与A0三折保留。absolute affine Ark16/60/65总见证13/57/48、FREE35/5/4；原全局95/120/131、5/12/10仍作代表。near Ark16见证0/44、FREE35/96（原0/0），60仍0/11、0/133，65无近POS；原val/3RScan近救21/157但近FREE分母0，不证明近低成本。far13负例floor5%=0，affine far损66/63/83；与near负分布转移失败分开解释。A0三δ完整保留，normalized仅少量near见证且成本高；不采用本固定三带配方、不提高残差训练优先级、不否定其他校准/重训。下一近带点级几何偏差与正/负排序诊断，far稀疏校准方法须独立预定；无事后改预算/合带/扫描。独立30cutoff/276480paired/900LOEO/150matched PASS，score6.347s、CPU保守608/900s，GPU/训练/推理/下载0，无常驻资源；仅已消费Development/采样FREE，非身体或实机安全，旧stop/CNH保留，前文Gitfdb864a3。
+RGB独立子线：[近带排序与几何](nearfield/RGB_BODY_QUERY_NEAR_RANK_GEOMETRY_DEV_20261010.md)完成全304cal/136eval近query缓存排序＋136eval/48新cal共184帧native点诊断。absolute affine Ark16/60首见证事后最低FREE成本41/96、56/133；旧head7/96、53/133，A0.2为12/96、44/133；normalized A0.2 Ark16局部2/96保留但60为59/133，65无近POS。Ark16/60近正union点150703/10243，affine预测/参考深度中位3.735/4.330，旧head2.677/2.160，A0.2仍3.086/3.545，六臂（含rawDP）均在原生近query之后；旧±.2代理幅度不足，不由eval倒推train界限。3RScan raw方向不同，不套统一倍数；ARKit严格nearFREE原生false-entry0与负margin校准F35并不矛盾。10000m缓存尾与已核执行源码inverse clamp端点吻合，成因未定位。全局affine及旧三折/分带负结果保留，不采用新点、不提高训练优先级；下一ARKit模型输入/米制尺度链与误差结构，后续界限仅train/cal。独立290rank/1740cost/184保存点值/1620quantiles及两个原始frame score完全复算PASS；CSV空组发布失败与仅汇总修复保留。geometry16.726/420s、ranking.799/180s、CPU保守622/1200s，GPU/下载/训练/新推理0，无常驻资源。仅Development/参考像素与事后曲线，非身体/实机/安全；旧stop/CNH保留，前文Gitf053479c。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
