@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB [四官方主干横比](../research/active/dtr-r0/nearfield/RGB_DEPTH_BACKBONE_COMPARE_DEV_20261010.md)完成各496帧，冻结query/56train affine/三折与304cal不调阈值。当前冻结系统近带交ToF、RGB职责≥0.8m；中远带实验首选DAV2 Indoor Large原始米制，三ARK见证440/554、FREE25/199 vs原DepthPro affine354/554、27/199（救138损52），但far292/323 vs319/323、65中远FREE21/103 vs10/103，逐capture无成本替换未获支持。UniDepth affine见证最多468/554但FREE32/199。近带米制误差明显恢复，Metric3D/MoGe raw的全局cut>0.25可结构排除近见证；60唯一增益DAV raw6/11伴FREE1/133，65近POS0使强信号N/E，职责分工不作单目近带原理否定。原DepthPro affine/全部旧失败与stop保留；完整同步RGB/CNH仍NOT_EVALUABLE。
+RGB [尺度读出与新增近带覆盖](../research/active/dtr-r0/nearfield/RGB_NEAR_READOUT_SCALE_DEV_20261010.md)完成R0/R1/R2/R3×五主干臂；旧496预测不重跑，官方按序新增三Validation visit各16帧，近POS44/75/51。pooled304先封存后184eval，原三LOCO另保留。六ARK主强信号未通过：Uni raw R2三新近W4→8/44、20→31/75、19→22/51且FREE不增，但中远损42/771=5.447%；全184含3RScan中远损71/1447=4.907%，跨源总表达数值条件，不能替换事前ARK主口径。Uni affine R2中远零损但只两条近增益。按封存主决定维持RGB≥0.8m、DAV2 Indoor Large raw/原读出、近带ToF；恢复近信息与局部收益保留，非单目原理否定。旧DepthPro affine、主干/残差/stop与同步融合N/E均保留。
 
 用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
 
