@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB [新鲜主干比较](../research/active/dtr-r0/nearfield/RGB_BACKBONE_CONFIRM_DEV_20261010.md)完成六个新官方Validation visit各16帧，两臂raw R0直接复用封存pooled304切点，无训练/旧预测重跑。Uni近带6/6见证更高，合计DAV3→Uni103/292、救100损0，但FREE0→12/515=净增2.330%>1%；中远464→775/1047、救357损46，但FREE7→17/107=净增9.346%>2%。见证条件通过、两成本条件失败，未达预声明替换信号：维持DAV2 Indoor Large raw R0、RGB≥0.8m，近带ToF。Uni近信息和中远收益成立，本工作点的新域FREE代价阻止升级；旧六capture三折补充亦完整保留，不改主判据。仅Development，远带FREE分母6、query相关，不作实机/安全确认。旧[尺度读出](../research/active/dtr-r0/nearfield/RGB_NEAR_READOUT_SCALE_DEV_20261010.md)的ARK主判与跨源混合结果、DepthPro affine/残差/stop及同步融合N/E保留。
+RGB [同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)完成old6/fresh6冻结R0的全部ties事后描述：old6近/中远、fresh6近在全部共同实际FREE点Uni≥DAV；fresh6中远交叉F0：DAV276/Uni227（−49），F104：1047/1046（−1），未达四曲线全域弱支配，按事前门停止阶段2。F7中远上包络仍Uni641>DAV483，近F0为16>13，收益与24capture带局部交叉完整保留；这是事后最大见证，不是部署选点。未重跑预测/训练/affine、未拟合新ARKcal或下载推理，cal域迁移仍未检验。维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。23683ties与30240逐query配对独立PASS；仅已消费Development、query相关，不作实机/安全确认。旧[主干确认](../research/active/dtr-r0/nearfield/RGB_BACKBONE_CONFIRM_DEV_20261010.md)的见证与FREE代价、尺度读出混合结果、DepthPro affine/残差/各run stop及同步融合N/E保留。
 
 用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
 
