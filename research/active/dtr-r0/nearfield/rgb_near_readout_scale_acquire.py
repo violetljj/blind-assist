@@ -127,7 +127,7 @@ class RangeZip(io.RawIOBase):
 
 
 def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
-            cohort_prefix="new_arkit_"):
+            cohort_prefix="new_arkit_", split_order=("Validation",)):
     started = time.perf_counter()
     root = root.resolve()
     plan = root / "PLAN.json"
@@ -148,17 +148,18 @@ def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
     receipt = dict(status="STARTING", pid=os.getpid(), gpu_s=0, model_outputs_read=False,
         plan_sha256=sha(plan), metadata_sha256=sha(metadata_path),
         inventory_sha256=sha(root / "consumed_inventory.json"), source_sha256=sha(__file__),
-        official_split="Validation", metadata_order="Original CSV physical row order; not sorted by video_id",
+        official_split=list(split_order), metadata_order="Original CSV physical row order within each prespecified split; not sorted by video_id",
         frames_per_capture=16, near_positive_query_gate=16, target_count=target_count,
         download_limit_bytes=download_limit, cohort_prefix=cohort_prefix, candidates=[], accepted=[])
     write(root / "acquisition_frozen_inputs.json", receipt)
     public_rows, evaluator_rows = [], []
     attempted_visits = set()
     try:
-        for index, row in enumerate(metadata):
+        ordered = [(index,row) for split in split_order for index,row in enumerate(metadata) if row["fold"]==split]
+        for index, row in ordered:
             allocation.remaining()
             cap, visit = row["video_id"], row["visit_id"]
-            if row["fold"] != "Validation" or cap in excluded or visit in MISSING or visit in old_visits or visit in attempted_visits:
+            if cap in excluded or visit in MISSING or visit in old_visits or visit in attempted_visits:
                 continue
             candidate = dict(metadata_index=index, capture=cap, visit_id=visit,
                              official_metadata_row=row, status="STARTING")
@@ -172,7 +173,7 @@ def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
             archives, streams, indices, details, files = {}, {}, {}, {}, {}
             try:
                 for asset, suffix in ASSETS:
-                    url = f"https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/Validation/{cap}/{asset}.zip"
+                    url = f"https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/{row['fold']}/{cap}/{asset}.zip"
                     size = allocation.request(url)
                     stream = RangeZip(url, size, allocation)
                     archive = zipfile.ZipFile(stream)
@@ -266,7 +267,7 @@ def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
                     np.savez_compressed(ref, labels=np.stack(labels), depth=depth, depth_K=k,
                                         color_K=k, map_x=mx, map_y=my, observed=observed)
                     sensor_rows.append(dict(environment="arkitscenes_"+cap, scan="arkitscenes_"+cap,
-                        split="validation", official_split="Validation", frame=frame, source_id=name,
+                        split="validation", official_split=row["fold"], frame=frame, source_id=name,
                         timestamp_s=float(name.rsplit("_",1)[1]), rgb_path=str(rp),rgb_sha256=sha(rp),
                         reference_path=str(ref),reference_sha256=sha(ref),color_K=k.tolist(),depth_K=k.tolist(),
                         color_shape=[192,256],depth_shape=[192,256],depth_shift=1000.,queries=states,
@@ -284,7 +285,7 @@ def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
                     observation_contract="RGB/public K/query only; references evaluator-only",
                     query_contract="Frozen27 sampled first-return boxes, min16; no whole-volume clearance claim",
                     license="Official Apple non-commercial research license; ignored local storage, no redistribution",
-                    official_data_role="New official Validation visit, eval-only Development")
+                    official_data_role=f"New official {row['fold']} visit, eval-only Development")
                 write(sensor / "dataset_manifest.json", manifest)
                 obs = [dict({key:r[key] for key in PUBLIC},cohort=cohort,role="eval") for r in sensor_rows]
                 write(sensor / "observations.json",dict(rows=[{k:r[k] for k in PUBLIC} for r in sensor_rows],

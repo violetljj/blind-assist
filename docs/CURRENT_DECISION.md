@@ -2,7 +2,7 @@
 
 更新：2026-10-10。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合与L2保留。
 
-RGB [同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)完成old6/fresh6冻结R0的全部ties事后描述：old6近/中远、fresh6近在全部共同实际FREE点Uni≥DAV；fresh6中远交叉F0：DAV276/Uni227（−49），F104：1047/1046（−1），未达四曲线全域弱支配，按事前门停止阶段2。F7中远上包络仍Uni641>DAV483，近F0为16>13，收益与24capture带局部交叉完整保留；这是事后最大见证，不是部署选点。未重跑预测/训练/affine、未拟合新ARKcal或下载推理，cal域迁移仍未检验。维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。23683ties与30240逐query配对独立PASS；仅已消费Development、query相关，不作实机/安全确认。旧[主干确认](../research/active/dtr-r0/nearfield/RGB_BACKBONE_CONFIRM_DEV_20261010.md)的见证与FREE代价、尺度读出混合结果、DepthPro affine/残差/各run stop及同步融合N/E保留。
+RGB [分带混合评价](../research/active/dtr-r0/nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
 ## ToF当前决定
 
