@@ -2,7 +2,7 @@
 
 更新：2026-10-10。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线：[有界残差实际训练](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_BOUNDED_RESIDUAL_DEV_20261010.md)完成两4993参数/同初始化同批次600step实际残差训练。主Ark16/60/65 affine见证/FREE103/5、120/12、131/10；depth/ray47/0、103/10、104/26；context52/0、94/22、102/9。两追加capture无优势，不升级，本run停止固定配方追加调参，affine保留。事后同5FREE context Ark16见证138，对固定affine103救54损19，对完整curve affine113救50损25，近2/44但FREE1/96；60/65同成本context91/102低于curve affine122/132。主/304cal补充trained cuts全>.25结构排除near，不证明无近信息；pooled cal各29/588。两臂直接paired与全5cohort/1725curves保留，65相对depthray省成本的混合收益不丢弃。下一若继续优先新增可观测RGB上下文/训练域覆盖，不把cal转train；不同机制开放。360特征/同600batches、880模型输出/23760原affine分数、全18792pairs/阈值与81原生query独立PASS，input审核源码SHA误断言留证。GPU49.128/900s、CPU保守280/1200s，无新DepthPro/下载，资源释放。仅已消费Development/first-return，旧A0全δ/LOCO/held成本/stop/CNH保留；前RGB正文Gitb97299b4。
+RGB独立子线：[冻结残差读出与条件校准](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_RESIDUAL_READOUT_DEV_20261010.md)冻结两step600预测，完成absolute/normalized×global/band。主60/65原affine见证/FREE120/12、131/10；CTX归一化global1/13、2/18，绝对band60/20、50/8，归一化band4/7、19/19，不升级。held固定带成本辅助DR130/12、131/10，对强curveaffine122/12、132/10救9损1／救0损1，局部排序空间保留但非校准迁移成功。Ark16band辅助144query N/E，commonPOS158/FREE105；nearPOS44/11/0无稳定恢复。全部4组合/3臂/3capture与5补充cohort、逐query救损、3450ties曲线独立PASS。CPU科学51.607s、独立审计12.806s、整体保守270/1200s；GPU/train/forward/download0，任务资源结束。affine保留，本run停止固定recipe调参，下一优先RGB可观测信息/合规train域覆盖，cal不转train，其它机制开放。仅已消费Development/nativefirstreturn，旧A0全δ/CNH/stop保留；前RGB正文Git24688f0d。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
