@@ -2,7 +2,7 @@
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2与A+LOCAL保留。
 
-RGB 当前冻结全局 affine，0.8m以上为候选public query职责；当前近带固定recipe停止调参。两step600残差及全部失败/局部排序结果按[原报告](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_RESIDUAL_READOUT_DEV_20261010.md)保留，不把配方失败写成单目近带原理否定。后续提前量/语义尚待评价。[本次输入核查](../research/active/dtr-r0/nearfield/CNH_RGB_FROZEN_E2E_INPUT_INVENTORY_20261010.md)确认没有未消费且满足真值合同的同步RGB/CNH输入，完整融合NOT_EVALUABLE，未运行新RGB推理。
+RGB [四官方主干横比](../research/active/dtr-r0/nearfield/RGB_DEPTH_BACKBONE_COMPARE_DEV_20261010.md)完成各496帧，冻结query/56train affine/三折与304cal不调阈值。当前冻结系统近带交ToF、RGB职责≥0.8m；中远带实验首选DAV2 Indoor Large原始米制，三ARK见证440/554、FREE25/199 vs原DepthPro affine354/554、27/199（救138损52），但far292/323 vs319/323、65中远FREE21/103 vs10/103，逐capture无成本替换未获支持。UniDepth affine见证最多468/554但FREE32/199。近带米制误差明显恢复，Metric3D/MoGe raw的全局cut>0.25可结构排除近见证；60唯一增益DAV raw6/11伴FREE1/133，65近POS0使强信号N/E，职责分工不作单目近带原理否定。原DepthPro affine/全部旧失败与stop保留；完整同步RGB/CNH仍NOT_EVALUABLE。
 
 ## 当前：信号与读出漏检拆解
 
