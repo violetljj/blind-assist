@@ -1,10 +1,10 @@
 # 前视障碍感知：当前状态
 
-更新：2026-10-10。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合与L2保留。
+更新：2026-10-11。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合与L2保留。
 
 RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
-[RGB＋ToF同步源可行性](nearfield/SYNC_RGB_TOF_FEASIBILITY_DEV_20261010.md)：**部分可行**。独立FARO渲染几何＋真实轨迹配准完成old6两capture的11/32稀疏锚帧、297query；coverage95.995%，618/704zone接受，近/中/远接受峰误差中位5.28/7.39/8.23cm。ToF W15/41、63/79、20/27；固定OR22/41、67/79、20/27，FREE分母51/6/0且均0，不选融合。官方high/low筛选相关性、静态2.5D/常数rho及错时残差保留；连续5Hz公共RGB＋ToF与实际接触事件仍未建立。另真实16帧窗口冻结M3/S仅作两走廊描述。下载143.76MB，command-wall保守450/1800s、GPU45/600s；2970行/704zone独立复算PASS。原候选不变，下一按visit隔离建设数据源，未启动。
+[同步RGB＋ToF数据源v1](nearfield/SYNC_RGB_TOF_DATASET_V1_DEV_20261011.md)已完成12新visit按6/2/4隔离、384帧/10368query；eval128帧/3456query只完整性封存，未计算方法指标。train+cal近/中/远POS828/1332/1217、FREE1354/536/173；独立FARO时间匹配63帧、有效配准51帧（train14/cal4/eval33），333帧保留ToF UNKNOWN，连续有效FARO窗口仍未建立。主臂K0全网格W31/828、94/1332、38/1217，F2/1354、1/536、0/173；rho/ambient、固定OR/AND及共同18帧对照详表，不选择融合器。所有FARO M3/S窗口NOT_RUN，仅native循环臂可作报警描述；不当ToF能力。384帧双RGB推理及5臂K2合成完成，下载480.49MB，GPU275.468s已释放；[旧可行性试点](nearfield/SYNC_RGB_TOF_FEASIBILITY_DEV_20261010.md)保留。
 
 ## ToF当前决定
 

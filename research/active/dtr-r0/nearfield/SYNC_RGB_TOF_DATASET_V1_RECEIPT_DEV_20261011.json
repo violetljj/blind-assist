@@ -1,0 +1,746 @@
+{
+  "payload_root": "artifacts.local/work/sync-rgb-tof-dataset-v1-dev-20261011",
+  "receipts": {
+    "dataset_integrity.json": {
+      "sha256": "201d3ba85ab197efaabe1824277f2f013ec125c0ecd4e305f21401a70d03b649",
+      "content": {
+        "status": "PASS",
+        "splits": {
+          "train": {
+            "visits": [
+              "381650",
+              "381652",
+              "421065",
+              "421252",
+              "421254",
+              "421259"
+            ],
+            "frames": 192,
+            "queries": 5184,
+            "reference_denominators": {
+              "near": {
+                "UNKNOWN": 71,
+                "FREE_ON_SAMPLED_RAYS": 974,
+                "POSITIVE": 683
+              },
+              "mid": {
+                "POSITIVE": 1019,
+                "FREE_ON_SAMPLED_RAYS": 330,
+                "UNKNOWN": 379
+              },
+              "far": {
+                "POSITIVE": 863,
+                "UNKNOWN": 750,
+                "FREE_ON_SAMPLED_RAYS": 115
+              }
+            },
+            "rgb_abs_residual": {
+              "n": 192,
+              "median_s": 0.0010000000038417056,
+              "p95_s": 0.0029999999997016857,
+              "max_s": 0.003000000011525117
+            },
+            "faro_matched_abs_residual": {
+              "n": 15,
+              "median_s": 0.03499999999985448,
+              "p95_s": 0.08229999999603024,
+              "max_s": 0.08299999999871943
+            },
+            "trajectory_nearest_grid_abs_residual": {
+              "n": 192,
+              "median_s": 0.0026384199982203427,
+              "p95_s": 0.4072106190027851,
+              "max_s": 0.882706419999522
+            },
+            "trajectory_interpolation_bracket_width": {
+              "n": 168,
+              "median_s": 0.09995920499932254,
+              "p95_s": 0.0999605465001423,
+              "max_s": 0.09996261999185663
+            },
+            "faro_matched_frames": 15,
+            "faro_registered_frames": 14,
+            "grid_pose_unavailable": 24
+          },
+          "cal": {
+            "visits": [
+              "421006",
+              "421009"
+            ],
+            "frames": 64,
+            "queries": 1728,
+            "reference_denominators": {
+              "near": {
+                "UNKNOWN": 51,
+                "POSITIVE": 145,
+                "FREE_ON_SAMPLED_RAYS": 380
+              },
+              "mid": {
+                "POSITIVE": 313,
+                "UNKNOWN": 57,
+                "FREE_ON_SAMPLED_RAYS": 206
+              },
+              "far": {
+                "UNKNOWN": 164,
+                "POSITIVE": 354,
+                "FREE_ON_SAMPLED_RAYS": 58
+              }
+            },
+            "rgb_abs_residual": {
+              "n": 64,
+              "median_s": 0.001999999993131496,
+              "p95_s": 0.0029999999969732016,
+              "max_s": 0.0029999999969732016
+            },
+            "faro_matched_abs_residual": {
+              "n": 6,
+              "median_s": 0.017999999989115167,
+              "p95_s": 0.017999999996391125,
+              "max_s": 0.017999999996391125
+            },
+            "trajectory_nearest_grid_abs_residual": {
+              "n": 64,
+              "median_s": 0.0020634999964386225,
+              "p95_s": 0.4159736720030196,
+              "max_s": 0.8158742900122888
+            },
+            "trajectory_interpolation_bracket_width": {
+              "n": 55,
+              "median_s": 0.099959500003024,
+              "p95_s": 0.09995985699788434,
+              "max_s": 0.0999607499979902
+            },
+            "faro_matched_frames": 6,
+            "faro_registered_frames": 4,
+            "grid_pose_unavailable": 9
+          },
+          "eval": {
+            "visits": [
+              "421002",
+              "421260",
+              "421393",
+              "421397"
+            ],
+            "frames": 128,
+            "queries": 3456,
+            "reference_denominators": {
+              "near": {
+                "UNKNOWN": 91,
+                "POSITIVE": 371,
+                "FREE_ON_SAMPLED_RAYS": 690
+              },
+              "mid": {
+                "UNKNOWN": 324,
+                "POSITIVE": 542,
+                "FREE_ON_SAMPLED_RAYS": 286
+              },
+              "far": {
+                "UNKNOWN": 506,
+                "POSITIVE": 616,
+                "FREE_ON_SAMPLED_RAYS": 30
+              }
+            },
+            "rgb_abs_residual": {
+              "n": 128,
+              "median_s": 0.0010000000038417056,
+              "p95_s": 0.0029999999969732016,
+              "max_s": 0.0029999999969732016
+            },
+            "faro_matched_abs_residual": {
+              "n": 42,
+              "median_s": 0.018999999985680915,
+              "p95_s": 0.08299999999799183,
+              "max_s": 0.08300000001327135
+            },
+            "trajectory_nearest_grid_abs_residual": {
+              "n": 128,
+              "median_s": 0.017447874990466516,
+              "p95_s": 2.345006370008194,
+              "max_s": 3.6150063700042665
+            },
+            "trajectory_interpolation_bracket_width": {
+              "n": 97,
+              "median_s": 0.09995929000433534,
+              "p95_s": 0.09995984800043516,
+              "max_s": 0.1166190399962943
+            },
+            "faro_matched_frames": 42,
+            "faro_registered_frames": 33,
+            "grid_pose_unavailable": 31
+          }
+        },
+        "hashed_unique_files": 5841,
+        "manifest_sha256": "abd125fb141e10921f2c5fafb9b2f770fa3b051388abd45282e163bb758f5635",
+        "eval_method_metrics_computed": false,
+        "eval_payload_access": "bytes for SHA256 only; no predicted arrays decoded",
+        "elapsed_s": 1.9931055000051856
+      }
+    },
+    "eval_integrity_receipt.json": {
+      "sha256": "b806d2cc8745dc0c924c208cd958ce0dc5243c6501f6a57059a683493d2f375c",
+      "content": {
+        "status": "SEALED_INTEGRITY_PASS",
+        "visits": [
+          "421002",
+          "421260",
+          "421393",
+          "421397"
+        ],
+        "frames": 128,
+        "queries": 3456,
+        "reference_denominators": {
+          "near": {
+            "UNKNOWN": 91,
+            "POSITIVE": 371,
+            "FREE_ON_SAMPLED_RAYS": 690
+          },
+          "mid": {
+            "UNKNOWN": 324,
+            "POSITIVE": 542,
+            "FREE_ON_SAMPLED_RAYS": 286
+          },
+          "far": {
+            "UNKNOWN": 506,
+            "POSITIVE": 616,
+            "FREE_ON_SAMPLED_RAYS": 30
+          }
+        },
+        "rgb_abs_residual": {
+          "n": 128,
+          "median_s": 0.0010000000038417056,
+          "p95_s": 0.0029999999969732016,
+          "max_s": 0.0029999999969732016
+        },
+        "faro_matched_abs_residual": {
+          "n": 42,
+          "median_s": 0.018999999985680915,
+          "p95_s": 0.08299999999799183,
+          "max_s": 0.08300000001327135
+        },
+        "trajectory_nearest_grid_abs_residual": {
+          "n": 128,
+          "median_s": 0.017447874990466516,
+          "p95_s": 2.345006370008194,
+          "max_s": 3.6150063700042665
+        },
+        "trajectory_interpolation_bracket_width": {
+          "n": 97,
+          "median_s": 0.09995929000433534,
+          "p95_s": 0.09995984800043516,
+          "max_s": 0.1166190399962943
+        },
+        "faro_matched_frames": 42,
+        "faro_registered_frames": 33,
+        "grid_pose_unavailable": 31,
+        "manifest_sha256": "abd125fb141e10921f2c5fafb9b2f770fa3b051388abd45282e163bb758f5635",
+        "eval_method_metrics_computed": false
+      }
+    },
+    "independent_audit.json": {
+      "sha256": "bd2eb26abaf4d9c662b4ab53091236ed0109427c827e81bc0d6ed81008f9587e",
+      "content": {
+        "status": "PASS",
+        "elapsed_s": 94.11870490002912,
+        "plan_sha256": "4f87e9875d1c990dc1a6ad1dd2e7606ca3c6476431b1f5f69dcea46f2b4e619e",
+        "candidate_order_entries": 804,
+        "candidate_records": 32,
+        "chronological_selections": [
+          {
+            "capture": "41048247",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "41048262",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444474",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444499",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444511",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444514",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444574",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444692",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444719",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444748",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444754",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444762",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444787",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444793",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444821",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444858",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444866",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444873",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444883",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444891",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444904",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444913",
+            "frames": 32,
+            "status": "PASS"
+          },
+          {
+            "capture": "42444923",
+            "frames": 32,
+            "status": "PASS"
+          }
+        ],
+        "accepted_gates": [
+          {
+            "capture": "41048247",
+            "near_POS": 83,
+            "midfar_strict_FREE": 72
+          },
+          {
+            "capture": "41048262",
+            "near_POS": 26,
+            "midfar_strict_FREE": 108
+          },
+          {
+            "capture": "42444499",
+            "near_POS": 142,
+            "midfar_strict_FREE": 52
+          },
+          {
+            "capture": "42444748",
+            "near_POS": 127,
+            "midfar_strict_FREE": 77
+          },
+          {
+            "capture": "42444754",
+            "near_POS": 161,
+            "midfar_strict_FREE": 80
+          },
+          {
+            "capture": "42444762",
+            "near_POS": 144,
+            "midfar_strict_FREE": 56
+          },
+          {
+            "capture": "42444858",
+            "near_POS": 48,
+            "midfar_strict_FREE": 225
+          },
+          {
+            "capture": "42444866",
+            "near_POS": 97,
+            "midfar_strict_FREE": 39
+          },
+          {
+            "capture": "42444873",
+            "near_POS": 36,
+            "midfar_strict_FREE": 145
+          },
+          {
+            "capture": "42444891",
+            "near_POS": 73,
+            "midfar_strict_FREE": 78
+          },
+          {
+            "capture": "42444913",
+            "near_POS": 112,
+            "midfar_strict_FREE": 56
+          },
+          {
+            "capture": "42444923",
+            "near_POS": 150,
+            "midfar_strict_FREE": 37
+          },
+          {
+            "capture": "42444474",
+            "near_POS": 224,
+            "midfar_strict_FREE": 0,
+            "rejected": true
+          },
+          {
+            "capture": "42444511",
+            "near_POS": 259,
+            "midfar_strict_FREE": 0,
+            "rejected": true
+          },
+          {
+            "capture": "42444514",
+            "near_POS": 192,
+            "midfar_strict_FREE": 2,
+            "rejected": true
+          },
+          {
+            "capture": "42444574",
+            "near_POS": 134,
+            "midfar_strict_FREE": 12,
+            "rejected": true
+          },
+          {
+            "capture": "42444692",
+            "near_POS": 74,
+            "midfar_strict_FREE": 29,
+            "rejected": true
+          },
+          {
+            "capture": "42444719",
+            "near_POS": 12,
+            "midfar_strict_FREE": 0,
+            "rejected": true
+          },
+          {
+            "capture": "42444787",
+            "near_POS": 223,
+            "midfar_strict_FREE": 8,
+            "rejected": true
+          },
+          {
+            "capture": "42444793",
+            "near_POS": 204,
+            "midfar_strict_FREE": 0,
+            "rejected": true
+          },
+          {
+            "capture": "42444821",
+            "near_POS": 174,
+            "midfar_strict_FREE": 14,
+            "rejected": true
+          },
+          {
+            "capture": "42444883",
+            "near_POS": 72,
+            "midfar_strict_FREE": 1,
+            "rejected": true
+          },
+          {
+            "capture": "42444904",
+            "near_POS": 120,
+            "midfar_strict_FREE": 0,
+            "rejected": true
+          }
+        ],
+        "split_frames": {
+          "train": 192,
+          "cal": 64,
+          "eval": 128
+        },
+        "historical_ledger_check": {
+          "rows": 39,
+          "capture_ids": [
+            "41048097",
+            "41125199",
+            "41159579",
+            "42445021",
+            "42446093",
+            "42446540",
+            "42897666",
+            "42897890",
+            "42899163",
+            "42899300",
+            "43649772",
+            "43828420",
+            "44358435",
+            "45261121",
+            "45261532",
+            "45663113",
+            "45663404",
+            "47331971",
+            "47332106",
+            "47332591",
+            "47333053",
+            "47333440",
+            "47333472",
+            "47334107",
+            "47429771",
+            "47430690",
+            "48018023",
+            "48018345",
+            "48018382",
+            "48018566",
+            "48458221",
+            "48458617"
+          ],
+          "metadata_mapped_capture_ids": [
+            "41048097",
+            "41125199",
+            "41159579",
+            "42445021",
+            "42446093",
+            "42446540",
+            "42897666",
+            "42897890",
+            "42899163",
+            "42899300",
+            "43649772",
+            "43828420",
+            "44358435",
+            "45261121",
+            "45261532",
+            "45663113",
+            "45663404",
+            "47331971",
+            "47332106",
+            "47332591",
+            "47333053",
+            "47333440",
+            "47333472",
+            "47334107",
+            "47429771",
+            "47430690",
+            "48018023",
+            "48018345",
+            "48018382",
+            "48018566",
+            "48458221",
+            "48458617"
+          ],
+          "unresolved_capture_ids": []
+        },
+        "train_cal_description": {
+          "status": "NOT_AVAILABLE",
+          "eval_method_payloads_opened": 0
+        },
+        "accepted_visits": 12,
+        "frames": 384,
+        "queries": 10368,
+        "target_frame_shortfall": 0,
+        "target_query_shortfall": 0,
+        "gaps": [],
+        "eval_method_payloads_opened": 0,
+        "protected_access": 0,
+        "training": 0,
+        "scope": "Official ordering, chronological first windows, accepted reference-only gates, visit isolation and source hashes; no eval method payload opened"
+      }
+    },
+    "independent_description_audit.json": {
+      "sha256": "aafb9fdc66b6c2421a0f7fe34c488370c8b45bd03ca7659ce533630a8978e1a6",
+      "content": {
+        "status": "PASS",
+        "pixel_rows_recomputed": 21060,
+        "pixel_frames": 13,
+        "total_rows_aggregated": 414720,
+        "summary_rows_recomputed": 360,
+        "sampling": "First chronological frame plus first source-available FARO frame of each train/cal visit, all5arms x K2 x27queries x6methods; source-only selection",
+        "eval_method_payloads_opened": 0,
+        "elapsed_s": 8.547023600025568
+      }
+    },
+    "independent_extra_tables_audit.json": {
+      "sha256": "19384f80476e61674b1c04ad93c00a7aeb8338485eed9cc9af6cad474a15ff16",
+      "content": {
+        "status": "PASS",
+        "FARO_available_summary_rows": 360,
+        "compact_rows": 240,
+        "frozen_summary_rows": 2,
+        "eval_method_payloads_opened": 0,
+        "elapsed_s": 1.12629540002672
+      }
+    },
+    "resource_accounting.json": {
+      "sha256": "fe8d8eaf7a57814cd648852ecaa8119548e7b350bcba3448503af8df3f00d8c0",
+      "content": {
+        "CPU_command_wall_conservative_upper_s": 1079.127,
+        "CPU_components_upper_s": {
+          "source": 489.127,
+          "synthesis_description": 320,
+          "inference_setup": 20,
+          "audit": 150,
+          "primary_integration_including_delivery": 100
+        },
+        "CPU_cap_s": 2400,
+        "GPU_command_wall_s": 275.4683599,
+        "GPU_cap_s": 600,
+        "download_bytes": 480485214,
+        "download_cap_bytes": 3000000000,
+        "resources": "task source/synthesis/RGB/frozen Python processes terminated; GPU released"
+      }
+    },
+    "train_cal_description_receipt.json": {
+      "sha256": "9dc8dc335d85986dcfa294a8d36d0cb2786441b4f72ba82dff31146467f87849",
+      "content": {
+        "rows": 414720,
+        "roles": [
+          "train",
+          "cal"
+        ],
+        "eval_payloads_loaded": false,
+        "threshold_sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47"
+      }
+    },
+    "synthesis_description_accounting.json": {
+      "sha256": "a822ab30ce5c250a60d0d13315de687f1675c83af4336f655d0544b32b27537f",
+      "content": {
+        "CPU_command_wall_s_conservative_upper": 320,
+        "synthesis_internal_s": 145.54076920001535,
+        "description_internal_s": 142.65624940005364,
+        "all_other_command_wall_upper_s": 31.802981399931,
+        "includes": "All inspection, edit, engineering check, schema adaptation, integrity sidecar, compile, summary commands; process wait intervals not double-counted. Conservative total <=320s vs600 allocated.",
+        "scientific_attempts": {
+          "synthesis": 1,
+          "description": 1
+        },
+        "failures": [],
+        "resumes": 0,
+        "GPU_s": 0,
+        "new_download_bytes": 0
+      }
+    },
+    "license_source_receipts.json": {
+      "sha256": "faedd04114486c7726e180712c18f1e52ff237b1b3221d700b7d3cb88af8c3d5",
+      "content": {
+        "files": [
+          {
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\official\\DATA.md",
+            "sha256": "bc849eea6ec95fd41513b7ad085dbb943d8f4b4c87f9fd999bdabd7e3aa63c52",
+            "bytes": 4704,
+            "provenance": "Reused byte-identical official receipt from sync-rgb-tof-feasibility-dev-20261010/sources; no new network transfer"
+          },
+          {
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\official\\LICENSE",
+            "sha256": "1b6a8700127de50c9d56f8f33eb202a64f6f212fd4b133435f7c8b6bccd3db59",
+            "bytes": 4796,
+            "provenance": "Reused byte-identical official receipt from sync-rgb-tof-feasibility-dev-20261010/sources; no new network transfer"
+          },
+          {
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\official\\metadata.csv",
+            "sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621",
+            "bytes": 236057,
+            "provenance": "Reused byte-identical official receipt from sync-rgb-tof-feasibility-dev-20261010/sources; no new network transfer"
+          },
+          {
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\official\\raw_README.md",
+            "sha256": "8e827be3ab353c9b2e0970ee87f5e7244b43de0cb16d73f3b3d87cc2fdc3520a",
+            "bytes": 2516,
+            "provenance": "Reused byte-identical official receipt from sync-rgb-tof-feasibility-dev-20261010/sources; no new network transfer"
+          },
+          {
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\official\\README.md",
+            "sha256": "8c6899b46b5ca0b0216ad555b475031dca22c0fa4075fb849b83919c4d616046",
+            "bytes": 3810,
+            "provenance": "Reused byte-identical official receipt from sync-rgb-tof-feasibility-dev-20261010/sources; no new network transfer"
+          }
+        ],
+        "license_url": "https://github.com/apple/ARKitScenes/blob/main/LICENSE",
+        "use": "local noncommercial research only",
+        "network_bytes": 0
+      }
+    },
+    "report_review_audit.json": {
+      "sha256": "76c0127e4be22c8589a51f459715354e6c19bf0b84fbe5799485482d8220f44d",
+      "content": {
+        "status": "PASS",
+        "numeric_table_cells_checked": 180,
+        "report_sha256": "161ad8a73eb96b90db84c6435cae987a746b614d73ccb16e18e96893d7268fa3",
+        "elapsed_s": 0.0037296999944373965,
+        "eval_method_payloads_opened": 0,
+        "scope": "Text boundaries reviewed plus all180method-table cells compared to independently audited compact CSV"
+      }
+    },
+    "audit_budget_ledger.json": {
+      "sha256": "9279c22facf0a54c620bce93c26dc84a1cece68a62b981bdd69188b85e7dab7e",
+      "content": {
+        "preserved_failures": [
+          "Initial source audit treated retained historical transport failure rows as active postgate attempts; corrected auditor lineage interpretation",
+          "Extra tables audit expected allgrid key, actual all_grid; corrected schema adapter",
+          "Report review identified subray16 typo; author corrected16x16=256 and final report reviewPASS"
+        ],
+        "notes": "Upper charge includes shell/import overhead, failures and final reporting reserve. Long source wall measured by internal elapsed plus conservative6s, not tool-poll wait summation. No ongoing owned process.",
+        "GPU_s": 0,
+        "allocated_CPU_s": 200,
+        "CPU_command_wall_upper_bound_s": 140,
+        "measurements": [
+          {
+            "internal_elapsed_s": 94.11870490002912,
+            "command_wall_upper_charge_s": 100,
+            "phase": "source_full_independent_native_labels_and_integrity"
+          },
+          {
+            "internal_elapsed_s": 8.547023600025568,
+            "command_wall_upper_charge_s": 11,
+            "phase": "method_pixel_sample_and_allgrid_summary"
+          },
+          {
+            "command_wall_s": 5.0785992,
+            "phase": "extra_tables_failed_schema_then_pass"
+          },
+          {
+            "phase": "inspection_script_edit_diagnostics_report_review_including_failed_asserts",
+            "command_wall_upper_charge_s": 23.9214008
+          }
+        ],
+        "download_bytes": 0
+      }
+    }
+  },
+  "eval_metrics": "NOT_COMPUTED"
+}
