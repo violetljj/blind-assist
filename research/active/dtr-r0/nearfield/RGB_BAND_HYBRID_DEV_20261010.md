@@ -129,7 +129,7 @@ PNG及独立PDF、near_all_ties.csv、near_envelope.csv、near_operational_point
 
 两模型成功同时驻留GPU，同帧按DAV→Uni顺序执行，核函数不重叠；实际参数 DAV335315649、Uni353831043，合计689146692。95个warm帧combined median0.2712968s/P95 0.3350201s；DAV median0.2005376/P95 0.2472577s，Uni median0.0718231/P95 0.0859019s。首cold帧单列：combined17.7493374s（DAV11.5944323s、Uni6.1548663s）。同步测量含预处理、network、CPU拷贝，不含native mapping/文件写入。peak allocated3339468800B、reserved3487563776B；GPUowned wall65.4916927s，只计一次双模型进程，CPU orchestration command67.0518553s归root。deployment_summary.json保留完整数据，PID73916已检查不存在，无task-owned常驻GPU。实际两模型推理仅针对本次新96帧。模型及ARKit许可证/版本/URL/SHA沿用已固定官方收据，仅本地非商业研究，不再分发权重。
 
-实际下载 **77,287,325/1,000,000,000 B**（含官方metadata/许可证151,157 B），仅Range子集、无权重新下载；GPU拥有进程墙钟 **65.492/600 s**。CPU按command-wall保守计账 **355/1200 s**：采集/适配80、评价/报告45、独立核验50、根代理推理编排/查读/目视/整合/交付180（其中实测GPU编排shell67.052 s，含在180中，不重复计）。账本包含失败，非CPU内核使用时间；所有任务workers已结束。产物保留在canonical artifacts.local/work/rgb-band-hybrid-dev-20261010。
+实际下载 **77,287,325/1,000,000,000 B**（含官方metadata/许可证151,157 B），仅Range子集、无新增权重下载；GPU拥有进程墙钟 **65.492/600 s**。CPU按command-wall保守计账 **355/1200 s**：采集/适配80、评价/报告45、独立核验50、根代理推理编排/查读/目视/整合/交付180（其中实测GPU编排shell67.052 s，含在180中，不重复计）。账本包含失败，非CPU内核使用时间；所有任务workers已结束。产物保留在canonical artifacts.local/work/rgb-band-hybrid-dev-20261010。
 
 一次独立核验从新native预测与冻结参考重建R0分数，验证校准来源与整组ties、官方选源/CRC与标签、逐query决策/救损、合计/主门与描述曲线：**PASS**，详见independent_audit_final.json及源码/终端收据。独立cal首检查误把pooled_FREE_scores.json归入old-final分数文件列表，失败independent_cal_audit.json保留，按父目录修复后attempt2通过。Fresh首检查的独立summary带额外capture别名，与生产environment分组schema不一致，首FAIL independent_audit.json保留；只适配分组schema并续未完成节点，已通过来源/首capture数学未重复。两个消费者修复均未改变科学配方、阈值或原数值。核验复算已有预测，未独立重跑神经模型。
 
