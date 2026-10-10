@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[A0与负参考](nearfield/RGB_BODY_QUERY_A0_DEV_20261010.md)。冻结log-affine主干＋旧depth/ray的log-Z有界代理，δ=.05/.1/.2×3capture全比较、另两capture严格sampledFREE按5%三折cal完成。追加60见证120/121/122各/202、FREE各12/220（affine120）；65见证130/130/129各/179、FREE10/11/11各/247（affine131、10），arkit16退化88/71/62各/228 vs103；所有δ曲线均有低于affine区段，不提高残差训练优先级但不否定重训。新增15官方train缓存环境240帧6480格，FREE30/10环境，原cal2→候选32/12环境；近带6仅1环境。补参考后冻结带条件cal探针取舍更差，不采用；新参考预测评分未运行。当前冻结affine为RGB几何代表，下一补近场跨环境负覆盖并评价新cal冻结预测。独立query/curve和8424参考核验通过；CPU保守674/1800s，训练/推理/GPU/下载0、无常驻资源。仅Development、相关sampledFREE非整盒/身体安全证据；旧停止规则/CNH保留，前文见Git167181b5。
+RGB独立子线：[新负参考冻结评分](nearfield/RGB_BODY_QUERY_NEGATIVE_SCORE_DEV_20261010.md)。原A0三折完整结果保留。新增240帧冻结DepthPro/旧头推理完成，原cal2＋新cal30的32严格FREE（12环境、near6仅1环境）选全局cutoff，各臂实际1/32；绝对余量affine在Ark16/60/65见证1/114/102、FREE0/10/7，五cutoff>.433m结构性排除near/mid。一次事后区间宽度归一化保留混合信号：A0δ=.1相对归一化affine在60/65净救21/25，FREE各+1；但同臂见证62→34、71→33，已有affine等成本辅助为47/41>34/33，near仍全0。不升级工作点、不提高残差训练优先级，不否定重训。15环境扩到960帧FREE129/13环境，near6→23仍1环境，按stop停止同源扩帧，新720帧未推理评分。下一更换环境/机位补跨环境近负覆盖；当前冻结affine为RGB代表。独立分数/配对/LOEO及25920参考核验PASS，GPU261.108/1000s、CPU保守821/1800s、训练/下载0，无保留进程。仅Development非整盒/身体/实机证明；旧停止/CNH保留，前文Git20e014b5。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
