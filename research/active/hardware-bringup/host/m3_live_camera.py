@@ -80,11 +80,15 @@ class CameraFeed:
     def __init__(self, output, stop, *, url=None, device_id=None, max_seconds=3600):
         self.output, self.stop = Path(output), stop
         self.url = validate_url(url) if url else None
+        self.usb_or_explicit_url = bool(url)
         self.device_id = device_id
         self.deadline = time.monotonic()+max_seconds
         self.lock = threading.Lock()
         self.latest = None
         self.receipts = deque(maxlen=50)
+        self.configuring = threading.Event()
+        self.network_revision = 0
+        self.usb_candidate_url = None
         self.state = dict(status='寻找相机', frames=0, reconnects=0, error=None, released=False)
 
     def snapshot(self):
@@ -102,6 +106,21 @@ class CameraFeed:
                 return self.latest[1], dict(self.latest[0])
             return None, None
 
+    def configuration_started(self):
+        self.configuring.set()
+        with self.lock:
+            self.network_revision += 1
+            self.latest = None
+            self.state.update(status='正在切换相机 Wi-Fi')
+
+    def configuration_finished(self):
+        self.configuring.clear()
+
+    def network_ready(self, ip):
+        """Address reported by the separately identity-checked USB Atom."""
+        with self.lock:
+            self.usb_candidate_url = validate_url(f'http://{ip}:81/stream')
+
     def run(self):
         self.output.mkdir()
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect()).open
@@ -111,6 +130,14 @@ class CameraFeed:
         try:
             with (self.output/'frames.jsonl').open('x', encoding='utf-8') as records, (self.output/'events.jsonl').open('x', encoding='utf-8') as events:
                 while not self.stop.is_set() and time.monotonic() < self.deadline:
+                    if self.configuring.is_set():
+                        self.stop.wait(.2)
+                        continue
+                    with self.lock:
+                        if self.usb_candidate_url:
+                            self.url = self.usb_candidate_url
+                            self.usb_or_explicit_url = True
+                            self.usb_candidate_url = None
                     if not self.url:
                         try:
                             url, identity = discover(self.device_id)
@@ -128,6 +155,8 @@ class CameraFeed:
                         events.write(json.dumps(dict(kind='discovered', identity=identity, url=url))+'\n')
                         events.flush()
                     recent = RecentBytes()
+                    with self.lock:
+                        revision = self.network_revision
                     try:
                         with opener(self.url, timeout=3) as response:
                             content_type = response.headers.get('Content-Type', '')
@@ -140,6 +169,8 @@ class CameraFeed:
                                 self.receipts.clear()
                             while not self.stop.is_set():
                                 header, jpeg = receive(body, match.group(1).encode('ascii'))
+                                if self.configuring.is_set() or revision != self.network_revision:
+                                    raise TransportError('Camera network configuration changed')
                                 stamp = time.monotonic_ns()
                                 from PIL import Image
                                 try:
@@ -162,6 +193,8 @@ class CameraFeed:
                                     (self.output/'first-frame.jpg').write_bytes(jpeg)
                                     first = False
                                 with self.lock:
+                                    if self.configuring.is_set() or revision != self.network_revision:
+                                        raise TransportError('Camera network configuration changed')
                                     self.latest = (header, jpeg, stamp)
                                     self.receipts.append(stamp)
                                     fps = (len(self.receipts)-1)*1e9/(stamp-self.receipts[0]) if len(self.receipts)>1 else None
@@ -177,7 +210,7 @@ class CameraFeed:
                         with self.lock:
                             self.latest = None
                             self.state.update(status='重连相机', reconnects=failures, error=str(exc))
-                        if self.device_id:
+                        if self.device_id and not self.usb_or_explicit_url:
                             self.url = None  # DHCP may have changed.
                         self.stop.wait(min(5, failures))
                     except Exception as exc:

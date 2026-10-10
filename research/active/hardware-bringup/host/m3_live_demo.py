@@ -1,6 +1,6 @@
 """Local live CNH/M3 bench viewer; current-scene residuals are engineering inputs.
 
-No training, scene truth, firmware writes, or changes to frozen experiments.
+No training, scene truth, firmware flashing, or changes to frozen experiments.
 """
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ sys.path.append(str(SERIAL_SITE))
 from capture import validate_frame
 from m3_live_engine import Engine
 from m3_live_camera import CameraFeed
+from m3_wifi_setup import WifiSetup, profiles
 
 PAGE_PATH = Path(__file__).with_suffix('.html')
 
@@ -64,6 +65,8 @@ class Demo:
         self.threads = []
         self.camera = CameraFeed(args.out / 'camera', self.stop, url=getattr(args, 'camera_url', None),
                                  device_id=getattr(args, 'camera_id', None), max_seconds=getattr(args, 'max_seconds', 3600)) if getattr(args, 'camera_id', None) or getattr(args, 'camera_url', None) else None
+        self.wifi = WifiSetup(self.stop, self.camera, getattr(args, 'camera_port', 'COM11'),
+                              getattr(args, 'camera_id', None) or 'b4:3a:45:bd:12:d8')
 
     def snapshot(self):
         with self.lock:
@@ -78,8 +81,9 @@ class Demo:
                 result['status'] = '输入中断 · UNKNOWN' if age > 1500 else '等待新预测 · UNKNOWN'
             elif self.reference_request:
                 result['status'] = '采集场景参照'
-            result['camera'] = self.camera.snapshot() if self.camera else dict(status='未开启相机', available=False)
-            return result
+        result['camera'] = self.camera.snapshot() if self.camera else dict(status='未开启相机', available=False)
+        result['wifi'] = self.wifi.snapshot()
+        return result
 
     def zone(self, index):
         if not 0 <= index < 64:
@@ -302,6 +306,7 @@ class Demo:
             self.condition.notify_all()
         for worker in self.threads:
             worker.join(timeout=15)
+        self.wifi.close()
         (self.args.out / 'final-status.json').write_text(json.dumps(self.snapshot(), indent=2, ensure_ascii=False), encoding='utf-8')
 
 
@@ -314,12 +319,15 @@ def main():
     parser.add_argument('--reference', type=Path, help='Reuse an actual recorded scene reference NPZ')
     parser.add_argument('--camera-url', help='Explicit local Atom http://IP:81/stream')
     parser.add_argument('--camera-id', default='b4:3a:45:bd:12:d8', help='Atom station MAC for discovery; empty disables discovery')
+    parser.add_argument('--camera-port', default='COM11', help='Selected Atom USB port for Wi-Fi setup')
     args = parser.parse_args()
+    if args.camera_port.lower() == args.port.lower():
+        parser.error('Camera Wi-Fi setup and ToF must use separate USB ports')
     args.out.mkdir(parents=True, exist_ok=False)
     import shutil
     source_dir = args.out / 'source'
     source_dir.mkdir()
-    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), Path(__file__).with_name('m3_live_camera.py'), PAGE_PATH):
+    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), Path(__file__).with_name('m3_live_camera.py'), Path(__file__).with_name('m3_wifi_setup.py'), PAGE_PATH):
         shutil.copyfile(source, source_dir / source.name)
     demo = Demo(args)
 
@@ -342,6 +350,11 @@ def main():
                 self.respond(PAGE_PATH.read_text(encoding='utf-8'), 'text/html; charset=utf-8')
             elif url.path == '/api/status':
                 self.respond(json.dumps(demo.snapshot(), allow_nan=False))
+            elif url.path == '/api/wifi/profiles':
+                try:
+                    self.respond(json.dumps(profiles()))
+                except (ValueError, OSError, __import__('subprocess').TimeoutExpired):
+                    self.respond(json.dumps(dict(profiles=[], current=None)))
             elif url.path == '/api/camera.jpg':
                 jpeg, _ = demo.camera.image() if demo.camera else (None, None)
                 if jpeg is None:
@@ -362,7 +375,19 @@ def main():
             if origin and origin != f'http://127.0.0.1:{args.http_port}':
                 self.send_error(403)
                 return
-            if self.path == '/api/reference':
+            if self.path == '/api/camera/wifi':
+                try:
+                    length = int(self.headers.get('Content-Length', '0'))
+                    if not 0 < length <= 2048:
+                        raise ValueError('配置输入长度无效')
+                    data = json.loads(self.rfile.read(length))
+                    if not isinstance(data, dict):
+                        raise ValueError('配置格式无效')
+                    demo.wifi.request(data)
+                except (ValueError, UnicodeError) as exc:
+                    self.respond(json.dumps(dict(ok=False, error=str(exc))))
+                    return
+            elif self.path == '/api/reference':
                 demo.reference()
             elif self.path == '/api/stop':
                 demo.stop.set()
