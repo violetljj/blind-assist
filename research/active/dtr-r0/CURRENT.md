@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[输入与数值诊断](nearfield/RGB_BODY_QUERY_INPUT_NUMERICS_DEV_20261010.md)完成96帧ARKit输入合约与固定16帧FP16/float32对照。时间戳/尺寸/K/mm→m/focal缩放通过，未发现实现尺度错误；旧48推理缺历史源码SHA如实保留，16/16 FP16缓存精确复现。原色饱和端点14830→14857，未消除；arkit16共同未饱和近正49152点affine ratio中位3.7923→3.7941、轴向inside0，新cal共同未饱和20178点2.6512→2.6505仍inside0；60/65所选端点无近POS，N/E。主absolute及global normalized救损/FREE增减0，辅助normalized band5救3损1/FREE增减0，其中cal near救1保留；cal far无FREE不报零成本。全局log-affine保留，不切换精度或提升训练优先级，未否定真正有界残差；下一现有train/cal残差目标、输入可辨识性与界限，禁止eval倒推bound，不默认范围回退。独立32倒数/336指标/1728配对及1原生frame排序PASS，辅助枚举/引号失败留证。GPU32calls262.191/300s、CPU保守741/1200s，无训练/下载、资源已释放。仅已消费Development/现有参考，非身体/实机/安全；旧A0三折/分带/stop/CNH保留，前文Gite4e6b2cd。
+RGB独立子线：[残差目标与输入兼容性](nearfield/RGB_BODY_QUERY_RESIDUAL_TARGET_DEV_20261010.md)完成56train/304cal目标与固定public512诊断，未读136eval。四bound .2/.742222/1.148101/3.184721；envelope约24.16倍且ARKitcal近83404点仅74.958%可达。16邻居代理近带ARKit MAE1.9614→.8289，但3RScan .6008→.6104、trainLOEO整体.3171→.4193；ARKit3/3访问整体改善，train7/7及cal3RScan17/17环境整体变差。像素改善不等于query救损/FREE，局部冲突不证明不可学习。全局affine保留，下一实际训练有界log残差＋可观测局部深度上下文，对照三项depth/ray；不默认范围回退、不用eval设bound。360采样/4bound/全邻距与汇总、2原帧/4exact16及角色核验PASS，审计失败与metadata语义修正留证。CPU保守329/1200s（整合全额200），GPU/训练/下载/新推理0，资源已释放。仅已消费Development/first-return参考，旧A0全δ/三折/成本取舍/stop/CNH保留；前RGB正文Gitabda0a31。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
