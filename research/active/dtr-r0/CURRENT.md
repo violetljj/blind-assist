@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[ARKit新visit校准](nearfield/RGB_BODY_QUERY_ARKIT_CAL_DEV_20261010.md)完成固定新Training三个visit×16帧：1296查询FREE556，near389/3visit；与旧已评分cal合并588FREE/15来源组，near395/4。48冻结DepthPro/旧head，新pooled-cal仅补充原A0三折，十cutoff实际均29/588且先于eval冻结。absolute affine Ark16/60/65见证95/120/131、FREE5/12/10；A0δ=.05见证86/120/130、FREE4/12/10，δ=.1为84/121/130、3/12/11，δ=.2为76/121/129、4/12/12。归一化δ=.05两个追加capture对归一化affine各净救1，FREE+0/+2，混合信号保留；强absolute affine事后同成本122/12、132/12，无领先。近带所有臂三eval均见证/FREE0/0；affine/A0阈值已解除结构排除，不定位单一模型原因。affine代表、残差训练优先级不升，A0不否定重训；下一冻结模型分距离校准，不追加同源扩帧。本轮13,187,490B/33.629s来源获取、48新推理、GPU81.957/500s、CPU保守778/1800s、训练0；独立cutoff/完整paired/LOEO/同成本核验PASS，失败留证、无常驻资源。仅已消费Development，新visit不证明物理独立或身体/实机安全；旧三折/近覆盖stop、CNH保留，前文Gitc782b6bd。
+RGB独立子线：[冻结分距离校准](nearfield/RGB_BODY_QUERY_DISTANCE_CAL_DEV_20261010.md)完成固定三带each<=5%、五臂absolute主/normalized辅，共30cal-only阈值；cal近395/中180/远13FREE，实际19/9/0、合计28/588，先于eval冻结，原全局与A0三折保留。absolute affine Ark16/60/65总见证13/57/48、FREE35/5/4；原全局95/120/131、5/12/10仍作代表。near Ark16见证0/44、FREE35/96（原0/0），60仍0/11、0/133，65无近POS；原val/3RScan近救21/157但近FREE分母0，不证明近低成本。far13负例floor5%=0，affine far损66/63/83；与near负分布转移失败分开解释。A0三δ完整保留，normalized仅少量near见证且成本高；不采用本固定三带配方、不提高残差训练优先级、不否定其他校准/重训。下一近带点级几何偏差与正/负排序诊断，far稀疏校准方法须独立预定；无事后改预算/合带/扫描。独立30cutoff/276480paired/900LOEO/150matched PASS，score6.347s、CPU保守608/900s，GPU/训练/推理/下载0，无常驻资源；仅已消费Development/采样FREE，非身体或实机安全，旧stop/CNH保留，前文Gitfdb864a3。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
