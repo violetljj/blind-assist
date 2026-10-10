@@ -6,19 +6,17 @@ RGB [同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_A
 
 ## ToF当前决定
 
-用户10-10成本口径：最近表面到共向走廊±.30m边缘间隙≤10cm为near-pass，轻通知.25、强1；far-pass/clear任何通知1。gap1逐query、同帧最高等级联合计数；contact f3–13及时、f14–15晚、全窗静默。旧满额成本、冻结v2留出及[任务成本重训](../research/active/dtr-r0/nearfield/CNH_TASK_COST_RETRAIN_DEV_20261010.md)的1×主点失败保留。
+用户2026-10-10决定：接受S集成的接触收益与轻提醒取舍，**S955/956/957任务成本HGB均值升为ToF模拟默认候选，未接入App**。冻结6e441f9a的6权重/47维，原5格强档逐slot不变，新增slot仅轻档。旧[确认](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)净151/1024、a/d通过而b/c失败保留；用户改用取舍曲线与环境波动，不再按成本≤k×原5格二元判定。旧约2.7pp是通知次数归一，实际far+clear有通知clip增量2.214pp。
 
-[S集成1.25×新留出确认](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)按WORKFLOW Confirm登记，协议`69e02149`渲染前提交。冻结6HGB/47维，无训练；新cal768/hold1536物理scene×K2、2/4新family，与27可访问库存16936旧物理键、背景及目标参数无交集。cal全负例ties选最低可行点，S集成tau2.04503、成本170.75≤137×1.25；封存后生成/读hold。
+[池化取舍](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_TRADEOFF_DEV_20261010.md)完成：六组已消费pass/clear负例、14family、7168clip（far+clear5376），全部ties最低阈值tau1.917951703；同池原5格445→606有通知clip，增2.995pp≤3pp，contact不选点。封存后生成1536scene×K2/4新family，与30库存19252键及背景/目标参数无交集。
 
-hold原5格H398/B315各/512，成本223，far+clear133。S集成救60/91、损0/0，净增151/1024=14.75%；a收益通过，d单seed145/142/140均≥40通过。b far+clear174>146.3（+30.8%）失败；c成本320>292.6875（+43.5%）失败。四项未全通过，保留原5格，不升默认候选。成本增97中near加权+56、far+10、clear+31，不能全部归因近擦边轻提醒。
+新hold原5格HEAD372/BODY308各/512；S救86/99、损0，净185/1024=18.07pp，v2加权成本211→325.75。far+clear有通知112→155/1536（7.292%→10.091%，+2.799pp）；family增量1.823–3.646pp。绝对漂移0.195pp，比旧2-family cal的1.042pp缩小；“两family造成漂移”记为用户解释，family数/选点口径/数据同时变动，未隔离因果。描述曲线1–3pp预算S收益高于E/both，零增量E优于S，无全域支配。
 
-精确旧tau2.414257迁移救47/86、成本285.5、far+clear149；成本在c容差内，far+clear仍越b上限，仅描述不替换主判。原both955救37/76、382/212；E救41/79、313.75/180。S接触收益与seed一致性复现，但跨family成本约束未复现；保留未晋升研究组件，下一建议针对far/clear高分尾及校准成本漂移，仅建议、未启动，不扫已消费hold阈值。
-
-82944事件/22594通知、104017cal负例ties、模型/特征/聚类与四判据独立PASS；保守GPU200/1200s、准备评价审计整合CPU800/1200command-wall，进程释放。该确认只关闭执行登记，不改变主线/受管复用inheritance。
+near-pass间隙≤10cm轻.25/强1，far/clear任何通知1；gap1逐query、同帧最高档联合计数，contact f3–13及时/f14–15晚。逐档计数、scene/family bootstrap及冻结候选manifest见报告；独立核验697900池ties、77322曲线、49152事件/13600通知PASS。GPU保守100/1200s、评价审计整合500/1200command-wall，权重/特征/保护源不动。
 
 ## 继承与边界
 
-共向HEAD/BODY不替代外参/时钟核验；旧漏检、E2E及细杆oracle/失败，各run停止规则保留。保护480/test未访问，旧已消费数据不选点/训练，新hold已消费。仅有限AABB模拟Development确认，非实机、安全、硬件极限或完整同步RGB/CNH证明；方向/PDR及硬件第二阶段未由本run重启。
+原M3/5格保留为对照和强档来源；旧E2E、重训/确认失败与各run停止规则保留。池化已消费负例按本任务授权复用，hold曲线仅描述不选点。有限AABB模拟Development、4family区间仅描述，非实机/安全证明；共向几何不替代外参/时钟核验，方向/PDR、硬件阶段与同步RGB融合未启动。后续台架/App由候选manifest提供接口，本任务未接入。
 
-更新前全文见Git `69e02149`及本run `integration_before/`；历史见RUNS/报告。
+更新前全文见Git `96e2b0ca`及本run `integration_before/`；历史见RUNS/报告。
 ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
