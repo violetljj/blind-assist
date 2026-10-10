@@ -112,7 +112,13 @@ class CameraFeed:
             with (self.output/'frames.jsonl').open('x', encoding='utf-8') as records, (self.output/'events.jsonl').open('x', encoding='utf-8') as events:
                 while not self.stop.is_set() and time.monotonic() < self.deadline:
                     if not self.url:
-                        url, identity = discover(self.device_id)
+                        try:
+                            url, identity = discover(self.device_id)
+                        except OSError as exc:
+                            with self.lock:
+                                self.state.update(status='等待网络就绪', error=str(exc))
+                            self.stop.wait(3)
+                            continue
                         if not url:
                             with self.lock:
                                 self.state.update(status='等待相机接入同一网络', error=None)
