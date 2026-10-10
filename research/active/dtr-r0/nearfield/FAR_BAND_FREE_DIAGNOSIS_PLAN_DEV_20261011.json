@@ -1,0 +1,35 @@
+{
+  "task": "FAR_BAND_FREE_DIAGNOSIS_DEV_20261011",
+  "phase": "EXPLORE consumed Development diagnosis only",
+  "budget": {"CPU_command_wall_s": 1500, "GPU_s": 300, "RGB_reinference": "only if required; prefer caches"},
+  "scope": ["v2 eval12", "v1.1 train6/cal2/eval4"],
+  "forbidden": ["protected 480/test", "training", "threshold/readout/model modification", "rescoring or rewriting past conclusions"],
+  "sampling": {
+    "seed": 20261011,
+    "unit": "unique source_id/query_id within dataset; K repeats never count separately",
+    "a": "all strict FREE supported by frozen RGB or available immutable native logit decisions",
+    "b": "strict FREE with neither available method support; equal total to a where pool permits",
+    "c": "POSITIVE; equal total to a where pool permits",
+    "strata": "dataset/visit. Match a counts per stratum first without replacement; redistribute shortages to other visits deterministically by largest remaining capacity, retaining shortage receipt",
+    "v2_decisions": "immutable eval/per_query.jsonl native_perturbed logit/RGB cells",
+    "v11_decisions": "all split cached DAV depth at inherited raw cut 0.24403834342956543; immutable v1 logit decisions available only for old eval4. No new logit forwards on train/cal"
+  },
+  "measurement": {
+    "native_rays": "256x192 sampled depth pixels intersecting box, not hardware raw beam count; report inside/before/after/invalid separately",
+    "confidence": "exact matching official raw confidence PNG, 0/1/2; unavailable remains unknown, not low confidence",
+    "faro": "cached fused depth grid pose to RGB pose nearest zbuffer; holes unknown. Surface contradictions may reflect label or FARO registration/reconstruction error",
+    "depth": "optical Z and Euclidean ray distance reported separately; all query intersections in RGB camera coordinates",
+    "geometry": "image edge/top/bottom proxies only, no semantic ceiling/floor claim; ray axial and physical intersection lengths; rank16 margin, rank15-17 gap and supporting ray lengths"
+  },
+  "multilabel_rules": {
+    "label_suspect": "native valid ray count<64 OR confidence2 fraction<0.9 when available OR FARO inside pixels>=16; strict FREE native missing=0 is tautological",
+    "geometry_risk": "domain intersects image outer5% border OR domain pixels<64 OR >50% DAV top16 margin rays have physical box intersection<0.10m; structural association, not causal attribution",
+    "model_error_strong": "native all domain beyond exit, native confidence2>=0.9, FARO beyond exit>=0.9 of domain with inside=0, and DAV inside>=16",
+    "model_disagreement_unconfirmed": "native all domain beyond exit and DAV inside>=16 but strong independent-empty rule not satisfied",
+    "fusion_only": "logit support true, frozen RGB support false; DAV inside<16 explicitly separates fusion output from RGB intrusion",
+    "unresolved": "none of label_suspect/geometry_risk/model_error_strong; supplementary disagreements do not establish cause"
+  },
+  "decision_check": "Controls determine enrichment, not raw prevalence alone. One query changes proportion by 1/N. FARO coverage/registration and confidence missingness constrain attribution; percentages may overlap. No diagnostic cut enters any evaluator.",
+  "deliverables": ["Chinese report", "per-query CSV/JSONL and selection", "each a RGB crop/query projection/native mask and three-source profile", "independent verification", "CURRENT/RUNS and normal push master"],
+  "future_reference": "draft only for newly constructed future evaluations; never retrospectively relabel consumed eval"
+}
