@@ -1,0 +1,2814 @@
+{
+  "payload_root": "artifacts.local/work/sync-rgb-tof-dataset-v1-1-dev-20261011",
+  "parent": "bebade38",
+  "receipts": {
+    "source_final_summary.json": {
+      "sha256": "231bdd96e7115ba62e5ad0be9b89d006a35f3898ed70647c2f8ce4b0e5153ef1",
+      "content": {
+        "status": "COMPLETE_ALL_TARGET_AND_REGISTERED_COMPONENTS",
+        "captures": 21,
+        "frames": 4827,
+        "pose_missing_frames": 26,
+        "download_bytes_including_all_documentation": 1916063998,
+        "main_acquisition_command_wall_s": 207.0213074000203,
+        "source_CPU_command_wall_upper_s": 257.0213074000203,
+        "GPU_s": 0,
+        "whole_visit_registered_visit_ids": [
+          "421002",
+          "421065",
+          "421254",
+          "421393",
+          "421397"
+        ],
+        "separate_target_capture_visit_ids": [
+          "381652",
+          "381650",
+          "421259",
+          "421252",
+          "421009",
+          "421006",
+          "421260"
+        ],
+        "source_manifest_sha256": "36fa8cd691c9c6d30418ad6a3c54e878ed21093c4aa35bdfcacf5526e97c8a38",
+        "source_code_sha256": "317680e3e4594201faedc11980f808459edc3f97edf2ac65dad615e94a299999",
+        "transform_records": [
+          {
+            "capture": "42444499",
+            "visit_id": "421065",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421065/42444499/42444499_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444499.npy",
+            "sha256": "00a8aa3b2526f6d5144aed642b7f3c588063d2bde47f723e0ef6e9a90f1cfcd7",
+            "wall_s": 2.64502460003132
+          },
+          {
+            "capture": "42444501",
+            "visit_id": "421065",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421065/42444501/42444501_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444501.npy",
+            "sha256": "28e08d139715cf9f951d1b3a62fca01d011f3afc739fe21c54fb40047c2c9dfa",
+            "wall_s": 3.110792900028173
+          },
+          {
+            "capture": "42444503",
+            "visit_id": "421065",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421065/42444503/42444503_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444503.npy",
+            "sha256": "063b28a7aa6c73e5620e1fcb3dabc0d7c19cb5c961a4be61c8e23543389a9786",
+            "wall_s": 3.398187299957499
+          },
+          {
+            "capture": "42444754",
+            "visit_id": "421254",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421254/42444754/42444754_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444754.npy",
+            "sha256": "7194d1c7524372dde792dcef74f9a11fc4d9f4f8475a2e5f532bab7f956ac565",
+            "wall_s": 2.6425629000295885
+          },
+          {
+            "capture": "42444755",
+            "visit_id": "421254",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421254/42444755/42444755_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444755.npy",
+            "sha256": "a1af0467892e17f309114a1b52610aab9092a51d6814d2a529a02934082c71ba",
+            "wall_s": 1.3926372999558225
+          },
+          {
+            "capture": "42444758",
+            "visit_id": "421254",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421254/42444758/42444758_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444758.npy",
+            "sha256": "856fa671c84e56c41f86d1871fc82327f1cac34d7db2af4187be7b58662904fd",
+            "wall_s": 1.570140999974683
+          },
+          {
+            "capture": "42444873",
+            "visit_id": "421002",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421002/42444873/42444873_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444873.npy",
+            "sha256": "e043cb8c713132f85d144cb24cd1f9efa9c4b4d4ec05e5b4bc2721888aaa1ea0",
+            "wall_s": 1.4457779999938793
+          },
+          {
+            "capture": "42444875",
+            "visit_id": "421002",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421002/42444875/42444875_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444875.npy",
+            "sha256": "39b1337ae08258669910c10a409d4cec829f8700df6a7b9107aff25b3b8355b0",
+            "wall_s": 1.9510522999917157
+          },
+          {
+            "capture": "42444876",
+            "visit_id": "421002",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421002/42444876/42444876_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444876.npy",
+            "sha256": "5ae0c0a17a9a9648bcb821a77c89e590b379e59ef44fff38ecfa18ff8ba8d87c",
+            "wall_s": 3.1107591000036336
+          },
+          {
+            "capture": "42444913",
+            "visit_id": "421397",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421397/42444913/42444913_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444913.npy",
+            "sha256": "079fe13968eaf7552ba99c6612035e1b826e993d4883ed9fd405207a16a73742",
+            "wall_s": 3.213509700028226
+          },
+          {
+            "capture": "42444916",
+            "visit_id": "421397",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421397/42444916/42444916_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444916.npy",
+            "sha256": "e7e49118840fd5349b23dffcfc2cd0a1cfc35198b1d3bb23a264f633867be0dd",
+            "wall_s": 1.7419294999563135
+          },
+          {
+            "capture": "42444917",
+            "visit_id": "421397",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421397/42444917/42444917_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444917.npy",
+            "sha256": "5c9fd426ceeb70997e7ebba763fdeeb4fc7f1472e3f544a76017ddf7e7616df7",
+            "wall_s": 3.3044339999905787
+          },
+          {
+            "capture": "42444923",
+            "visit_id": "421393",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421393/42444923/42444923_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444923.npy",
+            "sha256": "d5c73f1b003f0f46045cff425b309f295fde7c156da7dba07738db40ff520bae",
+            "wall_s": 1.3323527000029571
+          },
+          {
+            "capture": "42444924",
+            "visit_id": "421393",
+            "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/421393/42444924/42444924_refined_transform.npy",
+            "status": 200,
+            "head_bytes": 256,
+            "bytes": 256,
+            "path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\transforms\\42444924.npy",
+            "sha256": "47061537d142ba644b67df5c35de4e7cce1048aa0d13d51ffd589018ec8cb65f",
+            "wall_s": 1.4107728999806568
+          }
+        ],
+        "data_license_url": "https://scenefun3d.github.io/documentation/license/",
+        "scope": "21 captures only:12 target plus9 verified registered siblings;14 available highres siblings unregistered and not downloaded;one other capture no highres; not all36"
+      }
+    },
+    "source_seal.json": {
+      "sha256": "07ad2ba0a5355af8336516a433b732491b4604fff934db5a8aacb18aa7dc69ec",
+      "content": {
+        "source_manifest_sha256": "36fa8cd691c9c6d30418ad6a3c54e878ed21093c4aa35bdfcacf5526e97c8a38",
+        "plan_sha256": "ccf3a6e12040aa32ce4adae7967ce03fefb23b1bff8f358f74841b38ca87bc4a",
+        "status": "COMPLETE_ALL_TARGET_AND_REGISTERED_COMPONENTS"
+      }
+    },
+    "dataset_integrity.json": {
+      "sha256": "b697703c3385b10b5483dcb444365ae12441b9776201eddcb3c4458931c0b105",
+      "content": {
+        "status": "PASS",
+        "frames": 384,
+        "queries": 10368,
+        "manifest": {
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\dataset_manifest_v1_1.json",
+          "sha256": "f1d60791b643ba614bd36b2f99a056e813d5c7f8b91efbaa766b4e2a93a04bd0"
+        },
+        "unique_files_hashed": 5012,
+        "eval_payloads": "raw byte hashes only; input quality metadata only; no method array evaluation",
+        "elapsed_s": 3.6216580999898724
+      }
+    },
+    "eval_integrity_receipt.json": {
+      "sha256": "b698cb30bec5d435ef5b9f1032316008453f8aa9b1ca58e1a294c32fd1a9e8d8",
+      "content": {
+        "status": "SEALED",
+        "frames": 128,
+        "queries": 3456,
+        "visits": [
+          "421002",
+          "421260",
+          "421393",
+          "421397"
+        ],
+        "manifest": {
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\dataset_manifest_v1_1.json",
+          "sha256": "f1d60791b643ba614bd36b2f99a056e813d5c7f8b91efbaa766b4e2a93a04bd0"
+        },
+        "input_coverage": [
+          {
+            "role": "eval",
+            "arm": "faro_rho015_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 35,
+            "joint_frame_fraction": 0.2734375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.2421875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho015_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 34,
+            "joint_frame_fraction": 0.265625,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.25,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 39,
+            "joint_frame_fraction": 0.3046875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 41,
+            "joint_frame_fraction": 0.3203125,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient3",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 37,
+            "joint_frame_fraction": 0.2890625,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.234375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient3",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 36,
+            "joint_frame_fraction": 0.28125,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.265625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho060_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 51,
+            "joint_frame_fraction": 0.3984375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho060_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 51,
+            "joint_frame_fraction": 0.3984375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_circular_upper",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 32,
+            "joint_frame_fraction": 0.25,
+            "geometry_80zone_frames": 97,
+            "geometry_frame_fraction": 0.7578125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_circular_upper",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 32,
+            "joint_frame_fraction": 0.25,
+            "geometry_80zone_frames": 97,
+            "geometry_frame_fraction": 0.7578125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_perturbed",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 31,
+            "joint_frame_fraction": 0.2421875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.844879150390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_perturbed",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 31,
+            "joint_frame_fraction": 0.2421875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.844879150390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          }
+        ],
+        "query_metrics_computed": false,
+        "model_alarm_rates_computed": false
+      }
+    },
+    "coverage_summary.json": {
+      "sha256": "e5c10a62d43c2f1858af23e964fd967bdb736ced06a962626ef05213f709633b",
+      "content": {
+        "rows": [
+          {
+            "role": "all",
+            "arm": "faro_rho015_ambient1",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 85,
+            "joint_frame_fraction": 0.22135416666666666,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.21875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho015_ambient1",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 85,
+            "joint_frame_fraction": 0.22135416666666666,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.234375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho030_ambient1",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 103,
+            "joint_frame_fraction": 0.2682291666666667,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.359375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho030_ambient1",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 105,
+            "joint_frame_fraction": 0.2734375,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.359375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho030_ambient3",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 93,
+            "joint_frame_fraction": 0.2421875,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.234375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho030_ambient3",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 92,
+            "joint_frame_fraction": 0.23958333333333334,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.25,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho060_ambient1",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 119,
+            "joint_frame_fraction": 0.3098958333333333,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5234375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "faro_rho060_ambient1",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 118,
+            "joint_frame_fraction": 0.3072916666666667,
+            "geometry_80zone_frames": 184,
+            "geometry_frame_fraction": 0.4791666666666667,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.53125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.796875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8323974609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "native_circular_upper",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 110,
+            "joint_frame_fraction": 0.2864583333333333,
+            "geometry_80zone_frames": 320,
+            "geometry_frame_fraction": 0.8333333333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.53125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "native_circular_upper",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 112,
+            "joint_frame_fraction": 0.2916666666666667,
+            "geometry_80zone_frames": 320,
+            "geometry_frame_fraction": 0.8333333333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.53125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "native_perturbed",
+            "K": 0,
+            "frames": 384,
+            "joint_80zone_frames": 109,
+            "joint_frame_fraction": 0.2838541666666667,
+            "geometry_80zone_frames": 180,
+            "geometry_frame_fraction": 0.46875,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.484375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.765625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.80987548828125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "all",
+            "arm": "native_perturbed",
+            "K": 1,
+            "frames": 384,
+            "joint_80zone_frames": 110,
+            "joint_frame_fraction": 0.2864583333333333,
+            "geometry_80zone_frames": 180,
+            "geometry_frame_fraction": 0.46875,
+            "joint_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.765625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 384,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.80987548828125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho015_ambient1",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 46,
+            "joint_frame_fraction": 0.23958333333333334,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho015_ambient1",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 46,
+            "joint_frame_fraction": 0.23958333333333334,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho030_ambient1",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 57,
+            "joint_frame_fraction": 0.296875,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho030_ambient1",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 57,
+            "joint_frame_fraction": 0.296875,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho030_ambient3",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 50,
+            "joint_frame_fraction": 0.2604166666666667,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3359375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho030_ambient3",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 50,
+            "joint_frame_fraction": 0.2604166666666667,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.34375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho060_ambient1",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 61,
+            "joint_frame_fraction": 0.3177083333333333,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.578125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "faro_rho060_ambient1",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 60,
+            "joint_frame_fraction": 0.3125,
+            "geometry_80zone_frames": 103,
+            "geometry_frame_fraction": 0.5364583333333334,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.59375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.85723876953125,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "native_circular_upper",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 67,
+            "joint_frame_fraction": 0.3489583333333333,
+            "geometry_80zone_frames": 168,
+            "geometry_frame_fraction": 0.875,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.6328125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "native_circular_upper",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 68,
+            "joint_frame_fraction": 0.3541666666666667,
+            "geometry_80zone_frames": 168,
+            "geometry_frame_fraction": 0.875,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "native_perturbed",
+            "K": 0,
+            "frames": 192,
+            "joint_80zone_frames": 67,
+            "joint_frame_fraction": 0.3489583333333333,
+            "geometry_80zone_frames": 96,
+            "geometry_frame_fraction": 0.5,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5546875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8046875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.821746826171875,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "train",
+            "arm": "native_perturbed",
+            "K": 1,
+            "frames": 192,
+            "joint_80zone_frames": 67,
+            "joint_frame_fraction": 0.3489583333333333,
+            "geometry_80zone_frames": 96,
+            "geometry_frame_fraction": 0.5,
+            "joint_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8046875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 192,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.821746826171875,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho015_ambient1",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 4,
+            "joint_frame_fraction": 0.0625,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.03125,
+              "p90": 0.44218750000000084,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho015_ambient1",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 5,
+            "joint_frame_fraction": 0.078125,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.015625,
+              "p90": 0.443750000000001,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho030_ambient1",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 7,
+            "joint_frame_fraction": 0.109375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.0625,
+              "p90": 0.7062500000000012,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho030_ambient1",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 7,
+            "joint_frame_fraction": 0.109375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.0546875,
+              "p90": 0.7109375000000011,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho030_ambient3",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 6,
+            "joint_frame_fraction": 0.09375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.0234375,
+              "p90": 0.49687500000000107,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho030_ambient3",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 6,
+            "joint_frame_fraction": 0.09375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.015625,
+              "p90": 0.5625000000000013,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho060_ambient1",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 7,
+            "joint_frame_fraction": 0.109375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.15625,
+              "p90": 0.8015625000000008,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "faro_rho060_ambient1",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 7,
+            "joint_frame_fraction": 0.109375,
+            "geometry_80zone_frames": 16,
+            "geometry_frame_fraction": 0.25,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.1484375,
+              "p90": 0.8062500000000008,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3671875,
+              "p90": 0.890625,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.395416259765625,
+              "p90": 0.92384033203125,
+              "maximum": 0.99969482421875
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "native_circular_upper",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 11,
+            "joint_frame_fraction": 0.171875,
+            "geometry_80zone_frames": 55,
+            "geometry_frame_fraction": 0.859375,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.390625,
+              "p90": 0.9656250000000002,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "native_circular_upper",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 12,
+            "joint_frame_fraction": 0.1875,
+            "geometry_80zone_frames": 55,
+            "geometry_frame_fraction": 0.859375,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4453125,
+              "p90": 0.9593750000000001,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "native_perturbed",
+            "K": 0,
+            "frames": 64,
+            "joint_80zone_frames": 11,
+            "joint_frame_fraction": 0.171875,
+            "geometry_80zone_frames": 19,
+            "geometry_frame_fraction": 0.296875,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.328125,
+              "p90": 0.9546875000000001,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.6171875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.702056884765625,
+              "p90": 0.9992919921875,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "cal",
+            "arm": "native_perturbed",
+            "K": 1,
+            "frames": 64,
+            "joint_80zone_frames": 12,
+            "joint_frame_fraction": 0.1875,
+            "geometry_80zone_frames": 19,
+            "geometry_frame_fraction": 0.296875,
+            "joint_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.359375,
+              "p90": 0.953125,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.6171875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 64,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.702056884765625,
+              "p90": 0.999346923828125,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho015_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 35,
+            "joint_frame_fraction": 0.2734375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.2421875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho015_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 34,
+            "joint_frame_fraction": 0.265625,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.25,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 39,
+            "joint_frame_fraction": 0.3046875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 41,
+            "joint_frame_fraction": 0.3203125,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.3984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient3",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 37,
+            "joint_frame_fraction": 0.2890625,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.234375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho030_ambient3",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 36,
+            "joint_frame_fraction": 0.28125,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.265625,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho060_ambient1",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 51,
+            "joint_frame_fraction": 0.3984375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "faro_rho060_ambient1",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 51,
+            "joint_frame_fraction": 0.3984375,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.859375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.879486083984375,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_circular_upper",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 32,
+            "joint_frame_fraction": 0.25,
+            "geometry_80zone_frames": 97,
+            "geometry_frame_fraction": 0.7578125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.5,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_circular_upper",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 32,
+            "joint_frame_fraction": 0.25,
+            "geometry_80zone_frames": 97,
+            "geometry_frame_fraction": 0.7578125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 1.0,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_perturbed",
+            "K": 0,
+            "frames": 128,
+            "joint_80zone_frames": 31,
+            "joint_frame_fraction": 0.2421875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4609375,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.844879150390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          },
+          {
+            "role": "eval",
+            "arm": "native_perturbed",
+            "K": 1,
+            "frames": 128,
+            "joint_80zone_frames": 31,
+            "joint_frame_fraction": 0.2421875,
+            "geometry_80zone_frames": 65,
+            "geometry_frame_fraction": 0.5078125,
+            "joint_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.4296875,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "geometry_zone_fraction_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.8203125,
+              "p90": 1.0,
+              "maximum": 1.0
+            },
+            "subray_coverage_distribution": {
+              "n": 128,
+              "minimum": 0.0,
+              "p10": 0.0,
+              "median": 0.844879150390625,
+              "p90": 1.0,
+              "maximum": 1.0
+            }
+          }
+        ],
+        "primary_gate": {
+          "role": "all",
+          "arm": "faro_rho030_ambient1",
+          "K": 0,
+          "frames": 384,
+          "joint_80zone_frames": 103,
+          "joint_frame_fraction": 0.2682291666666667,
+          "geometry_80zone_frames": 184,
+          "geometry_frame_fraction": 0.4791666666666667,
+          "joint_zone_fraction_distribution": {
+            "n": 384,
+            "minimum": 0.0,
+            "p10": 0.0,
+            "median": 0.359375,
+            "p90": 1.0,
+            "maximum": 1.0
+          },
+          "geometry_zone_fraction_distribution": {
+            "n": 384,
+            "minimum": 0.0,
+            "p10": 0.0,
+            "median": 0.796875,
+            "p90": 1.0,
+            "maximum": 1.0
+          },
+          "subray_coverage_distribution": {
+            "n": 384,
+            "minimum": 0.0,
+            "p10": 0.0,
+            "median": 0.8323974609375,
+            "p90": 1.0,
+            "maximum": 1.0
+          },
+          "PASS": false
+        },
+        "input_validity_only": true
+      }
+    },
+    "independent_audit.json": {
+      "sha256": "0f65bbdc23efcb3cfb0864d5fdeb49c885ef43a72dd26198f497dd462830d882",
+      "content": {
+        "download_bytes": 0,
+        "scope": "Full input checks, source provenance and surface structural checks; all train/cal table aggregation and fixed8-frame pixel sample; full51 input geometry pooled recomputation; frozen summary aggregation",
+        "CPU_budget_s": 250,
+        "receipts": [
+          {
+            "file": "independent_preflight.json",
+            "sha256": "360d5d2330f89a1a6de31ee9de047d962af7be5e1d4aa11011c76542edda2163",
+            "status": "PASS"
+          },
+          {
+            "file": "independent_input_audit.json",
+            "sha256": "898e55d6011fd04683bd6f9086010a588940f7961a07fc2e19d266352edf361e",
+            "status": "PASS"
+          },
+          {
+            "file": "independent_geometry_consistency_pooled.json",
+            "sha256": "a0b3ed8fa8f3e548bde3d8ed7d2832dc0e05399facd6a6a8c74c9c255cf742de",
+            "status": "PASS"
+          },
+          {
+            "file": "independent_methods_audit.json",
+            "sha256": "b28c289c0a966d988616b8ab3f00a7256be0579961e59750a4280945755bd671",
+            "status": "PASS"
+          },
+          {
+            "file": "independent_frozen_summary_audit.json",
+            "sha256": "e23bce3fec1bc76b428d9334a55c2c921f18c5bb6e90b3f57158acd8557923b0",
+            "status": "PASS"
+          },
+          {
+            "file": "report_review_audit.json",
+            "sha256": "71b75fe343c9acf864d201f187a7895e0617b1471bfa2f9aeb95492db4fd8d41",
+            "status": "PASS"
+          }
+        ],
+        "eval_scope": "Eval CNH and input geometry decoded solely for authorized input validity/self-consistency; no eval query/model output used for method scoring or residual fitting",
+        "CPU_command_wall_conservative_upper_s": 75,
+        "status": "PASS",
+        "GPU_s": 0
+      }
+    },
+    "independent_input_audit.json": {
+      "sha256": "898e55d6011fd04683bd6f9086010a588940f7961a07fc2e19d266352edf361e",
+      "content": {
+        "status": "PASS",
+        "elapsed_s": 15.922611000016332,
+        "frames": 384,
+        "input_arm_noise_rows_recomputed": 4608,
+        "primary_gate": {
+          "frames": 384,
+          "geometry_80zone_frames": 184,
+          "joint_80zone_frames": 103,
+          "PASS": false
+        },
+        "surfaces": [
+          {
+            "capture": "41048247",
+            "voxels": 34279,
+            "frames_used": 45,
+            "min_support": 1,
+            "max_support": 26,
+            "allowed_captures": [
+              "41048247"
+            ]
+          },
+          {
+            "capture": "41048262",
+            "voxels": 301992,
+            "frames_used": 761,
+            "min_support": 1,
+            "max_support": 105,
+            "allowed_captures": [
+              "41048262"
+            ]
+          },
+          {
+            "capture": "42444499",
+            "voxels": 483401,
+            "frames_used": 835,
+            "min_support": 1,
+            "max_support": 125,
+            "allowed_captures": [
+              "42444499",
+              "42444501",
+              "42444503"
+            ]
+          },
+          {
+            "capture": "42444748",
+            "voxels": 252860,
+            "frames_used": 150,
+            "min_support": 1,
+            "max_support": 33,
+            "allowed_captures": [
+              "42444748"
+            ]
+          },
+          {
+            "capture": "42444754",
+            "voxels": 305049,
+            "frames_used": 738,
+            "min_support": 1,
+            "max_support": 199,
+            "allowed_captures": [
+              "42444754",
+              "42444755",
+              "42444758"
+            ]
+          },
+          {
+            "capture": "42444762",
+            "voxels": 275345,
+            "frames_used": 342,
+            "min_support": 1,
+            "max_support": 84,
+            "allowed_captures": [
+              "42444762"
+            ]
+          },
+          {
+            "capture": "42444858",
+            "voxels": 250636,
+            "frames_used": 151,
+            "min_support": 1,
+            "max_support": 46,
+            "allowed_captures": [
+              "42444858"
+            ]
+          },
+          {
+            "capture": "42444866",
+            "voxels": 43022,
+            "frames_used": 8,
+            "min_support": 1,
+            "max_support": 5,
+            "allowed_captures": [
+              "42444866"
+            ]
+          },
+          {
+            "capture": "42444873",
+            "voxels": 762809,
+            "frames_used": 441,
+            "min_support": 1,
+            "max_support": 126,
+            "allowed_captures": [
+              "42444873",
+              "42444875",
+              "42444876"
+            ]
+          },
+          {
+            "capture": "42444891",
+            "voxels": 860675,
+            "frames_used": 312,
+            "min_support": 1,
+            "max_support": 90,
+            "allowed_captures": [
+              "42444891"
+            ]
+          },
+          {
+            "capture": "42444913",
+            "voxels": 133152,
+            "frames_used": 487,
+            "min_support": 1,
+            "max_support": 159,
+            "allowed_captures": [
+              "42444913",
+              "42444916",
+              "42444917"
+            ]
+          },
+          {
+            "capture": "42444923",
+            "voxels": 221956,
+            "frames_used": 531,
+            "min_support": 1,
+            "max_support": 91,
+            "allowed_captures": [
+              "42444923",
+              "42444924"
+            ]
+          }
+        ],
+        "near_subray_hits": 962083,
+        "unknown_subrays": 2109616,
+        "source_frames": 4827,
+        "surface_used_frames": 4801,
+        "residual_fit_frames": 18,
+        "eval_residual_fit_frames": 0,
+        "eval_query_method_payloads_opened": 0,
+        "scope": "All4608CNH input coverage/SNR and hashes incl authorized eval input integrity; no eval query or model metrics"
+      }
+    },
+    "independent_methods_audit.json": {
+      "sha256": "b28c289c0a966d988616b8ab3f00a7256be0579961e59750a4280945755bd671",
+      "content": {
+        "status": "PASS",
+        "elapsed_s": 5.89358719997108,
+        "all_table_rows_aggregated": 497664,
+        "compact_rows_checked": 288,
+        "pixel_rows_recomputed": 15552,
+        "selected_frame_ids": [
+          "41048247_0_005",
+          "41048262_0_004",
+          "42444499_0_004",
+          "42444748_0_003",
+          "42444754_0_004",
+          "42444762_0_004",
+          "42444858_0_004",
+          "42444866_0_005"
+        ],
+        "sampling": "First source-available frame of each train/cal visit; all6arms xK2 x27queries x6methods",
+        "eval_query_method_payloads_opened": 0
+      }
+    },
+    "independent_geometry_consistency_pooled.json": {
+      "sha256": "a0b3ed8fa8f3e548bde3d8ed7d2832dc0e05399facd6a6a8c74c9c255cf742de",
+      "content": {
+        "status": "PASS",
+        "frames": 51,
+        "split_frames": {
+          "train": 14,
+          "cal": 4,
+          "eval": 33
+        },
+        "rows": [
+          {
+            "role": "all",
+            "band": "0.3-0.8m",
+            "paired_pixels": 727810,
+            "median_signed_m": -0.00900377662292895,
+            "median_abs_m": 0.00901185420422329,
+            "p90_abs_m": 0.02234172292842048
+          },
+          {
+            "role": "all",
+            "band": "0.3-3m_all_bands",
+            "paired_pixels": 2146136,
+            "median_signed_m": -0.017796995715602948,
+            "median_abs_m": 0.01779748191388797,
+            "p90_abs_m": 0.792931684282548
+          },
+          {
+            "role": "all",
+            "band": "0.8-1.5m",
+            "paired_pixels": 995100,
+            "median_signed_m": -0.021161567083188726,
+            "median_abs_m": 0.021162298605405472,
+            "p90_abs_m": 0.5303241275805819
+          },
+          {
+            "role": "all",
+            "band": "1.5-3m",
+            "paired_pixels": 423226,
+            "median_signed_m": -0.15662911950110636,
+            "median_abs_m": 0.1566360259226922,
+            "p90_abs_m": 2.1002828188828078
+          },
+          {
+            "role": "cal",
+            "band": "0.3-0.8m",
+            "paired_pixels": 92823,
+            "median_signed_m": -0.007971700192641928,
+            "median_abs_m": 0.00797290847425014,
+            "p90_abs_m": 0.042064513671945754
+          },
+          {
+            "role": "cal",
+            "band": "0.3-3m_all_bands",
+            "paired_pixels": 176249,
+            "median_signed_m": -0.008090343924244514,
+            "median_abs_m": 0.00809161158919569,
+            "p90_abs_m": 0.08435547393301791
+          },
+          {
+            "role": "cal",
+            "band": "0.8-1.5m",
+            "paired_pixels": 74539,
+            "median_signed_m": -0.008115973598378678,
+            "median_abs_m": 0.008116821298067123,
+            "p90_abs_m": 0.3700078134238212
+          },
+          {
+            "role": "cal",
+            "band": "1.5-3m",
+            "paired_pixels": 8887,
+            "median_signed_m": -0.008663135650686993,
+            "median_abs_m": 0.008663135650686993,
+            "p90_abs_m": 0.013976040024162377
+          },
+          {
+            "role": "eval",
+            "band": "0.3-0.8m",
+            "paired_pixels": 467227,
+            "median_signed_m": -0.016731818311658708,
+            "median_abs_m": 0.016731818311658708,
+            "p90_abs_m": 0.022960077094012602
+          },
+          {
+            "role": "eval",
+            "band": "0.3-3m_all_bands",
+            "paired_pixels": 1387970,
+            "median_signed_m": -0.023502163036528745,
+            "median_abs_m": 0.023502587150114607,
+            "p90_abs_m": 1.202877731565727
+          },
+          {
+            "role": "eval",
+            "band": "0.8-1.5m",
+            "paired_pixels": 589297,
+            "median_signed_m": -0.031589172273100985,
+            "median_abs_m": 0.03159015458886105,
+            "p90_abs_m": 0.7874197343017179
+          },
+          {
+            "role": "eval",
+            "band": "1.5-3m",
+            "paired_pixels": 331446,
+            "median_signed_m": -0.6493297847697537,
+            "median_abs_m": 0.6493297847697537,
+            "p90_abs_m": 2.257099343416482
+          },
+          {
+            "role": "train",
+            "band": "0.3-0.8m",
+            "paired_pixels": 167760,
+            "median_signed_m": 0.00017087842829827116,
+            "median_abs_m": 0.002160602618192564,
+            "p90_abs_m": 0.011944597499812732
+          },
+          {
+            "role": "train",
+            "band": "0.3-3m_all_bands",
+            "paired_pixels": 581917,
+            "median_signed_m": -0.00817711440060287,
+            "median_abs_m": 0.008243898487685142,
+            "p90_abs_m": 0.03741691288090881
+          },
+          {
+            "role": "train",
+            "band": "0.8-1.5m",
+            "paired_pixels": 331264,
+            "median_signed_m": -0.009791383941123777,
+            "median_abs_m": 0.009800389226358508,
+            "p90_abs_m": 0.036374634710427275
+          },
+          {
+            "role": "train",
+            "band": "1.5-3m",
+            "paired_pixels": 82893,
+            "median_signed_m": -0.02324147468762061,
+            "median_abs_m": 0.023248029152716176,
+            "p90_abs_m": 0.16502834252200976
+          }
+        ],
+        "elapsed_s": 13.53808680002112,
+        "scope": "Pooled pixel-level reconstruction self-consistency on original51 source frames, includingeval inputgeometry; source frames contributed to reconstruction, not independent accuracy or query/method evaluation",
+        "eval_query_method_payloads_opened": 0
+      }
+    },
+    "report_review_audit.json": {
+      "sha256": "71b75fe343c9acf864d201f187a7895e0617b1471bfa2f9aeb95492db4fd8d41",
+      "content": {
+        "status": "PASS",
+        "report_sha256": "69e44ea5e50166faeaf840d677b199507f552e8132ae2476912054a1caecd5f2",
+        "method_cells": 216,
+        "frozen_cells": 32,
+        "elapsed_s": 0.004522799979895353,
+        "text_review": "80/80FAIL103of384; geometry184; original51pooled long tails;5wholevisit7components;eval input-only and residual18; no parameter relaxation; budgets within caps",
+        "eval_query_method_payloads_opened": 0
+      }
+    },
+    "surface_synthesis_description_accounting.json": {
+      "sha256": "575281d2c9c0c2b2e871d3bd134afcb26d296329f2801b8cc953796dc8c5e326",
+      "content": {
+        "CPU_command_wall_s_conservative_upper": 700,
+        "first_surface_probe_command_wall_s": 4.0697254,
+        "rolling_surface_internal_s": 112.94652679999126,
+        "main_internal_s": 351.35507920000236,
+        "near_and_description_internal_s": 183.48084120004205,
+        "all_other_commands_and_startup_upper_s": 48.14782739996433,
+        "GPU_s": 0,
+        "new_download_bytes_by_this_agent": 0,
+        "scientific_failures": [],
+        "repeated_scientific_runs": 0,
+        "surface_cache_reuse": "Same-run seven no-transform components created once then reused after full-source-frame ID set and sha check; no scientific recomputation",
+        "budget_allocation_s": 1100,
+        "source_code_final_sha256": "e27c4a41b94b77b0aaa7734748567cf831c688057e4d90ba6c71ac6396622f4e",
+        "main_source_provenance": "main_execution_source_lineage.json honestly retrospective full-file reconstruction; scientific function AST unchanged",
+        "description_source_provenance": "description_execution_source_receipt.json preimport hash; exact copied file executed"
+      }
+    },
+    "frozen_budget_receipt.json": {
+      "sha256": "e39e1f1ac57443fbefb4f96575914ef8b6a46014c583fa8990b2a8362bbd52ce",
+      "content": {
+        "status": "COMPLETE_WITH_MISSING_WINDOW_LIMIT",
+        "CPU_command_wall_charged_s": 10,
+        "CPU_budget_s": 80,
+        "CPU_accounting": "Conservative10s includes all setup/read/AST/scope-receipt/summary/resource-check/final-delivery commands; observed shell calls before this receipt sum<5s. No expensiveCPU calculation outside GPU invocation.",
+        "GPU_command_wall_s": 100.6814729,
+        "GPU_budget_s": 550,
+        "GPU_resources_released": "Owned subprocess completed; nvidia-smi process names contain noPython",
+        "RGB": "REUSED_V1_NO_INFERENCE",
+        "eval": "NOT_RUN_INPUT_INTEGRITY_ONLY: role filtered before CNHpayload read/forward",
+        "model_sequences": 64,
+        "missing_source_or_pose_sequences_NOT_RUN": 64,
+        "original_query_unit": "HEAD/BODY two corridors; no27query mapping, no accuracy claim",
+        "noise_unit": "K2 related noise repeats, not independent scenes",
+        "wrapper_sha256": "406b8753a886e6eb889fc9525a5fb56fe2d05becb2a5599956dee179ec0532de",
+        "unchanged_v1_adapter_sha256": "166eb328e11f0d5540875e690db3caa0a316ba0a063925cfb1382a1a516c177a",
+        "summary_path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\frozen_inference\\train_cal_summary.json"
+      }
+    },
+    "resource_accounting.json": {
+      "sha256": "ed333b60c97867446efa04ab08e8e26a774786ec9ecb66b8ed05bdb6b0eff4bc",
+      "content": {
+        "CPU_command_wall_conservative_upper_s": 1300,
+        "components_upper_s": {
+          "source_including_coordinate_followup": 270,
+          "surface_synthesis_description": 700,
+          "frozen_setup": 20,
+          "independent_audit": 120,
+          "primary_integration_delivery": 190
+        },
+        "CPU_cap_s": 2400,
+        "GPU_command_wall_s": 100.6814729,
+        "GPU_cap_s": 600,
+        "download_bytes": 1916063998,
+        "download_cap_bytes": 3000000000,
+        "resources": "all task source/synthesis/description/frozen Python processes complete; GPU released",
+        "budgets_not_exhausted": true
+      }
+    },
+    "clarifications.json": {
+      "sha256": "97ad32aeee41a67bcf7d7f0a65790c07b9217460e56c1a8adf741ffd6b9de5b3",
+      "content": {
+        "original_PLAN_unchanged": true,
+        "clarifications": [
+          "80/80 computed as fixed CNH input validity only on eval (coverage and peak SNR); no query support, witness/FREE or M3/S alarm aggregation. Geometry-only necessary condition is separately reported.",
+          "Original51-frame geometry check includes source frames used in reconstruction; this measures reconstruction consistency, not independent geometric accuracy.",
+          "Only original18 train/cal frames estimate signed FARO-LiDAR perturbation distribution; eval33 remain excluded from fit.",
+          "Existing64 missing grid pose frames retained UNKNOWN: nominal upper bound320/384 renderable frames before any surface or SNR loss.",
+          "Before M3/S execution, scope limited to train+cal four FARO arms K2; eval is NOT_RUN_INPUT_INTEGRITY_ONLY, matching this task eval-only-integrity requirement. No new eval model raw outputs needed."
+        ],
+        "pose_counts": {
+          "train": 24,
+          "cal": 9,
+          "eval": 31
+        },
+        "same_v1_splits": true
+      }
+    },
+    "main_execution_source_lineage.json": {
+      "sha256": "f74a4223b4eda9902832759973d40ebfbeab6cd532285080f801fd4c3e5877c7",
+      "content": {
+        "status": "RETROSPECTIVE_SOURCE_RECONSTRUCTION_NOT_PRELAUNCH_HASH",
+        "reconstructed_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-rgb-tof-dataset-v1-1-dev-20261011\\main_start_source_reconstructed.py",
+        "reconstructed_sha256": "20e13f38d3d3a5c329f35d4f553b611ffb6fcd4d2b1152047d2a3fc163439238",
+        "limitation": "No prelaunch full-file byte hash was captured. Reconstructed from known postlaunch-only edits: compact_v11 and near_reference_diagnostic additions, and description CSV suffix rename. Scientific main functions were not edited after launch.",
+        "scientific_function_AST_sha256": {
+          "voxel_key": "673f4c229d4ba898052a0a4eb4b70cd19ae0963e2d04f233e798e9774b3f10df",
+          "fuse": "755d28566c006bfdeefa217ab09cc6adf705164b22ab6b0ca814a0cc68aea764",
+          "render": "9ba1b0df3e72453e5ee6d2dd83a0ca55466a926fe0923723a6350c23bb7d73e2",
+          "fit_residual": "768c7824c7663ed53b067a1278194dd58ce9e8c95272720a3261e43005a57195",
+          "perturb": "fed310b5ed4ef45cee095d81e883212758784f8968bfad1c15323ae4c2bf6be1",
+          "synthesize": "862a81efdf04c85d39133305e8826ec62dfb5d80629dc09d96388a6e21b84266",
+          "geometry_consistency": "5a91d5b6b8846e84c86294185f24f4d706a9a895b21a81c1dbe904b8fc57848b",
+          "main": "1092d91b8e10443157300e4f4b510f6e3602cc4fe4fdba94c3523dd9fd50c8b5"
+        },
+        "scientific_function_AST_unchanged_vs_current": true
+      }
+    },
+    "circular_exact_parity.json": {
+      "sha256": "cb725d61539f401dc063c25b42a860140479bda6afcd88aa481c5d88c2a4cb48",
+      "content": {
+        "checked_frames_times_K": 768,
+        "status": "PASS",
+        "arrays": [
+          "hist",
+          "ambient",
+          "counts",
+          "background",
+          "coverage"
+        ]
+      }
+    }
+  }
+}

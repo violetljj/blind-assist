@@ -1,0 +1,87 @@
+{
+  "task": "SYNC_RGB_TOF_DATASET_V1_1_DEV_20261011",
+  "parent": "bebade38069f03c520001d10203415521f4d98af",
+  "created_utc": "2026-10-10T16:33:14.029230+00:00",
+  "lane": "EXPLORE_DATA_CONSTRUCTION_NO_TRAINING",
+  "budgets": {
+    "CPU_command_wall_s": 2400,
+    "GPU_s": 600,
+    "download_bytes": 3000000000
+  },
+  "CPU_allocation": {
+    "source": 650,
+    "surface_synthesis_description": 1100,
+    "frozen_setup": 80,
+    "independent_audit": 250,
+    "primary": 320
+  },
+  "source": {
+    "visits": "exact v1 12 visits; splits/windows unchanged",
+    "scope": "inventory every metadata capture for each visit; HEAD all available highres/intrinsics/trajectory assets before download; train/cal first then eval if byte/time budget fits",
+    "coordinates": "merge cross capture only with official shared-world or transform evidence; otherwise retain separate components and render target-capture component only, report incomplete whole-visit registration",
+    "native_fill": false,
+    "missing_pose": "no extrapolation; retain UNKNOWN; source frame outside trajectory omitted with receipt"
+  },
+  "surface": {
+    "voxel_m": 0.02,
+    "surfel_radius_m": 0.02,
+    "input_stride_xy": 4,
+    "input_stride_origin_xy": [
+      0,
+      0
+    ],
+    "voxel_position": "mean of contributing world points",
+    "provenance": "number of unique source frame IDs per voxel",
+    "render": "256x192 pinhole front-facing circular camera-plane surfel splat, optical-Z nearest-depth zbuffer; no hole filling",
+    "all_available_frames": true
+  },
+  "synthesis": {
+    "model": "v1 frozen expected photon return plus Skellam and ambient",
+    "FOV_deg": 45,
+    "zones": [
+      8,
+      8
+    ],
+    "bins": 16,
+    "bin_m": 0.3002784,
+    "subrays_per_zone": [
+      16,
+      16
+    ],
+    "arms": [
+      "faro_rho030_ambient1",
+      "faro_rho015_ambient1",
+      "faro_rho060_ambient1",
+      "faro_rho030_ambient3",
+      "native_perturbed",
+      "native_circular_upper"
+    ],
+    "K": 2,
+    "seed": "v1 SeedSequence([20261011,accepted_visit_ordinal,window_index,frame_index,noise_index]); paired across arms"
+  },
+  "readout": "exact v1 seal bytes; SNR>=3, coverage>=.75, support>=16pixel; frozen pooled304 RGB reused",
+  "coverage_gate": {
+    "fraction_grid_frames": 0.8,
+    "fraction_zones": 0.8,
+    "zone_pass": "v1 coverage>=.75 AND noisy peak SNR>=3; main rho.3 ambient1 K0 primary; report K1 and all arms too",
+    "integer_frame_requirement": 308,
+    "integer_zones_per_frame": 52,
+    "denominator": 384,
+    "missing_frames": "retained as failure; no threshold relaxation"
+  },
+  "geometry_checks": {
+    "original_51": "input geometry consistency comparison only, no model outcomes; keep train/cal and eval input checks separate",
+    "near_coverage": "subrays optical-Z .3-.8m hit counts and unknown counts; unknown distance cannot be assigned near band without reference",
+    "residual_fit": "train+cal original18 effective frames only; eval33 NEVER fit noise distribution",
+    "residual_reason": "51 total includes sealed eval; fitting on it would violate visit train/cal/eval isolation",
+    "residual_distribution": "signed registered FARO minus native optical-Z at finite paired pixels, empirical by fixed bands [.3,.8),[.8,1.5),[1.5,3]; independent deterministic per-pixel resampling, no tuning, nonpositive invalid; outside bands UNKNOWN",
+    "residual_seed": "SeedSequence([20261011,1101,accepted_visit_ordinal,window_index,frame_index,noise_index])"
+  },
+  "evaluation": {
+    "train_cal": "6 arms x K2 x fixed ToF/RGB/OR/AND by27queries; original v1 native reference and RGB predictions reused",
+    "common_subset": "all arm input source and grid/RGB pose valid; determined before model outcome; also disclose per-zone missingness",
+    "eval": "inputs only integrity frames/coverage/hash; no method query metrics or alarm rates",
+    "M3_S": "frozen continuous16frames on merged FARO, valid complete windows only; HEAD/BODY descriptive, no contact accuracy"
+  },
+  "decision_check": "v1 only51/384 registered FARO; target308/384 frames each52/64 passing zones; coverage pass does not prove real ToF or justify threshold tuning; failure retains v1.1 partial source. Static 2.5D reconstruction shares official filtered-source bias."
+}
