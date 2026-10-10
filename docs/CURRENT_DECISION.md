@@ -2,7 +2,7 @@
 
 更新：2026-10-10。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线：[距离分布与查询读出](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_INTERVAL_DISTRIBUTION_DEV_20261010.md)。新query-independent log-Z分布/解析CDF与后验点深度读出完成，两网络原train1591791点、同初始化600步，仅原cal16/27query选阈值；6臂136帧3672query。新3RScan CDF正见证701/866 vs匹配cal几何555/866，救/损154/8但free射线误支持.111096 vs.097548；点读出675/866、.100255。追加ARKit点读出仍free73/220、79/247 vs几何12/220、10/247，不支持把退化整体归σ/CDF，未形成稳定跨相机候选。原cal只有2个strictfree子盒，百万free query-ray不代替query误报校准；下一补query级负参考并拆点深度迁移/覆盖/工作点。22032新记录与冻结/partition核验通过，GPU40.538s、CPU保守660s，下载0、任务释放；旧head/32臂不续训、575有限相关free/UNKNOWN/真实硬目标/同源锚点/完整身体细障碍步行第三硬件缺口与CNH预算保留。
+RGB独立子线：[点迁移与查询校准](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_MIGRATION_DIAGNOSTIC_DEV_20261010.md)。冻结缓存点迁移与三折query级cal探针完成，无训练/推理/下载。152帧5301769匹配点，新3RScan点MALE .282250 vsaffine .301547；追加ARKit整体ratio .812/.775但近/远带偏移不同，不定位单一尺度或硬件原因。另两capture严格sampledFREE按5%经验比例cal后，depth点FREE 73/220、79/247→11/220、27/247，正见证171/202、165/179→67/202、74/179，同折affine120/202、131/179；迁移支持率并未稳定5%，当前配方不升级。下一检验几何主干受约束残差（实施提议）并补跨环境query负cal/新相机/完整身体细障碍步行参考。相关mask/分母/分数与冻结核验通过，CPU保守490/1200s，GPU/下载0，故障和计时缺口留证、任务释放。已消费同相机家族/有限相关FREE不证明整盒空闲；旧阈值/head32停止配方、真实硬目标与CNH预算保留；前文见Git53bb1069。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
