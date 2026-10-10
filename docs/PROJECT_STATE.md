@@ -18,7 +18,7 @@ RGB独立子线：[点迁移与查询校准](../research/active/dtr-r0/nearfield
 
 目标回到ToF任务收益与分级提醒：明显风险给强提醒，接触/擦边难分时允许轻提醒；不把精确分界作为继续推进的前提。分级只依据运行时可见的分数与证据质量，真值仅评价；弱证据保留不确定含义。重点是弱/细目标证据在投影、累积和完整bin读出中的保留，以及分级能否增加有用及时提醒。强/轻提醒分别报告接触检出、完整救/损、pass与clear clip/slot成本，强转轻也单列；轻提醒可接受但打扰成本不记为零，不设零损失门槛。共向假设不替代外参、时钟或空间投影核验。
 
-[公共走廊峰与分级成本](../research/active/dtr-r0/nearfield/CNH_GRADED_CORRIDOR_DEV_20261010.md)完成88项空间证据、108线性与72浅层交互单元。强档ordinary OR保留，完整single轻档继续作参照；空间交互有HEAD/pass收益线索，但seed956 BODY损失明显，当前不默认采用过滤/静默。仅分数75% filter的pass149/168/158→140/146/143各/256，损5/8/6及时接触，额外时序推迟见报告。下一优先HEAD/BODY分别评分、校准和定预算，再检验距离峰断续支持。数值复算通过，CPU特征/分析各保守90s，GPU基准17.344s；无常驻资源。仅已消费模拟Development、小评分cal拟合、未接入App，无主干重训/前向/新采样。原M3/5格/L2/body truth/fullbin/480、weak_pass及旧stop保留。
+[按高度评分与校准](../research/active/dtr-r0/nearfield/CNH_GRADED_HEIGHT_CAL_DEV_20261010.md)完成288单元；分别评分恢复部分BODY，空间filter50对共享评分BODY救/损8/3、22/1、0/8，pass106/125/130各/256，clear70/74/72各/6656。完整single轻档和ordinary OR强档保留参照，按高度评分保留候选，不默认硬分预算/静默；下一距离峰跟踪与断续支持。288指标/144校准/442368事件及强档独立复算通过，CPU保守90/600s、GPU0，无常驻资源。仅已消费模拟Development、小评分cal拟合、未接入App，无主干重训/前向/新采样。原M3/5格/L2/body truth/fullbin/480、weak_pass及旧stop保留。
 
 已完成的[步行参考](../research/active/dtr-r0/nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)、[方向合同](../research/active/dtr-r0/nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)和全部方向聚合/锚定/高度混合结果作为历史诊断保留，不再驱动本阶段主线。步行参考的18–20°是过去/未来轨迹差异，非ToF姿态精度；单位/名义时钟限制仍按原报告。更新前CNH当前正文见Git 53bb1069同路径。
 
