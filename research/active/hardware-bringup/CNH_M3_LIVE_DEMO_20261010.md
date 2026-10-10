@@ -26,6 +26,10 @@
 
 证据为`browser-preview-before.json`、`browser-preview-after.json`（初版短时）、`browser-raf-throttling.json`、`browser-preview-direct-draw.json`、`browser-compositor-direct-draw.json`及`fake-camera-canvas-*-check.log`。第五会话加载新JPEG头，最终网页脚本按文件热加载；`viewer-final/`保留降频版本与最终源码。沿用参照和原第四会话的20:13到期时间，未改变模型、阈值、固件或Wi-Fi配置。
 
+用户随后授权继续优化，改为同源`/api/camera.mjpeg`持续MJPEG传输，替代反复请求单张JPEG。后端按新帧条件通知，每个订阅者只取最新帧；慢客户端写超时2秒，结束连接，不拖住相机采集。网页模块`host/m3_camera_view.js`增量解析分片，读取与解码分开，最多一个解码任务和一个可覆盖的待处理新帧；校验boot/序号/长度/接收时龄，断流取消reader、丢弃旧解码结果、释放位图并自动重连。分数仍250ms独立刷新。超龄检查使用同台电脑的主机发送时间和浏览器时钟，只衡量接收至更新新鲜度，不是设备曝光到提示延迟。保留原JPEG接口供检查，页面不再使用它循环取图。
+
+新持续流Python5组、前端6组合成检查通过，覆盖新帧唤醒、跳过中间帧、过期/结束释放、任意分片、长度界限、慢解码覆盖、EOF重连及旧回调取消。实际网页第一段11.008秒更新207帧、18.805fps，一个持续连接；持续运行超过60秒后，14.136秒更新363帧、25.679fps，全程同一个连接、90次采样无隐藏画面，末接收26.6fps/页面滚动26.3fps。两段源速率不同，不作为相等输入下的因果提升对照，也不承诺固定帧率。通过浏览器临时offline1600ms验证：旧画面隐藏，恢复网络后自动建立第二个连接，ToF和M3继续运行；没有改路由器或设备网络。第六会话沿用记录参照，开始于21:04，默认22:04到期或页面结束；第五会话已按原限到时释放。证据为`browser-mjpeg-first.json`、`browser-mjpeg-sustained.json`、`browser-mjpeg-network-recovery.json`、`fake-camera-stream-first-check.log`、`fake-camera-mjpeg-first-check.log`及`live-session-06/`。
+
 页面“切换相机 Wi-Fi”填写目标2.4GHz网络，并选择手动输入密码或显式复用电脑某个已保存网络的密码。配置只发送给串号匹配的Atom，不占用COM5；密码不进入状态、日志或网页存储。后台异步读取电脑密码和写USB，避免阻塞CNH采集。保存回执与联网回执、真实画面分别确认，未联网不显示成功。成功或失败均关闭配置串口；相机保留一组网络配置，无需重刷固件。不同SSID/新IP路径使用合成回执检查，同一家庭SSID的实际重新配置已通过页面完成：配置保存、画面恢复、USB释放，检查时28.0fps、ToF5.10Hz、计算中位7.90ms、该会话输入拒绝0次。未实测第二个不同网络。
 
 相机端原9项合成传输/状态检查通过，包括有效JPEG、过期、序号、新boot、畸形输入、EOF重连、切换网络时发现重试和停止释放；新增来源重试检查验证显式地址、USB回执地址与MAC发现三种来源的重连分支。Wi-Fi配置11项合成检查及新增联网地址回调检查通过，覆盖设备身份、凭据不回显、回执顺序、保存未联网、错误地址、停止释放、并发拒绝与密码解析期间采集锁可用。真实画面与换网界面也已实际查看。载荷和检查脚本在`artifacts.local/work/m3-live-camera-20261010/`，包括`actual-camera-before-wifi-page.json`、`actual-wifi-page-success.json`及`live-session-03/`。此前没有JPEG的会话和网络诊断保留，临时凭据文件已删除。第三会话的串口、模型、相机和配置串口均已释放；最终第四会话载入完整修改，沿用参照、真实画面和M3正常，默认保留3600秒或由页面结束。

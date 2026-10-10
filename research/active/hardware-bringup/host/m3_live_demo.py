@@ -327,7 +327,7 @@ def main():
     import shutil
     source_dir = args.out / 'source'
     source_dir.mkdir()
-    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), Path(__file__).with_name('m3_live_camera.py'), Path(__file__).with_name('m3_wifi_setup.py'), PAGE_PATH):
+    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), Path(__file__).with_name('m3_live_camera.py'), Path(__file__).with_name('m3_wifi_setup.py'), Path(__file__).with_name('m3_camera_view.js'), PAGE_PATH):
         shutil.copyfile(source, source_dir / source.name)
     demo = Demo(args)
 
@@ -350,6 +350,29 @@ def main():
             url = urlsplit(self.path)
             if url.path == '/':
                 self.respond(PAGE_PATH.read_text(encoding='utf-8'), 'text/html; charset=utf-8')
+            elif url.path == '/m3_camera_view.js':
+                self.respond(PAGE_PATH.with_name('m3_camera_view.js').read_text(encoding='utf-8'), 'text/javascript; charset=utf-8')
+            elif url.path == '/api/camera.mjpeg':
+                if not demo.camera or not demo.camera.snapshot()['available']:
+                    self.send_error(503, 'No fresh camera frame')
+                    return
+                self.send_response(200)
+                self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=BAFRAME')
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('Connection', 'close')
+                self.end_headers()
+                self.close_connection = True
+                self.connection.settimeout(2)
+                try:
+                    for header, jpeg in demo.camera.stream_frames():
+                        part = (f'--BAFRAME\r\nContent-Type: image/jpeg\r\nContent-Length: {len(jpeg)}\r\n'
+                                f'X-Frame-Sequence: {header["seq"]}\r\nX-Sequence-Id: {header["sequence_id"]}\r\n'
+                                f'X-Host-Age-Ms: {header["host_age_ms"]:.3f}\r\n'
+                                f'X-Host-Sent-Unix-Ms: {time.time()*1000:.3f}\r\n\r\n').encode('ascii')
+                        self.wfile.write(part + jpeg + b'\r\n')
+                        self.wfile.flush()
+                except OSError:
+                    pass  # Closed/slow browser; camera acquisition remains independent.
             elif url.path == '/api/status':
                 self.respond(json.dumps(demo.snapshot(), allow_nan=False))
             elif url.path == '/api/wifi/profiles':

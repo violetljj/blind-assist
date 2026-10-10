@@ -73,25 +73,6 @@ async function zone(force=false){if(zoneBusy||ended||(!force&&Date.now()-lastZon
  if(z.reference)html+=`<path d="${line(z.reference,x,y)}" fill="none" stroke="#869caa" stroke-width="2" stroke-dasharray="5 4"/>`;
  html+=`<path d="${line(z.current,x,y)}" fill="none" stroke="#61d9dc" stroke-width="2"/>`;el('wave').innerHTML=html;el('wave').classList.toggle('stale',!!latest?.stale);
  }catch(e){el('zoneSeq').textContent='等待区域数据'}finally{lastZone=Date.now();zoneBusy=false}}
-// Camera decode/draw cadence is independent of status polls and throttled rAF callbacks.
-let cameraSequence=null,cameraEpoch=0,cameraController=null,cameraTimer=null,cameraBusy=false,cameraCount=0,cameraPaintAt=null,cameraPaintTimes=[],cameraFrame=null;
-function cameraHide(message){el('cameraImage').classList.add('hidden');el('cameraWait').classList.remove('hidden');el('cameraWait').textContent=message;cameraSequence=null;cameraPaintAt=null;cameraPaintTimes=[];cameraFrame=null;el('cameraInfo').textContent='接收 '+label(latest?.camera?.fps,1)+' fps · 页面更新 — fps · 等待新画面'}
-function cameraSchedule(delay){clearTimeout(cameraTimer);cameraTimer=null;if(!ended&&!document.hidden)cameraTimer=setTimeout(()=>{cameraTimer=null;cameraLoop()},delay)}
-function cameraPause(message){cameraEpoch++;if(cameraController)cameraController.abort();clearTimeout(cameraTimer);cameraHide(message);if(!cameraBusy)cameraSchedule(250)}
-function camera(s){const c=s.camera||{},age=cameraPaintAt===null?Infinity:performance.now()-cameraPaintAt;if(s.wifi?.busy){cameraPause('正在切换相机 Wi-Fi');return}el('cameraState').textContent=age<1500?'实时画面':c.status||'等待相机';if(age>=1500)cameraHide(c.status||'等待相机');else cameraInfo()}
-function cameraInfo(){const times=cameraPaintTimes,fps=times.length>1?(times.length-1)*1000/(times.at(-1)-times[0]):null;el('cameraInfo').textContent='接收 '+label(latest?.camera?.fps,1)+' fps · 页面更新 '+label(fps,1)+' fps · 帧 '+cameraFrame+' · 两路曝光尚未同步';el('cameraImage').dataset.presentedFrames=String(cameraCount);el('cameraImage').dataset.presentedFps=fps===null?'':String(fps)}
-async function cameraLoop(){if(ended||document.hidden||cameraBusy)return;const start=performance.now(),epoch=cameraEpoch;let bitmap=null,timeout=null;
- if(!latest?.camera?.available||latest?.wifi?.busy){camera(safeCameraState());cameraSchedule(250);return}
- cameraBusy=true;cameraController=new AbortController();timeout=setTimeout(()=>cameraController?.abort(),1200);
- try{const response=await fetch('/api/camera.jpg',{cache:'no-store',signal:cameraController.signal});if(!response.ok)throw Error('等待新画面');const boot=response.headers.get('X-Sequence-Id'),seq=response.headers.get('X-Frame-Sequence'),ageText=response.headers.get('X-Host-Age-Ms');if(!boot||!seq||!/^\d+$/.test(seq)||ageText===null)throw Error('等待新画面');const key=boot+':'+seq,hostAge=Number(ageText),blob=await response.blob();if(key===cameraSequence)return;
- bitmap=await createImageBitmap(blob);if(ended||document.hidden||epoch!==cameraEpoch||latest?.wifi?.busy)return;if(!Number.isFinite(hostAge)||hostAge<0||hostAge+performance.now()-start>=1500)throw Error('等待新画面');
- const canvas=el('cameraImage');canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);cameraSequence=key;cameraFrame=response.headers.get('X-Frame-Sequence');cameraPaintAt=performance.now();cameraCount++;cameraPaintTimes.push(cameraPaintAt);if(cameraPaintTimes.length>90)cameraPaintTimes.shift();canvas.dataset.lastPaintMs=String(cameraPaintAt);canvas.dataset.frameKey=key;canvas.classList.remove('hidden');el('cameraWait').classList.add('hidden');el('cameraState').textContent='实时画面';cameraInfo();
- }catch(e){if(epoch===cameraEpoch&&!ended&&!document.hidden)cameraHide('等待新画面')}
- finally{if(bitmap)bitmap.close();clearTimeout(timeout);cameraController=null;cameraBusy=false;cameraSchedule(Math.max(0,1000/30-(performance.now()-start)))}
-}
-function safeCameraState(){return latest||{camera:{status:'等待相机'}}}
-document.addEventListener('visibilitychange',()=>{if(document.hidden)cameraPause('页面暂停显示');else cameraSchedule(0)});
-window.addEventListener('pagehide',()=>{ended=true;cameraPause('画面已结束')});
 function beep(){if(!sound||!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=650;g.gain.value=.08;o.start();o.stop(audio.currentTime+.16)}
 async function act(action){try{const r=await fetch('/api/'+action,{method:'POST'});if(!r.ok)throw Error('操作未完成');if(action==='stop'){ended=true;cameraPause('演示已结束');el('cameraImage').classList.add('hidden');el('cameraWait').classList.remove('hidden');el('cameraWait').textContent='演示已结束';el('stateText').textContent='已结束，正在释放设备';el('head').textContent=el('body').textContent='—';previous=false;el('reference').disabled=true;el('stop').disabled=true;}else{previous=false;await update(false)}}catch(e){el('error').textContent='操作失败：'+e.message;el('error').closest('details').open=true}}
 el('reference').onclick=async()=>{if(refBusy)return;refBusy=true;el('reference').disabled=true;await act('reference');refBusy=false};
@@ -106,5 +87,4 @@ async function update(schedule=true){if(ended)return;try{const response=await fe
  const p=s.prediction;let crossing=false;for(const [id,index]of [['head',0],['body',1]]){const ready=p&&p.ready&&!s.stale;el(id).textContent=p&&!s.stale&&p.smooth?label(p.smooth[index],3):'—';const over=ready&&p.crossing[index];el(id+'Flag').textContent=s.stale?'输入中断 · UNKNOWN':!p?'等待参照与推理':!p.ready?`历史预热 ${p.history}/8`:over?'超过模拟参考线':'低于模拟参考线';el(id+'Flag').classList.toggle('over',!!over);crossing=crossing||!!over}
  if(crossing&&!previous&&Date.now()-lastBeep>3000){beep();lastBeep=Date.now()}previous=crossing;camera(s);wifi(s);trend(s);zones();zone();el('detail').textContent=`冻结 seed 0–4 · FP32 · 输入拒绝 ${s.input_errors} 次 · 重连 ${s.reconnects||0} 次 · 参照版本 ${s.reference_version}`;el('error').textContent=s.error||'';
  }catch(e){cameraPause('服务连接中断');el('cameraImage').classList.add('hidden');el('cameraWait').classList.remove('hidden');el('stateText').textContent='连接中断 · UNKNOWN';el('head').textContent=el('body').textContent='—';el('headFlag').textContent=el('bodyFlag').textContent='等待服务连接';for(const id of ['trend','wave','zones'])el(id).classList.add('stale');previous=false}if(schedule&&!ended)setTimeout(update,250)}
-zones();update();cameraLoop();
-</script></body></html>
+</script><script src="/m3_camera_view.js"></script><script>zones();update();cameraView.start();</script></body></html>

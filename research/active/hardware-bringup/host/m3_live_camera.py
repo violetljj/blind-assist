@@ -84,6 +84,7 @@ class CameraFeed:
         self.device_id = device_id
         self.deadline = time.monotonic()+max_seconds
         self.lock = threading.Lock()
+        self.changed = threading.Condition(self.lock)
         self.latest = None
         self.receipts = deque(maxlen=50)
         self.configuring = threading.Event()
@@ -108,12 +109,33 @@ class CameraFeed:
                 return self.latest[1], header
             return None, None
 
+    def stream_frames(self):
+        """Each subscriber receives the latest frame, with no per-client queue."""
+        previous = None
+        while not self.stop.is_set():
+            with self.changed:
+                self.changed.wait_for(lambda: self.stop.is_set() or self.state['released'] or
+                    self.configuring.is_set() or (self.latest is not None and
+                    (self.latest[0]['sequence_id'], self.latest[0]['seq']) != previous), timeout=.5)
+                if self.stop.is_set() or self.state['released'] or self.configuring.is_set():
+                    return
+                if not self.latest or time.monotonic_ns()-self.latest[2] >= 1_500_000_000:
+                    return
+                header, jpeg, stamp = self.latest
+                key = (header['sequence_id'], header['seq'])
+                if key == previous:
+                    continue
+                header = dict(header, host_age_ms=(time.monotonic_ns()-stamp)/1e6)
+            previous = key
+            yield header, jpeg
+
     def configuration_started(self):
         self.configuring.set()
         with self.lock:
             self.network_revision += 1
             self.latest = None
             self.state.update(status='正在切换相机 Wi-Fi')
+            self.changed.notify_all()
 
     def configuration_finished(self):
         self.configuring.clear()
@@ -202,6 +224,7 @@ class CameraFeed:
                                     fps = (len(self.receipts)-1)*1e9/(stamp-self.receipts[0]) if len(self.receipts)>1 else None
                                     self.state.update(status='实时画面', frames=self.state['frames']+1,
                                                       seq=header['seq'], sequence_id=header['sequence_id'], fps=fps, error=None)
+                                    self.changed.notify_all()
                     except StopCapture:
                         break
                     except (OSError, TransportError) as exc:
@@ -212,6 +235,7 @@ class CameraFeed:
                         with self.lock:
                             self.latest = None
                             self.state.update(status='重连相机', reconnects=failures, error=str(exc))
+                            self.changed.notify_all()
                         if self.device_id and not self.usb_or_explicit_url:
                             self.url = None  # DHCP may have changed.
                         self.stop.wait(min(5, failures))
@@ -227,6 +251,7 @@ class CameraFeed:
                     (self.output/'last-frame.jpg').write_bytes(self.latest[1])
                 self.latest = None
                 self.state['released'] = True
+                self.changed.notify_all()
                 if self.stop.is_set():
                     self.state['status'] = '画面已结束'
             (self.output/'final-status.json').write_text(json.dumps(self.snapshot(), indent=2, ensure_ascii=False), encoding='utf-8')
