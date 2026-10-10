@@ -118,3 +118,5 @@ head相对affine-margin正query见证救/损为40777060的25/23、40777065的15/
 全run CPU辅助保守500/1500s（旧query30、初始grid准备35、审计145、源90、主评分/摘要/核验/交付200）；主评分实际32.256+12.332s，GPU103.166/900s、网络240/900s、新源及跨机7496107B/768MiB。完成相关复算后不加训练或扩预算。所有本轮计算/下载任务结束；canonical本地源码/参考/预测/失败/全量CSV/身份收据持久保留，worker partial也按原owner保留，没有活跃计算。partial路径与释放凭证见`third-camera-source/lane_completion.json`；总`completion_receipt.json`绑定计划、源码与所有必要收据。
 
 新增代码：[旧query覆盖诊断](rgb_body_query_query_coverage.py)、[固定query准备及几何读出](rgb_body_query_fixed_grid.py)、[追加ARKit源子集](rgb_body_query_arkit_additional.py)。已有baseline/head/校正代码复用未修改。交付检查为本轮真实执行、相关独立复算、scoped diff及docs index（15热页126本地链接）；未跑无关Android检查。三热文档仅替换RGB段，CNH并行记录保持。旧route文本由基线5844eacd和本轮交付前d4226481保留，原数字与失败不改。
+
+后继：[距离分布与解析查询读出](RGB_BODY_QUERY_INTERVAL_DISTRIBUTION_DEV_20261010.md)以新距离监督和query-independent表征推进，不续训旧query head；另校准新27-query工作点，原8臂和本报告指标不改。

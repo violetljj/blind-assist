@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB独立子线：[查询外推与负参考](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_QUERY_LEVEL_DEV_20261009.md)。固定27子盒、冻结旧head/cal且不重选阈值；136帧3672格，575格sampledFREE（572来自三ARKit capture），不是整盒/身体空闲。新3RScan正见证head352/866、affine-margin487/866，救/损109/244；旧ARKit采样free支持7/105对0/105；新增两个官方visit组head31/220、22/247，对照12/220、10/247。未证明冻结head对任意query的稳定增量，保留旧RGB距离信息Development收益；下一改距离/不确定性表征和query覆盖，以强几何及全量救回损失检验。第三硬件TUM仍因吞吐停止NOT_RUN，同iPad家族补参考不替代硬件迁移；完整身体/细障碍/步行仍缺。旧query/32特征不续训，真实硬目标/同源锚点限制/CNH预算不变。
+RGB独立子线：[距离分布与查询读出](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_INTERVAL_DISTRIBUTION_DEV_20261010.md)。新query-independent log-Z分布/解析CDF与后验点深度读出完成，两网络原train1591791点、同初始化600步，仅原cal16/27query选阈值；6臂136帧3672query。新3RScan CDF正见证701/866 vs匹配cal几何555/866，救/损154/8但free射线误支持.111096 vs.097548；点读出675/866、.100255。追加ARKit点读出仍free73/220、79/247 vs几何12/220、10/247，不支持把退化整体归σ/CDF，未形成稳定跨相机候选。原cal只有2个strictfree子盒，百万free query-ray不代替query误报校准；下一补query级负参考并拆点深度迁移/覆盖/工作点。22032新记录与冻结/partition核验通过，GPU40.538s、CPU保守660s，下载0、任务释放；旧head/32臂不续训、575有限相关free/UNKNOWN/真实硬目标/同源锚点/完整身体细障碍步行第三硬件缺口与CNH预算保留。
 
 [步行走廊参考](../research/active/dtr-r0/nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)已接通全部1025个BlindWays缓存片段：10位参与者、615000帧、10250native anchor×T0.5/1/1.5秒=30750窗口。显式60Hz名义相对时钟，无实测时间戳/头部朝向；原XY/Z上合同沿用，米尺度未找到官方明文，公制结果以旧单位假设为条件。
 
