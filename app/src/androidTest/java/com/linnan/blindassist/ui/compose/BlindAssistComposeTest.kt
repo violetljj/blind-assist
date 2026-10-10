@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
@@ -50,6 +51,7 @@ import com.linnan.blindassist.MainActivity
 import com.linnan.blindassist.model.AssistInputSource
 import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
+import com.linnan.blindassist.preferences.UserPreferences
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -162,6 +164,45 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
             .performScrollTo()
             .assertExists()
+    }
+
+    @Test
+    fun defaultFlowKeepsModeAndSettingsOptionsAsIndependentAccessibleControls() {
+        prepareMainShell()
+        openFeaturesTab()
+        val preferences = UserPreferences(composeRule.activity)
+        val saved = preferences.load()
+        try {
+            composeRule.onNodeWithContentDescription("选择日常辅助模式")
+                .performScrollTo()
+                .performClick()
+            composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+                .performScrollTo()
+                .assertHasClickAction()
+                .assertRole(Role.RadioButton)
+                .assertStateDescription("未选择")
+                .assertHeightIsAtLeast(48.dp)
+                .performClick()
+            composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+                .assertStateDescription("当前辅助模式")
+
+            composeRule.onNodeWithText("设置").performClick()
+            composeRule.onNodeWithTag("language_selector")
+                .performScrollTo()
+                .assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.ContentDescription))
+
+            composeRule.onNodeWithContentDescription("选择敏感提醒档位")
+                .performScrollTo()
+                .assertHasClickAction()
+                .assertRole(Role.RadioButton)
+                .assertHeightIsAtLeast(48.dp)
+        } finally {
+            preferences.setAlertProfile(saved.alertProfile)
+            preferences.setAssistScenario(saved.assistScenario)
+            preferences.setSpeechStyle(saved.speechStyle)
+            preferences.setVibrationStrength(saved.vibrationStrength)
+            preferences.setCareModeEnabled(saved.careModeEnabled)
+        }
     }
 
     @Test
@@ -379,6 +420,72 @@ class BlindAssistComposeTest {
 
     private fun SemanticsNodeInteraction.assertStateDescription(value: String): SemanticsNodeInteraction {
         return assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, value))
+    }
+
+    private fun SemanticsNodeInteraction.assertRole(value: Role): SemanticsNodeInteraction {
+        return assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, value))
+    }
+}
+
+@RunWith(AndroidJUnit4::class)
+class FeatureScreenAccessibilityTest {
+    @get:Rule
+    val composeRule = createComposeRule()
+
+    @Test
+    fun defaultFlowReflowsHomeControlsForLargeFont() {
+        composeRule.setContent {
+            BlindAssistTheme {
+                val density = LocalDensity.current
+                CompositionLocalProvider(
+                    LocalDensity provides Density(density.density, fontScale = 1.9f)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(width = 360.dp, height = 640.dp)
+                            .background(Color.White)
+                    ) {
+                        FeatureScreen(
+                            controls = featureScreenControls(),
+                            modelStatus = "Ready",
+                            appVersion = "test",
+                            onOpenCamera = {},
+                            onShowGlassesCenter = {},
+                            onDailyUsageModeChange = {},
+                            onQuietShortcut = {},
+                            onSensitiveShortcut = {}
+                        )
+                    }
+                }
+            }
+        }
+
+        composeRule.onNodeWithTag("home_primary_assist")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .assertHeightIsAtLeast(48.dp)
+        composeRule.onNodeWithContentDescription("Choose Sensitive assist mode")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .assertHeightIsAtLeast(48.dp)
+    }
+
+    private fun featureScreenControls(): AssistControlsUiState {
+        return AssistControlsUiState(
+            detectionEnabled = true,
+            speechEnabled = true,
+            vibrationEnabled = true,
+            careModeEnabled = false,
+            debugVisible = false,
+            alertProfile = AlertProfile.STANDARD,
+            assistScenario = AssistScenario.GENERAL,
+            speechStyle = SpeechStyle.STANDARD,
+            vibrationStrength = VibrationStrength.STANDARD,
+            appLanguage = AppLanguage.EN,
+            dailyUsageMode = DailyUsageMode.GENERAL_DAILY
+        )
     }
 }
 
