@@ -28,10 +28,12 @@ MISSING = {"", "NA", "nan", "NaN", None}
 
 
 class Allocation:
-    def __init__(self, root, wall_s, initial_received):
+    def __init__(self, root, wall_s, initial_received, download_limit=3_000_000_000):
         self.root, self.start = root, time.perf_counter()
         self.deadline = self.start + wall_s
-        self.received, self.reserved, self.limit = initial_received, 0, 3_000_000_000
+        self.received, self.reserved, self.limit = initial_received, 0, download_limit
+        if self.received > self.limit:
+            raise TimeoutError("Official metadata fetch already exceeds download allocation")
         self.records = []
         self.session = requests.Session()
 
@@ -124,7 +126,8 @@ class RangeZip(io.RawIOBase):
         return bytes(result)
 
 
-def acquire(root, wall_s=370):
+def acquire(root, wall_s=370, target_count=3, download_limit=3_000_000_000,
+            cohort_prefix="new_arkit_"):
     started = time.perf_counter()
     root = root.resolve()
     plan = root / "PLAN.json"
@@ -139,12 +142,15 @@ def acquire(root, wall_s=370):
     old_visits = set(inventory["visit_ids"])
     fixed = queries()
     initial_bytes = sum(p.stat().st_size for p in official.iterdir() if p.is_file())
-    allocation = Allocation(root, wall_s-3, initial_bytes)
+    if target_count < 1 or download_limit < 1:
+        raise ValueError("Positive target_count and download_limit required")
+    allocation = Allocation(root, wall_s-3, initial_bytes, download_limit)
     receipt = dict(status="STARTING", pid=os.getpid(), gpu_s=0, model_outputs_read=False,
         plan_sha256=sha(plan), metadata_sha256=sha(metadata_path),
         inventory_sha256=sha(root / "consumed_inventory.json"), source_sha256=sha(__file__),
         official_split="Validation", metadata_order="Original CSV physical row order; not sorted by video_id",
-        frames_per_capture=16, near_positive_query_gate=16, candidates=[], accepted=[])
+        frames_per_capture=16, near_positive_query_gate=16, target_count=target_count,
+        download_limit_bytes=download_limit, cohort_prefix=cohort_prefix, candidates=[], accepted=[])
     write(root / "acquisition_frozen_inputs.json", receipt)
     public_rows, evaluator_rows = [], []
     attempted_visits = set()
@@ -160,7 +166,7 @@ def acquire(root, wall_s=370):
             write(root / "candidate_selection_progress.json", receipt)
             source = root / "source" / cap
             source.mkdir(parents=True, exist_ok=True)
-            cohort = "new_arkit_"+cap
+            cohort = cohort_prefix+cap
             sensor = root / "new-eval-sensor" / cohort
             sensor.mkdir(parents=True, exist_ok=True)
             archives, streams, indices, details, files = {}, {}, {}, {}, {}
@@ -301,15 +307,16 @@ def acquire(root, wall_s=370):
                 write(source / "candidate_terminal.json", candidate)
                 write(root / "candidate_selection_progress.json", receipt)
                 print(json.dumps(candidate), flush=True)
-            if len(receipt["accepted"]) == 3: break
-        receipt["status"] = "COMPLETE3_NEW_VISITS" if len(receipt["accepted"])==3 else "PARTIAL_INSUFFICIENT_ELIGIBLE_VISITS"
+            if len(receipt["accepted"]) == target_count: break
+        receipt["status"] = f"COMPLETE{target_count}_NEW_VISITS" if len(receipt["accepted"])==target_count else "PARTIAL_INSUFFICIENT_ELIGIBLE_VISITS"
     except Exception as exc:
         receipt.update(status="BUDGET_STOP" if isinstance(exc,TimeoutError) else "FAILED_PARTIAL", error=repr(exc))
     finally:
         allocation.session.close()
-        write(root / "new_public_roster.json",dict(status="COMPLETE" if len(receipt["accepted"])==3 else "PARTIAL",
+        write(root / "new_public_roster.json",dict(status="COMPLETE" if len(receipt["accepted"])==target_count else "PARTIAL",
             rows=public_rows, frames=len(public_rows), evaluator_read=False, candidate_selection_frozen=True,
-            queries=fixed, selection_plan_sha256=sha(plan)))
+            queries=fixed, selection_plan_sha256=sha(plan),
+            accepted_cohorts_order=[r["cohort"] for r in receipt["accepted"]]))
         write(root / "new_evaluator_roster.json",dict(rows=evaluator_rows,queries=fixed,role="eval-only"))
         receipt.update(command_wall_s=time.perf_counter()-started, downloaded_bytes=allocation.received,
             outstanding_reserved_bytes=allocation.reserved, requests=allocation.records,
@@ -322,5 +329,8 @@ if __name__ == "__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--root",type=Path,required=True)
     p.add_argument("--wall-s",type=float,default=370)
+    p.add_argument("--target-count",type=int,default=3)
+    p.add_argument("--download-limit",type=int,default=3_000_000_000)
+    p.add_argument("--cohort-prefix",default="new_arkit_")
     a=p.parse_args()
-    acquire(a.root,a.wall_s)
+    acquire(a.root,a.wall_s,a.target_count,a.download_limit,a.cohort_prefix)

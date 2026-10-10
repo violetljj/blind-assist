@@ -12,7 +12,7 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 ## 当前工作
 
-RGB [尺度读出与新增近带覆盖](../research/active/dtr-r0/nearfield/RGB_NEAR_READOUT_SCALE_DEV_20261010.md)完成R0/R1/R2/R3×五主干臂；旧496预测不重跑，官方按序新增三Validation visit各16帧，近POS44/75/51。pooled304先封存后184eval，原三LOCO另保留。六ARK主强信号未通过：Uni raw R2三新近W4→8/44、20→31/75、19→22/51且FREE不增，但中远损42/771=5.447%；全184含3RScan中远损71/1447=4.907%，跨源总表达数值条件，不能替换事前ARK主口径。Uni affine R2中远零损但只两条近增益。按封存主决定维持RGB≥0.8m、DAV2 Indoor Large raw/原读出、近带ToF；恢复近信息与局部收益保留，非单目原理否定。旧DepthPro affine、主干/残差/stop与同步融合N/E均保留。
+RGB [新鲜主干比较](../research/active/dtr-r0/nearfield/RGB_BACKBONE_CONFIRM_DEV_20261010.md)完成六个新官方Validation visit各16帧，两臂raw R0直接复用封存pooled304切点，无训练/旧预测重跑。Uni近带6/6见证更高，合计DAV3→Uni103/292、救100损0，但FREE0→12/515=净增2.330%>1%；中远464→775/1047、救357损46，但FREE7→17/107=净增9.346%>2%。见证条件通过、两成本条件失败，未达预声明替换信号：维持DAV2 Indoor Large raw R0、RGB≥0.8m，近带ToF。Uni近信息和中远收益成立，本工作点的新域FREE代价阻止升级；旧六capture三折补充亦完整保留，不改主判据。仅Development，远带FREE分母6、query相关，不作实机/安全确认。旧[尺度读出](../research/active/dtr-r0/nearfield/RGB_NEAR_READOUT_SCALE_DEV_20261010.md)的ARK主判与跨源混合结果、DepthPro affine/残差/stop及同步融合N/E保留。
 
 用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
 
