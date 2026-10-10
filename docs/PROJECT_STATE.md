@@ -14,15 +14,13 @@ Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF�
 
 RGB独立子线：[距离分布与查询读出](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_INTERVAL_DISTRIBUTION_DEV_20261010.md)。新query-independent log-Z分布/解析CDF与后验点深度读出完成，两网络原train1591791点、同初始化600步，仅原cal16/27query选阈值；6臂136帧3672query。新3RScan CDF正见证701/866 vs匹配cal几何555/866，救/损154/8但free射线误支持.111096 vs.097548；点读出675/866、.100255。追加ARKit点读出仍free73/220、79/247 vs几何12/220、10/247，不支持把退化整体归σ/CDF，未形成稳定跨相机候选。原cal只有2个strictfree子盒，百万free query-ray不代替query误报校准；下一补query级负参考并拆点深度迁移/覆盖/工作点。22032新记录与冻结/partition核验通过，GPU40.538s、CPU保守660s，下载0、任务释放；旧head/32臂不续训、575有限相关free/UNKNOWN/真实硬目标/同源锚点/完整身体细障碍步行第三硬件缺口与CNH预算保留。
 
-[步行走廊参考](../research/active/dtr-r0/nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)已接通全部1025个BlindWays缓存片段：10位参与者、615000帧、10250native anchor×T0.5/1/1.5秒=30750窗口。显式60Hz名义相对时钟，无实测时间戳/头部朝向；原XY/Z上合同沿用，米尺度未找到官方明文，公制结果以旧单位假设为条件。
+用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
 
-past≥0.30m预定子集的past1s/future-chord差异RMS18.38/18.82/19.62°，不是设备yaw或head-to-travel误差；全部时域/参与者/缺失与低motion都保留，不按结果选T/δ。完整未来折线+0.30m圆盘仅中心轨迹proxy，中心距端点弦>0.30m为1/10250、2/9225、4/9225，非身体面积遗漏/碰撞。片段关联未知、不是iid。
+目标回到ToF任务收益与分级提醒：明显风险给强提醒，接触/擦边难分时允许轻提醒；不把精确分界作为继续推进的前提。分级只依据运行时可见的分数与证据质量，真值仅评价；弱证据保留不确定含义。重点是弱/细目标证据在投影、累积和完整bin读出中的保留，以及分级能否增加有用及时提醒。强/轻提醒分别报告接触检出、完整救/损、pass与clear clip/slot成本，强转轻也单列；轻提醒可接受但打扰成本不记为零，不设零损失门槛。共向假设不替代外参、时钟或空间投影核验。
 
-6fixture、30750行账本/66摘要/28700完整路径与100anchor的past公式/prefix核验通过。仅CPU离线整理（本run300s上限、GPU0）；无新模型/投影/训练/采集/数据下载/480。因果位置仍NOT_IMPLEMENTED；下一接合格因果位置与同参考/同时间窗评价，再验证物理T、身体几何、外参和同步。
+[普通扩充结果](../research/active/dtr-r0/nearfield/CNH_COUNTERFACTUAL_DEV_20261009.md)及weak_pass独立读出保留为Development候选；M3、原5格融合、L2、身体truth/fullbin/480身份与各旧run停止规则保留。下一先用已有ideal分数与账本判断强/轻提醒的可用工作点和细障碍漏检；先声明分级规则，再评价及时收益与分档成本。本次只更新任务假设和提醒方向，尚未实现提醒分级或新阈值，不启动训练/推理/新采集。
 
-旧[Charades方向合同](../research/active/dtr-r0/nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)、全部聚合/锚定/高度混合结果和旧2°mixed RMS结论按原run保留，不能与本轮轨迹差异直接换算。M3/5格/L2/bodytruth/bin/480及停止配方保留；更新前CNH正文见Git 4cfcca53同路径。
-
-方向估计仍是既有瓶颈。480新模拟unit确认保留39/51及时损失（/1002）的原身份；后续回放/筛查属于已消费Development。[扰动续训](../research/active/dtr-r0/nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)三门槛失败、配方停止，不加seed/epoch或换分布；方位微调及稀疏空间/关联L3暂停，M3/L2及负结果保留。读出、UNKNOWN与三态没有升级为安全证据。
+已完成的[步行参考](../research/active/dtr-r0/nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)、[方向合同](../research/active/dtr-r0/nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)和全部方向聚合/锚定/高度混合结果作为历史诊断保留，不再驱动本阶段主线。步行参考的18–20°是过去/未来轨迹差异，非ToF姿态精度；单位/名义时钟限制仍按原报告。更新前CNH当前正文见Git 53bb1069同路径。
 
 [Nymeria](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)样本异常未修补、合法段注册仅离线参考。原始IMU→CPF姿态前缀检查通过，准确度未评；位置/PDR未实现，E1整链不可评价。该audit run的位移接口与参与者抽样当时暂缓；新步行参考run见上述报告。
 
