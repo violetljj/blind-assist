@@ -105,14 +105,14 @@ def score(cohort, manifest, pm, info, check, inputs, checks):
     return data
 
 
-def head(repo, output, check, receipt):
+def head(repo, output, check, receipt, source=None, expected_frames=240):
     work, root, candidate, _ = paths(repo)
-    source = work/'rgb-body-query-negative-score-dev-20261010/additional-inference'
+    source = source if source is not None else work/'rgb-body-query-negative-score-dev-20261010/additional-inference'
     # This stage never opens evaluator manifests or reference payloads.
     obs = load(source/'observations.json'); dp = load(source/'predictions.json')
     assert dp['status'] == 'COMPLETE' and load(source/'terminal.json')['status'] == 'COMPLETE'
     assert not (source/'writer.json').exists()
-    assert len(obs['rows']) == len(dp['rows']) == 240
+    assert len(obs['rows']) == len(dp['rows']) == expected_frames
     assert all(set(r) <= set(PUBLIC) and r['split'] == 'additional_cal' for r in obs['rows'])
     info = load(candidate/'training_inputs.json'); gpu = load(candidate/'gpu_receipt.json')
     checkpoint = candidate/'depth_ray_gaussian_final.pt'

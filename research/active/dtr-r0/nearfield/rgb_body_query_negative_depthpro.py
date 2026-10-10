@@ -23,7 +23,7 @@ from rgb_body_query_input_diagnostic import sha, write
 WEIGHT_SHA = '3eb35ca68168ad3d14cb150f8947a4edf85589941661fdb2686259c80685c0ce'
 
 
-def run(repo, observations, output, budget_s):
+def run(repo, observations, output, budget_s, expected_frames=240):
     started = time.perf_counter()
     output.mkdir(parents=True, exist_ok=True)
     lock = output/'writer.json'
@@ -42,8 +42,8 @@ def run(repo, observations, output, budget_s):
         selected = [r for r in obs['rows'] if r['split'] == 'additional_cal']
         excluded = [r for r in obs['rows'] if r['split'] in ('train', 'cal')]
         identity = lambda r: (r['scan'], r['frame'])
-        if len(selected) != 240 or len({identity(r) for r in selected}) != 240:
-            raise ValueError('Expected 240 unique additional_cal frames')
+        if len(selected) != expected_frames or len({identity(r) for r in selected}) != expected_frames:
+            raise ValueError(f'Expected {expected_frames} unique additional_cal frames')
         if ({identity(r) for r in selected} & {identity(r) for r in excluded} or
                 {r['rgb_sha256'] for r in selected} & {r['rgb_sha256'] for r in excluded}):
             raise ValueError('additional_cal overlaps train/cal')
@@ -73,7 +73,7 @@ def run(repo, observations, output, budget_s):
                     raise ValueError('Resume output identity differs')
         result.update(status='STARTING', observations_sha256=sha(selected_path),
                       source_observations_sha256=source_sha, script_sha256=script_sha,
-                      pid=os.getpid(), total_frames=240)
+                      pid=os.getpid(), total_frames=expected_frames)
         write(manifest_path, result)
         base = repo/'artifacts.local/work/ba-nfo-depthpro-20260919'
         backend_path = base/'backend.json'
@@ -105,7 +105,7 @@ def run(repo, observations, output, budget_s):
         model.eval().requires_grad_(False)
         result['startup_s'] = time.perf_counter()-started
         done = {identity(p) for p in result['rows']}
-        print(f'START {len(done)}/240 startup={result["startup_s"]:.2f}s remaining_budget={budget_s-previous_wall-result["startup_s"]:.2f}s', flush=True)
+        print(f'START {len(done)}/{expected_frames} startup={result["startup_s"]:.2f}s remaining_budget={budget_s-previous_wall-result["startup_s"]:.2f}s', flush=True)
         for row in selected:
             if identity(row) in done:
                 continue
@@ -144,7 +144,7 @@ def run(repo, observations, output, budget_s):
                           allocation_wall_s=previous_wall+time.perf_counter()-started)
             write(manifest_path, result)
             if len(result['rows']) % 8 == 0:
-                print(f'{len(result["rows"])}/240 call={times[-1]:.3f}s elapsed={result["elapsed_s"]:.2f}s', flush=True)
+                print(f'{len(result["rows"])}/{expected_frames} call={times[-1]:.3f}s elapsed={result["elapsed_s"]:.2f}s', flush=True)
             del array, rgb
             x = pred = None
         else:
@@ -176,5 +176,6 @@ if __name__ == '__main__':
     parser.add_argument('--observations', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--budget-s', type=float, default=900.)
+    parser.add_argument('--expected-frames', type=int, default=240)
     args = parser.parse_args()
-    raise SystemExit(0 if run(args.repo.resolve(), args.observations.resolve(), args.output.resolve(), args.budget_s) else 1)
+    raise SystemExit(0 if run(args.repo.resolve(), args.observations.resolve(), args.output.resolve(), args.budget_s, args.expected_frames) else 1)

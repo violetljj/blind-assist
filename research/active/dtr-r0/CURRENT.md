@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[新session近负覆盖](nearfield/RGB_BODY_QUERY_NEAR_COVERAGE_DEV_20261010.md)。原A0三折与新cal32FREE冻结评分保留；当前affine代表、不提高残差训练优先级，不否定重新训练。新查15额外cal环境全部16未消费rescan各固定均匀8帧，全27query，共128帧3456查询；FREE22/8环境，near仅4仍原1环境。与旧960参考合并1088帧FREE151/13环境、near23→27仍1环境，未改善跨环境近负覆盖；按预定条件不运行新128推理/评分，缓存同scan/新session扩展均停止。旧near8640query中6511已有>=16FREE且零正像素却含UNKNOWN；新near1152中同类903。固定旧15/新16首帧depth missing303059/314458、box前1193/718、FOV外0，中央near格覆盖整张native depth；这是参考缺失诊断，不定位模型所有误差。缓存官方train35环境72scan已无未消费新环境。下一优先未消费ARKit Training visit作独立cal，现有eval不转cal，不放宽严格FREE或填洞。3456XYZ/原生身份及独立27query/分解PASS，CPU保守726/1800s，训练/推理/GPU/下载0，无保留进程。仅Development非身体/整盒/实机证据，CNH与旧停止保留，前文Gitd36e9e4b。
+RGB独立子线：[ARKit新visit校准](nearfield/RGB_BODY_QUERY_ARKIT_CAL_DEV_20261010.md)完成固定新Training三个visit×16帧：1296查询FREE556，near389/3visit；与旧已评分cal合并588FREE/15来源组，near395/4。48冻结DepthPro/旧head，新pooled-cal仅补充原A0三折，十cutoff实际均29/588且先于eval冻结。absolute affine Ark16/60/65见证95/120/131、FREE5/12/10；A0δ=.05见证86/120/130、FREE4/12/10，δ=.1为84/121/130、3/12/11，δ=.2为76/121/129、4/12/12。归一化δ=.05两个追加capture对归一化affine各净救1，FREE+0/+2，混合信号保留；强absolute affine事后同成本122/12、132/12，无领先。近带所有臂三eval均见证/FREE0/0；affine/A0阈值已解除结构排除，不定位单一模型原因。affine代表、残差训练优先级不升，A0不否定重训；下一冻结模型分距离校准，不追加同源扩帧。本轮13,187,490B/33.629s来源获取、48新推理、GPU81.957/500s、CPU保守778/1800s、训练0；独立cutoff/完整paired/LOEO/同成本核验PASS，失败留证、无常驻资源。仅已消费Development，新visit不证明物理独立或身体/实机安全；旧三折/近覆盖stop、CNH保留，前文Gitc782b6bd。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
