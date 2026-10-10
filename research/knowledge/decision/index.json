@@ -1,15 +1,15 @@
 {
   "schema_version": 3,
   "engine_version": "decision-v2-research-workflow",
-  "generated_at": "2026-10-07",
-  "source_fingerprint": "8e29dfc226d189b0b930f5898d0d4b0424c46ee57b6690681d00c32401daf823",
+  "generated_at": "2026-10-10",
+  "source_fingerprint": "a0177ea16e985911c08913ae3e24305388c3db19f75d49385a4b0aac1d35104e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 272,
     "uses": 271,
-    "experiments": 466,
+    "experiments": 467,
     "current_terminals": 236,
-    "run_associations": 464
+    "run_associations": 465
   },
   "failure_layers": [
     {
@@ -36394,6 +36394,28 @@
         "evaluation_evidence": 3
       },
       "search_text": "cnh-rhc-20261007 Under real head motion (HEADS-UP) and deployable heading, how do single vs dual CNH compare, and is single burden overstated by synthetic head modes? Synthetic head modes (SYN) with exact head-to-travel query, frozen M3 Sensor driven by real HEADS-UP head windows (NAT/ALN); deployable E1/EMA queries P1 single control unknown time NAT-SYN; P2 dual-single timely at calibrated FA<=2.5% (NAT+E1); P3 E1-exact timely COMPLETED_SIM_CONFIRMATION_EVIDENCE_ONLY / P1_SUPPORTED / P2_DUAL_GAIN_NOT_ESTABLISHED_AT_CALIBRATED_TARGET / P3_HEADING_LOSS / M3_RETAINED_NO_PROMOTION research/active/dtr-r0/nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md research/active/dtr-r0/nearfield/cnh_real_head_confirm.py"
+    },
+    {
+      "kind": "experiment",
+      "id": "cnh-s-ensemble-confirm-dev-20261010",
+      "status": "active",
+      "question": "Frozen S ensemble at predeclared1.25cost: fresh1536scene hold confirmation of four task-effect gates",
+      "baseline": "Frozen original M3/old5/both955; Eensemble samecalrule",
+      "change": "No training; frozen6HGB/47D; freshcal768hold1536K2; S1.25point now primary",
+      "primary_metric": "Timely net>=80/1024,H/B>=11; FC<=1.10old5,cost<=1.3125old5,eachSseednet>=40",
+      "decision": "ACTIVE_FORMAL_CONFIRMATORY_DEVELOPMENT; protocolcommittedbeforephotons; noAppbaselinechange",
+      "report": "research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_PROTOCOL_20261010.md",
+      "source": "New AABB cal2/hold4family;27permittedmetadata16936priorphysicalkeys; no480test",
+      "commit": "dd297b476679488136ec0cca9ea72dd4ffcc854e",
+      "association_id": "cnh-s-ensemble-confirm-dev-20261010",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6
+      },
+      "search_text": "cnh-s-ensemble-confirm-dev-20261010 Frozen S ensemble at predeclared1.25cost: fresh1536scene hold confirmation of four task-effect gates Frozen original M3/old5/both955; Eensemble samecalrule No training; frozen6HGB/47D; freshcal768hold1536K2; S1.25point now primary Timely net>=80/1024,H/B>=11; FC<=1.10old5,cost<=1.3125old5,eachSseednet>=40 ACTIVE_FORMAL_CONFIRMATORY_DEVELOPMENT; protocolcommittedbeforephotons; noAppbaselinechange research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_PROTOCOL_20261010.md New AABB cal2/hold4family;27permittedmetadata16936priorphysicalkeys; no480test"
     }
   ],
   "associations": [
@@ -37376,6 +37398,19 @@
       "artifact_refs": [
         "artifacts.local/work/cnh-route-comparison-20260924/progress.json",
         "artifacts.local/work/cnh-route-comparison-20260924"
+      ],
+      "decision_id": null,
+      "source_rows": 1
+    },
+    {
+      "run_id": "cnh-s-ensemble-confirm-dev-20261010",
+      "use_ids": [],
+      "protocol_id": "cnh-s-ensemble-confirm-dev-20261010",
+      "code_revision": "dd297b476679488136ec0cca9ea72dd4ffcc854e",
+      "input_fingerprint": "8101cfa068f4fad0af3902dd22780a6af3d26440fa79ffd63448a21a7904a838",
+      "artifact_refs": [
+        "research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_PROTOCOL_20261010.md",
+        "artifacts.local/work/cnh-s-ensemble-confirm-dev-20261010/"
       ],
       "decision_id": null,
       "source_rows": 1
