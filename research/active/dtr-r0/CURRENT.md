@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[点迁移与查询校准](nearfield/RGB_BODY_QUERY_MIGRATION_DIAGNOSTIC_DEV_20261010.md)。冻结缓存点迁移与三折query级cal探针完成，无训练/推理/下载。152帧5301769匹配点，新3RScan点MALE .282250 vsaffine .301547；追加ARKit整体ratio .812/.775但近/远带偏移不同，不定位单一尺度或硬件原因。另两capture严格sampledFREE按5%经验比例cal后，depth点FREE 73/220、79/247→11/220、27/247，正见证171/202、165/179→67/202、74/179，同折affine120/202、131/179；迁移支持率并未稳定5%，当前配方不升级。下一检验几何主干受约束残差（实施提议）并补跨环境query负cal/新相机/完整身体细障碍步行参考。相关mask/分母/分数与冻结核验通过，CPU保守490/1200s，GPU/下载0，故障和计时缺口留证、任务释放。已消费同相机家族/有限相关FREE不证明整盒空闲；旧阈值/head32停止配方、真实硬目标与CNH预算保留；前文见Git53bb1069。
+RGB独立子线：[A0与负参考](nearfield/RGB_BODY_QUERY_A0_DEV_20261010.md)。冻结log-affine主干＋旧depth/ray的log-Z有界代理，δ=.05/.1/.2×3capture全比较、另两capture严格sampledFREE按5%三折cal完成。追加60见证120/121/122各/202、FREE各12/220（affine120）；65见证130/130/129各/179、FREE10/11/11各/247（affine131、10），arkit16退化88/71/62各/228 vs103；所有δ曲线均有低于affine区段，不提高残差训练优先级但不否定重训。新增15官方train缓存环境240帧6480格，FREE30/10环境，原cal2→候选32/12环境；近带6仅1环境。补参考后冻结带条件cal探针取舍更差，不采用；新参考预测评分未运行。当前冻结affine为RGB几何代表，下一补近场跨环境负覆盖并评价新cal冻结预测。独立query/curve和8424参考核验通过；CPU保守674/1800s，训练/推理/GPU/下载0、无常驻资源。仅Development、相关sampledFREE非整盒/身体安全证据；旧停止规则/CNH保留，前文见Git167181b5。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
