@@ -1,31 +1,24 @@
-ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
-
 # 前视障碍感知：当前状态
 
-更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
+更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2与A+LOCAL保留。
 
 RGB 当前冻结全局 affine，0.8m以上为候选public query职责；当前近带固定recipe停止调参。两step600残差及全部失败/局部排序结果按[原报告](nearfield/RGB_BODY_QUERY_RESIDUAL_READOUT_DEV_20261010.md)保留，不把配方失败写成单目近带原理否定。后续提前量/语义尚待评价。[本次输入核查](nearfield/CNH_RGB_FROZEN_E2E_INPUT_INVENTORY_20261010.md)确认没有未消费且满足真值合同的同步RGB/CNH输入，完整融合NOT_EVALUABLE，未运行新RGB推理。
 
-## 当前：冻结配置与端到端评价
+## 当前：信号与读出漏检拆解
 
-用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
+头朝向＝身体朝向＝行进方向，HEAD/BODY共向query；方向估计/PDR暂不作前置。明显风险强提醒，接触/擦边难分可轻提醒；分级只用运行时证据，强轻/pass/clear实际通知成本分列。共向不替代外参/时钟核验。
 
-目标回到ToF任务收益与分级提醒：明显风险给强提醒，接触/擦边难分时允许轻提醒；不把精确分界作为继续推进的前提。分级只依据运行时可见的分数与证据质量，真值仅评价；弱证据保留不确定含义。重点是弱/细目标证据在投影、累积和完整bin读出中的保留，以及分级能否增加有用及时提醒。强/轻提醒分别报告接触检出、完整救/损、pass与clear clip/slot成本，强转轻也单列；轻提醒可接受但打扰成本不记为零，不设零损失门槛。共向假设不替代外参、时钟或空间投影核验。
+[CNH_BASELINE_MISS_DECOMPOSITION_DEV_20261010](nearfield/CNH_BASELINE_MISS_DECOMPOSITION_DEV_20261010.md)完成已消费E2E hold与旧ideal validation解释性复用：原5格新HEAD未及时98/256，高SNR≥4为38/98、低<2为32/98、中间28；BODY140/256中21/48/71。旧HEAD86/384中73/0/13，BODY140/384中60/16/64。K聚类到物理scene，各新128/旧96scene；不是新确认。
 
-[冻结配置新场景端到端评价](nearfield/CNH_RGB_FROZEN_E2E_RESULTS_20261010.md)完成ToF→通知比较：cal/hold各768新物理scene、K2，新背景family分开，主seed955预声明。主HEAD细横杆厚1.7cm，16scene/32相关事件；原5格与同通知成本匹配臂均2/32，救0损0。HEAD158/256不变，BODY116→119/256救3损0；hold空闲/纯擦边联合通知均28/37。原both为HEAD202、BODY154各/256、细横杆3/32，但通知49/286；956/957匹配HEAD细救回也0，956擦边38比原37多1。不支持主目标同成本收益，不升级App，固定配方结束不在该hold调参。原M3/5格/旧both及head50、L2和所有失败保留；旧剩余检出诊断见Git1311e202同路径。仅解析AABB共向ideal/有限背景、短窗口离线通知，完整RGB＋ToF不可评价。
+新高SNR漏检最多为BODY sign_edge19/64、HEAD sign_edge14/64、protrusion11/64、horizontal10/64、vertical3/64。HEAD全部38仅1帧达到4，短促回波不证明同成本可检出。暗rho .19的1.7cm横/竖杆和BODY暗2.5cm边缘列为当前模拟弱信号边界，中间档保留。下一建议短促contact窗证据保留、局部目标/背景关联，pass/clear负监督与通知成本入损失；仅建议，未训练。
 
-[HEAD细横杆期望回波诊断](nearfield/CNH_HEAD_THIN_SIGNAL_ORACLE_DEV_20261010.md)完成：厚度/反射率受控扫中，1.7cm在f13前距0.97m最佳bin SNR为1.37/3.59（rho .19/.57）；0.65m原薄杆整盒出横向视场。固定bin移动8帧SNR降至0.78/2.27，真值matched为2.38/6.54，静态√K不可搬用。原M3细杆3/32及时、29静默，但27/32及时窗曾有相容top8，支持中位2帧；query线性投影描述比例约16.4%，非网络因果。sub32敏感性显著，不能宣布硬件物理上限。当时建议的稀疏运动读出已完成，结果见下文；不同统计量阈值不可直接比较，不在已消费E2E hold调参，完整融合仍NOT_EVALUABLE。
+both/955的pass通知37→286来自3.5/7.5cm间隙，有通知clip37→193；所有pass本来都<10cm，无远pass对照。clear在13.5/18.5cm仍28→49通知，不能全以擦边解释。完整交叉表/逐事件ledger及一次独立复算PASS；CPU保守323/1500s、GPU期望50/600s，无新采噪/前向/阈值选择/保护集访问。
 
-[局部运动路径读出](nearfield/CNH_GRADED_MOTION_PATH_DEV_20261010.md)完成旧consumed ideal对照，不采用。当前top8 native中心沿公共运动回溯past8，正负值/缺帧/各rank保留；匹配静态同核同窗，两臂各6个固定浅层模型。validation运动相对head50：HEAD救/损0:0、2:3、0:5，BODY2:4、1:4、1:6，各/384；BODY弱横杆0:0、0:1、1:0，各/48。静默弱横杆相容路径诊断Z约3.5 vs静态1.3–1.5，但峰值模型margin仍−1.51/−1.12/−1.49，及时支持4帧；空闲最高路径Z中位3.62，幅度不足分离噪声。cal9/11 clear union slots/pass整clip约束通过，validation成本漂移单列。12cells/6cuts/360cohorts、公共几何与因果前缀通过，51事件/52诊断组补核验；源失败保留。下一候选共享多实例读出联合空间/路径形态，NOT_RUN，不扫本轮参数。[前轮聚合读出](nearfield/CNH_GRADED_WEAK_MASS_DEV_20261010.md)两聚合负结果、原M3/5格/L2/480/工作点/stop保留；未读已消费新E2E hold，仅模拟非实机。更新前当前页见Git b746125b。
+## 冻结结果与停止保留
 
-[稀疏峰运动对齐读出](nearfield/CNH_SPARSE_RAY_TRACK_DEV_20261010.md)完成固定EXPLORE：旧consumed ideal cal/validation各384行×K4，当前峰与已观测pose做1/2/4帧因果对齐，负例实际通知预算只在cal选阈值。validation原5格与主追加方案HEAD298/BODY244各/384、4cm HEAD19/64、暗4cm1/32均相同，及时/完整窗救损及提前全部0，擦边通知61→63；独立替代4cm及时救2损10，完整窗救2损17。擦边高尾将主阈值推至30.816，4cm及时最大分数仅8.012/17.537（rho .25/.65），当前幅度累积缺少空间选择性；薄杆支持也在外侧，不能直接删外侧峰。固定配方结束，原M3/5格不动；下一若继续，先查局部形状/背景对比可分性，NOT_RUN。本次不证明1.7cm迁移或实物物理极限，不在新E2E hold调参，完整RGB融合仍NOT_EVALUABLE。
+[CNH_RGB_FROZEN_E2E_RESULTS_20261010](nearfield/CNH_RGB_FROZEN_E2E_RESULTS_20261010.md)保留：原5格HEAD158/BODY116各/256；同通知成本匹配主955为158/119、薄HEAD均2/32；原both202/154，但clear/pass49/286。固定配方不在hold调参，不升级App。细杆期望与四类读出负结果沿用[CNH_HEAD_THIN_SIGNAL_ORACLE_DEV_20261010](nearfield/CNH_HEAD_THIN_SIGNAL_ORACLE_DEV_20261010.md)及[CNH_SPARSE_RAY_TRACK_DEV_20261010](nearfield/CNH_SPARSE_RAY_TRACK_DEV_20261010.md)所链接原报告；失败/停止规则按各run保留，不否定其它机制。
 
-已完成的[步行参考](nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)、[方向合同](nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)和全部方向聚合/锚定/高度混合结果作为历史诊断保留，不再驱动本阶段主线。步行参考的18–20°是过去/未来轨迹差异，非ToF姿态精度；单位/名义时钟限制仍按原报告。更新前CNH当前正文见Git 53bb1069同路径。
+方向/步行历史、旧扰动/T/T2、保护480/test及Nymeria异常按原记录保留；设备/City/新UE/硬件第二阶段不由本诊断重启。A+LOCAL的101/101与53ms不属M3成绩。完整同步RGB+CNH仍NOT_EVALUABLE。模拟oracle、有限AABB、相关K和消费复用不证明实机、安全或硬件极限。
 
-## 停止与保留
-
-[旧扰动训练](nearfield/CNH_QUERY_PERTURB_TRAIN_DEV_20261008.md)、T/T2、旧参照和门控的停止规则仍按各自run适用；不同机制开放。[480确认](nearfield/CNH_REAL_HEAD_CONFIRM_RESULTS_20261007.md)原身份保留，UNKNOWN/三态/query覆盖待验证。原Nymeria位移实现、−19°、设备/City/保护test/新UE及硬件第二阶段按原run暂缓；101/101与53ms属A+LOCAL，M3/CNH实机效果未建立。
-
-模拟AABB、有限背景、人工误差、相关K/帧及探索选择不构成实机、安全或独立确认。更新前CNH当前正文保留于Git 5844eacd同路径；RGB子线继续沿用。
-
-[RUNS](RUNS.md) · [总决定](../../../docs/CURRENT_DECISION.md)。
+更新前全文保留于Git `d0c52ce2` 同路径及本run `integration_before/`。路线日志见[RUNS](RUNS.md)。
+ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
