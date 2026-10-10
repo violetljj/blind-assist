@@ -83,6 +83,7 @@ class Engine:
         self.mean = self.std = None
         self.reference = None
         self.history = deque(maxlen=8)
+        self.projected_history = deque(maxlen=8)
         self.logits = deque(maxlen=5)
         self.last = None
         self.resets = 0
@@ -90,6 +91,7 @@ class Engine:
     def reset(self):
         """Clear causal history and scores while retaining the reference."""
         self.history.clear()
+        self.projected_history.clear()
         self.logits.clear()
         self.last = None
         self.resets += 1
@@ -205,8 +207,17 @@ class Engine:
         self.history.append(z.astype(self.input_dtype))
         torch = self.torch
         with torch.inference_mode():
-            transforms = np.repeat(self.transform[None], len(self.history), axis=0)
-            voxels = self.projector.sequence(np.asarray(self.history), transforms)
+            # The stationary adapter reuses each exposure's projection. Keep the
+            # original FP32 oldest-to-newest sum, rather than a running sum whose
+            # subtraction/reordering would change frozen numerical inputs.
+            current, seen = self.projector.frame(self.history[-1], self.transform)
+            self.projected_history.append((current, seen))
+            total = torch.zeros_like(current)
+            count = torch.zeros_like(seen)
+            for mass, coverage in self.projected_history:
+                total += mass
+                count += coverage
+            voxels = torch.stack([total, count, current], 0)
             voxels = (voxels.half() if self.feature_precision == 'float16-frozen' else voxels.float())[None]
             if not bool(torch.isfinite(voxels).all()):
                 self.reset()

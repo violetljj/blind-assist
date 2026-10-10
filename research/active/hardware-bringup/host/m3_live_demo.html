@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M3 · 实时台架</title>
+<style>
+:root{color-scheme:dark;--bg:#0d161d;--card:#15242e;--line:#293f4c;--text:#e6f0f4;--dim:#98b0bf;--head:#61d9dc;--body:#ffbd70}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,"Microsoft YaHei",sans-serif}main{max-width:1060px;margin:auto;padding:22px}h1{font-size:23px;letter-spacing:.3px;margin:0}h2{font-size:15px;margin:0}.sub{color:var(--dim);font-size:12px;line-height:1.7;margin:7px 0 0}.top,.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.badge{font-size:11px;border:1px solid #506173;color:#c1d1de;border-radius:5px;padding:4px 7px}.metrics{display:flex;gap:14px;color:var(--dim);font-size:12px;flex-wrap:wrap;margin:12px 0}.metrics b{color:var(--text);font-weight:500}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}.status{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--head)}.dot{height:7px;width:7px;border-radius:50%;background:currentColor}.scores{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scorecard{padding:15px 17px}.scorecard h2{font-size:13px;font-weight:500;color:var(--head)}.scorecard.body h2{color:var(--body)}.score{font:36px ui-monospace,Consolas,monospace;margin:8px 0 5px;font-variant-numeric:tabular-nums}.flag{font-size:11px;color:var(--dim);min-height:17px}.over{color:var(--body)}button{font:inherit;color:var(--text);border:1px solid #3d5c6e;background:#213b4a;padding:7px 11px;border-radius:7px;cursor:pointer}button:hover{background:#2c5165}button:focus-visible,summary:focus-visible{outline:2px solid var(--head);outline-offset:3px}button:disabled{opacity:.45;cursor:wait}.small{font-size:12px}button[aria-pressed=true]{border-color:var(--head);background:#234d58}.reference-card{padding:12px 16px}.refhead{display:flex;align-items:center;justify-content:space-between;gap:12px}.refinfo{font-size:12px;color:var(--dim);margin-top:4px}.progresswrap{margin-top:10px}progress{width:100%;height:7px;accent-color:var(--head)}.hidden{display:none!important}.legend{display:flex;gap:13px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:10px}.key{display:inline-block;width:13px;height:2px;vertical-align:middle;margin-right:4px;background:var(--head)}.key.body{background:var(--body)}.key.ref{background:#869caa}.chart{width:100%;display:block;margin-top:8px;height:auto}.chart text{fill:var(--dim);font-size:10px;font-family:system-ui,sans-serif}.viz{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin-top:13px}.cell{border:1px solid transparent;border-radius:4px;padding:8px 0;font:11px ui-monospace,monospace;text-align:center;min-width:0}.cell.selected{border-color:#fff;box-shadow:0 0 0 1px #fff}.tabs{display:flex;gap:5px;margin-top:10px}.tabs button{padding:5px 9px;font-size:12px}.stale{opacity:.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.stop{background:#382c31;border-color:#6c4a53;color:#edbec3}details{border-top:1px solid var(--line);padding-top:12px;color:var(--dim);font-size:12px;line-height:1.8}summary{cursor:pointer}details p{margin:8px 0}#error{color:#efb898;overflow-wrap:anywhere}.hint{color:var(--body)}.foot{margin-bottom:12px}.gridnote{min-height:33px}
+@media(max-width:720px){main{padding:16px}.viz{grid-template-columns:1fr}.card{padding:14px}.scorecard{padding:13px}.score{font-size:34px}.metrics{gap:10px}h1{font-size:21px}.cell{padding:9px 0}.chart text{font-size:11px}}
+</style></head>
+<body><main>
+<div class="top"><h1>M3 · 实时台架</h1><span class="badge">真实 CNH / 工程输入</span></div>
+<p class="sub">固定 ToF，移动前方物体，观察相对场景参照的变化。</p>
+<div class="metrics"><span id="source">COM5 · 8×8×16</span><span><b id="hz">—</b> Hz</span><span>计算中位 <b id="compute">—</b> ms</span><span>输入距今 <b id="age">—</b> ms</span></div>
+<div class="status" id="state"><span class="dot"></span><span id="stateText">连接中</span></div>
+<div class="scores">
+<section class="card scorecard"><h2>头部 · HEAD</h2><div class="score" id="head">—</div><div class="flag" id="headFlag">等待输入</div></section>
+<section class="card scorecard body"><h2>身体 · BODY</h2><div class="score" id="body">—</div><div class="flag" id="bodyFlag">等待输入</div></section>
+</div>
+<p class="sub">分数为平滑 logit；模拟参考线 0.856 尚未标定实物报警。</p>
+<section class="card">
+<div class="row"><h2>分数变化</h2><span class="sub">最近 20 秒</span></div>
+<svg id="trend" class="chart" viewBox="0 0 520 170" role="img" aria-label="HEAD 与 BODY 连续分数趋势"></svg>
+<div class="legend"><span><i class="key"></i>HEAD</span><span><i class="key body"></i>BODY</span><span><i class="key ref"></i>模拟参考线</span></div>
+</section>
+<section class="card reference-card">
+<div class="refhead"><div><h2 id="refTitle">准备场景参照</h2><div class="refinfo" id="refText">首次采集约 20 秒，请保持设备与场景静止。</div></div><button class="small" id="reference">重采参照</button></div>
+<div id="progresswrap" class="progresswrap"><progress id="progress" max="100" value="0"></progress><div class="sub" id="progressText">0 / 100 帧</div></div>
+<div class="sub" id="quality"></div>
+</section>
+<div class="viz">
+<section class="card"><div class="row"><h2>8×8 传感器区域</h2><span class="sub" id="valid">— / 64 有效距离</span></div>
+<div class="tabs" role="group" aria-label="区域显示内容"><button id="distanceTab" aria-pressed="true">距离 · mm</button><button id="residualTab" aria-pressed="false">回波变化</button></div>
+<div id="zones" class="grid" aria-label="点击区域查看 16 bin 回波"></div><p class="sub gridnote" id="gridnote">固定距离色阶 0–3000 mm；? 表示无有效距离。</p><p class="sub">点击任一区域，查看下方回波对照。区域顺序来自传感器。</p></section>
+<section class="card"><div class="row"><h2 id="zoneTitle">区域 R4 · C4</h2><span class="sub" id="zoneSeq">16 个距离 bin</span></div>
+<svg id="wave" class="chart" viewBox="0 0 520 205" role="img" aria-label="所选区域当前原始回波与场景参照对照"></svg>
+<div class="legend"><span><i class="key"></i>当前原始回波</span><span><i class="key ref"></i>场景参照均值</span></div><p class="sub">横轴为 bin 名义距离，纵轴为解码幅度。每 bin 约 0.30 m；不是障碍物定位。</p></section>
+</div>
+<div class="actions"><button class="small" id="sound" aria-pressed="false">开启越线提示音</button><button class="small stop" id="stop">结束演示并释放设备</button></div>
+<details class="foot"><summary>输入说明与运行详情</summary><p>冻结 M3 五模型，最近 8 帧历史与最近 5 次 logit 因果平滑。逐 bin 减去当前场景均值，再除以样本标准差，采用 FP32 工程表示。参照中已有物体也会被减去，因此这里展示场景变化响应，尚无实物检出率结论。</p><p>名义俯角 −10°，设备必须固定；移动设备或改变参照场景后请重采。参照变化提示仅用于操作反馈，不参与模型判决。</p><p id="detail">加载中</p><p id="error"></p></details>
+</main>
+<script>
+'use strict';
+const el=id=>document.getElementById(id), THRESHOLD=.8557642486787612;
+let latest=null,mode='distance',selected=27,ended=false,sound=false,audio=null,previous=false,lastBeep=0,zoneBusy=false,lastZone=0,refBusy=false;
+const finite=v=>typeof v==='number'&&Number.isFinite(v);
+function label(v,d=1){return finite(v)?v.toFixed(d):'—'}
+function line(values,x,y){return values.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(2)},${y(v).toFixed(2)}`).join(' ')}
+function axes(lo,hi,x0,y0,w,h,xlabels){let html='';for(let i=0;i<4;i++){const yy=y0+h-i*h/3,v=lo+(hi-lo)*i/3;html+=`<line x1="${x0}" y1="${yy}" x2="${x0+w}" y2="${yy}" stroke="#2a3e49"/><text x="${x0-7}" y="${yy+4}" text-anchor="end">${Math.abs(v)>999?v.toExponential(1):v.toFixed(1)}</text>`}for(const [x,t]of xlabels)html+=`<text x="${x}" y="${y0+h+20}" text-anchor="middle">${t}</text>`;return html}
+function trend(s){const points=s.trend||[],last=points.length?points[points.length-1].t_ms:0,pts=points.filter(p=>last-p.t_ms<=20000),w=457,h=120,x0=50,y0=10;
+ if(!pts.length){el('trend').innerHTML='<text x="260" y="80" text-anchor="middle">等待参照与 8 帧历史就绪</text>';return}
+ const vals=pts.flatMap(p=>[p.head,p.body]).concat(THRESHOLD),min=Math.min(...vals),max=Math.max(...vals),pad=Math.max(.4,(max-min)*.15),lo=min-pad,hi=max+pad,y=v=>y0+h-(v-lo)/(hi-lo)*h,x=t=>x0+w*(1-(last-t)/20000);
+ let html=axes(lo,hi,x0,y0,w,h,[[x0,'−20 s'],[x0+w/2,'−10 s'],[x0+w,'现在']]);html+=`<line x1="${x0}" y1="${y(THRESHOLD)}" x2="${x0+w}" y2="${y(THRESHOLD)}" stroke="#869caa" stroke-dasharray="5 5"/>`;
+ for(const [key,color]of [['head','#61d9dc'],['body','#ffbd70']]){html+=`<path d="${line(pts.map(p=>p[key]),i=>x(pts[i].t_ms),y)}" fill="none" stroke="${color}" stroke-width="2"/><circle cx="${x(last)}" cy="${y(pts[pts.length-1][key])}" r="3" fill="${color}"/>`}
+ el('trend').innerHTML=html;el('trend').classList.toggle('stale',s.stale);
+}
+function zones(){const vals=latest?(mode==='distance'?latest.distance:latest.residual_max):null;if(!el('zones').children.length)el('zones').innerHTML=Array.from({length:64},(_,i)=>`<button class="cell" data-zone="${i}"></button>`).join('');Array.from(el('zones').children).forEach((button,i)=>{const v=vals?vals[i]:null,r=finite(v)?Math.min(1,Math.max(0,v)/(mode==='distance'?3000:10)):0;
+ const color=!finite(v)?'#26333d':mode==='distance'?`hsl(${25+r*160} 38% 25%)`:`hsl(${v<0?220:180} 45% ${17+r*26}%)`,text=!finite(v)?'?':mode==='distance'?Math.round(v):Math.abs(v)>=1000?v.toExponential(0):v.toFixed(1);
+ button.textContent=text;button.style.background=color;button.classList.toggle('selected',i===selected);button.setAttribute('aria-pressed',i===selected);button.setAttribute('aria-label',`区域 R${1+Math.floor(i/8)} C${1+i%8}，${text}`)});el('zones').classList.toggle('stale',!!latest?.stale);
+ el('gridnote').textContent=mode==='distance'?'固定距离色阶 0–3000 mm；? 表示无有效距离。':'最大标准化变化：固定色阶 0–10。超出范围仅颜色饱和，数值保留。';}
+async function zone(force=false){if(zoneBusy||ended||(!force&&Date.now()-lastZone<500))return;zoneBusy=true;const index=selected;try{const response=await fetch('/api/zone?index='+index,{cache:'no-store'});if(!response.ok)throw Error('区域读取失败');const z=await response.json();if(index!==selected||z.reference_version!==latest?.reference_version)return;
+ el('zoneTitle').textContent=`区域 R${z.row+1} · C${z.col+1}`;el('zoneSeq').textContent=z.seq==null?'等待输入':`帧 ${z.seq}`;
+ if(!z.current){el('wave').innerHTML='<text x="260" y="90" text-anchor="middle">等待传感器输入</text>';return}
+ const values=z.current.concat(z.reference||[]),lo=Math.min(0,...values),hi=Math.max(1,...values),w=447,h=145,x0=60,y0=12,y=v=>y0+h-(v-lo)/(hi-lo)*h,x=i=>x0+w*i/15;
+ let html=axes(lo,hi,x0,y0,w,h,[0,5,10,15].map(i=>[x(i),`${(i*z.bin_width_m).toFixed(1)} m`]));
+ if(z.reference)html+=`<path d="${line(z.reference,x,y)}" fill="none" stroke="#869caa" stroke-width="2" stroke-dasharray="5 4"/>`;
+ html+=`<path d="${line(z.current,x,y)}" fill="none" stroke="#61d9dc" stroke-width="2"/>`;el('wave').innerHTML=html;el('wave').classList.toggle('stale',!!latest?.stale);
+ }catch(e){el('zoneSeq').textContent='等待区域数据'}finally{lastZone=Date.now();zoneBusy=false}}
+function beep(){if(!sound||!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=650;g.gain.value=.08;o.start();o.stop(audio.currentTime+.16)}
+async function act(action){try{const r=await fetch('/api/'+action,{method:'POST'});if(!r.ok)throw Error('操作未完成');if(action==='stop'){ended=true;el('stateText').textContent='已结束，正在释放设备';el('head').textContent=el('body').textContent='—';previous=false;el('reference').disabled=true;el('stop').disabled=true;}else{previous=false;await update(false)}}catch(e){el('error').textContent='操作失败：'+e.message;el('error').closest('details').open=true}}
+el('reference').onclick=async()=>{if(refBusy)return;refBusy=true;el('reference').disabled=true;await act('reference');refBusy=false};
+el('stop').onclick=()=>act('stop');
+el('sound').onclick=()=>{sound=!sound;el('sound').textContent=sound?'关闭越线提示音':'开启越线提示音';el('sound').setAttribute('aria-pressed',sound);if(sound){audio=audio||new AudioContext();audio.resume()}};
+for(const [id,value]of [['distanceTab','distance'],['residualTab','residual']])el(id).onclick=()=>{mode=value;el('distanceTab').setAttribute('aria-pressed',mode==='distance');el('residualTab').setAttribute('aria-pressed',mode==='residual');zones()};
+el('zones').onclick=event=>{const button=event.target.closest('[data-zone]');if(!button)return;selected=Number(button.dataset.zone);zones();zone(true)};
+async function update(schedule=true){if(ended)return;try{const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw Error('服务未就绪');const s=await response.json();if(latest&&latest.reference_version!==s.reference_version)el('wave').innerHTML='<text x="260" y="90" text-anchor="middle">等待当前参照数据</text>';latest=s;el('stateText').textContent=s.status;el('state').style.color=s.stale?'#ffbd70':'#61d9dc';el('hz').textContent=label(s.sensor_hz,2);el('compute').textContent=label(s.compute_median_ms);el('age').textContent=s.receipt_age_ms<60000?label(s.receipt_age_ms,0):'—';el('source').textContent=s.seq==null?'COM5 · 8×8×16':`COM5 · 帧 ${s.seq}`;el('valid').textContent=`${s.valid_zones??'—'} / 64 有效距离`;
+ el('progresswrap').classList.toggle('hidden',s.reference_ready);el('progress').value=s.reference_count;const remaining=s.sensor_hz?(100-s.reference_count)/s.sensor_hz:null;el('progressText').textContent=`${s.reference_count} / 100 帧${finite(remaining)?' · 约 '+Math.ceil(Math.max(0,remaining))+' 秒':''}`;
+ el('refTitle').textContent=s.reference_ready?'场景参照已就绪':s.reference_collecting?'采集场景参照':'恢复场景参照';el('refText').textContent=s.reference_ready?(s.reference_restored?'沿用已记录参照；设备移动后请重采。':'设备移动或参照场景改变后请重采。'):'保持设备与场景静止；采集期间清空旧分数。';el('reference').disabled=s.reference_collecting||refBusy||!s.models_ready;
+ const warning=s.reference_quality?.scene_change_warning;el('quality').textContent=s.reference_ready?(warning?'采集时场景变化较多，建议固定后重采。':'参照采集完成，可移动物体观察响应。'):s.reference_resets?`不连续输入已重新开始采集 ${s.reference_resets} 次。`:'';el('quality').classList.toggle('hint',!!warning);
+ const p=s.prediction;let crossing=false;for(const [id,index]of [['head',0],['body',1]]){const ready=p&&p.ready&&!s.stale;el(id).textContent=p&&!s.stale&&p.smooth?label(p.smooth[index],3):'—';const over=ready&&p.crossing[index];el(id+'Flag').textContent=s.stale?'输入中断 · UNKNOWN':!p?'等待参照与推理':!p.ready?`历史预热 ${p.history}/8`:over?'超过模拟参考线':'低于模拟参考线';el(id+'Flag').classList.toggle('over',!!over);crossing=crossing||!!over}
+ if(crossing&&!previous&&Date.now()-lastBeep>3000){beep();lastBeep=Date.now()}previous=crossing;trend(s);zones();zone();el('detail').textContent=`冻结 seed 0–4 · FP32 · 输入拒绝 ${s.input_errors} 次 · 重连 ${s.reconnects||0} 次 · 参照版本 ${s.reference_version}`;el('error').textContent=s.error||'';
+ }catch(e){el('stateText').textContent='连接中断 · UNKNOWN';el('head').textContent=el('body').textContent='—';el('headFlag').textContent=el('bodyFlag').textContent='等待服务连接';for(const id of ['trend','wave','zones'])el(id).classList.add('stale');previous=false}if(schedule&&!ended)setTimeout(update,250)}
+zones();update();
+</script></body></html>

@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 import threading
 import time
+from urllib.parse import urlsplit, parse_qs
 
 sys.dont_write_bytecode = True
 import numpy as np
@@ -23,38 +24,20 @@ sys.path.append(str(SERIAL_SITE))
 from capture import validate_frame
 from m3_live_engine import Engine
 
-PAGE = r'''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>M3 实时台架</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#10191f;color:#edf3f4;font:16px system-ui,"Microsoft YaHei",sans-serif}
-main{max-width:1150px;margin:auto;padding:30px}h1{font-size:30px;margin:0 0 8px}p{line-height:1.7;color:#a7b9c2}
-.live{color:#62dfb7}.bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.pill{background:#21333d;border-radius:30px;padding:8px 14px}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.card{background:#17252e;border:1px solid #2a3f4b;border-radius:18px;padding:22px}
-h2{font-size:20px;margin:0 0 15px}.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}.cell{text-align:center;border-radius:5px;padding:11px 0;font:13px ui-monospace,monospace;min-width:0}
-.score{font:54px ui-monospace,monospace;margin:12px 0}.muted{font-size:13px;color:#9bb1bf}.badge{color:#ffc88d;min-height:25px}.warn{background:#382e24;border:1px solid #5a4631;border-radius:12px;padding:14px;line-height:1.7}
-button,select{font:inherit;background:#244956;color:white;border:1px solid #477386;border-radius:9px;padding:10px 16px;cursor:pointer}button:hover{background:#356473}button.stop{background:#543332}
-progress{width:100%;height:16px;accent-color:#62dfb7}footer{margin-top:20px}#error{color:#ffa99b;white-space:pre-wrap}
-@media(max-width:760px){main{padding:18px}.cols{grid-template-columns:1fr}.cell{padding:10px 0;font-size:11px}}
-</style><main>
-<h1>M3 · 实时 CNH 台架</h1><p>真实传感器 → 最近 8 帧空间投影 → 冻结 M3 五模型 → 身体 / 头部分数</p>
-<div class="bar"><span class="pill live" id="state">连接中</span><span class="pill" id="seq">—</span><span class="pill" id="hz">—</span><span class="pill" id="latency">—</span></div>
-<div class="card" style="margin-top:20px"><h2 id="refTitle">采集当前场景参照</h2><progress id="progress" max="100" value="0"></progress><p id="refText">首次采集约 20 秒。保持 ToF 和场景静止；之后移动物体观察响应。</p>
-<div class="bar"><button onclick="act('reference')">重新采集场景参照</button><button id="sound" onclick="toggleSound()">开启越线提示音</button><button class="stop" onclick="act('stop')">结束演示并释放设备</button></div></div>
-<div class="cols"><div class="card"><h2>头部 HEAD</h2><div class="score" id="head">—</div><div class="badge" id="headFlag">等待输入</div><div class="muted">平滑 logit，数值不是概率</div></div>
-<div class="card"><h2>身体 BODY</h2><div class="score" id="body">—</div><div class="badge" id="bodyFlag">等待输入</div><div class="muted">固定台架、名义俯角 −10°</div></div></div>
-<div class="cols"><div class="card"><h2>传感器原始区域距离 · mm</h2><div class="grid" id="range"></div><p class="muted">8×8 原始区域顺序；无有效距离显示 ?。不是相机上的物体位置。</p></div>
-<div class="card"><div class="bar"><h2>CNH 回波</h2><select id="view"><option value="residual">相对场景参照的最大变化</option><option value="raw">原始每区最大 bin 幅度</option></select></div><div class="grid" id="hist"></div><p class="muted" id="scale">每区 16 个距离 bin；色标随当前帧缩放。</p></div></div>
-<footer><div class="warn">本演示运行原 M3 权重，输入采用当前场景均值与波动归一化后的残差，并以 FP32 保留真实强回波，避免 FP16 上溢。参照中已有物体也会被减去，因此这里展示背景变化响应。参考线 0.855764 来自模拟，尚未标定实物报警效果；越线不能解释成已确认障碍。设备必须固定，移动设备后需重新采集参照。</div><p id="error"></p><p class="muted" id="identity"></p></footer>
-</main><script>
-let sound=false,context=null,previous=false,lastBeep=0,ended=false;
-const el=id=>document.getElementById(id);
-async function act(action){try{const r=await fetch('/api/'+action,{method:'POST'});if(!r.ok)throw Error('操作未完成');if(action==='stop'){ended=true;el('state').textContent='已结束，正在释放设备';el('head').textContent=el('body').textContent='—';previous=false;}}catch(e){el('error').textContent='操作失败，请重试：'+e.message;}}
-function toggleSound(){sound=!sound;el('sound').textContent=sound?'关闭越线提示音':'开启越线提示音';if(sound){context=context||new AudioContext();context.resume()}}
-function beep(){if(!sound||!context)return;const o=context.createOscillator(),g=context.createGain();o.connect(g);g.connect(context.destination);o.frequency.value=650;g.gain.value=.08;o.start();o.stop(context.currentTime+.16)}
-function grid(id,vals,type){const max=Math.max(1,...vals.filter(v=>v!==null).map(Math.abs));el(id).innerHTML=vals.map(v=>{const t=v===null?'?':type==='range'?Math.round(v):Number(v).toPrecision(2);const ratio=v===null?0:Math.min(1,Math.abs(v)/max);const col=type==='range'?`hsl(${170-Math.min(1,(v||0)/3000)*110} 35% 25%)`:`hsl(${v<0?220:165} 45% ${17+ratio*25}%)`;return `<div class="cell" style="background:${col}">${t}</div>`}).join('')}
-async function update(){if(ended)return;try{const s=await(await fetch('/api/status',{cache:'no-store'})).json();el('state').textContent=s.status;el('seq').textContent=s.seq===undefined?'COM5':`COM5 · 帧 ${s.seq}`;el('hz').textContent=s.sensor_hz?`${s.sensor_hz.toFixed(2)} Hz`:'8×8×16';el('latency').textContent=s.prediction?`推理 ${s.prediction.processing_ms.toFixed(1)} ms`:'初始化';el('progress').value=s.reference_count;el('refTitle').textContent=s.reference_ready?'当前场景参照已就绪':'采集当前场景参照';el('refText').textContent=s.reference_ready?'现在可移动物体观察模型分数。设备移动或场景重置后，重新采集参照。':`已采集 ${s.reference_count} / 100 帧，请保持设备和场景静止。`;if(s.distance)grid('range',s.distance,'range');const vals=el('view').value==='raw'?s.hist_max:s.residual_max;if(vals)grid('hist',vals,'hist');const p=s.prediction;let crossing=false;for(const [id,index]of [['head',0],['body',1]]){el(id).textContent=p&&!s.stale?p.smooth[index].toFixed(3):'—';el(id+'Flag').textContent=s.stale?'输入中断 · UNKNOWN':!p?'等待参照与推理':!p.ready?`历史预热 ${p.history}/8`:p.crossing[index]?'超过模拟参考线':'低于模拟参考线';if(p&&p.ready&&!s.stale&&p.crossing[index])crossing=true}if(crossing&&!previous&&Date.now()-lastBeep>3000){beep();lastBeep=Date.now()}previous=crossing;el('error').textContent=s.error||'';el('identity').textContent=s.models_ready?'原始冻结 M3 · seed 0–4 · 当前/历史投影 · 本机运行':'加载冻结模型中';}catch(e){el('state').textContent='连接中断 · UNKNOWN';el('head').textContent=el('body').textContent='—';previous=false;}setTimeout(update,250)}update();
-</script></html>'''
+PAGE_PATH = Path(__file__).with_suffix('.html')
 
+
+def reference_quality(histograms):
+    """Display-only scene drift heuristic; does not accept/reject model inputs."""
+    h = np.asarray(histograms, dtype=np.float64)
+    middle = len(h)//2
+    sd = h.std(0, ddof=1)
+    floor = max(float(np.median(sd[sd > 0]))*1e-3 if (sd > 0).any() else 0., 1e-9)
+    shift = np.abs(h[:middle].mean(0)-h[middle:].mean(0))/np.maximum(sd, floor)
+    p95 = float(np.percentile(shift, 95))
+    return dict(half_mean_shift_p95=p95, scene_change_warning=p95 > .8,
+                rule='display-only: p95 half-mean shift / sample SD > 0.8',
+                scope='Scene-change hint, not physical noise or obstacle-free calibration')
 
 class Demo:
     def __init__(self, args):
@@ -62,12 +45,20 @@ class Demo:
         self.stop = threading.Event()
         self.lock = threading.Lock()
         self.condition = threading.Condition(self.lock)
-        self.reference_request = True
+        self.reconnects = 0
+        self.acquisition_epoch = 0
+        self.reference_request = not bool(getattr(args, 'reference', None))
         self.reference_version = 0
         self.reference_frames = []
         self.latest = None
+        self.reference_mean = None
+        self.reference_sd = None
+        self.trend = deque(maxlen=110)
+        self.compute_times = deque(maxlen=100)
         self.state = dict(status='加载模型', reference_count=0, reference_ready=False,
-                          models_ready=False, error=None, input_errors=0)
+                          models_ready=False, error=None, input_errors=0,
+                          reference_total=100, reference_collecting=self.reference_request,
+                          reference_version=0, reference_resets=0)
         self.receipts = deque(maxlen=50)
         self.threads = []
 
@@ -77,74 +68,66 @@ class Demo:
             age = (time.monotonic_ns() - result.get('received_ns', 0)) / 1e6
             prediction_age = (time.monotonic_ns() - result.get('prediction_received_ns', 0)) / 1e6
             result['stale'] = age > 1500 or (result['reference_ready'] and prediction_age > 1500)
+            result.update(receipt_age_ms=max(0, age), prediction_age_ms=max(0, prediction_age),
+                          trend=list(self.trend), reference_version=self.reference_version,
+                          compute_median_ms=float(np.median(self.compute_times)) if self.compute_times else None)
             if result['stale'] and result.get('models_ready'):
-                result['status'] = '输入中断 · UNKNOWN'
+                result['status'] = '输入中断 · UNKNOWN' if age > 1500 else '等待新预测 · UNKNOWN'
+            elif self.reference_request:
+                result['status'] = '采集场景参照'
             return result
+
+    def zone(self, index):
+        if not 0 <= index < 64:
+            raise ValueError('Zone index must be 0..63')
+        with self.lock:
+            current = self.latest[2].reshape(64,16)[index].tolist() if self.latest else None
+            mean = self.reference_mean.reshape(64,16)[index].tolist() if self.reference_mean is not None else None
+            return dict(index=index, row=index//8, col=index%8, current=current, reference=mean,
+                        bin_width_m=8*.0375348, seq=self.state.get('seq'),
+                        received_ns=self.state.get('received_ns'), reference_version=self.reference_version)
 
     def reference(self):
         with self.condition:
             self.reference_request = True
             self.reference_version += 1
             self.reference_frames = []
-            self.state.update(reference_count=0, reference_ready=False, prediction=None)
+            self.reference_mean = self.reference_sd = None
+            self.trend.clear()
+            self.compute_times.clear()
+            self.state.update(reference_count=0, reference_ready=False, prediction=None,
+                              reference_collecting=True, status='采集场景参照', residual_max=None,
+                              reference_quality=None, error=None)
             self.condition.notify_all()
 
     def acquire(self):
         import serial
         raw_path = self.args.out / 'live-frames.jsonl'
         try:
-            with serial.Serial(port=None, baudrate=115200, timeout=.2) as link, raw_path.open('x', encoding='utf-8') as log, (self.args.out / 'serial.bin').open('xb') as raw, (self.args.out / 'rejected.jsonl').open('x', encoding='utf-8') as rejected:
-                link.dtr = False
-                link.rts = False
-                link.port = self.args.port
-                link.open()
-                pending = bytearray()
-                previous = None
+            with raw_path.open('x', encoding='utf-8') as log, (self.args.out / 'serial.bin').open('xb') as raw, (self.args.out / 'rejected.jsonl').open('x', encoding='utf-8') as rejected:
                 while not self.stop.is_set():
-                    chunk = link.read(max(1, link.in_waiting))
-                    raw.write(chunk)
-                    raw.flush()
-                    pending.extend(chunk)
-                    if len(pending) > 2_000_000:
-                        pending.clear()
-                    while b'\n' in pending:
-                        line, _, pending = pending.partition(b'\n')
-                        try:
-                            sensor = json.loads(line)
-                            if sensor.get('type') != 'cnh_frame':
-                                continue
-                            derived = validate_frame(sensor)
-                            if (derived['rows'], derived.get('bins')) != (8, 16):
-                                raise ValueError('Expected 8x8x16 CNH')
-                            h = np.asarray(derived['hist_normalized'], dtype=np.float64).reshape(8, 8, 16)
-                            if not np.isfinite(h).all():
-                                raise ValueError('Nonfinite CNH input')
-                            stamp = time.monotonic_ns()
-                            continuous = previous is None or (sensor['seq'] == previous[0]+1 and 0 < sensor['ms']-previous[1] <= 500)
-                            previous = (sensor['seq'], sensor['ms'])
-                            log.write(json.dumps(dict(sensor=sensor, host_received_monotonic_ns=stamp))+'\n')
-                            log.flush()
-                            with self.condition:
-                                self.receipts.append(stamp)
-                                hz = (len(self.receipts)-1)*1e9/(stamp-self.receipts[0]) if len(self.receipts)>1 else None
-                                if self.reference_request:
-                                    if not continuous:
-                                        self.reference_frames = []
-                                    self.reference_frames.append(h)
-                                    self.state['reference_count'] = len(self.reference_frames)
-                                self.latest = (sensor['seq'], sensor['ms'], h, self.reference_version, stamp)
-                                self.state.update(seq=sensor['seq'], received_ns=stamp, sensor_hz=hz,
-                                                  distance=derived['distance_known_mm'], hist_max=h.max(-1).flatten().tolist())
-                                self.condition.notify_all()
-                        except (ValueError, UnicodeError, KeyError) as exc:
-                            rejected.write(json.dumps(dict(received_ns=time.monotonic_ns(), reason=str(exc),
-                                                           serial_line=line.decode('utf-8', errors='replace')))+'\n')
-                            rejected.flush()
-                            if isinstance(exc, json.JSONDecodeError):
-                                continue  # Opening in the middle of one serial frame is expected.
+                    try:
+                        with serial.Serial(port=None, baudrate=115200, timeout=.2) as link:
+                            link.dtr = False
+                            link.rts = False
+                            link.port = self.args.port
+                            link.open()
                             with self.lock:
-                                self.state['error'] = '输入检查: '+str(exc)
-                                self.state['input_errors'] += 1
+                                self.state.update(serial_released=False, reconnecting=False)
+                            self.read_serial(link, log, raw, rejected)
+                    except (OSError, serial.SerialException) as exc:
+                        with self.condition:
+                            self.reconnects += 1
+                            self.acquisition_epoch += 1
+                            self.latest = None
+                            self.receipts.clear()
+                            self.trend.clear()
+                            self.state.update(error='串口: '+str(exc), prediction=None, received_ns=0,
+                                              reconnecting=True, reconnects=self.reconnects)
+                            if self.reference_request:
+                                self.reference_frames.clear()
+                                self.state.update(reference_count=0, reference_resets=self.state['reference_resets']+1)
+                        self.stop.wait(1.5)
         except Exception as exc:
             with self.lock:
                 self.state['error'] = '串口: '+str(exc)
@@ -152,39 +135,119 @@ class Demo:
             with self.lock:
                 self.state['serial_released'] = True
 
+    def read_serial(self, link, log, raw, rejected):
+        pending = bytearray()
+        previous = None
+        while not self.stop.is_set():
+            chunk = link.read(max(1, link.in_waiting))
+            raw.write(chunk)
+            pending.extend(chunk)
+            if len(pending) > 2_000_000:
+                rejected.write(json.dumps(dict(reason='serial buffer overflow', bytes=len(pending)))+'\n')
+                rejected.flush()
+                pending.clear()
+            while b'\n' in pending:
+                line, _, pending = pending.partition(b'\n')
+                raw.flush()
+                try:
+                    sensor = json.loads(line)
+                    if sensor.get('type') != 'cnh_frame':
+                        continue
+                    derived = validate_frame(sensor)
+                    if (derived['rows'], derived.get('bins')) != (8, 16):
+                        raise ValueError('Expected 8x8x16 CNH')
+                    h = np.asarray(derived['hist_normalized'], dtype=np.float64).reshape(8, 8, 16)
+                    if not np.isfinite(h).all():
+                        raise ValueError('Nonfinite CNH input')
+                    stamp = time.monotonic_ns()
+                    continuous = previous is None or (sensor['seq'] == previous[0]+1 and 0 < sensor['ms']-previous[1] <= 500)
+                    previous = (sensor['seq'], sensor['ms'])
+                    log.write(json.dumps(dict(sensor=sensor, host_received_monotonic_ns=stamp))+'\n')
+                    log.flush()
+                    with self.condition:
+                        self.receipts.append(stamp)
+                        hz = (len(self.receipts)-1)*1e9/(stamp-self.receipts[0]) if len(self.receipts)>1 else None
+                        if self.reference_request:
+                            if not continuous:
+                                self.reference_frames.clear()
+                                self.state['reference_resets'] += 1
+                            if len(self.reference_frames) < 100:
+                                self.reference_frames.append(h)
+                            self.state['reference_count'] = len(self.reference_frames)
+                        self.latest = (sensor['seq'], sensor['ms'], h, self.reference_version, stamp, self.acquisition_epoch)
+                        distance = derived['distance_known_mm']
+                        self.state.update(seq=sensor['seq'], received_ns=stamp, sensor_hz=hz,
+                                          distance=distance, valid_zones=sum(d is not None for d in distance),
+                                          hist_max=h.max(-1).flatten().tolist())
+                        self.condition.notify_all()
+                except (ValueError, UnicodeError, KeyError) as exc:
+                    rejected.write(json.dumps(dict(received_ns=time.monotonic_ns(), reason=str(exc),
+                                                   serial_line=line.decode('utf-8', errors='replace')))+'\n')
+                    rejected.flush()
+                    with self.lock:
+                        self.state['input_errors'] += 1
+                        if not isinstance(exc, json.JSONDecodeError):
+                            self.state['error'] = '输入检查: '+str(exc)
+
     def infer(self):
         engine = None
         processed = None
+        previous_epoch = None
+        previous_receipt_ns = None
         try:
             engine = Engine(feature_precision='float32-engineering')
             (self.args.out / 'model-identity.json').write_text(json.dumps(engine.metadata(), indent=2), encoding='utf-8')
+            if self.args.reference:
+                with np.load(self.args.reference, allow_pickle=False) as saved:
+                    reference = saved['histograms']
+                receipt = engine.set_reference(reference)
+                quality = reference_quality(reference)
+                receipt.update(quality=quality, restored_from=str(self.args.reference.resolve()))
+                np.savez_compressed(self.args.out / 'reference-0.npz', histograms=reference)
+                (self.args.out / 'reference-0.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+                with self.lock:
+                    if self.reference_version == 0 and not self.reference_request:
+                        self.reference_mean, self.reference_sd = engine.mean.copy(), engine.std.copy()
+                        self.state.update(reference_ready=True, reference_count=len(reference),
+                                          reference_collecting=False, reference_quality=quality, reference_restored=True)
             with self.lock:
                 self.state.update(models_ready=True, status='采集场景参照')
             with (self.args.out / 'inference.jsonl').open('x', encoding='utf-8') as log:
                 while not self.stop.is_set():
                     with self.condition:
-                        self.condition.wait_for(lambda: self.stop.is_set() or (self.latest is not None and (self.latest[0], self.latest[3]) != processed), timeout=.5)
+                        self.condition.wait_for(lambda: self.stop.is_set() or (self.latest is not None and (self.latest[0], self.latest[3], self.latest[5]) != processed), timeout=.5)
                         if self.stop.is_set():
                             break
                         current = self.latest
-                        if current is None or (current[0], current[3]) == processed:
+                        if current is None or (current[0], current[3], current[5]) == processed:
                             continue
                         reference = np.asarray(self.reference_frames) if self.reference_request and len(self.reference_frames) >= 100 else None
                         need_reference = self.reference_request
                         version = self.reference_version
                     if reference is not None:
                         reference_receipt = engine.set_reference(reference[:100])
+                        quality = reference_quality(reference[:100])
+                        reference_receipt.update(quality=quality)
                         np.savez_compressed(self.args.out / f'reference-{version}.npz', histograms=reference[:100])
                         (self.args.out / f'reference-{version}.json').write_text(json.dumps(reference_receipt, indent=2), encoding='utf-8')
                         with self.lock:
                             if version == self.reference_version:
                                 self.reference_request = False
-                                self.state.update(reference_ready=True, reference_count=100)
+                                self.reference_mean, self.reference_sd = engine.mean.copy(), engine.std.copy()
+                                self.state.update(reference_ready=True, reference_count=100,
+                                                  reference_collecting=False, reference_quality=quality,
+                                                  reference_restored=False)
                         need_reference = False
-                    processed = (current[0], current[3])
+                    processed = (current[0], current[3], current[5])
                     if need_reference:
                         continue
                     input_received_ns = current[4]
+                    if ((previous_epoch is not None and current[5] != previous_epoch) or
+                            (previous_receipt_ns is not None and input_received_ns-previous_receipt_ns > 1_500_000_000)):
+                        engine.reset()
+                        with self.lock:
+                            self.trend.clear()
+                    previous_epoch, previous_receipt_ns = current[5], input_received_ns
                     try:
                         result = engine.step(current[2], current[0], current[1])
                     except ValueError as exc:
@@ -193,14 +256,22 @@ class Demo:
                                                   input_error=str(exc), reference_version=current[3]))+'\n')
                         log.flush()
                         with self.lock:
+                            self.trend.clear()
                             self.state.update(prediction=None, error='本帧输入: '+str(exc), status='输入不可评价 · UNKNOWN')
                         continue
                     result.update(smooth=result['smoothed'], crossing=result['reference_crossing'], processing_ms=result['compute_ms'])
+                    result.update(reference_version=current[3], acquisition_epoch=current[5])
                     log.write(json.dumps(result, allow_nan=False)+'\n')
                     log.flush()
                     residual = engine.normalized(current[2])
                     with self.lock:
-                        if current[3] == self.reference_version and not self.reference_request:
+                        if current[3] == self.reference_version and current[5] == self.acquisition_epoch and not self.reference_request:
+                            self.compute_times.append(result['compute_ms'])
+                            if result['reset']:
+                                self.trend.clear()
+                            if result['ready']:
+                                self.trend.append(dict(t_ms=input_received_ns/1e6, seq=current[0],
+                                                       head=result['smooth'][0], body=result['smooth'][1]))
                             self.state.update(status='实时 M3 · 工程输入', prediction=result,
                                               residual_max=residual.max(-1).flatten().tolist(), error=None,
                                               prediction_received_ns=input_received_ns)
@@ -236,12 +307,13 @@ def main():
     parser.add_argument('--http-port', type=int, default=8766)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--max-seconds', type=int, default=3600)
+    parser.add_argument('--reference', type=Path, help='Reuse an actual recorded scene reference NPZ')
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=False)
     import shutil
     source_dir = args.out / 'source'
     source_dir.mkdir()
-    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py')):
+    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), PAGE_PATH):
         shutil.copyfile(source, source_dir / source.name)
     demo = Demo(args)
 
@@ -259,10 +331,17 @@ def main():
             self.wfile.write(payload)
 
         def do_GET(self):
-            if self.path == '/':
-                self.respond(PAGE, 'text/html; charset=utf-8')
-            elif self.path == '/api/status':
+            url = urlsplit(self.path)
+            if url.path == '/':
+                self.respond(PAGE_PATH.read_text(encoding='utf-8'), 'text/html; charset=utf-8')
+            elif url.path == '/api/status':
                 self.respond(json.dumps(demo.snapshot(), allow_nan=False))
+            elif url.path == '/api/zone':
+                try:
+                    index = int(parse_qs(url.query).get('index', ['27'])[0])
+                    self.respond(json.dumps(demo.zone(index), allow_nan=False))
+                except ValueError:
+                    self.send_error(400, 'Zone index must be 0..63')
             else:
                 self.send_error(404)
 
