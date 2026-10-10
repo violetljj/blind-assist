@@ -23,6 +23,7 @@ SERIAL_SITE = ROOT / 'artifacts.local/hardware-bringup/venv/Lib/site-packages'
 sys.path.append(str(SERIAL_SITE))
 from capture import validate_frame
 from m3_live_engine import Engine
+from m3_live_camera import CameraFeed
 
 PAGE_PATH = Path(__file__).with_suffix('.html')
 
@@ -61,6 +62,8 @@ class Demo:
                           reference_version=0, reference_resets=0)
         self.receipts = deque(maxlen=50)
         self.threads = []
+        self.camera = CameraFeed(args.out / 'camera', self.stop, url=getattr(args, 'camera_url', None),
+                                 device_id=getattr(args, 'camera_id', None), max_seconds=getattr(args, 'max_seconds', 3600)) if getattr(args, 'camera_id', None) or getattr(args, 'camera_url', None) else None
 
     def snapshot(self):
         with self.lock:
@@ -75,6 +78,7 @@ class Demo:
                 result['status'] = '输入中断 · UNKNOWN' if age > 1500 else '等待新预测 · UNKNOWN'
             elif self.reference_request:
                 result['status'] = '采集场景参照'
+            result['camera'] = self.camera.snapshot() if self.camera else dict(status='未开启相机', available=False)
             return result
 
     def zone(self, index):
@@ -287,7 +291,7 @@ class Demo:
                 self.state['model_released'] = True
 
     def start(self):
-        for func in (self.acquire, self.infer):
+        for func in (self.acquire, self.infer) + ((self.camera.run,) if self.camera else ()):
             worker = threading.Thread(target=func, daemon=True)
             worker.start()
             self.threads.append(worker)
@@ -308,12 +312,14 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--max-seconds', type=int, default=3600)
     parser.add_argument('--reference', type=Path, help='Reuse an actual recorded scene reference NPZ')
+    parser.add_argument('--camera-url', help='Explicit local Atom http://IP:81/stream')
+    parser.add_argument('--camera-id', default='b4:3a:45:bd:12:d8', help='Atom station MAC for discovery; empty disables discovery')
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=False)
     import shutil
     source_dir = args.out / 'source'
     source_dir.mkdir()
-    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), PAGE_PATH):
+    for source in (Path(__file__), Path(__file__).with_name('m3_live_engine.py'), Path(__file__).with_name('m3_live_camera.py'), PAGE_PATH):
         shutil.copyfile(source, source_dir / source.name)
     demo = Demo(args)
 
@@ -322,7 +328,7 @@ def main():
             pass
 
         def respond(self, data, content_type='application/json; charset=utf-8'):
-            payload = data.encode('utf-8')
+            payload = data.encode('utf-8') if isinstance(data, str) else data
             self.send_response(200)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(payload)))
@@ -336,6 +342,12 @@ def main():
                 self.respond(PAGE_PATH.read_text(encoding='utf-8'), 'text/html; charset=utf-8')
             elif url.path == '/api/status':
                 self.respond(json.dumps(demo.snapshot(), allow_nan=False))
+            elif url.path == '/api/camera.jpg':
+                jpeg, _ = demo.camera.image() if demo.camera else (None, None)
+                if jpeg is None:
+                    self.send_error(503, 'No fresh camera frame')
+                else:
+                    self.respond(jpeg, 'image/jpeg')
             elif url.path == '/api/zone':
                 try:
                     index = int(parse_qs(url.query).get('index', ['27'])[0])
