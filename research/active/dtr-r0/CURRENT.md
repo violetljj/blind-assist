@@ -12,7 +12,7 @@ RGB独立子线：[新负参考冻结评分](nearfield/RGB_BODY_QUERY_NEGATIVE_S
 
 目标回到ToF任务收益与分级提醒：明显风险给强提醒，接触/擦边难分时允许轻提醒；不把精确分界作为继续推进的前提。分级只依据运行时可见的分数与证据质量，真值仅评价；弱证据保留不确定含义。重点是弱/细目标证据在投影、累积和完整bin读出中的保留，以及分级能否增加有用及时提醒。强/轻提醒分别报告接触检出、完整救/损、pass与clear clip/slot成本，强转轻也单列；轻提醒可接受但打扰成本不记为零，不设零损失门槛。共向假设不替代外参、时钟或空间投影核验。
 
-[分级提醒与回波诊断](nearfield/CNH_GRADED_EVIDENCE_DEV_20261010.md)已实现并评价ideal缓存级候选。保留ordinary OR强档、ordinary single新增证据轻档：三seed总及时HEAD351/344/346、BODY307/310/312各/384，额外轻档救36/31/23和40/53/30、总损0；clear总73/107/80slots各/6656，pass149/168/158clips各/256。query内双轴降级仅省强clear2slots/pass1clip却损强提醒时序，优先保留强档；max3作次选。相近分数下趋势/波动重叠，背景可见静默未成立；下一补公共扩张走廊/局部峰及匹配背景证据，降低轻档pass成本。原M3/5格/L2/body truth/fullbin/480、weak_pass候选和旧stop保留；仅模拟Development、未接入App，无训练/前向/新采样。
+[公共走廊峰与分级成本](nearfield/CNH_GRADED_CORRIDOR_DEV_20261010.md)完成全cal/validation88项内/扩张/外环current/past8证据、108线性与72浅层交互单元。ordinary OR强档保留，single完整轻档及时HEAD351/344/346、BODY307/310/312各/384及pass149/168/158各/256继续作参照。空间交互25% replace对同cal预算score-only的HEAD净增24/21/19、BODY+4/−9/+15、pass−4/−7/−2，clear+4/+9/0；有局部收益但BODY代价明显，不作默认。仅分数75% filter损5/8/6及时接触，pass降到140/146/143，时序损也保留；过滤不是free。下一HEAD/BODY分别评分/cal/预算，再考虑距离峰断续支持。有峰不证明障碍存在，背景静默未成立；CPU/CUDA计数不等价留证，CPU与评分独立复算PASS。仅已消费模拟Development、cal小评分拟合，未接入App，无主干重训/前向/新采样；原M3/5格/L2/body truth/fullbin/480、weak_pass及旧stop保留，前轮见[原报告](nearfield/CNH_GRADED_EVIDENCE_DEV_20261010.md)。
 
 已完成的[步行参考](nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)、[方向合同](nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)和全部方向聚合/锚定/高度混合结果作为历史诊断保留，不再驱动本阶段主线。步行参考的18–20°是过去/未来轨迹差异，非ToF姿态精度；单位/名义时钟限制仍按原报告。更新前CNH当前正文见Git 53bb1069同路径。
 
