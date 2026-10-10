@@ -4,11 +4,9 @@
 
 RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
-用户预注册逻辑回归主融合的[同步确认v2](nearfield/SYNC_FUSION_CONFIRM_V2_DEV_20261011.md)已完成：协议cfe21852在新数据前提交，资源修订7674cf8a在追加下载/eval前提交；训练旧train6+已消费eval4，新cal6/eval12共576帧，cal36点/34021ties封存后一次OPEN。**query级融合在中带得到确认（真实RGB+半合成ToF）**：半循环logit中W1767/1923、F54/959=5.631%≤7.5%容许上限（未达严格5%），vs最佳ToF1382净385，12visit95%增益CI15.017–27.495pp；救407/损22，vsOR救267/损37净230。近带净136、CI3.439–23.013pp、F43/2139=2.010%次判据通过；远净368但FREE96/270=35.556%超15%，失败。FARO仅过门eval66帧/6贡献visit，中logit234/284 vsRGB177/284净57、F0/22，近52/303 vsRGB162净−110；RGB近中53.47%/62.32%未饱和，独立几何尚非全面确认。125/576 FARO过门、71缺poseUNKNOWN、4.110GB下载及GPU225.460s边界保留；模型/阈值eval后不改，默认S/M3/5格/RGB不升级App，下一真实ToF中带验证。独立12150query/72900决策/36表/24paired/2000bootstrap PASS，eval12已消费。
+[融合确认v3](nearfield/SYNC_FUSION_CONFIRM_V3_DEV_20261011.md)完成预注册：协议`ec252d68`在建新数据前提交并推送，实现`95f451e6`在OPEN前提交；旧30visit一次训练、新cal6/eval12共576帧，D′六臂等权HGB/B′混合LR/(b)半循环LR均去显式query位置与带别特征，加最低传感器证据OR门控。21阈值/全部ties封存并独立复算后eval一次OPEN。**主中带确认未通过**。半循环中D′ W1696/2077，vs最佳单源rgb净+87，救213/损126，12visit聚类95%CI-0.308–9.155pp，FREE4/689=0.581%；主FAIL。同口径：D_prime净+87、CI-0.308–9.155pp、FREE4/689=0.581%（FAIL）；B_prime净+86、CI-0.519–9.557pp、FREE8/689=1.161%（FAIL）；audit_b净-91、CI-11.354–2.535pp、FREE0/689=0.000%（FAIL）。次判据：faro_rho030_ambient1近带vsRGB净-2、FREE15/105=14.286%，FAIL；faro_rho030_ambient10近带vsRGB净-58、FREE121/1702=7.109%，FAIL。主中带收益按最低证据拆为both净-16、tof_only净+209、rgb_only净-26、neither净-80；全6臂/3带/3模型无证据支持0，属条件分解非因果。FARO仅eval43过门帧，完整贡献visit见报告，远带只报告、不作主张。9权重/hash、六臂manifest、逐query/四类拆分/2000次bootstrap、四阶段独立核验PASS。下载3,889,213,192B/4GB、GPU211.577/600s、CPU保守2209.665/2400 command-wall s，任务进程释放；18新visit已消费，eval后未改模型或阈值，不读保护480/test。仅真实RGB＋半合成ToF Development，不升级App/M3/5格或作实机/安全结论。
 
-[融合证据事后审计](nearfield/SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.md)：原中带+385按最低阳性几何证据拆为净253（65.7%）与无最低证据净132（34.3%），属于条件分解而非因果归因；先验基线中W204/F106。删除显式位置/距离输入(a)净383，门控(b)净282、12visit95%CI10.07–21.39pp、F44/959=4.59%，去先验后融合收益仍成立（事后），建议新visit预注册确认(b)。远(b)F58/270=21.48%仍失败；原v2预注册文字/数字保留，不将无最低证据类解释为仅使用先验。12150query独立核验PASS、GPU0，稳健性任务已通知补同样拆分。
-
-[混合质量稳健性](nearfield/SYNC_FUSION_ROBUST_DEV_20261011.md)完成EXPLORE：30已消费visit、5折外eval6/内cal5/train19，六ToF臂混合cal同阈值；A/B/C/D在FARO近vsRGB净11/121/124/188，ambient×10近−653/53/71/209，半循环中vs最佳单源净−122/1224/1205/1380。B/C/D满足用户原计数描述，但A负收益使80%条件成为空约束，保留率N/E，不宣称有有效保留型候选。D中救1511/损131，95%CI21.93–35.64pp、FREE87/2107=4.13%；FARO/压力近FREE15.83%/4.49%均未达2%，压力ToF缺测52.31%非全部失效。D中增益按最低局部证据拆净1184/196；同折位置/带别logit先验中W0，拆分非因果。混合训练未证实质量单调降ToF权重。本任务推荐D（六臂等权HGB v1配方）及B对照进入下一确认；此前门控(b)未与D同协议配对，缺证据回退RGB对照需另预注册。原v2结论与冻结读出保留；主/补充独立核验PASS，CPU保守1000/1800command-wall、GPU0/300、无下载，不读保护480/test。
+历史v2/事后审计/稳健性CV（均已消费）保留：[v2中带净385](nearfield/SYNC_FUSION_CONFIRM_V2_DEV_20261011.md)、[去位置＋门控(b)事后净282](nearfield/SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.md)、[含位置六臂HGB探索](nearfield/SYNC_FUSION_ROBUST_DEV_20261011.md)。原结果及失败未回溯改写；本次v3按新visit预注册评价上述组合。
 
 历史v1（已消费）：用户2026-10-11决定进入query级同步融合器阶段，主ToF使用扰动native（**半循环**），固定过门FARO作独立几何检验。[同步融合v1](nearfield/SYNC_FUSION_V1_DEV_20261011.md)已完成train6/cal2/eval4隔离、20维HGB主模型与logistic对照、cal近2%/中5%/远10%选点、封存后一次eval。**仅半循环来源支持，独立几何未复现**：native HGB近/中W278/371、497/542，F7/690、9/286，胜最佳单源净20/104；远W511/616但F7/30超标。FARO近W145/163、F8/151，不及RGB146/163、2/151；中远cal FREE=0不可校准。logistic同判读，不替换主模型；HGB近中净收益visit区间跨0。eval已消费，不据此改模型/阈值；下一先补独立几何cal与新visit来源，未升级默认候选。W为query POS命中，与旧像素交集W不可纵比。
 
@@ -28,7 +26,7 @@ near-pass间隙≤10cm轻.25/强1，far/clear任何通知1；gap1逐query、同�
 
 ## 继承与边界
 
-原M3/5格保留为对照和强档来源；旧E2E、重训/确认失败与各run停止规则保留。池化已消费负例按本任务授权复用，hold曲线仅描述不选点。有限AABB模拟Development、4family区间仅描述，非实机/安全证明；共向几何不替代外参/时钟核验，方向/PDR、硬件阶段未启动，同步v2中带query确认仅限半循环来源；FARO中带同向仅描述、近带负增益，未构成全面独立确认。后续台架/App由候选manifest提供接口，本任务未接入。
+原M3/5格保留为对照和强档来源；旧E2E、重训/确认失败与各run停止规则保留。池化已消费负例按本任务授权复用，hold曲线仅描述不选点。有限AABB模拟Development、4family区间仅描述，非实机/安全证明；共向几何不替代外参/时钟核验，方向/PDR、硬件阶段未启动，融合v3当前判读以本页新visit预注册结果为准；半循环主中带与稀疏FARO/压力近带次判据分别报告，远带仅描述，未构成全面独立实机确认。后续台架/App由候选manifest提供接口，本任务未接入。
 
-本次更新前全文见Git `c0fd6849`及 sync-fusion-confirm-v2-dev-20261011/ 的 `integration_before/`；历史见RUNS/报告。
+本次v3整合前全文见Git `95f451e6`及 sync-fusion-confirm-v3-dev-20261011/ 的 `CURRENT*_integration_before.md`；历史见RUNS/报告。
 ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED

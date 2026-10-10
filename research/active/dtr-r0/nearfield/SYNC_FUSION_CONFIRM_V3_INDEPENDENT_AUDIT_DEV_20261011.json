@@ -1,0 +1,211 @@
+{
+  "protocol": {
+    "status": "PASS",
+    "protocol_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+    "features": 16,
+    "shared_ensembles": 3,
+    "calibration_cells": 21,
+    "arms": 6,
+    "new_eval_reference_reads": 0,
+    "new_candidate_reads": 0,
+    "checks": [
+      "six-arm weighted fixed HGB and LR plus native-only LR",
+      "all four explicit query/band indices removed",
+      "unclipped original sensor minimum evidence gate",
+      "new chronological cal6/eval12 visits and fixed windows",
+      "all-ties mixed calibration and shared thresholds",
+      "mid primary positive paired gain/CI and FREE7.5%",
+      "FARO and ambient10 near secondary gain>=0/FREE4%",
+      "full12visit paired bootstrap and missing-denominator rejection",
+      "far descriptive only; protected480/test excluded",
+      "strict command-wall/GPU/download budget and once-only eval"
+    ],
+    "CPU_command_wall_s": 0.007792600023094565,
+    "GPU_s": 0
+  },
+  "train": {
+    "status": "PASS",
+    "train_seal_sha256": "da024262dc39824b99ee3f8396c3bdf14c51ba0bfcbebbb12a0ce1b778fce0ae",
+    "training_feature_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+    "models_verified": 9,
+    "weighted_arm_sums_verified": 6,
+    "training_visits": 30,
+    "feature_columns": 16,
+    "protocol_commit": "ec252d683c57a432ffd07e84e1fe2f4dd48d1075",
+    "protocol_plan_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+    "protocol_git_blob_sha256": "2a68cc2a3eb0499137f57e24db73d9b217066bd15f82a74ab7f48f67d14851c0",
+    "protocol_binding": "exact text after CRLF to LF normalization; decoded JSON equal",
+    "new_eval_reads": 0,
+    "model_inference_runs": 0,
+    "model_refits": 0,
+    "CPU_command_wall_s": 1.9415780000272207,
+    "GPU_s": 0
+  },
+  "preeval": {
+    "status": "PASS",
+    "models_verified": 9,
+    "weighted_arm_sums_verified": 6,
+    "training_visits": 30,
+    "calibration_visits": 6,
+    "calibration_rows": 26217,
+    "exhaustive_cells": 21,
+    "exhaustive_ties_checked": 54566,
+    "data_integrity": {
+      "status": "PASS",
+      "cohort_complete": true,
+      "admitted_visits": 18,
+      "historically_excluded_visits": 143,
+      "frames": 576,
+      "window_preselection_recomputed": 36,
+      "split_counts": {
+        "cal": 6,
+        "eval": 12
+      },
+      "FOV_45_fully_covered_frames": 576,
+      "FOV_45_incomplete_frames": 0,
+      "minimum_side_half_FOV_deg": 23.04097916220116,
+      "RGB_grid_abs_residual_s": {
+        "n": 576,
+        "median": 0.0010000000183936208,
+        "p90": 0.0020000000367872417,
+        "max": 0.003000000026077032
+      },
+      "trajectory_nearest_residual_s": {
+        "n": 874,
+        "median": 0.0020702300025732256,
+        "p90": 0.018200123007409273,
+        "max": 0.019488460035063326
+      },
+      "trajectory_bracket_span_s": {
+        "n": 874,
+        "median": 0.09995899998466484,
+        "p90": 0.09996029999456368,
+        "max": 0.11662033000902738
+      },
+      "pose_missing_brackets": 278,
+      "new_eval_reference_reads": 0,
+      "new_eval_model_score_reads": 0
+    },
+    "sensor_samples": {
+      "status": "PASS",
+      "selection": "first and last public calibration frames, independent of outcomes",
+      "calibration_frame_ids": [
+        "42446517_197417.682",
+        "42447221_212452.249"
+      ],
+      "pressure_arrays_exact": 80,
+      "six_arm_query_rows_exact": 270,
+      "FARO_K0_gate_frames": 2,
+      "FARO_K0_gates": [
+        {
+          "frame_id": "42446517_197417.682",
+          "joint_pass_zones": 0,
+          "admitted": false
+        },
+        {
+          "frame_id": "42447221_212452.249",
+          "joint_pass_zones": 0,
+          "admitted": false
+        }
+      ],
+      "new_eval_reference_reads": 0,
+      "new_eval_model_score_reads": 0
+    },
+    "prior_train_audit_sha256": "c0146d16d30a525c4a8400a7d77c9a68d4d32f325c41b62b62112cbc6617c589",
+    "cal_seal_sha256": "0b1ad689a40efe676a324aced38238df55d35fead3c1aa6101e652e606edb865",
+    "new_eval_reference_reads": 0,
+    "new_eval_model_score_reads": 0,
+    "training_model_refits": 0,
+    "CPU_command_wall_s": 19.34289070003433,
+    "GPU_s": 0
+  },
+  "posteval": {
+    "status": "PASS",
+    "cached_rows": 53001,
+    "query_decisions_checked": 371007,
+    "CSV_rows_verified": 53001,
+    "metrics_checked": 126,
+    "paired_rows_checked": 108,
+    "evidence_rows_checked": 504,
+    "four_group_decompositions": 432,
+    "bootstrap_replicates": 2000,
+    "visit_clusters": 12,
+    "cache_sha256": "23c2df0557fc1ec0a00a5718a86030c3f86e9aaa42d437de15e9b8409e83af65",
+    "summary_sha256": "b2f4dcd9b3bb2d55fe075b9631a4d343a897b99d612a927105db71959afd8c20",
+    "evidence_decomposition_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\independent_evidence_decomposition.json",
+    "evidence_decomposition_sha256": "4304c3478b2ed59f2fc110ad293ef4c131762bebfe1cf33d91503114beb36bf2",
+    "primary": {
+      "arm": "native_perturbed",
+      "band": 1,
+      "method": "D_prime",
+      "comparator": "rgb",
+      "comparator_role": "best_single",
+      "rescue": 213,
+      "loss": 126,
+      "delta_W": 87,
+      "POS": 2077,
+      "delta_W_rate": 0.04188733750601829,
+      "delta_W_CI": {
+        "lower": -5.024999999999999,
+        "upper": 195.0,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": -0.0030792811839323465,
+        "upper": 0.09154670828248691,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 63,
+      "UNKNOWN_added": 11,
+      "UNKNOWN_removed": 148,
+      "FREE_rate": 0.005805515239477504,
+      "FREE_tolerance": 0.075,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "positive_difference": true,
+        "interval_lower_positive": false,
+        "FREE_tolerance_pass": true
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    "secondary": [
+      {
+        "arm": "faro_rho030_ambient1",
+        "method": "D_prime",
+        "delta_W_vs_RGB": -2,
+        "FREE_rate": 0.14285714285714285,
+        "FREE_tolerance": 0.04,
+        "criteria": {
+          "calibrated_and_denominators": true,
+          "nonnegative_net": false,
+          "FREE_tolerance_pass": false
+        },
+        "status": "FAIL",
+        "pass_all": false
+      },
+      {
+        "arm": "faro_rho030_ambient10",
+        "method": "D_prime",
+        "delta_W_vs_RGB": -58,
+        "FREE_rate": 0.07109283196239718,
+        "FREE_tolerance": 0.04,
+        "criteria": {
+          "calibrated_and_denominators": true,
+          "nonnegative_net": false,
+          "FREE_tolerance_pass": false
+        },
+        "status": "FAIL",
+        "pass_all": false
+      }
+    ],
+    "new_eval_reference_reopens": 0,
+    "model_inference_reruns": 0,
+    "result": "主中带确认未通过",
+    "CPU_command_wall_s": 2.8049982999800704,
+    "GPU_s": 0
+  }
+}
