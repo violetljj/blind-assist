@@ -1,0 +1,183 @@
+{
+  "task": "SYNC_FUSION_V1_DEV_20261011",
+  "parent": "5902640c",
+  "created_utc": "2026-10-10T17:03:26.784702+00:00",
+  "lane": "EXPLORE_SMALL_FUSION_TRAINING",
+  "user_decision": "2026-10-11 user authorizes fusion stage despite v1.1 coverage gate failure; native_perturbed is semi-circular primary; gated fused FARO is independent-geometry cross-check; no actual-ToF claim",
+  "budget": {
+    "CPU_command_wall_s": 1800,
+    "GPU_s": 300,
+    "allocation_CPU": {
+      "features": 450,
+      "train_cal": 350,
+      "eval_bootstrap": 350,
+      "independent_audit": 300,
+      "primary": 350
+    }
+  },
+  "inputs": {
+    "v1_1_manifest": "artifacts.local/work/sync-rgb-tof-dataset-v1-1-dev-20261011/dataset_manifest_v1_1.json",
+    "manifest_sha256": "f1d60791b643ba614bd36b2f99a056e813d5c7f8b91efbaa766b4e2a93a04bd0",
+    "visits": "exact unchanged train6/cal2/eval4; no protected480/test",
+    "sources": [
+      "native_perturbed",
+      "faro_rho030_ambient1"
+    ],
+    "native_domain": "all grid frames, including missing ToF; semi-circular, not independent geometry",
+    "FARO_domain": "all roles admitted iff v1.1 K0 joint_pass_zones>=52; fixed input gate only; no K1/outcome selection",
+    "K": "average K0/K1 observation features to one row per frame/query, not duplicated independent samples"
+  },
+  "features": {
+    "names": [
+      "tof_margin16_m",
+      "tof_margin16_missing",
+      "tof_support_pixels",
+      "tof_unknown_fraction",
+      "tof_before_fraction",
+      "tof_inside_fraction",
+      "tof_after_fraction",
+      "tof_median_entry_offset_m",
+      "tof_median_exit_offset_m",
+      "tof_valid_K_count",
+      "dav_margin16_m",
+      "dav_margin16_missing",
+      "dav_finite_fraction",
+      "uni_margin16_m",
+      "uni_margin16_missing",
+      "uni_finite_fraction",
+      "band_index",
+      "query_x_index",
+      "query_y_index",
+      "query_z_index"
+    ],
+    "readout": "unchanged v1 peak_readout SNR>=3 coverage>=.75 and projection; no source native/reference/labels/categories/groundtruth depths used as features",
+    "margin": "16th largest min(z-entry,exit-z) over query-domain finite positive predicted rays; less16 finite rays -> -inf",
+    "ToF_K": "ordinary features arithmetic mean; either missing margin -> baseline -inf and model margin -10 with missingflag1; valid_K_count0/1/2",
+    "model_missing_floor_m": -10,
+    "model_metre_features_clip": [
+      -10,
+      10
+    ],
+    "baseline_scores_not_clipped": true,
+    "ToF_relationship": "before z<entry, inside entry<=z<=exit, after z>exit; fractions divided by query-domain rays; median offsets to entry/exit over finite positive rays, absent=-10",
+    "support": "projected pixel-ray count with predicted depth inside query, not independent subrays",
+    "RGB": "DAV2 and UniDepth own raw margin16, missing indicator, finite-domain fraction",
+    "query_indices": "x/y/z centre sorted0/1/2; band_index=zindex; identity/source/visit/frame IDs not model features"
+  },
+  "models": {
+    "per_source": true,
+    "seeds": [
+      955,
+      956,
+      957
+    ],
+    "ensemble": "arithmetic mean positive-class probabilities",
+    "HGB": {
+      "max_iter": 100,
+      "learning_rate": 0.1,
+      "max_leaf_nodes": 7,
+      "max_depth": 3,
+      "min_samples_leaf": 50,
+      "l2_regularization": 1,
+      "early_stopping": false,
+      "class_weight": null
+    },
+    "Logistic": {
+      "preprocess": "StandardScaler fitted on source train POS/FREE only",
+      "C": 1,
+      "penalty": "l2",
+      "solver": "lbfgs",
+      "max_iter": 1000,
+      "class_weight": null
+    },
+    "train_labels": "POSITIVE=1, FREE_ON_SAMPLED_RAYS=0; UNKNOWN excluded; only train visits",
+    "no_model_selection": "HGB primary, logistic named control; no hyperparameter search; deterministic seeds may coincide"
+  },
+  "scores": {
+    "ToF": "K2 mean rawmargin, missing propagation",
+    "RGB": "Uni rawmargin for near, DAV rawmargin for mid/far",
+    "OR": "max(ToF,RGB)",
+    "AND": "min(ToF,RGB)",
+    "methods": [
+      "HGB",
+      "logistic",
+      "ToF",
+      "RGB",
+      "OR",
+      "AND"
+    ]
+  },
+  "calibration": {
+    "roles": [
+      "cal"
+    ],
+    "by": [
+      "source",
+      "method",
+      "band"
+    ],
+    "band_targets": {
+      "0.3-0.8m": 0.02,
+      "0.8-1.5m": 0.05,
+      "1.5-3m": 0.1
+    },
+    "threshold_rule": "score>=threshold; all finite unique score ties plus +inf all-reject; -inf is never candidate",
+    "objective": "among F<=floor(target*FREE), maximize query W on POS, then minimize F, then choose highest threshold; no tie splitting",
+    "zero_FREE": "threshold+inf, status NOT_CALIBRATABLE; never count as success",
+    "zero_POS": "threshold+inf, status NO_CAL_POS; never count as success",
+    "seal": "all feature names/source hashes/train-cal feature hashes/model joblib hashes/full cal tie table/cutpoints/code snapshots sealed before eval open"
+  },
+  "metric_contract": {
+    "W": "query-level predicted positive AND POS reference; not old pixel-intersection witness; all methods same",
+    "F": "predicted positive AND strict FREE",
+    "U": "predicted positive AND UNKNOWN; UNKNOWN excluded from fitting, included in eval support report",
+    "no_pixel_claim": "learner emits query probability only; legacy pixel-witness numbers not directly comparable"
+  },
+  "eval": {
+    "single_open": "exclusive append-only eval_open receipt after verified cal seal; produce immutable query score/label/prediction cache once; no weights or cutpoint changes afterward; later audit/bootstrap reads frozen query table only",
+    "best_single": "at frozen cal points select higher eval W of ToF/RGB within source/band; ties fewer F then RGB. Equivalent improvement criterion beats both fixed single sensors; no model or threshold selection",
+    "paired": "on same POS queries, rescue=model_yes comparator_no; loss=model_no comparator_yes; also FREE added/removed and UNKNOWN added/removed; compare best_single and OR",
+    "bootstrap": {
+      "replicates": 2000,
+      "seed": 20261011,
+      "cluster": "resample four original eval visits with replacement; FARO absent visits remain zero-count clusters; all paired queries stay together; comparator identity fixed to full eval choice",
+      "interval": "percentile2.5/97.5 for W/POS F/FREE and paired deltaW/POS; zero denominator replicates omitted with valid count reported"
+    },
+    "no_denominator": "eval zeroPOS or zeroFREE band NOT_EVALUABLE, not success"
+  },
+  "decision": {
+    "primary": "HGB only; logistic same rule separately as control, do not choose better method posteval",
+    "source_band_success": "cal status calibrated, eval POS>0, FREE>0, Wfusion>max(WToF,WRGB), and Ffusion/FREE<=band target",
+    "two_sources": "same at least2 bands in intersection of successful source bands -> query-level fusion benefit (real RGB + semi-synthetic ToF)",
+    "only_primary_source": "native successful in at least2bands but two-source condition fails -> only semi-circular source supports, independent geometry not reproduced; distinguish uncalibratable from empirical failure",
+    "otherwise": "no observed fusion benefit"
+  },
+  "preflight_denominators": {
+    "native_cal": {
+      "POS": [
+        145,
+        313,
+        354
+      ],
+      "FREE": [
+        380,
+        206,
+        58
+      ]
+    },
+    "gated_FARO_cal": {
+      "frames": 7,
+      "POS": [
+        38,
+        51,
+        12
+      ],
+      "FREE": [
+        16,
+        0,
+        0
+      ]
+    },
+    "implication": "independent FARO mid/far cannot calibrate within unchanged data; retain NOT_CALIBRATABLE, no new visits/gate relaxation/eval borrowing"
+  }
+}
