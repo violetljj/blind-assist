@@ -4,7 +4,7 @@ ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED
 
 更新：2026-10-10。盲杖互补前视感知主线；原M3、5格局部融合、L2和A+LOCAL保留。
 
-RGB独立子线：[残差目标与输入兼容性](nearfield/RGB_BODY_QUERY_RESIDUAL_TARGET_DEV_20261010.md)完成56train/304cal目标与固定public512诊断，未读136eval。四bound .2/.742222/1.148101/3.184721；envelope约24.16倍且ARKitcal近83404点仅74.958%可达。16邻居代理近带ARKit MAE1.9614→.8289，但3RScan .6008→.6104、trainLOEO整体.3171→.4193；ARKit3/3访问整体改善，train7/7及cal3RScan17/17环境整体变差。像素改善不等于query救损/FREE，局部冲突不证明不可学习。全局affine保留，下一实际训练有界log残差＋可观测局部深度上下文，对照三项depth/ray；不默认范围回退、不用eval设bound。360采样/4bound/全邻距与汇总、2原帧/4exact16及角色核验PASS，审计失败与metadata语义修正留证。CPU保守329/1200s（整合全额200），GPU/训练/下载/新推理0，资源已释放。仅已消费Development/first-return参考，旧A0全δ/三折/成本取舍/stop/CNH保留；前RGB正文Gitabda0a31。
+RGB独立子线：[有界残差实际训练](nearfield/RGB_BODY_QUERY_BOUNDED_RESIDUAL_DEV_20261010.md)完成两4993参数/同初始化同批次600step实际残差训练。主Ark16/60/65 affine见证/FREE103/5、120/12、131/10；depth/ray47/0、103/10、104/26；context52/0、94/22、102/9。两追加capture无优势，不升级，本run停止固定配方追加调参，affine保留。事后同5FREE context Ark16见证138，对固定affine103救54损19，对完整curve affine113救50损25，近2/44但FREE1/96；60/65同成本context91/102低于curve affine122/132。主/304cal补充trained cuts全>.25结构排除near，不证明无近信息；pooled cal各29/588。两臂直接paired与全5cohort/1725curves保留，65相对depthray省成本的混合收益不丢弃。下一若继续优先新增可观测RGB上下文/训练域覆盖，不把cal转train；不同机制开放。360特征/同600batches、880模型输出/23760原affine分数、全18792pairs/阈值与81原生query独立PASS，input审核源码SHA误断言留证。GPU49.128/900s、CPU保守280/1200s，无新DepthPro/下载，资源释放。仅已消费Development/first-return，旧A0全δ/LOCO/held成本/stop/CNH保留；前RGB正文Gitb97299b4。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
