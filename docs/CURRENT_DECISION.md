@@ -2,7 +2,7 @@
 
 更新：2026-10-10。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合和L2保留。
 
-RGB独立子线：[近带排序与几何](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_NEAR_RANK_GEOMETRY_DEV_20261010.md)完成全304cal/136eval近query缓存排序＋136eval/48新cal共184帧native点诊断。absolute affine Ark16/60首见证事后最低FREE成本41/96、56/133；旧head7/96、53/133，A0.2为12/96、44/133；normalized A0.2 Ark16局部2/96保留但60为59/133，65无近POS。Ark16/60近正union点150703/10243，affine预测/参考深度中位3.735/4.330，旧head2.677/2.160，A0.2仍3.086/3.545，六臂（含rawDP）均在原生近query之后；旧±.2代理幅度不足，不由eval倒推train界限。3RScan raw方向不同，不套统一倍数；ARKit严格nearFREE原生false-entry0与负margin校准F35并不矛盾。10000m缓存尾与已核执行源码inverse clamp端点吻合，成因未定位。全局affine及旧三折/分带负结果保留，不采用新点、不提高训练优先级；下一ARKit模型输入/米制尺度链与误差结构，后续界限仅train/cal。独立290rank/1740cost/184保存点值/1620quantiles及两个原始frame score完全复算PASS；CSV空组发布失败与仅汇总修复保留。geometry16.726/420s、ranking.799/180s、CPU保守622/1200s，GPU/下载/训练/新推理0，无常驻资源。仅Development/参考像素与事后曲线，非身体/实机/安全；旧stop/CNH保留，前文Gitf053479c。
+RGB独立子线：[输入与数值诊断](../research/active/dtr-r0/nearfield/RGB_BODY_QUERY_INPUT_NUMERICS_DEV_20261010.md)完成96帧ARKit输入合约与固定16帧FP16/float32对照。时间戳/尺寸/K/mm→m/focal缩放通过，未发现实现尺度错误；旧48推理缺历史源码SHA如实保留，16/16 FP16缓存精确复现。原色饱和端点14830→14857，未消除；arkit16共同未饱和近正49152点affine ratio中位3.7923→3.7941、轴向inside0，新cal共同未饱和20178点2.6512→2.6505仍inside0；60/65所选端点无近POS，N/E。主absolute及global normalized救损/FREE增减0，辅助normalized band5救3损1/FREE增减0，其中cal near救1保留；cal far无FREE不报零成本。全局log-affine保留，不切换精度或提升训练优先级，未否定真正有界残差；下一现有train/cal残差目标、输入可辨识性与界限，禁止eval倒推bound，不默认范围回退。独立32倒数/336指标/1728配对及1原生frame排序PASS，辅助枚举/引号失败留证。GPU32calls262.191/300s、CPU保守741/1200s，无训练/下载、资源已释放。仅已消费Development/现有参考，非身体/实机/安全；旧A0三折/分带/stop/CNH保留，前文Gite4e6b2cd。
 
 ## 当前：共向假设下推进ToF检出与分级提醒
 
