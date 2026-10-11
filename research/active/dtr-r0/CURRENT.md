@@ -20,6 +20,8 @@ RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新V
 
 ## ToF当前决定
 
+[sim→real输入合同第一步](../hardware-bringup/SIM2REAL_INPUT_CONTRACT_DEV_20261011.md)完成已有真实CNH EXPLORE：13片段12922帧/12726满窗，原M3、5格、S HEAD/BODY为61.88/15.33%、84.83/52.34%、84.86/52.85%；仅减far-selected bias并保留表面的新拟合floor后三模型100%/100%。bias340/1024格覆盖、噪声R²=.0024及ambient系数0边界不支持物理映射成功；新BODY2586无固件弱表面支撑。旧5格04 HEAD144中133对既定两格敏感，但其有柜面支撑；新路径消融0取消不能当FPN消失。独立raw/参数/三类闭合与真实forward核验PASS，CPU保守≤400/1800command-wall、GPU≤150/300s，权重释放。下一先建模拟器噪声/固件处理与空间串扰模板；重训/六条件标注录制仅草案。M3/原5格/S模拟默认保留，无新采集/刷写/调阈值/模型或App修改，不读480/test；只是真实回放描述，不作检出/误报或安全结论。
+
 用户2026-10-10决定：接受S集成的接触收益与轻提醒取舍，**S955/956/957任务成本HGB均值升为ToF模拟默认候选，未接入App**。冻结6e441f9a的6权重/47维，原5格强档逐slot不变，新增slot仅轻档。旧[确认](nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)净151/1024、a/d通过而b/c失败保留；用户改用取舍曲线与环境波动，不再按成本≤k×原5格二元判定。旧约2.7pp是通知次数归一，实际far+clear有通知clip增量2.214pp。
 
 [池化取舍](nearfield/CNH_S_ENSEMBLE_TRADEOFF_DEV_20261010.md)完成：六组已消费pass/clear负例、14family、7168clip（far+clear5376），全部ties最低阈值tau1.917951703；同池原5格445→606有通知clip，增2.995pp≤3pp，contact不选点。封存后生成1536scene×K2/4新family，与30库存19252键及背景/目标参数无交集。
