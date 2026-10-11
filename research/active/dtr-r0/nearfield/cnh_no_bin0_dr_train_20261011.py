@@ -329,10 +329,11 @@ def prepare():
         maps.clear(); torch.cuda.empty_cache()
 
 
-def prepare_features(arm):
+def prepare_features(arm, *, resume_ordinary=False):
     import cnh_boundary_token_model as M
     from cnh_cvr_projection import Projector
-    if arm == 'both': return prepare_features_paired()
+    if arm == 'both': return prepare_features_paired(resume_ordinary=resume_ordinary)
+    if resume_ordinary: raise ValueError('The documented ordinary-cache repair applies to paired features only')
     stage = Stage('prepare_features_'+arm); dropped = [0] if arm == 'no_bin0' else [0, 1]
     data = OUT/'inputs/train'; folder = OUT/'features'/arm; folder.mkdir(parents=True, exist_ok=True)
     z = np.load(data/'histories.npy', mmap_mode='r'); t = np.load(data/'transforms.npy', mmap_mode='r')
@@ -349,7 +350,6 @@ def prepare_features(arm):
         ordinary.flush(); del ordinary, zz, tt, ll, geometry
         vox = np.lib.format.open_memmap(folder/'m3.npy', mode='w+', dtype=np.float16, shape=(len(ids), 3, 24, 17, 33))
         projector = Projector()
-        paired_errors = None
         for begin in range(0, len(ids), 8):
             stage.check(); ix = ids[begin:begin+8]
             zz = np.array(z[ix]); zz[..., dropped] = 0
@@ -364,7 +364,7 @@ def prepare_features(arm):
     finally: torch.cuda.empty_cache()
 
 
-def prepare_features_paired():
+def prepare_features_paired(*, resume_ordinary=False):
     """Two masks share geometric transport and feature geometry, not signals."""
     import cnh_boundary_token_model as M
     from cnh_cvr_projection import Projector
@@ -373,25 +373,63 @@ def prepare_features_paired():
     z = np.load(data/'histories.npy', mmap_mode='r'); t = np.load(data/'transforms.npy', mmap_mode='r')
     le = np.load(data/'length.npy', mmap_mode='r'); ids = np.load(data/'m3_indices.npy')
     try:
-        for arm in ('no_bin0', 'no_bin01'):
-            folder = OUT/'features'/arm; folder.mkdir(parents=True, exist_ok=True)
-            if (folder/'ordinary.npy').exists() or (folder/'m3.npy').exists():
-                raise FileExistsError('Preserve existing feature preparation: '+str(folder))
-            arrays[arm] = np.lib.format.open_memmap(folder/'ordinary.npy', mode='w+', dtype=np.float16, shape=(len(z), 2, 16, 9, 8, 8))
-        with torch.no_grad():
-            for begin in range(0, len(z), 64):
-                stage.check(); end = min(begin+64, len(z))
-                zz = torch.as_tensor(np.array(z[begin:end]), device='cuda').float(); zz[..., 0] = 0
-                tt = torch.as_tensor(np.array(t[begin:end]), device='cuda'); ll = torch.as_tensor(np.array(le[begin:end]), device='cuda')
-                geometry = M.feature_geometry(tt, ll, 'center')
-                arrays['no_bin0'][begin:end] = M.build_features(zz, geometry, ll)[:, :, :, list(CHANNELS)].half().cpu().numpy()
-                zz[..., 1] = 0
-                arrays['no_bin01'][begin:end] = M.build_features(zz, geometry, ll)[:, :, :, list(CHANNELS)].half().cpu().numpy()
-        for arr in arrays.values(): arr.flush()
-        arrays.clear(); del zz, tt, ll, geometry
+        resume_checks = []
+        if resume_ordinary:
+            failures = [json.loads(p.read_text()) for p in (OUT/'gpu_receipts').glob('prepare_features_both_*.json')]
+            if not any(r['status']=='FAILED' and 'UnboundLocalError' in r.get('error', '') and 'paired_errors' in r.get('error', '') for r in failures):
+                raise ValueError('No matching documented post-ordinary projection failure')
+            for arm in ('no_bin0', 'no_bin01'):
+                cached = np.load(OUT/'features'/arm/'ordinary.npy', mmap_mode='r')
+                if cached.shape != (len(z), 2, 16, 9, 8, 8) or cached.dtype != np.float16:
+                    raise ValueError('Completed ordinary cache shape/dtype mismatch')
+                # The preserved traceback occurred after ordinary.flush(), and
+                # before the first M3 write. Recompute both endpoint rows to
+                # bind the existing complete cache to the repaired extractor.
+                for index in (0, len(z)-1):
+                    zz = torch.as_tensor(np.array(z[index:index+1]), device='cuda').float()
+                    zz[..., [0] if arm=='no_bin0' else [0, 1]] = 0
+                    tt = torch.as_tensor(np.array(t[index:index+1]), device='cuda')
+                    ll = torch.as_tensor(np.array(le[index:index+1]), device='cuda')
+                    geometry = M.feature_geometry(tt, ll, 'center')
+                    expected = M.build_features(zz, geometry, ll)[:, :, :, list(CHANNELS)].half().cpu().numpy()[0]
+                    if not np.array_equal(cached[index], expected):
+                        raise ValueError('Preserved ordinary endpoint differs: '+arm+str(index))
+                    resume_checks.append(dict(arm=arm, row=index, exact=True))
+                del cached
+            stamp = time.time_ns()
+            preserved = []
+            for arm in ('no_bin0', 'no_bin01'):
+                partial = OUT/'features'/arm/'m3.npy'
+                if not partial.is_file(): raise FileNotFoundError('Expected documented M3 partial: '+str(partial))
+                target = partial.with_name(f'm3_failed_unbound_paired_errors_{stamp}.npy')
+                if not partial.resolve().is_relative_to(OUT.resolve()) or not target.parent.resolve().is_relative_to(OUT.resolve()):
+                    raise ValueError('Repair path escapes this task output')
+                partial.rename(target); preserved.append(str(target))
+            save(OUT/'feature_resume_ordinary_receipt.json', dict(reason='paired_errors initializer source repair',
+                cached_rows=len(z), endpoint_checks=resume_checks, preserved_partial_paths=preserved,
+                native_rerender=False, ordinary_rerender=False))
+        else:
+            for arm in ('no_bin0', 'no_bin01'):
+                folder = OUT/'features'/arm; folder.mkdir(parents=True, exist_ok=True)
+                if (folder/'ordinary.npy').exists() or (folder/'m3.npy').exists():
+                    raise FileExistsError('Preserve existing feature preparation: '+str(folder))
+                arrays[arm] = np.lib.format.open_memmap(folder/'ordinary.npy', mode='w+', dtype=np.float16, shape=(len(z), 2, 16, 9, 8, 8))
+            with torch.no_grad():
+                for begin in range(0, len(z), 64):
+                    stage.check(); end = min(begin+64, len(z))
+                    zz = torch.as_tensor(np.array(z[begin:end]), device='cuda').float(); zz[..., 0] = 0
+                    tt = torch.as_tensor(np.array(t[begin:end]), device='cuda'); ll = torch.as_tensor(np.array(le[begin:end]), device='cuda')
+                    geometry = M.feature_geometry(tt, ll, 'center')
+                    arrays['no_bin0'][begin:end] = M.build_features(zz, geometry, ll)[:, :, :, list(CHANNELS)].half().cpu().numpy()
+                    zz[..., 1] = 0
+                    arrays['no_bin01'][begin:end] = M.build_features(zz, geometry, ll)[:, :, :, list(CHANNELS)].half().cpu().numpy()
+            for arr in arrays.values(): arr.flush()
+            arrays.clear()
+        del zz, tt, ll, geometry
         for arm in ('no_bin0', 'no_bin01'):
             arrays[arm] = np.lib.format.open_memmap(OUT/'features'/arm/'m3.npy', mode='w+', dtype=np.float16, shape=(len(ids), 3, 24, 17, 33))
         projector = Projector()
+        paired_errors = None
         for begin in range(0, len(ids), 8):
             stage.check(); ix = ids[begin:begin+8]
             zz = np.array(z[ix]); zz[..., 0] = 0
@@ -409,7 +447,8 @@ def prepare_features_paired():
                 print('PREPARE_FEATURES_BOTH', begin, '/', len(ids), round(time.monotonic()-stage.start, 1), flush=True)
         for arr in arrays.values(): arr.flush()
         receipt = stage.finish('COMPLETE', arms=['no_bin0', 'no_bin01'], ordinary_rows=len(z), m3_rows=len(ids), shared_geometry=True,
-                               paired_projection_max_abs=paired_errors)
+                               paired_projection_max_abs=paired_errors, resumed_ordinary=resume_ordinary,
+                               ordinary_endpoint_checks=resume_checks)
         for arm in arrays: save(OUT/'features'/arm/'receipt.json', dict(receipt, arm=arm))
         return receipt
     except Exception as error:
@@ -508,11 +547,12 @@ def main():
     parser.add_argument('stage', choices=('profile', 'prepare', 'features', 'train_m3', 'train_ordinary'))
     parser.add_argument('--arm', choices=('no_bin0', 'no_bin01', 'both'), default='no_bin0')
     parser.add_argument('--seeds', type=int, nargs='+')
+    parser.add_argument('--resume-ordinary', action='store_true')
     a = parser.parse_args(); handle = configure()
     try:
         if a.stage == 'profile': profile()
         elif a.stage == 'prepare': prepare()
-        elif a.stage == 'features': prepare_features(a.arm)
+        elif a.stage == 'features': prepare_features(a.arm, resume_ordinary=a.resume_ordinary)
         elif a.stage == 'train_m3': train_m3(a.arm, a.seeds or (list(range(5)) if a.arm=='no_bin0' else [0]))
         elif a.stage == 'train_ordinary': train_ordinary(a.arm, a.seeds or (ORDINARY_SEEDS if a.arm=='no_bin0' else [ORDINARY_SEEDS[0]]))
     finally:

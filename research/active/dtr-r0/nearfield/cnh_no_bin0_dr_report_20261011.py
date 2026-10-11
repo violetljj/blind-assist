@@ -140,6 +140,15 @@ def run(out=OUT, report=REPORT):
     if (out/'profile.json').exists():
         p=read(out,'profile.json')
         text.append(f"长训练前profile：主M3预计{p.get('estimate_main_m3_train_seconds',0):.1f}s、主ordinary{p.get('estimate_main_ordinary_train_seconds',0):.1f}s、双臂投影{p.get('estimate_two_arm_projection_seconds',0):.1f}s；共享渲染和特征，避免按seed重复生成。实际时长以最终receipt计费为准。")
+    feature_receipts=[]
+    for arm in ('no_bin0','no_bin01'):
+        path=out/'features'/arm/'receipt.json'
+        if path.exists():
+            r=read(path.parent,path.name)
+            feature_receipts.append([arm,r.get('status','COMPLETE'),r.get('ordinary_rows','—'),r.get('m3_rows','—'),str(r.get('paired_projection_max_abs','—')),str(r.get('resumed_ordinary',False))])
+    if feature_receipts:
+        text.append(table(('特征臂','状态','ordinary行','M3行','双臂投影vs独立投影最大绝对差','恢复既有ordinary缓存'),feature_receipts))
+    text.append('过程失败与恢复保留：首次profile在PLAN.json缺少字段时中止（3.22s），首次冷渲染耗时不宜外推，另存原receipt并改用热态profile。双臂特征阶段完成ordinary缓存后，因paired_errors初始化遗漏发生UnboundLocalError（20.165s）；仅修复初始化，显式resume对两臂缓存首尾各4行逐值验证，将未完成M3缓存按时间戳保留，再续作投影。失败耗时计入预算，训练配方、数据、随机化范围及判读门槛未因此改变。')
     text.append('## 模拟留出与成本\n\n切点仅模拟cal。新M3/raised按whole-score ties匹配原clear成本，解析LOCAL保留原cut；S池化六组已消费负例，contact不选点，选择相对旧原5格far+clear有通知clip增量≤3pp的最低tau。全部权重/切点hash封存后才生成新hold，旧新候选用同一名义光子观测配对。')
     source=read(out,'fresh_hold_source_receipt.json')
     text.append(f"新hold {source['physical_scenes']}物理scene×K{source['replicas']}，四新背景family；HEAD/BODY接触event各{source['contact_events_per_height'][0]}/{source['contact_events_per_height'][1]}。对{source['inventory_file_count']}份允许库存metadata、{source['inventory_keys']}物理key预检，物理key、背景几何、family、目标尺寸和rho交集均为0。未读取保护480/test。")
