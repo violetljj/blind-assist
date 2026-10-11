@@ -20,6 +20,8 @@ RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新V
 
 ## ToF当前决定
 
+[宿舍孪生全报警判别](../hardware-bringup/DORM_TWIN_DISCRIMINATION_DEV_20261011.md)EXPLORE完成，**窗外尽头时倾向A，近侧杂物单独不足以解释全报；实际几何未测，真实A/B不可确认**。名义幕3.2m/高1.55m，合理−15…0°原5格/S空HEAD/BODY0/108，g20–55cm基本静默；near原全强由幕2.8m进入3m窗驱动，单移回3.2m降至HEAD1/108/BODY0，名义只移幕2.8m则216/216全强。99主cell＋8输出后声明组件诊断，不回改主几何/判据。拼合近bin254/256，v3只换串扰分子；真实4/4b/7仍全强，9 BODY89→24/89，空762→697/762但杆5/6强584→60/584，不采用v3默认。差异含bin0与远幕10/11，单最早bin不足解释组合全强。下一先核实际姿态/raw映射/尽头距离，再补signed仪器与噪声合同、核/gain及窄通道窗内外分布，骨干重训后拟合S仅草案；不先单独微调S。独立7196845项＋CUDA六窗PASS/旧−10°兼容，CPU≤300/1500、GPU≤100/600command-wall s；无重训/模型阈值修改/480访问，几何假设与模板过减局限见报告。
+
 [宿舍十条件实机pilot校准回放](../hardware-bringup/REAL_PILOT_CALIBRATION_REPLAY_DEV_20261011.md)完成EXPLORE，**仍不可迁移**：1507帧/1362满窗，v1继承06d49473与v2在空通道4/4b/9的原5格/S均762/762 query-frames强报警，外侧7也全强；墙/杆/8HEAD报警，无S新增light。用户授权宽松稳定规则，strict失败保留；4/4b观测Var=.145814·positive_mean+.089665·ambient+.081291、R²=.533699，阳台上半弱模板128/1024cell；2fit gain=.749185、核σ=.404742bin，3check能量L2残差11.16%/核逐bin109.98%。旧zone34两bin非所有场景共同异常。仅1–4b拟合、5–9评价，3不回流；模型/阈值/名义−10°/恒等历史保持冻结。独立raw/参数/计数与同CUDAfresh forward PASS，CPU跨后端S分数差留证。CPU保守300/1500、GPU65/300command-wall s；下一全空间bias/单位噪声→核零偏→固定模式/gain，更新模拟器重训骨干再拟合S仅草案；不读480/test、不作检出/误报或安全主张，不升候选/App。
 
 [sim→real输入合同第一步](../hardware-bringup/SIM2REAL_INPUT_CONTRACT_DEV_20261011.md)完成已有真实CNH EXPLORE：13片段12922帧/12726满窗，原M3、5格、S HEAD/BODY为61.88/15.33%、84.83/52.34%、84.86/52.85%；仅减far-selected bias并保留表面的新拟合floor后三模型100%/100%。bias340/1024格覆盖、噪声R²=.0024及ambient系数0边界不支持物理映射成功；新BODY2586无固件弱表面支撑。旧5格04 HEAD144中133对既定两格敏感，但其有柜面支撑；新路径消融0取消不能当FPN消失。独立raw/参数/三类闭合与真实forward核验PASS，CPU保守≤400/1800command-wall、GPU≤150/300s，权重释放。下一先建模拟器噪声/固件处理与空间串扰模板；重训/六条件标注录制仅草案。M3/原5格/S模拟默认保留，无新采集/刷写/调阈值/模型或App修改，不读480/test；只是真实回放描述，不作检出/误报或安全结论。
