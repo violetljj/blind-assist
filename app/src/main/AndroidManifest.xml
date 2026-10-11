@@ -24,6 +24,10 @@
             android:name="com.linnan.blindassist.vision.OBJECT_DETECTOR_PROVIDER"
             android:value="com.linnan.blindassist.vision.ProductionQnnRoutingObjectDetectorProvider" />
         <activity
+            android:name=".PhoneCaptureActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".HardwareDemoActivity"
             android:exported="false" />
         <activity

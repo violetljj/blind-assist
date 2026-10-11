@@ -12,6 +12,7 @@ import sys
 import uuid
 from m3_live_camera import CameraFeed
 from capture import Decoder
+from atom_imu import ImuFeed, load_mounting, private_host, unavailable_alignment, receipt_ns, RECEIPT_CLOCK_DOMAIN
 from real_labeled_capture import GuidedCapture, CaptureClock, open_serial, WiFiStream, private_tof_host, default_output_root, segment_plan
 
 HERE=Path(__file__).resolve().parent
@@ -35,7 +36,8 @@ class InterruptSerial:
     def close(self):return self.device.close()
 
 class Bridge:
-    def __init__(self, output, *, port='COM5', resume=False, redo=None, serial_factory=None, capture_factory=GuidedCapture, tof_host=None, tof_tcp_port=3335):
+    def __init__(self, output, *, port='COM5', resume=False, redo=None, serial_factory=None, capture_factory=GuidedCapture, tof_host=None, tof_tcp_port=3335,
+                 imu_host=None, imu_tcp_port=3336, imu_mounting=None):
         self.output=Path(output);self.port=port;self.resume=resume;self.redo=redo or []
         self.serial_factory=serial_factory;self.capture_factory=capture_factory
         self.tof_host=private_tof_host(tof_host) if tof_host else None;self.tof_tcp_port=int(tof_tcp_port)
@@ -49,16 +51,33 @@ class Bridge:
         self.preview_stop=threading.Event();self.preview_worker=None;self.preview_device=None
         self.preview_latest=None;self.preview_frames=0;self.preview_error=None
         self.preview_status='未开启ToF预览'
+        self.imu_host=private_host(imu_host) if imu_host else None;self.imu_tcp_port=int(imu_tcp_port)
+        self.imu_mounting=load_mounting(imu_mounting) if imu_mounting else None;self.imu=None
         try:
             if json.loads((self.output/'capture.json').read_text(encoding='utf-8-sig')).get('session_complete'):
                 self.phase='complete'
         except (OSError, ValueError):pass
+    def ensure_imu(self,payload):
+        host=str(payload.get('imu_host',self.imu_host or '')).strip()
+        host=private_host(host) if host else None
+        if self.imu and self.imu.host!=host:
+            self.imu.close();self.imu=None
+        self.imu_host=host
+        if host and self.imu is None:
+            self.output.mkdir(parents=True,exist_ok=True)
+            self.imu=ImuFeed(host,self.output/f'imu-{uuid.uuid4().hex}',self.imu_tcp_port,mounting=self.imu_mounting).start()
+    def close_imu(self):
+        feed=self.imu
+        if feed:
+            feed.close();self.imu=None
     def log(self,*values,**kwargs):
         with self.lock:self.logs.append(' '.join(str(v) for v in values))
     def ask(self,prompt):
         with self.lock:self.prompt=prompt;self.prompt_id+=1;self.waiting=True;self.wait_latest=None
         def emit_wait(kind,record):
             if kind=='frames':
+                record['host_receipt_clock_domain']=RECEIPT_CLOCK_DOMAIN
+                record['imu']=self.imu.align(record['host_received_monotonic_ns']) if self.imu else unavailable_alignment()
                 with self.lock:self.wait_latest=record
         wait_decoder=Decoder(emit_wait)
         try:
@@ -68,7 +87,7 @@ class Bridge:
                     # H3 disconnects a stalled TCP consumer. Drain unsaved bytes
                     # during placement prompts so waiting never fills its socket.
                     if self.tof_host and self.capture and self.capture.device is not None and '下一段' not in prompt:
-                        wait_decoder.feed(self.capture.device.read(16384),time.monotonic_ns())
+                        wait_decoder.feed(self.capture.device.read(16384),receipt_ns())
             raise KeyboardInterrupt('网页停止')
         finally:
             with self.lock:self.waiting=False;self.wait_latest=None
@@ -93,6 +112,7 @@ class Bridge:
             valid={str(s['condition_index']) for s in segment_plan()}|{s['condition'] for s in segment_plan()}|{s['segment_id'] for s in segment_plan()}
             if any(s not in valid for s in selected):raise ValueError('重录可填1–9、4b或逗号分隔编号')
             self.port=port;self.tof_host=host;self.tof_tcp_port=tcp_port;self.stop_event.clear();self.answers=queue.Queue();self.prompt='';self.waiting=False
+            self.ensure_imu(payload)
             self.phase='running';self.error=None;self.preview_error=None;self.logs.clear()
             resume=bool(payload.get('resume',self.resume))
             def run():
@@ -103,7 +123,9 @@ class Bridge:
                         return InterruptSerial(device,self.stop_event)
                     transport=dict(kind='wifi_tcp',host=host,tcp_port=tcp_port) if host else dict(kind='usb_serial',port=self.port)
                     source=f'tcp://{host}:{tcp_port}' if host else self.port
-                    self.capture=self.capture_factory(self.output,factory,clock=InterruptClock(self.stop_event),input_fn=self.ask,print_fn=self.log,port=source,transport=transport)
+                    options=dict(clock=InterruptClock(self.stop_event),input_fn=self.ask,print_fn=self.log,port=source,transport=transport)
+                    if self.imu:options['imu_feed']=self.imu
+                    self.capture=self.capture_factory(self.output,factory,**options)
                     manifest=self.capture.run_session(resume=resume,redo=selected)
                     with self.lock:self.phase='complete' if manifest.get('session_complete') else 'partial'
                 except KeyboardInterrupt:
@@ -113,6 +135,7 @@ class Bridge:
                 finally:
                     if self.capture and self.capture.device is not None:
                         self.capture.device.close();self.capture.device=None
+                    self.close_imu()
                     with self.lock:self.waiting=False
             self.worker=threading.Thread(target=run,name='guided-capture-web',daemon=True);self.worker.start()
     def preview(self,payload):
@@ -125,6 +148,7 @@ class Bridge:
             if not 1<=tcp_port<=65535:raise ValueError('ToF TCP端口必须在1–65535')
             self.tof_host=host;self.tof_tcp_port=tcp_port;self.preview_stop.clear()
             self.preview_latest=None;self.preview_frames=0;self.preview_error=None;self.preview_status='正在连接ToF'
+            self.ensure_imu(payload)
             def run():
                 delay=1
                 while not self.preview_stop.is_set():
@@ -135,13 +159,15 @@ class Bridge:
                         def emit(kind,record):
                             nonlocal last_frame_at,delay
                             if kind=='frames':
+                                record['host_receipt_clock_domain']=RECEIPT_CLOCK_DOMAIN
+                                record['imu']=self.imu.align(record['host_received_monotonic_ns']) if self.imu else unavailable_alignment()
                                 last_frame_at=time.monotonic();delay=1
                                 with self.lock:
                                     self.preview_latest=record;self.preview_frames+=1
                                     self.preview_error=None;self.preview_status='实时更新'
                         decoder=Decoder(emit)
                         while not self.preview_stop.is_set():
-                            device.timeout=.2;decoder.feed(device.read(16384),time.monotonic_ns())
+                            device.timeout=.2;decoder.feed(device.read(16384),receipt_ns())
                             if time.monotonic()-last_frame_at>1.5:
                                 raise OSError('1.5秒未收到有效ToF帧')
                     except (OSError,ValueError) as exc:
@@ -168,6 +194,7 @@ class Bridge:
             if worker.is_alive():raise RuntimeError('ToF预览尚未退出，不能占用同一TCP进行采集')
     def stop(self):
         self.stop_event.set();self.stop_preview()
+        if not (self.worker and self.worker.is_alive()):self.close_imu()
     def close(self):
         self.closing=True;self.stop()
         self.camera_stop.set()
@@ -177,6 +204,7 @@ class Bridge:
             if self.capture and self.capture.device is not None:self.capture.device.close()
             self.worker.join(2)
             if self.worker.is_alive():raise RuntimeError('采集线程尚未退出，请检查终端')
+        self.close_imu()
     def state(self):
         # Read existing collector outputs; never duplicate its serial/decoder pipeline.
         metadata={};manifest={};current=None
@@ -200,12 +228,15 @@ class Bridge:
                     except ValueError:pass
         with self.lock:
             preview_active=bool(self.preview_worker and self.preview_worker.is_alive())
+            imu_feed=self.imu
             shown=self.preview_latest if preview_active else self.wait_latest if self.waiting else self.latest
-            stamp=shown.get('host_received_monotonic_ns') if shown else None
+            stamp=shown.get('host_received_monotonic_ns') if shown and shown.get('host_receipt_clock_domain')==RECEIPT_CLOCK_DOMAIN else None
             return dict(phase=self.phase,prompt=self.prompt,prompt_id=self.prompt_id,waiting=self.waiting,logs=list(self.logs),error=self.error or self.preview_error,
                 output=str(self.output),port=self.port,tof_host=self.tof_host,tof_tcp_port=self.tof_tcp_port,transport='wifi_tcp' if self.tof_host else 'usb_serial',resume=self.resume,redo=self.redo,segments=segment_plan(),manifest=manifest,
                 latest=shown,metadata={} if preview_active else metadata,tof_preview=preview_active,tof_preview_frames=self.preview_frames,tof_preview_status=self.preview_status,
-                age_ms=max(0,(time.monotonic_ns()-stamp)/1e6) if stamp else None,worker_active=bool(self.worker and self.worker.is_alive()),
+                age_ms=max(0,(receipt_ns()-stamp)/1e6) if stamp else None,worker_active=bool(self.worker and self.worker.is_alive()),
+                imu_host=self.imu_host,imu_tcp_port=self.imu_tcp_port,
+                imu=imu_feed.snapshot() if imu_feed else dict(status='IMU_NOT_CONFIGURED' if not self.imu_host else 'NOT_STARTED',available=False),
                 camera=self.camera.snapshot() if self.camera else dict(status='未开启相机',available=False))
 
 def handler_for(bridge):
@@ -260,11 +291,15 @@ def main(argv=None):
     parser.add_argument('--output',type=Path);parser.add_argument('--port',default='COM5');parser.add_argument('--web-port',type=int,default=8791)
     parser.add_argument('--tof-host',help='明确的局域网私有IPv4；留空默认USB')
     parser.add_argument('--tof-tcp-port',type=int,default=3335)
+    parser.add_argument('--imu-host',help='明确Atom私有IPv4；点击开始/预览后接入IMU')
+    parser.add_argument('--imu-tcp-port',type=int,default=3336)
+    parser.add_argument('--imu-mounting',type=Path,help='已核对的atom.imu.mount.v1安装记录')
     parser.add_argument('--resume',action='store_true');parser.add_argument('--redo',action='append',default=[])
     parser.add_argument('--camera-url',default='http://192.168.5.9:81/stream',help='已连接Atom的局域网MJPEG地址；空字符串禁用相机')
     args=parser.parse_args(argv);output=args.output or default_output_root(ROOT/'artifacts.local/work')
     if not output.resolve().is_relative_to((ROOT/'artifacts.local').resolve()):parser.error('输出必须位于canonical artifacts.local内')
-    try:bridge=Bridge(output,port=args.port,resume=args.resume,redo=args.redo,tof_host=args.tof_host,tof_tcp_port=args.tof_tcp_port)
+    try:bridge=Bridge(output,port=args.port,resume=args.resume,redo=args.redo,tof_host=args.tof_host,tof_tcp_port=args.tof_tcp_port,
+                      imu_host=args.imu_host,imu_tcp_port=args.imu_tcp_port,imu_mounting=args.imu_mounting)
     except ValueError as exc:parser.error(str(exc))
     server=ThreadingHTTPServer(('127.0.0.1',args.web_port),handler_for(bridge))
     if args.camera_url:

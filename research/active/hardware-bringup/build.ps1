@@ -12,6 +12,10 @@ Copy-Item -LiteralPath (Join-Path $PSScriptRoot "firmware/$Sketch/$Sketch.ino") 
 if ($Sketch -in @('tof_wifi','tof_cnh_h3_wifi','atom_wifi')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'firmware/demo_wifi.h') -Destination $src
 }
+if ($Sketch -eq 'atom_wifi') {
+    Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'firmware/atom_wifi') -Filter '*.h' -File |
+        ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $src }
+}
 $hashes = [ordered]@{}
 if ($Sketch -in @('tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','tof_wifi')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'firmware/platform.h'),(Join-Path $PSScriptRoot 'firmware/platform.cpp') -Destination $src

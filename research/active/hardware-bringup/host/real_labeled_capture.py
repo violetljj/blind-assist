@@ -16,7 +16,9 @@ import statistics
 import socket
 import sys
 import time
+import uuid
 from capture import Decoder, write_json
+from atom_imu import ImuFeed, load_mounting, private_host, unavailable_alignment, receipt_ns, clock_metadata
 
 FIRMWARE = "xiao-cnh-h3-v1"
 WIFI_FIRMWARE = "xiao-cnh-h3-wifi-v1"
@@ -36,8 +38,9 @@ CONDITIONS = (
 )
 
 class CaptureClock:
-    monotonic = staticmethod(time.monotonic)
-    monotonic_ns = staticmethod(time.monotonic_ns)
+    monotonic = staticmethod(time.perf_counter)
+    monotonic_ns = staticmethod(receipt_ns)
+    receipt_clock = staticmethod(clock_metadata)
     sleep = staticmethod(time.sleep)
     utcnow = staticmethod(lambda: datetime.now(timezone.utc).isoformat())
 
@@ -239,7 +242,8 @@ class GuidedCapture:
     """One estimated height; Enter-led segments; inject IO/clock for offline replay."""
     def __init__(self, output_root, serial_factory, *, clock=None, input_fn=input,
                  print_fn=print, preflight_seconds=12, segment_seconds=30,
-                 countdown_seconds=3, probe_seconds=2, port="COM5", replay=False, transport=None):
+                 countdown_seconds=3, probe_seconds=2, port="COM5", replay=False, transport=None,
+                 imu_feed=None):
         self.root = Path(output_root)
         self.serial_factory, self.clock = serial_factory, clock or CaptureClock()
         self.ask, self.print = input_fn, print_fn
@@ -248,6 +252,7 @@ class GuidedCapture:
         self.port, self.replay, self.device = port, replay, None
         self.transport = dict(transport or {"kind": "recorded_serial_replay" if replay else "usb_serial", "port": port})
         self.startup_path = None
+        self.imu_feed = imu_feed
 
     def drain(self):
         if hasattr(self.device, "reset_input_buffer"):
@@ -507,6 +512,8 @@ class GuidedCapture:
                         transport=dict(self.transport),
                         evidence_scope="SIMULATED_SERIAL_REPLAY" if self.replay else "REAL_LABELED_CAPTURE",
                         host_timestamp_rule="chunk-final-newline receipt; host monotonic_ns + UTC; not synchronized")
+        metadata['imu'] = self.imu_feed.snapshot() if self.imu_feed else {'status': 'IMU_NOT_CONFIGURED'}
+        metadata['host_receipt_clock'] = self.clock.receipt_clock() if hasattr(self.clock, 'receipt_clock') else {'domain':'INJECTED_CLOCK_UNSPECIFIED'}
         context_path = self.root / "operator-context.json"
         if context_path.exists() and not metadata.get("phase"):
             context = json.loads(context_path.read_text(encoding="utf-8-sig"))
@@ -516,6 +523,8 @@ class GuidedCapture:
         write_json(directory / "metadata.json", metadata)
         events, latest = [], None
         ambient_frame_medians = []
+        imu_residuals = []
+        imu_status_counts = {}
         preflight_decoder, preflight_events = None, []
         digest, total, monitor = hashlib.sha256(), 0, self.clock.monotonic()
         started = self.clock.monotonic()
@@ -528,7 +537,13 @@ class GuidedCapture:
             handles = {"frames": frames, "events": event_file, "issues": issues}
             def emit(kind, record):
                 nonlocal latest, preflight_decoder, preflight_events
-                record = dict(record, host_received_utc=self.clock.utcnow())
+                record = dict(record, host_received_utc=self.clock.utcnow(), host_receipt_clock_domain=metadata['host_receipt_clock']['domain'])
+                if kind == 'frames':
+                    record['imu'] = self.imu_feed.align(record['host_received_monotonic_ns']) if self.imu_feed else unavailable_alignment()
+                    status = record['imu']['status']
+                    imu_status_counts[status] = imu_status_counts.get(status, 0) + 1
+                    if record['imu']['available']:
+                        imu_residuals.append(record['imu']['residual_ms'])
                 handles[kind].write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")
                 if kind == "events":
                     events.append(record)
@@ -593,6 +608,14 @@ class GuidedCapture:
                     "source": "derived.ambient_normalized; CNH raw/scaler-normalized units, not lux",
                     "frames_with_ambient": len(ambient_frame_medians),
                     "median_of_zone_medians": statistics.median(ambient_frame_medians) if ambient_frame_medians else None}
+                metadata['imu_end'] = self.imu_feed.snapshot() if self.imu_feed else {'status': 'IMU_NOT_CONFIGURED'}
+                ordered_residuals = sorted(abs(value) for value in imu_residuals)
+                metadata['imu_alignment_summary'] = dict(frames=summary['frames'], aligned_frames=len(imu_residuals),
+                    status_counts=imu_status_counts, signed_mean_residual_ms=statistics.mean(imu_residuals) if imu_residuals else None,
+                    absolute_p95_residual_ms=ordered_residuals[int(.95*(len(ordered_residuals)-1))] if ordered_residuals else None,
+                    absolute_max_residual_ms=max(ordered_residuals) if ordered_residuals else None,
+                    rule='nearest final-newline host receipt; signed residual = IMU - CNH; max absolute 100 ms; up to 30 ms future receipt wait',
+                    exposure_synchronized=False)
                 if metadata.get("phase") == "preflight":
                     metadata["startup_window_summary"] = preflight_decoder.summary() if preflight_decoder is not None else Decoder().summary()
                 write_json(directory / "metadata.json", metadata)
@@ -611,11 +634,15 @@ def main(argv=None):
     parser.add_argument("--port", default="COM5")
     parser.add_argument("--tof-host", help="明确私有IPv4；使用完整H3 Wi-Fi TCP流，未填写则USB串口")
     parser.add_argument("--tof-tcp-port", type=int, default=3335)
+    parser.add_argument('--imu-host', help='明确Atom私有IPv4；逐帧IMU TCP，留空则明确标记未配置')
+    parser.add_argument('--imu-tcp-port', type=int, default=3336)
+    parser.add_argument('--imu-mounting', type=Path, help='已核对IMU轴/水平零点/墙面读数的atom.imu.mount.v1记录')
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--redo", action="append", default=[], metavar="编号或名称")
     parser.add_argument("--replay", type=Path, help="已有raw.bin模拟串口，标记REPLAY，不连接设备")
     parser.add_argument("--output", type=Path, help="明确原目录，尤其跨日/恢复；必须在artifacts.local内")
     args = parser.parse_args(argv)
+    imu = None
     repo = Path(__file__).resolve().parents[4]
     try:
         root = args.output or default_output_root(repo/"artifacts.local/work")
@@ -624,13 +651,21 @@ def main(argv=None):
         clock = CaptureClock()
         if args.replay and args.tof_host:
             parser.error("--replay与--tof-host不能同时使用")
+        if args.replay and args.imu_host:
+            parser.error('--replay不连接实际IMU')
+        if args.imu_mounting and not args.imu_host:
+            parser.error('--imu-mounting需要--imu-host')
         host = private_tof_host(args.tof_host) if args.tof_host else None
         if not 1 <= args.tof_tcp_port <= 65535:
             parser.error("ToF TCP端口必须在1–65535")
         transport = {"kind": "wifi_tcp", "host": host, "tcp_port": args.tof_tcp_port} if host else None
         factory = (lambda: ReplaySerial(args.replay, clock)) if args.replay else (lambda: WiFiStream(host, args.tof_tcp_port)) if host else (lambda: open_serial(args.port))
         source = f"tcp://{host}:{args.tof_tcp_port}" if host else args.port
-        app = GuidedCapture(root, factory, clock=clock, port=source, replay=bool(args.replay), transport=transport)
+        if args.imu_host:
+            root.mkdir(parents=True, exist_ok=True)
+            mounting = load_mounting(args.imu_mounting) if args.imu_mounting else None
+            imu = ImuFeed(private_host(args.imu_host), root/f'imu-{uuid.uuid4().hex}', args.imu_tcp_port, mounting=mounting).start()
+        app = GuidedCapture(root, factory, clock=clock, port=source, replay=bool(args.replay), transport=transport, imu_feed=imu)
         app.run_session(resume=args.resume, redo=args.redo)
         return 0
     except KeyboardInterrupt:
@@ -639,6 +674,9 @@ def main(argv=None):
     except (ValueError, OSError) as exc:
         print(f"停止：{exc}")
         return 2
+    finally:
+        if imu is not None:
+            imu.close()
 
 
 if __name__ == "__main__":

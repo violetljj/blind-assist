@@ -16,6 +16,13 @@ present mounting:
 
 Real CNH must pass through ``to_model`` before any frozen projection, M3, LOCAL,
 ordinary or S feature. Remounting invalidates this mapping (``check_mounting``).
+
+The distinct IMU-to-ToF optical-axis mounting record uses ``atom_imu.load_mounting``
+(``atom.imu.mount.v1``). It records a proper 3x3 rotation, actual optical-level
+gravity, down-tilt plane, separate up check and frontal-wall check. RGB display
+rotation/mirroring and this zone permutation do not supply that IMU extrinsic.
+Operator pilot records declare their manual zero, repeat residual and unknown
+absolute optical accuracy separately from this already checked zone mapping.
 """
 from __future__ import annotations
 

@@ -4,6 +4,33 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.16.2 capture performance and lifecycle
+
+- User requested speed/smoothness/stability of the three-stream page; scoped to this foreground collector, preserving all received raw records and per-record fsync.
+- Isolated latest-only JPEG decode/Canvas transform and background HUD; moved controls to a serial worker with lifecycle generations. Reused append streams and SHA256; finalized counts use manifest with damaged/legacy fallback.
+- Fixed old-now freshness race after waiting for storage and refused source registration during finalization; close/join stays outside the data lock. Preview grid/native-axis labels remain visible.
+- 35 focused core tests passed, debug/androidTest/lint passed; final version48 APK260300372 bytes, SHA256 1B7AD5E47EC8527596A2442D1B2A086240CA72FCC59A144DDDC981FEB26334D3, identity/signature/16KB verified. Installed with existing records retained; first48 APK92DFD3B1... archived separately.
+- First added draw-performance assertion failed with a sleep-only sample window; retained failed020734 receipt and advanced the Compose test clock during sampling. Independent screenshot then exposed clipped IMU footer, repaired explicit line heights and checked un-clipped measured bounds. Final system gfxinfo and live receipt results are in the [report](research/active/hardware-bringup/ATOM_IMU_PITCH_20261012.md).
+- Actual5s saved138AtomRGB/26CNH/507IMU,26/26 causal,P9513.600ms,145 ZIP entries exact. External12s UI render10.145→29.728fps,jank94.31→32.60%,median27.990→6.354ms;tailP9538.203→39.078ms unimproved. Phone left ready preview without recording; return home releases its sensor connections.
+
+## 2026-10-12 — v10.16.1 Atom RGB + CNH + IMU preview and capture
+
+- Replaced this page's phone CameraX source with Atom original MJPEG JPEG/headers/device timestamps and independent Android receipt time; historical sessions remain exportable.
+- Added simultaneous Atom picture, valid 8x8 ToF grid and native BMI270 attitude/six-axis previews with established orientation. Actual capture:138 RGB/26 CNH/508 IMU, 26/26 causal matches, P95 age12.339ms;145-entry ZIP exact, Activity recreation/reconnect passed.
+- 33 focused JVM tests, debug/androidTest builds, lint and APK identity/signature/16KB verification passed. Version47 APK:260093247 bytes, SHA256 EB1E814630F1DF50D61FBEFD5B994B9614DCDF0043719F1C4D14CADFAC253670.
+
+## 2026-10-12 — v10.16.0 phone RGB + CNH + Atom IMU capture
+
+- Goal/scope: foreground phone RGB + H3 CNH + Atom IMU capture, durable raw records, independent clocks, interruptions and ZIP export. No experiment/training budget; scoped build/tests and live acquisition/export acceptance, fixing observed failures.
+- Added home entry, nominal VGA10Hz CameraX, full raw64x16 CNH, notes/session list, raw issue/tail retention, atomic manifests and recovery. No clock/geometry or model promotion.
+- Added UDP discovery and dual USB-provisioned Wi-Fi profiles, preserving legacy NVS and switching on loss.
+- Preserved initial H3 first-line EOF; repaired whole-row30ms budget to400ms/200ms no-progress. Post-flash is_alive failed, user cold power-cycle restored CNH. Actual24-frame decoder,50RGB/27CNH and system-picker exact ZIP passed.
+- Atom full8MB flash backed up first:SHA256 a46ed2a0b5ed73fec719523d9c493dadcdc20ac23e4f0020e0bf7468658cd68e. IMU phase only flashed Atom; failed I2C1 collision retained, BMI moved toI2C0 after camera init, MJPEG/STA identity restored.
+- Added TCP3336 raw6axis/gravity/native pose, QPC nearest receipt alignment, per-frame pose and phone raw/index persistence. Desktop60s:6002IMU99.992Hz/306CNH5.10298Hz,no gaps;pitch SD.059765deg/drift-.188655deg. Old15.625ms clock retained;QPC102/102,absP958.7625ms.
+- Historical phone-camera LAN/hotspot/restoredLAN counts50/25/507,51/27/509,50/25/506; causal25/25,26/27,25/25,P9510.438/10.465/11.196ms; ZIP57/58/57 entries exact. First hotspot CNH correctly unavailable; hotspot off restored Atom4.250s/ToF6.469s in same boots, then homepage/clients released.
+- Operator reference return +3.856718deg, no optical accuracy claim/retuning; companion mounting record saved. Real12-frame CPU frozen replay:7warm/5READY,no extra reset/nonfinite,hashes/thresholds unchanged.
+- 27 Android focused tests/build/lint/APK/recreation passed; version46 SHA256 C14E12186E2F42D991F462A3F74C5D03E243E8BA089D393A7708BF89C9A90714. Firmware14/host11 tests passed. Complete failures, receipts, rollback and limits: [Atom IMU report](research/active/hardware-bringup/ATOM_IMU_PITCH_20261012.md), ignored phone-capture-v1/phone-capture-imu-v1/atom-imu-v1 payloads.
+
 ## 2026-09-23 — v10.15.1 restore home and explicit Start assist
 
 - Corrected the user's intended scope: MainActivity is launcher again; home stays

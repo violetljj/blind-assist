@@ -80,7 +80,8 @@ fun FeatureScreen(
     modifier: Modifier = Modifier,
     glassesConnectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
     onQuietShortcut: () -> Unit = {},
-    onSensitiveShortcut: () -> Unit = {}
+    onSensitiveShortcut: () -> Unit = {},
+    onOpenDataCapture: () -> Unit = {}
 ) {
     val language = controls.appLanguage
     val selectedMode = when (controls.alertProfile) {
@@ -150,6 +151,14 @@ fun FeatureScreen(
             )
             Spacer(Modifier.height(28.dp))
 
+            HomeInfoRow(
+                icon = Icons.Outlined.CameraAlt,
+                iconTint = BaHomeCobalt,
+                title = if (language == AppLanguage.EN) "Collect RGB + ToF + IMU" else "数据采集 · RGB / ToF / IMU",
+                onClick = onOpenDataCapture,
+                trailingIcon = Icons.Rounded.ChevronRight,
+                modifier = Modifier.testTag("home_capture_entry")
+            )
             HomeInfoRow(
                 icon = Icons.Outlined.Visibility,
                 iconTint = BaHomeCobalt,

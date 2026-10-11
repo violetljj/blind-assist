@@ -27,14 +27,26 @@ static WiFiClient cnhClient;
 
 // One complete NDJSON line at a time; the histogram/calibration is unchanged.
 // No sample backlog. A stalled/partial TCP consumer is disconnected visibly.
+// A phone received only 5744 bytes of its first CNH frame before EOF under the
+// old 30 ms budget. Allow delayed ACK/backpressure for
+// up to two 5 Hz periods, but stop after one period without any byte progress.
+static constexpr uint32_t CNH_TCP_ROW_DEADLINE_US = 400000;
+static constexpr uint32_t CNH_TCP_STALL_DEADLINE_US = 200000;
 static bool sendCnhClient(const String& text) {
   if (!cnhClient.connected()) return false;
   const uint8_t* data = (const uint8_t*)text.c_str();
   size_t sent = 0;
   const uint32_t started = micros();
-  while (sent < text.length() && (uint32_t)(micros()-started) < 30000) {
+  uint32_t lastProgress = started;
+  while (sent < text.length()) {
+    const uint32_t now = micros();
+    if ((uint32_t)(now-started) >= CNH_TCP_ROW_DEADLINE_US ||
+        (uint32_t)(now-lastProgress) >= CNH_TCP_STALL_DEADLINE_US) break;
     int count = send(cnhClient.fd(), data+sent, text.length()-sent, MSG_DONTWAIT);
-    if (count > 0) sent += count;
+    if (count > 0) {
+      sent += count;
+      lastProgress = micros();
+    }
     else if (count < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) break;
     else delay(1);
   }

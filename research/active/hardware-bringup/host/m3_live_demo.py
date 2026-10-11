@@ -25,6 +25,7 @@ from capture import validate_frame
 from m3_live_engine import Engine
 from m3_live_camera import CameraFeed
 from m3_wifi_setup import WifiSetup, profiles
+from atom_imu import ImuFeed, load_mounting, unavailable_alignment, receipt_ns, clock_metadata, RECEIPT_CLOCK_DOMAIN
 
 PAGE_PATH = Path(__file__).with_suffix('.html')
 
@@ -58,11 +59,14 @@ class Demo:
         self.trend = deque(maxlen=110)
         self.compute_times = deque(maxlen=100)
         self.state = dict(status='加载模型', reference_count=0, reference_ready=False,
+                          host_receipt_clock=clock_metadata(),
                           models_ready=False, error=None, input_errors=0,
                           reference_total=100, reference_collecting=self.reference_request,
                           reference_version=0, reference_resets=0)
         self.receipts = deque(maxlen=50)
         self.threads = []
+        self.imu_mounting = load_mounting(args.imu_mounting) if getattr(args, 'imu_mounting', None) else None
+        self.imu = ImuFeed(args.imu_host, args.out/'imu', getattr(args, 'imu_tcp_port', 3336), mounting=self.imu_mounting) if getattr(args, 'imu_host', None) else None
         self.camera = CameraFeed(args.out / 'camera', self.stop, url=getattr(args, 'camera_url', None),
                                  device_id=getattr(args, 'camera_id', None), max_seconds=getattr(args, 'max_seconds', 3600)) if getattr(args, 'camera_id', None) or getattr(args, 'camera_url', None) else None
         self.wifi = WifiSetup(self.stop, self.camera, getattr(args, 'camera_port', 'COM11'),
@@ -71,8 +75,8 @@ class Demo:
     def snapshot(self):
         with self.lock:
             result = dict(self.state)
-            age = (time.monotonic_ns() - result.get('received_ns', 0)) / 1e6
-            prediction_age = (time.monotonic_ns() - result.get('prediction_received_ns', 0)) / 1e6
+            age = (receipt_ns() - result.get('received_ns', 0)) / 1e6
+            prediction_age = (receipt_ns() - result.get('prediction_received_ns', 0)) / 1e6
             result['stale'] = age > 1500 or (result['reference_ready'] and prediction_age > 1500)
             result.update(receipt_age_ms=max(0, age), prediction_age_ms=max(0, prediction_age),
                           trend=list(self.trend), reference_version=self.reference_version,
@@ -83,6 +87,7 @@ class Demo:
                 result['status'] = '采集场景参照'
         result['camera'] = self.camera.snapshot() if self.camera else dict(status='未开启相机', available=False)
         result['wifi'] = self.wifi.snapshot()
+        result['imu'] = self.imu.snapshot() if self.imu else dict(status='IMU_NOT_CONFIGURED', available=False)
         return result
 
     def zone(self, index):
@@ -148,6 +153,7 @@ class Demo:
         previous = None
         while not self.stop.is_set():
             chunk = link.read(max(1, link.in_waiting))
+            chunk_host_ns = receipt_ns()
             raw.write(chunk)
             pending.extend(chunk)
             if len(pending) > 2_000_000:
@@ -167,10 +173,11 @@ class Demo:
                     h = np.asarray(derived['hist_normalized'], dtype=np.float64).reshape(8, 8, 16)
                     if not np.isfinite(h).all():
                         raise ValueError('Nonfinite CNH input')
-                    stamp = time.monotonic_ns()
+                    stamp = chunk_host_ns
                     continuous = previous is None or (sensor['seq'] == previous[0]+1 and 0 < sensor['ms']-previous[1] <= 500)
                     previous = (sensor['seq'], sensor['ms'])
-                    log.write(json.dumps(dict(sensor=sensor, host_received_monotonic_ns=stamp))+'\n')
+                    imu = self.imu.align(stamp) if self.imu else unavailable_alignment()
+                    log.write(json.dumps(dict(sensor=sensor, host_received_monotonic_ns=stamp, host_receipt_clock_domain=RECEIPT_CLOCK_DOMAIN, imu=imu))+'\n')
                     log.flush()
                     with self.condition:
                         self.receipts.append(stamp)
@@ -182,14 +189,14 @@ class Demo:
                             if len(self.reference_frames) < 100:
                                 self.reference_frames.append(h)
                             self.state['reference_count'] = len(self.reference_frames)
-                        self.latest = (sensor['seq'], sensor['ms'], h, self.reference_version, stamp, self.acquisition_epoch)
+                        self.latest = (sensor['seq'], sensor['ms'], h, self.reference_version, stamp, self.acquisition_epoch, imu)
                         distance = derived['distance_known_mm']
                         self.state.update(seq=sensor['seq'], received_ns=stamp, sensor_hz=hz,
                                           distance=distance, valid_zones=sum(d is not None for d in distance),
                                           hist_max=h.max(-1).flatten().tolist())
                         self.condition.notify_all()
                 except (ValueError, UnicodeError, KeyError) as exc:
-                    rejected.write(json.dumps(dict(received_ns=time.monotonic_ns(), reason=str(exc),
+                    rejected.write(json.dumps(dict(received_ns=receipt_ns(), host_receipt_clock_domain=RECEIPT_CLOCK_DOMAIN, reason=str(exc),
                                                    serial_line=line.decode('utf-8', errors='replace')))+'\n')
                     rejected.flush()
                     with self.lock:
@@ -203,7 +210,7 @@ class Demo:
         previous_epoch = None
         previous_receipt_ns = None
         try:
-            engine = Engine(feature_precision='float32-engineering')
+            engine = Engine(feature_precision='float32-engineering', imu_mounting=self.imu_mounting)
             (self.args.out / 'model-identity.json').write_text(json.dumps(engine.metadata(), indent=2), encoding='utf-8')
             if self.args.reference:
                 with np.load(self.args.reference, allow_pickle=False) as saved:
@@ -257,7 +264,7 @@ class Demo:
                             self.trend.clear()
                     previous_epoch, previous_receipt_ns = current[5], input_received_ns
                     try:
-                        result = engine.step(current[2], current[0], current[1])
+                        result = engine.step(current[2], current[0], current[1], imu=current[6])
                     except ValueError as exc:
                         engine.reset()
                         log.write(json.dumps(dict(seq=current[0], ms=current[1], status='UNKNOWN',
@@ -295,6 +302,7 @@ class Demo:
                 self.state['model_released'] = True
 
     def start(self):
+        if self.imu:self.imu.start()
         for func in (self.acquire, self.infer) + ((self.camera.run,) if self.camera else ()):
             worker = threading.Thread(target=func, daemon=True)
             worker.start()
@@ -302,6 +310,7 @@ class Demo:
 
     def close(self):
         self.stop.set()
+        if self.imu:self.imu.close()
         with self.condition:
             self.condition.notify_all()
         for worker in self.threads:
@@ -320,7 +329,11 @@ def main():
     parser.add_argument('--camera-url', help='Explicit local Atom http://IP:81/stream')
     parser.add_argument('--camera-id', default='b4:3a:45:bd:12:d8', help='Atom station MAC for discovery; empty disables discovery')
     parser.add_argument('--camera-port', default='COM11', help='Selected Atom USB port for Wi-Fi setup')
+    parser.add_argument('--imu-host', help='Explicit Atom private IPv4; TCP IMU raw and per-CNH receipt alignment')
+    parser.add_argument('--imu-tcp-port', type=int, default=3336)
+    parser.add_argument('--imu-mounting', type=Path, help='Verified atom.imu.mount.v1; without it IMU is recorded, model pitch stays explicitly nominal')
     args = parser.parse_args()
+    if args.imu_mounting and not args.imu_host:parser.error('--imu-mounting requires --imu-host')
     if args.camera_port.lower() == args.port.lower():
         parser.error('Camera Wi-Fi setup and ToF must use separate USB ports')
     args.out.mkdir(parents=True, exist_ok=False)

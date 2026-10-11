@@ -4,6 +4,7 @@
 #include "esp_http_server.h"
 #include "lwip/sockets.h"
 #include "lwip/tcp.h"
+#include "atom_imu.h"
 static bool cameraReady=false;
 static uint32_t sequence=0;
 static httpd_handle_t streamServer=nullptr;
@@ -37,13 +38,15 @@ void setup() {
   c.pin_vsync=10;c.pin_href=14;c.pin_pclk=40;c.xclk_freq_hz=20000000;
   c.ledc_timer=LEDC_TIMER_0;c.ledc_channel=LEDC_CHANNEL_0;
   c.pixel_format=PIXFORMAT_JPEG;c.frame_size=FRAMESIZE_VGA;c.jpeg_quality=12;c.fb_count=2;
-  c.fb_location=CAMERA_FB_IN_PSRAM;c.grab_mode=CAMERA_GRAB_LATEST;c.sccb_i2c_port=0;
+  c.fb_location=CAMERA_FB_IN_PSRAM;c.grab_mode=CAMERA_GRAB_LATEST;c.sccb_i2c_port=AtomImu::cameraSccbPort;
   esp_err_t result=esp_camera_init(&c);cameraReady=result==ESP_OK;
   Serial.printf("{\"type\":\"camera_init\",\"status\":%d}\n",(int)result);
+  // Camera bus allocation must finish before BMI270 starts publishing samples.
+  AtomImu::begin();
   httpd_config_t config=HTTPD_DEFAULT_CONFIG();config.server_port=81;config.ctrl_port=32769;
   config.send_wait_timeout=1;config.recv_wait_timeout=1;config.max_open_sockets=2;config.lru_purge_enable=true;
   if(httpd_start(&streamServer,&config)==ESP_OK){
     httpd_uri_t uri={};uri.uri="/stream";uri.method=HTTP_GET;uri.handler=stream;httpd_register_uri_handler(streamServer,&uri);
   }
 }
-void loop(){demoNetworkLoop();delay(1);}
+void loop(){demoNetworkLoop();AtomImu::loop();delay(1);}

@@ -44,7 +44,7 @@ def _histogram(value):
 class Engine:
     """A stationary bench adapter; owns no hardware, files, capture or workers."""
 
-    def __init__(self, device='cuda', pitch=-10, feature_precision='float16-frozen'):
+    def __init__(self, device='cuda', pitch=-10, feature_precision='float16-frozen', imu_mounting=None):
         if not np.isfinite(pitch):
             raise ValueError('Finite nominal mount pitch required')
         if feature_precision not in ('float16-frozen', 'float32-engineering'):
@@ -67,6 +67,11 @@ class Engine:
         torch.backends.cudnn.allow_tf32 = False
         check_mounting()
         self.pitch = float(pitch)
+        self.nominal_pitch = self.pitch
+        self.rotation = rotation
+        self.imu_mounting = imu_mounting
+        self.pose_epoch = None
+        self.pose_last = None
         self.transform = np.eye(4)
         self.transform[:3, :3] = rotation(self.pitch, 'x')
         self.models = []
@@ -159,9 +164,11 @@ class Engine:
     def metadata(self):
         return dict(
             algorithm='frozen M3 five-seed CVR', model_hashes=dict(self.model_hashes),
-            device=str(self.device), query_order=list(QUERY_ORDER), nominal_pitch_deg=self.pitch,
+            device=str(self.device), query_order=list(QUERY_ORDER), nominal_pitch_deg=self.nominal_pitch,
+            imu_mounting=self.imu_mounting, pose_source='per-frame IMU with declared mounting verification quality if available; explicit nominal fallback otherwise',
             zone_orientation=MAPPING_ID,
-            stationary_sensor=True, relative_transport='identity; fixed nominal mount',
+            stationary_sensor=self.imu_mounting is None,
+            relative_transport='identity translations/yaw; each exposure projected with its own IMU tilt in the declared mounting reference when available',
             past_frames=8, feature_precision=self.feature_precision,
             native_z_dtype=f'{np.dtype(self.input_dtype).name} engineering residual',
             projection='float64 geometry / float32 sequential accumulation / '+np.dtype(self.input_dtype).name+' voxel cache',
@@ -178,13 +185,42 @@ class Engine:
             score_scope='Engineering model response; not probability or obstacle accuracy',
         )
 
-    def step(self, hist, seq, ms):
+    def frame_pose(self, imu):
+        from atom_imu import calibrated_attitude
+        attitude = calibrated_attitude(imu, self.imu_mounting)
+        epoch = (attitude['source'], attitude.get('imu_boot_id'), attitude.get('mounting_sha256')) if attitude['available'] else ('NOMINAL_MOUNT_ASSUMPTION',)
+        reset = self.pose_epoch is not None and epoch != self.pose_epoch
+        if attitude.get('sample_gap'):
+            reset = True
+        if attitude['available'] and self.pose_last is not None and epoch == self.pose_epoch:
+            if attitude['imu_seq'] < self.pose_last:
+                reset = True
+        if reset:
+            self.reset()
+        self.pose_epoch = epoch
+        self.pose_last = attitude.get('imu_seq')
+        if attitude['available']:
+            self.pitch = attitude['pitch_deg']
+            # The inherited cnh_cvr_pilot.rotation helper only supports x/y.
+            # Build optical-axis roll explicitly instead of its x-axis fallback.
+            roll = np.deg2rad(attitude['roll_deg'])
+            c, s = np.cos(roll), np.sin(roll)
+            roll_rotation = np.array([[c,-s,0],[s,c,0],[0,0,1]])
+            self.transform[:3, :3] = self.rotation(self.pitch, 'x') @ roll_rotation
+            return attitude, reset
+        self.pitch = self.nominal_pitch
+        self.transform[:3, :3] = self.rotation(self.pitch, 'x')
+        return dict(attitude, source='NOMINAL_MOUNT_ASSUMPTION', used_pitch_deg=self.pitch,
+                    used_roll_deg=0., measured=False), reset
+
+    def step(self, hist, seq, ms, imu=None):
         """Consume exactly one actual frame; gaps reset rather than fill histories."""
         started = time.perf_counter()
         h = _histogram(hist)
         if isinstance(seq, bool) or isinstance(ms, bool) or int(seq) != seq or int(ms) != ms:
             raise ValueError('Integer sensor sequence and millisecond timestamp required')
         seq, ms = int(seq), int(ms)
+        pose, pose_reset = self.frame_pose(imu)
         reason = None
         if self.last is not None:
             previous_seq, previous_ms = self.last
@@ -195,7 +231,9 @@ class Engine:
         if reason:
             self.reset()
         self.last = (seq, ms)
-        result = dict(seq=seq, ms=ms, input_mode=INPUT_MODE, reset=bool(reason), reset_reason=reason,
+        result = dict(seq=seq, ms=ms, input_mode=INPUT_MODE, reset=bool(reason) or pose_reset,
+                      reset_reason=reason or ('imu-pose-availability-or-identity-discontinuity' if pose_reset else None),
+                      imu=imu, pose=pose,
                       ready=False, history=0, raw=None, smoothed=None, reference_crossing=None,
                       threshold=THRESHOLD, threshold_is_simulation_reference=True,
                       query_order=list(QUERY_ORDER), maxz=None, max_abs_residual=None,

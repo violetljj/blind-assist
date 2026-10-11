@@ -137,7 +137,11 @@ class MainActivity : ComponentActivity() {
                             onCompleteOnboarding = appViewModel::onCompleteOnboarding,
                             onShowOnboarding = appViewModel::onShowOnboarding,
                             onShowGlassesCenter = appViewModel::onShowGlassesCenter,
-                            onDismissGlassesCenter = appViewModel::onDismissGlassesCenter
+                            onDismissGlassesCenter = appViewModel::onDismissGlassesCenter,
+                            onOpenDataCapture = {
+                                assistSession.dispatch(AssistRuntimeIntent.CloseCamera)
+                                startActivity(Intent(this@MainActivity, PhoneCaptureActivity::class.java))
+                            }
                         ),
                         glasses = GlassesSimulatorActions(
                             onOpenHardwareDemo = {
