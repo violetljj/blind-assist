@@ -2,6 +2,8 @@
 
 更新：2026-10-11。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合与L2保留。
 
+个人回顾：[10-09至10-11阶段总结](STAGE_SUMMARY_20261011.md)（ToF/RGB/融合结论、代价与下一步选项）。
+
 RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
 [融合确认v3](nearfield/SYNC_FUSION_CONFIRM_V3_DEV_20261011.md)完成预注册：协议`ec252d68`在建新数据前提交并推送，实现`95f451e6`在OPEN前提交；旧30visit一次训练、新cal6/eval12共576帧，D′六臂等权HGB/B′混合LR/(b)半循环LR均去显式query位置与带别特征，加最低传感器证据OR门控。21阈值/全部ties封存并独立复算后eval一次OPEN。**主中带确认未通过**。半循环中D′ W1696/2077，vs最佳单源rgb净+87，救213/损126，12visit聚类95%CI-0.308–9.155pp，FREE4/689=0.581%；主FAIL。同口径：D_prime净+87、CI-0.308–9.155pp、FREE4/689=0.581%（FAIL）；B_prime净+86、CI-0.519–9.557pp、FREE8/689=1.161%（FAIL）；audit_b净-91、CI-11.354–2.535pp、FREE0/689=0.000%（FAIL）。次判据：faro_rho030_ambient1近带vsRGB净-2、FREE15/105=14.286%，FAIL；faro_rho030_ambient10近带vsRGB净-58、FREE121/1702=7.109%，FAIL。主中带收益按最低证据拆为both净-16、tof_only净+209、rgb_only净-26、neither净-80；全6臂/3带/3模型无证据支持0，属条件分解非因果。FARO仅eval43过门帧，完整贡献visit见报告，远带只报告、不作主张。9权重/hash、六臂manifest、逐query/四类拆分/2000次bootstrap、四阶段独立核验PASS。下载3,889,213,192B/4GB、GPU211.577/600s、CPU保守2209.665/2400 command-wall s，任务进程释放；18新visit已消费，eval后未改模型或阈值，不读保护480/test。仅真实RGB＋半合成ToF Development，不升级App/M3/5格或作实机/安全结论。
