@@ -2,6 +2,10 @@
 
 更新：2026-10-11。工程接入属于避障主线的支持工作，不另开算法研究线。
 
+## 实机输入合同v5：zone方向修正（优先于下文真实回放结论）
+
+[v5报告](REAL_CONTRACT_V5_ORIENTATION_DEV_20261011.md)：此前实机回放按原始zone顺序入模；原始行0在下、列0在右，模型约定行0在上、列0在左，场景上下颠倒。[方向模块](host/cnh_zone_orientation.py)带安装校验，[实时引擎](host/m3_live_engine.py)已修。另有bin0串扰拖尾（bin1约2%，旧模板取自强光阳台约0.5%，只落入HEAD）与随环境光变化的直流基线。v5下M3在空4/4b/9均0/0，残留强报警来自LOCAL；近杆转报BODY（0/42），2m远杆不可见。下一步模拟DR加拖尾/基线并重审LOCAL。仅已消费pilot开发描述。
+
 ## signed bias／LOCAL合同v4：零证据链修复
 
 [v4合同修复报告](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)EXPLORE完成，按预写PLAN把去bin0＋DR＋新S提升为**模拟Development默认候选，待独立实机确认**。[默认manifest指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)与[加载器](host/local_signed_bias_default.py)已落地。实机非负背景仅饱和扣除，不把signed负bias加为回波；模拟保留原signed统计合同。因果≤8帧历史无正证据时三分支静默，未门控分数留存并标无证据。未重训、未改切点、无新bin/zone删除、无App变动。

@@ -15,6 +15,8 @@ import time
 
 import numpy as np
 
+from cnh_zone_orientation import MAPPING_ID, check_mounting, to_model
+
 ROOT = Path(__file__).resolve().parents[4]
 NEAR = ROOT / 'research/active/dtr-r0/nearfield'
 MODEL_DIRECTORY = ROOT / 'artifacts.local/work/cnh-margin-labels-20261002/models/M3'
@@ -63,6 +65,7 @@ class Engine:
         torch.set_num_threads(2)
         torch.backends.cuda.matmul.allow_tf32 = False
         torch.backends.cudnn.allow_tf32 = False
+        check_mounting()
         self.pitch = float(pitch)
         self.transform = np.eye(4)
         self.transform[:3, :3] = rotation(self.pitch, 'x')
@@ -157,6 +160,7 @@ class Engine:
         return dict(
             algorithm='frozen M3 five-seed CVR', model_hashes=dict(self.model_hashes),
             device=str(self.device), query_order=list(QUERY_ORDER), nominal_pitch_deg=self.pitch,
+            zone_orientation=MAPPING_ID,
             stationary_sensor=True, relative_transport='identity; fixed nominal mount',
             past_frames=8, feature_precision=self.feature_precision,
             native_z_dtype=f'{np.dtype(self.input_dtype).name} engineering residual',
@@ -204,7 +208,9 @@ class Engine:
         except ValueError:
             self.reset()
             raise
-        self.history.append(z.astype(self.input_dtype))
+        # Raw zones are rotated 180 degrees against the frozen projector grid;
+        # display paths keep raw order, only the model input is reoriented.
+        self.history.append(to_model(z).astype(self.input_dtype))
         torch = self.torch
         with torch.inference_mode():
             # The stationary adapter reuses each exposure's projection. Keep the
