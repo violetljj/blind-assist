@@ -107,6 +107,8 @@ class WiFiStream:
         if not 1 <= self.port <= 65535:
             raise ValueError("ToF TCP端口必须在1–65535")
         self.socket = socket_factory((self.host, self.port), timeout=3)
+        self.socket_factory = socket_factory
+        self.reconnections = 0
         self.socket.settimeout(.2)
         self.closed = False
 
@@ -124,8 +126,15 @@ class WiFiStream:
         except socket.timeout:
             return b""
         if not chunk:
-            raise OSError("ToF Wi-Fi TCP连接已关闭")
+            self.reconnect()
+            return b""
         return chunk
+
+    def reconnect(self):
+        self.socket.close()
+        self.socket = self.socket_factory((self.host, self.port), timeout=3)
+        self.socket.settimeout(.2)
+        self.reconnections += 1
 
     def reset_input_buffer(self):
         # Discard only bytes already pending on the host socket. No command/reset
@@ -136,7 +145,8 @@ class WiFiStream:
             for _ in range(64):
                 try:
                     if not self.socket.recv(16384):
-                        raise OSError("ToF Wi-Fi TCP连接已关闭")
+                        self.reconnect()
+                        break
                 except BlockingIOError:
                     break
         finally:
@@ -436,6 +446,9 @@ class GuidedCapture:
                         self.print(f"自动距离：{reference['distance_m'] if reference['stable'] else '未知'}m（固件弱参考；未知继续）。")
                         write_json(attempt/"metadata.json", dict(metadata, status="ready"))
                         self.ask("按Enter开始；录制时人离开前方与两侧、设备物体不动: ")
+                        if segment["condition_index"] in (2, 3):
+                            reference = self.probe(attempt, "distance-probe-final", metadata, "scene_central4")
+                            metadata.update(distance_reference=reference, target_distance_m=reference["distance_m"])
                         for remaining in range(self.countdown_seconds, 0, -1):
                             self.print(f"{remaining}s")
                             self.drain()
@@ -494,6 +507,12 @@ class GuidedCapture:
                         transport=dict(self.transport),
                         evidence_scope="SIMULATED_SERIAL_REPLAY" if self.replay else "REAL_LABELED_CAPTURE",
                         host_timestamp_rule="chunk-final-newline receipt; host monotonic_ns + UTC; not synchronized")
+        context_path = self.root / "operator-context.json"
+        if context_path.exists() and not metadata.get("phase"):
+            context = json.loads(context_path.read_text(encoding="utf-8-sig"))
+            metadata.update(operator_context=context, static_scene=context.get("static_scene", False),
+                            mounting=context.get("mounting"), tilt_deg=None,
+                            tilt_source=context.get("tilt_source", "unmeasured"))
         write_json(directory / "metadata.json", metadata)
         events, latest = [], None
         ambient_frame_medians = []

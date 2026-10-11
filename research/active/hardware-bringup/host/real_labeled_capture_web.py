@@ -44,6 +44,7 @@ class Bridge:
         self.logs=deque(maxlen=180);self.prompt='';self.prompt_id=0;self.waiting=False
         self.phase='idle';self.error=None;self.worker=None;self.capture=None;self.closing=False
         self.latest=None;self.frame_path=None;self.frame_offset=0;self.frame_pending=b''
+        self.wait_latest=None
         self.camera=None;self.camera_stop=threading.Event();self.camera_worker=None
         self.preview_stop=threading.Event();self.preview_worker=None;self.preview_device=None
         self.preview_latest=None;self.preview_frames=0;self.preview_error=None
@@ -51,14 +52,22 @@ class Bridge:
     def log(self,*values,**kwargs):
         with self.lock:self.logs.append(' '.join(str(v) for v in values))
     def ask(self,prompt):
-        with self.lock:self.prompt=prompt;self.prompt_id+=1;self.waiting=True
+        with self.lock:self.prompt=prompt;self.prompt_id+=1;self.waiting=True;self.wait_latest=None
+        def emit_wait(kind,record):
+            if kind=='frames':
+                with self.lock:self.wait_latest=record
+        wait_decoder=Decoder(emit_wait)
         try:
             while not self.stop_event.is_set():
-                try:return self.answers.get(timeout=.2)
-                except queue.Empty:pass
+                try:return self.answers.get(timeout=.05)
+                except queue.Empty:
+                    # H3 disconnects a stalled TCP consumer. Drain unsaved bytes
+                    # during placement prompts so waiting never fills its socket.
+                    if self.tof_host and self.capture and self.capture.device is not None:
+                        wait_decoder.feed(self.capture.device.read(16384),time.monotonic_ns())
             raise KeyboardInterrupt('网页停止')
         finally:
-            with self.lock:self.waiting=False
+            with self.lock:self.waiting=False;self.wait_latest=None
     def reply(self,text,prompt_id):
         with self.lock:
             if not self.waiting or prompt_id!=self.prompt_id:raise ValueError('提示已变化，请等待页面更新')
@@ -187,7 +196,7 @@ class Bridge:
                     except ValueError:pass
         with self.lock:
             preview_active=bool(self.preview_worker and self.preview_worker.is_alive())
-            shown=self.preview_latest if preview_active else self.latest
+            shown=self.preview_latest if preview_active else self.wait_latest if self.waiting else self.latest
             stamp=shown.get('host_received_monotonic_ns') if shown else None
             return dict(phase=self.phase,prompt=self.prompt,prompt_id=self.prompt_id,waiting=self.waiting,logs=list(self.logs),error=self.error or self.preview_error,
                 output=str(self.output),port=self.port,tof_host=self.tof_host,tof_tcp_port=self.tof_tcp_port,transport='wifi_tcp' if self.tof_host else 'usb_serial',resume=self.resume,redo=self.redo,segments=segment_plan(),manifest=manifest,
