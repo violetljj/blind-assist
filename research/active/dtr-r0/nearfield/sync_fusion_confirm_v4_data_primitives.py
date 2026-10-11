@@ -402,4 +402,3 @@ def seal_inputs(root):
     for name in ('faro_source_manifest_final.json','faro_source_extension_receipt.json','source_render_binding_receipt.json','resource_amendment_receipt.json'):
         if (root/name).exists():manifest[name.removesuffix('.json')+'_sha256']=sha(root/name)
     write(root/'dataset_manifest_v2.json',manifest);write(root/'data_input_seal.json',dict(manifest_sha256=sha(root/'dataset_manifest_v2.json'),public_roster_sha256=sha(root/'public_roster.json'),synthesis_manifest_sha256=sha(root/'synthesis_manifest.json'),input_gate_sha256=sha(root/'input_coverage_gate.csv'),command_wall_s=time.perf_counter()-start,eval_method_metrics_computed=False))
-

@@ -131,7 +131,7 @@ def main():
             f"资源：{resource.get('description', json.dumps(resource, ensure_ascii=False))}。预算 CPU≤2400 command-wall s、GPU≤600s、下载≤4,000,000,000B；统计与报告预算包含于总账。", '',
             '该证据是公开真实 RGB＋半合成 ToF 的 Development 新 visit 确认。半循环 ToF 不提供独立几何真值；FARO 是有限下载前缀和固定过门子集。reference 门槛富集、名义共位/45°、静态表面与轨迹误差保留。16 个 visit 的区间不保证其他场景或域迁移；OOF→冻结分数分布差会影响部署点。本轮不访问保护480/test，不证明实机、整身体清空或导航安全，不升级 App/M3/5格读出。', '',
             f"复现脚本：`sync_fusion_confirm_v4_models.py`（crossfit→cal→唯一eval→cache summarize）；报告脚本 `{Path(__file__).name}`；协议、封存、表格与 hash 收据见 `{args.receipts.name}`。", '']
-    args.report.write_text('\n'.join(out), encoding='utf8')
+    args.report.write_bytes('\n'.join(out).encode('utf8'))
     files = [root / x for x in ('PLAN.json', 'protocol_commit.json', 'dataset_manifest.json',
         'candidate_gate_records.json', 'oof/oof_seal.json', 'cal/cal_seal.json',
         'eval/eval_open.json', 'eval/cache_seal.json', 'summary/summary.json')]
@@ -147,7 +147,7 @@ def main():
         files=[dict(path=str(f.resolve()), bytes=f.stat().st_size, sha256=sha(f)) for f in files],
         report_CPU_command_wall_s=time.monotonic()-started, report_GPU_s=0,
         report_eval_reference_reads=0, report_model_reads=0, protected_480_test_reads=0)
-    args.receipts.write_text(json.dumps(receipt, ensure_ascii=False, indent=2, allow_nan=False) + '\n', encoding='utf8')
+    args.receipts.write_bytes((json.dumps(receipt, ensure_ascii=False, indent=2, allow_nan=False) + '\n').encode('utf8'))
     print(json.dumps(dict(report=str(args.report), receipt=str(args.receipts),
                          status=summary['status'], CPU_command_wall_s=time.monotonic()-started), ensure_ascii=False))
 

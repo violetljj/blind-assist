@@ -189,6 +189,7 @@ def public_data(root):
         metadata = list(csv.DictReader(stream))
     entries = manifest['entries']; consumed = set(map(str, load(root / 'consumed_inventory.json')['visit_ids']))
     p = load(root / 'PLAN.json')
+    assert sha(root / 'official/metadata.csv') == p['data']['metadata_sha256']
     previous_root = Path(p['inherited']['v3_train_seal_path']).parent.parent
     previous_rows = load(previous_root / 'public_roster.json')['rows']
     previous_failed = {str(r['visit_id']) for r in load(previous_root / 'candidate_gate_records.json') if r['status'] == 'SKIP_REFERENCE_GATE'}
@@ -642,6 +643,7 @@ def main():
     args = ap.parse_args(); started = time.perf_counter()
     result = protocol_review(args.root, args.protocol) if args.stage == 'protocol' else globals()[args.stage](args.root)
     result.update(CPU_command_wall_s=time.perf_counter() - started, GPU_s=0, protected_480_test_reads=0,
+                  audit_source_sha256=sha(__file__),
                   independent_implementation=True, eval_reference_reopens=0, model_refits=0)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open('x', encoding='utf8') as stream:
