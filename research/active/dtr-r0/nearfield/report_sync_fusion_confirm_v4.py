@@ -129,6 +129,7 @@ def main():
             f"新 cohort {len(manifest['entries'])} 个 visit，每个 32 帧；官方顺序前4 cal、后16 eval，两个独立16帧5Hz窗口和 v3 相同 reference 门槛。历史消费 visit 与失败候选整 visit 排除，不调窗口迁就模型。接受/跳过证据：{link(root, 'candidate_gate_records.json')}；完整 manifest：{link(root, 'dataset_manifest.json')}。", '',
             f"独立核验 **{audit['status']}**；核验细项和实际数量保存在 {link(root, str(args.audit.resolve().relative_to(root)), '独立 eval 审计')}。审计独立重算 ties 阶梯、pAUC、2000 visit bootstrap、部署点、全部漂移和 OOF/封存身份；报告只读已审计汇总，不再次读取 eval reference 或重新加载模型。", '',
             f"资源：{resource.get('description', json.dumps(resource, ensure_ascii=False))}。预算 CPU≤2400 command-wall s、GPU≤600s、下载≤4,000,000,000B；统计与报告预算包含于总账。", '',
+            '观察特征阶段首次分配 120 秒，在 115.1756 秒记录预算停止；在 cal 封存及 eval OPEN 前机械续跑，验证已缓存数组逐项 np.array_equal。通过阶段额度重分配扩大该阶段预算，整体 CPU/GPU/下载硬上限不变；未换窗口、模型、特征配方或判据。失败、续跑和 FARO 下载前缀终态保留在收据中。', '',
             '该证据是公开真实 RGB＋半合成 ToF 的 Development 新 visit 确认。半循环 ToF 不提供独立几何真值；FARO 是有限下载前缀和固定过门子集。reference 门槛富集、名义共位/45°、静态表面与轨迹误差保留。16 个 visit 的区间不保证其他场景或域迁移；OOF→冻结分数分布差会影响部署点。本轮不访问保护480/test，不证明实机、整身体清空或导航安全，不升级 App/M3/5格读出。', '',
             f"复现脚本：`sync_fusion_confirm_v4_models.py`（crossfit→cal→唯一eval→cache summarize）；报告脚本 `{Path(__file__).name}`；协议、封存、表格与 hash 收据见 `{args.receipts.name}`。", '']
     args.report.write_bytes('\n'.join(out).encode('utf8'))
@@ -136,6 +137,13 @@ def main():
         'candidate_gate_records.json', 'oof/oof_seal.json', 'cal/cal_seal.json',
         'eval/eval_open.json', 'eval/cache_seal.json', 'summary/summary.json')]
     files += [Path(c['all_ties_path']) for c in cal['cells']]
+    additional = ('independent_protocol_audit.json', 'independent_preeval_audit.json',
+        'resource_observations_reallocation.json', 'features_observation_failure.json',
+        'data_resource_ledger.json', 'features_observation_terminal.json',
+        'infer_observation_terminal.json', 'faro_source_completion_scope.json',
+        'acquisition_terminal.json', 'faro_source_terminal.json',
+        'native_synthesis_terminal.json', 'faro_synthesis_terminal.json')
+    files += [root / name for name in additional if (root / name).exists()]
     files += list((root / 'summary').glob('*.csv')) + [root / 'summary/low_free_curves.png',
         root / 'summary/bootstrap_replicates.npz', root / 'cal/oof_vs_frozen_distribution.csv',
         root / 'cal/new4_frozen_distribution.csv', args.audit, args.resource_json, args.report, Path(__file__)]
