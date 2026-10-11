@@ -37,7 +37,7 @@ def infer(budget):
  import sync_rgb_tof_v1_rgb_infer as frozen
  frozen.run(argparse.Namespace(repo=REPO,runroot=ROOT/'rgb_inference',roster=roster,plan_seal=seal,budget_s=budget))
  assert load(ROOT/'rgb_inference/dual_resident_terminal.json')['status']=='COMPLETE', 'Preserve incomplete RGB terminal; no success label'
-def build(budget):
+def build(budget,resume=False):
  start=time.perf_counter();protocol();assert not (ROOT/'feature_manifest.json').exists();rows=[];inputs={};sim=[]
  def bind(p):inputs[str(Path(p).resolve())]=sha(p)
  for p in (ROOT/'PLAN.json',ROOT/'public_roster.json',ROOT/'synthesis_manifest.json',ROOT/'input_coverage_gate.csv',ROOT/'frozen_readout_seal.json'):bind(p)
@@ -69,7 +69,13 @@ def build(budget):
     if arm not in ('native_perturbed','faro_rho030_ambient1'):
      ss=.5 if arm=='faro_rho015_ambient1' else 2 if arm=='faro_rho060_ambient1' else 1;aa=3 if arm=='faro_rho030_ambient3' else 10 if arm=='faro_rho030_ambient10' else 1
      hist,n,bg=sample(z['expectation'][None]*ss,z['ambient'][None]*aa,int(z['seed']));z.update(hist=hist[0],counts=n[0],background=bg[0],expectation=z['expectation']*ss,ambient=z['ambient']*aa)
-     path=ROOT/'simulated'/frame['source_id']/(arm+f'_k{k}.npz');path.parent.mkdir(parents=True,exist_ok=True);assert not path.exists();np.savez_compressed(path,**z)
+     path=ROOT/'simulated'/frame['source_id']/(arm+f'_k{k}.npz');path.parent.mkdir(parents=True,exist_ok=True)
+     if path.exists():
+      assert resume, 'Existing engineering cache requires explicit resume'
+      with np.load(path,allow_pickle=False) as cached:
+       assert set(cached.files)==set(z)
+       assert all(np.array_equal(cached[n],z[n],equal_nan=True) for n in z), 'Cached fixed simulation changed'
+     else:np.savez_compressed(path,**z)
      sim.append(dict(path=str(path.resolve()),sha256=sha(path),arm=arm,repeat=k,source_id=frame['source_id'],frame_id=frame['frame_id'],seed=int(z['seed']),signal_scale=ss,ambient_scale=aa))
     dep=peak_readout(z['hist'],z['background'],z['coverage'],z['grid_K'],shape,z['grid_pose'],K,shape,z['rgb_pose'],seal)[0] if np.isfinite(z['grid_pose']).all() else np.full(shape,np.inf)
     obs.append([features_for_depth(dep,*v) for v in it])
@@ -92,9 +98,11 @@ def build(budget):
  manifest.update(base_data_manifest_sha256=sha(ROOT/'dataset_manifest_v4.json'),six_arms=list(ARMS),derived_pressure_inputs=sim,feature_manifest_sha256=sha(ROOT/'feature_manifest.json'),feature_outputs=outputs)
  save(ROOT/'dataset_manifest_v4_complete.json',manifest)
 def main():
- a=argparse.ArgumentParser();a.add_argument('stage',choices=('infer','features'));a.add_argument('--budget-s',type=float,default=300);args=a.parse_args();t=time.perf_counter()
+ a=argparse.ArgumentParser();a.add_argument('stage',choices=('infer','features'));a.add_argument('--budget-s',type=float,default=300);a.add_argument('--resume-engineering',action='store_true');args=a.parse_args();t=time.perf_counter()
  try:
-  {'infer':infer,'features':build}[args.stage](args.budget_s);save(ROOT/(args.stage+'_observation_terminal.json'),dict(status='COMPLETE',command_wall_s=time.perf_counter()-t))
+  if args.stage=='infer':infer(args.budget_s)
+  else:build(args.budget_s,args.resume_engineering)
+  save(ROOT/(args.stage+'_observation_terminal.json'),dict(status='COMPLETE',command_wall_s=time.perf_counter()-t,resume_engineering=args.resume_engineering))
  except Exception as e:
   save(ROOT/(args.stage+'_observation_failure.json'),dict(error=repr(e),command_wall_s=time.perf_counter()-t));raise
 if __name__=='__main__':main()
