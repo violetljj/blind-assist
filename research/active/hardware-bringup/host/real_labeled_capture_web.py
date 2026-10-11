@@ -8,6 +8,9 @@ from pathlib import Path
 import queue
 import threading
 import time
+import sys
+import uuid
+from m3_live_camera import CameraFeed
 from real_labeled_capture import GuidedCapture, CaptureClock, open_serial, default_output_root, segment_plan
 
 HERE=Path(__file__).resolve().parent
@@ -38,6 +41,7 @@ class Bridge:
         self.logs=deque(maxlen=180);self.prompt='';self.prompt_id=0;self.waiting=False
         self.phase='idle';self.error=None;self.worker=None;self.capture=None;self.closing=False
         self.latest=None;self.frame_path=None;self.frame_offset=0;self.frame_pending=b''
+        self.camera=None;self.camera_stop=threading.Event();self.camera_worker=None
     def log(self,*values,**kwargs):
         with self.lock:self.logs.append(' '.join(str(v) for v in values))
     def ask(self,prompt):
@@ -86,6 +90,8 @@ class Bridge:
     def stop(self):self.stop_event.set()
     def close(self):
         self.closing=True;self.stop()
+        self.camera_stop.set()
+        if self.camera_worker:self.camera_worker.join(5)
         if self.worker and self.worker.is_alive():self.worker.join(5)
         if self.worker and self.worker.is_alive():
             if self.capture and self.capture.device is not None:self.capture.device.close()
@@ -116,7 +122,8 @@ class Bridge:
             stamp=self.latest.get('host_received_monotonic_ns') if self.latest else None
             return dict(phase=self.phase,prompt=self.prompt,prompt_id=self.prompt_id,waiting=self.waiting,logs=list(self.logs),error=self.error,
                 output=str(self.output),port=self.port,resume=self.resume,redo=self.redo,segments=segment_plan(),metadata=metadata,manifest=manifest,
-                latest=self.latest,age_ms=max(0,(time.monotonic_ns()-stamp)/1e6) if stamp else None,worker_active=bool(self.worker and self.worker.is_alive()))
+                latest=self.latest,age_ms=max(0,(time.monotonic_ns()-stamp)/1e6) if stamp else None,worker_active=bool(self.worker and self.worker.is_alive()),
+                camera=self.camera.snapshot() if self.camera else dict(status='未开启相机',available=False))
 
 def handler_for(bridge):
     class Handler(BaseHTTPRequestHandler):
@@ -127,6 +134,20 @@ def handler_for(bridge):
             self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff');self.end_headers();self.wfile.write(body)
         def do_GET(self):
             if self.path in ('/','/index.html'):self.send(200,(HERE/'real_labeled_capture.html').read_bytes(),'text/html; charset=utf-8')
+            elif self.path=='/m3_camera_view.js':self.send(200,(HERE/'m3_camera_view.js').read_bytes(),'text/javascript; charset=utf-8')
+            elif self.path=='/api/camera.mjpeg':
+                if not bridge.camera or not bridge.camera.snapshot()['available']:
+                    self.send(503,dict(error='等待实时相机'));return
+                self.send_response(200);self.send_header('Content-Type','multipart/x-mixed-replace; boundary=BAFRAME')
+                self.send_header('Cache-Control','no-store');self.send_header('Connection','close');self.end_headers()
+                self.close_connection=True;self.connection.settimeout(2)
+                try:
+                    for header,jpeg in bridge.camera.stream_frames():
+                        part=(f'--BAFRAME\r\nContent-Type: image/jpeg\r\nContent-Length: {len(jpeg)}\r\n'
+                              f'X-Frame-Sequence: {header["seq"]}\r\nX-Sequence-Id: {header["sequence_id"]}\r\n'
+                              f'X-Host-Age-Ms: {header["host_age_ms"]:.3f}\r\nX-Host-Sent-Unix-Ms: {time.time()*1000:.3f}\r\n\r\n').encode('ascii')
+                        self.wfile.write(part+jpeg+b'\r\n');self.wfile.flush()
+                except OSError:pass
             elif self.path=='/api/state':self.send(200,bridge.state())
             else:self.send(404,dict(error='路径不存在'))
         def do_POST(self):
@@ -149,13 +170,22 @@ def handler_for(bridge):
     return Handler
 
 def main(argv=None):
+    for stream in (sys.stdout,sys.stderr):
+        if hasattr(stream,'reconfigure'):stream.reconfigure(encoding='utf-8')
     parser=argparse.ArgumentParser(description='只打开本地ToF十段采集台，点击开始才连接串口')
     parser.add_argument('--output',type=Path);parser.add_argument('--port',default='COM5');parser.add_argument('--web-port',type=int,default=8791)
     parser.add_argument('--resume',action='store_true');parser.add_argument('--redo',action='append',default=[])
+    parser.add_argument('--camera-url',default='http://192.168.5.9:81/stream',help='已连接Atom的局域网MJPEG地址；空字符串禁用相机')
     args=parser.parse_args(argv);output=args.output or default_output_root(ROOT/'artifacts.local/work')
     if not output.resolve().is_relative_to((ROOT/'artifacts.local').resolve()):parser.error('输出必须位于canonical artifacts.local内')
     bridge=Bridge(output,port=args.port,resume=args.resume,redo=args.redo)
     server=ThreadingHTTPServer(('127.0.0.1',args.web_port),handler_for(bridge))
+    if args.camera_url:
+        preview_root=ROOT/'artifacts.local/work/real-labeled-camera-preview'
+        preview_root.mkdir(parents=True,exist_ok=True)
+        bridge.camera=CameraFeed(preview_root/uuid.uuid4().hex,bridge.camera_stop,url=args.camera_url,max_seconds=12*3600)
+        bridge.camera_worker=threading.Thread(target=bridge.camera.run,name='atom-preview',daemon=True)
+        bridge.camera_worker.start()
     print(f'本地采集台：http://127.0.0.1:{server.server_port}/；尚未连接设备',flush=True)
     try:server.serve_forever(poll_interval=.2)
     except KeyboardInterrupt:pass
