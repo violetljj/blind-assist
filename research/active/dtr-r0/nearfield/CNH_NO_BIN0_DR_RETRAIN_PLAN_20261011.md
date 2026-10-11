@@ -34,7 +34,7 @@ M3 使用原 CVR 配方：五 seed 0–4，20 epoch，batch256，AdamW lr0.002/w
 
 强档按原模拟负例的 whole-score ties、原 M3/raised/local 匹配成本规则重算新模型尺度；ordinary single 同原 cal 规则。固定解析 LOCAL 若无学习尺度变化可沿用其原切点，具体继承与重新计算需在切点 receipt 中写明。切点均为模拟 cal，不能读取新 hold/真实。
 
-S 池化 cal 继承9e150dd8六组已消费 pass/clear、14family、7168负例clip（far+clear5376），重新计算新模型及输入臂的47维特征。contact不参与选点。按全部 whole-score ties 选择满足相对于同臂 strong baseline 的 far+clear 有通知clip增量≤3pp的最低tau；gap1真实通知计算，不能用slot计数代替。封存权重hash、所有切点和代码后才生成并打开新hold。
+S 池化 cal 继承9e150dd8六组已消费 pass/clear、14family、7168负例clip（far+clear5376），重新计算新模型及输入臂的47维特征。contact不参与选点。按全部 whole-score ties 选择满足相对于旧原5格池化 baseline 的 far+clear 有通知clip增量≤3pp的最低tau，与9e150dd8相同绝对通知预算；gap1真实通知计算，不能用slot计数代替。如果新strong本身已超预算，记录不可行（S取∞不能修复strong），不放宽预算。封存权重hash、所有切点和代码后才生成并打开新hold。
 
 新hold沿用tradeoff目标/布置采样数量，1536物理scene×K2、HEAD/BODY各512接触event，四pass层、clear；所有目标尺寸与rho在旧源标量上加0.00191。背景采用新结构的 alternating-double-bridges、stepped-twolevel-panels、skew-separated-tripod-posts、offset-asymmetric-nested-backs 四family（每族两镜像实例），具体盒体在配套source预先固定，改变侧物连接与数量，不只改名或平移。必须对允许的全部库存元数据（含已消费9e150dd8）检查物理key、背景几何hash、family零交集。只读允许库存metadata，不打开保护数据。新hold冻结名义光子模型，与旧候选在同一观测上配对，不能给新候选独享较容易的观测。
 
